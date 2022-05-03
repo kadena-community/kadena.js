@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "lint": "npx eslint . --ext .js,.ts",
-    "test": "jest"
+    "postinstall": "husky install"
   },
   "keywords": [],
   "author": "Randynamic",
@@ -22,6 +22,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.5",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
     "jest": "^27.5.1",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.4",
