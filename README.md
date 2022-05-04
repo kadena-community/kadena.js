@@ -7,3 +7,10 @@
 > Kadena.js is a collection of libraries that will allow you to interact with the `local`, `testnet` or `mainnet` Kadena chainweb.
 > It will provide helper function
 
+
+### TODO
+* Add coverage tooling
+* coverage Charts
+* size warning
+
+
