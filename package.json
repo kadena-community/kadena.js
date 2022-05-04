@@ -1,8 +1,8 @@
 {
   "name": "kadena.js",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
+  "main": "index.ts",
   "scripts": {
     "test": "jest",
     "build": "webpack --mode=development",
@@ -10,8 +10,35 @@
     "lint": "npx eslint . --ext .js,.ts",
     "postinstall": "husky install"
   },
-  "keywords": [],
+  "homepage": "tbd",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kadena-io/kadena.js.git"
+  },
+  "keywords": [
+    "Kadena",
+    "Crypto",
+    "blackchain",
+    "Pact-lang",
+    "ChainWeb",
+    "utils",
+    "utilities"
+  ],
   "author": "Randynamic",
+  "contributors": [
+    {
+      "name": "buckie",
+      "web": "https://github.com/buckie"
+    },
+    {
+      "name": "ggobugi27",
+      "web": "https://github.com/ggobugi27"
+    },
+    {
+      "name": "Randynamic",
+      "web": "https://github.com/Randynamic"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.5.0",
