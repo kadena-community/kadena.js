@@ -1,3 +1,3 @@
-export * from './KeyPair';
-export * from './PactCommand';
-export * from './SignCommand';
+export * from '../crypto/interfaces/KeyPair';
+export * from '../crypto/interfaces/PactCommand';
+export * from '../crypto/interfaces/SignCommand';
