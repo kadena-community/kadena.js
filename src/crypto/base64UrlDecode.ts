@@ -9,8 +9,8 @@ const chars =
  */
 
 export default function base64UrlDecode(str: string): string {
-  str = String(str).replace(/[=]+$/, ''); // #31: ExtendScript bad parse of /=
-  if (str.length % 4 === 1) {
+  const newString = String(str).replace(/[=]+$/, ''); // #31: ExtendScript bad parse of /=
+  if (newString.length % 4 === 1) {
     throw new InvalidCharacterError(
       "'atob' failed: The string to be decoded is not correctly encoded.",
     );
@@ -20,7 +20,7 @@ export default function base64UrlDecode(str: string): string {
     // initialize result and counters
     let bc = 0, bs, buffer, idx = 0;
     // get next character
-    (buffer = str.charAt(idx++)); // eslint-disable-line no-cond-assign
+    (buffer = newString.charAt(idx++)); // eslint-disable-line no-cond-assign
     // character found in table? initialize bit storage and add its ascii value;
     ~buffer &&
     ((bs = bc % 4 ? (bs || 0) * 64 + buffer : buffer),
