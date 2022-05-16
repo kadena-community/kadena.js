@@ -6,8 +6,17 @@ export interface Payload {
   exec: Exec;
 }
 
+export interface Cap {
+  name: stinrg;
+  args: [string];
+}
+
 export interface PubKey {
   pubKey: string;
+  scheme?: string;
+  addr?: string;
+  clist?;
+  [Cap];
 }
 
 export interface Meta {
