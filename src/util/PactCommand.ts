@@ -2,12 +2,19 @@ export interface Exec {
   data: object;
   code: string;
 }
-export interface Payload {
-  exec: Exec;
+
+export interface Cont {
+  proof: string | null;
+  pactId: string;
+  rollback: boolean;
+  step: number;
+  data: object;
 }
 
+export type Payload = Exec | Cont;
+
 export interface Cap {
-  name: stinrg;
+  name: string;
   args: [string];
 }
 
@@ -15,8 +22,7 @@ export interface PubKey {
   pubKey: string;
   scheme?: string;
   addr?: string;
-  clist?;
-  [Cap];
+  clist?: [Cap];
 }
 
 export interface Meta {
