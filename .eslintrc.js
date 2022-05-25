@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 
-module.exports = {
+const config = {
   root: true,
   extends: 'airbnb-typescript/base',
   plugins: ['import', 'prettier', 'jest'],
@@ -18,3 +18,5 @@ module.exports = {
     'jest/globals': true,
   },
 };
+
+module.exports = config;
