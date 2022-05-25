@@ -20,7 +20,7 @@ type Cap = {
  */
 export default function mkCap(name: string, args: Array<any> = []): Cap {
   return {
-    name: name,
-    args: args,
+    name,
+    args,
   };
 }
