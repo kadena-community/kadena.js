@@ -20,8 +20,11 @@ export type PactDecimal = {
   decimal: string
 };
 
-/** TODO: Should the helper functions `mkPactInt` and `mkPactDecimal` try to enforce the
- * constraints the type definition explains. i.e. Should `isSafeInteger` be used?
+/** TODO:
+ * - Should the helper functions `mkPactInt` and `mkPactDecimal` try to enforce the
+ *   constraints the type definition explains.
+ * - Should `isSafeInteger` be used?
+ * - Should the function check if the string is a valid integer/decimal?
  * */
 
 export function mkPactInt(value: string): PactInt {
