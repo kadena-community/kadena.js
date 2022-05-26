@@ -1,4 +1,6 @@
 import mkCap from '../mkCap';
+import { mkPactInt } from '../../util/PactValue';
+import { mkPactDecimal } from '../../util/PactValue';
 
 test('should create a baseline cap with empty args', () => {
   const actual = mkCap('coin.GAS');
@@ -38,6 +40,21 @@ test("should create a cap with JavaScript's Number.MAX_SAFE_INTEGER", () => {
 test("should create a cap with JavaScript's Number.MIN_SAFE_INTEGER", () => {
   const actual = mkCap('coin.TEST', [Number.MIN_SAFE_INTEGER]);
   const expected = { name: 'coin.TEST', args: [-9007199254740991] };
+
+  expect(expected).toEqual(actual);
+});
+
+test('should create a cap with number, pact integer, and pact decimal', () => {
+  const bigInt = mkPactInt('90071992547409910000');
+  const smallDec = mkPactDecimal('-0.90071992547409910000');
+
+  const actual = mkCap('coin.TEST', [Number.MIN_SAFE_INTEGER, bigInt, smallDec]);
+  const expected = { name: 'coin.TEST',
+    args: [
+      -9007199254740991,
+      { int: '90071992547409910000' },
+      { decimal: '-0.90071992547409910000' },
+    ] };
 
   expect(expected).toEqual(actual);
 });
