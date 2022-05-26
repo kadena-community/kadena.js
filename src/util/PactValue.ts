@@ -12,9 +12,9 @@
  * TODO: add object representation of Integer.
  * TODO: add object representation of Decimal.
  */
- export type PactLiteral = string | number | boolean;
+export type PactLiteral = string | number | boolean;
 
- /**
+/**
   * @typedef {sumtype} PactValue - A sum type representing a `pact` value.
   * Should have parity with the JSON serialization of the Haskell type `PactValue` as defined in `pact`:
   * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/PactValue.hs#L109
@@ -24,4 +24,4 @@
   * TODO: add guard type of pact values type.
   * TODO: add module reference type type.
   */
- export type PactValue = PactLiteral | Array<PactValue>;
+export type PactValue = PactLiteral | Array<PactValue>;

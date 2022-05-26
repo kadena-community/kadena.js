@@ -1,4 +1,4 @@
-import { PactValue } from "./PactValue";
+import { PactValue } from './PactValue';
 
 export interface Exec {
   data: object;
@@ -26,7 +26,7 @@ export type Payload = Exec | Cont;
 export type Cap = {
   name: string;
   args: Array<PactValue>;
-}
+};
 
 export interface PubKey {
   pubKey: string;
