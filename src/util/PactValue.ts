@@ -6,8 +6,8 @@
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L64
  */
 export type PactInt = {
-    int: string
-}
+  int: string
+};
 
 /**
  * @typedef {object} PactDecimal - A very big or very small `pact` decimal value.
@@ -17,8 +17,8 @@ export type PactInt = {
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L83
  */
 export type PactDecimal = {
-    decimal: string
-}
+  decimal: string
+};
 
 /** TODO: Should the helper functions `mkPactInt` and `mkPactDecimal` try to enforce the
  * constraints the type definition explains. i.e. Should `isSafeInteger` be used?
@@ -26,13 +26,13 @@ export type PactDecimal = {
 
 export function mkPactInt(value: string): PactInt {
   return {
-    int: value
+    int: value,
   };
 }
 
 export function mkPactDecimal(value: string): PactDecimal {
   return {
-    decimal: value
+    decimal: value,
   };
 }
 
