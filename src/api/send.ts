@@ -1,25 +1,25 @@
 
-type Host = string
+type Host = string;
 
-type RequestBody = SendRequestBody
+type RequestBody = SendRequestBody;
 
-type ChainwebChainId = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12" | "13" | "14" | "15" | "16" | "17" | "18" | "19";
-type ChainwebMetaData = {
-    creationTime: number, // TODO: What's the haskell type of this
-    ttl: number,
-    gasLimit: number,
-    gasPrice: number,
-    sender: string,
-    chainId: ChainwebChainId
-}
+type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
+export type ChainwebMetaData = {
+  creationTime: number, // TODO: What's the haskell type of this
+  ttl: number,
+  gasLimit: number,
+  gasPrice: number,
+  sender: string,
+  chainId: ChainwebChainId
+};
 
 // TODO: mkMeta: https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L513
 
-type SendRequestBodyPayload = string
+type SendRequestBodyPayload = string;
 
 type SendRequestBody = {
-    cmds: Array<SendRequestBodyPayload>
-}
+  cmds: Array<SendRequestBodyPayload>
+};
 /** Corresponds to `mkPublicSend`:
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L359
  *
@@ -29,9 +29,9 @@ type SendRequestBody = {
  * @returns
  */
 function payloadArrayToSendReqBody(arr: Array<SendRequestBodyPayload>): SendRequestBody {
-    return {
-        cmds: arr,
-    }
+  return {
+    cmds: arr,
+  };
 }
 
 /** Corresponds to `mkReq` function:
@@ -43,13 +43,13 @@ function payloadArrayToSendReqBody(arr: Array<SendRequestBodyPayload>): SendRequ
  * @returns
  */
 function stringifyAndMakePOSTRequest(cmd: RequestBody): RequestInit {
-    return {
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: "POST",
-        body: JSON.stringify(cmd)
-    }
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(cmd),
+  };
 }
 
 
@@ -60,6 +60,6 @@ function stringifyAndMakePOSTRequest(cmd: RequestBody): RequestInit {
  * @param apiHost
  * @returns
  */
-function rawSend(sendRequest: SendRequestBody, apiHost: Host): Promise<Response> {
-    return fetch(`${apiHost}/api/v1/send`, stringifyAndMakePOSTRequest(sendRequest))
+export function rawSend(sendRequest: Array<SendRequestBodyPayload>, apiHost: Host): Promise<Response> {
+  return fetch(`${apiHost}/api/v1/send`, stringifyAndMakePOSTRequest(payloadArrayToSendReqBody(sendRequest)));
 }
