@@ -8,13 +8,13 @@ import { KeyPair, SignCommand } from '../util';
  Sign a hash using key pair
 */
 export default function signHash(
-  hsh: string,
+  hash: string,
   { secretKey, publicKey }: KeyPair,
 ): SignCommand {
-  const hshBin = base64UrlDecodeArr(hsh);
+  const hshBin = base64UrlDecodeArr(hash);
   const sigBin = nacl.sign.detached(
     hshBin,
     toTweetNaclSecretKey({ secretKey, publicKey }),
   );
-  return { hash: hsh, sig: binToHex(sigBin), pubKey: publicKey };
+  return { hash, sig: binToHex(sigBin), pubKey: publicKey };
 }
