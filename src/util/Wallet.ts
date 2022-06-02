@@ -1,10 +1,7 @@
-import * from 'util';
+import { Cap } from './PactCommand';
 
-export interface SigningCap extends Cap {
+export interface SigningCap {
   role: string;
   description: string;
-  cap: {
-    name: string;
-    args: string[];
-  };
+  cap: Cap;
 }

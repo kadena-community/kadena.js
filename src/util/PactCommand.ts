@@ -23,10 +23,10 @@ export type Payload = Exec | Cont;
  *                           - "<moduleName>.<capability>"
  * @property {array} args - Array of PactValue arguments the capability expects.
  */
-export type Cap = {
+export interface Cap {
   name: string;
   args: Array<PactValue>;
-};
+}
 
 export interface PubKey {
   pubKey: string;
