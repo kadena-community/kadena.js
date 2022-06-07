@@ -1,4 +1,5 @@
 import { InvalidCharacterError } from '../util';
+import { Base64Url } from '../util/Base64Url';
 
 const chars =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
@@ -8,7 +9,7 @@ const chars =
  * code from [https://gist.github.com/1020396] by [https://github.com/atk]
  */
 
-export default function base64UrlDecode(str: string): string {
+export default function base64UrlDecode(str: Base64Url): string {
   const newString = String(str).replace(/[=]+$/, ''); // #31: ExtendScript bad parse of /=
   if (newString.length % 4 === 1) {
     throw new InvalidCharacterError(

@@ -1,4 +1,5 @@
 import { InvalidCharacterError } from '../util';
+import { Base64Url } from '../util/Base64Url';
 
 /**
  * Takes in string and outputs Base64 Url encoded string
@@ -8,7 +9,7 @@ import { InvalidCharacterError } from '../util';
 const chars =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
 
-export default function base64UrlEncode(str: string): string {
+export default function base64UrlEncode(str: string): Base64Url {
   let block,
     charCode,
     output = '';
