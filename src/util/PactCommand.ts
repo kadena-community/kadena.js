@@ -10,8 +10,8 @@ import { Base16String } from './Base16String';
  *               Required field, but if not applicable set to 'null'.
  */
 export interface Exec {
-  code: string;
   data: object | null;
+  code: string;
 }
 
 /**
@@ -20,12 +20,12 @@ export interface Exec {
  * @param pactId - The id of the `defpact` to be continued or rolled back.
  *                 The id is equivalent to the request key (payload hash) of the transaction that
  *                 executed the first step of the `defpact`.
- * @param step - Step in the defpact to execute.
- * @param rollback - Whether to execute a specified rollback on this step.
- * @param data - Arbitrary JSON to be accessed in Pact code via `read-msg`, `read-integer`, ect.
- *               Required field, but if not applicable set to 'null'.
  * @param proof - Backend-specific data for continuing a cross-chain proof.
  *                Required field, but if not applicable set to 'null'.
+ * @param rollback - Whether to execute a specified rollback on this step.
+ * @param step - Step in the defpact to execute.
+ * @param data - Arbitrary JSON to be accessed in Pact code via `read-msg`, `read-integer`, ect.
+ *               Required field, but if not applicable set to 'null'.
  */
 export interface Cont {
   pactId: Base64Url;
@@ -66,8 +66,8 @@ export type SignerScheme = 'ED25519';
  * @param clist - List of Pact capabilities associated with/installed by this signer.
  */
 export interface Signer {
-  scheme?: SignerScheme;
   pubKey: Base16String;
+  scheme?: SignerScheme;
   addr?: Base16String;
   clist?: [Cap];
 }
