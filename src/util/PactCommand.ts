@@ -55,7 +55,7 @@ export type Cap = {
   args: Array<PactValue>;
 };
 
-export type SignerScheme = "ED25519";
+export type SignerScheme = 'ED25519';
 
 /**
  * Information on the cryptographic signer authenticating a Chainweb transaction.
@@ -75,8 +75,7 @@ export interface Signer {
 /**
  * Stringified Chainweb chain numbers.
  */
-export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' |
-                              '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
+export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
 
 /**
  * Metadata necessary for sending transactions to Chainweb.
@@ -101,7 +100,7 @@ export interface ChainwebMetaData {
 /**
  * Different Chainweb network versions.
  */
-export type ChainwebNetworkId = "mainnet01" | "testnet04" | "devnet"
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'devnet';
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.
@@ -120,7 +119,7 @@ export interface CommandPayload {
   nonce: string;
 }
 
-export type CommandPayloadStringifiedJSON = string
+export type CommandPayloadStringifiedJSON = string;
 
 // TODO: function for gettig from CommandPayload -> CommandPayloadStringifiedJSON
 
