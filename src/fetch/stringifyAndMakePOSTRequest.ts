@@ -6,11 +6,11 @@
  *
  */
 export function stringifyAndMakePOSTRequest<T>(body: T): RequestInit {
-    return {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(body),
-    };
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(body),
   };
+}
