@@ -5,18 +5,18 @@ import { parseRes } from './parseRes';
 
 /**
  * Request type of /send endpoint.
- * Non-empty array of Pact commands (or transactions) to submit to server.
+ *
+ * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
  */
 export type SendRequestBody = {
   cmds: Array<Command>
 };
 
 /**
- * Response type of /send endpoint, which returns a list of the request
- * keys (or transaction hashes) of the transactions submitted.
+ * Response type of /send endpoint.
  *
- * The list can be sent to /poll and /listen to retrieve the results
- * of the transactions.
+ * @param requestKeys - List of request keys (or command hashes) of the transactions submitted.
+ *                      Can be sent to /poll and /listen to retrieve transaction results.
  */
 export type SendResponse = {
   requestKeys: Array<Base16String>
@@ -25,7 +25,7 @@ export type SendResponse = {
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
  *
- * Corresponds to `fetchSendRaw` and `fetchSend` function:
+ * Corresponds to `fetchSendRaw` and `fetchSend` functions:
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L601
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L589
  *
