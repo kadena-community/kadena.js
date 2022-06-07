@@ -3,3 +3,9 @@ export interface SignCommand {
   hash: string;
   pubKey: string;
 }
+
+export interface preparedCommand {
+  hash: string;
+  sigs: { sig: string }[];
+  cmd: string;
+}
