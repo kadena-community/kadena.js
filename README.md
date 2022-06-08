@@ -9,8 +9,9 @@
 
 
 ### TODO
-* Add coverage tooling
-* coverage Charts
-* size warning
+- make ready to go public
+- npm registry
+- release cycles
+- 
 
 
