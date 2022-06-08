@@ -1,7 +1,7 @@
 import { Command } from '../util/PactCommand';
 import { Base16String } from '../util/Base16String';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-import { parseRes } from './parseRes';
+import { parseResponse } from './parseResponse';
 
 /**
  * Request type of /send endpoint.
@@ -34,8 +34,8 @@ export type SendResponse = {
  * @returns - Raw Response from Server.
  */
 export function send(reqBody: SendRequestBody, apiHost: string):Promise<SendResponse> {
-  let req = stringifyAndMakePOSTRequest<SendRequestBody>(reqBody);
-  let res = fetch(`${apiHost}/api/v1/send`, req);
-  const parsedRes: Promise<SendResponse> = parseRes(res);
+  let req:RequestInit = stringifyAndMakePOSTRequest<SendRequestBody>(reqBody);
+  let res:Promise<Response> = fetch(`${apiHost}/api/v1/send`, req);
+  const parsedRes: Promise<SendResponse> = parseResponse(res);
   return parsedRes;
 }
