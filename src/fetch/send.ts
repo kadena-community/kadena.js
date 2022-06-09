@@ -29,13 +29,13 @@ export type SendResponse = {
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L601
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L589
  *
- * @param reqBody - Non-empty array of Pact commands to submit to server.
+ * @param requestBody - Non-empty array of Pact commands to submit to server.
  * @param apiHost - API host running a Pact-enabled server.
  * @returns - Raw Response from Server.
  */
-export function send(reqBody: SendRequestBody, apiHost: string):Promise<SendResponse> {
-  let req:RequestInit = stringifyAndMakePOSTRequest<SendRequestBody>(reqBody);
-  let res:Promise<Response> = fetch(`${apiHost}/api/v1/send`, req);
-  const parsedRes: Promise<SendResponse> = parseResponse(res);
+export function send(requestBody: SendRequestBody, apiHost: string):Promise<SendResponse> {
+  let request:RequestInit = stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
+  let response:Promise<Response> = fetch(`${apiHost}/api/v1/send`, request);
+  const parsedRes: Promise<SendResponse> = parseResponse(response);
   return parsedRes;
 }
