@@ -8,7 +8,7 @@ test('should stringify body and create POST request', () => {
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    body: `{"name":"hello","val":"'world'"}`,
+    body: "{\"name\":\"hello\",\"val\":\"'world'\"}",
   };
 
   expect(expected).toEqual(actual);

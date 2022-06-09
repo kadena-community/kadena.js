@@ -1,41 +1,31 @@
-jest.mock('fetch');
-
 import { parseResponse } from '../parseResponse';
+import { mockFetch } from './mockFetch';
+import { MockTestType, mockSuccessResponse, mockFailureResponse } from './mockFetch';
 
-type MockTestType = {
-    arr: [string],
-    int: number
-}
-
-test('should parse 200 OK Response as expected type', async () => {
-  const mockTestObj = {
-    arr: ['hello', 'world'],
-    int: 2
-  };
-
-  const mockResponse:Promise<Response> = Promise.resolve(new Response(JSON.stringify(mockTestObj), { "status" : 200 , "statusText" : "SuperSmashingGreat!" }));
-  const parsedResponsePromise:Promise<MockTestType> = parseResponse(mockResponse);
-  const actual:MockTestType = await parsedResponsePromise;
-  const expected = mockTestObj;
-
-  expect(expected).toEqual(actual);
+const unmockedFetch = global.fetch;
+/**
+ * NOTE (Linda, 06/09/2022):
+ * Typing `mockFetch` as jest.Mock was needed to satisfy
+ * the type constraint of jest and the original `fetch` function.
+ *
+ * See `mockFetch.ts` for more details.
+ */
+beforeAll(() => { global.fetch = (mockFetch as jest.Mock); });
+afterAll(() => {
+  global.fetch = unmockedFetch;
 });
 
-/*test('should return concatenated errors', async () => {
-    const mockTestObj = {
-      arr: ['hello', 'world'],
-      int: 2
-    };
+test('should parse successful Response as expected type', async () => {
+  const mockPromise:Promise<Response> = fetch('/simple/success');
+  const parsedResponse:MockTestType = await parseResponse(mockPromise);
+  expect(mockSuccessResponse).toEqual(parsedResponse);
+});
 
-    global.fetch = jest.fn(() => Promise.resolve({
-      ok: false,
-      json: () => Promise.resolve({ errors: [{ message: "someErrorMessage" }, { message: "anotherErrorMessage" }] })
-    })) as jest.Mock;
+test('should return concatenated errors', async () => {
+  async function parseFailedResponse() {
+    const mockPromise:Promise<Response> = fetch('/simple/failure');
+    return parseResponse(mockPromise);
+  }
 
-    const mockPromise:Promise<Response> = fetch("test.com/url", stringifyAndMakePOSTRequest("testRequest"));
-    const actualPromise:Promise<MockTestType> = parseResponse(mockPromise);
-    const actual:MockTestType = await actualPromise;
-    const expected = mockTestObj;
-
-    expect(expected).toEqual("somethingrandom");
-  });*/
+  return expect(parseFailedResponse).rejects.toThrowError(mockFailureResponse);
+});
