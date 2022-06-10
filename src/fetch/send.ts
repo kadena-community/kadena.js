@@ -2,6 +2,7 @@ import { Command } from '../util/PactCommand';
 import { Base16String } from '../util/Base16String';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { parseResponse } from './parseResponse';
+import fetch, { RequestInit, Response } from 'node-fetch';
 
 /**
  * Request type of /send endpoint.

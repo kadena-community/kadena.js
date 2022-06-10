@@ -4,20 +4,13 @@ import pactTestCommand from '../../crypto/tests/mockdata/Pact';
 import sign from '../../crypto/sign';
 import { SignCommand } from '../../util/SignCommand';
 import { Command } from '../../util/PactCommand';
+import fetch from 'node-fetch';
 
 
-const unmockedFetch = global.fetch;
-/**
- * NOTE (Linda, 06/09/2022):
- * Typing `mockFetch` as jest.Mock was needed to satisfy
- * the type constraint of jest and the original `fetch` function.
- *
- * See `mockFetch.ts` for more details.
- */
-beforeAll(() => { global.fetch = (mockFetch as jest.Mock); });
-afterAll(() => {
-  global.fetch = unmockedFetch;
-});
+jest.mock('node-fetch');
+const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
+mockedFunctionFetch.mockImplementation(mockFetch as jest.MockedFunction<typeof fetch>);
+
 
 test('/send should return request keys of txs submitted', async () => {
   const commandStr = JSON.stringify(pactTestCommand);
