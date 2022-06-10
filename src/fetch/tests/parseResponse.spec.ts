@@ -1,5 +1,5 @@
 import { parseResponse } from '../parseResponse';
-import { Response } from 'node-fetch';
+import { Response as NodeFetchResponse } from 'node-fetch';
 
 test('should parse successful Response as expected type', async () => {
   type MockTestType = {
@@ -10,7 +10,7 @@ test('should parse successful Response as expected type', async () => {
     arr: ['hello', 'world'],
     int: 2,
   };
-  const mockPromise = Promise.resolve(new Response(JSON.stringify(mockSuccessResponse)));
+  const mockPromise = Promise.resolve(new NodeFetchResponse(JSON.stringify(mockSuccessResponse)));
   const parsedResponse:MockTestType = await parseResponse(mockPromise);
   expect(mockSuccessResponse).toEqual(parsedResponse);
 });
@@ -28,7 +28,7 @@ test('should fail if Response promise was an error', async () => {
 test('should fail if Response status not `ok`', async () => {
   const mockFailureResponse:string = 'Some API error message.';
   async function parseFailedResponse() {
-    const mockPromise = Promise.resolve(new Response(mockFailureResponse, {status: 404}));
+    const mockPromise = Promise.resolve(new NodeFetchResponse(mockFailureResponse, { status: 404 }));
     return parseResponse(mockPromise);
   }
 
