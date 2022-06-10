@@ -42,6 +42,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.5.1",
+    "@types/node-fetch": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.15.0",
@@ -60,6 +61,7 @@
   },
   "dependencies": {
     "blakejs": "^1.2.1",
+    "node-fetch": "^2.6.6",
     "tweetnacl": "^1.0.3"
   }
 }
