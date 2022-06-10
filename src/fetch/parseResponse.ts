@@ -1,3 +1,5 @@
+import { Response } from 'node-fetch';
+
 /**
  * Parses raw `fetch` response into a typed JSON value.
  *
