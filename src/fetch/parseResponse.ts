@@ -1,4 +1,4 @@
-import { Response } from 'node-fetch';
+import { Response as NodeFetchResponse } from 'node-fetch';
 
 /**
  * Parses raw `fetch` response into a typed JSON value.
@@ -7,8 +7,8 @@ import { Response } from 'node-fetch';
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L546
  *
  */
-export async function parseResponse<T>(raw: Promise<Response>):Promise<T> {
-  const response:Response = await raw;
+export async function parseResponse<T>(raw: Promise<NodeFetchResponse>):Promise<T> {
+  const response:NodeFetchResponse = await raw;
   if (response.ok) {
     const JSONResponse:T = await response.json();
     return JSONResponse;

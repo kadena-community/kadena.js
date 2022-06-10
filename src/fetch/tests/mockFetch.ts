@@ -1,5 +1,5 @@
 import { SendRequestBody, SendResponse } from '../send';
-import { RequestInit } from 'node-fetch';
+import { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 
 /**
  * Mock implementation of node-fetch's `fetch` function.
@@ -12,7 +12,7 @@ import { RequestInit } from 'node-fetch';
  * ```
  *
  */
-export async function mockFetch(url:string, init?: RequestInit): Promise<object> {
+export async function mockFetch(url:string, init?: NodeFetchRequestInit): Promise<object> {
   switch (url) {
     case '/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
