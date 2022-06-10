@@ -1,3 +1,5 @@
+import { RequestInit } from 'node-fetch';
+
 /**
  * Formats API request body to use with `fetch` function.
  *
