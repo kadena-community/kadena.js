@@ -121,9 +121,13 @@ export interface CommandPayload {
 
 export type CommandPayloadStringifiedJSON = string;
 
-// TODO: function for gettig from CommandPayload -> CommandPayloadStringifiedJSON
+export interface UserSig {
+  sig: Base16String
+}
 
+// TODO: function for gettig from CommandPayload -> CommandPayloadStringifiedJSON
 // TODO: Change file name to just 'Command.ts'.
+
 
 /**
  * The full transaction, its hash, and its signatures.
@@ -137,5 +141,5 @@ export type CommandPayloadStringifiedJSON = string;
 export interface Command {
   cmd: CommandPayloadStringifiedJSON;
   hash: Base64Url;
-  sigs: [Base16String];
+  sigs: Array<UserSig>;
 }
