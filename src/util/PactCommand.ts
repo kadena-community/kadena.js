@@ -100,7 +100,7 @@ export interface ChainwebMetaData {
 /**
  * Different Chainweb network versions.
  */
-export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'devnet';
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.
