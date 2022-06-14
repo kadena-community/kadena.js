@@ -8,7 +8,10 @@
     "build": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "lint": "npx eslint . --ext .js,.ts",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
+    "test:pact-server": "jest ./integration-test/pact-server-test.spec.ts",
+    "test:devnet": "jest ./integration-test/devnet-test.spec.ts"
   },
   "homepage": "tbd",
   "repository": {
