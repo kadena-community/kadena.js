@@ -28,7 +28,7 @@ test('/send should return request keys of txs submitted', async () => {
   };
   const expectedRequestKey1 = signedCommand1.hash;
 
-  // NOTE: `signedCommand2` was generated with pact -a and submitted to `devnet` chain 0.
+  // A tx created for chain 0 of devnet using `pact -a`.
   const signedCommand2:Command = {
     'hash':'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     'sigs':[{ 'sig':'0df98906e0c7a6e380f72dac6211b37c321f6555f3eb20ee2736f37784a3edda54da3a15398079b44f474b1fc7f522ffa3ae004a67a0a0266ecc8c82b9a0220b' }],
@@ -47,7 +47,7 @@ test('/send should return request keys of txs submitted', async () => {
 });
 
 test('/send should return error if sent to wrong chain id', async () => {
-  // NOTE: `signedCommand2` was generated with pact -a and submitted to `devnet` chain 0.
+  // A tx created for chain 0 of devnet using `pact -a`.
   const signedCommand:Command = {
     'hash':'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     'sigs':[{ 'sig':'0df98906e0c7a6e380f72dac6211b37c321f6555f3eb20ee2736f37784a3edda54da3a15398079b44f474b1fc7f522ffa3ae004a67a0a0266ecc8c82b9a0220b' }],
@@ -62,7 +62,7 @@ test('/send should return error if sent to wrong chain id', async () => {
 });
 
 test('/send should return error for duplicate txs', async () => {
-  // NOTE: `signedCommand2` was generated with pact -a and submitted to `devnet` chain 0.
+  // A tx created for chain 0 of devnet using `pact -a`.
   const signedCommand:Command = {
     'hash':'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     'sigs':[{ 'sig':'0df98906e0c7a6e380f72dac6211b37c321f6555f3eb20ee2736f37784a3edda54da3a15398079b44f474b1fc7f522ffa3ae004a67a0a0266ecc8c82b9a0220b' }],
