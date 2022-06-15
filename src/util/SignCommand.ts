@@ -4,8 +4,18 @@ export interface SignCommand {
   pubKey: string;
 }
 
-export interface preparedCommand {
+export interface PreparedCommand {
   hash: string;
-  sigs: { sig: string }[];
+  sigs: Sig[];
   cmd: string;
+}
+
+export interface Sig {
+  sig: string;
+}
+
+export interface SignedSig {
+  hash: string;
+  sig: string | undefined;
+  publicKey: string;
 }
