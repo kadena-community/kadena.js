@@ -1,9 +1,6 @@
-import {
-  pullAndCheckHashs,
-  pullSig,
-  PreparedCommand,
-  SignCommand,
-} from '../util';
+import { pullAndCheckHashs } from './pullAndCheckHashs';
+import { pullSig } from './pullSig';
+import { PreparedCommand, SignCommand } from '../util';
 /**
  * Makes a single command given signed data.
  * @param sigs {array} - array of signature objects, see 'sign'

@@ -1,5 +1,7 @@
-import { asArray, mkSigner, attachSig, KeyPair } from '../util';
+import { attachSig } from './attachSig';
+import { mkSigner } from './mkSigner';
 import { mkSingleCmd } from './mkSingleCmd';
+import { KeyPair } from '../util';
 
 /**
  * Prepare an ExecMsg pact command for use in send or local execution.
