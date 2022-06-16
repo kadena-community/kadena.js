@@ -1,8 +1,4 @@
-export interface SignCommand {
-  sig: string;
-  hash: string;
-  pubKey: string;
-}
+export type SignCommand = SignedSig | UnsignedSig;
 
 export interface PreparedCommand {
   hash: string;
@@ -11,11 +7,17 @@ export interface PreparedCommand {
 }
 
 export interface Sig {
-  sig: string;
+  sig: string | undefined;
 }
 
 export interface SignedSig {
   hash: string;
   sig: string | undefined;
-  publicKey: string;
+  pubKey: string;
+}
+
+export interface UnsignedSig {
+  hash: string;
+  sig: string | undefined;
+  pubKey?: string;
 }

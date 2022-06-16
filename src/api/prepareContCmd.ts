@@ -1,5 +1,5 @@
-import { asArray, attachSig } from '../util';
-import mkSingleCmd from './mkSingleCmd';
+import { asArray, attachSig, KeyPair, mkSigner } from '../util';
+import { mkSingleCmd } from './mkSingleCmd';
 
 /**
  * Prepare an ContMsg pact command for use in send or local execution.
@@ -14,18 +14,18 @@ import mkSingleCmd from './mkSingleCmd';
  * @param meta {object} - public meta information, see mkMeta
  * @return valid pact API Cont command for send or local use.
  */
-var prepareContCmd = function (
-  keyPairs = [],
+export function prepareContCmd(
+  keyPairs: [KeyPair],
   nonce: string = new Date().toISOString(),
-  proof: string,
+  proof: string | null,
   pactId: string,
   rollback: boolean,
   step: number,
   envData: object,
-  meta = mkMeta('', '', 0, 0, 0, 0),
+  meta = {},
   networkId = null,
 ) {
-  var kpArray = asArray(keyPairs);
+  var kpArray = keyPairs;
   var signers = kpArray.map(mkSigner);
   var cmdJSON = {
     networkId: networkId,
@@ -45,4 +45,4 @@ var prepareContCmd = function (
   var cmd = JSON.stringify(cmdJSON);
   var sigs = attachSig(cmd, kpArray);
   return mkSingleCmd(sigs, cmd);
-};
+}
