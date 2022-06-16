@@ -13,7 +13,14 @@ export const envData = {
     'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
   ],
 };
-
+export const meta = {
+  creationTime: 0,
+  ttl: 0,
+  gasLimit: 0,
+  chainId: '',
+  gasPrice: 0,
+  sender: '',
+};
 export const cmd = {
   networkId: null,
   payload: {
