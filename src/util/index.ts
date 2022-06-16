@@ -5,5 +5,3 @@ export * from './PactCommand';
 export * from './PactValue';
 export * from './SignCommand';
 export * from './InvalidCharacterError';
-export * from './asArray';
-export * from './pullAndCheckHashs';
