@@ -7,25 +7,44 @@
 > Kadena.js is a collection of libraries that will allow you to interact with the `local`, `development`, `testnet` or `mainnet` Kadena chainweb.
 > It will provide helper function
 
-### Running Tests
+<hr>
+
+## Running Tests
+
+### Unit testing
 To run the unit tests:
 ```shell
 $ npm test
 ```
 
-To run integration tests against a pact server:
+To run single unit tests:
 ```shell
-// Requires starting a pact server that is listening at http://127.0.0.1:9001.
-$ npm start:pact
-$ npm test:pact-server
+$ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 ```
 
-To run integration tests against devnet:
+### integration tests
+#### Pactserver
+
+To run integration tests against a pact server it requires starting a pact server that is listening at http://127.0.0.1:9001.
+The following command can be used:
+
 ```shell
-// Requires starting devnet and exposing the pact endpoints at http://localhost:8080.
-// For more details, see instructions at https://github.com/kadena-io/devnet.
-$ npm test:devnet
+$ npm start:pact
+$ npm test:integration:pactserver
 ```
+> <b>TODO</b> make Pact server port configurable
+
+#### devnet
+To run integration tests against devnet it requires starting devnet and exposing the pact endpoints at http://localhost:8080.
+For more details, see instructions at the [Devnet Github repository](https://github.com/kadena-io/devnet).
+
+The following command can be used:
+```shell
+$ npm test:integration:devnet
+```
+> <b>TODO</b> make Pact server port configurable
+
+<hr>
 
 ## TODO
 - make ready to go public
