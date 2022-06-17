@@ -25,14 +25,11 @@ $ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 ### integration tests
 #### Pactserver
 
-To run integration tests against a pact server it requires starting a pact server that is listening at http://127.0.0.1:9001.
-The following command can be used:
+To run integration tests against a pact server the following command can be used:
 
 ```shell
-$ npm start:pact
 $ npm test:integration:pactserver
 ```
-> <b>TODO</b> make Pact server port configurable
 
 #### devnet
 To run integration tests against devnet it requires starting devnet and exposing the pact endpoints at http://localhost:8080.

@@ -4,16 +4,14 @@
   "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
   "main": "index.ts",
   "scripts": {
-    "test": "jest ${npm_config_single} --testPathIgnorePatterns \/integration-test\/*",
-    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern \/integration-test\/devnet*",
-    "test:integration:pactserver": "jest ${npm_config_single} --testPathPattern \/integration-test\/pact-server*",
+    "test": "jest ${npm_config_single} --testPathIgnorePatterns /integration-test/*",
+    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern /integration-test/devnet*",
+    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern \/integration-test\/pact-server*\" --kill-others",
     "build": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "lint": "npx eslint . --ext .js,.ts",
     "postinstall": "husky install",
-    "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
-    "test:pact-server": "jest ./integration-test/pact-server-test.spec.ts",
-    "test:devnet": "jest ./integration-test/devnet-test.spec.ts"
+    "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf"
   },
   "homepage": "tbd",
   "repository": {
@@ -50,6 +48,7 @@
     "@types/node-fetch": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
+    "concurrently": "^7.2.2",
     "eslint": "^8.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
