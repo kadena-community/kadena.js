@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "jest ${npm_config_single} --testPathIgnorePatterns \/integration-test\/*",
-    "test:integration": "jest ${npm_config_single} --testPathPattern \/integration-test\/*",
+    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern \/integration-test\/devnet*",
+    "test:integration:pactserver": "jest ${npm_config_single} --testPathPattern \/integration-test\/pact-server*",
     "build": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "lint": "npx eslint . --ext .js,.ts",
