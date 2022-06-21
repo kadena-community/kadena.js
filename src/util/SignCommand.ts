@@ -1,23 +1,27 @@
-export type SignCommand = SignedSig | UnsignedSig;
-
-export interface PreparedCommand {
-  hash: string;
-  sigs: Sig[];
-  cmd: string;
-}
-
-export interface Sig {
+export interface Signature {
   sig: string | undefined;
 }
 
-export interface SignedSig {
+export interface SignedSignatureWithHash extends Signature {
   hash: string;
   sig: string | undefined;
   pubKey: string;
 }
 
-export interface UnsignedSig {
+export interface UnsignedSignatureWithHash extends Signature {
   hash: string;
   sig: string | undefined;
   pubKey?: string;
+}
+
+export type SignatureWithHash =
+  | SignedSignatureWithHash
+  | UnsignedSignatureWithHash;
+
+export type SignCommand = SignatureWithHash;
+
+export interface SignedCommand {
+  hash: string;
+  sigs: Signature[];
+  cmd: string;
 }

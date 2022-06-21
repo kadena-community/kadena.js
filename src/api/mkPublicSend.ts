@@ -1,8 +1,8 @@
-import { PreparedCommand } from '../util';
+import { Command, PublicRequest } from '../util';
 /**
  * Makes outer wrapper for a 'send' endpoint.
  * @param {array or object} cmds - one or an array of commands, see mkSingleCmd
  */
-export function mkPublicSend(cmds: Array<PreparedCommand>): object {
-  return { cmds: cmds };
+export default function mkPublicSend(commands: Array<Command>): PublicRequest {
+  return { cmds: commands };
 }

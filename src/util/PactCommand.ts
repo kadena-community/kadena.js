@@ -1,7 +1,7 @@
 import { PactValue } from './PactValue';
 import { Base64Url } from './Base64Url';
 import { Base16String } from './Base16String';
-
+import { Signature } from './SignCommand';
 /**
  * A Chainweb transaction payload that executes arbitraty Pact code.
  *
@@ -38,9 +38,7 @@ export interface Cont {
 /**
  * The different Pact transaction types that can be sent to Chainweb.
  */
-export type PactPayload =
-  | { exec: Exec }
-  | { cont: Cont };
+export type PactPayload = { exec: Exec } | { cont: Cont };
 
 /**
  * A Pact capability to be signed and brought into scope during Pact execution.
@@ -75,7 +73,27 @@ export interface Signer {
 /**
  * Stringified Chainweb chain numbers.
  */
-export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
+export type ChainwebChainId =
+  | '0'
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '10'
+  | '11'
+  | '12'
+  | '13'
+  | '14'
+  | '15'
+  | '16'
+  | '17'
+  | '18'
+  | '19';
 
 /**
  * Metadata necessary for sending transactions to Chainweb.
@@ -122,12 +140,11 @@ export interface CommandPayload {
 export type CommandPayloadStringifiedJSON = string;
 
 export interface UserSig {
-  sig: Base16String
+  sig: Base16String;
 }
 
 // TODO: function for gettig from CommandPayload -> CommandPayloadStringifiedJSON
 // TODO: Change file name to just 'Command.ts'.
-
 
 /**
  * The full transaction, its hash, and its signatures.
@@ -141,5 +158,5 @@ export interface UserSig {
 export interface Command {
   cmd: CommandPayloadStringifiedJSON;
   hash: Base64Url;
-  sigs: Array<UserSig>;
+  sigs: Array<Signature>;
 }

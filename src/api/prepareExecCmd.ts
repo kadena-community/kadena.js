@@ -1,7 +1,7 @@
-import { attachSig } from './attachSig';
-import { mkSigner } from './mkSigner';
-import { mkSingleCmd } from './mkSingleCmd';
-import { KeyPair } from '../util';
+import attachSignature from './attachSignature';
+import mkSigner from './mkSigner';
+import mkSingleCommand from './mkSingleCommand';
+import { KeyPair, Command } from '../util';
 
 /**
  * Prepare an ExecMsg pact command for use in send or local execution.
@@ -13,20 +13,16 @@ import { KeyPair } from '../util';
  * @param meta {object} - public meta information, see mkMeta
  * @return valid pact API command for send or local use.
  */
-export function prepareExecCmd(
+export default function prepareExecCmd(
   keyPairs: [KeyPair],
-
-  //{publicKey , secretKey}
-  //[{publicKey, secretKey}, ... ]
-  //{publicKey}
   nonce: string = new Date().toISOString(),
   pactCode: string,
   envData: object,
   meta: object,
   networkId: string | null = null,
-) {
-  var signers = keyPairs.map(mkSigner);
-  var cmdJSON = {
+): Command {
+  const signers = keyPairs.map(mkSigner);
+  const cmdJSON = {
     networkId: networkId,
     payload: {
       exec: {
@@ -38,7 +34,7 @@ export function prepareExecCmd(
     meta: meta,
     nonce: JSON.stringify(nonce),
   };
-  var cmd = JSON.stringify(cmdJSON);
-  var sigs = attachSig(cmd, keyPairs);
-  return mkSingleCmd(sigs, cmd);
+  const cmd = JSON.stringify(cmdJSON);
+  const sigs = attachSignature(cmd, keyPairs);
+  return mkSingleCommand(sigs, cmd);
 }

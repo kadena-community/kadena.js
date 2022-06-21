@@ -3,7 +3,7 @@ import hashBin from './hashBin';
 import binToHex from './binToHex';
 import base64UrlEncodeArr from './base64UrlEncodeArr';
 import toTweetNaclSecretKey from './toTweetNaclSecretKey';
-import { KeyPair, SignCommand } from '../util';
+import { KeyPair, SignatureWithHash } from '../util';
 
 /**
 Perform blake2b256 hashing on a message, and sign using keyPair.
@@ -12,7 +12,7 @@ Perform blake2b256 hashing on a message, and sign using keyPair.
 export default function sign(
   msg: string,
   { secretKey, publicKey }: KeyPair,
-): SignCommand {
+): SignatureWithHash {
   const hshBin = hashBin(msg);
   const hsh = base64UrlEncodeArr(hshBin);
   const sigBin = nacl.sign.detached(
