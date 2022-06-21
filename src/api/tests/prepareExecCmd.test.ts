@@ -1,9 +1,9 @@
 import { kp, nonce, pactCode, envData, meta } from './mockdata/execCmd';
-import { prepareExecCmd } from '../prepareExecCmd';
+import prepareExecCmd from '../prepareExecCmd';
 
-test('Takes in Pact Command fields and outputs signed prepareExecCmd Object', () => {
-  var actual = prepareExecCmd([kp], nonce, pactCode, envData, meta);
-  var expected = {
+test('Takes in Pact Command parameters and outputs a signed Pact Exec Command Object', () => {
+  const actual = prepareExecCmd([kp], nonce, pactCode, envData, meta);
+  const expected = {
     hash: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     sigs: [
       {

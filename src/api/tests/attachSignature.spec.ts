@@ -1,9 +1,9 @@
-import { attachSig } from '../attachSig';
+import attachSignature from '../attachSignature';
 import { kp, msg } from './mockdata/execCmd';
 
-test('Takes in singleCmd object and outputs mkPublicSend formatted specifically for a send request', () => {
-  var actual = attachSig(msg, [kp]);
-  var expected = [
+test('Takes in stringified cmd and keyPairs, and outputs signatures with hash', () => {
+  const actual = attachSignature(msg, [kp]);
+  const expected = [
     {
       hash: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
       pubKey:

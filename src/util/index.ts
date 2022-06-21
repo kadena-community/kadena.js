@@ -5,3 +5,5 @@ export * from './PactCommand';
 export * from './PactValue';
 export * from './SignCommand';
 export * from './InvalidCharacterError';
+export * from './unique';
+export * from './PactApi';

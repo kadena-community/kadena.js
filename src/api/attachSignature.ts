@@ -1,7 +1,7 @@
 import hashBin from '../crypto/hashBin';
 import base64UrlEncodeArr from '../crypto/base64UrlEncodeArr';
 import sign from '../crypto/sign';
-import { SignCommand, Sig, KeyPair } from '../util';
+import { SignatureWithHash, KeyPair } from '../util';
 
 /**
  * Attach signature to hashed data
@@ -9,12 +9,12 @@ import { SignCommand, Sig, KeyPair } from '../util';
  * @param keyPair - signing ED25519 keypair
  * @return {Array} of "hash", "sig" (signature in hex format), and "pubKey" public key values.
  */
-export function attachSig(
+export default function attachSignature(
   msg: string,
   kpArray: Array<KeyPair>,
-): Array<SignCommand> {
-  var hshBin = hashBin(msg);
-  var hsh = base64UrlEncodeArr(hshBin);
+): Array<SignatureWithHash> {
+  const hshBin = hashBin(msg);
+  const hsh = base64UrlEncodeArr(hshBin);
   if (kpArray === []) {
     return [{ hash: hsh, sig: undefined }];
   } else {

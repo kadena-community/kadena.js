@@ -1,8 +1,8 @@
-import { mkSingleCmd } from '../mkSingleCmd';
+import mkSingleCommand from '../mkSingleCommand';
 import pactTestCommand from './mockdata/Pact';
 
-test('Takes in sign object and cmd object and outputs singleCmd formatted for API requests', () => {
-  var sign = [
+test('Takes in signature objects and stringified Pact object, and outputs a Signed Pact Command', () => {
+  const sign = [
     {
       hash: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
       sig: '4b0ecfbb0e8f3cb291b57abd27028ceaa221950affa39f10efbf4a5fe740d32670e94c3d3949a7e5f4f6ea692052ca110f7cb2e9a8ee2c5eff4251ed84bbfa03',
@@ -11,8 +11,8 @@ test('Takes in sign object and cmd object and outputs singleCmd formatted for AP
     },
   ];
 
-  var actual = mkSingleCmd(sign, JSON.stringify(pactTestCommand));
-  var expected = {
+  const actual = mkSingleCommand(sign, JSON.stringify(pactTestCommand));
+  const expected = {
     hash: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     sigs: [
       {

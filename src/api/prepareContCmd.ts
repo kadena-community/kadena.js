@@ -1,7 +1,7 @@
-import { attachSig } from './attachSig';
-import { mkSigner } from './mkSigner';
-import { mkSingleCmd } from './mkSingleCmd';
-import { KeyPair } from '../util';
+import attachSignature from './attachSignature';
+import mkSigner from './mkSigner';
+import mkSingleCommand from './mkSingleCommand';
+import { KeyPair, Command } from '../util';
 /**
  * Prepare an ContMsg pact command for use in send or local execution.
  * To use in send, wrap result with 'mkSingleCommand'.
@@ -15,7 +15,7 @@ import { KeyPair } from '../util';
  * @param meta {object} - public meta information, see mkMeta
  * @return valid pact API Cont command for send or local use.
  */
-export function prepareContCmd(
+export default function prepareContCmd(
   keyPairs: [KeyPair],
   nonce: string = new Date().toISOString(),
   proof: string | null,
@@ -25,10 +25,10 @@ export function prepareContCmd(
   envData: object,
   meta = {},
   networkId = null,
-) {
-  var kpArray = keyPairs;
-  var signers = kpArray.map(mkSigner);
-  var cmdJSON = {
+): Command {
+  const kpArray = keyPairs;
+  const signers = kpArray.map(mkSigner);
+  const cmdJSON = {
     networkId: networkId,
     payload: {
       cont: {
@@ -43,7 +43,7 @@ export function prepareContCmd(
     meta: meta,
     nonce: JSON.stringify(nonce),
   };
-  var cmd = JSON.stringify(cmdJSON);
-  var sigs = attachSig(cmd, kpArray);
-  return mkSingleCmd(sigs, cmd);
+  const cmd = JSON.stringify(cmdJSON);
+  const sigs = attachSignature(cmd, kpArray);
+  return mkSingleCommand(sigs, cmd);
 }

@@ -1,8 +1,8 @@
 import { kp, nonce, pactId, rollback, step, envData } from './mockdata/contCmd';
-import { prepareContCmd } from '../prepareContCmd';
+import prepareContCmd from '../prepareContCmd';
 
-test('Takes in Pact Command fields and outputs signed prepareContCmd Object', () => {
-  var actual = prepareContCmd(
+test('Takes in Pact Command parameters and outputs a signed Pact Cont Command Object', () => {
+  const actual = prepareContCmd(
     [kp],
     nonce,
     null,
@@ -12,7 +12,7 @@ test('Takes in Pact Command fields and outputs signed prepareContCmd Object', ()
     envData,
   );
 
-  var expected = {
+  const expected = {
     hash: 'NjduEShgzrjEmAVhprS85hst7mvCqOo6qjGH5j5WHro',
     sigs: [
       {

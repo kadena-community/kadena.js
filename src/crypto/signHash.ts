@@ -2,7 +2,7 @@ import nacl from 'tweetnacl';
 import base64UrlDecodeArr from './base64UrlDecodeArr';
 import toTweetNaclSecretKey from './toTweetNaclSecretKey';
 import binToHex from './binToHex';
-import { KeyPair, SignCommand } from '../util';
+import { KeyPair, SignatureWithHash } from '../util';
 
 /**
  Sign a hash using key pair
@@ -10,7 +10,7 @@ import { KeyPair, SignCommand } from '../util';
 export default function signHash(
   hash: string,
   { secretKey, publicKey }: KeyPair,
-): SignCommand {
+): SignatureWithHash {
   const hshBin = base64UrlDecodeArr(hash);
   const sigBin = nacl.sign.detached(
     hshBin,
