@@ -175,8 +175,8 @@
    * To remove these restrictions, you could set projectFolderMinDepth=1
    * and set projectFolderMaxDepth to a large number.
    */
-  // "projectFolderMinDepth": 2,
-  // "projectFolderMaxDepth": 2,
+  "projectFolderMinDepth": 3,
+  "projectFolderMaxDepth": 3,
 
   /**
    * Today the npmjs.com registry enforces fairly strict naming rules for packages, but in the early
@@ -296,7 +296,7 @@
      * The default branch name. This tells "rush change" which remote branch to compare against.
      * The default value is "main"
      */
-    // "defaultBranch": "main",
+     "defaultBranch": "master"
 
     /**
      * The default remote. This tells "rush change" which remote to compare against if the remote URL is
@@ -385,7 +385,14 @@
     * to projects. If this property is not specified, any tag is allowed. This
     * list is useful in preventing typos when specifying tags for projects.
     */
-  // "allowedProjectTags": [ "apps", "Web", "tools" ],
+  /**
+   * @alber70g
+   * 1. Apps: has a runtime and can be deployed (e.g.: chainweb explorer)
+   * 2. Libs: offers functionality, but isn't a deployable artifact
+   * 3. Tools: is used in pipeline, during development or otherwise not a app or lib
+   */
+   "allowedProjectTags": ["apps", "libs", "tools"],
+
 
   /**
    * (Required) This is the inventory of projects to be managed by Rush.
@@ -396,6 +403,23 @@
    * 3. It's useful to have a centralized inventory of all projects and their important metadata.
    */
   "projects": [
+    // #########################
+    // ##  Deployables
+    // #########################
+    // #########################
+    // ##  Features
+    // #########################
+    // #########################
+    // ##  Libraries
+    // #########################
+    {
+      "packageName": "kadena.js",
+      "projectFolder": "packages/libs/kadena.js",
+      "tags": ["libs"]
+    },
+    // #########################
+    // ##  Tools
+    // #########################
     // {
     //   /**
     //    * The NPM package name of the project (must match package.json)
