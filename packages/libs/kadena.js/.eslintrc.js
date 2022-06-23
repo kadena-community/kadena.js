@@ -65,12 +65,4 @@ module.exports = {
     ],
   },
   settings: {},
-  overrides: [
-    {
-      files: ['**/stories.tsx', '**/*.stories.tsx'],
-      rules: {
-        'import/no-default-export': 'off',
-      },
-    },
-  ],
 };
