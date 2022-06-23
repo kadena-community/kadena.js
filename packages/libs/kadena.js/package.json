@@ -70,6 +70,7 @@
   "dependencies": {
     "blakejs": "^1.2.1",
     "node-fetch": "^2.6.6",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "webpack": "~5.73.0"
   }
 }
