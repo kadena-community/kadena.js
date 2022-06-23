@@ -62,7 +62,7 @@
      * The default value is false to avoid legacy compatibility issues.
      * It is strongly recommended to set strictPeerDependencies=true.
      */
-    // "strictPeerDependencies": true,
+    "strictPeerDependencies": true,
 
     /**
      * Configures the strategy used to select versions during installation.
@@ -94,7 +94,7 @@
      *
      * The default value is false.
      */
-    // "preventManualShrinkwrapChanges": true,
+    "preventManualShrinkwrapChanges": true,
 
     /**
      * If true, then `rush install` will use the PNPM workspaces feature to perform the
@@ -150,7 +150,7 @@
    * version. In those cases, you will need to add an entry to the "allowedAlternativeVersions"
    * section of the common-versions.json.
    */
-  // "ensureConsistentVersions": true,
+  "ensureConsistentVersions": true,
 
   /**
    * Large monorepos can become intimidating for newcomers if project folder paths don't follow
@@ -189,7 +189,7 @@
    *
    * The default value is false.
    */
-  // "allowMostlyStandardPackageNames": true,
+  "allowMostlyStandardPackageNames": true,
 
   /**
    * This feature helps you to review and approve new packages before they are introduced
@@ -243,17 +243,17 @@
      * IMPORTANT: Because these are regular expressions encoded as JSON string literals,
      * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
      */
-    // "allowedEmailRegExps": [
-    //   "[^@]+@users\\.noreply\\.github\\.com",
+    "allowedEmailRegExps": [
+      "[^@]+@users\\.noreply\\.github\\.com",
     //   "travis@example\\.org"
-    // ],
+    ],
 
     /**
      * When Rush reports that the address is malformed, the notice can include an example
      * of a recommended email.  Make sure it conforms to one of the allowedEmailRegExps
      * expressions.
      */
-    // "sampleEmail": "mrexample@users.noreply.github.com",
+    "sampleEmail": "mrexample@users.noreply.github.com",
 
     /**
      * The commit message to use when committing changes during 'rush publish'.
@@ -290,7 +290,7 @@
      * your PR branch, and in this situation "rush change" will also automatically invoke "git fetch"
      * to retrieve the latest activity for the remote main branch.
      */
-    // "url": "https://github.com/microsoft/rush-example",
+    "url": "https://github.com/kadena-io/kadena.js",
 
     /**
      * The default branch name. This tells "rush change" which remote branch to compare against.
@@ -371,7 +371,7 @@
    * that read these JSON files and do something with them.  These scripts are typically registered
    * in the "eventHooks" section.
    */
-  // "telemetryEnabled": false,
+  "telemetryEnabled": true,
 
   /**
    * Allows creation of hotfix changes. This feature is experimental so it is disabled by default.
