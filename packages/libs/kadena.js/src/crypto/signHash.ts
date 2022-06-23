@@ -1,8 +1,10 @@
-import nacl from 'tweetnacl';
+import type { KeyPair, SignCommand } from '../util';
+
 import base64UrlDecodeArr from './base64UrlDecodeArr';
-import toTweetNaclSecretKey from './toTweetNaclSecretKey';
 import binToHex from './binToHex';
-import { KeyPair, SignCommand } from '../util';
+import toTweetNaclSecretKey from './toTweetNaclSecretKey';
+
+import nacl from 'tweetnacl';
 
 /**
  Sign a hash using key pair

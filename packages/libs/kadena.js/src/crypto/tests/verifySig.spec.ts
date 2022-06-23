@@ -1,6 +1,6 @@
-import verifySig from '../verifySig';
-import hexToBin from '../hexToBin';
 import base64UrlDecodeArr from '../base64UrlDecodeArr';
+import hexToBin from '../hexToBin';
+import verifySig from '../verifySig';
 
 test('Takes in message, signature, and public key in binary object, returns boolean', () => {
   const signCmd = {

@@ -1,6 +1,8 @@
-import nacl from 'tweetnacl';
+import type { KeyPair } from '../util';
+
 import binToHex from './binToHex';
-import { KeyPair } from '../util';
+
+import nacl from 'tweetnacl';
 
 /**
  * Generate a random ED25519 keypair.

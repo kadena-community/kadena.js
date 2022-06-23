@@ -1,8 +1,14 @@
-import { Command } from '../util/PactCommand';
-import { Base16String } from '../util/Base16String';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import type { Base16String } from '../util/Base16String';
+import type { Command } from '../util/PactCommand';
+
 import { parseResponse } from './parseResponse';
-import fetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse } from 'node-fetch';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+
+import type {
+  RequestInit as NodeFetchRequestInit,
+  Response as NodeFetchResponse,
+} from 'node-fetch';
+import fetch from 'node-fetch';
 
 /**
  * Request type of /send endpoint.
@@ -10,7 +16,7 @@ import fetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchRespon
  * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
  */
 export type SendRequestBody = {
-  cmds: Array<Command>
+  cmds: Array<Command>;
 };
 
 /**
@@ -20,7 +26,7 @@ export type SendRequestBody = {
  *                      Can be sent to /poll and /listen to retrieve transaction results.
  */
 export type SendResponse = {
-  requestKeys: Array<Base16String>
+  requestKeys: Array<Base16String>;
 };
 
 /**
@@ -32,11 +38,18 @@ export type SendResponse = {
  *
  * @param requestBody - Non-empty array of Pact commands to submit to server.
  * @param apiHost - API host running a Pact-enabled server.
- * @returns - Raw Response from Server.
+ * @return - Raw Response from Server.
  */
-export function send(requestBody: SendRequestBody, apiHost: string):Promise<SendResponse> {
-  let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
-  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/send`, request);
+export function send(
+  requestBody: SendRequestBody,
+  apiHost: string,
+): Promise<SendResponse> {
+  const request: NodeFetchRequestInit =
+    stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
+  const response: Promise<NodeFetchResponse> = fetch(
+    `${apiHost}/api/v1/send`,
+    request,
+  );
   const parsedRes: Promise<SendResponse> = parseResponse(response);
   return parsedRes;
 }

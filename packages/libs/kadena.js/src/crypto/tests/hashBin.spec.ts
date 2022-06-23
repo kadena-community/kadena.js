@@ -1,4 +1,5 @@
 import hashBin from '../hashBin';
+
 import pactTestCommand from './mockdata/Pact';
 
 test('should perform blake2b256 hashing on a string and output hash as an Uint8Array binary object', () => {

@@ -1,5 +1,5 @@
 import { InvalidCharacterError } from '../util';
-import { Base64Url } from '../util/Base64Url';
+import type { Base64Url } from '../util/Base64Url';
 
 const chars =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';

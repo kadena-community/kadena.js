@@ -1,5 +1,6 @@
+import type { Base64Url } from '../util/Base64Url';
+
 import base64UrlEncode from './base64UrlEncode';
-import { Base64Url } from '../util/Base64Url';
 import uint8ArrayToStr from './uint8ArrayToStr';
 
 /**

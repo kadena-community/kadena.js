@@ -1,9 +1,11 @@
-import nacl from 'tweetnacl';
-import hashBin from './hashBin';
-import binToHex from './binToHex';
+import type { KeyPair, SignCommand } from '../util';
+
 import base64UrlEncodeArr from './base64UrlEncodeArr';
+import binToHex from './binToHex';
+import hashBin from './hashBin';
 import toTweetNaclSecretKey from './toTweetNaclSecretKey';
-import { KeyPair, SignCommand } from '../util';
+
+import nacl from 'tweetnacl';
 
 /**
 Perform blake2b256 hashing on a message, and sign using keyPair.
