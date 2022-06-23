@@ -31,7 +31,7 @@ export type SPVResponse = SPVProof;
  * @param apiHost - API host running a Pact-enabled server.
  * @returns -
  */
- export function spv(requestBody: SPVRequestBody, apiHost: string):Promise<SPVResponse> {
+export function spv(requestBody: SPVRequestBody, apiHost: string):Promise<SPVResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<SPVRequestBody>(requestBody);
   let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/local`, request);
   const parsedRes: Promise<SPVResponse> = parseResponse(response);

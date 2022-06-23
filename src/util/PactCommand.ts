@@ -145,14 +145,14 @@ export interface Command {
 }
 
 type PactResultSuccess = {
-  status: "success";
+  status: 'success';
   data: PactValue;
-}
+};
 
 type PactResultError = {
-  status: "failure";
+  status: 'failure';
   error: object;
-}
+};
 
 /** Backend-specific data for continuing a cross-chain proof. */
 export type SPVProof = string;
@@ -178,7 +178,7 @@ type PactExec = {
       moduleHash: string;
     }
   }
-}
+};
 
 /** @TODO */
 type PactEvent = object;
@@ -197,7 +197,7 @@ type ChainwebResponseMetaData = {
   blockTime: number;
   blockHeight: number;
   prevBlockHash: string;
-}
+};
 
 /**
  * API result of attempting to execute a pact transaction.
@@ -229,5 +229,5 @@ export interface CommandResult {
   logs: string | null;
   continuation: PactExec | null;
   metaData: ChainwebResponseMetaData | null;
-  events?: Array<Event>;
+  events?: Array<PactEvent>;
 }

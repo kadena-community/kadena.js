@@ -15,7 +15,7 @@ export type LocalResponse = CommandResult;
  * @param apiHost - API host running a Pact-enabled server.
  * @returns - The command result returned by the server.
  */
- export function local(requestBody: LocalRequestBody, apiHost: string):Promise<LocalResponse> {
+export function local(requestBody: LocalRequestBody, apiHost: string):Promise<LocalResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<LocalRequestBody>(requestBody);
   let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/local`, request);
   const parsedRes: Promise<LocalResponse> = parseResponse(response);

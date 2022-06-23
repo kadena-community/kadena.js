@@ -27,7 +27,7 @@ export type PollResponse = Array<CommandResult>;
  *            If a transaction is missing, then it might still be in the mempool,
  *            or might have expired.
  */
- export function poll(requestBody: PollRequestBody, apiHost: string):Promise<PollResponse> {
+export function poll(requestBody: PollRequestBody, apiHost: string):Promise<PollResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<PollRequestBody>(requestBody);
   let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/poll`, request);
   const parsedRes: Promise<PollResponse> = parseResponse(response);

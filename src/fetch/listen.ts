@@ -9,7 +9,7 @@ import { Base64Url } from '../util/Base64Url';
  *
  * @param listen - Single request key (or command hash) to listen for.
  */
- export type ListenRequestBody = {
+export type ListenRequestBody = {
   listen: Base64Url
 };
 
@@ -22,7 +22,7 @@ export type ListenResponse = CommandResult;
  * @param apiHost - API host running a Pact-enabled server.
  * @returns - The transaction result we listened for.
  */
- export function listen(requestBody: ListenRequestBody, apiHost: string):Promise<ListenResponse> {
+export function listen(requestBody: ListenRequestBody, apiHost: string):Promise<ListenResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<ListenRequestBody>(requestBody);
   let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/poll`, request);
   const parsedRes: Promise<ListenResponse> = parseResponse(response);
