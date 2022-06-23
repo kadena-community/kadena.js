@@ -143,3 +143,88 @@ export interface Command {
   hash: Base64Url;
   sigs: Array<UserSig>;
 }
+
+type PactResultSuccess = {
+  status: "success";
+  data: PactValue;
+}
+
+type PactResultError = {
+  status: "failure";
+  error: object;
+}
+
+/**
+ * @TODO
+ * @TODO nested pacts
+*/
+type PactExec = {
+  pactId: string;
+  step: number;
+  stepCount: number;
+  executed: boolean;
+  stepHasRollback: boolean;
+  continuation: {
+    def: string;
+    args: PactValue;
+  };
+  yield: {
+    data: object;
+    provenance: {
+      targetChainId: string;
+      moduleHash: string;
+    }
+  }
+}
+
+/** @TODO */
+type PactEvent = object;
+
+/**
+ * Platform-specific information on the block that executed a transaction.
+ *
+ * @param blockHash - Block hash of the block containing the transaction.
+ * @param blockTime - POSIX time when the block was mined.
+ * @param blockHeight - Block height of the block.
+ * @param prevBlockHash - Parent Block hash of the containing block.
+ *
+ */
+type ChainwebResponseMetaData = {
+  blockHash: string;
+  blockTime: number;
+  blockHeight: number;
+  prevBlockHash: string;
+}
+
+/**
+ * API result of attempting to execute a pact transaction.
+ *
+ * @param reqKey - Unique ID of a pact transaction, equivalent to the payload hash.
+ * @param txId - Database-internal transaction tracking ID.
+ *               Absent when transaction was not successful.
+ *               Expected to be non-negative 64-bit integers and
+ *               are expected to be monotonically increasing.
+ *
+ * @TODO Should txId be a BigInt?
+ *
+ * @param result - Pact execution result, either a Pact error or the output (a PactValue) of the last pact expression in the transaction.
+ * @param gas - Gas units consummed by the transaction as a 64-bit integer.
+ *
+ * @TODO add gas field to api spec docs.
+ * @TODO should this be a BigInt since Haskell defines it as int64?
+ *
+ * @param logs - Backend-specific value providing image of database logs.
+ * @param continuation - Describes the result of a defpact execution, if one occurred.
+ * @param metaData - Platform-specific information on the block that executed the transaction.
+ * @param events - Optional list of Pact events emitted during the transaction.
+ */
+export interface CommandResult {
+  reqKey: Base64Url;
+  txId: number | null;
+  result: PactResultSuccess | PactResultError;
+  gas: number;
+  logs: string | null;
+  continuation: PactExec | null;
+  metaData: ChainwebResponseMetaData | null;
+  events?: Array<Event>;
+}
