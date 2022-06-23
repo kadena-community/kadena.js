@@ -154,6 +154,9 @@ type PactResultError = {
   error: object;
 }
 
+/** Backend-specific data for continuing a cross-chain proof. */
+export type SPVProof = string;
+
 /**
  * @TODO
  * @TODO nested pacts

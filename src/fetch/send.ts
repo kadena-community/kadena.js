@@ -1,5 +1,5 @@
 import { Command } from '../util/PactCommand';
-import { Base16String } from '../util/Base16String';
+import { Base64Url } from '../util/Base64Url';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { parseResponse } from './parseResponse';
 import fetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse } from 'node-fetch';
@@ -20,19 +20,15 @@ export type SendRequestBody = {
  *                      Can be sent to /poll and /listen to retrieve transaction results.
  */
 export type SendResponse = {
-  requestKeys: Array<Base16String>
+  requestKeys: Array<Base64Url>
 };
 
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
  *
- * Corresponds to `fetchSendRaw` and `fetchSend` functions:
- * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L601
- * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L589
- *
- * @param requestBody - Non-empty array of Pact commands to submit to server.
+ * @param requestBody - Non-empty list of Pact commands to submit to the server.
  * @param apiHost - API host running a Pact-enabled server.
- * @returns - Raw Response from Server.
+ * @returns - Non-empty list of the submitted commands' request key.
  */
 export function send(requestBody: SendRequestBody, apiHost: string):Promise<SendResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
