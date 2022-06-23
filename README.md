@@ -23,8 +23,7 @@ If any issues occur, you can run `rush update --purge`
 
 ## Requirements
 
-- node > 16
-- pnpm > 7
+- node > LTS (node 16, as 18 isn't yet LTS)
 - rushjs
 
 See [installing perequisites](#installing-prerequisites)
@@ -40,21 +39,6 @@ several options, here used `n`. Can also use `asdf` (generic version manager),
 # `n` node version manager
 brew install n
 n lts
-```
-
-### Install `pnpm`
-
-Brew
-
-```sh
-# ignore dependencies because it'll install `node` as a dependency managed by brew
-brew install pnpm --ignore-dependecies
-```
-
-Node
-
-```sh
-npm install --global pnpm
 ```
 
 ### Install `rush`
