@@ -1,0 +1,11 @@
+{
+  "name": "rush-command-packages",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "lint-staged": "^13.0.2",
+    "prettier": "^2.7.1",
+    "prettier-quick": "^0.0.5",
+    "sort-package-json": "^1.57.0"
+  }
+}
