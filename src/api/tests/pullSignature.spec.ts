@@ -1,5 +1,5 @@
 import pullSignature from '../pullSignature';
-import { signCmd } from './mockdata/execCmd';
+import { signCmd } from './mockdata/execCommand';
 
 test('Takes in a signature with hash object and outputs the signature object', () => {
   const actual = pullSignature(signCmd);

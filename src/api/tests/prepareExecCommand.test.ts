@@ -1,4 +1,10 @@
-import { keyPair, nonce, pactCode, envData, meta } from './mockdata/execCmd';
+import {
+  keyPair,
+  nonce,
+  pactCode,
+  envData,
+  meta,
+} from './mockdata/execCommand';
 import prepareExecCommand from '../prepareExecCommand';
 
 test('Takes in Pact Command parameters and outputs a signed Pact Exec Command Object', () => {

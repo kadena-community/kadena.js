@@ -7,7 +7,7 @@ import {
   envData,
   meta,
   networkId,
-} from './mockdata/contCmd';
+} from './mockdata/contCommand';
 import prepareContCommand from '../prepareContCommand';
 
 test('Takes in Pact Command parameters and outputs a signed Pact Cont Command Object', () => {

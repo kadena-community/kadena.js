@@ -1,5 +1,5 @@
 import createCommand from '../createCommand';
-import { testCommandPayload } from './mockdata/Pact';
+import { payload } from './mockdata/execCommand';
 
 test('Takes in signature objects and stringified Pact object, and outputs a Signed Pact Command', () => {
   const sign = [
@@ -11,7 +11,7 @@ test('Takes in signature objects and stringified Pact object, and outputs a Sign
     },
   ];
 
-  const actual = createCommand(sign, JSON.stringify(testCommandPayload));
+  const actual = createCommand(sign, JSON.stringify(payload));
   const expected = {
     hash: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     sigs: [

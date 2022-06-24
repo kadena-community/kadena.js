@@ -1,5 +1,5 @@
 import attachSignature from '../attachSignature';
-import { keyPair, msg } from './mockdata/execCmd';
+import { keyPair, msg } from './mockdata/execCommand';
 
 test('Takes in stringified cmd and keyPairs, and outputs signatures with hash', () => {
   const actual = attachSignature(msg, [keyPair]);
