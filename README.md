@@ -6,8 +6,6 @@
 
 > Kadena.js is a collection of libraries that will allow you to interact with the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will provide helper function
 
-### Running Tests
-
 To run the unit tests:
 
 ```shell
@@ -32,6 +30,8 @@ $ npm test:devnet
 
 ### TODO
 
-- Add coverage tooling
-- coverage Charts
-- size warning
+### TODO
+
+- make ready to go public
+- npm registry
+- release cycles
