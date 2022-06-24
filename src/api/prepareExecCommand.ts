@@ -4,10 +4,11 @@ import createCommand from './createCommand';
 import {
   KeyPair,
   Command,
-  ChainwebNetworkId,
-  ChainwebMetaData,
-  ChainwebEnvData,
-  ChainwebNonce,
+  PactCode,
+  NetworkId,
+  MetaData,
+  EnvData,
+  Nonce,
 } from '../util';
 
 /**
@@ -22,11 +23,11 @@ import {
  */
 export default function prepareExecCommand(
   keyPairs: Array<KeyPair>,
-  nonce: ChainwebNonce,
-  pactCode: string,
-  envData: ChainwebEnvData,
-  meta: ChainwebMetaData,
-  networkId: ChainwebNetworkId,
+  nonce: Nonce,
+  pactCode: PactCode,
+  envData: EnvData,
+  meta: MetaData,
+  networkId: NetworkId,
 ): Command {
   const signers = keyPairs.map(pullSigner);
   const cmdJSON = {

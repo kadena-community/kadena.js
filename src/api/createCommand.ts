@@ -12,7 +12,7 @@ import {
  * @return valid Pact API command for send or local use.
  */
 export default function createCommand(
-  sigs: SignatureWithHash[],
+  sigs: Array<SignatureWithHash>,
   cmd: CommandPayloadStringifiedJSON,
 ): Command {
   return {

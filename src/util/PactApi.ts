@@ -1,6 +1,7 @@
 import { Base16String } from './Base16String';
 import { Command } from './PactCommand';
 
+//TODO: Add descriptions
 export type RequestKeys = {
   requestKeys: Base16String[];
 };
