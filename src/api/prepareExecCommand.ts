@@ -1,11 +1,18 @@
 import attachSignature from './attachSignature';
-import mkSigner from './mkSigner';
-import mkSingleCommand from './mkSingleCommand';
-import { KeyPair, Command } from '../util';
+import pullSigner from './pullSigner';
+import createCommand from './createCommand';
+import {
+  KeyPair,
+  Command,
+  ChainwebNetworkId,
+  ChainwebMetaData,
+  ChainwebEnvData,
+  ChainwebNonce,
+} from '../util';
 
 /**
  * Prepare an ExecMsg pact command for use in send or local execution.
- * To use in send, wrap result with 'mkSingleCommand'.
+ * To use in send, wrap result with 'createCommmand'.
  * @param keyPairs {array or object} - array or single ED25519 keypair and/or clist (list of `cap` in mkCap)
  * @param nonce {string} - nonce value for ensuring unique hash - default to current time
  * @param pactCode {string} - pact code to execute - required
@@ -13,15 +20,15 @@ import { KeyPair, Command } from '../util';
  * @param meta {object} - public meta information, see mkMeta
  * @return valid pact API command for send or local use.
  */
-export default function prepareExecCmd(
-  keyPairs: [KeyPair],
-  nonce: string = new Date().toISOString(),
+export default function prepareExecCommand(
+  keyPairs: Array<KeyPair>,
+  nonce: ChainwebNonce,
   pactCode: string,
-  envData: object,
-  meta: object,
-  networkId: string | null = null,
+  envData: ChainwebEnvData,
+  meta: ChainwebMetaData,
+  networkId: ChainwebNetworkId,
 ): Command {
-  const signers = keyPairs.map(mkSigner);
+  const signers = keyPairs.map(pullSigner);
   const cmdJSON = {
     networkId: networkId,
     payload: {
@@ -36,5 +43,5 @@ export default function prepareExecCmd(
   };
   const cmd = JSON.stringify(cmdJSON);
   const sigs = attachSignature(cmd, keyPairs);
-  return mkSingleCommand(sigs, cmd);
+  return createCommand(sigs, cmd);
 }

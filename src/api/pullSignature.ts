@@ -1,4 +1,4 @@
-import { SignatureWithHash, Signature, KeyPair } from '../util';
+import { SignatureWithHash, Signature } from '../util';
 
 export default function pullSignature({
   hash,

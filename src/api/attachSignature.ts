@@ -1,7 +1,11 @@
 import hashBin from '../crypto/hashBin';
 import base64UrlEncodeArr from '../crypto/base64UrlEncodeArr';
 import sign from '../crypto/sign';
-import { SignatureWithHash, KeyPair } from '../util';
+import {
+  SignatureWithHash,
+  KeyPair,
+  CommandPayloadStringifiedJSON,
+} from '../util';
 
 /**
  * Attach signature to hashed data
@@ -10,27 +14,27 @@ import { SignatureWithHash, KeyPair } from '../util';
  * @return {Array} of "hash", "sig" (signature in hex format), and "pubKey" public key values.
  */
 export default function attachSignature(
-  msg: string,
-  kpArray: Array<KeyPair>,
+  msg: CommandPayloadStringifiedJSON,
+  keyPairs: Array<KeyPair>,
 ): Array<SignatureWithHash> {
   const hshBin = hashBin(msg);
-  const hsh = base64UrlEncodeArr(hshBin);
-  if (kpArray === []) {
-    return [{ hash: hsh, sig: undefined }];
+  const hash = base64UrlEncodeArr(hshBin);
+  if (keyPairs === []) {
+    return [{ hash: hash, sig: undefined }];
   } else {
-    return kpArray.map((kp) => {
+    return keyPairs.map((keyPair) => {
       if (
-        kp.hasOwnProperty('publicKey') &&
-        kp.publicKey &&
-        kp.hasOwnProperty('secretKey') &&
-        kp.secretKey
+        keyPair.hasOwnProperty('publicKey') &&
+        keyPair.publicKey &&
+        keyPair.hasOwnProperty('secretKey') &&
+        keyPair.secretKey
       ) {
-        return sign(msg, kp);
+        return sign(msg, keyPair);
       } else {
         return {
-          hash: hsh,
+          hash: hash,
           sig: undefined,
-          publicKey: kp.publicKey,
+          publicKey: keyPair.publicKey,
         };
       }
     });
