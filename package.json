@@ -4,7 +4,7 @@
   "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
   "main": "index.ts",
   "scripts": {
-    "test": "jest ./src/*",
+    "test": "jest",
     "build": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "lint": "npx eslint . --ext .js,.ts",

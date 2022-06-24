@@ -1,5 +1,11 @@
 import createExecCommand from '../createExecCommand';
-import { keyPair, nonce, pactCode, envData, meta } from './mockdata/execCmd';
+import {
+  keyPair,
+  nonce,
+  pactCode,
+  envData,
+  meta,
+} from './mockdata/execCommand';
 
 test('Takes in exec command parameters and outputs a command formatted for /send endpoint', () => {
   const actual = createExecCommand(

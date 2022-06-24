@@ -8,7 +8,7 @@ import {
   envData,
   meta,
   networkId,
-} from './mockdata/contCmd';
+} from './mockdata/contCommand';
 
 test('Takes in cont command parameters and outputs a command formatted for /send endpoint', () => {
   const actual = createContCommand(

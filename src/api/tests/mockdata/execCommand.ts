@@ -40,8 +40,8 @@ export const meta: ChainwebMetaData = {
   sender: '',
 };
 
-export const cmd: CommandPayload = {
-  networkId: 'testnet04',
+export const payload: CommandPayload = {
+  networkId: null,
   payload: {
     exec: {
       data: envData,
