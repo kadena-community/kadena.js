@@ -10,8 +10,8 @@ import { Signature } from './SignCommand';
  *               Required field, but if not applicable set to 'null'.
  */
 export interface Exec {
-  data: object | null;
-  code: string;
+  data: EnvData;
+  code: PactCode;
 }
 
 /**
@@ -28,11 +28,11 @@ export interface Exec {
  *               Required field, but if not applicable set to 'null'.
  */
 export interface Cont {
-  pactId: Base64Url;
-  step: ChainwebContStep;
-  rollback: ChainwebContRollback;
-  data: ChainwebEnvData;
-  proof: ChainwebProof;
+  pactId: PactTransactionHash;
+  step: Step;
+  rollback: Rollback;
+  data: EnvData;
+  proof: Proof;
 }
 
 /**
@@ -71,6 +71,78 @@ export interface Signer {
 }
 
 /**
+ * Metadata necessary for sending transactions to Chainweb.
+ *
+ * @param creationTime - Time transaction sent in POSIX epoch format.
+ * @param ttl - Time in seconds after the creation time that the transaction can be executed.
+ *              Valid range: [ 1 .. 180000 ] seconds.
+ * @param gasLimit - Maximum amount of gas units that can be consumed during transaction execution.
+ * @param gasPrice - Specifies price per gas unit to be charged. Must be >= 1.
+ * @param sender - Indicates the gas-paying account in Chainweb.
+ * @param chainId - Platform-specific chain identifier.
+ */
+export interface MetaData {
+  creationTime: number;
+  ttl: number;
+  gasLimit: number;
+  gasPrice: number;
+  sender: string;
+  chainId: string;
+}
+
+//TODO : Add descriptions
+export type PactTransactionHash = Base64Url;
+export type PactCode = string;
+export type Nonce = string;
+export type EnvData = object | null;
+export type Step = number;
+export type Rollback = boolean;
+export type Proof = Base64Url | null;
+export type NetworkId = string | null;
+
+/**
+ * The full transaction payload to be signed and sent to Chainweb.
+ *
+ * @param networkId - Backend-specific identifier of target network.
+ * @param payload - Pact code to execute during transaction.
+ * @param signers - List of signers, corresponding with list of signatures in outer command.
+ * @param meta - Platform-specific metadata.
+ * @param nonce - Arbitrary user-supplied value (often a timestamp).
+ */
+export interface CommandPayload {
+  networkId: NetworkId | null;
+  payload: PactPayload;
+  signers: Array<Signer>;
+  meta: MetaData;
+  nonce: string;
+}
+
+export type CommandPayloadStringifiedJSON = string;
+
+export interface UserSig {
+  sig: Base16String;
+}
+
+// TODO: function for gettig from CommandPayload -> CommandPayloadStringifiedJSON
+// TODO: Change file name to just 'Command.ts'.
+
+/**
+ * The full transaction, its hash, and its signatures.
+ * Used to submit dry-run (/local) or permanent (/send) transactions to Chainweb.
+ *
+ * @param cmd - Stringified JSON of a CommandPayload object. The canonic, non-malleable signed transaction data.
+ * @param hash - The Blake2s-256 hash of the `cmd` field value. Serves as a command's requestKey since each transaction must be unique.
+ * @param sigs - List of signatures corresponding one-to-one with the `signers` array in the CommandPayload.
+
+ */
+export interface Command {
+  cmd: CommandPayloadStringifiedJSON;
+  hash: PactTransactionHash;
+  sigs: Array<Signature>;
+}
+
+//TODO: Move Chainweb Specific Types
+/**
  * Stringified Chainweb chain numbers.
  */
 export type ChainwebChainId =
@@ -96,26 +168,6 @@ export type ChainwebChainId =
   | '19';
 
 /**
- * Metadata necessary for sending transactions to Chainweb.
- *
- * @param creationTime - Time transaction sent in POSIX epoch format.
- * @param ttl - Time in seconds after the creation time that the transaction can be executed.
- *              Valid range: [ 1 .. 180000 ] seconds.
- * @param gasLimit - Maximum amount of gas units that can be consumed during transaction execution.
- * @param gasPrice - Specifies price per gas unit to be charged. Must be >= 1.
- * @param sender - Indicates the gas-paying account in Chainweb.
- * @param chainId - Platform-specific chain identifier.
- */
-export interface ChainwebMetaData {
-  creationTime: number;
-  ttl: number;
-  gasLimit: number;
-  gasPrice: number;
-  sender: string;
-  chainId: string;
-}
-
-/**
  * Different Chainweb network versions.
  */
 export type ChainwebNetworkId =
@@ -123,50 +175,3 @@ export type ChainwebNetworkId =
   | 'testnet04'
   | 'development'
   | null;
-
-export type ChainwebNonce = string;
-export type ChainwebEnvData = object | null;
-export type ChainwebContStep = number;
-export type ChainwebContRollback = boolean;
-export type ChainwebProof = Base64Url | null;
-
-/**
- * The full transaction payload to be signed and sent to Chainweb.
- *
- * @param networkId - Backend-specific identifier of target network.
- * @param payload - Pact code to execute during transaction.
- * @param signers - List of signers, corresponding with list of signatures in outer command.
- * @param meta - Platform-specific metadata.
- * @param nonce - Arbitrary user-supplied value (often a timestamp).
- */
-export interface CommandPayload {
-  networkId: ChainwebNetworkId | null;
-  payload: PactPayload;
-  signers: Array<Signer>;
-  meta: ChainwebMetaData;
-  nonce: string;
-}
-
-export type CommandPayloadStringifiedJSON = string;
-
-export interface UserSig {
-  sig: Base16String;
-}
-
-// TODO: function for gettig from CommandPayload -> CommandPayloadStringifiedJSON
-// TODO: Change file name to just 'Command.ts'.
-
-/**
- * The full transaction, its hash, and its signatures.
- * Used to submit dry-run (/local) or permanent (/send) transactions to Chainweb.
- *
- * @param cmd - Stringified JSON of a CommandPayload object. The canonic, non-malleable signed transaction data.
- * @param hash - The Blake2s-256 hash of the `cmd` field value. Serves as a command's requestKey since each transaction must be unique.
- * @param sigs - List of signatures corresponding one-to-one with the `signers` array in the CommandPayload.
-
- */
-export interface Command {
-  cmd: CommandPayloadStringifiedJSON;
-  hash: Base64Url;
-  sigs: Array<Signature>;
-}

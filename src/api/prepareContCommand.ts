@@ -3,13 +3,14 @@ import pullSigner from './pullSigner';
 import createCommand from './createCommand';
 import {
   KeyPair,
-  ChainwebNonce,
-  ChainwebNetworkId,
-  ChainwebProof,
-  ChainwebMetaData,
-  ChainwebEnvData,
-  ChainwebContStep,
-  ChainwebContRollback,
+  PactTransactionHash,
+  Nonce,
+  NetworkId,
+  Proof,
+  MetaData,
+  EnvData,
+  Step,
+  Rollback,
   Command,
   CommandPayload,
   Base64Url,
@@ -30,14 +31,14 @@ import {
  */
 export default function prepareContCommand(
   keyPairs: Array<KeyPair>,
-  nonce: ChainwebNonce,
-  proof: ChainwebProof,
-  pactId: Base16String,
-  rollback: ChainwebContRollback,
-  step: ChainwebContStep,
-  envData: ChainwebEnvData,
-  meta: ChainwebMetaData,
-  networkId: ChainwebNetworkId,
+  nonce: Nonce,
+  proof: Proof,
+  pactId: PactTransactionHash,
+  rollback: Rollback,
+  step: Step,
+  envData: EnvData,
+  meta: MetaData,
+  networkId: NetworkId,
 ): Command {
   const signers = keyPairs.map(pullSigner);
 

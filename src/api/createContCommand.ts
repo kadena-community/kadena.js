@@ -2,12 +2,14 @@ import prepareContCommand from './prepareContCommand';
 import createSendRequest from './createSendRequest';
 import {
   Base64Url,
-  ChainwebMetaData,
-  ChainwebNonce,
-  ChainwebEnvData,
-  ChainwebNetworkId,
-  ChainwebContStep,
-  ChainwebContRollback,
+  MetaData,
+  Nonce,
+  Proof,
+  EnvData,
+  NetworkId,
+  Step,
+  Rollback,
+  PactTransactionHash,
   SendRequest,
   KeyPair,
   Command,
@@ -18,14 +20,14 @@ import {
  */
 export default function createContCommmand(
   keyPairs: Array<KeyPair>,
-  nonce: ChainwebNonce,
-  step: ChainwebContStep,
-  pactId: Base64Url,
-  rollback: ChainwebContRollback,
-  envData: ChainwebEnvData,
-  meta: ChainwebMetaData,
-  proof: string | null,
-  networkId: ChainwebNetworkId,
+  nonce: Nonce,
+  step: Step,
+  pactId: PactTransactionHash,
+  rollback: Rollback,
+  envData: EnvData,
+  meta: MetaData,
+  proof: Proof,
+  networkId: NetworkId,
 ): SendRequest {
   return createSendRequest([
     prepareContCommand(
