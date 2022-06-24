@@ -1,5 +1,6 @@
+import type { KeyPair } from '../util';
+
 import hexToBin from './hexToBin';
-import { KeyPair } from '../util';
 
 /**
 Converts a keypair into Uint8Array binary object, public key attached to secret key

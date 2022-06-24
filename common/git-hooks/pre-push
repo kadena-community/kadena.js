@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# old script from packages/husky/kadena.js
-# . "$(dirname "$0")/_/husky.sh"
-
-(cd packages/libs/kadena.js && npm run test || exit $?)
-(cd packages/libs/kadena.js && npm run lint || exit $?)

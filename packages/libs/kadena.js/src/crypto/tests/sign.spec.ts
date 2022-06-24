@@ -1,4 +1,5 @@
 import sign from '../sign';
+
 import pactTestCommand from './mockdata/Pact';
 
 test('Takes in a message and keypair, outputs an object with "hash", "sig", and "pubKey" in hex format.', () => {

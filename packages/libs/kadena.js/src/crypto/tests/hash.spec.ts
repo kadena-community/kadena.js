@@ -1,4 +1,5 @@
 import hash from '../hash';
+
 import pactTestCommand from './mockdata/Pact';
 
 test('should perform blake2b256 hashing on a string and output hash encoded as unescaped base64url', () => {

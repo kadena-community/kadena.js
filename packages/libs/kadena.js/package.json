@@ -2,25 +2,6 @@
   "name": "kadena.js",
   "version": "0.0.1",
   "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
-  "main": "index.ts",
-  "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "test": "jest ${npm_config_single} --testPathIgnorePatterns /integration-test/*",
-    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern /integration-test/devnet*",
-    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern \/integration-test\/pact-server*\" --kill-others",
-    "coverage": "jest --collectCoverage",
-    "serve-coverage" : "python -m SimpleHTTPServer",
-    "build": "webpack --mode=development",
-    "build:prod": "webpack --mode=production",
-    "lint": "npx eslint . --ext .js,.ts",
-    "postinstall": "# husky install",
-    "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf"
-  },
-  "homepage": "tbd",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/kadena-io/kadena.js.git"
-  },
   "keywords": [
     "Kadena",
     "Crypto",
@@ -30,6 +11,12 @@
     "utils",
     "utilities"
   ],
+  "homepage": "tbd",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kadena-io/kadena.js.git"
+  },
+  "license": "MIT",
   "author": "Randynamic",
   "contributors": [
     {
@@ -45,7 +32,35 @@
       "web": "https://github.com/Randynamic"
     }
   ],
-  "license": "MIT",
+  "main": "index.ts",
+  "scripts": {
+    "build": "webpack --mode=development",
+    "build:prod": "webpack --mode=production",
+    "coverage": "jest --collectCoverage",
+    "preinstall": "npx only-allow pnpm",
+    "lint": "npx eslint . --ext .js,.ts",
+    "precommit": "pnpm run test --silent",
+    "serve-coverage": "python -m SimpleHTTPServer",
+    "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
+    "test": "jest ${npm_config_single} --testPathIgnorePatterns /integration-test/*",
+    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern /integration-test/devnet*",
+    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern /integration-test/pact-server*\" --kill-others"
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "blakejs": "^1.2.1",
+    "node-fetch": "^2.6.6",
+    "tweetnacl": "^1.0.3",
+    "webpack": "~5.73.0"
+  },
   "devDependencies": {
     "@types/jest": "^27.5.1",
     "@types/node-fetch": "^2.6.1",
@@ -55,22 +70,25 @@
     "eslint": "^8.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-google": "~0.14.0",
+    "eslint-config-prettier": "~8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^8.0.1",
+    "eslint-plugin-simple-import-sort": "~7.0.0",
     "jest": "^28.1.0",
     "prettier": "^2.6.2",
+    "prettier-eslint": "~15.0.1",
     "serve": "^13.0.2",
     "ts-jest": "^28.0.2",
     "ts-loader": "^9.3.0",
     "typescript": "^4.6.4",
     "webpack-cli": "^4.9.2"
   },
-  "dependencies": {
-    "blakejs": "^1.2.1",
-    "node-fetch": "^2.6.6",
-    "tweetnacl": "^1.0.3",
-    "webpack": "~5.73.0"
+  "engines": {
+    "node": ">=16",
+    "npm": ">=999",
+    "pnpm": ">=6.7.1",
+    "yarn": ">=999"
   }
 }

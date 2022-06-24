@@ -6,7 +6,7 @@
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L64
  */
 export type PactInt = {
-  int: string
+  int: string;
 };
 
 /**
@@ -17,7 +17,7 @@ export type PactInt = {
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L83
  */
 export type PactDecimal = {
-  decimal: string
+  decimal: string;
 };
 
 /** TODO:
@@ -39,7 +39,6 @@ export function mkPactDecimal(value: string): PactDecimal {
   };
 }
 
-
 /**
  * @typedef {sumtype} PactLiteral - A sum type representing a `pact` literal value.
  * Should have parity with the JSON serialization of the Haskell type `Literal` as defined in `pact`:
@@ -56,13 +55,13 @@ export function mkPactDecimal(value: string): PactDecimal {
 export type PactLiteral = string | number | PactInt | PactDecimal | boolean;
 
 /**
-  * @typedef {sumtype} PactValue - A sum type representing a `pact` value.
-  * Should have parity with the JSON serialization of the Haskell type `PactValue` as defined in `pact`:
-  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/PactValue.hs#L109
-  * @property {PactLiteral}
-  * @property {Array<PactValue>} - Array of pact values (recursive type)
-  * TODO: add object map of pact values type.
-  * TODO: add guard type of pact values type.
-  * TODO: add module reference type type.
-  */
+ * @typedef {sumtype} PactValue - A sum type representing a `pact` value.
+ * Should have parity with the JSON serialization of the Haskell type `PactValue` as defined in `pact`:
+ * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/PactValue.hs#L109
+ * @property {PactLiteral}
+ * @property {Array<PactValue>} - Array of pact values (recursive type)
+ * TODO: add object map of pact values type.
+ * TODO: add guard type of pact values type.
+ * TODO: add module reference type type.
+ */
 export type PactValue = PactLiteral | Array<PactValue>;
