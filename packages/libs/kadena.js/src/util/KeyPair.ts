@@ -1,4 +1,5 @@
 export interface KeyPair {
   publicKey: string;
-  secretKey: string;
+  secretKey?: string;
+  clist?: [];
 }
