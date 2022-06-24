@@ -29,10 +29,10 @@ export interface Exec {
  */
 export interface Cont {
   pactId: Base64Url;
-  step: number;
-  rollback: boolean;
-  data: object | null;
-  proof: Base64Url | null;
+  step: ChainwebContStep;
+  rollback: ChainwebContRollback;
+  data: ChainwebEnvData;
+  proof: ChainwebProof;
 }
 
 /**
@@ -67,7 +67,7 @@ export interface Signer {
   pubKey: Base16String;
   scheme?: SignerScheme;
   addr?: Base16String;
-  clist?: [Cap];
+  clist?: Array<Cap>;
 }
 
 /**
@@ -112,13 +112,23 @@ export interface ChainwebMetaData {
   gasLimit: number;
   gasPrice: number;
   sender: string;
-  chainId: ChainwebChainId;
+  chainId: string;
 }
 
 /**
  * Different Chainweb network versions.
  */
-export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
+export type ChainwebNetworkId =
+  | 'mainnet01'
+  | 'testnet04'
+  | 'development'
+  | null;
+
+export type ChainwebNonce = string;
+export type ChainwebEnvData = object | null;
+export type ChainwebContStep = number;
+export type ChainwebContRollback = boolean;
+export type ChainwebProof = Base64Url | null;
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.
@@ -132,7 +142,7 @@ export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
 export interface CommandPayload {
   networkId: ChainwebNetworkId | null;
   payload: PactPayload;
-  signers: [Signer];
+  signers: Array<Signer>;
   meta: ChainwebMetaData;
   nonce: string;
 }

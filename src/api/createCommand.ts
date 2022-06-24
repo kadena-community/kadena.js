@@ -1,15 +1,19 @@
 import pullAndCheckHashs from './pullAndCheckHashs';
 import pullSignature from './pullSignature';
-import { Command, SignatureWithHash } from '../util';
+import {
+  Command,
+  SignatureWithHash,
+  CommandPayloadStringifiedJSON,
+} from '../util';
 /**
  * Makes a single command given signed data.
  * @param sigs {array} - array of signature objects, see 'sign'
  * @param cmd {string} - stringified JSON blob used to create hash
  * @return valid Pact API command for send or local use.
  */
-export default function mkSingleCommand(
+export default function createCommand(
   sigs: SignatureWithHash[],
-  cmd: string,
+  cmd: CommandPayloadStringifiedJSON,
 ): Command {
   return {
     hash: pullAndCheckHashs(sigs),

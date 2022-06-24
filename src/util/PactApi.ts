@@ -1,16 +1,18 @@
 import { Base16String } from './Base16String';
 import { Command } from './PactCommand';
 
+export type RequestKeys = {
+  requestKeys: Base16String[];
+};
+
+export type LocalRequest = Command;
+
+export type SendRequest = {
+  cmds: Array<Command>;
+};
+
 export type PollRequest = RequestKeys;
 
-export interface RequestKeys {
-  requestKeys: Base16String[];
-}
-
-export interface ListenRequest {
+export type ListenRequest = {
   listen: Base16String;
-}
-
-export interface PublicRequest {
-  cmds: Command[];
-}
+};

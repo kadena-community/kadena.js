@@ -1,5 +1,5 @@
 import createPollRequest from '../createPollRequest';
-import mkPublicSend from '../mkPublicSend';
+import createSendRequest from '../createSendRequest';
 
 test('Takes in command formatted for /send endpoint and outputs request for /poll endpoint', () => {
   const cmd = {
@@ -12,7 +12,7 @@ test('Takes in command formatted for /send endpoint and outputs request for /pol
     cmd: '{"networkId":null,"payload":{"exec":{"data":{"accounts-admin-keyset":["ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"]},"code":"(define-keyset \'k (read-keyset \\"accounts-admin-keyset\\"))\\n(module system \'k\\n  (defun get-system-time ()\\n    (time \\"2017-10-31T12:00:00Z\\")))\\n(get-system-time)"}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
   };
 
-  const actual = createPollRequest(mkPublicSend([cmd]));
+  const actual = createPollRequest(createSendRequest([cmd]));
   const expected = {
     requestKeys: [cmd.hash],
   };

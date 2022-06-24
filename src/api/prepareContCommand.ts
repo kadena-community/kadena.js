@@ -1,7 +1,20 @@
 import attachSignature from './attachSignature';
-import mkSigner from './mkSigner';
-import mkSingleCommand from './mkSingleCommand';
-import { KeyPair, Command } from '../util';
+import pullSigner from './pullSigner';
+import createCommand from './createCommand';
+import {
+  KeyPair,
+  ChainwebNonce,
+  ChainwebNetworkId,
+  ChainwebProof,
+  ChainwebMetaData,
+  ChainwebEnvData,
+  ChainwebContStep,
+  ChainwebContRollback,
+  Command,
+  CommandPayload,
+  Base64Url,
+  Base16String,
+} from '../util';
 /**
  * Prepare an ContMsg pact command for use in send or local execution.
  * To use in send, wrap result with 'mkSingleCommand'.
@@ -15,20 +28,20 @@ import { KeyPair, Command } from '../util';
  * @param meta {object} - public meta information, see mkMeta
  * @return valid pact API Cont command for send or local use.
  */
-export default function prepareContCmd(
-  keyPairs: [KeyPair],
-  nonce: string = new Date().toISOString(),
-  proof: string | null,
-  pactId: string,
-  rollback: boolean,
-  step: number,
-  envData: object,
-  meta = {},
-  networkId = null,
+export default function prepareContCommand(
+  keyPairs: Array<KeyPair>,
+  nonce: ChainwebNonce,
+  proof: ChainwebProof,
+  pactId: Base16String,
+  rollback: ChainwebContRollback,
+  step: ChainwebContStep,
+  envData: ChainwebEnvData,
+  meta: ChainwebMetaData,
+  networkId: ChainwebNetworkId,
 ): Command {
-  const kpArray = keyPairs;
-  const signers = kpArray.map(mkSigner);
-  const cmdJSON = {
+  const signers = keyPairs.map(pullSigner);
+
+  const cmdJSON: CommandPayload = {
     networkId: networkId,
     payload: {
       cont: {
@@ -44,6 +57,6 @@ export default function prepareContCmd(
     nonce: JSON.stringify(nonce),
   };
   const cmd = JSON.stringify(cmdJSON);
-  const sigs = attachSignature(cmd, kpArray);
-  return mkSingleCommand(sigs, cmd);
+  const sigs = attachSignature(cmd, keyPairs);
+  return createCommand(sigs, cmd);
 }
