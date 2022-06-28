@@ -157,31 +157,61 @@ type PactResultError = {
 /** Backend-specific data for continuing a cross-chain proof. */
 export type SPVProof = string;
 
+
+
 /**
- * @TODO
- * @TODO nested pacts
+ * Describes result of a defpact execution.
+ * 
+ * @param pactId - Identifies this defpact execution. Generated after the first step and matches the request key of the transaction.
+ * @param step - Identifies which step executed in defpact.
+ * @param stepCount - Total number of steps in pact.
+ * @param executed - Optional value for private pacts, indicates if step was skipped.
+ * @param stepHasRollback - Indicates if pact step has rollback.
+ * @param continuation - Closure describing executed pact.
+ * @param continuation.def - Fully-qualified defpact name.
+ * @param continuation.args - Arguments used with defpact.
+ * @param yield - Value yielded during pact step, optionally indicating cross-chain execution.
+ * @param yield.data - Pact value object containing yielded data.
+ * @param yield.provenance
+ * @param yield.provenance.targetChainId - Chain ID of target chain for next step.
+ * @param yield.provenance.moduleHash - Hash of module executing defpact.
+ * 
+ * @TODO Add nested pacts to OpenApi specs?
+ * @TODO Is the `yield.data` type correctly defined?
 */
 type PactExec = {
   pactId: string;
   step: number;
   stepCount: number;
-  executed: boolean;
+  executed: boolean | null;
   stepHasRollback: boolean;
   continuation: {
     def: string;
     args: PactValue;
   };
   yield: {
-    data: object;
+    data: Array<([string, PactValue])>;
     provenance: {
       targetChainId: string;
       moduleHash: string;
-    }
-  }
+    } | null;
+  } | null;
 };
 
-/** @TODO */
-type PactEvent = object;
+/**
+ * Events emitted during Pact execution.
+ * 
+ * @param name - Event defcap name.
+ * @param module - Qualified module name of event defcap.
+ * @param params - defcap arguments.
+ * @param moduleHash - Hash of emitting module.
+ */
+type PactEvent = {
+  name: string;
+  module: string;
+  params: Array<PactValue>;
+  moduleHash: string;
+};
 
 /**
  * Platform-specific information on the block that executed a transaction.
@@ -190,6 +220,9 @@ type PactEvent = object;
  * @param blockTime - POSIX time when the block was mined.
  * @param blockHeight - Block height of the block.
  * @param prevBlockHash - Parent Block hash of the containing block.
+ * @param publicMeta - Platform-specific data provided by the request.
+ * 
+ * @TODO Add `publicMeta` to Open API spec.
  *
  */
 type ChainwebResponseMetaData = {
@@ -197,6 +230,7 @@ type ChainwebResponseMetaData = {
   blockTime: number;
   blockHeight: number;
   prevBlockHash: string;
+  publicMeta: ChainwebMetaData
 };
 
 /**
@@ -207,19 +241,16 @@ type ChainwebResponseMetaData = {
  *               Absent when transaction was not successful.
  *               Expected to be non-negative 64-bit integers and
  *               are expected to be monotonically increasing.
- *
- * @TODO Should txId be a BigInt?
- *
  * @param result - Pact execution result, either a Pact error or the output (a PactValue) of the last pact expression in the transaction.
  * @param gas - Gas units consummed by the transaction as a 64-bit integer.
- *
- * @TODO add gas field to api spec docs.
- * @TODO should this be a BigInt since Haskell defines it as int64?
- *
  * @param logs - Backend-specific value providing image of database logs.
  * @param continuation - Describes the result of a defpact execution, if one occurred.
  * @param metaData - Platform-specific information on the block that executed the transaction.
  * @param events - Optional list of Pact events emitted during the transaction.
+ * 
+ * @TODO Should `txId` and `gas` be a BigInt since Haskell defines it as int64?
+ * @TODO Add `gas` to OpenApi spec?
+ * 
  */
 export interface CommandResult {
   reqKey: Base64Url;

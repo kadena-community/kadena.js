@@ -33,7 +33,7 @@ export type SPVResponse = SPVProof;
  */
 export function spv(requestBody: SPVRequestBody, apiHost: string):Promise<SPVResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<SPVRequestBody>(requestBody);
-  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/local`, request);
+  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/spv`, request);
   const parsedRes: Promise<SPVResponse> = parseResponse(response);
   return parsedRes;
 }

@@ -24,7 +24,7 @@ export type ListenResponse = CommandResult;
  */
 export function listen(requestBody: ListenRequestBody, apiHost: string):Promise<ListenResponse> {
   let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<ListenRequestBody>(requestBody);
-  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/poll`, request);
+  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/listen`, request);
   const parsedRes: Promise<ListenResponse> = parseResponse(response);
   return parsedRes;
 }
