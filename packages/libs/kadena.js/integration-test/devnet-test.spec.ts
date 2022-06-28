@@ -4,7 +4,6 @@
 import { ChainwebNetworkId, Command, CommandResult } from '../src/util/PactCommand';
 import { local } from '../src/fetch/local';
 import { send, SendRequestBody } from '../src/fetch/send';
-import { listen, ListenRequestBody } from '../src/fetch/listen';
 import { createSampleExecTx } from './mock-txs';
 
 const devnetNetwork:ChainwebNetworkId = 'development';
@@ -15,7 +14,7 @@ const devnetKeyPair = {
 };
 
 test('[DevNet] Makes a /send request and retrieve request key', async () => {
-  const pactCode:string = "(+ 1 2)";
+  const pactCode:string = '(+ 1 2)';
   const signedCommand:Command = createSampleExecTx(devnetNetwork, devnetKeyPair, pactCode);
   const sendReq:SendRequestBody = {
     cmds: [signedCommand],
@@ -28,16 +27,16 @@ test('[DevNet] Makes a /send request and retrieve request key', async () => {
 });
 
 test('[DevNet] Makes a /local request and retrieve result', async () => {
-  const pactCode:string = "(+ 1 2)";
+  const pactCode:string = '(+ 1 2)';
   const signedCommand:Command = createSampleExecTx(devnetNetwork, devnetKeyPair, pactCode);
   var actual:CommandResult = await local(signedCommand, devnetApiHost);
   var { logs, metaData, ...actualWithoutLogsAndMetaData } = actual;
-  var expected:Omit<CommandResult, "logs" | "metaData"> = {
+  var expected:Omit<CommandResult, 'logs' | 'metaData'> = {
     reqKey: signedCommand.hash,
     txId: null,
     result: {
       data: 3,
-      status: "success",
+      status: 'success',
     },
     gas: 5,
     continuation: null,

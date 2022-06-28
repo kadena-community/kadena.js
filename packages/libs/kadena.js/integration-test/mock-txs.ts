@@ -3,7 +3,7 @@ import { SignCommand } from '../src/util/SignCommand';
 import sign from '../src/crypto/sign';
 import { KeyPair } from '../src/util';
 
-export function createSampleExecTx(network:ChainwebNetworkId, keyPair:KeyPair, pactCode:string, envData:(object|null) = null):Command {
+export function createSampleExecTx(network:ChainwebNetworkId, keyPair:KeyPair, pactCode:string, envData:(object | null) = null):Command {
   const nonce:string = 'step01';
 
   const cmd:CommandPayload = {

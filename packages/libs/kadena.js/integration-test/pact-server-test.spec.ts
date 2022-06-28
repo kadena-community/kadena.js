@@ -15,7 +15,7 @@ const pactServerKeyPair = {
 };
 
 test('[Pact Server] Makes a /send request and retrieve request key', async () => {
-  const pactCode:string = "(+ 1 2)";
+  const pactCode:string = '(+ 1 2)';
   const signedCommand:Command = createSampleExecTx(pactServerNetwork, pactServerKeyPair, pactCode);
   const sendReq:SendRequestBody = {
     cmds: [signedCommand],
@@ -29,16 +29,16 @@ test('[Pact Server] Makes a /send request and retrieve request key', async () =>
 });
 
 test('[Pact Server] Makes a /local request and retrieve result', async () => {
-  const pactCode:string = "(+ 1 2)";
+  const pactCode:string = '(+ 1 2)';
   const signedCommand:Command = createSampleExecTx(pactServerNetwork, pactServerKeyPair, pactCode);
   var actual:CommandResult = await local(signedCommand, pactServerApiHost);
   var { logs, ...actualWithoutLogs } = actual;
-  var expected:Omit<CommandResult, "logs"> = {
+  var expected:Omit<CommandResult, 'logs'> = {
     reqKey: signedCommand.hash,
     txId: null,
     result: {
       data: 3,
-      status: "success",
+      status: 'success',
     },
     gas: 0,
     continuation: null,
