@@ -13,6 +13,7 @@ import {
   Command,
   CommandPayloadStringifiedJSON,
   Proof,
+  SignatureWithHash,
 } from '../../../util';
 
 export const keyPair: KeyPair = {
@@ -64,6 +65,12 @@ export const payload: CommandPayload = {
     sender: '',
   },
   nonce: JSON.stringify(nonce),
+};
+
+export const signature: SignatureWithHash = {
+  hash: 'neA9dm-puxrTzdyUu466mDv6fagpnHxKPnSaAHuiM2Q',
+  pubKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
+  sig: 'dfae888ddbd4d96e90749e2c2d599517095d999da518b5f07bd14307248acd018f82b01c1925af17c5a3f6e2c3938a765d5f53baf713c365dbcec9997a477e00',
 };
 
 export const stringifiedPayload: CommandPayloadStringifiedJSON =
