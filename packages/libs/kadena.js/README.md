@@ -132,6 +132,9 @@ wallet:
   - Sends an enriched `Command` payload to the signing API of the Chainweaver wallet.
 - **TODO** `sendSigned`:
   - Very similar to `fetch.send` function, but expects a single `Command` instead of a list of them. Could be omitted.
+- **DONE** `createCap`
+  - Returns a `SigningCap`, which contains a regular Pact capability and some added fields consumed by chainweaver.
+
 
 [chainweb.js](https://github.com/kadena-io/chainweb.js/blob/main/src/chainweb.js):
 
