@@ -7,12 +7,11 @@ type hashes = {
 
 export function unique(hashes: Array<Base64Url>): Array<Base64Url> {
   let isUnique: hashes = {};
-  let uniqueHashes = [];
-  for (let i = 0; i < hashes.length; i++) {
-    if (!isUnique[hashes[i]]) {
-      isUnique[hashes[i]] = true;
-      uniqueHashes.push(hashes[i]);
+  return hashes.filter((hash) => {
+    if (!isUnique[hash]) {
+      isUnique[hash] = true;
+      return true;
     }
-  }
-  return uniqueHashes;
+    return false;
+  });
 }

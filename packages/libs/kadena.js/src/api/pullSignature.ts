@@ -1,9 +1,5 @@
 import { SignatureWithHash, Signature } from '../util';
 
-export default function pullSignature({
-  hash,
-  sig,
-  pubKey,
-}: SignatureWithHash): Signature {
+export default function pullSignature({ sig }: SignatureWithHash): Signature {
   return { sig: sig };
 }

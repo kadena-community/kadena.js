@@ -43,18 +43,18 @@ export default function prepareContCommand(
   const signers = keyPairs.map(pullSigner);
 
   const cmdJSON: CommandPayload = {
-    networkId: networkId,
+    networkId,
     payload: {
       cont: {
-        proof: proof || null,
-        pactId: pactId,
-        rollback: rollback,
-        step: step,
-        data: envData || {},
+        proof,
+        pactId,
+        rollback,
+        step,
+        data: envData,
       },
     },
-    signers: signers,
-    meta: meta,
+    signers,
+    meta,
     nonce: JSON.stringify(nonce),
   };
   const cmd = JSON.stringify(cmdJSON);

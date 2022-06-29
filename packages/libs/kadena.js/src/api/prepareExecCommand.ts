@@ -31,15 +31,15 @@ export default function prepareExecCommand(
 ): Command {
   const signers = keyPairs.map(pullSigner);
   const cmdJSON = {
-    networkId: networkId,
+    networkId,
     payload: {
       exec: {
-        data: envData || {},
+        data: envData,
         code: pactCode,
       },
     },
-    signers: signers,
-    meta: meta,
+    signers,
+    meta,
     nonce: JSON.stringify(nonce),
   };
   const cmd = JSON.stringify(cmdJSON);
