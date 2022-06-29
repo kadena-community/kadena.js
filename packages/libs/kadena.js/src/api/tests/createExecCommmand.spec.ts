@@ -1,12 +1,13 @@
-import createExecCommand from '../createExecCommand';
-import createSendRequest from '../createSendRequest';
+import { createExecCommand } from '../createExecCommand';
+import { createSendRequest } from '../createSendRequest';
+
 import {
+  command,
+  envData,
   keyPairs,
+  meta,
   nonce,
   pactCode,
-  envData,
-  meta,
-  command,
 } from './mockdata/execCommand';
 
 test('Takes in exec command parameters and outputs a command formatted for /send endpoint', () => {

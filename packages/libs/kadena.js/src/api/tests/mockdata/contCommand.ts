@@ -1,20 +1,18 @@
-import {
+import type {
+  Command,
+  CommandPayload,
+  CommandPayloadStringifiedJSON,
+  EnvData,
+  KeyPair,
+  MetaData,
   NetworkId,
   Nonce,
-  KeyPair,
   PactTransactionHash,
-  Step,
-  Rollback,
-  EnvData,
-  MetaData,
-  Base64Url,
-  Base16String,
-  CommandPayload,
-  Command,
-  CommandPayloadStringifiedJSON,
   Proof,
+  Rollback,
   SignatureWithHash,
-} from '../../../util';
+  Step,
+} from '@kadena/types';
 
 export const keyPair: KeyPair = {
   publicKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',

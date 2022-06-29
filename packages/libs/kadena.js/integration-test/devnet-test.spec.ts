@@ -1,15 +1,16 @@
 // Expects devnet server to be running at http://localhost:8080.
 // To run, follow instructions at https://github.com/kadena-io/devnet.
 
-import sign from '../src/crypto/sign';
-import type { SendRequestBody } from '../src/fetch/send';
-import { send } from '../src/fetch/send';
 import type {
   ChainwebNetworkId,
   Command,
   CommandPayload,
-} from '../src/util/PactCommand';
-import type { SignCommand } from '../src/util/SignCommand';
+  SignCommand,
+} from '@kadena/types';
+
+import { sign } from '../src/crypto/sign';
+import type { SendRequestBody } from '../src/fetch/send';
+import { send } from '../src/fetch/send';
 
 const network: ChainwebNetworkId = 'development';
 const apiHost = 'http://localhost:8080/chainweb/0.0/development/chain/0/pact';

@@ -1,21 +1,20 @@
-import attachSignature from './attachSignature';
-import pullSigner from './pullSigner';
-import createCommand from './createCommand';
-import {
-  KeyPair,
-  PactTransactionHash,
-  Nonce,
-  NetworkId,
-  Proof,
-  MetaData,
-  EnvData,
-  Step,
-  Rollback,
+import type {
   Command,
   CommandPayload,
-  Base64Url,
-  Base16String,
-} from '../util';
+  EnvData,
+  KeyPair,
+  MetaData,
+  NetworkId,
+  Nonce,
+  PactTransactionHash,
+  Proof,
+  Rollback,
+  Step,
+} from '@kadena/types';
+
+import { attachSignature } from './attachSignature';
+import { createCommand } from './createCommand';
+import { pullSigner } from './pullSigner';
 /**
  * Prepare an ContMsg pact command for use in send or local execution.
  * To use in send, wrap result with 'mkSingleCommand'.
@@ -29,7 +28,7 @@ import {
  * @param meta {object} - public meta information, see mkMeta
  * @return valid pact API Cont command for send or local use.
  */
-export default function prepareContCommand(
+export function prepareContCommand(
   keyPairs: Array<KeyPair>,
   nonce: Nonce,
   proof: Proof,

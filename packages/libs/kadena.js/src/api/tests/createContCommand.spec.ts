@@ -1,16 +1,17 @@
-import createContCommand from '../createContCommand';
-import createSendRequest from '../createSendRequest';
+import { createContCommand } from '../createContCommand';
+import { createSendRequest } from '../createSendRequest';
+
 import {
-  keyPairs,
-  nonce,
-  pactId,
-  rollback,
-  step,
+  command,
   envData,
+  keyPairs,
   meta,
   networkId,
+  nonce,
+  pactId,
   proof,
-  command,
+  rollback,
+  step,
 } from './mockdata/contCommand';
 
 test('Takes in cont command parameters and outputs a command formatted for /send endpoint', () => {

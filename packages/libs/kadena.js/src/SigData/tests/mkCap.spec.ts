@@ -1,5 +1,5 @@
 import { mkPactDecimal, mkPactInt } from '../../util/PactValue';
-import mkCap from '../mkCap';
+import { mkCap } from '../mkCap';
 
 test('should create a baseline cap with empty args', () => {
   const actual = mkCap('coin.GAS');

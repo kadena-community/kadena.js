@@ -62,7 +62,7 @@
      * The default value is false to avoid legacy compatibility issues.
      * It is strongly recommended to set strictPeerDependencies=true.
      */
-    "strictPeerDependencies": true,
+    "strictPeerDependencies": false,
 
     /**
      * Configures the strategy used to select versions during installation.
@@ -232,46 +232,46 @@
    * optional features you can use.
    */
   // "gitPolicy": {
-    /**
-     * Work at a big company?  Tired of finding Git commits at work with unprofessional Git
-     * emails such as "beer-lover@my-college.edu"?  Rush can validate people's Git email address
-     * before they get started.
-     *
-     * Define a list of regular expressions describing allowable e-mail patterns for Git commits.
-     * They are case-insensitive anchored JavaScript RegExps.  Example: ".*@example\.com"
-     *
-     * IMPORTANT: Because these are regular expressions encoded as JSON string literals,
-     * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
-     */
-    // "allowedEmailRegExps": [
-    //   "[^@]+@users\\.noreply\\.github\\.com",
-    //   "travis@example\\.org"
-    // ],
+  /**
+   * Work at a big company?  Tired of finding Git commits at work with unprofessional Git
+   * emails such as "beer-lover@my-college.edu"?  Rush can validate people's Git email address
+   * before they get started.
+   *
+   * Define a list of regular expressions describing allowable e-mail patterns for Git commits.
+   * They are case-insensitive anchored JavaScript RegExps.  Example: ".*@example\.com"
+   *
+   * IMPORTANT: Because these are regular expressions encoded as JSON string literals,
+   * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
+   */
+  // "allowedEmailRegExps": [
+  //   "[^@]+@users\\.noreply\\.github\\.com",
+  //   "travis@example\\.org"
+  // ],
 
-    /**
-     * When Rush reports that the address is malformed, the notice can include an example
-     * of a recommended email.  Make sure it conforms to one of the allowedEmailRegExps
-     * expressions.
-     */
-    // "sampleEmail": "mrexample@users.noreply.github.com",
+  /**
+   * When Rush reports that the address is malformed, the notice can include an example
+   * of a recommended email.  Make sure it conforms to one of the allowedEmailRegExps
+   * expressions.
+   */
+  // "sampleEmail": "mrexample@users.noreply.github.com",
 
-    /**
-     * The commit message to use when committing changes during 'rush publish'.
-     *
-     * For example, if you want to prevent these commits from triggering a CI build,
-     * you might configure your system's trigger to look for a special string such as "[skip-ci]"
-     * in the commit message, and then customize Rush's message to contain that string.
-     */
-    // "versionBumpCommitMessage": "Bump versions [skip ci]",
+  /**
+   * The commit message to use when committing changes during 'rush publish'.
+   *
+   * For example, if you want to prevent these commits from triggering a CI build,
+   * you might configure your system's trigger to look for a special string such as "[skip-ci]"
+   * in the commit message, and then customize Rush's message to contain that string.
+   */
+  // "versionBumpCommitMessage": "Bump versions [skip ci]",
 
-    /**
-     * The commit message to use when committing changes during 'rush version'.
-     *
-     * For example, if you want to prevent these commits from triggering a CI build,
-     * you might configure your system's trigger to look for a special string such as "[skip-ci]"
-     * in the commit message, and then customize Rush's message to contain that string.
-     */
-    // "changeLogUpdateCommitMessage": "Update changelogs [skip ci]"
+  /**
+   * The commit message to use when committing changes during 'rush version'.
+   *
+   * For example, if you want to prevent these commits from triggering a CI build,
+   * you might configure your system's trigger to look for a special string such as "[skip-ci]"
+   * in the commit message, and then customize Rush's message to contain that string.
+   */
+  // "changeLogUpdateCommitMessage": "Update changelogs [skip ci]"
   // },
 
   "repository": {
@@ -296,7 +296,7 @@
      * The default branch name. This tells "rush change" which remote branch to compare against.
      * The default value is "main"
      */
-     "defaultBranch": "master"
+    "defaultBranch": "master"
 
     /**
      * The default remote. This tells "rush change" which remote to compare against if the remote URL is
@@ -381,18 +381,17 @@
   // "hotfixChangeEnabled": false,
 
   /**
-    * This is an optional, but recommended, list of available tags that can be applied
-    * to projects. If this property is not specified, any tag is allowed. This
-    * list is useful in preventing typos when specifying tags for projects.
-    */
+   * This is an optional, but recommended, list of available tags that can be applied
+   * to projects. If this property is not specified, any tag is allowed. This
+   * list is useful in preventing typos when specifying tags for projects.
+   */
   /**
    * @alber70g
    * 1. Apps: has a runtime and can be deployed (e.g.: chainweb explorer)
    * 2. Libs: offers functionality, but isn't a deployable artifact
    * 3. Tools: is used in pipeline, during development or otherwise not a app or lib
    */
-   "allowedProjectTags": ["apps", "libs", "tools"],
-
+  "allowedProjectTags": ["apps", "libs", "tools"],
 
   /**
    * (Required) This is the inventory of projects to be managed by Rush.
@@ -406,9 +405,11 @@
     // #########################
     // ##  Deployables
     // #########################
+
     // #########################
     // ##  Features
     // #########################
+
     // #########################
     // ##  Libraries
     // #########################
@@ -417,6 +418,16 @@
       "projectFolder": "packages/libs/kadena.js",
       "tags": ["libs"]
     },
+    {
+      "packageName": "@kadena/crypto",
+      "projectFolder": "packages/libs/crypto",
+      "tags": ["libs"]
+    },
+    {
+      "packageName": "@kadena/types",
+      "projectFolder": "packages/libs/types",
+      "tags": ["libs"]
+    }
     // #########################
     // ##  Tools
     // #########################

@@ -38,7 +38,7 @@
     "build:prod": "webpack --mode=production",
     "coverage": "jest --collectCoverage",
     "preinstall": "npx only-allow pnpm",
-    "lint": "npx eslint . --ext .js,.ts",
+    "lint": "npx eslint . --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "serve-coverage": "python -m SimpleHTTPServer",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
@@ -47,7 +47,7 @@
     "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern /integration-test/pact-server*\" --kill-others"
   },
   "lint-staged": {
-    "src/**/*.{js,ts}": [
+    "src/**/*.ts": [
       "eslint --fix",
       "prettier --write -u"
     ],
@@ -56,12 +56,14 @@
     ]
   },
   "dependencies": {
+    "@kadena/types": "workspace:*",
     "blakejs": "^1.2.1",
     "node-fetch": "^2.6.6",
     "tweetnacl": "^1.0.3",
     "webpack": "~5.73.0"
   },
   "devDependencies": {
+    "@parcel/transformer-typescript-types": "2.6.2",
     "@types/jest": "^27.5.1",
     "@types/node-fetch": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",

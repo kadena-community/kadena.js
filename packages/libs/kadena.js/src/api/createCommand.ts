@@ -1,17 +1,18 @@
-import pullAndCheckHashs from './pullAndCheckHashs';
-import pullSignature from './pullSignature';
-import {
+import type {
   Command,
-  SignatureWithHash,
   CommandPayloadStringifiedJSON,
-} from '../util';
+  SignatureWithHash,
+} from '@kadena/types';
+
+import { pullAndCheckHashs } from './pullAndCheckHashs';
+import { pullSignature } from './pullSignature';
 /**
  * Makes a single command given signed data.
  * @param signatures {array} - array of signature objects, see 'sign'
  * @param cmd {string} - stringified JSON blob used to create hash
  * @return valid Pact API command for send or local use.
  */
-export default function createCommand(
+export function createCommand(
   signatures: Array<SignatureWithHash>,
   cmd: CommandPayloadStringifiedJSON,
 ): Command {

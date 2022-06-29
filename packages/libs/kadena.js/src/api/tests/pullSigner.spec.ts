@@ -1,4 +1,5 @@
-import pullSigner from '../pullSigner';
+import { pullSigner } from '../pullSigner';
+
 import { keyPair } from './mockdata/execCommand';
 
 test('Takes in a keyPair and outputs the public key', () => {

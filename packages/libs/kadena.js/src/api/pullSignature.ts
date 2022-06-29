@@ -1,5 +1,5 @@
-import { SignatureWithHash, Signature } from '../util';
+import type { Signature, SignatureWithHash } from '@kadena/types';
 
-export default function pullSignature({ sig }: SignatureWithHash): Signature {
+export function pullSignature({ sig }: SignatureWithHash): Signature {
   return { sig: sig };
 }

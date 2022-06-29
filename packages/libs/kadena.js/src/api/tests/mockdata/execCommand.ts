@@ -1,20 +1,13 @@
-//Test Case 1 - 01-system.yaml code from https://github.com/kadena-io/pact/blob/master/examples/accounts/scripts/01-system.yaml
-import {
-  NetworkId,
-  PactCode,
-  Nonce,
-  Step,
-  Rollback,
-  EnvData,
-  MetaData,
-  Base64Url,
-  Base16String,
-  Exec,
+// Test Case 1 - 01-system.yaml code from https://github.com/kadena-io/pact/blob/master/examples/accounts/scripts/01-system.yaml
+import type {
   Command,
-  KeyPair,
-  SignatureWithHash,
   CommandPayload,
-} from '../../../util';
+  KeyPair,
+  MetaData,
+  Nonce,
+  PactCode,
+  SignatureWithHash,
+} from '@kadena/types';
 
 export const keyPair: KeyPair = {
   publicKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',

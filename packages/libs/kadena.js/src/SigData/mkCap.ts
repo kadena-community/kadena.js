@@ -1,5 +1,4 @@
-import type { Cap } from '../util/PactCommand';
-import type { PactValue } from '../util/PactValue';
+import type { Cap, PactValue } from '@kadena/types';
 
 /**
  * Helper function for creating a pact capability object.
@@ -8,7 +7,7 @@ import type { PactValue } from '../util/PactValue';
  * @param {array} args - Array of PactValue arguments the capability expects (default: empty array).
  * @return {Cap} - A properly formatted Cap object required in SigBuilder.
  */
-export default function mkCap(name: string, args: Array<PactValue> = []): Cap {
+export function mkCap(name: string, args: Array<PactValue> = []): Cap {
   return {
     name,
     args,

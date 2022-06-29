@@ -1,12 +1,11 @@
-import { Base64Url } from './Base64Url';
-import { Command } from './PactCommand';
+import type { Base64Url } from '@kadena/types';
 
 type hashes = {
   [key: string]: boolean;
 };
 
 export function unique(hashes: Array<Base64Url>): Array<Base64Url> {
-  let isUnique: hashes = {};
+  const isUnique: hashes = {};
   return hashes.filter((hash) => {
     if (!isUnique[hash]) {
       isUnique[hash] = true;
