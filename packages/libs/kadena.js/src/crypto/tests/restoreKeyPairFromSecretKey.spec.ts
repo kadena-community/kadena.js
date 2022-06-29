@@ -14,3 +14,9 @@ test('restores keypair from secretkey', () => {
 
   expect(expected).toEqual(actual);
 });
+
+test('Takes in a bad sized secret key and throw error', () => {
+  const secretKey =
+    '53d1e1639bd6c607d33f3efcbaafc6d0d4fb022cd57a3a9b8534ddcd8c471902@';
+  expect(() => restoreKeyPairFromSecretKey(secretKey)).toThrow();
+});

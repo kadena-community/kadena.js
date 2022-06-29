@@ -83,38 +83,40 @@ crypto:
 
 api:
 
-- **PENDING** `mkPublicSend`:
+- **PENDING** `createSendRequest`:
   - Omitted, it just wrapped a list of Commands into the expected format for the `/send` endpoint. `SendRequestBody` type created instead.
-- **TODO** `prepareContCmd`:
+- **DONE** `prepareContCommand`:
   - Puts together and signs a continuation payload `Command`.
-- **TODO** `prepareExecCmd`:
+- **DONE** `prepareExecCommand`:
   - Puts together and signs an exec payload `Command`.
-- **TODO** `mkSingleCmd`:
+- **PENDING** `createCommand`:
   - Puts together a `Command` type from a list of signatures and a stringified payload. Also checks that the signatures are for correct hash.
+  - Pending for renaming, formally mkSingleCmd.
+- **DONE** `createContCommand`:
+  - A wrapper for a `mkPublicSend` and `prepareContCmd` call. Could potentially be omitted.
+- **DONE** `createExecCommand`:
+  - A wrapper for a `mkPublicSend` and `prepareExecCmd` call. Could potentially be omitted.
+- **PENDING** `createLocalCommand`:
+  - Wrapper for `prepareExecCmd`. The request type for `local` endpoint is just a single `Command`. Could be omitted, but the naming here does provides extra clarity.
+- **DONE** `createPollRequest`:
+  - Prepares a `/poll` endpoint request type (i.e. a list of request keys) from a `{cmds: [Command]}` type (i.e. the type of the `/send` endpoint). Ignore naming/docs that imply the `Command` should have an exec payload.
+- **DONE** `createListenRequest`:
+  - Prepares a `/listen` endpoint request type. Similar to `createPollRequest`, but only uses the first request key.
+- **DONE** `attachSignature`:
+  - API Helper function that attaches signed or unsigned signature from a keypair and stringified payload.
+- **DONE** `pullAndCheckHashs`:
+  - API Helper function maps through signatures and make sure that the signatures are signing the same hash and pulls the hash.
+- **DONE** `pullSignature`:
+  - API Helper function that pulls signature only object from signature with hash object `{hash, pubKey, sig}`
+- **DONE** `pullSigner`:
+  - API Helper function that pulls public key and capability list if it exists.
 
 lang:
 
-- **DONE** `createExp`
-  - Puts together a lisp-style Pact Code from Pact function and arguments
-- **REMOVED** `mkMeta`
-  - Omitted.
-- **REMOVED** `mkCap`:
-  - Moved to `wallet` section as `createCap`.
-
-simple:
-
-- cont:
-  - **TODO** `createCommand`:
-    - A wrapper for a `mkPublicSend` and `prepareContCmd` call. Could potentially be omitted.
-- exec:
-  - **TODO** `createCommand`:
-    - A wrapper for a `mkPublicSend` and `prepareExecCmd` call. Could potentially be omitted.
-  - **TODO** `createLocalCommand`:
-    - Wrapper for `prepareExecCmd`. The request type for `local` endpoint is just a single `Command`. Could be omitted, but the naming here does provides extra clarity.
-  - **TODO** `createPollRequest`:
-    - Prepares a `/poll` endpoint request type (i.e. a list of request keys) from a `{cmds: [Command]}` type (i.e. the type of the `/send` endpoint). Ignore naming/docs that imply the `Command` should have an exec payload.
-  - **TODO** `createListenRequest`:
-    - Prepares a `/listen` endpoint request type. Similar to `createPollRequest`, but only uses the first request key.
+- **PENDING** `mkExp`
+- **PENDING** `mkMeta`
+- **PENDING** `mkCap`:
+  - Returns a `SigningCap`, which contains a regular Pact capability and some added fields consumed by chainweaver.
 
 fetch:
 
@@ -132,6 +134,7 @@ wallet:
   - Very similar to `fetch.send` function, but expects a single `Command` instead of a list of them. Could be omitted.
 - **DONE** `createCap`
   - Returns a `SigningCap`, which contains a regular Pact capability and some added fields consumed by chainweaver.
+
 
 [chainweb.js](https://github.com/kadena-io/chainweb.js/blob/main/src/chainweb.js):
 
