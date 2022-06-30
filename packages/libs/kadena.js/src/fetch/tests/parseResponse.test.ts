@@ -3,10 +3,10 @@ import { parseResponse } from '../parseResponse';
 import { Response as NodeFetchResponse } from 'node-fetch';
 
 test('should parse successful Response as expected type', async () => {
-  type MockTestType = {
+  interface MockTestType {
     arr: Array<string>;
     int: number;
-  };
+  }
   const mockSuccessResponse: MockTestType = {
     arr: ['hello', 'world'],
     int: 2,

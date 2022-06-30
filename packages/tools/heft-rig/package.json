@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "test": ""
+    "test": "",
+    "_phase:build": "",
+    "_phase:test": ""
   },
   "peerDependencies": {
     "@rushstack/heft": "^0.46.1"

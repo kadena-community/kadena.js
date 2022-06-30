@@ -8,9 +8,11 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "heft build",
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
     "precommit": "pnpm run test --silent",
-    "test": "heft test"
+    "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [

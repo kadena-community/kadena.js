@@ -1,5 +1,5 @@
 {
-  "extends": "@kadena/heft-rig/profiles/default/config/jest.config.json",
+  "extends": "@rushstack/heft-jest-plugin/includes/jest-shared.config.json",
   "collectCoverage": true,
   "coverageThreshold": {
     "global": {

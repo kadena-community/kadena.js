@@ -7,6 +7,8 @@
   "author": "Albert G",
   "types": "src/index.d.ts",
   "scripts": {
+    "_phase:build": "",
+    "_phase:test": "",
     "build": "",
     "preinstall": "npx only-allow pnpm",
     "precommit": "pnpm run test --silent",

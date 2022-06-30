@@ -1,7 +1,7 @@
 jest.mock('node-fetch');
 
 import { sign } from '@kadena/crypto';
-import { pactTestCommand } from '@kadena/crypto/src/tests/mockdata';
+import { pactTestCommand } from '@kadena/crypto';
 import type { Command, SignCommand } from '@kadena/types';
 
 import type { SendRequestBody, SendResponse } from '../send';
