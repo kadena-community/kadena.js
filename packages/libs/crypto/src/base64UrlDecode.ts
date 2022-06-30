@@ -1,3 +1,4 @@
+// eslint-disable no-bitwise
 import type { Base64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';

@@ -416,21 +416,34 @@
     {
       "packageName": "kadena.js",
       "projectFolder": "packages/libs/kadena.js",
-      "tags": ["libs"]
+      "tags": ["libs"],
+      "shouldPublish": false
     },
+
     {
       "packageName": "@kadena/crypto",
       "projectFolder": "packages/libs/crypto",
-      "tags": ["libs"]
+      "tags": ["libs"],
+      "shouldPublish": false
     },
+
     {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
-      "tags": ["libs"]
-    }
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Tools
     // #########################
+    {
+      "packageName": "@kadena/heft-rig",
+      "projectFolder": "packages/tools/heft-rig",
+      "tags": ["tools"],
+      "shouldPublish": false
+    }
+
     // {
     //   /**
     //    * The NPM package name of the project (must match package.json)

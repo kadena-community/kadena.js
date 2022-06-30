@@ -1,14 +1,13 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  preset: 'ts-jest/presets/default-esm',
-  testEnvironment: 'node',
+  extends: '@kadena/heft-rig/profiles/default/config/jest.config.json',
   collectCoverage: true,
   coverageThreshold: {
     global: {
-      branches: 74,
-      functions: 90,
-      lines: 90,
-      statements: -10,
+      branches: 50,
+      functions: 50,
+      lines: 50,
+      statements: 50,
     },
   },
 };

@@ -1,7 +1,9 @@
+jest.mock('node-fetch');
+
+import { sign } from '@kadena/crypto';
+import { pactTestCommand } from '@kadena/crypto/src/tests/mockdata';
 import type { Command, SignCommand } from '@kadena/types';
 
-import { sign } from '../../../../crypto/src/sign';
-import { pactTestCommand } from '../../../../crypto/src/tests/mockdata/Pact';
 import type { SendRequestBody, SendResponse } from '../send';
 import { send } from '../send';
 
@@ -9,7 +11,6 @@ import { mockFetch } from './mockFetch';
 
 import fetch from 'node-fetch';
 
-jest.mock('node-fetch');
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
