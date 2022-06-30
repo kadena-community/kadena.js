@@ -1,6 +1,7 @@
-import pullAndCheckHashs from '../pullAndCheckHashs';
-import { signature } from './mockdata/execCommand';
+import { pullAndCheckHashs } from '../pullAndCheckHashs';
+
 import { signature as signature1 } from './mockdata/contCommand';
+import { signature } from './mockdata/execCommand';
 
 test('Takes in an array of signature objects and check that all signatures signed the same hash, and outputs the hash', () => {
   const actual = pullAndCheckHashs([signature]);

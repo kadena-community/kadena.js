@@ -1,5 +1,4 @@
-import type { Base16String } from '../util/Base16String';
-import type { Command } from '../util/PactCommand';
+import type { Base16String, Command } from '@kadena/types';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

@@ -1,24 +1,23 @@
-import prepareContCommand from './prepareContCommand';
-import createSendRequest from './createSendRequest';
-import {
-  Base64Url,
-  MetaData,
-  Nonce,
-  Proof,
+import type {
   EnvData,
-  NetworkId,
-  Step,
-  Rollback,
-  PactTransactionHash,
-  SendRequest,
   KeyPair,
-  Command,
-} from '../util';
+  MetaData,
+  NetworkId,
+  Nonce,
+  PactTransactionHash,
+  Proof,
+  Rollback,
+  SendRequest,
+  Step,
+} from '@kadena/types';
+
+import { createSendRequest } from './createSendRequest';
+import { prepareContCommand } from './prepareContCommand';
 
 /**
  * Make a full 'send' endpoint cont command. See 'prepareContCommand' for parameters.
  */
-export default function createContCommmand(
+export function createContCommand(
   keyPairs: Array<KeyPair>,
   nonce: Nonce,
   step: Step,

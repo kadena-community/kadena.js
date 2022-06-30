@@ -1,7 +1,7 @@
-import sign from '../../crypto/sign';
-import pactTestCommand from '../../crypto/tests/mockdata/Pact';
-import type { Command } from '../../util/PactCommand';
-import type { SignCommand } from '../../util/SignCommand';
+import type { Command, SignCommand } from '@kadena/types';
+
+import { sign } from '../../../../crypto/src/sign';
+import { pactTestCommand } from '../../../../crypto/src/tests/mockdata/Pact';
 import type { SendRequestBody, SendResponse } from '../send';
 import { send } from '../send';
 

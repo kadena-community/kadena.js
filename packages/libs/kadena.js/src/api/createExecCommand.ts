@@ -1,20 +1,19 @@
-import prepareExecCommand from './prepareExecCommand';
-import createSendRequest from './createSendRequest';
-import {
-  NetworkId,
-  MetaData,
+import type {
   EnvData,
+  KeyPair,
+  MetaData,
+  NetworkId,
   Nonce,
   PactCode,
-  Base64Url,
   SendRequest,
-  KeyPair,
-  Command,
-} from '../util';
+} from '@kadena/types';
+
+import { createSendRequest } from './createSendRequest';
+import { prepareExecCommand } from './prepareExecCommand';
 /**
  * Make a full 'send' endpoint exec command. See 'prepareExecCommand' for parameters.
  */
-export default function createExecCommmand(
+export function createExecCommand(
   keyPairs: Array<KeyPair>,
   nonce: Nonce,
   pactCode: PactCode,

@@ -1,16 +1,17 @@
+import { prepareContCommand } from '../prepareContCommand';
+
 import {
-  keyPairs,
-  nonce,
-  pactId,
-  rollback,
-  step,
-  proof,
+  command,
   envData,
+  keyPairs,
   meta,
   networkId,
-  command,
+  nonce,
+  pactId,
+  proof,
+  rollback,
+  step,
 } from './mockdata/contCommand';
-import prepareContCommand from '../prepareContCommand';
 
 test('Takes in Pact Command parameters and outputs a signed Pact Cont Command Object', () => {
   const actual = prepareContCommand(

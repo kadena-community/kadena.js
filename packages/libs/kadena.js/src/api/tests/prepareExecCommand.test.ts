@@ -1,12 +1,13 @@
+import { prepareExecCommand } from '../prepareExecCommand';
+
 import {
+  command,
+  envData,
   keyPairs,
+  meta,
   nonce,
   pactCode,
-  envData,
-  meta,
-  command,
 } from './mockdata/execCommand';
-import prepareExecCommand from '../prepareExecCommand';
 
 test('Takes in Pact Command parameters and outputs a signed Pact Exec Command Object', () => {
   const actual = prepareExecCommand(

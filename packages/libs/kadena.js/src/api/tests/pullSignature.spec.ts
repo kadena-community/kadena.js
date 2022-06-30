@@ -1,4 +1,5 @@
-import pullSignature from '../pullSignature';
+import { pullSignature } from '../pullSignature';
+
 import { signature } from './mockdata/execCommand';
 
 test('Takes in a signature with hash object and outputs the signature object', () => {

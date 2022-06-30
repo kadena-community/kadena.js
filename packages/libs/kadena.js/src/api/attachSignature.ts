@@ -1,11 +1,12 @@
-import hashBin from '../crypto/hashBin';
-import base64UrlEncodeArr from '../crypto/base64UrlEncodeArr';
-import sign from '../crypto/sign';
-import {
-  SignatureWithHash,
-  KeyPair,
+import type {
   CommandPayloadStringifiedJSON,
-} from '../util';
+  KeyPair,
+  SignatureWithHash,
+} from '@kadena/types';
+
+import { base64UrlEncodeArr } from '../../../crypto/src/base64UrlEncodeArr';
+import { hashBin } from '../../../crypto/src/hashBin';
+import { sign } from '../../../crypto/src/sign';
 
 /**
  * Attach signature to hashed data
@@ -13,7 +14,7 @@ import {
  * @param keyPair - signing ED25519 keypair
  * @return {Array} of "hash", "sig" (signature in hex format), and "pubKey" public key values.
  */
-export default function attachSignature(
+export function attachSignature(
   msg: CommandPayloadStringifiedJSON,
   keyPairs: Array<KeyPair>,
 ): Array<SignatureWithHash> {
@@ -24,9 +25,9 @@ export default function attachSignature(
   } else {
     return keyPairs.map((keyPair) => {
       if (
-        keyPair.hasOwnProperty('publicKey') &&
+        Object.prototype.hasOwnProperty.call(keyPair, 'publicKey') &&
         keyPair.publicKey &&
-        keyPair.hasOwnProperty('secretKey') &&
+        Object.prototype.hasOwnProperty.call(keyPair, 'secretKey') &&
         keyPair.secretKey
       ) {
         return sign(msg, keyPair);

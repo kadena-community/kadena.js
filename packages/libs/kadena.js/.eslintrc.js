@@ -22,7 +22,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-imports': 'error',
     camelcase: 'error',
     'import/no-cycle': 'error',
-    'import/no-default-export': 'error',
+    'import/no-default-export': 'warn',
     'import/no-duplicates': 'warn',
     'import/prefer-default-export': 'off',
     'new-cap': 'error',
@@ -46,8 +46,8 @@ module.exports = {
     'no-useless-escape': 'error',
     'prefer-const': 'error',
     'prettier/prettier': 'warn',
-    'require-jsdoc': 'error',
-    'valid-jsdoc': 'error',
+    'require-jsdoc': 'warn',
+    'valid-jsdoc': 'warn',
     'simple-import-sort/imports': [
       'error',
       {

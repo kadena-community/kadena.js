@@ -2,15 +2,16 @@
 // To run: `$ npm run start:pact`.
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
-import sign from '../src/crypto/sign';
-import type { SendRequestBody } from '../src/fetch/send';
-import { send } from '../src/fetch/send';
 import type {
   ChainwebNetworkId,
   Command,
   CommandPayload,
-} from '../src/util/PactCommand';
-import type { SignCommand } from '../src/util/SignCommand';
+  SignCommand,
+} from '@kadena/types';
+
+import { sign } from '../src/crypto/sign';
+import type { SendRequestBody } from '../src/fetch/send';
+import { send } from '../src/fetch/send';
 
 const network: ChainwebNetworkId = 'development';
 const apiHost = 'http://127.0.0.1:9001';

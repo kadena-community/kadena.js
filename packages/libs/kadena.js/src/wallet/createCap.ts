@@ -1,8 +1,8 @@
-import { SigningCap } from '../util';
+import type { SigningCap } from '@kadena/types';
 /**
  * Prepares a properly formatted cap object required in signing API.
  */
-export default function createCap(
+export function createCap(
   role: string,
   description: string,
   name: string,
