@@ -9,7 +9,6 @@ import { sign } from '../../../../crypto/src/sign';
 import { send } from '../send';
 
 import { pactTestCommand } from './mockdata/Pact';
-
 import { mockFetch } from './mockFetch';
 
 import fetch from 'node-fetch';
