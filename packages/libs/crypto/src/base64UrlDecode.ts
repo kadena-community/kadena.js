@@ -1,9 +1,9 @@
-// eslint-disable no-bitwise
+/* eslint-disable no-bitwise */
 import type { Base64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';
 
-const chars =
+const chars: string =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
 
 /**

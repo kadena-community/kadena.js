@@ -1,5 +1,5 @@
 export class InvalidCharacterError extends Error {
-  get name() {
+  public get name(): string {
     return this.constructor.name;
   }
 }

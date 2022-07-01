@@ -1,4 +1,19 @@
-export const pactTestCommand = {
+export const pactTestCommand: {
+  networkId: undefined | unknown;
+  payload: {
+    exec: { data: { 'accounts-admin-keyset': string[] }; code: string };
+  };
+  signers: { pubKey: string }[];
+  meta: {
+    creationTime: number;
+    ttl: number;
+    gasLimit: number;
+    chainId: string;
+    gasPrice: number;
+    sender: string;
+  };
+  nonce: string;
+} = {
   networkId: null,
   payload: {
     exec: {

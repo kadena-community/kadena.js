@@ -1,11 +1,11 @@
 import type { Base64Url } from '@kadena/types';
 
-type hashes = {
+interface IHashes {
   [key: string]: boolean;
-};
+}
 
 export function unique(hashes: Array<Base64Url>): Array<Base64Url> {
-  const isUnique: hashes = {};
+  const isUnique: IHashes = {};
   return hashes.filter((hash) => {
     if (!isUnique[hash]) {
       isUnique[hash] = true;

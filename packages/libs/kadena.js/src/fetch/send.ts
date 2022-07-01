@@ -14,9 +14,9 @@ import fetch from 'node-fetch';
  *
  * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
  */
-export type SendRequestBody = {
+export interface ISendRequestBody {
   cmds: Array<Command>;
-};
+}
 
 /**
  * Response type of /send endpoint.
@@ -24,9 +24,9 @@ export type SendRequestBody = {
  * @param requestKeys - List of request keys (or command hashes) of the transactions submitted.
  *                      Can be sent to /poll and /listen to retrieve transaction results.
  */
-export type SendResponse = {
+export interface ISendResponse {
   requestKeys: Array<Base16String>;
-};
+}
 
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
@@ -40,15 +40,15 @@ export type SendResponse = {
  * @return - Raw Response from Server.
  */
 export function send(
-  requestBody: SendRequestBody,
+  requestBody: ISendRequestBody,
   apiHost: string,
-): Promise<SendResponse> {
+): Promise<ISendResponse> {
   const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
+    stringifyAndMakePOSTRequest<ISendRequestBody>(requestBody);
   const response: Promise<NodeFetchResponse> = fetch(
     `${apiHost}/api/v1/send`,
     request,
   );
-  const parsedRes: Promise<SendResponse> = parseResponse(response);
+  const parsedRes: Promise<ISendResponse> = parseResponse(response);
   return parsedRes;
 }
