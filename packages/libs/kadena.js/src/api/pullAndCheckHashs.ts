@@ -5,7 +5,6 @@ export function pullAndCheckHashs(sigs: Array<SignatureWithHash>): string {
   sigs.forEach((sig) => {
     if (sig.hash !== hash) {
       // eslint-disable-next-line no-console
-      console.log('error');
       throw new Error(
         'Sigs for different hashes found: ' + JSON.stringify(sigs),
       );

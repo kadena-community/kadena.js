@@ -20,7 +20,7 @@ export function attachSignature(
 ): Array<SignatureWithHash> {
   const hshBin = hashBin(msg);
   const hash = base64UrlEncodeArr(hshBin);
-  if (keyPairs === []) {
+  if (!keyPairs.length) {
     return [{ hash: hash, sig: undefined }];
   } else {
     return keyPairs.map((keyPair) => {

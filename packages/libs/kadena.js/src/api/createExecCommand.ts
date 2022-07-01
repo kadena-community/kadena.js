@@ -5,7 +5,7 @@ import type {
   NetworkId,
   Nonce,
   PactCode,
-  SendRequest,
+  SendRequestBody,
 } from '@kadena/types';
 
 import { createSendRequest } from './createSendRequest';
@@ -20,7 +20,7 @@ export function createExecCommand(
   envData: EnvData,
   meta: MetaData,
   networkId: NetworkId,
-): SendRequest {
+): SendRequestBody {
   return createSendRequest([
     prepareExecCommand(keyPairs, nonce, pactCode, envData, meta, networkId),
   ]);

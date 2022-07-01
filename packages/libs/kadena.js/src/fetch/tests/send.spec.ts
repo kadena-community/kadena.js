@@ -1,10 +1,14 @@
-import type { Command, SignCommand } from '@kadena/types';
+import type {
+  Command,
+  SendRequestBody,
+  SendResponse,
+  SignatureWithHash,
+} from '@kadena/types';
 
 import { sign } from '../../../../crypto/src/sign';
-import { pactTestCommand } from '../../../../crypto/src/tests/mockdata/Pact';
-import type { SendRequestBody, SendResponse } from '../send';
 import { send } from '../send';
 
+import { pactTestCommand } from './mockdata/Pact';
 import { mockFetch } from './mockFetch';
 
 import fetch from 'node-fetch';
@@ -16,16 +20,16 @@ mockedFunctionFetch.mockImplementation(
 );
 
 test('/send should return request keys of txs submitted', async () => {
-  const commandStr1 = JSON.stringify(pactTestCommand);
-  const keyPair1 = {
+  const commandStr = JSON.stringify(pactTestCommand);
+  const keyPair = {
     publicKey:
       'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
     secretKey:
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
-  const cmdWithOneSignature1: SignCommand = sign(commandStr1, keyPair1);
+  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr, keyPair);
   const signedCommand1: Command = {
-    cmd: commandStr1,
+    cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
     sigs: [{ sig: cmdWithOneSignature1.sig }],
   };

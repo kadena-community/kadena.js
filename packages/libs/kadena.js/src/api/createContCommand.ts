@@ -7,7 +7,7 @@ import type {
   PactTransactionHash,
   Proof,
   Rollback,
-  SendRequest,
+  SendRequestBody,
   Step,
 } from '@kadena/types';
 
@@ -27,7 +27,7 @@ export function createContCommand(
   meta: MetaData,
   proof: Proof,
   networkId: NetworkId,
-): SendRequest {
+): SendRequestBody {
   return createSendRequest([
     prepareContCommand(
       keyPairs,

@@ -1,4 +1,4 @@
-import type { ListenRequest, SendRequest } from '@kadena/types';
+import type { ListenRequestBody, SendRequestBody } from '@kadena/types';
 
 import { unique } from '../util/unique';
 
@@ -7,6 +7,8 @@ import { unique } from '../util/unique';
  * @param execMsg {object} JSON with "cmds" field, see 'mkPublicSend'. Only takes first element.
  * @return {object} with "requestKey" for polling.
  */
-export function createListenRequest({ cmds }: SendRequest): ListenRequest {
+export function createListenRequest({
+  cmds,
+}: SendRequestBody): ListenRequestBody {
   return { listen: unique(cmds.map(({ hash }) => hash))[0] };
 }
