@@ -140,6 +140,123 @@ export interface Command {
   sigs: Array<Signature>;
 }
 
+type PactResultSuccess = {
+  status: 'success';
+  data: PactValue;
+};
+
+type PactResultError = {
+  status: 'failure';
+  error: object;
+};
+
+/** Backend-specific data for continuing a cross-chain proof. */
+export type SPVProof = string;
+
+/**
+ * Describes result of a defpact execution.
+ *
+ * @param pactId - Identifies this defpact execution. Generated after the first step and matches the request key of the transaction.
+ * @param step - Identifies which step executed in defpact.
+ * @param stepCount - Total number of steps in pact.
+ * @param executed - Optional value for private pacts, indicates if step was skipped.
+ * @param stepHasRollback - Indicates if pact step has rollback.
+ * @param continuation - Closure describing executed pact.
+ * @param continuation.def - Fully-qualified defpact name.
+ * @param continuation.args - Arguments used with defpact.
+ * @param yield - Value yielded during pact step, optionally indicating cross-chain execution.
+ * @param yield.data - Pact value object containing yielded data.
+ * @param yield.provenance
+ * @param yield.provenance.targetChainId - Chain ID of target chain for next step.
+ * @param yield.provenance.moduleHash - Hash of module executing defpact.
+ *
+ * @TODO Add nested pacts to OpenApi specs?
+ * @TODO Is the `yield.data` type correctly defined?
+ */
+type PactExec = {
+  pactId: string;
+  step: number;
+  stepCount: number;
+  executed: boolean | null;
+  stepHasRollback: boolean;
+  continuation: {
+    def: string;
+    args: PactValue;
+  };
+  yield: {
+    data: Array<[string, PactValue]>;
+    provenance: {
+      targetChainId: string;
+      moduleHash: string;
+    } | null;
+  } | null;
+};
+
+/**
+ * Events emitted during Pact execution.
+ *
+ * @param name - Event defcap name.
+ * @param module - Qualified module name of event defcap.
+ * @param params - defcap arguments.
+ * @param moduleHash - Hash of emitting module.
+ */
+type PactEvent = {
+  name: string;
+  module: string;
+  params: Array<PactValue>;
+  moduleHash: string;
+};
+
+/**
+ * Platform-specific information on the block that executed a transaction.
+ *
+ * @param blockHash - Block hash of the block containing the transaction.
+ * @param blockTime - POSIX time when the block was mined.
+ * @param blockHeight - Block height of the block.
+ * @param prevBlockHash - Parent Block hash of the containing block.
+ * @param publicMeta - Platform-specific data provided by the request.
+ *
+ * @TODO Add `publicMeta` to Open API spec.
+ *
+ */
+type ChainwebResponseMetaData = {
+  blockHash: string;
+  blockTime: number;
+  blockHeight: number;
+  prevBlockHash: string;
+  publicMeta: ChainwebMetaData;
+};
+
+/**
+ * API result of attempting to execute a pact transaction.
+ *
+ * @param reqKey - Unique ID of a pact transaction, equivalent to the payload hash.
+ * @param txId - Database-internal transaction tracking ID.
+ *               Absent when transaction was not successful.
+ *               Expected to be non-negative 64-bit integers and
+ *               are expected to be monotonically increasing.
+ * @param result - Pact execution result, either a Pact error or the output (a PactValue) of the last pact expression in the transaction.
+ * @param gas - Gas units consummed by the transaction as a 64-bit integer.
+ * @param logs - Backend-specific value providing image of database logs.
+ * @param continuation - Describes the result of a defpact execution, if one occurred.
+ * @param metaData - Platform-specific information on the block that executed the transaction.
+ * @param events - Optional list of Pact events emitted during the transaction.
+ *
+ * @TODO Should `txId` and `gas` be a BigInt since Haskell defines it as int64?
+ * @TODO Add `gas` to OpenApi spec?
+ *
+ */
+export interface CommandResult {
+  reqKey: Base64Url;
+  txId: number | null;
+  result: PactResultSuccess | PactResultError;
+  gas: number;
+  logs: string | null;
+  continuation: PactExec | null;
+  metaData: ChainwebResponseMetaData | null;
+  events?: Array<PactEvent>;
+}
+
 // TODO: Move Chainweb Specific Types
 /**
  * Stringified Chainweb chain numbers.
