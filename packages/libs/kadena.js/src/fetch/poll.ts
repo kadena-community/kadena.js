@@ -1,20 +1,13 @@
-import { CommandResult } from '../util/PactCommand';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import type { PollRequestBody, PollResponse } from '@kadena/types';
+
 import { parseResponse } from './parseResponse';
-import fetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse } from 'node-fetch';
-import { Base64Url } from '../util/Base64Url';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-
-/**
- * Request type of /poll endpoint.
- *
- * @param requestKeys - List of request keys (or command hashes) to poll for.
- */
-export type PollRequestBody = {
-  requestKeys: Array<Base64Url>
-};
-
-export type PollResponse = Array<CommandResult>;
+import type {
+  RequestInit as NodeFetchRequestInit,
+  Response as NodeFetchResponse,
+} from 'node-fetch';
+import fetch from 'node-fetch';
 
 /**
  * Allows polling for one or more transaction results by request key.
@@ -23,13 +16,20 @@ export type PollResponse = Array<CommandResult>;
  *                      that we want to know the results of.
  *                      Must be non-empty list.
  * @param apiHost - API host running a Pact-enabled server.
- * @returns - Array of the transaction results we polled for.
+ * @return - Array of the transaction results we polled for.
  *            If a transaction is missing, then it might still be in the mempool,
  *            or might have expired.
  */
-export function poll(requestBody: PollRequestBody, apiHost: string):Promise<PollResponse> {
-  let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<PollRequestBody>(requestBody);
-  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/poll`, request);
+export function poll(
+  requestBody: PollRequestBody,
+  apiHost: string,
+): Promise<PollResponse> {
+  const request: NodeFetchRequestInit =
+    stringifyAndMakePOSTRequest<PollRequestBody>(requestBody);
+  const response: Promise<NodeFetchResponse> = fetch(
+    `${apiHost}/api/v1/poll`,
+    request,
+  );
   const parsedRes: Promise<PollResponse> = parseResponse(response);
   return parsedRes;
 }

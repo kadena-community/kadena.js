@@ -1,10 +1,13 @@
-import { Command, CommandResult } from '../util/PactCommand';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-import { parseResponse } from './parseResponse';
-import fetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse } from 'node-fetch';
+import type { LocalRequestBody, LocalResponse } from '@kadena/types';
 
-export type LocalRequestBody = Command;
-export type LocalResponse = CommandResult;
+import { parseResponse } from './parseResponse';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+
+import type {
+  RequestInit as NodeFetchRequestInit,
+  Response as NodeFetchResponse,
+} from 'node-fetch';
+import fetch from 'node-fetch';
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -13,11 +16,18 @@ export type LocalResponse = CommandResult;
  *
  * @param requestBody - Pact command to submit to server (non-transactional).
  * @param apiHost - API host running a Pact-enabled server.
- * @returns - The command result returned by the server.
+ * @return - The command result returned by the server.
  */
-export function local(requestBody: LocalRequestBody, apiHost: string):Promise<LocalResponse> {
-  let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<LocalRequestBody>(requestBody);
-  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/local`, request);
+export function local(
+  requestBody: LocalRequestBody,
+  apiHost: string,
+): Promise<LocalResponse> {
+  const request: NodeFetchRequestInit =
+    stringifyAndMakePOSTRequest<LocalRequestBody>(requestBody);
+  const response: Promise<NodeFetchResponse> = fetch(
+    `${apiHost}/api/v1/local`,
+    request,
+  );
   const parsedRes: Promise<LocalResponse> = parseResponse(response);
   return parsedRes;
 }

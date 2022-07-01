@@ -1,14 +1,13 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
-  modulePathIgnorePatterns: ['package.json'],
   collectCoverage: true,
   coverageThreshold: {
     global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
+      branches: 74,
+      functions: 90,
+      lines: 90,
       statements: -10,
     },
   },

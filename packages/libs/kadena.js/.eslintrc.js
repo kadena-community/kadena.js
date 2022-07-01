@@ -1,22 +1,68 @@
-const { resolve } = require('path');
-
-const config = {
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+    jest: true,
+  },
   root: true,
-  extends: 'airbnb-typescript/base',
-  plugins: ['import', 'prettier', 'jest'],
-  parserOptions: {
-    project: resolve(__dirname, './tsconfig.eslint.json'),
+  extends: [
+    'google',
+    'eslint:recommended',
+    'plugin:import/typescript',
+    'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'import', 'simple-import-sort', 'prettier'],
+  globals: {
+    JSX: 'readonly',
   },
   rules: {
-    'jest/no-disabled-tests': 'warn',
-    'jest/no-focused-tests': 'error',
-    'jest/no-identical-title': 'error',
-    'jest/prefer-to-have-length': 'warn',
-    'jest/valid-expect': 'error',
+    '@typescript-eslint/consistent-type-imports': 'error',
+    camelcase: 'error',
+    'import/no-cycle': 'error',
+    'import/no-default-export': 'warn',
+    'import/no-duplicates': 'warn',
+    'import/prefer-default-export': 'off',
+    'new-cap': 'error',
+    'no-case-declarations': 'error',
+    'no-console': [
+      'error',
+      {
+        allow: ['warn', 'error'],
+      },
+    ],
+    'no-ex-assign': 'error',
+    'no-extra-boolean-cast': 'error',
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+      },
+    ],
+    'no-redeclare': 'error',
+    'no-unused-vars': 'error',
+    'no-useless-escape': 'error',
+    'prefer-const': 'error',
+    'prettier/prettier': 'warn',
+    'require-jsdoc': 'warn',
+    'valid-jsdoc': 'warn',
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          // Side effect imports.
+          ['^\\u0000'],
+          // own packages.
+          [`^(@kadena)(/.*|$)`],
+          // Parent imports. Put `..` last.
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+        ],
+      },
+    ],
   },
-  env: {
-    'jest/globals': true,
-  },
+  settings: {},
 };
-
-module.exports = config;

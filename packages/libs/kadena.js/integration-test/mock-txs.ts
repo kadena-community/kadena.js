@@ -1,12 +1,22 @@
-import { ChainwebNetworkId, CommandPayload, Command } from '../src/util/PactCommand';
-import { SignCommand } from '../src/util/SignCommand';
-import sign from '../src/crypto/sign';
-import { KeyPair } from '../src/util';
+import {
+  ChainwebNetworkId,
+  CommandPayload,
+  Command,
+  SignatureWithHash,
+  KeyPair,
+} from '@kadena/types';
 
-export function createSampleExecTx(network:ChainwebNetworkId, keyPair:KeyPair, pactCode:string, envData:(object | null) = null):Command {
-  const nonce:string = 'step01';
+import { sign } from '../../crypto/src/sign';
 
-  const cmd:CommandPayload = {
+export function createSampleExecTx(
+  network: ChainwebNetworkId,
+  keyPair: KeyPair,
+  pactCode: string,
+  envData: object | null = null,
+): Command {
+  const nonce: string = 'step01';
+
+  const cmd: CommandPayload = {
     networkId: network,
     payload: {
       exec: {
@@ -14,11 +24,13 @@ export function createSampleExecTx(network:ChainwebNetworkId, keyPair:KeyPair, p
         code: pactCode,
       },
     },
-    signers: [{
-      'pubKey': keyPair.publicKey,
-    }],
+    signers: [
+      {
+        pubKey: keyPair.publicKey,
+      },
+    ],
     meta: {
-      creationTime: Math.round((new Date).getTime() / 1000) - 1,
+      creationTime: Math.round(new Date().getTime() / 1000) - 1,
       ttl: 28800,
       gasLimit: 10000,
       chainId: '0',
@@ -29,8 +41,8 @@ export function createSampleExecTx(network:ChainwebNetworkId, keyPair:KeyPair, p
   };
 
   const commandStr = JSON.stringify(cmd);
-  const cmdWithOneSignature:SignCommand = sign(commandStr, keyPair);
-  const signedCommand:Command = {
+  const cmdWithOneSignature: SignatureWithHash = sign(commandStr, keyPair);
+  const signedCommand: Command = {
     cmd: commandStr,
     hash: cmdWithOneSignature.hash,
     sigs: [{ sig: cmdWithOneSignature.sig }],

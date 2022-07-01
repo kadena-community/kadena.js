@@ -1,38 +1,35 @@
-import { Command } from '../util/PactCommand';
-import { Base64Url } from '../util/Base64Url';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import type { SendRequestBody, SendResponse } from '@kadena/types';
+
 import { parseResponse } from './parseResponse';
-import fetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse } from 'node-fetch';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-/**
- * Request type of /send endpoint.
- *
- * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
- */
-export type SendRequestBody = {
-  cmds: Array<Command>
-};
-
-/**
- * Response type of /send endpoint.
- *
- * @param requestKeys - List of request keys (or command hashes) of the transactions submitted.
- *                      Can be sent to /poll and /listen to retrieve transaction results.
- */
-export type SendResponse = {
-  requestKeys: Array<Base64Url>
-};
+import type {
+  RequestInit as NodeFetchRequestInit,
+  Response as NodeFetchResponse,
+} from 'node-fetch';
+import fetch from 'node-fetch';
 
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
  *
- * @param requestBody - Non-empty list of Pact commands to submit to the server.
+ * Corresponds to `fetchSendRaw` and `fetchSend` functions:
+ * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L601
+ * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L589
+ *
+ * @param requestBody - Non-empty array of Pact commands to submit to server.
  * @param apiHost - API host running a Pact-enabled server.
- * @returns - Non-empty list of the submitted commands' request key.
+ * @return - Raw Response from Server.
  */
-export function send(requestBody: SendRequestBody, apiHost: string):Promise<SendResponse> {
-  let request:NodeFetchRequestInit = stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
-  let response:Promise<NodeFetchResponse> = fetch(`${apiHost}/api/v1/send`, request);
+export function send(
+  requestBody: SendRequestBody,
+  apiHost: string,
+): Promise<SendResponse> {
+  const request: NodeFetchRequestInit =
+    stringifyAndMakePOSTRequest<SendRequestBody>(requestBody);
+  const response: Promise<NodeFetchResponse> = fetch(
+    `${apiHost}/api/v1/send`,
+    request,
+  );
   const parsedRes: Promise<SendResponse> = parseResponse(response);
   return parsedRes;
 }

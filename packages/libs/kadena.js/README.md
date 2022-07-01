@@ -4,25 +4,28 @@
 
 # kadena.js - Kadena Javascript API
 
-> Kadena.js is a collection of libraries that will allow you to interact with the `local`, `development`, `testnet` or `mainnet` Kadena chainweb.
-> It will provide helper function
+> Kadena.js is a collection of libraries that will allow you to interact with the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will provide helper function
 
 <hr>
 
 ## Running Tests
 
 ### Unit testing
+
 To run the unit tests:
+
 ```shell
 $ npm test
 ```
 
 To run single unit tests:
+
 ```shell
 $ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 ```
 
 ### integration tests
+
 #### Pactserver
 
 To run integration tests against a pact server the following command can be used:
@@ -32,23 +35,27 @@ $ npm test:integration:pactserver
 ```
 
 #### devnet
-To run integration tests against devnet it requires starting devnet and exposing the pact endpoints at http://localhost:8080.
-For more details, see instructions at the [Devnet Github repository](https://github.com/kadena-io/devnet).
+
+To run integration tests against devnet it requires starting devnet and exposing the pact endpoints at http://localhost:8080. For more details, see instructions at the [Devnet Github repository](https://github.com/kadena-io/devnet).
 
 The following command can be used:
+
 ```shell
 $ npm test:integration:devnet
 ```
+
 > <b>TODO</b> make Pact server port configurable
 
 <hr>
 
 ## TODO
+
 - make ready to go public
 - npm registry
 - release cycles
 
 ### Function Migration Progress
+
 - DONE: 16
 - PENDING: 5
 - TODO: 35
@@ -56,6 +63,7 @@ $ npm test:integration:devnet
 [pact-lang-api.js](https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js):
 
 crypto:
+
 - **DONE** `binToHex`
 - **DONE** `hexToBin`
 - **DONE** `base64UrlEncode`
@@ -74,36 +82,44 @@ crypto:
 - **DONE** `toTweetNaclSecretKey`
 
 api:
-- **PENDING** `mkPublicSend`:
+
+- **PENDING** `createSendRequest`:
   - Omitted, it just wrapped a list of Commands into the expected format for the `/send` endpoint. `SendRequestBody` type created instead.
-- **TODO** `prepareContCmd`:
+- **DONE** `prepareContCommand`:
   - Puts together and signs a continuation payload `Command`.
-- **TODO** `prepareExecCmd`:
+- **DONE** `prepareExecCommand`:
   - Puts together and signs an exec payload `Command`.
-- **TODO** `mkSingleCmd`:
+- **PENDING** `createCommand`:
   - Puts together a `Command` type from a list of signatures and a stringified payload. Also checks that the signatures are for correct hash.
+  - Pending for renaming, formally mkSingleCmd.
+- **DONE** `createContCommand`:
+  - A wrapper for a `mkPublicSend` and `prepareContCmd` call. Could potentially be omitted.
+- **DONE** `createExecCommand`:
+  - A wrapper for a `mkPublicSend` and `prepareExecCmd` call. Could potentially be omitted.
+- **PENDING** `createLocalCommand`:
+  - Wrapper for `prepareExecCmd`. The request type for `local` endpoint is just a single `Command`. Could be omitted, but the naming here does provides extra clarity.
+- **DONE** `createPollRequest`:
+  - Prepares a `/poll` endpoint request type (i.e. a list of request keys) from a `{cmds: [Command]}` type (i.e. the type of the `/send` endpoint). Ignore naming/docs that imply the `Command` should have an exec payload.
+- **DONE** `createListenRequest`:
+  - Prepares a `/listen` endpoint request type. Similar to `createPollRequest`, but only uses the first request key.
+- **DONE** `attachSignature`:
+  - API Helper function that attaches signed or unsigned signature from a keypair and stringified payload.
+- **DONE** `pullAndCheckHashs`:
+  - API Helper function maps through signatures and make sure that the signatures are signing the same hash and pulls the hash.
+- **DONE** `pullSignature`:
+  - API Helper function that pulls signature only object from signature with hash object `{hash, pubKey, sig}`
+- **DONE** `pullSigner`:
+  - API Helper function that pulls public key and capability list if it exists.
 
 lang:
+
 - **PENDING** `mkExp`
 - **PENDING** `mkMeta`
 - **PENDING** `mkCap`:
   - Returns a `SigningCap`, which contains a regular Pact capability and some added fields consumed by chainweaver.
 
-simple:
-- cont:
-  - **TODO** `createCommand`:
-    - A wrapper for a `mkPublicSend` and `prepareContCmd` call. Could potentially be omitted.
-- exec:
-  - **TODO** `createCommand`:
-    - A wrapper for a `mkPublicSend` and `prepareExecCmd` call. Could potentially be omitted.
-  - **TODO** `createLocalCommand`:
-    - Wrapper for `prepareExecCmd`. The request type for `local` endpoint is just a single `Command`. Could be omitted, but the naming here does provides extra clarity.
-  - **TODO** `createPollRequest`:
-    - Prepares a `/poll` endpoint request type (i.e. a list of request keys) from a `{cmds: [Command]}` type (i.e. the type of the `/send` endpoint). Ignore naming/docs that imply the `Command` should have an exec payload.
-  - **TODO** `createListenRequest`:
-    - Prepares a `/listen` endpoint request type. Similar to `createPollRequest`, but only uses the first request key.
-
 fetch:
+
 - **PENDING** `send`
 - **TODO** `local`
 - **TODO** `poll`
@@ -111,19 +127,24 @@ fetch:
 - **TODO** `spv`
 
 wallet:
+
 - **TODO** `sign`:
   - Sends an enriched `Command` payload to the signing API of the Chainweaver wallet.
 - **TODO** `sendSigned`:
   - Very similar to `fetch.send` function, but expects a single `Command` instead of a list of them. Could be omitted.
+- **DONE** `createCap`
+  - Returns a `SigningCap`, which contains a regular Pact capability and some added fields consumed by chainweaver.
 
 
 [chainweb.js](https://github.com/kadena-io/chainweb.js/blob/main/src/chainweb.js):
 
 cut:
+
 - **TODO** `current`:
   - Queries a chainweb node's `/cut` endpoint. Uses retry.
 
 event:
+
 - **TODO** `range`:
   - Calls the `blocks` function, which eventually calls `branchPage` function.
 - **TODO** `recent`:
@@ -137,6 +158,7 @@ event:
 [marmalade.js](https://github.com/kadena-io/marmalade/blob/main/src/Pact.SigBuilder.js):
 
 SigData:
+
 - **DONE** `mkCap`:
   - Similar to pact-lang's `mkCap` function, but this one creates a regular Pact capability.
 - **TODO** `mkMeta`:
@@ -154,6 +176,7 @@ SigData:
 - **TODO** `mkSigData`
 
 - util:
+
   - **TODO** `gasCap`: Gas capability.
   - **TODO** `addGasCap`:
     - Adds a gas capbility to a list of capabilities. Uses `gasCap`.
@@ -167,6 +190,7 @@ SigData:
     - Gets public key from signers created by `mkSigner*` functions.
 
 - ex:
+
   - **TODO** `execCmdExample1`:
     - Creates an example exec transaction that can be sent to the wallet for signing. Could be omitted.
   - **TODO** `contCmdExample1`:
@@ -174,7 +198,6 @@ SigData:
 
 - debug
   - **DONE** `toggleDebug`: Omitted.
-
 
 ### Enhacements
 
@@ -188,16 +211,13 @@ SigData:
 http://localhost:8080/chainweb/0.0/development/chain/1/pact
 ```
 
-In the above, `0.0` represents the node API Version and could change later on.
-Also, `development` represents the version of Chainweb that the node is running. Other possible values are `testnet04` and `mainnet01`.
-Both of these pieces of information is returned by querying the `/info` endpoint. For example:
+In the above, `0.0` represents the node API Version and could change later on. Also, `development` represents the version of Chainweb that the node is running. Other possible values are `testnet04` and `mainnet01`. Both of these pieces of information is returned by querying the `/info` endpoint. For example:
 
 ```
 http://localhost:8080/info
 ```
 
-(B) The Chainweb node version (i.e. `development`) is a required field in a transaction's payload.
-An error is thrown if the network specified in the transaction payload does not match the network version specified in the endpoint prefix (i.e. `../0.0/development/chain..`).
+(B) The Chainweb node version (i.e. `development`) is a required field in a transaction's payload. An error is thrown if the network specified in the transaction payload does not match the network version specified in the endpoint prefix (i.e. `../0.0/development/chain..`).
 
 It is an error prone user experience to have users pass along a node's version information along with the hostname, especially if this information is easily autodected.
 
