@@ -1,5 +1,9 @@
 'use strict';
 
+const packages = {
+  // browserslist: [['caniuse-lite', '1.0.30001336']],
+};
+
 /**
  * When using the PNPM package manager, you can use pnpmfile.js to workaround
  * dependencies that have mistakes in their package.json file.  (This feature is
@@ -14,8 +18,8 @@
  */
 module.exports = {
   hooks: {
-    readPackage
-  }
+    readPackage,
+  },
 };
 
 /**
@@ -27,12 +31,27 @@ module.exports = {
  * The return value is the updated object.
  */
 function readPackage(packageJson, context) {
-
   // // The karma types have a missing dependency on typings from the log4js package.
   // if (packageJson.name === '@types/karma') {
   //  context.log('Fixed up dependencies for @types/karma');
   //  packageJson.dependencies['log4js'] = '0.6.38';
   // }
+
+  if (packages[packageJson.name]) {
+    context.log(`modifying versions for '${packageJson.name}'`);
+
+    const versions = packages[packageJson.name];
+
+    versions.forEach(([name, version]) => {
+      if (packageJson.dependencies[name]) {
+        context.log(
+          `  - ${name}@${packageJson.dependencies[name]} => ${version}`
+        );
+
+        packageJson.dependencies[name] = version;
+      }
+    });
+  }
 
   return packageJson;
 }

@@ -62,7 +62,7 @@
      * The default value is false to avoid legacy compatibility issues.
      * It is strongly recommended to set strictPeerDependencies=true.
      */
-    // "strictPeerDependencies": true,
+    "strictPeerDependencies": false,
 
     /**
      * Configures the strategy used to select versions during installation.
@@ -94,7 +94,7 @@
      *
      * The default value is false.
      */
-    // "preventManualShrinkwrapChanges": true,
+    "preventManualShrinkwrapChanges": true,
 
     /**
      * If true, then `rush install` will use the PNPM workspaces feature to perform the
@@ -150,7 +150,7 @@
    * version. In those cases, you will need to add an entry to the "allowedAlternativeVersions"
    * section of the common-versions.json.
    */
-  // "ensureConsistentVersions": true,
+  "ensureConsistentVersions": true,
 
   /**
    * Large monorepos can become intimidating for newcomers if project folder paths don't follow
@@ -189,7 +189,7 @@
    *
    * The default value is false.
    */
-  // "allowMostlyStandardPackageNames": true,
+  "allowMostlyStandardPackageNames": true,
 
   /**
    * This feature helps you to review and approve new packages before they are introduced
@@ -217,7 +217,7 @@
   //     "tools",      // non-shipping projects that are part of the developer toolchain
   //     "prototypes"  // experiments that should mostly be ignored by the review process
   //   ],
-  // 
+  //
   //   /**
   //    * A list of NPM package scopes that will be excluded from review.
   //    * We recommend to exclude TypeScript typings (the "@types" scope), because
@@ -231,48 +231,48 @@
    * If you use Git as your version control system, this section has some additional
    * optional features you can use.
    */
-  "gitPolicy": {
-    /**
-     * Work at a big company?  Tired of finding Git commits at work with unprofessional Git
-     * emails such as "beer-lover@my-college.edu"?  Rush can validate people's Git email address
-     * before they get started.
-     *
-     * Define a list of regular expressions describing allowable e-mail patterns for Git commits.
-     * They are case-insensitive anchored JavaScript RegExps.  Example: ".*@example\.com"
-     *
-     * IMPORTANT: Because these are regular expressions encoded as JSON string literals,
-     * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
-     */
-    // "allowedEmailRegExps": [
-    //   "[^@]+@users\\.noreply\\.github\\.com",
-    //   "travis@example\\.org"
-    // ],
+  // "gitPolicy": {
+  /**
+   * Work at a big company?  Tired of finding Git commits at work with unprofessional Git
+   * emails such as "beer-lover@my-college.edu"?  Rush can validate people's Git email address
+   * before they get started.
+   *
+   * Define a list of regular expressions describing allowable e-mail patterns for Git commits.
+   * They are case-insensitive anchored JavaScript RegExps.  Example: ".*@example\.com"
+   *
+   * IMPORTANT: Because these are regular expressions encoded as JSON string literals,
+   * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
+   */
+  // "allowedEmailRegExps": [
+  //   "[^@]+@users\\.noreply\\.github\\.com",
+  //   "travis@example\\.org"
+  // ],
 
-    /**
-     * When Rush reports that the address is malformed, the notice can include an example
-     * of a recommended email.  Make sure it conforms to one of the allowedEmailRegExps
-     * expressions.
-     */
-    // "sampleEmail": "mrexample@users.noreply.github.com",
+  /**
+   * When Rush reports that the address is malformed, the notice can include an example
+   * of a recommended email.  Make sure it conforms to one of the allowedEmailRegExps
+   * expressions.
+   */
+  // "sampleEmail": "mrexample@users.noreply.github.com",
 
-    /**
-     * The commit message to use when committing changes during 'rush publish'.
-     *
-     * For example, if you want to prevent these commits from triggering a CI build,
-     * you might configure your system's trigger to look for a special string such as "[skip-ci]"
-     * in the commit message, and then customize Rush's message to contain that string.
-     */
-    // "versionBumpCommitMessage": "Bump versions [skip ci]",
+  /**
+   * The commit message to use when committing changes during 'rush publish'.
+   *
+   * For example, if you want to prevent these commits from triggering a CI build,
+   * you might configure your system's trigger to look for a special string such as "[skip-ci]"
+   * in the commit message, and then customize Rush's message to contain that string.
+   */
+  // "versionBumpCommitMessage": "Bump versions [skip ci]",
 
-    /**
-     * The commit message to use when committing changes during 'rush version'.
-     *
-     * For example, if you want to prevent these commits from triggering a CI build,
-     * you might configure your system's trigger to look for a special string such as "[skip-ci]"
-     * in the commit message, and then customize Rush's message to contain that string.
-     */
-    // "changeLogUpdateCommitMessage": "Update changelogs [skip ci]"
-  },
+  /**
+   * The commit message to use when committing changes during 'rush version'.
+   *
+   * For example, if you want to prevent these commits from triggering a CI build,
+   * you might configure your system's trigger to look for a special string such as "[skip-ci]"
+   * in the commit message, and then customize Rush's message to contain that string.
+   */
+  // "changeLogUpdateCommitMessage": "Update changelogs [skip ci]"
+  // },
 
   "repository": {
     /**
@@ -290,13 +290,13 @@
      * your PR branch, and in this situation "rush change" will also automatically invoke "git fetch"
      * to retrieve the latest activity for the remote main branch.
      */
-    // "url": "https://github.com/microsoft/rush-example",
+    "url": "https://github.com/kadena-io/kadena.js",
 
     /**
      * The default branch name. This tells "rush change" which remote branch to compare against.
      * The default value is "main"
      */
-     "defaultBranch": "master"
+    "defaultBranch": "master"
 
     /**
      * The default remote. This tells "rush change" which remote to compare against if the remote URL is
@@ -355,7 +355,7 @@
     //    * The folder name for this variant.
     //    */
     //   "variantName": "old-sdk",
-    // 
+    //
     //   /**
     //    * An informative description
     //    */
@@ -371,7 +371,7 @@
    * that read these JSON files and do something with them.  These scripts are typically registered
    * in the "eventHooks" section.
    */
-  // "telemetryEnabled": false,
+  "telemetryEnabled": true,
 
   /**
    * Allows creation of hotfix changes. This feature is experimental so it is disabled by default.
@@ -381,18 +381,17 @@
   // "hotfixChangeEnabled": false,
 
   /**
-    * This is an optional, but recommended, list of available tags that can be applied
-    * to projects. If this property is not specified, any tag is allowed. This
-    * list is useful in preventing typos when specifying tags for projects.
-    */
+   * This is an optional, but recommended, list of available tags that can be applied
+   * to projects. If this property is not specified, any tag is allowed. This
+   * list is useful in preventing typos when specifying tags for projects.
+   */
   /**
    * @alber70g
    * 1. Apps: has a runtime and can be deployed (e.g.: chainweb explorer)
    * 2. Libs: offers functionality, but isn't a deployable artifact
    * 3. Tools: is used in pipeline, during development or otherwise not a app or lib
    */
-   "allowedProjectTags": ["apps", "libs", "tools"],
-
+  "allowedProjectTags": ["apps", "libs", "tools"],
 
   /**
    * (Required) This is the inventory of projects to be managed by Rush.
@@ -406,9 +405,11 @@
     // #########################
     // ##  Deployables
     // #########################
+
     // #########################
     // ##  Features
     // #########################
+
     // #########################
     // ##  Libraries
     // #########################
@@ -417,6 +418,16 @@
       "projectFolder": "packages/libs/kadena.js",
       "tags": ["libs"]
     },
+    {
+      "packageName": "@kadena/crypto",
+      "projectFolder": "packages/libs/crypto",
+      "tags": ["libs"]
+    },
+    {
+      "packageName": "@kadena/types",
+      "projectFolder": "packages/libs/types",
+      "tags": ["libs"]
+    }
     // #########################
     // ##  Tools
     // #########################
@@ -425,19 +436,19 @@
     //    * The NPM package name of the project (must match package.json)
     //    */
     //   "packageName": "my-app",
-    // 
+    //
     //   /**
     //    * The path to the project folder, relative to the rush.json config file.
     //    */
     //   "projectFolder": "apps/my-app",
-    // 
+    //
     //   /**
     //    * An optional category for usage in the "browser-approved-packages.json"
     //    * and "nonbrowser-approved-packages.json" files.  The value must be one of the
     //    * strings from the "reviewCategories" defined above.
     //    */
     //   "reviewCategory": "production",
-    // 
+    //
     //   /**
     //    * A list of local projects that appear as devDependencies for this project, but cannot be
     //    * locally linked because it would create a cyclic dependency; instead, the last published
@@ -446,20 +457,20 @@
     //   "cyclicDependencyProjects": [
     //     // "my-toolchain"
     //   ],
-    // 
+    //
     //   /**
     //    * If true, then this project will be ignored by the "rush check" command.
     //    * The default value is false.
     //    */
     //   // "skipRushCheck": false,
-    // 
+    //
     //   /**
     //    * A flag indicating that changes to this project will be published to npm, which affects
     //    * the Rush change and publish workflows. The default value is false.
     //    * NOTE: "versionPolicyName" and "shouldPublish" are alternatives; you cannot specify them both.
     //    */
     //   // "shouldPublish": false,
-    // 
+    //
     //   /**
     //    * Facilitates postprocessing of a project's files prior to publishing.
     //    *
@@ -468,14 +479,14 @@
     //    * must contain its own package.json file, which is typically a build output.
     //    */
     //   // "publishFolder": "temp/publish",
-    // 
+    //
     //   /**
     //    * An optional version policy associated with the project.  Version policies are defined
     //    * in "version-policies.json" file.  See the "rush publish" documentation for more info.
     //    * NOTE: "versionPolicyName" and "shouldPublish" are alternatives; you cannot specify them both.
     //    */
     //   // "versionPolicyName": "",
-    // 
+    //
     //   /**
     //     * An optional set of custom tags that can be used to select this project. For example,
     //     * adding "my-custom-tag" will allow this project to be selected by the
@@ -483,14 +494,14 @@
     //     */
     //   // "tags": ["apps", "web"]
     // },
-    // 
+    //
     // {
     //   "packageName": "my-controls",
     //   "projectFolder": "libraries/my-controls",
     //   "reviewCategory": "production",
     //   "tags": ["libraries", "web"]
     // },
-    // 
+    //
     // {
     //   "packageName": "my-toolchain",
     //   "projectFolder": "tools/my-toolchain",

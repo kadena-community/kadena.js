@@ -101,6 +101,7 @@ test('[Pact Server] Makes a /listen request and retrieve result', async () => {
       data: 3,
       status: 'success',
     },
+
   };
   expect(actualWithoutLogsAndMetaData).toEqual(expected);
 });

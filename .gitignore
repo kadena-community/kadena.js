@@ -1,3 +1,14 @@
+# build artefacts
+**/lib
+**/lib-commonjs
+**/.parcel-cache
+
+# lock-files that don't belong here
+package-lock.json
+yarn.lock
+npm-shrinkwrap.json
+shrinkwrap.json
+
 # Logs
 *.log
 npm-debug.log*
@@ -63,6 +74,7 @@ common/deploy/
 common/temp/
 common/autoinstallers/*/.npmrc
 **/.rush/temp/
+**/.rush
 
 # Heft
 .heft

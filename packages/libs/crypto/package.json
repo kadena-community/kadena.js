@@ -1,0 +1,41 @@
+{
+  "name": "@kadena/crypto",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "Albert G",
+  "main": "lib-commonjs/index.js",
+  "module": "lib/index.js",
+  "source": "src/index.ts",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "parcel build --no-autoinstall",
+    "precommit": "pnpm run test --silent",
+    "test": "jest"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/types": "workspace:*",
+    "blakejs": "^1.2.1",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@parcel/packager-ts": "2.6.2",
+    "@parcel/transformer-typescript-types": "2.6.2",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^16.0.0",
+    "jest": "^28.1.0",
+    "parcel": "~2.6.2",
+    "ts-jest": "^28.0.2",
+    "typescript": "^4.6.4"
+  }
+}
