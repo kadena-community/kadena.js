@@ -4,7 +4,10 @@ import type {
   PollResponse,
   SendRequestBody,
   SendResponse,
+  SPVResponse,
 } from '@kadena/types';
+
+import { testSPVProof } from './Pact';
 
 import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 
@@ -84,7 +87,6 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-
     case '/api/v1/listen': {
       if (init?.body !== null && init?.body !== undefined) {
         const response: ListenResponse = {
@@ -107,7 +109,30 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/wrongChain/chain/1/pact/api/v1/send': {
+    case '/spv': {
+      if (init?.body !== null && init?.body !== undefined) {
+        const response: SPVResponse = testSPVProof;
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(response),
+        });
+      } else {
+        throw new Error('Expected RequestInit body not found.');
+      }
+    }
+    case '/tooyoung/spv': {
+      if (init?.body !== null && init?.body !== undefined) {
+        const errorMsg =
+          'SPV target not reachable: target chain not reachable. Chainweb instance is too young';
+        return Promise.resolve({
+          ok: false,
+          text: () => Promise.resolve(errorMsg),
+        });
+      } else {
+        throw new Error('Expected RequestInit body not found.');
+      }
+    }
+    case '/wrongChain/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
         const parsedBody: SendRequestBody = JSON.parse(body.toString());
@@ -126,7 +151,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/duplicate/chain/0/pact/api/v1/send': {
+    case '/duplicate/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
         const parsedBody: SendRequestBody = JSON.parse(body.toString());

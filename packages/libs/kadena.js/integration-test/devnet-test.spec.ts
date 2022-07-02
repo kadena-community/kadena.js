@@ -19,9 +19,10 @@ import { local } from '../src/fetch/local';
 import { poll } from '../src/fetch/poll';
 import { listen } from '../src/fetch/listen';
 import { send } from '../src/fetch/send';
+import { spv } from '../src/fetch/spv';
 import { createPollRequest } from '../src/api/createPollRequest';
 import { createListenRequest } from '../src/api/createListenRequest';
-import { createSampleExecTx } from './mock-txs';
+import { createSampleExecTx, createSampleContTx } from './mock-txs';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHost: string =
@@ -30,30 +31,52 @@ const devnetKeyPair = {
   publicKey: 'f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
   secretKey: 'da81490c7efd5a95398a3846fa57fd17339bdf1b941d102f2d3217ad29785ff0',
 };
+const devnetAccount = 'k:'.concat(devnetKeyPair.publicKey);
 
-const pactCode: string = '(+ 1 2)';
-const signedCommand: Command = createSampleExecTx(
+const signedCommand1: Command = createSampleExecTx(
   devnetNetwork,
   devnetKeyPair,
-  pactCode,
+  `(+ 1 2)`,
 );
-const sendReq: SendRequestBody = {
-  cmds: [signedCommand],
+const sendReq1: SendRequestBody = {
+  cmds: [signedCommand1],
+};
+
+const signedCommand2: Command = createSampleExecTx(
+  devnetNetwork,
+  {
+    ...devnetKeyPair,
+    clist: [
+      {
+        name: 'coin.GAS',
+        args: [],
+      },
+      {
+        name: 'coin.TRANSFER_XCHAIN',
+        args: [devnetAccount, devnetAccount, 0.05, `${1}`],
+      },
+    ],
+  },
+  `(coin.transfer-crosschain "${devnetAccount}" "${devnetAccount}" (read-keyset "test-keyset") "${1}" ${0.05})`,
+  { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
+);
+const sendReq2: SendRequestBody = {
+  cmds: [signedCommand2],
 };
 
 test('[DevNet] Makes a /send request and retrieve request key', async () => {
-  const actual: SendResponse = await send(sendReq, devnetApiHost);
+  const actual: SendResponse = await send(sendReq1, devnetApiHost);
   const expected: SendResponse = {
-    requestKeys: [signedCommand.hash],
+    requestKeys: [signedCommand1.hash],
   };
   expect(actual).toEqual(expected);
 });
 
 test('[DevNet] Makes a /local request and retrieve result', async () => {
-  const actual: LocalResponse = await local(signedCommand, devnetApiHost);
+  const actual: LocalResponse = await local(signedCommand1, devnetApiHost);
   const { logs, metaData, ...actualWithoutLogsAndMetaData } = actual;
   const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
-    reqKey: signedCommand.hash,
+    reqKey: signedCommand1.hash,
     txId: null,
     result: {
       data: 3,
@@ -67,7 +90,7 @@ test('[DevNet] Makes a /local request and retrieve result', async () => {
 
 test('[DevNet] Makes a /poll request and retrieve empty result while tx is in mempool', async () => {
   const actual: PollResponse = await poll(
-    createPollRequest(sendReq),
+    createPollRequest(sendReq1),
     devnetApiHost,
   );
   const expected: PollResponse = {};
@@ -76,7 +99,7 @@ test('[DevNet] Makes a /poll request and retrieve empty result while tx is in me
 
 jest.setTimeout(100000);
 test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll request and retrieve result', async () => {
-  await listen(createListenRequest(sendReq), devnetApiHost)
+  await listen(createListenRequest(sendReq1), devnetApiHost)
     .then((actual: ListenResponse) => {
       const { logs, metaData, txId, ...actualWithoutLogsAndMetaData } = actual;
       const expected: Omit<ListenResponse, 'logs' | 'metaData' | 'txId'> = {
@@ -89,15 +112,11 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
             },
             moduleHash: 'rE7DU8jlQL9x_MPYuniZJf5ICBTAEHAIFQCB4blofP4',
             name: 'TRANSFER',
-            params: [
-              'k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
-              'k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
-              0.00005,
-            ],
+            params: [devnetAccount, devnetAccount, 0.00005],
           },
         ],
         gas: 5,
-        reqKey: signedCommand.hash,
+        reqKey: signedCommand1.hash,
         result: {
           data: 3,
           status: 'success',
@@ -106,9 +125,12 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
       expect(actualWithoutLogsAndMetaData).toEqual(expected);
     })
     .then(async () => {
-      const actual = await poll(createPollRequest(sendReq), devnetApiHost);
+      const actual = await poll(createPollRequest(sendReq1), devnetApiHost);
 
-      const actualInArray = Object.values(actual);
+      const actualInArray = Object.values(actual).map((res) => {
+        const { logs, metaData, txId, ...resultWithoutDynamicData } = res;
+        return resultWithoutDynamicData;
+      });
 
       const expected: Omit<CommandResult, 'logs' | 'metaData' | 'txId'> = {
         continuation: null,
@@ -120,15 +142,11 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
             },
             moduleHash: 'rE7DU8jlQL9x_MPYuniZJf5ICBTAEHAIFQCB4blofP4',
             name: 'TRANSFER',
-            params: [
-              'k:'.concat(devnetKeyPair.publicKey),
-              'k:'.concat(devnetKeyPair.publicKey),
-              0.00005,
-            ],
+            params: [devnetAccount, devnetAccount, 0.00005],
           },
         ],
         gas: 5,
-        reqKey: signedCommand.hash,
+        reqKey: signedCommand1.hash,
         result: {
           data: 3,
           status: 'success',
@@ -136,5 +154,53 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
       };
 
       expect(actualInArray).toEqual([expected]);
+    });
+});
+
+test('[DevNet] Makes a cross chain transfer /send exec command request , then makes /spv request and retrieve proof, then makes a /send cont command request and retrieve result', async () => {
+  //Initiates a cross chain transfer
+  send(sendReq2, devnetApiHost)
+    .then((actual: SendResponse) => {
+      const expected: SendResponse = {
+        requestKeys: [signedCommand2.hash],
+      };
+      expect(actual).toEqual(expected);
+    })
+    .then(async () => {
+      // wait for the tx to complete
+      const actual = await listen(createListenRequest(sendReq1), devnetApiHost);
+      const { result, ...rest } = actual;
+      const { status } = result;
+      expect(status).toEqual('success');
+    })
+    .then(async () => {
+      //Try to fetch /spv but fails because instance is too young
+      const actual = await spv(
+        { requestKey: signedCommand2.hash, targetChainId: '' },
+        devnetApiHost,
+      );
+      const expected = '';
+      expect(actual).toEqual(expected);
+      //sleep
+      ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
+    })
+    .then(async () => {
+      const actual = await spv(
+        { requestKey: signedCommand2.hash, targetChainId: '' },
+        devnetApiHost,
+      );
+      const expected = '';
+      console.log(actual, expected);
+      expect(actual).toEqual(expected);
+      return { proof: actual, hash: signedCommand2.hash };
+    })
+    .then(async ({ proof, hash }) => {
+      const actual = await createSampleContTx(
+        devnetNetwork,
+        devnetKeyPair,
+        hash,
+        {},
+        proof,
+      );
     });
 });

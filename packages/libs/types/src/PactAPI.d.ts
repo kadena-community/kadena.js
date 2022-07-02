@@ -1,5 +1,5 @@
 import type { Base64Url } from './Base64Url';
-import type { ChainwebChainId, Command, CommandResult } from './PactCommand';
+import type { ChainId, Command, CommandResult } from './PactCommand';
 
 // TODO: Add descriptions
 export type RequestKeys = {
@@ -58,7 +58,7 @@ export type ListenResponse = CommandResult;
  */
 export type SPVRequestBody = {
   requestKey: Base64Url;
-  targetChainId: ChainwebChainId;
+  targetChainId: ChainId;
 };
 
 /**

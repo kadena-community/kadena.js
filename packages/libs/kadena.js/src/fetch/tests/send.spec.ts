@@ -8,8 +8,8 @@ import type {
 import { sign } from '../../../../crypto/src/sign';
 import { send } from '../send';
 
+import { mockFetch } from './mockdata/mockFetch';
 import { pactTestCommand } from './mockdata/Pact';
-import { mockFetch } from './mockFetch';
 
 import fetch from 'node-fetch';
 
@@ -71,16 +71,12 @@ test('/send should return error if sent to wrong chain id', async () => {
   const sendReq: SendRequestBody = {
     cmds: [signedCommand],
   };
-  const expectedErrorMsg =
-    'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
-  const responseActual: Promise<SendResponse> = send(
-    sendReq,
-    '/wrongChain/chain/1/pact',
-  );
+  const expectedErrorMsg = `Error: Validation failed for hash "${signedCommand.hash}": Transaction metadata (chain id, chainweb version) conflicts with this endpoint`;
+  const responseActual: Promise<SendResponse> = send(sendReq, '/wrongChain');
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
 
-test('/send should return error for duplicate txs', async () => {
+test('/send should return error if tx already exists on chain', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
   const signedCommand: Command = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
@@ -94,11 +90,7 @@ test('/send should return error for duplicate txs', async () => {
   const sendReq: SendRequestBody = {
     cmds: [signedCommand],
   };
-  const expectedErrorMsg =
-    'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
-  const responseActual: Promise<SendResponse> = send(
-    sendReq,
-    '/duplicate/chain/0/pact',
-  );
+  const expectedErrorMsg = `Error: Validation failed for hash "${signedCommand.hash}": Transaction already exists on chain`;
+  const responseActual: Promise<SendResponse> = send(sendReq, '/duplicate');
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });

@@ -87,7 +87,7 @@ export interface MetaData {
   gasLimit: number;
   gasPrice: number;
   sender: string;
-  chainId: string;
+  chainId: ChainId;
 }
 
 // TODO : Add descriptions
@@ -99,6 +99,7 @@ export type Step = number;
 export type Rollback = boolean;
 export type Proof = Base64Url | null;
 export type NetworkId = string | null;
+export type ChainId = string;
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.
@@ -174,8 +175,8 @@ export type SPVProof = string;
  * @TODO Is the `yield.data` type correctly defined?
  */
 type PactExec = {
-  pactId: string;
-  step: number;
+  pactId: PactTransactionHash;
+  step: Step;
   stepCount: number;
   executed: boolean | null;
   stepHasRollback: boolean;
@@ -186,7 +187,7 @@ type PactExec = {
   yield: {
     data: Array<[string, PactValue]>;
     provenance: {
-      targetChainId: string;
+      targetChainId: ChainId;
       moduleHash: string;
     } | null;
   } | null;
@@ -202,7 +203,7 @@ type PactExec = {
  */
 type PactEvent = {
   name: string;
-  module: string;
+  module: { name: string; namespace: string | null };
   params: Array<PactValue>;
   moduleHash: string;
 };

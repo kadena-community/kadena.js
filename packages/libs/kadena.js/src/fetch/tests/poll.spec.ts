@@ -2,7 +2,7 @@ import type { PollRequestBody, PollResponse } from '@kadena/types';
 
 import { poll } from '../poll';
 
-import { mockFetch } from './mockFetch';
+import { mockFetch } from './mockdata/mockFetch';
 
 import fetch from 'node-fetch';
 

@@ -2,7 +2,7 @@ import type { ListenRequestBody, ListenResponse } from '@kadena/types';
 
 import { listen } from '../listen';
 
-import { mockFetch } from './mockFetch';
+import { mockFetch } from './mockdata/mockFetch';
 
 import fetch from 'node-fetch';
 
