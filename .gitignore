@@ -75,6 +75,7 @@ common/temp/
 common/autoinstallers/*/.npmrc
 **/.rush/temp/
 **/.rush
+packages/*/*/temp
 
 # Heft
 .heft

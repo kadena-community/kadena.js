@@ -1,4 +1,4 @@
-import type { SendRequestBody, SendResponse } from '../send';
+import type { ISendRequestBody, ISendResponse } from '../send';
 
 import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 
@@ -21,9 +21,9 @@ export async function mockFetch(
     case '/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
-        const parsedBody: SendRequestBody = JSON.parse(body.toString());
+        const parsedBody: ISendRequestBody = JSON.parse(body.toString());
         const requestKeys = parsedBody.cmds.map((cmd) => cmd.hash);
-        const response: SendResponse = { requestKeys };
+        const response: ISendResponse = { requestKeys };
         return Promise.resolve({
           ok: true,
           json: () => Promise.resolve(response),
@@ -35,7 +35,7 @@ export async function mockFetch(
     case '/wrongChain/chain/1/pact/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
-        const parsedBody: SendRequestBody = JSON.parse(body.toString());
+        const parsedBody: ISendRequestBody = JSON.parse(body.toString());
         const requestKeys = parsedBody.cmds.map((cmd) => cmd.hash);
         const errorMsg: string = requestKeys
           .map(
@@ -54,7 +54,7 @@ export async function mockFetch(
     case '/duplicate/chain/0/pact/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
-        const parsedBody: SendRequestBody = JSON.parse(body.toString());
+        const parsedBody: ISendRequestBody = JSON.parse(body.toString());
         const requestKeys = parsedBody.cmds.map((cmd) => cmd.hash);
         const errorMsg: string = requestKeys
           .map(
