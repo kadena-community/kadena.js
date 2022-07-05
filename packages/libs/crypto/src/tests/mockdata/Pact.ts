@@ -1,3 +1,8 @@
+/**
+ *
+ *
+ * @alpha
+ */
 export const pactTestCommand: {
   networkId: undefined | unknown;
   payload: {

@@ -48,10 +48,10 @@ export type PactPayload = { exec: Exec } | { cont: Cont };
  *    - "<moduleName>.<capabilityName>"
  * @param args - An array of PactValue arguments the capability expects.
  */
-export type Cap = {
+export interface Cap {
   name: string;
   args: Array<PactValue>;
-};
+}
 
 export type SignerScheme = 'ED25519';
 

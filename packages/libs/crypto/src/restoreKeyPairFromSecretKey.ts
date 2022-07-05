@@ -7,6 +7,8 @@ import nacl from 'tweetnacl';
 
 /**
  * Generate a deterministic ED25519 keypair from a given Kadena secretKey
+ *
+ * @alpha
  */
 export function restoreKeyPairFromSecretKey(seed: string): KeyPair {
   if (seed.length !== 64) {

@@ -5,6 +5,8 @@ import { strToUint8Array } from './strToUint8Array';
 
 /**
  * Takes in a hex string and outputs a Uint8Array binary object.
+ *
+ * @alpha
  */
 export function base64UrlDecodeArr(input: Base64Url): Uint8Array {
   return strToUint8Array(base64UrlDecode(input));

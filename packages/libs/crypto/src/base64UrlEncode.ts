@@ -3,14 +3,15 @@ import type { Base64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';
 
-/**
- * Takes in string and outputs Base64 Url encoded string
- * code from [https://gist.github.com/999166] by [https://github.com/nignag]
- */
-
 const chars: string =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
 
+/**
+ * Takes in string and outputs Base64 Url encoded string
+ * code from [https://gist.github.com/999166] by [https://github.com/nignag]
+ *
+ * @alpha
+ */
 export function base64UrlEncode(str: string): Base64Url {
   let block: number | undefined;
   let charCode: number;

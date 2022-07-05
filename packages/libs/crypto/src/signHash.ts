@@ -8,6 +8,8 @@ import nacl from 'tweetnacl';
 
 /**
  Sign a hash using key pair
+
+ * @alpha
 */
 export function signHash(
   hash: string,

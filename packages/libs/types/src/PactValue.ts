@@ -5,9 +5,9 @@
  * indicated by the `pact` serialization of integer values:
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L64
  */
-export type PactInt = {
+export interface PactInt {
   int: string;
-};
+}
 
 /**
  * @typedef {object} PactDecimal - A very big or very small `pact` decimal value.
@@ -16,9 +16,9 @@ export type PactInt = {
  * indicated by the `pact` serialization of decimal values:
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L83
  */
-export type PactDecimal = {
+export interface PactDecimal {
   decimal: string;
-};
+}
 
 /**
  * @typedef {sumtype} PactLiteral - A sum type representing a `pact` literal value.

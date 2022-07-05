@@ -6,6 +6,8 @@ import nacl from 'tweetnacl';
 
 /**
  * Generate a random ED25519 keypair.
+ *
+ * @alpha
  */
 export function genKeyPair(): KeyPair {
   const keyPair = nacl.sign.keyPair();
