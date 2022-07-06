@@ -1,11 +1,9 @@
-import type {
-  Command,
-  SendRequestBody,
-  SendResponse,
-  SignatureWithHash,
-} from '@kadena/types';
+jest.mock('node-fetch');
 
-import { sign } from '../../../../crypto/src/sign';
+import { sign } from '@kadena/crypto';
+import type { Command, SignatureWithHash } from '@kadena/types';
+
+import type { ISendRequestBody, ISendResponse } from '../send';
 import { send } from '../send';
 
 import { mockFetch } from './mockdata/mockFetch';
@@ -13,7 +11,6 @@ import { pactTestCommand } from './mockdata/Pact';
 
 import fetch from 'node-fetch';
 
-jest.mock('node-fetch');
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
@@ -47,13 +44,13 @@ test('/send should return request keys of txs submitted', async () => {
   };
   const expectedRequestKey2 = 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q';
 
-  const sendReq: SendRequestBody = {
+  const sendReq: ISendRequestBody = {
     cmds: [signedCommand1, signedCommand2],
   };
-  const responseExpected: SendResponse = {
+  const responseExpected: ISendResponse = {
     requestKeys: [expectedRequestKey1, expectedRequestKey2],
   };
-  const responseActual: SendResponse = await send(sendReq, '');
+  const responseActual: ISendResponse = await send(sendReq, '');
   expect(responseExpected).toEqual(responseActual);
 });
 
@@ -68,11 +65,15 @@ test('/send should return error if sent to wrong chain id', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: SendRequestBody = {
+  const sendReq: ISendRequestBody = {
     cmds: [signedCommand],
   };
-  const expectedErrorMsg = `Error: Validation failed for hash "${signedCommand.hash}": Transaction metadata (chain id, chainweb version) conflicts with this endpoint`;
-  const responseActual: Promise<SendResponse> = send(sendReq, '/wrongChain');
+  const expectedErrorMsg =
+    'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
+  const responseActual: Promise<ISendResponse> = send(
+    sendReq,
+    '/wrongChain/chain/1/pact',
+  );
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
 
@@ -87,10 +88,14 @@ test('/send should return error if tx already exists on chain', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: SendRequestBody = {
+  const sendReq: ISendRequestBody = {
     cmds: [signedCommand],
   };
-  const expectedErrorMsg = `Error: Validation failed for hash "${signedCommand.hash}": Transaction already exists on chain`;
-  const responseActual: Promise<SendResponse> = send(sendReq, '/duplicate');
+  const expectedErrorMsg =
+    'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
+  const responseActual: Promise<ISendResponse> = send(
+    sendReq,
+    '/duplicate/chain/0/pact',
+  );
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });

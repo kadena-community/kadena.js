@@ -94,7 +94,7 @@ export interface MetaData {
 export type PactTransactionHash = Base64Url;
 export type PactCode = string;
 export type Nonce = string;
-export type EnvData = object | null;
+export type EnvData = Record<string, unknown> | null;
 export type Step = number;
 export type Rollback = boolean;
 export type Proof = Base64Url | null;
@@ -225,7 +225,7 @@ type ChainwebResponseMetaData = {
   blockTime: number;
   blockHeight: number;
   prevBlockHash: string;
-  publicMeta: ChainwebMetaData;
+  publicMeta: MetaData;
 };
 
 /**

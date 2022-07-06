@@ -32,9 +32,11 @@
       "web": "https://github.com/Randynamic"
     }
   ],
-  "main": "index.ts",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "webpack --mode=development",
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
     "build:prod": "webpack --mode=production",
     "coverage": "jest --collectCoverage",
     "preinstall": "npx only-allow pnpm",
@@ -42,7 +44,7 @@
     "precommit": "pnpm run test --silent",
     "serve-coverage": "python -m SimpleHTTPServer",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
-    "test": "jest ${npm_config_single} --testPathIgnorePatterns /integration-test/*",
+    "test": "heft test",
     "test:integration:devnet": "jest ${npm_config_single} --testPathPattern /integration-test/devnet*",
     "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern /integration-test/pact-server*\" --kill-others"
   },
@@ -56,6 +58,7 @@
     ]
   },
   "dependencies": {
+    "@kadena/crypto": "workspace:*",
     "@kadena/types": "workspace:*",
     "blakejs": "^1.2.1",
     "node-fetch": "^2.6.6",
@@ -63,7 +66,10 @@
     "webpack": "~5.73.0"
   },
   "devDependencies": {
-    "@parcel/transformer-typescript-types": "2.6.2",
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
     "@types/jest": "^27.5.1",
     "@types/node-fetch": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
@@ -78,18 +84,13 @@
     "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "~7.0.0",
-    "jest": "^28.1.0",
-    "parcel": "~2.6.2",
     "prettier": "^2.6.2",
     "prettier-eslint": "~15.0.1",
     "serve": "^13.0.2",
-    "ts-jest": "^28.0.2",
     "ts-loader": "^9.3.0",
-    "typescript": "^4.6.4",
     "webpack-cli": "^4.9.2"
   },
   "engines": {
-    "node": ">=16",
     "npm": ">=999",
     "pnpm": ">=6.7.1",
     "yarn": ">=999"

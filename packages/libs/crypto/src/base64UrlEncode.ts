@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import type { Base64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';
@@ -7,13 +8,13 @@ import { InvalidCharacterError } from './InvalidCharacterError';
  * code from [https://gist.github.com/999166] by [https://github.com/nignag]
  */
 
-const chars =
+const chars: string =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
 
 export function base64UrlEncode(str: string): Base64Url {
-  let block;
-  let charCode;
-  let output = '';
+  let block: number | undefined;
+  let charCode: number;
+  let output: string = '';
   for (
     let idx = 0, map = chars;
     str.charAt(idx | 0);

@@ -1,5 +1,5 @@
 import type { Base64Url } from './Base64Url';
-import type { ChainId, Command, CommandResult } from './PactCommand';
+import type { ChainId, Command, CommandResult, SPVProof } from './PactCommand';
 
 // TODO: Add descriptions
 export type RequestKeys = {

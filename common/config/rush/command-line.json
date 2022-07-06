@@ -20,8 +20,7 @@
       "enableParallelism": true,
       "ignoreDependencyOrder": false,
       "ignoreMissingScript": false,
-      // default: false. Changed to true as jest outputs everything to stdErr :(
-      "allowWarningsInSuccessfulBuild": true,
+      "allowWarningsInSuccessfulBuild": false,
       // default: false. Changed to true as it should not need to run when nothing has changed
       "incremental": true,
       "watchForChanges": false,
