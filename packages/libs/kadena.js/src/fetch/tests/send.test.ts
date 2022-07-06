@@ -70,10 +70,7 @@ test('/send should return error if sent to wrong chain id', async () => {
   };
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
-  const responseActual: Promise<ISendResponse> = send(
-    sendReq,
-    '/wrongChain/chain/1/pact',
-  );
+  const responseActual: Promise<ISendResponse> = send(sendReq, '/wrongChain');
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
 
@@ -93,9 +90,6 @@ test('/send should return error if tx already exists on chain', async () => {
   };
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
-  const responseActual: Promise<ISendResponse> = send(
-    sendReq,
-    '/duplicate/chain/0/pact',
-  );
+  const responseActual: Promise<ISendResponse> = send(sendReq, '/duplicate');
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
