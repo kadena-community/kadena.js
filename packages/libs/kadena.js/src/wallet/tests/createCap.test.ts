@@ -24,6 +24,7 @@ describe('createCap', () => {
       'Gas',
       'Grants gas payment capability',
       'coin.GAS',
+      [],
     );
     const expected = {
       role: 'Gas',

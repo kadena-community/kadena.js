@@ -1,3 +1,5 @@
+jest.mock('node-fetch');
+
 import type { SPVResponse } from '@kadena/types';
 
 import { spv } from '../spv';
@@ -7,7 +9,6 @@ import { testSPVProof, testSPVRequest } from './mockdata/Pact';
 
 import fetch from 'node-fetch';
 
-jest.mock('node-fetch');
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
@@ -23,5 +24,5 @@ test('/spv returns error message when proof is young', () => {
   const actual: Promise<SPVResponse> = spv(testSPVRequest, '/tooyoung');
   const expectedErrorMsg =
     'SPV target not reachable: target chain not reachable. Chainweb instance is too young';
-  expect(actual).rejects.toThrowError(expectedErrorMsg);
+  return expect(actual).rejects.toThrowError(expectedErrorMsg);
 });

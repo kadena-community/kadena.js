@@ -1,6 +1,10 @@
-import type { SPVRequestBody, SPVResponse } from '@kadena/types';
+import type {
+  CommandPayload,
+  SPVRequestBody,
+  SPVResponse,
+} from '@kadena/types';
 
-export const pactTestCommand = {
+export const pactTestCommand: CommandPayload = {
   networkId: null,
   payload: {
     exec: {
@@ -29,7 +33,7 @@ export const pactTestCommand = {
   nonce: JSON.stringify('step01'),
 };
 
-export const testInitiateSPV = {
+export const testInitiateSPV: object = {
   'zflBHR6QJBR78rdiOu6Hr-zCwDTOEOeBamsjtUX94Zk': {
     gas: 444,
     result: {
