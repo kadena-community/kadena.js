@@ -4,98 +4,126 @@
 
 ```ts
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type Base16String = string;
 
-// @public (undocumented)
-export type Base64Url = string;
+// @alpha (undocumented)
+export type ChainId = string;
 
-// @public
-export type Cap = {
-    name: string;
-    args: Array<PactValue>;
-};
-
-// @public
+// @alpha
 export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
 
-// @public
-export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development' | null;
+// @alpha
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development' | undefined;
 
-// @public
-export interface Command {
+// @alpha (undocumented)
+export type CommandPayloadStringifiedJSON = string;
+
+// @alpha (undocumented)
+export type EnvData = Record<string, unknown> | undefined;
+
+// @alpha (undocumented)
+export type IBase64Url = string;
+
+// @alpha
+export interface ICap {
+    // (undocumented)
+    args: Array<PactValue>;
+    // (undocumented)
+    name: string;
+}
+
+// @alpha
+export interface ICommand {
     // (undocumented)
     cmd: CommandPayloadStringifiedJSON;
     // (undocumented)
     hash: PactTransactionHash;
     // (undocumented)
-    sigs: Array<Signature>;
+    sigs: Array<ISignature>;
 }
 
-// @public
-export interface CommandPayload {
+// @alpha
+export interface ICommandPayload {
     // (undocumented)
-    meta: MetaData;
+    meta: IMetaData;
     // (undocumented)
-    networkId: NetworkId | null;
+    networkId: Exclude<NetworkId, undefined> | null;
     // (undocumented)
     nonce: string;
     // (undocumented)
     payload: PactPayload;
     // (undocumented)
-    signers: Array<Signer>;
+    signers: Array<ISigner>;
 }
 
-// @public (undocumented)
-export type CommandPayloadStringifiedJSON = string;
+// @alpha
+export interface ICommandResult {
+    // (undocumented)
+    continuation: IPactExec | null;
+    // (undocumented)
+    events?: Array<IPactEvent>;
+    // (undocumented)
+    gas: number;
+    // (undocumented)
+    logs: string | null;
+    // Warning: (ae-forgotten-export) The symbol "IChainwebResponseMetaData" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    metaData: IChainwebResponseMetaData | null;
+    // (undocumented)
+    reqKey: IBase64Url;
+    // Warning: (ae-forgotten-export) The symbol "IPactResultSuccess" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "IPactResultError" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    result: IPactResultSuccess | IPactResultError;
+    // (undocumented)
+    txId: number | null;
+}
 
-// @public
-export interface Cont {
+// @alpha
+export interface IContPayload {
     // (undocumented)
     data: EnvData;
     // (undocumented)
     pactId: PactTransactionHash;
     // (undocumented)
-    proof: Proof;
+    proof: Exclude<Proof, undefined> | null;
     // (undocumented)
     rollback: Rollback;
     // (undocumented)
     step: Step;
 }
 
-// @public (undocumented)
-export type EnvData = Record<string, unknown> | null;
-
-// @public
-export interface Exec {
+// @alpha
+export interface IExecPayload {
     // (undocumented)
     code: PactCode;
     // (undocumented)
     data: EnvData;
 }
 
-// @public (undocumented)
-export interface KeyPair {
+// @alpha (undocumented)
+export interface IKeyPair {
     // (undocumented)
-    clist?: [];
+    clist?: Array<ICap>;
     // (undocumented)
     publicKey: string;
     // (undocumented)
     secretKey?: string;
 }
 
-// @public (undocumented)
-export type ListenRequest = {
-    listen: Base16String;
-};
-
-// @public (undocumented)
-export type LocalRequest = Command;
-
-// @public
-export interface MetaData {
+// @alpha
+export interface IListenRequestBody {
     // (undocumented)
-    chainId: string;
+    listen: IBase64Url;
+}
+
+// @alpha
+export interface IMetaData {
+    // (undocumented)
+    chainId: ChainId;
     // (undocumented)
     creationTime: number;
     // (undocumented)
@@ -108,84 +136,95 @@ export interface MetaData {
     ttl: number;
 }
 
-// @public (undocumented)
-export type NetworkId = string | null;
-
-// @public (undocumented)
-export type Nonce = string;
-
-// @public (undocumented)
-export type PactCode = string;
-
-// @public
-export type PactDecimal = {
+// @alpha
+export interface IPactDecimal {
+    // (undocumented)
     decimal: string;
-};
+}
 
-// @public
-export type PactInt = {
+// @alpha
+export interface IPactEvent {
+    // (undocumented)
+    module: {
+        name: string;
+        namespace: string | null;
+    };
+    // (undocumented)
+    moduleHash: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    params: Array<PactValue>;
+}
+
+// @alpha
+export interface IPactExec {
+    continuation: {
+        def: string;
+        args: PactValue;
+    };
+    executed: boolean | null;
+    pactId: PactTransactionHash;
+    step: Step;
+    stepCount: number;
+    stepHasRollback: boolean;
+    yield: {
+        data: Array<[string, PactValue]>;
+        provenance: {
+            targetChainId: ChainId;
+            moduleHash: string;
+        } | null;
+    } | null;
+}
+
+// @alpha
+export interface IPactInt {
+    // (undocumented)
     int: string;
-};
+}
 
-// @public
-export type PactLiteral = string | number | PactInt | PactDecimal | boolean;
+// @alpha
+export interface IPollRequestBody {
+    // (undocumented)
+    requestKeys: Array<IBase64Url>;
+}
 
-// @public
-export type PactPayload = {
-    exec: Exec;
-} | {
-    cont: Cont;
-};
+// @alpha (undocumented)
+export interface IPollResponse {
+    // (undocumented)
+    [key: IBase64Url]: ICommandResult;
+}
 
-// @public (undocumented)
-export type PactTransactionHash = Base64Url;
+// @alpha (undocumented)
+export interface IRequestKeys {
+    // (undocumented)
+    requestKeys: Array<IBase64Url>;
+}
 
-// @public
-export type PactValue = PactLiteral | Array<PactValue>;
+// @alpha
+export interface ISendRequestBody {
+    // (undocumented)
+    cmds: Array<ICommand>;
+}
 
-// @public (undocumented)
-export type PollRequest = RequestKeys;
-
-// @public (undocumented)
-export type Proof = Base64Url | null;
-
-// @public (undocumented)
-export type RequestKeys = {
-    requestKeys: Base16String[];
-};
-
-// @public (undocumented)
-export type Rollback = boolean;
-
-// @public (undocumented)
-export type SendRequest = {
-    cmds: Array<Command>;
-};
-
-// @public (undocumented)
-export interface Signature {
+// @alpha (undocumented)
+export interface ISignature {
     // (undocumented)
     sig: string | undefined;
 }
 
-// @public (undocumented)
-export type SignatureWithHash = SignedSignatureWithHash | UnsignedSignatureWithHash;
-
-// @public (undocumented)
-export type SignCommand = SignatureWithHash;
-
-// @public (undocumented)
-export interface SignedCommand {
+// @alpha (undocumented)
+export interface ISignedCommand {
     // (undocumented)
     cmd: string;
     // (undocumented)
     hash: string;
     // (undocumented)
-    sigs: Signature[];
+    sigs: ISignature[];
 }
 
-// @public (undocumented)
-export interface SignedSignatureWithHash extends Signature {
+// @alpha (undocumented)
+export interface ISignedSignatureWithHash extends ISignature {
     // (undocumented)
     hash: string;
     // (undocumented)
@@ -194,36 +233,38 @@ export interface SignedSignatureWithHash extends Signature {
     sig: string | undefined;
 }
 
-// @public
-export interface Signer {
+// @alpha
+export interface ISigner {
     // (undocumented)
     addr?: Base16String;
     // (undocumented)
-    clist?: Array<Cap>;
+    clist?: Array<ICap>;
     // (undocumented)
     pubKey: Base16String;
     // (undocumented)
     scheme?: SignerScheme;
 }
 
-// @public (undocumented)
-export type SignerScheme = 'ED25519';
-
-// @public
-export interface SigningCap {
+// @alpha
+export interface ISigningCap {
     // (undocumented)
-    cap: Cap;
+    cap: ICap;
     // (undocumented)
     description: string;
     // (undocumented)
     role: string;
 }
 
-// @public (undocumented)
-export type Step = number;
+// @alpha
+export interface ISPVRequestBody {
+    // (undocumented)
+    requestKey: IBase64Url;
+    // (undocumented)
+    targetChainId: ChainId;
+}
 
-// @public (undocumented)
-export interface UnsignedSignatureWithHash extends Signature {
+// @alpha (undocumented)
+export interface IUnsignedSignatureWithHash extends ISignature {
     // (undocumented)
     hash: string;
     // (undocumented)
@@ -232,11 +273,72 @@ export interface UnsignedSignatureWithHash extends Signature {
     sig: string | undefined;
 }
 
-// @public (undocumented)
-export interface UserSig {
+// @alpha (undocumented)
+export interface IUserSig {
     // (undocumented)
     sig: Base16String;
 }
+
+// @alpha (undocumented)
+export type ListenResponse = ICommandResult;
+
+// @alpha (undocumented)
+export type LocalRequestBody = ICommand;
+
+// @alpha (undocumented)
+export type LocalResponse = ICommandResult;
+
+// @alpha (undocumented)
+export type NetworkId = string | undefined;
+
+// @alpha (undocumented)
+export type Nonce = string;
+
+// @alpha (undocumented)
+export type PactCode = string;
+
+// @alpha
+export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
+
+// @alpha
+export type PactPayload = {
+    exec: IExecPayload;
+} | {
+    cont: IContPayload;
+};
+
+// @alpha (undocumented)
+export type PactTransactionHash = IBase64Url;
+
+// @alpha
+export type PactValue = PactLiteral | Array<PactValue>;
+
+// @alpha (undocumented)
+export type Proof = IBase64Url | undefined;
+
+// @alpha (undocumented)
+export type Rollback = boolean;
+
+// @alpha
+export type SendResponse = IRequestKeys;
+
+// @alpha (undocumented)
+export type SignatureWithHash = ISignedSignatureWithHash | IUnsignedSignatureWithHash;
+
+// @alpha (undocumented)
+export type SignCommand = SignatureWithHash;
+
+// @alpha (undocumented)
+export type SignerScheme = 'ED25519';
+
+// @alpha
+export type SPVProof = string;
+
+// @alpha
+export type SPVResponse = SPVProof;
+
+// @alpha (undocumented)
+export type Step = number;
 
 // (No @packageDocumentation comment for this package)
 

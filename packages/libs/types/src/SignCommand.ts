@@ -1,27 +1,45 @@
-export interface Signature {
+/**
+ * @alpha
+ */
+export interface ISignature {
   sig: string | undefined;
 }
 
-export interface SignedSignatureWithHash extends Signature {
+/**
+ * @alpha
+ */
+export interface ISignedSignatureWithHash extends ISignature {
   hash: string;
   sig: string | undefined;
   pubKey: string;
 }
 
-export interface UnsignedSignatureWithHash extends Signature {
+/**
+ * @alpha
+ */
+export interface IUnsignedSignatureWithHash extends ISignature {
   hash: string;
   sig: string | undefined;
   pubKey?: string;
 }
 
+/**
+ * @alpha
+ */
 export type SignatureWithHash =
-  | SignedSignatureWithHash
-  | UnsignedSignatureWithHash;
+  | ISignedSignatureWithHash
+  | IUnsignedSignatureWithHash;
 
+/**
+ * @alpha
+ */
 export type SignCommand = SignatureWithHash;
 
-export interface SignedCommand {
+/**
+ * @alpha
+ */
+export interface ISignedCommand {
   hash: string;
-  sigs: Signature[];
+  sigs: ISignature[];
   cmd: string;
 }

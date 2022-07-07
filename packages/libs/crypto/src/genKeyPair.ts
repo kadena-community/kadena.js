@@ -1,4 +1,4 @@
-import type { KeyPair } from '@kadena/types';
+import type { IKeyPair } from '@kadena/types';
 
 import { binToHex } from './binToHex';
 
@@ -9,7 +9,7 @@ import nacl from 'tweetnacl';
  *
  * @alpha
  */
-export function genKeyPair(): KeyPair {
+export function genKeyPair(): IKeyPair {
   const keyPair = nacl.sign.keyPair();
   const publicKey = binToHex(keyPair.publicKey);
   const secretKey = binToHex(keyPair.secretKey).slice(0, 64);

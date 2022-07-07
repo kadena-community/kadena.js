@@ -4,27 +4,27 @@
 
 ```ts
 
-import type { Base64Url } from '@kadena/types';
-import type { KeyPair } from '@kadena/types';
+import type { IBase64Url } from '@kadena/types';
+import type { IKeyPair } from '@kadena/types';
 import type { SignCommand } from '@kadena/types';
 
 // @alpha
-export function base64UrlDecode(str: Base64Url): string;
+export function base64UrlDecode(str: IBase64Url): string;
 
 // @alpha
-export function base64UrlDecodeArr(input: Base64Url): Uint8Array;
+export function base64UrlDecodeArr(input: IBase64Url): Uint8Array;
 
 // @alpha
-export function base64UrlEncode(str: string): Base64Url;
+export function base64UrlEncode(str: string): IBase64Url;
 
 // @alpha
-export function base64UrlEncodeArr(input: Uint8Array): Base64Url;
+export function base64UrlEncodeArr(input: Uint8Array): IBase64Url;
 
 // @alpha
 export function binToHex(array: Uint8Array): string;
 
 // @alpha
-export function genKeyPair(): KeyPair;
+export function genKeyPair(): IKeyPair;
 
 // @alpha
 export function hash(str: string): string;
@@ -61,19 +61,19 @@ export const pactTestCommand: {
 };
 
 // @alpha
-export function restoreKeyPairFromSecretKey(seed: string): KeyPair;
+export function restoreKeyPairFromSecretKey(seed: string): IKeyPair;
 
 // @alpha
-export function sign(msg: string, { secretKey, publicKey }: KeyPair): SignCommand;
+export function sign(msg: string, { secretKey, publicKey }: IKeyPair): SignCommand;
 
 // @alpha
-export function signHash(hash: string, { secretKey, publicKey }: KeyPair): SignCommand;
+export function signHash(hash: string, { secretKey, publicKey }: IKeyPair): SignCommand;
 
 // @alpha
 export function strToUint8Array(str: string): Uint8Array;
 
 // @alpha
-export function toTweetNaclSecretKey({ secretKey, publicKey, }: KeyPair): Uint8Array;
+export function toTweetNaclSecretKey({ secretKey, publicKey, }: IKeyPair): Uint8Array;
 
 // @alpha
 export function uint8ArrayToStr(array: Uint8Array): string;

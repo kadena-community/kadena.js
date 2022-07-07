@@ -1,13 +1,13 @@
 import type {
   EnvData,
-  KeyPair,
-  MetaData,
+  IKeyPair,
+  IMetaData,
   NetworkId,
   Nonce,
   PactTransactionHash,
   Proof,
   Rollback,
-  SendRequestBody,
+  ISendRequestBody,
   Step,
 } from '@kadena/types';
 
@@ -18,16 +18,16 @@ import { prepareContCommand } from './prepareContCommand';
  * Make a full 'send' endpoint cont command. See 'prepareContCommand' for parameters.
  */
 export function createContCommand(
-  keyPairs: Array<KeyPair>,
+  keyPairs: Array<IKeyPair>,
   nonce: Nonce,
   step: Step,
   pactId: PactTransactionHash,
   rollback: Rollback,
   envData: EnvData,
-  meta: MetaData,
+  meta: IMetaData,
   proof: Proof,
   networkId: NetworkId,
-): SendRequestBody {
+): ISendRequestBody {
   return createSendRequest([
     prepareContCommand(
       keyPairs,

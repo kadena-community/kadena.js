@@ -1,10 +1,10 @@
 import type {
-  CommandPayload,
-  SPVRequestBody,
+  ICommandPayload,
+  ISPVRequestBody,
   SPVResponse,
 } from '@kadena/types';
 
-export const pactTestCommand: CommandPayload = {
+export const pactTestCommand: ICommandPayload = {
   networkId: null,
   payload: {
     exec: {
@@ -158,7 +158,7 @@ export const testInitiateSPV: object = {
   },
 };
 
-export const testSPVRequest: SPVRequestBody = {
+export const testSPVRequest: ISPVRequestBody = {
   requestKey: 'zflBHR6QJBR78rdiOu6Hr-zCwDTOEOeBamsjtUX94Zk',
   targetChainId: '1',
 };

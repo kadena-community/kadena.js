@@ -1,8 +1,8 @@
 import type {
-  Command,
+  ICommand,
   EnvData,
-  KeyPair,
-  MetaData,
+  IKeyPair,
+  IMetaData,
   NetworkId,
   Nonce,
   PactCode,
@@ -23,16 +23,16 @@ import { pullSigner } from './pullSigner';
  * @return valid pact API command for send or local use.
  */
 export function prepareExecCommand(
-  keyPairs: Array<KeyPair>,
+  keyPairs: Array<IKeyPair>,
   nonce: Nonce,
   pactCode: PactCode,
   envData: EnvData,
-  meta: MetaData,
-  networkId: NetworkId,
-): Command {
+  meta: IMetaData,
+  networkId?: NetworkId,
+): ICommand {
   const signers = keyPairs.map(pullSigner);
   const cmdJSON = {
-    networkId,
+    networkId: networkId || null,
     payload: {
       exec: {
         data: envData,

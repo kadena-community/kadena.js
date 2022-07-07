@@ -1,4 +1,4 @@
-import type { Base64Url } from '@kadena/types';
+import type { IBase64Url } from '@kadena/types';
 
 import { base64UrlDecode } from './base64UrlDecode';
 import { strToUint8Array } from './strToUint8Array';
@@ -8,6 +8,6 @@ import { strToUint8Array } from './strToUint8Array';
  *
  * @alpha
  */
-export function base64UrlDecodeArr(input: Base64Url): Uint8Array {
+export function base64UrlDecodeArr(input: IBase64Url): Uint8Array {
   return strToUint8Array(base64UrlDecode(input));
 }

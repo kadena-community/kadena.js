@@ -1,8 +1,8 @@
 import type {
   ListenResponse,
   LocalResponse,
-  PollResponse,
-  SendRequestBody,
+  IPollResponse,
+  ISendRequestBody,
   SendResponse,
   SPVResponse,
 } from '@kadena/types';
@@ -30,7 +30,7 @@ export async function mockFetch(
     case '/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
-        const parsedBody: SendRequestBody = JSON.parse(body.toString());
+        const parsedBody: ISendRequestBody = JSON.parse(body.toString());
         const requestKeys = parsedBody.cmds.map((cmd) => cmd.hash);
         const response: SendResponse = { requestKeys };
         return Promise.resolve({
@@ -65,7 +65,7 @@ export async function mockFetch(
     }
     case '/api/v1/poll': {
       if (init?.body !== null && init?.body !== undefined) {
-        const response: PollResponse = {
+        const response: IPollResponse = {
           'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8': {
             reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
             txId: null,
@@ -135,7 +135,7 @@ export async function mockFetch(
     case '/wrongChain/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
-        const parsedBody: SendRequestBody = JSON.parse(body.toString());
+        const parsedBody: ISendRequestBody = JSON.parse(body.toString());
         const requestKeys = parsedBody.cmds.map((cmd) => cmd.hash);
         const errorMsg: string = requestKeys
           .map(
@@ -154,7 +154,7 @@ export async function mockFetch(
     case '/duplicate/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
-        const parsedBody: SendRequestBody = JSON.parse(body.toString());
+        const parsedBody: ISendRequestBody = JSON.parse(body.toString());
         const requestKeys = parsedBody.cmds.map((cmd) => cmd.hash);
         const errorMsg: string = requestKeys
           .map(

@@ -1,7 +1,10 @@
-import type { Cap } from './PactCommand';
+import type { ICap } from './PactCommand';
 
-export interface KeyPair {
+/**
+ * @alpha
+ */
+export interface IKeyPair {
   publicKey: string;
   secretKey?: string;
-  clist?: Array<Cap>;
+  clist?: Array<ICap>;
 }

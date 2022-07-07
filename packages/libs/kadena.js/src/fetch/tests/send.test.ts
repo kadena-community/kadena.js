@@ -1,13 +1,13 @@
 jest.mock('node-fetch');
 
 import { sign } from '@kadena/crypto';
-import type { Command, SignatureWithHash } from '@kadena/types';
+import { pactTestCommand } from '@kadena/crypto';
+import type { ICommand, SignatureWithHash  } from '@kadena/types';
 
-import type { ISendRequestBody, ISendResponse } from '../send';
+import type { IISendRequestBody, ISendResponse } from '../send';
 import { send } from '../send';
 
 import { mockFetch } from './mockdata/mockFetch';
-import { pactTestCommand } from './mockdata/Pact';
 
 import fetch from 'node-fetch';
 
@@ -25,7 +25,7 @@ test('/send should return request keys of txs submitted', async () => {
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
   const cmdWithOneSignature1: SignatureWithHash = sign(commandStr, keyPair);
-  const signedCommand1: Command = {
+  const signedCommand1: ICommand = {
     cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
     sigs: [{ sig: cmdWithOneSignature1.sig }],
@@ -33,7 +33,7 @@ test('/send should return request keys of txs submitted', async () => {
   const expectedRequestKey1 = signedCommand1.hash;
 
   // A tx created for chain 0 of devnet using `pact -a`.
-  const signedCommand2: Command = {
+  const signedCommand2: ICommand = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     sigs: [
       {
@@ -44,7 +44,7 @@ test('/send should return request keys of txs submitted', async () => {
   };
   const expectedRequestKey2 = 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q';
 
-  const sendReq: ISendRequestBody = {
+  const sendReq: IISendRequestBody = {
     cmds: [signedCommand1, signedCommand2],
   };
   const responseExpected: ISendResponse = {
@@ -56,7 +56,7 @@ test('/send should return request keys of txs submitted', async () => {
 
 test('/send should return error if sent to wrong chain id', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
-  const signedCommand: Command = {
+  const signedCommand: ICommand = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     sigs: [
       {
@@ -65,7 +65,7 @@ test('/send should return error if sent to wrong chain id', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: ISendRequestBody = {
+  const sendReq: IISendRequestBody = {
     cmds: [signedCommand],
   };
   const expectedErrorMsg =
@@ -76,7 +76,7 @@ test('/send should return error if sent to wrong chain id', async () => {
 
 test('/send should return error if tx already exists on chain', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
-  const signedCommand: Command = {
+  const signedCommand: ICommand = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     sigs: [
       {
@@ -85,7 +85,7 @@ test('/send should return error if tx already exists on chain', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: ISendRequestBody = {
+  const sendReq: IISendRequestBody = {
     cmds: [signedCommand],
   };
   const expectedErrorMsg =

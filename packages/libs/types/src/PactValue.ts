@@ -1,48 +1,60 @@
 /**
- * @typedef {object} PactInt - A very big or very small `pact` integer value.
+ * A very big or very small `pact` integer value.
  * Integers greater than the max `number` value (9007199254740991) or less than
  * the min `number` value (-9007199254740991) are stringified and tagged as
  * indicated by the `pact` serialization of integer values:
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L64
+ * @alpha
  */
-export interface PactInt {
+export interface IPactInt {
   int: string;
 }
 
 /**
- * @typedef {object} PactDecimal - A very big or very small `pact` decimal value.
+ * A very big or very small `pact` decimal value.
  * Decimals whose mantissa precision is greater than the max `number` value (9007199254740991)
  * or less than the min `number` value (-9007199254740991) are stringified and tagged as
  * indicated by the `pact` serialization of decimal values:
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Codec.hs#L83
+ * @alpha
  */
-export interface PactDecimal {
+export interface IPactDecimal {
   decimal: string;
 }
 
 /**
- * @typedef {sumtype} PactLiteral - A sum type representing a `pact` literal value.
+ * A sum type representing a `pact` literal value.
  * Should have parity with the JSON serialization of the Haskell type `Literal` as defined in `pact`:
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/Exp.hs#L95
- * @property {string}
- * @property {number} - JavaScript integer and decimal values.
+ * string
+ *
+ * `number` - JavaScript integer and decimal values.
  *                      Max `number` value is 9007199254740991.
  *                      Min `number` value is -9007199254740991.
- * @property {PactInt} - Integer values that exceed the max and min precision of `number`.
- * @property {PactDecimal} - Decimal values whose mantissa exceed the max and min precision of `number`.
- * @property {boolean}
+ *
+ * `PactInt` - Integer values that exceed the max and min precision of `number`.
+ *
+ * `PactDecimal` - Decimal values whose mantissa exceed the max and min precision of `number`.
+ *
+ * `boolean`
+ *
  * TODO: add `UTCTime` literal.
+ * @alpha
  */
-export type PactLiteral = string | number | PactInt | PactDecimal | boolean;
+export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
 
 /**
- * @typedef {sumtype} PactValue - A sum type representing a `pact` value.
+ * A sum type representing a `pact` value.
  * Should have parity with the JSON serialization of the Haskell type `PactValue` as defined in `pact`:
  * https://github.com/kadena-io/pact/blob/master/src/Pact/Types/PactValue.hs#L109
- * @property {PactLiteral}
- * @property {Array<PactValue>} - Array of pact values (recursive type)
+ *
+ * `PactLiteral` - any `PactLiteral`
+ *
+ * `Array<PactValue>` - Array of pact values (recursive type)
+ *
  * TODO: add object map of pact values type.
  * TODO: add guard type of pact values type.
  * TODO: add module reference type type.
+ * @alpha
  */
 export type PactValue = PactLiteral | Array<PactValue>;

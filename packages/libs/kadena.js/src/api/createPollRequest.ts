@@ -1,4 +1,4 @@
-import type { PollRequestBody, SendRequestBody } from '@kadena/types';
+import type { IPollRequestBody, ISendRequestBody } from '@kadena/types';
 
 import { unique } from '../util/unique';
 /**
@@ -6,6 +6,6 @@ import { unique } from '../util/unique';
  * @param execMsg {object} JSON with "cmds" field, see 'mkPublicSend'
  * @return {object} with "requestKeys" for polling.
  */
-export function createPollRequest({ cmds }: SendRequestBody): PollRequestBody {
+export function createPollRequest({ cmds }: ISendRequestBody): IPollRequestBody {
   return { requestKeys: unique(cmds.map(({ hash }) => hash)) };
 }

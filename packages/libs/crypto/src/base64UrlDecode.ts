@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import type { Base64Url } from '@kadena/types';
+import type { IBase64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';
 
@@ -12,7 +12,7 @@ const chars: string =
  *
  * @alpha
  */
-export function base64UrlDecode(str: Base64Url): string {
+export function base64UrlDecode(str: IBase64Url): string {
   const newString = String(str).replace(/[=]+$/, ''); // #31: ExtendScript bad parse of /=
   if (newString.length % 4 === 1) {
     throw new InvalidCharacterError(

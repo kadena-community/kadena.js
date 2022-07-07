@@ -1,6 +1,4 @@
 /**
- *
- *
  * @alpha
  */
 export const pactTestCommand: {

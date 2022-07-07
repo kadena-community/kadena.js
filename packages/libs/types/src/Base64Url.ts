@@ -1,1 +1,4 @@
-export type Base64Url = string;
+/**
+ * @alpha
+ */
+export type IBase64Url = string;

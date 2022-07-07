@@ -1,4 +1,4 @@
-import type { ListenRequestBody, SendRequestBody } from '@kadena/types';
+import type { IListenRequestBody, ISendRequestBody } from '@kadena/types';
 
 import { unique } from '../util/unique';
 
@@ -9,6 +9,6 @@ import { unique } from '../util/unique';
  */
 export function createListenRequest({
   cmds,
-}: SendRequestBody): ListenRequestBody {
+}: ISendRequestBody): IListenRequestBody {
   return { listen: unique(cmds.map(({ hash }) => hash))[0] };
 }

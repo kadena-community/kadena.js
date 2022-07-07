@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import type { Base64Url } from '@kadena/types';
+import type { IBase64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';
 
@@ -12,7 +12,7 @@ const chars: string =
  *
  * @alpha
  */
-export function base64UrlEncode(str: string): Base64Url {
+export function base64UrlEncode(str: string): IBase64Url {
   let block: number | undefined;
   let charCode: number;
   let output: string = '';
