@@ -45,8 +45,8 @@
     "serve-coverage": "python -m SimpleHTTPServer",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
     "test": "heft test",
-    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern /integration-test/devnet*",
-    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern /integration-test/pact-server*\" --kill-others"
+    "test:integration:devnet": "heft test --test-path-pattern /integration-test/devnet*",
+    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"heft test --test-path-pattern /integration-test/pact-server*\" --kill-others"
   },
   "lint-staged": {
     "src/**/*.ts": [
