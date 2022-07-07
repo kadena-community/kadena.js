@@ -428,6 +428,13 @@
     },
 
     {
+      "packageName": "@kadena/integration-tests",
+      "projectFolder": "packages/libs/integration-tests",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],

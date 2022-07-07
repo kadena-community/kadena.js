@@ -8,21 +8,18 @@ import {
   CommandResult,
   SendRequestBody,
   SendResponse,
-  LocalRequestBody,
   LocalResponse,
-  PollRequestBody,
   PollResponse,
-  ListenRequestBody,
   ListenResponse,
 } from '@kadena/types';
 
 import { createSampleExecTx } from './mock-txs';
-import { poll } from '../src/fetch/poll';
-import { listen } from '../src/fetch/listen';
-import { local } from '../src/fetch/local';
-import { send } from '../src/fetch/send';
-import { createPollRequest } from '../src/api/createPollRequest';
-import { createListenRequest } from '../src/api/createListenRequest';
+import { poll } from 'kadena.js/lib/fetch/poll';
+import { listen } from 'kadena.js/lib/fetch/listen';
+import { local } from 'kadena.js/lib/fetch/local';
+import { send } from 'kadena.js/lib/fetch/send';
+import { createPollRequest } from 'kadena.js/lib/api/createPollRequest';
+import { createListenRequest } from 'kadena.js/lib/api/createListenRequest';
 
 const pactServerNetwork: ChainwebNetworkId = 'development';
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
@@ -71,7 +68,7 @@ test('[Pact Server] Makes a /poll request and retrieve result', async () => {
     pactServerApiHost,
   );
   const actualInArray = Object.values(actual);
-  const expected: PollResponse = {
+  const expected: CommandResult = {
     continuation: null,
     gas: 0,
     logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
@@ -93,7 +90,7 @@ test('[Pact Server] Makes a /listen request and retrieve result', async () => {
     pactServerApiHost,
   );
   const { logs, metaData, txId, ...actualWithoutLogsAndMetaData } = actual;
-  const expected: ListenResponse = {
+  const expected: Omit<ListenResponse, 'logs' | 'metaData' | 'txId'> = {
     continuation: null,
     gas: 0,
     reqKey: signedCommand.hash,

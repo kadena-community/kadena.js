@@ -7,21 +7,17 @@ import {
   CommandResult,
   SendRequestBody,
   SendResponse,
-  LocalRequestBody,
   LocalResponse,
-  PollRequestBody,
   PollResponse,
-  ListenRequestBody,
   ListenResponse,
-  Base64Url,
 } from '@kadena/types';
-import { local } from '../src/fetch/local';
-import { poll } from '../src/fetch/poll';
-import { listen } from '../src/fetch/listen';
-import { send } from '../src/fetch/send';
-import { spv } from '../src/fetch/spv';
-import { createPollRequest } from '../src/api/createPollRequest';
-import { createListenRequest } from '../src/api/createListenRequest';
+import { poll } from 'kadena.js/lib/fetch/poll';
+import { listen } from 'kadena.js/lib/fetch/listen';
+import { local } from 'kadena.js/lib/fetch/local';
+import { send } from 'kadena.js/lib/fetch/send';
+import { spv } from 'kadena.js/lib/fetch/spv';
+import { createPollRequest } from 'kadena.js/lib/api/createPollRequest';
+import { createListenRequest } from 'kadena.js/lib/api/createListenRequest';
 import { createSampleExecTx, createSampleContTx } from './mock-txs';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
@@ -159,7 +155,7 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
 
 test('[DevNet] Makes a cross chain transfer /send exec command request , then makes /spv request and retrieve proof, then makes a /send cont command request and retrieve result', async () => {
   //Initiates a cross chain transfer
-  send(sendReq2, devnetApiHost)
+  return send(sendReq2, devnetApiHost)
     .then((actual: SendResponse) => {
       const expected: SendResponse = {
         requestKeys: [signedCommand2.hash],
@@ -169,7 +165,7 @@ test('[DevNet] Makes a cross chain transfer /send exec command request , then ma
     .then(async () => {
       // wait for the tx to complete
       const actual = await listen(createListenRequest(sendReq1), devnetApiHost);
-      const { result, ...rest } = actual;
+      const { result } = actual;
       const { status } = result;
       expect(status).toEqual('success');
     })
@@ -182,7 +178,7 @@ test('[DevNet] Makes a cross chain transfer /send exec command request , then ma
       const expected = '';
       expect(actual).toEqual(expected);
       //sleep
-      ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
+      return ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
     })
     .then(async () => {
       const actual = await spv(

@@ -1,22 +1,21 @@
 import {
   NetworkId,
-  CommandPayload,
   Command,
-  SignatureWithHash,
   KeyPair,
   MetaData,
   Proof,
   PactTransactionHash,
+  EnvData,
 } from '@kadena/types';
 
-import { prepareExecCommand } from '../src/api/prepareExecCommand';
-import { prepareContCommand } from '../src/api/prepareContCommand';
+import { prepareExecCommand } from 'kadena.js/lib/api/prepareExecCommand';
+import { prepareContCommand } from 'kadena.js/lib/api/prepareContCommand';
 
 export function createSampleExecTx(
   network: NetworkId,
   keyPair: KeyPair,
   pactCode: string,
-  envData: object | null = null,
+  envData: EnvData = null,
 ): Command {
   const nonce: string = 'step01';
   const meta: MetaData = {
@@ -34,7 +33,7 @@ export function createSampleContTx(
   network: NetworkId,
   keyPair: KeyPair,
   pactId: PactTransactionHash,
-  envData: object | null = null,
+  envData: EnvData = null,
   proof: Proof,
 ): Command {
   const nonce: string = 'step02';

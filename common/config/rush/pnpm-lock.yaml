@@ -28,6 +28,33 @@ importers:
       '@types/jest': 27.5.2
       '@types/node': 16.11.41
 
+  ../../packages/libs/integration-tests:
+    specifiers:
+      '@kadena/heft-rig': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/jest': ^27.5.1
+      '@types/node': ^16.0.0
+      blakejs: ^1.2.1
+      concurrently: ^7.2.2
+      kadena.js: workspace:*
+      tweetnacl: ^1.0.3
+    dependencies:
+      '@kadena/types': link:../types
+      blakejs: 1.2.1
+      kadena.js: link:../kadena.js
+      tweetnacl: 1.0.3
+    devDependencies:
+      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@rushstack/eslint-config': 2.6.2
+      '@rushstack/heft': 0.46.1
+      '@types/heft-jest': 1.0.3
+      '@types/jest': 27.5.2
+      '@types/node': 16.11.41
+      concurrently: 7.2.2
+
   ../../packages/libs/kadena.js:
     specifiers:
       '@kadena/crypto': workspace:*
@@ -41,7 +68,6 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.23.0
       '@typescript-eslint/parser': ^5.23.0
       blakejs: ^1.2.1
-      concurrently: ^7.2.2
       eslint: ^8.15.0
       eslint-config-airbnb-base: ^15.0.0
       eslint-config-airbnb-typescript: ^17.0.0
@@ -75,7 +101,6 @@ importers:
       '@types/node-fetch': 2.6.2
       '@typescript-eslint/eslint-plugin': 5.29.0_c98dd95c676de54ce87ba8db61cd826d
       '@typescript-eslint/parser': 5.29.0_eslint@8.18.0
-      concurrently: 7.2.2
       eslint: 8.18.0
       eslint-config-airbnb-base: 15.0.0_9462c2f560e8d8d9149a63cde905d125
       eslint-config-airbnb-typescript: 17.0.0_e9f3da126f31877f89120f08c624316f
