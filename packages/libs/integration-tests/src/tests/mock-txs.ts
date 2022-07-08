@@ -6,6 +6,7 @@ import {
   Proof,
   PactTransactionHash,
   EnvData,
+  ChainwebChainId,
 } from '@kadena/types';
 
 import { prepareExecCommand } from 'kadena.js/lib/api/prepareExecCommand';
@@ -35,13 +36,14 @@ export function createSampleContTx(
   pactId: PactTransactionHash,
   envData: EnvData = null,
   proof: Proof,
+  targetChainId: ChainwebChainId,
 ): Command {
   const nonce: string = 'step02';
   const meta: MetaData = {
     creationTime: Math.round(new Date().getTime() / 1000) - 1,
     ttl: 28800,
     gasLimit: 10000,
-    chainId: '0',
+    chainId: targetChainId,
     gasPrice: 0.00001,
     sender: 'k:'.concat(keyPair.publicKey),
   };

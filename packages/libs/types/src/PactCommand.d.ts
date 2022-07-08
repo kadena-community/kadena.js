@@ -225,7 +225,7 @@ type ChainwebResponseMetaData = {
   blockTime: number;
   blockHeight: number;
   prevBlockHash: string;
-  publicMeta: MetaData;
+  publicMeta?: MetaData;
 };
 
 /**

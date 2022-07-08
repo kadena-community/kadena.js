@@ -47,10 +47,10 @@ test('[Pact Server] Makes a /send request and retrieve request key', async () =>
 
 test('[Pact Server] Makes a /local request and retrieve result', async () => {
   const actual: LocalResponse = await local(signedCommand, pactServerApiHost);
-  const { logs, ...actualWithoutLogs } = actual;
-  const expected: Omit<CommandResult, 'logs'> = {
+  const expected: CommandResult = {
     reqKey: signedCommand.hash,
     txId: null,
+    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
     result: {
       data: 3,
       status: 'success',
@@ -59,7 +59,7 @@ test('[Pact Server] Makes a /local request and retrieve result', async () => {
     continuation: null,
     metaData: null,
   };
-  expect(actualWithoutLogs).toEqual(expected);
+  expect(actual).toEqual(expected);
 });
 
 test('[Pact Server] Makes a /poll request and retrieve result', async () => {
@@ -89,15 +89,17 @@ test('[Pact Server] Makes a /listen request and retrieve result', async () => {
     createListenRequest(sendReq),
     pactServerApiHost,
   );
-  const { logs, metaData, txId, ...actualWithoutLogsAndMetaData } = actual;
-  const expected: Omit<ListenResponse, 'logs' | 'metaData' | 'txId'> = {
+  const expected: ListenResponse = {
     continuation: null,
     gas: 0,
+    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+    metaData: null,
     reqKey: signedCommand.hash,
     result: {
       data: 3,
       status: 'success',
     },
+    txId: 0,
   };
-  expect(actualWithoutLogsAndMetaData).toEqual(expected);
+  expect(actual).toEqual(expected);
 });
