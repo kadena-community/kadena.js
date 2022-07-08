@@ -25,7 +25,7 @@ export function createSampleExecTx(
     gasLimit: 10000,
     chainId: '0',
     gasPrice: 0.00001,
-    sender: 'k:'.concat(keyPair.publicKey),
+    sender: `k:${keyPair.publicKey}`,
   };
   return prepareExecCommand([keyPair], nonce, pactCode, envData, meta, network);
 }
@@ -45,7 +45,7 @@ export function createSampleContTx(
     gasLimit: 10000,
     chainId: targetChainId,
     gasPrice: 0.00001,
-    sender: 'k:'.concat(keyPair.publicKey),
+    sender: `k:${keyPair.publicKey}`,
   };
   const step = 1;
   const rollback = false;
