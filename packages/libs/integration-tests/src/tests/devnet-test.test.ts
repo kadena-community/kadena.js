@@ -12,13 +12,17 @@ import {
   ListenResponse,
   PactEvent,
 } from '@kadena/types';
-import { poll } from 'kadena.js/lib/fetch/poll';
-import { listen } from 'kadena.js/lib/fetch/listen';
-import { local } from 'kadena.js/lib/fetch/local';
-import { send } from 'kadena.js/lib/fetch/send';
-import { spv } from 'kadena.js/lib/fetch/spv';
-import { createPollRequest } from 'kadena.js/lib/api/createPollRequest';
-import { createListenRequest } from 'kadena.js/lib/api/createListenRequest';
+
+import {
+  poll,
+  listen,
+  local,
+  send,
+  spv,
+  createPollRequest,
+  createListenRequest,
+} from 'kadena.js';
+
 import { createSampleExecTx, createSampleContTx } from './mock-txs';
 
 const devnetNetwork: ChainwebNetworkId = 'development';

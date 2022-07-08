@@ -13,13 +13,16 @@ import {
   ListenResponse,
 } from '@kadena/types';
 
+import {
+  poll,
+  listen,
+  local,
+  send,
+  createPollRequest,
+  createListenRequest,
+} from 'kadena.js';
+
 import { createSampleExecTx } from './mock-txs';
-import { poll } from 'kadena.js/lib/fetch/poll';
-import { listen } from 'kadena.js/lib/fetch/listen';
-import { local } from 'kadena.js/lib/fetch/local';
-import { send } from 'kadena.js/lib/fetch/send';
-import { createPollRequest } from 'kadena.js/lib/api/createPollRequest';
-import { createListenRequest } from 'kadena.js/lib/api/createListenRequest';
 
 const pactServerNetwork: ChainwebNetworkId = 'development';
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
