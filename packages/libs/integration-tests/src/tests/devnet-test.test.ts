@@ -81,14 +81,14 @@ test('[DevNet] Makes a /send cross-chain request and retrieve request key', asyn
   const expected: SendResponse = {
     requestKeys: [signedCommand2.hash],
   };
-  console.log('/send cross-chain req' + JSON.stringify(sendReq2));
-  console.log('/send cross-chain' + JSON.stringify(actual));
   expect(actual).toEqual(expected);
 });
 
-/*
 test('[DevNet] Makes a /local request and retrieve result', async () => {
-  const actual: LocalResponse = await local(signedCommand1, devnetApiHostChain0);
+  const actual: LocalResponse = await local(
+    signedCommand1,
+    devnetApiHostChain0,
+  );
   const { logs, metaData, ...actualWithoutLogsAndMetaData } = actual;
   const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
     reqKey: signedCommand1.hash,
@@ -105,10 +105,10 @@ test('[DevNet] Makes a /local request and retrieve result', async () => {
   expect(logs).toBeTruthy();
 
   // Expect metaData.publicMeta to equal what was supplied in the Command.
-  expect(metaData?.publicMeta.chainId).toEqual('0');
-  expect(metaData?.publicMeta.sender).toEqual(devnetAccount));
+  expect(metaData?.publicMeta).toBeDefined();
+  expect(metaData?.publicMeta?.chainId).toEqual('0');
+  expect(metaData?.publicMeta?.sender).toEqual(devnetAccount);
 });
-
 
 test('[DevNet] Makes a /poll request and retrieve empty result while tx is in mempool', async () => {
   const actual: PollResponse = await poll(
@@ -118,7 +118,6 @@ test('[DevNet] Makes a /poll request and retrieve empty result while tx is in me
   const expected: PollResponse = {};
   expect(actual).toEqual(expected);
 });
-
 
 jest.setTimeout(100000);
 test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll request and retrieve result', async () => {
@@ -135,7 +134,7 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
   // sleep to give time for blocks to be mined.
   // NOTE: This might be a potential source of tests failing.
   await ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(40000);
-  
+
   await listen(createListenRequest(sendReq1), devnetApiHostChain0)
     .then((actual: ListenResponse) => {
       const { logs, metaData, txId, ...actualWithoutLogsAndMetaData } = actual;
@@ -145,7 +144,10 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
       expect(actualWithoutLogsAndMetaData).toEqual(expectedResult);
     })
     .then(async () => {
-      const actual = await poll(createPollRequest(sendReq1), devnetApiHostChain0);
+      const actual = await poll(
+        createPollRequest(sendReq1),
+        devnetApiHostChain0,
+      );
 
       const actualInArray = Object.values(actual).map((res) => {
         const { logs, metaData, txId, ...resultWithoutDynamicData } = res;
@@ -157,7 +159,6 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
       expect(actualInArray).toEqual([expectedResult]);
     });
 });
-*/
 
 jest.setTimeout(300000);
 test('[DevNet] Makes a cross chain transfer /send exec command request , then makes /spv request and retrieve proof, then makes a /send cont command request and retrieve result', async () => {
@@ -169,7 +170,6 @@ test('[DevNet] Makes a cross chain transfer /send exec command request , then ma
     .then((actual: ListenResponse) => {
       const { result } = actual;
       const { status } = result;
-      console.log('spv /listen: ' + JSON.stringify(actual));
       expect(status).toEqual('success');
     })
     .then(async () => {
@@ -198,11 +198,10 @@ test('[DevNet] Makes a cross chain transfer /send exec command request , then ma
         devnetKeyPair,
         hash,
         {},
-        proof,
+        proof.replace(/\"/g, '').replace(/\\/g, ''),
         '1',
       );
       const contReq: SendRequestBody = { cmds: [contReqPayload] };
-      console.log('/spv send cont: ' + JSON.stringify(contReq));
       const actual: SendResponse = await send(contReq, devnetApiHostChain1);
       const expected: SendResponse = {
         requestKeys: [contReqPayload.hash],
@@ -220,7 +219,6 @@ test('[DevNet] Makes a cross chain transfer /send exec command request , then ma
       );
       const { result } = actual;
       const { status } = result;
-      console.log('spv /listen: cont ' + JSON.stringify(actual));
       expect(status).toEqual('success');
     });
 });
