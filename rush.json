@@ -430,7 +430,7 @@
     {
       "packageName": "@kadena/integration-tests",
       "projectFolder": "packages/libs/integration-tests",
-      "tags": ["libs"],
+      "tags": ["tools"],
       "shouldPublish": false
     },
 
