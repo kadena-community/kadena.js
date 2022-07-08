@@ -34,7 +34,7 @@ const devnetKeyPair = {
   publicKey: 'f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
   secretKey: 'da81490c7efd5a95398a3846fa57fd17339bdf1b941d102f2d3217ad29785ff0',
 };
-const devnetAccount = 'k:'.concat(devnetKeyPair.publicKey);
+const devnetAccount = `k:${devnetKeyPair.publicKey}`;
 
 const signedCommand1: Command = createSampleExecTx(
   devnetNetwork,
