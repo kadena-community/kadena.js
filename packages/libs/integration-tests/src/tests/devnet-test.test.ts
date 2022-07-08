@@ -10,6 +10,7 @@ import {
   LocalResponse,
   PollResponse,
   ListenResponse,
+  PactEvent,
 } from '@kadena/types';
 import { poll } from 'kadena.js/lib/fetch/poll';
 import { listen } from 'kadena.js/lib/fetch/listen';
@@ -130,6 +131,17 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
       status: 'success',
     },
   };
+  const expectedEvent: Array<PactEvent> = [
+    {
+      module: {
+        name: 'coin',
+        namespace: null,
+      },
+      moduleHash: 'rE7DU8jlQL9x_MPYuniZJf5ICBTAEHAIFQCB4blofP4',
+      name: 'TRANSFER',
+      params: [devnetAccount, devnetAccount, 0.00005],
+    },
+  ];
 
   // sleep to give time for blocks to be mined.
   // NOTE: This might be a potential source of tests failing.
@@ -137,11 +149,14 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
 
   await listen(createListenRequest(sendReq1), devnetApiHostChain0)
     .then((actual: ListenResponse) => {
-      const { logs, metaData, txId, ...actualWithoutLogsAndMetaData } = actual;
+      const { logs, metaData, txId, ...resultWithoutDynamicData } = actual;
       expect(logs).toBeTruthy();
       expect(txId).toBeTruthy();
       expect(metaData).toBeTruthy();
-      expect(actualWithoutLogsAndMetaData).toEqual(expectedResult);
+      if (resultWithoutDynamicData.events) {
+        expect(actual.events).toEqual(expectedEvent);
+      }
+      expect(resultWithoutDynamicData).toEqual(expectedResult);
     })
     .then(async () => {
       const actual = await poll(
@@ -154,6 +169,9 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
         expect(logs).toBeTruthy();
         expect(txId).toBeTruthy();
         expect(metaData).toBeTruthy();
+        if (resultWithoutDynamicData.events) {
+          expect(actual.events).toEqual(expectedEvent);
+        }
         return resultWithoutDynamicData;
       });
       expect(actualInArray).toEqual([expectedResult]);

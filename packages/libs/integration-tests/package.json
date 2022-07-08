@@ -13,7 +13,7 @@
     "build": "heft build --clean",
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
-    "test": "rushx build && heft test --no-build",
+    "test": "",
     "test:integration:devnet": "rushx build && heft test --no-build --test-path-pattern devnet*",
     "test:integration:pactserver": "concurrently \"npm:start:pact\" \"rushx build && heft test --no-build --test-path-pattern pact-server*\" --kill-others"
   },
