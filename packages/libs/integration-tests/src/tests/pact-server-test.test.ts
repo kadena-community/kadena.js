@@ -40,69 +40,76 @@ const sendReq: SendRequestBody = {
   cmds: [signedCommand],
 };
 
-test('[Pact Server] Makes a /send request and retrieve request key', async () => {
-  const actual: SendResponse = await send(sendReq, pactServerApiHost);
-  const expected = {
-    requestKeys: [signedCommand.hash],
-  };
-  expect(actual).toEqual(expected);
+describe('[Pact Server] Makes /send request', () => {
+  it('Receives request key of transaction', async () => {
+    const actual: SendResponse = await send(sendReq, pactServerApiHost);
+    const expected = {
+      requestKeys: [signedCommand.hash],
+    };
+    expect(actual).toEqual(expected);
+  });
 });
 
-test('[Pact Server] Makes a /local request and retrieve result', async () => {
-  const actual: LocalResponse = await local(signedCommand, pactServerApiHost);
-  const expected: CommandResult = {
-    reqKey: signedCommand.hash,
-    txId: null,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    gas: 0,
-    continuation: null,
-    metaData: null,
-  };
-  expect(actual).toEqual(expected);
+describe('[Pact Server] Makes /local request', () => {
+  it('Receives the expected transaction result', async () => {
+    const actual: LocalResponse = await local(signedCommand, pactServerApiHost);
+    const expected: CommandResult = {
+      reqKey: signedCommand.hash,
+      txId: null,
+      logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+      result: {
+        data: 3,
+        status: 'success',
+      },
+      gas: 0,
+      continuation: null,
+      metaData: null,
+    };
+    expect(actual).toEqual(expected);
+  });
 });
 
-test('[Pact Server] Makes a /poll request and retrieve result', async () => {
-  const actual: PollResponse = await poll(
-    createPollRequest(sendReq),
-    pactServerApiHost,
-  );
-  const actualInArray = Object.values(actual);
-  const expected: CommandResult = {
-    continuation: null,
-    gas: 0,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-    metaData: null,
-    reqKey: signedCommand.hash,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    txId: 0,
-  };
-
-  expect(actualInArray).toEqual([expected]);
+describe('[Pact Server] Makes /poll request', () => {
+  it('Receives the expected transaction result', async () => {
+    const actual: PollResponse = await poll(
+      createPollRequest(sendReq),
+      pactServerApiHost,
+    );
+    const actualInArray = Object.values(actual);
+    const expected: CommandResult = {
+      continuation: null,
+      gas: 0,
+      logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+      metaData: null,
+      reqKey: signedCommand.hash,
+      result: {
+        data: 3,
+        status: 'success',
+      },
+      txId: 0,
+    };
+    expect(actualInArray).toEqual([expected]);
+  });
 });
 
-test('[Pact Server] Makes a /listen request and retrieve result', async () => {
-  const actual: ListenResponse = await listen(
-    createListenRequest(sendReq),
-    pactServerApiHost,
-  );
-  const expected: ListenResponse = {
-    continuation: null,
-    gas: 0,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-    metaData: null,
-    reqKey: signedCommand.hash,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    txId: 0,
-  };
-  expect(actual).toEqual(expected);
+describe('[Pact Server] Makes /listen request', () => {
+  it('Receives the expected transaction result', async () => {
+    const actual: ListenResponse = await listen(
+      createListenRequest(sendReq),
+      pactServerApiHost,
+    );
+    const expected: ListenResponse = {
+      continuation: null,
+      gas: 0,
+      logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+      metaData: null,
+      reqKey: signedCommand.hash,
+      result: {
+        data: 3,
+        status: 'success',
+      },
+      txId: 0,
+    };
+    expect(actual).toEqual(expected);
+  });
 });

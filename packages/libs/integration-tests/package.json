@@ -12,8 +12,8 @@
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
     "test": "",
-    "test:integration:devnet": "heft test --no-build --test-path-pattern devnet*",
-    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"heft test --no-build --test-path-pattern pact-server*\" --kill-others"
+    "test:integration:devnet": "heft test --test-path-pattern devnet*",
+    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"sleep 5 && heft test --test-path-pattern pact-server* && sleep 5\" --kill-others"
   },
   "lint-staged": {
     "src/**/*.ts": [
@@ -37,6 +37,7 @@
     "@types/heft-jest": "~1.0.3",
     "@types/jest": "^27.5.1",
     "@types/node": "^16.0.0",
-    "concurrently": "^7.2.2"
+    "concurrently": "^7.2.2",
+    "exponential-backoff": "~3.1.0"
   }
 }

@@ -13,7 +13,7 @@ mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
 
-test('/listen should return request keys of txs submitted', async () => {
+test('/listen should return result of tx queried', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
   const requestKey: ListenRequestBody = {
     listen: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',

@@ -19,7 +19,7 @@ mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
 
-test('/local should return request keys of txs submitted', async () => {
+test('/local should return result of tx queried', async () => {
   const commandStr1 = JSON.stringify(pactTestCommand);
   const keyPair1 = {
     publicKey:

@@ -24,6 +24,7 @@ import {
 } from 'kadena.js';
 
 import { createSampleExecTx, createSampleContTx } from './mock-txs';
+import { backOff } from 'exponential-backoff';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =
@@ -68,64 +69,75 @@ const signedCommand2: Command = createSampleExecTx(
   `(coin.transfer-crosschain "${devnetAccount}" "${devnetAccount}" (read-keyset "test-keyset") "${1}" ${0.05})`,
   { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
 );
+
 const sendReq2: SendRequestBody = {
   cmds: [signedCommand2],
 };
 
-test('[DevNet] Makes a /send simple request and retrieve request key', async () => {
-  const actual: SendResponse = await send(sendReq1, devnetApiHostChain0);
-  const expected: SendResponse = {
-    requestKeys: [signedCommand1.hash],
-  };
-  expect(actual).toEqual(expected);
+function sleep20Seconds(): Promise<unknown> {
+  return ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
+}
+
+describe('[DevNet] Makes /send request of simple transaction', () => {
+  it('Receives request key of transaction', async () => {
+    const actual: SendResponse = await send(sendReq1, devnetApiHostChain0);
+    const expected: SendResponse = {
+      requestKeys: [signedCommand1.hash],
+    };
+    expect(actual).toEqual(expected);
+  });
 });
 
-test('[DevNet] Makes a /send cross-chain request and retrieve request key', async () => {
-  //Initiates a cross chain transfer
-  const actual: SendResponse = await send(sendReq2, devnetApiHostChain0);
-  const expected: SendResponse = {
-    requestKeys: [signedCommand2.hash],
-  };
-  expect(actual).toEqual(expected);
+describe('[DevNet] Makes /send request to initiate a cross-chain transaction', () => {
+  test('Receives request key of transaction', async () => {
+    const actual: SendResponse = await send(sendReq2, devnetApiHostChain0);
+    const expected: SendResponse = {
+      requestKeys: [signedCommand2.hash],
+    };
+    expect(actual).toEqual(expected);
+  });
 });
 
-test('[DevNet] Makes a /local request and retrieve result', async () => {
-  const actual: LocalResponse = await local(
-    signedCommand1,
-    devnetApiHostChain0,
-  );
-  const { logs, metaData, ...actualWithoutLogsAndMetaData } = actual;
-  const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
-    reqKey: signedCommand1.hash,
-    txId: null,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    gas: 5,
-    continuation: null,
-  };
-  expect(actualWithoutLogsAndMetaData).toEqual(expected);
-
-  expect(logs).toBeTruthy();
-
-  // Expect metaData.publicMeta to equal what was supplied in the Command.
-  expect(metaData?.publicMeta).toBeDefined();
-  expect(metaData?.publicMeta?.chainId).toEqual('0');
-  expect(metaData?.publicMeta?.sender).toEqual(devnetAccount);
+describe('[DevNet] Makes /local request of simple transaction', () => {
+  it('Receives the expected transaction result', async () => {
+    const actual: LocalResponse = await local(
+      signedCommand1,
+      devnetApiHostChain0,
+    );
+    const { logs, metaData, ...actualWithoutLogsAndMetaData } = actual;
+    const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
+      reqKey: signedCommand1.hash,
+      txId: null,
+      result: {
+        data: 3,
+        status: 'success',
+      },
+      gas: 5,
+      continuation: null,
+    };
+    expect(actualWithoutLogsAndMetaData).toEqual(expected);
+    expect(logs).toBeTruthy();
+    expect(metaData?.publicMeta).toBeDefined();
+    expect(metaData?.publicMeta?.chainId).toEqual('0');
+    expect(metaData?.publicMeta?.sender).toEqual(devnetAccount);
+  });
 });
 
-test('[DevNet] Makes a /poll request and retrieve empty result while tx is in mempool', async () => {
-  const actual: PollResponse = await poll(
-    createPollRequest(sendReq1),
-    devnetApiHostChain0,
-  );
-  const expected: PollResponse = {};
-  expect(actual).toEqual(expected);
+describe('[DevNet] Makes /poll request of simple transaction', () => {
+  it('Receives empty result while tx is still in mempool', async () => {
+    const actual: PollResponse = await poll(
+      createPollRequest(sendReq1),
+      devnetApiHostChain0,
+    );
+    const expected: PollResponse = {};
+    expect(actual).toEqual(expected);
+  });
 });
 
+// NOTE: Sets test timeout to 100 seconds (~2 min) since devnet blockrate is slower than
+// pact-server.
 jest.setTimeout(100000);
-test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll request and retrieve result', async () => {
+describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
   const expectedResult: Omit<CommandResult, 'logs' | 'metaData' | 'txId'> = {
     continuation: null,
     gas: 5,
@@ -135,112 +147,131 @@ test('[DevNet] Makes a /listen request and retrieve result, then makes a /poll r
       status: 'success',
     },
   };
-  const expectedEvent: Array<PactEvent> = [
+  const expectedEvent: Array<Omit<PactEvent, 'moduleHash'>> = [
     {
       module: {
         name: 'coin',
         namespace: null,
       },
-      moduleHash: 'rE7DU8jlQL9x_MPYuniZJf5ICBTAEHAIFQCB4blofP4',
       name: 'TRANSFER',
       params: [devnetAccount, devnetAccount, 0.00005],
     },
   ];
 
-  // sleep to give time for blocks to be mined.
-  // NOTE: This might be a potential source of tests failing.
-  await ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(40000);
+  it('Makes /listen request and retrieves expected result', async () => {
+    // sleep to give time for blocks to be mined.
+    // NOTE: This might be a potential source of tests failing.
+    //await sleep20Seconds();
+    //await sleep20Seconds();
 
-  await listen(createListenRequest(sendReq1), devnetApiHostChain0)
-    .then((actual: ListenResponse) => {
-      const { logs, metaData, txId, ...resultWithoutDynamicData } = actual;
+    await backOff(() =>
+      listen(createListenRequest(sendReq1), devnetApiHostChain0).then(
+        (actual: ListenResponse) => {
+          const { logs, metaData, txId, events, ...resultWithoutDynamicData } =
+            actual;
+          expect(logs).toBeTruthy();
+          expect(txId).toBeTruthy();
+          expect(metaData).toBeTruthy();
+          if (events !== undefined && events && events[0]) {
+            const { moduleHash, ...eventWithNoModHash } = events[0];
+            expect([eventWithNoModHash]).toEqual(expectedEvent);
+            expect(moduleHash).toBeTruthy();
+          }
+          expect(resultWithoutDynamicData).toEqual(expectedResult);
+        },
+      ),
+    );
+  });
+
+  it('Makes /poll request and retrieves expected result after /listen succeeds', async () => {
+    const actual = await poll(createPollRequest(sendReq1), devnetApiHostChain0);
+    const actualInArray = Object.values(actual).map((res) => {
+      const { logs, metaData, txId, events, ...resultWithoutDynamicData } = res;
       expect(logs).toBeTruthy();
       expect(txId).toBeTruthy();
       expect(metaData).toBeTruthy();
-      if (resultWithoutDynamicData.events) {
-        expect(actual.events).toEqual(expectedEvent);
+      if (events !== undefined && events && events[0]) {
+        const { moduleHash, ...eventWithNoModHash } = events[0];
+        expect([eventWithNoModHash]).toEqual(expectedEvent);
+        expect(moduleHash).toBeTruthy();
       }
-      expect(resultWithoutDynamicData).toEqual(expectedResult);
-    })
-    .then(async () => {
-      const actual = await poll(
-        createPollRequest(sendReq1),
-        devnetApiHostChain0,
-      );
-
-      const actualInArray = Object.values(actual).map((res) => {
-        const { logs, metaData, txId, ...resultWithoutDynamicData } = res;
-        expect(logs).toBeTruthy();
-        expect(txId).toBeTruthy();
-        expect(metaData).toBeTruthy();
-        if (resultWithoutDynamicData.events) {
-          expect(actual.events).toEqual(expectedEvent);
-        }
-        return resultWithoutDynamicData;
-      });
-      expect(actualInArray).toEqual([expectedResult]);
+      return resultWithoutDynamicData;
     });
+    expect(actualInArray).toEqual([expectedResult]);
+  });
 });
 
+// NOTE: Sets test timeout to 300 seconds (5 min) since devnet blockrate is slower than
+// pact-server.
 jest.setTimeout(300000);
-test('[DevNet] Makes a cross chain transfer /send exec command request , then makes /spv request and retrieve proof, then makes a /send cont command request and retrieve result', async () => {
-  // sleep to give time for blocks to be mined.
-  // NOTE: This might be a potential source of tests failing.
-  await ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(40000);
+describe('[DevNet] Finishes a cross-chain transfer', () => {
+  it('Retrieves expected result of transaction that initiated the cross-chain', async () => {
+    // sleep to give time for blocks to be mined.
+    // NOTE: This might be a potential source of tests failing.
+    //await sleep20Seconds();
+    //await sleep20Seconds();
 
-  await listen(createListenRequest(sendReq2), devnetApiHostChain0)
-    .then((actual: ListenResponse) => {
-      const { result } = actual;
-      const { status } = result;
-      expect(status).toEqual('success');
-    })
-    .then(async () => {
-      // Try to fetch /spv but fails because instance is too young.
-      const actual = spv(
+    const actual: ListenResponse = await backOff(() =>
+      listen(createListenRequest(sendReq2), devnetApiHostChain0),
+    );
+    const { result } = actual;
+    const { status } = result;
+    expect(status).toEqual('success');
+  });
+
+  it('/spv fails because instance is too young', async () => {
+    const actual = spv(
+      { requestKey: signedCommand2.hash, targetChainId: '1' },
+      devnetApiHostChain0,
+    );
+    const expected =
+      'SPV target not reachable: target chain not reachable. Chainweb instance is too young';
+    return expect(actual).rejects.toThrowError(expected);
+  });
+
+  it('Retrieves /spv proof after waiting some time and completes the cross-chain transfer', async () => {
+    await sleep20Seconds();
+    await sleep20Seconds();
+    await sleep20Seconds();
+    await sleep20Seconds();
+
+    // Retrieve spv proof
+    const actualSPVProof = await backOff(() =>
+      spv(
         { requestKey: signedCommand2.hash, targetChainId: '1' },
         devnetApiHostChain0,
-      );
-      const expected =
-        'SPV target not reachable: target chain not reachable. Chainweb instance is too young';
-      return expect(actual).rejects.toThrowError(expected);
-    })
-    .then(async () => {
-      // Try to fetch /spv proof again after waiting some time.
-      await ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(80000);
-      const actual = await spv(
-        { requestKey: signedCommand2.hash, targetChainId: '1' },
-        devnetApiHostChain0,
-      );
-      return { proof: actual, hash: signedCommand2.hash };
-    })
-    .then(async ({ proof, hash }) => {
-      // Complete cross-chain transfer with a continuation in target chain.
-      const contReqPayload: Command = createSampleContTx(
-        devnetNetwork,
-        devnetKeyPair,
-        hash,
-        {},
-        proof.replace(/\"/g, '').replace(/\\/g, ''),
-        '1',
-      );
-      const contReq: SendRequestBody = { cmds: [contReqPayload] };
-      const actual: SendResponse = await send(contReq, devnetApiHostChain1);
-      const expected: SendResponse = {
-        requestKeys: [contReqPayload.hash],
-      };
-      expect(actual).toEqual(expected);
-      return contReq;
-    })
-    .then(async (sendContReq: SendRequestBody) => {
-      // sleep to give time for blocks to be mined.
-      // NOTE: This might be a potential source of tests failing.
-      await ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(40000);
-      const actual: CommandResult = await listen(
-        createListenRequest(sendContReq),
-        devnetApiHostChain1,
-      );
-      const { result } = actual;
-      const { status } = result;
-      expect(status).toEqual('success');
-    });
+      ),
+    );
+    const proof = actualSPVProof;
+    const hash = signedCommand2.hash;
+
+    // Submit /send request finishing cross-chain transfer in target chain
+    const contReqPayload: Command = createSampleContTx(
+      devnetNetwork,
+      devnetKeyPair,
+      hash,
+      {},
+      proof.replace(/\"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
+      '1',
+    );
+    const contReq: SendRequestBody = { cmds: [contReqPayload] };
+    const actualContSendResp: SendResponse = await send(
+      contReq,
+      devnetApiHostChain1,
+    );
+    const expectedContSendResp: SendResponse = {
+      requestKeys: [contReqPayload.hash],
+    };
+    expect(actualContSendResp).toEqual(expectedContSendResp);
+
+    //await sleep20Seconds();
+    //await sleep20Seconds();
+    // Retrieve result of finishing cross-chain transfer
+    const actualContResult: CommandResult = await backOff(() =>
+      listen(createListenRequest(contReq), devnetApiHostChain1),
+    );
+    const { result } = actualContResult;
+    const { status } = result;
+    expect(status).toEqual('success');
+  });
 });
