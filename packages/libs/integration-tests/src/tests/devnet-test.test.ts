@@ -159,11 +159,6 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
   ];
 
   it('Makes /listen request and retrieves expected result', async () => {
-    // sleep to give time for blocks to be mined.
-    // NOTE: This might be a potential source of tests failing.
-    //await sleep20Seconds();
-    //await sleep20Seconds();
-
     await backOff(() =>
       listen(createListenRequest(sendReq1), devnetApiHostChain0).then(
         (actual: ListenResponse) => {
@@ -206,11 +201,6 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
 jest.setTimeout(300000);
 describe('[DevNet] Finishes a cross-chain transfer', () => {
   it('Retrieves expected result of transaction that initiated the cross-chain', async () => {
-    // sleep to give time for blocks to be mined.
-    // NOTE: This might be a potential source of tests failing.
-    //await sleep20Seconds();
-    //await sleep20Seconds();
-
     const actual: ListenResponse = await backOff(() =>
       listen(createListenRequest(sendReq2), devnetApiHostChain0),
     );
@@ -230,6 +220,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
   });
 
   it('Retrieves /spv proof after waiting some time and completes the cross-chain transfer', async () => {
+    // NOTE: sleep to prevent too young error.
     await sleep20Seconds();
     await sleep20Seconds();
     await sleep20Seconds();
@@ -264,8 +255,6 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     };
     expect(actualContSendResp).toEqual(expectedContSendResp);
 
-    //await sleep20Seconds();
-    //await sleep20Seconds();
     // Retrieve result of finishing cross-chain transfer
     const actualContResult: CommandResult = await backOff(() =>
       listen(createListenRequest(contReq), devnetApiHostChain1),
