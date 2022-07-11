@@ -1,13 +1,13 @@
 jest.mock('node-fetch');
 
 import { sign } from '@kadena/crypto';
-import { pactTestCommand } from '@kadena/crypto';
-import type { Command, SignCommand } from '@kadena/types';
+import type { Command, SignatureWithHash } from '@kadena/types';
 
 import type { ISendRequestBody, ISendResponse } from '../send';
 import { send } from '../send';
 
-import { mockFetch } from './mockFetch';
+import { mockFetch } from './mockdata/mockFetch';
+import { pactTestCommand } from './mockdata/Pact';
 
 import fetch from 'node-fetch';
 
@@ -17,16 +17,16 @@ mockedFunctionFetch.mockImplementation(
 );
 
 test('/send should return request keys of txs submitted', async () => {
-  const commandStr1 = JSON.stringify(pactTestCommand);
-  const keyPair1 = {
+  const commandStr = JSON.stringify(pactTestCommand);
+  const keyPair = {
     publicKey:
       'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
     secretKey:
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
-  const cmdWithOneSignature1: SignCommand = sign(commandStr1, keyPair1);
+  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr, keyPair);
   const signedCommand1: Command = {
-    cmd: commandStr1,
+    cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
     sigs: [{ sig: cmdWithOneSignature1.sig }],
   };
@@ -70,14 +70,11 @@ test('/send should return error if sent to wrong chain id', async () => {
   };
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
-  const responseActual: Promise<ISendResponse> = send(
-    sendReq,
-    '/wrongChain/chain/1/pact',
-  );
+  const responseActual: Promise<ISendResponse> = send(sendReq, '/wrongChain');
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
 
-test('/send should return error for duplicate txs', async () => {
+test('/send should return error if tx already exists on chain', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
   const signedCommand: Command = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
@@ -93,9 +90,6 @@ test('/send should return error for duplicate txs', async () => {
   };
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
-  const responseActual: Promise<ISendResponse> = send(
-    sendReq,
-    '/duplicate/chain/0/pact',
-  );
+  const responseActual: Promise<ISendResponse> = send(sendReq, '/duplicate');
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });

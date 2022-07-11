@@ -1,0 +1,43 @@
+{
+  "name": "@kadena/integration-tests",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "Albert G",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "heft build --clean",
+    "precommit": "pnpm run test --silent",
+    "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
+    "test": "",
+    "test:integration:devnet": "heft test --test-path-pattern devnet*",
+    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"sleep 5 && heft test --test-path-pattern pact-server* && sleep 5\" --kill-others"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/types": "workspace:*",
+    "blakejs": "^1.2.1",
+    "kadena.js": "workspace:*",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^16.0.0",
+    "concurrently": "^7.2.2",
+    "exponential-backoff": "~3.1.0"
+  }
+}

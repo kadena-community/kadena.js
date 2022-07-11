@@ -43,10 +43,7 @@
     "lint": "npx eslint . --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "serve-coverage": "python -m SimpleHTTPServer",
-    "start:pact": "rm -Rf ./log && mkdir log && pact --serve integration-test/pact-server.conf",
-    "test": "heft test",
-    "test:integration:devnet": "jest ${npm_config_single} --testPathPattern /integration-test/devnet*",
-    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"jest ${npm_config_single} --testPathPattern /integration-test/pact-server*\" --kill-others"
+    "test": "heft test"
   },
   "lint-staged": {
     "src/**/*.ts": [
@@ -74,7 +71,6 @@
     "@types/node-fetch": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
-    "concurrently": "^7.2.2",
     "eslint": "^8.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",

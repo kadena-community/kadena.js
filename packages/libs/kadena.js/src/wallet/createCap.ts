@@ -6,7 +6,7 @@ export function createCap(
   role: string,
   description: string,
   name: string,
-  args: string[] = [],
+  args: Array<string>,
 ): SigningCap {
   return {
     role,
