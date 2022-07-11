@@ -2,7 +2,7 @@
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to Kadena.js, which is hosted in the [Atom Organization](https://github.com/kadena-io/kadena.js) on GitHub.
+The following is a set of guidelines for contributing to Kadena.js, which is hosted here [Kadena.js](https://github.com/kadena-io/kadena.js) on GitHub.
 
 ### Table Of Contents
 
