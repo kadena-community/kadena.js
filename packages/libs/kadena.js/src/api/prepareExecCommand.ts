@@ -32,7 +32,7 @@ export function prepareExecCommand(
 ): ICommand {
   const signers = keyPairs.map(pullSigner);
   const cmdJSON = {
-    networkId: networkId || null,
+    networkId: networkId !== undefined ? networkId : null,
     payload: {
       exec: {
         data: envData,

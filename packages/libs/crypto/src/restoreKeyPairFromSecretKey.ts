@@ -12,7 +12,7 @@ import nacl from 'tweetnacl';
  */
 export function restoreKeyPairFromSecretKey(seed: string): IKeyPair {
   if (seed.length !== 64) {
-    throw new Error('Seed forIKeyPairgeneration has bad size');
+    throw new Error('Seed for IKeyPairgeneration has bad size');
   }
   const seedForNacl = hexToBin(seed);
   const keyPair = nacl.sign.keyPair.fromSeed(seedForNacl);

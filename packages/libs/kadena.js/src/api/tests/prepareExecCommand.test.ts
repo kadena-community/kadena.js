@@ -9,7 +9,7 @@ import {
   pactCode,
 } from './mockdata/execCommand';
 
-test('Takes in PactICommandparameters and outputs a signed PactIExecCommand Object', () => {
+test('Takes in Pact ICommandparameters and outputs a signed PactIExecCommand Object', () => {
   const actual = prepareExecCommand(keyPairs, nonce, pactCode, envData, meta);
   const expected = command;
 

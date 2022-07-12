@@ -67,7 +67,7 @@ export type SignerScheme = 'ED25519';
  * Information on the cryptographic signer authenticating a Chainweb transaction.
  *
  * @param scheme - The cryptographic signature scheme used. Defaults to "ED25519".
- * @param pubKey - todo
+ * @param pubKey - The Public Key of the signing key pair.
  * @param addr - String derived from the public key. Defaults to equal the value of `pubKey`.
  * @param clist - List of Pact capabilities associated with/installed by this signer.
  * @alpha
@@ -169,14 +169,14 @@ export interface IUserSig {
   sig: Base16String;
 }
 
-// TODO: function for gettig fromICommandPayload-> CommandPayloadStringifiedJSON
+// TODO: function for gettig from ICommandPayload-> CommandPayloadStringifiedJSON
 // TODO: Change file name to just 'Command.ts'.
 
 /**
  * The full transaction, its hash, and its signatures.
  * Used to submit dry-run (/local) or permanent (/send) transactions to Chainweb.
  *
- * @param cmd - Stringified JSON of aICommandPayloadobject. The canonic, non-malleable signed transaction data.
+ * @param cmd - Stringified JSON of a ICommandPayloadobject. The canonic, non-malleable signed transaction data.
  * @param hash - The Blake2s-256 hash of the `cmd` field value. Serves as a command's requestKey since each transaction must be unique.
  * @param sigs - List of signatures corresponding one-to-one with the `signers` array in the CommandPayload.
  * @alpha

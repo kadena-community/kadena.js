@@ -13,7 +13,7 @@ import {
   step,
 } from './mockdata/contCommand';
 
-test('Takes in PactICommandparameters and outputs a signed Pact ContICommandObject', () => {
+test('Takes in Pact ICommandparameters and outputs a signed Pact ContICommandObject', () => {
   const actual = prepareContCommand(
     keyPairs,
     nonce,
