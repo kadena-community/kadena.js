@@ -1,0 +1,19 @@
+{
+  "name": "@kadena/eslint-config",
+  "version": "0.0.1",
+  "description": "Kadena monorepo eslint-config",
+  "license": "MIT",
+  "scripts": {
+    "build": "",
+    "_phase:build": "",
+    "_phase:test": "",
+    "test": ""
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.23.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "typescript": "~4.6.3"
+  }
+}

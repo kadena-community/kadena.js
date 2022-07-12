@@ -449,6 +449,12 @@
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
       "shouldPublish": false
+    },
+    {
+      "packageName": "@kadena/eslint-config",
+      "projectFolder": "packages/tools/eslint-config",
+      "tags": ["tools"],
+      "shouldPublish": false
     }
 
     // {

@@ -42,10 +42,10 @@ export function prepareContCommand(
   const signers = keyPairs.map(pullSigner);
 
   const cmdJSON: ICommandPayload = {
-    networkId: networkId || null,
+    networkId: networkId !== undefined ? networkId : null,
     payload: {
       cont: {
-        proof: proof || null,
+        proof: proof !== undefined ? proof : null,
         pactId,
         rollback,
         step,

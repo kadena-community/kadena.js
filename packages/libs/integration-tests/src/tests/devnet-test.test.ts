@@ -167,7 +167,7 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
           expect(logs).toBeTruthy();
           expect(txId).toBeTruthy();
           expect(metaData).toBeTruthy();
-          if (events !== undefined && events && events[0]) {
+          if (events !== undefined && events.length !== 0) {
             const { moduleHash, ...eventWithNoModHash } = events[0];
             expect([eventWithNoModHash]).toEqual(expectedEvent);
             expect(moduleHash).toBeTruthy();
@@ -185,7 +185,7 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
       expect(logs).toBeTruthy();
       expect(txId).toBeTruthy();
       expect(metaData).toBeTruthy();
-      if (events !== undefined && events && events[0]) {
+      if (events !== undefined && events.length !== 0) {
         const { moduleHash, ...eventWithNoModHash } = events[0];
         expect([eventWithNoModHash]).toEqual(expectedEvent);
         expect(moduleHash).toBeTruthy();

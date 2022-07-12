@@ -38,14 +38,14 @@ export const meta: IMetaData = {
 };
 
 export const payload: ICommandPayload = {
-  networkId: networkId || null,
+  networkId: networkId !== undefined ? networkId : null,
   payload: {
     cont: {
       pactId: pactId,
       step: step,
       rollback: rollback,
       data: {},
-      proof: proof || null,
+      proof: proof !== undefined ? proof : null,
     },
   },
   signers: [

@@ -23,9 +23,9 @@ export function attachSignature(
     return keyPairs.map((keyPair) => {
       if (
         Object.prototype.hasOwnProperty.call(keyPair, 'publicKey') &&
-        keyPair.publicKey &&
+        keyPair.publicKey !== undefined &&
         Object.prototype.hasOwnProperty.call(keyPair, 'secretKey') &&
-        keyPair.secretKey
+        keyPair.secretKey !== undefined
       ) {
         return sign(msg, keyPair);
       } else {
