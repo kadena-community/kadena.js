@@ -27,6 +27,7 @@ export function base64UrlEncode(str: string): IBase64Url {
         "'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.",
       );
     }
+    /* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */
     block = ((block || 0) << 8) | charCode;
   }
   return output;

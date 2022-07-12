@@ -2,6 +2,6 @@
 require('@rushstack/eslint-config/patch/modern-module-resolution');
 
 module.exports = {
-  extends: ['@rushstack/eslint-config/profile/node'],
+  extends: ['@kadena/eslint-config/profile/lib'],
   parserOptions: { tsconfigRootDir: __dirname },
 };
