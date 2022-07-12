@@ -1,9 +1,9 @@
 import type {
-  Command,
-  CommandPayload,
+  ICommand,
+  ICommandPayload,
   EnvData,
-  KeyPair,
-  MetaData,
+  IKeyPair,
+  IMetaData,
   NetworkId,
   Nonce,
   PactTransactionHash,
@@ -29,23 +29,23 @@ import { pullSigner } from './pullSigner';
  * @return valid pact API Cont command for send or local use.
  */
 export function prepareContCommand(
-  keyPairs: Array<KeyPair>,
+  keyPairs: Array<IKeyPair>,
   nonce: Nonce,
   proof: Proof,
   pactId: PactTransactionHash,
   rollback: Rollback,
   step: Step,
   envData: EnvData,
-  meta: MetaData,
+  meta: IMetaData,
   networkId: NetworkId,
-): Command {
+): ICommand {
   const signers = keyPairs.map(pullSigner);
 
-  const cmdJSON: CommandPayload = {
-    networkId,
+  const cmdJSON: ICommandPayload = {
+    networkId: networkId || null,
     payload: {
       cont: {
-        proof,
+        proof: proof || null,
         pactId,
         rollback,
         step,

@@ -1,25 +1,25 @@
 import {
   NetworkId,
-  Command,
-  KeyPair,
-  MetaData,
+  ICommand,
+  IKeyPair,
+  IMetaData,
   Proof,
   PactTransactionHash,
   EnvData,
   ChainwebChainId,
 } from '@kadena/types';
 
-import { prepareExecCommand } from 'kadena.js/lib/api/prepareExecCommand';
-import { prepareContCommand } from 'kadena.js/lib/api/prepareContCommand';
+import { prepareExecCommand } from 'kadena.js';
+import { prepareContCommand } from 'kadena.js';
 
 export function createSampleExecTx(
   network: NetworkId,
-  keyPair: KeyPair,
+  keyPair: IKeyPair,
   pactCode: string,
-  envData: EnvData = null,
-): Command {
+  envData?: EnvData,
+): ICommand {
   const nonce: string = 'step01';
-  const meta: MetaData = {
+  const meta: IMetaData = {
     creationTime: Math.round(new Date().getTime() / 1000) - 1,
     ttl: 28800,
     gasLimit: 10000,
@@ -32,14 +32,14 @@ export function createSampleExecTx(
 
 export function createSampleContTx(
   network: NetworkId,
-  keyPair: KeyPair,
+  keyPair: IKeyPair,
   pactId: PactTransactionHash,
-  envData: EnvData = null,
+  envData: EnvData,
   proof: Proof,
   targetChainId: ChainwebChainId,
-): Command {
+): ICommand {
   const nonce: string = 'step02';
-  const meta: MetaData = {
+  const meta: IMetaData = {
     creationTime: Math.round(new Date().getTime() / 1000) - 1,
     ttl: 28800,
     gasLimit: 10000,

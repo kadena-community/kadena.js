@@ -1,5 +1,7 @@
 /**
  * Takes in string and outputs Uint8Array
+ *
+ * @alpha
  */
 export function strToUint8Array(str: string): Uint8Array {
   const arr = new Uint8Array(str.length);

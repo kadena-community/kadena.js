@@ -4,12 +4,12 @@
 
 import {
   ChainwebNetworkId,
-  Command,
-  CommandResult,
-  SendRequestBody,
+  ICommand,
+  ICommandResult,
+  ISendRequestBody,
   SendResponse,
   LocalResponse,
-  PollResponse,
+  IPollResponse,
   ListenResponse,
 } from '@kadena/types';
 
@@ -31,12 +31,12 @@ const pactServerKeyPair = {
   secretKey: '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
 };
 const pactCode: string = '(+ 1 2)';
-const signedCommand: Command = createSampleExecTx(
+const signedCommand: ICommand = createSampleExecTx(
   pactServerNetwork,
   pactServerKeyPair,
   pactCode,
 );
-const sendReq: SendRequestBody = {
+const sendReq: ISendRequestBody = {
   cmds: [signedCommand],
 };
 
@@ -53,7 +53,7 @@ describe('[Pact Server] Makes /send request', () => {
 describe('[Pact Server] Makes /local request', () => {
   it('Receives the expected transaction result', async () => {
     const actual: LocalResponse = await local(signedCommand, pactServerApiHost);
-    const expected: CommandResult = {
+    const expected: ICommandResult = {
       reqKey: signedCommand.hash,
       txId: null,
       logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
@@ -71,12 +71,12 @@ describe('[Pact Server] Makes /local request', () => {
 
 describe('[Pact Server] Makes /poll request', () => {
   it('Receives the expected transaction result', async () => {
-    const actual: PollResponse = await poll(
+    const actual: IPollResponse = await poll(
       createPollRequest(sendReq),
       pactServerApiHost,
     );
     const actualInArray = Object.values(actual);
-    const expected: CommandResult = {
+    const expected: ICommandResult = {
       continuation: null,
       gas: 0,
       logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',

@@ -5,13 +5,13 @@
   "keywords": [],
   "license": "ISC",
   "author": "Albert G",
-  "types": "src/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "_phase:build": "",
-    "_phase:test": "",
-    "build": "",
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
-    "precommit": "pnpm run test --silent",
     "test": ""
   },
   "lint-staged": {

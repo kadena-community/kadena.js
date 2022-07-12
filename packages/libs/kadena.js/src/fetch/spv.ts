@@ -1,4 +1,4 @@
-import type { SPVRequestBody, SPVResponse } from '@kadena/types';
+import type { ISPVRequestBody, SPVResponse } from '@kadena/types';
 
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
@@ -18,11 +18,11 @@ import fetch from 'node-fetch';
  * @return -
  */
 export function spv(
-  requestBody: SPVRequestBody,
+  requestBody: ISPVRequestBody,
   apiHost: string,
 ): Promise<SPVResponse> {
   const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<SPVRequestBody>(requestBody);
+    stringifyAndMakePOSTRequest<ISPVRequestBody>(requestBody);
   const response: Promise<NodeFetchResponse> = fetch(`${apiHost}/spv`, request);
   const parsedRes: Promise<SPVResponse> = parseResponseTEXT(response);
   return parsedRes;

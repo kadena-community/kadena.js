@@ -41,7 +41,6 @@
     "coverage": "jest --collectCoverage",
     "preinstall": "npx only-allow pnpm",
     "lint": "npx eslint . --ext .js,.ts --fix",
-    "precommit": "pnpm run test --silent",
     "serve-coverage": "python -m SimpleHTTPServer",
     "test": "heft test"
   },

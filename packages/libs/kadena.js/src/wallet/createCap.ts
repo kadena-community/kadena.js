@@ -1,4 +1,4 @@
-import type { SigningCap } from '@kadena/types';
+import type { ISigningCap } from '@kadena/types';
 /**
  * Prepares a properly formatted cap object required in signing API.
  */
@@ -7,7 +7,7 @@ export function createCap(
   description: string,
   name: string,
   args: Array<string>,
-): SigningCap {
+): ISigningCap {
   return {
     role,
     description,

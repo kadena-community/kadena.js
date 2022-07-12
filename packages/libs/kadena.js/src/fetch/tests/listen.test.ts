@@ -1,6 +1,6 @@
 jest.mock('node-fetch');
 
-import type { ListenRequestBody, ListenResponse } from '@kadena/types';
+import type { IListenRequestBody, ListenResponse } from '@kadena/types';
 
 import { listen } from '../listen';
 
@@ -15,7 +15,7 @@ mockedFunctionFetch.mockImplementation(
 
 test('/listen should return result of tx queried', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
-  const requestKey: ListenRequestBody = {
+  const requestKey: IListenRequestBody = {
     listen: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
   };
 
@@ -31,7 +31,7 @@ test('/listen should return result of tx queried', async () => {
     metaData: null,
     logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
   };
-  const localReq: ListenRequestBody = requestKey;
+  const localReq: IListenRequestBody = requestKey;
   const responseExpected: ListenResponse = commandResult1;
   const responseActual: ListenResponse = await listen(localReq, '');
 
