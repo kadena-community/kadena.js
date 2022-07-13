@@ -1,12 +1,12 @@
 jest.mock('node-fetch');
 
+import fetch from 'node-fetch';
+
 import type { IListenRequestBody, ListenResponse } from '@kadena/types';
 
 import { listen } from '../listen';
 
 import { mockFetch } from './mockdata/mockFetch';
-
-import fetch from 'node-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

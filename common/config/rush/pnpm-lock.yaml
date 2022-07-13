@@ -16,6 +16,7 @@ importers:
       '@types/jest': ^27.5.1
       '@types/node': ^16.0.0
       blakejs: ^1.2.1
+      eslint: ^8.15.0
       tweetnacl: ^1.0.3
     dependencies:
       '@kadena/types': link:../types
@@ -24,11 +25,12 @@ importers:
     devDependencies:
       '@kadena/eslint-config': link:../../tools/eslint-config
       '@kadena/heft-rig': link:../../tools/heft-rig
-      '@rushstack/eslint-config': 2.6.2
+      '@rushstack/eslint-config': 2.6.2_eslint@8.18.0
       '@rushstack/heft': 0.46.1
       '@types/heft-jest': 1.0.3
       '@types/jest': 27.5.2
       '@types/node': 16.11.41
+      eslint: 8.18.0
 
   ../../packages/libs/integration-tests:
     specifiers:
@@ -83,7 +85,6 @@ importers:
       eslint-plugin-import: ^2.26.0
       eslint-plugin-jest: ^26.2.2
       eslint-plugin-prettier: ^4.0.0
-      eslint-plugin-simple-import-sort: ~7.0.0
       node-fetch: ^2.6.6
       prettier: ^2.6.2
       prettier-eslint: ~15.0.1
@@ -117,7 +118,6 @@ importers:
       eslint-plugin-import: 2.26.0_eslint@8.18.0
       eslint-plugin-jest: 26.5.3_52880f56fd5fc83b858cbefe0b577aa2
       eslint-plugin-prettier: 4.0.0_bd3c4b21319ad16ec3ab54a1da22f60e
-      eslint-plugin-simple-import-sort: 7.0.0_eslint@8.18.0
       prettier: 2.7.1
       prettier-eslint: 15.0.1
       serve: 13.0.2
@@ -142,13 +142,21 @@ importers:
 
   ../../packages/tools/eslint-config:
     specifiers:
+      '@kadena/eslint-config': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
       '@typescript-eslint/eslint-plugin': ^5.23.0
       eslint: ^8.15.0
+      eslint-plugin-import: ^2.26.0
+      eslint-plugin-simple-import-sort: ~7.0.0
       typescript: ~4.6.3
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.29.0_eslint@8.18.0+typescript@4.6.4
     devDependencies:
+      '@kadena/eslint-config': 'link:'
+      '@rushstack/eslint-config': 2.6.2_eslint@8.18.0+typescript@4.6.4
       eslint: 8.18.0
+      eslint-plugin-import: 2.26.0_eslint@8.18.0
+      eslint-plugin-simple-import-sort: 7.0.0_eslint@8.18.0
       typescript: 4.6.4
 
   ../../packages/tools/heft-rig:

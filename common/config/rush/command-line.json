@@ -26,6 +26,7 @@
       "watchForChanges": false,
       "disableBuildCache": false
     },
+
     {
       "commandKind": "global",
       "name": "lint-staged",
@@ -35,6 +36,7 @@
       // This will invoke common/autoinstallers/rush-command-packages/node_modules/.bin/lint-staged
       "shellCommand": "lint-staged --quiet"
     },
+
     {
       "commandKind": "bulk",
       "name": "precommit",
@@ -49,7 +51,24 @@
       "incremental": true,
       "watchForChanges": false,
       "disableBuildCache": false
+    },
+
+    {
+      "commandKind": "bulk",
+      "name": "lint",
+      "summary": "Runs eslint --fix in all projects",
+      "safeForSimultaneousRushProcesses": false,
+      // default: false. this can be run simultaneousely
+      "enableParallelism": true,
+      "ignoreDependencyOrder": false,
+      // default: false. this command is just for convenience
+      "ignoreMissingScript": true,
+      "allowWarningsInSuccessfulBuild": false,
+      "incremental": false,
+      "watchForChanges": false,
+      "disableBuildCache": false
     }
+
     // {
     //   /**
     //    * (Required) Determines the type of custom command.

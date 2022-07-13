@@ -1,8 +1,8 @@
 import type {
-  ICommand,
-  ICommandPayload,
   CommandPayloadStringifiedJSON,
   EnvData,
+  ICommand,
+  ICommandPayload,
   IKeyPair,
   IMetaData,
   NetworkId,

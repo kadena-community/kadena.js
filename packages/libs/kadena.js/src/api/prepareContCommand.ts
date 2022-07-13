@@ -1,7 +1,7 @@
 import type {
+  EnvData,
   ICommand,
   ICommandPayload,
-  EnvData,
   IKeyPair,
   IMetaData,
   NetworkId,

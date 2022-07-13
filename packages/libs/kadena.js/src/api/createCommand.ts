@@ -1,6 +1,6 @@
 import type {
-  ICommand,
   CommandPayloadStringifiedJSON,
+  ICommand,
   SignatureWithHash,
 } from '@kadena/types';
 

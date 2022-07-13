@@ -1,15 +1,15 @@
+import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
+
 import type {
-  ListenResponse,
-  LocalResponse,
   IPollResponse,
   ISendRequestBody,
+  ListenResponse,
+  LocalResponse,
   SendResponse,
   SPVResponse,
 } from '@kadena/types';
 
 import { testSPVProof } from './Pact';
-
-import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 
 /**
  * Mock implementation of node-fetch's `fetch` function.

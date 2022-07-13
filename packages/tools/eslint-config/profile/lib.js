@@ -4,6 +4,9 @@ module.exports = {
     '@rushstack/eslint-config/profile/node',
     // add when api-extractor is integrated
     // '@rushstack/eslint-config/mixins/tsdoc',
-    '../mixins/kadena.js',
+    '../mixins/strict-boolean-expressions.js',
+    '../mixins/import-no-duplicates.js',
+    '../mixins/simple-import-sort.js',
   ],
+  plugins: ['import', 'simple-import-sort'],
 };

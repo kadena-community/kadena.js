@@ -453,6 +453,7 @@
     {
       "packageName": "@kadena/eslint-config",
       "projectFolder": "packages/tools/eslint-config",
+      "cyclicDependencyProjects": ["@kadena/eslint-config"],
       "tags": ["tools"],
       "shouldPublish": false
     }

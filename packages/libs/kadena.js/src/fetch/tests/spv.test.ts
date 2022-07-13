@@ -1,13 +1,13 @@
 jest.mock('node-fetch');
 
+import fetch from 'node-fetch';
+
 import type { SPVResponse } from '@kadena/types';
 
 import { spv } from '../spv';
 
 import { mockFetch } from './mockdata/mockFetch';
 import { testSPVProof, testSPVRequest } from './mockdata/Pact';
-
-import fetch from 'node-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

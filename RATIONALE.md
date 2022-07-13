@@ -18,6 +18,22 @@ Main reasons:
 
 # Eslint
 
+Whatever is auto-fixable, should be auto-fixed. We do not want unnecessary
+burden by thinking about coding standards. This allows contributers to focus on
+value adding, not on style:
+
+- use of semi-colons
+- use of parens
+- use of quotes
+- trailing commas
+- tabs and spaces (2)
+- print width
+- import order
+- imports from the same package
+- type imports
+- package.json (scripts) order
+- etc.
+
 Have a look at
 [rushstack eslint-config](https://github.com/microsoft/rushstack/tree/main/eslint/eslint-config)
 for the rationale

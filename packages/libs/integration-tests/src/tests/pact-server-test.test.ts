@@ -3,24 +3,24 @@
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
 import {
+  createListenRequest,
+  createPollRequest,
+  listen,
+  local,
+  poll,
+  send,
+} from 'kadena.js';
+
+import {
   ChainwebNetworkId,
   ICommand,
   ICommandResult,
-  ISendRequestBody,
-  SendResponse,
-  LocalResponse,
   IPollResponse,
+  ISendRequestBody,
   ListenResponse,
+  LocalResponse,
+  SendResponse,
 } from '@kadena/types';
-
-import {
-  poll,
-  listen,
-  local,
-  send,
-  createPollRequest,
-  createListenRequest,
-} from 'kadena.js';
 
 import { createSampleExecTx } from './mock-txs';
 
