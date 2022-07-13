@@ -22,6 +22,6 @@ export function createExecCommand(
   networkId?: NetworkId,
 ): ISendRequestBody {
   return createSendRequest([
-    prepareExecCommand(keyPairs, nonce, pactCode, envData, meta, networkId),
+    prepareExecCommand(keyPairs, nonce, pactCode, meta, networkId, envData),
   ]);
 }

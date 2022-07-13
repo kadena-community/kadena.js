@@ -38,16 +38,15 @@ const devnetKeyPair = {
 const devnetAccount = `k:${devnetKeyPair.publicKey}`;
 
 const signedCommand1: ICommand = createSampleExecTx(
-  devnetNetwork,
   devnetKeyPair,
   `(+ 1 2)`,
+  devnetNetwork,
 );
 const sendReq1: ISendRequestBody = {
   cmds: [signedCommand1],
 };
 
 const signedCommand2: ICommand = createSampleExecTx(
-  devnetNetwork,
   {
     ...devnetKeyPair,
     clist: [
@@ -67,6 +66,7 @@ const signedCommand2: ICommand = createSampleExecTx(
     ],
   },
   `(coin.transfer-crosschain "${devnetAccount}" "${devnetAccount}" (read-keyset "test-keyset") "${1}" ${0.05})`,
+  devnetNetwork,
   { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
 );
 

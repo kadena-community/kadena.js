@@ -12,7 +12,6 @@ import {
 } from 'kadena.js';
 
 import {
-  ChainwebNetworkId,
   ICommand,
   ICommandResult,
   IPollResponse,
@@ -24,18 +23,13 @@ import {
 
 import { createSampleExecTx } from './mock-txs';
 
-const pactServerNetwork: ChainwebNetworkId = 'development';
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
 const pactServerKeyPair = {
   publicKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
   secretKey: '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
 };
 const pactCode: string = '(+ 1 2)';
-const signedCommand: ICommand = createSampleExecTx(
-  pactServerNetwork,
-  pactServerKeyPair,
-  pactCode,
-);
+const signedCommand: ICommand = createSampleExecTx(pactServerKeyPair, pactCode);
 const sendReq: ISendRequestBody = {
   cmds: [signedCommand],
 };

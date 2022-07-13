@@ -24,9 +24,9 @@ describe('prepareContCommand', () => {
       pactId,
       rollback,
       step,
-      envData,
       meta,
       networkId,
+      envData,
     );
 
     const expected = command;
@@ -41,9 +41,9 @@ describe('prepareContCommand', () => {
       pactId,
       rollback,
       step,
-      envData,
       meta,
       'Mainnet01',
+      envData,
     );
 
     const expected: ICommand = {

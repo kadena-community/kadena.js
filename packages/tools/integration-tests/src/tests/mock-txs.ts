@@ -12,9 +12,9 @@ import {
 } from '@kadena/types';
 
 export function createSampleExecTx(
-  network: NetworkId,
   keyPair: IKeyPair,
   pactCode: string,
+  network?: NetworkId,
   envData?: EnvData,
 ): ICommand {
   const nonce: string = 'step01';
@@ -26,7 +26,7 @@ export function createSampleExecTx(
     gasPrice: 0.00001,
     sender: `k:${keyPair.publicKey}`,
   };
-  return prepareExecCommand([keyPair], nonce, pactCode, envData, meta, network);
+  return prepareExecCommand([keyPair], nonce, pactCode, meta, network, envData);
 }
 
 export function createSampleContTx(
@@ -55,8 +55,8 @@ export function createSampleContTx(
     pactId,
     rollback,
     step,
-    envData,
     meta,
     network,
+    envData,
   );
 }
