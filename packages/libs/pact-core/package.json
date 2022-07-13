@@ -1,0 +1,24 @@
+{
+  "name": "@kadena/pact-core",
+  "version": "0.0.1",
+  "description": "Core library for generating Pact expression generator in js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node --transpile-only src/index.ts",
+    "lint-staged": "lint-staged",
+    "build": "heft build --clean",
+    "_phase:build": "heft build --clean",
+    "_phase:test": "",
+    "test": ""
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "@types/node-fetch": "~2.6.2",
+    "node-fetch": "^2.6.7",
+    "ts-node": "~10.8.2"
+  }
+}

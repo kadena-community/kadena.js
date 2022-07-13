@@ -435,6 +435,13 @@
     },
 
     {
+      "packageName": "@kadena/pact-core",
+      "projectFolder": "packages/libs/pact-core",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
@@ -445,15 +452,23 @@
     // ##  Tools
     // #########################
     {
+      "packageName": "@kadena/eslint-config",
+      "projectFolder": "packages/tools/eslint-config",
+      "cyclicDependencyProjects": ["@kadena/eslint-config"],
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
       "shouldPublish": false
     },
+
     {
-      "packageName": "@kadena/eslint-config",
-      "projectFolder": "packages/tools/eslint-config",
-      "cyclicDependencyProjects": ["@kadena/eslint-config"],
+      "packageName": "@kadena/pactjs-cli",
+      "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
       "shouldPublish": false
     }
