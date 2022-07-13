@@ -1,11 +1,11 @@
 import type {
   EnvData,
-  KeyPair,
-  MetaData,
+  IKeyPair,
+  IMetaData,
+  ISendRequestBody,
   NetworkId,
   Nonce,
   PactCode,
-  SendRequestBody,
 } from '@kadena/types';
 
 import { createSendRequest } from './createSendRequest';
@@ -14,13 +14,13 @@ import { prepareExecCommand } from './prepareExecCommand';
  * Make a full 'send' endpoint exec command. See 'prepareExecCommand' for parameters.
  */
 export function createExecCommand(
-  keyPairs: Array<KeyPair>,
+  keyPairs: Array<IKeyPair>,
   nonce: Nonce,
   pactCode: PactCode,
   envData: EnvData,
-  meta: MetaData,
-  networkId: NetworkId,
-): SendRequestBody {
+  meta: IMetaData,
+  networkId?: NetworkId,
+): ISendRequestBody {
   return createSendRequest([
     prepareExecCommand(keyPairs, nonce, pactCode, envData, meta, networkId),
   ]);

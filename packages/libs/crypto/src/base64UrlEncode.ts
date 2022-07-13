@@ -1,17 +1,18 @@
 /* eslint-disable no-bitwise */
-import type { Base64Url } from '@kadena/types';
+import type { IBase64Url } from '@kadena/types';
 
 import { InvalidCharacterError } from './InvalidCharacterError';
-
-/**
- * Takes in string and outputs Base64 Url encoded string
- * code from [https://gist.github.com/999166] by [https://github.com/nignag]
- */
 
 const chars: string =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
 
-export function base64UrlEncode(str: string): Base64Url {
+/**
+ * Takes in string and outputs Base64 Url encoded string
+ * code from [https://gist.github.com/999166] by [https://github.com/nignag]
+ *
+ * @alpha
+ */
+export function base64UrlEncode(str: string): IBase64Url {
   let block: number | undefined;
   let charCode: number;
   let output: string = '';
@@ -26,6 +27,7 @@ export function base64UrlEncode(str: string): Base64Url {
         "'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.",
       );
     }
+    /* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */
     block = ((block || 0) << 8) | charCode;
   }
   return output;

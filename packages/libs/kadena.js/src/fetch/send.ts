@@ -1,21 +1,21 @@
-import type { Base16String, Command } from '@kadena/types';
-
-import { parseResponse } from './parseResponse';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
 } from 'node-fetch';
 import fetch from 'node-fetch';
 
+import type { Base16String, ICommand } from '@kadena/types';
+
+import { parseResponse } from './parseResponse';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+
 /**
  * Request type of /send endpoint.
  *
  * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
  */
-export interface ISendRequestBody {
-  cmds: Array<Command>;
+export interface IISendRequestBody {
+  cmds: Array<ICommand>;
 }
 
 /**
@@ -40,11 +40,11 @@ export interface ISendResponse {
  * @return - Raw Response from Server.
  */
 export function send(
-  requestBody: ISendRequestBody,
+  requestBody: IISendRequestBody,
   apiHost: string,
 ): Promise<ISendResponse> {
   const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<ISendRequestBody>(requestBody);
+    stringifyAndMakePOSTRequest<IISendRequestBody>(requestBody);
   const response: Promise<NodeFetchResponse> = fetch(
     `${apiHost}/api/v1/send`,
     request,

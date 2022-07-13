@@ -1,7 +1,8 @@
 # build artefacts
-**/lib
-**/lib-commonjs
-**/.parcel-cache
+packages/*/*/lib
+packages/*/*/lib-commonjs
+packages/*/*/.parcel-cache
+packages/*/*/dist
 
 # lock-files that don't belong here
 package-lock.json

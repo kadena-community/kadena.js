@@ -84,7 +84,7 @@ crypto:
 api:
 
 - **PENDING** `createSendRequest`:
-  - Omitted, it just wrapped a list of Commands into the expected format for the `/send` endpoint. `SendRequestBody` type created instead.
+  - Omitted, it just wrapped a list of Commands into the expected format for the `/send` endpoint. `ISendRequestBody` type created instead.
 - **DONE** `prepareContCommand`:
   - Puts together and signs a continuation payload `Command`.
 - **DONE** `prepareExecCommand`:

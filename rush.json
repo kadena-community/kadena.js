@@ -428,6 +428,13 @@
     },
 
     {
+      "packageName": "@kadena/integration-tests",
+      "projectFolder": "packages/tools/integration-tests",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
@@ -443,10 +450,10 @@
       "tags": ["tools"],
       "shouldPublish": false
     },
-
     {
-      "packageName": "@kadena/integration-tests",
-      "projectFolder": "packages/tools/integration-tests",
+      "packageName": "@kadena/eslint-config",
+      "projectFolder": "packages/tools/eslint-config",
+      "cyclicDependencyProjects": ["@kadena/eslint-config"],
       "tags": ["tools"],
       "shouldPublish": false
     }

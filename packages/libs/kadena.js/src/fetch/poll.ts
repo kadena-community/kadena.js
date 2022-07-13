@@ -1,13 +1,13 @@
-import type { PollRequestBody, PollResponse } from '@kadena/types';
-
-import { parseResponse } from './parseResponse';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
 } from 'node-fetch';
 import fetch from 'node-fetch';
+
+import type { IPollRequestBody, IPollResponse } from '@kadena/types';
+
+import { parseResponse } from './parseResponse';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 /**
  * Allows polling for one or more transaction results by request key.
@@ -21,15 +21,15 @@ import fetch from 'node-fetch';
  *            or might have expired.
  */
 export function poll(
-  requestBody: PollRequestBody,
+  requestBody: IPollRequestBody,
   apiHost: string,
-): Promise<PollResponse> {
+): Promise<IPollResponse> {
   const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<PollRequestBody>(requestBody);
+    stringifyAndMakePOSTRequest<IPollRequestBody>(requestBody);
   const response: Promise<NodeFetchResponse> = fetch(
     `${apiHost}/api/v1/poll`,
     request,
   );
-  const parsedRes: Promise<PollResponse> = parseResponse(response);
+  const parsedRes: Promise<IPollResponse> = parseResponse(response);
   return parsedRes;
 }

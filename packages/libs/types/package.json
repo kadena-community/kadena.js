@@ -5,13 +5,14 @@
   "keywords": [],
   "license": "ISC",
   "author": "Albert G",
-  "types": "src/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "_phase:build": "",
-    "_phase:test": "",
-    "build": "",
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
-    "precommit": "pnpm run test --silent",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
     "test": ""
   },
   "lint-staged": {
@@ -24,6 +25,7 @@
     ]
   },
   "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
     "@kadena/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",

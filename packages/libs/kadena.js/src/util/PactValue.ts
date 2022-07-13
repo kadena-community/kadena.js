@@ -5,15 +5,21 @@
  * - Should the function check if the string is a valid integer/decimal?
  * */
 
-import type { PactDecimal, PactInt } from '@kadena/types';
+import type { IPactDecimal, IPactInt } from '@kadena/types';
 
-export function mkPactInt(value: string): PactInt {
+/**
+ * @alpha
+ */
+export function mkPactInt(value: string): IPactInt {
   return {
     int: value,
   };
 }
 
-export function mkPactDecimal(value: string): PactDecimal {
+/**
+ * @alpha
+ */
+export function mkPactDecimal(value: string): IPactDecimal {
   return {
     decimal: value,
   };

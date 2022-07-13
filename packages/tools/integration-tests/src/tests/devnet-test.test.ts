@@ -1,30 +1,30 @@
 // These tests expect devnet to be running at http://localhost:8080.
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
+import { backOff } from 'exponential-backoff';
 import {
-  ChainwebNetworkId,
-  Command,
-  CommandResult,
-  SendRequestBody,
-  SendResponse,
-  LocalResponse,
-  PollResponse,
-  ListenResponse,
-  PactEvent,
-} from '@kadena/types';
-
-import {
-  poll,
+  createListenRequest,
+  createPollRequest,
   listen,
   local,
+  poll,
   send,
   spv,
-  createPollRequest,
-  createListenRequest,
 } from 'kadena.js';
 
-import { createSampleExecTx, createSampleContTx } from './mock-txs';
-import { backOff } from 'exponential-backoff';
+import {
+  ChainwebNetworkId,
+  ICommand,
+  ICommandResult,
+  IPactEvent,
+  IPollResponse,
+  ISendRequestBody,
+  ListenResponse,
+  LocalResponse,
+  SendResponse,
+} from '@kadena/types';
+
+import { createSampleContTx, createSampleExecTx } from './mock-txs';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =
@@ -37,16 +37,16 @@ const devnetKeyPair = {
 };
 const devnetAccount = `k:${devnetKeyPair.publicKey}`;
 
-const signedCommand1: Command = createSampleExecTx(
+const signedCommand1: ICommand = createSampleExecTx(
   devnetNetwork,
   devnetKeyPair,
   `(+ 1 2)`,
 );
-const sendReq1: SendRequestBody = {
+const sendReq1: ISendRequestBody = {
   cmds: [signedCommand1],
 };
 
-const signedCommand2: Command = createSampleExecTx(
+const signedCommand2: ICommand = createSampleExecTx(
   devnetNetwork,
   {
     ...devnetKeyPair,
@@ -70,7 +70,7 @@ const signedCommand2: Command = createSampleExecTx(
   { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
 );
 
-const sendReq2: SendRequestBody = {
+const sendReq2: ISendRequestBody = {
   cmds: [signedCommand2],
 };
 
@@ -125,11 +125,11 @@ describe('[DevNet] Makes /local request of simple transaction', () => {
 
 describe('[DevNet] Makes /poll request of simple transaction', () => {
   it('Receives empty result while tx is still in mempool', async () => {
-    const actual: PollResponse = await poll(
+    const actual: IPollResponse = await poll(
       createPollRequest(sendReq1),
       devnetApiHostChain0,
     );
-    const expected: PollResponse = {};
+    const expected: IPollResponse = {};
     expect(actual).toEqual(expected);
   });
 });
@@ -138,7 +138,7 @@ describe('[DevNet] Makes /poll request of simple transaction', () => {
 // pact-server.
 jest.setTimeout(100000);
 describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
-  const expectedResult: Omit<CommandResult, 'logs' | 'metaData' | 'txId'> = {
+  const expectedResult: Omit<ICommandResult, 'logs' | 'metaData' | 'txId'> = {
     continuation: null,
     gas: 5,
     reqKey: signedCommand1.hash,
@@ -147,7 +147,7 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
       status: 'success',
     },
   };
-  const expectedEvent: Array<Omit<PactEvent, 'moduleHash'>> = [
+  const expectedEvent: Array<Omit<IPactEvent, 'moduleHash'>> = [
     {
       module: {
         name: 'coin',
@@ -167,7 +167,7 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
           expect(logs).toBeTruthy();
           expect(txId).toBeTruthy();
           expect(metaData).toBeTruthy();
-          if (events !== undefined && events && events[0]) {
+          if (events !== undefined && events.length !== 0) {
             const { moduleHash, ...eventWithNoModHash } = events[0];
             expect([eventWithNoModHash]).toEqual(expectedEvent);
             expect(moduleHash).toBeTruthy();
@@ -185,7 +185,7 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
       expect(logs).toBeTruthy();
       expect(txId).toBeTruthy();
       expect(metaData).toBeTruthy();
-      if (events !== undefined && events && events[0]) {
+      if (events !== undefined && events.length !== 0) {
         const { moduleHash, ...eventWithNoModHash } = events[0];
         expect([eventWithNoModHash]).toEqual(expectedEvent);
         expect(moduleHash).toBeTruthy();
@@ -237,7 +237,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     const hash = signedCommand2.hash;
 
     // Submit /send request finishing cross-chain transfer in target chain
-    const contReqPayload: Command = createSampleContTx(
+    const contReqPayload: ICommand = createSampleContTx(
       devnetNetwork,
       devnetKeyPair,
       hash,
@@ -245,7 +245,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
       proof.replace(/\"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
       '1',
     );
-    const contReq: SendRequestBody = { cmds: [contReqPayload] };
+    const contReq: ISendRequestBody = { cmds: [contReqPayload] };
     const actualContSendResp: SendResponse = await send(
       contReq,
       devnetApiHostChain1,
@@ -256,7 +256,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     expect(actualContSendResp).toEqual(expectedContSendResp);
 
     // Retrieve result of finishing cross-chain transfer
-    const actualContResult: CommandResult = await backOff(() =>
+    const actualContResult: ICommandResult = await backOff(() =>
       listen(createListenRequest(contReq), devnetApiHostChain1),
     );
     const { result } = actualContResult;

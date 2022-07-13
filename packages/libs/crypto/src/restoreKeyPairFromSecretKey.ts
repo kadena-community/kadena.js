@@ -1,16 +1,18 @@
-import type { KeyPair } from '@kadena/types';
+import nacl from 'tweetnacl';
+
+import type { IKeyPair } from '@kadena/types';
 
 import { binToHex } from './binToHex';
 import { hexToBin } from './hexToBin';
 
-import nacl from 'tweetnacl';
-
 /**
  * Generate a deterministic ED25519 keypair from a given Kadena secretKey
+ *
+ * @alpha
  */
-export function restoreKeyPairFromSecretKey(seed: string): KeyPair {
+export function restoreKeyPairFromSecretKey(seed: string): IKeyPair {
   if (seed.length !== 64) {
-    throw new Error('Seed for KeyPair generation has bad size');
+    throw new Error('Seed for IKeyPairgeneration has bad size');
   }
   const seedForNacl = hexToBin(seed);
   const keyPair = nacl.sign.keyPair.fromSeed(seedForNacl);

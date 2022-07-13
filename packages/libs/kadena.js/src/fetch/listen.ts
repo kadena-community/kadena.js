@@ -1,13 +1,13 @@
-import type { ListenRequestBody, ListenResponse } from '@kadena/types';
-
-import { parseResponse } from './parseResponse';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
 } from 'node-fetch';
 import fetch from 'node-fetch';
+
+import type { IListenRequestBody, ListenResponse } from '@kadena/types';
+
+import { parseResponse } from './parseResponse';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 /**
  * Blocking request for single command result.
@@ -17,11 +17,11 @@ import fetch from 'node-fetch';
  * @return - The transaction result we listened for.
  */
 export function listen(
-  requestBody: ListenRequestBody,
+  requestBody: IListenRequestBody,
   apiHost: string,
 ): Promise<ListenResponse> {
   const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<ListenRequestBody>(requestBody);
+    stringifyAndMakePOSTRequest<IListenRequestBody>(requestBody);
   const response: Promise<NodeFetchResponse> = fetch(
     `${apiHost}/api/v1/listen`,
     request,
