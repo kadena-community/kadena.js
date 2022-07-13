@@ -1,11 +1,11 @@
 import type { IKeyPair, SignCommand } from '@kadena/types';
 
+import nacl from 'tweetnacl';
+
 import { base64UrlEncodeArr } from './base64UrlEncodeArr';
 import { binToHex } from './binToHex';
 import { hashBin } from './hashBin';
 import { toTweetNaclSecretKey } from './toTweetNaclSecretKey';
-
-import nacl from 'tweetnacl';
 
 /**
 Perform blake2b256 hashing on a message, and sign using keyPair.
@@ -23,5 +23,6 @@ export function sign(
     hshBin,
     toTweetNaclSecretKey({ secretKey, publicKey }),
   );
+
   return { hash: hsh, sig: binToHex(sigBin), pubKey: publicKey };
 }

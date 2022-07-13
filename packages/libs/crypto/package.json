@@ -12,6 +12,7 @@
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {
@@ -35,6 +36,7 @@
     "@rushstack/heft": "~0.46.1",
     "@types/heft-jest": "~1.0.3",
     "@types/jest": "^27.5.1",
-    "@types/node": "^16.0.0"
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0"
   }
 }

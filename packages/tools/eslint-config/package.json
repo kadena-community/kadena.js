@@ -6,6 +6,7 @@
   "scripts": {
     "build": "",
     "_phase:build": "",
+    "lint": "npx eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
     "_phase:test": "",
     "test": ""
   },
@@ -14,6 +15,10 @@
   },
   "devDependencies": {
     "eslint": "^8.15.0",
-    "typescript": "~4.6.3"
+    "typescript": "~4.6.3",
+    "@kadena/eslint-config": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "eslint-plugin-simple-import-sort": "~7.0.0",
+    "eslint-plugin-import": "^2.26.0"
   }
 }

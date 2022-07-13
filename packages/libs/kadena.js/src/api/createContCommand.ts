@@ -2,12 +2,12 @@ import type {
   EnvData,
   IKeyPair,
   IMetaData,
+  ISendRequestBody,
   NetworkId,
   Nonce,
   PactTransactionHash,
   Proof,
   Rollback,
-  ISendRequestBody,
   Step,
 } from '@kadena/types';
 

@@ -1,13 +1,13 @@
-import type { Base16String, ICommand } from '@kadena/types';
-
-import { parseResponse } from './parseResponse';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
 } from 'node-fetch';
 import fetch from 'node-fetch';
+
+import type { Base16String, ICommand } from '@kadena/types';
+
+import { parseResponse } from './parseResponse';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 /**
  * Request type of /send endpoint.

@@ -1,16 +1,15 @@
+import { prepareContCommand, prepareExecCommand } from 'kadena.js';
+
 import {
-  NetworkId,
+  ChainwebChainId,
+  EnvData,
   ICommand,
   IKeyPair,
   IMetaData,
-  Proof,
+  NetworkId,
   PactTransactionHash,
-  EnvData,
-  ChainwebChainId,
+  Proof,
 } from '@kadena/types';
-
-import { prepareExecCommand } from 'kadena.js';
-import { prepareContCommand } from 'kadena.js';
 
 export function createSampleExecTx(
   network: NetworkId,

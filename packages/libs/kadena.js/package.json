@@ -40,7 +40,7 @@
     "build:prod": "webpack --mode=production",
     "coverage": "jest --collectCoverage",
     "preinstall": "npx only-allow pnpm",
-    "lint": "npx eslint . --ext .js,.ts --fix",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
     "serve-coverage": "python -m SimpleHTTPServer",
     "test": "heft test"
   },
@@ -79,7 +79,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-simple-import-sort": "~7.0.0",
     "prettier": "^2.6.2",
     "prettier-eslint": "~15.0.1",
     "serve": "^13.0.2",

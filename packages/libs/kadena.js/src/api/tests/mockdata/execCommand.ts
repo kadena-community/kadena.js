@@ -1,8 +1,8 @@
 // Test Case 1 - 01-system.yaml code from https://github.com/kadena-io/pact/blob/master/examples/accounts/scripts/01-system.yaml
 import type {
+  EnvData,
   ICommand,
   ICommandPayload,
-  EnvData,
   IKeyPair,
   IMetaData,
   Nonce,

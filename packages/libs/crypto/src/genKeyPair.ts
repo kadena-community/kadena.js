@@ -1,8 +1,8 @@
+import nacl from 'tweetnacl';
+
 import type { IKeyPair } from '@kadena/types';
 
 import { binToHex } from './binToHex';
-
-import nacl from 'tweetnacl';
 
 /**
  * Generate a random ED25519 keypair.

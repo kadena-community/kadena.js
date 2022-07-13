@@ -2,10 +2,10 @@ import type {
   EnvData,
   IKeyPair,
   IMetaData,
+  ISendRequestBody,
   NetworkId,
   Nonce,
   PactCode,
-  ISendRequestBody,
 } from '@kadena/types';
 
 import { createSendRequest } from './createSendRequest';
