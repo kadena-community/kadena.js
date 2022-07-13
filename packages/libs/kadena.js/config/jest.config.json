@@ -1,3 +1,0 @@
-{
-  "extends": "@kadena/heft-rig/profiles/default/config/jest.config.json"
-}

@@ -12,7 +12,7 @@ export async function parseResponse<T>(
 ): Promise<T> {
   const response: NodeFetchResponse = await raw;
   if (response.ok) {
-    const JSONResponse: T = await response.json();
+    const JSONResponse = (await response.json()) as T;
     return JSONResponse;
   } else {
     // Handle API errors
