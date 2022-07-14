@@ -1,17 +1,6 @@
 // These tests expect devnet to be running at http://localhost:8080.
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
-import { backOff } from 'exponential-backoff';
-import {
-  createListenRequest,
-  createPollRequest,
-  listen,
-  local,
-  poll,
-  send,
-  spv,
-} from 'kadena.js';
-
 import {
   ChainwebNetworkId,
   ICommand,
@@ -25,6 +14,17 @@ import {
 } from '@kadena/types';
 
 import { createSampleContTx, createSampleExecTx } from './mock-txs';
+
+import { backOff } from 'exponential-backoff';
+import {
+  createListenRequest,
+  createPollRequest,
+  listen,
+  local,
+  poll,
+  send,
+  spv,
+} from 'kadena.js';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =

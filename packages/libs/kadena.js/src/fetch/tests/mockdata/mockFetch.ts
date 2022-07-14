@@ -1,5 +1,3 @@
-import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
-
 import type {
   IPollResponse,
   ISendRequestBody,
@@ -10,6 +8,8 @@ import type {
 } from '@kadena/types';
 
 import { testSPVProof } from './Pact';
+
+import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 
 /**
  * Mock implementation of node-fetch's `fetch` function.
