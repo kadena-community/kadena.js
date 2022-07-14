@@ -1,6 +1,6 @@
-import { Response as NodeFetchResponse } from 'node-fetch';
-
 import { parseResponseTEXT } from '../parseResponseTEXT';
+
+import { Response as NodeFetchResponse } from 'node-fetch';
 
 test('should parse successful Response as expected type', async () => {
   type MockTestType = string;

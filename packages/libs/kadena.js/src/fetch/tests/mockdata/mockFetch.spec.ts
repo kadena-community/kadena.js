@@ -1,11 +1,11 @@
 jest.mock('node-fetch');
 
-import type { Response as NodeFetchResponse } from 'node-fetch';
-import fetch from 'node-fetch';
-
 import { parseResponse } from '../../parseResponse';
 
 import { mockFetch } from './mockFetch';
+
+import type { Response as NodeFetchResponse } from 'node-fetch';
+import fetch from 'node-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

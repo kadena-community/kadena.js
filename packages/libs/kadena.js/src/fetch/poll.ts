@@ -1,13 +1,13 @@
+import type { IPollRequestBody, IPollResponse } from '@kadena/types';
+
+import { parseResponse } from './parseResponse';
+import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
 } from 'node-fetch';
 import fetch from 'node-fetch';
-
-import type { IPollRequestBody, IPollResponse } from '@kadena/types';
-
-import { parseResponse } from './parseResponse';
-import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 /**
  * Allows polling for one or more transaction results by request key.

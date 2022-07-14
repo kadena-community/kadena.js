@@ -1,6 +1,6 @@
-import type { RequestInit } from 'node-fetch';
-
 import { stringifyAndMakePOSTRequest } from '../stringifyAndMakePOSTRequest';
+
+import type { RequestInit } from 'node-fetch';
 
 test('should stringify body and create POST request', () => {
   const body: object = { name: 'hello', val: "'world'" };

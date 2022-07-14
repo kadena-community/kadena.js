@@ -3,15 +3,6 @@
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
 import {
-  createListenRequest,
-  createPollRequest,
-  listen,
-  local,
-  poll,
-  send,
-} from 'kadena.js';
-
-import {
   ICommand,
   ICommandResult,
   IPollResponse,
@@ -22,6 +13,15 @@ import {
 } from '@kadena/types';
 
 import { createSampleExecTx } from './mock-txs';
+
+import {
+  createListenRequest,
+  createPollRequest,
+  listen,
+  local,
+  poll,
+  send,
+} from 'kadena.js';
 
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
 const pactServerKeyPair = {

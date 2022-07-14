@@ -1,5 +1,3 @@
-import { prepareContCommand, prepareExecCommand } from 'kadena.js';
-
 import {
   ChainwebChainId,
   EnvData,
@@ -10,6 +8,8 @@ import {
   PactTransactionHash,
   Proof,
 } from '@kadena/types';
+
+import { prepareContCommand, prepareExecCommand } from 'kadena.js';
 
 export function createSampleExecTx(
   keyPair: IKeyPair,
