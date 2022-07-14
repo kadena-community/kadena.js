@@ -11,7 +11,8 @@ import type { ISignature } from './SignCommand';
  * @alpha
  */
 export interface IExecPayload {
-  data: EnvData;
+  /* eslint-disable-next-line @rushstack/no-new-null */
+  data: Exclude<EnvData, undefined> | null;
   code: PactCode;
 }
 
@@ -33,7 +34,8 @@ export interface IContPayload {
   pactId: PactTransactionHash;
   step: Step;
   rollback: Rollback;
-  data: EnvData;
+  /* eslint-disable-next-line @rushstack/no-new-null */
+  data: Exclude<EnvData, undefined> | null;
   /* eslint-disable-next-line @rushstack/no-new-null */
   proof: Exclude<Proof, undefined> | null;
 }

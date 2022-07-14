@@ -7,33 +7,31 @@ import {
   envData,
   keyPairs,
   meta,
-  networkId,
   nonce,
   pactId,
-  proof,
   rollback,
   step,
 } from './mockdata/contCommand';
 
 describe('prepareContCommand', () => {
-  it('Takes in Pact ICommandparameters and outputs a signed Pact ContICommandObject', () => {
+  it('Creates a signed Pact ContICommandObject with undefined `proof` and `networkId`', () => {
     const actual = prepareContCommand(
       keyPairs,
       nonce,
-      proof,
+      undefined, // proof
       pactId,
       rollback,
       step,
-      envData,
       meta,
-      networkId,
+      undefined, // networkId
+      envData,
     );
 
     const expected = command;
     expect(expected).toEqual(actual);
   });
 
-  it('takes in Pact ICommandparameters with networkId mainnet and outputs a signed Pact ContICommandObject', () => {
+  it('Creates a signed Pact ContICommandObject with networkId=Mainnet01 and a mock proof', () => {
     const actual = prepareContCommand(
       keyPairs,
       nonce,
@@ -41,9 +39,9 @@ describe('prepareContCommand', () => {
       pactId,
       rollback,
       step,
-      envData,
       meta,
       'Mainnet01',
+      envData,
     );
 
     const expected: ICommand = {
@@ -54,6 +52,32 @@ describe('prepareContCommand', () => {
         },
       ],
       cmd: '{"networkId":"Mainnet01","payload":{"cont":{"proof":"fakeProof","pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
+    };
+
+    expect(expected).toEqual(actual);
+  });
+
+  it('Creates a signed Pact ContICommandObject with undefined envData', () => {
+    const actual = prepareContCommand(
+      keyPairs,
+      nonce,
+      'fakeProof',
+      pactId,
+      rollback,
+      step,
+      meta,
+      'Mainnet01',
+      undefined, // envData
+    );
+
+    const expected: ICommand = {
+      hash: '3eVrb7If4TlWevuiILS6_vKGNSRzjTfDMqCiWdiyzSc',
+      sigs: [
+        {
+          sig: '59d57d3ec58faf2caf550249a5499f2f0a3ce968aaf41e2f13182533c2bd2eb01a55a276eddd28da775cb7bf2cf4b711ffbb565b7cb7742e1b45298627395504',
+        },
+      ],
+      cmd: '{"networkId":"Mainnet01","payload":{"cont":{"proof":"fakeProof","pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":null}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
     };
 
     expect(expected).toEqual(actual);

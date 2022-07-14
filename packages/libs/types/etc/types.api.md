@@ -85,7 +85,7 @@ export interface ICommandResult {
 // @alpha
 export interface IContPayload {
     // (undocumented)
-    data: EnvData;
+    data: Exclude<EnvData, undefined> | null;
     // (undocumented)
     pactId: PactTransactionHash;
     // (undocumented)
@@ -101,7 +101,7 @@ export interface IExecPayload {
     // (undocumented)
     code: PactCode;
     // (undocumented)
-    data: EnvData;
+    data: Exclude<EnvData, undefined> | null;
 }
 
 // @alpha (undocumented)

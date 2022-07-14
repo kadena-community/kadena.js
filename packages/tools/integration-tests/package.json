@@ -9,7 +9,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "npx eslint src --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
     "test": "",

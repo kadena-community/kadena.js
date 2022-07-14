@@ -35,9 +35,9 @@ export function prepareContCommand(
   pactId: PactTransactionHash,
   rollback: Rollback,
   step: Step,
-  envData: EnvData,
   meta: IMetaData,
-  networkId: NetworkId,
+  networkId?: NetworkId,
+  envData?: EnvData,
 ): ICommand {
   const signers = keyPairs.map(pullSigner);
 
@@ -49,7 +49,7 @@ export function prepareContCommand(
         pactId,
         rollback,
         step,
-        data: envData,
+        data: envData !== undefined ? envData : null,
       },
     },
     signers,

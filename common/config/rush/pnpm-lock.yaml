@@ -32,37 +32,6 @@ importers:
       '@types/node': 16.11.41
       eslint: 8.18.0
 
-  ../../packages/libs/integration-tests:
-    specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
-      '@kadena/types': workspace:*
-      '@rushstack/eslint-config': ~2.6.2
-      '@rushstack/heft': ~0.46.1
-      '@types/heft-jest': ~1.0.3
-      '@types/jest': ^27.5.1
-      '@types/node': ^16.0.0
-      blakejs: ^1.2.1
-      concurrently: ^7.2.2
-      exponential-backoff: ^3.1.0
-      kadena.js: workspace:*
-      tweetnacl: ^1.0.3
-    dependencies:
-      '@kadena/types': link:../types
-      blakejs: 1.2.1
-      exponential-backoff: 3.1.0
-      kadena.js: link:../kadena.js
-      tweetnacl: 1.0.3
-    devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
-      '@rushstack/eslint-config': 2.6.2
-      '@rushstack/heft': 0.46.1
-      '@types/heft-jest': 1.0.3
-      '@types/jest': 27.5.2
-      '@types/node': 16.11.41
-      concurrently: 7.2.2
-
   ../../packages/libs/kadena.js:
     specifiers:
       '@kadena/crypto': workspace:*
@@ -181,6 +150,37 @@ importers:
       '@rushstack/eslint-config': 2.6.2_eslint@8.18.0+typescript@4.6.4
       '@rushstack/heft': 0.46.1
       '@types/heft-jest': 1.0.3
+
+  ../../packages/tools/integration-tests:
+    specifiers:
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/jest': ^27.5.1
+      '@types/node': ^16.0.0
+      blakejs: ^1.2.1
+      concurrently: ^7.2.2
+      exponential-backoff: ^3.1.0
+      kadena.js: workspace:*
+      tweetnacl: ^1.0.3
+    dependencies:
+      '@kadena/types': link:../../libs/types
+      blakejs: 1.2.1
+      exponential-backoff: 3.1.0
+      kadena.js: link:../../libs/kadena.js
+      tweetnacl: 1.0.3
+    devDependencies:
+      '@kadena/eslint-config': link:../eslint-config
+      '@kadena/heft-rig': link:../heft-rig
+      '@rushstack/eslint-config': 2.6.2
+      '@rushstack/heft': 0.46.1
+      '@types/heft-jest': 1.0.3
+      '@types/jest': 27.5.2
+      '@types/node': 16.11.41
+      concurrently: 7.2.2
 
 packages:
 

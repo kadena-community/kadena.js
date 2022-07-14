@@ -6,6 +6,8 @@ import { unique } from '../util/unique';
  * @param execMsg {object} JSON with "cmds" field, see 'mkPublicSend'
  * @return {object} with "requestKeys" for polling.
  */
-export function createPollRequest({ cmds }: ISendRequestBody): IPollRequestBody {
+export function createPollRequest({
+  cmds,
+}: ISendRequestBody): IPollRequestBody {
   return { requestKeys: unique(cmds.map(({ hash }) => hash)) };
 }

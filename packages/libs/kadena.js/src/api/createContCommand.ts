@@ -36,9 +36,9 @@ export function createContCommand(
       pactId,
       rollback,
       step,
-      envData,
       meta,
       networkId,
+      envData,
     ),
   ]);
 }
