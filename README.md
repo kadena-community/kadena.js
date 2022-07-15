@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./common/images/Kadena.JS_logo.png" width="200" alt="kadena.js" />
+</p>
+
 # Kadena.js
 
 Contains all public Kadena projects for the JavaScript ecosystem
