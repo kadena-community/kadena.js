@@ -6,3 +6,6 @@
 
 ./common @randynamic
 ./*.*      @randynamic
+
+./common @ggobugi27
+./*.*      @ggobugi27
