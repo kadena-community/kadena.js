@@ -1,6 +1,6 @@
 {
-  "name": "@kadena/crypto",
-  "version": "1.0.0",
+  "name": "@kadena/cryptography-utils",
+  "version": "0.1.0-Alpha",
   "description": "",
   "keywords": [],
   "license": "ISC",

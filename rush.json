@@ -421,8 +421,8 @@
     },
 
     {
-      "packageName": "@kadena/crypto",
-      "projectFolder": "packages/libs/crypto",
+      "packageName": "@kadena/cryptography-utils",
+      "projectFolder": "packages/libs/cryptography-utils",
       "tags": ["libs"],
       "shouldPublish": false
     },

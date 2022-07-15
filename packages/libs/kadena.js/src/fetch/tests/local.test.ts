@@ -1,12 +1,12 @@
 jest.mock('node-fetch');
 
-import { sign } from '@kadena/crypto';
 import type {
   LocalRequestBody,
   LocalResponse,
   SignatureWithHash,
 } from '@kadena/types';
 
+import { sign } from '../../../../cryptography-utils';
 import { local } from '../local';
 
 import { mockFetch } from './mockdata/mockFetch';
