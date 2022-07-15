@@ -438,7 +438,7 @@
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
-      "shouldPublish": false
+      "shouldPublish": true
     },
 
     // #########################
