@@ -1,10 +1,23 @@
 {
   "name": "@kadena/cryptography-utils",
-  "version": "0.1.0-Alpha",
+  "version": "0.0.1",
   "description": "",
   "keywords": [],
   "license": "ISC",
-  "author": "Albert G",
+  "contributors": [
+    {
+      "name": "Albert"
+    },
+    {
+      "name": "Linda"
+    },
+    {
+      "name": "Hee Kyun"
+    },
+    {
+      "name": "Randy"
+    }
+  ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
