@@ -1,6 +1,6 @@
 jest.mock('node-fetch');
 
-import { pactTestCommand, sign } from '@kadena/crypto';
+import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import type { ICommand, SignatureWithHash } from '@kadena/types';
 
 import type { IISendRequestBody, ISendResponse } from '../send';

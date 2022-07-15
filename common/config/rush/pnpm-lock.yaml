@@ -5,7 +5,7 @@ importers:
   .:
     specifiers: {}
 
-  ../../packages/libs/crypto:
+  ../../packages/libs/cryptography-utils:
     specifiers:
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
@@ -30,7 +30,7 @@ importers:
 
   ../../packages/libs/kadena.js:
     specifiers:
-      '@kadena/crypto': workspace:*
+      '@kadena/cryptography-utils': workspace:*
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@kadena/types': workspace:*
@@ -46,7 +46,7 @@ importers:
       webpack: ~5.73.0
       webpack-cli: ^4.9.2
     dependencies:
-      '@kadena/crypto': link:../crypto
+      '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/types': link:../types
       blakejs: 1.2.1
       node-fetch: 2.6.7

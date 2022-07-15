@@ -1,4 +1,4 @@
-import { base64UrlEncodeArr, hashBin, sign } from '@kadena/crypto';
+import { base64UrlEncodeArr, hashBin, sign } from '@kadena/cryptography-utils';
 import type {
   CommandPayloadStringifiedJSON,
   IKeyPair,
