@@ -19,8 +19,9 @@ export * from './fetch/send';
 export * from './fetch/spv';
 export * from './fetch/stringifyAndMakePOSTRequest';
 export * from './lang/createExp';
+export * from './lang/createPactInteger';
+export * from './lang/createPactDecimal';
 export * from './SigData/mkCap';
-export * from './util/PactValue';
 export * from './util/unique';
 export * from './wallet/createCap';
 

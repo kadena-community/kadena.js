@@ -1,4 +1,5 @@
-import { mkPactDecimal, mkPactInt } from '../../util/PactValue';
+import { createPactDecimal } from '../../lang/createPactDecimal';
+import { createPactInteger } from '../../lang/createPactInteger';
 import { mkCap } from '../mkCap';
 
 test('should create a baseline cap with empty args', () => {
@@ -50,8 +51,8 @@ test("should create a cap with JavaScript's Number.MIN_SAFE_INTEGER", () => {
 });
 
 test('should create a cap with number, pact integer, and pact decimal', () => {
-  const bigInt = mkPactInt('90071992547409910000');
-  const smallDec = mkPactDecimal('-0.90071992547409910000');
+  const bigInt = createPactDecimal('90071992547409910000');
+  const smallDec = createPactInteger('-0.90071992547409910000');
 
   const actual = mkCap('coin.TEST', [
     Number.MIN_SAFE_INTEGER,
