@@ -9,6 +9,7 @@
 
 > Cryptography-Utils is a collection of utility functions cryptography related
 
+API Reference can be found here [./etc/cryptography-utils.api.md](./etc/cryptography-utils.api.md)
 <hr>
 
 crypto:
