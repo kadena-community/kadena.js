@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Kadena Discord Kadena.js Support (Kadena.js channel)
+    url: https://discord.io/kadena
+    about: Contact us on discord if you're having trouble with the library.

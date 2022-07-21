@@ -17,16 +17,8 @@ The following is a set of guidelines for contributing to Kadena.js, which is hos
 - Code of Conduct
 - Kadena & Kadena.js
 - Kadena.js and Packages
-- Kadena.js Design Principles
-- Reporting Issues
-- Reporting KIP
-- Your First Code Contribution
+- Issues
 - Pull Requests
-- Styleguides
-- Git Commit Messages
-- Typescript Styleguide
-- Documentation Styleguide
-- Issue and Pull Request Labels
 
 
 ### Questions
@@ -79,8 +71,29 @@ As our eco system will grow so will the packages and dapps we will release under
 ### Conventions
 tbd.
 
-### Bug reporting
+### Issues
 This section will help you create issues or filing bugs for Kadena.js. Following these steps will 
 help maintainers and community members solving the issues finding duplicates etc. etc.
 
-Before creating an issue doesn't already exist under https://github.com/kadena-community/kadena.js/issues
+1. Before creating an issue  make sure you are running the latest version
+2. Check if the issue doesn't already exist under [issues](https://github.com/kadena-community/kadena.js/issues)
+3. Use a clear and descriptive title for the identification of the problems
+4. Describe in a clear flow how to reproduce the problem. If possible create a gif or use screenshots. 
+5. Include details about the configuration and environment
+
+
+## Pull Request
+When you want to pick up an issues or want to improve the code it is done via a pull request.
+
+When filling out the pull request please take note of the following checklists:
+* Link the PR to an issue (if this is applicable).
+* Enable the checkbox to allow maintainer edits so the branch can be updated for a merge. Once you submit your PR, a team member will review your proposal. We may ask questions or request for additional information.
+* As you update your PR and apply changes, mark each conversation as resolved.
+
+When your PR is merged!
+
+🚀🚀 Thank you 🚀🚀.
+
+Now that you are part of the Kadena.js community, see how else you can contribute to the project.
+
+
