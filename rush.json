@@ -435,8 +435,8 @@
     },
 
     {
-      "packageName": "@kadena/pact-core",
-      "projectFolder": "packages/libs/pact-core",
+      "packageName": "@kadena/pactjs",
+      "projectFolder": "packages/libs/pactjs",
       "tags": ["libs"],
       "shouldPublish": false
     },

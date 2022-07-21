@@ -1,7 +1,7 @@
 {
   "name": "@kadena/pactjs-cli",
   "version": "0.0.1",
-  "description": "CLI tool accompanying @kadena/pact-core and @kadena/pact-client to generate TypeScript definitions and Pact client",
+  "description": "CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate TypeScript definitions and Pact client",
   "license": "MIT",
   "bin": {
     "pactjs": "lib/index.js"

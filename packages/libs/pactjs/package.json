@@ -1,7 +1,7 @@
 {
-  "name": "@kadena/pact-core",
+  "name": "@kadena/pactjs",
   "version": "0.0.1",
-  "description": "Core library for generating Pact expression generator in js",
+  "description": "Core library for building Pact expressions in js. Makes use of @kadena/pactjs-generated",
   "license": "MIT",
   "scripts": {
     "start": "ts-node --transpile-only src/index.ts",
