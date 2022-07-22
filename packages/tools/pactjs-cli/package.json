@@ -11,7 +11,7 @@
     "build": "heft build --clean",
     "_phase:build": "heft build --clean",
     "_phase:test": "",
-    "test": ""
+    "test": "heft test"
   },
   "dependencies": {
     "commander": "^9.3.0"

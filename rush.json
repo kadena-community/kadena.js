@@ -442,6 +442,13 @@
     },
 
     {
+      "packageName": "@kadena/pactjs-generator",
+      "projectFolder": "packages/libs/pactjs-generator",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
