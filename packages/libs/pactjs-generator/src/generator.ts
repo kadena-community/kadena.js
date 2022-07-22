@@ -1,38 +1,60 @@
-import { createReadStream, PathLike, readFileSync } from 'fs';
+import { PathLike, readFileSync } from 'fs';
 import byline from 'byline';
+import { Defun, getModuleAndMethods, Output } from './lexer';
 
-interface IContractDefinition {}
+interface IContractDefinition {
+  get modules(): string[] | undefined;
+  getMethods(moduleName: string): Record<string, Defun> | undefined;
+}
 
 export class FileContractDefinition implements IContractDefinition {
   bylineStream: byline.LineStream | undefined;
+  raw: Output | undefined;
 
-  constructor(private filePath: PathLike) {
-    this.load();
+  constructor(
+    private filePath: PathLike,
+    private logger: (msg: any, ...args: any[]) => void = () => {},
+  ) {
     this.parse();
   }
 
-  private load(): void {
-    var stream = createReadStream(this.filePath);
-    this.bylineStream = byline.createStream(stream, { keepEmptyLines: true });
+  private parse(): void {
+    this.raw = getModuleAndMethods(
+      readFileSync(this.filePath, 'utf8'),
+      this.logger,
+    );
+  }
+
+  get modules() {
+    return this.raw ? Object.keys(this.raw) : undefined;
+  }
+
+  getMethods(moduleName: string) {
+    return this.raw ? this.raw[moduleName].defuns : undefined;
+  }
+}
+
+export class StringContractDefinition implements IContractDefinition {
+  raw: Output | undefined;
+  constructor(
+    private contract: string,
+    private logger: (msg: any, ...args: any[]) => void = () => {},
+  ) {
+    this.parse();
   }
 
   private parse(): void {
-    if (this.bylineStream !== undefined) {
-      let lineNo: number = 0;
-      this.bylineStream.on('data', function (line: Buffer) {
-        lineNo++;
-        if (line.toString().includes('defun')) {
-          console.log(lineNo, line.toString());
-        }
-      });
-    }
+    this.raw = getModuleAndMethods(this.contract, this.logger);
   }
 
-  get methods() {
-    return [];
+  get modules(): string[] | undefined {
+    return this.raw ? Object.keys(this.raw) : undefined;
+  }
+  getMethods(moduleName: string): Record<string, Defun> | undefined {
+    return this.raw ? this.raw[moduleName].defuns : undefined;
   }
 }
 
 export class PactTypescriptGenerator {
-  constructor(...args: IContractDefinition) {}
+  constructor(...args: IContractDefinition[]) {}
 }
