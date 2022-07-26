@@ -1,6 +1,6 @@
 import { PathLike, readFileSync } from 'fs';
 import byline from 'byline';
-import { Defun, getModuleAndMethods, Output } from './lexer';
+import { Defun, getModuleAndMethods, Output } from './parser';
 
 interface IContractDefinition {
   get modules(): string[] | undefined;
