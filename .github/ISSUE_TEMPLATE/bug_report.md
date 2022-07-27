@@ -13,13 +13,10 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 A clear and concise description how to reproduce the error.
-It helps to add screenshots/ gifs.
+It helps to add screenshots/gifs.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
