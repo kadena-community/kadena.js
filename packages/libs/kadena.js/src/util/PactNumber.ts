@@ -26,14 +26,16 @@ export class PactNumber {
       throw new Error('PactNumber is not an integer');
     }
     return {
-      int: this._number.toString(),
+      int: this.toInteger(),
     };
   }
 
   public toDecimal(): string {
     if (this._number.isInteger()) {
       return `${this._number.toString()}.0`;
-    } else return `${this._number.toString()}`;
+    }
+    console.log(this._number, this._number.isInteger());
+    return `${this._number.toString()}`;
   }
 
   public toStringifiedDecimal(): string {
@@ -42,7 +44,7 @@ export class PactNumber {
 
   public toPactDecimal(): IPactDecimal {
     return {
-      decimal: this._number.toString(),
+      decimal: this.toDecimal(),
     };
   }
 }

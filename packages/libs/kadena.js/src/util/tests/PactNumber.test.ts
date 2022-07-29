@@ -2,56 +2,86 @@ import { PactNumber } from '../PactNumber';
 
 import { throws } from 'assert';
 
-describe('toPactInteger', () => {
-  it('should print an integer string', () => {
-    const pactNumber = new PactNumber('90071992547409910000');
-    const actual = pactNumber.toInteger();
-    const expected = '90071992547409910000';
+describe('Pact Number', () => {
+  it('Takes in a big integer string as PactNumber and print it as an integer', () => {
+    const actual = new PactNumber('900719925474099100001').toInteger();
+    const expected = '900719925474099100001';
 
     expect(expected).toEqual(actual);
   });
 
-  it('should create a pact integer object with big positive integer', () => {
-    const pactNumber = new PactNumber('900719925474099100001');
-    const actual = pactNumber.toPactInteger();
+  it('Takes in a big integer string as PactNumber and print it as a Pact integer object', () => {
+    const actual = new PactNumber('900719925474099100001').toPactInteger();
     const expected = { int: '900719925474099100001' };
 
     expect(expected).toEqual(actual);
   });
 
-  it('should convert an integer to a decimal and print in string', () => {
+  it('Takes in a big integer string as PactNumber and convert and print as a decimal', () => {
     const pactNumber = new PactNumber('900719925474099100001');
-    const actual = pactNumber.toPactDecimal();
-    const expected = { decimal: '900719925474099100001' };
+    const actual = pactNumber.toStringifiedInteger();
+    const expected = JSON.stringify('900719925474099100001');
 
     expect(expected).toEqual(actual);
   });
 
-  it('should convert an integer to a decimal and print in pact decimal object', () => {
+  it('Takes in a big integer string as PactNumber and convert and print as a decimal', () => {
     const pactNumber = new PactNumber('900719925474099100001');
-    const actual = pactNumber.toPactDecimal();
-    const expected = { decimal: '900719925474099100001' };
+    const actual = pactNumber.toDecimal();
+    const expected = '900719925474099100001.0';
 
     expect(expected).toEqual(actual);
   });
 
-  it('should create a pact decimal object with very small negative decimal', () => {
-    const pactNumber = new PactNumber('-0.90071992547409910000');
+  it('Takes in a big integer string as PactNumber and convert and print as a stringified decimal', () => {
+    const pactNumber = new PactNumber('900719925474099100001');
+    const actual = pactNumber.toStringifiedDecimal();
+    const expected = JSON.stringify('900719925474099100001.0');
+
+    expect(expected).toEqual(actual);
+  });
+
+  it('Takes in a big integer string as PactNumber and convert and print as a Pact decimal object', () => {
+    const pactNumber = new PactNumber('900719925474099100001');
     const actual = pactNumber.toPactDecimal();
-    const expected = { decimal: '-0.9007199254740991' };
+    const expected = { decimal: '900719925474099100001.0' };
+
+    expect(expected).toEqual(actual);
+  });
+
+  it('Takes in a big decimal string as PactNumber and print as a Pact decimal object', () => {
+    const pactNumber = new PactNumber('-0.9007199254740991192919');
+    const actual = pactNumber.toDecimal();
+    const expected = '-0.9007199254740991192919';
+
+    expect(expected).toEqual(actual);
+  });
+
+  it('Takes in a big decimal string as PactNumber and print as a Pact decimal object', () => {
+    const pactNumber = new PactNumber('-0.9007199254740991192919');
+    const actual = pactNumber.toPactDecimal();
+    const expected = { decimal: '-0.9007199254740991192919' };
+
+    expect(expected).toEqual(actual);
+  });
+
+  it('Takes in a big decimal string as PactNumber and print as a stringified decimal', () => {
+    const pactNumber = new PactNumber('-0.9007199254740991192919');
+    const actual = pactNumber.toStringifiedDecimal();
+    const expected = JSON.stringify('-0.9007199254740991192919');
 
     expect(expected).toEqual(actual);
   });
 
   it('should throw an error when toInteger is called with a decimal', () => {
     throws(() => {
-      new PactNumber('-0.90071992547409910000').toInteger();
+      new PactNumber('-0.9007199254740991192919').toInteger();
     });
   });
 
   it('should throw an error when toPactInteger is called with a decimal', () => {
     throws(() => {
-      new PactNumber('-0.90071992547409910000').toPactInteger();
+      new PactNumber('-0.9007199254740991192919').toPactInteger();
     });
   });
 
@@ -61,15 +91,15 @@ describe('toPactInteger', () => {
     });
   });
 
-  it('should take in number as PactNumber', () => {
-    const actual = new PactNumber(9007199254740991000).toInteger();
-    const expected = '9007199254740991000';
+  it('should take in big integer number as PactNumber, but precisions are lost', () => {
+    const actual = new PactNumber(900719925474099100001).toInteger();
+    const expected = '900719925474099100000';
 
     expect(expected).toEqual(actual);
   });
 
-  it('should take in number as PactNumber', () => {
-    const actual = new PactNumber(0.9007199254740991).toDecimal();
+  it('should take big decimal number as PactNumber, but precisions are lost', () => {
+    const actual = new PactNumber(0.9007199254740991192919).toDecimal();
     const expected = '0.9007199254740991';
 
     expect(expected).toEqual(actual);
