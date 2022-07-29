@@ -42,6 +42,7 @@
     "@kadena/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
-    "@types/heft-jest": "~1.0.3"
+    "@types/heft-jest": "~1.0.3",
+    "eslint": "^8.15.0"
   }
 }
