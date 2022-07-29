@@ -1,0 +1,43 @@
+{
+  "name": "@kadena/pactjs-generator",
+  "version": "0.0.1",
+  "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
+  "license": "MIT",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "",
+    "build": "heft build --clean",
+    "gen-parser": "nearleyc src/lexer.ne -o ./src/grammar.js",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint-staged": "lint-staged",
+    "start": "ts-node --transpile-only src/index.ts",
+    "test": "heft test"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "byline": "~5.0.0",
+    "moo": "~0.5.1",
+    "nearley": "~2.20.1"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@types/byline": "~4.2.33",
+    "@types/heft-jest": "~1.0.3",
+    "@types/moo": "~0.5.5",
+    "@types/nearley": "~2.11.2",
+    "@types/node": "^16.0.0",
+    "@types/node-fetch": "~2.6.2",
+    "node-fetch": "^2.6.7",
+    "ts-node": "~10.8.2"
+  }
+}

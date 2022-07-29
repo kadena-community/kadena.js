@@ -1,0 +1,26 @@
+{
+  "name": "@kadena/pactjs-cli",
+  "version": "0.0.1",
+  "description": "CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate TypeScript definitions and Pact client",
+  "license": "MIT",
+  "bin": {
+    "pactjs": "lib/index.js"
+  },
+  "scripts": {
+    "lint-staged": "lint-staged",
+    "build": "heft build --clean",
+    "_phase:build": "heft build --clean",
+    "_phase:test": "",
+    "test": "heft test"
+  },
+  "dependencies": {
+    "commander": "^9.3.0"
+  },
+  "devDependencies": {
+    "@kadena/heft-rig": "workspace:*",
+    "@types/node": "^16.0.0",
+    "@types/heft-jest": "~1.0.3",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@kadena/eslint-config": "workspace:*"
+  }
+}
