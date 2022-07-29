@@ -72,6 +72,7 @@ importers:
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       '@types/node-fetch': ~2.6.2
@@ -81,6 +82,7 @@ importers:
       '@kadena/eslint-config': link:../../tools/eslint-config
       '@kadena/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2
+      '@rushstack/heft': 0.46.6
       '@types/heft-jest': 1.0.3
       '@types/node': 16.11.46
       '@types/node-fetch': 2.6.2
@@ -92,6 +94,7 @@ importers:
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
       '@types/byline': ~4.2.33
       '@types/heft-jest': ~1.0.3
       '@types/moo': ~0.5.5
@@ -111,6 +114,7 @@ importers:
       '@kadena/eslint-config': link:../../tools/eslint-config
       '@kadena/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2
+      '@rushstack/heft': 0.46.6
       '@types/byline': 4.2.33
       '@types/heft-jest': 1.0.3
       '@types/moo': 0.5.5
@@ -214,6 +218,7 @@ importers:
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       commander: ^9.3.0
@@ -223,6 +228,7 @@ importers:
       '@kadena/eslint-config': link:../eslint-config
       '@kadena/heft-rig': link:../heft-rig
       '@rushstack/eslint-config': 2.6.2
+      '@rushstack/heft': 0.46.6
       '@types/heft-jest': 1.0.3
       '@types/node': 16.11.46
 
