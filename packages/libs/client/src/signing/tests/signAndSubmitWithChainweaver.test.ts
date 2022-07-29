@@ -1,0 +1,39 @@
+const thenMock = jest.fn();
+const crossFetchMock = jest.fn(
+  () => ({ then: thenMock } as unknown as Promise<Response>),
+);
+
+jest.mock<typeof fetch>('cross-fetch', () => crossFetchMock);
+import { IPactCommand } from '../../interfaces/IPactCommand';
+import { ICommandBuilder, Pact } from '../../pact';
+import { signAndSubmitWithChainweaver } from '../signAndSubmitWithChainweaver';
+
+import fetch from 'cross-fetch';
+
+describe('signAndSubmitWithChainweaver', () => {
+  it('makes a call on 127.0.0.1:9467/v1/sign with transaction', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pactModule = Pact.modules as any;
+    const unsignedCommand = (
+      pactModule.coin.transfer('k:from') as ICommandBuilder<{
+        GAS: [];
+      }> &
+        IPactCommand
+    )
+      .addCap('GAS', 'signer-key')
+      .addMeta({
+        sender: '',
+      });
+
+    await signAndSubmitWithChainweaver(
+      unsignedCommand,
+    );
+
+    expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/sign', {
+      body: '{"code":"(coin.transfer \\"k:from\\")","data":{},"networkId":"testnet04","caps":[{"role":"GAS","description":"cap for GAS","cap":{"name":"GAS","args":[]}}],"sender":"","chainId":"1 ","gasLimit":2500,"gasPrice":1e-8,"signingPubKey":"","ttl":300}',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      method: 'POST',
+    });
+    expect(thenMock).toBeCalled();
+  });
+});

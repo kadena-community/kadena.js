@@ -1,0 +1,49 @@
+{
+  "name": "@kadena/pactjs-test-project",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Test project to verify pactjs-cli and pactjs-generator",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "dist/pactjs-generator.d.ts",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test",
+    "build": "heft build",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint-staged": "lint-staged",
+    "pactjs:generate:contract": "pactjs contract-generate --clean --file src/coin.contract.pact",
+    "pactjs:generate:template": "pactjs template-generate --clean --file src/tx-templates --out src/tx-templates-generated",
+    "postinstall": "rushx pactjs:generate:contract; rushx pactjs:generate:template",
+    "test": "heft test"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "debug": "~4.3.4"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "concurrently": "^7.2.2",
+    "eslint": "^8.15.0",
+    "node-fetch": "^2.6.7",
+    "npm-run-all": "~4.1.5",
+    "ts-node": "~10.8.2"
+  }
+}

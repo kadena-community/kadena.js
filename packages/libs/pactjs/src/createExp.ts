@@ -5,5 +5,7 @@ import { PactCode, PactValue } from '@kadena/types';
  * @alpha
  */
 export function createExp(firstArg: string, ...args: PactValue[]): PactCode {
-  return `(${firstArg} ${Array.prototype.slice.call(args, 0).join(' ')})`;
+  return `(${firstArg}${args.length > 0 ? ' ' : ''}${Array.prototype.slice
+    .call(args, 0)
+    .join(' ')})`;
 }

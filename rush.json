@@ -312,9 +312,7 @@
     /**
      * The list of shell commands to run before the Rush installation starts
      */
-    "preRushInstall": [
-      // "common/scripts/pre-rush-install.js"
-    ],
+    "preRushInstall": ["./common/scripts/add-lib-index-pactjs-cli.js"],
 
     /**
      * The list of shell commands to run after the Rush installation finishes
@@ -421,6 +419,13 @@
     },
 
     {
+      "packageName": "@kadena/client",
+      "projectFolder": "packages/libs/client",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/cryptography-utils",
       "projectFolder": "packages/libs/cryptography-utils",
       "tags": ["libs"],
@@ -442,6 +447,20 @@
     },
 
     {
+      "packageName": "@kadena/pactjs-generator",
+      "projectFolder": "packages/libs/pactjs-generator",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/pactjs-test-project",
+      "projectFolder": "packages/libs/pactjs-test-project",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
@@ -452,15 +471,23 @@
     // ##  Tools
     // #########################
     {
+      "packageName": "@kadena/eslint-config",
+      "projectFolder": "packages/tools/eslint-config",
+      "cyclicDependencyProjects": ["@kadena/eslint-config"],
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
       "shouldPublish": false
     },
+
     {
-      "packageName": "@kadena/eslint-config",
-      "projectFolder": "packages/tools/eslint-config",
-      "cyclicDependencyProjects": ["@kadena/eslint-config"],
+      "packageName": "@kadena/pactjs-cli",
+      "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
       "shouldPublish": false
     }
