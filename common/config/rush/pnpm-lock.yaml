@@ -38,6 +38,7 @@ importers:
       '@rushstack/heft': ~0.46.1
       '@types/heft-jest': ~1.0.3
       '@types/node-fetch': ~2.6.2
+      bignumber.js: ^9.0.2
       blakejs: ^1.2.1
       node-fetch: ^2.6.7
       serve: ^13.0.2
@@ -48,6 +49,7 @@ importers:
     dependencies:
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/types': link:../types
+      bignumber.js: 9.0.2
       blakejs: 1.2.1
       node-fetch: 2.6.7
       tweetnacl: 1.0.3
@@ -2094,6 +2096,10 @@ packages:
 
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+
+  /bignumber.js/9.0.2:
+    resolution: {integrity: sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==}
+    dev: false
 
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
