@@ -1,4 +1,4 @@
 /**
  * @alpha
  */
-export * from './generator';
+export * from './ContractDefinition';

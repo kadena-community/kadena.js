@@ -1,4 +1,7 @@
-import { FileContractDefinition, StringContractDefinition } from '../generator';
+import {
+  FileContractDefinition,
+  StringContractDefinition,
+} from '../ContractDefinition';
 
 import path from 'path';
 
@@ -9,6 +12,7 @@ describe('FileContractDefinition', () => {
 
     expect(fileContractDefinition.modules).toEqual(['coin']);
     const methods = fileContractDefinition.getMethods('coin')!;
+    console.log(JSON.stringify(methods));
     expect(Object.keys(methods).length).toEqual(23);
   });
 });
