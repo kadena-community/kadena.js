@@ -1,0 +1,67 @@
+.pactContainer {
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  padding: 32px;
+}
+
+.pactHead {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  color: #975e9a;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+@media only screen and (max-width: 860px) {
+  .pactContainer {
+    padding: 0;
+  }
+
+  .pactHead {
+    margin: 16px 0 0 16px;
+  }
+
+  .commandMobileResult {
+    padding-bottom: 16px;
+  }
+
+  .commandMobileResult {
+    background: #ffffff;
+    border-radius: 30px;
+  }
+
+  .transactionBtn {
+    height: 48px;
+    line-height: 150%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    cursor: pointer;
+  }
+
+  .previewTransactionBtn {
+    height: 48px;
+    width: 248px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3c2453;
+    font-family: Neue Haas Grotesk Display Pro, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    background: #c0fb50;
+    border-radius: 40px;
+    cursor: pointer;
+    border: none;
+  }
+}
+
+@media only screen and (min-width: 860px) and (max-width: 1365px) {
+  .pactContainer {
+    padding: 16px;
+  }
+}

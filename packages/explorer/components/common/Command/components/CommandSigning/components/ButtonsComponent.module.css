@@ -1,0 +1,96 @@
+.buttonGroup {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.submitButton {
+  height: 40px;
+  width: 200px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  background: rgb(0 0 0 / 50%);
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.picture {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.pictureButton {
+  width: 200px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  background: #3c2453;
+  border-radius: 40px;
+  padding: 8px 40px;
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+.pictureButton:hover {
+  transform: scale(1.05);
+}
+.pictureButton:active {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.picture input {
+  display: none;
+  height: 40px;
+}
+
+.picture > span {
+  margin-left: 8px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.chooseFile {
+  max-width: 150px;
+  display: flex;
+  color: #ffffff;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chooseFile:hover {
+  overflow: visible;
+}
+
+@media only screen and (max-width: 860px) {
+  .buttonGroup {
+    margin-left: 16px;
+  }
+  .chooseFile {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .buttonGroup {
+    min-height: 90px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

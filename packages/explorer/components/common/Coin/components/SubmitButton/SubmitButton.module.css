@@ -1,0 +1,26 @@
+.submitRow {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.submitRowBtn {
+  height: 48px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3c2453;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  background: #c0fb50;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+}

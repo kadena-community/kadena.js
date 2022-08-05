@@ -1,0 +1,31 @@
+.bannerGraphicContainer{
+  position: relative;
+  height: 50px;
+}
+
+.leftOpacity {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 0;
+  width: 20%;
+  z-index: 2;
+  background-image: linear-gradient(to right, rgba(23,9,46,0.94) 40%,rgba(23,9,46,0) 100%);
+}
+
+.rightOpacity {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  right: 0;
+  width: 20%;
+  z-index: 2;
+  background-image: linear-gradient(to left, rgba(23,9,46,0.94) 40%,rgba(23,9,46,0) 100%);
+  
+}
+
+@media only screen and (max-width: 860px) {
+  .bannerGraphicContainer {
+    height: 32px;
+  }
+}

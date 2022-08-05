@@ -1,0 +1,38 @@
+.buttonsContainer {
+  width: 100px !important;
+  height: 28px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-style: normal;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  margin-top: 4px;
+}
+
+.chartButton {
+  height: 28px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 10px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  background: #3c2453;
+  border-radius: 15px;
+  cursor: pointer;
+  overflow: hidden;
+  border: none;
+  margin-left: 12px;
+  padding-left: 8px;
+  appearance: none;
+  text-transform: uppercase;
+}
+
+.buttonsContainer > svg {
+  position: absolute;
+  right: 8px;
+}

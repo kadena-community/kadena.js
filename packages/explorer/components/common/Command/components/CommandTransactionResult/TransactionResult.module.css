@@ -1,0 +1,72 @@
+.resultContainer {
+  min-width: 250px;
+  flex: 1;
+  margin-top: 40px;
+}
+
+.loadingContainer {
+  margin-top: 40px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 155px;
+  flex: 1;
+}
+
+.json {
+  position: relative;
+  height: 35px;
+  width: 100px;
+  background: rgba(80, 59, 211, 0.5);
+  border-radius: 100px;
+}
+
+.jsonSelect {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  background: transparent;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0 12px;
+  appearance: none;
+}
+
+.json > svg {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.jsonSelect > option {
+  background: #975e9a;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 860px) {
+  .resultContainer {
+    padding: 16px;
+    margin-top: 0;
+  }
+  .json {
+    background: rgba(80, 59, 211, 0.5);
+    border-radius: 100px;
+  }
+  .loadingContainer {
+    min-height: unset;
+  }
+}

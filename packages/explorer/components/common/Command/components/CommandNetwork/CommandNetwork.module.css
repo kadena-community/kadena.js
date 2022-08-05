@@ -1,0 +1,28 @@
+.networkContainer {
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  padding: 32px;
+}
+
+.textDanger {
+  color: #d61c06;
+  font-weight: 400;
+  font-size: 13px;
+  margin-top: -20px;
+}
+
+@media only screen and (max-width: 860px) {
+  .networkContainer {
+    padding: 16px 0 0 0;
+  }
+
+  .textDanger {
+    margin-left: 16px;
+  }
+}
+
+@media only screen and (min-width: 860px) and (max-width: 1365px) {
+  .networkContainer {
+    padding: 16px;
+  }
+}

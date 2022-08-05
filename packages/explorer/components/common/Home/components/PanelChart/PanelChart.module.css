@@ -1,0 +1,51 @@
+.containerRight {
+  display: flex;
+  justify-content: space-between;
+}
+
+.containerRight > *:first-child {
+  margin-left: 32px;
+}
+
+.containerRight > *:last-child {
+  margin-right: 32px;
+}
+
+.containerChart {
+  display: flex;
+}
+
+.iconChart {
+  width: 50px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.iconChart:hover {
+  background: rgb(151 94 154 / 30%);
+}
+
+.iconChartActive {
+  background: rgb(151 94 154 / 20%);
+}
+
+.iconChartLeft {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.iconChartRight {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.containerLeft {
+  display: flex;
+}
+
+.containerLeft svg {
+  margin-right: 13px;
+  cursor: pointer;
+}

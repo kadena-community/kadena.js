@@ -1,0 +1,87 @@
+.signingContainer {
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  padding: 32px;
+}
+
+.signingContainer [class*='container'] {
+  margin-top: 16px;
+}
+
+.textDanger {
+  color: #d61c06;
+  font-weight: 400;
+  font-size: 13px;
+  margin-top: -20px;
+}
+
+.senderBlock {
+  min-height: 200px;
+  background: rgba(151, 94, 154, 0.34);
+  border-radius: 10px;
+  padding: 8px 24px;
+  margin-top: 24px;
+}
+
+.radioGroup {
+  height: 40px;
+  display: flex;
+  padding-top: 16px;
+}
+
+.keyInputGroup {
+  display: flex;
+  gap: 16px;
+  border-top: 0;
+  border-bottom: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(
+    to right,
+    transparent 0%,
+    #975e9a,
+    #975e9a,
+    #975e9a,
+    #975e9a,
+    #975e9a 90%,
+    transparent 100%
+  );
+  margin-top: 8px;
+}
+
+.public {
+  width: 100%;
+  padding: 0;
+}
+
+.keyInputGroup [class*='inputBlock'] {
+  background: rgb(0 0 0 / 50%);
+}
+
+.signatureRadio {
+  margin-left: 15px;
+}
+
+@media only screen and (max-width: 860px) {
+  .signingContainer {
+    padding: 16px 0 0 0;
+  }
+
+  .senderBlock {
+    padding: 8px 0;
+    margin: 0 16px;
+  }
+
+  .radioGroup {
+    margin-left: 16px;
+  }
+
+  .textDanger {
+    margin: -20px 16px 0 16px;
+  }
+}
+
+@media only screen and (min-width: 860px) and (max-width: 1365px) {
+  .signingContainer {
+    padding: 16px;
+  }
+}

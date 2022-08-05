@@ -1,0 +1,82 @@
+.pactText {
+  width: 100%;
+  min-height: 244px;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 15px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  resize: none;
+  background: rgba(151, 94, 154, 0.34);
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 16px 24px;
+  white-space: pre-wrap;
+}
+
+.pactText::-webkit-scrollbar {
+  display: none;
+}
+
+.pactText::placeholder {
+  color: #975e9a;
+  white-space: pre-wrap;
+}
+
+.pactLink {
+  color: #975e9a;
+  text-align: left;
+  font-weight: 400;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.link {
+  color: #837fbd;
+  text-decoration: underline;
+  margin-left: 8px;
+}
+
+.showCode {
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  margin: 28px 0;
+}
+
+.code {
+  height: 48px;
+  width: 174px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: #483157;
+  border-radius: 40px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 150%;
+  border: none;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 860px) {
+  .textareaContainer {
+    min-height: 244px;
+    padding: 15px 14px 0 14px;
+  }
+
+  .pactText {
+    height: 356px;
+    font-size: 13px;
+    padding: 14px;
+  }
+
+  .pactLink {
+    font-size: 10px;
+    margin: 12px 28px;
+  }
+}

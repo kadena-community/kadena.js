@@ -1,0 +1,42 @@
+.hintContainer {
+  height: 17px;
+  width: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 400;
+  background: #975e9a;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.hintContainer > span {
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+.tooltip {
+  opacity: 1 !important;
+}
+
+.tooltipContainer {
+  width: 200px;
+  background: #ffffff;
+  font-style: normal;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  opacity: 1;
+  padding: 8px 0;
+}
+
+.tooltipHead {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #3c2453;
+}
+
+.tooltipText {
+  font-size: 13px;
+  font-weight: 400;
+}

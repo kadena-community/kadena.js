@@ -1,0 +1,57 @@
+.keyPairContainer {
+  max-width: 500px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+}
+
+.container {
+  background: rgb(0 0 0 / 50%);
+  border-radius: 40px;
+  padding: 32px;
+}
+
+.keyPair {
+  height: 28px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.keyText {
+  color: #975e9a;
+  font-weight: 400;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.keyLink {
+  color: #975e9a;
+  font-weight: 400;
+  font-size: 13px;
+  margin: 16px 0 0 0;
+}
+
+.link {
+  color: #837fbd;
+  text-decoration: underline;
+  margin-left: 8px;
+}
+
+@media only screen and (max-width: 860px) {
+  .keyPairContainer {
+    padding: 0;
+  }
+  .container {
+    border-radius: 20px;
+  }
+  .keyPair {
+    font-size: 15px;
+  }
+  .keyLink {
+    margin: 8px 0;
+  }
+  .keyText {
+    font-size: 13px;
+  }
+}

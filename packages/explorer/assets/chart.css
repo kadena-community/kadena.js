@@ -1,0 +1,3 @@
+.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis .recharts-cartesian-axis-ticks .recharts-layer.recharts-cartesian-axis-tick:first-child {
+  display: none;
+}

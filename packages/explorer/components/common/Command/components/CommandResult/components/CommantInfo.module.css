@@ -1,0 +1,40 @@
+.infoContainer {
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  line-height: 150%;
+  display: flex;
+  align-items: center;
+  color: #975e9a;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 16px 0;
+}
+
+.infoText {
+  line-height: 150%;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 17px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  word-break: break-all;
+}
+
+@media only screen and (max-width: 860px) {
+  .infoContainer {
+    width: calc(100vw - 32px);
+  }
+  .info {
+    width: calc(100vw - 32px);
+    font-size: 13px;
+    margin: 24px 0 8px 0;
+  }
+  .infoText {
+    font-size: 13px;
+  }
+}

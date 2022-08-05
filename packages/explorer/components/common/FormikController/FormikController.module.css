@@ -1,0 +1,105 @@
+.controller {
+  margin-bottom: 24px;
+}
+
+.head {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  color: #975e9a;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.block {
+  height: 48px;
+  background: rgba(151, 94, 154, 0.34);
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.element {
+  height: 48px;
+  width: 100%;
+  color: #ffffff;
+  background: transparent;
+  font-size: 15px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  border: none;
+  outline: none;
+  appearance: none;
+  padding: 0 24px;
+}
+
+.inputBlock {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.arrow {
+  display: flex;
+  margin-top: 8px;
+  height: 12px;
+  margin-right: 12px;
+  width: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow > svg {
+  transform: translateY(-50%);
+}
+
+.element > option {
+  background: #975e9a;
+  color: #ffffff;
+}
+
+.element::placeholder {
+  color: #975e9a;
+  font-weight: 400;
+  font-size: 15px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+}
+
+.textDanger {
+  color: #d61c06;
+  font-weight: 400;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+@media only screen and (max-width: 860px) {
+  .controller {
+    margin-bottom: 16px;
+  }
+
+  .element {
+    font-size: 13px;
+  }
+
+  .element::placeholder {
+    font-size: 13px;
+  }
+
+  .head {
+    margin: 0 16px 16px 16px;
+  }
+
+  .block {
+    margin: 0 16px;
+    font-size: 13px;
+  }
+  .textDanger {
+    margin-left: 16px;
+  }
+}
