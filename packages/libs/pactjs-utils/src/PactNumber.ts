@@ -1,7 +1,11 @@
 import { IPactDecimal, IPactInt } from '@kadena/types';
-
 import BigNumber from 'bignumber.js';
 
+/**
+ * Constructs a bignumber.js instance and formats into Pact number formats.
+ *
+ * @alpha
+ */
 export class PactNumber {
   private readonly _number: BigNumber;
 

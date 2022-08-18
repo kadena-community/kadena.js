@@ -35,6 +35,7 @@ importers:
       '@kadena/cryptography-utils': workspace:*
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
+      '@kadena/pactjs-utils': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -51,6 +52,7 @@ importers:
       webpack-cli: ^4.9.2
     dependencies:
       '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/pactjs-utils': link:../pactjs-utils
       '@kadena/types': link:../types
       bignumber.js: 9.0.2
       blakejs: 1.2.1
@@ -68,6 +70,27 @@ importers:
       serve: 13.0.4
       ts-loader: 9.3.1_webpack@5.73.0
       webpack-cli: 4.10.0_webpack@5.73.0
+
+  ../../packages/libs/pactjs-utils:
+    specifiers:
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/node': ^16.0.0
+      eslint: ^8.15.0
+    dependencies:
+      '@kadena/types': link:../types
+    devDependencies:
+      '@kadena/eslint-config': link:../../tools/eslint-config
+      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@rushstack/eslint-config': 2.6.2_eslint@8.19.0
+      '@rushstack/heft': 0.46.4
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.11.44
+      eslint: 8.19.0
 
   ../../packages/libs/types:
     specifiers:

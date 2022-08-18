@@ -18,8 +18,6 @@ export * from './fetch/poll';
 export * from './fetch/send';
 export * from './fetch/spv';
 export * from './fetch/stringifyAndMakePOSTRequest';
-export * from './util/createExp';
-export * from './util/PactNumber';
 export * from './SigData/mkCap';
 export * from './util/unique';
 export * from './wallet/createCap';

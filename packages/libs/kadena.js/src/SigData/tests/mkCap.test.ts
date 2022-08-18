@@ -1,4 +1,5 @@
-import { PactNumber } from '../../util/PactNumber';
+import { PactNumber } from '@kadena/pactjs-utils';
+
 import { mkCap } from '../mkCap';
 
 test('should create a baseline cap with empty args', () => {
