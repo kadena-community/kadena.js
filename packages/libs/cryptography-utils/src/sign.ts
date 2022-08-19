@@ -24,7 +24,5 @@ export function sign(
     toTweetNaclSecretKey({ secretKey, publicKey }),
   );
 
-  console.log(hsh);
-
   return { hash: hsh, sig: binToHex(sigBin), pubKey: publicKey };
 }
