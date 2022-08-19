@@ -6,5 +6,7 @@ import { Buffer } from 'buffer';
  * @alpha
  */
 export function hexToBin(hexString: string): Uint8Array {
-  return new Uint8Array(Buffer.from(hexString, 'hex'));
+  const uint8Array = new Uint8Array(Buffer.from(hexString, 'hex'));
+
+  return uint8Array;
 }
