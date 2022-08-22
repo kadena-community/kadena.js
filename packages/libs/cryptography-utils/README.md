@@ -9,7 +9,7 @@
 
 > Cryptography-Utils is a collection of utility functions cryptography related
 
-API Reference can be found here [ryptography-utils.api.md](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils/etc/cryptography-utils.api.md)
+API Reference can be found here [cryptography-utils.api.md](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils/etc/cryptography-utils.api.md)
 <hr>
 
 crypto:
