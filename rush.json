@@ -290,7 +290,7 @@
      * your PR branch, and in this situation "rush change" will also automatically invoke "git fetch"
      * to retrieve the latest activity for the remote main branch.
      */
-    "url": "https://github.com/kadena-io/kadena.js",
+    "url": "https://github.com/kadena-community/kadena.js",
 
     /**
      * The default branch name. This tells "rush change" which remote branch to compare against.
