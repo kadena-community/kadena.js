@@ -405,6 +405,12 @@
     // #########################
     // ##  Deployables
     // #########################
+    {
+      "packageName": "@kadena/block-explorer",
+      "projectFolder": "packages/apps/explorer",
+      "reviewCategory": "prototypes",
+      "shouldPublish": false
+    },
 
     // #########################
     // ##  Features
