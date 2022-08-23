@@ -82,9 +82,11 @@ importers:
       '@rushstack/heft': ~0.46.1
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
+      bignumber.js: ^9.0.2
       eslint: ^8.15.0
     dependencies:
       '@kadena/types': link:../types
+      bignumber.js: 9.1.0
     devDependencies:
       '@kadena/eslint-config': link:../../tools/eslint-config
       '@kadena/heft-rig': link:../../tools/heft-rig
