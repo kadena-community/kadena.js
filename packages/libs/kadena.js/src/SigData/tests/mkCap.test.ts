@@ -1,4 +1,5 @@
-import { mkPactDecimal, mkPactInt } from '../../util/PactValue';
+import { PactNumber } from '@kadena/pactjs-utils';
+
 import { mkCap } from '../mkCap';
 
 test('should create a baseline cap with empty args', () => {
@@ -50,9 +51,8 @@ test("should create a cap with JavaScript's Number.MIN_SAFE_INTEGER", () => {
 });
 
 test('should create a cap with number, pact integer, and pact decimal', () => {
-  const bigInt = mkPactInt('90071992547409910000');
-  const smallDec = mkPactDecimal('-0.90071992547409910000');
-
+  const bigInt = new PactNumber('90071992547409910000').toPactInteger();
+  const smallDec = new PactNumber('-0.90071992547409910000').toPactDecimal();
   const actual = mkCap('coin.TEST', [
     Number.MIN_SAFE_INTEGER,
     bigInt,
@@ -63,7 +63,7 @@ test('should create a cap with number, pact integer, and pact decimal', () => {
     args: [
       -9007199254740991,
       { int: '90071992547409910000' },
-      { decimal: '-0.90071992547409910000' },
+      { decimal: '-0.9007199254740991' },
     ],
   };
 

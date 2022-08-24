@@ -57,7 +57,9 @@
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/pactjs-utils": "workspace:*",
     "@kadena/types": "workspace:*",
+    "bignumber.js": "^9.0.2",
     "blakejs": "^1.2.1",
     "node-fetch": "^2.6.7",
     "tweetnacl": "^1.0.3",
