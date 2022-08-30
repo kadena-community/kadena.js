@@ -428,16 +428,16 @@
     },
 
     {
-      "packageName": "@kadena/pactjs-utils",
-      "projectFolder": "packages/libs/pactjs-utils",
-      "tags": ["libs"],
+      "packageName": "@kadena/integration-tests",
+      "projectFolder": "packages/tools/integration-tests",
+      "tags": ["tools"],
       "shouldPublish": false
     },
 
     {
-      "packageName": "@kadena/integration-tests",
-      "projectFolder": "packages/tools/integration-tests",
-      "tags": ["tools"],
+      "packageName": "@kadena/pactjs-utils",
+      "projectFolder": "packages/libs/pactjs-utils",
+      "tags": ["libs"],
       "shouldPublish": false
     },
 
