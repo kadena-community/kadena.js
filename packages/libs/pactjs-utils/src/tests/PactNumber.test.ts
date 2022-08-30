@@ -1,7 +1,5 @@
 import { PactNumber } from '../PactNumber';
 
-// import { throws } from 'assert';
-
 describe('Pact Number', () => {
   it('Takes in a big integer string as PactNumber and print it as an integer', () => {
     const actual = new PactNumber('900719925474099100001').toInteger();
