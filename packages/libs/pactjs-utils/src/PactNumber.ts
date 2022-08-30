@@ -38,7 +38,6 @@ export class PactNumber {
     if (this._number.isInteger()) {
       return `${this._number.toString()}.0`;
     }
-    console.log(this._number, this._number.isInteger());
     return `${this._number.toString()}`;
   }
 
