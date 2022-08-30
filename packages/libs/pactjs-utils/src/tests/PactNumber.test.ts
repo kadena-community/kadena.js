@@ -74,17 +74,21 @@ describe('Pact Number', () => {
   });
 
   it('should throw an error when toInteger is called with a decimal', () => {
-    expect(new PactNumber('-0.9007199254740991192919').toInteger()).toThrow();
+    expect(() => {
+      new PactNumber('-0.9007199254740991192919').toInteger();
+    }).toThrowError('PactNumber is not an integer');
   });
 
   it('should throw an error when toPactInteger is called with a decimal', () => {
-    expect(
-      new PactNumber('-0.9007199254740991192919').toPactInteger(),
-    ).toThrow();
+    expect(() => {
+      new PactNumber('-0.9007199254740991192919').toPactInteger();
+    }).toThrowError('PactNumber is not an integer');
   });
 
   it('should throw an error when NaN is inputted ', () => {
-    expect(new PactNumber('a')).toThrow();
+    expect(() => {
+      new PactNumber('a');
+    }).toThrowError('Value is NaN');
   });
 
   it('should take in big integer number as PactNumber, but precisions are lost', () => {
