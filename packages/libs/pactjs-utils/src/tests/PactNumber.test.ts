@@ -1,6 +1,6 @@
 import { PactNumber } from '../PactNumber';
 
-import { throws } from 'assert';
+// import { throws } from 'assert';
 
 describe('Pact Number', () => {
   it('Takes in a big integer string as PactNumber and print it as an integer', () => {
@@ -74,21 +74,17 @@ describe('Pact Number', () => {
   });
 
   it('should throw an error when toInteger is called with a decimal', () => {
-    throws(() => {
-      new PactNumber('-0.9007199254740991192919').toInteger();
-    });
+    expect(new PactNumber('-0.9007199254740991192919').toInteger()).toThrow();
   });
 
   it('should throw an error when toPactInteger is called with a decimal', () => {
-    throws(() => {
-      new PactNumber('-0.9007199254740991192919').toPactInteger();
-    });
+    expect(
+      new PactNumber('-0.9007199254740991192919').toPactInteger(),
+    ).toThrow();
   });
 
   it('should throw an error when NaN is inputted ', () => {
-    throws(() => {
-      new PactNumber('a');
-    });
+    expect(new PactNumber('a')).toThrow();
   });
 
   it('should take in big integer number as PactNumber, but precisions are lost', () => {

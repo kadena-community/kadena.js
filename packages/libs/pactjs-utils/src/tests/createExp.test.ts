@@ -15,7 +15,6 @@ describe('createExp', () => {
       new PactNumber('2').toInteger(),
       new PactNumber('3').toDecimal(),
     );
-    console.log(actual);
     const expected = '(+ 2 3.0)';
 
     expect(expected).toEqual(actual);
