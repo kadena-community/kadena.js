@@ -1,4 +1,4 @@
-import { RequestInit as NodeFetchRequestInit } from 'node-fetch';
+import { RequestInit as NodeFetchRequestInit } from 'isomorphic-fetch';
 
 /**
  * Formats API request body to use with `fetch` function.

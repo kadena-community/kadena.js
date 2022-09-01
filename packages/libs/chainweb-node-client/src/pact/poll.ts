@@ -6,8 +6,8 @@ import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
-} from 'node-fetch';
-import fetch from 'node-fetch';
+} from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch';
 
 /**
  * Allows polling for one or more transaction results by request key.
