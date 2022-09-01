@@ -14,19 +14,12 @@ API Reference can be found here [chainweb-node-client.api.md](https://github.com
 
 crypto:
 
-- `binToHex`
-- `hexToBin`
-- `base64UrlEncode`
-- `base64UrlDecode`
-- `base64UrlEncodeArr`
-- `base64UrlDecodeArr`
-- `strToUint8Array`
-- `uint8ArrayToStr`
-- `hash`
-- `hashBin`
-- `genKeyPair`
-- `restoreKeyPairFromSecretKey`
-- `sign`
-- `signHash`
-- `verifySig`
-- `toTweetNaclSecretKey`
+- `listen`
+- `local`
+- `mkCap`
+- `parseResponse`
+- `parseResponseTEXT`
+- `poll`
+- `send`
+- `spv`
+- `stringifyAndMakePOSTRequest`
