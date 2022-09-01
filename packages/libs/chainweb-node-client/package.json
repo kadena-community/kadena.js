@@ -1,0 +1,52 @@
+{
+  "name": "@kadena/chainweb-node-client",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Albert"
+    },
+    {
+      "name": "Linda"
+    },
+    {
+      "name": "Hee Kyun"
+    },
+    {
+      "name": "Randy"
+    }
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
+    "preinstall": "npx only-allow pnpm",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "test": "rushx build && heft test --no-build"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0"
+  }
+}

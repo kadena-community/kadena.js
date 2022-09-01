@@ -433,10 +433,10 @@
     },
 
     {
-      "packageName": "@kadena/integration-tests",
-      "projectFolder": "packages/tools/integration-tests",
-      "tags": ["tools"],
-      "shouldPublish": false
+      "packageName": "@kadena/chainweb-node-client",
+      "projectFolder": "packages/libs/chainweb-node-client",
+      "tags": ["libs"],
+      "shouldPublish": true
     },
 
     {
@@ -481,6 +481,14 @@
     {
       "packageName": "@kadena/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+
+    {
+      "packageName": "@kadena/integration-tests",
+      "projectFolder": "packages/tools/integration-tests",
       "tags": ["tools"],
       "shouldPublish": false
     },
