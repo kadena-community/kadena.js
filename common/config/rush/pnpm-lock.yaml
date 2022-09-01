@@ -5,6 +5,27 @@ importers:
   .:
     specifiers: {}
 
+  ../../packages/libs/chainweb-node-client:
+    specifiers:
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/node': ^16.0.0
+      eslint: ^8.15.0
+    dependencies:
+      '@kadena/types': link:../types
+    devDependencies:
+      '@kadena/eslint-config': link:../../tools/eslint-config
+      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@rushstack/eslint-config': 2.6.2_eslint@8.22.0
+      '@rushstack/heft': 0.46.7
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.11.54
+      eslint: 8.22.0
+
   ../../packages/libs/cryptography-utils:
     specifiers:
       '@kadena/eslint-config': workspace:*
