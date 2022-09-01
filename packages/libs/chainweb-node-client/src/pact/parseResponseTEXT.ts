@@ -1,4 +1,4 @@
-import type { Response as NodeFetchResponse } from 'node-fetch';
+import type { Response as NodeFetchResponse } from 'isomorphic-fetch';
 
 /**
  * Parses raw `fetch` response into a typed JSON value.

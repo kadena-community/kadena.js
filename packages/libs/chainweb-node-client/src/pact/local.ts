@@ -6,8 +6,8 @@ import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import type {
   RequestInit as NodeFetchRequestInit,
   Response as NodeFetchResponse,
-} from 'node-fetch';
-import fetch from 'node-fetch';
+} from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch';
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
