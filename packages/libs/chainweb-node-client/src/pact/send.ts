@@ -3,7 +3,7 @@ import type { Base16String, ICommand } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 
 /**
  * Request type of /send endpoint.

@@ -3,7 +3,7 @@ import type { ICommandResult, IListenRequestBody } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 
 /**
  * Blocking request for single command result.
