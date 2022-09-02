@@ -38,7 +38,10 @@
     ]
   },
   "dependencies": {
-    "@kadena/types": "workspace:*"
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@types/isomorphic-fetch": "~0.0.36",
+    "node-fetch": "~3.2.10"
   },
   "devDependencies": {
     "@kadena/eslint-config": "workspace:*",

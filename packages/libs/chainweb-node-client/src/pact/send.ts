@@ -3,11 +3,7 @@ import type { Base16String, ICommand } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type {
-  RequestInit as NodeFetchRequestInit,
-  Response as NodeFetchResponse,
-} from 'isomorphic-fetch';
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 
 /**
  * Request type of /send endpoint.
@@ -42,13 +38,13 @@ export interface ISendResponse {
 export function send(
   requestBody: IISendRequestBody,
   apiHost: string,
-): Promise<ISendResponse> {
-  const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<IISendRequestBody>(requestBody);
-  const response: Promise<NodeFetchResponse> = fetch(
+): Promise<ISendResponse | Response> {
+  const request = stringifyAndMakePOSTRequest(requestBody);
+
+  const response: Promise<ISendResponse | Response> = fetch(
     `${apiHost}/api/v1/send`,
     request,
-  );
-  const parsedRes: Promise<ISendResponse> = parseResponse(response);
-  return parsedRes;
+  ).then((r) => parseResponse(r));
+
+  return response;
 }

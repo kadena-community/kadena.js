@@ -3,11 +3,7 @@ import type { IPollRequestBody, IPollResponse } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type {
-  RequestInit as NodeFetchRequestInit,
-  Response as NodeFetchResponse,
-} from 'isomorphic-fetch';
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 
 /**
  * Allows polling for one or more transaction results by request key.
@@ -23,13 +19,13 @@ import fetch from 'isomorphic-fetch';
 export function poll(
   requestBody: IPollRequestBody,
   apiHost: string,
-): Promise<IPollResponse> {
-  const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<IPollRequestBody>(requestBody);
-  const response: Promise<NodeFetchResponse> = fetch(
+): Promise<IPollResponse | Response> {
+  const request = stringifyAndMakePOSTRequest(requestBody);
+
+  const response: Promise<IPollResponse | Response> = fetch(
     `${apiHost}/api/v1/poll`,
     request,
-  );
-  const parsedRes: Promise<IPollResponse> = parseResponse(response);
-  return parsedRes;
+  ).then((r) => parseResponse<IPollResponse>(r));
+
+  return response;
 }

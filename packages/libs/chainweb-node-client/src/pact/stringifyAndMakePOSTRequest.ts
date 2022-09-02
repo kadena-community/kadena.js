@@ -1,5 +1,3 @@
-import { RequestInit as NodeFetchRequestInit } from 'isomorphic-fetch';
-
 /**
  * Formats API request body to use with `fetch` function.
  *
@@ -7,7 +5,7 @@ import { RequestInit as NodeFetchRequestInit } from 'isomorphic-fetch';
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L533
  *
  */
-export function stringifyAndMakePOSTRequest<T>(body: T): NodeFetchRequestInit {
+export function stringifyAndMakePOSTRequest<T>(body: T) {
   return {
     headers: {
       'Content-Type': 'application/json',

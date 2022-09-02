@@ -1,4 +1,4 @@
-jest.mock('node-fetch');
+jest.mock('isomorphic-fetch');
 
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import type { ICommand, SignatureWithHash } from '@kadena/types';
@@ -8,7 +8,7 @@ import { send } from '../send';
 
 import { mockFetch } from './mockdata/mockFetch';
 
-import fetch from 'node-fetch';
+import 'isomorphic-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

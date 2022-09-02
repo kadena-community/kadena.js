@@ -1,12 +1,14 @@
-jest.mock('node-fetch');
+jest.mock('isomorphic-fetch');
+
+import { ICommandResult } from '@kadena/types';
+
+import 'isomorphic-fetch';
 
 import type { IListenRequestBody, ListenResponse } from '@kadena/types';
 
 import { listen } from '../listen';
 
 import { mockFetch } from './mockdata/mockFetch';
-
-import fetch from 'node-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
@@ -33,7 +35,7 @@ test('/listen should return result of tx queried', async () => {
   };
   const localReq: IListenRequestBody = requestKey;
   const responseExpected: ListenResponse = commandResult1;
-  const responseActual: ListenResponse = await listen(localReq, '');
+  const responseActual: ICommandResult | Response = await listen(localReq, '');
 
   expect(responseExpected).toEqual(responseActual);
 });

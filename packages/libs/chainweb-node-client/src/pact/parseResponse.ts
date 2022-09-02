@@ -1,5 +1,3 @@
-import type { Response as NodeFetchResponse } from 'isomorphic-fetch';
-
 /**
  * Parses raw `fetch` response into a typed JSON value.
  *
@@ -7,13 +5,9 @@ import type { Response as NodeFetchResponse } from 'isomorphic-fetch';
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L546
  *
  */
-export async function parseResponse<T>(
-  raw: Promise<NodeFetchResponse>,
-): Promise<T> {
-  const response: NodeFetchResponse = await raw;
+export async function parseResponse<T>(response: Response): Promise<T> {
   if (response.ok) {
-    const JSONResponse = (await response.json()) as T;
-    return JSONResponse;
+    return (await response.json()) as Promise<T>;
   } else {
     // Handle API errors
     const TEXTResponse: string = await response.text();

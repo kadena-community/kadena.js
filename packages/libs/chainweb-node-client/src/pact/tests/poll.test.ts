@@ -1,4 +1,4 @@
-jest.mock('node-fetch');
+jest.mock('isomorphic-fetch');
 
 import type { IPollRequestBody, IPollResponse } from '@kadena/types';
 
@@ -6,7 +6,7 @@ import { poll } from '../poll';
 
 import { mockFetch } from './mockdata/mockFetch';
 
-import fetch from 'node-fetch';
+import 'isomorphic-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
