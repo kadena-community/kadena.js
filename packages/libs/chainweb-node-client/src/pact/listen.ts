@@ -1,13 +1,9 @@
-import type { IListenRequestBody, ListenResponse } from '@kadena/types';
+import type { ICommandResult, IListenRequestBody } from '@kadena/types';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type {
-  RequestInit as NodeFetchRequestInit,
-  Response as NodeFetchResponse,
-} from 'node-fetch';
-import fetch from 'node-fetch';
+import 'isomorphic-fetch';
 
 /**
  * Blocking request for single command result.
@@ -19,13 +15,13 @@ import fetch from 'node-fetch';
 export function listen(
   requestBody: IListenRequestBody,
   apiHost: string,
-): Promise<ListenResponse> {
-  const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<IListenRequestBody>(requestBody);
-  const response: Promise<NodeFetchResponse> = fetch(
+): Promise<ICommandResult | Response> {
+  const request = stringifyAndMakePOSTRequest(requestBody);
+
+  const response: Promise<ICommandResult | Response> = fetch(
     `${apiHost}/api/v1/listen`,
     request,
-  );
-  const parsedRes: Promise<ListenResponse> = parseResponse(response);
-  return parsedRes;
+  ).then((r) => parseResponse<ICommandResult>(r));
+
+  return response;
 }

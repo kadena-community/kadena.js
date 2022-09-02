@@ -1,13 +1,9 @@
-import type { LocalRequestBody, LocalResponse } from '@kadena/types';
+import type { ICommandResult, IListenRequestBody } from '@kadena/types';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type {
-  RequestInit as NodeFetchRequestInit,
-  Response as NodeFetchResponse,
-} from 'isomorphic-fetch';
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -19,15 +15,15 @@ import fetch from 'isomorphic-fetch';
  * @return - The command result returned by the server.
  */
 export function local(
-  requestBody: LocalRequestBody,
+  requestBody: IListenRequestBody,
   apiHost: string,
-): Promise<LocalResponse> {
-  const request: NodeFetchRequestInit =
-    stringifyAndMakePOSTRequest<LocalRequestBody>(requestBody);
-  const response: Promise<NodeFetchResponse> = fetch(
+): Promise<ICommandResult | Response> {
+  const request = stringifyAndMakePOSTRequest(requestBody);
+
+  const response: Promise<ICommandResult | Response> = fetch(
     `${apiHost}/api/v1/local`,
     request,
-  );
-  const parsedRes: Promise<LocalResponse> = parseResponse(response);
-  return parsedRes;
+  ).then((r) => parseResponse<ICommandResult>(r));
+
+  return response;
 }
