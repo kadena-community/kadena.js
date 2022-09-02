@@ -1,4 +1,4 @@
-jest.mock('isomorphic-fetch');
+jest.mock('cross-fetch');
 
 import type { IPollRequestBody, IPollResponse } from '@kadena/types';
 
@@ -6,7 +6,7 @@ import { poll } from '../poll';
 
 import { mockFetch } from './mockdata/mockFetch';
 
-import 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
