@@ -2,6 +2,7 @@ jest.mock('node-fetch');
 
 import { sign } from '@kadena/cryptography-utils';
 import type {
+  ICommandResult,
   LocalRequestBody,
   LocalResponse,
   SignatureWithHash,
@@ -48,7 +49,7 @@ test('/local should return result of tx queried', async () => {
   };
   const localReq: LocalRequestBody = signedCommand1;
   const responseExpected: LocalResponse = commandResult1;
-  const responseActual: LocalResponse = await local(localReq, '');
+  const responseActual: ICommandResult | Response = await local(localReq, '');
 
   expect(responseExpected).toEqual(responseActual);
 });

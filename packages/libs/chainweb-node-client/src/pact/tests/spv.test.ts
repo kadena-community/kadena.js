@@ -15,13 +15,13 @@ mockedFunctionFetch.mockImplementation(
 );
 
 test('/spv returns SPV proof', async () => {
-  const actual: SPVResponse = await spv(testSPVRequest, '');
+  const actual: string | Response = await spv(testSPVRequest, '');
   const expected: SPVResponse = testSPVProof;
   expect(actual).toEqual(expected);
 });
 
 test('/spv returns error message when proof is young', () => {
-  const actual: Promise<SPVResponse> = spv(testSPVRequest, '/tooyoung');
+  const actual: Promise<string | Response> = spv(testSPVRequest, '/tooyoung');
   const expectedErrorMsg =
     'SPV target not reachable: target chain not reachable. Chainweb instance is too young';
   return expect(actual).rejects.toThrowError(expectedErrorMsg);

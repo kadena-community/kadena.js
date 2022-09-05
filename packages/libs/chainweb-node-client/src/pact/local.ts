@@ -1,4 +1,4 @@
-import type { ICommandResult, IListenRequestBody } from '@kadena/types';
+import type { ICommandResult, LocalRequestBody } from '@kadena/types';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
@@ -15,7 +15,7 @@ import fetch from 'cross-fetch';
  * @return - The command result returned by the server.
  */
 export function local(
-  requestBody: IListenRequestBody,
+  requestBody: LocalRequestBody,
   apiHost: string,
 ): Promise<ICommandResult | Response> {
   const request = stringifyAndMakePOSTRequest(requestBody);
