@@ -7,7 +7,7 @@
  */
 export async function parseResponse<T>(response: Response): Promise<T> {
   if (response.ok) {
-    return (await response.json()) as Promise<T>;
+    return (await response.json()) as T;
   } else {
     // Handle API errors
     const TEXTResponse: string = await response.text();

@@ -35,7 +35,7 @@ test('/poll should return request keys of txs submitted', async () => {
   };
   const localReq: IPollRequestBody = signedCommand;
   const responseExpected: IPollResponse = commandResult;
-  const responseActual: IPollResponse = await poll(localReq, '');
+  const responseActual: Response | IPollResponse = await poll(localReq, '');
 
   expect(responseExpected).toEqual(responseActual);
 });
