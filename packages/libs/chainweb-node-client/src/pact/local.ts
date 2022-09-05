@@ -3,7 +3,8 @@ import type { ICommandResult, LocalRequestBody } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import fetch, { Response } from 'cross-fetch';
+import type { Response } from 'cross-fetch';
+import fetch from 'cross-fetch';
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
