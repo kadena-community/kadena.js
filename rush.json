@@ -426,6 +426,13 @@
     },
 
     {
+      "packageName": "@kadena/bootstrap-lib",
+      "projectFolder": "packages/libs/bootstrap-lib",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/cryptography-utils",
       "projectFolder": "packages/libs/cryptography-utils",
       "tags": ["libs"],
