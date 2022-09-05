@@ -5,6 +5,37 @@ importers:
   .:
     specifiers: {}
 
+  ../../packages/libs/bootstrap-lib:
+    specifiers:
+      '@kadena/cryptography-utils': workspace:*
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/pactjs-utils': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/isomorphic-fetch': ~0.0.36
+      '@types/node': ^16.0.0
+      cross-fetch: ~3.1.5
+      eslint: ^8.15.0
+      node-fetch: ~3.2.10
+    dependencies:
+      '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/pactjs-utils': link:../pactjs-utils
+      '@kadena/types': link:../types
+      '@types/isomorphic-fetch': 0.0.36
+      cross-fetch: 3.1.5
+      node-fetch: 3.2.10
+    devDependencies:
+      '@kadena/eslint-config': link:../../tools/eslint-config
+      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@rushstack/eslint-config': 2.6.2_eslint@8.22.0
+      '@rushstack/heft': 0.46.7
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.11.54
+      eslint: 8.22.0
+
   ../../packages/libs/chainweb-node-client:
     specifiers:
       '@kadena/cryptography-utils': workspace:*
