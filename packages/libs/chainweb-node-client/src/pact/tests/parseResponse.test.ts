@@ -1,6 +1,6 @@
 import { parseResponse } from '../parseResponse';
 
-import { Response as NodeFetchResponse } from 'node-fetch';
+import { Response } from 'cross-fetch';
 
 test('should parse successful Response as expected type', async () => {
   interface IMockTestType {
@@ -12,7 +12,7 @@ test('should parse successful Response as expected type', async () => {
     int: 2,
   };
   const mockPromise = Promise.resolve(
-    new NodeFetchResponse(JSON.stringify(mockSuccessResponse)),
+    new Response(JSON.stringify(mockSuccessResponse)),
   );
 
   const mockedData = await mockPromise;
@@ -40,7 +40,7 @@ test('should fail if Response status not `ok`', async () => {
   const mockFailureResponse = 'Some API error message.';
   async function parseFailedResponse(): Promise<unknown> {
     const mockPromise = Promise.resolve(
-      new NodeFetchResponse(mockFailureResponse, { status: 404 }),
+      new Response(mockFailureResponse, { status: 404 }),
     );
 
     const mockedData = await mockPromise;

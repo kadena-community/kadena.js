@@ -3,7 +3,7 @@ import type { IPollRequestBody, IPollResponse } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import fetch from 'cross-fetch';
+import fetch, { Response } from 'cross-fetch';
 
 /**
  * Allows polling for one or more transaction results by request key.

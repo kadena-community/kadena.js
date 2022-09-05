@@ -1,4 +1,4 @@
-jest.mock('node-fetch');
+jest.mock('cross-fetch');
 
 import { sign } from '@kadena/cryptography-utils';
 import type {
@@ -13,7 +13,7 @@ import { local } from '../local';
 import { mockFetch } from './mockdata/mockFetch';
 import { pactTestCommand } from './mockdata/Pact';
 
-import fetch from 'node-fetch';
+import fetch, { Response } from 'cross-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
