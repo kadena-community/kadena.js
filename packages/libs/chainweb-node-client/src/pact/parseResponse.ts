@@ -1,4 +1,4 @@
-import { Response } from 'cross-fetch';
+import type { Response } from 'cross-fetch';
 
 /**
  * Parses raw `fetch` response into a typed JSON value.
