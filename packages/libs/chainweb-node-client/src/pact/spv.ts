@@ -3,7 +3,7 @@ import type { ISPVRequestBody, SPVResponse } from '@kadena/types';
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import fetch from 'cross-fetch';
+import fetch, { Response } from 'cross-fetch';
 
 /**
  * Blocking request to fetch spv proof of a cross chain transaction.

@@ -1,14 +1,11 @@
 import { parseResponseTEXT } from '../parseResponseTEXT';
 
-import { Response as NodeFetchResponse } from 'node-fetch';
-import { parseResponse } from '../parseResponse';
+import { Response } from 'cross-fetch';
 
 test('should parse successful Response as expected type', async () => {
   type MockTestType = string;
   const mockSuccessResponse: MockTestType = 'hello_world';
-  const mockPromise = Promise.resolve(
-    new NodeFetchResponse(mockSuccessResponse),
-  );
+  const mockPromise = Promise.resolve(new Response(mockSuccessResponse));
 
   const mockedData = await mockPromise;
 
@@ -35,7 +32,7 @@ test('should fail if Response status not `ok`', async () => {
   const mockFailureResponse = 'Some API error message.';
   async function parseFailedResponse(): Promise<string> {
     const mockPromise = Promise.resolve(
-      new NodeFetchResponse(mockFailureResponse, { status: 404 }),
+      new Response(mockFailureResponse, { status: 404 }),
     );
 
     const mockedData = await mockPromise;

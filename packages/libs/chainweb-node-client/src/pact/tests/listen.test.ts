@@ -2,7 +2,7 @@ jest.mock('cross-fetch');
 
 import { ICommandResult } from '@kadena/types';
 
-import fetch from 'cross-fetch';
+import fetch, { Response } from 'cross-fetch';
 
 import type { IListenRequestBody, ListenResponse } from '@kadena/types';
 

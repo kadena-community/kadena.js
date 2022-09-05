@@ -9,8 +9,6 @@ import type {
 
 import { testSPVProof } from './Pact';
 
-import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
-
 /**
  * Mock implementation of node-fetch's `fetch` function.
  *
@@ -22,10 +20,7 @@ import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
  * ```
  *
  */
-export async function mockFetch(
-  url: string,
-  init?: NodeFetchRequestInit,
-): Promise<object> {
+export async function mockFetch(url: string, init?: any): Promise<object> {
   switch (url) {
     case '/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {
