@@ -1,6 +1,4 @@
-import type { IBase64Url } from '@kadena/types';
-
-interface IHashes {
+interface ICache {
   [key: string]: boolean;
 }
 
@@ -26,11 +24,11 @@ interface IHashes {
  * ```
  * @alpha
  */
-export function unique(hashes: Array<IBase64Url>): Array<IBase64Url> {
-  const isUnique: IHashes = {};
-  return hashes.filter((hash) => {
-    if (!isUnique[hash]) {
-      isUnique[hash] = true;
+export function unique(array: Array<string>): Array<string> {
+  const isUnique: ICache = {};
+  return array.filter((item: string) => {
+    if (!isUnique[item]) {
+      isUnique[item] = true;
       return true;
     }
     return false;
