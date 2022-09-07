@@ -1,7 +1,7 @@
 import type { Response } from 'cross-fetch';
 
 /**
- * Parses raw `fetch` response into a typed JSON value.
+ * Parses raw `fetch` response into text.
  *
  * Corresponds to `parseRes` function:
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L546
