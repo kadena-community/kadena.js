@@ -1,8 +1,8 @@
 // These tests expect devnet to be running at http://localhost:8080.
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
-import * as pact from '@kadena/chainweb-node-client';
-import { ISendResponse } from '@kadena/chainweb-node-client';
+import { pact } from '@kadena/chainweb-node-client';
+import { ISendResponse } from '@kadena/chainweb-node-client/lib/pact';
 import {
   ChainwebNetworkId,
   ICommand,
@@ -10,7 +10,6 @@ import {
   IPactEvent,
   IPollResponse,
   ISendRequestBody,
-  ListenResponse,
   LocalResponse,
   SendResponse,
 } from '@kadena/types';
@@ -245,7 +244,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
       devnetKeyPair,
       hash,
       {},
-      proof.replace(/\"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
+      proof.replace(/"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
       '1',
     );
     const contReq: ISendRequestBody = { cmds: [contReqPayload] };

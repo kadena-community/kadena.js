@@ -16,44 +16,61 @@ import type { LocalRequestBody } from '@kadena/types';
 import type { PactValue } from '@kadena/types';
 import type { SPVResponse } from '@kadena/types';
 
-// @public
-export interface IISendRequestBody {
+// @alpha
+interface IISendRequestBody {
     // (undocumented)
     cmds: Array<ICommand>;
 }
 
-// @public
-export interface ISendResponse {
+// @alpha
+interface ISendResponse {
     // (undocumented)
     requestKeys: Array<Base16String>;
 }
 
-// @public
-export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+// @alpha
+function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
 
-// @public
-export function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+// @alpha
+function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult | Response>;
 
-// @public
-export function mkCap(name: string, args?: Array<PactValue>): ICap;
+// @alpha
+function mkCap(name: string, args?: Array<PactValue>): ICap;
 
-// @public
-export function parseResponse<T>(response: Response): Promise<T>;
+declare namespace pact {
+    export {
+        listen,
+        local,
+        mkCap,
+        parseResponse,
+        parseResponseTEXT,
+        poll,
+        send,
+        IISendRequestBody,
+        ISendResponse,
+        spv,
+        stringifyAndMakePOSTRequest
+    }
+}
+export { pact }
 
-// @public
-export function parseResponseTEXT(response: Response): Promise<string>;
+// @alpha
+function parseResponse<T>(response: Response): Promise<T>;
 
-// @public
-export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse | Response>;
+// @alpha
+function parseResponseTEXT(response: Response): Promise<string>;
 
-// @public
-export function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse | Response>;
+// @alpha
+function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse | Response>;
 
-// @public
-export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
+// @alpha
+function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse | Response>;
 
-// @public
-export function stringifyAndMakePOSTRequest<T>(body: T): object;
+// @alpha
+function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
+
+// @alpha
+function stringifyAndMakePOSTRequest<T>(body: T): object;
 
 // (No @packageDocumentation comment for this package)
 

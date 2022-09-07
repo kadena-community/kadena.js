@@ -10,6 +10,7 @@ import fetch from 'cross-fetch';
  * Request type of /send endpoint.
  *
  * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
+ * @alpha
  */
 export interface IISendRequestBody {
   cmds: Array<ICommand>;
@@ -20,6 +21,7 @@ export interface IISendRequestBody {
  *
  * @param requestKeys - List of request keys (or command hashes) of the transactions submitted.
  *                      Can be sent to /poll and /listen to retrieve transaction results.
+ * @alpha
  */
 export interface ISendResponse {
   requestKeys: Array<Base16String>;
@@ -34,7 +36,7 @@ export interface ISendResponse {
  *
  * @param requestBody - Non-empty array of Pact commands to submit to server.
  * @param apiHost - API host running a Pact-enabled server.
- * @return - Raw Response from Server.
+ * @alpha
  */
 export function send(
   requestBody: IISendRequestBody,

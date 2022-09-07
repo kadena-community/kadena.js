@@ -20,7 +20,10 @@ import { testSPVProof } from './Pact';
  * ```
  *
  */
-export async function mockFetch(url: string, init?: any): Promise<object> {
+export async function mockFetch(
+  url: string,
+  init?: RequestInit,
+): Promise<object> {
   switch (url) {
     case '/api/v1/send': {
       if (init?.body !== null && init?.body !== undefined) {

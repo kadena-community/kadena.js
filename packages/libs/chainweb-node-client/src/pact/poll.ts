@@ -8,14 +8,15 @@ import fetch from 'cross-fetch';
 
 /**
  * Allows polling for one or more transaction results by request key.
+ * Returns an Array of the transaction results we polled for.
+ * If a transaction is missing, then it might still be in the mempool, or might have expired.
  *
  * @param requestBody - The request keys of transactions submitted to the server
  *                      that we want to know the results of.
  *                      Must be non-empty list.
  * @param apiHost - API host running a Pact-enabled server.
- * @return - Array of the transaction results we polled for.
- *            If a transaction is missing, then it might still be in the mempool,
- *            or might have expired.
+ *
+ * @alpha
  */
 export function poll(
   requestBody: IPollRequestBody,

@@ -12,7 +12,7 @@ import fetch from 'cross-fetch';
  *
  * @param requestBody -
  * @param apiHost - API host running a Pact-enabled server.
- * @return -
+ * @alpha
  */
 export function spv(
   requestBody: ISPVRequestBody,

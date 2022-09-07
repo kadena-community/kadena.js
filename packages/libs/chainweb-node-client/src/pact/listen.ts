@@ -12,7 +12,7 @@ import fetch from 'cross-fetch';
  *
  * @param requestBody - The request key of transaction submitted to the server that we want to know the results of.
  * @param apiHost - API host running a Pact-enabled server.
- * @return - The transaction result we listened for.
+ * @alpha
  */
 export function listen(
   requestBody: IListenRequestBody,

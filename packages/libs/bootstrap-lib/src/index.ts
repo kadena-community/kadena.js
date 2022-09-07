@@ -1,5 +1,8 @@
-import { fetch, Request, Response } from 'cross-fetch';
+import { fetch, Response } from 'cross-fetch';
 
+/**
+ * @internal
+ */
 export const x = () => (): Promise<Response> =>
   fetch('http://somethod.com', {
     method: 'POST',

@@ -5,7 +5,7 @@ import type { Response } from 'cross-fetch';
  *
  * Corresponds to `parseRes` function:
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L546
- *
+ * @alpha
  */
 export async function parseResponseTEXT(response: Response): Promise<string> {
   if (response.ok) {

@@ -1,1 +1,3 @@
-export * from './pact';
+import * as pact from './pact';
+
+export { pact };

@@ -13,7 +13,7 @@ import fetch from 'cross-fetch';
  *
  * @param requestBody - Pact command to submit to server (non-transactional).
  * @param apiHost - API host running a Pact-enabled server.
- * @return - The command result returned by the server.
+ * @alpha
  */
 export function local(
   requestBody: LocalRequestBody,

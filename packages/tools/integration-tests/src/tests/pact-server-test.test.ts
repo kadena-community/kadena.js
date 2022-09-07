@@ -2,16 +2,14 @@
 // To run: `$ npm run start:pact`.
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
-import * as pact from '@kadena/chainweb-node-client';
-import { ISendResponse } from '@kadena/chainweb-node-client';
+import { pact } from '@kadena/chainweb-node-client';
+import { ISendResponse } from '@kadena/chainweb-node-client/lib/pact';
 import {
   ICommand,
   ICommandResult,
   IPollResponse,
   ISendRequestBody,
   ListenResponse,
-  LocalResponse,
-  SendResponse,
 } from '@kadena/types';
 
 import { createSampleExecTx } from './mock-txs';
