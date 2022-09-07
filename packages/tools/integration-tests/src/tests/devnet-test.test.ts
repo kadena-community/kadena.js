@@ -1,6 +1,8 @@
 // These tests expect devnet to be running at http://localhost:8080.
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
+import * as pact from '@kadena/chainweb-node-client';
+import { ISendResponse } from '@kadena/chainweb-node-client';
 import {
   ChainwebNetworkId,
   ICommand,
@@ -16,15 +18,7 @@ import {
 import { createSampleContTx, createSampleExecTx } from './mock-txs';
 
 import { backOff } from 'exponential-backoff';
-import {
-  createListenRequest,
-  createPollRequest,
-  listen,
-  local,
-  poll,
-  send,
-  spv,
-} from 'kadena.js';
+import { createListenRequest, createPollRequest } from 'kadena.js';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =
@@ -74,13 +68,18 @@ const sendReq2: ISendRequestBody = {
   cmds: [signedCommand2],
 };
 
+const { listen, local, poll, send, spv } = pact;
+
 function sleep20Seconds(): Promise<unknown> {
   return ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
 }
 
 describe('[DevNet] Makes /send request of simple transaction', () => {
   it('Receives request key of transaction', async () => {
-    const actual: SendResponse = await send(sendReq1, devnetApiHostChain0);
+    const actual: Response | ISendResponse = await send(
+      sendReq1,
+      devnetApiHostChain0,
+    );
     const expected: SendResponse = {
       requestKeys: [signedCommand1.hash],
     };
@@ -90,7 +89,10 @@ describe('[DevNet] Makes /send request of simple transaction', () => {
 
 describe('[DevNet] Makes /send request to initiate a cross-chain transaction', () => {
   test('Receives request key of transaction', async () => {
-    const actual: SendResponse = await send(sendReq2, devnetApiHostChain0);
+    const actual: Response | ISendResponse = await send(
+      sendReq2,
+      devnetApiHostChain0,
+    );
     const expected: SendResponse = {
       requestKeys: [signedCommand2.hash],
     };
@@ -100,11 +102,12 @@ describe('[DevNet] Makes /send request to initiate a cross-chain transaction', (
 
 describe('[DevNet] Makes /local request of simple transaction', () => {
   it('Receives the expected transaction result', async () => {
-    const actual: LocalResponse = await local(
+    const actual: ICommandResult | Response = await local(
       signedCommand1,
       devnetApiHostChain0,
     );
-    const { logs, metaData, ...actualWithoutLogsAndMetaData } = actual;
+    const { logs, metaData, ...actualWithoutLogsAndMetaData } =
+      actual as ICommandResult;
     const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
       reqKey: signedCommand1.hash,
       txId: null,
@@ -125,7 +128,7 @@ describe('[DevNet] Makes /local request of simple transaction', () => {
 
 describe('[DevNet] Makes /poll request of simple transaction', () => {
   it('Receives empty result while tx is still in mempool', async () => {
-    const actual: IPollResponse = await poll(
+    const actual: Response | IPollResponse = await poll(
       createPollRequest(sendReq1),
       devnetApiHostChain0,
     );
@@ -161,9 +164,9 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
   it('Makes /listen request and retrieves expected result', async () => {
     await backOff(() =>
       listen(createListenRequest(sendReq1), devnetApiHostChain0).then(
-        (actual: ListenResponse) => {
+        (actual: ICommandResult | Response) => {
           const { logs, metaData, txId, events, ...resultWithoutDynamicData } =
-            actual;
+            actual as ICommandResult;
           expect(logs).toBeTruthy();
           expect(txId).toBeTruthy();
           expect(metaData).toBeTruthy();
@@ -201,10 +204,10 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
 jest.setTimeout(300000);
 describe('[DevNet] Finishes a cross-chain transfer', () => {
   it('Retrieves expected result of transaction that initiated the cross-chain', async () => {
-    const actual: ListenResponse = await backOff(() =>
+    const actual: ICommandResult | Response = await backOff(() =>
       listen(createListenRequest(sendReq2), devnetApiHostChain0),
     );
-    const { result } = actual;
+    const { result } = actual as ICommandResult;
     const { status } = result;
     expect(status).toEqual('success');
   });
@@ -227,13 +230,13 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     await sleep20Seconds();
 
     // Retrieve spv proof
-    const actualSPVProof = await backOff(() =>
+    const actualSPVProof: string | Response = await backOff(() =>
       spv(
         { requestKey: signedCommand2.hash, targetChainId: '1' },
         devnetApiHostChain0,
       ),
     );
-    const proof = actualSPVProof;
+    const proof = actualSPVProof as string;
     const hash = signedCommand2.hash;
 
     // Submit /send request finishing cross-chain transfer in target chain
@@ -246,7 +249,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
       '1',
     );
     const contReq: ISendRequestBody = { cmds: [contReqPayload] };
-    const actualContSendResp: SendResponse = await send(
+    const actualContSendResp: ISendResponse | Response = await send(
       contReq,
       devnetApiHostChain1,
     );
@@ -256,10 +259,10 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     expect(actualContSendResp).toEqual(expectedContSendResp);
 
     // Retrieve result of finishing cross-chain transfer
-    const actualContResult: ICommandResult = await backOff(() =>
+    const actualContResult: ICommandResult | Response = await backOff(() =>
       listen(createListenRequest(contReq), devnetApiHostChain1),
     );
-    const { result } = actualContResult;
+    const { result } = actualContResult as ICommandResult;
     const { status } = result;
     expect(status).toEqual('success');
   });

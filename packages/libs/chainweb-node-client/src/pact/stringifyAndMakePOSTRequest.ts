@@ -5,7 +5,7 @@
  * https://github.com/kadena-io/pact-lang-api/blob/master/pact-lang-api.js#L533
  *
  */
-export function stringifyAndMakePOSTRequest<T>(body: T) {
+export function stringifyAndMakePOSTRequest<T>(body: T): object {
   return {
     headers: {
       'Content-Type': 'application/json',

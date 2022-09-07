@@ -53,13 +53,7 @@ export function send(requestBody: IISendRequestBody, apiHost: string): Promise<I
 export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
 
 // @public
-export function stringifyAndMakePOSTRequest<T>(body: T): {
-    headers: {
-        'Content-Type': string;
-    };
-    method: string;
-    body: string;
-};
+export function stringifyAndMakePOSTRequest<T>(body: T): object;
 
 // (No @packageDocumentation comment for this package)
 

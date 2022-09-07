@@ -2,6 +2,8 @@
 // To run: `$ npm run start:pact`.
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
+import * as pact from '@kadena/chainweb-node-client';
+import { ISendResponse } from '@kadena/chainweb-node-client';
 import {
   ICommand,
   ICommandResult,
@@ -14,14 +16,7 @@ import {
 
 import { createSampleExecTx } from './mock-txs';
 
-import {
-  createListenRequest,
-  createPollRequest,
-  listen,
-  local,
-  poll,
-  send,
-} from 'kadena.js';
+import { createListenRequest, createPollRequest } from 'kadena.js';
 
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
 const pactServerKeyPair = {
@@ -34,9 +29,14 @@ const sendReq: ISendRequestBody = {
   cmds: [signedCommand],
 };
 
+const { listen, local, poll, send } = pact;
+
 describe('[Pact Server] Makes /send request', () => {
   it('Receives request key of transaction', async () => {
-    const actual: SendResponse = await send(sendReq, pactServerApiHost);
+    const actual: ISendResponse | Response = await send(
+      sendReq,
+      pactServerApiHost,
+    );
     const expected = {
       requestKeys: [signedCommand.hash],
     };
@@ -46,7 +46,10 @@ describe('[Pact Server] Makes /send request', () => {
 
 describe('[Pact Server] Makes /local request', () => {
   it('Receives the expected transaction result', async () => {
-    const actual: LocalResponse = await local(signedCommand, pactServerApiHost);
+    const actual: ICommandResult | Response = await local(
+      signedCommand,
+      pactServerApiHost,
+    );
     const expected: ICommandResult = {
       reqKey: signedCommand.hash,
       txId: null,
@@ -65,7 +68,7 @@ describe('[Pact Server] Makes /local request', () => {
 
 describe('[Pact Server] Makes /poll request', () => {
   it('Receives the expected transaction result', async () => {
-    const actual: IPollResponse = await poll(
+    const actual: IPollResponse | Response = await poll(
       createPollRequest(sendReq),
       pactServerApiHost,
     );
@@ -88,7 +91,7 @@ describe('[Pact Server] Makes /poll request', () => {
 
 describe('[Pact Server] Makes /listen request', () => {
   it('Receives the expected transaction result', async () => {
-    const actual: ListenResponse = await listen(
+    const actual: Response | ICommandResult = await listen(
       createListenRequest(sendReq),
       pactServerApiHost,
     );

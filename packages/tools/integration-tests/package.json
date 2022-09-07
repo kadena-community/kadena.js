@@ -39,6 +39,7 @@
     ]
   },
   "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/types": "workspace:*",
     "blakejs": "^1.2.1",
     "exponential-backoff": "^3.1.0",

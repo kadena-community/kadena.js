@@ -275,6 +275,7 @@ importers:
 
   ../../packages/tools/integration-tests:
     specifiers:
+      '@kadena/chainweb-node-client': workspace:*
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@kadena/types': workspace:*
@@ -289,6 +290,7 @@ importers:
       kadena.js: workspace:*
       tweetnacl: ^1.0.3
     dependencies:
+      '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
       '@kadena/types': link:../../libs/types
       blakejs: 1.2.1
       exponential-backoff: 3.1.0
