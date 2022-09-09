@@ -79,7 +79,7 @@ export function toTweetNaclSecretKey({ secretKey, publicKey, }: IKeyPair): Uint8
 export function uint8ArrayToStr(array: Uint8Array): string;
 
 // @alpha
-export function unique(hashes: Array<IBase64Url>): Array<IBase64Url>;
+export function unique(array: Array<string>): Array<string>;
 
 // @alpha
 export function verifySig(msg: Uint8Array, sig: Uint8Array, pubKey: Uint8Array): boolean;
