@@ -4,7 +4,9 @@
 
 ```ts
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "x" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const x: () => () => Promise<Response>;
 
 // (No @packageDocumentation comment for this package)
