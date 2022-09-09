@@ -5,12 +5,11 @@
   </picture>
 </p>
 
-# kadena.js - Pactjs-Utils
+# kadena.js - Pactjs
 
-> Pactjs-Utils is a collection of utility functions pactjs related
+> Pactjs is a collection of utility functions pactjs related
 
-API Reference can be found here
-[./etc/pactjs-utils.api.md](./etc/pactjs-utils.api.md)
+API Reference can be found here [./etc/pactjs.api.md](./etc/pactjs.api.md)
 
 <hr>
 

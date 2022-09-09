@@ -435,10 +435,10 @@
     },
 
     {
-      "packageName": "@kadena/pactjs-utils",
-      "projectFolder": "packages/libs/pactjs-utils",
+      "packageName": "@kadena/pactjs",
+      "projectFolder": "packages/libs/pactjs",
       "tags": ["libs"],
-      "shouldPublish": false
+      "shouldPublish": true
     },
 
     {
