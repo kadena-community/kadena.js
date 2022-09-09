@@ -1,6 +1,5 @@
+import { unique } from '@kadena/cryptography-utils';
 import type { IListenRequestBody, ISendRequestBody } from '@kadena/types';
-
-import { unique } from '../util/unique';
 
 /**
  * Given an exec 'send' message, prepare a message for 'listen' endpoint.

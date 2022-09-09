@@ -29,4 +29,5 @@ crypto:
 - `sign`
 - `signHash`
 - `verifySig`
+- `unique`
 - `toTweetNaclSecretKey`

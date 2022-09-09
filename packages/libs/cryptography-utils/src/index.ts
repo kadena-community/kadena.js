@@ -13,5 +13,6 @@ export * from './signHash';
 export * from './strToUint8Array';
 export * from './toTweetNaclSecretKey';
 export * from './uint8ArrayToStr';
+export * from './unique';
 export * from './verifySig';
 export * from './tests/mockdata/Pact';
