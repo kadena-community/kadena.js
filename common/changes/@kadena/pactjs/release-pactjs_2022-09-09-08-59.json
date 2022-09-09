@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs",
+      "comment": "release pactjs library ",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/pactjs"
+}
