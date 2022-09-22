@@ -4,8 +4,8 @@
 
 ```ts
 
+import { ICap } from '@kadena/types';
 import { ISignedCommand } from '@kadena/types';
-import { ISigner } from '@kadena/types';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
@@ -42,7 +42,13 @@ export interface IPactCommand {
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
-    signers: ISigner[];
+    signers: {
+        pubKey: string;
+        caps: {
+            name: string;
+            args: ICap['args'];
+        }[];
+    }[];
     // (undocumented)
     type: string;
 }

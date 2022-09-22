@@ -1,6 +1,9 @@
 import { ISignedCommand } from '@kadena/types';
 
-import { IChainweaverSignBody } from '../chainweaver-api/v1/sign';
+import {
+  IChainweaverCap,
+  IChainweaverSignBody,
+} from '../chainweaver-api/v1/sign';
 import { IPactCommand } from '../interfaces/IPactCommand';
 
 import fetch from 'cross-fetch';
@@ -32,16 +35,27 @@ export async function signAndSubmitWithChainweaver({
     ttl,
   };
 
-  signers.forEach(({ clist }) => {
-    clist?.forEach(({ name, args }) => {
+  signers.forEach((signer) => {
+    signer.caps.forEach((cap) => {
       body.caps.push({
-        role: `${name}`,
-        description: `cap for ${name}`,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        cap: { name, args: args as any },
+        role: cap.name,
+        description: `cap for ${cap.name}`,
+        cap: { name: cap.name, args: cap.args as IChainweaverCap['args'] },
       });
     });
   });
+
+  // keeping this here for when the APIs are aligned
+  // signers.forEach(({ clist }) => {
+  //   clist?.forEach(({ name, args }) => {
+  //     body.caps.push({
+  //       role: `${name}`,
+  //       description: `cap for ${name}`,
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //       cap: { name, args: args as any },
+  //     });
+  //   });
+  // });
 
   debug(`body: `, body);
 

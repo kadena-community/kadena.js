@@ -1,4 +1,4 @@
-import { ISigner } from "@kadena/types";
+import { ICap } from "@kadena/types";
 
 /**
  * @alpha
@@ -8,7 +8,14 @@ export interface IPactCommand {
   data: Record<string, unknown>;
   publicMeta: IPublicMeta;
   networkId: string;
-  signers: ISigner[];
+  // signers: ISigner[];
+  signers: {
+    pubKey: string;
+    caps: {
+      name: string;
+      args: ICap['args'];
+    }[];
+  }[]
   type: string;
 }
 
