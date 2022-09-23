@@ -12,8 +12,8 @@
     "build": "",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
-    "pactjs:generate:contract": "pactjs contract-generate --clean --file src/coin.contract.pact",
-    "pactjs:generate:template": "pactjs template-generate --clean --file src/tx-templates --out src/tx-templates-generated",
+    "pactjs:generate:contract": "pactjs contract-generate --clean --file src/example-contract/coin.contract.pact",
+    "pactjs:generate:template": "pactjs template-generate --clean --file src/example-templates/tx-templates --out src/example-templates/generated-tx-templates",
     "postinstall": "rushx pactjs:generate:contract; rushx pactjs:generate:template",
     "test": ""
   },

@@ -1,11 +1,15 @@
-import { IUnsignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
+import {
+  IUnsignedTransaction,
+  Pact,
+  signWithChainweaver,
+} from '@kadena/client';
 
 const sender: string = 'croesus';
 const receiver: string =
   'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
 // const sender: string = receiver;
 const senderNoK: string =
-  '2993f795d133fa5d0fd877a641cabc8b28cd36147f666988cacbaa4379d1ff93';
+  '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
 // const senderNoK: string = sender.split('k:')[1];
 const amount: number = 1000.0;
 const data: { ks: { keys: string[]; pred: string } } = {
@@ -37,5 +41,7 @@ const unsignedTransaction: IUnsignedTransaction = Pact.modules.coin[
 // console.log(JSON.stringify(unsignedTransaction));
 
 signWithChainweaver(unsignedTransaction)
-  .then((res) => console.log('signed transaction: \n  ', res))
+  .then((res) =>
+    console.log('signed transaction: \n  ', JSON.stringify(res, null, 2)),
+  )
   .catch(console.error);
