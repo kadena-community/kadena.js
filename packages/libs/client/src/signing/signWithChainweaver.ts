@@ -29,6 +29,10 @@ export async function signWithChainweaver(
   try {
     return JSON.parse(bodyText);
   } catch (error) {
-    throw new Error(`${bodyText} \n in \n ${body}`);
+    throw new Error(
+      `Response from v1/quickSign was \`${bodyText}\`. ` +
+        `\nCode: \`${response.status}\`` +
+        `\nText: \`${response.statusText}\` `,
+    );
   }
 }

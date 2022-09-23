@@ -80,10 +80,6 @@ class PactCommand
     this.signers = [];
   }
 
-  public toString(): string {
-    return JSON.stringify(this, null, 2);
-  }
-
   public createTransaction(): IUnsignedTransaction {
     const dateInMs: number = Date.now();
 

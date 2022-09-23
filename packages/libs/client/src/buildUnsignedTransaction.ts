@@ -30,9 +30,13 @@ The values:
 Error: ${e}`);
   }
   debug('pactjs:buildUnsignedTransaction')('cmd', cmd);
+  debug('pactjs:buildUnsignedTransaction')(
+    'unsignedTransactionCommand',
+    unsignedTransactionCommand,
+  );
 
   return {
-    cmd,
+    cmd: JSON.stringify(unsignedTransactionCommand),
     hash,
     sigs: unsignedTransactionCommand.signers.reduce((acc, signer) => {
       acc[signer.pubKey] = null;
