@@ -61,7 +61,7 @@ This will probably have some breakdown
   - `utils` functions like that use the `api` functions to get information
 - `@kadena/chainweb-data-client` typed js wrapper with fetch to call chainweb-data API endpoints
 - `@kadena/pactjs-client` wrapper around chainweb-node-client with ability to switch environments etc.
-- `@kadena/wallet-client` client for wallet to sign, connect, retreive account info, etc
+- `@kadena/wallet-client` client for wallet to sign, connect, retrieve account info, etc
 - `@kadena/marmalade-client` specific client for marmalade/NFTs
 - `@kadena/types` common used typescript definitions. Preferably this will all move to the low-level libraries. Whenever you build something on top of those, you can use those types.
 - =====

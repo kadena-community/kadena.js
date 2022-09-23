@@ -318,6 +318,7 @@ importers:
       '@types/ramda': ~0.28.15
       '@types/rimraf': ~3.0.2
       commander: ^9.3.0
+      cross-fetch: ~3.1.5
       eslint: ^8.15.0
       mkdirp: ~1.0.4
       ramda: ~0.28.0
@@ -327,6 +328,7 @@ importers:
     dependencies:
       '@kadena/pactjs-generator': link:../../libs/pactjs-generator
       commander: 9.4.0
+      cross-fetch: 3.1.5
       mkdirp: 1.0.4
       ramda: 0.28.0
       rimraf: 3.0.2

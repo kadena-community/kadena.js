@@ -38,10 +38,17 @@ export function templateGenerateCommand(
       '-f, --file <file-or-directory>',
       'File or directory to use to generate the client',
     )
-    .option('-o, --out <file-or-directory>', 'Output file/directory to place the generated client')
+    .option(
+      '-o, --out <file-or-directory>',
+      'Output file/directory to place the generated client',
+    )
     .action((args: TTemplateGenerateOptions) => {
       debug('template-generate:action')({ args });
-      TemplateGenerateOptions.parse(args);
+      try {
+        TemplateGenerateOptions.parse(args);
+      } catch (e) {
+        program.error(e);
+      }
       templateGenerate(program, version)(args);
     });
 }
