@@ -53,34 +53,34 @@ export const lexer: Lexer = moo.compile({
  * @internal
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function flattenRecursive<T extends readonly any[]>(arr: T): unknown[] {
-  return arr.reduce((acc, cur) => {
-    if (Array.isArray(cur)) {
-      return acc.concat(flattenRecursive(cur));
-    }
-    return acc.concat(cur);
-  }, []);
-}
+// export function flattenRecursive<T extends readonly any[]>(arr: T): unknown[] {
+//   return arr.reduce((acc, cur) => {
+//     if (Array.isArray(cur)) {
+//       return acc.concat(flattenRecursive(cur));
+//     }
+//     return acc.concat(cur);
+//   }, []);
+// }
 
 /**
  * @internal
  */
-export const wrap =
-  <T>(type: string): ((arr: T[]) => { type: string; value: T[] }) =>
-  (arr: T[]) => {
-    return {
-      type,
-      value: arr,
-    };
-  };
+// export const wrap =
+//   <T>(type: string): ((arr: T[]) => { type: string; value: T[] }) =>
+//   (arr: T[]) => {
+//     return {
+//       type,
+//       value: arr,
+//     };
+//   };
 
 /**
  * @internal
  */
-export const filterFlattenWrap =
-  <T>(type: string): ((arr: T[]) => { type: string; value: unknown[] }) =>
-  (arr: T[]) =>
-    wrap(type)(flattenRecursive(arr).filter(Boolean));
+// export const filterFlattenWrap =
+//   <T>(type: string): ((arr: T[]) => { type: string; value: unknown[] }) =>
+//   (arr: T[]) =>
+//     wrap(type)(flattenRecursive(arr).filter(Boolean));
 
 /**
  * @internal

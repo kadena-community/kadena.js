@@ -149,8 +149,10 @@ describe('lexer', () => {
             : () => {};
 
         const output = getLexerOutput(test, logger);
+        const outputWithoutLogger = getLexerOutput(test);
         // match given length
         expect(output).toHaveLength(expectedTokenCount);
+        expect(output).toEqual(outputWithoutLogger);
         expect(
           output
             .map(({ type }) => type)
