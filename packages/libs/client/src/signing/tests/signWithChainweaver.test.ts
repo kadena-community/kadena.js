@@ -29,7 +29,7 @@ describe('signWithChainweaver', () => {
         IPactCommand
     )
       .addCap('GAS', 'signer-key')
-      .addMeta({
+      .setMeta({
         sender: '',
       })
       .createTransaction();
@@ -61,7 +61,7 @@ describe('signWithChainweaver', () => {
         IPactCommand
     )
       .addCap('GAS', 'signer-key')
-      .addMeta({
+      .setMeta({
         sender: '',
       })
       .createTransaction();

@@ -28,14 +28,14 @@ describe('signAndSubmitWithChainweaver', () => {
         IPactCommand
     )
       .addCap('GAS', 'signer-key')
-      .addMeta({
+      .setMeta({
         sender: '',
       });
 
     await signAndSubmitWithChainweaver(unsignedCommand);
 
     expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/sign', {
-      body: '{"code":"(coin.transfer \\"k:from\\")","data":{},"networkId":"testnet04","caps":[{"role":"GAS","description":"cap for GAS","cap":{"name":"GAS","args":[]}}],"sender":"","chainId":"1 ","gasLimit":2500,"gasPrice":1e-8,"signingPubKey":"","ttl":300}',
+      body: '{"code":"(coin.transfer \\"k:from\\")","data":{},"networkId":"mainnet01","caps":[{"role":"GAS","description":"cap for GAS","cap":{"name":"GAS","args":[]}}],"sender":"","chainId":"1","gasLimit":2500,"gasPrice":1e-8,"signingPubKey":"","ttl":28800}',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       method: 'POST',
     });

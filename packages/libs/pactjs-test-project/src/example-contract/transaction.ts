@@ -14,7 +14,7 @@ const pactCommand: IPactCommand &
   .transfer(sender, receiver, amount)
   .addCap('coin.GAS', sender.split('k:')[1])
   .addCap('coin.TRANSFER', sender.split('k:')[1], sender, receiver, amount)
-  .addMeta(
+  .setMeta(
     {
       chainId: '1',
       gasLimit: 600,

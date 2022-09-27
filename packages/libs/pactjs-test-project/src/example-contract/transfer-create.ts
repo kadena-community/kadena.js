@@ -25,7 +25,7 @@ const unsignedTransaction: IUnsignedTransaction = Pact.modules.coin[
   .addData(data)
   .addCap('coin.GAS', senderNoK)
   .addCap('coin.TRANSFER', senderNoK, sender, receiver, amount)
-  .addMeta(
+  .setMeta(
     {
       sender: senderNoK,
     },

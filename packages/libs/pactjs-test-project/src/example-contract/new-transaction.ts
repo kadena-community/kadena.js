@@ -24,7 +24,7 @@ function main(): void {
         pred: 'keys-all',
       },
     })
-    .addMeta(
+    .setMeta(
       {
         gasLimit: 1000,
         gasPrice: 1.0e-6,

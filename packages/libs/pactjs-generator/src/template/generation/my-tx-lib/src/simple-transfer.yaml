@@ -17,9 +17,13 @@ signers:
         args: []
 type: exec
 docs:
-  from-acct: Account that you want to send from
+  from-acct:
+    description: Account that you want to send from
+    type: PactString
   to-acct: Account that you want to send to
-  amount: The amount of KDA that you want to transfer
+  amount:
+    description: The amount of KDA that you want to transfer
+    type: PactNumber
   chain: The chain that you want to execute the transaction on
   network: The network that you want to use ("testnet04", "mainnet")
   from-key: The key (without k:) that signs the caps

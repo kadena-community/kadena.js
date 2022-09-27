@@ -20,9 +20,11 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    addMeta: (publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
     createTransaction(): IUnsignedTransaction;
+    // (undocumented)
+    setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
+        sender: IPactCommand['publicMeta']['sender'];
+    }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
 
 // @alpha (undocumented)

@@ -26,8 +26,10 @@ export interface ICommandBuilder<
   addData: (
     data: IPactCommand['data'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  addMeta: (
-    publicMeta: Partial<IPactCommand['publicMeta']>,
+  setMeta: (
+    publicMeta: Partial<IPactCommand['publicMeta']> & {
+      sender: IPactCommand['publicMeta']['sender'];
+    },
     networkId?: IPactCommand['networkId'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
@@ -50,6 +52,7 @@ class PactCommand
   public code: string;
   public data: Record<string, unknown>;
   public publicMeta: {
+    // TODO: use enum for chainId
     chainId: string;
     sender: string;
     gasLimit: number;
@@ -70,11 +73,11 @@ class PactCommand
     this.code = '';
     this.data = {};
     this.publicMeta = {
-      chainId: '1 ',
+      chainId: '1',
       gasLimit: 2500,
       gasPrice: 1.0e-8,
       sender: '',
-      ttl: 5 * 60, // 5 minutes,
+      ttl: 8 * 60 * 60, // 8 hours,
     };
     this.networkId = 'testnet04';
     this.signers = [];
@@ -128,9 +131,9 @@ class PactCommand
     return this;
   }
 
-  public addMeta(
+  public setMeta(
     publicMeta: Partial<IPactCommand['publicMeta']>,
-    networkId: IPactCommand['networkId'] = 'testnet04',
+    networkId: IPactCommand['networkId'] = 'mainnet01',
   ): PactCommand {
     this.publicMeta = Object.assign(this.publicMeta, publicMeta);
     this.networkId = networkId;
