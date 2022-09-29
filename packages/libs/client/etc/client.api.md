@@ -7,12 +7,20 @@
 import { ChainId } from '@kadena/types';
 import { ICap } from '@kadena/types';
 import { ISignedCommand } from '@kadena/types';
+import { PactValue } from '@kadena/types';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
 
+// Warning: (ae-internal-missing-underscore) The name "buildUnsignedTransaction" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): ICommandBuilder<{}>;
+
+// Warning: (ae-forgotten-export) The symbol "PactCommand" needs to be exported by the entry point index.d.ts
+//
 // @alpha (undocumented)
-export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IUnsignedTransaction;
+export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
 // @alpha (undocumented)
 export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
@@ -101,7 +109,7 @@ export const Pact: IPact;
 export function signAndSubmitWithChainweaver({ code, data, networkId, publicMeta: { chainId, gasLimit, gasPrice, sender, ttl }, signers, }: IPactCommand): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
-export function signWithChainweaver(transaction: IUnsignedTransaction): Promise<ISignedCommand>;
+export function signWithChainweaver(...transactions: IUnsignedTransaction[]): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
 export type TemplateHoles = string[];

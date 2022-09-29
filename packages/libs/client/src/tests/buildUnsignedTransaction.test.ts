@@ -25,9 +25,28 @@ signers:
 
     const unsignedTransaction = buildUnsignedTransaction(parts, holes, args);
     const expected = {
-      cmd: '{"code":"(describe-module \\"coin\\")","signers":[{"pubKey":"no-key","caps":[{"name":"coin.GAS","args":[]}]}]}',
-      hash: 'CiOCI0G3K-azK4dvVraisrHwjZf5WOoUWeL-1KbZAa4',
-      sigs: { 'no-key': null },
+      code: '(describe-module "coin")',
+      data: {},
+      networkId: 'testnet04',
+      publicMeta: {
+        chainId: '1',
+        gasLimit: 2500,
+        gasPrice: 1e-8,
+        sender: '',
+        ttl: 28800,
+      },
+      signers: [
+        {
+          caps: [
+            {
+              args: [],
+              name: 'coin.GAS',
+            },
+          ],
+          pubKey: 'no-key',
+        },
+      ],
+      type: 'exec',
     };
 
     expect(unsignedTransaction).toEqual(expected);

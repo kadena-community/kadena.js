@@ -11,7 +11,7 @@
   "networkId": "{{network}}",
   "signers": [
       {
-          "public": "{{fromKey}}",
+          "pubKey": "{{fromKey}}",
           "caps": [
               {
                   "name": "coin.TRANSFER",

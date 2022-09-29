@@ -164,6 +164,15 @@ class PactCommand
   }
 }
 
+/**
+ * @alpha
+ */
+export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand {
+  const pactCommand = Object.assign(new PactCommand(), tpl);
+  log(`createPactCommandFromTemplate returns ${pactCommand}`);
+  return pactCommand;
+}
+
 const pactCreator = (): IPact => {
   const transaction: PactCommand = new PactCommand();
   const ThePact: IPact = new Proxy(function () {} as unknown as IPact, {

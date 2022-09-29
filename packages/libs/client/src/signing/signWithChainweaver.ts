@@ -11,9 +11,9 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
  * @alpha
  */
 export async function signWithChainweaver(
-  transaction: IUnsignedTransaction,
+  ...transactions: IUnsignedTransaction[]
 ): Promise<ISignedCommand> {
-  const body: string = JSON.stringify({ reqs: [transaction] });
+  const body: string = JSON.stringify({ reqs: transactions });
 
   debug('calling sign api:', body);
 

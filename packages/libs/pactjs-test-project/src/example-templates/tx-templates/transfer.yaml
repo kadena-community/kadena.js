@@ -9,7 +9,7 @@ publicMeta:
   ttl: 600
 networkId: {{network}}
 signers:
-  - public: {{fromKey}}
+  - pubKey: {{fromKey}}
     caps:
       - name: "coin.TRANSFER"
         args: [{{fromAcct}}, {{toAcct}}, {{amount}}]
