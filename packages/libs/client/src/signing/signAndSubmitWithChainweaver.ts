@@ -10,7 +10,7 @@ import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
 
-const debug: Debugger = _debug('pactjs:signWithChainweaver');
+const debug: Debugger = _debug('pactjs:signAndSubmitWithChainweaver');
 
 /**
  * @alpha
@@ -57,7 +57,7 @@ export async function signAndSubmitWithChainweaver({
   //   });
   // });
 
-  debug(`body: `, body);
+  debug(`body: `, JSON.stringify(body));
 
   const response = await fetch('http://127.0.0.1:9467/v1/sign', {
     method: 'POST',
@@ -68,7 +68,9 @@ export async function signAndSubmitWithChainweaver({
 
   // response is not JSON when not-ok
   try {
-    return JSON.parse(bodyText);
+    const parsedBody = JSON.parse(bodyText);
+    debug(`response: `, bodyText);
+    return parsedBody;
   } catch (error) {
     throw new Error(
       `Response from v1/quickSign was \`${bodyText}\`. ` +
