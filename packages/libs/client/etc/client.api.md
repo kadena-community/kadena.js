@@ -4,6 +4,7 @@
 
 ```ts
 
+import { ChainId } from '@kadena/types';
 import { ICap } from '@kadena/types';
 import { ISignedCommand } from '@kadena/types';
 
@@ -62,7 +63,7 @@ export interface IPactModules {
 // @alpha (undocumented)
 export interface IPublicMeta {
     // (undocumented)
-    chainId: string;
+    chainId: ChainId;
     // (undocumented)
     gasLimit: number;
     // (undocumented)

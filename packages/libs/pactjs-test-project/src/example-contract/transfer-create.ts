@@ -37,5 +37,5 @@ const unsignedTransaction: IUnsignedTransaction = Pact.modules.coin[
 console.log('sending transaction: \n  ', JSON.stringify(unsignedTransaction));
 
 signWithChainweaver(unsignedTransaction)
-  .then((r) => console.log('signed transaction \n', r))
+  .then((r) => console.log('signed transaction \n', JSON.stringify(r, null, 2)))
   .catch(console.error);

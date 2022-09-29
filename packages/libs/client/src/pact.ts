@@ -1,6 +1,6 @@
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
-import { ICap, ICommandPayload, PactValue } from '@kadena/types';
+import { ChainId, ICap, ICommandPayload, PactValue } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
 import { IUnsignedTransaction } from './interfaces/IUnsignedTransaction';
@@ -53,7 +53,7 @@ class PactCommand
   public data: Record<string, unknown>;
   public publicMeta: {
     // TODO: use enum for chainId
-    chainId: string;
+    chainId: ChainId;
     sender: string;
     gasLimit: number;
     gasPrice: number;

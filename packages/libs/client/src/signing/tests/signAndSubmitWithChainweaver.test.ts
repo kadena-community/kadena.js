@@ -16,7 +16,7 @@ describe('signAndSubmitWithChainweaver', () => {
   it('makes a call on 127.0.0.1:9467/v1/sign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
-      json: () => {},
+      text: () => JSON.stringify({}),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

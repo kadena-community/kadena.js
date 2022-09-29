@@ -59,10 +59,21 @@ export async function signAndSubmitWithChainweaver({
 
   debug(`body: `, body);
 
-  const res = await fetch('http://127.0.0.1:9467/v1/sign', {
+  const response = await fetch('http://127.0.0.1:9467/v1/sign', {
     method: 'POST',
     body: JSON.stringify(body),
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
   });
-  return await res.json();
+  const bodyText = await response.text();
+
+  // response is not JSON when not-ok
+  try {
+    return JSON.parse(bodyText);
+  } catch (error) {
+    throw new Error(
+      `Response from v1/quickSign was \`${bodyText}\`. ` +
+        `\nCode: \`${response.status}\`` +
+        `\nText: \`${response.statusText}\` `,
+    );
+  }
 }

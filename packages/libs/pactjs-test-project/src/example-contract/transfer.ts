@@ -1,6 +1,7 @@
 import {
   IUnsignedTransaction,
   Pact,
+  signAndSubmitWithChainweaver,
   signWithChainweaver,
 } from '@kadena/client';
 
@@ -18,9 +19,12 @@ const data: { ks: { keys: string[]; pred: string } } = {
   },
 };
 
-const unsignedTransaction: IUnsignedTransaction = Pact.modules.coin[
-  'transfer-create'
-](senderAccount, receiverAccount, () => "(read-keyset 'ks)", amount)
+const unsignedTransaction = Pact.modules.coin['transfer-create'](
+  senderAccount,
+  receiverAccount,
+  () => "(read-keyset 'ks)",
+  amount,
+)
   .addData(data)
   .addCap('coin.GAS', senderPubkey)
   .addCap('coin.TRANSFER', senderPubkey, senderAccount, receiverAccount, amount)
@@ -36,7 +40,7 @@ const unsignedTransaction: IUnsignedTransaction = Pact.modules.coin[
 // console.log(JSON.stringify(unsignedTransaction));
 
 signWithChainweaver(unsignedTransaction)
-  .then((res) =>
+  .then((res: any) =>
     console.log('signed transaction: \n  ', JSON.stringify(res, null, 2)),
   )
   .catch(console.error);

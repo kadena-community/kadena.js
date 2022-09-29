@@ -1,4 +1,4 @@
-import { ICap } from "@kadena/types";
+import { ChainId, ICap } from "@kadena/types";
 
 /**
  * @alpha
@@ -23,7 +23,7 @@ export interface IPactCommand {
  * @alpha
  */
 export interface IPublicMeta {
-  chainId: string;
+  chainId: ChainId;
   sender: string;
   gasLimit: number;
   gasPrice: number;
