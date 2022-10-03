@@ -30,4 +30,11 @@ describe('createExp', () => {
 
     expect(expected).toEqual(actual);
   });
+
+  it('does not add a space when only a function is called', () => {
+    const expr = createExp('fn');
+    const expected = '(fn)';
+
+    expect(expr).toBe(expected);
+  });
 });

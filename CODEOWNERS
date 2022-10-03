@@ -1,11 +1,6 @@
 # CODEOWNERS file.
 # See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-./common @alber70g
-./*.*      @alber70g
-
-./common @randynamic
-./*.*      @randynamic
-
-./common @ggobugi27
-./*.*      @ggobugi27
+# As a test I put myself here
+./common    @alber70g @randynamic @ggobugi27
+./*.*       @alber70g @randynamic @ggobugi27

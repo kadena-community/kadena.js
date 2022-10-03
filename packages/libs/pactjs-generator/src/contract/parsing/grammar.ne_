@@ -1,0 +1,77 @@
+@{%
+  var { lexer, flattenRecursive, flattenOnce, wrap, filterFlattenWrap } = require('./lexer.js');
+%}
+
+@lexer lexer
+
+main        -> _ ((%lparen _ %rparen | module | comment) _ ):+
+
+# specific grammar
+#  - module
+module          -> %lparen _ %module _ name _ keysetOrGovernance _ meta _ moduleBody _ %rparen
+keysetOrGovernance -> %atom
+meta            -> ( doc _ | model _ ):*
+doc             -> %string
+                   | "@doc" _ %string
+model           -> "@model" _ ( expression | listOfExpressions)
+expression      -> %lparen _
+                   ( maybeTypedAtom
+                   | %decimal
+                   | %symbol
+                   | %boolean
+                   | %string
+                   | expression )
+                   ( _ maybeTypedAtom
+                   | _ %decimal
+                   | _ %symbol
+                   | _ %boolean
+                   | _ %string
+                   | _ expression):* _ %rparen
+listOfExpressions -> %lsquare _ expression (_ expression):* _ %rsquare
+
+moduleBody      -> ( _ ( comment
+                     | defun
+                     | defpact
+                     | defcap
+                     | deftable
+                     | defschema
+                     | defconst
+                     | implements
+                     | use
+                     | bless
+                   )):*
+# - bless
+implements      -> %lparen _ %implements _ name _ %rparen
+# - defschema
+defschema       -> %lparen _ %defschema _ name _ meta _ field:+ _ %rparen
+field           -> _ maybeTypedAtom
+# - deftable
+deftable        -> %lparen _ %deftable _ maybeTypedSchema _ meta _ %rparen
+maybeTypedSchema -> %atom (%colon %lcurly %atom %rcurly):?
+
+#  - bless
+bless           -> %lparen _ %bless _ %string _ %rparen
+#  - defun
+defun           -> %defun defunName argList defunBody
+defunName       -> maybeTypedAtom
+#  - defcap
+defcap          -> %lparen _ %defcap _ name _ argList (_ doc):? _ body _ %rparen
+
+# generic grammar
+name            -> %atom
+maybeTypedAtom  -> %atom
+                   | typedAtom
+typedAtom       -> %atom %colon %atom
+argList         -> %lparen _ %rparen
+                   | %lparen _ maybeTypedAtom ( _ %comma _ maybeTypedAtom ):* %rparen
+body            -> ( expression (_ expression):* | bodyToken )
+bodyToken -> %atom | %string | %boolean
+
+
+
+#  | "[" _ value (_ "," _ value):* _ "]"
+
+comment      -> %comment _
+
+_            -> (%ws  | %nl  ):*
+__           -> (%ws  | %nl  ):+

@@ -1,0 +1,29 @@
+{
+  "code": "(coin.transfer \"{{from-acct}}\" \"{{to-acct}}\" {{amount}})",
+  "data": null,
+  "publicMeta": {
+    "chainId": "{{chain}}",
+    "sender": "{{from-acct}}",
+    "gasLimit": 2500,
+    "gasPrice": 1e-8,
+    "ttl": 600
+  },
+  "networkId": "{{network}}",
+  "signers": [
+    {
+      "public": "{{from-key}}",
+      "caps": [
+        { "name": "coin.GAS", "args": [] },
+        {
+          "name": "coin.TRANSFER",
+          "args": [
+            "{{from-acct}}",
+            "{{to-acct}}",
+            "{{amount}}"
+          ]
+        }
+      ]
+    }
+  ],
+  "type": "exec"
+}

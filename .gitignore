@@ -10,6 +10,9 @@ yarn.lock
 npm-shrinkwrap.json
 shrinkwrap.json
 
+# Metadata
+tsdoc-metadata.json
+
 # Logs
 *.log
 npm-debug.log*
