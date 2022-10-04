@@ -21,7 +21,7 @@ const Options = z.object({
       invalid_type_error: 'Error: -c, --chain must be a number',
     })
     .min(0)
-    .max(20),
+    .max(19),
   /* eslint-enable @typescript-eslint/naming-convention */
 });
 
@@ -45,8 +45,8 @@ export function retrieveContractCommand(
       'mainnet',
     )
     .addOption(
-      new Option('-c, --chain <chain>', 'Chain to retrieve from (default 1)')
-        .argParser(parseInt)
+      new Option('-c, --chain <number>', 'Chain to retrieve from (default 1)')
+        .argParser((value) => parseInt(value, 10))
         .default(1),
     )
     .action(async (args: TOptions) => {

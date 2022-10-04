@@ -30,12 +30,13 @@ export function retrieveContract(
         networkMap[network].network
       }\\",\\"payload\\":{\\"exec\\":{\\"code\\":\\"(describe-module \\\\\\"${module}\\\\\\")\\",\\"data\\":{}}}}","hash":"${hash}","sigs":[]}`;
 
-    const { textResponse } = await callLocal(network, createBody());
+    const { textResponse } = await callLocal(network, chain, createBody());
 
     const hashFromResponse = textResponse?.split(' ').splice(-1, 1)[0];
 
     const { jsonResponse } = await callLocal(
       network,
+      chain,
       createBody(hashFromResponse),
     );
 
@@ -49,6 +50,7 @@ export function retrieveContract(
 
 async function callLocal(
   network: TOptions['network'],
+  chain: TOptions['chain'],
   body: string,
 ): Promise<{
   textResponse: string | undefined;
