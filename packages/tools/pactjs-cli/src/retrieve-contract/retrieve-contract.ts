@@ -26,14 +26,17 @@ export function retrieveContract(
     const now = new Date();
 
     const createBody = (hash: string = ''): string =>
-      `{"cmd":"{\\"signers\\":[],\\"meta\\":{\\"creationTime\\":${now.getTime()},\\"ttl\\":600,\\"chainId\\":\\"${chain}\\",\\"gasPrice\\":1.0e-8,\\"gasLimit\\":2500,\\"sender\\":\\"sender00\\"},\\"nonce\\":\\"CW:${now.toUTCString()}\\",\\"networkId\\":\\"${network}\\",\\"payload\\":{\\"exec\\":{\\"code\\":\\"(describe-module \\\\\\"${module}\\\\\\")\\",\\"data\\":{}}}}","hash":"${hash}","sigs":[]}`;
+      `{"cmd":"{\\"signers\\":[],\\"meta\\":{\\"creationTime\\":${now.getTime()},\\"ttl\\":600,\\"chainId\\":\\"${chain}\\",\\"gasPrice\\":1.0e-8,\\"gasLimit\\":2500,\\"sender\\":\\"sender00\\"},\\"nonce\\":\\"CW:${now.toUTCString()}\\",\\"networkId\\":\\"${
+        networkMap[network].network
+      }\\",\\"payload\\":{\\"exec\\":{\\"code\\":\\"(describe-module \\\\\\"${module}\\\\\\")\\",\\"data\\":{}}}}","hash":"${hash}","sigs":[]}`;
 
-    const { textResponse } = await callLocal(network, createBody());
+    const { textResponse } = await callLocal(network, chain, createBody());
 
     const hashFromResponse = textResponse?.split(' ').splice(-1, 1)[0];
 
     const { jsonResponse } = await callLocal(
       network,
+      chain,
       createBody(hashFromResponse),
     );
 
@@ -47,6 +50,7 @@ export function retrieveContract(
 
 async function callLocal(
   network: TOptions['network'],
+  chain: TOptions['chain'],
   body: string,
 ): Promise<{
   textResponse: string | undefined;
@@ -61,7 +65,7 @@ async function callLocal(
 }> {
   const response = await fetch(
     `https://${networkMap[network].api}/chainweb/0.0/` +
-      `${networkMap[network].network}/chain/0/pact/api/v1/local`,
+      `${networkMap[network].network}/chain/${chain}/pact/api/v1/local`,
     {
       headers: {
         accept: 'application/json;charset=utf-8, application/json',
