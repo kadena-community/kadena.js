@@ -45,7 +45,7 @@ export function retrieveContractCommand(
       'mainnet',
     )
     .addOption(
-      new Option('-c, --chain <network>', 'Chain to retrieve from (default 1)')
+      new Option('-c, --chain <chain>', 'Chain to retrieve from (default 1)')
         .argParser(parseInt)
         .default(1),
     )
