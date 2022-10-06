@@ -61,7 +61,7 @@
     "@kadena/types": "workspace:*",
     "bignumber.js": "^9.0.2",
     "blakejs": "^1.2.1",
-    "node-fetch": "~3.2.10",
+    "node-fetch": "~2.6.2",
     "tweetnacl": "^1.0.3",
     "webpack": "~5.73.0"
   },

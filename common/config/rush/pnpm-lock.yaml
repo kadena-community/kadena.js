@@ -5,6 +5,68 @@ importers:
   .:
     specifiers: {}
 
+  ../../packages/libs/bootstrap-lib:
+    specifiers:
+      '@kadena/cryptography-utils': workspace:*
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/pactjs': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/isomorphic-fetch': ~0.0.36
+      '@types/node': ^16.0.0
+      cross-fetch: ~3.1.5
+      eslint: ^8.15.0
+      node-fetch: ~2.6.2
+    dependencies:
+      '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/pactjs': link:../pactjs
+      '@kadena/types': link:../types
+      '@types/isomorphic-fetch': 0.0.36
+      cross-fetch: 3.1.5
+      node-fetch: 2.6.7
+    devDependencies:
+      '@kadena/eslint-config': link:../../tools/eslint-config
+      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@rushstack/eslint-config': 2.6.2_eslint@8.23.1
+      '@rushstack/heft': 0.46.7
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.11.59
+      eslint: 8.23.1
+
+  ../../packages/libs/chainweb-node-client:
+    specifiers:
+      '@kadena/cryptography-utils': workspace:*
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/pactjs': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/heft-jest': ~1.0.3
+      '@types/isomorphic-fetch': ~0.0.36
+      '@types/node': ^16.0.0
+      cross-fetch: ~3.1.5
+      eslint: ^8.15.0
+      node-fetch: ~2.6.2
+    dependencies:
+      '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/pactjs': link:../pactjs
+      '@kadena/types': link:../types
+      '@types/isomorphic-fetch': 0.0.36
+      cross-fetch: 3.1.5
+      node-fetch: 2.6.7
+    devDependencies:
+      '@kadena/eslint-config': link:../../tools/eslint-config
+      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@rushstack/eslint-config': 2.6.2_eslint@8.23.1
+      '@rushstack/heft': 0.46.7
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.11.59
+      eslint: 8.23.1
+
   ../../packages/libs/client:
     specifiers:
       '@kadena/cryptography-utils': workspace:*
@@ -81,7 +143,7 @@ importers:
       bignumber.js: ^9.0.2
       blakejs: ^1.2.1
       eslint: ^8.15.0
-      node-fetch: ^2.6.7
+      node-fetch: ~2.6.2
       serve: ^13.0.2
       ts-loader: ^9.3.0
       tweetnacl: ^1.0.3
@@ -149,7 +211,7 @@ importers:
       eslint: ^8.15.0
       moo: ~0.5.1
       nearley: ~2.20.1
-      node-fetch: ^2.6.7
+      node-fetch: ~2.6.2
       npm-run-all: ~4.1.5
       ramda: ~0.28.0
       ts-node: ~10.8.2
@@ -193,7 +255,7 @@ importers:
       concurrently: ^7.2.2
       debug: ~4.3.4
       eslint: ^8.15.0
-      node-fetch: ^2.6.7
+      node-fetch: ~2.6.2
       npm-run-all: ~4.1.5
       ts-node: ~10.8.2
     dependencies:
@@ -1449,6 +1511,10 @@ packages:
     dependencies:
       '@types/jest': 29.0.3
     dev: true
+
+  /@types/isomorphic-fetch/0.0.36:
+    resolution: {integrity: sha512-ulw4d+vW1HKn4oErSmNN2HYEcHGq0N1C5exlrMM0CRqX1UUpFhGb5lwiom5j9KN3LBJJDLRmYIZz1ghm7FIzZw==}
+    dev: false
 
   /@types/istanbul-lib-coverage/2.0.4:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
