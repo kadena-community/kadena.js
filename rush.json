@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.74.0",
+  "rushVersion": "5.80.1",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -426,6 +426,13 @@
     },
 
     {
+      "packageName": "@kadena/bootstrap-lib",
+      "projectFolder": "packages/libs/bootstrap-lib",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/cryptography-utils",
       "projectFolder": "packages/libs/cryptography-utils",
       "tags": ["libs"],
@@ -433,10 +440,10 @@
     },
 
     {
-      "packageName": "@kadena/integration-tests",
-      "projectFolder": "packages/tools/integration-tests",
-      "tags": ["tools"],
-      "shouldPublish": false
+      "packageName": "@kadena/chainweb-node-client",
+      "projectFolder": "packages/libs/chainweb-node-client",
+      "tags": ["libs"],
+      "shouldPublish": true
     },
 
     {
@@ -481,6 +488,14 @@
     {
       "packageName": "@kadena/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+
+    {
+      "packageName": "@kadena/integration-tests",
+      "projectFolder": "packages/tools/integration-tests",
       "tags": ["tools"],
       "shouldPublish": false
     },

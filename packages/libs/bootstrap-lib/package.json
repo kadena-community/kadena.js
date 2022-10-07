@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/integration-tests",
+  "name": "@kadena/bootstrap-lib",
   "version": "0.0.1",
   "description": "",
   "keywords": [],
@@ -21,13 +21,12 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
-    "lint": "npx eslint src --ext .js,.ts --fix",
-    "precommit": "pnpm run test --silent",
-    "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
-    "test": "",
-    "test:integration:devnet": "heft test --test-path-pattern devnet*",
-    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"sleep 5 && heft test --test-path-pattern pact-server* && sleep 5\" --kill-others"
+    "preinstall": "npx only-allow pnpm",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [
@@ -39,12 +38,12 @@
     ]
   },
   "dependencies": {
-    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
     "@kadena/types": "workspace:*",
-    "blakejs": "^1.2.1",
-    "exponential-backoff": "^3.1.0",
-    "kadena.js": "workspace:*",
-    "tweetnacl": "^1.0.3"
+    "@types/isomorphic-fetch": "~0.0.36",
+    "cross-fetch": "~3.1.5",
+    "node-fetch": "~2.6.2"
   },
   "devDependencies": {
     "@kadena/eslint-config": "workspace:*",
@@ -53,7 +52,6 @@
     "@rushstack/heft": "~0.46.1",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "concurrently": "^7.2.2",
     "eslint": "^8.15.0"
   }
 }
