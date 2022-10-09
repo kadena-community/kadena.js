@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Rush Install
-        uses: advancedcsg-open/actions-rush@v1.4.5
+        uses: advancedcsg-open/actions-rush@latest
         with:
           build: true
 
