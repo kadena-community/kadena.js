@@ -24,9 +24,4 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
 
-      - name: RushJS Helper
-        uses: advancedcsg-open/actions-rush@v1.6.0
-        with:
-          build: true
-
       - run: node ./common/scripts/install-run-rush.js test
