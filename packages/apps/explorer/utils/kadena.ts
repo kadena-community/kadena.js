@@ -1,4 +1,4 @@
-import lib from 'cardano-crypto.js/kadena-crypto';
+import lib from 'libs/cardano-crypto';
 import Pact from 'pact-lang-api';
 import { isPrivateKey } from './string';
 

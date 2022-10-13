@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Moved return value to a const",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}

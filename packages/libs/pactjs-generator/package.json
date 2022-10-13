@@ -1,0 +1,58 @@
+{
+  "name": "@kadena/pactjs-generator",
+  "version": "0.0.1",
+  "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "dist/pactjs-generator.d.ts",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "",
+    "prebuild": "npm run build:lexer && npm run build:grammar",
+    "build": "heft build --clean",
+    "build:lexer": "tsc src/lexer.ts",
+    "build:lexer:watch": "chokidar src/lexer.ts -c \"rushx build:lexer\"",
+    "build:grammar": "nearleyc src/grammar.ne -o src/grammar.js",
+    "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"rushx build:grammar\"",
+    "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
+    "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint-staged": "lint-staged",
+    "start": "ts-node --transpile-only src/index.ts",
+    "test": "heft test"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "byline": "~5.0.0",
+    "moo": "~0.5.1",
+    "nearley": "~2.20.1",
+    "ramda": "~0.28.0",
+    "yaml": "~2.1.1"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/byline": "~4.2.33",
+    "@types/heft-jest": "~1.0.3",
+    "@types/moo": "~0.5.5",
+    "@types/nearley": "~2.11.2",
+    "@types/node": "^16.0.0",
+    "@types/node-fetch": "~2.6.2",
+    "@types/ramda": "~0.28.15",
+    "concurrently": "^7.2.2",
+    "eslint": "^8.15.0",
+    "node-fetch": "~2.6.2",
+    "npm-run-all": "~4.1.5",
+    "ts-node": "~10.8.2"
+  }
+}

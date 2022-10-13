@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 /**
  * Takes in Uint8Array binary object and outputs hex string.
  *

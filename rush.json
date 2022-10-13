@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.74.0",
+  "rushVersion": "5.80.1",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -290,7 +290,7 @@
      * your PR branch, and in this situation "rush change" will also automatically invoke "git fetch"
      * to retrieve the latest activity for the remote main branch.
      */
-    "url": "https://github.com/kadena-io/kadena.js",
+    "url": "https://github.com/kadena-community/kadena.js",
 
     /**
      * The default branch name. This tells "rush change" which remote branch to compare against.
@@ -312,9 +312,7 @@
     /**
      * The list of shell commands to run before the Rush installation starts
      */
-    "preRushInstall": [
-      // "common/scripts/pre-rush-install.js"
-    ],
+    "preRushInstall": ["./common/scripts/add-lib-index-pactjs-cli.js"],
 
     /**
      * The list of shell commands to run after the Rush installation finishes
@@ -427,6 +425,20 @@
     },
 
     {
+      "packageName": "@kadena/client",
+      "projectFolder": "packages/libs/client",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/bootstrap-lib",
+      "projectFolder": "packages/libs/bootstrap-lib",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/cryptography-utils",
       "projectFolder": "packages/libs/cryptography-utils",
       "tags": ["libs"],
@@ -434,9 +446,30 @@
     },
 
     {
-      "packageName": "@kadena/integration-tests",
-      "projectFolder": "packages/tools/integration-tests",
-      "tags": ["tools"],
+      "packageName": "@kadena/chainweb-node-client",
+      "projectFolder": "packages/libs/chainweb-node-client",
+      "tags": ["libs"],
+      "shouldPublish": true
+    },
+
+    {
+      "packageName": "@kadena/pactjs",
+      "projectFolder": "packages/libs/pactjs",
+      "tags": ["libs"],
+      "shouldPublish": true
+    },
+
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "projectFolder": "packages/libs/pactjs-generator",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/pactjs-test-project",
+      "projectFolder": "packages/libs/pactjs-test-project",
+      "tags": ["libs"],
       "shouldPublish": false
     },
 
@@ -451,15 +484,31 @@
     // ##  Tools
     // #########################
     {
+      "packageName": "@kadena/eslint-config",
+      "projectFolder": "packages/tools/eslint-config",
+      "cyclicDependencyProjects": ["@kadena/eslint-config"],
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
       "shouldPublish": false
     },
+
+
     {
-      "packageName": "@kadena/eslint-config",
-      "projectFolder": "packages/tools/eslint-config",
-      "cyclicDependencyProjects": ["@kadena/eslint-config"],
+      "packageName": "@kadena/integration-tests",
+      "projectFolder": "packages/tools/integration-tests",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
       "shouldPublish": false
     }

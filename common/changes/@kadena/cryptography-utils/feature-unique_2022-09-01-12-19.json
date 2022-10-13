@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Added new util function unique to create an array with unique IBase64Url",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}
