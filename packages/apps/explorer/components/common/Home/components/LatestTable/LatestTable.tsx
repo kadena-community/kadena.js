@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { ComponentType, FC, memo } from 'react';
 import dynamic from 'next/dynamic';
 import LatestHead from './components/LatestHead/LatestHead';
 import { useTableList } from '../../../../../services/latestTable';
@@ -12,7 +12,7 @@ interface Props {
   network: NetworkName;
 }
 
-const DynamicGraph: any = dynamic(
+const DynamicGraph: ComponentType<any> = dynamic(
   () => import('components/common/Home/components/Graph/Graph'),
   {
     ssr: false,

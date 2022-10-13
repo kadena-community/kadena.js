@@ -1,22 +1,20 @@
 import React, { memo, useCallback, useContext, useState } from 'react';
 import Link from 'next/link';
-import { ActiveTab } from 'services/coin';
-import WarningIcon from 'components/common/GlobalIcons/WarningIcon';
-import s from './MobileDropdownMenu.module.css';
 import GlobalDropdown from '../../../../GlobalDropdown/GlobalDropdown';
-import { Route } from '../../../../../../config/Routes';
-import { NetworkContext } from '../../../../../../services/app';
-import { NetworkName } from '../../../../../../utils/api';
+import { Route } from 'config/Routes';
+import { NetworkContext } from 'services/app';
+import { NetworkName } from 'utils/api';
 import GetStarted from '../../Menu/components/GetStarted/GetStarted';
 import LearnMore from '../../Menu/components/LearnMore/LearnMore';
 import Network from '../../Menu/components/Network/Network';
 import ArrowIcon from '../../../../GlobalIcons/ArrowIcon';
 
+import s from './MobileDropdownMenu.module.css';
+
 const MobileDropdownMenu = () => {
   const { network, setNetwork } = useContext(NetworkContext);
   const [visible, setVisible] = useState<boolean | string>(false);
   const [visibleItem, setVisibleItem] = useState<boolean | string>('');
-  const [subMenu, setSubMenu] = useState<boolean>(false);
 
   const onMenuItem = useCallback(item => {
     setVisibleItem(prev => (prev === item ? '' : item));
@@ -76,111 +74,6 @@ const MobileDropdownMenu = () => {
                         Kadena
                       </a>
                     </Link>
-                  </div>
-                </GlobalDropdown>
-              ) : null}
-            </div>
-            <div
-              className={`${s.item} ${s.subMenuFinish}`}
-              onClick={e => {
-                onMenuItem('tools');
-                e.stopPropagation();
-              }}>
-              {'TOOLS'}
-              <ArrowIcon width={'8px'} height={'8px'} fill={'#120D23'} />
-              {isUnfinishedChains && (
-                <span className={s.iconWarning}>
-                  <WarningIcon height="24" width="24" fill="#D61C06" />
-                </span>
-              )}
-              {visibleItem === 'tools' ? (
-                <GlobalDropdown setOpenedTab={setVisibleItem}>
-                  <div className={s.dropdownMenuItem}>
-                    <Link href={Route.Command}>
-                      <a
-                        target="_blank"
-                        href={Route.Command}
-                        className={`${s.menuItem} ${s.item}`}>
-                        Command
-                      </a>
-                    </Link>
-                    <div
-                      className={`${s.item} ${s.itemCoin} ${s.subMenuFinish}`}
-                      onClick={e => {
-                        setSubMenu(!subMenu);
-                        e.stopPropagation();
-                      }}>
-                      {'COIN'}
-                      <ArrowIcon
-                        width={'8px'}
-                        height={'8px'}
-                        fill={'#120D23'}
-                      />
-                      {isUnfinishedChains && (
-                        <span className={s.iconWarning}>
-                          <WarningIcon height="24" width="24" fill="#D61C06" />
-                        </span>
-                      )}
-                      {subMenu ? (
-                        <GlobalDropdown setOpenedTab={setVisibleItem}>
-                          <div className={`${s.dropdownMenuItem} ${s.subMenu}`}>
-                            <Link
-                              href={{
-                                pathname: Route.CoinParam,
-                                query: { tab: ActiveTab.transfer },
-                              }}>
-                              <a
-                                target="_blank"
-                                className={`${s.menuItem} ${s.item}`}>
-                                Transfer
-                              </a>
-                            </Link>
-                            <Link
-                              href={{
-                                pathname: Route.CoinParam,
-                                query: { tab: ActiveTab.finish },
-                              }}>
-                              <a
-                                target="_blank"
-                                className={`${s.menuItem} ${s.item} ${s.subMenuFinish}`}>
-                                Finish Cross Chain Transfer
-                                {isUnfinishedChains && (
-                                  <span className={s.iconWarning}>
-                                    <WarningIcon
-                                      height="24"
-                                      width="24"
-                                      fill="#D61C06"
-                                    />
-                                  </span>
-                                )}
-                              </a>
-                            </Link>
-                            <Link
-                              href={{
-                                pathname: Route.CoinParam,
-                                query: { tab: ActiveTab.balance },
-                              }}>
-                              <a
-                                target="_blank"
-                                className={`${s.menuItem} ${s.item}`}>
-                                Check Account Balance
-                              </a>
-                            </Link>
-                            <Link
-                              href={{
-                                pathname: Route.CoinParam,
-                                query: { tab: ActiveTab.generate },
-                              }}>
-                              <a
-                                target="_blank"
-                                className={`${s.menuItem} ${s.item}`}>
-                                Generate KeyPair
-                              </a>
-                            </Link>
-                          </div>
-                        </GlobalDropdown>
-                      ) : null}
-                    </div>
                   </div>
                 </GlobalDropdown>
               ) : null}

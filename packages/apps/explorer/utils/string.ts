@@ -1,5 +1,4 @@
 import utf8 from 'utf8';
-// @ts-ignore
 import Pact from 'pact-lang-api';
 import { blake2s } from 'blakejs';
 import { NetworkName } from './api';
@@ -26,7 +25,6 @@ export const decodeBase64ToNumber = (strToDecode: string) => {
     encodeUtf8(addPaddingIfNecessary(strToDecode)),
     'base64',
   );
-  // @ts-ignore
   return buff.toString('hex').match(/../g).reverse().join('');
 };
 
@@ -35,7 +33,6 @@ export const decodeBase64ToString = (strToDecode: string) => {
     encodeUtf8(addPaddingIfNecessary(strToDecode)),
     'base64',
   );
-  // @ts-ignore
   return buff.toString('hex');
 };
 

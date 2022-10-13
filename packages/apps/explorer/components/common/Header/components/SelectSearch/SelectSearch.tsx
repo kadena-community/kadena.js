@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import ArrowIcon from 'components/common/GlobalIcons/ArrowIcon';
-import { useWindowSize } from 'utils/window';
+import { useWindowSize } from 'utils/hooks';
 import { SearchType } from 'network/search';
 import ReactSelect, {
   components,
@@ -12,9 +12,9 @@ import s from './SelectSearch.module.css';
 import { options } from './config';
 import { useStyles } from './styles';
 
-const IndicatorsContainer: FC = memo(() => (
+const IndicatorsContainer: FC = () => (
   <ArrowIcon height="10" width="10" fill="#975E9A" />
-));
+);
 
 const SingleValue: FC<SingleValueProps> = memo(props => {
   const current = props.getValue()[0] as Record<string, string>;
@@ -26,9 +26,8 @@ const SingleValue: FC<SingleValueProps> = memo(props => {
 });
 
 const formatGroupLabel = (data: GroupBase<unknown>) => {
-  if (!data.label) {
-    return undefined;
-  }
+  if (!data.label) return undefined;
+
   return (
     <div className={s.label}>
       <span>{data.label}</span>
@@ -40,7 +39,7 @@ const SelectSearch: FC<{
   type: SearchType;
   setType: (type: SearchType) => void;
 }> = ({ type, setType }) => {
-  const [widthSize] = useWindowSize();
+  const { width: windowWidth } = useWindowSize();
 
   const onHandleSelect = useCallback((newValue: unknown) => {
     setType((newValue as Record<string, string>).value as SearchType);
@@ -56,15 +55,14 @@ const SelectSearch: FC<{
       .value();
   }, [type]);
 
-  const width = useMemo(() => {
-    return widthSize > 1024
+  const width =
+    windowWidth > 1024
       ? chooseValue?.width
-      : widthSize > 300
+      : windowWidth > 300
       ? chooseValue?.minWidth
       : 66;
-  }, [chooseValue, widthSize]);
 
-  const styles = useStyles(widthSize);
+  const styles = useStyles(windowWidth);
 
   return (
     <div style={{ width, minWidth: width }}>
@@ -85,4 +83,4 @@ const SelectSearch: FC<{
   );
 };
 
-export default memo(SelectSearch);
+export default SelectSearch;

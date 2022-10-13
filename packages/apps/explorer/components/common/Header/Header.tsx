@@ -14,8 +14,8 @@ const Header: FC<
   searchValue,
   setSearchValue,
   topScroll,
-  focused,
-  setFocused,
+  isFocused,
+  setIsFocused,
   type,
   setType,
 }) => {
@@ -33,8 +33,8 @@ const Header: FC<
             searchRequestValue={searchRequestValue}
             searchValue={searchValue}
             setSearchValue={setSearchValue}
-            focused={focused}
-            setFocused={setFocused}
+            isFocused={isFocused}
+            setIsFocused={setIsFocused}
             type={type}
             setType={setType}
           />

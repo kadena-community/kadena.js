@@ -1,8 +1,6 @@
-// @ts-ignore
 import Pact from 'pact-lang-api';
 import { DefaultQueryParams, queryParamsTypeAdapter } from '../utils/api';
-import { getPactHost } from '../utils/string';
-import { getKeyPairsFromSeedPhrase } from '../utils/kadena';
+import { getPactHost, getKeyPairsFromSeedPhrase } from 'utils';
 
 interface AccountGenQueryParams extends DefaultQueryParams {
   accountName: string;

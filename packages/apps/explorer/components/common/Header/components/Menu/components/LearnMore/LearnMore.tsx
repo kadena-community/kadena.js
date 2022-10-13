@@ -1,12 +1,14 @@
 import React, { FC, memo } from 'react';
 import Link from 'next/link';
+import { Route } from 'config/Routes';
+
 import s from '../Network/Network.module.css';
 import style from './LearnMore.module.css';
-import { Route } from '../../../../../../../config/Routes';
 
 interface IProps {
   mobileMenu?: string;
 }
+
 const LearnMore: FC<IProps> = ({ mobileMenu }) => {
   return (
     <div

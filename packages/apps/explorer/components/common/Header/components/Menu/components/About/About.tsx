@@ -1,8 +1,9 @@
 import React, { FC, memo } from 'react';
 import Link from 'next/link';
-import s from '../Network/Network.module.css';
+import { Route } from 'config/Routes';
+
 import style from './About.module.css';
-import { Route } from '../../../../../../../config/Routes';
+import s from '../Network/Network.module.css';
 
 const About: FC = () => {
   return (
@@ -21,4 +22,4 @@ const About: FC = () => {
   );
 };
 
-export default memo(About);
+export default About;

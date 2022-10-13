@@ -4,9 +4,10 @@ import { ISearchProps } from '../../../Layout/Layout';
 import MobileSearch from '../MobileSearch/MobileSearch';
 import SearchIcon from '../../../GlobalIcons/SearchIcon';
 import CloseIcon from '../../../GlobalIcons/CloseIcon';
-import style from './MobileHeader.module.css';
 import MobileDropdownMenu from './MobileDropdownMenu/MobileDropdownMenu';
 import KadenaLogo from '../KadenaLogo/KadenaLogo';
+
+import s from './MobileHeader.module.css';
 
 const MobileHeader: FC<
   ISearchProps & { type: SearchType; setType: (type: SearchType) => void }
@@ -15,15 +16,16 @@ const MobileHeader: FC<
   searchValue,
   setSearchValue,
   topScroll,
-  focused,
-  setFocused,
+  isFocused,
+  setIsFocused,
   type,
   setType,
 }) => {
   const [activeSearch, setActiveSearch] = useState<boolean>(false);
+
   return (
     <header
-      className={`${style.mobileContainer} headerTop`}
+      className={`${s.mobileContainer} headerTop`}
       style={{
         background: `rgba(23, 13, 40, ${topScroll && topScroll / 90})`,
       }}>
@@ -33,13 +35,13 @@ const MobileHeader: FC<
             searchRequestValue={searchRequestValue}
             searchValue={searchValue}
             setSearchValue={setSearchValue}
-            focused={focused}
-            setFocused={setFocused}
+            isFocused={isFocused}
+            setIsFocused={setIsFocused}
             type={type}
             setType={setType}
           />
           <div
-            className={style.closeIcon}
+            className={s.closeIcon}
             onClick={() => {
               setActiveSearch(!activeSearch);
               setSearchValue('');
@@ -52,7 +54,7 @@ const MobileHeader: FC<
           <MobileDropdownMenu />
           <KadenaLogo id="mobile" width={32} height={35.5} />
           <div
-            className={style.iconStyle}
+            className={s.iconStyle}
             onClick={() => setActiveSearch(!activeSearch)}>
             <SearchIcon height="20" width="20" fill="#FFF" />
           </div>

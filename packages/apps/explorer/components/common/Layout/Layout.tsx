@@ -1,20 +1,20 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useState } from 'react';
 import { SearchType } from 'network/search';
 import Header from '../Header/Header';
-import { useSearch } from '../../../services/search';
-import s from './Layout.module.css';
+import { useSearch } from 'utils/hooks';
 import MobileHeader from '../Header/components/MobileHeader/MobileHeader';
-import useTopScroll from '../../../services/topScroll';
+import { useTopScroll } from 'utils/hooks';
 import SearchDropdown from '../Header/components/SearchDropdown/SearchDropdown';
 import FloatButton from '../FloatButton/FloatButton';
 
+import s from './Layout.module.css';
 export interface ISearchProps {
   searchRequestValue: (e: ChangeEvent<HTMLInputElement>) => void;
   setSearchValue: (val: string) => void;
   searchValue: string;
   topScroll?: number;
-  focused: boolean;
-  setFocused: (bool: boolean) => void;
+  isFocused: boolean;
+  setIsFocused: (bool: boolean) => void;
 }
 
 interface ILayout {
@@ -32,8 +32,8 @@ const Layout: FC<ILayout> = ({ children, isSearchPage, initType }) => {
     searchValue,
     dataSearch,
     setSearchValue,
-    focused,
-    setFocused,
+    isFocused,
+    setIsFocused,
     nodeInfo,
   } = useSearch(type);
 
@@ -44,8 +44,8 @@ const Layout: FC<ILayout> = ({ children, isSearchPage, initType }) => {
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         topScroll={topScroll}
-        focused={focused}
-        setFocused={setFocused}
+        isFocused={isFocused}
+        setIsFocused={setIsFocused}
         type={type}
         setType={setType}
       />
@@ -54,8 +54,8 @@ const Layout: FC<ILayout> = ({ children, isSearchPage, initType }) => {
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         topScroll={topScroll}
-        focused={focused}
-        setFocused={setFocused}
+        isFocused={isFocused}
+        setIsFocused={setIsFocused}
         type={type}
         setType={setType}
       />
@@ -79,4 +79,4 @@ const Layout: FC<ILayout> = ({ children, isSearchPage, initType }) => {
   );
 };
 
-export default memo(Layout);
+export default Layout;

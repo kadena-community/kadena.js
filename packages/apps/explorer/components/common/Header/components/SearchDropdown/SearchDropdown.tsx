@@ -5,8 +5,8 @@ import { NetworkContext } from 'services/app';
 import { NodeInfoResponseData } from 'network/info';
 import { SearchResult, SearchType } from 'network/search';
 import s from './SearchDropdown.module.css';
-import { ISearchData } from '../../../../../services/search';
-import { APIRoute, Route } from '../../../../../config/Routes';
+import { ISearchData } from 'utils/hooks';
+import { APIRoute, Route } from 'config/Routes';
 import { Loader } from '../../../Loader/Loader';
 import CheckIcon from '../../../GlobalIcons/CheckIcon';
 import CloseIcon from '../../../GlobalIcons/CloseIcon';
@@ -27,9 +27,6 @@ const SearchDropdown: FC<ISearchDropdown> = ({
   type,
 }) => {
   const getBaseUrl = useCallback((value: any) => {
-    if (value.id === 'check-balance') {
-      return `${Route.Coin}${Route.Balance}`;
-    }
     switch (value.type) {
       case 'event':
         if (

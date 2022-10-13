@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { DateTime } from 'luxon';
 import cookie from 'cookie';
 import { NetworkName } from './api';
-import { hasWindow } from './window';
+import { hasWindow } from 'utils';
 import { Route } from '../config/Routes';
 
 export function getCookie(name: string, context?: GetServerSidePropsContext) {

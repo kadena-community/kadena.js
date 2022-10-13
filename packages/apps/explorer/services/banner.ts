@@ -2,11 +2,11 @@ import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DateTime } from 'luxon';
 import maxBy from 'lodash/maxBy';
 import minBy from 'lodash/minBy';
-import BannerGraphic from '../components/common/Home/components/Banner/components/BannerBlocks/BannerGraphic/BannerGraphic';
+import BannerGraphic from 'components/common/Home/components/Banner/components/BannerBlocks/BannerGraphic/BannerGraphic';
 import { ChainInfoResponseData } from '../network/chain';
 import { abbreviateNumber, getAbbreviatedNumber } from '../utils/string';
 import { ChainStatsResponseData } from '../network/stats';
-import { NetworkName, TimeInterval } from '../utils/api';
+import { NetworkName, TimeInterval } from 'utils/api';
 
 interface IPropsChart {
   blockChartData: IDataChartBlock[];

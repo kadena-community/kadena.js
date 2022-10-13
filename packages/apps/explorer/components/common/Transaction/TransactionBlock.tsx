@@ -1,8 +1,9 @@
 import React, { FC, memo } from 'react';
 import Link from 'next/link';
 import { ITransactionData } from 'services/transaction';
+import { Route } from 'config/Routes';
+
 import s from './TransactionBlock.module.css';
-import { Route } from '../../../config/Routes';
 
 interface IProps {
   title: string;

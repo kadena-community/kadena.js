@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { FC, memo } from 'react';
 import { SearchType } from 'network/search';
 import { ISearchProps } from '../../../Layout/Layout';
 import CloseIcon from '../../../GlobalIcons/CloseIcon';
 import SearchIcon from '../../../GlobalIcons/SearchIcon';
-import s from './Search.module.css';
 import SelectSearch from '../SelectSearch/SelectSearch';
+
+import s from './Search.module.css';
 
 const Search: FC<
   ISearchProps & { type: SearchType; setType: (type: SearchType) => void }
@@ -13,22 +13,22 @@ const Search: FC<
   searchRequestValue,
   searchValue,
   setSearchValue,
-  focused,
-  setFocused,
+  isFocused,
+  setIsFocused,
   type,
   setType,
 }) => {
   return (
-    <div className={`${s.searchInput} ${focused && s.activeSearchInput}`}>
+    <div className={`${s.searchInput} ${isFocused && s.activeSearchInput}`}>
       <SelectSearch type={type} setType={setType} />
       <input
         className={s.searchInputClass}
         value={searchValue}
         spellCheck={false}
         onChange={searchRequestValue}
-        style={{ color: focused ? '#000' : '#fff' }}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        style={{ color: isFocused ? '#000' : '#fff' }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
       {searchValue ? (
         <div

@@ -1,11 +1,12 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { IDataChart } from 'services/banner';
 import { TimeInterval } from 'utils/api';
-import s from './Chart.module.css';
-import { useWindowSize } from '../../../../../utils/window';
+import { useWindowSize } from 'utils/hooks';
 import PanelChart from '../PanelChart/PanelChart';
 import LineType from './TypeChart/LineType';
 import BarType from './TypeChart/BarType';
+
+import s from './Chart.module.css';
 
 interface IProps {
   chartData: {
@@ -18,7 +19,7 @@ interface IProps {
   active: number;
 }
 
-export enum TypeChart {
+export enum ChartType {
   Line = 'line',
   Bar = 'bar',
 }
@@ -35,8 +36,8 @@ const Chart: FC<IProps> = ({
   timeInterval,
   active,
 }) => {
-  const [typeChart, setTypeChart] = useState<TypeChart>(TypeChart.Line);
-  const [width] = useWindowSize();
+  const [chartType, setChartType] = useState<ChartType>(ChartType.Line);
+  const { width } = useWindowSize();
 
   const [stateTime, setStateTime] = useState<TimeInterval>(timeInterval);
   const [stateActive, setStateActive] = useState<number>(active);
@@ -99,13 +100,13 @@ const Chart: FC<IProps> = ({
         chartData={chartData}
         title={title}
         isRealTime={isRealTime}
-        typeChart={typeChart}
-        setTypeChart={setTypeChart}
+        chartType={chartType}
+        setTypeChart={setChartType}
         zoomOut={zoomOut}
       />
       <div className={s.container}>
         <div className={s.chartsContainer}>
-          {typeChart === TypeChart.Line ? (
+          {chartType === ChartType.Line ? (
             <LineType
               chart={chart}
               setChart={setChart}

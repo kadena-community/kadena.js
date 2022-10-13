@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { ComponentType } from 'react';
 import { useTransactionData } from 'services/transaction';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import TransactionBlock from '../../../../components/common/Transaction/TransactionBlock';
-import Layout from '../../../../components/common/Layout/Layout';
-import HistoryPage from '../../../../components/common/Transaction/components/HistoryPage/HistoryPage';
-import s from '../../../../components/common/Transaction/TransactionDetails.module.css';
-import { Loader } from '../../../../components/common/Loader/Loader';
-import { NetworkName } from '../../../../utils/api';
+import TransactionBlock from 'components/common/Transaction/TransactionBlock';
+import Layout from 'components/common/Layout/Layout';
+import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
+import s from 'components/common/Transaction/TransactionDetails.module.css';
+import { Loader } from 'components/common/Loader/Loader';
 
-const MainTransactionDetailsComponent = () => {
+const TransactionDetailsComponent = () => {
   const router = useRouter();
   const {
     transactionData,
@@ -22,10 +21,8 @@ const MainTransactionDetailsComponent = () => {
     blockLink,
     transactionInfo,
     error,
-  } = useTransactionData(
-    String(router.query?.requestKey),
-    NetworkName.MAIN_NETWORK,
-  );
+  } = useTransactionData(String(router.query?.requestKey));
+
   return (
     <Layout>
       <div className={s.transactionDetails}>
@@ -65,15 +62,15 @@ const MainTransactionDetailsComponent = () => {
   );
 };
 
-const MainTransactionDetailsDynamic: any = dynamic<any>(
-  () => Promise.resolve(MainTransactionDetailsComponent),
+const TransactionDetailsDynamic: ComponentType<unknown> = dynamic<any>(
+  () => Promise.resolve(TransactionDetailsComponent),
   {
     ssr: false,
   },
 );
 
-const MainTransactionDetails: NextPage = () => {
-  return <MainTransactionDetailsDynamic />;
+const TransactionDetails: NextPage = () => {
+  return <TransactionDetailsDynamic />;
 };
 
-export default MainTransactionDetails;
+export default TransactionDetails;

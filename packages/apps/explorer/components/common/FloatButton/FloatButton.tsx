@@ -1,8 +1,9 @@
 import React, { FC, memo, useState } from 'react';
 import Link from 'next/link';
-import s from './FloatButton.module.css';
 import QuestionIcon from '../GlobalIcons/QuestionIcon';
 import DiscordIcon from '../GlobalIcons/DiscordIcon';
+
+import s from './FloatButton.module.css';
 
 const FloatButton: FC = () => {
   const [state, setState] = useState<boolean>(false);

@@ -8,7 +8,7 @@ import App from 'next/app';
 import ErrorBoundary from 'components/common/ErrorBoundary';
 import { NetworkContext, useNetworkState } from '../services/app';
 import { NetworkName } from '../utils/api';
-import { getNetworkCookie, setCookieStatic } from '../utils/cookie';
+import { getNetworkCookie, setCookieStatic } from 'utils/cookie';
 
 function MyApp({ Component, pageProps }: AppProps & { Component: any }) {
   const networkState = useNetworkState(

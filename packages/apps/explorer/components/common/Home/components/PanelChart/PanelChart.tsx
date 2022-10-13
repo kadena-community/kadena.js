@@ -3,8 +3,9 @@ import LineChartIcon from 'components/common/GlobalIcons/LineChartIcon';
 import ZoomOut from 'components/common/GlobalIcons/ZoomOut';
 import React, { memo } from 'react';
 import { IDataChart } from 'services/banner';
-import { TypeChart } from '../Chart/Chart';
+import { ChartType } from '../Chart/Chart';
 import ExportChart from './ExportChart/ExportChart';
+
 import s from './PanelChart.module.css';
 
 interface Props {
@@ -14,8 +15,8 @@ interface Props {
   };
   title: string;
   isRealTime: boolean;
-  typeChart: TypeChart;
-  setTypeChart: (typeChart: TypeChart) => void;
+  chartType: ChartType;
+  setTypeChart: (chartType: ChartType) => void;
   zoomOut: () => void;
 }
 
@@ -23,42 +24,40 @@ const PanelChart = ({
   chartData,
   title,
   isRealTime,
-  typeChart,
+  chartType,
   setTypeChart,
   zoomOut,
-}: Props) => {
-  return (
-    <div className={s.containerRight}>
-      <div className={s.containerChart}>
-        <div
-          onClick={() => setTypeChart(TypeChart.Bar)}
-          className={`${s.iconChart} ${s.iconChartLeft} ${
-            typeChart === TypeChart.Bar && s.iconChartActive
-          }`}>
-          <BarChartIcon height="24" width="24" fill="#8e6c93" />
-        </div>
-        <div
-          onClick={() => setTypeChart(TypeChart.Line)}
-          className={`${s.iconChart} ${s.iconChartRight} ${
-            typeChart === TypeChart.Line && s.iconChartActive
-          }`}>
-          <LineChartIcon height="24" width="24" fill="#8e6c93" />
-        </div>
+}: Props) => (
+  <div className={s.containerRight}>
+    <div className={s.containerChart}>
+      <div
+        onClick={() => setTypeChart(ChartType.Bar)}
+        className={`${s.iconChart} ${s.iconChartLeft} ${
+          chartType === ChartType.Bar && s.iconChartActive
+        }`}>
+        <BarChartIcon height="24" width="24" fill="#8e6c93" />
       </div>
-      <div className={s.containerLeft}>
-        {!isRealTime && (
-          <div onClick={() => zoomOut()}>
-            <ZoomOut height="24" width="24" fill="#8e6c93" />
-          </div>
-        )}
-        <ExportChart
-          chartData={chartData}
-          title={title}
-          isRealTime={isRealTime}
-        />
+      <div
+        onClick={() => setTypeChart(ChartType.Line)}
+        className={`${s.iconChart} ${s.iconChartRight} ${
+          chartType === ChartType.Line && s.iconChartActive
+        }`}>
+        <LineChartIcon height="24" width="24" fill="#8e6c93" />
       </div>
     </div>
-  );
-};
+    <div className={s.containerLeft}>
+      {!isRealTime && (
+        <div onClick={() => zoomOut()}>
+          <ZoomOut height="24" width="24" fill="#8e6c93" />
+        </div>
+      )}
+      <ExportChart
+        chartData={chartData}
+        title={title}
+        isRealTime={isRealTime}
+      />
+    </div>
+  </div>
+);
 
 export default memo(PanelChart);

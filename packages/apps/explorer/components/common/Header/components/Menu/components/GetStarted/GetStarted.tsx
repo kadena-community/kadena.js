@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
 import Link from 'next/link';
+
 import style from './GetStarted.module.css';
 import s from '../Network/Network.module.css';
 
@@ -67,4 +68,4 @@ const GetStarted: FC<IProps> = ({ mobileMenu }) => {
   );
 };
 
-export default memo(GetStarted);
+export default GetStarted;

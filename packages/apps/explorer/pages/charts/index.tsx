@@ -1,8 +1,8 @@
 import React from 'react';
-import { useWindowSize } from 'utils/window';
+import { useWindowSize } from 'utils/hooks';
 
 const ChartsPage = () => {
-  const [, height] = useWindowSize();
+  const { height } = useWindowSize();
 
   return (
     <embed

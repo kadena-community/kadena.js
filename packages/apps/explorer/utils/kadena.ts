@@ -1,6 +1,4 @@
-// @ts-ignore
 import lib from 'cardano-crypto.js/kadena-crypto';
-// @ts-ignore
 import Pact from 'pact-lang-api';
 import { isPrivateKey } from './string';
 
@@ -24,6 +22,7 @@ export const getKeyPairsFromSeedPhrase = (
   const axpub = new Uint8Array(pubRaw);
   const pub = Pact.crypto.binToHex(axpub);
   const prv = Pact.crypto.binToHex(axprv);
+
   return {
     publicKey: pub,
     secretKey: prv,
@@ -42,12 +41,15 @@ export function setSignatureIfNecessary(cmdValue: any, sig: string) {
   if (!sig || !cmdValue) {
     throw new Error('Wrong Parameters: request getSignature');
   }
+
   if (sig.length === 64) {
     return cmdValue;
   }
+
   if (sig.length === 128 && isPrivateKey(sig)) {
     return cmdValue;
   }
+
   if (sig.length > 64) {
     const cmdHash = cmdValue.cmds[0].hash;
     const signature = getSignatureFromHash(cmdHash, sig);

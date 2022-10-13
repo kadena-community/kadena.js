@@ -1,7 +1,7 @@
+import React from 'react';
 import { SearchType } from 'network/search';
 import { useRouter } from 'next/router';
-import React from 'react';
-import Layout from '../../components/common/Layout/Layout';
+import Layout from 'components/common/Layout/Layout';
 
 const SearchPage = () => {
   const router = useRouter();

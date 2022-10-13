@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Error from 'components/common/Error';
 
-export default function Custom500() {
-  return <Error>500 - Server-side error occurred</Error>;
-}
+const Error500Page: FC = () => <Error>500 - Server-side error occurred</Error>;
+
+export default Error500Page;

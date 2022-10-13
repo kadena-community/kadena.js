@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 import ArrowIcon from '../../../GlobalIcons/ArrowIcon';
 import s from './Menu.module.css';
 import GlobalDropdown from '../../../GlobalDropdown/GlobalDropdown';
-import { useMenu } from '../../../../../services/menu';
+import { useMenu } from 'utils/hooks';
 
 interface Props {
   onItemClick: () => void;
@@ -23,20 +23,6 @@ const Menu: FC<Props> = ({ onItemClick }) => {
           }}>
           ABOUT
           {openedTab === 'about' ? (
-            <ArrowIcon height="8" width="8" fill="rgb(0 0 0 / 50%)" />
-          ) : (
-            <ArrowIcon height="8" width="8" fill="#FFF" />
-          )}
-        </a>
-        <a
-          className={`${s.block} ${openedTab === 'tools' ? s.active : ''}`}
-          onClick={e => {
-            setOpenedTab(prev => (prev === 'tools' ? '' : 'tools'));
-            e.stopPropagation();
-            onItemClick();
-          }}>
-          TOOLS
-          {openedTab === 'tools' ? (
             <ArrowIcon height="8" width="8" fill="rgb(0 0 0 / 50%)" />
           ) : (
             <ArrowIcon height="8" width="8" fill="#FFF" />

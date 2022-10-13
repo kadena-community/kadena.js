@@ -7,10 +7,11 @@ import { IBanner, IDataChart } from 'services/banner';
 import { Navigation, Pagination } from 'swiper';
 import { TimeInterval } from 'utils/api';
 import BannerBlock from './components/BannerBlocks/BannerBlock';
-import s from './Banner.module.css';
 import LeftArrow from './components/Icons/LeftArrow';
 import RightArrow from './components/Icons/RightArrow';
-import { useWindowSize } from '../../../../../utils/window';
+import { useWindowSize } from 'utils/hooks';
+
+import s from './Banner.module.css';
 
 interface IProps {
   banners: IBanner[];
@@ -27,7 +28,7 @@ const Banner: FC<IProps> = ({
   timeInterval,
   onChangeTimeInterval,
 }) => {
-  const [width] = useWindowSize();
+  const { width } = useWindowSize();
 
   const slidesPerView = useMemo(() => {
     if (width) {

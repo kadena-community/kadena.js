@@ -1,9 +1,9 @@
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { NodeInfoResponseData } from 'network/info';
 import uniqBy from 'lodash/uniqBy';
-import { BlockDetail, NetworkName } from '../utils/api';
-import { hasWindow } from '../utils/window';
-import { setNetworkCookie } from '../utils/cookie';
+import { BlockDetail, NetworkName } from 'utils/api';
+import { hasWindow } from 'utils/hasWindow';
+import { setNetworkCookie } from 'utils/cookie';
 import { useRecentUpdates } from './api';
 
 export const NetworkContext = createContext<{

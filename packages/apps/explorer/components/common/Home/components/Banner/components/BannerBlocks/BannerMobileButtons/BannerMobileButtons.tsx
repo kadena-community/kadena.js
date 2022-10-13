@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
 import ArrowIcon from '../../../../../../GlobalIcons/ArrowIcon';
+
 import s from './BannerMobileButtons.module.css';
 
 interface IProps {

@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import differenceWith from 'lodash/differenceWith';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { getTime, useChainGraph } from 'services/api';
-import { useWindowSize } from 'utils/window';
+import { useWindowSize } from 'utils/hooks/useWindowSize';
 import range from 'lodash/range';
+
 import s from './Graph.module.css';
 
 const Graph = () => {
-  const [width] = useWindowSize();
+  const { width } = useWindowSize();
 
   const memoGetGraphDimensions = useCallback(getGraphDimensions, [width]);
   const memoGetTime = useCallback(getTime, []);
@@ -38,7 +38,6 @@ const Graph = () => {
 
   useEffect(() => {
     if (
-      // @ts-ignore
       differenceWith(data.nodes, graphData.nodes, (a, b) => a.id === b.id)
         .length
     ) {
@@ -79,14 +78,12 @@ const Graph = () => {
           linkColor={() => '#975E9A'}
           nodeRelSize={radius}
           cooldownTicks={0}
-          nodeLabel={
-            ((node: Record<string, string | number>) => {
-              if (node?.creationTime) {
-                return `<p>Height: ${node.height} <br />Chain: ${node?.chainId}</p>`;
-              }
-              return undefined;
-            }) as any
-          }
+          nodeLabel={(node: Record<string, string | number>) => {
+            if (node?.creationTime) {
+              return `<p>Height: ${node.height} <br />Chain: ${node?.chainId}</p>`;
+            }
+            return;
+          }}
           nodeCanvasObject={(node: Record<string, string | number>, ctx) => {
             const y = Number(node?.level) * ySize - ySizeDelta;
             node.y = y;

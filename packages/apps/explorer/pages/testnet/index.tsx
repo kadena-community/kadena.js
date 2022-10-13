@@ -1,18 +1,16 @@
 import React from 'react';
 import { unstable_serialize } from 'swr';
 import { GetServerSidePropsContext } from 'next';
+
+import { APIRoute } from 'config/Routes';
 import { BlocksContext, useBlocksState } from 'services/app';
-import Layout from '../../components/common/Layout/Layout';
-import LatestTable from '../../components/common/Home/components/LatestTable/LatestTable';
-import {
-  nodeInfoAsync,
-  useNodeInfo,
-  withFallbackApiData,
-} from '../../services/api';
-import { APIRoute } from '../../config/Routes';
-import { NetworkName } from '../../utils/api';
-import { setCookieStatic } from '../../utils/cookie';
-import Main from '../../components/common/Home/components/Main/Main';
+import { nodeInfoAsync, useNodeInfo, withFallbackApiData } from 'services/api';
+import { NetworkName } from 'utils/api';
+import { setCookieStatic } from 'utils/cookie';
+
+import Layout from 'components/common/Layout/Layout';
+import LatestTable from 'components/common/Home/components/LatestTable/LatestTable';
+import Main from 'components/common/Home/components/Main/Main';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {

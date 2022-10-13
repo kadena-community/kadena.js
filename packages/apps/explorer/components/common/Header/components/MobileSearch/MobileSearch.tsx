@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { SearchType } from 'network/search';
-import { ISearchProps } from '../../../Layout/Layout';
+import { ISearchProps } from 'components/common/Layout/Layout';
 import s from '../Search/Search.module.css';
 import SelectSearch from '../SelectSearch/SelectSearch';
 
@@ -9,14 +9,14 @@ const MobileSearch: FC<
 > = ({
   searchValue,
   searchRequestValue,
-  focused,
-  setFocused,
+  isFocused,
+  setIsFocused,
   type,
   setType,
 }) => {
   return (
     <div
-      className={`${s.searchInput} ${focused && s.activeSearchInput} ${
+      className={`${s.searchInput} ${isFocused && s.activeSearchInput} ${
         s.mobileSearchInput
       }`}>
       <SelectSearch type={type} setType={setType} />
@@ -26,10 +26,10 @@ const MobileSearch: FC<
         spellCheck={false}
         value={searchValue}
         onChange={searchRequestValue}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         style={{
-          color: focused ? '#000' : '#fff',
+          color: isFocused ? '#000' : '#fff',
         }}
       />
     </div>

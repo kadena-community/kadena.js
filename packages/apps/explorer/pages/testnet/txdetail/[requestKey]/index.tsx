@@ -66,7 +66,6 @@ const TestTransactionDetailsComponent = () => {
 };
 
 const TestTransactionDetailsDynamic: any = dynamic<any>(
-  // @ts-ignore
   () => Promise.resolve(TestTransactionDetailsComponent),
   {
     ssr: false,

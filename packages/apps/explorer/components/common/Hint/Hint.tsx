@@ -1,6 +1,7 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import ReactTooltipLib from 'react-tooltip';
 import { tooltipTexts } from './Tooltip/tooltipTexts';
+
 import s from './Hint.module.css';
 
 interface IProps {
@@ -44,4 +45,4 @@ const Hint: FC<IProps> = ({ messageKey, id }) => {
   );
 };
 
-export default memo(Hint);
+export default Hint;

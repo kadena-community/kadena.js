@@ -1,17 +1,18 @@
 import React from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import TransactionBlock from '../../../../../../components/common/Transaction/TransactionBlock';
-import Layout from '../../../../../../components/common/Layout/Layout';
-import s from '../../../../../../components/common/Transaction/TransactionDetails.module.css';
-import { useBlockData } from '../../../../../../services/block';
-import HistoryPage from '../../../../../../components/common/Transaction/components/HistoryPage/HistoryPage';
-import { Loader } from '../../../../../../components/common/Loader/Loader';
-import { NetworkName } from '../../../../../../utils/api';
+import TransactionBlock from 'components/common/Transaction/TransactionBlock';
+import Layout from 'components/common/Layout/Layout';
+import s from 'components/common/Transaction/TransactionDetails.module.css';
+import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
+import { Loader } from 'components/common/Loader/Loader';
+import { NetworkName } from 'utils/api';
+import { useBlockData } from 'utils/hooks';
 
 const TestBlockDetailsComponent = () => {
   const { headerData, parentLink, payloadData, blockInfo, error } =
     useBlockData(NetworkName.TEST_NETWORK);
+
   return (
     <Layout>
       <div className={s.transactionDetails}>
@@ -41,7 +42,6 @@ const TestBlockDetailsComponent = () => {
 };
 
 const TestBlockDetailsDynamic: any = dynamic<any>(
-  // @ts-ignore
   () => Promise.resolve(TestBlockDetailsComponent),
   {
     ssr: false,

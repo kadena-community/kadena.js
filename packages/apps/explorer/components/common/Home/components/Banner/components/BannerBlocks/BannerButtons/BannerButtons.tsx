@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
 import { IDataBtn } from 'services/banner';
+
 import s from './BannerButtons.module.css';
 
 interface IProps {

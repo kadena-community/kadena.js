@@ -6,7 +6,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-// @ts-ignore
 import Pact from 'pact-lang-api';
 import yaml from 'yaml';
 import CommandPact from '../components/common/Command/components/CommandPact/CommandPact';
@@ -21,7 +20,7 @@ import {
 } from '../config/Constants';
 import { NetworkContext } from './app';
 import { useNodeInfo } from './api';
-import { getPactHost, isHexadecimal } from '../utils/string';
+import { getPactHost, isHexadecimal } from 'utils';
 
 type ComponentInfo = {
   Component: FC<any>;

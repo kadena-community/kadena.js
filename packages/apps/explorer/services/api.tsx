@@ -11,6 +11,7 @@ import isEqual from 'lodash/isEqual';
 import map from 'lodash/map';
 import uniq from 'lodash/uniq';
 import range from 'lodash/range';
+
 import { APIRemoteRoute, APIRoute } from '../config/Routes';
 import {
   getAllInfoByTime,
@@ -38,8 +39,8 @@ import { ChainStatsResponseData, getStatInfo } from '../network/stats';
 import { getTransactionInfo } from '../network/transaction';
 import { getBlockInfo } from '../network/block';
 import { getBlockOutputs, OutputResponseData } from '../network/outputs';
-import { hasWindow } from '../utils/window';
-import { useDebounce } from './debounce';
+import { hasWindow } from 'utils/hasWindow';
+import { useDebounce } from 'utils/hooks';
 import { getBranchInfo } from '../network/branch';
 import { BlocksContext } from './app';
 
@@ -462,7 +463,6 @@ export const branchInfoAsync = async (
 
   let blockInfo: BlockDetail | null = null;
   if ((branchInfo || []).length > 0) {
-    // @ts-ignore
     blockInfo = branchInfo[0];
   }
 

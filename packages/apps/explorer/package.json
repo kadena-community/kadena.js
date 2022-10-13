@@ -43,7 +43,7 @@
     "react-select": "^5.4.0",
     "react-spinners": "^0.11.0",
     "react-tooltip": "^4.2.21",
-    "recharts": "^2.1.8",
+    "recharts": "2.1.12",
     "swiper": "^8.0.3",
     "swr": "^1.2.0",
     "utf8": "^3.0.0",
