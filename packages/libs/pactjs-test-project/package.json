@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "description": "Test project to verify pactjs-cli and pactjs-generator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/pactjs-test-project"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",

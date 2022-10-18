@@ -2,6 +2,10 @@
   "name": "@kadena/pactjs-generator",
   "version": "0.0.1",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/pactjs-generator"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
