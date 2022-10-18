@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  background: rgb(0 0 0 / 50%);
+  margin: 64px 40px 32px 40px;
+  border-radius: 20px;
+  padding: 32px;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-weight: 700;
+  color: white;
+  font-size: 16px;
+  padding-bottom: 16px;
+  padding-top: 20px;
+}
+
+.container > div {
+  width: 33%;
+  margin-right: 32px;
+  border-right: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(
+    to bottom,
+    rgba(166, 127, 168, 0),
+    rgba(166, 127, 168, 0.5),
+    rgba(166, 127, 168, 0.5),
+    rgba(166, 127, 168, 0)
+  );
+}
+
+.container > div:last-child {
+  width: 33%;
+  margin-right: 0;
+  border-right: none;
+}
+
+.title {
+  color: #975e9a;
+  padding-bottom: 8px;
+}
+
+.text {
+  font-size: 21px;
+}
+
+.subtext1 {
+  opacity: 0.5;
+  margin-left: 8px;
+}
+
+.subtext2 {
+  color: rgb(197, 250, 36);
+  margin-left: 8px;
+}
+
+.subtext3 {
+  color: #d61c06;
+  margin-left: 8px;
+}
+
+@media only screen and (max-width: 860px) {
+  .container {
+    font-size: 13px;
+    margin: 32px 16px 0px 16px;
+  }
+  .text {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    flex-wrap: wrap;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  .container > div {
+    width: 100%;
+    border-bottom: 1px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(
+      to right,
+      rgba(166, 127, 168, 0),
+      rgba(166, 127, 168, 0.5),
+      rgba(166, 127, 168, 0.5),
+      rgba(166, 127, 168, 0)
+    );
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    margin-right: 0;
+    border-right: none;
+  }
+  .container > div:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}

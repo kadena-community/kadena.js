@@ -1,0 +1,193 @@
+.transactionBlock {
+  background: rgb(0 0 0 / 50%);
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  border-radius: 40px;
+  margin-bottom: 32px;
+}
+
+.blockHeader {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  border-top: 0;
+  border-bottom: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(
+    to right,
+    rgba(166, 127, 168, 0),
+    rgba(166, 127, 168, 1),
+    rgba(166, 127, 168, 1),
+    rgba(166, 127, 168, 0)
+  );
+  padding: 32px;
+}
+
+.transactionBlockRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 400;
+  border: 0;
+  border-bottom: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(
+    to right,
+    rgba(166, 127, 168, 0.3),
+    rgba(166, 127, 168, 0.3),
+    rgba(166, 127, 168, 0.3),
+    rgba(166, 127, 168, 0.3)
+  );
+  padding-top: 24px;
+  padding-bottom: 20px;
+  margin: 0 32px;
+  word-break: break-all;
+  gap: 20px;
+}
+
+.transactionBlockRow:last-child {
+  border-bottom: 0;
+}
+
+.leftRow {
+  width: 155px;
+  line-height: 150%;
+  flex: 0 0 auto;
+  color: #975e9a;
+  font-weight: 700;
+}
+
+.rightRowList {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.rightRowCode {
+  line-height: 150%;
+  flex: 1;
+  color: #ffffff !important;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.rightRow {
+  line-height: 150%;
+  flex: 1;
+  display: flex;
+  color: #ffffff !important;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  word-break: break-all;
+}
+
+.rightRowLink {
+  line-height: 150%;
+  flex: 1;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  transition: all 300ms ease-in-out;
+}
+.rightRowLink:hover {
+  transform: scale(1);
+}
+.rightRowLink:active {
+  opacity: 0.5 !important;
+  transform: scale(0.95) !important;
+}
+.rightRowLink:not(:empty):after {
+  display: inline-block;
+  content: '';
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  background-color: currentColor;
+  -webkit-mask: url('/images/arrow.svg') no-repeat 50% 50%;
+  mask: url('/images/arrow.svg') no-repeat 50% 50%;
+  margin: 0 0 -1px 8px;
+  width: 14px;
+  height: 14px;
+}
+
+.eventBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 30px;
+}
+
+.jsonData {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+@media only screen and (max-width: 860px) {
+  .transactionBlock {
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  .transactionBlockRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 12px 0;
+    margin: 0 16px;
+  }
+
+  .blockHeader {
+    font-size: 13px;
+    padding: 16px;
+  }
+
+  .leftRow {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+
+  .rightRow {
+    font-size: 13px;
+  }
+
+  .rightRowCode {
+    font-size: 13px;
+  }
+
+  .rightRowLink {
+    font-size: 13px;
+  }
+
+  .rightRowLink:not(:empty):after {
+    margin: 0 0 -1px 4px;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media only screen and (min-width: 860px) and (max-width: 1365px) {
+  .transactionBlock {
+    min-width: 400px;
+  }
+
+  .leftRow {
+    min-width: 155px;
+  }
+
+  .rightRow {
+    word-break: break-all;
+  }
+
+  .rightRowCode {
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+
+  .rightRowLink {
+    word-break: break-all;
+  }
+}

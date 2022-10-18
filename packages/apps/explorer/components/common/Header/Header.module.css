@@ -1,0 +1,40 @@
+.rootContainer {
+  line-height: 150%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  color: #ffffff;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  font-style: normal;
+  padding: 24px 16px;
+  z-index: 100;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rootContentContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1540px;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.centralContainer {
+  display: flex;
+  align-items: center;
+  width: 976px;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 860px) {
+  .rootContainer {
+    display: none;
+  }
+}

@@ -1,0 +1,39 @@
+.buttonsContainer {
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartsBtn {
+  height: 28px;
+  width: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #3c2453;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  font-family: Neue Haas Grotesk Display Pro, sans-serif;
+  border-radius: 15px;
+  border: 1px solid #3c2453;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.chartBtnActive {
+  background: #3c2453;
+  color: #ffffff;
+  cursor: auto;
+}
+
+.buttonsActive {
+  color: #ffffff;
+  background: #3c2453;
+}
+
+.buttonsContainer > button:not(:last-child) {
+  margin-right: 5px;
+}
