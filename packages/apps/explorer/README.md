@@ -21,7 +21,6 @@ source ./emsdk_env.sh
 ```
 
 Second, change the value of `REMOTE_URL` in `next.config.js`:
-
 ```bash
 REMOTE_URL: 'http://localhost:3000' # put your remote or local (for dev) host URL
 ```

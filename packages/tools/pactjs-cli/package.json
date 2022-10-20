@@ -6,6 +6,10 @@
   "bin": {
     "pactjs": "lib/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/tools/pactjs-cli"
+  },
   "scripts": {
     "lint-staged": "lint-staged",
     "build": "heft build --clean",
