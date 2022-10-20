@@ -7,6 +7,7 @@ importers:
 
   ../../packages/apps/explorer:
     specifiers:
+      '@kadena/heft-rig': workspace:*
       '@next/eslint-plugin-next': ^12.0.8
       '@prisma/client': ^3.13.0
       '@trendyol-js/react-carousel': ^2.0.1
@@ -71,6 +72,7 @@ importers:
       yaml: ~2.1.1
       yup: ^0.32.11
     dependencies:
+      '@kadena/heft-rig': link:../../tools/heft-rig
       '@prisma/client': 3.15.2_prisma@3.15.2
       '@trendyol-js/react-carousel': 2.0.1_react@17.0.2
       async: 3.2.4

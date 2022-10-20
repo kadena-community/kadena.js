@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/block-explorer",
+  "name": "@kadena/explorer",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -7,11 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "",
+    "lint-staged": "lint-staged",
     "prisma:generate": "npx prisma generate",
     "create:info:test": "curl --request GET 'http://web:3000/api/info/create?network=Testnet'",
     "create:info:main": "curl --request GET 'http://web:3000/api/info/create?network=Mainnet'"
   },
   "dependencies": {
+    "@kadena/heft-rig": "workspace:*",
     "@prisma/client": "^3.13.0",
     "@trendyol-js/react-carousel": "^2.0.1",
     "async": "^3.2.3",
