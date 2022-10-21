@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "echo test",
     "prisma:generate": "npx prisma generate",
     "create:info:test": "curl --request GET 'http://web:3000/api/info/create?network=Testnet'",
     "create:info:main": "curl --request GET 'http://web:3000/api/info/create?network=Mainnet'"
