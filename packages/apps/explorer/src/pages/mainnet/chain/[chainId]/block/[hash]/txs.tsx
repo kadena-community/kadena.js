@@ -6,8 +6,7 @@ import Layout from 'components/common/Layout/Layout';
 import s from 'components/common/Transaction/TransactionDetails.module.css';
 import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
 import { Loader } from 'components/common/Loader/Loader';
-import { NetworkName } from '../../../../../../utils/api';
-import { hasWindow } from 'src/utils';
+import { hasWindow, NetworkName } from 'utils';
 import { useBlockData } from 'utils/hooks';
 
 const MainBlockDetailsComponent = () => {

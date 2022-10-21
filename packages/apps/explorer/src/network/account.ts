@@ -1,7 +1,11 @@
 // @ts-expect-error Could not find a declaration file for module 'pact-lang-api'.
 import Pact from 'pact-lang-api';
-import { DefaultQueryParams, queryParamsTypeAdapter } from 'utils/api';
-import { getPactHost, getKeyPairsFromSeedPhrase } from 'utils';
+import {
+  getPactHost,
+  getKeyPairsFromSeedPhrase,
+  DefaultQueryParams,
+  queryParamsTypeAdapter,
+} from 'utils';
 
 interface AccountGenQueryParams extends DefaultQueryParams {
   accountName: string;
