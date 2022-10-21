@@ -404,7 +404,7 @@
     // ##  Deployables
     // #########################
     {
-      "packageName": "@kadena/block-explorer",
+      "packageName": "@kadena/explorer",
       "projectFolder": "packages/apps/explorer",
       "reviewCategory": "prototypes",
       "shouldPublish": false
@@ -497,7 +497,6 @@
       "tags": ["tools"],
       "shouldPublish": false
     },
-
 
     {
       "packageName": "@kadena/integration-tests",
