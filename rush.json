@@ -428,7 +428,7 @@
       "packageName": "@kadena/client",
       "projectFolder": "packages/libs/client",
       "tags": ["libs"],
-      "shouldPublish": false
+      "shouldPublish": true
     },
 
     {

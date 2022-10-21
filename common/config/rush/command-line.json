@@ -45,6 +45,16 @@
     // },
 
     {
+      "commandKind": "phased",
+      "name": "retest",
+      "summary": "Rebuilds all projects and reruns their tests.",
+      // "phases": [],
+      "phases": ["_phase:build", "_phase:test"],
+      "enableParallelism": true,
+      "incremental": false
+    },
+
+    {
       "commandKind": "global",
       "name": "lint-staged",
       "summary": "Used by the pre-commit Git hook. This command invokes lint-staged to fix staged files.",
@@ -241,6 +251,43 @@
     //    */
     //   // "autoinstallerName": "my-task"
     // }
+  ],
+
+  /**
+   * Adding support for phased builds: https://rushjs.io/pages/maintainer/phased_builds/
+   */
+  "phases": [
+    {
+      /**
+       * The name of the phase. Note that this value must start with the \"_phase:\" prefix.
+       */
+      "name": "_phase:build",
+
+      /**
+       * The dependencies of this phase.
+       */
+      "dependencies": {
+        "upstream": ["_phase:build"]
+      },
+
+      /**
+       * Normally Rush requires that each project's package.json has a \"scripts\" entry matching the phase name. To disable this check, set \"ignoreMissingScript\" to true.
+       */
+      "ignoreMissingScript": true,
+
+      /**
+       * By default, Rush returns a nonzero exit code if errors or warnings occur during a command. If this option is set to \"true\", Rush will return a zero exit code if warnings occur during the execution of this phase.
+       */
+      "allowWarningsOnSuccess": false
+    },
+    {
+      "name": "_phase:test",
+      "dependencies": {
+        "self": ["_phase:build"]
+      },
+      "ignoreMissingScript": true,
+      "allowWarningsOnSuccess": false
+    }
   ],
 
   /**
