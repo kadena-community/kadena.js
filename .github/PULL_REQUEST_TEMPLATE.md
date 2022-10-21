@@ -14,6 +14,7 @@ Closes [issue link]
 ## Check off the following:
 
 - [ ] I have reviewed my changes and run the appropriate tests.
+- [ ] I have have run `rush change` to add the appropriate change logs.
 - [ ] I have added/edited docs.
 - [ ] I have added tutorials.
 - [ ] I have double checked and DEFINITELY added docs.
