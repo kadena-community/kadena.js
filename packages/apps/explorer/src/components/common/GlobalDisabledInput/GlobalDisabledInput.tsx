@@ -1,6 +1,8 @@
-import React, { FC, memo } from 'react';
 import Hint from '../Hint/Hint';
+
 import s from './GlobalDisabledInput.module.css';
+
+import React, { FC, memo } from 'react';
 
 interface IProps {
   head: string;

@@ -1,6 +1,7 @@
-import React, { FC, memo } from 'react';
 import { IPropsFormikController } from '../FormikController';
 import s from '../FormikController.module.css';
+
+import React, { FC } from 'react';
 
 interface IProps {
   props: IPropsFormikController;
@@ -14,9 +15,9 @@ const Input: FC<IProps> = ({ props }) => {
         {children ? <span className={s.icon}>{children}</span> : null}
         <input {...rest} spellCheck={false} className={s.element} />
       </div>
-      {error && <div className={s.textDanger}>{error}</div>}
+      {!!error && <div className={s.textDanger}>{error}</div>}
     </>
   );
 };
 
-export default memo(Input);
+export default Input;

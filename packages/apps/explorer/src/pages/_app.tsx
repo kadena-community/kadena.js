@@ -1,13 +1,15 @@
-import React from 'react';
 import '../assets/base.css';
 import '../assets/chart.css';
 import '../assets/banner.css';
-import type { AppContext, AppProps } from 'next/app';
-import Head from 'next/head';
-import App from 'next/app';
-import ErrorBoundary from 'components/common/ErrorBoundary';
+
 import { NetworkContext, useNetworkState } from '../services/app';
 import { NetworkName } from '../utils/api';
+
+import ErrorBoundary from 'components/common/ErrorBoundary';
+import type { AppContext, AppProps } from 'next/app';
+import App from 'next/app';
+import Head from 'next/head';
+import React from 'react';
 import { getNetworkCookie, setCookieStatic } from 'utils/cookie';
 
 function MyApp({ Component, pageProps }: AppProps & { Component: any }) {

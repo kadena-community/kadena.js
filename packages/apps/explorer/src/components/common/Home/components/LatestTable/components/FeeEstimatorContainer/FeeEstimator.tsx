@@ -1,4 +1,4 @@
-import React, { FC, memo, useState, useEffect } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { useTransactionData } from 'services/transaction';
 
 interface Props {
@@ -11,9 +11,9 @@ const FeeEstimator: FC<Props> = ({ requestKey }) => {
   const { metaData, historyData } = useTransactionData(requestKey);
 
   useEffect(() => {
-    const gasPrice = metaData.find(item => item.id === 8)?.value;
+    const gasPrice = metaData.find((item) => item.id === 8)?.value;
     const gas = historyData?.length
-      ? (historyData[0]?.items || []).find(item => item.id === 12)?.value
+      ? (historyData[0]?.items || []).find((item) => item.id === 12)?.value
       : undefined;
     if (gasPrice && gas) {
       setFeeEstimator((Number(gasPrice) * Number(gas)).toFixed(8));

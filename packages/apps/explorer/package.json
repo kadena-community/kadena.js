@@ -7,14 +7,14 @@
     "create:info:main": "curl --request GET 'http://web:3000/api/info/create?network=Mainnet'",
     "create:info:test": "curl --request GET 'http://web:3000/api/info/create?network=Testnet'",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "next lint --fix",
     "lint-staged": "lint-staged",
     "prisma:generate": "npx prisma generate",
     "start": "next start",
     "test": ""
   },
   "lint-staged": {
-    "src/**/*.ts(x)": [
+    "src/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write -u"
     ],
@@ -61,6 +61,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
     "@next/eslint-plugin-next": "^12.0.8",
     "@types/async": "^3.2.12",
     "@types/base64-arraybuffer": "^0.2.0",
@@ -81,10 +82,7 @@
     "eslint": "^8.15.0",
     "eslint-config-next": "11.1.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.24.0",
     "prettier": "^2.3.2",
     "typescript": "~4.6.3"
   }

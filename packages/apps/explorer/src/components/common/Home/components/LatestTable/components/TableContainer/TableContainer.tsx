@@ -1,10 +1,12 @@
+import { Route } from '../../../../../../../config/Routes';
+import CheckIcon from '../../../../../GlobalIcons/CheckIcon';
+import CloseIcon from '../../../../../GlobalIcons/CloseIcon';
+
+import s from './TableContainer.module.css';
+
+import Link from 'next/link';
 import React, { FC, memo, useCallback } from 'react';
 import { Data } from 'services/latestTable';
-import Link from 'next/link';
-import CheckIcon from '../../../../../GlobalIcons/CheckIcon';
-import s from './TableContainer.module.css';
-import CloseIcon from '../../../../../GlobalIcons/CloseIcon';
-import { Route } from '../../../../../../../config/Routes';
 
 export interface ITableProps {
   data: Data[];
@@ -19,12 +21,15 @@ const TableContainer: FC<ITableProps> = ({
   activeTab,
   mode,
 }) => {
-  const getBaseUrl = useCallback((chainId: number) => {
-    if (mode === 'block') {
-      return `${Route.Chain}/${chainId}${Route.Block}`;
-    }
-    return Route.Transaction;
-  }, []);
+  const getBaseUrl = useCallback(
+    (chainId: number) => {
+      if (mode === 'block') {
+        return `${Route.Chain}/${chainId}${Route.Block}`;
+      }
+      return Route.Transaction;
+    },
+    [mode],
+  );
 
   return (
     <table cellSpacing={0} className={s.tableContainer}>

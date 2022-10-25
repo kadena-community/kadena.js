@@ -5,9 +5,7 @@ require('@rushstack/eslint-config/patch/modern-module-resolution');
 module.exports = {
   extends: [
     '@kadena/eslint-config/profile/lib',
-    '@next/eslint-plugin-next',
-    'eslint-plugin-jsx-a11y',
-    'eslint-plugin-react',
+    'eslint-config-next',
     'eslint-config-prettier',
   ],
   parserOptions: { tsconfigRootDir: __dirname },

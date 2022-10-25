@@ -1,17 +1,18 @@
-import React, { FC, memo, useMemo } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { IBanner, IDataChart } from 'services/banner';
-import { Navigation, Pagination } from 'swiper';
-import { TimeInterval } from 'utils/api';
+
 import BannerBlock from './components/BannerBlocks/BannerBlock';
 import LeftArrow from './components/Icons/LeftArrow';
 import RightArrow from './components/Icons/RightArrow';
-import { useWindowSize } from 'utils/hooks';
-
 import s from './Banner.module.css';
+
+import React, { FC, memo, useMemo } from 'react';
+import { IBanner, IDataChart } from 'services/banner';
+import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { TimeInterval } from 'utils/api';
+import { useWindowSize } from 'utils/hooks';
 
 interface IProps {
   banners: IBanner[];
@@ -29,7 +30,7 @@ const Banner: FC<IProps> = ({
   onChangeTimeInterval,
 }) => {
   const { width } = useWindowSize();
-
+  // eslint-disable @typescript-eslint/naming-convention
   const slidesPerView = useMemo(() => {
     if (width) {
       if (width < 360) {
@@ -46,6 +47,59 @@ const Banner: FC<IProps> = ({
       }
     }
   }, [width]);
+
+  const carouselBreakpoints: any = {
+    10: {
+      slidesPerView: 1,
+      spaceBetween: 32,
+      navigation: false,
+      pagination: {
+        clickable: true,
+        type: 'bullets',
+      },
+    },
+    360: {
+      slidesPerView: 2,
+      spaceBetween: 24,
+      navigation: false,
+      pagination: {
+        clickable: true,
+        type: 'bullets',
+      },
+    },
+    640: {
+      slidesPerView: 3,
+      spaceBetween: 24,
+      navigation: false,
+      pagination: {
+        clickable: true,
+        type: 'bullets',
+      },
+    },
+    861: {
+      slidesPerView: 2,
+      spaceBetween: 24,
+      navigation: false,
+      pagination: {
+        clickable: true,
+        type: 'bullets',
+      },
+    },
+    1024: {
+      slidesPerView: 3,
+      spaceBetween: 24,
+      navigation: false,
+      pagination: {
+        clickable: true,
+        type: 'bullets',
+      },
+    },
+    1366: {
+      slidesPerView: 4,
+      spaceBetween: 24,
+    },
+    // eslint-enable @typescript-eslint/naming-convention
+  };
 
   return (
     <div className="carousel-container">
@@ -91,58 +145,6 @@ const Banner: FC<IProps> = ({
       </div>
     </div>
   );
-};
-
-const carouselBreakpoints: any = {
-  10: {
-    slidesPerView: 1,
-    spaceBetween: 32,
-    navigation: false,
-    pagination: {
-      clickable: true,
-      type: 'bullets',
-    },
-  },
-  360: {
-    slidesPerView: 2,
-    spaceBetween: 24,
-    navigation: false,
-    pagination: {
-      clickable: true,
-      type: 'bullets',
-    },
-  },
-  640: {
-    slidesPerView: 3,
-    spaceBetween: 24,
-    navigation: false,
-    pagination: {
-      clickable: true,
-      type: 'bullets',
-    },
-  },
-  861: {
-    slidesPerView: 2,
-    spaceBetween: 24,
-    navigation: false,
-    pagination: {
-      clickable: true,
-      type: 'bullets',
-    },
-  },
-  1024: {
-    slidesPerView: 3,
-    spaceBetween: 24,
-    navigation: false,
-    pagination: {
-      clickable: true,
-      type: 'bullets',
-    },
-  },
-  1366: {
-    slidesPerView: 4,
-    spaceBetween: 24,
-  },
 };
 
 export default memo(Banner);

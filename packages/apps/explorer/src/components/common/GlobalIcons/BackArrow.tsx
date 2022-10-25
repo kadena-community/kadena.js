@@ -1,8 +1,9 @@
-import React, { memo } from 'react';
 import { useRouter } from 'next/router';
+import React, { FC } from 'react';
 
-const BackArrow = () => {
+const BackArrow: FC = () => {
   const router = useRouter();
+
   return (
     <div onClick={() => router.push('/')} style={{ cursor: 'pointer' }}>
       <svg
@@ -10,7 +11,8 @@ const BackArrow = () => {
         height="18"
         viewBox="0 0 19 18"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -22,4 +24,4 @@ const BackArrow = () => {
   );
 };
 
-export default memo(BackArrow);
+export default BackArrow;

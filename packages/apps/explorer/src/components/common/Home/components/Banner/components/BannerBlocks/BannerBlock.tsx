@@ -1,7 +1,8 @@
+import s from './BannerBlock.module.css';
+
 import React, { FC, memo } from 'react';
 import { IBanner, IDataChart } from 'services/banner';
 import { TimeInterval } from 'utils/api';
-import s from './BannerBlock.module.css';
 
 interface IProps {
   banner: IBanner;

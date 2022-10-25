@@ -1,16 +1,19 @@
-import React, { FC, memo } from 'react';
-import ArrowIcon from '../../../GlobalIcons/ArrowIcon';
-import s from './Menu.module.css';
 import GlobalDropdown from '../../../GlobalDropdown/GlobalDropdown';
+import ArrowIcon from '../../../GlobalIcons/ArrowIcon';
+
+import s from './Menu.module.css';
+
+import React, { FC } from 'react';
 import { useMenu } from 'utils/hooks';
 
-interface Props {
+interface IProps {
   onItemClick: () => void;
 }
 
-const Menu: FC<Props> = ({ onItemClick }) => {
+const Menu: FC<IProps> = ({ onItemClick }) => {
   const { openedTab, setOpenedTab, componentInfo, network } = useMenu();
   const { Component, props: componentProps } = componentInfo;
+
   return (
     <div className={s.menuContainer}>
       <div className={s.menu}>
@@ -84,4 +87,4 @@ const Menu: FC<Props> = ({ onItemClick }) => {
   );
 };
 
-export default memo(Menu);
+export default Menu;

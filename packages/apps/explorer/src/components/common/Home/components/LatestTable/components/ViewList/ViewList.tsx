@@ -1,6 +1,7 @@
+import s from './ViewList.module.css';
+
 import React, { FC, memo } from 'react';
 import { RowData } from 'services/latestTable';
-import s from './ViewList.module.css';
 
 interface IProps {
   data: RowData[];

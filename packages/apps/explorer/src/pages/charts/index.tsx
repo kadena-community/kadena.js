@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useWindowSize } from 'utils/hooks';
 
-const ChartsPage = () => {
+const ChartsPage: FC = () => {
   const { height } = useWindowSize();
 
   return (

@@ -1,14 +1,14 @@
+import s from './Graph.module.css';
+
 import differenceWith from 'lodash/differenceWith';
 import isUndefined from 'lodash/isUndefined';
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import range from 'lodash/range';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { getTime, useChainGraph } from 'services/api';
 import { useWindowSize } from 'utils/hooks/useWindowSize';
-import range from 'lodash/range';
 
-import s from './Graph.module.css';
-
-const Graph = () => {
+const Graph: FC = () => {
   const { width } = useWindowSize();
 
   const memoGetGraphDimensions = useCallback(getGraphDimensions, [width]);
@@ -43,7 +43,7 @@ const Graph = () => {
     ) {
       setGraphData(data as any);
     }
-  }, [data]);
+  }, [data, graphData.nodes]);
 
   useEffect(() => {
     setInterval(() => {
@@ -63,7 +63,7 @@ const Graph = () => {
         };
       });
     }, 1000);
-  }, []);
+  }, [memoGetTime]);
 
   return (
     <div className={s.container}>

@@ -1,7 +1,7 @@
+import s from './Network.module.css';
+
 import React, { FC, memo, useMemo } from 'react';
 import { NetworkName } from 'utils/api';
-
-import s from './Network.module.css';
 
 interface IProps {
   setNetwork: (val: NetworkName) => void;

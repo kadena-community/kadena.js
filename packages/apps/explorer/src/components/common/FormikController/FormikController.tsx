@@ -1,9 +1,11 @@
-import React, { ChangeEvent, FC, memo, ReactNode } from 'react';
-import s from './FormikController.module.css';
 import Hint from '../Hint/Hint';
+
 import Input from './components/Input';
-import Select from './components/Select';
 import Radio from './components/Radio/Radio';
+import Select from './components/Select';
+import s from './FormikController.module.css';
+
+import React, { ChangeEvent, FC, memo, ReactNode } from 'react';
 
 interface IFakeSelectData {
   id?: number;
@@ -35,7 +37,7 @@ export interface IPropsFormikController {
   ) => void;
 }
 
-const FormikController: FC<IPropsFormikController> = props => {
+const FormikController: FC<IPropsFormikController> = (props) => {
   const { control, head, hint, data, children, error, id, label, ...rest } =
     props;
   const inputProps = { children, error, ...rest };

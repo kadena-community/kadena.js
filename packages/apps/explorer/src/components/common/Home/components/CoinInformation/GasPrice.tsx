@@ -1,18 +1,19 @@
-import React, { FC, memo, useEffect, useState } from 'react';
-import { useTransactionData } from 'services/transaction';
 import s from './CoinInformation.module.css';
 
-interface Props {
+import React, { FC, memo, useEffect, useState } from 'react';
+import { useTransactionData } from 'services/transaction';
+
+interface IProps {
   requestKey: string;
 }
 
-const GasPrice: FC<Props> = ({ requestKey }) => {
+const GasPrice: FC<IProps> = ({ requestKey }) => {
   const [gasPrice, setGasPrice] = useState<string>('—');
 
   const { metaData } = useTransactionData(requestKey);
 
   useEffect(() => {
-    const value = metaData.find(item => item.id === 8)?.value;
+    const value = metaData.find((item) => item.id === 8)?.value;
     if (value) {
       setGasPrice(String(value));
     }

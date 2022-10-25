@@ -1,26 +1,22 @@
-import React from 'react';
-import { unstable_serialize } from 'swr';
+import LatestTable from 'components/common/Home/components/LatestTable/LatestTable';
+import Main from 'components/common/Home/components/Main/Main';
+import Layout from 'components/common/Layout/Layout';
+import { APIRoute } from 'config/Routes';
 import { GetServerSidePropsContext } from 'next';
+import React, { FC } from 'react';
+import { nodeInfoAsync, useNodeInfo, withFallbackApiData } from 'services/api';
 import { BlocksContext, useBlocksState } from 'services/app';
-import Layout from '../../components/common/Layout/Layout';
-import LatestTable from '../../components/common/Home/components/LatestTable/LatestTable';
-import {
-  nodeInfoAsync,
-  useNodeInfo,
-  withFallbackApiData,
-} from '../../services/api';
-import { APIRoute } from '../../config/Routes';
-import { NetworkName } from '../../utils/api';
-import { setCookieStatic } from '../../utils/cookie';
-import Main from '../../components/common/Home/components/Main/Main';
+import { unstable_serialize } from 'swr';
+import { NetworkName, setCookieStatic } from 'utils';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    await setCookieStatic(context, 'network', NetworkName.MAIN_NETWORK);
+    setCookieStatic(context, 'network', NetworkName.MAIN_NETWORK);
     const nodeInfoData = await nodeInfoAsync(
       APIRoute.Info,
       NetworkName.MAIN_NETWORK,
     );
+
     return {
       props: {
         fallbackApiData: {
@@ -35,7 +31,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-const MainNetHome = () => {
+const MainNetHome: FC = () => {
   const nodeInfo = useNodeInfo(NetworkName.MAIN_NETWORK);
 
   const blockState = useBlocksState(NetworkName.MAIN_NETWORK, nodeInfo);

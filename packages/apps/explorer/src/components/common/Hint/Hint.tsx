@@ -1,8 +1,8 @@
-import React, { FC, memo, useEffect, useState } from 'react';
-import ReactTooltipLib from 'react-tooltip';
 import { tooltipTexts } from './Tooltip/tooltipTexts';
-
 import s from './Hint.module.css';
+
+import React, { FC, useEffect, useState } from 'react';
+import ReactTooltipLib from 'react-tooltip';
 
 interface IProps {
   messageKey: string;
@@ -34,7 +34,8 @@ const Hint: FC<IProps> = ({ messageKey, id }) => {
           effect="solid"
           backgroundColor="#fff"
           textColor="#000"
-          className={s.tooltip}>
+          className={s.tooltip}
+        >
           <div className={s.tooltipContainer}>
             <p className={s.tooltipHead}>{head}</p>
             <span className={s.tooltipText}>{text}</span>

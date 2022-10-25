@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import Layout from 'components/common/Layout/Layout';
 import About from 'components/common/About/About';
+import Layout from 'components/common/Layout/Layout';
+import React, { FC } from 'react';
 
 const AboutPage: FC = () => (
   <Layout>

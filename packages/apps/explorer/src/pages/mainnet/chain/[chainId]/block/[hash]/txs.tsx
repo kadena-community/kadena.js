@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import Layout from 'components/common/Layout/Layout';
+import { Loader } from 'components/common/Loader/Loader';
+import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
+import TransactionBlock from 'components/common/Transaction/TransactionBlock';
+import s from 'components/common/Transaction/TransactionDetails.module.css';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import TransactionBlock from 'components/common/Transaction/TransactionBlock';
-import Layout from 'components/common/Layout/Layout';
-import s from 'components/common/Transaction/TransactionDetails.module.css';
-import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
-import { Loader } from 'components/common/Loader/Loader';
+import React, { useEffect } from 'react';
 import { hasWindow, NetworkName } from 'utils';
 import { useBlockData } from 'utils/hooks';
 

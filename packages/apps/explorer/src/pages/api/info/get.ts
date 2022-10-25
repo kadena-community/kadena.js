@@ -1,8 +1,8 @@
+import { Info } from '@prisma/client';
+import BigNumber from 'bignumber.js';
 import groupBy from 'lodash/groupBy';
 import prisma from 'services/prisma';
 import { NetworkName, TimeInterval } from 'utils/api';
-import BigNumber from 'bignumber.js';
-import { Info } from '@prisma/client';
 
 type FieldType =
   | 'circulatingSupply'

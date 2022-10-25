@@ -1,9 +1,11 @@
-import React, { FC, ChangeEvent, useState, memo, useCallback } from 'react';
-import s from './GlobalAddDeleteInput.module.css';
 import style from '../FormikController/FormikController.module.css';
-import Hint from '../Hint/Hint';
 import MinusIcon from '../GlobalIcons/MinusIcon';
 import PlusIcon from '../GlobalIcons/PlusIcon';
+import Hint from '../Hint/Hint';
+
+import s from './GlobalAddDeleteInput.module.css';
+
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 
 interface IProps {
   head: string;
@@ -34,7 +36,7 @@ const GlobalAddDeleteInput: FC<IProps> = ({
       onChangeValues(name, newData);
     }
     setValue('');
-  }, [value, data]);
+  }, [value, data, name, onChangeValues]);
 
   const deleteRow = useCallback(
     (deleteIndex: number) => {
@@ -42,7 +44,7 @@ const GlobalAddDeleteInput: FC<IProps> = ({
       setData(newData);
       onChangeValues(name, newData);
     },
-    [data],
+    [data, name, onChangeValues],
   );
 
   return (
@@ -57,7 +59,8 @@ const GlobalAddDeleteInput: FC<IProps> = ({
           <button
             type="button"
             className={s.plus}
-            onClick={() => deleteRow(index)}>
+            onClick={() => deleteRow(index)}
+          >
             <MinusIcon height="14" width="14" fill="#000" />
           </button>
         </div>

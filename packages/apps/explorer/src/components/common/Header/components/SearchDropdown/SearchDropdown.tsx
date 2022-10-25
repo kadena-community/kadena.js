@@ -1,15 +1,17 @@
-import React, { FC, memo, useCallback, useContext, useEffect } from 'react';
-import Link from 'next/link';
-import { useSWRConfig } from 'swr';
-import { NetworkContext } from 'services/app';
-import { NodeInfoResponseData } from 'network/info';
-import { SearchResult, SearchType } from 'network/search';
-import s from './SearchDropdown.module.css';
-import { ISearchData } from 'utils/hooks';
-import { APIRoute, Route } from 'config/Routes';
-import { Loader } from '../../../Loader/Loader';
 import CheckIcon from '../../../GlobalIcons/CheckIcon';
 import CloseIcon from '../../../GlobalIcons/CloseIcon';
+import { Loader } from '../../../Loader/Loader';
+
+import s from './SearchDropdown.module.css';
+
+import { APIRoute, Route } from 'config/Routes';
+import { NodeInfoResponseData } from 'network/info';
+import { SearchResult, SearchType } from 'network/search';
+import Link from 'next/link';
+import React, { FC, memo, useCallback, useContext, useEffect } from 'react';
+import { NetworkContext } from 'services/app';
+import { useSWRConfig } from 'swr';
+import { ISearchData } from 'utils/hooks';
 
 interface ISearchDropdown {
   dataSearch: ISearchData;
@@ -54,12 +56,14 @@ const SearchDropdown: FC<ISearchDropdown> = ({
   };
 
   useEffect(() => {
-    if (searchValue) {
-      if (!dataSearch.values.length) {
-        mutate([APIRoute.Search, network, args, type]);
+    async () => {
+      if (searchValue) {
+        if (!dataSearch.values.length) {
+          await mutate([APIRoute.Search, network, args, type]);
+        }
       }
-    }
-  }, []);
+    };
+  }, [args, dataSearch.values.length, mutate, network, searchValue, type]);
 
   useEffect(() => {
     document.body.style.overflowY = 'hidden';

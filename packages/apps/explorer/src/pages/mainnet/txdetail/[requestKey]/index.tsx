@@ -1,14 +1,15 @@
-import React from 'react';
-import { useTransactionData } from 'services/transaction';
+import Layout from '../../../../components/common/Layout/Layout';
+import { Loader } from '../../../../components/common/Loader/Loader';
+import HistoryPage from '../../../../components/common/Transaction/components/HistoryPage/HistoryPage';
+import TransactionBlock from '../../../../components/common/Transaction/TransactionBlock';
+import s from '../../../../components/common/Transaction/TransactionDetails.module.css';
+import { NetworkName } from '../../../../utils/api';
+
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import TransactionBlock from '../../../../components/common/Transaction/TransactionBlock';
-import Layout from '../../../../components/common/Layout/Layout';
-import HistoryPage from '../../../../components/common/Transaction/components/HistoryPage/HistoryPage';
-import s from '../../../../components/common/Transaction/TransactionDetails.module.css';
-import { Loader } from '../../../../components/common/Loader/Loader';
-import { NetworkName } from '../../../../utils/api';
+import React from 'react';
+import { useTransactionData } from 'services/transaction';
 
 const MainTransactionDetailsComponent = () => {
   const router = useRouter();

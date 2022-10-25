@@ -1,4 +1,4 @@
-export const options = [
+export const options: Record<string, any>[] = [
   {
     label: '',
     options: [

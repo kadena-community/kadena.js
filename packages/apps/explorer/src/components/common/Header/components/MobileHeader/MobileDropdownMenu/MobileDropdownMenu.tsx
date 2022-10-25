@@ -1,17 +1,18 @@
-import React, { memo, useCallback, useContext, useState } from 'react';
-import Link from 'next/link';
 import GlobalDropdown from '../../../../GlobalDropdown/GlobalDropdown';
-import { Route } from 'config/Routes';
-import { NetworkContext } from 'services/app';
-import { NetworkName } from 'utils/api';
+import ArrowIcon from '../../../../GlobalIcons/ArrowIcon';
 import GetStarted from '../../Menu/components/GetStarted/GetStarted';
 import LearnMore from '../../Menu/components/LearnMore/LearnMore';
 import Network from '../../Menu/components/Network/Network';
-import ArrowIcon from '../../../../GlobalIcons/ArrowIcon';
 
 import s from './MobileDropdownMenu.module.css';
 
-const MobileDropdownMenu = () => {
+import { Route } from 'config/Routes';
+import Link from 'next/link';
+import React, { FC, memo, useCallback, useContext, useState } from 'react';
+import { NetworkContext } from 'services/app';
+import { NetworkName } from 'utils/api';
+
+const MobileDropdownMenu: FC = () => {
   const { network, setNetwork } = useContext(NetworkContext);
   const [visible, setVisible] = useState<boolean | string>(false);
   const [visibleItem, setVisibleItem] = useState<boolean | string>('');
@@ -19,9 +20,6 @@ const MobileDropdownMenu = () => {
   const onMenuItem = useCallback((item) => {
     setVisibleItem((prev) => (prev === item ? '' : item));
   }, []);
-
-  const isUnfinishedChains =
-    typeof window !== 'undefined' && !!localStorage.getItem('unfinishedChains');
 
   return (
     <div className={s.container}>
@@ -75,6 +73,7 @@ const MobileDropdownMenu = () => {
                         target="_blank"
                         href="https://kadena.io/about/"
                         className={`${s.menuItem} ${s.item}`}
+                        rel="noreferrer"
                       >
                         Kadena
                       </a>

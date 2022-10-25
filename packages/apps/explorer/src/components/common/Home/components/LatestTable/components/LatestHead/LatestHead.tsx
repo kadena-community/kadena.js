@@ -1,8 +1,10 @@
-import React, { FC, memo, useContext } from 'react';
+import FeeEstimatorContainer from '../FeeEstimatorContainer/FeeEstimatorContainer';
+
 import s from './LatestHead.module.css';
+
+import React, { FC, memo, useContext } from 'react';
 import { NetworkContext } from 'services/app';
 import { NetworkName } from 'utils/api';
-import FeeEstimatorContainer from '../FeeEstimatorContainer/FeeEstimatorContainer';
 
 interface IProps {
   activeTab: string;

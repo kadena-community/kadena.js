@@ -1,6 +1,7 @@
-import React from 'react';
-import Document, { Html, Head, Main, DocumentContext } from 'next/document';
 import { DeferNextScript } from '../services/next';
+
+import Document, { DocumentContext, Head, Html, Main } from 'next/document';
+import React from 'react';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
