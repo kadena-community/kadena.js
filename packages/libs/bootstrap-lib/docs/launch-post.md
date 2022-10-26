@@ -1,20 +1,24 @@
 Title: Release @kadena/client
 
 We've created a library that allows Javascript/Typescript users to easily
-interact with the Kadena Blockchain. We've explicitly kept out creating
-contracts as it's way more complicated to transpile Javascript to Pact, as
-contracts need to be Pact lang in the end anyway.
+interact with the Kadena Blockchain. Creating contracts is explicitly left out
+as it's a lot more complicated to transpile Javascript to Pact.
 
-Interaction with the Kadena Blockchain works in multiple ways, and they're
-described in this article. We'll also go into the concepts and rationale of
-@kadena/client.
+Interaction with the Kadena Blockchain works in multiple ways. With this tool
+there's two ways you can do so:
+[**1. contract based**](#contract-based-interaction-using-kadenaclient), and
+[**2. template based**](#template-based-interaction-using-kadenaclient). There's
+also information on an
+[**Automated way of signing using Chainweaver**](#automated-sign-request-to-chainweaver-desktop).
+They will be covered in this article. We'll also go into the concepts and
+rationale of @kadena/client.
 
 - [Prerequisites](#prerequisites)
-- [Bootstrapping @kadena/client](#bootstrapping-kadenaclient)
+- [Contract based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
   - [Load contracts from the blockchain](#load-contracts-from-the-blockchain)
   - [Manually singing the transaction](#manually-singing-the-transaction)
-  - [Automated sign request to **Chainweaver desktop**](#automated-sign-request-to-chainweaver-desktop)
-- [Building a simple transaction using a template](#building-a-simple-transaction-using-a-template)
+- [Automated sign request to **Chainweaver desktop**](#automated-sign-request-to-chainweaver-desktop)
+- [Template based interaction using @kadena/client](#template-based-interaction-using-kadenaclient)
   - [Load the contract repository](#load-the-contract-repository)
   - [Generate code from templates](#generate-code-from-templates)
   - [A function is generated from a template](#a-function-is-generated-from-a-template)
@@ -34,12 +38,15 @@ minimum of the things you need to do in order to start using @kadena/client:
 - install the client `npm install @kadena/client`
 - install the commandline tool `npm install @kadena/pactjs-cli`
 
-# Bootstrapping @kadena/client
+# Contract based interaction using @kadena/client
 
-We wanted @kadena/client to be self sufficient even when you're not using
-default contracts like `coin` or `marmalade`. That's why you have to generate
-the interfaces that are used by `@kadena/client` from information on the
-blockchain or from your own smart contracts.
+We wanted @kadena/client to be self independent of anything. So thi is just a
+tool that can be used with arbitrary contracts. That's also the reason why you
+have to generate the interfaces that are used by `@kadena/client`. You can use
+information from the blockchain or from your own smart contracts, locally.
+
+As you will see, we're providing a repository with templates, to use with the
+template side of this tool.
 
 ## Load contracts from the blockchain
 
@@ -124,6 +131,8 @@ const transactionBuilder =
     });
 ```
 
+**Note**
+
 Take note of the following:
 
 - namespaced arguments (`k:`, `w:` etc) are account-names, where non-namespaced
@@ -148,13 +157,13 @@ const unsignedTransaction = transactionBuilder.createTransaction();
 console.log(JSON.stringify(unsignedTransaction));
 ```
 
-## Automated sign request to **Chainweaver desktop**
+# Automated sign request to **Chainweaver desktop**
 
-This is not very user friendly. Using the `transaction` we can send a
-sign-request to Chainweaver. **(NB: this can only with the desktop version, not
-the web-version, as it's
+Using the `transaction` we can send a sign-request to Chainweaver. **(NB: this
+can only with the desktop version, not the web-version, as it's
 [exposing port 9467](https://kadena-io.github.io/signing-api/)**
 
+> **Note**  
 > In the future we will provide an interface with WalletConnect. This is not yet
 > finalized. Once it is, we'll update the `@kadena/client` accordingly
 
@@ -182,10 +191,10 @@ Take note of the following:
 - `signAndSubmitWithChainweaver` needs the "open" transaction, as it needs to
   calculate the hash for the metadata (sender, gas-parameters)
 
-# Building a simple transaction using a template
+# Template based interaction using @kadena/client
 
 To provide contract-developers a way to communicate how their contracts should
-be used, we added a way to get intelliSense for templates. Contract-developers
+be used, we added a way to get autocompletion for templates. Contract-developers
 can now provide their contracts that consumers of their smart-contract can use
 in Javascript.
 
@@ -271,23 +280,23 @@ work. But this outlines the general idea of how templates are used.
 Let's say we're using this template. Templates **aren't** valid `yaml`. They are
 however checked to be valid transactions when used as templates.
 
-```
+```yaml
 code: |-
   (coin.transfer "{{fromAcct}}" "{{toAcct}}" {{amount}})
 data:
 publicMeta:
-  chainId: "{{chain}}"
-  sender: {{fromAcct}}
+  chainId: '{{chain}}'
+  sender: { { fromAcct } }
   gasLimit: 2500
   gasPrice: 1.0e-8
   ttl: 600
-networkId: {{network}}
+networkId: { { network } }
 signers:
-  - pubKey: {{fromKey}}
+  - pubKey: { { fromKey } }
     caps:
-      - name: "coin.TRANSFER"
-        args: [{{fromAcct}}, {{toAcct}}, {{amount}}]
-      - name: "coin.GAS"
+      - name: 'coin.TRANSFER'
+        args: [{ { fromAcct } }, { { toAcct } }, { { amount } }]
+      - name: 'coin.GAS'
         args: []
 type: exec
 ```
