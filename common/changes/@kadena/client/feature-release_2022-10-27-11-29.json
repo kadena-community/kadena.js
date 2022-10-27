@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Updated readme",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

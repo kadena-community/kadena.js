@@ -463,7 +463,7 @@
       "packageName": "@kadena/pactjs-generator",
       "projectFolder": "packages/libs/pactjs-generator",
       "tags": ["libs"],
-      "shouldPublish": false
+      "shouldPublish": true
     },
 
     {
@@ -509,7 +509,7 @@
       "packageName": "@kadena/pactjs-cli",
       "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
-      "shouldPublish": false
+      "shouldPublish": true
     }
 
     // {
