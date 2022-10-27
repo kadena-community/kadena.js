@@ -11,7 +11,3 @@ export * from './api/pullAndCheckHashs';
 export * from './api/pullSignature';
 export * from './api/pullSigner';
 export * from './wallet/createCap';
-
-export function message(msg: string): string {
-  return `Hello, ${msg}!`;
-}
