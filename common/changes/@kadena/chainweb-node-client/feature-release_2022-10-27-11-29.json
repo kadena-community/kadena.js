@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "updated Readme",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}

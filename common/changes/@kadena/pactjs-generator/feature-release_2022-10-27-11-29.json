@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "Updated readme for release",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}
