@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@kadena/pactjs-cli",
-      "comment": "use .kadena/pactjs-generated to prevent deletion",
-      "type": "patch"
+      "comment": "",
+      "type": "none"
     }
   ],
   "packageName": "@kadena/pactjs-cli"

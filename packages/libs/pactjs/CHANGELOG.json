@@ -1,0 +1,30 @@
+{
+  "name": "@kadena/pactjs",
+  "entries": [
+    {
+      "version": "0.1.0",
+      "tag": "@kadena/pactjs_v0.1.0",
+      "date": "Fri, 28 Oct 2022 11:53:11 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "version bump"
+          },
+          {
+            "comment": "Added absolute url's and repositories for npm"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "release pactjs library "
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.0.2`"
+          }
+        ]
+      }
+    }
+  ]
+}

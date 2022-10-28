@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@kadena/chainweb-node-client",
-      "comment": "version bump",
-      "type": "patch"
+      "comment": "",
+      "type": "none"
     }
   ],
   "packageName": "@kadena/chainweb-node-client"

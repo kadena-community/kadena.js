@@ -2,6 +2,40 @@
   "name": "@kadena/cryptography-utils",
   "entries": [
     {
+      "version": "0.1.0",
+      "tag": "@kadena/cryptography-utils_v0.1.0",
+      "date": "Fri, 28 Oct 2022 11:53:11 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "version bump"
+          },
+          {
+            "comment": "Added repository urls"
+          },
+          {
+            "comment": "Added Buffer"
+          },
+          {
+            "comment": "Added buffer fix"
+          },
+          {
+            "comment": "Moved return value to a const"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Added new util function unique to create an array with unique IBase64Url"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@kadena/cryptography-utils_v0.0.2",
       "date": "Fri, 15 Jul 2022 14:16:50 GMT",
