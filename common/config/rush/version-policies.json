@@ -121,7 +121,7 @@
      * inappropriately.  The minor/patch version parts will be bumped independently according
      * to the types of changes made to each project, according to the "rush change" command.
      */
-    "lockedMajor": 0,
+    "lockedMajor": 0
 
     /**
      * (Optional) When publishing is managed by Rush, by default the "rush change" command will
@@ -130,7 +130,7 @@
      * in some other way, set "exemptFromRushChange" to true to tell "rush change" to ignore the projects
      * belonging to this version policy.
      */
-    "exemptFromRushChange": false
+    // "exemptFromRushChange": false
 
     // "includeEmailInChangeFile": true
   }
