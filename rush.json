@@ -428,7 +428,8 @@
       "packageName": "@kadena/client",
       "projectFolder": "packages/libs/client",
       "tags": ["libs"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     },
 
     {
@@ -442,28 +443,32 @@
       "packageName": "@kadena/cryptography-utils",
       "projectFolder": "packages/libs/cryptography-utils",
       "tags": ["libs"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     },
 
     {
       "packageName": "@kadena/chainweb-node-client",
       "projectFolder": "packages/libs/chainweb-node-client",
       "tags": ["libs"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     },
 
     {
       "packageName": "@kadena/pactjs",
       "projectFolder": "packages/libs/pactjs",
       "tags": ["libs"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     },
 
     {
       "packageName": "@kadena/pactjs-generator",
       "projectFolder": "packages/libs/pactjs-generator",
       "tags": ["libs"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     },
 
     {
@@ -477,7 +482,8 @@
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     },
 
     // #########################
@@ -509,7 +515,8 @@
       "packageName": "@kadena/pactjs-cli",
       "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     }
 
     // {
