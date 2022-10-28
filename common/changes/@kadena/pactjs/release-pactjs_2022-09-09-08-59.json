@@ -3,7 +3,7 @@
     {
       "packageName": "@kadena/pactjs",
       "comment": "release pactjs library ",
-      "type": "patch"
+      "type": "minor"
     }
   ],
   "packageName": "@kadena/pactjs"
