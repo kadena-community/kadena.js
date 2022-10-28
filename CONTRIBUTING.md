@@ -68,7 +68,7 @@ This will probably have some breakdown
 - `@kadena/pactjs` runtime for generating pact expressions
 - `@kadena/pactjs-cli` cli to generate pact contract type definitions and interface to pact client. deployment of contracts, etc
 - `@kadena/pactjs-generator` library that creates typescript definition from contract, template, etc
-- `@kadena/pactjs-generated` library that does not exist on npm. 
+- `.kadena/pactjs-generated` library that does not exist on npm. 
   It is _generated_ by `@kadena/pactjs-cli` and `@kadena/pactjs-generator` and is a dependency of `@kadena/pactjs`
 - `@kadena/transaction-templates` a supportive library for transactions. As there is no way to determine from pact alone which caps are needed for a given transaction, and in turn which signatures are needed, we want to provide the community a way to "publish" templates. These templates can be used by `@kadena/pactjs-cli` to generate the necessary typescript definitions
 

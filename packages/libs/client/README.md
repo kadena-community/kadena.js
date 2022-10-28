@@ -1,6 +1,6 @@
 # kadena.js - Client
 
-Core library for building Pact expressions to send to the blockchain in js. Makes use of @kadena/pactjs-generated
+Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated
 
 <p align="center">
   <picture>
