@@ -1,0 +1,22 @@
+{
+  "name": "@kadena/pactjs-cli",
+  "entries": [
+    {
+      "version": "0.0.2",
+      "tag": "@kadena/pactjs-cli_v0.0.2",
+      "date": "Fri, 28 Oct 2022 10:38:50 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use .kadena/pactjs-generated to prevent deletion"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/pactjs-generator\" to `0.0.2`"
+          }
+        ]
+      }
+    }
+  ]
+}

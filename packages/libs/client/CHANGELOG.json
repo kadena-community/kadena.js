@@ -1,0 +1,36 @@
+{
+  "name": "@kadena/client",
+  "entries": [
+    {
+      "version": "0.0.3",
+      "tag": "@kadena/client_v0.0.3",
+      "date": "Fri, 28 Oct 2022 10:38:50 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Adds launch-post"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Updated readme"
+          },
+          {
+            "comment": "use .kadena/pactjs-generated to prevent deletion"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.0.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.0.2`"
+          }
+        ]
+      }
+    }
+  ]
+}

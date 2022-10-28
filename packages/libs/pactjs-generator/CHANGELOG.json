@@ -1,0 +1,17 @@
+{
+  "name": "@kadena/pactjs-generator",
+  "entries": [
+    {
+      "version": "0.0.2",
+      "tag": "@kadena/pactjs-generator_v0.0.2",
+      "date": "Fri, 28 Oct 2022 10:38:50 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Updated readme for release"
+          }
+        ]
+      }
+    }
+  ]
+}
