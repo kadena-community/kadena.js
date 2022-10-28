@@ -20,25 +20,25 @@
   "dependencies": {
     "@kadena/pactjs-generator": "workspace:*",
     "commander": "^9.3.0",
-    "ramda": "~0.28.0",
-    "mkdirp": "~1.0.4",
-    "rimraf": "~3.0.2",
-    "zod": "~3.18.0",
-    "yaml": "~2.1.1",
     "cross-fetch": "~3.1.5",
-    "debug": "~4.3.4"
+    "debug": "~4.3.4",
+    "mkdirp": "~1.0.4",
+    "ramda": "~0.28.0",
+    "rimraf": "~3.0.2",
+    "yaml": "~2.1.1",
+    "zod": "~3.18.0"
   },
   "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
     "@kadena/heft-rig": "workspace:*",
-    "@types/node": "^16.0.0",
-    "@types/heft-jest": "~1.0.3",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
-    "@kadena/eslint-config": "workspace:*",
-    "eslint": "^8.15.0",
-    "@types/ramda": "~0.28.15",
+    "@types/debug": "~4.1.7",
+    "@types/heft-jest": "~1.0.3",
     "@types/mkdirp": "~1.0.2",
+    "@types/node": "^16.0.0",
+    "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
-    "@types/debug": "~4.1.7"
+    "eslint": "^8.15.0"
   }
 }

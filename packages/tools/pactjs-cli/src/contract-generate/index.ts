@@ -6,8 +6,8 @@ import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';
 import rimraf from 'rimraf';
 
-const TARGET_PACKAGE: '@kadena/pactjs-generated' =
-  '@kadena/pactjs-generated' as const;
+const TARGET_PACKAGE: '.kadena/pactjs-generated' =
+  '.kadena/pactjs-generated' as const;
 
 interface IContractGenerateOptions {
   file: string;
@@ -31,13 +31,13 @@ function verifyTsconfigTypings(
   if (tsconfigPath === undefined || tsconfigPath.length === 0) {
     console.error('Could not find tsconfig.json, skipping types verification');
   } else {
-    console.log(`Verifying tsconfig.json at \`${tsconfigPath}\``);
+    console.log(`\nVerifying tsconfig.json at \`${tsconfigPath}\``);
     const tsconfig: string = readFileSync(tsconfigPath, 'utf8');
 
-    if (!tsconfig.includes('@kadena/pactjs-generated')) {
+    if (!tsconfig.includes('.kadena/pactjs-generated')) {
       console.log(
-        `You have not added @kadena/pactjs-generated to tsconfig.json. Add it now.
-{ "compilerOptions": { "types": ["@kadena/pactjs-generated"] } }`,
+        `\n!!! WARNING: You have not added .kadena/pactjs-generated to tsconfig.json. Add it now.
+{ "compilerOptions": { "types": [".kadena/pactjs-generated"] } }`,
       );
     }
   }

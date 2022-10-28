@@ -8,7 +8,7 @@ This project demonstrates the use of the `@kadena/pact-cli` together with
 
 ## Smart Contracts
 
-We can generate the `@kadena/pactjs-generated` to be used by `@kadena/client`
+We can generate the `.kadena/pactjs-generated` to be used by `@kadena/client`
 with the `@kadena/pactjs-cli`. 
 
 Generate the TypeScript definitions for `@kadena/client`s `modules`.
