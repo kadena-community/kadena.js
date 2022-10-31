@@ -117,15 +117,6 @@ export const getPactHost = (
   }
 };
 
-export function isPrivateKey(sig: string) {
-  if (!sig) return false;
-  if (sig.length === 64) return true;
-  const secretKey = sig.slice(0, 64);
-  const publicKey = sig.slice(64);
-  const restored = Pact.crypto.restoreKeyPairFromSecretKey(secretKey);
-  return restored.secretKey === secretKey && restored.publicKey === publicKey;
-}
-
 export const convertDecimal = (decimal: number | string) => {
   decimal = decimal.toString();
   if (decimal.includes('.')) {
