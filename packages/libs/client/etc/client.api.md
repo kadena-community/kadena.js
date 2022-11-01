@@ -109,7 +109,9 @@ export const Pact: IPact;
 export function signAndSubmitWithChainweaver({ code, data, networkId, publicMeta: { chainId, gasLimit, gasPrice, sender, ttl }, signers, }: IPactCommand): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
-export function signWithChainweaver(...transactions: IUnsignedTransaction[]): Promise<ISignedCommand>;
+export function signWithChainweaver(...transactions: IUnsignedTransaction[]): Promise<{
+    results: ISignedCommand[];
+}>;
 
 // @alpha (undocumented)
 export type TemplateHoles = string[];
