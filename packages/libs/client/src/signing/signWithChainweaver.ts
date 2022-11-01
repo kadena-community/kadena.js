@@ -12,7 +12,7 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
  */
 export async function signWithChainweaver(
   ...transactions: IUnsignedTransaction[]
-): Promise<ISignedCommand> {
+): Promise<{ results: ISignedCommand[] }> {
   const body: string = JSON.stringify({ reqs: transactions });
 
   debug('calling sign api:', body);
