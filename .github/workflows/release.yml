@@ -1,7 +1,7 @@
 name: Rush release (version --bump, publish)
 on:
   push:
-    branches: ['develop']
+    branches: ['master']
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        NodeVersion: [14, 16]
+        NodeVersion: [16]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -18,8 +18,8 @@ jobs:
           token: ${{ secrets.ACTIONS_RELEASE_KADENA_JS }}
       - name: Git config user
         run: |
-          git config --local user.name "Rushbot Kadena"
-          git config --local user.email "rushbot-kadena@users.noreply.github.com"
+          git config --local user.name "Kadena Rushbot"
+          git config --local user.email "kadena-rushbot@users.noreply.github.com"
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
