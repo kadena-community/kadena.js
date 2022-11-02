@@ -2,6 +2,21 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.0.5",
+      "tag": "@kadena/client_v0.0.5",
+      "date": "Wed, 02 Nov 2022 12:29:53 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix signWithChainweaver"
+          },
+          {
+            "comment": "use ChainwebNetworkId for networkId"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.4",
       "tag": "@kadena/client_v0.0.4",
       "date": "Tue, 01 Nov 2022 11:21:25 GMT",
