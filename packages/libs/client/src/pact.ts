@@ -1,6 +1,12 @@
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
-import { ChainId, ICap, ICommandPayload, PactValue } from '@kadena/types';
+import {
+  ChainId,
+  ChainwebNetworkId,
+  ICap,
+  ICommandPayload,
+  PactValue,
+} from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
 import { IUnsignedTransaction } from './interfaces/IUnsignedTransaction';
@@ -59,7 +65,7 @@ class PactCommand
     gasPrice: number;
     ttl: number;
   };
-  public networkId: string;
+  public networkId: Exclude<ChainwebNetworkId, undefined>;
   public signers: {
     pubKey: string;
     caps: {

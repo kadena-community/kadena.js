@@ -5,6 +5,7 @@
 ```ts
 
 import { ChainId } from '@kadena/types';
+import { ChainwebNetworkId } from '@kadena/types';
 import { ICap } from '@kadena/types';
 import { ISignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
@@ -49,7 +50,7 @@ export interface IPactCommand {
     // (undocumented)
     data: Record<string, unknown>;
     // (undocumented)
-    networkId: string;
+    networkId: Exclude<ChainwebNetworkId, undefined>;
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
