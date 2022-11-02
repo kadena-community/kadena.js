@@ -61,6 +61,9 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
+# Optional config for 'rush publish'
+.npmrc-publish
+
 # Yarn Integrity file
 .yarn-integrity
 
