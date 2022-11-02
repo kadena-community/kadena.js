@@ -1,4 +1,4 @@
-import { ChainId, ICap } from "@kadena/types";
+import { ChainId, ChainwebNetworkId, ICap } from '@kadena/types';
 
 /**
  * @alpha
@@ -7,7 +7,7 @@ export interface IPactCommand {
   code: string;
   data: Record<string, unknown>;
   publicMeta: IPublicMeta;
-  networkId: string;
+  networkId: Exclude<ChainwebNetworkId, undefined>;
   // signers: ISigner[];
   signers: {
     pubKey: string;
@@ -15,7 +15,7 @@ export interface IPactCommand {
       name: string;
       args: ICap['args'];
     }[];
-  }[]
+  }[];
   type: string;
 }
 
