@@ -16,3 +16,4 @@ cwd=$(pwd)
 # Invoke preinstalled packages from the autoinstaller "rush-command-packages"
 # Invokes "lint-staged" in all projects
 node common/scripts/install-run-rush.js lint-staged || exit $?
+node common/scripts/install-run-rush.js change || exit $?

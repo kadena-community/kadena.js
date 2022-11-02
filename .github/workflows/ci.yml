@@ -1,9 +1,9 @@
 name: Rush CI (changelog, retest)
 on:
-  push:
-    branches: ['develop']
+  # push:
+  #   branches: ['master']
   pull_request:
-    branches: ['develop']
+    branches: ['master']
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
