@@ -33,8 +33,12 @@ jobs:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
-      - name: Rush version bump (install-run-rush)
-        run: node common/scripts/install-run-rush.js version --bump --target-branch master --ignore-git-hooks
+
+      # Disabled this step; it's better to run this step locally and submit it
+      # as a PR. This makes a release explicit instead of automatic
+      # - name: Rush version bump (install-run-rush)
+      #   run: node common/scripts/install-run-rush.js version --bump --target-branch master --ignore-git-hooks
+
       - name: Rush publish (install-run-rush)
         run: node common/scripts/install-run-rush.js publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master
       # - name: Rush test (rush-lib)
