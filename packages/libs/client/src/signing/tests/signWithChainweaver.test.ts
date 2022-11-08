@@ -16,12 +16,13 @@ describe('signWithChainweaver', () => {
   it('makes a call on 127.0.0.1:9467/v1/quickSign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
-      text: () => JSON.stringify({ signedResponse: true }),
+      text: () => JSON.stringify({ results: [] }),
       json: () => {},
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pactModule = Pact.modules as any;
+
     const unsignedCommand = (
       pactModule.coin.transfer('k:from') as ICommandBuilder<{
         GAS: [];
@@ -31,8 +32,8 @@ describe('signWithChainweaver', () => {
       .addCap('GAS', 'signer-key')
       .setMeta({
         sender: '',
-      })
-      .createTransaction();
+      });
+
     const body = JSON.stringify({ reqs: [unsignedCommand] });
 
     await signWithChainweaver(unsignedCommand);
@@ -63,8 +64,7 @@ describe('signWithChainweaver', () => {
       .addCap('GAS', 'signer-key')
       .setMeta({
         sender: '',
-      })
-      .createTransaction();
+      });
 
     // expected: throws an error
     signWithChainweaver(unsignedCommand).catch((e) => {

@@ -24,6 +24,19 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
 // @alpha (undocumented)
+export type IChainweaverSig = string;
+
+// @alpha (undocumented)
+export interface IChainweaverSignedCommand {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: {
+        [pubkey: string]: IChainweaverSig;
+    };
+}
+
+// @alpha (undocumented)
 export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
     // (undocumented)
     addCap<TCap extends keyof TCaps>(caps: TCap, signer: string, ...args: TCaps[TCap]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
@@ -97,10 +110,10 @@ export interface IUnsignedTransaction {
     cmd: string;
     // (undocumented)
     hash: string;
-    // Warning: (ae-forgotten-export) The symbol "PublicKey" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
-    sigs: Record<PublicKey, null>;
+    sigs: {
+        [pubkey: string]: string | null;
+    };
 }
 
 // @alpha (undocumented)
@@ -110,9 +123,7 @@ export const Pact: IPact;
 export function signAndSubmitWithChainweaver({ code, data, networkId, publicMeta: { chainId, gasLimit, gasPrice, sender, ttl }, signers, }: IPactCommand): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
-export function signWithChainweaver(...transactions: IUnsignedTransaction[]): Promise<{
-    results: ISignedCommand[];
-}>;
+export function signWithChainweaver(...transactions: IUnsignedTransaction[]): Promise<(IUnsignedTransaction | ISignedCommand)[]>;
 
 // @alpha (undocumented)
 export type TemplateHoles = string[];

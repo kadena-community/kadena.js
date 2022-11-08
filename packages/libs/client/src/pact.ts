@@ -1,15 +1,17 @@
+import { pact } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
 import {
   ChainId,
   ChainwebNetworkId,
   ICap,
+  ICommand,
   ICommandPayload,
+  ISignature,
   PactValue,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
-import { IUnsignedTransaction } from './interfaces/IUnsignedTransaction';
 import { parseType } from './utils/parseType';
 
 import debug, { Debugger } from 'debug';
@@ -23,12 +25,7 @@ export interface ICommandBuilder<
   TCaps extends Record<string, TArgs>,
   TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps],
 > {
-  addCap<TCap extends keyof TCaps>(
-    caps: TCap,
-    signer: string,
-    ...args: TCaps[TCap]
-  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  createTransaction(): IUnsignedTransaction;
+  createCommand(): ICommand;
   addData: (
     data: IPactCommand['data'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
@@ -38,6 +35,21 @@ export interface ICommandBuilder<
     },
     networkId?: IPactCommand['networkId'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  addCap<TCap extends keyof TCaps>(
+    caps: TCap,
+    signer: string,
+    ...args: TCaps[TCap]
+  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  send(apiHost: string): Promise<pact.ISendResponse | Response>;
+  addSignatures(
+    ...signatures: string[]
+  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  // setSigner(
+  //   fn: (
+  //     ...transactions: (IPactCommand &
+  //       ICommandBuilder<Record<string, unknown>>)[]
+  //   ) => Promise<this>,
+  // ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
 
 /**
@@ -52,13 +64,12 @@ export interface IPact {
   modules: IPactModules;
 }
 
-class PactCommand
+export class PactCommand
   implements IPactCommand, ICommandBuilder<Record<string, unknown>>
 {
   public code: string;
   public data: Record<string, unknown>;
   public publicMeta: {
-    // TODO: use enum for chainId
     chainId: ChainId;
     sender: string;
     gasLimit: number;
@@ -73,6 +84,13 @@ class PactCommand
       args: ICap['args'];
     }[];
   }[];
+  public signatures: ISignature[];
+  // public signer:
+  //   | ((
+  //       ...transactions: (IPactCommand &
+  //         ICommandBuilder<Record<string, unknown>>)[]
+  //     ) => Promise<this>)
+  //   | undefined;
   public type: 'exec' = 'exec';
 
   public constructor() {
@@ -87,9 +105,15 @@ class PactCommand
     };
     this.networkId = 'testnet04';
     this.signers = [];
+    this.signatures = [];
   }
 
-  public createTransaction(): IUnsignedTransaction {
+  /**
+   * Create a command that's compatible with the blockchain
+   * @returns a command that can be send to the blockchain
+   * (see https://api.chainweb.com/openapi/pact.html#tag/endpoint-send/paths/~1send/post)
+   */
+  public createCommand(): ICommand {
     const dateInMs: number = Date.now();
 
     // convert to IUnsignedTransactionCommand
@@ -116,20 +140,13 @@ class PactCommand
     const hash = blakeHash(cmd);
 
     // convert to IUnsignedTransaction
-    const unsignedTransaction: IUnsignedTransaction = {
+    const command: ICommand = {
       hash,
-      sigs: unsignedTransactionCommand.signers.reduce((acc, signer) => {
-        acc[signer.pubKey] = null;
-        return acc;
-      }, {} as Record<string, null>),
-      // sigs: unsignedTransactionCommand.signers.reduce((acc, signer) => {
-      //   acc.push({ hash, sig: undefined, pubKey: signer.pubKey });
-      //   return acc;
-      // }, [] as SignCommand[]),
+      sigs: this.signatures,
       cmd,
     };
 
-    return unsignedTransaction;
+    return command;
   }
 
   public addData(data: IPactCommand['data']): PactCommand {
@@ -156,7 +173,7 @@ class PactCommand
     );
 
     if (signerIndex === -1) {
-      // signer not found yet
+      // signer not found
       // push new signer to this.signers
       this.signers.push({
         pubKey: signer,
@@ -168,6 +185,36 @@ class PactCommand
     }
     return this;
   }
+
+  /**
+   * Sends a transaction to the ApiHost when the transaction is complete
+   * (i.e. it is checked whether the signatures are complete)
+   * @param apiHost the chainweb host where to send the transaction to
+   */
+  public send(apiHost: string): Promise<pact.ISendResponse | Response> {
+    if (this.signers.length !== this.signatures.length) {
+      throw new Error(
+        'The signature count does not comply with the signers count.' +
+          '\nMaybe the transaction is not signed yet',
+      );
+    }
+    return pact.send({ cmds: [this.createCommand()] }, apiHost);
+  }
+
+  public addSignatures(...signatures: string[]): PactCommand {
+    this.signatures.push(...signatures.map((sig) => ({ sig })));
+    return this;
+  }
+
+  //   public setSigner(
+  //     fn: (
+  //       ...transactions: (IPactCommand &
+  //         ICommandBuilder<Record<string, unknown>>)[]
+  //     ) => Promise<this>,
+  //   ): this {
+  //     this.signer = fn;
+  //     return this;
+  //   }
 }
 
 /**

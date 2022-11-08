@@ -194,6 +194,7 @@ importers:
 
   ../../packages/libs/client:
     specifiers:
+      '@kadena/chainweb-node-client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
@@ -217,6 +218,7 @@ importers:
       debug: 4.3.4
       yaml: 2.1.3
     devDependencies:
+      '@kadena/chainweb-node-client': link:../chainweb-node-client
       '@kadena/eslint-config': link:../../tools/eslint-config
       '@kadena/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.25.0

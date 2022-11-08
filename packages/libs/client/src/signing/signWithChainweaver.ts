@@ -1,18 +1,31 @@
-import { ISignedCommand } from '@kadena/types';
-
-import { IUnsignedTransaction } from '../interfaces/IUnsignedTransaction';
+import { IPactCommand } from '../interfaces/IPactCommand';
+import { ICommandBuilder } from '../pact';
 
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
 
+/**
+ * @alpha
+ */
+export type IChainweaverSig = string;
+
+/**
+ * @alpha
+ */
+export interface IChainweaverSignedCommand {
+  sigs: { [pubkey: string]: IChainweaverSig };
+  cmd: string;
+}
+
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
+
 /**
  * @alpha
  */
 export async function signWithChainweaver(
-  ...transactions: IUnsignedTransaction[]
-): Promise<{ results: ISignedCommand[] }> {
+  ...transactions: (IPactCommand & ICommandBuilder<Record<string, unknown>>)[]
+): Promise<(IPactCommand & ICommandBuilder<Record<string, unknown>>)[]> {
   const body: string = JSON.stringify({ reqs: transactions });
 
   debug('calling sign api:', body);
@@ -27,7 +40,17 @@ export async function signWithChainweaver(
 
   // response is not JSON when not-ok
   try {
-    return JSON.parse(bodyText);
+    const result = JSON.parse(bodyText) as {
+      results: IChainweaverSignedCommand[];
+    };
+    result.results.map((signedCommand, i) => {
+      transactions[i].addSignatures(
+        ...Object.keys(signedCommand.sigs).map(
+          (pubkey) => signedCommand.sigs[pubkey],
+        ),
+      );
+    });
+    return transactions;
   } catch (error) {
     throw new Error(
       `Response from v1/quickSign was \`${bodyText}\`. ` +
