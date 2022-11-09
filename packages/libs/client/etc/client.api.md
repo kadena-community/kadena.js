@@ -7,6 +7,9 @@
 import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/types';
 import { ICap } from '@kadena/types';
+import { ICommand } from '@kadena/types';
+import { ISendResponse } from '@kadena/chainweb-node-client';
+import { ISignature } from '@kadena/types';
 import { ISignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 
@@ -18,8 +21,6 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 // @internal (undocumented)
 export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): ICommandBuilder<{}>;
 
-// Warning: (ae-forgotten-export) The symbol "PactCommand" needs to be exported by the entry point index.d.ts
-//
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
@@ -43,7 +44,11 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    createTransaction(): IUnsignedTransaction;
+    addSignatures(...signatures: string[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    // (undocumented)
+    createCommand(): ICommand;
+    // (undocumented)
+    send(apiHost: string): Promise<ISendResponse | Response>;
     // (undocumented)
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
         sender: IPactCommand['publicMeta']['sender'];
@@ -66,6 +71,8 @@ export interface IPactCommand {
     networkId: Exclude<ChainwebNetworkId, undefined>;
     // (undocumented)
     publicMeta: IPublicMeta;
+    // (undocumented)
+    signatures: ISignature[];
     // (undocumented)
     signers: {
         pubKey: string;
@@ -119,11 +126,55 @@ export interface IUnsignedTransaction {
 // @alpha (undocumented)
 export const Pact: IPact;
 
+// Warning: (ae-incompatible-release-tags) The symbol "PactCommand" is marked as @public, but its signature references "IPactCommand" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "PactCommand" is marked as @public, but its signature references "ICommandBuilder" which is marked as @alpha
+//
+// @public (undocumented)
+export class PactCommand implements IPactCommand, ICommandBuilder<Record<string, unknown>> {
+    constructor();
+    // (undocumented)
+    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T[]): PactCommand;
+    // (undocumented)
+    addData(data: IPactCommand['data']): PactCommand;
+    // (undocumented)
+    addSignatures(...signatures: string[]): PactCommand;
+    // (undocumented)
+    code: string;
+    createCommand(): ICommand;
+    // (undocumented)
+    data: Record<string, unknown>;
+    // (undocumented)
+    networkId: Exclude<ChainwebNetworkId, undefined>;
+    // (undocumented)
+    publicMeta: {
+        chainId: ChainId;
+        sender: string;
+        gasLimit: number;
+        gasPrice: number;
+        ttl: number;
+    };
+    send(apiHost: string): Promise<ISendResponse | Response>;
+    // (undocumented)
+    setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): PactCommand;
+    // (undocumented)
+    signatures: ISignature[];
+    // (undocumented)
+    signers: {
+        pubKey: string;
+        caps: {
+            name: string;
+            args: ICap['args'];
+        }[];
+    }[];
+    // (undocumented)
+    type: 'exec';
+}
+
 // @alpha (undocumented)
 export function signAndSubmitWithChainweaver({ code, data, networkId, publicMeta: { chainId, gasLimit, gasPrice, sender, ttl }, signers, }: IPactCommand): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
-export function signWithChainweaver(...transactions: IUnsignedTransaction[]): Promise<(IUnsignedTransaction | ISignedCommand)[]>;
+export function signWithChainweaver(...transactions: (IPactCommand & ICommandBuilder<Record<string, unknown>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<string, unknown>>)[]>;
 
 // @alpha (undocumented)
 export type TemplateHoles = string[];

@@ -8,7 +8,7 @@ import {
   parseResponse,
   parseResponseTEXT,
   stringifyAndMakePOSTRequest,
-} from '../index';
+} from '../../';
 
 test('Expects functions to be exposed', async () => {
   expect(listen).toBeDefined();

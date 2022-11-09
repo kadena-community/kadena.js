@@ -17,60 +17,43 @@ import type { PactValue } from '@kadena/types';
 import type { SPVResponse } from '@kadena/types';
 
 // @alpha
-interface IISendRequestBody {
+export interface IISendRequestBody {
     // (undocumented)
     cmds: Array<ICommand>;
 }
 
 // @alpha
-interface ISendResponse {
+export interface ISendResponse {
     // (undocumented)
     requestKeys: Array<Base16String>;
 }
 
 // @alpha
-function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
 
 // @alpha
-function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+export function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult | Response>;
 
 // @alpha
-function mkCap(name: string, args?: Array<PactValue>): ICap;
-
-declare namespace pact {
-    export {
-        listen,
-        local,
-        mkCap,
-        parseResponse,
-        parseResponseTEXT,
-        poll,
-        send,
-        IISendRequestBody,
-        ISendResponse,
-        spv,
-        stringifyAndMakePOSTRequest
-    }
-}
-export { pact }
+export function mkCap(name: string, args?: Array<PactValue>): ICap;
 
 // @alpha
-function parseResponse<T>(response: Response): Promise<T>;
+export function parseResponse<T>(response: Response): Promise<T>;
 
 // @alpha
-function parseResponseTEXT(response: Response): Promise<string>;
+export function parseResponseTEXT(response: Response): Promise<string>;
 
 // @alpha
-function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse | Response>;
+export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse | Response>;
 
 // @alpha
-function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse | Response>;
+export function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse | Response>;
 
 // @alpha
-function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
+export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
 
 // @alpha
-function stringifyAndMakePOSTRequest<T>(body: T): object;
+export function stringifyAndMakePOSTRequest<T>(body: T): object;
 
 // (No @packageDocumentation comment for this package)
 

@@ -2,8 +2,13 @@
 // To run: `$ npm run start:pact`.
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
-import { pact } from '@kadena/chainweb-node-client';
-import { ISendResponse } from '@kadena/chainweb-node-client/lib/pact';
+import {
+  ISendResponse,
+  listen,
+  local,
+  poll,
+  send,
+} from '@kadena/chainweb-node-client';
 import {
   ICommand,
   ICommandResult,
@@ -26,8 +31,6 @@ const signedCommand: ICommand = createSampleExecTx(pactServerKeyPair, pactCode);
 const sendReq: ISendRequestBody = {
   cmds: [signedCommand],
 };
-
-const { listen, local, poll, send } = pact;
 
 describe('[Pact Server] Makes /send request', () => {
   it('Receives request key of transaction', async () => {

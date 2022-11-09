@@ -1,4 +1,4 @@
-import { pact } from '@kadena/chainweb-node-client';
+import { ISendResponse, send } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
 import {
@@ -40,7 +40,7 @@ export interface ICommandBuilder<
     signer: string,
     ...args: TCaps[TCap]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  send(apiHost: string): Promise<pact.ISendResponse | Response>;
+  send(apiHost: string): Promise<ISendResponse | Response>;
   addSignatures(
     ...signatures: string[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
@@ -191,14 +191,14 @@ export class PactCommand
    * (i.e. it is checked whether the signatures are complete)
    * @param apiHost the chainweb host where to send the transaction to
    */
-  public send(apiHost: string): Promise<pact.ISendResponse | Response> {
+  public send(apiHost: string): Promise<ISendResponse | Response> {
     if (this.signers.length !== this.signatures.length) {
       throw new Error(
         'The signature count does not comply with the signers count.' +
           '\nMaybe the transaction is not signed yet',
       );
     }
-    return pact.send({ cmds: [this.createCommand()] }, apiHost);
+    return send({ cmds: [this.createCommand()] }, apiHost);
   }
 
   public addSignatures(...signatures: string[]): PactCommand {
