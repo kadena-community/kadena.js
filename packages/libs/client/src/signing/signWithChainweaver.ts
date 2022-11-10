@@ -1,4 +1,5 @@
 import { IPactCommand } from '../interfaces/IPactCommand';
+import { IUnsignedTransaction } from '../interfaces/IUnsignedTransaction';
 import { ICommandBuilder } from '../pact';
 
 import fetch from 'cross-fetch';
@@ -18,15 +19,33 @@ export interface IChainweaverSignedCommand {
   cmd: string;
 }
 
+export interface IChainweaverQuickSignRequestBody {
+  reqs: IUnsignedTransaction[];
+}
+
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
 /**
  * @alpha
  */
-export async function signWithChainweaver(
-  ...transactions: (IPactCommand & ICommandBuilder<Record<string, unknown>>)[]
-): Promise<(IPactCommand & ICommandBuilder<Record<string, unknown>>)[]> {
-  const body: string = JSON.stringify({ reqs: transactions });
+export async function signWithChainweaver<T1 extends string, T2>(
+  ...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]
+): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]> {
+  const quickSignRequest: IChainweaverQuickSignRequestBody = {
+    reqs: transactions.map((t) => {
+      const command = t.createCommand();
+      return {
+        cmd: command.cmd,
+        hash: command.hash,
+        sigs: t.signers.reduce((sigsObject, signer, i) => {
+          const sig = t.signatures[i]?.sig;
+          sigsObject[signer.pubKey] = sig === undefined ? null : sig;
+          return sigsObject;
+        }, {} as Record<string, string | null>),
+      };
+    }),
+  };
+  const body: string = JSON.stringify(quickSignRequest);
 
   debug('calling sign api:', body);
 
@@ -44,7 +63,7 @@ export async function signWithChainweaver(
       results: IChainweaverSignedCommand[];
     };
     result.results.map((signedCommand, i) => {
-      transactions[i].addSignatures(
+      transactions[i].setSignatures(
         ...Object.keys(signedCommand.sigs).map(
           (pubkey) => signedCommand.sigs[pubkey],
         ),

@@ -8,6 +8,8 @@ import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/types';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
+import { ICommandResult } from '@kadena/types';
+import { IPollResponse } from '@kadena/types';
 import { ISendResponse } from '@kadena/chainweb-node-client';
 import { ISignature } from '@kadena/types';
 import { ISignedCommand } from '@kadena/types';
@@ -23,6 +25,14 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
+
+// @public (undocumented)
+export interface IChainweaverQuickSignRequestBody {
+    // Warning: (ae-incompatible-release-tags) The symbol "reqs" is marked as @public, but its signature references "IUnsignedTransaction" which is marked as @alpha
+    //
+    // (undocumented)
+    reqs: IUnsignedTransaction[];
+}
 
 // @alpha (undocumented)
 export type IChainweaverSig = string;
@@ -44,15 +54,19 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    addSignatures(...signatures: string[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
     createCommand(): ICommand;
     // (undocumented)
-    send(apiHost: string): Promise<ISendResponse | Response>;
+    local(apiHost: string): Promise<ICommandResult>;
+    // (undocumented)
+    poll(apiHost: string): Promise<IPollResponse>;
+    // (undocumented)
+    send(apiHost: string): Promise<ISendResponse>;
     // (undocumented)
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
         sender: IPactCommand['publicMeta']['sender'];
     }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    // (undocumented)
+    setSignatures(...signatures: string[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
 
 // @alpha (undocumented)
@@ -72,7 +86,7 @@ export interface IPactCommand {
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
-    signatures: ISignature[];
+    signatures: (ISignature | undefined)[];
     // (undocumented)
     signers: {
         pubKey: string;
@@ -133,18 +147,21 @@ export const Pact: IPact;
 export class PactCommand implements IPactCommand, ICommandBuilder<Record<string, unknown>> {
     constructor();
     // (undocumented)
-    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T[]): PactCommand;
+    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T[]): this;
     // (undocumented)
-    addData(data: IPactCommand['data']): PactCommand;
+    addData(data: IPactCommand['data']): this;
     // (undocumented)
-    addSignatures(...signatures: string[]): PactCommand;
+    cmd: string | undefined;
     // (undocumented)
     code: string;
     createCommand(): ICommand;
     // (undocumented)
     data: Record<string, unknown>;
+    local(apiHost: string): Promise<ICommandResult>;
     // (undocumented)
     networkId: Exclude<ChainwebNetworkId, undefined>;
+    // (undocumented)
+    poll(apiHost: string): Promise<IPollResponse>;
     // (undocumented)
     publicMeta: {
         chainId: ChainId;
@@ -153,11 +170,15 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         gasPrice: number;
         ttl: number;
     };
-    send(apiHost: string): Promise<ISendResponse | Response>;
     // (undocumented)
-    setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): PactCommand;
+    requestKey: string | undefined;
+    send(apiHost: string): Promise<ISendResponse>;
     // (undocumented)
-    signatures: ISignature[];
+    setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
+    // (undocumented)
+    setSignatures(...signatures: string[]): this;
+    // (undocumented)
+    signatures: (ISignature | undefined)[];
     // (undocumented)
     signers: {
         pubKey: string;
@@ -174,7 +195,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
 export function signAndSubmitWithChainweaver({ code, data, networkId, publicMeta: { chainId, gasLimit, gasPrice, sender, ttl }, signers, }: IPactCommand): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
-export function signWithChainweaver(...transactions: (IPactCommand & ICommandBuilder<Record<string, unknown>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<string, unknown>>)[]>;
+export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;
 
 // @alpha (undocumented)
 export type TemplateHoles = string[];

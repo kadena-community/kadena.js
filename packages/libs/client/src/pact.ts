@@ -1,4 +1,4 @@
-import { ISendResponse, send } from '@kadena/chainweb-node-client';
+import { ISendResponse, local, poll, send } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
 import {
@@ -7,6 +7,8 @@ import {
   ICap,
   ICommand,
   ICommandPayload,
+  ICommandResult,
+  IPollResponse,
   ISignature,
   PactValue,
 } from '@kadena/types';
@@ -40,8 +42,10 @@ export interface ICommandBuilder<
     signer: string,
     ...args: TCaps[TCap]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  send(apiHost: string): Promise<ISendResponse | Response>;
-  addSignatures(
+  local(apiHost: string): Promise<ICommandResult>;
+  send(apiHost: string): Promise<ISendResponse>;
+  poll(apiHost: string): Promise<IPollResponse>;
+  setSignatures(
     ...signatures: string[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   // setSigner(
@@ -84,7 +88,7 @@ export class PactCommand
       args: ICap['args'];
     }[];
   }[];
-  public signatures: ISignature[];
+  public signatures: (ISignature | undefined)[];
   // public signer:
   //   | ((
   //       ...transactions: (IPactCommand &
@@ -92,6 +96,8 @@ export class PactCommand
   //     ) => Promise<this>)
   //   | undefined;
   public type: 'exec' = 'exec';
+  public cmd: string | undefined;
+  public requestKey: string | undefined;
 
   public constructor() {
     this.code = '';
@@ -134,7 +140,10 @@ export class PactCommand
     };
 
     // stringify command
-    const cmd: string = JSON.stringify(unsignedTransactionCommand);
+    const cmd: string =
+      this.cmd !== undefined
+        ? this.cmd
+        : JSON.stringify(unsignedTransactionCommand);
 
     // hash command
     const hash = blakeHash(cmd);
@@ -142,14 +151,15 @@ export class PactCommand
     // convert to IUnsignedTransaction
     const command: ICommand = {
       hash,
-      sigs: this.signatures,
+      sigs: this.signatures.map((s) => (s === undefined ? { sig: '' } : s)),
       cmd,
     };
 
+    this.cmd = command.cmd;
     return command;
   }
 
-  public addData(data: IPactCommand['data']): PactCommand {
+  public addData(data: IPactCommand['data']): this {
     this.data = data;
     return this;
   }
@@ -157,7 +167,7 @@ export class PactCommand
   public setMeta(
     publicMeta: Partial<IPactCommand['publicMeta']>,
     networkId: IPactCommand['networkId'] = 'mainnet01',
-  ): PactCommand {
+  ): this {
     this.publicMeta = Object.assign(this.publicMeta, publicMeta);
     this.networkId = networkId;
     return this;
@@ -167,7 +177,7 @@ export class PactCommand
     capability: string,
     signer: string,
     ...args: T[]
-  ): PactCommand {
+  ): this {
     const signerIndex: number = this.signers.findIndex(
       (s) => s.pubKey === signer,
     );
@@ -179,6 +189,7 @@ export class PactCommand
         pubKey: signer,
         caps: [{ name: capability, args }],
       });
+      this.signatures.push(undefined);
     } else {
       // add cap to existing signer
       this.signers[signerIndex].caps.push({ name: capability, args });
@@ -187,34 +198,69 @@ export class PactCommand
   }
 
   /**
-   * Sends a transaction to the ApiHost when the transaction is complete
+   * Sends a transaction to the ApiHost /local to test the transaction
    * (i.e. it is checked whether the signatures are complete)
    * @param apiHost the chainweb host where to send the transaction to
    */
-  public send(apiHost: string): Promise<ISendResponse | Response> {
-    if (this.signers.length !== this.signatures.length) {
+  public local(apiHost: string): Promise<ICommandResult> {
+    if (
+      this.signers.length !== this.signatures.length &&
+      !this.signatures.some((s) => s === null)
+    ) {
       throw new Error(
         'The signature count does not comply with the signers count.' +
-          '\nMaybe the transaction is not signed yet',
+          '\nMaybe the transaction is not signed yet,' +
+          '\nor there are `null` values',
       );
     }
-    return send({ cmds: [this.createCommand()] }, apiHost);
+    return local(this.createCommand(), apiHost);
   }
 
-  public addSignatures(...signatures: string[]): PactCommand {
-    this.signatures.push(...signatures.map((sig) => ({ sig })));
+  /**
+   * Sends a transaction to the ApiHost /send when the transaction is finalized
+   * (i.e. it is checked whether the signatures are complete)
+   * @param apiHost the chainweb host where to send the transaction to
+   */
+  public async send(apiHost: string): Promise<ISendResponse> {
+    if (
+      this.signers.length !== this.signatures.length &&
+      !this.signatures.some((s) => s === null)
+    ) {
+      throw new Error(
+        'The signature count does not comply with the signers count.' +
+          '\nMaybe the transaction is not signed yet,' +
+          '\nor there are `null` values',
+      );
+    }
+    const sendResponse = await send({ cmds: [this.createCommand()] }, apiHost);
+    this.requestKey = sendResponse.requestKeys[0].toString();
+    return sendResponse;
+  }
+
+  public poll(apiHost: string): Promise<IPollResponse> {
+    if (this.requestKey === undefined) {
+      throw new Error(
+        '`requestKey` not found' +
+          '\nThis request might not be send yet, or it possibly failed.',
+      );
+    }
+    return poll({ requestKeys: [this.requestKey] }, apiHost);
+  }
+
+  public setSignatures(...signatures: string[]): this {
+    this.signatures = signatures.map((sig) => ({ sig }));
     return this;
   }
 
-  //   public setSigner(
-  //     fn: (
-  //       ...transactions: (IPactCommand &
-  //         ICommandBuilder<Record<string, unknown>>)[]
-  //     ) => Promise<this>,
-  //   ): this {
-  //     this.signer = fn;
-  //     return this;
-  //   }
+  // public setSigner(
+  //   fn: (
+  //     ...transactions: (IPactCommand &
+  //       ICommandBuilder<Record<string, unknown>>)[]
+  //   ) => Promise<this>,
+  // ): this {
+  //   this.signer = fn;
+  //   return this;
+  // }
 }
 
 /**
