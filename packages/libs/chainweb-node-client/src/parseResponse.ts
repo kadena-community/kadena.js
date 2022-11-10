@@ -11,8 +11,13 @@ export async function parseResponse<T>(response: Response): Promise<T> {
   if (response.ok) {
     return (await response.json()) as T;
   } else {
-    // Handle API errors
-    const TEXTResponse: string = await response.text();
-    return Promise.reject(new Error(TEXTResponse));
+    try {
+      // Handle API errors
+
+      const textResponse: string = await response.text();
+      return Promise.reject(new Error(textResponse));
+    } catch (error) {
+      return response as unknown as T;
+    }
   }
 }

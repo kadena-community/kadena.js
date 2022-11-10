@@ -3,7 +3,6 @@ import type { Base16String, ICommand } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type { Response } from 'cross-fetch';
 import fetch from 'cross-fetch';
 
 /**
@@ -41,10 +40,10 @@ export interface ISendResponse {
 export function send(
   requestBody: IISendRequestBody,
   apiHost: string,
-): Promise<ISendResponse | Response> {
+): Promise<ISendResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);
 
-  const response: Promise<ISendResponse | Response> = fetch(
+  const response: Promise<ISendResponse> = fetch(
     `${apiHost}/api/v1/send`,
     request,
   ).then((r) => parseResponse(r));

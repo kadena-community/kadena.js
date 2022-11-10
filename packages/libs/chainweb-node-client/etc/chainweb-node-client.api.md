@@ -32,7 +32,7 @@ export interface ISendResponse {
 export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
 
 // @alpha
-export function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+export function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult>;
 
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;
@@ -44,10 +44,10 @@ export function parseResponse<T>(response: Response): Promise<T>;
 export function parseResponseTEXT(response: Response): Promise<string>;
 
 // @alpha
-export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse | Response>;
+export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse | Response>;
+export function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse>;
 
 // @alpha
 export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
