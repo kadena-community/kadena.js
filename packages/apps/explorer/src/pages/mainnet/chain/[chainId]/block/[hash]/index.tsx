@@ -1,17 +1,18 @@
-import React from 'react';
+import Layout from 'components/common/Layout/Layout';
+import { Loader } from 'components/common/Loader/Loader';
+import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
+import TransactionBlock from 'components/common/Transaction/TransactionBlock';
+import s from 'components/common/Transaction/TransactionDetails.module.css';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import TransactionBlock from 'components/common/Transaction/TransactionBlock';
-import Layout from 'components/common/Layout/Layout';
-import s from 'components/common/Transaction/TransactionDetails.module.css';
-import HistoryPage from 'components/common/Transaction/components/HistoryPage/HistoryPage';
-import { Loader } from 'components/common/Loader/Loader';
+import React, { FC } from 'react';
 import { NetworkName } from 'utils/api';
 import { useBlockData } from 'utils/hooks';
 
-const MainBlockDetailsComponent = () => {
+const MainBlockDetailsComponent: FC = () => {
   const { headerData, parentLink, payloadData, blockInfo, error } =
     useBlockData(NetworkName.MAIN_NETWORK);
+
   return (
     <Layout>
       <div className={s.transactionDetails}>
@@ -41,7 +42,7 @@ const MainBlockDetailsComponent = () => {
   );
 };
 
-const MainBlockDetailsDynamic: any = dynamic<any>(
+const MainBlockDetailsDynamic: any = dynamic<unknown>(
   () => Promise.resolve(MainBlockDetailsComponent),
   {
     ssr: false,

@@ -1,7 +1,7 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-
 import s from './Loader.module.css';
+
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 const PuffLoader: any = dynamic<any>(
   () => import('react-spinners/PuffLoader'),

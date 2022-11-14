@@ -1,16 +1,17 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import { options } from './config';
+import s from './SelectSearch.module.css';
+import { useStyles } from './styles';
+
 import ArrowIcon from 'components/common/GlobalIcons/ArrowIcon';
-import { useWindowSize } from 'utils/hooks';
+import { chain } from 'lodash';
 import { SearchType } from 'network/search';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import ReactSelect, {
   components,
   GroupBase,
   SingleValueProps,
 } from 'react-select';
-import { chain } from 'lodash';
-import s from './SelectSearch.module.css';
-import { options } from './config';
-import { useStyles } from './styles';
+import { useWindowSize } from 'utils/hooks';
 
 const IndicatorsContainer: FC = () => (
   <ArrowIcon height="10" width="10" fill="#975E9A" />
@@ -24,6 +25,8 @@ const SingleValue: FC<SingleValueProps> = memo((props) => {
     </components.SingleValue>
   );
 });
+
+SingleValue.displayName = 'SingleValue';
 
 const formatGroupLabel = (data: GroupBase<unknown>) => {
   if (!data.label) return undefined;

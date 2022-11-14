@@ -1,19 +1,21 @@
-import React, { FC, memo, useMemo } from 'react';
-import { useCoinInformation, useRecentInfo } from 'services/api';
-import { NetworkName } from 'utils/api';
 import s from './CoinInformation.module.css';
 import GasPrice from './GasPrice';
 
-interface Props {
+import React, { FC, memo, useMemo } from 'react';
+import { useCoinInformation, useRecentInfo } from 'services/api';
+import { NetworkName } from 'utils/api';
+
+interface IProps {
   network: NetworkName;
 }
 
-const CoinInformation: FC<Props> = ({ network }) => {
+const CoinInformation: FC<IProps> = ({ network }) => {
   const { data } = useCoinInformation(NetworkName.MAIN_NETWORK);
 
   const marketCap = useMemo(() => {
     return (
-      data?.marketCap && new Intl.NumberFormat('en-US').format(data?.marketCap)
+      !!data?.marketCap &&
+      new Intl.NumberFormat('en-US').format(data?.marketCap)
     );
   }, [data?.marketCap]);
 

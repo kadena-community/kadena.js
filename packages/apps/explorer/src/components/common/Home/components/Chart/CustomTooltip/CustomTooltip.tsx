@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
 import s from './CustomTooltip.module.css';
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+import React, { FC, memo } from 'react';
+
+const CustomTooltip: FC = ({ active, payload, label }: Record<string, any>) => {
   if (active && payload && payload.length) {
     return (
       <div className={s.tooltip}>

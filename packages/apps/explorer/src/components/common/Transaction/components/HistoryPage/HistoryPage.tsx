@@ -1,9 +1,11 @@
-import React, { FC, memo } from 'react';
-import { ITransactionData } from 'services/transaction';
-import s from './HistoryPage.module.css';
+import { Route } from '../../../../../config/Routes';
 import CheckIcon from '../../../GlobalIcons/CheckIcon';
 import CloseIcon from '../../../GlobalIcons/CloseIcon';
-import { Route } from '../../../../../config/Routes';
+
+import s from './HistoryPage.module.css';
+
+import React, { FC, memo } from 'react';
+import { ITransactionData } from 'services/transaction';
 
 interface IProps {
   data: {

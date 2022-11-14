@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { useMemo } from 'react';
 import { StylesConfig } from 'react-select';
 
@@ -9,12 +8,12 @@ export const useStyles = (customStyle?: {
 }) => {
   const styles = useMemo<StylesConfig>(() => {
     return {
-      container: styles => ({
+      container: (styles) => ({
         ...styles,
         height: '100%',
         minWidth: '140px',
       }),
-      control: styles => ({
+      control: (styles) => ({
         ...styles,
         background: 'transparent',
         border: 'none',
@@ -25,33 +24,33 @@ export const useStyles = (customStyle?: {
           border: 'none',
         },
       }),
-      singleValue: styles => ({
+      singleValue: (styles) => ({
         ...styles,
         color: '#975E9A',
         fontWeight: 400,
         ...customStyle?.singleValue,
       }),
-      indicatorSeparator: styles => ({
+      indicatorSeparator: (styles) => ({
         ...styles,
         display: 'none',
       }),
-      placeholder: styles => ({
+      placeholder: (styles) => ({
         ...styles,
         ...customStyle?.placeholder,
       }),
-      valueContainer: styles => ({
+      valueContainer: (styles) => ({
         ...styles,
         paddingLeft: '22px',
         paddingRight: '22px',
       }),
-      menu: styles => ({
+      menu: (styles) => ({
         ...styles,
         background: 'rgb(75 42 77)',
         color: '#975E9A',
         fontSize: '15px',
         ...customStyle?.menu,
       }),
-      group: styles => ({
+      group: (styles) => ({
         ...styles,
         padding: 0,
         '#react-select-search-group-1-heading': {
@@ -73,7 +72,7 @@ export const useStyles = (customStyle?: {
         },
       }),
     };
-  }, []);
+  }, [customStyle?.menu, customStyle?.placeholder, customStyle?.singleValue]);
 
   return styles;
 };

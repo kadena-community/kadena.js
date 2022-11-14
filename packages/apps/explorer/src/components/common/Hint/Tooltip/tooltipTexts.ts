@@ -1,9 +1,9 @@
-type SingleText = {
+interface ISingleText {
   head: string;
   text: string;
-};
+}
 
-export const tooltipTexts: Record<string, SingleText> = {
+export const tooltipTexts: Record<string, ISingleText> = {
   pact: {
     head: 'What is Pact code?',
     text: "Pact is Kadena's smart contacts programing language.Type arbitrary pact expressions in the input box below.",

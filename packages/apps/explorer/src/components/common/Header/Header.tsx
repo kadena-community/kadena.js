@@ -1,11 +1,13 @@
-import React, { FC, memo, useCallback } from 'react';
-import { SearchType } from 'network/search';
-import Search from './components/Search/Search';
-import Menu from './components/Menu/Menu';
 import { ISearchProps } from '../Layout/Layout';
-import s from './Header.module.css';
-import Logo from './components/Logo/Logo';
+
 import KadenaLogo from './components/KadenaLogo/KadenaLogo';
+import Logo from './components/Logo/Logo';
+import Menu from './components/Menu/Menu';
+import Search from './components/Search/Search';
+import s from './Header.module.css';
+
+import { SearchType } from 'network/search';
+import React, { FC, memo, useCallback } from 'react';
 
 const Header: FC<
   ISearchProps & { type: SearchType; setType: (type: SearchType) => void }
@@ -25,7 +27,8 @@ const Header: FC<
       className={`${s.rootContainer} headerTop`}
       style={{
         background: `rgba(23, 13, 40, ${topScroll && topScroll / 90})`,
-      }}>
+      }}
+    >
       <div className={s.rootContentContainer}>
         <Logo />
         <div className={s.centralContainer}>

@@ -1,9 +1,10 @@
+import { IPropsFormikController } from '../FormikController';
+import s from '../FormikController.module.css';
+
+import { IndicatorsContainer } from 'components/common/Select/IndicatorsContainer';
+import { useStyles } from 'components/common/Select/styles';
 import React, { FC, memo, useMemo } from 'react';
 import ReactSelect, { GroupBase, OptionsOrGroups } from 'react-select';
-import { useStyles } from 'components/common/Select/styles';
-import { IndicatorsContainer } from 'components/common/Select/IndicatorsContainer';
-import s from '../FormikController.module.css';
-import { IPropsFormikController } from '../FormikController';
 
 interface IProps {
   props: IPropsFormikController;
@@ -13,7 +14,7 @@ const FormikSelect: FC<IProps> = ({ props }) => {
   const { name, setFieldValue, data, error, placeholder, onBlur, ...rest } =
     props;
 
-  const onHandleSelect = (newValue: any) => {
+  const onHandleSelect = (newValue: any): void => {
     if (setFieldValue && name) {
       setFieldValue(name, newValue.value);
     }

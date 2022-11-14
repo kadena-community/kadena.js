@@ -1,6 +1,8 @@
-import React, { FC, memo } from 'react';
-import style from './LatestTransaction.module.css';
 import TableContainer, { ITableProps } from '../TableContainer/TableContainer';
+
+import style from './LatestTransaction.module.css';
+
+import React, { FC, memo } from 'react';
 
 const LatestTransaction: FC<ITableProps> = ({
   data: dataTableTransactions,

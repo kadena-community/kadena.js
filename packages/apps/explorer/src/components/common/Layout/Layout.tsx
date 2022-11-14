@@ -1,13 +1,13 @@
-import React, { ChangeEvent, FC, memo, ReactNode, useState } from 'react';
-import { SearchType } from 'network/search';
-import Header from '../Header/Header';
-import { useSearch } from 'utils/hooks';
-import MobileHeader from '../Header/components/MobileHeader/MobileHeader';
-import { useTopScroll } from 'utils/hooks';
-import SearchDropdown from '../Header/components/SearchDropdown/SearchDropdown';
 import FloatButton from '../FloatButton/FloatButton';
+import MobileHeader from '../Header/components/MobileHeader/MobileHeader';
+import SearchDropdown from '../Header/components/SearchDropdown/SearchDropdown';
+import Header from '../Header/Header';
 
 import s from './Layout.module.css';
+
+import { SearchType } from 'network/search';
+import React, { ChangeEvent, FC, ReactNode, useState } from 'react';
+import { useSearch, useTopScroll } from 'utils/hooks';
 export interface ISearchProps {
   searchRequestValue: (e: ChangeEvent<HTMLInputElement>) => void;
   setSearchValue: (val: string) => void;

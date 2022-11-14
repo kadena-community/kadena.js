@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { AppProps } from 'next/app';
 import Error from 'components/common/Error';
+import { AppProps } from 'next/app';
+import React, { FC } from 'react';
 
 const ErrorBoundary: FC<{ children: JSX.Element } & AppProps> = ({
   children,

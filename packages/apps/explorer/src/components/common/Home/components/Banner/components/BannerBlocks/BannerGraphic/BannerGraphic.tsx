@@ -1,8 +1,8 @@
+import s from './BannerGraphic.module.css';
+
 import React, { FC, memo } from 'react';
 import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import { IDataChartBlock } from 'services/banner';
-
-import s from './BannerGraphic.module.css';
 
 interface IProps {
   blockChartData: IDataChartBlock[];

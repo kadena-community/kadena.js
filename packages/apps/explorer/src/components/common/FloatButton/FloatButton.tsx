@@ -1,9 +1,10 @@
-import React, { FC, memo, useState } from 'react';
-import Link from 'next/link';
-import QuestionIcon from '../GlobalIcons/QuestionIcon';
 import DiscordIcon from '../GlobalIcons/DiscordIcon';
+import QuestionIcon from '../GlobalIcons/QuestionIcon';
 
 import s from './FloatButton.module.css';
+
+import Link from 'next/link';
+import React, { FC, memo, useState } from 'react';
 
 const FloatButton: FC = () => {
   const [state, setState] = useState<boolean>(false);
@@ -22,7 +23,8 @@ const FloatButton: FC = () => {
         style={state ? { opacity: 1 } : {}}
         onClick={() => {
           setState(!state);
-        }}>
+        }}
+      >
         <QuestionIcon height="24" width="24" fill="#fff" />
       </div>
     </>

@@ -1,6 +1,8 @@
-import React, { FC, memo } from 'react';
-import style from './LatestBlocks.module.css';
 import TableContainer, { ITableProps } from '../TableContainer/TableContainer';
+
+import style from './LatestBlocks.module.css';
+
+import React, { FC, memo } from 'react';
 
 const LatestBlocks: FC<ITableProps> = ({
   data: dataTableBlocks,

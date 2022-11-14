@@ -1,14 +1,16 @@
-import React, { ComponentType, FC, memo } from 'react';
-import dynamic from 'next/dynamic';
-import LatestHead from './components/LatestHead/LatestHead';
-import { useTableList } from '../../../../../services/latestTable';
-import s from './LatestTable.module.css';
-import { NetworkName } from '../../../../../utils/api';
 import { Loader } from '../../../Loader/Loader';
-import { useRecentInfo } from '../../../../../services/api';
-import FeeEstimatorContainer from './components/FeeEstimatorContainer/FeeEstimatorContainer';
 
-interface Props {
+import FeeEstimatorContainer from './components/FeeEstimatorContainer/FeeEstimatorContainer';
+import LatestHead from './components/LatestHead/LatestHead';
+import s from './LatestTable.module.css';
+
+import dynamic from 'next/dynamic';
+import React, { ComponentType, FC, memo } from 'react';
+import { useRecentInfo } from 'services/api';
+import { useTableList } from 'services/latestTable';
+import { NetworkName } from 'utils';
+
+interface IProps {
   network: NetworkName;
 }
 
@@ -19,7 +21,7 @@ const DynamicGraph: ComponentType<any> = dynamic(
   },
 );
 
-const LatestTable: FC<Props> = ({ network }) => {
+const LatestTable: FC<IProps> = ({ network }) => {
   const recentInfo = useRecentInfo(network);
   const {
     isVisible,

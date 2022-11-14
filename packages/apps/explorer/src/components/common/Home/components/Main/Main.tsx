@@ -1,19 +1,21 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
-import Chart from '../Chart/Chart';
-import Banner from '../Banner/Banner';
-import { useChartData } from 'services/banner';
-import { useAllInfoByTime, useChainInfo } from 'services/api';
 import { Loader } from '../../../Loader/Loader';
-import { NetworkName, TimeInterval } from 'utils/api';
-import s from './Main.module.css';
+import Banner from '../Banner/Banner';
+import Chart from '../Chart/Chart';
 import CoinInformation from '../CoinInformation/CoinInformation';
 
-interface Props {
+import s from './Main.module.css';
+
+import React, { memo, useCallback, useMemo, useState } from 'react';
+import { useAllInfoByTime, useChainInfo } from 'services/api';
+import { useChartData } from 'services/banner';
+import { NetworkName, TimeInterval } from 'utils/api';
+
+interface IProps {
   network: NetworkName;
   nodeInfo: any;
 }
 
-const Main = ({ network, nodeInfo }: Props) => {
+const Main = ({ network, nodeInfo }: IProps) => {
   const chainInfo = useChainInfo(network, nodeInfo);
 
   const [timeInterval, setTimeInterval] = useState<TimeInterval>(
@@ -34,7 +36,7 @@ const Main = ({ network, nodeInfo }: Props) => {
       allInfo,
       timeInterval,
     }),
-    [network, chainInfo],
+    [network, chainInfo, allInfo, timeInterval],
   );
   const { banners, onChangeBg, active, chartData } =
     useChartData(chartDataProps);

@@ -1,8 +1,9 @@
-import React, { FC, memo } from 'react';
-import { SearchType } from 'network/search';
-import { ISearchProps } from 'components/common/Layout/Layout';
 import s from '../Search/Search.module.css';
 import SelectSearch from '../SelectSearch/SelectSearch';
+
+import { ISearchProps } from 'components/common/Layout/Layout';
+import { SearchType } from 'network/search';
+import React, { FC, memo } from 'react';
 
 const MobileSearch: FC<
   ISearchProps & { type: SearchType; setType: (type: SearchType) => void }

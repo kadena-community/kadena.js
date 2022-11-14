@@ -1,19 +1,20 @@
+import { BrushStartEndIndex } from '../Chart';
+import CustomTooltip from '../CustomTooltip/CustomTooltip';
+
 import React, { FC, memo, useState } from 'react';
 import {
-  Tooltip,
-  CartesianGrid,
-  YAxis,
-  XAxis,
-  ResponsiveContainer,
   Bar,
   BarChart,
-  ReferenceArea,
   Brush,
+  CartesianGrid,
+  ReferenceArea,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
 import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart';
 import { IDataChart } from 'services/banner';
-import { BrushStartEndIndex } from '../Chart';
-import CustomTooltip from '../CustomTooltip/CustomTooltip';
 
 interface IProps {
   chart: {
@@ -59,7 +60,8 @@ const BarType: FC<IProps> = ({
           chart.refAreaLeft &&
           setChart({ ...chart, refAreaRight: e?.activeLabel || '' })
         }
-        onMouseUp={() => !isRealTime && zoom()}>
+        onMouseUp={() => !isRealTime && zoom()}
+      >
         <defs>
           <linearGradient id="FillGradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stopColor="rgba(243.7, 198.2,  95.3, 0.254)" />

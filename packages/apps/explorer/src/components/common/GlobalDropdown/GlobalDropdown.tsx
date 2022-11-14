@@ -1,5 +1,6 @@
-import React, { FC, useEffect, memo, ReactNode } from 'react';
 import s from './GlobalDropdown.module.css';
+
+import React, { FC, memo, ReactNode, useEffect } from 'react';
 
 interface IProps {
   children: ReactNode;

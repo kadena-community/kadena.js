@@ -1,8 +1,8 @@
-import React, { FC, memo } from 'react';
-import Link from 'next/link';
-import { Route } from 'config/Routes';
-
 import s from './Logo.module.css';
+
+import { Route } from 'config/Routes';
+import Link from 'next/link';
+import React, { FC } from 'react';
 
 const Logo: FC = () => (
   <Link href={Route.Root}>

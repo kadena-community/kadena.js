@@ -1,7 +1,9 @@
-import React, { FC, memo } from 'react';
-import s from './Radio.module.css';
 import Hint from '../../../Hint/Hint';
 import { IPropsFormikController } from '../../FormikController';
+
+import s from './Radio.module.css';
+
+import React, { FC, memo } from 'react';
 
 interface IProps {
   props: IPropsFormikController;

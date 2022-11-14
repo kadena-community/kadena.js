@@ -6,12 +6,9 @@ import {
   jsonHeader,
   queryParamsTypeAdapter,
   switchBetweenConfig,
-} from '../utils/api';
-import {
-  MAIN_NETWORK_API_URL,
-  TEST_NETWORK_API_URL,
-} from '../config/Constants';
-import { APIRemoteRoute } from '../config/Routes';
+} from 'utils';
+import { MAIN_NETWORK_API_URL, TEST_NETWORK_API_URL } from 'config/Constants';
+import { APIRemoteRoute } from 'config/Routes';
 
 interface BlockQueryParams extends DefaultQueryParams {
   minHeight: string;

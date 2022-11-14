@@ -1,9 +1,10 @@
-import React, { FC, memo } from 'react';
-import Link from 'next/link';
-import { Route } from 'config/Routes';
-
 import s from '../Network/Network.module.css';
+
 import style from './LearnMore.module.css';
+
+import { Route } from 'config/Routes';
+import Link from 'next/link';
+import React, { FC, memo } from 'react';
 
 interface IProps {
   mobileMenu?: string;

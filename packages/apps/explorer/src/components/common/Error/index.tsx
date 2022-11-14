@@ -1,6 +1,8 @@
-import React, { FC, ReactNode } from 'react';
 import Logo from '../Header/components/Logo/Logo';
+
 import s from './Error.module.css';
+
+import React, { FC, ReactNode } from 'react';
 
 const Error: FC<{ children: ReactNode }> = ({ children }) => {
   return (
