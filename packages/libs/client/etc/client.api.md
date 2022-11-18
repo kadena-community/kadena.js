@@ -26,10 +26,8 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IChainweaverQuickSignRequestBody {
-    // Warning: (ae-incompatible-release-tags) The symbol "reqs" is marked as @public, but its signature references "IUnsignedTransaction" which is marked as @alpha
-    //
     // (undocumented)
     reqs: IUnsignedTransaction[];
 }
@@ -86,8 +84,6 @@ export interface IPactCommand {
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
-    signatures: (ISignature | undefined)[];
-    // (undocumented)
     signers: {
         pubKey: string;
         caps: {
@@ -95,6 +91,8 @@ export interface IPactCommand {
             args: ICap['args'];
         }[];
     }[];
+    // (undocumented)
+    sigs: (ISignature | undefined)[];
     // (undocumented)
     type: string;
 }
@@ -140,10 +138,7 @@ export interface IUnsignedTransaction {
 // @alpha (undocumented)
 export const Pact: IPact;
 
-// Warning: (ae-incompatible-release-tags) The symbol "PactCommand" is marked as @public, but its signature references "IPactCommand" which is marked as @alpha
-// Warning: (ae-incompatible-release-tags) The symbol "PactCommand" is marked as @public, but its signature references "ICommandBuilder" which is marked as @alpha
-//
-// @public (undocumented)
+// @alpha (undocumented)
 export class PactCommand implements IPactCommand, ICommandBuilder<Record<string, unknown>> {
     constructor();
     // (undocumented)
@@ -178,8 +173,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     setSignatures(...signatures: string[]): this;
     // (undocumented)
-    signatures: (ISignature | undefined)[];
-    // (undocumented)
     signers: {
         pubKey: string;
         caps: {
@@ -187,6 +180,8 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
             args: ICap['args'];
         }[];
     }[];
+    // (undocumented)
+    sigs: (ISignature | undefined)[];
     // (undocumented)
     type: 'exec';
 }

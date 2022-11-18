@@ -5,6 +5,7 @@ import { ICommandBuilder } from '../pact';
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
+import { ISignature } from '@kadena/types';
 
 /**
  * @alpha
@@ -19,6 +20,9 @@ export interface IChainweaverSignedCommand {
   cmd: string;
 }
 
+/**
+ * @alpha
+ */
 export interface IChainweaverQuickSignRequestBody {
   reqs: IUnsignedTransaction[];
 }
@@ -38,7 +42,7 @@ export async function signWithChainweaver<T1 extends string, T2>(
         cmd: command.cmd,
         hash: command.hash,
         sigs: t.signers.reduce((sigsObject, signer, i) => {
-          const sig = t.signatures[i]?.sig;
+          const sig = t.sigs[i]?.sig;
           sigsObject[signer.pubKey] = sig === undefined ? null : sig;
           return sigsObject;
         }, {} as Record<string, string | null>),
@@ -57,24 +61,34 @@ export async function signWithChainweaver<T1 extends string, T2>(
 
   const bodyText = await response.text();
 
-  // response is not JSON when not-ok
+  // response is not JSON when not-ok, that's why we use try-catch
   try {
     const result = JSON.parse(bodyText) as {
       results: IChainweaverSignedCommand[];
     };
     result.results.map((signedCommand, i) => {
-      transactions[i].setSignatures(
-        ...Object.keys(signedCommand.sigs).map(
-          (pubkey) => signedCommand.sigs[pubkey],
+      transactions[i].addSignatures(
+        ...Object.keys(signedCommand.sigs).reduce(
+          (sigs, pubkey) => {
+            const sig = signedCommand.sigs[pubkey];
+            sigs.push({ pubkey, sig });
+            return sigs;
+          },
+          [] as {
+            pubkey: string;
+            sig: string;
+          }[],
         ),
       );
     });
     return transactions;
   } catch (error) {
     throw new Error(
-      `Response from v1/quickSign was \`${bodyText}\`. ` +
+      'An error occurred when adding signatures to the command' +
+        `\nResponse from v1/quickSign was \`${bodyText}\`. ` +
         `\nCode: \`${response.status}\`` +
-        `\nText: \`${response.statusText}\` `,
+        `\nText: \`${response.statusText}\` ` +
+        `${error}`,
     );
   }
 }

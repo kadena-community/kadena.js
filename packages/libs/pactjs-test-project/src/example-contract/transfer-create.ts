@@ -31,7 +31,7 @@ const unsignedTransaction: IUnsignedTransaction = Pact.modules.coin[
     },
     'testnet04',
   )
-  .createTransaction();
+  .createCommand();
 
 // write numbers as decimal
 console.log('sending transaction: \n  ', JSON.stringify(unsignedTransaction));

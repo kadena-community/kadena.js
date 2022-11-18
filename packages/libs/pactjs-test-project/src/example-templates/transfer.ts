@@ -21,7 +21,7 @@ async function main(): Promise<void> {
     network,
   });
 
-  const signedCmd = await signWithChainweaver(builder.createTransaction());
+  const signedCmd = await signWithChainweaver(builder.createCommand());
   console.log(JSON.stringify({ signedCmd }));
 }
 

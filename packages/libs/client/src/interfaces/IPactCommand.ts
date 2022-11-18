@@ -17,7 +17,7 @@ export interface IPactCommand {
     }[];
   }[];
   type: string;
-  signatures: (ISignature | undefined)[];
+  sigs: (ISignature | undefined)[];
 }
 
 /**
