@@ -142,7 +142,7 @@ export class PactCommand
         clist: signer.caps,
       })),
       meta: { ...this.publicMeta, creationTime: Math.floor(dateInMs / 1000) },
-      nonce: new Date(dateInMs).toISOString(),
+      nonce: 'kjs ' + new Date(dateInMs).toISOString(),
     };
 
     // stringify command

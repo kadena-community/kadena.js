@@ -12,7 +12,6 @@ import { ICommandResult } from '@kadena/types';
 import { IPollResponse } from '@kadena/types';
 import { ISendResponse } from '@kadena/chainweb-node-client';
 import { ISignature } from '@kadena/types';
-import { ISignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 
 // @alpha (undocumented)
@@ -52,6 +51,11 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
+    addSignatures(...sig: {
+        pubkey: string;
+        sig: string;
+    }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    // (undocumented)
     createCommand(): ICommand;
     // (undocumented)
     local(apiHost: string): Promise<ICommandResult>;
@@ -63,8 +67,6 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
         sender: IPactCommand['publicMeta']['sender'];
     }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
-    setSignatures(...signatures: string[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
 
 // @alpha (undocumented)
@@ -146,6 +148,11 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     addData(data: IPactCommand['data']): this;
     // (undocumented)
+    addSignatures(...sigs: {
+        pubkey: string;
+        sig: string;
+    }[]): this;
+    // (undocumented)
     cmd: string | undefined;
     // (undocumented)
     code: string;
@@ -171,8 +178,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
     // (undocumented)
-    setSignatures(...signatures: string[]): this;
-    // (undocumented)
     signers: {
         pubKey: string;
         caps: {
@@ -185,9 +190,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     type: 'exec';
 }
-
-// @alpha (undocumented)
-export function signAndSubmitWithChainweaver({ code, data, networkId, publicMeta: { chainId, gasLimit, gasPrice, sender, ttl }, signers, }: IPactCommand): Promise<ISignedCommand>;
 
 // @alpha (undocumented)
 export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;

@@ -102,6 +102,7 @@ describe('Pact proxy', () => {
       json: () => {},
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
@@ -127,6 +128,7 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
@@ -152,6 +154,7 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
@@ -184,6 +187,7 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',

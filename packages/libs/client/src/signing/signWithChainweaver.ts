@@ -5,7 +5,6 @@ import { ICommandBuilder } from '../pact';
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
-import { ISignature } from '@kadena/types';
 
 /**
  * @alpha

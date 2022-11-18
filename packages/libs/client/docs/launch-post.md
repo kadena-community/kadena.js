@@ -169,12 +169,8 @@ can only with the desktop version, not the web-version, as it's
 
 ```ts
 import {
-  signAndSubmitWithChainweaver,
   signWithChainweaver,
 } from '@kadena/client';
-
-// pass the transactionBuilder object, as metadata can still be changed
-const submitResult = signAndSubmitWithChainweaver(transactionBuilder);
 
 // use the finalized transaction, and sign it with Chainweaver
 cont signedTransaction = signWithChainweaver(unsignedTransaction)
@@ -188,8 +184,6 @@ Take note of the following:
   calculated. Things like `sender`, `gasPrice` or `gasLimit` **CANNOT be
   changed** anymore.
 - `signWithChainweaver` needs the finalized transaction
-- `signAndSubmitWithChainweaver` needs the "open" transaction, as it needs to
-  calculate the hash for the metadata (sender, gas-parameters)
 
 # Template based interaction using @kadena/client
 
@@ -304,9 +298,8 @@ type: exec
 Each of the `{{name}}`s are variables that can be passed to the template
 function.
 
-The function returns a `CommandBuilder`, this can be used in the
-`signAndSubmitWithChainweaver(cmd)` or to `.createTransaction()` and use in
-`signWithChainweaver(unsignedTx)`
+The function returns a `CommandBuilder`, this can be used to add metadata to the
+transaction and to `signWithChainweaver(unsignedTx)`
 [as shown here](#automated-sign-request-to-chainweaver-desktop)
 
 ```ts

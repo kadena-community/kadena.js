@@ -46,11 +46,12 @@ async function transactionMain(): Promise<void> {
 
   const res = await signWithChainweaver(unsignedTransaction);
 
+  console.log('sigs', res[0].sigs);
   console.log('signed transactions', JSON.stringify(res, null, 2));
 
-  const sendRequests = res.map((t) => {
-    console.log('sending transaction', t.code);
-    return t.send(testnetChain1ApiHost);
+  const sendRequests = res.map((tx) => {
+    console.log('sending transaction', tx.code);
+    return tx.send(testnetChain1ApiHost);
   });
 
   const sendResponses = await Promise.all(sendRequests);
@@ -84,7 +85,10 @@ async function pollMain(...requestKeys: string[]): Promise<void> {
     console.log('found transaction');
     const foundRequestKeys: string[] = [];
     Object.keys(pollResponse).forEach((requestKey) => {
-      console.log(`${requestKey} poll response`, pollResponse[requestKey]);
+      console.log(
+        `${requestKey} poll response`,
+        JSON.stringify(pollResponse[requestKey], undefined, 2),
+      );
       foundRequestKeys.push(requestKey);
     });
 
@@ -103,7 +107,6 @@ async function getBalanceMain() {
   console.log(res);
 }
 
-// transactionMain().catch(console.error);
-pollMain('WGUEEaH4agsjB7-DIqg_RcQ05oOdFpDkWh2xBHwrdl0').catch(console.error);
-
+transactionMain().catch(console.error);
+// pollMain('OXnoT0dDMQRKjrDDo4UHYr4u71Uo7Ry9Eb_1V9za6vM').catch(console.error);
 // getBalanceMain().catch(console.error);
