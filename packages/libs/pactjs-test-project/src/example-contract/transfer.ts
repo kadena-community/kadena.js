@@ -94,5 +94,16 @@ async function pollMain(...requestKeys: string[]): Promise<void> {
   }
 }
 
-transactionMain().catch(console.error);
-// pollMain('').catch(console.error);
+async function getBalanceMain() {
+  const res = await Pact.modules.coin['get-balance'](
+    'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+  )
+    .setMeta({ sender: '', chainId: '10' })
+    .local(testnetChain1ApiHost);
+  console.log(res);
+}
+
+// transactionMain().catch(console.error);
+pollMain('WGUEEaH4agsjB7-DIqg_RcQ05oOdFpDkWh2xBHwrdl0').catch(console.error);
+
+// getBalanceMain().catch(console.error);
