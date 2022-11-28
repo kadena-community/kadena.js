@@ -11,7 +11,7 @@ import fetch from 'cross-fetch';
  * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
  * @alpha
  */
-export interface IISendRequestBody {
+export interface ISendRequestBody {
   cmds: Array<ICommand>;
 }
 
@@ -38,7 +38,7 @@ export interface ISendResponse {
  * @alpha
  */
 export function send(
-  requestBody: IISendRequestBody,
+  requestBody: ISendRequestBody,
   apiHost: string,
 ): Promise<ISendResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);

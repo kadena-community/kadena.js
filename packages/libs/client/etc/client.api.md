@@ -20,7 +20,7 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 // Warning: (ae-internal-missing-underscore) The name "buildUnsignedTransaction" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): ICommandBuilder<{}>;
+export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
 
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
@@ -138,6 +138,12 @@ export interface IUnsignedTransaction {
 }
 
 // @alpha (undocumented)
+export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
+
+// @alpha (undocumented)
+export type NonceType = string;
+
+// @alpha (undocumented)
 export const Pact: IPact;
 
 // @alpha (undocumented)
@@ -162,6 +168,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     local(apiHost: string): Promise<ICommandResult>;
     // (undocumented)
     networkId: Exclude<ChainwebNetworkId, undefined>;
+    nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
     // (undocumented)

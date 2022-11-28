@@ -74,6 +74,16 @@ export interface IPact {
 /**
  * @alpha
  */
+export type NonceType = string;
+
+/**
+ * @alpha
+ */
+export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
+
+/**
+ * @alpha
+ */
 export class PactCommand
   implements IPactCommand, ICommandBuilder<Record<string, unknown>>
 {
@@ -121,6 +131,18 @@ export class PactCommand
   }
 
   /**
+   * A function that is generated based on IPactCommand and the creation date.
+   * This is called during execution of `createCommand()` and adds `nonce` to
+   * the command.
+   * @param t - transaction
+   * @param dateInMs - date in milliseconds from epoch
+   * @returns string that will be created during `createCommand()`
+   */
+  public nonceCreator(t: IPactCommand, dateInMs: number): NonceType {
+    return 'kjs ' + new Date(dateInMs).toISOString();
+  }
+
+  /**
    * Create a command that's compatible with the blockchain
    * @returns a command that can be send to the blockchain
    * (see https://api.chainweb.com/openapi/pact.html#tag/endpoint-send/paths/~1send/post)
@@ -142,7 +164,7 @@ export class PactCommand
         clist: signer.caps,
       })),
       meta: { ...this.publicMeta, creationTime: Math.floor(dateInMs / 1000) },
-      nonce: 'kjs ' + new Date(dateInMs).toISOString(),
+      nonce: this.nonceCreator(this, dateInMs),
     };
 
     // stringify command

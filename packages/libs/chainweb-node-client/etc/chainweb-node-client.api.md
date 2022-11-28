@@ -17,7 +17,7 @@ import type { PactValue } from '@kadena/types';
 import type { SPVResponse } from '@kadena/types';
 
 // @alpha
-export interface IISendRequestBody {
+export interface ISendRequestBody {
     // (undocumented)
     cmds: Array<ICommand>;
 }
@@ -47,7 +47,7 @@ export function parseResponseTEXT(response: Response): Promise<string>;
 export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: IISendRequestBody, apiHost: string): Promise<ISendResponse>;
+export function send(requestBody: ISendRequestBody, apiHost: string): Promise<ISendResponse>;
 
 // @alpha
 export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;

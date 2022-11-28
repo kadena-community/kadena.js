@@ -3,7 +3,7 @@ jest.mock('cross-fetch');
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import type { ICommand, SignatureWithHash } from '@kadena/types';
 
-import type { IISendRequestBody, ISendResponse } from '../send';
+import type { ISendRequestBody, ISendResponse } from '../send';
 import { send } from '../send';
 
 import { mockFetch } from './mockdata/mockFetch';
@@ -43,7 +43,7 @@ test('/send should return request keys of txs submitted', async () => {
   };
   const expectedRequestKey2 = 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q';
 
-  const sendReq: IISendRequestBody = {
+  const sendReq: ISendRequestBody = {
     cmds: [signedCommand1, signedCommand2],
   };
   const responseExpected: ISendResponse = {
@@ -64,7 +64,7 @@ test('/send should return error if sent to wrong chain id', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: IISendRequestBody = {
+  const sendReq: ISendRequestBody = {
     cmds: [signedCommand],
   };
   const expectedErrorMsg =
@@ -87,7 +87,7 @@ test('/send should return error if tx already exists on chain', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: IISendRequestBody = {
+  const sendReq: ISendRequestBody = {
     cmds: [signedCommand],
   };
   const expectedErrorMsg =
