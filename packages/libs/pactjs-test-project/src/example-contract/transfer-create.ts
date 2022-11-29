@@ -1,41 +1,49 @@
 import { Pact, signWithChainweaver } from '@kadena/client';
 
+const apiHost = (
+  chainId: string,
+  network: string = '',
+  networkId: string = 'mainnet01',
+  apiVersion: string = '0.0',
+): string => {
+  return `https://api.${network}chainweb.com/chainweb/${apiVersion}/${networkId}/chain/${chainId}/pact`;
+};
+
+const testnetChain1ApiHost: string = apiHost('1', 'testnet.', 'testnet04');
+
+function onlyKey(account: string): string {
+  return account.split(':')[1];
+}
+
 async function main(): Promise<void> {
-  const sender: string = 'croesus';
-  const receiver: string =
+  const sender: string =
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
-  // const sender: string = receiver;
-  const senderNoK: string =
-    '2993f795d133fa5d0fd877a641cabc8b28cd36147f666988cacbaa4379d1ff93';
-  // const senderNoK: string = sender.split('k:')[1];
+  const receiver: string = 'k:somepublickey';
   const amount: number = 1000.0;
   const data: Record<string, unknown> = {
     ks: {
-      keys: [
-        '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
-      ],
+      keys: ['somepublickey'],
       pred: 'keys-all',
     },
   };
 
-  const unsignedTransaction = Pact.modules.coin['transfer-create'](
+  const unsignedTransaction = await Pact.modules.coin['transfer-create'](
     sender,
     receiver,
-    () => 'read-keyset ks',
+    () => '(read-keyset "ks")',
     amount,
   )
     .addData(data)
-    .addCap('coin.GAS', senderNoK)
-    .addCap('coin.TRANSFER', senderNoK, sender, receiver, amount)
-    .setMeta(
-      {
-        sender: senderNoK,
-      },
-      'testnet04',
-    );
+    .addCap('coin.TRANSFER', onlyKey(sender), sender, receiver, amount);
 
-  // write numbers as decimal
-  console.log('sending transaction: \n  ', JSON.stringify(unsignedTransaction));
+  console.log(
+    'unsigned transaction',
+    JSON.stringify(unsignedTransaction, null, 2),
+  );
+
+  const localResponse = unsignedTransaction.local(testnetChain1ApiHost);
+
+  console.log('response: ', JSON.stringify(localResponse, null, 2));
 
   signWithChainweaver(unsignedTransaction)
     .then((r) =>
