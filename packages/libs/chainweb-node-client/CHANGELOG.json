@@ -2,6 +2,18 @@
   "name": "@kadena/chainweb-node-client",
   "entries": [
     {
+      "version": "0.1.0",
+      "tag": "@kadena/chainweb-node-client_v0.1.0",
+      "date": "Tue, 29 Nov 2022 16:13:04 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "BREAKING: Removed wrapper `pact`. Exports functions directly"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.4",
       "tag": "@kadena/chainweb-node-client_v0.0.4",
       "date": "Fri, 28 Oct 2022 11:53:11 GMT",

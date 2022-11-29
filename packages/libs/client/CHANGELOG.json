@@ -2,6 +2,29 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.0",
+      "tag": "@kadena/client_v0.1.0",
+      "date": "Tue, 29 Nov 2022 16:13:04 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "BREAKING: Removes `createTransaction`, replaced by `createCommand`."
+          },
+          {
+            "comment": "Adds `send` and `addSignatures` to CommandBuilder."
+          },
+          {
+            "comment": "Adds `local` and `poll` to CommandBuilder."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.5",
       "tag": "@kadena/client_v0.0.5",
       "date": "Wed, 02 Nov 2022 12:29:53 GMT",
