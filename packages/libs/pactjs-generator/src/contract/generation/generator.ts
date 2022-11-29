@@ -37,7 +37,7 @@ export function generateDts(modules: Output): Map<ModuleName, string> {
       moduleDtss.set(
         ModuleName,
         `
-import type { ICommandBuilder } from '@kadena/client';
+import type { ICommandBuilder, IPactCommand } from '@kadena/client';
 
 declare module '@kadena/client' {
   export type I${capitalize(module.name)}Caps = {
@@ -65,7 +65,9 @@ declare module '@kadena/client' {
                  argDef.type,
                )}`;
              })
-             .join(', ')}) => ICommandBuilder<I${capitalize(module.name)}Caps>`;
+             .join(', ')}) => ICommandBuilder<I${capitalize(
+             module.name,
+           )}Caps> & IPactCommand`;
          })
          .join(',\n')}
     }
