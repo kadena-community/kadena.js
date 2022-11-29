@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "Adds `IPactCommand` to module functions.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}

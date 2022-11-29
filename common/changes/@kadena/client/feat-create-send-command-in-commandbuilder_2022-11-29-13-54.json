@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Adds `local` and `poll` to CommandBuilder.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
