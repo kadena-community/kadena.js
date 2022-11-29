@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@kadena/chainweb-node-client",
-      "comment": "Removed wrapper `pact`. Exports functions directly",
+      "comment": "BREAKING: Removed wrapper `pact`. Exports functions directly",
       "type": "minor"
     }
   ],
