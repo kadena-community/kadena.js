@@ -1,8 +1,14 @@
 // These tests expect devnet to be running at http://localhost:8080.
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
-import { pact } from '@kadena/chainweb-node-client';
-import { ISendResponse } from '@kadena/chainweb-node-client/lib/pact';
+import {
+  ISendResponse,
+  listen,
+  local,
+  poll,
+  send,
+  spv,
+} from '@kadena/chainweb-node-client';
 import {
   ChainwebNetworkId,
   ICommand,
@@ -66,8 +72,6 @@ const signedCommand2: ICommand = createSampleExecTx(
 const sendReq2: ISendRequestBody = {
   cmds: [signedCommand2],
 };
-
-const { listen, local, poll, send, spv } = pact;
 
 function sleep20Seconds(): Promise<unknown> {
   return ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);

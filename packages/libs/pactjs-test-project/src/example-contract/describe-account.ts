@@ -21,47 +21,10 @@ async function transactionMain(): Promise<void> {
 
   const amount: number = 0.1337;
 
-  const unsignedTransaction = Pact.modules.coin
-    .transfer(
-      senderAccount,
-      receiverAccount,
-      // () => '(read-keyset "ks")',
-      amount,
-    )
-    // .addData({
-    //   ks: {
-    //     keys: [onlyKey(receiverAccount)],
-    //     pred: 'keys-all',
-    //   },
-    // })
-    .addCap(
-      'coin.TRANSFER',
-      onlyKey(senderAccount),
-      senderAccount,
-      receiverAccount,
-      amount,
-    )
-    .addCap('coin.GAS', onlyKey(senderAccount))
-    .setMeta({ sender: senderAccount }, 'testnet04');
+  const unsignedTransaction = Pact.modules.coin['get-balance'](senderAccount);
 
-  const res = await signWithChainweaver(unsignedTransaction);
-
-  console.log('sigs', res[0].sigs);
-  console.log('signed transactions', JSON.stringify(res, null, 2));
-
-  const sendRequests = res.map((tx) => {
-    console.log('sending transaction', tx.code);
-    return tx.send(testnetChain1ApiHost);
-  });
-
-  const sendResponses = await Promise.all(sendRequests);
-  sendResponses.map(async function startPolling(
-    sendResponse: ISendResponse,
-  ): Promise<void> {
-    console.log('sendResponse', sendResponse);
-    const requestKey = (await sendRequests[0]).requestKeys[0];
-    await pollMain(requestKey);
-  });
+  const res = await unsignedTransaction.local(testnetChain1ApiHost);
+  console.log(res);
 }
 
 async function pollMain(...requestKeys: string[]): Promise<void> {

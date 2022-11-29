@@ -1,0 +1,15 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Removes `createTransaction`, replaced by `createCommand`.",
+      "type": "major"
+    },
+    {
+      "packageName": "@kadena/client",
+      "comment": "Adds `send` and `addSignatures` to CommandBuilder.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

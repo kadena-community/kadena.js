@@ -1,8 +1,4 @@
-import {
-  IPactCommand,
-  Pact,
-  signAndSubmitWithChainweaver,
-} from '@kadena/client';
+import { IPactCommand, Pact, signWithChainweaver } from '@kadena/client';
 
 const sender: string =
   'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
@@ -26,6 +22,4 @@ const pactCommand: IPactCommand &
   );
 
 // let's sign with chainweaver quicksign
-signAndSubmitWithChainweaver(pactCommand)
-  .then(console.log)
-  .catch(console.error);
+signWithChainweaver(pactCommand).then(console.log).catch(console.error);

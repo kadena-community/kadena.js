@@ -46,6 +46,7 @@ signers:
           pubKey: 'no-key',
         },
       ],
+      sigs: [],
       type: 'exec',
     };
 

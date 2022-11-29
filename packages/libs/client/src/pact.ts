@@ -1,15 +1,19 @@
+import { ISendResponse, local, poll, send } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
 import {
   ChainId,
   ChainwebNetworkId,
   ICap,
+  ICommand,
   ICommandPayload,
+  ICommandResult,
+  IPollResponse,
+  ISignature,
   PactValue,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
-import { IUnsignedTransaction } from './interfaces/IUnsignedTransaction';
 import { parseType } from './utils/parseType';
 
 import debug, { Debugger } from 'debug';
@@ -23,12 +27,7 @@ export interface ICommandBuilder<
   TCaps extends Record<string, TArgs>,
   TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps],
 > {
-  addCap<TCap extends keyof TCaps>(
-    caps: TCap,
-    signer: string,
-    ...args: TCaps[TCap]
-  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  createTransaction(): IUnsignedTransaction;
+  createCommand(): ICommand;
   addData: (
     data: IPactCommand['data'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
@@ -38,6 +37,26 @@ export interface ICommandBuilder<
     },
     networkId?: IPactCommand['networkId'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  addCap<TCap extends keyof TCaps>(
+    caps: TCap,
+    signer: string,
+    ...args: TCaps[TCap]
+  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  local(apiHost: string): Promise<ICommandResult>;
+  send(apiHost: string): Promise<ISendResponse>;
+  poll(apiHost: string): Promise<IPollResponse>;
+  addSignatures(
+    ...sig: {
+      pubkey: string;
+      sig: string;
+    }[]
+  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  // setSigner(
+  //   fn: (
+  //     ...transactions: (IPactCommand &
+  //       ICommandBuilder<Record<string, unknown>>)[]
+  //   ) => Promise<this>,
+  // ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
 
 /**
@@ -52,13 +71,25 @@ export interface IPact {
   modules: IPactModules;
 }
 
-class PactCommand
+/**
+ * @alpha
+ */
+export type NonceType = string;
+
+/**
+ * @alpha
+ */
+export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
+
+/**
+ * @alpha
+ */
+export class PactCommand
   implements IPactCommand, ICommandBuilder<Record<string, unknown>>
 {
   public code: string;
   public data: Record<string, unknown>;
   public publicMeta: {
-    // TODO: use enum for chainId
     chainId: ChainId;
     sender: string;
     gasLimit: number;
@@ -73,7 +104,16 @@ class PactCommand
       args: ICap['args'];
     }[];
   }[];
+  public sigs: (ISignature | undefined)[];
+  // public signer:
+  //   | ((
+  //       ...transactions: (IPactCommand &
+  //         ICommandBuilder<Record<string, unknown>>)[]
+  //     ) => Promise<this>)
+  //   | undefined;
   public type: 'exec' = 'exec';
+  public cmd: string | undefined;
+  public requestKey: string | undefined;
 
   public constructor() {
     this.code = '';
@@ -87,9 +127,27 @@ class PactCommand
     };
     this.networkId = 'testnet04';
     this.signers = [];
+    this.sigs = [];
   }
 
-  public createTransaction(): IUnsignedTransaction {
+  /**
+   * A function that is generated based on IPactCommand and the creation date.
+   * This is called during execution of `createCommand()` and adds `nonce` to
+   * the command.
+   * @param t - transaction
+   * @param dateInMs - date in milliseconds from epoch
+   * @returns string that will be created during `createCommand()`
+   */
+  public nonceCreator(t: IPactCommand, dateInMs: number): NonceType {
+    return 'kjs ' + new Date(dateInMs).toISOString();
+  }
+
+  /**
+   * Create a command that's compatible with the blockchain
+   * @returns a command that can be send to the blockchain
+   * (see https://api.chainweb.com/openapi/pact.html#tag/endpoint-send/paths/~1send/post)
+   */
+  public createCommand(): ICommand {
     const dateInMs: number = Date.now();
 
     // convert to IUnsignedTransactionCommand
@@ -106,33 +164,30 @@ class PactCommand
         clist: signer.caps,
       })),
       meta: { ...this.publicMeta, creationTime: Math.floor(dateInMs / 1000) },
-      nonce: new Date(dateInMs).toISOString(),
+      nonce: this.nonceCreator(this, dateInMs),
     };
 
     // stringify command
-    const cmd: string = JSON.stringify(unsignedTransactionCommand);
+    const cmd: string =
+      this.cmd !== undefined
+        ? this.cmd
+        : JSON.stringify(unsignedTransactionCommand);
 
     // hash command
     const hash = blakeHash(cmd);
 
     // convert to IUnsignedTransaction
-    const unsignedTransaction: IUnsignedTransaction = {
+    const command: ICommand = {
       hash,
-      sigs: unsignedTransactionCommand.signers.reduce((acc, signer) => {
-        acc[signer.pubKey] = null;
-        return acc;
-      }, {} as Record<string, null>),
-      // sigs: unsignedTransactionCommand.signers.reduce((acc, signer) => {
-      //   acc.push({ hash, sig: undefined, pubKey: signer.pubKey });
-      //   return acc;
-      // }, [] as SignCommand[]),
+      sigs: this.sigs.map((s) => (s === undefined ? { sig: '' } : s)),
       cmd,
     };
 
-    return unsignedTransaction;
+    this.cmd = command.cmd;
+    return command;
   }
 
-  public addData(data: IPactCommand['data']): PactCommand {
+  public addData(data: IPactCommand['data']): this {
     this.data = data;
     return this;
   }
@@ -140,7 +195,7 @@ class PactCommand
   public setMeta(
     publicMeta: Partial<IPactCommand['publicMeta']>,
     networkId: IPactCommand['networkId'] = 'mainnet01',
-  ): PactCommand {
+  ): this {
     this.publicMeta = Object.assign(this.publicMeta, publicMeta);
     this.networkId = networkId;
     return this;
@@ -150,24 +205,82 @@ class PactCommand
     capability: string,
     signer: string,
     ...args: T[]
-  ): PactCommand {
+  ): this {
     const signerIndex: number = this.signers.findIndex(
       (s) => s.pubKey === signer,
     );
 
     if (signerIndex === -1) {
-      // signer not found yet
+      // signer not found
       // push new signer to this.signers
       this.signers.push({
         pubKey: signer,
         caps: [{ name: capability, args }],
       });
+      this.sigs.push(undefined);
     } else {
       // add cap to existing signer
       this.signers[signerIndex].caps.push({ name: capability, args });
     }
     return this;
   }
+
+  /**
+   * Sends a transaction to the ApiHost /local to test the transaction
+   * (i.e. it is checked whether the signatures are complete)
+   * @param apiHost - the chainweb host where to send the transaction to
+   * @alpha
+   */
+  public local(apiHost: string): Promise<ICommandResult> {
+    log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
+
+    return local(this.createCommand(), apiHost);
+  }
+
+  /**
+   * Sends a transaction to the ApiHost /send when the transaction is finalized
+   * (i.e. it is checked whether the signatures are complete)
+   * @param apiHost - the chainweb host where to send the transaction to
+   * @alpha
+   */
+  public async send(apiHost: string): Promise<ISendResponse> {
+    const sendResponse = await send({ cmds: [this.createCommand()] }, apiHost);
+    this.requestKey = sendResponse.requestKeys[0].toString();
+    return sendResponse;
+  }
+
+  public poll(apiHost: string): Promise<IPollResponse> {
+    if (this.requestKey === undefined) {
+      throw new Error(
+        '`requestKey` not found' +
+          '\nThis request might not be send yet, or it possibly failed.',
+      );
+    }
+    return poll({ requestKeys: [this.requestKey] }, apiHost);
+  }
+
+  public addSignatures(...sigs: { pubkey: string; sig: string }[]): this {
+    sigs.forEach(({ pubkey, sig }) => {
+      const foundSignerIndex = this.signers.findIndex(
+        ({ pubKey }) => pubKey === pubkey,
+      );
+      if (foundSignerIndex === -1) {
+        throw new Error('Cannot add signature, public key not present');
+      }
+      this.sigs[foundSignerIndex] = { sig };
+    });
+    return this;
+  }
+
+  // public setSigner(
+  //   fn: (
+  //     ...transactions: (IPactCommand &
+  //       ICommandBuilder<Record<string, unknown>>)[]
+  //   ) => Promise<this>,
+  // ): this {
+  //   this.signer = fn;
+  //   return this;
+  // }
 }
 
 /**

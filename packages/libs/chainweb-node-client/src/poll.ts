@@ -2,7 +2,6 @@ import type { IPollRequestBody, IPollResponse } from '@kadena/types';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-import type { Response } from 'cross-fetch';
 
 import fetch from 'cross-fetch';
 
@@ -21,10 +20,10 @@ import fetch from 'cross-fetch';
 export function poll(
   requestBody: IPollRequestBody,
   apiHost: string,
-): Promise<IPollResponse | Response> {
+): Promise<IPollResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);
 
-  const response: Promise<IPollResponse | Response> = fetch(
+  const response: Promise<IPollResponse> = fetch(
     `${apiHost}/api/v1/poll`,
     request,
   ).then((r) => parseResponse<IPollResponse>(r));

@@ -1,4 +1,4 @@
-import { ChainId, ChainwebNetworkId, ICap } from '@kadena/types';
+import { ChainId, ChainwebNetworkId, ICap, ISignature } from '@kadena/types';
 
 /**
  * @alpha
@@ -17,6 +17,7 @@ export interface IPactCommand {
     }[];
   }[];
   type: string;
+  sigs: (ISignature | undefined)[];
 }
 
 /**

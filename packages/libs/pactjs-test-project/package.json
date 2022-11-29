@@ -13,7 +13,7 @@
   "scripts": {
     "_phase:build": "",
     "_phase:test": "",
-    "build": "",
+    "build": "tsc --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "pactjs:generate:contract": "pactjs contract-generate --clean --file src/example-contract/coin.contract.pact",
@@ -31,6 +31,7 @@
     ]
   },
   "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/types": "workspace:*",

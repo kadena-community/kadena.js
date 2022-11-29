@@ -3,7 +3,6 @@ import type { Base16String, ICommand } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type { Response } from 'cross-fetch';
 import fetch from 'cross-fetch';
 
 /**
@@ -12,7 +11,7 @@ import fetch from 'cross-fetch';
  * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
  * @alpha
  */
-export interface IISendRequestBody {
+export interface ISendRequestBody {
   cmds: Array<ICommand>;
 }
 
@@ -39,12 +38,12 @@ export interface ISendResponse {
  * @alpha
  */
 export function send(
-  requestBody: IISendRequestBody,
+  requestBody: ISendRequestBody,
   apiHost: string,
-): Promise<ISendResponse | Response> {
+): Promise<ISendResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);
 
-  const response: Promise<ISendResponse | Response> = fetch(
+  const response: Promise<ISendResponse> = fetch(
     `${apiHost}/api/v1/send`,
     request,
   ).then((r) => parseResponse(r));

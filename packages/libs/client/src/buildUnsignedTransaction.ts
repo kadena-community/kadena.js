@@ -14,7 +14,7 @@ export function buildUnsignedTransaction(
   parts: string[],
   holes: string[],
   args: Record<string, string>,
-): ICommandBuilder<{}> {
+): IPactCommand & ICommandBuilder<{}> {
   const filledTemplate: string = buildCommandFromTemplate(parts, holes, args);
   const payload = parse(filledTemplate) as IPactCommand;
 

@@ -1,4 +1,4 @@
-import { Pact, signAndSubmitWithChainweaver } from '@kadena/client';
+import { Pact, signWithChainweaver } from '@kadena/client';
 
 function main(): void {
   const sender =
@@ -34,7 +34,7 @@ function main(): void {
       'testnet04',
     );
 
-  signAndSubmitWithChainweaver(transaction) // sign
+  signWithChainweaver(transaction) // sign
     .then((x) => console.log(JSON.stringify(x)))
     .catch(console.log);
 }

@@ -3,7 +3,6 @@ import type { ICommandResult, LocalRequestBody } from '@kadena/types';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
-import type { Response } from 'cross-fetch';
 import fetch from 'cross-fetch';
 
 /**
@@ -18,10 +17,10 @@ import fetch from 'cross-fetch';
 export function local(
   requestBody: LocalRequestBody,
   apiHost: string,
-): Promise<ICommandResult | Response> {
+): Promise<ICommandResult> {
   const request = stringifyAndMakePOSTRequest(requestBody);
 
-  const response: Promise<ICommandResult | Response> = fetch(
+  const response: Promise<ICommandResult> = fetch(
     `${apiHost}/api/v1/local`,
     request,
   ).then((r) => parseResponse<ICommandResult>(r));
