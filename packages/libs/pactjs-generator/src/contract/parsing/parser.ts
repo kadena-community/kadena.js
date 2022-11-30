@@ -12,7 +12,7 @@ export interface ILocation {
 /**
  * @internal
  */
-export type Arg = { name: string; type: string | undefined } & ILocation;
+export type Arg = { name: string; type: string | 'undefined' } & ILocation;
 /**
  * @internal
  */
