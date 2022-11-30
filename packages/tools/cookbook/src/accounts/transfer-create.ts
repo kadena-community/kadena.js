@@ -2,7 +2,7 @@ import { Pact, signWithChainweaver } from '@kadena/client';
 import { ISendResponse } from '@kadena/chainweb-node-client';
 import { getAccountKey, apiHost, printLocal } from '../utils';
 
-const HELP = `Usage example: \n\nnode transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
+const HELP = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
 const NETWORK_ID = 'testnet04';
 const API_HOST = apiHost('1', 'testnet.', NETWORK_ID);
 
