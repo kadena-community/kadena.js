@@ -422,6 +422,25 @@ importers:
       '@types/heft-jest': 1.0.3
       eslint: 8.25.0
 
+  ../../packages/tools/cookbook:
+    specifiers:
+      '@kadena/chainweb-node-client': workspace:*
+      '@kadena/client': workspace:*
+      '@kadena/eslint-config': workspace:*
+      '@kadena/heft-rig': workspace:*
+      '@kadena/pactjs-cli': workspace:*
+      '@kadena/types': workspace:*
+      '@types/node': ^16.0.0
+    dependencies:
+      '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
+      '@kadena/client': link:../../libs/client
+      '@kadena/heft-rig': link:../heft-rig
+      '@kadena/types': link:../../libs/types
+    devDependencies:
+      '@kadena/eslint-config': link:../eslint-config
+      '@kadena/pactjs-cli': link:../pactjs-cli
+      '@types/node': 16.11.65
+
   ../../packages/tools/eslint-config:
     specifiers:
       '@kadena/eslint-config': workspace:*

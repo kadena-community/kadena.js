@@ -1,0 +1,27 @@
+{
+  "name": "@kadena/cookbook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "build": "",
+    "_phase:build": "",
+    "lint": "npx eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
+    "_phase:test": "",
+    "test": ""
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@kadena/heft-rig": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^16.0.0",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@kadena/eslint-config": "workspace:*"
+  }
+}
