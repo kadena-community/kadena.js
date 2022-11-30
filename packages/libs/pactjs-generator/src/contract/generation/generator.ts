@@ -9,9 +9,9 @@ const keywordsMap: Record<string, string> = {
   'object{fungible-v2.account-details}': 'object',
 };
 
-const mapType = (name: string | undefined): string => {
-  if (name === undefined) {
-    return 'undefined';
+const mapType = (name: string | 'undefined'): string => {
+  if (name === 'undefined') {
+    return 'any';
   }
   if (name in keywordsMap) {
     return keywordsMap[name];
@@ -24,6 +24,14 @@ type ModuleName = string;
 
 function capitalize([first, ...rest]: string): string {
   return first.toUpperCase() + rest.join('');
+}
+
+function camelCase(name: string[]): string {
+  return name.map(capitalize).join('');
+}
+
+function stripDashesAndCamelCase(name: string): string {
+  return camelCase(name.split('-'));
 }
 
 /**
@@ -40,7 +48,7 @@ export function generateDts(modules: Output): Map<ModuleName, string> {
 import type { ICommandBuilder, IPactCommand } from '@kadena/client';
 
 declare module '@kadena/client' {
-  export type I${capitalize(module.name)}Caps = {
+  export type I${stripDashesAndCamelCase(module.name)}Caps = {
     ${Object.keys(module.defcaps)
       .map((defcapName) => {
         const defcap: Defcap = module.defcaps[defcapName];
@@ -65,7 +73,7 @@ declare module '@kadena/client' {
                  argDef.type,
                )}`;
              })
-             .join(', ')}) => ICommandBuilder<I${capitalize(
+             .join(', ')}) => ICommandBuilder<I${stripDashesAndCamelCase(
              module.name,
            )}Caps> & IPactCommand`;
          })
