@@ -12,18 +12,19 @@ describe('generator', () => {
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-    const expected = `import type { ICommandBuilder } from '@kadena/client';
+    const expected =
+      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
 declare module '@kadena/client' {
   export type ICoinCaps = { }
   export interface IPactModules {
     "coin": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICoinCaps>
+      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICoinCaps> & IPactCommand
     }
   }
 }`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
+        .split(/[\s\n]/)
+        .filter((x) => x !== '')
+        .join(' ');
     expect(dTs).toBe(expected);
   });
 
@@ -39,7 +40,8 @@ declare module '@kadena/client' {
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-    const expected = `import type { ICommandBuilder } from '@kadena/client';
+    const expected =
+      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
 declare module '@kadena/client' {
   export type ICoinCaps = {
     "coin.GAS": [ ],
@@ -47,13 +49,13 @@ declare module '@kadena/client' {
   }
   export interface IPactModules {
     "coin": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICoinCaps>
+      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICoinCaps> & IPactCommand
     }
   }
 }`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
+        .split(/[\s\n]/)
+        .filter((x) => x !== '')
+        .join(' ');
     expect(dTs).toBe(expected);
   });
 });

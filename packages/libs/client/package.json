@@ -18,9 +18,9 @@
     "test": "heft test"
   },
   "devDependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/eslint-config": "workspace:*",
     "@kadena/heft-rig": "workspace:*",
-    "@kadena/chainweb-node-client": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
     "@types/debug": "~4.1.7",
