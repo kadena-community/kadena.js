@@ -15,13 +15,12 @@
   },
   "dependencies": {
     "@kadena/client": "workspace:*",
-    "@kadena/chainweb-node-client": "workspace:*",
-    "@kadena/types": "workspace:*",
-    "@kadena/heft-rig": "workspace:*"
+    "@kadena/chainweb-node-client": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^16.0.0",
     "@kadena/pactjs-cli": "workspace:*",
-    "@kadena/eslint-config": "workspace:*"
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*"
   }
 }

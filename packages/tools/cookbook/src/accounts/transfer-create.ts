@@ -1,6 +1,6 @@
 import { Pact, signWithChainweaver } from '@kadena/client';
 import { ISendResponse } from '@kadena/chainweb-node-client';
-import { getAccountKey, apiHost, printLocal } from '../utils';
+import { accountKey, apiHost, pollTransactions } from '../utils';
 
 const HELP = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
 const NETWORK_ID = 'testnet04';
@@ -12,17 +12,16 @@ if (process.argv.length !== 5) {
 }
 
 const [sender, receiver, transferAmount] = process.argv.slice(2);
-const amount = Number(transferAmount);
 
 async function transferCreate(
   sender: string,
   receiver: string,
   amount: number,
 ): Promise<void> {
-  const senderPublicKey = getAccountKey(sender);
+  const senderPublicKey = accountKey(sender);
   const guardData: Record<string, unknown> = {
     ks: {
-      keys: [getAccountKey(receiver)],
+      keys: [accountKey(receiver)],
       pred: 'keys-all',
     },
   };
@@ -36,12 +35,7 @@ async function transferCreate(
     .addData(guardData)
     .addCap('coin.GAS', senderPublicKey)
     .addCap('coin.TRANSFER', senderPublicKey, sender, receiver, amount)
-    .setMeta(
-      {
-        sender: senderPublicKey,
-      },
-      NETWORK_ID,
-    );
+    .setMeta({ sender }, NETWORK_ID);
 
   const signedTransactions = await signWithChainweaver(transactionBuilder);
 
@@ -55,11 +49,10 @@ async function transferCreate(
   sendResponses.map(async function startPolling(
     sendResponse: ISendResponse,
   ): Promise<void> {
-    console.log('sendResponse', sendResponse);
+    console.log('Send response: ', sendResponse);
     const requestKey = (await sendRequests[0]).requestKeys[0];
-    console.log({ requestKey });
-    // await pollMain(requestKey);
+    await pollTransactions([requestKey], API_HOST);
   });
 }
 
-transferCreate(sender, receiver, amount).catch(console.error);
+transferCreate(sender, receiver, Number(transferAmount)).catch(console.error);

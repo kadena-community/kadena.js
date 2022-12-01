@@ -26,12 +26,21 @@ In depth documentation for setting up and using @kadena/client can be found at
 
 | Name                                                     | Description                    |
 | -------------------------------------------------------- | ------------------------------ |
-| **ACCOUNTS**                                             |                                |
+| **Accounts**                                             |                                |
 | [Create And Fund Account](./accounts/transfer-create.js) | Create and fund a KDA account. |
 
 ## Setup
 
-1. Install dependencies
-2. Load contracts from blockchain
-3. Generate Interfaces
+1. [Install dependencies](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain)
+2. [Load contracts from blockchain](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain)
+3. [Generate Interfaces](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain)
 4. Execute commands
+
+Example: Running the transfer-create script:
+
+```bash
+ts-node src/accounts/transfer-create.ts senderAccount recieverAccount 1
+```
+
+> **NOTE:** These scripts assume that accounts follow the recommended
+> convention: k:publicKey `tsconfig.json`. Otherwise this will not work
