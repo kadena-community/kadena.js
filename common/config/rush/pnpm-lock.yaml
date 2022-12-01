@@ -426,7 +426,6 @@ importers:
     specifiers:
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/client': workspace:*
-      '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@types/node': ^16.0.0
@@ -434,7 +433,6 @@ importers:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
       '@kadena/client': link:../../libs/client
     devDependencies:
-      '@kadena/eslint-config': link:../eslint-config
       '@kadena/heft-rig': link:../heft-rig
       '@kadena/pactjs-cli': link:../pactjs-cli
       '@types/node': 16.11.65

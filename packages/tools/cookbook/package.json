@@ -8,9 +8,6 @@
   "license": "ISC",
   "scripts": {
     "build": "",
-    "_phase:build": "",
-    "lint": "npx eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
-    "_phase:test": "",
     "test": ""
   },
   "dependencies": {
@@ -20,7 +17,6 @@
   "devDependencies": {
     "@types/node": "^16.0.0",
     "@kadena/pactjs-cli": "workspace:*",
-    "@kadena/eslint-config": "workspace:*",
     "@kadena/heft-rig": "workspace:*"
   }
 }

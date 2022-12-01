@@ -39,7 +39,7 @@ In depth documentation for setting up and using @kadena/client can be found at
 Example: Running the transfer-create script:
 
 ```bash
-ts-node src/accounts/transfer-create.ts senderAccount recieverAccount 1
+ts-node src/accounts/transfer-create.ts senderAccount receiverAccount 1
 ```
 
 ## Notes
