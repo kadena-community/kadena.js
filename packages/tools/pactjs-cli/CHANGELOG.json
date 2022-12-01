@@ -2,6 +2,18 @@
   "name": "@kadena/pactjs-cli",
   "entries": [
     {
+      "version": "0.0.6",
+      "tag": "@kadena/pactjs-cli_v0.0.6",
+      "date": "Thu, 01 Dec 2022 09:16:13 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/pactjs-generator\" to `0.1.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.5",
       "tag": "@kadena/pactjs-cli_v0.0.5",
       "date": "Tue, 29 Nov 2022 16:14:08 GMT",
