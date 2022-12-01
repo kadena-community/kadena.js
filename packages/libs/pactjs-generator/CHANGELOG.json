@@ -2,6 +2,18 @@
   "name": "@kadena/pactjs-generator",
   "entries": [
     {
+      "version": "0.1.1",
+      "tag": "@kadena/pactjs-generator_v0.1.1",
+      "date": "Thu, 01 Dec 2022 09:16:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix issue where dashes in smart contract caused invalid typings"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.0",
       "tag": "@kadena/pactjs-generator_v0.1.0",
       "date": "Tue, 29 Nov 2022 16:14:08 GMT",
