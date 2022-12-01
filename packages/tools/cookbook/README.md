@@ -42,5 +42,15 @@ Example: Running the transfer-create script:
 ts-node src/accounts/transfer-create.ts senderAccount recieverAccount 1
 ```
 
-> **NOTE:** These scripts assume that accounts follow the recommended
-> convention: k:publicKey `tsconfig.json`. Otherwise this will not work
+## Notes
+
+- These scripts assume that accounts follow the recommended convention:
+  `k:publicKey`. If your account name does not follow this convention, you will
+  need to manually update it in the script.
+- All scripts are integrated with sign requests to Chainweaver desktop (this
+  will not work on the web client). If you would like to manually paste the
+  sigData into the Chainweaver application, you can use the `printSigData`
+  function provided in the utils directory.
+- If you would like to test a transaction without sending it to the blockchain
+  to be mined, you can use the `printLocal` function provided in the utils
+  directory to print the response for a non-transactional command execution.
