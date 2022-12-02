@@ -1,10 +1,12 @@
-import { Pact, signWithChainweaver } from '@kadena/client';
 import { ISendResponse } from '@kadena/chainweb-node-client';
+import { Pact, signWithChainweaver } from '@kadena/client';
+
 import { accountKey, apiHost, pollTransactions } from '../utils';
 
-const HELP = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
-const NETWORK_ID = 'testnet04';
-const API_HOST = apiHost('1', 'testnet.', NETWORK_ID);
+const HELP: string = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' | undefined =
+  'testnet04';
+const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 5) {
   console.info(HELP);

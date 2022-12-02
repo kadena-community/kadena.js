@@ -1,7 +1,8 @@
 import { Pact } from '@kadena/client';
+
 import { apiHost } from '../utils';
 
-const HELP = `Usage example: \n\nts-node create-account.js k:{accountPublicKey}`;
+const HELP: string = `Usage example: \n\nts-node create-account.js k:{accountPublicKey}`;
 
 if (process.argv.length !== 3) {
   console.info(HELP);

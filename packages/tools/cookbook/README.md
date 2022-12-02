@@ -5,17 +5,15 @@ This project demonstrates common use cases for `@kadena/client` and
 
 <p align="center">
 
-  <picture>
+<picture>
 
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+<source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
 
-    <img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+<img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
 
-  </picture>
+</picture>
 
 </p>
-
-<hr>
 
 In depth documentation for setting up and using @kadena/client can be found at
 [@kadena/client](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#kadenajs---client)
@@ -24,10 +22,12 @@ In depth documentation for setting up and using @kadena/client can be found at
 
 ## Overview
 
-| Name                                                     | Description                    |
-| -------------------------------------------------------- | ------------------------------ |
-| **Accounts**                                             |                                |
-| [Create And Fund Account](./accounts/transfer-create.js) | Create and fund a KDA account. |
+| Name                                                         | Description                    |
+| ------------------------------------------------------------ | ------------------------------ |
+| **Accounts**                                                 |                                |
+| [Create Account](./src/accounts/create-account.ts)           | Create a KDA account.          |
+| [Create And Fund Account](./src/accounts/transfer-create.ts) | Create and fund a KDA account. |
+| [Get Balance](./src/accounts/get-balance.ts)                 | Check KDA account balance.     |
 
 ## Setup
 

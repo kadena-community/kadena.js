@@ -31,8 +31,10 @@ export async function pollTransactions(
       (k) => !foundRequestKeys.includes(k),
     );
 
-    remainingTransactions.length
-      ? setTimeout(() => pollTransactions(remainingTransactions, apiHost), 5000)
-      : console.log('Polling Completed');
+    if (remainingTransactions.length) {
+      setTimeout(() => pollTransactions(remainingTransactions, apiHost), 5000);
+    } else {
+      console.log('Polling Completed');
+    }
   }
 }

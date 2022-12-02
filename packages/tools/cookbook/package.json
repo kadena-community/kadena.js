@@ -2,21 +2,40 @@
   "name": "@kadena/cookbook",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "keywords": [],
-  "author": "",
   "license": "ISC",
+  "author": "",
+  "main": "index.js",
   "scripts": {
-    "build": "",
-    "test": ""
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
+    "preinstall": "npx only-allow pnpm",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "test": "rushx build && heft test --no-build"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
   },
   "dependencies": {
-    "@kadena/client": "workspace:*",
-    "@kadena/chainweb-node-client": "workspace:*"
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/client": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^16.0.0",
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
-    "@kadena/heft-rig": "workspace:*"
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0",
+    "ts-node": "~10.8.2"
   }
 }
