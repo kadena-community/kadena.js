@@ -1,7 +1,9 @@
 import { ISendResponse } from '@kadena/chainweb-node-client';
 import { Pact, signWithChainweaver } from '@kadena/client';
 
-import { accountKey, apiHost, pollTransactions } from '../utils';
+import { accountKey } from '../utils/account-key';
+import { apiHost } from '../utils/api-host';
+import { pollTransactions } from '../utils/poll-transactions';
 
 const HELP: string = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
 const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' | undefined =
