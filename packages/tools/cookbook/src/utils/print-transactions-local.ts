@@ -1,7 +1,14 @@
 import type { ICoinCaps, ICommandBuilder, IPactCommand } from '@kadena/client';
 
-// Blocking/sync call to submit a command for non-transactional execution
-// In a blockchain environment this would be a node-local “dirty read”
+/**
+ * Blocking/sync call to submit a command for non-transactional execution.
+ * In a blockchain environment this would be a node-local “dirty read”
+ *
+ * @export
+ * @param {((ICommandBuilder<ICoinCaps> & IPactCommand)[])} signedTransactions
+ * @param {string} apiHost
+ * @return {Promise<void>}
+ */
 export async function printTransactionsLocal(
   signedTransactions: (ICommandBuilder<ICoinCaps> & IPactCommand)[],
   apiHost: string,

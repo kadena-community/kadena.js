@@ -15,7 +15,14 @@ if (process.argv.length !== 4) {
 
 const [gasProvider, receiver] = process.argv.slice(2);
 
-async function transferCreate(
+/**
+ * Create a new KDA account
+ *
+ * @param {string} gasProvider
+ * @param {string} receiver
+ * @return {Promise<void>}
+ */
+async function createAccount(
   gasProvider: string,
   receiver: string,
 ): Promise<void> {
@@ -53,4 +60,4 @@ async function transferCreate(
   });
 }
 
-transferCreate(gasProvider, receiver).catch(console.error);
+createAccount(gasProvider, receiver).catch(console.error);

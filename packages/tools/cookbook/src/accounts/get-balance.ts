@@ -11,7 +11,13 @@ if (process.argv.length !== 3) {
 
 const [account] = process.argv.slice(2);
 
-async function transferCreate(account: string): Promise<void> {
+/**
+ * Get KDA account balance
+ *
+ * @param {string} account
+ * @return {Promise<void>}
+ */
+async function getBalance(account: string): Promise<void> {
   const response = await Pact.modules.coin['get-balance'](account).local(
     apiHost(),
   );
@@ -19,4 +25,4 @@ async function transferCreate(account: string): Promise<void> {
   console.log(response);
 }
 
-transferCreate(account).catch(console.error);
+getBalance(account).catch(console.error);

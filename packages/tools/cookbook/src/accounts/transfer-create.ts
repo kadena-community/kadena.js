@@ -15,6 +15,14 @@ if (process.argv.length !== 5) {
 
 const [sender, receiver, transferAmount] = process.argv.slice(2);
 
+/**
+ * Create a new KDA account and transfer funds to it
+ *
+ * @param {string} sender
+ * @param {string} receiver
+ * @param {number} amount
+ * @return {Promise<void>}
+ */
 async function transferCreate(
   sender: string,
   receiver: string,

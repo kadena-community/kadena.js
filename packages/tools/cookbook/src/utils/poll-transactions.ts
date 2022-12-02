@@ -1,6 +1,13 @@
 import { poll } from '@kadena/chainweb-node-client';
 
-// Poll for transaction mined on the blockchain
+/**
+ * Poll for transaction mined on the blockchain
+ *
+ * @export
+ * @param {string[]} requestKeys
+ * @param {string} apiHost
+ * @return {Promise<void>}
+ */
 export async function pollTransactions(
   requestKeys: string[],
   apiHost: string,
