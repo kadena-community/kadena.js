@@ -11,7 +11,10 @@
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "rushx pactjs:load:contract; rushx pactjs:generate:interfacex",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "pactjs:generate:interface": "pactjs contract-generate --file './contracts/coin.module.pact'",
+    "pactjs:load:contract": "pactjs retrieve-contract --out './contracts/coin.module.pact' --module 'coin'",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {
