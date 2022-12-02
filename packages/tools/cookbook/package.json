@@ -8,14 +8,11 @@
   "main": "index.js",
   "scripts": {
     "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
+    "_phase:test": "",
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "rushx pactjs:load:contract; rushx pactjs:generate:interface",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
-    "pactjs:generate:interface": "pactjs contract-generate --file './contracts/coin.module.pact'",
-    "pactjs:load:contract": "pactjs retrieve-contract --out './contracts/coin.module.pact' --module 'coin'",
-    "test": "rushx build && heft test --no-build"
+    "test": ""
   },
   "lint-staged": {
     "src/**/*.ts": [
