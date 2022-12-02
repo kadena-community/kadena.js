@@ -7,7 +7,7 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "_phase:build": "heft build --clean",
+    "_phase:build": "",
     "_phase:test": "",
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
