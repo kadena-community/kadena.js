@@ -1,6 +1,9 @@
 // Blocking/sync call to submit a command for non-transactional execution
 // In a blockchain environment this would be a node-local “dirty read”
-export async function printLocal(signedTransactions: any[], apiHost: string) {
+export async function printTransactionsLocal(
+  signedTransactions: any[],
+  apiHost: string,
+) {
   const localRequests = signedTransactions.map((tx) => {
     console.log(`Sending transaction: ${tx.code}`);
     return tx.local(apiHost);
