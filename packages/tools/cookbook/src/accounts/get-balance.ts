@@ -2,7 +2,7 @@ import { Pact } from '@kadena/client';
 
 import { apiHost } from '../utils/api-host';
 
-const HELP: string = `Usage example: \n\nts-node create-account.js k:{accountPublicKey}`;
+const HELP: string = `Usage example: \n\nts-node get-balance.js k:{accountPublicKey}`;
 
 if (process.argv.length !== 3) {
   console.info(HELP);
@@ -22,7 +22,7 @@ async function getBalance(account: string): Promise<void> {
     apiHost(),
   );
 
-  console.log(response);
+  console.log(JSON.stringify(response, null, 2));
 }
 
 getBalance(account).catch(console.error);
