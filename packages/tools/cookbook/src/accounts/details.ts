@@ -11,6 +11,12 @@ if (process.argv.length !== 3) {
 
 const [account] = process.argv.slice(2);
 
+/**
+ * View details for an account
+ *
+ * @param {string} account
+ * @return {Promise<void>}
+ */
 async function details(account: string): Promise<void> {
   const response = await Pact.modules.coin.details(account).local(apiHost());
 
