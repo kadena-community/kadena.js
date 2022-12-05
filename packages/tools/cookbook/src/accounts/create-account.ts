@@ -20,9 +20,9 @@ const [gasProvider, receiver] = process.argv.slice(2);
 /**
  * Create a new KDA account
  *
- * @param {string} gasProvider
- * @param {string} receiver
- * @return {Promise<void>}
+ * @param gasProvider - Account paying for gas
+ * @param receiver - Account being created
+ * @return
  */
 async function createAccount(
   gasProvider: string,

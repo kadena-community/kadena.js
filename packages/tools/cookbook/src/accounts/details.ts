@@ -14,8 +14,8 @@ const [account] = process.argv.slice(2);
 /**
  * View details for an account
  *
- * @param {string} account
- * @return {Promise<void>}
+ * @param account - Account name
+ * @return
  */
 async function details(account: string): Promise<void> {
   const response = await Pact.modules.coin.details(account).local(apiHost());

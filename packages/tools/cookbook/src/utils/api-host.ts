@@ -1,12 +1,11 @@
 /**
  * Composes the apiHost
  *
- * @export
- * @param {string} [chainId='1']
- * @param {string} [network='testnet.']
- * @param {string} [networkId='testnet04']
- * @param {string} [apiVersion='0.0']
- * @return {string}
+ * @param [chainId='1']
+ * @param [network='testnet.']
+ * @param [networkId='testnet04']
+ * @param [apiVersion='0.0']
+ * @return
  */
 export function apiHost(
   chainId: string = '1',

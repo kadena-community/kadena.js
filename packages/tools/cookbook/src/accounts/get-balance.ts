@@ -14,8 +14,8 @@ const [account] = process.argv.slice(2);
 /**
  * Get KDA account balance
  *
- * @param {string} account
- * @return {Promise<void>}
+ * @param account - Account name
+ * @return
  */
 async function getBalance(account: string): Promise<void> {
   const response = await Pact.modules.coin['get-balance'](account).local(

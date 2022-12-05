@@ -20,10 +20,10 @@ const [sender, receiver, transferAmount] = process.argv.slice(2);
 /**
  * Create a new KDA account and transfer funds to it
  *
- * @param {string} sender
- * @param {string} receiver
- * @param {number} amount
- * @return {Promise<void>}
+ * @param sender - Account sending coins
+ * @param receiver - Account being created and receiving coins
+ * @param amount - Amount of coins transferred to the new account
+ * @return
  */
 async function transferCreate(
   sender: string,
