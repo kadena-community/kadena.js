@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Remove `cmd` from the transaction when the properties of this transaction change, so it gets recalculated. Also reset signatures (if any) in that case, because the signatures do no longer match the transaction",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

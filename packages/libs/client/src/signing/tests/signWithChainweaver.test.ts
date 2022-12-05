@@ -79,7 +79,7 @@ describe('signWithChainweaver', () => {
     });
   });
 
-  it('adds signatures in multisig fasion to the transactions', async () => {
+  it('adds signatures in multisig fashion to the transactions', async () => {
     const mockedResponse: { results: IChainweaverSignedCommand[] } = {
       results: [{ cmd: '', sigs: { 'gas-signer-pubkey': 'gas-key-sig' } }],
     };
