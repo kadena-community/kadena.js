@@ -490,6 +490,14 @@
     // ##  Tools
     // #########################
     {
+      "packageName": "@kadena/cookbook",
+      "projectFolder": "packages/tools/cookbook",
+      "cyclicDependencyProjects": ["@kadena/cookbook"],
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena/eslint-config",
       "projectFolder": "packages/tools/eslint-config",
       "cyclicDependencyProjects": ["@kadena/eslint-config"],

@@ -162,7 +162,7 @@ Now that everything is bootstrapped, we can start building transactions.
 Create a new file and name it `transfer.ts` (or `.js`).
 
 ```ts
-import { Pactjs } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
 // store the builder in a variable
 const transactionBuilder =
@@ -232,12 +232,10 @@ can only with the desktop version, not the web-version, as it's
 > finalized. Once it is, we'll update the `@kadena/client` accordingly
 
 ```ts
-import {
-  signWithChainweaver,
-} from '@kadena/client';
+import { signWithChainweaver } from '@kadena/client';
 
 // use the finalized transaction, and sign it with Chainweaver
-cont signedTransaction = signWithChainweaver(unsignedTransaction)
+const signedTransaction = signWithChainweaver(unsignedTransaction)
   .then(console.log)
   .catch(console.error);
 ```
