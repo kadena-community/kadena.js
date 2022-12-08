@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model blocks {
+  chainid      BigInt
+  creationtime DateTime       @db.Timestamptz(6)
+  epoch        DateTime       @db.Timestamptz(6)
+  flags        Decimal        @db.Decimal(20, 0)
+  hash         String         @id @db.VarChar
+  height       BigInt
+  miner        String         @db.VarChar
+  nonce        Decimal        @db.Decimal(20, 0)
+  parent       String         @db.VarChar
+  payload      String         @db.VarChar
+  powhash      String         @db.VarChar
+  predicate    String         @db.VarChar
+  target       Decimal        @db.Decimal(80, 0)
+  weight       Decimal        @db.Decimal(80, 0)
+  events       events[]
+  minerkeys    minerkeys[]
+  transactions transactions[]
+  transfers    transfers[]
+}
+
+model events {
+  block      String @db.VarChar
+  chainid    BigInt
+  height     BigInt
+  idx        BigInt
+  module     String @db.VarChar
+  modulehash String @db.VarChar
+  name       String @db.VarChar
+  params     Json
+  paramtext  String @db.VarChar
+  qualname   String @db.VarChar
+  requestkey String @db.VarChar
+  blocks     blocks @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([block, idx, requestkey])
+  @@index([height, chainid, idx], map: "events_height_chainid_idx")
+  @@index([requestkey])
+}
+
+model minerkeys {
+  block  String @db.VarChar
+  key    String @db.VarChar
+  blocks blocks @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([block, key])
+}
+
+model signers {
+  addr       String? @db.VarChar
+  caps       Json
+  idx        Int
+  pubkey     String  @db.VarChar
+  requestkey String  @db.VarChar
+  scheme     String? @db.VarChar
+  sig        String  @db.VarChar
+
+  @@id([idx, requestkey])
+}
+
+model transactions {
+  badresult    Json?
+  block        String   @db.VarChar
+  chainid      BigInt
+  code         String?  @db.VarChar
+  continuation Json?
+  creationtime DateTime @db.Timestamptz(6)
+  data         Json?
+  gas          BigInt
+  gaslimit     BigInt
+  gasprice     Float
+  goodresult   Json?
+  height       BigInt
+  logs         String?  @db.VarChar
+  metadata     Json?
+  nonce        String   @db.VarChar
+  num_events   BigInt?
+  pactid       String?  @db.VarChar
+  proof        String?  @db.VarChar
+  requestkey   String   @db.VarChar
+  rollback     Boolean?
+  sender       String   @db.VarChar
+  step         BigInt?
+  ttl          BigInt
+  txid         BigInt?
+  blocks       blocks   @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([block, requestkey])
+  @@index([height])
+  @@index([requestkey])
+}
+
+model transfers {
+  amount     Decimal @db.Decimal
+  block      String  @db.VarChar
+  chainid    BigInt
+  from_acct  String  @db.VarChar
+  height     BigInt
+  idx        BigInt
+  modulehash String  @db.VarChar
+  modulename String  @db.VarChar
+  requestkey String  @db.VarChar
+  to_acct    String  @db.VarChar
+  blocks     blocks  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([block, chainid, idx, modulehash, requestkey])
+  @@index([from_acct, height, idx], map: "transfers_from_acct_height_idx")
+  @@index([to_acct, height, idx])
+}
