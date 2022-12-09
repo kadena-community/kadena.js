@@ -406,8 +406,15 @@
     {
       "packageName": "@kadena/explorer",
       "projectFolder": "packages/apps/explorer",
-      "reviewCategory": "prototypes",
-      "shouldPublish": false
+      "shouldPublish": false,
+      "skipRushCheck": true
+    },
+
+    {
+      "packageName": "@kadena/graph",
+      "projectFolder": "packages/apps/graph",
+      "shouldPublish": false,
+      "skipRushCheck": true
     },
 
     // #########################

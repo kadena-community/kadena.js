@@ -130,6 +130,14 @@ importers:
       prettier: 2.7.1
       typescript: 4.6.4
 
+  ../../packages/apps/graph:
+    specifiers:
+      '@prisma/client': ~4.7.1
+      prisma: ^3.13.0
+    dependencies:
+      '@prisma/client': 4.7.1_prisma@3.15.2
+      prisma: 3.15.2
+
   ../../packages/libs/bootstrap-lib:
     specifiers:
       '@kadena/cryptography-utils': workspace:*
@@ -1569,8 +1577,26 @@ packages:
       prisma: 3.15.2
     dev: false
 
+  /@prisma/client/4.7.1_prisma@3.15.2:
+    resolution: {integrity: sha512-/GbnOwIPtjiveZNUzGXOdp7RxTEkHL4DZP3vBaFNadfr6Sf0RshU5EULFzVaSi9i9PIK9PYd+1Rn7z2B2npb9w==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c
+      prisma: 3.15.2
+    dev: false
+
   /@prisma/engines-version/3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e:
     resolution: {integrity: sha512-e3k2Vd606efd1ZYy2NQKkT4C/pn31nehyLhVug6To/q8JT8FpiMrDy7zmm3KLF0L98NOQQcutaVtAPhzKhzn9w==}
+    dev: false
+
+  /@prisma/engines-version/4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c:
+    resolution: {integrity: sha512-Bd4LZ+WAnUHOq31e9X/ihi5zPlr4SzTRwUZZYxvWOxlerIZ7HJlVa9zXpuKTKLpI9O1l8Ec4OYCKsivWCs5a3Q==}
     dev: false
 
   /@prisma/engines/3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e:
