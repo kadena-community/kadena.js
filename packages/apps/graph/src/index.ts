@@ -1,17 +1,19 @@
-import { createYoga, createSchema } from 'graphql-yoga';
-import { createServer } from 'node:http';
 import 'json-bigint-patch';
 
+import { getBlocks } from './lastBlock/Blocks';
+
+import { blocks, PrismaClient } from '@prisma/client';
 import {
   BigIntTypeDefinition,
   DateTypeDefinition,
   PositiveFloatTypeDefinition,
 } from 'graphql-scalars';
+import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
+import { createServer } from 'node:http';
 
-import { PrismaClient } from '@prisma/client';
-import { BlocksSingleton, getBlocks } from './lastBlock/Blocks';
-
-const blocksProvider = getBlocks();
+const pubsub = createPubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>();
+const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(pubsub);
+blocksProvider.start();
 
 // Provide your schema
 const yoga = createYoga({
@@ -68,31 +70,8 @@ const yoga = createYoga({
       },
       Subscription: {
         newBlocks: {
-          subscribe: async function* (
-            _,
-            _args,
-            ctx: { blocks: BlocksSingleton },
-          ) {
-            let newBlocks = await blocksProvider.getLatestBlocks();
-            yield {
-              newBlocks,
-            };
-            let count = 0;
-            while (true) {
-              count++;
-              await new Promise((resolve) => {
-                const interval = setInterval(async () => {
-                  const foundBlocks = await blocksProvider.getLatestBlocks();
-                  if (foundBlocks.length > 0) {
-                    newBlocks = foundBlocks;
-                    clearInterval(interval);
-                    resolve(undefined);
-                  }
-                }, 1000);
-              });
-              yield { newBlocks };
-            }
-          },
+          subscribe: () => pubsub.subscribe('NEW_BLOCKS'),
+          resolve: (payload) => payload,
         },
       },
     },
