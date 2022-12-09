@@ -1,0 +1,35 @@
+{
+  "name": "@kadena/graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "_phase:build": "",
+    "_phase:test": "",
+    "build": "",
+    "start": "ts-node-dev --respawn -T --no-notify --exit-child src/index.ts",
+    "prisma:generate": "prisma generate",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run prisma:generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.7.1",
+    "graphql": "~16.6.0",
+    "graphql-yoga": "~3.1.1",
+    "prisma": "^4.7.1",
+    "graphql-scalars": "~1.20.1",
+    "json-bigint-patch": "~0.0.8"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0"
+  }
+}
