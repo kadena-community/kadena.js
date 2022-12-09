@@ -2,9 +2,9 @@ import { blocks, Prisma, PrismaClient } from '@prisma/client';
 import debug from 'debug';
 import { PubSub } from 'graphql-yoga';
 
-const log = debug('graph:blocks');
+const log: debug.Debugger = debug('graph:blocks');
 
-class Blocks {
+class BlocksService {
   private _lastBlocks: blocks[] = [];
   private _prisma: PrismaClient<
     Prisma.PrismaClientOptions,
@@ -12,20 +12,22 @@ class Blocks {
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >;
   private _interval: NodeJS.Timer | undefined;
+  public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>;
 
-  constructor(private pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>) {
+  public constructor(pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>) {
     this._prisma = new PrismaClient();
+    this.pubsub = pubsub;
     this.start();
   }
 
-  start() {
+  public start(): void {
     if (this._interval) {
       clearInterval(this._interval);
     }
     this._interval = setInterval(() => this.getLatestBlocks(), 1000);
   }
 
-  stop() {
+  public stop(): void {
     if (this._interval) {
       clearInterval(this._interval);
     }
@@ -84,12 +86,13 @@ class Blocks {
   }
 }
 
-let blocksSingleton: Blocks | undefined = undefined;
+let blocksSingleton: BlocksService | undefined = undefined;
+
 export function getBlocks(
   pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>,
-) {
+): BlocksService {
   if (!blocksSingleton) {
-    blocksSingleton = new Blocks(pubsub);
+    blocksSingleton = new BlocksService(pubsub);
   }
 
   return blocksSingleton;

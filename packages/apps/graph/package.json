@@ -11,6 +11,7 @@
     "_phase:test": "",
     "build": "",
     "postinstall": "npm run prisma:generate",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "start": "ts-node-dev --respawn -T --no-notify --exit-child src/index.ts",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@prisma/client": "^4.7.1",
     "debug": "~4.3.4",
+    "eslint": "^8.15.0",
     "graphql": "~16.6.0",
     "graphql-scalars": "~1.20.1",
     "graphql-yoga": "~3.1.1",

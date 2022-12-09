@@ -29,6 +29,7 @@
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint-staged": "lint-staged",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {
