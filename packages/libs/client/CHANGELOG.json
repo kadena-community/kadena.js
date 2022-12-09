@@ -2,6 +2,32 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.1",
+      "tag": "@kadena/client_v0.1.1",
+      "date": "Fri, 09 Dec 2022 12:07:57 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Updated docs"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.1.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.1.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.1.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.0.3`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.0",
       "tag": "@kadena/client_v0.1.0",
       "date": "Tue, 29 Nov 2022 16:14:08 GMT",
