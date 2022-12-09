@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "remove only-allow pnpm",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}
