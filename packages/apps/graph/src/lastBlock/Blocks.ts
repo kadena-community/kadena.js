@@ -1,46 +1,96 @@
-import { PrismaClient, Prisma, blocks } from '@prisma/client';
+import { blocks, Prisma, PrismaClient } from '@prisma/client';
+import debug from 'debug';
+import { PubSub } from 'graphql-yoga';
+
+const log = debug('graph:blocks');
 
 class Blocks {
-  lastBlocks: blocks[] = [];
-  prisma: PrismaClient<
+  private _lastBlocks: blocks[] = [];
+  private _prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >;
+  private _interval: NodeJS.Timer | undefined;
 
-  constructor() {
-    this.prisma = new PrismaClient();
+  constructor(private pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>) {
+    this._prisma = new PrismaClient();
+    this.start();
   }
 
-  public async getLatestBlocks(): Promise<blocks[]> {
-    if (this.lastBlocks.length === 0) {
-      this.lastBlocks = await this.prisma.blocks.findMany({
+  start() {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
+    this._interval = setInterval(() => this.getLatestBlocks(), 1000);
+  }
+
+  stop() {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
+  }
+
+  public async getLatestBlocks(): Promise<void> {
+    if (this._lastBlocks.length === 0) {
+      this._lastBlocks = await this._prisma.blocks.findMany({
         orderBy: {
           creationtime: 'desc',
         },
-        take: 10,
+        take: 1,
       });
-      return this.lastBlocks;
+      log(
+        'publish initial blocks',
+        this._lastBlocks.map(
+          ({ chainid, creationtime, height }) =>
+            `${chainid}  ${height} ${creationtime}`,
+        ),
+      );
+
+      this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
     } else {
-      this.lastBlocks = await this.prisma.blocks.findMany({
+      const newBlocks = await this._prisma.blocks.findMany({
         where: {
-          creationtime: {
-            gt: this.lastBlocks[0].creationtime,
-          },
+          AND: [
+            {
+              creationtime: {
+                gt: this._lastBlocks[0].creationtime,
+              },
+            },
+            {
+              hash: {
+                not: this._lastBlocks[0].hash,
+              },
+            },
+          ],
         },
         orderBy: {
           creationtime: 'desc',
         },
       });
-      return this.lastBlocks;
+      if (newBlocks.length > 0) {
+        log(
+          'publish new blocks',
+          newBlocks.map(
+            ({ chainid, creationtime, height }) =>
+              `${chainid}  ${height} ${creationtime}`,
+          ),
+        );
+
+        this._lastBlocks = newBlocks;
+        this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
+      }
     }
   }
 }
 
-const blocksSingleton = new Blocks();
+let blocksSingleton: Blocks | undefined = undefined;
+export function getBlocks(
+  pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>,
+) {
+  if (!blocksSingleton) {
+    blocksSingleton = new Blocks(pubsub);
+  }
 
-export type BlocksSingleton = typeof blocksSingleton;
-
-export function getBlocks() {
   return blocksSingleton;
 }
