@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/types",
+      "comment": "remove only-allow pnpm",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/types"
+}

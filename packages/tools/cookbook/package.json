@@ -10,7 +10,6 @@
     "_phase:build": "",
     "_phase:test": "",
     "build": "",
-    "preinstall": "npx only-allow pnpm",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "test": ""
   },
