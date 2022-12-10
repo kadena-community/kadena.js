@@ -80,6 +80,7 @@ mkdir my-dapp-with-kadena-client
 cd my-dapp-with-kadena-client
 npm init -y
 npm install -g typescript
+tsc --init
 npm install --save @kadena/client
 npm install --save-dev @kadena/pactjs-cli
 npm install --save-dev ts-node
