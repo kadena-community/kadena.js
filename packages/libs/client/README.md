@@ -81,8 +81,7 @@ cd my-dapp-with-kadena-client
 npm init -y
 npm install -g typescript
 npm install --save @kadena/client
-npm install --save-dev @kadena/pactjs-cli
-npm install --save-dev ts-node
+npm install -g --save-dev @kadena/pactjs-cli ts-node
 ```
 
 # Contract based interaction using @kadena/client
