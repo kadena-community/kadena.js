@@ -2,7 +2,7 @@ import 'json-bigint-patch';
 
 import { getBlocks } from './lastBlock/Blocks';
 
-import { blocks } from '@prisma/client';
+import { blocks, PrismaClient } from '@prisma/client';
 import {
   BigIntTypeDefinition,
   DateTypeDefinition,
@@ -19,6 +19,9 @@ blocksProvider.start();
 
 // eslint-disable-next-line @rushstack/typedef-var
 const yoga = createYoga({
+  context: {
+    prisma: new PrismaClient(),
+  },
   schema: createSchema({
     typeDefs: [
       BigIntTypeDefinition,
@@ -26,7 +29,7 @@ const yoga = createYoga({
       PositiveFloatTypeDefinition,
       /* GraphQL */ `
         type Query {
-          lastBlockHeight: Int!
+          lastBlockHeight: BigInt!
         }
 
         type Subscription {
@@ -52,6 +55,16 @@ const yoga = createYoga({
       `,
     ],
     resolvers: {
+      Query: {
+        lastBlockHeight: async (parent, args, context) => {
+          const lastBlock = await context.prisma.blocks.findFirst({
+            orderBy: {
+              height: 'desc',
+            },
+          });
+          return lastBlock?.height;
+        },
+      },
       Block: {
         chainid: (parent) => BigInt(parent.chainid),
         height: (parent) => BigInt(parent.height),
