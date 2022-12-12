@@ -148,7 +148,7 @@ The log shows what has happened. Inside the `node_modules` directory, a new
 package has been created: `.kadena/pactjs-generated`. This package is referenced by
 `@kadena/client` to give you type information.
 
-> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],` to compilerOptions
+> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],` to `compilerOptions`
 > in `tsconfig.json`. Otherwise this will not work
 
 # Building a simple transaction from the contract
