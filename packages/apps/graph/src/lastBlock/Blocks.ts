@@ -3,6 +3,7 @@ import debug from 'debug';
 import { PubSub } from 'graphql-yoga';
 
 const log: debug.Debugger = debug('graph:blocks');
+const performanceLog: debug.Debugger = debug('performance');
 
 class BlocksService {
   private _lastBlocks: blocks[] = [];
@@ -51,6 +52,8 @@ class BlocksService {
 
       this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
     } else {
+      performanceLog('before');
+
       const newBlocks = await this._prisma.blocks.findMany({
         where: {
           AND: [
@@ -70,6 +73,9 @@ class BlocksService {
           creationtime: 'desc',
         },
       });
+
+      performanceLog('after-response');
+
       if (newBlocks.length > 0) {
         log(
           'publish new blocks',
@@ -81,6 +87,8 @@ class BlocksService {
 
         this._lastBlocks = newBlocks;
         this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
+
+        performanceLog('after-publish');
       }
     }
   }

@@ -419,6 +419,14 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/graph-client",
+      "projectFolder": "packages/apps/graph-client",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": true,
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################
