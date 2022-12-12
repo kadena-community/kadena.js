@@ -14,6 +14,7 @@ import { createServer } from 'node:http';
 const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }> = createPubSub<{
   NEW_BLOCKS: [NEW_BLOCKS: blocks[]];
 }>();
+
 const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(pubsub);
 blocksProvider.start();
 
@@ -22,6 +23,7 @@ const yoga = createYoga({
   context: {
     prisma: new PrismaClient(),
   },
+
   schema: createSchema({
     typeDefs: [
       BigIntTypeDefinition,
@@ -41,7 +43,7 @@ const yoga = createYoga({
           creationtime: Date!
           epoch: Date!
           flags: Float!
-          hash: String!
+          hash: ID!
           height: BigInt!
           miner: String!
           nonce: Float!
@@ -54,6 +56,7 @@ const yoga = createYoga({
         }
       `,
     ],
+
     resolvers: {
       Query: {
         lastBlockHeight: async (parent, args, context) => {
@@ -65,10 +68,12 @@ const yoga = createYoga({
           return lastBlock?.height;
         },
       },
+
       Block: {
         chainid: (parent) => BigInt(parent.chainid),
         height: (parent) => BigInt(parent.height),
       },
+
       Subscription: {
         newBlocks: {
           subscribe: () => pubsub.subscribe('NEW_BLOCKS'),
@@ -81,6 +86,7 @@ const yoga = createYoga({
 
 // eslint-disable-next-line @rushstack/typedef-var
 const server = createServer(yoga);
+
 server.listen(4000, () => {
   console.info('Server is running on http://localhost:4000/graphql');
 });
