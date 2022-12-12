@@ -7,16 +7,19 @@ import React, { useEffect, useState } from 'react';
 
 export default function Home(): JSX.Element {
   const { loading, data } = useGetBlocksSubscription();
+  const dataString = JSON.stringify(data);
   const [allBlocks, setBlocks] = useState<any[]>([]);
 
   useEffect(() => {
-    if (data) {
-      setBlocks((b) => {
-        b.push(...data.newBlocks);
-        return b;
-      });
-    }
-  }, [data]);
+    setBlocks((b) => [
+      ...b,
+      ...(data?.newBlocks.map(({ chainid, hash, height, __typename }) => ({
+        chainid,
+        hash,
+        height,
+      })) ?? []),
+    ]);
+  }, [dataString]);
 
   return (
     <div className={styles.container}>
@@ -37,12 +40,11 @@ export default function Home(): JSX.Element {
         </p>
 
         <h3>GraphQL: </h3>
-        <p>
+        <div>
           <pre>
-            {loading && 'Loading...'}
-            {!loading && JSON.stringify(allBlocks, null, 2)}
+            {loading ? 'Loading...' : JSON.stringify(allBlocks, null, 2)}
           </pre>
-        </p>
+        </div>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>

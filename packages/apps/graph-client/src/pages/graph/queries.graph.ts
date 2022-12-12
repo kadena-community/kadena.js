@@ -11,6 +11,7 @@ export const getBlocksSubscription: DocumentNode = gql`
     newBlocks {
       chainid
       hash
+      height
     }
   }
 `;
