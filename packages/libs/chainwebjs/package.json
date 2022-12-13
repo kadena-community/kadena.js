@@ -1,0 +1,78 @@
+{
+  "name": "@kadena/chainwebjs",
+  "version": "0.0.1",
+  "description": "Javascript bindings for the Kadena Chainweb API",
+  "keywords": [
+    "chainweb",
+    "kadena",
+    "kda",
+    "kadenajs",
+    "blockchain",
+    "api"
+  ],
+  "homepage": "https://github.com/kadena-community/kadena.js/tree/master#readme",
+  "bugs": {
+    "url": "https://github.com/kadena-community/kadena.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/chainwebjs"
+  },
+  "license": "MIT",
+  "author": "Lars Kuhtz <lars@kadena.io>",
+  "contributors": [
+    {
+      "name": "Danillo"
+    },
+    {
+      "name": "Jermaine"
+    },
+    {
+      "name": "Albert"
+    },
+    {
+      "name": "Linda"
+    },
+    {
+      "name": "Hee Kyun"
+    },
+    {
+      "name": "Randy"
+    }
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
+    "preinstall": "npx only-allow pnpm",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "test": "rushx build && heft test --no-build"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "cross-fetch": "~3.1.5",
+    "eventsource": "^1.1.0",
+    "node-fetch": "~2.6.2",
+    "p-retry": "^4.5.0"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0"
+  }
+}
