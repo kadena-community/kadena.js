@@ -199,7 +199,7 @@ describe('Pact proxy', () => {
   });
 });
 
-describe('The hash and signers for a transaction are reset', () => {
+describe('TransactionCommand', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pact = Pact as any;
   const sender =
