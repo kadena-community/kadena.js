@@ -237,7 +237,7 @@ describe('TransactionCommand', () => {
       );
   });
 
-  it('when setMeta is called', async () => {
+  it('resets `cmd` `hash` and `signatures` when `setMeta` is called', async () => {
     const transaction = transactionCommand.createCommand();
 
     const updatedTransactionCommand = transactionCommand.setMeta(
@@ -255,7 +255,7 @@ describe('TransactionCommand', () => {
     expect(transaction.hash).not.toEqual(updatedTransaction.hash);
   });
 
-  it('when addData is called', async () => {
+  it('resets `cmd` `hash` and `signatures` when `addData` is called', async () => {
     const transaction = transactionCommand.createCommand();
 
     const updatedTransactionCommand = transactionCommand.addData({
@@ -276,7 +276,7 @@ describe('TransactionCommand', () => {
     expect(transaction.hash).not.toEqual(updatedTransaction.hash);
   });
 
-  it('when addCap is called', async () => {
+  it('resets `cmd` `hash` and `signatures` when `addCap` is called', async () => {
     const transaction = transactionCommand.createCommand();
 
     const updatedTransactionCommand = transactionCommand.addCap(
