@@ -347,6 +347,7 @@ export function parser(contract: string, logger: ILogger): Output {
         break;
 
       default:
+        console.log('default', token);
         break;
     }
     logger('token', token);
