@@ -17,7 +17,6 @@ import { IPactCommand } from './interfaces/IPactCommand';
 import { parseType } from './utils/parseType';
 
 import debug, { Debugger } from 'debug';
-import { timeEnd } from 'console';
 
 const log: Debugger = debug('pactjs:proxy');
 
@@ -45,11 +44,11 @@ export interface ICommandBuilder<
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   local(apiHost: string): Promise<ICommandResult>;
   send(apiHost: string): Promise<ISendResponse>;
-  finished(
+  callPollUntilTimeout(
     apiHost: string,
     interval?: number,
     timeout?: number,
-  ): Promise<IPollResponse>;
+  ): Promise<this>;
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
     ...sig: {
@@ -57,6 +56,7 @@ export interface ICommandBuilder<
       sig: string;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  status: string;
   // setSigner(
   //   fn: (
   //     ...transactions: (IPactCommand &

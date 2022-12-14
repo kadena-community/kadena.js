@@ -1,7 +1,7 @@
 {
   "extends": "./node_modules/@kadena/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["heft-jest", "node"],
+    "types": ["heft-jest", "node", ".kadena/pactjs-generated"],
     "lib": ["es2017", "DOM"]
   }
 }

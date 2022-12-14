@@ -201,7 +201,7 @@ describe('Pact proxy', () => {
     expect(() => builder.poll('fake-api-host.local.co')).toThrow();
   });
 
-  it('throws when trying a .finished() when no requestkey is present', async () => {
+  it('throws when trying to call .callPollUntilTimeout() when no requestkey is present', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
       ok: true,
@@ -220,7 +220,7 @@ describe('Pact proxy', () => {
     let expectingError;
 
     try {
-      await builder.finished('fake-api-host.local.co');
+      await builder.callPollUntilTimeout('fake-api-host.local.co');
     } catch (error) {
       expectingError = error;
     }
@@ -228,7 +228,7 @@ describe('Pact proxy', () => {
     expect(expectingError.message).toContain('`requestKey` not found');
   });
 
-  it('returns a response after polling a succeeding transaction', async () => {
+  fit('returns a response after polling a succeeding transaction', async () => {
     const mockFetch = (isSuccessful: boolean): void => {
       const response = {
         key1: {
@@ -268,15 +268,17 @@ describe('Pact proxy', () => {
     // make fetch return a failure
     mockFetch(false);
 
-    // clear the mocked fetch to make counting the polling calls easier
+    // clear the mocked fetch to make counting the /poll calls easier
     (fetch as jest.Mock).mockClear();
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    builder.finished('fake-api-host.local.co', 1000, 5000).then((response) => {
-      expect(response).toEqual({ key1: { result: { status: 'success' } } });
-    });
+    builder
+      .callPollUntilTimeout('fake-api-host.local.co', 1000, 5000)
+      .then((t) => {
+        expect(t.status).toBe('success');
+      });
 
-    jest.runAllTimers();
+    jest.advanceTimersByTime(1000);
     await flushPromises();
 
     expect((fetch as jest.Mock).mock.calls).toHaveLength(1);
@@ -290,76 +292,8 @@ describe('Pact proxy', () => {
     mockFetch(true);
 
     jest.advanceTimersByTime(1000);
-    await flushPromises();
 
     expect((fetch as jest.Mock).mock.calls).toHaveLength(3);
-  });
-
-  it("times out when a polled transaction isn't succeeding within time", async () => {
-    const mockFetch = (isSuccessful: boolean): void => {
-      const response = {
-        key1: {
-          result: {
-            status: isSuccessful ? 'success' : 'failure',
-          },
-        },
-      };
-
-      (fetch as jest.Mock).mockResolvedValue({
-        status: 200,
-        ok: true,
-        text: () => JSON.stringify(response),
-        json: () => response,
-      });
-    };
-
-    jest.useFakeTimers();
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      1.234,
-    );
-
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
-    });
-
-    await builder.send('fake-api-host.local.co');
-
-    // make fetch return a failure
-    mockFetch(false);
-
-    // clear the mocked fetch to make counting the polling calls easier
-    (fetch as jest.Mock).mockClear();
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    builder.finished('fake-api-host.local.co', 1000, 2000).then((response) => {
-      expect(response).toEqual({ key1: { result: { status: 'failure' } } });
-    });
-
-    jest.advanceTimersByTime(1000);
-    await flushPromises();
-
-    expect((fetch as jest.Mock).mock.calls).toHaveLength(1);
-    expect((fetch as jest.Mock).mock.calls[0]).toEqual([
-      'fake-api-host.local.co/api/v1/poll',
-      {
-        body: '{"requestKeys":["key1"]}',
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      },
-    ]);
-
-    jest.advanceTimersByTime(1000);
-    await flushPromises();
-
-    expect((fetch as jest.Mock).mock.calls).toHaveLength(2);
   });
 });
 
