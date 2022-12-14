@@ -131,6 +131,18 @@ export class PactCommand
   }
 
   /**
+   * If a non-malleable (finalized) transaction gets altered after
+   * running createCommand, we need to recalculate the hash and
+   * remove the signatures as these do not match with the transaction anymore.
+   * Each signature in this.sigs will be replaced with undefined so the length
+   * of the array matches with this.signers.
+   */
+  private _unfinalizeTransaction(): void {
+    this.cmd = undefined;
+    this.sigs = this.sigs.map(() => undefined);
+  }
+
+  /**
    * A function that is generated based on IPactCommand and the creation date.
    * This is called during execution of `createCommand()` and adds `nonce` to
    * the command.
@@ -188,6 +200,8 @@ export class PactCommand
   }
 
   public addData(data: IPactCommand['data']): this {
+    this._unfinalizeTransaction();
+
     this.data = data;
     return this;
   }
@@ -196,6 +210,8 @@ export class PactCommand
     publicMeta: Partial<IPactCommand['publicMeta']>,
     networkId: IPactCommand['networkId'] = 'mainnet01',
   ): this {
+    this._unfinalizeTransaction();
+
     this.publicMeta = Object.assign(this.publicMeta, publicMeta);
     this.networkId = networkId;
     return this;
@@ -206,6 +222,8 @@ export class PactCommand
     signer: string,
     ...args: T[]
   ): this {
+    this._unfinalizeTransaction();
+
     const signerIndex: number = this.signers.findIndex(
       (s) => s.pubKey === signer,
     );
@@ -217,6 +235,7 @@ export class PactCommand
         pubKey: signer,
         caps: [{ name: capability, args }],
       });
+      // push undefined to make sure this.sigs matches the length (and position) of this.signers
       this.sigs.push(undefined);
     } else {
       // add cap to existing signer
