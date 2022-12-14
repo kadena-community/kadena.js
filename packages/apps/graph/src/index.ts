@@ -1,6 +1,7 @@
 import 'json-bigint-patch';
 
 import { getBlocks } from './lastBlock/Blocks';
+import { mockBlocks } from './lastBlock/mocks/blocks.mock';
 
 import { blocks, PrismaClient } from '@prisma/client';
 import {
@@ -15,7 +16,10 @@ const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }> = createPubSub<{
   NEW_BLOCKS: [NEW_BLOCKS: blocks[]];
 }>();
 
-const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(pubsub);
+const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(
+  pubsub,
+  mockBlocks,
+);
 blocksProvider.start();
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -53,7 +57,12 @@ const yoga = createYoga({
           predicate: String!
           target: PositiveFloat!
           weight: PositiveFloat!
+          # transactions: [Transaction!]!
         }
+
+        # type Transaction {
+
+        # }
       `,
     ],
 

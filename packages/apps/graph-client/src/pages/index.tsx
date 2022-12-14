@@ -11,14 +11,7 @@ export default function Home(): JSX.Element {
   const [allBlocks, setBlocks] = useState<any[]>([]);
 
   useEffect(() => {
-    setBlocks((b) => [
-      ...b,
-      ...(data?.newBlocks.map(({ chainid, hash, height, __typename }) => ({
-        chainid,
-        hash,
-        height,
-      })) ?? []),
-    ]);
+    setBlocks((b) => [...b, ...(data?.newBlocks.map((b) => b) ?? [])]);
   }, [dataString]);
 
   return (
