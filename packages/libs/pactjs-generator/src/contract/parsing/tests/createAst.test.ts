@@ -51,7 +51,7 @@ describe('createAst', () => {
     expect(simplifyTree(ast)).toEqual(expectedAst);
   });
 
-  it('provides an ast with two root elements, the first one being the namespace', () => {
+  it('provides an ast with children, the first being the namespace', () => {
     const contract = `(namespace 'free)
     (module coin GOVERNANCE
       (defun transfer (sender:string receiver:string))
