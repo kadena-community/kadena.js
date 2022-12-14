@@ -35,6 +35,7 @@ export type Defcap = {
  */
 export interface IState {
   stack: string[];
+  namespaceName: string;
   moduleName: string;
   defunName: string;
   defcapName: string;
@@ -46,6 +47,7 @@ export interface IState {
  */
 export type Module = {
   name: string;
+  namespace: string;
   defuns: Record<string, Defun>;
   defcaps: Record<string, Defcap>;
 } & ILocation;
@@ -64,12 +66,14 @@ export function parser(contract: string, logger: ILogger): Output {
   let token: moo.Token | undefined = undefined;
   const state: IState = {
     stack: [],
+    namespaceName: '',
     moduleName: '',
     defcapName: '',
     defunName: '',
     argName: '',
   } as IState;
 
+  const KW_NAMESPACE: 'namespace' = 'namespace';
   const KW_MODULE: 'module' = 'module';
   const KW_DEFUN: 'defun' = 'defun';
   const KW_DEFCAP: 'defcap' = 'defcap';
@@ -89,6 +93,12 @@ export function parser(contract: string, logger: ILogger): Output {
     lastThreeTokens.shift();
     lastThreeTokens.push(token);
     switch (token.type) {
+      case KW_NAMESPACE:
+        state.stack.push(KW_NAMESPACE);
+        logger('========================');
+        logger(`=== push ${KW_NAMESPACE}`);
+        logger('========================');
+        break;
       case KW_DEFCAP:
         state.stack.push(KW_DEFCAP);
         logger('========================');
@@ -150,6 +160,7 @@ export function parser(contract: string, logger: ILogger): Output {
           state.moduleName = token.value;
           output[token.value] = {
             name: token.value,
+            namespace: state.namespaceName,
             defuns: {},
             defcaps: {},
             line: token.line,
@@ -329,6 +340,10 @@ export function parser(contract: string, logger: ILogger): Output {
           state.defcapName = '';
         }
         break;
+      case 'symbol':
+        state.namespaceName = token.value.split("'")[1];
+        break;
+
       default:
         break;
     }

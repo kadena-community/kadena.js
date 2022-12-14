@@ -42,6 +42,26 @@ describe('parser', () => {
     expect(methods.untypedFn.args.secondArg.type).toBe('undefined');
   });
 
+  it('parses namespaces', () => {
+    const contract = `(namespace 'free)
+      (module test-on-free GOVERNANCE
+        (defun transfer:string (sender:string receiver:string amount:number))
+        (defun untypedFn (firstArg secondArg))
+      )`;
+    const contractDefinition = new StringContractDefinition(
+      contract,
+      // console.log,
+    );
+    expect(contractDefinition.modules).toEqual(['test-on-free']);
+    expect(contractDefinition.getNamespace('test-on-free')).toEqual('free');
+    const methods = contractDefinition.getMethods('test-on-free')!;
+    expect(Object.keys(methods)).toHaveLength(2);
+    expect(methods.untypedFn).toBeDefined();
+    expect(methods.untypedFn.returnType).toBe('undefined');
+    expect(methods.untypedFn.args.firstArg.type).toBe('undefined');
+    expect(methods.untypedFn.args.secondArg.type).toBe('undefined');
+  });
+
   it('lexer test.contract.pact', () => {
     const filePath = path.join(__dirname, './test.contract.pact');
     const fileContractDefinition = new FileContractDefinition(
