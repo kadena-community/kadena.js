@@ -34,6 +34,14 @@ function stripDashesAndCamelCase(name: string): string {
   return camelCase(name.split('-'));
 }
 
+function generateModuleName(module: Module): string {
+  if (module.namespace.length === 0) {
+    return module.name;
+  } else {
+    return `${module.namespace}.${module.name}`;
+  }
+}
+
 /**
  * @alpha
  */
@@ -62,7 +70,7 @@ declare module '@kadena/client' {
       .join(', \n')}
   }
   export interface IPactModules {
-    "${module.name}": {
+    "${generateModuleName(module)}": {
        ${Object.keys(module.defuns)
          .map((defun) => {
            const fnc: Defun = module.defuns[defun];

@@ -114,4 +114,31 @@ declare module '@kadena/client' {
     ]);
     expect(parsedContract.modules).toEqual(['module-with-dashes']);
   });
+
+  it('creates a typescript definition with a namespace', () => {
+    const contract: string = `(namespace 'free-namespace)
+    (module the-free-module
+      (defun transfer:string (from:string to:string amount:decimal))
+    )`;
+    const parsedContract = new StringContractDefinition(contract);
+    const dTs = generateDts(parsedContract.modulesWithFunctions)
+      .get('the-free-module')!
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
+    const expected =
+      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+declare module '@kadena/client' {
+  export type ITheFreeModuleCaps = { }
+  export interface IPactModules {
+    "free-namespace.the-free-module": {
+      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ITheFreeModuleCaps> & IPactCommand
+    }
+  }
+}`
+        .split(/[\s\n]/)
+        .filter((x) => x !== '')
+        .join(' ');
+    expect(dTs).toBe(expected);
+  });
 });
