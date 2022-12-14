@@ -14,8 +14,13 @@ class BlocksService {
   >;
   private _interval: NodeJS.Timer | undefined;
   public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>;
+  i: number = 0;
 
-  public constructor(pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>) {
+  public constructor(
+    pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>,
+    // eslint-disable-next-line @typescript-eslint/no-parameter-properties
+    private mocks?: blocks[],
+  ) {
     this._prisma = new PrismaClient();
     this.pubsub = pubsub;
     this.start();
@@ -35,10 +40,29 @@ class BlocksService {
   }
 
   public async getLatestBlocks(): Promise<void> {
+    if (this.mocks) {
+      if (this.i % 10 === 0) {
+        console.log('publish 2 block');
+        this.pubsub.publish('NEW_BLOCKS', [
+          this.mocks[this.i],
+          this.mocks[this.i + 1],
+        ]);
+        this.i += 2;
+      } else {
+        console.log('publish 1 block');
+        this.pubsub.publish('NEW_BLOCKS', [this.mocks[this.i]]);
+        this.i++;
+      }
+      return;
+    }
+
     if (this._lastBlocks.length === 0) {
       this._lastBlocks = await this._prisma.blocks.findMany({
         orderBy: {
           creationtime: 'desc',
+        },
+        include: {
+          transactions: true,
         },
         take: 1,
       });
@@ -72,6 +96,9 @@ class BlocksService {
         orderBy: {
           creationtime: 'desc',
         },
+        include: {
+          transactions: true,
+        },
       });
 
       performanceLog('after-response');
@@ -98,9 +125,10 @@ let blocksSingleton: BlocksService | undefined = undefined;
 
 export function getBlocks(
   pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>,
+  mocks?: blocks[],
 ): BlocksService {
   if (!blocksSingleton) {
-    blocksSingleton = new BlocksService(pubsub);
+    blocksSingleton = new BlocksService(pubsub, mocks);
   }
 
   return blocksSingleton;
