@@ -341,7 +341,9 @@ export function parser(contract: string, logger: ILogger): Output {
         }
         break;
       case 'symbol':
-        state.namespaceName = token.value.split("'")[1];
+        if (state.stack.includes(KW_NAMESPACE) && state.stack.length === 1) {
+          state.namespaceName = token.value.split("'")[1];
+        }
         break;
 
       default:
