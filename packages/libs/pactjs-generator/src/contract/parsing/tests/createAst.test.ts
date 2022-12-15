@@ -50,6 +50,28 @@ describe('createAst', () => {
     ];
     expect(simplifyTree(ast)).toEqual(expectedAst);
   });
+
+  it('provides an ast with children, the first being the namespace', () => {
+    const contract = `(namespace 'free)
+    (module coin GOVERNANCE
+      (defun transfer (sender:string receiver:string))
+    )`;
+    const ast = createAst(contract, console.log);
+    expect(ast).toHaveLength(4);
+    expect(ast[0].children![0].text).toEqual('namespace');
+    expect(ast[0].children![1].text).toContain('free');
+  });
+
+  it('provides an ast with children, the first being the namespace using double quotes', () => {
+    const contract = `(namespace "free")
+    (module coin GOVERNANCE
+      (defun transfer (sender:string receiver:string))
+    )`;
+    const ast = createAst(contract, console.log);
+    expect(ast).toHaveLength(4);
+    expect(ast[0].children![0].text).toEqual('namespace');
+    expect(ast[0].children![1].text).toContain('free');
+  });
 });
 
 type SimpleAst = ISimpleAstNode[];

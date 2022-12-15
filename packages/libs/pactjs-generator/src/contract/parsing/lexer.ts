@@ -20,6 +20,7 @@ export const lexer: Lexer = moo.compile({
       deftable: 'deftable',
       let: 'let',
       let_star: 'let*',
+      namespace: 'namespace',
       cond: 'cond',
       step: 'step',
       stepWithRollback: 'step-with-rollback',
