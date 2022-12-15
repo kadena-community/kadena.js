@@ -155,6 +155,7 @@ export class PactCommand
   private _unfinalizeTransaction(): void {
     this.cmd = undefined;
     this.sigs = this.sigs.map(() => undefined);
+    this.status = 'malleable';
   }
 
   /**
@@ -211,6 +212,7 @@ export class PactCommand
     };
 
     this.cmd = command.cmd;
+    this.status = 'non-malleable';
     return command;
   }
 
@@ -274,7 +276,6 @@ export class PactCommand
   /**
    * Checks if a transaction succeeded or failed by polling the apiHost at
    * a given interval. Times out if it takes too long.
-   * (i.e. it is checked whether the signatures are complete)
    * @param apiHost - the chainweb host where to send the transaction to
    * @param interval - the amount of time in ms between the api calls
    * @param timeout - the total time in ms after this function will time out
@@ -302,12 +303,15 @@ export class PactCommand
             }
 
             if (result[this.requestKey!].result.status === 'success') {
+              // resolve the Promise when we get a "success" response
               this.status = 'success';
               clearTimeout(cancelTimeout);
               resolve(this);
             } else if (Date.now() < endTime) {
+              // no "success" response (yet), try again in `interval` seconds
               setTimeout(poll, interval);
             } else {
+              // took longer than the specified `timeout`, reject the Promise
               this.status = 'timeout';
               clearTimeout(cancelTimeout);
               reject(result);
