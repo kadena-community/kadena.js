@@ -343,11 +343,20 @@ export function parser(contract: string, logger: ILogger): Output {
       case 'symbol':
         if (state.stack.includes(KW_NAMESPACE) && state.stack.length === 1) {
           state.namespaceName = token.value.split("'")[1];
+          // pop KW_NAMESPACE
+          state.stack.pop();
+        }
+        break;
+
+      case 'string':
+        if (state.stack.includes(KW_NAMESPACE) && state.stack.length === 1) {
+          state.namespaceName = token.value.split('"')[1];
+          // pop KW_NAMESPACE
+          state.stack.pop();
         }
         break;
 
       default:
-        console.log('default', token);
         break;
     }
     logger('token', token);
