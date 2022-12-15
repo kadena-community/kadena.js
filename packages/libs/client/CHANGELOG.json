@@ -2,6 +2,18 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.2",
+      "tag": "@kadena/client_v0.1.2",
+      "date": "Thu, 15 Dec 2022 14:56:25 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "When proprerties of a non-malleable transaction change, remove `cmd`, `hash` and `signatures` from the transaction to issue a recalculation of the `cmd` and `hash`."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.1",
       "tag": "@kadena/client_v0.1.1",
       "date": "Fri, 09 Dec 2022 12:07:57 GMT",
