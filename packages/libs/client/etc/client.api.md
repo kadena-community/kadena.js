@@ -56,6 +56,8 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
+    callPollUntilTimeout(apiHost: string, interval?: number, timeout?: number): Promise<this>;
+    // (undocumented)
     createCommand(): ICommand;
     // (undocumented)
     local(apiHost: string): Promise<ICommandResult>;
@@ -67,6 +69,8 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
         sender: IPactCommand['publicMeta']['sender'];
     }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    // (undocumented)
+    status: string;
 }
 
 // @alpha (undocumented)
@@ -158,6 +162,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         pubkey: string;
         sig: string;
     }[]): this;
+    callPollUntilTimeout(apiHost: string, interval?: number, timeout?: number): Promise<this>;
     // (undocumented)
     cmd: string | undefined;
     // (undocumented)
@@ -194,6 +199,10 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     }[];
     // (undocumented)
     sigs: (ISignature | undefined)[];
+    // Warning: (ae-forgotten-export) The symbol "TransactionStatus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    status: TransactionStatus;
     // (undocumented)
     type: 'exec';
 }
