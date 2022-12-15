@@ -99,6 +99,7 @@ export function parser(contract: string, logger: ILogger): Output {
         logger(`=== push ${KW_NAMESPACE}`);
         logger('========================');
         break;
+
       case KW_DEFCAP:
         state.stack.push(KW_DEFCAP);
         logger('========================');
@@ -340,6 +341,7 @@ export function parser(contract: string, logger: ILogger): Output {
           state.defcapName = '';
         }
         break;
+
       case 'symbol':
         if (state.stack.includes(KW_NAMESPACE) && state.stack.length === 1) {
           state.namespaceName = token.value.split("'")[1];
