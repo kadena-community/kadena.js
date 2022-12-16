@@ -228,7 +228,7 @@ describe('Pact proxy', () => {
     expect(expectingError.message).toContain('`requestKey` not found');
   });
 
-  fit('returns a response after polling a succeeding transaction', async () => {
+  it('returns a response after polling a succeeding transaction', async () => {
     const mockFetch = (isSuccessful: boolean): void => {
       const response = {
         key1: {
