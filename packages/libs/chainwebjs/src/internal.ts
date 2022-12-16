@@ -91,15 +91,11 @@ export async function cutPeerPage(
   host?: string,
   retryOptions?: IRetryOptions,
 ): Promise<ICutPeerResponse> {
-  try {
-    const result = await retryFetch(
-      () => fetch(transFormUrl(baseUrl(network, host, 'cut/peer'))),
-      retryOptions,
-    );
-    return parseResponse<ICutPeerResponse>(result);
-  } catch (e) {
-    throw new Error(`Error fetching txStream: ${e}`);
-  }
+  const result = await retryFetch(
+    () => fetch(transFormUrl(baseUrl(network, host, 'cut/peer'))),
+    retryOptions,
+  );
+  return parseResponse<ICutPeerResponse>(result);
 }
 
 /**
@@ -170,23 +166,19 @@ export async function branchPage(
     lower: lower,
   };
 
-  try {
-    const result = await retryFetch(
-      () =>
-        fetch(transFormUrl(url), {
-          method: 'post',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: accept,
-          },
-        }),
-      retryOptions,
-    );
-    return await parseResponse<IHeaderBranchResponse>(result);
-  } catch (e) {
-    throw new Error(`Error fetching branchPage: ${e}`);
-  }
+  const result = await retryFetch(
+    () =>
+      fetch(transFormUrl(url), {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: accept,
+        },
+      }),
+    retryOptions,
+  );
+  return await parseResponse<IHeaderBranchResponse>(result);
 }
 
 /**

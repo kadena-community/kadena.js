@@ -39,10 +39,6 @@ export async function cutPeers(
   host?: string,
   retryOptions?: IRetryOptions,
 ): Promise<ICutPeerItem[]> {
-  try {
-    const page = await cutPeerPage(network, host, retryOptions);
-    return page.items.reverse();
-  } catch (e) {
-    throw new Error(`Error fetching cut peers: ${e}`);
-  }
+  const page = await cutPeerPage(network, host, retryOptions);
+  return page.items.reverse();
 }

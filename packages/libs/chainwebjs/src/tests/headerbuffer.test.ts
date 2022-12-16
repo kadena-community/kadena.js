@@ -29,13 +29,11 @@ function testHeaderBuffer(): boolean {
   });
 
   for (let i = 10; i < 15; ++i) {
-    // console.log("i:", i); console.log("buffer:", hb);
     hb.add(hdr(i));
   }
 
   // reorgg
   for (let i = 13; i < 17; ++i) {
-    // console.log("i:", i); console.log("buffer:", hb);
     hb.add(hdr(i));
   }
 

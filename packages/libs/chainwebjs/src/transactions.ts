@@ -1,4 +1,3 @@
-// @ts-nocheck
 import EventSource from 'eventsource';
 import {
   recentBlocks,
