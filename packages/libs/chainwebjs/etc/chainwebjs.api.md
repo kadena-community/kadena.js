@@ -4,6 +4,8 @@
 
 ```ts
 
+import { default as EventSource_2 } from 'eventsource';
+
 // @alpha
 function base64json(txt: string): string;
 
@@ -20,41 +22,41 @@ function blockByHeight(chainId: number | string, height: number, network?: strin
 function blocks(chainId: number | string, start: number, end: number, network?: string, host?: string): Promise<IBlockPayloads<ITransactionElement>[]>;
 
 // @alpha
-function blockStream(depth: number, chainIds: number[], callback: (block: IBlockPayloads<ITransactionElement>) => void, network?: string, host?: string): Promise<EventSource>;
+function blockStream(depth: number, chainIds: number[], callback: (block: IBlockPayloads<ITransactionElement>) => void, network?: string, host?: string): EventSource_2;
 
 // Warning: (ae-forgotten-export) The symbol "IRetryOptions" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "IBlockHeader" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function branch(chainId: number | string, upper: string[], lower: string[], minHeight: number, maxHeight: number, n: number, format: string, network: string, host: string, retryOptions?: IRetryOptions): Promise<IBlockHeader[]>;
+function branch(chainId: number | string, upper: string[], lower: string[], minHeight: number | undefined, maxHeight: number | undefined, n: number | undefined, format: string | undefined, network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IBlockHeader[]>;
 
 // Warning: (ae-forgotten-export) The symbol "IHeaderBranchResponse" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function branchPage(chainId: number | string, upper: string[], lower: string[], minHeight: number, maxHeight: number, n: number, next: string | undefined, format: string, network: string, host: string, retryOptions?: IRetryOptions): Promise<IHeaderBranchResponse>;
+function branchPage(chainId: number | string, upper: string[], lower: string[], minHeight: number | undefined, maxHeight: number | undefined, n: number | undefined, next: string | undefined, format: string | undefined, network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IHeaderBranchResponse>;
 
 // Warning: (ae-forgotten-export) The symbol "IBufferHeader" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function chainUpdates(depth: number, chainIds: number[], callback: (header: IBufferHeader) => void, network: string, host: string): Promise<EventSource>;
+function chainUpdates(depth: number, chainIds: number[], callback: (header: IBufferHeader) => void, network?: string, host?: string): EventSource_2;
 
 // @alpha
-function currentBranch(chainId: number | string, start: number, end: number, n: number, format: string, network: string, host: string): Promise<IBlockHeader[]>;
+function currentBranch(chainId: number | string, start: number, end: number, n: number | undefined, format: string, network?: string, host?: string): Promise<IBlockHeader[]>;
 
 // Warning: (ae-forgotten-export) The symbol "ICutResponse" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function currentCut(network: string, host: string, retryOptions?: IRetryOptions): Promise<ICutResponse>;
+function currentCut(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<ICutResponse>;
 
 // Warning: (ae-forgotten-export) The symbol "ICutPeerResponse" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function cutPeerPage(network: string, host: string, retryOptions: IRetryOptions): Promise<ICutPeerResponse>;
+function cutPeerPage(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<ICutPeerResponse>;
 
 // Warning: (ae-forgotten-export) The symbol "ICutPeerItem" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function cutPeers(network: string, host: string, retryOptions: IRetryOptions): Promise<ICutPeerItem[]>;
+function cutPeers(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<ICutPeerItem[]>;
 
 // @public (undocumented)
 const _default: {
@@ -67,7 +69,7 @@ const _default: {
         range: typeof header.headers;
         recent: typeof header.recentHeaders;
         stream: typeof header.headerStream;
-        height: (chainId: string | number, height: number, network: string, host: string) => Promise<IBlockHeader>;
+        height: (chainId: string | number, height: number, network?: string | undefined, host?: string | undefined) => Promise<IBlockHeader>;
         blockHash: typeof header.headerByBlockHash;
     };
     block: {
@@ -113,22 +115,22 @@ function eventsByBlockHash(chainId: number | string, hash: string, network?: str
 function eventsByHeight(chainId: number | string, height: number, network?: string, host?: string): Promise<IEventData[]>;
 
 // @alpha
-function eventStream(depth: number, chainIds: number[], callback: (event: IEventData) => void, network?: string, host?: string): Promise<EventSource>;
+function eventStream(depth: number, chainIds: number[], callback: (event: IEventData) => void, network?: string, host?: string): EventSource_2;
 
 // @alpha
-function headerByBlockHash(chainId: number | string, hash: string, network: string, host: string): Promise<IBlockHeader>;
+function headerByBlockHash(chainId: number | string, hash: string, network?: string, host?: string): Promise<IBlockHeader>;
 
 // @alpha
-const headerByHeight: (chainId: number | string, height: number, network: string, host: string) => Promise<IBlockHeader>;
+const headerByHeight: (chainId: number | string, height: number, network?: string | undefined, host?: string | undefined) => Promise<IBlockHeader>;
 
 // @alpha
-function headers(chainId: number | string, start: number, end: number, network: string, host: string): Promise<IBlockHeader[]>;
+function headers(chainId: number | string, start: number, end: number, network?: string, host?: string): Promise<IBlockHeader[]>;
 
 // @alpha
-function headers2blocks(hdrs: IBlockHeader[], network: string, host: string, retryOptions?: IRetryOptions): Promise<IBlockPayloads<ITransactionElement>[]>;
+function headers2blocks(hdrs: IBlockHeader[], network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IBlockPayloads<ITransactionElement>[]>;
 
 // @alpha
-function headerStream(depth: number, chainIds: number[], callback: (header: IBlockHeader) => void, network: string, host: string): Promise<EventSource>;
+function headerStream(depth: number, chainIds: number[], callback: (header: IBlockHeader) => void, network?: string, host?: string): EventSource_2;
 
 // @alpha
 function parseResponse<T>(response: Response): Promise<T>;
@@ -136,7 +138,7 @@ function parseResponse<T>(response: Response): Promise<T>;
 // Warning: (ae-forgotten-export) The symbol "IBlockPayload" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function payloads(chainId: number | string, hashes: string[], format: string, network: string, host: string, retryOptions?: IRetryOptions): Promise<IBlockPayload<ITransactionElement>[]>;
+function payloads(chainId: number | string, hashes: string[], format: string, network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IBlockPayload<ITransactionElement>[]>;
 
 // @alpha
 function recentBlocks(chainId: number | string, depth: number, n: number, network?: string, host?: string): Promise<IBlockPayloads<ITransactionElement>[]>;
@@ -145,17 +147,10 @@ function recentBlocks(chainId: number | string, depth: number, n: number, networ
 function recentEvents(chainId: number | string, depth: number, n: number, network?: string, host?: string): Promise<IEventData[]>;
 
 // @alpha
-function recentHeaders(chainId: number | string, depth: number | undefined, n: number | undefined, network: string, host: string): Promise<IBlockHeader[]>;
+function recentHeaders(chainId: number | string, depth?: number, n?: number, network?: string, host?: string): Promise<IBlockHeader[]>;
 
 // @alpha
 function recentTxs(chainId: number | string, depth?: number, n?: number, network?: string, host?: string): Promise<ITransactionElement[]>;
-
-// @alpha
-class ResponseError_2 extends Error {
-    constructor(response: Response);
-    // (undocumented)
-    response: Response;
-}
 
 // @alpha
 function txs(chainId: number | string, start: number, end: number, network?: string, host?: string): Promise<ITransactionElement[]>;
@@ -167,7 +162,7 @@ function txsByBlockHash(chainId: number | string, hash: string, network?: string
 function txsByHeight(chainId: number | string, height: number, network?: string, host?: string): Promise<ITransactionElement[]>;
 
 // @alpha
-function txStream(depth: number, chainIds: number[], callback: (transaction: ITransactionElement) => void, network?: string, host?: string): Promise<EventSource>;
+function txStream(depth: number, chainIds: number[], callback: (transaction: ITransactionElement) => void, network?: string, host?: string): EventSource_2;
 
 // Warnings were encountered during analysis:
 //

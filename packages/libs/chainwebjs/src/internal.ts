@@ -1,4 +1,6 @@
 import base64url from 'base64url';
+import fetch from 'cross-fetch';
+
 import {
   ICutPeerResponse,
   IBlockHeader,
@@ -8,6 +10,7 @@ import {
   ITransactionTransaction,
   ICoinbase,
   ITransactionElement,
+  IPagedResponse,
 } from './types';
 import { currentCut } from './cut';
 import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
@@ -25,11 +28,11 @@ import { pageIterator } from './paging';
 async function reversePages<T>(
   query: (
     next: string | undefined,
-    limit: number,
-  ) => Promise<{ next: string | undefined; limit: number; items: T[] }>,
-  n: number,
+    limit: number | undefined,
+  ) => Promise<IPagedResponse<T>>,
+  n: number | undefined,
 ): Promise<T[]> {
-  const iter = pageIterator<T>(query, n);
+  const iter = pageIterator(query, n);
   const ps = [] as T[][];
   for await (const p of iter) {
     ps.unshift(p.reverse());
@@ -84,9 +87,9 @@ export function base64json(txt: string): string {
  * @alpha
  */
 export async function cutPeerPage(
-  network: string,
-  host: string,
-  retryOptions: IRetryOptions,
+  network?: string,
+  host?: string,
+  retryOptions?: IRetryOptions,
 ): Promise<ICutPeerResponse> {
   try {
     const result = await retryFetch(
@@ -121,13 +124,13 @@ export async function branchPage(
   chainId: number | string,
   upper: string[],
   lower: string[],
-  minHeight: number,
-  maxHeight: number,
-  n: number,
+  minHeight: number | undefined,
+  maxHeight: number | undefined,
+  n: number | undefined,
   next: string | undefined,
-  format: string,
-  network: string,
-  host: string,
+  format: string | undefined,
+  network?: string,
+  host?: string,
   retryOptions?: IRetryOptions,
 ): Promise<IHeaderBranchResponse> {
   /* Format and Accept header value */
@@ -147,7 +150,7 @@ export async function branchPage(
   }
 
   /* URL */
-  const url = chainUrl(chainId, network, host, 'header/branch');
+  const url = chainUrl(chainId, 'header/branch', network, host);
   if (minHeight !== undefined) {
     url.searchParams.append('minheight', minHeight as unknown as string);
   }
@@ -180,9 +183,9 @@ export async function branchPage(
         }),
       retryOptions,
     );
-    return parseResponse<IHeaderBranchResponse>(result);
+    return await parseResponse<IHeaderBranchResponse>(result);
   } catch (e) {
-    throw new Error(`Error fetching txStream: ${e}`);
+    throw new Error(`Error fetching branchPage: ${e}`);
   }
 }
 
@@ -203,35 +206,33 @@ export async function branchPage(
  * @alpha
  */
 
-export function branch(
+export async function branch(
   chainId: number | string,
   upper: string[],
   lower: string[],
-  minHeight: number,
-  maxHeight: number,
-  n: number,
-  format: string,
-  network: string,
-  host: string,
+  minHeight: number | undefined,
+  maxHeight: number | undefined,
+  n: number | undefined,
+  format: string | undefined,
+  network?: string,
+  host?: string,
   retryOptions?: IRetryOptions,
 ): Promise<IBlockHeader[]> {
-  return reversePages<IBlockHeader>(
-    (next, limit) =>
-      branchPage(
-        chainId,
-        upper,
-        lower,
-        minHeight,
-        maxHeight,
-        limit,
-        next,
-        format,
-        network,
-        host,
-        retryOptions,
-      ),
-    n,
-  );
+  return reversePages<IBlockHeader>(async (next, limit) => {
+    return branchPage(
+      chainId,
+      upper,
+      lower,
+      minHeight,
+      maxHeight,
+      limit,
+      next,
+      format,
+      network,
+      host,
+      retryOptions,
+    );
+  }, n);
 }
 
 /**
@@ -251,10 +252,10 @@ export async function currentBranch(
   chainId: number | string,
   start: number,
   end: number,
-  n: number,
+  n: number | undefined,
   format: string,
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
 ): Promise<IBlockHeader[]> {
   const { hashes } = await currentCut(network, host);
   return branch(
@@ -287,13 +288,13 @@ export async function payloads(
   chainId: number | string,
   hashes: string[],
   format: string,
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
   retryOptions?: IRetryOptions,
 ): Promise<IBlockPayload<ITransactionElement>[]> {
   format = format ? format : 'json';
 
-  const url = chainUrl(chainId, network, host, `payload/outputs/batch`);
+  const url = chainUrl(chainId, 'payload/outputs/batch', network, host);
 
   const response = await retryFetch(
     () =>

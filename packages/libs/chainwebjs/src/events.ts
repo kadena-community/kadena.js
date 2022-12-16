@@ -1,3 +1,4 @@
+import EventSource from 'eventsource';
 import { recentBlocks, headers2blocks, blockByBlockHash } from './blocks';
 import { blocks } from './blocks';
 import { chainUpdates } from './headers';
@@ -44,8 +45,8 @@ export async function events(
   chainId: number | string,
   start: number,
   end: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IEventData[]> {
   const results = await blocks(chainId, start, end, network, host);
   return filterEvents(results);
@@ -66,8 +67,8 @@ export async function recentEvents(
   chainId: number | string,
   depth: number,
   n: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IEventData[]> {
   const results = await recentBlocks(chainId, depth, n, network, host);
   return filterEvents(results);
@@ -89,9 +90,9 @@ export function eventStream(
   depth: number,
   chainIds: number[],
   callback: (event: IEventData) => void,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
-): Promise<EventSource> {
+  network?: string,
+  host?: string,
+): EventSource {
   const ro = depth > 1 ? {} : { retry404: true, minTimeout: 1000 };
   const cb = async (u: {
     txCount: number;
@@ -122,8 +123,8 @@ export function eventStream(
 export async function eventsByBlockHash(
   chainId: number | string,
   hash: string,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IEventData[]> {
   const block = await blockByBlockHash(chainId, hash, network, host);
   return filterEvents([block]);
@@ -139,11 +140,11 @@ export async function eventsByBlockHash(
  *
  * @alpha
  */
-export function eventsByHeight(
+export async function eventsByHeight(
   chainId: number | string,
   height: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IEventData[]> {
   return events(chainId, height, height, network, host);
 }

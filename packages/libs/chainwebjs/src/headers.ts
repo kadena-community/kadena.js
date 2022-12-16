@@ -1,3 +1,4 @@
+import EventSource from 'eventsource';
 import { IBufferHeader, IBlockHeader } from './types';
 import { HeaderBuffer } from './HeaderBuffer';
 import { currentBranch, branch } from './internal';
@@ -20,10 +21,10 @@ export function headers(
   chainId: number | string,
   start: number,
   end: number,
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
 ): Promise<IBlockHeader[]> {
-  return currentBranch(chainId, start, end, 0, 'json', network, host);
+  return currentBranch(chainId, start, end, undefined, 'json', network, host);
 }
 
 /**
@@ -42,8 +43,8 @@ export async function recentHeaders(
   chainId: number | string,
   depth: number = 0,
   n: number = 1,
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
 ): Promise<IBlockHeader[]> {
   const cut = await currentCut(network, host);
   const start = cut.hashes['0'].height - depth - n + 1;
@@ -64,14 +65,14 @@ export async function recentHeaders(
  * @alpha
  */
 
-export async function headerStream(
+export function headerStream(
   depth: number,
   chainIds: number[],
   callback: (header: IBlockHeader) => void,
-  network: string,
-  host: string,
-): Promise<EventSource> {
-  return await chainUpdates(
+  network?: string,
+  host?: string,
+): EventSource {
+  return chainUpdates(
     depth,
     chainIds,
     (u) => callback(u.header),
@@ -94,10 +95,20 @@ export async function headerStream(
 export async function headerByBlockHash(
   chainId: number | string,
   hash: string,
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
 ): Promise<IBlockHeader> {
-  const x = await branch(chainId, [hash], [], 0, 0, 1, '', network, host);
+  const x = await branch(
+    chainId,
+    [hash],
+    [],
+    undefined,
+    undefined,
+    1,
+    undefined,
+    network,
+    host,
+  );
   return x[0];
 }
 
@@ -114,8 +125,8 @@ export async function headerByBlockHash(
 export const headerByHeight = async (
   chainId: number | string,
   height: number,
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
 ): Promise<IBlockHeader> => {
   const x = await headers(chainId, height, height, network, host);
   return x[0];
@@ -128,23 +139,28 @@ export const headerByHeight = async (
  *
  * @alpha
  */
-const headerUpdates = async (
+
+/**
+ * @param {headerCallback} callback - function that is called for each update
+ * @param {string} [network="mainnet01"] - chainweb network
+ * @param {string} [host="https://api.chainweb.com"] - chainweb api host
+ */
+const headerUpdates = (
   callback: (header: IBufferHeader) => void,
-  network: string,
-  host: string,
-): Promise<EventSource> => {
+  network?: string,
+  host?: string,
+): EventSource => {
   const url = baseUrl(network, host, 'header/updates');
+
   const es = new EventSource(`${url}`);
-
-  const eventParser = (evt: MessageEvent): void => {
-    const data = JSON.parse(evt.data) as IBufferHeader;
-    return callback(data);
-  };
-
   es.onerror = (err) => {
     throw err;
   };
-  es.addEventListener('BlockHeader', eventParser);
+
+  es.addEventListener('BlockHeader', ((evt: MessageEvent): void => {
+    const messageEvent = evt as MessageEvent;
+    callback(JSON.parse(messageEvent.data) as IBufferHeader);
+  }) as EventListener);
   return es;
 };
 
@@ -162,24 +178,21 @@ const headerUpdates = async (
  *
  * @alpha
  */
-
-export async function chainUpdates(
+export function chainUpdates(
   depth: number,
   chainIds: number[],
   callback: (header: IBufferHeader) => void,
-  network: string,
-  host: string,
-): Promise<EventSource> {
+  network?: string,
+  host?: string,
+): EventSource {
   const bs = {} as {
     [key: string]: HeaderBuffer;
   };
   chainIds.forEach((x) => (bs[x] = new HeaderBuffer(depth, callback)));
   return headerUpdates(
     (hdr) => {
-      return bs[hdr.header.chainId] === null ||
-        bs[hdr.header.chainId].add === null
-        ? undefined
-        : bs[hdr.header.chainId].add(hdr);
+      const x = bs[hdr.header.chainId];
+      return x === undefined || x.add === undefined ? undefined : x.add(hdr);
     },
     network,
     host,

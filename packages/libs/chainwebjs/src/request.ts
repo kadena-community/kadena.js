@@ -1,6 +1,8 @@
-import pRetry from 'p-retry';
+import pRetry, { AbortError } from 'p-retry';
 import { IRetryOptions } from './types';
-import { ResponseError } from './ResponseError';
+import ResponseError from './ResponseError';
+import { config } from './config';
+import { Response } from 'cross-fetch';
 
 export function transFormUrl(url: URL): string {
   return url as unknown as string;
@@ -14,8 +16,9 @@ export function transFormUrl(url: URL): string {
  *
  * @alpha
  */
+const errorCodes: Array<number> = [408, 423, 425, 429, 500, 502, 503, 504];
 
-export function retryFetch(
+export async function retryFetch(
   fetchAction: () => Promise<Response>,
   retryOptions?: IRetryOptions,
 ): Promise<Response> {
@@ -32,47 +35,16 @@ export function retryFetch(
   const retry404 = retryOptions.retry404;
 
   const run = async (): Promise<Response> => {
-    try {
-      const response = await fetchAction();
-      if (response.status === 200) {
-        return response;
-
-        // retry 404 if requested
-      } else if (response.status === 404 && retry404) {
-        // not found
-        throw new ResponseError(response);
-
-        // retry potentially ephemeral failure conditions
-      } else if (response.status === 408) {
-        // response timeout
-        throw new ResponseError(response);
-      } else if (response.status === 423) {
-        // locked
-        throw new ResponseError(response);
-      } else if (response.status === 425) {
-        // too early
-        throw new ResponseError(response);
-      } else if (response.status === 429) {
-        // too many requests
-        throw new ResponseError(response);
-      } else if (response.status === 500) {
-        // internal server error
-        throw new ResponseError(response);
-      } else if (response.status === 502) {
-        // bad gateway
-        throw new ResponseError(response);
-      } else if (response.status === 503) {
-        // service unavailable
-        throw new ResponseError(response);
-      } else if (response.status === 504) {
-        // gateway timeout
-        throw new ResponseError(response);
-      } else {
-        // unknown error
-        throw new ResponseError(response);
-      }
-    } catch (e) {
-      throw new Error(`Error fetching: ${e}`);
+    const response = await fetchAction();
+    if (response.status === 200) {
+      return response;
+    } else if (
+      (response.status === 404 && retry404) ||
+      errorCodes.indexOf(response.status) !== -1
+    ) {
+      throw new ResponseError(response);
+    } else {
+      throw new AbortError(new ResponseError(response));
     }
   };
 
@@ -89,8 +61,8 @@ export function retryFetch(
  * @alpha
  */
 export function baseUrl(
-  network: string,
-  host: string,
+  network: string = config.network,
+  host: string = config.host,
   pathSuffix: string,
 ): URL {
   return new URL(`${host}/chainweb/0.0/${network}/${pathSuffix}`);
@@ -108,9 +80,9 @@ export function baseUrl(
  */
 export function chainUrl(
   chainId: number | string,
-  network: string,
-  host: string,
   pathSuffix: string,
+  network?: string,
+  host?: string,
 ): URL {
   if (chainId === null) {
     throw new Error('missing chainId parameter');

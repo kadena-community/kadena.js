@@ -1,3 +1,5 @@
+// @ts-nocheck
+import EventSource from 'eventsource';
 import {
   recentBlocks,
   blocks,
@@ -46,8 +48,8 @@ export async function txs(
   chainId: number | string,
   start: number,
   end: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<ITransactionElement[]> {
   const x = await blocks(chainId, start, end, network, host);
   return filterTxs(x);
@@ -68,8 +70,8 @@ export async function recentTxs(
   chainId: number | string,
   depth: number = 0,
   n: number = 1,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<ITransactionElement[]> {
   const x = await recentBlocks(chainId, depth, n, network, host);
   return filterTxs(x);
@@ -78,7 +80,8 @@ export async function recentTxs(
 /**
  * Apply callback to new transactions.
  *
- * @param depth - confirmation depth at which blocks are yielded
+ * @param depth - confirmation depth at which blocks
+ *  are yielded
  * @param chainIds - array of chainIds from which blocks are included
  * @param callback - function that is called for each transaction
  * @param network - chainweb network
@@ -86,13 +89,13 @@ export async function recentTxs(
  *
  * @alpha
  */
-export async function txStream(
+export function txStream(
   depth: number,
   chainIds: number[],
   callback: (transaction: ITransactionElement) => void,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
-): Promise<EventSource> {
+  network?: string,
+  host?: string,
+): EventSource {
   const ro: IRetryOptions =
     depth > 1 ? {} : { retry404: true, minTimeout: 1000 };
   const cb = async (u: {
@@ -104,7 +107,7 @@ export async function txStream(
       filterTxs(blocks).forEach(callback);
     }
   };
-  return await chainUpdates(depth, chainIds, cb, network, host);
+  return chainUpdates(depth, chainIds, cb, network, host);
 }
 
 /**
@@ -121,8 +124,8 @@ export async function txStream(
 export async function txsByBlockHash(
   chainId: number | string,
   hash: string,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<ITransactionElement[]> {
   const block = await blockByBlockHash(chainId, hash, network, host);
   return filterTxs([block]);
@@ -141,8 +144,8 @@ export async function txsByBlockHash(
 export async function txsByHeight(
   chainId: number | string,
   height: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<ITransactionElement[]> {
   return txs(chainId, height, height, network, host);
 }

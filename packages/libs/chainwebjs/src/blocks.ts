@@ -1,3 +1,4 @@
+import EventSource from 'eventsource';
 import {
   headers,
   headerStream,
@@ -40,8 +41,8 @@ import { payloads } from './internal';
  */
 export async function headers2blocks(
   hdrs: IBlockHeader[],
-  network: string,
-  host: string,
+  network?: string,
+  host?: string,
   retryOptions?: IRetryOptions,
 ): Promise<IBlockPayloads<ITransactionElement>[]> {
   let missing = hdrs;
@@ -106,8 +107,8 @@ export async function blocks(
   chainId: number | string,
   start: number,
   end: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IBlockPayloads<ITransactionElement>[]> {
   const hdrs = await headers(chainId, start, end, network, host);
   return headers2blocks(hdrs, network, host);
@@ -128,8 +129,8 @@ export async function recentBlocks(
   chainId: number | string,
   depth: number,
   n: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IBlockPayloads<ITransactionElement>[]> {
   const hdrs = await recentHeaders(chainId, depth, n, network, host);
   let ro: IRetryOptions = {};
@@ -157,13 +158,13 @@ export async function recentBlocks(
  *
  * @alpha
  */
-export async function blockStream(
+export function blockStream(
   depth: number,
   chainIds: number[],
   callback: (block: IBlockPayloads<ITransactionElement>) => void,
-  network: string = 'mainnet01  ',
-  host: string = 'https://api.chainweb.com',
-): Promise<EventSource> {
+  network?: string,
+  host?: string,
+): EventSource {
   const ro: IRetryOptions =
     depth > 1 ? {} : { retry404: true, minTimeout: 1000 };
   const cb = async (hdr: IBlockHeader): Promise<void> => {
@@ -190,8 +191,8 @@ export async function blockStream(
 export async function blockByBlockHash(
   chainId: number | string,
   hash: string,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IBlockPayloads<ITransactionElement>> {
   const hdr = await headerByBlockHash(chainId, hash, network, host);
   const bs = await headers2blocks([hdr], network, host);
@@ -211,8 +212,8 @@ export async function blockByBlockHash(
 export async function blockByHeight(
   chainId: number | string,
   height: number,
-  network: string = 'mainnet01',
-  host: string = 'https://api.chainweb.com',
+  network?: string,
+  host?: string,
 ): Promise<IBlockPayloads<ITransactionElement>> {
   const x = await blocks(chainId, height, height, network, host);
   return x[0];

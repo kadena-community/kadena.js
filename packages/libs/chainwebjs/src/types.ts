@@ -1,8 +1,21 @@
+export interface IConfig {
+  network: string;
+  host: string;
+}
+
 export interface IBufferHeader {
   txCount: number;
   powHash: string;
   header: IBlockHeader;
   target: string;
+}
+
+export interface IHeaderBuffer {
+  depth: number;
+  callback: (header: IBufferHeader) => void;
+  curHeight: number | undefined;
+  buffer: IBufferHeader[];
+  add: (u: IBufferHeader) => void;
 }
 
 interface IOnFailedAttempt {
@@ -51,6 +64,12 @@ export interface IHeaderBranchResponse {
   next: string;
   items: IBlockHeader[];
   limit: number;
+}
+
+export interface IPagedResponse<T> {
+  next?: string;
+  items: T[];
+  limit?: number;
 }
 
 export interface IBlockHeader {

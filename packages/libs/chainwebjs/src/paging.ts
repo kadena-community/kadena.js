@@ -1,6 +1,8 @@
 /* ************************************************************************** */
 /* Pageing Tools */
 
+import { IPagedResponse } from './types';
+
 /** Yields full pages, i.e. arrarys of page items.
  *
  * @param query - A query callback that takes a `next` and an optional `limit` parameter.
@@ -8,20 +10,21 @@
  *
  * @alpha
  */
+
 export async function* pageIterator<T>(
   query: (
     next: string | undefined,
-    limit: number,
-  ) => Promise<{ next: string | undefined; limit: number; items: T[] }>,
-  n: number,
+    limit: number | undefined,
+  ) => Promise<IPagedResponse<T>>,
+  n: number | undefined,
 ): AsyncGenerator<T[], void, unknown> {
-  let next: string | undefined;
+  let next = undefined;
   let c = 0;
   do {
-    const limit = n ? n - c : 0;
-    const page = await query(next, limit);
+    const limit = n ? n - c : undefined;
+    const page: IPagedResponse<T> = await query(next, limit);
     next = page.next;
-    c += page.limit;
+    c += page.limit || 0;
     yield page.items;
   } while (next && (n ? c < n : true));
 }

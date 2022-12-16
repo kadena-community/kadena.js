@@ -1,4 +1,4 @@
-import * as ResponseError from './ResponseError';
+import ResponseError from './ResponseError';
 import * as cut from './cut';
 import * as header from './headers';
 import * as block from './blocks';
@@ -7,7 +7,7 @@ import * as event from './events';
 import * as internal from './internal';
 
 export default {
-  ResponseError,
+  ResponseError: ResponseError,
   cut: {
     current: cut.currentCut,
     peers: cut.cutPeers,
