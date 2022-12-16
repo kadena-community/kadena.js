@@ -7,7 +7,7 @@ import * as event from './events';
 import * as internal from './internal';
 
 export default {
-  ResponseError: ResponseError,
+  ResponseError,
   cut: {
     current: cut.currentCut,
     peers: cut.cutPeers,
