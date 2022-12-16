@@ -1,6 +1,12 @@
+import { Block } from '../../__generated__/sdk';
 import { keyframes, styled } from '../../styles/stitches.config';
+import { Box } from '../box';
+import { Text } from '../text';
 
+import { Link2Icon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import React from 'react';
+
+const TEMP_NUM = 2;
 
 const Container: any = styled('div', {
   borderRadius: '$md',
@@ -50,21 +56,58 @@ const Content: any = styled('div', {
   width: '$blockWidth',
   background: '$$color',
   borderRadius: '$md',
-  p: '$2',
-  fontSize: '$xs',
+  display: 'flex',
+  alignItems: 'center',
+  px: '$2',
+  py: '$1',
 });
 
 interface IChainBlockProps {
   color: string;
   numTransactions?: number;
-  mined: boolean;
+  block?: Block;
+  textColor: string;
 }
 
 export function ChainBlock(props: IChainBlockProps): JSX.Element {
-  const { color, mined } = props;
+  const { color, textColor, block } = props;
+
   return (
     <Container>
-      {mined && <Content css={{ $$color: color }}>{` `}</Content>}
+      {block && (
+        <Content css={{ $$color: color, $$textColor: textColor }}>
+          <Box
+            css={{
+              fontSize: '$xs',
+              display: 'grid',
+              gridTemplateColumns: 'auto minmax(0, 1fr)',
+              gridColumnGap: '$1',
+              alignItems: 'center',
+              // justifyItems: 'center',
+              gridRowGap: 0,
+              color: '$$textColor',
+              svg: {
+                width: '0.7rem',
+                height: '0.7rem',
+              },
+            }}
+          >
+            <TimerIcon />
+            <Text
+              as="span"
+              css={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {new Date() - new Date(block.creationtime)} s
+            </Text>
+            <RocketIcon />
+            <Text as="span">{TEMP_NUM} txs</Text>
+          </Box>
+        </Content>
+      )}
     </Container>
   );
 }
