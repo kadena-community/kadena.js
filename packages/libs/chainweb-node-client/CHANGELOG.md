@@ -1,6 +1,13 @@
 # Change Log - @kadena/chainweb-node-client
 
-This log was last generated on Tue, 29 Nov 2022 16:14:08 GMT and should not be manually modified.
+This log was last generated on Fri, 09 Dec 2022 12:07:57 GMT and should not be manually modified.
+
+## 0.1.1
+Fri, 09 Dec 2022 12:07:57 GMT
+
+### Patches
+
+- remove only-allow pnpm
 
 ## 0.1.0
 Tue, 29 Nov 2022 16:14:08 GMT

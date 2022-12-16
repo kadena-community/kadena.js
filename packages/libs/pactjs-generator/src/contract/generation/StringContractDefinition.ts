@@ -32,6 +32,10 @@ export class StringContractDefinition implements IContractDefinition {
     return this._raw[moduleName].defuns;
   }
 
+  public getNamespace(moduleName: string): string {
+    return this._raw[moduleName].namespace;
+  }
+
   public get modulesWithFunctions(): Output {
     return this._raw;
   }

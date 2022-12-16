@@ -1,0 +1,40 @@
+{
+  "name": "@kadena/cookbook",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "_phase:build": "",
+    "_phase:test": "",
+    "build": "",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "test": ""
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/client": "workspace:*"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0",
+    "ts-node": "~10.8.2"
+  }
+}

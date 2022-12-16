@@ -80,9 +80,9 @@ mkdir my-dapp-with-kadena-client
 cd my-dapp-with-kadena-client
 npm init -y
 npm install -g typescript
+tsc --init
 npm install --save @kadena/client
-npm install --save-dev @kadena/pactjs-cli
-npm install --save-dev ts-node
+npm install -g --save-dev @kadena/pactjs-cli ts-node
 ```
 
 # Contract based interaction using @kadena/client
@@ -145,11 +145,11 @@ pactjs contract-generate --file "./contracts/coin.module.pact"
 ````
 
 The log shows what has happened. Inside the `node_modules` directory, a new
-package has been created: `.kadena/generated`. This package is referenced by
+package has been created: `.kadena/pactjs-generated`. This package is referenced by
 `@kadena/client` to give you type information.
 
-> **NOTE:** do not forget to add this `"types": [".kadena/generated"],` to your
-> `tsconfig.json`. Otherwise this will not work
+> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],` to `compilerOptions`
+> in `tsconfig.json`. Otherwise this will not work
 
 # Building a simple transaction from the contract
 
@@ -162,7 +162,7 @@ Now that everything is bootstrapped, we can start building transactions.
 Create a new file and name it `transfer.ts` (or `.js`).
 
 ```ts
-import { Pactjs } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
 // store the builder in a variable
 const transactionBuilder =
@@ -232,12 +232,10 @@ can only with the desktop version, not the web-version, as it's
 > finalized. Once it is, we'll update the `@kadena/client` accordingly
 
 ```ts
-import {
-  signWithChainweaver,
-} from '@kadena/client';
+import { signWithChainweaver } from '@kadena/client';
 
 // use the finalized transaction, and sign it with Chainweaver
-cont signedTransaction = signWithChainweaver(unsignedTransaction)
+const signedTransaction = signWithChainweaver(unsignedTransaction)
   .then(console.log)
   .catch(console.error);
 ```

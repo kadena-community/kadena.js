@@ -1,6 +1,18 @@
 # Change Log - @kadena/client
 
-This log was last generated on Tue, 29 Nov 2022 16:14:08 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Dec 2022 14:56:25 GMT and should not be manually modified.
+
+## 0.1.2
+Thu, 15 Dec 2022 14:56:25 GMT
+
+### Patches
+
+- When proprerties of a non-malleable transaction change, remove `cmd`, `hash` and `signatures` from the transaction to issue a recalculation of the `cmd` and `hash`.
+
+## 0.1.1
+Fri, 09 Dec 2022 12:07:57 GMT
+
+_Version update only_
 
 ## 0.1.0
 Tue, 29 Nov 2022 16:14:08 GMT
