@@ -6,8 +6,7 @@ import { styled } from '../styles/stitches.config';
 import { useParsedBlocks } from '../utils/hooks/useParsedBlocks';
 
 import Head from 'next/head';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 const StyledMain = styled('main', {
   display: 'flex',
