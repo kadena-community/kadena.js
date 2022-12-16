@@ -3,6 +3,8 @@ import { keyframes, styled } from '../../styles/stitches.config';
 import { Box } from '../box';
 import { Text } from '../text';
 
+import { TimeTicker } from './time-ticker';
+
 import { Link2Icon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
@@ -83,7 +85,6 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
               gridTemplateColumns: 'auto minmax(0, 1fr)',
               gridColumnGap: '$1',
               alignItems: 'center',
-              // justifyItems: 'center',
               gridRowGap: 0,
               color: '$$textColor',
               svg: {
@@ -93,16 +94,7 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
             }}
           >
             <TimerIcon />
-            <Text
-              as="span"
-              css={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {new Date() - new Date(block.creationtime)} s
-            </Text>
+            <TimeTicker date={new Date(block.creationtime)} />
             <RocketIcon />
             <Text as="span">{TEMP_NUM} txs</Text>
           </Box>
