@@ -181,8 +181,10 @@ importers:
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
+      '@radix-ui/colors': ~0.1.8
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
+      '@stitches/react': ~1.2.8
       '@types/heft-jest': ~1.0.3
       '@types/node': 18.11.13
       '@types/react': 18.0.26
@@ -199,6 +201,8 @@ importers:
     dependencies:
       '@apollo/client': 3.7.2_30c50e0ebe73d138eec12db09601b888
       '@graphql-yoga/apollo-link': 1.0.1_0078bc52451ccf51f2a896d9bac8c381
+      '@radix-ui/colors': 0.1.8
+      '@stitches/react': 1.2.8_react@18.2.0
       '@types/node': 18.11.13
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.9
@@ -3046,6 +3050,10 @@ packages:
     requiresBuild: true
     dev: false
 
+  /@radix-ui/colors/0.1.8:
+    resolution: {integrity: sha512-jwRMXYwC0hUo0mv6wGpuw254Pd9p/R6Td5xsRpOmaWkUHlooNWqVcadgyzlRumMq3xfOTXwJReU0Jv+EIy4Jbw==}
+    dev: false
+
   /@repeaterjs/repeater/3.0.4:
     resolution: {integrity: sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==}
 
@@ -3370,6 +3378,14 @@ packages:
     resolution: {integrity: sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==}
     dependencies:
       '@sinonjs/commons': 1.8.6
+    dev: false
+
+  /@stitches/react/1.2.8_react@18.2.0:
+    resolution: {integrity: sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA==}
+    peerDependencies:
+      react: '>= 16.3.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@swc/helpers/0.4.14:

@@ -14,7 +14,7 @@
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
-    "start": "ts-node-dev --respawn -T --no-notify --exit-child src/index.ts",
+    "start": "npx ts-node-dev --respawn -T --no-notify --exit-child src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {

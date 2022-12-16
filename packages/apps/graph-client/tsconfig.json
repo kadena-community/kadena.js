@@ -1,9 +1,7 @@
 {
   "extends": "./node_modules/@kadena/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "target": "ES2020",
     "allowJs": false,
     "skipLibCheck": true,
@@ -14,7 +12,5 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
