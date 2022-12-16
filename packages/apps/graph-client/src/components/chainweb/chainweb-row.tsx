@@ -54,12 +54,12 @@ export function ChainwebRow({
         {height}
       </Text>
       {row.map((block, index) => {
-        console.log({ index });
         return (
           <ChainBlock
             key={`${height}-${index}`}
-            color={selectColor(index)}
-            mined={!!block}
+            color={selectColor(index, 6)}
+            block={block}
+            textColor={selectColor(index, 11)}
           />
         );
       })}

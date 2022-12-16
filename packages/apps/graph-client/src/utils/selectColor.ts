@@ -37,6 +37,6 @@ function selectScale(chainId: number): string {
     case 19:
       return 'green';
     default:
-      return 'gray';
+      return 'mauve';
   }
 }

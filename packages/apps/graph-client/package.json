@@ -26,6 +26,7 @@
     "@apollo/client": "~3.7.2",
     "@graphql-yoga/apollo-link": "~1.0.1",
     "@radix-ui/colors": "~0.1.8",
+    "@radix-ui/react-icons": "~1.1.1",
     "@stitches/react": "~1.2.8",
     "@types/node": "18.11.13",
     "@types/react": "18.0.26",

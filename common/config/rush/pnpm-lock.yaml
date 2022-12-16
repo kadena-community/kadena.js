@@ -182,6 +182,7 @@ importers:
       '@kadena/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@radix-ui/colors': ~0.1.8
+      '@radix-ui/react-icons': ~1.1.1
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
       '@stitches/react': ~1.2.8
@@ -202,6 +203,7 @@ importers:
       '@apollo/client': 3.7.2_30c50e0ebe73d138eec12db09601b888
       '@graphql-yoga/apollo-link': 1.0.1_0078bc52451ccf51f2a896d9bac8c381
       '@radix-ui/colors': 0.1.8
+      '@radix-ui/react-icons': 1.1.1_react@18.2.0
       '@stitches/react': 1.2.8_react@18.2.0
       '@types/node': 18.11.13
       '@types/react': 18.0.26
@@ -3052,6 +3054,14 @@ packages:
 
   /@radix-ui/colors/0.1.8:
     resolution: {integrity: sha512-jwRMXYwC0hUo0mv6wGpuw254Pd9p/R6Td5xsRpOmaWkUHlooNWqVcadgyzlRumMq3xfOTXwJReU0Jv+EIy4Jbw==}
+    dev: false
+
+  /@radix-ui/react-icons/1.1.1_react@18.2.0:
+    resolution: {integrity: sha512-xc3wQC59rsFylVbSusQCrrM+6695ppF730Q6yqzhRdqDcRNWIm2R6ngpzBoSOQMcwnq4p805F+Gr7xo4fmtN1A==}
+    peerDependencies:
+      react: ^16.x || ^17.x || ^18.x
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@repeaterjs/repeater/3.0.4:
