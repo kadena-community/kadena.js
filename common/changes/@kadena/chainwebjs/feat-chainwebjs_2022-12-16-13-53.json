@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainwebjs",
+      "comment": "Added types for project",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainwebjs"
+}
