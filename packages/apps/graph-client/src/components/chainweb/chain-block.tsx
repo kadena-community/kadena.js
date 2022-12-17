@@ -94,7 +94,10 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
             }}
           >
             <TimerIcon />
-            <TimeTicker date={new Date(block.creationtime)} />
+            <TimeTicker
+              date={new Date(block.creationtime)}
+              // date={new Date()}
+            />
             <RocketIcon />
             <Text as="span">{TEMP_NUM} txs</Text>
           </Box>
