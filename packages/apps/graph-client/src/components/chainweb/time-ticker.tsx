@@ -7,11 +7,17 @@ interface ITimeTickerProps {
 }
 
 export function TimeTicker({ date }: ITimeTickerProps): JSX.Element {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [timeDiff, setTimeDiff] = useState<number>(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCurrentDate(new Date());
+      const timeDiffSeconds: number = Math.round((new Date() - date) / 1000);
+
+      if (timeDiffSeconds <= 100) {
+        setTimeDiff(timeDiffSeconds);
+      } else {
+        clearInterval(intervalId);
+      }
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -21,12 +27,10 @@ export function TimeTicker({ date }: ITimeTickerProps): JSX.Element {
     <Text
       as="span"
       css={{
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
       }}
     >
-      {Math.round((currentDate - date) / 1000)} s
+      {timeDiff < 100 ? timeDiff : '>99'} s
     </Text>
   );
 }
