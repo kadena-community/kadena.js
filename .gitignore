@@ -87,3 +87,6 @@ packages/*/*/temp
 
 # Heft
 .heft
+
+# Pact command history
+.pact-history
