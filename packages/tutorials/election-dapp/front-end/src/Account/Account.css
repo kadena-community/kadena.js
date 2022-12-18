@@ -1,0 +1,29 @@
+.Account {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Account-details {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.Account-set-button {
+  font-weight: bold;
+  width: 200px;
+  height: 30px;
+}
+
+.Account-input-wrapper {
+  display: flex;
+}
+
+.Account-input {
+  width: 400px;
+  height: 25px;
+  font-size: 16px;
+  margin: 0 5px;
+}
