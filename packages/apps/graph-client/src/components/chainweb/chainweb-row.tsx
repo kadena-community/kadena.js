@@ -1,10 +1,11 @@
 import type { Block } from '../../__generated__/sdk';
 import { selectColor } from '../../utils/selectColor';
 import { Box } from '../box';
+import { Text } from '../text';
 
 import { ChainBlock } from './chain-block';
-import React = require('react');
-import { Text } from '../text';
+
+import React from 'react';
 
 interface IChainwebRowProps {
   blocks: Block[];

@@ -1,3 +1,3 @@
 import { styled } from '../styles/stitches.config';
 
-export const Box = styled('div');
+export const Box: any = styled('div');

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/naming-convention: 0 */
+
 import type { CSS as StitchesCSS, PropertyValue } from '@stitches/react';
 import { createStitches } from '@stitches/react';
 export type { VariantProps } from '@stitches/react';

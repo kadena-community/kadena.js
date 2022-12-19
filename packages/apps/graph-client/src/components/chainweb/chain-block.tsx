@@ -64,7 +64,7 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
 
   return (
     <Container>
-      {block && (
+      {block ? (
         <Content css={{ $$color: color, $$textColor: textColor }}>
           <Box
             css={{
@@ -87,7 +87,7 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
             <Text as="span">{TEMP_NUM} txs</Text>
           </Box>
         </Content>
-      )}
+      ) : null}
     </Container>
   );
 }
