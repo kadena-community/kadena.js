@@ -80,7 +80,6 @@ export const {
       12: '3rem',
     },
     sizes: {
-      // contentWidth: '80rem',
       blockWidth: '4rem',
     },
   },

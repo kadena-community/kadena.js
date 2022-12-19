@@ -1,6 +1,5 @@
 import { useGetBlocksSubscription } from '../__generated__/sdk';
-import { ChainwebHeader } from '../components/chainweb/chainweb-header';
-import { ChainwebRow } from '../components/chainweb/chainweb-row';
+import { ChainwebGraph } from '../components/chainweb';
 import { Text } from '../components/text';
 import { styled } from '../styles/stitches.config';
 import { useParsedBlocks } from '../utils/hooks/useParsedBlocks';
@@ -8,7 +7,7 @@ import { useParsedBlocks } from '../utils/hooks/useParsedBlocks';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 
-const StyledMain = styled('main', {
+const StyledMain: any = styled('main', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -47,22 +46,7 @@ export default function Home(): JSX.Element {
         </Text>
 
         <div>
-          {loading ? (
-            'Loading...'
-          ) : (
-            <>
-              <ChainwebHeader />
-              {Object.entries(allBlocks)
-                .reverse()
-                .map(([height, blocks]) => (
-                  <ChainwebRow
-                    key={height}
-                    height={Number(height)}
-                    blocks={blocks}
-                  />
-                ))}
-            </>
-          )}
+          {loading ? 'Loading...' : <ChainwebGraph blocks={allBlocks} />}
         </div>
       </StyledMain>
     </div>
