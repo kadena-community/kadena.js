@@ -5,10 +5,10 @@ import { Text } from '../text';
 
 import { TimeTicker } from './time-ticker';
 
-import { Link2Icon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
+import { RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
-const TEMP_NUM = 2;
+const TEMP_NUM: number = 2;
 
 const Container: any = styled('div', {
   borderRadius: '$md',
@@ -18,22 +18,10 @@ const Container: any = styled('div', {
   justifyContent: 'center',
   m: '$1',
 
-  // Update to be responsive
+  // NOTE: Needs to be updated to be responsive
   height: '$blockWidth',
   width: '$blockWidth',
   border: '1px solid $mauve7',
-
-  // '&::before': {
-  //   content: '',
-  //   position: 'absolute',
-  //   top: '50%',
-  //   left: '50%',
-  //   transform: 'translate(-50%, -50%)',
-  //   width: '0.75rem',
-  //   height: '0.75rem',
-  //   borderRadius: '$md',
-  //   background: '$mauve3',
-  // },
 });
 
 const BlockEntrance: any = keyframes({
@@ -94,10 +82,7 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
             }}
           >
             <TimerIcon />
-            <TimeTicker
-              date={new Date(block.creationtime)}
-              // date={new Date()}
-            />
+            <TimeTicker date={new Date(block.creationtime)} />
             <RocketIcon />
             <Text as="span">{TEMP_NUM} txs</Text>
           </Box>

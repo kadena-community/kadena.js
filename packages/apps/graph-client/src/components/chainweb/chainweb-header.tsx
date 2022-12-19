@@ -4,7 +4,7 @@ import { Text } from '../text';
 
 import React from 'react';
 
-export function ChainwebHeader() {
+export function ChainwebHeader(): JSX.Element {
   return (
     <Box
       css={{

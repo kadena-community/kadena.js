@@ -3,14 +3,12 @@ import type { Block } from '../../__generated__/sdk';
 import { useCallback, useState } from 'react';
 
 interface IUseParseBlocksReturn {
-  //   rows: Block[][];
   allBlocks: Record<number, Block[]>;
   addBlocks: (blocks: Block[]) => void;
 }
 
 export function useParsedBlocks(): IUseParseBlocksReturn {
   const [allBlocks, setAllBlocks] = useState<Record<number, Block[]>>({});
-  const [rows, setRows] = useState<Block[][]>([]);
 
   const addBlocks = useCallback(
     (newBlocks: Block[]) => {
