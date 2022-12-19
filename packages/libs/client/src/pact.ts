@@ -302,7 +302,7 @@ export class PactCommand
               throw new Error('requestKey is undefined');
             }
 
-            if (result[this.requestKey!].result.status === 'success') {
+            if (result[this.requestKey!]?.result.status === 'success') {
               // resolve the Promise when we get a "success" response
               this.status = 'success';
               clearTimeout(cancelTimeout);
@@ -317,9 +317,7 @@ export class PactCommand
               reject(result);
             }
           })
-          .catch((err) =>
-            console.log('this.poll failed, retrying. Error:', err),
-          );
+          .catch((err) => console.log('this.poll failed. Error:', err));
       };
       poll();
     });

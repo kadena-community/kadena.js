@@ -230,13 +230,15 @@ describe('Pact proxy', () => {
 
   it('returns a response after polling a succeeding transaction', async () => {
     const mockFetch = (isSuccessful: boolean): void => {
-      const response = {
-        key1: {
-          result: {
-            status: isSuccessful ? 'success' : 'failure',
-          },
-        },
-      };
+      const response = isSuccessful
+        ? {
+            key1: {
+              result: {
+                status: 'success',
+              },
+            },
+          }
+        : {};
 
       (fetch as jest.Mock).mockResolvedValue({
         status: 200,

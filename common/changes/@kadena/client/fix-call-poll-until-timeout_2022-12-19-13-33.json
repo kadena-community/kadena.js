@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Fix callPollUntilTimeout to not catch when an empty object is returned from /poll",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
