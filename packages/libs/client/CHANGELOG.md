@@ -1,6 +1,13 @@
 # Change Log - @kadena/client
 
-This log was last generated on Mon, 19 Dec 2022 12:54:50 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Dec 2022 13:39:19 GMT and should not be manually modified.
+
+## 0.1.4
+Mon, 19 Dec 2022 13:39:19 GMT
+
+### Patches
+
+- Fix callPollUntilTimeout to not catch when an empty object is returned from /poll
 
 ## 0.1.3
 Mon, 19 Dec 2022 12:54:50 GMT
