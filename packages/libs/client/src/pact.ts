@@ -44,6 +44,11 @@ export interface ICommandBuilder<
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   local(apiHost: string): Promise<ICommandResult>;
   send(apiHost: string): Promise<ISendResponse>;
+  callPollUntilTimeout(
+    apiHost: string,
+    interval?: number,
+    timeout?: number,
+  ): Promise<this>;
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
     ...sig: {
@@ -51,6 +56,7 @@ export interface ICommandBuilder<
       sig: string;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  status: string;
   // setSigner(
   //   fn: (
   //     ...transactions: (IPactCommand &
@@ -80,6 +86,13 @@ export type NonceType = string;
  * @alpha
  */
 export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
+
+type TransactionStatus =
+  | 'malleable'
+  | 'non-malleable'
+  | 'pending'
+  | 'success'
+  | 'timeout';
 
 /**
  * @alpha
@@ -114,6 +127,7 @@ export class PactCommand
   public type: 'exec' = 'exec';
   public cmd: string | undefined;
   public requestKey: string | undefined;
+  public status: TransactionStatus;
 
   public constructor() {
     this.code = '';
@@ -128,6 +142,7 @@ export class PactCommand
     this.networkId = 'testnet04';
     this.signers = [];
     this.sigs = [];
+    this.status = 'malleable';
   }
 
   /**
@@ -140,6 +155,7 @@ export class PactCommand
   private _unfinalizeTransaction(): void {
     this.cmd = undefined;
     this.sigs = this.sigs.map(() => undefined);
+    this.status = 'malleable';
   }
 
   /**
@@ -196,6 +212,7 @@ export class PactCommand
     };
 
     this.cmd = command.cmd;
+    this.status = 'non-malleable';
     return command;
   }
 
@@ -257,6 +274,58 @@ export class PactCommand
   }
 
   /**
+   * Checks if a transaction succeeded or failed by polling the apiHost at
+   * a given interval. Times out if it takes too long.
+   * @param apiHost - the chainweb host where to send the transaction to
+   * @param interval - the amount of time in ms between the api calls
+   * @param timeout - the total time in ms after this function will time out
+   * @alpha
+   */
+  public callPollUntilTimeout(
+    apiHost: string,
+    interval: number = 5000,
+    timeout: number = 60000,
+  ): Promise<this> {
+    const endTime = Date.now() + timeout;
+    this.status = 'pending';
+
+    return new Promise((resolve, reject) => {
+      const cancelTimeout = setTimeout(() => {
+        this.status = 'timeout';
+        reject('timeout');
+      }, timeout);
+
+      const poll = (): void => {
+        this.poll(apiHost)
+          .then((result) => {
+            if (this.requestKey === undefined) {
+              throw new Error('requestKey is undefined');
+            }
+
+            if (result[this.requestKey!].result.status === 'success') {
+              // resolve the Promise when we get a "success" response
+              this.status = 'success';
+              clearTimeout(cancelTimeout);
+              resolve(this);
+            } else if (Date.now() < endTime) {
+              // no "success" response (yet), try again in `interval` seconds
+              setTimeout(poll, interval);
+            } else {
+              // took longer than the specified `timeout`, reject the Promise
+              this.status = 'timeout';
+              clearTimeout(cancelTimeout);
+              reject(result);
+            }
+          })
+          .catch((err) =>
+            console.log('this.poll failed, retrying. Error:', err),
+          );
+      };
+      poll();
+    });
+  }
+
+  /**
    * Sends a transaction to the ApiHost /send when the transaction is finalized
    * (i.e. it is checked whether the signatures are complete)
    * @param apiHost - the chainweb host where to send the transaction to
@@ -272,9 +341,10 @@ export class PactCommand
     if (this.requestKey === undefined) {
       throw new Error(
         '`requestKey` not found' +
-          '\nThis request might not be send yet, or it possibly failed.',
+          '\nThis request might not be sent yet, or it possibly failed.',
       );
     }
+
     return poll({ requestKeys: [this.requestKey] }, apiHost);
   }
 
