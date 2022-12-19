@@ -1,6 +1,14 @@
 # Change Log - @kadena/client
 
-This log was last generated on Thu, 15 Dec 2022 14:56:25 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Dec 2022 12:54:50 GMT and should not be manually modified.
+
+## 0.1.3
+Mon, 19 Dec 2022 12:54:50 GMT
+
+### Patches
+
+- Added (postinstall) helpers to make retrieving and generating contracts easier.
+- Added a `callPollUntilTimeout` function which calls the /poll endpoint until the transaction is successful or the request times out
 
 ## 0.1.2
 Thu, 15 Dec 2022 14:56:25 GMT
