@@ -49,7 +49,10 @@ export interface ICommandBuilder<
     options?: {
       interval?: number;
       timeout?: number;
-      onPoll?: (result: IPollResponse) => unknown;
+      onPoll?: (
+        transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+        pollRequest: Promise<IPollResponse>,
+      ) => void;
     },
   ): Promise<this>;
   poll(apiHost: string): Promise<IPollResponse>;
@@ -280,25 +283,43 @@ export class PactCommand
   /**
    * Checks if a transaction succeeded or failed by polling the apiHost at
    * a given interval. Times out if it takes too long.
-   * @param apiHost - the chainweb host where to send the transaction to
-   * @param interval - the amount of time in ms between the api calls (optional)
-   * @param timeout - the total time in ms after this function will time out (optional)
-   * @param onPoll - a function that gets called after each poll with the IPollResult as a parameter (optional)
+   *
+   * @param {string} apiHost - the chainweb host where to send the transaction to
+   * @param {({
+   *       interval?: number;
+   *       timeout?: number;
+   *       onPoll?: (
+   *         transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+   *         pollRequest: Promise<IPollResponse>,
+   *       ) => void;
+   *     })} [options] -
+   *   - `interval` - the amount of time in ms between the api calls (optional)
+   *   - `timeout` - the total time in ms after this function will time out (optional)
+   *   - `onPoll` - `(transaction, pollRequest) => void` a function that gets called before each poll request (optional)
+   *
+   * @return {Promise<this>} the transaction object
    * @alpha
    */
   public pollUntil(
     apiHost: string,
-    options: {
+    options?: {
       interval?: number;
       timeout?: number;
-      onPoll?: (result: IPollResponse) => void;
+      onPoll?: (
+        transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+        pollRequest: Promise<IPollResponse>,
+      ) => void;
     },
   ): Promise<this> {
     if (this.requestKey === undefined) {
-      throw new Error('requestKey is undefined');
+      throw new Error('`requestKey` not found');
     }
 
-    const { interval = 5000, timeout = 180_000, onPoll } = options;
+    const {
+      interval = 5000,
+      timeout = 1000 * 60 * 3,
+      onPoll = () => {},
+    } = { ...options };
     const endTime = Date.now() + timeout;
     this.status = 'pending';
 
@@ -309,10 +330,11 @@ export class PactCommand
       }, timeout);
 
       const poll = (): void => {
-        this.poll(apiHost)
-          .then((result) => {
-            onPoll?.(result);
+        const pollRequest = this.poll(apiHost);
+        onPoll(this, pollRequest);
 
+        pollRequest
+          .then((result) => {
             if (result[this.requestKey!]?.result.status === 'success') {
               // resolve the Promise when we get a "success" response
               this.status = 'success';

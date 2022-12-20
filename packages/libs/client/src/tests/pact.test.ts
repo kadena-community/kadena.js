@@ -311,7 +311,7 @@ describe('Pact proxy', () => {
     expect((fetch as jest.Mock).mock.calls).toHaveLength(3);
   });
 
-  it('rejects the promise for callPollUntilTimeout if the transaction failed', async () => {
+  it('rejects the promise for pollUntil if the transaction failed', async () => {
     jest.useFakeTimers();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -353,7 +353,7 @@ describe('Pact proxy', () => {
     expect((fetch as jest.Mock).mock.calls).toHaveLength(1);
   });
 
-  fit('calls the onPoll function for each poll', async () => {
+  it('calls the onPoll function for each poll', async () => {
     jest.useFakeTimers();
 
     const onPoll = jest.fn();
@@ -392,6 +392,11 @@ describe('Pact proxy', () => {
     await advanceTimersAndFlushPromises(1000);
 
     expect(onPoll.mock.calls).toHaveLength(3);
+
+    // expect two arguments on poll
+    expect(onPoll.mock.lastCall).toHaveLength(2);
+    // expect the first argument to be a transaction with property cmd
+    expect(onPoll.mock.lastCall[0].cmd).toBeDefined();
   });
 });
 
