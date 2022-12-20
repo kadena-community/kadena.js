@@ -46,8 +46,11 @@ export interface ICommandBuilder<
   send(apiHost: string): Promise<ISendResponse>;
   callPollUntilTimeout(
     apiHost: string,
-    interval?: number,
-    timeout?: number,
+    options?: {
+      interval?: number;
+      timeout?: number;
+      onPoll?: (result: IPollResponse) => unknown;
+    },
   ): Promise<this>;
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
@@ -92,6 +95,7 @@ type TransactionStatus =
   | 'non-malleable'
   | 'pending'
   | 'success'
+  | 'failure'
   | 'timeout';
 
 /**
@@ -283,9 +287,14 @@ export class PactCommand
    */
   public callPollUntilTimeout(
     apiHost: string,
-    interval: number = 5000,
-    timeout: number = 60000,
+    options: {
+      interval?: number;
+      timeout?: number;
+      onPoll?: (result: IPollResponse) => void;
+    },
   ): Promise<this> {
+    const { interval = 5000, timeout = 60000, onPoll } = options;
+
     const endTime = Date.now() + timeout;
     this.status = 'pending';
 
@@ -302,11 +311,17 @@ export class PactCommand
               throw new Error('requestKey is undefined');
             }
 
+            onPoll?.(result);
+
             if (result[this.requestKey!]?.result.status === 'success') {
               // resolve the Promise when we get a "success" response
               this.status = 'success';
               clearTimeout(cancelTimeout);
               resolve(this);
+            } else if (result[this.requestKey!]?.result.status === 'failure') {
+              this.status = 'failure';
+              clearTimeout(cancelTimeout);
+              reject(this);
             } else if (Date.now() < endTime) {
               // no "success" response (yet), try again in `interval` seconds
               setTimeout(poll, interval);

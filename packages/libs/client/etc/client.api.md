@@ -56,7 +56,11 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    callPollUntilTimeout(apiHost: string, interval?: number, timeout?: number): Promise<this>;
+    callPollUntilTimeout(apiHost: string, options?: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (result: IPollResponse) => unknown;
+    }): Promise<this>;
     // (undocumented)
     createCommand(): ICommand;
     // (undocumented)
@@ -162,7 +166,11 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         pubkey: string;
         sig: string;
     }[]): this;
-    callPollUntilTimeout(apiHost: string, interval?: number, timeout?: number): Promise<this>;
+    callPollUntilTimeout(apiHost: string, options: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (result: IPollResponse) => void;
+    }): Promise<this>;
     // (undocumented)
     cmd: string | undefined;
     // (undocumented)

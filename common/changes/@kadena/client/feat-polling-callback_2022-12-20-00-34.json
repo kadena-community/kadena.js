@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Adds an onCall callback to `callPollUntilTimeout` which gets called after each poll",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
