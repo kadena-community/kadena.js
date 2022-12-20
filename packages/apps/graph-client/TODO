@@ -1,0 +1,1 @@
+[ ] Had to set `declaration: false` in tsconfig as a workaround for this: https://github.com/microsoft/TypeScript/issues/42873
