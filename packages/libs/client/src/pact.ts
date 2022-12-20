@@ -44,7 +44,7 @@ export interface ICommandBuilder<
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   local(apiHost: string): Promise<ICommandResult>;
   send(apiHost: string): Promise<ISendResponse>;
-  callPollUntilTimeout(
+  pollUntil(
     apiHost: string,
     options?: {
       interval?: number;
@@ -281,11 +281,12 @@ export class PactCommand
    * Checks if a transaction succeeded or failed by polling the apiHost at
    * a given interval. Times out if it takes too long.
    * @param apiHost - the chainweb host where to send the transaction to
-   * @param interval - the amount of time in ms between the api calls
-   * @param timeout - the total time in ms after this function will time out
+   * @param interval - the amount of time in ms between the api calls (optional)
+   * @param timeout - the total time in ms after this function will time out (optional)
+   * @param onPoll - a function that gets called after each poll with the IPollResult as a parameter (optional)
    * @alpha
    */
-  public callPollUntilTimeout(
+  public pollUntil(
     apiHost: string,
     options: {
       interval?: number;
@@ -293,8 +294,11 @@ export class PactCommand
       onPoll?: (result: IPollResponse) => void;
     },
   ): Promise<this> {
-    const { interval = 5000, timeout = 60000, onPoll } = options;
+    if (this.requestKey === undefined) {
+      throw new Error('requestKey is undefined');
+    }
 
+    const { interval = 5000, timeout = 180_000, onPoll } = options;
     const endTime = Date.now() + timeout;
     this.status = 'pending';
 
@@ -307,10 +311,6 @@ export class PactCommand
       const poll = (): void => {
         this.poll(apiHost)
           .then((result) => {
-            if (this.requestKey === undefined) {
-              throw new Error('requestKey is undefined');
-            }
-
             onPoll?.(result);
 
             if (result[this.requestKey!]?.result.status === 'success') {
@@ -319,6 +319,7 @@ export class PactCommand
               clearTimeout(cancelTimeout);
               resolve(this);
             } else if (result[this.requestKey!]?.result.status === 'failure') {
+              // reject the Promise when we get a "failure" response
               this.status = 'failure';
               clearTimeout(cancelTimeout);
               reject(this);

@@ -24,27 +24,19 @@ async function advanceTimersAndFlushPromises(
   await flushPromises();
 }
 
-function mockFetchForPoll(isSuccessful?: boolean): void {
+function mockFetchForPoll(status?: 'success' | 'failure'): void {
   let response = {};
 
-  if (isSuccessful === undefined) {
+  if (status === undefined) {
     response = {};
   } else {
-    response = isSuccessful
-      ? {
-          key1: {
-            result: {
-              status: 'success',
-            },
-          },
-        }
-      : {
-          key1: {
-            result: {
-              status: 'failure',
-            },
-          },
-        };
+    response = {
+      key1: {
+        result: {
+          status,
+        },
+      },
+    };
   }
 
   (fetch as jest.Mock).mockResolvedValue({
@@ -240,7 +232,7 @@ describe('Pact proxy', () => {
     expect(() => builder.poll('fake-api-host.local.co')).toThrow();
   });
 
-  it('throws when trying to call .callPollUntilTimeout() when no requestkey is present', async () => {
+  it('throws when trying to call .pollUntil() when no requestkey is present', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
       ok: true,
@@ -259,7 +251,7 @@ describe('Pact proxy', () => {
     let expectingError;
 
     try {
-      await builder.callPollUntilTimeout('fake-api-host.local.co');
+      await builder.pollUntil('fake-api-host.local.co');
     } catch (error) {
       expectingError = error;
     }
@@ -295,7 +287,7 @@ describe('Pact proxy', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     builder
-      .callPollUntilTimeout('fake-api-host.local.co', {
+      .pollUntil('fake-api-host.local.co', {
         interval: 1000,
         timeout: 5000,
       })
@@ -312,7 +304,7 @@ describe('Pact proxy', () => {
     expect((fetch as jest.Mock).mock.calls).toHaveLength(2);
 
     // update the response to a succeeding one
-    mockFetchForPoll(true);
+    mockFetchForPoll('success');
 
     await advanceTimersAndFlushPromises(1000);
 
@@ -340,7 +332,7 @@ describe('Pact proxy', () => {
     await builder.send('fake-api-host.local.co');
 
     // make fetch return failed
-    mockFetchForPoll(false);
+    mockFetchForPoll('failure');
 
     // clear the mocked fetch to make counting the /poll calls easier
     (fetch as jest.Mock).mockClear();
@@ -349,12 +341,12 @@ describe('Pact proxy', () => {
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await builder.callPollUntilTimeout('fake-api-host.local.co');
+      await builder.pollUntil('fake-api-host.local.co');
     } catch (error) {
       expectingError = error;
     }
 
-    await advanceTimersAndFlushPromises(10000);
+    await advanceTimersAndFlushPromises(5000);
 
     expect(expectingError.status).toBe('failure');
 
@@ -364,9 +356,7 @@ describe('Pact proxy', () => {
   fit('calls the onPoll function for each poll', async () => {
     jest.useFakeTimers();
 
-    const onPoll = jest.fn().mockImplementation(() => {
-      console.log('log');
-    });
+    const onPoll = jest.fn();
 
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
@@ -388,7 +378,7 @@ describe('Pact proxy', () => {
     mockFetchForPoll();
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    builder.callPollUntilTimeout('fake-api-host.local.co', {
+    builder.pollUntil('fake-api-host.local.co', {
       interval: 1000,
       onPoll,
     });
@@ -397,7 +387,7 @@ describe('Pact proxy', () => {
     await advanceTimersAndFlushPromises(1000);
     await advanceTimersAndFlushPromises(1000);
 
-    mockFetchForPoll(true);
+    mockFetchForPoll('success');
 
     await advanceTimersAndFlushPromises(1000);
 
