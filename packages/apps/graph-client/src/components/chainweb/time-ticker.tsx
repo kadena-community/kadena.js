@@ -10,14 +10,15 @@ export function TimeTicker({ date }: ITimeTickerProps): JSX.Element {
   const [timeDiff, setTimeDiff] = useState<number>(0);
 
   useEffect(() => {
+    setTimeDiff(Math.round((new Date().valueOf() - date.valueOf()) / 1000));
+
     const intervalId = setInterval(() => {
       const timeDiffSeconds: number = Math.round(
         (new Date().valueOf() - date.valueOf()) / 1000,
       );
 
-      if (timeDiffSeconds <= 100) {
-        setTimeDiff(timeDiffSeconds);
-      } else {
+      setTimeDiff(timeDiffSeconds);
+      if (timeDiffSeconds >= 100) {
         clearInterval(intervalId);
       }
     }, 1000);
