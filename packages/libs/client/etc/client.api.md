@@ -68,6 +68,8 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
     }): Promise<this>;
     // (undocumented)
+    requestKey: string | undefined;
+    // (undocumented)
     send(apiHost: string): Promise<ISendResponse>;
     // (undocumented)
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
