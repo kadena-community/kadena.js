@@ -1,9 +1,7 @@
-import { ISendResponse } from '@kadena/chainweb-node-client';
 import { Pact, signWithChainweaver } from '@kadena/client';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
-import { pollTransactions } from '../utils/poll-transactions';
 
 const HELP: string = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} amount`;
 const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' | undefined =
@@ -49,22 +47,20 @@ async function transferCreate(
     .addCap('coin.TRANSFER', senderPublicKey, sender, receiver, amount)
     .setMeta({ sender }, NETWORK_ID);
 
-  const signedTransactions = await signWithChainweaver(transactionBuilder);
+  await signWithChainweaver(transactionBuilder);
 
-  const sendRequests = signedTransactions.map((tx) => {
-    console.log(`Sending transaction: ${tx.code}`);
-    return tx.send(API_HOST);
+  await transactionBuilder.send(API_HOST);
+  const pollResult = await transactionBuilder.pollUntil(API_HOST, {
+    onPoll: async (transaction, pollRequest): Promise<void> => {
+      console.log(
+        `Polling ${transaction.requestKey}.\nStatus: ${transaction.status}`,
+      );
+      console.log(await pollRequest);
+    },
   });
 
-  const sendResponses = await Promise.all(sendRequests);
-
-  sendResponses.map(async function startPolling(
-    sendResponse: ISendResponse,
-  ): Promise<void> {
-    console.log('Send response: ', sendResponse);
-    const requestKey = (await sendRequests[0]).requestKeys[0];
-    await pollTransactions([requestKey], API_HOST);
-  });
+  console.log('Polling Completed.');
+  console.log(pollResult);
 }
 
 transferCreate(sender, receiver, Number(transferAmount)).catch(console.error);

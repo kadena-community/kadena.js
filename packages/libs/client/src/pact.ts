@@ -63,6 +63,7 @@ export interface ICommandBuilder<
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   status: string;
+  requestKey: string | undefined;
   // setSigner(
   //   fn: (
   //     ...transactions: (IPactCommand &
@@ -150,6 +151,7 @@ export class PactCommand
     this.signers = [];
     this.sigs = [];
     this.status = 'malleable';
+    this.requestKey = undefined;
   }
 
   /**
