@@ -8,8 +8,6 @@ import { TimeTicker } from './time-ticker';
 import { RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
-const TEMP_NUM: number = 2;
-
 const Container: any = styled('div', {
   borderRadius: '$md',
   position: 'relative',
@@ -54,13 +52,13 @@ const Content: any = styled('div', {
 
 interface IChainBlockProps {
   color: string;
-  numTransactions?: number;
+  numTransactions: number;
   block?: Block;
   textColor: string;
 }
 
 export function ChainBlock(props: IChainBlockProps): JSX.Element {
-  const { color, textColor, block } = props;
+  const { color, textColor, block, numTransactions = 0 } = props;
 
   return (
     <Container>
@@ -83,8 +81,12 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
           >
             <TimerIcon />
             <TimeTicker date={new Date(block.creationtime)} />
-            <RocketIcon />
-            <Text as="span">{TEMP_NUM} txs</Text>
+            {!!numTransactions && (
+              <>
+                <RocketIcon />
+                <Text as="span">{numTransactions} txs</Text>
+              </>
+            )}
           </Box>
         </Content>
       ) : null}

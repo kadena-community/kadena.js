@@ -1,6 +1,6 @@
 import { theme } from '../styles/stitches.config';
 
-export function selectColor(chainId: number, level?: number): string {
+export function selectColor(chainId: number, level: number = 11): string {
   return theme.colors[
     `${selectScale(chainId)}${level || 7}` as keyof typeof theme.colors
   ].value;
