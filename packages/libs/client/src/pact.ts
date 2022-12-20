@@ -284,20 +284,13 @@ export class PactCommand
    * Checks if a transaction succeeded or failed by polling the apiHost at
    * a given interval. Times out if it takes too long.
    *
-   * @param {string} apiHost - the chainweb host where to send the transaction to
-   * @param {({
-   *       interval?: number;
-   *       timeout?: number;
-   *       onPoll?: (
-   *         transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
-   *         pollRequest: Promise<IPollResponse>,
-   *       ) => void;
-   *     })} [options] -
+   * @param apiHost - the chainweb host where to send the transaction to
+   * @param options
    *   - `interval` - the amount of time in ms between the api calls (optional)
    *   - `timeout` - the total time in ms after this function will time out (optional)
    *   - `onPoll` - `(transaction, pollRequest) => void` a function that gets called before each poll request (optional)
    *
-   * @return {Promise<this>} the transaction object
+   * @returns the transaction object
    * @alpha
    */
   public pollUntil(

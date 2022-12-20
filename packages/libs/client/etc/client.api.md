@@ -65,7 +65,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     pollUntil(apiHost: string, options?: {
         interval?: number;
         timeout?: number;
-        onPoll?: (result: IPollResponse) => unknown;
+        onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
     }): Promise<this>;
     // (undocumented)
     send(apiHost: string): Promise<ISendResponse>;
@@ -179,10 +179,10 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
-    pollUntil(apiHost: string, options: {
+    pollUntil(apiHost: string, options?: {
         interval?: number;
         timeout?: number;
-        onPoll?: (result: IPollResponse) => void;
+        onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
     }): Promise<this>;
     // (undocumented)
     publicMeta: {
