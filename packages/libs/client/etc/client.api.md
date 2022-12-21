@@ -56,13 +56,17 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    callPollUntilTimeout(apiHost: string, interval?: number, timeout?: number): Promise<this>;
-    // (undocumented)
     createCommand(): ICommand;
     // (undocumented)
     local(apiHost: string): Promise<ICommandResult>;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
+    // (undocumented)
+    pollUntil(apiHost: string, options?: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
+    }): Promise<this>;
     // (undocumented)
     send(apiHost: string): Promise<ISendResponse>;
     // (undocumented)
@@ -162,7 +166,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         pubkey: string;
         sig: string;
     }[]): this;
-    callPollUntilTimeout(apiHost: string, interval?: number, timeout?: number): Promise<this>;
     // (undocumented)
     cmd: string | undefined;
     // (undocumented)
@@ -176,6 +179,11 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
+    pollUntil(apiHost: string, options?: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
+    }): Promise<this>;
     // (undocumented)
     publicMeta: {
         chainId: ChainId;
