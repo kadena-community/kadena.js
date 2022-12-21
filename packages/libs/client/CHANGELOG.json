@@ -2,6 +2,18 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.5",
+      "tag": "@kadena/client_v0.1.5",
+      "date": "Wed, 21 Dec 2022 12:17:18 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Renames `callPollUntilTimeout` to `pollUntil`. Adds an onCall callback to `pollUntil` which gets called after each poll"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.4",
       "tag": "@kadena/client_v0.1.4",
       "date": "Mon, 19 Dec 2022 13:39:19 GMT",

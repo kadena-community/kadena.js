@@ -1,6 +1,13 @@
 # Change Log - @kadena/client
 
-This log was last generated on Mon, 19 Dec 2022 13:39:19 GMT and should not be manually modified.
+This log was last generated on Wed, 21 Dec 2022 12:17:18 GMT and should not be manually modified.
+
+## 0.1.5
+Wed, 21 Dec 2022 12:17:18 GMT
+
+### Patches
+
+- Renames `callPollUntilTimeout` to `pollUntil`. Adds an onCall callback to `pollUntil` which gets called after each poll
 
 ## 0.1.4
 Mon, 19 Dec 2022 13:39:19 GMT
