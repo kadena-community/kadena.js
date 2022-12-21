@@ -22,18 +22,6 @@ const mapType = (name: string | 'undefined'): string => {
 
 type ModuleName = string;
 
-function capitalize([first, ...rest]: string): string {
-  return first.toUpperCase() + rest.join('');
-}
-
-function camelCase(name: string[]): string {
-  return name.map(capitalize).join('');
-}
-
-function stripDashesAndCamelCase(name: string): string {
-  return camelCase(name.split('-'));
-}
-
 function generateModuleName(module: Module): string {
   if (module.namespace.length === 0) {
     return module.name;
@@ -56,11 +44,13 @@ export function generateDts(modules: Output): Map<ModuleName, string> {
 import type { ICommandBuilder, IPactCommand } from '@kadena/client';
 
 declare module '@kadena/client' {
-  export type I${stripDashesAndCamelCase(module.name)}Caps = {
+  export interface ICapabilities {
     ${Object.keys(module.defcaps)
       .map((defcapName) => {
         const defcap: Defcap = module.defcaps[defcapName];
-        return `"${module.name}.${defcapName}": [ ${Object.keys(defcap.args)
+        return `"${generateModuleName(module)}.${defcapName}": [ ${Object.keys(
+          defcap.args,
+        )
           .map((argName) => {
             const defcapArg: Arg = defcap.args[argName];
             return `${argName.replace(/-/g, '')}: ${mapType(defcapArg.type)}`;
@@ -81,9 +71,7 @@ declare module '@kadena/client' {
                  argDef.type,
                )}`;
              })
-             .join(', ')}) => ICommandBuilder<I${stripDashesAndCamelCase(
-             module.name,
-           )}Caps> & IPactCommand`;
+             .join(', ')}) => ICommandBuilder<ICapabilities> & IPactCommand`;
          })
          .join(',\n')}
     }
