@@ -2,6 +2,33 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.4",
+      "tag": "@kadena/client_v0.1.4",
+      "date": "Mon, 19 Dec 2022 13:39:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix callPollUntilTimeout to not catch when an empty object is returned from /poll"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.1.3",
+      "tag": "@kadena/client_v0.1.3",
+      "date": "Mon, 19 Dec 2022 12:54:50 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added (postinstall) helpers to make retrieving and generating contracts easier."
+          },
+          {
+            "comment": "Added a `callPollUntilTimeout` function which calls the /poll endpoint until the transaction is successful or the request times out"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.2",
       "tag": "@kadena/client_v0.1.2",
       "date": "Thu, 15 Dec 2022 14:56:25 GMT",

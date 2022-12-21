@@ -48,6 +48,7 @@ signers:
       ],
       sigs: [],
       type: 'exec',
+      status: 'malleable',
     };
 
     expect(unsignedTransaction).toEqual(expected);
