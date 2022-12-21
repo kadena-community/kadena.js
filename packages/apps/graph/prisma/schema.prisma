@@ -22,6 +22,7 @@ model blocks {
   predicate    String         @db.VarChar
   target       Decimal        @db.Decimal(80, 0)
   weight       Decimal        @db.Decimal(80, 0)
+  id           Int            @default(autoincrement())
   events       events[]
   minerkeys    minerkeys[]
   transactions transactions[]
@@ -43,7 +44,7 @@ model events {
   blocks     blocks @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, idx, requestkey])
-  @@index([height, chainid, idx], map: "events_height_chainid_idx")
+  @@index([height(sort: Desc), chainid, idx], map: "events_height_chainid_idx")
   @@index([requestkey])
 }
 
@@ -113,6 +114,6 @@ model transfers {
   blocks     blocks  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, chainid, idx, modulehash, requestkey])
-  @@index([from_acct, height, idx], map: "transfers_from_acct_height_idx")
-  @@index([to_acct, height, idx])
+  @@index([from_acct, height(sort: Desc), idx], map: "transfers_from_acct_height_idx")
+  @@index([to_acct, height(sort: Desc), idx])
 }

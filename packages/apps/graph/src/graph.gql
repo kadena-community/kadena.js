@@ -1,0 +1,167 @@
+# wallet
+# - balances
+# - history transactions
+# fungibles
+# - holders (exclude dust)
+# - transfers filtered by pubkey
+# - transfers filtered by token
+# explorer (insight + incentive(!))
+# - requestkey polling
+# - crosschain transactions + continuations
+# dapp
+# - events
+# - remove code (now misused)
+# non-fungibles
+# domain shortname kda wallet service (https://www.aptosnames.com/)
+
+# - lijstje met basics voor ecosystem te thriven
+
+# account: a holder of fungibles
+type Query {
+  lastBlockHeight: Int!
+  getAccount(accountName: String!, filter: GetAccountFilter): Account!
+  node(id: ID!): Node!
+  nodes(ids: [ID!]!): [Node!]!
+}
+
+extend type Query {
+  hello: String
+}
+
+# query {
+#   getAccount(accountName: "alber70g") {
+#     id
+#     accountName
+#     totalBalance
+#     transactions {
+
+#     }
+#   }
+# }
+
+input GetAccountFilter {
+  module: String
+}
+
+interface Node {
+  id: ID!
+}
+
+type Account {
+  """
+  The id of the account, being __typename:accountName
+  e.g.: Account:k:oairestnoiarsetn
+  """
+  id: ID!
+  accountName: String!
+  chains: [ChainAccount!]!
+  totalBalance: Float!
+  transactions: [Transaction!]!
+}
+
+# query TheTransactions {
+#   getAccount(filter: {accountName: "alber70g"}) {
+#     transactions {
+#       ... on TransferTransaction {
+#         from {
+#           id
+#           accountName
+#         }
+#       }
+#     }
+#   }
+# }
+
+type ChainAccount {
+  chainId: ID!
+  guard: Guard!
+  balance: Float!
+  module: String!
+  """
+  All transactions where the sender is this account
+  """
+  transactions: [Transaction!]!
+  """
+  All transfers where the sender or receiver is this account
+  """
+  transfers(module: String): [Transfer!]!
+}
+
+type Transaction {
+  cmd: String!
+  hash: String!
+  signatures: [String!]!
+}
+
+"""
+Transfer is a fungible transfer, with one or more transactions.
+When there are more than one transaction, it means that the transfer was a crosschain transfer.
+Any transaction that emits "TRANSFER" "TRANSFER_XCHAIN_RECD"
+"""
+type Transfer {
+  from: Account!
+  to: Account!
+  amount: Float!
+  transaction: [Transaction]!
+}
+
+type Guard {
+  keys: [String!]!
+  predicate: KeysetPredicate!
+}
+
+enum KeysetPredicate {
+  KeysAll
+  KeysAny
+  KeysTwo
+}
+
+# base64(type, repo, branch/commit, path)("file", "alber70g/eenrepo", "master", "package.json") = 02938l9287459128934
+# url: iets.com/repo/branch/path
+# query file {
+#   node(id: "02938l9287459128934") {
+#     ... on File {
+#       name
+#       contents
+#     }
+#   }
+# }
+
+type Subscription {
+  newBlocks: [Block!]!
+  #   events(eventName: [String]): [Event!]!
+  #   poll(requestKey: String!): PollResponse
+}
+
+# query EventsForMe {
+#   events(eventName: ["kdlaunch.kdswap-exchange.UPDATE"]) {}
+# }
+
+# type Mutation {
+#   send(sendBody: SendBody): SendResponse
+#   local(localBody: LocalBody): LocalResponse
+
+#   # crosschain transfers, insight in hops + estimate time to confirmation
+#   transfer(from: String, to: String): Transfer!
+# }
+
+################
+
+# Block is a block from the Chainweb blockchain
+type Block {
+  id: Int!
+  chainid: BigInt!
+  creationtime: Date!
+  epoch: Date!
+  flags: Float!
+  hash: ID!
+  height: BigInt!
+  miner: String!
+  nonce: Float!
+  parent: String!
+  payload: String!
+  powhash: String!
+  predicate: String!
+  target: PositiveFloat!
+  weight: PositiveFloat!
+}
