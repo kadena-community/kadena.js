@@ -141,36 +141,74 @@ declare module '@kadena/client' {
         .join(' ');
     expect(dTs).toBe(expected);
   });
-});
 
-it('creates a typescript definition with DEFCAPS from a namespaced contract', () => {
-  const contract: string = `(namespace 'free-namespace)
+  it('creates a typescript definition with DEFCAPS from a namespaced contract', () => {
+    const contract: string = `(namespace 'free-namespace)
     (module the-free-module
     (defun transfer:string (from:string to:string amount:decimal))
     (defcap GAS ())
     (defcap TRANSFER (sender:string receiver:string amount:decimal))
   )`;
-  const parsedContract = new StringContractDefinition(contract);
-  const dTs = generateDts(parsedContract.modulesWithFunctions)
-    .get('the-free-module')!
-    .split(/[\s\n]/)
-    .filter((x) => x !== '')
-    .join(' ');
-  const expected =
-    `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
-declare module '@kadena/client' {
-export interface ICapabilities {
-  "free-namespace.the-free-module.GAS": [ ],
-  "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: number ]
-}
-export interface IPactModules {
-  "free-namespace.the-free-module": {
-    "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICapabilities> & IPactCommand
-  }
-}
-}`
+    const parsedContract = new StringContractDefinition(contract);
+    const dTs = generateDts(parsedContract.modulesWithFunctions)
+      .get('the-free-module')!
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-  expect(dTs).toBe(expected);
+    const expected =
+      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+declare module '@kadena/client' {
+  export interface ICapabilities {
+    "free-namespace.the-free-module.GAS": [ ],
+    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: number ]
+  }
+  export interface IPactModules {
+    "free-namespace.the-free-module": {
+      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICapabilities> & IPactCommand
+    }
+  }
+}`
+        .split(/[\s\n]/)
+        .filter((x) => x !== '')
+        .join(' ');
+    expect(dTs).toBe(expected);
+  });
+
+  it('creates a typescript definition with a custom interface name', () => {
+    const contract: string = `(namespace 'free-namespace)
+    (module the-free-module
+    (defun transfer:string (from:string to:string amount:decimal))
+    (defcap GAS ())
+    (defcap TRANSFER (sender:string receiver:string amount:decimal)))`;
+
+    const parsedContract = new StringContractDefinition(contract);
+
+    const dTs = generateDts(
+      parsedContract.modulesWithFunctions,
+      'IMyInterfaceName',
+    )
+      .get('the-free-module')!
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
+
+    const expected =
+      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+declare module '@kadena/client' {
+  export interface IMyInterfaceName {
+    "free-namespace.the-free-module.GAS": [ ],
+    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: number ]
+  }
+  export interface IPactModules {
+    "free-namespace.the-free-module": {
+      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<IMyInterfaceName> & IPactCommand
+    }
+  }
+}`
+        .split(/[\s\n]/)
+        .filter((x) => x !== '')
+        .join(' ');
+
+    expect(dTs).toBe(expected);
+  });
 });

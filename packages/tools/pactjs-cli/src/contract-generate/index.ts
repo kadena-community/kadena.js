@@ -12,6 +12,7 @@ const TARGET_PACKAGE: '.kadena/pactjs-generated' =
 interface IContractGenerateOptions {
   file: string;
   clean: boolean;
+  capsInterface: string | undefined;
 }
 
 const shallowFindFile = (path: string, file: string): string | undefined => {
@@ -56,6 +57,7 @@ const generate =
     );
     const moduleDtss: Map<string, string> = generateDts(
       pactModule.modulesWithFunctions,
+      args.capsInterface,
     );
 
     // walk up in file tree from process.cwd() to get the package.json
@@ -162,6 +164,11 @@ export function contractGenerateCommand(
     .command('contract-generate')
     .description('Generate client based on a contract')
     .option('-c, --clean', 'Clean existing generated files')
+    .option(
+      '-i, --caps-interface',
+      'Custom name for the interface of the caps. ' +
+        'Can be used to create a type definition with a limited set of capabilities.',
+    )
     .option('-f, --file <file>', 'Generate d.ts from Pact contract file')
     .action((args: IContractGenerateOptions) => {
       generate(program, version)(args);

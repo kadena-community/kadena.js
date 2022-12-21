@@ -33,7 +33,7 @@ export class FileContractDefinition implements IContractDefinition {
 // Warning: (ae-forgotten-export) The symbol "ModuleName" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function generateDts(modules: Output): Map<ModuleName, string>;
+export function generateDts(modules: Output, capsInterfaceName?: string): Map<ModuleName, string>;
 
 // @alpha (undocumented)
 export function generateTemplates(templates: {
