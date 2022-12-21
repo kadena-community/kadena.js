@@ -33,7 +33,10 @@ function generateModuleName(module: Module): string {
 /**
  * @alpha
  */
-export function generateDts(modules: Output): Map<ModuleName, string> {
+export function generateDts(
+  modules: Output,
+  capsInterfaceName: string = 'ICapabilities',
+): Map<ModuleName, string> {
   const moduleDtss: Map<ModuleName, string> = new Map<ModuleName, string>();
   for (const ModuleName in modules) {
     if (Object.prototype.hasOwnProperty.call(modules, ModuleName)) {
@@ -44,7 +47,7 @@ export function generateDts(modules: Output): Map<ModuleName, string> {
 import type { ICommandBuilder, IPactCommand } from '@kadena/client';
 
 declare module '@kadena/client' {
-  export interface ICapabilities {
+  export interface ${capsInterfaceName} {
     ${Object.keys(module.defcaps)
       .map((defcapName) => {
         const defcap: Defcap = module.defcaps[defcapName];
@@ -71,7 +74,9 @@ declare module '@kadena/client' {
                  argDef.type,
                )}`;
              })
-             .join(', ')}) => ICommandBuilder<ICapabilities> & IPactCommand`;
+             .join(
+               ', ',
+             )}) => ICommandBuilder<${capsInterfaceName}> & IPactCommand`;
          })
          .join(',\n')}
     }
