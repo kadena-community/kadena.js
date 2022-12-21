@@ -4,6 +4,7 @@ import { getBlocks } from './lastBlock/Blocks';
 import { mockBlocks } from './lastBlock/mocks/blocks.mock';
 
 import { blocks, PrismaClient } from '@prisma/client';
+import fs from 'fs';
 import {
   BigIntTypeDefinition,
   DateTypeDefinition,
@@ -11,6 +12,7 @@ import {
 } from 'graphql-scalars';
 import { createPubSub, createSchema, createYoga, PubSub } from 'graphql-yoga';
 import { createServer } from 'node:http';
+import path from 'path';
 
 const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }> = createPubSub<{
   NEW_BLOCKS: [NEW_BLOCKS: blocks[]];
@@ -18,10 +20,13 @@ const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }> = createPubSub<{
 
 const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(
   pubsub,
-  mockBlocks,
+  // mockBlocks,
 );
 blocksProvider.start();
 
+function loadFileAsString(filePath: string) {
+  return fs.readFileSync(path.join(__dirname, filePath), 'utf-8');
+}
 // eslint-disable-next-line @rushstack/typedef-var
 const yoga = createYoga({
   context: {
@@ -33,41 +38,17 @@ const yoga = createYoga({
       BigIntTypeDefinition,
       DateTypeDefinition,
       PositiveFloatTypeDefinition,
-      /* GraphQL */ `
-        type Query {
-          lastBlockHeight: BigInt!
-        }
-
-        type Subscription {
-          newBlocks: [Block!]!
-        }
-
-        type Block {
-          chainid: BigInt!
-          creationtime: Date!
-          epoch: Date!
-          flags: Float!
-          hash: ID!
-          height: BigInt!
-          miner: String!
-          nonce: Float!
-          parent: String!
-          payload: String!
-          powhash: String!
-          predicate: String!
-          target: PositiveFloat!
-          weight: PositiveFloat!
-          # transactions: [Transaction!]!
-        }
-
-        # type Transaction {
-
-        # }
-      `,
+      loadFileAsString('./graph.gql'),
     ],
 
     resolvers: {
       Query: {
+        hello: (_, args) => {
+          return {
+            id: '1',
+            name: 'hello',
+          };
+        },
         lastBlockHeight: async (parent, args, context) => {
           const lastBlock = await context.prisma.blocks.findFirst({
             orderBy: {

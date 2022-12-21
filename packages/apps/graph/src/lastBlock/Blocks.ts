@@ -59,7 +59,7 @@ class BlocksService {
     if (this._lastBlocks.length === 0) {
       this._lastBlocks = await this._prisma.blocks.findMany({
         orderBy: {
-          creationtime: 'desc',
+          id: 'desc',
         },
         include: {
           transactions: true,
@@ -69,8 +69,7 @@ class BlocksService {
       log(
         'publish initial blocks',
         this._lastBlocks.map(
-          ({ chainid, creationtime, height }) =>
-            `${chainid}  ${height} ${creationtime}`,
+          ({ chainid, id, height }) => `${chainid}  ${height} ${id}`,
         ),
       );
 
@@ -82,8 +81,8 @@ class BlocksService {
         where: {
           AND: [
             {
-              creationtime: {
-                gt: this._lastBlocks[0].creationtime,
+              id: {
+                gt: this._lastBlocks[0].id,
               },
             },
             {
@@ -94,7 +93,7 @@ class BlocksService {
           ],
         },
         orderBy: {
-          creationtime: 'desc',
+          id: 'desc',
         },
         include: {
           transactions: true,
@@ -107,8 +106,7 @@ class BlocksService {
         log(
           'publish new blocks',
           newBlocks.map(
-            ({ chainid, creationtime, height }) =>
-              `${chainid}  ${height} ${creationtime}`,
+            ({ chainid, id, height }) => `${chainid}  ${height} ${id}`,
           ),
         );
 

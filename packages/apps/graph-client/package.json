@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 2; rushx generate:graph -w\"",
+    "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 5; rushx generate:graph -w\"",
     "generate:graph": "graphql-codegen --config codegen.yml",
     "lint": "next lint",
     "lint-staged": "lint-staged",
