@@ -3,7 +3,7 @@ import 'json-bigint-patch';
 import { getBlocks } from './lastBlock/Blocks';
 import { mockBlocks } from './lastBlock/mocks/blocks.mock';
 
-import { blocks, PrismaClient } from '@prisma/client';
+import { Block, PrismaClient } from '@prisma/client';
 import fs from 'fs';
 import {
   BigIntTypeDefinition,
@@ -14,8 +14,8 @@ import { createPubSub, createSchema, createYoga, PubSub } from 'graphql-yoga';
 import { createServer } from 'node:http';
 import path from 'path';
 
-const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }> = createPubSub<{
-  NEW_BLOCKS: [NEW_BLOCKS: blocks[]];
+const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }> = createPubSub<{
+  NEW_BLOCKS: [NEW_BLOCKS: Block[]];
 }>();
 
 const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(
@@ -38,7 +38,7 @@ const yoga = createYoga({
       BigIntTypeDefinition,
       DateTypeDefinition,
       PositiveFloatTypeDefinition,
-      loadFileAsString('./graph.gql'),
+      loadFileAsString('./schema.graphql'),
     ],
 
     resolvers: {

@@ -1,25 +1,36 @@
-import { blocks, Prisma, PrismaClient } from '@prisma/client';
+import {
+  Block,
+  BlockSequence,
+  Prisma,
+  PrismaClient,
+  Transaction,
+} from '@prisma/client';
 import debug from 'debug';
 import { PubSub } from 'graphql-yoga';
 
 const log: debug.Debugger = debug('graph:blocks');
 const performanceLog: debug.Debugger = debug('performance');
 
+export interface ILastBlock {
+  blocks_sequence: BlockSequence | null;
+  transactions: Transaction[];
+}
+
 class BlocksService {
-  private _lastBlocks: blocks[] = [];
+  private _lastBlocks: ILastBlock[] = [];
   private _prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >;
   private _interval: NodeJS.Timer | undefined;
-  public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>;
+  public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: ILastBlock[]] }>;
   i: number = 0;
 
   public constructor(
-    pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>,
+    pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: ILastBlock[]] }>,
     // eslint-disable-next-line @typescript-eslint/no-parameter-properties
-    private mocks?: blocks[],
+    private mocks?: ILastBlock[],
   ) {
     this._prisma = new PrismaClient();
     this.pubsub = pubsub;
@@ -57,59 +68,48 @@ class BlocksService {
     }
 
     if (this._lastBlocks.length === 0) {
-      this._lastBlocks = await this._prisma.blocks.findMany({
-        orderBy: {
-          id: 'desc',
-        },
-        include: {
-          transactions: true,
-        },
-        take: 1,
+      this._lastBlocks = (
+        await this._prisma.blockSequence.findMany({
+          orderBy: { id: 'desc' },
+          include: {
+            blocks: {
+              include: {
+                blocks_sequence: true,
+                transactions: true,
+              },
+            },
+          },
+        })
+      ).flatMap((blocksSequence) => {
+        return blocksSequence.blocks;
       });
-      log(
-        'publish initial blocks',
-        this._lastBlocks.map(
-          ({ chainid, id, height }) => `${chainid}  ${height} ${id}`,
-        ),
-      );
 
       this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
-    } else {
+    } else if (this._lastBlocks[0].blocks_sequence !== null) {
       performanceLog('before');
+      console.log('last block id: ', this._lastBlocks[0]);
+      console.log(this._lastBlocks[0].blocks_sequence.id);
 
-      const newBlocks = await this._prisma.blocks.findMany({
-        where: {
-          AND: [
-            {
-              id: {
-                gt: this._lastBlocks[0].id,
+      const newBlocks = (
+        await this._prisma.blockSequence.findMany({
+          where: { id: { gt: this._lastBlocks[0].blocks_sequence.id } },
+          orderBy: { id: 'desc' },
+          include: {
+            blocks: {
+              include: {
+                transactions: true,
+                blocks_sequence: true,
               },
             },
-            {
-              hash: {
-                not: this._lastBlocks[0].hash,
-              },
-            },
-          ],
-        },
-        orderBy: {
-          id: 'desc',
-        },
-        include: {
-          transactions: true,
-        },
+          },
+        })
+      ).flatMap((blocksSequence) => {
+        return blocksSequence.blocks!;
       });
 
       performanceLog('after-response');
 
       if (newBlocks.length > 0) {
-        log(
-          'publish new blocks',
-          newBlocks.map(
-            ({ chainid, id, height }) => `${chainid}  ${height} ${id}`,
-          ),
-        );
-
         this._lastBlocks = newBlocks;
         this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
 
@@ -122,8 +122,8 @@ class BlocksService {
 let blocksSingleton: BlocksService | undefined = undefined;
 
 export function getBlocks(
-  pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: blocks[]] }>,
-  mocks?: blocks[],
+  pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }>,
+  mocks?: ILastBlock[],
 ): BlocksService {
   if (!blocksSingleton) {
     blocksSingleton = new BlocksService(pubsub, mocks);

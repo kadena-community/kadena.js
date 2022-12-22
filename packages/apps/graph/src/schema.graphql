@@ -76,7 +76,7 @@ type Block {
   creationtime: Date!
   epoch: Date!
   # flags: Float!
-  powHash: String!
+  powhash: String!
   hash: ID!
   height: BigInt!
   nonce: Float!

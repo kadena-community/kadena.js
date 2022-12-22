@@ -7,28 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model blocks {
-  chainid      BigInt
-  creationtime DateTime       @db.Timestamptz(6)
-  epoch        DateTime       @db.Timestamptz(6)
-  flags        Decimal        @db.Decimal(20, 0)
-  hash         String         @id @db.VarChar
-  height       BigInt
-  miner        String         @db.VarChar
-  nonce        Decimal        @db.Decimal(20, 0)
-  parent       String         @db.VarChar
-  payload      String         @db.VarChar
-  powhash      String         @db.VarChar
-  predicate    String         @db.VarChar
-  target       Decimal        @db.Decimal(80, 0)
-  weight       Decimal        @db.Decimal(80, 0)
-  events       events[]
-  minerkeys    minerkeys[]
-  transactions transactions[]
-  transfers    transfers[]
+model Block {
+  chainid         BigInt
+  creationtime    DateTime          @db.Timestamptz(6)
+  epoch           DateTime          @db.Timestamptz(6)
+  flags           Decimal           @db.Decimal(20, 0)
+  hash            String            @id @db.VarChar
+  height          BigInt
+  miner           String            @db.VarChar
+  nonce           Decimal           @db.Decimal(20, 0)
+  parent          String            @db.VarChar
+  payload         String            @db.VarChar
+  powhash         String            @db.VarChar
+  predicate       String            @db.VarChar
+  target          Decimal           @db.Decimal(80, 0)
+  weight          Decimal           @db.Decimal(80, 0)
+  blocks_sequence BlockSequence?
+  events          Event[]
+  minerkeys       Minerkey[]
+  transactions    Transaction[]
+  transfers       Transfer[]
+
+  @@map("blocks")
 }
 
-model events {
+model Event {
   block      String @db.VarChar
   chainid    BigInt
   height     BigInt
@@ -40,22 +43,24 @@ model events {
   paramtext  String @db.VarChar
   qualname   String @db.VarChar
   requestkey String @db.VarChar
-  blocks     blocks @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  blocks     Block  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, idx, requestkey])
   @@index([height(sort: Desc), chainid, idx], map: "events_height_chainid_idx")
   @@index([requestkey])
+  @@map("events")
 }
 
-model minerkeys {
+model Minerkey {
   block  String @db.VarChar
   key    String @db.VarChar
-  blocks blocks @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  blocks Block  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, key])
+  @@map("minerkeys")
 }
 
-model signers {
+model Signer {
   addr       String? @db.VarChar
   caps       Json
   idx        Int
@@ -65,9 +70,10 @@ model signers {
   sig        String  @db.VarChar
 
   @@id([idx, requestkey])
+  @@map("signers")
 }
 
-model transactions {
+model Transaction {
   badresult    Json?
   block        String   @db.VarChar
   chainid      BigInt
@@ -92,14 +98,15 @@ model transactions {
   step         BigInt?
   ttl          BigInt
   txid         BigInt?
-  blocks       blocks   @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  blocks       Block    @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, requestkey])
   @@index([height])
   @@index([requestkey])
+  @@map("transactions")
 }
 
-model transfers {
+model Transfer {
   amount     Decimal @db.Decimal
   block      String  @db.VarChar
   chainid    BigInt
@@ -110,9 +117,28 @@ model transfers {
   modulename String  @db.VarChar
   requestkey String  @db.VarChar
   to_acct    String  @db.VarChar
-  blocks     blocks  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  blocks     Block   @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, chainid, idx, modulehash, requestkey])
   @@index([from_acct, height(sort: Desc), idx], map: "transfers_from_acct_height_idx")
   @@index([to_acct, height(sort: Desc), idx])
+  @@map("transfers")
+}
+
+model BlockSequence {
+  hash   String @unique
+  id     BigInt @id @default(autoincrement())
+  blocks Block?  @relation(fields: [hash], references: [hash])
+
+  @@map("block_sequence")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model schema_migrations {
+  filename    String   @db.VarChar(512)
+  checksum    String   @db.VarChar(32)
+  executed_at DateTime @default(now()) @db.Timestamp(6)
+
+  @@ignore
 }

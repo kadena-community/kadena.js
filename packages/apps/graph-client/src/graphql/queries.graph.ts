@@ -12,15 +12,15 @@ export const getBlocksSubscription: DocumentNode = gql`
       chainid
       creationtime
       epoch
-      flags
+      # flags
       hash
       height
-      miner
+      # miner
       nonce
-      parent
+      # parent
       payload
       powhash
-      predicate
+      # predicate
       target
       weight
     }
