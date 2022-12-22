@@ -1,4 +1,3 @@
-
 import { Pact, signWithChainweaver } from '@kadena/client'
 import { pollTransactions } from './utils'
 
@@ -54,9 +53,7 @@ export const getVotes = async (candidateId: string): Promise<number> => {
 export const vote = async (account: string, candidateId: string): Promise<void> => {
   const transactionBuilder = Pact.modules['free.election']
     .vote(account, candidateId)
-    // @ts-ignore
     .addCap('coin.GAS', accountKey(account))
-    // @ts-ignore
     .addCap('free.election.ACCOUNT-OWNER', accountKey(account), account)
     .setMeta({
       ttl: 28000,

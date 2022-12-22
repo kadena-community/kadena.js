@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@kadena/chainweb-node-client": "^0.1.1",
-    "@kadena/client": "^0.1.2",
+    "@kadena/client": "^0.1.5",
     "@kadena/pactjs-cli": "^0.0.7",
     "@kadena/types": "^0.0.3",
     "@testing-library/jest-dom": "^5.14.1",
@@ -26,7 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pactjs:generate:contracts": "pactjs contract-generate --file ../pact/election.pact; pactjs contract-generate --file ../pact/election-gas-station.pact"
+    "pactjs:generate:contracts": "pactjs contract-generate --file ../pact/election.pact; pactjs contract-generate --file ../pact/election-gas-station.pact; pactjs contract-generate --file ../pact/root/coin-v4.pact"
   },
   "eslintConfig": {
     "extends": [
