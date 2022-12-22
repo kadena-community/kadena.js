@@ -29,7 +29,7 @@ export const Candidate: React.FC<IProps> = ({ candidate: { id, name }, voteAllow
   }, [id, voteInProgress])
 
   return (
-    <div className="Candidate-row">
+    <section className="Candidate-row">
       <div>
         <span className="Candidate-row-header">Candidate Id</span>
         <p className="Candidate-row-content">{id}</p>
@@ -45,6 +45,6 @@ export const Candidate: React.FC<IProps> = ({ candidate: { id, name }, voteAllow
       <div className="Candidate-vote-container">
         <button disabled={!voteAllowed || voteInProgress} onClick={() => onVote(id)}>Vote Now</button>
       </div>
-    </div>
+    </section>
   )
 }

@@ -19,7 +19,7 @@ interface IProps {
 
 export const Candidates: React.FC<IProps> = ({ voteAllowed, voteInProgress, onVote }): JSX.Element => (
   <div className="Candidates">
-    <div className="Candidates-heading">
+    <header className="Candidates-heading">
       <h2>Candidates</h2>
       {voteInProgress &&
         <div className="Candidates-progress">
@@ -27,8 +27,8 @@ export const Candidates: React.FC<IProps> = ({ voteAllowed, voteInProgress, onVo
           <SpinnerRoundFilled size={30} color="#ed098f" />
         </div>
       }
-    </div>
-    <div className="Candidates-list">
+    </header>
+    <section className="Candidates-list">
       {candidates.map(candidate =>
         <Candidate
           key={candidate.id}
@@ -37,6 +37,6 @@ export const Candidates: React.FC<IProps> = ({ voteAllowed, voteInProgress, onVo
           candidate={candidate}
           onVote={onVote}
         />)}
-    </div>
+    </section>
   </div>
 )
