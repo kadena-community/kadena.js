@@ -389,7 +389,7 @@
    * 2. Libs: offers functionality, but isn't a deployable artifact
    * 3. Tools: is used in pipeline, during development or otherwise not a app or lib
    */
-  "allowedProjectTags": ["apps", "libs", "tools"],
+  "allowedProjectTags": ["apps", "libs", "tools", "tutorials"],
 
   /**
    * (Required) This is the inventory of projects to be managed by Rush.
@@ -525,6 +525,16 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
+    },
+
+    // #########################
+    // ##  Tutorials
+    // #########################
+    {
+      "packageName": "@tutorials/election",
+      "projectFolder": "packages/tutorials/election-dapp",
+      "tags": ["tutorials"],
+      "shouldPublish": false
     }
 
     // {
