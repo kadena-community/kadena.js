@@ -52,13 +52,12 @@ const Content: any = styled('div', {
 
 interface IChainBlockProps {
   color: string;
-  numTransactions: number;
   block?: Block;
   textColor: string;
 }
 
 export function ChainBlock(props: IChainBlockProps): JSX.Element {
-  const { color, textColor, block, numTransactions = 0 } = props;
+  const { color, textColor, block } = props;
 
   return (
     <Container>
@@ -81,10 +80,10 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
           >
             <TimerIcon />
             <TimeTicker date={new Date(block.creationtime)} />
-            {!!numTransactions && (
+            {block.transactions.totalCount > 0 && (
               <>
                 <RocketIcon />
-                <Text as="span">{numTransactions} txs</Text>
+                <Text as="span">{block.transactions.totalCount} txs</Text>
               </>
             )}
           </Box>

@@ -16,13 +16,22 @@ export const getBlocksSubscription: DocumentNode = gql`
       hash
       height
       # miner
-      nonce
+      # nonce
       # parent
-      payload
-      powhash
+      # payload
+      # powhash
       # predicate
-      target
-      weight
+      # target
+      # weight
+      transactions {
+        totalCount
+        edges {
+          node {
+            id
+            reqKey
+          }
+        }
+      }
     }
   }
 `;
