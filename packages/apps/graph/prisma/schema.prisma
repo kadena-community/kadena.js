@@ -2,31 +2,35 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Block {
-  chainid         BigInt
-  creationtime    DateTime          @db.Timestamptz(6)
-  epoch           DateTime          @db.Timestamptz(6)
-  flags           Decimal           @db.Decimal(20, 0)
-  hash            String            @id @db.VarChar
-  height          BigInt
-  miner           String            @db.VarChar
-  nonce           Decimal           @db.Decimal(20, 0)
-  parent          String            @db.VarChar
-  payload         String            @db.VarChar
-  powhash         String            @db.VarChar
-  predicate       String            @db.VarChar
-  target          Decimal           @db.Decimal(80, 0)
-  weight          Decimal           @db.Decimal(80, 0)
-  blocks_sequence BlockSequence?
-  events          Event[]
-  minerkeys       Minerkey[]
-  transactions    Transaction[]
-  transfers       Transfer[]
+  chainid      BigInt
+  creationtime DateTime      @db.Timestamptz(6)
+  epoch        DateTime      @db.Timestamptz(6)
+  flags        Decimal       @db.Decimal(20, 0)
+  hash         String        @id @db.VarChar
+  height       BigInt
+  miner        String        @db.VarChar
+  nonce        Decimal       @db.Decimal(20, 0)
+  parent       String        @db.VarChar
+  payload      String        @db.VarChar
+  powhash      String        @db.VarChar
+  predicate    String        @db.VarChar
+  target       Decimal       @db.Decimal(80, 0)
+  weight       Decimal       @db.Decimal(80, 0)
+  id           Int           @unique(map: "blocks_id_uniq") @default(autoincrement())
+  events       Event[]
+  minerkeys    Minerkey[]
+  transactions Transaction[]
+  transfers    Transfer[]
 
   @@map("blocks")
 }
@@ -125,14 +129,9 @@ model Transfer {
   @@map("transfers")
 }
 
-model BlockSequence {
-  hash   String @unique
-  id     BigInt @id @default(autoincrement())
-  blocks Block?  @relation(fields: [hash], references: [hash])
-
-  @@map("block_sequence")
-}
-
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model schema_migrations {

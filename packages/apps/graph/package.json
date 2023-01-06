@@ -15,7 +15,7 @@
     "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
-    "start": "npx ts-node-dev --respawn -T --no-notify --exit-child src/index.ts",
+    "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
@@ -28,6 +28,9 @@
     ]
   },
   "dependencies": {
+    "@pothos/core": "~3.24.0",
+    "@pothos/plugin-prisma": "~3.39.0",
+    "@pothos/plugin-relay": "~3.32.0",
     "@prisma/client": "^4.7.1",
     "debug": "~4.3.4",
     "eslint": "^8.15.0",

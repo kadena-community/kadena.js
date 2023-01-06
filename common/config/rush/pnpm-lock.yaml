@@ -135,6 +135,9 @@ importers:
       '@kadena/eslint-config': workspace:*
       '@kadena/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
+      '@pothos/core': ~3.24.0
+      '@pothos/plugin-prisma': ~3.39.0
+      '@pothos/plugin-relay': ~3.32.0
       '@prisma/client': ^4.7.1
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -149,6 +152,9 @@ importers:
       json-bigint-patch: ~0.0.8
       prisma: ^4.7.1
     dependencies:
+      '@pothos/core': 3.24.0_graphql@16.6.0
+      '@pothos/plugin-prisma': 3.39.0_55378334d681a926571320c6382d2a2f
+      '@pothos/plugin-relay': 3.32.0_edf6a7ca2c947fb584c04a6e9ec26824
       '@prisma/client': 4.7.1_prisma@4.7.1
       debug: 4.3.4
       eslint: 8.29.0
@@ -3006,6 +3012,41 @@ packages:
       tslib: 2.4.1
     dev: false
 
+  /@pothos/core/3.24.0_graphql@16.6.0:
+    resolution: {integrity: sha512-LfWzUrmjhg9WQNUntQMJWOfMLb51AMunqBOC66zWEIi2GR4IcAQCPwzy77713Zd/awtIInIuHv4x5/1whAWeeA==}
+    peerDependencies:
+      graphql: '>=15.1.0'
+    dependencies:
+      graphql: 16.6.0
+    dev: false
+
+  /@pothos/plugin-prisma/3.39.0_55378334d681a926571320c6382d2a2f:
+    resolution: {integrity: sha512-V5gOa2RF2XQNP16eSw07tiEyVunYIhRM5DIV2UTPAUHzILD+7vv3LLvmx5FY2w81J1MjrjuvOCcZ8NJl+VazQg==}
+    hasBin: true
+    peerDependencies:
+      '@pothos/core': '*'
+      '@prisma/client': '*'
+      graphql: '>=15.1.0'
+      typescript: '>=4.7.2'
+    dependencies:
+      '@pothos/core': 3.24.0_graphql@16.6.0
+      '@prisma/client': 4.7.1_prisma@4.7.1
+      '@prisma/generator-helper': 4.8.0
+      graphql: 16.6.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@pothos/plugin-relay/3.32.0_edf6a7ca2c947fb584c04a6e9ec26824:
+    resolution: {integrity: sha512-S92ORMjpmkZe1ek6ZE8ShWPYLDhqsikGOM+ip4eLWdQSlxnEPz98o+4S+oqYKXwMMaGC01kF7HHr7kzY41t7dA==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: '>=15.1.0'
+    dependencies:
+      '@pothos/core': 3.24.0_graphql@16.6.0
+      graphql: 16.6.0
+    dev: false
+
   /@prisma/client/3.15.2_prisma@3.15.2:
     resolution: {integrity: sha512-ErqtwhX12ubPhU4d++30uFY/rPcyvjk+mdifaZO5SeM21zS3t4jQrscy8+6IyB0GIYshl5ldTq6JSBo1d63i8w==}
     engines: {node: '>=12.6'}
@@ -3034,6 +3075,16 @@ packages:
       prisma: 4.7.1
     dev: false
 
+  /@prisma/debug/4.8.0:
+    resolution: {integrity: sha512-/VT+P6npte5nN8RgLUYm7cNFpHnl7WxbPRZDUIbMF6FG1oI2i3I3NOSOM05urdd1X/rjlZWUgxoh7rL2sdaLSQ==}
+    dependencies:
+      '@types/debug': 4.1.7
+      debug: 4.3.4
+      strip-ansi: 6.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@prisma/engines-version/3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e:
     resolution: {integrity: sha512-e3k2Vd606efd1ZYy2NQKkT4C/pn31nehyLhVug6To/q8JT8FpiMrDy7zmm3KLF0L98NOQQcutaVtAPhzKhzn9w==}
     dev: false
@@ -3050,6 +3101,17 @@ packages:
   /@prisma/engines/4.7.1:
     resolution: {integrity: sha512-zWabHosTdLpXXlMefHmnouhXMoTB1+SCbUU3t4FCmdrtIOZcarPKU3Alto7gm/pZ9vHlGOXHCfVZ1G7OIrSbog==}
     requiresBuild: true
+    dev: false
+
+  /@prisma/generator-helper/4.8.0:
+    resolution: {integrity: sha512-qUSX/6aLkIXUAnIw5IyJdizkqFYYc4EfP4VFLAFYQb281affP6XNQm8nf+El7H6J4MM0eWPRqTH1gtAWFqAYkg==}
+    dependencies:
+      '@prisma/debug': 4.8.0
+      '@types/cross-spawn': 6.0.2
+      chalk: 4.1.2
+      cross-spawn: 7.0.3
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@radix-ui/colors/0.1.8:
@@ -3507,11 +3569,16 @@ packages:
     resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
     dev: true
 
+  /@types/cross-spawn/6.0.2:
+    resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
+    dependencies:
+      '@types/node': 18.11.13
+    dev: false
+
   /@types/debug/4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
-    dev: true
 
   /@types/eslint-scope/3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
@@ -3621,7 +3688,6 @@ packages:
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
-    dev: true
 
   /@types/nearley/2.11.2:
     resolution: {integrity: sha512-jeyIDNBxxyWyEk6HemDC+t32b4fxthVsgWDxf88qD2WpX0QpOyY8JvA80AElPTBGRUsO0EKnr6OeVOjK3ZDdnA==}

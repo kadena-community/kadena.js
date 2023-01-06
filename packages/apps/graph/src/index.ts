@@ -1,77 +1,17 @@
 import 'json-bigint-patch';
+import './graph';
 
-import { getBlocks } from './lastBlock/Blocks';
-import { mockBlocks } from './lastBlock/mocks/blocks.mock';
+import { builder } from './graph/builder';
 
-import { Block, PrismaClient } from '@prisma/client';
-import fs from 'fs';
-import {
-  BigIntTypeDefinition,
-  DateTypeDefinition,
-  PositiveFloatTypeDefinition,
-} from 'graphql-scalars';
-import { createPubSub, createSchema, createYoga, PubSub } from 'graphql-yoga';
+import { createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
-import path from 'path';
 
-const pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }> = createPubSub<{
-  NEW_BLOCKS: [NEW_BLOCKS: Block[]];
-}>();
+// eslint-disable-next-line @rushstack/typedef-var
+const schema = builder.toSchema();
 
-const blocksProvider: ReturnType<typeof getBlocks> = getBlocks(
-  pubsub,
-  // mockBlocks,
-);
-blocksProvider.start();
-
-function loadFileAsString(filePath: string) {
-  return fs.readFileSync(path.join(__dirname, filePath), 'utf-8');
-}
 // eslint-disable-next-line @rushstack/typedef-var
 const yoga = createYoga({
-  context: {
-    prisma: new PrismaClient(),
-  },
-
-  schema: createSchema({
-    typeDefs: [
-      BigIntTypeDefinition,
-      DateTypeDefinition,
-      PositiveFloatTypeDefinition,
-      loadFileAsString('./schema.graphql'),
-    ],
-
-    resolvers: {
-      Query: {
-        hello: (_, args) => {
-          return {
-            id: '1',
-            name: 'hello',
-          };
-        },
-        lastBlockHeight: async (parent, args, context) => {
-          const lastBlock = await context.prisma.blocks.findFirst({
-            orderBy: {
-              height: 'desc',
-            },
-          });
-          return lastBlock?.height;
-        },
-      },
-
-      Block: {
-        chainid: (parent) => BigInt(parent.chainid),
-        height: (parent) => BigInt(parent.height),
-      },
-
-      Subscription: {
-        newBlocks: {
-          subscribe: () => pubsub.subscribe('NEW_BLOCKS'),
-          resolve: (payload) => payload,
-        },
-      },
-    },
-  }),
+  schema,
 });
 
 // eslint-disable-next-line @rushstack/typedef-var
