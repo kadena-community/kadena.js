@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 5; rushx generate:graph -w\"",
-    "generate:graph": "graphql-codegen --config codegen.yml",
+    "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 6; rushx generate:schema & sleep 3; rushx generate:sdk\"",
+    "generate:schema": "graphql-codegen --config codegen-schema.yml -w",
+    "generate:sdk": "graphql-codegen --config codegen-sdk.yml -w",
     "lint": "next lint",
     "lint-staged": "lint-staged",
     "next:dev": "next dev",

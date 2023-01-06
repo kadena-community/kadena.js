@@ -1,9 +1,6 @@
 overwrite: true
-schema: http://localhost:3000/graph
+schema: ./src/__generated__/graphql.schema.json
 generates:
-  ./src/__generated__/graphql.schema.json:
-    plugins:
-      - 'introspection'
   ./src/__generated__/sdk.ts:
     documents: 'src/**/*.graph.(ts|tsx)'
     plugins:
