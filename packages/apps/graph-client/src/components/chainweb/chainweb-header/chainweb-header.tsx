@@ -1,6 +1,6 @@
-import { selectColor } from '../../utils/selectColor';
-import { Box } from '../box';
-import { Text } from '../text';
+import { selectColor } from '../../../utils/selectColor';
+import { Box } from '../../box';
+import { Text } from '../../text';
 
 import React from 'react';
 
@@ -15,7 +15,7 @@ export function ChainwebHeader(): JSX.Element {
       <Box css={{ width: '$blockWidth', mx: '$1' }} />
       {[...new Array(20)].map((_, index) => (
         <Text
-          key={index}
+          key={`chainweb_header_${index}`}
           as="span"
           css={{
             fontWeight: '$bold',

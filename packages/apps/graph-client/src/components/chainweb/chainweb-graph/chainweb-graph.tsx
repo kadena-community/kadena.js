@@ -1,7 +1,7 @@
 import type { Block } from '../../__generated__/sdk';
 
-import { ChainwebHeader } from './chainweb-header';
-import { ChainwebRow } from './chainweb-row';
+import { ChainwebHeader } from './../chainweb-header';
+import { ChainwebRow } from './../chainweb-row';
 
 import React from 'react';
 

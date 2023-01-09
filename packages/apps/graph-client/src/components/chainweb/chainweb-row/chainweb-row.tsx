@@ -1,9 +1,9 @@
-import type { Block } from '../../__generated__/sdk';
-import { selectColor } from '../../utils/selectColor';
-import { Box } from '../box';
-import { Text } from '../text';
+import type { Block } from '../../../__generated__/sdk';
+import { selectColor } from '../../../utils/selectColor';
+import { Box } from '../../box';
+import { Text } from '../../text';
 
-import { ChainBlock } from './chain-block';
+import { ChainBlock } from './../chain-block';
 
 import React from 'react';
 

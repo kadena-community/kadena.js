@@ -2,8 +2,10 @@ import { useGetBlocksSubscription } from '../__generated__/sdk';
 import { ChainwebGraph } from '../components/chainweb';
 import { Text } from '../components/text';
 import { styled } from '../styles/stitches.config';
-import { useParsedBlocks } from '../utils/hooks/useParsedBlocks';
+import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
+import { usePrevious } from '../utils/hooks/use-previous';
 
+import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 
@@ -17,24 +19,25 @@ const StyledMain: any = styled('main', {
 
 export default function Home(): JSX.Element {
   const { loading, data } = useGetBlocksSubscription();
-  const dataString = JSON.stringify(data);
+  const previousData = usePrevious(data);
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
   useEffect(() => {
-    if (data?.newBlocks && data?.newBlocks?.length > 0) {
+    if (
+      isEqual(previousData, data) === false &&
+      data?.newBlocks &&
+      data?.newBlocks?.length > 0
+    ) {
       addBlocks(data?.newBlocks);
     }
-  }, [dataString]);
+  }, [data]);
 
   return (
     <div>
       <Head>
         <title>Kadena Graph Client</title>
-        <link
-          rel="icon"
-          href="https://kadena.io/wp-content/uploads/2021/10/Favicon-V1.png"
-        />
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <StyledMain>

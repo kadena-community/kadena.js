@@ -1,4 +1,4 @@
-import { Text } from '../text';
+import { Text } from '../../text';
 
 import React, { useEffect, useState } from 'react';
 
