@@ -35,7 +35,7 @@
 (load "root/fungible-xchain-v1.pact")
 
 ;; load coin module
-(load "root/coin-v4.pact")
+(load "root/coin-v5.pact")
 
 ;; create coin module tables
 (create-table coin.coin-table)
