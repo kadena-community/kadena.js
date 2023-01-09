@@ -1,5 +1,4 @@
 import { Pact, signWithChainweaver } from '@kadena/client'
-import { pollTransactions } from './utils'
 
 const NETWORK_ID = 'testnet04'
 const CHAIN_ID = '0'
@@ -63,12 +62,23 @@ export const vote = async (account: string, candidateId: string): Promise<void> 
       sender: account,
     }, NETWORK_ID)
 
-    const signedTransaction = await signWithChainweaver(transactionBuilder)
+    await signWithChainweaver(transactionBuilder)
 
-    console.log(`Sending transaction: ${signedTransaction[0].code}`)
-    const response = await signedTransaction[0].send(API_HOST)
+    console.log(`Sending transaction: ${transactionBuilder.code}`)
+    const response = await transactionBuilder.send(API_HOST);
 
     console.log('Send response: ', response)
     const requestKey = response.requestKeys[0]
-    await pollTransactions([requestKey], API_HOST)
+
+    const pollResult = await transactionBuilder.pollUntil(API_HOST, {
+      onPoll: async (transaction, pollRequest): Promise<void> => {
+        console.log(
+          `Polling ${requestKey}.\nStatus: ${transaction.status}`,
+        );
+        console.log(await pollRequest);
+      },
+    });
+
+    console.log('Polling Completed.');
+    console.log(pollResult);
 }
