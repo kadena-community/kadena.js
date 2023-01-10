@@ -2,13 +2,13 @@
   "name": "@kadena/client",
   "version": "0.1.5",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
-  "license": "MIT",
-  "main": "lib/index.js",
-  "types": "dist/client.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client"
   },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "dist/client.d.ts",
   "scripts": {
     "start": "ts-node --transpile-only src/index.ts",
     "lint-staged": "lint-staged",
@@ -20,6 +20,24 @@
     "_phase:test": "",
     "test": "heft test"
   },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "cross-fetch": "~3.1.5",
+    "debug": "~4.3.4",
+    "yaml": "~2.1.1"
+  },
   "devDependencies": {
     "@kadena/eslint-config": "workspace:*",
     "@kadena/heft-rig": "workspace:*",
@@ -30,14 +48,5 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
     "ts-node": "~10.8.2"
-  },
-  "dependencies": {
-    "@kadena/chainweb-node-client": "workspace:*",
-    "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
-    "cross-fetch": "~3.1.5",
-    "debug": "~4.3.4",
-    "yaml": "~2.1.1"
   }
 }

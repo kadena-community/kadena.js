@@ -1,0 +1,53 @@
+{
+  "name": "@kadena/graph",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "_phase:build": "",
+    "_phase:test": "",
+    "build": "",
+    "postinstall": "npm run prisma:generate",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint-staged": "lint-staged",
+    "prisma:generate": "prisma generate",
+    "prisma:pull": "prisma db pull",
+    "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@pothos/core": "~3.24.0",
+    "@pothos/plugin-prisma": "~3.39.0",
+    "@pothos/plugin-relay": "~3.32.0",
+    "@prisma/client": "^4.7.1",
+    "debug": "~4.3.4",
+    "eslint": "^8.15.0",
+    "graphql": "~16.6.0",
+    "graphql-scalars": "~1.20.1",
+    "graphql-yoga": "~3.1.1",
+    "json-bigint-patch": "~0.0.8",
+    "prisma": "^4.7.1"
+  },
+  "devDependencies": {
+    "@kadena/eslint-config": "workspace:*",
+    "@kadena/heft-rig": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/debug": "~4.1.7",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0"
+  }
+}

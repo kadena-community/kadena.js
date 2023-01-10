@@ -407,6 +407,23 @@
       "packageName": "@kadena/explorer",
       "projectFolder": "packages/apps/explorer",
       "reviewCategory": "prototypes",
+      "skipRushCheck": true,
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/graph",
+      "projectFolder": "packages/apps/graph",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": true,
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/graph-client",
+      "projectFolder": "packages/apps/graph-client",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": true,
       "shouldPublish": false
     },
 
