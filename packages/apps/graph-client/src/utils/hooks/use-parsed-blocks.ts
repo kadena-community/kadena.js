@@ -1,18 +1,20 @@
-import type { Block } from '../../__generated__/sdk';
-
 import { useCallback, useState } from 'react';
 
+interface IBlock {
+  height: number;
+  chainid: number;
+}
 interface IUseParseBlocksReturn {
-  allBlocks: Record<number, Block[]>;
-  addBlocks: (blocks: Block[]) => void;
+  allBlocks: Record<number, IBlock[]>;
+  addBlocks: (blocks: IBlock[]) => void;
 }
 
 export function useParsedBlocks(): IUseParseBlocksReturn {
-  const [allBlocks, setAllBlocks] = useState<Record<number, Block[]>>({});
+  const [allBlocks, setAllBlocks] = useState<Record<number, IBlock[]>>({});
 
   const addBlocks = useCallback(
-    (newBlocks: Block[]) => {
-      const groupedNewBlocks: Record<number, Block[]> = {};
+    (newBlocks: IBlock[]) => {
+      const groupedNewBlocks: Record<number, IBlock[]> = {};
       newBlocks.forEach((block) =>
         groupedNewBlocks[block.height as number]?.length
           ? (groupedNewBlocks[block.height] = [
