@@ -1,5 +1,5 @@
-import { env } from '../../utils/dotenv';
-import { prismaClient } from '../../utils/prismaClient';
+import { prismaClient } from '../../db/prismaClient';
+import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
@@ -21,13 +21,13 @@ builder.queryField('blocks', (t) => {
         SELECT height
         FROM blocks b
         GROUP BY height
-        HAVING COUNT(*) >= ${env.CHAIN_COUNT} AND
+        HAVING COUNT(*) >= ${dotenv.CHAIN_COUNT} AND
         COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
         ORDER BY height DESC
         LIMIT ${count}
       `) as { height: number }[];
 
-      if (onlyCompleted === true) {
+      if (completedHeights.length > 0 && onlyCompleted === true) {
         return prismaClient.block.findMany({
           where: {
             OR: [

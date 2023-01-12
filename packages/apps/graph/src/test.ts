@@ -1,4 +1,4 @@
-import { prismaClient } from './utils/prismaClient';
+import { prismaClient } from './db/prismaClient';
 
 async function main() {
   await prismaClient.block
