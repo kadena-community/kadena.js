@@ -1,4 +1,4 @@
-import { prismaClient } from '../../utils/prismaClient';
+import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Block', {
