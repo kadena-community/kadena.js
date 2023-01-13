@@ -50,6 +50,7 @@ export async function recentHeaders(
   const start = cut.hashes['0'].height - depth - n + 1;
   const end = cut.hashes['0'].height - depth;
   const upper = cut.hashes[`${chainId}`].hash;
+
   return branch(chainId, [upper], [], start, end, n, 'json', network, host);
 }
 

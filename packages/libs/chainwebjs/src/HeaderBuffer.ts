@@ -61,8 +61,6 @@ export class HeaderBuffer {
     } else {
       const idx = h - this.currHeight;
 
-      // double check consistency
-      // maybe do this check only after shift below?
       const prevHash = this.buffer[idx - 1].header.hash;
       if (hdr.parent !== prevHash) {
         throw new Error(

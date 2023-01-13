@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { HeaderBuffer } from '../HeaderBuffer';
 import { IBufferHeader } from '../types';
 /* ************************************************************************** */
@@ -44,6 +45,85 @@ function testHeaderBuffer(): boolean {
   });
 }
 
-test('HeaderBuffer', () => {
-  expect(testHeaderBuffer()).toBe(true);
+/* HeaderBuffer */
+
+describe('HeaderBuffer', () => {
+  test('HeaderBuffer', () => {
+    expect(testHeaderBuffer()).toBe(true);
+  });
+
+  test('HeaderBuffer check orphins', () => {
+    const hb = new HeaderBuffer(2, (x) => console.log(x));
+    const data1: IBufferHeader = {
+      txCount: 0,
+      header: {
+        hash: 'h1',
+        nonce: '16916480306891548596',
+        creationTime: 1671629220030544,
+        parent: 'jUYuT5ucNcY9wOf77IhuEw1niP2n3h1G3MdR6H7PXAk',
+        adjacents: {
+          '5': '_Ab4g11kyl2rnqBqZjvO-CiSmlf_yErs4hos6YULeac',
+          '10': 'XAfmr3TLWnWI2T2yj2osSFpXa5PIVqBY_YSpjw_3plE',
+          '15': 'AXX9ocmKxjayaah6rK7rVIkpsm2AzGbtI1B2jf41vdM',
+        },
+        target: 's_sYJULAtv3xvS72SXJ4gFsUPWZcIGTMPQAAAAAAAAA',
+        payloadHash: 'jvstHn1mXqNjPqeGDGkEvtBN4yKy5JglL-BbVr-a76A',
+        chainId: 0,
+        weight: 'GRw1f8Mpviw1LwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        height: 3306634,
+        chainwebVersion: 'mainnet01',
+        epochStart: 1671628208326429,
+        featureFlags: 0,
+      },
+      powHash: '',
+      target: '',
+    };
+
+    const data2 = { ...data1, header: { ...data1.header, height: 3306633 } };
+    try {
+      hb.add(data1);
+      hb.add(data2);
+    } catch (err) {
+      expect(err.message).toMatch(
+        `HeaderBuffer: confirmation depth violation: block at height 3306633 got orphaned`,
+      );
+    }
+  });
+
+  test('HeaderBuffer check consistency', () => {
+    const hb = new HeaderBuffer(2, (x) => console.log(x));
+    const data1: IBufferHeader = {
+      txCount: 0,
+      header: {
+        hash: 'h1',
+        nonce: '16916480306891548596',
+        creationTime: 1671629220030544,
+        parent: 'jUYuT5ucNcY9wOf77IhuEw1niP2n3h1G3MdR6H7PXAk',
+        adjacents: {
+          '5': '_Ab4g11kyl2rnqBqZjvO-CiSmlf_yErs4hos6YULeac',
+          '10': 'XAfmr3TLWnWI2T2yj2osSFpXa5PIVqBY_YSpjw_3plE',
+          '15': 'AXX9ocmKxjayaah6rK7rVIkpsm2AzGbtI1B2jf41vdM',
+        },
+        target: 's_sYJULAtv3xvS72SXJ4gFsUPWZcIGTMPQAAAAAAAAA',
+        payloadHash: 'jvstHn1mXqNjPqeGDGkEvtBN4yKy5JglL-BbVr-a76A',
+        chainId: 0,
+        weight: 'GRw1f8Mpviw1LwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        height: 3306634,
+        chainwebVersion: 'mainnet01',
+        epochStart: 1671628208326429,
+        featureFlags: 0,
+      },
+      powHash: '',
+      target: '',
+    };
+    const data2 = { ...data1, header: { ...data1.header, parent: 'h1' } };
+    try {
+      hb.add(data1);
+      hb.add(data2);
+    } catch (err) {
+      expect(err.message).toMatch(
+        `HeaderBuffer: inconsistent chain at height 3306634. Parent jUYuT5ucNcY9wOf77IhuEw1niP2n3h1G3MdR6H7PXAk doesn't match expected value h1`,
+      );
+    }
+  });
 });

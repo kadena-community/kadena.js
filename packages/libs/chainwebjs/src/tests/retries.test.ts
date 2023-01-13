@@ -1,4 +1,6 @@
 import chainweb from '..';
+import { parseResponse } from '../internal';
+import { chainUrl } from '../request';
 
 /* ************************************************************************** */
 /* Retries */
@@ -26,5 +28,42 @@ describe('retry', () => {
       'Request https://api.chainweb.com/chainweb/0.0/invalid/cut failed with 404, Not Found',
     );
     expect(c).toBe(0);
+  });
+  test('response success', async () => {
+    const x = await parseResponse({
+      status: 200,
+      ok: true,
+      json: async () => 'done',
+    } as unknown as Response);
+    expect(x).toMatch('done');
+  });
+  test('response error', async () => {
+    try {
+      await parseResponse({
+        text: async () => 'fail',
+      } as unknown as Response);
+    } catch (err) {
+      expect(err.message).toBe('fail');
+    }
+  });
+  test('response error no text', async () => {
+    await expect(async () => {
+      await parseResponse({} as unknown as Response);
+    }).rejects.toThrow('response.text is not a function');
+  });
+});
+
+describe('request', () => {
+  test('URL', async () => {
+    const url = chainUrl(1, 'header/payload');
+    expect(url.href).toMatch(
+      'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/header/payload',
+    );
+  });
+
+  test('response error no chain', async () => {
+    expect(() => {
+      chainUrl(null as unknown as string, 'header/payload');
+    }).toThrow('missing chainId parameter');
   });
 });

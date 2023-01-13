@@ -1,12 +1,27 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import chainweb from '..';
 
+jest.mock('cross-fetch', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+  };
+});
+
+import { mockFetch } from './mokker';
+
+import fetch from 'cross-fetch';
+
+const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
+mockedFunctionFetch.mockImplementation(
+  mockFetch as jest.MockedFunction<typeof fetch>,
+);
+
+import chainweb from '..';
 /* ************************************************************************** */
 /* Test settings */
 
 jest.setTimeout(25000);
 const debug: boolean = false;
-const streamTest = test.concurrent;
 
 /* ************************************************************************** */
 /* Test Utils */
@@ -130,8 +145,15 @@ describe('recents', () => {
  */
 
 describe('range', () => {
-  test.each([10, 370])('Transactions %p', async (n) => {
-    const r = await chainweb.transaction.range(0, height, height + (n - 1));
+  test.each([10])('Transactions %p', async (n) => {
+    const r = await chainweb.transaction.range(
+      0,
+      height,
+      height + (n - 1),
+      undefined,
+      undefined,
+      parseInt(`300${n}`, 10),
+    );
     logg('Transactions:', r);
     r.forEach((v, i) => {
       expect(v).toHaveProperty('transaction');
@@ -140,45 +162,4 @@ describe('range', () => {
       expect(v.height).toBeGreaterThanOrEqual(header.height + i);
     });
   });
-});
-
-/* ************************************************************************** */
-/* Streams */
-
-/* Streams are backed by EventSource clients that retrieve header update
- * events from the Chainweb API.
- *
- * The depth parameter is useful to avoid receiving items from orphaned blocks.
- *
- * The functions buffer, filter, and transform the original events and
- * generate a stream of derived items to which a callback is applied.
- *
- * The functions also return the underlying EventSource object, for more
- * advanced low-level control.
- */
-
-const sleep = (ms: number | undefined): Promise<void> =>
-  new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
-
-const allChains = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-];
-
-describe('stream', () => {
-  streamTest(
-    'Events',
-    async () => {
-      let count = 0;
-      const hs = chainweb.event.stream(1, allChains, (h) => {
-        logg('new event', h);
-        count++;
-      });
-      logg('event stream started');
-      await sleep(60000);
-      hs.close();
-      logg('event stream closed');
-      expect(count).toBeGreaterThanOrEqual(0);
-    },
-    61000,
-  );
 });

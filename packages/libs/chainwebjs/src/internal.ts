@@ -1,5 +1,6 @@
 import base64url from 'base64url';
 import fetch from 'cross-fetch';
+// remove import fs from 'fs';
 
 import {
   ICutPeerResponse,
@@ -54,7 +55,9 @@ export async function parseResponse<T>(response: Response): Promise<T> {
       const textResponse: string = await response.text();
       return Promise.reject(new Error(textResponse));
     } catch (error) {
-      return response as unknown as T;
+      console.log('tt:', error);
+      // return response as unknown as T;
+      throw new Error(error.message);
     }
   }
 }
@@ -147,6 +150,7 @@ export async function branchPage(
 
   /* URL */
   const url = chainUrl(chainId, 'header/branch', network, host);
+
   if (minHeight !== undefined) {
     url.searchParams.append('minheight', minHeight as unknown as string);
   }
@@ -160,7 +164,6 @@ export async function branchPage(
     url.searchParams.append('next', next);
   }
 
-  /* Body */
   const body = {
     upper: upper,
     lower: lower,
@@ -178,7 +181,8 @@ export async function branchPage(
       }),
     retryOptions,
   );
-  return await parseResponse<IHeaderBranchResponse>(result);
+
+  return parseResponse<IHeaderBranchResponse>(result);
 }
 
 /**
@@ -283,10 +287,11 @@ export async function payloads(
   network?: string,
   host?: string,
   retryOptions?: IRetryOptions,
+  n?: number,
 ): Promise<IBlockPayload<ITransactionElement>[]> {
   format = format ? format : 'json';
-
-  const url = chainUrl(chainId, 'payload/outputs/batch', network, host);
+  const path = n ? `payload/outputs/batch?${n}` : 'payload/outputs/batch';
+  const url = chainUrl(chainId, path, network, host);
 
   const response = await retryFetch(
     () =>
@@ -301,29 +306,23 @@ export async function payloads(
   );
 
   const res = await parseResponse<IBlockPayload<string[]>[]>(response);
-  // TO-DO base64 handling
-  if (format === 'json') {
-    const result = res.map((data) => {
-      const transaction: IBlockPayload<ITransactionElement> = {
-        ...data,
-        minerData: base64json(data.minerData),
-        coinbase: base64json(data.coinbase),
-        transactions: data.transactions.map((txs) => {
-          const tx = base64json(txs[0]) as unknown as ITransactionTransaction;
-          const out = base64json(txs[1]) as unknown as ICoinbase;
-          tx.cmd = JSON.parse(tx.cmd as unknown as string);
-          return {
-            transaction: tx,
-            output: out,
-          } as ITransactionElement;
-        }),
-      };
-      return transaction;
-    });
-    return result;
-  } else {
-    throw new Error(
-      `Unsupported format '${format}'. Supported formats are 'json' (default) and 'base64'`,
-    );
-  }
+
+  const result = res.map((data) => {
+    const transaction: IBlockPayload<ITransactionElement> = {
+      ...data,
+      minerData: base64json(data.minerData),
+      coinbase: base64json(data.coinbase),
+      transactions: data.transactions.map((txs) => {
+        const tx = base64json(txs[0]) as unknown as ITransactionTransaction;
+        const out = base64json(txs[1]) as unknown as ICoinbase;
+        tx.cmd = JSON.parse(tx.cmd as unknown as string);
+        return {
+          transaction: tx,
+          output: out,
+        } as ITransactionElement;
+      }),
+    };
+    return transaction;
+  });
+  return result;
 }

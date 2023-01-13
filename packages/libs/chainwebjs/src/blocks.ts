@@ -21,12 +21,6 @@ import { payloads } from './internal';
  * Utility function for collecting the payloads with outputs for a set
  * of headers from the same chain.
  *
- * TODO: Currently all blocks must be from the same chain. We should support
- * blocks from different chains.
- *
- * TODO: The use of this function below is inefficient. It would be better
- * to start fetching payloads asynchronously while iterating through
- * block header pages.
  */
 
 /**
@@ -44,6 +38,7 @@ export async function headers2blocks(
   network?: string,
   host?: string,
   retryOptions?: IRetryOptions,
+  n?: number,
 ): Promise<IBlockPayloads<ITransactionElement>[]> {
   let missing = hdrs;
   const result: IBlockPayloads<ITransactionElement>[] = [];
@@ -57,14 +52,15 @@ export async function headers2blocks(
       network,
       host,
       retryOptions,
+      n,
     );
 
     // Note that in worst case a server may return only one payload at a time thus starving the
     // client. Well, chainweb nodes don't behave that way :-)
     if (pays.length === 0) {
       throw new Error(
-        `failed to get payloads for some headers. Missing ${missing.map(
-          (h) => ({ hash: h.hash, height: h.height }),
+        `failed to get payloads for some headers. Missing ${JSON.stringify(
+          missing.map((h) => ({ hash: h.hash, height: h.height })),
         )}`,
       );
     }
@@ -85,10 +81,14 @@ export async function headers2blocks(
         });
         return false;
       } else {
-        return true;
+        // return true;
+        throw new Error(
+          `failed to get payloads for some headers. Missing ${hdr.payloadHash}`,
+        );
       }
     });
   }
+
   return result;
 }
 
@@ -109,9 +109,10 @@ export async function blocks(
   end: number,
   network?: string,
   host?: string,
+  n?: number,
 ): Promise<IBlockPayloads<ITransactionElement>[]> {
   const hdrs = await headers(chainId, start, end, network, host);
-  return headers2blocks(hdrs, network, host);
+  return headers2blocks(hdrs, network, host, {}, n);
 }
 
 /**
@@ -137,7 +138,8 @@ export async function recentBlocks(
   if (depth <= 1) {
     ro = { retry404: true, minTimeout: 1000 };
   }
-  return headers2blocks(hdrs, network, host, ro);
+
+  return headers2blocks(hdrs, network, host, ro, n);
 }
 
 /**
@@ -168,12 +170,8 @@ export function blockStream(
   const ro: IRetryOptions =
     depth > 1 ? {} : { retry404: true, minTimeout: 1000 };
   const cb = async (hdr: IBlockHeader): Promise<void> => {
-    try {
-      const blocks = await headers2blocks([hdr], network, host, ro);
-      callback(blocks[0]);
-    } catch (err) {
-      console.log(err);
-    }
+    const blocks = await headers2blocks([hdr], network, host, ro);
+    callback(blocks[0]);
   };
   return headerStream(depth, chainIds, cb, network, host);
 }

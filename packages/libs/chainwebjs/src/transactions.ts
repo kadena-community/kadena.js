@@ -13,6 +13,8 @@ import {
   ITransactionElement,
 } from './types';
 
+// import fs from 'fs';
+
 /**
  * Utility function to filter the transactions from an array of blocks
  *
@@ -20,7 +22,7 @@ import {
  *
  * @alpha
  */
-const filterTxs = (
+export const filterTxs = (
   blocks: IBlockPayloads<ITransactionElement>[],
 ): ITransactionElement[] => {
   return blocks
@@ -49,8 +51,9 @@ export async function txs(
   end: number,
   network?: string,
   host?: string,
+  n?: number,
 ): Promise<ITransactionElement[]> {
-  const x = await blocks(chainId, start, end, network, host);
+  const x = await blocks(chainId, start, end, network, host, n);
   return filterTxs(x);
 }
 

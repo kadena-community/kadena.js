@@ -99,12 +99,8 @@ export function eventStream(
     header: IBlockHeader;
   }): Promise<void> => {
     if (u.txCount > 0) {
-      try {
-        const blocks = await headers2blocks([u.header], network, host, ro);
-        filterEvents(blocks).forEach(callback);
-      } catch (err) {
-        console.log(err);
-      }
+      const blocks = await headers2blocks([u.header], network, host, ro);
+      filterEvents(blocks).forEach(callback);
     }
   };
   return chainUpdates(depth, chainIds, cb, network, host);

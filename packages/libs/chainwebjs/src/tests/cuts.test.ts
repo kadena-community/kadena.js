@@ -1,3 +1,19 @@
+jest.mock('cross-fetch', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+  };
+});
+
+import { mockFetch } from './mokker';
+
+import fetch from 'cross-fetch';
+
+const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
+mockedFunctionFetch.mockImplementation(
+  mockFetch as jest.MockedFunction<typeof fetch>,
+);
+
 import chainweb from '..';
 
 /* ************************************************************************** */
