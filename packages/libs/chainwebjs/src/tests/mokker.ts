@@ -63,6 +63,13 @@ export const mockFetch = (url: URL | string, init?: RequestInit): unknown => {
         ) as unknown as IPagedResponse<IBlockHeader>,
       );
 
+    case 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch?minheight=3306646&maxheight=3306646&limit=1':
+      return makeFetchResponse<IPagedResponse<IBlockHeader>>(
+        blockRecentsRecentHeadersMock(
+          1,
+        ) as unknown as IPagedResponse<IBlockHeader>,
+      );
+
     case 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch?minheight=3306629&maxheight=3306637&limit=9':
       return makeFetchResponse<IPagedResponse<IBlockHeader>>(
         blockRecentsRecentHeadersMock(
@@ -149,6 +156,11 @@ export const mockFetch = (url: URL | string, init?: RequestInit): unknown => {
     case 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch':
       return makeFetchResponse<IBlockPayload<string[]>[]>(
         blockByHeightPayloadsMock,
+      );
+
+    case 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch?1':
+      return makeFetchResponse<IBlockPayload<string[]>[]>(
+        blockRecentsPayloadsMock(10) as unknown as IBlockPayload<string[]>[],
       );
 
     case 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch?730':

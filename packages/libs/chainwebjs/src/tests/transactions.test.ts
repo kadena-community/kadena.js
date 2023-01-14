@@ -128,6 +128,11 @@ describe('recents', () => {
     logg('Transactions:', r);
     expect(r).toBeTruthy();
   });
+  test('Recents default dept - should not throw', async () => {
+    const r = await chainweb.transaction.recent(0, undefined, undefined);
+    logg('Transactions:', r);
+    expect(r).toBeTruthy();
+  });
   test('Filtered data formatting with transactions', () => {
     const data = filterTxs(
       filterData as unknown as IBlockPayloads<ITransactionElement>[],

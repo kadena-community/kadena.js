@@ -83,17 +83,47 @@ describe('stream transaction depth 1 should succeed', () => {
   );
 });
 
+describe('stream transaction depth 10 should succeed', () => {
+  streamTest(
+    'Transactions',
+    async () => {
+      let count = 0;
+      const hs = chainweb.transaction.stream(
+        10,
+        transactions_allChains,
+        (h) => {
+          logg('new transaction', h);
+          count++;
+        },
+      );
+      hs.close();
+      expect(count).toBeGreaterThanOrEqual(0);
+    },
+    500,
+  );
+});
+
 describe('stream transaction depth 0 should succeed', () => {
   streamTest(
     'Transactions',
     async () => {
       let count = 0;
       const hs = chainweb.transaction.stream(0, transactions_allChains, (h) => {
-        logg('new transaction', h);
         count++;
       });
       hs.close();
       expect(count).toBeGreaterThanOrEqual(0);
+    },
+    500,
+  );
+});
+
+describe('stream should not throw with depth 10', () => {
+  streamTest(
+    'Block',
+    async () => {
+      const hs = chainweb.block.stream(10, [0], (h) => {});
+      hs.close();
     },
     500,
   );

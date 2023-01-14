@@ -13,8 +13,6 @@ import {
   ITransactionElement,
 } from './types';
 
-// import fs from 'fs';
-
 /**
  * Utility function to filter the transactions from an array of blocks
  *
@@ -104,7 +102,6 @@ export function txStream(
     txCount: number;
     header: IBlockHeader;
   }): Promise<void> => {
-    console.log(u);
     if (u.txCount > 0) {
       const blocks = await headers2blocks([u.header], network, host, ro);
       filterTxs(blocks).forEach(callback);
