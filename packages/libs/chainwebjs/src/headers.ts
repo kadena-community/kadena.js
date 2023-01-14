@@ -4,6 +4,7 @@ import { HeaderBuffer } from './HeaderBuffer';
 import { currentBranch, branch } from './internal';
 import { currentCut } from './cut';
 import { baseUrl } from './request';
+import { buildEventSource } from './utils';
 
 /**
  * Headers from a range of block heights
@@ -153,8 +154,9 @@ const headerUpdates = (
 ): EventSource => {
   const url = baseUrl(network, host, 'header/updates');
 
-  const es = new EventSource(`${url}`);
+  const es = buildEventSource(`${url}`);
   es.onerror = (err) => {
+    console.log(err);
     throw err;
   };
 

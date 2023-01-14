@@ -1,7 +1,4 @@
-// @ts-ignore
 /* eslint-disable @typescript-eslint/naming-convention */
-
-// 400 range
 
 jest.mock('cross-fetch', () => {
   return {
@@ -125,6 +122,11 @@ describe('recents', () => {
         }
       }
     });
+  });
+  test('Recents default dept - should not throw', async () => {
+    const r = await chainweb.transaction.recent(0, undefined, 10);
+    logg('Transactions:', r);
+    expect(r).toBeTruthy();
   });
   test('Filtered data formatting with transactions', () => {
     const data = filterTxs(

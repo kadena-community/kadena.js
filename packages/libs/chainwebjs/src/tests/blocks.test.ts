@@ -16,7 +16,7 @@ mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
 import chainweb from '..';
-import { IBlockPayload, IHeaderBranchResponse } from '../types';
+import { IBlockPayload, IPagedResponse, IBlockHeader } from '../types';
 
 /* ************************************************************************** */
 /* Test settings */
@@ -100,7 +100,7 @@ describe('by blockHash', () => {
             [] as unknown as IBlockPayload<string[]>[],
           );
         default:
-          return makeFetchResponse<IHeaderBranchResponse>({
+          return makeFetchResponse<IPagedResponse<IBlockHeader>>({
             limit: 1,
             items: [
               {
@@ -124,7 +124,7 @@ describe('by blockHash', () => {
               },
             ],
             next: null,
-          } as unknown as IHeaderBranchResponse);
+          } as unknown as IPagedResponse<IBlockHeader>);
       }
     };
 

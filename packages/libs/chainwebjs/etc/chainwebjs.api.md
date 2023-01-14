@@ -30,10 +30,10 @@ function blockStream(depth: number, chainIds: number[], callback: (block: IBlock
 // @alpha
 function branch(chainId: number | string, upper: string[], lower: string[], minHeight: number | undefined, maxHeight: number | undefined, n: number | undefined, format: string | undefined, network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IBlockHeader[]>;
 
-// Warning: (ae-forgotten-export) The symbol "IHeaderBranchResponse" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IPagedResponse" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function branchPage(chainId: number | string, upper: string[], lower: string[], minHeight: number | undefined, maxHeight: number | undefined, n: number | undefined, next: string | undefined, format: string | undefined, network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IHeaderBranchResponse>;
+function branchPage(chainId: number | string, upper: string[], lower: string[], minHeight: number | undefined, maxHeight: number | undefined, n: number | undefined, next: string | undefined, format: string | undefined, network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IPagedResponse<IBlockHeader>>;
 
 // Warning: (ae-forgotten-export) The symbol "IBufferHeader" needs to be exported by the entry point index.d.ts
 //
@@ -48,13 +48,11 @@ function currentBranch(chainId: number | string, start: number, end: number, n: 
 // @alpha
 function currentCut(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<ICutResponse>;
 
-// Warning: (ae-forgotten-export) The symbol "ICutPeerResponse" needs to be exported by the entry point index.d.ts
-//
-// @alpha
-function cutPeerPage(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<ICutPeerResponse>;
-
 // Warning: (ae-forgotten-export) The symbol "ICutPeerItem" needs to be exported by the entry point index.d.ts
 //
+// @alpha
+function cutPeerPage(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<IPagedResponse<ICutPeerItem>>;
+
 // @alpha
 function cutPeers(network?: string, host?: string, retryOptions?: IRetryOptions): Promise<ICutPeerItem[]>;
 
@@ -141,7 +139,7 @@ function parseResponse<T>(response: Response): Promise<T>;
 // Warning: (ae-forgotten-export) The symbol "IBlockPayload" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-function payloads(chainId: number | string, hashes: string[], format: string, network?: string, host?: string, retryOptions?: IRetryOptions, n?: number): Promise<IBlockPayload<ITransactionElement>[]>;
+function payloads(chainId: number | string, hashes: string[], network?: string, host?: string, retryOptions?: IRetryOptions, n?: number): Promise<IBlockPayload<ITransactionElement>[]>;
 
 // @alpha
 function recentBlocks(chainId: number | string, depth: number, n: number, network?: string, host?: string): Promise<IBlockPayloads<ITransactionElement>[]>;

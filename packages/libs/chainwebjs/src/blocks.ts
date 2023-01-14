@@ -1,4 +1,5 @@
 import EventSource from 'eventsource';
+
 import {
   headers,
   headerStream,
@@ -48,7 +49,6 @@ export async function headers2blocks(
     const pays = await payloads(
       chainId,
       hdrs.map((x) => x.payloadHash),
-      'json',
       network,
       host,
       retryOptions,

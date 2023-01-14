@@ -23,7 +23,7 @@ export async function retryFetch(
   retryOptions?: IRetryOptions,
 ): Promise<Response> {
   // set default retryOptions, with any passed-in retryOptions overriding the defaults
-  retryOptions = {
+  const options: IRetryOptions = {
     onFailedAttempt: (x) => console.log('failed fetch attempt:', x.message),
     retries: 2,
     minTimeout: 500,
@@ -32,7 +32,7 @@ export async function retryFetch(
     ...(retryOptions && { ...retryOptions }),
   };
 
-  const retry404 = retryOptions.retry404;
+  const retry404 = options.retry404;
 
   const run = async (): Promise<Response> => {
     const response = await fetchAction();
@@ -48,7 +48,7 @@ export async function retryFetch(
     }
   };
 
-  return pRetry(run, retryOptions);
+  return pRetry(run, options);
 }
 
 /**

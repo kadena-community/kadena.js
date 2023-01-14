@@ -18,7 +18,7 @@ export interface IHeaderBuffer {
   add: (u: IBufferHeader) => void;
 }
 
-interface IOnFailedAttempt {
+interface IOnFailedAttempt extends Error {
   message: string;
 }
 
@@ -44,12 +44,6 @@ export interface ICutHash {
   hash: string;
 }
 
-export interface ICutPeerResponse {
-  next: string;
-  items: ICutPeerItem[];
-  limit: number;
-}
-
 export interface ICutPeerItem {
   address: ICutPeerAddress;
   id: undefined | string;
@@ -58,12 +52,6 @@ export interface ICutPeerItem {
 export interface ICutPeerAddress {
   hostname: string;
   port: number;
-}
-
-export interface IHeaderBranchResponse {
-  next: string;
-  items: IBlockHeader[];
-  limit: number;
 }
 
 export interface IPagedResponse<T> {
@@ -96,22 +84,6 @@ export interface IHeaderBranchRequestBody {
 export interface IBlockPayloads<T> {
   header: IBlockHeader;
   payload: IBlockPayloadMap<T>;
-}
-
-export interface IBlockHeader {
-  nonce: string;
-  creationTime: number;
-  parent: string;
-  adjacents: { [key: string]: string };
-  target: string;
-  payloadHash: string;
-  chainId: number;
-  weight: string;
-  height: number;
-  chainwebVersion: string;
-  epochStart: number;
-  featureFlags: number;
-  hash: string;
 }
 
 export interface IBlockPayloadMap<T>
@@ -169,11 +141,11 @@ export interface IMinerData {
 
 export interface ITransactionElement {
   height?: number;
-  transaction: ITransactionTransaction;
+  transaction: ITransactionPayload;
   output: ICoinbase;
 }
 
-export interface ITransactionTransaction {
+export interface ITransactionPayload {
   hash: string;
   sigs: ISig[];
   cmd: ICmd;

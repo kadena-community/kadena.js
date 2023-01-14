@@ -29,6 +29,14 @@ describe('retry', () => {
     );
     expect(c).toBe(0);
   });
+  test('abort 404 log error', async () => {
+    const opts = { retries: 1, minTimeout: 20 };
+    const r = chainweb.cut.current('invalid', undefined, opts);
+    await expect(r).rejects.toThrow(chainweb.ResponseError);
+    await expect(r).rejects.toThrow(
+      'Request https://api.chainweb.com/chainweb/0.0/invalid/cut failed with 404, Not Found',
+    );
+  });
   test('response success', async () => {
     const x = await parseResponse({
       status: 200,

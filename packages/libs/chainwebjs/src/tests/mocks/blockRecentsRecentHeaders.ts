@@ -9,11 +9,11 @@ interface mockBlocks {
 import { bigloadStart } from './730-360-pageNext-inclusive-xz5JDTRLwqSC2T861tTGIovEcklBUbXxDw6VS7yYay4';
 import { bigloadMiddle } from './730-360-pageNext-inclusive-76kklGQO0cKSxtSSrhP_iD07J94VG3PHIxTDl7kQUhk';
 import { bigloadEnd } from './730-10';
-import { IHeaderBranchResponse } from '../../types';
+import { IPagedResponse, IBlockHeader } from '../../types';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getItemsFromArrByAmount = (
-  obj: IHeaderBranchResponse,
+  obj: IPagedResponse<IBlockHeader>,
   amount: number,
   limit?: number | undefined,
 ) => ({

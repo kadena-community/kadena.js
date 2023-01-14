@@ -1,17 +1,15 @@
 import base64url from 'base64url';
 import fetch from 'cross-fetch';
-// remove import fs from 'fs';
 
 import {
-  ICutPeerResponse,
+  IPagedResponse,
+  ICutPeerItem,
   IBlockHeader,
-  IHeaderBranchResponse,
   IRetryOptions,
   IBlockPayload,
-  ITransactionTransaction,
+  ITransactionPayload,
   ICoinbase,
   ITransactionElement,
-  IPagedResponse,
 } from './types';
 import { currentCut } from './cut';
 import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
@@ -55,7 +53,6 @@ export async function parseResponse<T>(response: Response): Promise<T> {
       const textResponse: string = await response.text();
       return Promise.reject(new Error(textResponse));
     } catch (error) {
-      console.log('tt:', error);
       // return response as unknown as T;
       throw new Error(error.message);
     }
@@ -93,12 +90,12 @@ export async function cutPeerPage(
   network?: string,
   host?: string,
   retryOptions?: IRetryOptions,
-): Promise<ICutPeerResponse> {
+): Promise<IPagedResponse<ICutPeerItem>> {
   const result = await retryFetch(
     () => fetch(transFormUrl(baseUrl(network, host, 'cut/peer'))),
     retryOptions,
   );
-  return parseResponse<ICutPeerResponse>(result);
+  return parseResponse<IPagedResponse<ICutPeerItem>>(result);
 }
 
 /**
@@ -131,22 +128,10 @@ export async function branchPage(
   network?: string,
   host?: string,
   retryOptions?: IRetryOptions,
-): Promise<IHeaderBranchResponse> {
+): Promise<IPagedResponse<IBlockHeader>> {
   /* Format and Accept header value */
   format = format ? format : 'json';
-  let accept = '';
-  switch (format) {
-    case 'json':
-      accept = 'application/json;blockheader-encoding=object';
-      break;
-    case 'binary':
-      accept = 'application/json';
-      break;
-    default:
-      throw new Error(
-        `Unsupported header format ${format}. Supported values are 'json' and 'binary'.`,
-      );
-  }
+  const accept = 'application/json;blockheader-encoding=object';
 
   /* URL */
   const url = chainUrl(chainId, 'header/branch', network, host);
@@ -182,7 +167,7 @@ export async function branchPage(
     retryOptions,
   );
 
-  return parseResponse<IHeaderBranchResponse>(result);
+  return parseResponse<IPagedResponse<IBlockHeader>>(result);
 }
 
 /**
@@ -283,13 +268,11 @@ export async function currentBranch(
 export async function payloads(
   chainId: number | string,
   hashes: string[],
-  format: string,
   network?: string,
   host?: string,
   retryOptions?: IRetryOptions,
   n?: number,
 ): Promise<IBlockPayload<ITransactionElement>[]> {
-  format = format ? format : 'json';
   const path = n ? `payload/outputs/batch?${n}` : 'payload/outputs/batch';
   const url = chainUrl(chainId, path, network, host);
 
@@ -313,7 +296,7 @@ export async function payloads(
       minerData: base64json(data.minerData),
       coinbase: base64json(data.coinbase),
       transactions: data.transactions.map((txs) => {
-        const tx = base64json(txs[0]) as unknown as ITransactionTransaction;
+        const tx = base64json(txs[0]) as unknown as ITransactionPayload;
         const out = base64json(txs[1]) as unknown as ICoinbase;
         tx.cmd = JSON.parse(tx.cmd as unknown as string);
         return {

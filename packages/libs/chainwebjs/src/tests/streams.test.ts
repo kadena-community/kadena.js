@@ -79,7 +79,7 @@ describe('stream', () => {
     'Events',
     async () => {
       let count = 0;
-      const hs = chainweb.event.stream(-1, events_allChains, (h) => {
+      const hs = chainweb.event.stream(1, events_allChains, (h) => {
         logg('new event', h);
         count++;
       });
