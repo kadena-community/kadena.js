@@ -318,7 +318,6 @@ importers:
       node-fetch: ~2.6.2
       p-retry: ^4.5.0
     dependencies:
-      '@types/eventsource': 1.1.10
       base64url: 3.0.1
       cross-fetch: 3.1.5
       eventsource: 2.0.2
@@ -327,11 +326,12 @@ importers:
     devDependencies:
       '@kadena/eslint-config': link:../../tools/eslint-config
       '@kadena/heft-rig': link:../../tools/heft-rig
-      '@rushstack/eslint-config': 2.6.2_eslint@8.25.0
+      '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
+      '@types/eventsource': 1.1.10
       '@types/heft-jest': 1.0.3
-      '@types/node': 16.11.65
-      eslint: 8.25.0
+      '@types/node': 16.18.7
+      eslint: 8.29.0
 
   ../../packages/libs/client:
     specifiers:
@@ -3633,7 +3633,7 @@ packages:
 
   /@types/eventsource/1.1.10:
     resolution: {integrity: sha512-rYzRmJSnm44Xb7FICRXEjwe/26ZiiS+VMGmuD17PevMP56cGgLEsaM955sYQW0S+K7h+mPOL70vGf1hi4WDjVA==}
-    dev: false
+    dev: true
 
   /@types/glob/8.0.0:
     resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
