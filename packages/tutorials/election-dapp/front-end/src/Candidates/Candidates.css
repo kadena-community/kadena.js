@@ -1,0 +1,26 @@
+.Candidates {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.Candidates-heading {
+  display: flex;
+  align-items: center;
+}
+
+.Candidates-progress {
+  display: flex;
+  margin-left: 20px;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+}
+
+.Candidates-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

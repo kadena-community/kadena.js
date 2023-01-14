@@ -44,10 +44,16 @@ export interface ICommandBuilder<
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   local(apiHost: string): Promise<ICommandResult>;
   send(apiHost: string): Promise<ISendResponse>;
-  callPollUntilTimeout(
+  pollUntil(
     apiHost: string,
-    interval?: number,
-    timeout?: number,
+    options?: {
+      interval?: number;
+      timeout?: number;
+      onPoll?: (
+        transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+        pollRequest: Promise<IPollResponse>,
+      ) => void;
+    },
   ): Promise<this>;
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
@@ -92,6 +98,7 @@ type TransactionStatus =
   | 'non-malleable'
   | 'pending'
   | 'success'
+  | 'failure'
   | 'timeout';
 
 /**
@@ -276,16 +283,36 @@ export class PactCommand
   /**
    * Checks if a transaction succeeded or failed by polling the apiHost at
    * a given interval. Times out if it takes too long.
+   *
    * @param apiHost - the chainweb host where to send the transaction to
-   * @param interval - the amount of time in ms between the api calls
-   * @param timeout - the total time in ms after this function will time out
+   * @param options
+   *   - `interval` - the amount of time in ms between the api calls (optional)
+   *   - `timeout` - the total time in ms after this function will time out (optional)
+   *   - `onPoll` - `(transaction, pollRequest) => void` a function that gets called before each poll request (optional)
+   *
+   * @returns the transaction object
    * @alpha
    */
-  public callPollUntilTimeout(
+  public pollUntil(
     apiHost: string,
-    interval: number = 5000,
-    timeout: number = 60000,
+    options?: {
+      interval?: number;
+      timeout?: number;
+      onPoll?: (
+        transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+        pollRequest: Promise<IPollResponse>,
+      ) => void;
+    },
   ): Promise<this> {
+    if (this.requestKey === undefined) {
+      throw new Error('`requestKey` not found');
+    }
+
+    const {
+      interval = 5000,
+      timeout = 1000 * 60 * 3,
+      onPoll = () => {},
+    } = { ...options };
     const endTime = Date.now() + timeout;
     this.status = 'pending';
 
@@ -296,17 +323,21 @@ export class PactCommand
       }, timeout);
 
       const poll = (): void => {
-        this.poll(apiHost)
-          .then((result) => {
-            if (this.requestKey === undefined) {
-              throw new Error('requestKey is undefined');
-            }
+        const pollRequest = this.poll(apiHost);
+        onPoll(this, pollRequest);
 
+        pollRequest
+          .then((result) => {
             if (result[this.requestKey!]?.result.status === 'success') {
               // resolve the Promise when we get a "success" response
               this.status = 'success';
               clearTimeout(cancelTimeout);
               resolve(this);
+            } else if (result[this.requestKey!]?.result.status === 'failure') {
+              // reject the Promise when we get a "failure" response
+              this.status = 'failure';
+              clearTimeout(cancelTimeout);
+              reject(this);
             } else if (Date.now() < endTime) {
               // no "success" response (yet), try again in `interval` seconds
               setTimeout(poll, interval);

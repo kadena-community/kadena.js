@@ -1,0 +1,37 @@
+.Candidate-row {
+  display: flex;
+  border-radius: 10px;
+  padding: 15px 25px;
+  margin-bottom: 5px;
+  background-color: lightgray;
+}
+
+.Candidate-row div {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+.Candidate-row div:first-child {
+  flex: 0.5;
+}
+
+.Candidate-row .Candidate-vote-container {
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.Candidate-vote-container button {
+  width: 80%;
+  height: 80%;
+  font-weight: bold;
+}
+
+.Candidate-row-header {
+  font-size: 16px;
+}
+
+.Candidate-row-content {
+  font-weight: bold;
+}

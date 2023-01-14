@@ -1,0 +1,129 @@
+;; begin-tx and commit-tx simulate a transaction
+(begin-tx "Load modules")
+
+;; set transaction JSON data
+(env-data {
+  ;; Here we set the required keysets.
+  ;; Note:
+  ;; - in a real transaction, `admin-key` would be a public key
+  ;; - "keys-all" is a built-in predicate that specifies all keys are needed to sign a tx,
+  ;;   in this case we only set one key
+  'election-admin-keyset: { "keys": ["admin-key"], "pred": "keys-all" },
+  'alice-keyset: { "keys": ["alice-key"], "pred": "keys-all" },
+  'bob-keyset: { "keys": ["bob-key"], "pred": "keys-all" },
+  'namespace-keyset: { "keys": [ ], "pred": "keys-all" },
+
+  ;; Upgrade key is set to false because we are deploying the modules
+  'upgrade: false
+})
+
+;; All Pact modules must exist within a namespace on Chainweb, except for basic contracts provided by Kadena.
+;; There are two namespaces available for anyone to use on Chainweb: the 'free' namespace and the 'user'
+;; namespace. Our contract uses the "free" namespace, so we need to make sure it exists in our REPL
+;; environment.
+
+;; Defining a namespace requires that we provide two keysets. The first keyset indicates the user that must
+;; have signed any transaction that deploys code to the given namespace. The second keyset is the namespace
+;; admin's keyset, and it indicates that the admin must sign the transaction that creates the new namespace.
+;; For testing purposes we will use the same mock namespace keyset for both.
+(define-namespace "free" (read-keyset "namespace-keyset") (read-keyset "namespace-keyset"))
+
+;; load fungible-v2 interface
+(load "root/fungible-v2.pact")
+
+;; load fungible-xchain-v1 interace
+(load "root/fungible-xchain-v1.pact")
+
+;; load coin module
+(load "root/coin-v5.pact")
+
+;; create coin module tables
+(create-table coin.coin-table)
+(create-table coin.allocation-table)
+
+;; load election module
+(load "election.pact")
+
+;; commit the transaction
+(commit-tx)
+
+(begin-tx "Create KDA accounts")
+
+;; create "alice" KDA account
+(coin.create-account "alice" (read-keyset "alice-keyset"))
+;; create "bob" KDA account
+(coin.create-account "bob" (read-keyset "bob-keyset"))
+
+(commit-tx)
+
+(begin-tx "Vote for non-existing candidate")
+
+;; set the key signing this transaction, `alice-key`
+;; setting `caps` as an empty array translates into `unrestricted mode`, meaning our keyset
+;; can be used to sign anything, it's not restricted to a specific set of capabilities
+(env-sigs [{ "key": "alice-key", "caps": []}])
+;; this test passes because the election.vote call fails
+(expect-failure "Can't vote for a non-existing candidate" (free.election.vote "alice" "5"))
+
+(commit-tx)
+
+(begin-tx "Add candidates")
+(use free.election)
+
+;; Need to provide the key that is part of the election-admin-keyset
+(env-sigs [{ "key": "admin-key", "caps": []}])
+
+;; Call `insert-candidates` to add 3 candidates
+(insert-candidates [{ "key": "1", "name": "Candidate A" } { "key": "2", "name": "Candidate B" } { "key": "3", "name": "Candidate B" }])
+
+;; test if votes count for candidate "1" is initialized with 0
+(expect "votes for Candidate A initialized" (get-votes "1") 0)
+
+;; test if votes count for candidate "2" is initialized with 0
+(expect "votes for Candidate B initialized" (get-votes "2") 0)
+
+;; test if votes count for candidate "3" is initialized with 0
+(expect "votes for Candidate C initialized" (get-votes "3") 0)
+
+(commit-tx)
+
+(begin-tx)
+(use free.election)
+;; we set the key signing this tx and the capabilities that can be signed
+;; coin.GAS is a capability that allows gas payments, we will talk more about gas and gas stations in the
+;; next section
+;; election.ACCOUNT-OWNER is the capability we implemented that validates the owner of the KDA account
+(env-sigs [{ "key": "alice-key", "caps": [(coin.GAS), (free.election.ACCOUNT-OWNER "alice")]}])
+
+;; test if votes count for candidate "1" is correctly increased by 1
+;; 1. Retrieve the number of votes
+(let ((count (get-votes "1")))
+  ;; 2. Vote
+  (vote "alice" "1")
+  ;; 3. Check if the vote was correctly recorded
+  (expect "votes count is increased by 1" (get-votes "1") (+ count 1)))
+
+;; Test if the `VOTED` event with parameter "1" was emitted in this transaction
+(expect "voted event"
+  [ { "name": "free.election.VOTED", "params": ["1"], "module-hash": (at 'hash (describe-module "free.election"))}]
+  (env-events true))
+
+;; execute the same test using a different account
+(env-sigs [{ "key": "bob-key", "caps": [(coin.GAS), (free.election.ACCOUNT-OWNER "bob")]}])
+;; test if votes count for candidate "2" is correctly increased by 1
+(let ((count (get-votes "2")))
+  (vote "bob" "2")
+  (expect "votes count is increased by 1" (get-votes "2") (+ count 1)))
+
+(expect "voted event"
+  [ { "name": "free.election.VOTED",
+      "params": ["2"],
+      "module-hash": (at 'hash (describe-module "free.election"))
+    }
+  ]
+  (env-events true))
+
+;; test that bob's attempt to vote twice fails
+(expect-failure "Double voting not allowed" (vote "bob" "1"))
+
+(commit-tx)

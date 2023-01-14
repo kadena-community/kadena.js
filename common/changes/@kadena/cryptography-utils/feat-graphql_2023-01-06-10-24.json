@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "adds lint-staged",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}
