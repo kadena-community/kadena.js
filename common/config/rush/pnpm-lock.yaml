@@ -7,8 +7,8 @@ importers:
 
   ../../packages/apps/explorer:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@next/eslint-plugin-next': ^12.0.8
       '@prisma/client': ^3.13.0
       '@trendyol-js/react-carousel': ^2.0.1
@@ -68,7 +68,7 @@ importers:
       yaml: ~2.1.1
       yup: ^0.32.11
     dependencies:
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@prisma/client': 3.15.2_prisma@3.15.2
       '@trendyol-js/react-carousel': 2.0.1_react@17.0.2
       async: 3.2.4
@@ -105,7 +105,7 @@ importers:
       yaml: 2.1.3
       yup: 0.32.11
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@next/eslint-plugin-next': 12.3.4
       '@types/async': 3.2.16
       '@types/base64-arraybuffer': 0.2.0
@@ -132,8 +132,8 @@ importers:
 
   ../../packages/apps/graph:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@pothos/core': ~3.24.0
       '@pothos/plugin-prisma': ~3.39.0
@@ -168,8 +168,8 @@ importers:
       json-bigint-patch: 0.0.8
       prisma: 4.7.1
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
@@ -190,8 +190,8 @@ importers:
       '@graphql-codegen/typescript-operations': ~2.5.10
       '@graphql-codegen/typescript-react-apollo': ~3.3.7
       '@graphql-yoga/apollo-link': ~1.0.1
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@radix-ui/colors': ~0.1.8
       '@radix-ui/react-icons': ~1.1.1
@@ -239,8 +239,8 @@ importers:
       '@graphql-codegen/typescript-graphql-request': 4.5.8_graphql@16.6.0
       '@graphql-codegen/typescript-operations': 2.5.10_graphql@16.6.0
       '@graphql-codegen/typescript-react-apollo': 3.3.7_graphql@16.6.0
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0+typescript@4.9.4
       '@rushstack/heft': 0.46.7
@@ -250,9 +250,9 @@ importers:
 
   ../../packages/libs/bootstrap-lib:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/cryptography-utils': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
@@ -271,8 +271,8 @@ importers:
       cross-fetch: 3.1.5
       node-fetch: 2.6.7
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -281,9 +281,9 @@ importers:
 
   ../../packages/libs/chainweb-node-client:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/cryptography-utils': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
@@ -302,8 +302,8 @@ importers:
       cross-fetch: 3.1.5
       node-fetch: 2.6.7
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -312,10 +312,10 @@ importers:
 
   ../../packages/libs/client:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/cryptography-utils': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
@@ -337,8 +337,8 @@ importers:
       debug: 4.3.4
       yaml: 2.1.3
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/debug': 4.1.7
@@ -349,8 +349,8 @@ importers:
 
   ../../packages/libs/cryptography-utils:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -366,8 +366,8 @@ importers:
       buffer: 6.0.3
       tweetnacl: 1.0.3
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -376,9 +376,9 @@ importers:
 
   ../../packages/libs/kadena.js:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/cryptography-utils': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
@@ -404,8 +404,8 @@ importers:
       tweetnacl: 1.0.3
       webpack: 5.73.0_webpack-cli@4.10.0
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -417,8 +417,8 @@ importers:
 
   ../../packages/libs/pactjs:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -430,8 +430,8 @@ importers:
       '@kadena/types': link:../types
       bignumber.js: 9.1.1
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -440,8 +440,8 @@ importers:
 
   ../../packages/libs/pactjs-generator:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
       '@types/byline': ~4.2.33
@@ -468,8 +468,8 @@ importers:
       ramda: 0.28.0
       yaml: 2.1.3
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/byline': 4.2.33
@@ -487,11 +487,11 @@ importers:
 
   ../../packages/libs/pactjs-test-project:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
@@ -511,8 +511,8 @@ importers:
       '@kadena/types': link:../types
       debug: 4.3.4
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
@@ -526,15 +526,15 @@ importers:
 
   ../../packages/libs/types:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
       '@types/heft-jest': ~1.0.3
       eslint: ^8.15.0
     devDependencies:
-      '@kadena/eslint-config': link:../../tools/eslint-config
-      '@kadena/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -542,10 +542,10 @@ importers:
 
   ../../packages/tools/cookbook:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/client': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -557,8 +557,8 @@ importers:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
       '@kadena/client': link:../../libs/client
     devDependencies:
-      '@kadena/eslint-config': link:../eslint-config
-      '@kadena/heft-rig': link:../heft-rig
+      '@kadena-dev/eslint-config': link:../eslint-config
+      '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena/pactjs-cli': link:../pactjs-cli
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
@@ -610,7 +610,7 @@ importers:
 
   ../../packages/tools/eslint-config:
     specifiers:
-      '@kadena/eslint-config': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@typescript-eslint/eslint-plugin': ^5.23.0
       eslint: ^8.15.0
@@ -621,7 +621,7 @@ importers:
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.46.0_eslint@8.29.0+typescript@4.6.4
     devDependencies:
-      '@kadena/eslint-config': 'link:'
+      '@kadena-dev/eslint-config': 'link:'
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0+typescript@4.6.4
       eslint: 8.29.0
       eslint-plugin-import: 2.26.0_eslint@8.29.0
@@ -631,7 +631,7 @@ importers:
 
   ../../packages/tools/heft-rig:
     specifiers:
-      '@kadena/eslint-config': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
       '@microsoft/api-extractor': ~7.28.2
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -647,16 +647,16 @@ importers:
       jest-environment-node: 27.4.6
       typescript: 4.6.4
     devDependencies:
-      '@kadena/eslint-config': link:../eslint-config
+      '@kadena-dev/eslint-config': link:../eslint-config
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0+typescript@4.6.4
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
 
   ../../packages/tools/integration-tests:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/chainweb-node-client': workspace:*
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -676,8 +676,8 @@ importers:
       kadena.js: link:../../libs/kadena.js
       tweetnacl: 1.0.3
     devDependencies:
-      '@kadena/eslint-config': link:../eslint-config
-      '@kadena/heft-rig': link:../heft-rig
+      '@kadena-dev/eslint-config': link:../eslint-config
+      '@kadena-dev/heft-rig': link:../heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/heft-jest': 1.0.3
@@ -687,8 +687,8 @@ importers:
 
   ../../packages/tools/pactjs-cli:
     specifiers:
-      '@kadena/eslint-config': workspace:*
-      '@kadena/heft-rig': workspace:*
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@kadena/pactjs-generator': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -718,8 +718,8 @@ importers:
       yaml: 2.1.3
       zod: 3.18.0
     devDependencies:
-      '@kadena/eslint-config': link:../eslint-config
-      '@kadena/heft-rig': link:../heft-rig
+      '@kadena-dev/eslint-config': link:../eslint-config
+      '@kadena-dev/heft-rig': link:../heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
       '@rushstack/heft': 0.46.7
       '@types/debug': 4.1.7

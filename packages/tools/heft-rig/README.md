@@ -1,4 +1,4 @@
-## @kadena/heft-rig
+## @kadena-dev/heft-rig
 
 A rig package for Node.js projects that build using [Heft](https://www.npmjs.com/package/@rushstack/heft)
 build system.  To learn more about rig packages, consult the
@@ -13,7 +13,7 @@ To enable it, add a **rig.json** file to your project, as shown below:
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rig-package/rig.schema.json",
 
-  "rigPackageName": "@kadena/heft-rig"
+  "rigPackageName": "@kadena-dev/heft-rig"
 }
 ```
 
@@ -27,4 +27,4 @@ https://github.com/microsoft/rushstack/tree/main/rigs/heft-node-rig/profiles/def
   https://github.com/microsoft/rushstack/blob/main/rigs/heft-node-rig/CHANGELOG.md) - Find
   out what's new in the latest version
 
-`@kadena/heft-rig` is part of the [Rush Stack](https://rushstack.io/) family of projects.
+`@kadena-dev/heft-rig` is part of the [Rush Stack](https://rushstack.io/) family of projects.
