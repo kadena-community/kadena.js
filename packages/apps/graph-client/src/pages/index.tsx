@@ -38,7 +38,9 @@ export default function Home(): JSX.Element {
     ) {
       addBlocks(newBlocks?.newBlocks);
     }
+  }, [newBlocks]);
 
+  useEffect(() => {
     if (
       isEqual(previousRecentBlocks, recentBlocks) === false &&
       recentBlocks?.blocks &&
@@ -46,7 +48,7 @@ export default function Home(): JSX.Element {
     ) {
       addBlocks(recentBlocks?.blocks);
     }
-  }, [newBlocks, recentBlocks]);
+  }, [recentBlocks]);
 
   return (
     <div>
