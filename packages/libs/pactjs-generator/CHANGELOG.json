@@ -2,6 +2,23 @@
   "name": "@kadena/pactjs-generator",
   "entries": [
     {
+      "version": "0.1.3",
+      "tag": "@kadena/pactjs-generator_v0.1.3",
+      "date": "Mon, 16 Jan 2023 16:31:08 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Merge generated types for capabilities across modules "
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.2",
       "tag": "@kadena/pactjs-generator_v0.1.2",
       "date": "Thu, 15 Dec 2022 14:56:25 GMT",
