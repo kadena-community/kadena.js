@@ -527,14 +527,14 @@
       "projectFolder": "packages/tools/eslint-config",
       "cyclicDependencyProjects": ["@kadena-dev/eslint-config"],
       "tags": ["tools"],
-      "shouldPublish": false
+      "shouldPublish": true
     },
 
     {
       "packageName": "@kadena-dev/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
-      "shouldPublish": false
+      "shouldPublish": true
     },
 
     {

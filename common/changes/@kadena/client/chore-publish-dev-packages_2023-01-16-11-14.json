@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
