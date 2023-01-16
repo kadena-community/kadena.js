@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/heft-rig",
+  "name": "@kadena-dev/heft-rig",
   "version": "0.0.1",
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "@rushstack/heft-jest-plugin": "~0.3.16"
   },
   "devDependencies": {
-    "@kadena/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-config": "workspace:*",
     "@rushstack/heft": "~0.46.1",
     "@types/heft-jest": "~1.0.3",
     "@rushstack/eslint-config": "~2.6.2",
