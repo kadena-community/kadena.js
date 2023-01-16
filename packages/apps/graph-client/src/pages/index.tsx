@@ -1,4 +1,7 @@
-import { useGetBlocksSubscription } from '../__generated__/sdk';
+import {
+  useGetBlocksSubscription,
+  useGetRecentHeightsQuery,
+} from '../__generated__/sdk';
 import { ChainwebGraph } from '../components/chainweb';
 import { Text } from '../components/text';
 import { styled } from '../styles/stitches.config';
@@ -18,20 +21,32 @@ const StyledMain: any = styled('main', {
 });
 
 export default function Home(): JSX.Element {
-  const { loading, data } = useGetBlocksSubscription();
-  const previousData = usePrevious(data);
+  const { loading: loadingNewBlocks, data: newBlocks } =
+    useGetBlocksSubscription();
+  const { loading: loadingRecentBlocks, data: recentBlocks } =
+    useGetRecentHeightsQuery({ variables: { count: 3 } });
+  const previousNewBlocks = usePrevious(newBlocks);
+  const previousRecentBlocks = usePrevious(recentBlocks);
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
   useEffect(() => {
     if (
-      isEqual(previousData, data) === false &&
-      data?.newBlocks &&
-      data?.newBlocks?.length > 0
+      isEqual(previousNewBlocks, newBlocks) === false &&
+      newBlocks?.newBlocks &&
+      newBlocks?.newBlocks?.length > 0
     ) {
-      addBlocks(data?.newBlocks);
+      addBlocks(newBlocks?.newBlocks);
     }
-  }, [data]);
+
+    if (
+      isEqual(previousRecentBlocks, recentBlocks) === false &&
+      recentBlocks?.blocks &&
+      recentBlocks?.blocks?.length > 0
+    ) {
+      addBlocks(recentBlocks?.blocks);
+    }
+  }, [newBlocks, recentBlocks]);
 
   return (
     <div>
@@ -49,7 +64,11 @@ export default function Home(): JSX.Element {
         </Text>
 
         <div>
-          {loading ? 'Loading...' : <ChainwebGraph blocks={allBlocks} />}
+          {loadingRecentBlocks || loadingNewBlocks ? (
+            'Loading...'
+          ) : (
+            <ChainwebGraph blocks={allBlocks} />
+          )}
         </div>
       </StyledMain>
     </div>
