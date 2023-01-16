@@ -1,6 +1,13 @@
 # Change Log - @kadena/pactjs-cli
 
-This log was last generated on Thu, 15 Dec 2022 14:56:25 GMT and should not be manually modified.
+This log was last generated on Mon, 16 Jan 2023 16:31:08 GMT and should not be manually modified.
+
+## 0.0.8
+Mon, 16 Jan 2023 16:31:08 GMT
+
+### Patches
+
+- Adds option to choose custom interface for caps
 
 ## 0.0.7
 Thu, 15 Dec 2022 14:56:25 GMT
