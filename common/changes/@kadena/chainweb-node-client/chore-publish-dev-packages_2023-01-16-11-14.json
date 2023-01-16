@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
