@@ -1,7 +1,7 @@
 {
   "name": "@kadena/chainwebjs",
   "version": "0.0.1",
-  "description": "Javascript bindings for the Kadena Chainweb API",
+  "description": "Javascript (Typescript) bindings for the Kadena Chainweb API",
   "keywords": [
     "chainweb",
     "kadena",
