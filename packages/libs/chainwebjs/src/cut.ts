@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { baseUrl, retryFetch, transFormUrl } from './request';
 import { cutPeerPage, parseResponse } from './internal';
 import { ICutPeerItem, ICutResponse, IRetryOptions } from './types';

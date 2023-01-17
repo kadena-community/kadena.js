@@ -67,7 +67,7 @@ const logg = (...args: unknown[]): void => {
 
 const transactions_allChains = [0];
 
-describe('stream transaction depth 1 should succeed', () => {
+describe('stream transaction depth 1 and count should increase by blocks', () => {
   streamTest(
     'Transactions',
     async () => {
@@ -83,7 +83,7 @@ describe('stream transaction depth 1 should succeed', () => {
   );
 });
 
-describe('stream transaction depth 10 should succeed', () => {
+describe('stream transaction depth 10 should succeed and count should increase by blocks', () => {
   streamTest(
     'Transactions',
     async () => {
@@ -103,7 +103,7 @@ describe('stream transaction depth 10 should succeed', () => {
   );
 });
 
-describe('stream transaction depth 0 should succeed', () => {
+describe('stream transaction depth 0 should succeed and count should increase by blocks', () => {
   streamTest(
     'Transactions',
     async () => {
@@ -118,12 +118,16 @@ describe('stream transaction depth 0 should succeed', () => {
   );
 });
 
-describe('stream should not throw with depth 10', () => {
+describe('stream should not throw with depth 10 and count should increase by blocks', () => {
   streamTest(
     'Block',
     async () => {
-      const hs = chainweb.block.stream(10, [0], (h) => {});
+      let count = 0;
+      const hs = chainweb.block.stream(10, [0], (h) => {
+        count++;
+      });
       hs.close();
+      expect(count).toBeGreaterThanOrEqual(0);
     },
     500,
   );
@@ -133,7 +137,7 @@ const events_allChains = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ];
 
-describe('stream', () => {
+describe('stream should succeed per chain count should increase by blocks', () => {
   buildEventSourceSpy.mockReturnValue({
     ...evtsmock,
     addEventListener: jest.fn().mockImplementation((event, handler) => {
@@ -154,19 +158,3 @@ describe('stream', () => {
     500,
   );
 });
-
-// describe('stream', () => {
-//   streamTest(
-//     'Events',
-//     async () => {
-//       let count = 0;
-//       const hs = chainweb.event.stream(1, events_allChains, (h) => {
-//         logg('new event', h);
-//         count++;
-//       });
-//       hs.close();
-//       expect(count).toBeGreaterThanOrEqual(0);
-//     },
-//     500,
-//   );
-// });

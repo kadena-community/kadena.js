@@ -9,6 +9,5 @@
       "statements": 90
     }
   },
-  "coverageReporters": ["json", "html"],
   "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"]
 }

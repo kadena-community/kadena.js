@@ -41,7 +41,7 @@ const height = 1511601;
 /* By Height */
 
 describe('by height', () => {
-  test('Headers', async () => {
+  test('Headers correct return by height', async () => {
     const r = await chainweb.header.height(0, height);
     logg('Headers:', r);
     expect(r).toEqual({

@@ -156,7 +156,6 @@ const headerUpdates = (
 
   const es = buildEventSource(`${url}`);
   es.onerror = (err) => {
-    console.log(err);
     throw err;
   };
 

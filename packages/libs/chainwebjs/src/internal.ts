@@ -133,7 +133,6 @@ export async function branchPage(
   format = format ? format : 'json';
   const accept = 'application/json;blockheader-encoding=object';
 
-  /* URL */
   const url = chainUrl(chainId, 'header/branch', network, host);
 
   if (minHeight !== undefined) {
