@@ -1,27 +1,21 @@
-import { prismaClient } from '../../utils/prismaClient';
+import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 import { Block } from '@prisma/client';
-import _debug from 'debug';
+import _debug, { Debugger } from 'debug';
 
-const log = _debug('graph:Subscription:newBlocks');
+const log: Debugger = _debug('graph:Subscription:newBlocks');
 
 builder.subscriptionField('newBlocks', (t) => {
   return t.prismaField({
     type: ['Block'],
     nullable: true,
     subscribe: () => iteratorFn(),
-    resolve: (_, block) => block,
-    // subscribe: () => pubsub.subscribe('NEW_BLOCKS'),
-    // resolve: (payload) => {
-    //   console.log('payload', JSON.stringify(payload, null, 2));
-    //   return payload;
-    // },
+    resolve: (__, block) => block,
   });
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-async function* iteratorFn() {
+async function* iteratorFn(): AsyncGenerator<Block[], void, unknown> {
   let lastBlock = (await getLastBlocks())[0];
 
   yield [lastBlock];

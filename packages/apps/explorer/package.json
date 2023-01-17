@@ -23,7 +23,7 @@
     ]
   },
   "dependencies": {
-    "@kadena/heft-rig": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
     "@prisma/client": "^3.13.0",
     "@trendyol-js/react-carousel": "^2.0.1",
     "async": "^3.2.3",
@@ -61,7 +61,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@kadena/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-config": "workspace:*",
     "@next/eslint-plugin-next": "^12.0.8",
     "@types/async": "^3.2.12",
     "@types/base64-arraybuffer": "^0.2.0",

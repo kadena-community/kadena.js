@@ -260,6 +260,7 @@ export async function currentBranch(
  * @param network- chainweb network
  * @param host - chainweb api host
  * @param retryOptions - retry options object as accepted by the retry package
+ * @param n - if given, limits the number of results.
  *
  * @alpha
  */

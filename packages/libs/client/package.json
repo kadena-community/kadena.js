@@ -39,8 +39,8 @@
     "yaml": "~2.1.1"
   },
   "devDependencies": {
-    "@kadena/eslint-config": "workspace:*",
-    "@kadena/heft-rig": "workspace:*",
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
     "@types/debug": "~4.1.7",
