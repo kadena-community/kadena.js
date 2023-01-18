@@ -25,6 +25,7 @@ export default builder.prismaNode('Transaction', {
     block: t.prismaField({
       type: 'Block',
       nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findUnique({
           where: {

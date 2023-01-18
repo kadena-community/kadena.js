@@ -12,9 +12,18 @@ import Head from 'next/head';
 import React from 'react';
 import { getNetworkCookie, setCookieStatic } from 'utils/cookie';
 
-function MyApp({ Component, pageProps }: AppProps & { Component: any }) {
+function MyApp({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Component,
+  pageProps,
+}: AppProps & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Component: any;
+}): JSX.Element {
   const networkState = useNetworkState(
-    pageProps?.network || NetworkName.MAIN_NETWORK,
+    pageProps?.network !== undefined
+      ? pageProps.network
+      : NetworkName.MAIN_NETWORK,
   );
   return (
     <>
@@ -39,9 +48,11 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
 
   const network = await getNetworkCookie(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     appContext.ctx as any,
     appContext.router.asPath,
   );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setCookieStatic(appContext.ctx as any, 'network', network);
   return {
     ...appProps,

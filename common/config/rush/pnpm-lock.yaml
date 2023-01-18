@@ -12,6 +12,7 @@ importers:
       '@kadena-dev/heft-rig': workspace:*
       '@next/eslint-plugin-next': ^12.0.8
       '@prisma/client': ^3.13.0
+      '@rushstack/eslint-config': ~2.6.2
       '@trendyol-js/react-carousel': ^2.0.1
       '@types/async': ^3.2.12
       '@types/base64-arraybuffer': ^0.2.0
@@ -109,6 +110,7 @@ importers:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@next/eslint-plugin-next': 12.3.4
+      '@rushstack/eslint-config': 2.6.2_eslint@8.29.0+typescript@4.6.4
       '@types/async': 3.2.16
       '@types/base64-arraybuffer': 0.2.0
       '@types/bcrypt': 5.0.0

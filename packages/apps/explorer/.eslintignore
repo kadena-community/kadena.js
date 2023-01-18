@@ -3,3 +3,5 @@
 !.*.js
 **/dist/**
 **/coverage/**
+**/*.ts
+**/*.tsx

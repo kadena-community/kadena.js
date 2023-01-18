@@ -1,14 +1,22 @@
 import { DeferNextScript } from '../services/next';
 
-import Document, { DocumentContext, Head, Html, Main } from 'next/document';
+import Document, {
+  DocumentContext,
+  DocumentInitialProps,
+  Head,
+  Html,
+  Main,
+} from 'next/document';
 import React from 'react';
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+  public static async getInitialProps(
+    ctx: DocumentContext,
+  ): Promise<DocumentInitialProps> {
     return Document.getInitialProps(ctx);
   }
 
-  render() {
+  public render(): JSX.Element {
     return (
       <Html lang="en">
         <Head>

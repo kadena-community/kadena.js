@@ -3,7 +3,8 @@ import { chainInfoAsync, nodeInfoAsync, statInfoAsync } from 'services/api';
 import prisma from 'services/prisma';
 import { NetworkName } from 'utils/api';
 
-export default async function handler(req: any, res: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function handler(req: any, res: any): Promise<void> {
   try {
     const { network } = req.query;
 
@@ -20,8 +21,8 @@ export default async function handler(req: any, res: any) {
     const nodeInfoData = await nodeInfoAsync(APIRoute.Info, network);
 
     if (
-      !nodeInfoData?.version ||
-      !nodeInfoData?.instance ||
+      nodeInfoData?.version === null ||
+      nodeInfoData?.instance === null ||
       !nodeInfoData?.chainIds ||
       !nodeInfoData?.height
     ) {
@@ -65,6 +66,9 @@ export default async function handler(req: any, res: any) {
     res.status(200).json({ message: 'Success' });
   } catch (error) {
     await prisma.$disconnect();
-    res.status(500).json({ message: (error as any)?.message || 'Error' });
+    res.status(500).json({
+      message:
+        (error as { message: string | undefined })?.message !== null || 'Error',
+    });
   }
 }

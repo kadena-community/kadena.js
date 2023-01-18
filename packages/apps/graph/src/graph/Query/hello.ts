@@ -5,6 +5,6 @@ export default builder.queryField('hello', (t) =>
     args: {
       name: t.arg.string(),
     },
-    resolve: (parent, { name }) => `hello, ${name || 'World'}`,
+    resolve: (__parent, { name = 'World' }) => `hello, ${name}`,
   }),
 );
