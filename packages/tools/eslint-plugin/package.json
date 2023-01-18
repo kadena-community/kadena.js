@@ -1,0 +1,33 @@
+{
+  "name": "@kadena-dev/eslint-plugin",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "",
+    "build": "heft build --clean",
+    "lint-staged": "lint-staged",
+    "test": "heft test"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "eslint-module-utils": "^2.7.1",
+    "is-core-module": "^2.8.0"
+  },
+  "devDependencies": {
+    "@rushstack/heft": "~0.46.1",
+    "eslint": "^8.15.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "~7.31.11",
+    "eslint-plugin-simple-import-sort": "~7.0.0",
+    "typescript": "~4.6.3"
+  }
+}
