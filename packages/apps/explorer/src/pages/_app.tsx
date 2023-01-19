@@ -12,14 +12,13 @@ import Head from 'next/head';
 import React from 'react';
 import { getNetworkCookie, setCookieStatic } from 'utils/cookie';
 
-function MyApp({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  Component,
-  pageProps,
-}: AppProps & {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Component: any;
-}): JSX.Element {
+function MyApp(
+  args: AppProps & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Component: any;
+  },
+): JSX.Element {
+  const { pageProps, Component } = args;
   const networkState = useNetworkState(
     pageProps?.network !== undefined
       ? pageProps.network

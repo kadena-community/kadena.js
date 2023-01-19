@@ -30,7 +30,6 @@ const Banner: FC<IProps> = ({
   onChangeTimeInterval,
 }) => {
   const { width } = useWindowSize();
-  // eslint-disable @typescript-eslint/naming-convention
   const slidesPerView = useMemo(() => {
     if (width) {
       if (width < 360) {
@@ -49,6 +48,7 @@ const Banner: FC<IProps> = ({
   }, [width]);
 
   const carouselBreakpoints: any = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     10: {
       slidesPerView: 1,
       spaceBetween: 32,
@@ -58,6 +58,7 @@ const Banner: FC<IProps> = ({
         type: 'bullets',
       },
     },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     360: {
       slidesPerView: 2,
       spaceBetween: 24,
@@ -67,6 +68,7 @@ const Banner: FC<IProps> = ({
         type: 'bullets',
       },
     },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     640: {
       slidesPerView: 3,
       spaceBetween: 24,
@@ -76,6 +78,7 @@ const Banner: FC<IProps> = ({
         type: 'bullets',
       },
     },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     861: {
       slidesPerView: 2,
       spaceBetween: 24,
@@ -85,6 +88,7 @@ const Banner: FC<IProps> = ({
         type: 'bullets',
       },
     },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     1024: {
       slidesPerView: 3,
       spaceBetween: 24,
@@ -94,6 +98,7 @@ const Banner: FC<IProps> = ({
         type: 'bullets',
       },
     },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     1366: {
       slidesPerView: 4,
       spaceBetween: 24,
