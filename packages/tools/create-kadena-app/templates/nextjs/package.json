@@ -1,0 +1,28 @@
+{
+  "name": "nextjs",
+  "version": "1.0.0",
+  "description": "Nextjs starter project with @kadena/client integration",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@kadena/client": "^0.1.5",
+    "next": "latest",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "spinners-react": "^1.0.7"
+  },
+  "devDependencies": {
+    "@kadena/pactjs-cli": "^0.0.8",
+    "@kadena/types": "^0.0.3",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.26",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "^13.1.2",
+    "typescript": "4.9.4"
+  }
+}
