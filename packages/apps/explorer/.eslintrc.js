@@ -4,7 +4,7 @@ require('@rushstack/eslint-config/patch/modern-module-resolution');
 
 module.exports = {
   extends: [
-    '@kadena/eslint-config/profile/lib',
+    '@kadena-dev/eslint-config/profile/lib',
     'eslint-config-next',
     'eslint-config-prettier',
   ],

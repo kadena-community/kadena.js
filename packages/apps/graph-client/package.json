@@ -50,13 +50,14 @@
     "@graphql-codegen/typescript-graphql-request": "~4.5.8",
     "@graphql-codegen/typescript-operations": "~2.5.10",
     "@graphql-codegen/typescript-react-apollo": "~3.3.7",
-    "@kadena/eslint-config": "workspace:*",
-    "@kadena/heft-rig": "workspace:*",
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "concurrently": "^7.2.2"
+    "concurrently": "^7.2.2",
+    "ts-node": "~10.8.2"
   }
 }

@@ -1,4 +1,4 @@
-import { prismaClient } from '../utils/prismaClient';
+import { prismaClient } from '../db/prismaClient';
 
 import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
