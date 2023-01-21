@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* ************************************************************************** */
-/* Pageing Tools */
+/* Paging Tools */
 
 import { IPagedResponse } from './types';
 
