@@ -52,8 +52,8 @@ export async function txs(
   host: string,
   n?: number,
 ): Promise<ITransactionElement[]> {
-  const x = await blocks(chainId, start, end, network, host, n);
-  return filterTxs(x);
+  const txs = await blocks(chainId, start, end, network, host, n);
+  return filterTxs(txs);
 }
 
 /**
@@ -74,8 +74,8 @@ export async function recentTxs(
   network: string,
   host: string,
 ): Promise<ITransactionElement[]> {
-  const x = await recentBlocks(chainId, depth, n, network, host);
-  return filterTxs(x);
+  const recentTxs = await recentBlocks(chainId, depth, n, network, host);
+  return filterTxs(recentTxs);
 }
 
 /**
