@@ -1,6 +1,7 @@
-import { baseUrl, retryFetch, transFormUrl } from './request';
 import { cutPeerPage, parseResponse } from './internal';
+import { baseUrl, retryFetch, transFormUrl } from './request';
 import { ICutPeerItem, ICutResponse, IRetryOptions } from './types';
+
 import fetch from 'cross-fetch';
 
 /**
@@ -14,14 +15,12 @@ import fetch from 'cross-fetch';
  */
 
 export async function currentCut(
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   retryOptions?: IRetryOptions,
 ): Promise<ICutResponse> {
-  const result = await retryFetch(
-    () => fetch(transFormUrl(baseUrl(network, host, 'cut'))),
-    retryOptions,
-  );
+  const u = transFormUrl(baseUrl(network, host, 'cut'));
+  const result = await retryFetch(() => fetch(u), retryOptions);
   return parseResponse<ICutResponse>(result);
 }
 
@@ -35,8 +34,8 @@ export async function currentCut(
  * @alpha
  */
 export async function cutPeers(
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   retryOptions?: IRetryOptions,
 ): Promise<ICutPeerItem[]> {
   const page = await cutPeerPage(network, host, retryOptions);

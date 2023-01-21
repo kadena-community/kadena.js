@@ -50,15 +50,13 @@ export class HeaderBuffer {
       };
       this.buffer[1] = u;
       this.currHeight = h - 1;
-
-      // Orphan check
     } else if (h <= this.currHeight) {
+      // It is an orpaned block
       throw new Error(
         `HeaderBuffer: confirmation depth violation: block at height ${h} got orphaned`,
       );
-
-      // place item into buffer
     } else {
+      // place item into buffer
       const idx = h - this.currHeight;
 
       const prevHash = this.buffer[idx - 1].header.hash;
@@ -76,7 +74,7 @@ export class HeaderBuffer {
       this.buffer.shift();
       const b = this.buffer[0];
       this.currHeight += 1;
-      if (b) {
+      if (b !== undefined && b !== null) {
         this.callback(b);
       } else {
         throw new Error(

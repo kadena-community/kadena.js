@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 jest.mock('eventsource', () => {
   return {
     __esModule: true,
@@ -6,7 +5,9 @@ jest.mock('eventsource', () => {
   };
 });
 import * as utils from '../utils';
+
 import { blockStream } from './mocks/blockStream';
+import { config } from './config';
 
 const buildEventSourceSpy = jest.spyOn(utils, 'buildEventSource');
 const data =
@@ -71,9 +72,9 @@ const transactions_chains = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ];
 
-describe('stream transaction depth 0, 1 and count should increase by blocks', () => {
+describe('chainweb.transaction.stream', () => {
   streamTest(
-    'Transactions',
+    'should stream transactions with depth 0, 1 and count should increase by blocks',
     async () => {
       buildEventSourceSpy.mockReturnValue({
         ...evtsmock,
@@ -84,26 +85,36 @@ describe('stream transaction depth 0, 1 and count should increase by blocks', ()
         }),
       });
       let count = 0;
-      const hs = chainweb.transaction.stream(1, transactions_chains, (h) => {
-        logg('new transaction', h);
-        count++;
-      });
+      const hs = chainweb.transaction.stream(
+        1,
+        transactions_chains,
+        (h) => {
+          logg('new transaction', h);
+          count++;
+        },
+        config.network,
+        config.host,
+      );
       hs.close();
       expect(count).toBeGreaterThanOrEqual(0);
     },
     100,
   );
-});
 
-describe('stream transaction depth 0 and 10 should succeed and count should increase by blocks', () => {
   streamTest.each([10, 0])(
-    'Transactions',
+    'should stream transactions with depth 0 and depth 10 succeeding, and count should increase by blocks',
     async (n) => {
       let count = 0;
-      const hs = chainweb.transaction.stream(n, [0], (h) => {
-        logg('new transaction', h);
-        count++;
-      });
+      const hs = chainweb.transaction.stream(
+        n,
+        [0],
+        (h) => {
+          logg('new transaction', h);
+          count++;
+        },
+        config.network,
+        config.host,
+      );
       hs.close();
       expect(count).toBeGreaterThanOrEqual(0);
     },
@@ -126,14 +137,20 @@ describe('stream transaction depth 0 and 10 should succeed and count should incr
  * advanced low-level control.
  */
 
-describe('stream should not throw with depth 10 and count should increase by blocks', () => {
+describe('chainweb.block.stream', () => {
   streamTest(
-    'Block',
+    'should stream and not throw with depth 10, and count should increase by blocks',
     async () => {
       let count = 0;
-      const hs = chainweb.block.stream(10, [0], (h) => {
-        count++;
-      });
+      const hs = chainweb.block.stream(
+        10,
+        [0],
+        (h) => {
+          count++;
+        },
+        config.network,
+        config.host,
+      );
       hs.close();
       expect(count).toBeGreaterThanOrEqual(0);
     },
@@ -159,9 +176,9 @@ const events_allChains = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ];
 
-describe('stream should succeed per chain count should increase by blocks', () => {
+describe('chainweb.event.stream', () => {
   streamTest.each([data3, data2])(
-    'Events',
+    'should stream and succeed, chain count should increase by blocks',
     async (n) => {
       buildEventSourceSpy.mockReturnValue({
         ...evtsmock,
@@ -170,12 +187,17 @@ describe('stream should succeed per chain count should increase by blocks', () =
         }),
       });
       let count = 0;
-      const hs = chainweb.event.stream(0, events_allChains, (h) => {
-        logg('new event', h);
-        count++;
-      });
+      const hs = chainweb.event.stream(
+        0,
+        events_allChains,
+        (h) => {
+          logg('new event', h);
+          count++;
+        },
+        config.network,
+        config.host,
+      );
       hs.close();
-      console.log(count);
       expect(count).toBeGreaterThanOrEqual(0);
     },
     100,
@@ -184,9 +206,9 @@ describe('stream should succeed per chain count should increase by blocks', () =
 
 const chains = [2, 4];
 
-describe('stream', () => {
+describe('chainweb.block.stream', () => {
   streamTest(
-    'Block',
+    'should stream for even chains and count should increase by blocks',
     async () => {
       let count = 0;
       buildEventSourceSpy.mockReturnValue({
@@ -197,10 +219,16 @@ describe('stream', () => {
           });
         }),
       });
-      const hs = chainweb.block.stream(1, chains, (h) => {
-        count += 1;
-        expect(h.header.chainId % 2).toBe(0);
-      });
+      const hs = chainweb.block.stream(
+        1,
+        chains,
+        (h) => {
+          count += 1;
+          expect(h.header.chainId % 2).toBe(0);
+        },
+        config.network,
+        config.host,
+      );
       expect(count).toBeGreaterThanOrEqual(0);
       hs.close();
     },

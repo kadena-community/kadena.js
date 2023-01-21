@@ -1,10 +1,10 @@
-import ResponseError from './ResponseError';
-import * as cut from './cut';
-import * as header from './headers';
 import * as block from './blocks';
-import * as transaction from './transactions';
+import * as cut from './cut';
 import * as event from './events';
+import * as header from './headers';
 import * as internal from './internal';
+import ResponseError from './ResponseError';
+import * as transaction from './transactions';
 
 export default {
   ResponseError,

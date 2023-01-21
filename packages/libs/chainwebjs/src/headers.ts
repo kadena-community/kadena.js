@@ -1,10 +1,11 @@
-import EventSource from 'eventsource';
-import { IBufferHeader, IBlockHeader } from './types';
-import { HeaderBuffer } from './HeaderBuffer';
-import { currentBranch, branch } from './internal';
 import { currentCut } from './cut';
+import { HeaderBuffer } from './HeaderBuffer';
+import { branch, currentBranch } from './internal';
 import { baseUrl } from './request';
+import { IBlockHeader, IBufferHeader } from './types';
 import { buildEventSource } from './utils';
+
+import EventSource from 'eventsource';
 
 /**
  * Headers from a range of block heights
@@ -22,8 +23,8 @@ export function headers(
   chainId: number | string,
   start: number,
   end: number,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<IBlockHeader[]> {
   return currentBranch(chainId, start, end, undefined, 'json', network, host);
 }
@@ -44,8 +45,8 @@ export async function recentHeaders(
   chainId: number | string,
   depth: number = 0,
   n: number = 1,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<IBlockHeader[]> {
   const cut = await currentCut(network, host);
   const start = cut.hashes['0'].height - depth - n + 1;
@@ -71,8 +72,8 @@ export function headerStream(
   depth: number,
   chainIds: number[],
   callback: (header: IBlockHeader) => void,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): EventSource {
   return chainUpdates(
     depth,
@@ -97,8 +98,8 @@ export function headerStream(
 export async function headerByBlockHash(
   chainId: number | string,
   hash: string,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<IBlockHeader> {
   const x = await branch(
     chainId,
@@ -127,8 +128,8 @@ export async function headerByBlockHash(
 export const headerByHeight = async (
   chainId: number | string,
   height: number,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<IBlockHeader> => {
   const x = await headers(chainId, height, height, network, host);
   return x[0];
@@ -149,8 +150,8 @@ export const headerByHeight = async (
  */
 const headerUpdates = (
   callback: (header: IBufferHeader) => void,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): EventSource => {
   const url = baseUrl(network, host, 'header/updates');
 
@@ -184,8 +185,8 @@ export function chainUpdates(
   depth: number,
   chainIds: number[],
   callback: (header: IBufferHeader) => void,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): EventSource {
   const bs = {} as {
     [key: string]: HeaderBuffer;

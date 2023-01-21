@@ -1,4 +1,7 @@
-import { IConfig } from './types';
+export interface IConfig {
+  network: string;
+  host: string;
+}
 
 export const config: IConfig = {
   network: 'mainnet01',

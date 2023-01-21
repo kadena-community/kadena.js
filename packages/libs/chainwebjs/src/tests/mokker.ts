@@ -10,23 +10,22 @@
  *
  */
 
-import { blockByHeightPayloadsMock } from './mocks/blockByHeightPayloadsMock';
+import {
+  IBlockHeader,
+  IBlockPayload,
+  ICutPeerItem,
+  ICutResponse,
+  IPagedResponse,
+} from '../types';
+
 import { blockByHeightBranchPageMock } from './mocks/blockByHeightBranchPageMock';
 import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
-
-import { blockRecentsRecentHeadersMock } from './mocks/blockRecentsRecentHeaders';
+import { blockByHeightPayloadsMock } from './mocks/blockByHeightPayloadsMock';
 import { blockRecentsPayloadsMock } from './mocks/blockRecentsPayloadsMock';
+import { blockRecentsRecentHeadersMock } from './mocks/blockRecentsRecentHeaders';
+import { cutPeersMock } from './mocks/cutPeers';
 import { rangeHeadersMock } from './mocks/rangeHeaderMock';
 import { rangePayloadsMock } from './mocks/rangePayloadsMock';
-import { cutPeersMock } from './mocks/cutPeers';
-
-import {
-  IBlockPayload,
-  ICutResponse,
-  ICutPeerItem,
-  IPagedResponse,
-  IBlockHeader,
-} from '../types';
 
 export const urlHelper = (url: URL | string): string => {
   if (url instanceof URL) {

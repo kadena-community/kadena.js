@@ -1,8 +1,3 @@
-export interface IConfig {
-  network: string;
-  host: string;
-}
-
 export interface IBufferHeader {
   txCount: number;
   powHash: string;

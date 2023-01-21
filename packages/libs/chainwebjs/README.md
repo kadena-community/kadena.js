@@ -32,7 +32,7 @@ Some functions require a `chainId` parameter (or an array of chain IDs). Chain
 IDs should be provided as numbers from the set of supported chains of the
 respective `network`. There is no default value.
 
-When a `depth` parameter is required, a value of `3` or larger is a save choice.
+When a `depth` parameter is required, a value of `3` or larger is a safe choice.
 
 Functions return items in order ascending by block height. Because the server
 usually returns items in reverse order, functions buffer all items from

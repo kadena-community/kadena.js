@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 jest.mock('cross-fetch', () => {
   return {
     __esModule: true,
@@ -7,14 +5,16 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { mockFetch } from './mokker';
 import { filterTxs } from '../transactions';
+import { IBlockPayloads, ITransactionElement } from '../types';
+
+import { header } from './mocks/header';
 import {
   filterData,
-  filterDataNoTx,
   filterDataFormatted,
+  filterDataNoTx,
 } from './mocks/recentsfilterDataMock';
-import { IBlockPayloads, ITransactionElement } from '../types';
+import { mockFetch } from './mokker';
 
 import fetch from 'cross-fetch';
 
@@ -23,6 +23,8 @@ mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
 import chainweb from '..';
+
+import { config } from './config';
 /* ************************************************************************** */
 /* Test settings */
 
@@ -41,35 +43,20 @@ const logg = (...args: unknown[]): void => {
 /* ************************************************************************** */
 /* Blocks */
 
-const header = {
-  adjacents: {
-    '10': 'oT8NLW-IZSziaOgI_1AfCdJ18u3epFpGONrkQ_F6w_Y',
-    '15': 'ZoBvuaVZWBOKLaDZfM51A9LaKb5B1f2fW83VLftQa3Y',
-    '5': 'SDj4sXByWVqi9epbPAiz1zqhmBGJrzSY2bPk9-IMaA0',
-  },
-  chainId: 0,
-  chainwebVersion: 'mainnet01',
-  creationTime: 1617745627822054,
-  epochStart: 1617743254198411,
-  featureFlags: 0,
-  hash: 'BsxyrIDE0to4Kn9bjdgR_Q7Ha9bYkzd7Yso8r0zrdOc',
-  height: 1511601,
-  nonce: '299775665679630368',
-  parent: 'XtgUmsnF20vMX4Dx9kN2W8cIXXiLNtDdFZLugMoDjrY',
-  payloadHash: '2Skc1JkkBdLPkj5ZoV27nzhR3WjGD-tJiztCFGTaKIQ',
-  target: '9sLMdbnd1x6vtRGpIw5tKMt_1hgprJS0oQkAAAAAAAA',
-  weight: 'iFU5b59ACHSOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-};
-
 const height = header.height;
 const blockHash = header.hash;
 
 /* ************************************************************************** */
 /* By Height */
 
-describe('by height', () => {
-  test('Transactions', async () => {
-    const r = await chainweb.transaction.height(0, height);
+describe('chainweb.transaction', () => {
+  it('get transaction items by height and validate', async () => {
+    const r = await chainweb.transaction.height(
+      0,
+      height,
+      config.network,
+      config.host,
+    );
     logg('Transactions:', r);
     expect(r.length).toBe(1);
     expect(r[0]).toHaveProperty('transaction');
@@ -77,14 +64,17 @@ describe('by height', () => {
     expect(r[0]).toHaveProperty('height');
     expect(r[0].height).toBe(height);
   });
-});
 
-/* ************************************************************************** */
-/* By Block Hash */
+  /* ************************************************************************** */
+  /* By Block Hash */
 
-describe('by blockHash', () => {
-  test('Transactions', async () => {
-    const r = await chainweb.transaction.blockHash(0, blockHash);
+  it('get transaction items by blockhash and validate', async () => {
+    const r = await chainweb.transaction.blockHash(
+      0,
+      blockHash,
+      config.network,
+      config.host,
+    );
     logg('Transactions:', r);
     expect(r.length).toBe(1);
     expect(r[0]).toHaveProperty('transaction');
@@ -92,54 +82,78 @@ describe('by blockHash', () => {
     expect(r[0]).toHaveProperty('height');
     expect(r[0].height).toBe(height);
   });
-});
 
-/* ************************************************************************** */
-/* Recents */
+  /* ************************************************************************** */
+  /* Recents */
 
-/* These functions return items from recent blocks in the block history starting
- * at a given depth.
- *
- * The depth parameter is useful to avoid receiving items from orphaned blocks.
- *
- * Currently, there is no support for paging. There is thus a limit on the
- * size of the range that can be handled in a single call. The function simply
- * return whatever fits into a server page.
- */
+  /* These functions return items from recent blocks in the block history starting
+   * at a given depth.
+   *
+   * The depth parameter is useful to avoid receiving items from orphaned blocks.
+   *
+   * Currently, there is no support for paging. There is thus a limit on the
+   * size of the range that can be handled in a single call. The function simply
+   * return whatever fits into a server page.
+   */
 
-describe('recents', () => {
-  test.each([0, 10, 100])('Transactions %p', async (n) => {
-    const cur = (await chainweb.cut.current()).hashes[0].height;
-    const r = await chainweb.transaction.recent(0, 10, n);
-    logg('Transactions:', r);
-    expect(r).toBeTruthy();
-    r.forEach((v, i) => {
-      expect(v.height).toBeLessThanOrEqual(cur - 10);
-      if (i > 0) {
-        const prev = r[i - 1];
-        if (prev && prev.height) {
-          expect(v.height).toBeGreaterThanOrEqual(prev.height);
+  it.each([0, 10, 100])(
+    'should get transactions by maximum number og blocks %p and validate',
+    async (n) => {
+      const cur = (await chainweb.cut.current(config.network, config.host))
+        .hashes[0].height;
+      const r = await chainweb.transaction.recent(
+        0,
+        10,
+        n,
+        config.network,
+        config.host,
+      );
+      logg('Transactions:', r);
+      expect(r).toBeTruthy();
+      r.forEach((v, i) => {
+        expect(v.height).toBeLessThanOrEqual(cur - 10);
+        if (i > 0) {
+          const prev = r[i - 1];
+          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+          if (prev && prev.height) {
+            expect(v.height).toBeGreaterThanOrEqual(prev.height);
+          }
         }
-      }
-    });
-  });
-  test('Recents default dept - should not throw', async () => {
-    const r = await chainweb.transaction.recent(0, undefined, 10);
+      });
+    },
+  );
+  it('should get recents when default dept is set and limited to 10', async () => {
+    const r = await chainweb.transaction.recent(
+      0,
+      undefined,
+      10,
+      config.network,
+      config.host,
+    );
     logg('Transactions:', r);
     expect(r).toBeTruthy();
   });
-  test('Recents default dept - should not throw', async () => {
-    const r = await chainweb.transaction.recent(0, undefined, undefined);
+  it('should get recents when default dept is set', async () => {
+    const r = await chainweb.transaction.recent(
+      0,
+      undefined,
+      undefined,
+      config.network,
+      config.host,
+    );
     logg('Transactions:', r);
     expect(r).toBeTruthy();
   });
-  test('Filtered data formatting with transactions', () => {
+});
+
+describe('Transaction filter', () => {
+  it('should filter data and return formatted', () => {
     const data = filterTxs(
       filterData as unknown as IBlockPayloads<ITransactionElement>[],
     );
     expect(data).toEqual(filterDataFormatted);
   });
-  test('Filtered data formatting without transactions', () => {
+  it('should filter data and return formatted without transactions', () => {
     const data = filterTxs(
       filterDataNoTx as unknown as IBlockPayloads<ITransactionElement>[],
     );
@@ -163,14 +177,15 @@ describe('recents', () => {
  * should also use `range` or `recent` queries for the respective type of item.
  */
 
-describe('range', () => {
-  test.each([10])('Transactions %p', async (n) => {
+describe('chainweb.transaction', () => {
+  it('should get transactions by range n', async () => {
+    const n = 10;
     const r = await chainweb.transaction.range(
       0,
       height,
       height + (n - 1),
-      undefined,
-      undefined,
+      config.network,
+      config.host,
       parseInt(`400${n}`, 10),
     );
     logg('Transactions:', r);

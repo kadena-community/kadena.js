@@ -1,9 +1,8 @@
-import EventSource from 'eventsource';
 import {
-  recentBlocks,
+  blockByBlockHash,
   blocks,
   headers2blocks,
-  blockByBlockHash,
+  recentBlocks,
 } from './blocks';
 import { chainUpdates } from './headers';
 import {
@@ -12,6 +11,8 @@ import {
   IRetryOptions,
   ITransactionElement,
 } from './types';
+
+import EventSource from 'eventsource';
 
 /**
  * Utility function to filter the transactions from an array of blocks
@@ -47,8 +48,8 @@ export async function txs(
   chainId: number | string,
   start: number,
   end: number,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   n?: number,
 ): Promise<ITransactionElement[]> {
   const x = await blocks(chainId, start, end, network, host, n);
@@ -70,8 +71,8 @@ export async function recentTxs(
   chainId: number | string,
   depth: number = 0,
   n: number = 1,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<ITransactionElement[]> {
   const x = await recentBlocks(chainId, depth, n, network, host);
   return filterTxs(x);
@@ -93,8 +94,8 @@ export function txStream(
   depth: number,
   chainIds: number[],
   callback: (transaction: ITransactionElement) => void,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): EventSource {
   const ro: IRetryOptions =
     depth > 1 ? {} : { retry404: true, minTimeout: 1000 };
@@ -124,8 +125,8 @@ export function txStream(
 export async function txsByBlockHash(
   chainId: number | string,
   hash: string,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<ITransactionElement[]> {
   const block = await blockByBlockHash(chainId, hash, network, host);
   return filterTxs([block]);
@@ -144,8 +145,8 @@ export async function txsByBlockHash(
 export async function txsByHeight(
   chainId: number | string,
   height: number,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<ITransactionElement[]> {
   return txs(chainId, height, height, network, host);
 }

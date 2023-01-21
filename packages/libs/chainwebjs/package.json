@@ -48,6 +48,7 @@
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint-staged": "lint-staged",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {

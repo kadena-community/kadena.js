@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { HeaderBuffer } from '../HeaderBuffer';
 import { IBufferHeader } from '../types';
 /* ************************************************************************** */
@@ -53,8 +52,11 @@ const data1: IBufferHeader = {
     creationTime: 1671629220030544,
     parent: 'jUYuT5ucNcY9wOf77IhuEw1niP2n3h1G3MdR6H7PXAk',
     adjacents: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       '5': '_Ab4g11kyl2rnqBqZjvO-CiSmlf_yErs4hos6YULeac',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       '10': 'XAfmr3TLWnWI2T2yj2osSFpXa5PIVqBY_YSpjw_3plE',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       '15': 'AXX9ocmKxjayaah6rK7rVIkpsm2AzGbtI1B2jf41vdM',
     },
     target: 's_sYJULAtv3xvS72SXJ4gFsUPWZcIGTMPQAAAAAAAAA',
@@ -73,11 +75,11 @@ const data1: IBufferHeader = {
 /* HeaderBuffer */
 
 describe('HeaderBuffer', () => {
-  test('HeaderBuffer', () => {
+  it('should create a headerbuffer', () => {
     expect(testHeaderBuffer()).toBe(true);
   });
 
-  test('HeaderBuffer check orphins', () => {
+  it('should throw when headerbuffer has orphins', () => {
     const hb = new HeaderBuffer(2, (x) => {});
     const data2 = { ...data1, header: { ...data1.header, height: 3306633 } };
     try {
@@ -90,7 +92,7 @@ describe('HeaderBuffer', () => {
     }
   });
 
-  test('HeaderBuffer check consistency', () => {
+  it('should throw when chain is inconsistent at certain height', () => {
     const hb = new HeaderBuffer(2, (x) => {});
     const data2 = { ...data1, header: { ...data1.header, parent: 'h1' } };
     try {
@@ -103,7 +105,7 @@ describe('HeaderBuffer', () => {
     }
   });
 
-  test('HeaderBuffer check low dept - orphane', () => {
+  it('should throw when dept is violated and orphane found', () => {
     const hb = new HeaderBuffer(0, (x) => {});
     try {
       hb.add(data1);
@@ -114,7 +116,7 @@ describe('HeaderBuffer', () => {
     }
   });
 
-  test('HeaderBuffer check low dept', () => {
+  it('should throw when block is missing', () => {
     const hb = new HeaderBuffer(-1, (x) => {});
     const data2 = {
       ...data1,

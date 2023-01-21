@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 jest.mock('cross-fetch', () => {
   return {
     __esModule: true,
@@ -7,7 +5,7 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { mockFetch, urlHelper, makeFetchResponse } from './mokker';
+import { makeFetchResponse, mockFetch, urlHelper } from './mokker';
 
 import fetch from 'cross-fetch';
 
@@ -15,9 +13,11 @@ const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
+import { IBlockHeader, IBlockPayload, IPagedResponse } from '../types';
 import chainweb from '..';
-import { IBlockPayload, IPagedResponse, IBlockHeader } from '../types';
 
+import { header } from './mocks/header';
+import { config } from './config';
 /* ************************************************************************** */
 /* Test settings */
 
@@ -41,49 +41,20 @@ beforeEach(() => {
 /* ************************************************************************** */
 /* Blocks */
 
-const header = {
-  adjacents: {
-    '10': 'oT8NLW-IZSziaOgI_1AfCdJ18u3epFpGONrkQ_F6w_Y',
-    '15': 'ZoBvuaVZWBOKLaDZfM51A9LaKb5B1f2fW83VLftQa3Y',
-    '5': 'SDj4sXByWVqi9epbPAiz1zqhmBGJrzSY2bPk9-IMaA0',
-  },
-  chainId: 0,
-  chainwebVersion: 'mainnet01',
-  creationTime: 1617745627822054,
-  epochStart: 1617743254198411,
-  featureFlags: 0,
-  hash: 'BsxyrIDE0to4Kn9bjdgR_Q7Ha9bYkzd7Yso8r0zrdOc',
-  height: 1511601,
-  nonce: '299775665679630368',
-  parent: 'XtgUmsnF20vMX4Dx9kN2W8cIXXiLNtDdFZLugMoDjrY',
-  payloadHash: '2Skc1JkkBdLPkj5ZoV27nzhR3WjGD-tJiztCFGTaKIQ',
-  target: '9sLMdbnd1x6vtRGpIw5tKMt_1hgprJS0oQkAAAAAAAA',
-  weight: 'iFU5b59ACHSOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-};
-
 const height = header.height;
 const blockHash = header.hash;
 
-/* ************************************************************************** */
-/* By Height */
+describe('chainweb.block', () => {
+  /* ************************************************************************** */
+  /* By Height */
 
-describe('by height', () => {
-  test('Block', async () => {
-    const r = await chainweb.block.height(0, height);
-    logg('Block:', r);
-    expect(r).toHaveProperty('header');
-    expect(r.header).toEqual(header);
-    expect(r).toHaveProperty('payload');
-    expect(r.payload.payloadHash).toEqual(header.payloadHash);
-  });
-});
-
-/* ************************************************************************** */
-/* By Block Hash */
-
-describe('by blockHash', () => {
-  test('Block', async () => {
-    const r = await chainweb.block.blockHash(0, blockHash);
+  it('gets the block by height an validates', async () => {
+    const r = await chainweb.block.height(
+      0,
+      height,
+      config.network,
+      config.host,
+    );
     logg('Block:', r);
     expect(r).toHaveProperty('header');
     expect(r.header).toEqual(header);
@@ -91,7 +62,24 @@ describe('by blockHash', () => {
     expect(r.payload.payloadHash).toEqual(header.payloadHash);
   });
 
-  test('Block by hash no payload', async () => {
+  /* ************************************************************************** */
+  /* By Block Hash */
+
+  it('gets the block by block hash an validates', async () => {
+    const r = await chainweb.block.blockHash(
+      0,
+      blockHash,
+      config.network,
+      config.host,
+    );
+    logg('Block:', r);
+    expect(r).toHaveProperty('header');
+    expect(r.header).toEqual(header);
+    expect(r).toHaveProperty('payload');
+    expect(r.payload.payloadHash).toEqual(header.payloadHash);
+  });
+
+  it('throws on fetching Block by blockhash without payload', async () => {
     const localMockFetch = (url: URL | string, init?: RequestInit): unknown => {
       const path = urlHelper(url);
       switch (path) {
@@ -108,8 +96,11 @@ describe('by blockHash', () => {
                 creationTime: 1617745627822054,
                 parent: 'XtgUmsnF20vMX4Dx9kN2W8cIXXiLNtDdFZLugMoDjrY',
                 adjacents: {
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   '15': 'ZoBvuaVZWBOKLaDZfM51A9LaKb5B1f2fW83VLftQa3Y',
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   '10': 'oT8NLW-IZSziaOgI_1AfCdJ18u3epFpGONrkQ_F6w_Y',
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   '5': 'SDj4sXByWVqi9epbPAiz1zqhmBGJrzSY2bPk9-IMaA0',
                 },
                 target: '9sLMdbnd1x6vtRGpIw5tKMt_1hgprJS0oQkAAAAAAAA',
@@ -132,7 +123,12 @@ describe('by blockHash', () => {
       localMockFetch as jest.MockedFunction<typeof fetch>,
     );
     try {
-      const r = await chainweb.block.blockHash(0, blockHash);
+      const r = await chainweb.block.blockHash(
+        0,
+        blockHash,
+        config.network,
+        config.host,
+      );
       logg('Block:', r);
     } catch (err) {
       const error =
@@ -140,32 +136,34 @@ describe('by blockHash', () => {
       expect(err.message).toMatch(error);
     }
   });
-});
 
-/* ************************************************************************** */
-/* Ranges */
+  /* ************************************************************************** */
+  /* Ranges */
 
-/* These functions query items from a range of block heights and return the
- * result as an array.
- *
- * Currently, there is no support for paging. There is thus a limit on the
- * size of the range that can be handled in a single call. The function simply
- * return whatever fits into a server page.
- *
- * Streams are online and only return items from blocks that got mined after the
- * stream was started. They are thus useful for prompt notification of new
- * items. In order of exhaustively querying all, including old, items, one
- * should also use `range` or `recent` queries for the respective type of item.
- */
+  /* These functions query items from a range of block heights and return the
+   * result as an array.
+   *
+   * Currently, there is no support for paging. There is thus a limit on the
+   * size of the range that can be handled in a single call. The function simply
+   * return whatever fits into a server page.
+   *
+   * Streams are online and only return items from blocks that got mined after the
+   * stream was started. They are thus useful for prompt notification of new
+   * items. In order of exhaustively querying all, including old, items, one
+   * should also use `range` or `recent` queries for the respective type of item.
+   */
 
-describe('range', () => {
-  test.each([10])('Block %p', async (n) => {
+  /* ************************************************************************** */
+  /* By Range */
+
+  it('gets block by range and validates', async () => {
+    const n = 10;
     const r = await chainweb.block.range(
       0,
       height,
       height + (n - 1),
-      undefined,
-      undefined,
+      config.network,
+      config.host,
       parseInt(`200${n}`, 10),
     );
 
@@ -184,36 +182,59 @@ describe('range', () => {
       }
     });
   });
-});
 
-describe('recents', () => {
-  test.each([10, 100, 359, 360, 730])('Block %p', async (n) => {
-    const cur = (await chainweb.cut.current()).hashes[0].height;
-    const r = await chainweb.block.recent(0, 10, n);
-    logg('Block:', r);
-    expect(r).toBeTruthy();
-    expect(r.length).toBe(n);
-    r.forEach((v, i) => {
-      expect(v.header.height).toBeLessThanOrEqual(cur - 10);
-      expect(v.payload).toHaveProperty('coinbase');
-      expect(v.header.chainwebVersion).toBe('mainnet01');
-      expect(v.payload.payloadHash).toEqual(v.header.payloadHash);
-      if (i > 0) {
-        expect(v.header.height).toBe(r[i - 1].header.height + 1);
-      }
-    });
-  });
+  /* ************************************************************************** */
+  /* By Recent */
 
-  test('recents low depth', async () => {
-    const r = await chainweb.block.recent(0, 0, 10);
+  it.each([10, 100, 359, 360, 730])(
+    'gets recent blocks with limit %p',
+    async (n) => {
+      const cur = (await chainweb.cut.current(config.network, config.host))
+        .hashes[0].height;
+      const r = await chainweb.block.recent(
+        0,
+        10,
+        n,
+        config.network,
+        config.host,
+      );
+      logg('Block:', r);
+      expect(r).toBeTruthy();
+      expect(r.length).toBe(n);
+      r.forEach((v, i) => {
+        expect(v.header.height).toBeLessThanOrEqual(cur - 10);
+        expect(v.payload).toHaveProperty('coinbase');
+        expect(v.header.chainwebVersion).toBe('mainnet01');
+        expect(v.payload.payloadHash).toEqual(v.header.payloadHash);
+        if (i > 0) {
+          expect(v.header.height).toBe(r[i - 1].header.height + 1);
+        }
+      });
+    },
+  );
+
+  it('recgets recent blocks with low dept', async () => {
+    const r = await chainweb.block.recent(
+      0,
+      0,
+      10,
+      config.network,
+      config.host,
+    );
     logg('Block:', r);
     expect(r).toBeTruthy();
     expect(r.length).toBe(10);
   });
 
-  test('recents payload mismatch should throw', async () => {
+  it('throws when payload is not in sync with headers', async () => {
     await expect(async () => {
-      const r = await chainweb.block.recent(0, 9, 9);
+      const r = await chainweb.block.recent(
+        0,
+        9,
+        9,
+        config.network,
+        config.host,
+      );
       logg('Block:', r);
       expect(r).toBeTruthy();
       expect(r.length).toBe(10);

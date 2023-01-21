@@ -1,8 +1,8 @@
-import pRetry, { AbortError } from 'p-retry';
-import { IRetryOptions } from './types';
 import ResponseError from './ResponseError';
-import { config } from './config';
+import { IRetryOptions } from './types';
+
 import { Response } from 'cross-fetch';
+import pRetry, { AbortError } from 'p-retry';
 
 export function transFormUrl(url: URL): string {
   return url as unknown as string;
@@ -20,7 +20,7 @@ const errorCodes: Array<number> = [408, 423, 425, 429, 500, 502, 503, 504];
 
 export async function retryFetch(
   fetchAction: () => Promise<Response>,
-  retryOptions?: IRetryOptions,
+  retryOptions: IRetryOptions = {},
 ): Promise<Response> {
   // set default retryOptions, with any passed-in retryOptions overriding the defaults
   const options: IRetryOptions = {
@@ -29,7 +29,7 @@ export async function retryFetch(
     minTimeout: 500,
     randomize: true,
     retry404: false,
-    ...(retryOptions && { ...retryOptions }),
+    ...retryOptions,
   };
 
   const retry404 = options.retry404;
@@ -39,6 +39,7 @@ export async function retryFetch(
     if (response.status === 200) {
       return response;
     } else if (
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       (response.status === 404 && retry404) ||
       errorCodes.indexOf(response.status) !== -1
     ) {
@@ -61,8 +62,8 @@ export async function retryFetch(
  * @alpha
  */
 export function baseUrl(
-  network: string = config.network,
-  host: string = config.host,
+  network: string,
+  host: string,
   pathSuffix: string,
 ): URL {
   return new URL(`${host}/chainweb/0.0/${network}/${pathSuffix}`);
@@ -81,8 +82,8 @@ export function baseUrl(
 export function chainUrl(
   chainId: number | string,
   pathSuffix: string,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): URL {
   if (chainId === null) {
     throw new Error('missing chainId parameter');

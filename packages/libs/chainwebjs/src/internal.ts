@@ -1,19 +1,19 @@
+import { currentCut } from './cut';
+import { pageIterator } from './paging';
+import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
+import {
+  IBlockHeader,
+  IBlockPayload,
+  ICoinbase,
+  ICutPeerItem,
+  IPagedResponse,
+  IRetryOptions,
+  ITransactionElement,
+  ITransactionPayload,
+} from './types';
+
 import base64url from 'base64url';
 import fetch from 'cross-fetch';
-
-import {
-  IPagedResponse,
-  ICutPeerItem,
-  IBlockHeader,
-  IRetryOptions,
-  IBlockPayload,
-  ITransactionPayload,
-  ICoinbase,
-  ITransactionElement,
-} from './types';
-import { currentCut } from './cut';
-import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
-import { pageIterator } from './paging';
 
 /**
  * Yields items from pages in reverse order.
@@ -87,8 +87,8 @@ export function base64json(txt: string): string {
  * @alpha
  */
 export async function cutPeerPage(
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   retryOptions?: IRetryOptions,
 ): Promise<IPagedResponse<ICutPeerItem>> {
   const result = await retryFetch(
@@ -125,12 +125,12 @@ export async function branchPage(
   n: number | undefined,
   next: string | undefined,
   format: string | undefined,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   retryOptions?: IRetryOptions,
 ): Promise<IPagedResponse<IBlockHeader>> {
   /* Format and Accept header value */
-  format = format ? format : 'json';
+  format = format !== null ? format : 'json';
   const accept = 'application/json;blockheader-encoding=object';
 
   const url = chainUrl(chainId, 'header/branch', network, host);
@@ -194,8 +194,8 @@ export async function branch(
   maxHeight: number | undefined,
   n: number | undefined,
   format: string | undefined,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   retryOptions?: IRetryOptions,
 ): Promise<IBlockHeader[]> {
   return reversePages<IBlockHeader>(async (next, limit) => {
@@ -234,8 +234,8 @@ export async function currentBranch(
   end: number,
   n: number | undefined,
   format: string,
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
 ): Promise<IBlockHeader[]> {
   const { hashes } = await currentCut(network, host);
   return branch(
@@ -268,12 +268,13 @@ export async function currentBranch(
 export async function payloads(
   chainId: number | string,
   hashes: string[],
-  network?: string,
-  host?: string,
+  network: string,
+  host: string,
   retryOptions?: IRetryOptions,
   n?: number,
 ): Promise<IBlockPayload<ITransactionElement>[]> {
-  const path = n ? `payload/outputs/batch?${n}` : 'payload/outputs/batch';
+  const path =
+    n !== undefined ? `payload/outputs/batch?${n}` : 'payload/outputs/batch';
   const url = chainUrl(chainId, path, network, host);
 
   const response = await retryFetch(

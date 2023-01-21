@@ -34,8 +34,11 @@ const logg = (...args: unknown[]): void => {
 /* ************************************************************************** */
 /* Cuts */
 
-describe('Cuts', () => {
-  test('peers', async () => {
+describe('chainweb.cut', () => {
+  /* ************************************************************************** */
+  /* By Peers */
+
+  it('gets p2p cuts of network and validates', async () => {
     const r = await chainweb.cut.peers(
       'mainnet01',
       'https://us-e1.chainweb.com',
@@ -44,7 +47,11 @@ describe('Cuts', () => {
     expect(r).toBeTruthy();
     expect(r.length).toBeGreaterThan(0);
   });
-  test('current', async () => {
+
+  /* ************************************************************************** */
+  /* By Current */
+
+  it('gets current cut from chainweb node', async () => {
     const r = await chainweb.cut.current(
       'mainnet01',
       'https://api.chainweb.com',
