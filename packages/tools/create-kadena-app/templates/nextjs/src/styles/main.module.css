@@ -33,16 +33,16 @@
   max-width: 1000px;
 }
 
-.cardtitle {
+.cardTitle {
   margin: 0.5rem 0;
 }
 
-.cardsection {
+.cardSection {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.cardsection input, .cardsection textarea {
+.cardSection input, .cardSection textarea {
   width: 300px;
 }
