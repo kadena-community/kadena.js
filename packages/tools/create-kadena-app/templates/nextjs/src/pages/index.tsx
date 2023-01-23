@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { useState } from 'react'
 import { SpinnerRoundFilled } from 'spinners-react'
 import { Pact, signWithChainweaver } from '@kadena/client'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/main.module.css'
 
 const NETWORK_ID = 'testnet04'
 const CHAIN_ID = '0'
@@ -16,11 +16,11 @@ const Home: React.FC = (): JSX.Element => {
   const [messageFromChain, setMessageFromChain] = useState<string>('')
   const [writeInProgress, setWriteInProgress] = useState<boolean>(false)
 
-  const handleAccountInputChange = (event: any): void => {
+  const handleAccountInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setAccount(event.target.value)
   }
 
-  const handleWriteMessageInputChange = (event: any): void => {
+  const handleWriteMessageInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setMessageToWrite(event.target.value)
   }
 
@@ -90,25 +90,25 @@ const Home: React.FC = (): JSX.Element => {
             to interact with the Kadena blockchain using <code>@kadena/client</code> and edit <code>src/pages/index.tsx</code> to get started.</p>
         </div>
         <div className={styles.card}>
-          <h3 className={styles.cardtitle}>Interact with the blockchain</h3>
-          <section className={styles.cardsection}>
+          <h3 className={styles.cardTitle}>Interact with the blockchain</h3>
+          <section className={styles.cardSection}>
             <h4>My Account</h4>
             <input onChange={handleAccountInputChange} value={account} placeholder="Please enter a valid k:account"></input>
           </section>
-          <section className={styles.cardsection}>
+          <section className={styles.cardSection}>
             <h4>Write Message</h4>
             <textarea onChange={handleWriteMessageInputChange} value={messageToWrite} disabled={writeInProgress}></textarea>
             <button onClick={() => writeMessage()} disabled={messageToWrite === '' || writeInProgress}>Write</button>
             {writeInProgress && <SpinnerRoundFilled size={30} color="#ed098f" />}
           </section>
-          <section className={styles.cardsection}>
+          <section className={styles.cardSection}>
             <h4>Read Message</h4>
             <textarea disabled value={messageFromChain}></textarea>
             <button onClick={() => readMessage()} disabled={account === ''}>Read</button>
           </section>
         </div>
         <div className={styles.card}>
-          <h3 className={styles.cardtitle}>Resources</h3>
+          <h3 className={styles.cardTitle}>Resources</h3>
           <a href="https://docs.kadena.io/">Find in-depth information about Kadena. &rarr;</a>
           <a href="https://github.com/kadena-community/kadena.js/tree/master/packages/tools/create-kadena-app/pact">The smart contract powering this page. &rarr;</a>
         </div>

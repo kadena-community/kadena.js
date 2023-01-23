@@ -172,10 +172,6 @@ export function projectGenerateCommand(
         program.error(`value "${name}" is an invalid project name`);
       }
 
-      console.log('dirname', __dirname);
-      console.log('process.cwd', process.cwd());
-      console.log('executionPath', executionPath);
-
       generate(program, version, executionPath)(args);
     });
 }
