@@ -523,6 +523,14 @@
     },
 
     {
+      "packageName": "@kadena/create-kadena-app",
+      "projectFolder": "packages/tools/create-kadena-app",
+      "tags": ["tools"],
+      "shouldPublish": false,
+      "versionPolicyName": "alpha"
+    },
+
+    {
       "packageName": "@kadena-dev/eslint-config",
       "projectFolder": "packages/tools/eslint-config",
       "cyclicDependencyProjects": ["@kadena-dev/eslint-config"],

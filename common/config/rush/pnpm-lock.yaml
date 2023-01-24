@@ -598,6 +598,47 @@ importers:
       eslint: 8.29.0
       ts-node: 10.8.2_@types+node@16.18.7
 
+  ../../packages/tools/create-kadena-app:
+    specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
+      '@rushstack/eslint-config': ~2.6.2
+      '@rushstack/heft': ~0.46.1
+      '@types/cross-spawn': ~6.0.2
+      '@types/debug': ~4.1.7
+      '@types/heft-jest': ~1.0.3
+      '@types/mkdirp': ~1.0.2
+      '@types/node': ^16.0.0
+      '@types/ramda': ~0.28.15
+      '@types/rimraf': ~3.0.2
+      commander: ^9.3.0
+      cross-fetch: ~3.1.5
+      cross-spawn: ~7.0.3
+      eslint: ^8.15.0
+      ramda: ~0.28.0
+      ts-node: ~10.8.2
+      yaml: ~2.1.1
+    dependencies:
+      commander: 9.4.1
+      cross-fetch: 3.1.5
+      cross-spawn: 7.0.3
+      ramda: 0.28.0
+      yaml: 2.1.3
+    devDependencies:
+      '@kadena-dev/eslint-config': link:../eslint-config
+      '@kadena-dev/heft-rig': link:../heft-rig
+      '@rushstack/eslint-config': 2.6.2_eslint@8.29.0
+      '@rushstack/heft': 0.46.7
+      '@types/cross-spawn': 6.0.2
+      '@types/debug': 4.1.7
+      '@types/heft-jest': 1.0.3
+      '@types/mkdirp': 1.0.2
+      '@types/node': 16.18.7
+      '@types/ramda': 0.28.20
+      '@types/rimraf': 3.0.2
+      eslint: 8.29.0
+      ts-node: 10.8.2_@types+node@16.18.7
+
   ../../packages/tools/eslint-config:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
@@ -3678,7 +3719,6 @@ packages:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
       '@types/node': 18.11.13
-    dev: false
 
   /@types/debug/4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
@@ -3711,7 +3751,7 @@ packages:
     resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.7
+      '@types/node': 18.11.13
     dev: true
 
   /@types/graceful-fs/4.1.5:
@@ -3788,7 +3828,7 @@ packages:
   /@types/mkdirp/1.0.2:
     resolution: {integrity: sha512-o0K1tSO0Dx5X6xlU5F1D6625FawhC3dU3iqr25lluNv/+/QIVH8RLNEiVokgIZo+mz+87w/3Mkg/VvQS+J51fQ==}
     dependencies:
-      '@types/node': 16.18.7
+      '@types/node': 18.11.13
     dev: true
 
   /@types/moo/0.5.5:
@@ -3882,7 +3922,7 @@ packages:
     resolution: {integrity: sha512-F3OznnSLAUxFrCEu/L5PY8+ny8DtcFRjx7fZZ9bycvXRi3KPTRS9HOitGZwvPg0juRhXFWIeKX58cnX5YqLohQ==}
     dependencies:
       '@types/glob': 8.0.0
-      '@types/node': 16.18.7
+      '@types/node': 18.11.13
     dev: true
 
   /@types/scheduler/0.16.2:

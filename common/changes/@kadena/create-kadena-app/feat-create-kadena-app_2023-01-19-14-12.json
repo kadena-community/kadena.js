@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/create-kadena-app",
+      "comment": "Create kadena app - initial project setup",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/create-kadena-app"
+}
