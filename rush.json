@@ -471,6 +471,14 @@
       "shouldPublish": true,
       "versionPolicyName": "alpha"
     },
+    
+    {
+      "packageName": "@kadena/chainwebjs",
+      "projectFolder": "packages/libs/chainwebjs",
+      "tags": ["libs"],
+      "shouldPublish": false,
+      "versionPolicyName": "alpha"
+    },
 
     {
       "packageName": "@kadena/pactjs",
