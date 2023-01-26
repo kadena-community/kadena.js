@@ -17,7 +17,7 @@ const SUPPORTED_PROJECT_TEMPLATES: Array<string> = [
   'angular',
 ];
 
-const NOTIMPLEMENTED_PROJECT_TEMPLATES: Array<string> = ['vuejs', 'angular'];
+const NOTIMPLEMENTED_PROJECT_TEMPLATES: Array<string> = ['angular'];
 
 const COPY_IGNORE_LIST: Array<string> = [
   '.next',
