@@ -5,7 +5,18 @@ export default builder.prismaNode('Transaction', {
   id: { field: 'block_requestkey' },
   fields: (t) => ({
     // database fields
-    reqKey: t.exposeString('requestkey'),
+    reqKey: t.exposeString('requestkey', {
+      deprecationReason: 'Use requestkey instead',
+    }),
+    nonce: t.exposeString('nonce'),
+    code: t.exposeString('code', { nullable: true }),
+    data: t.field({
+      type: 'String',
+      nullable: true,
+      resolve(parent) {
+        return JSON.stringify(parent.data);
+      },
+    }),
 
     // computed fields
     gas: t.expose('gas', { type: 'BigInt' }),

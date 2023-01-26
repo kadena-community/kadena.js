@@ -1,6 +1,9 @@
 import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
+import { prismaModelName } from '@pothos/plugin-prisma';
+import { Prisma } from '@prisma/client';
+
 export default builder.prismaNode('Block', {
   id: { field: 'hash' },
   name: 'Block',
@@ -17,23 +20,28 @@ export default builder.prismaNode('Block', {
 
     // relations
     transactions: t.prismaConnection({
+      args: {
+        events: t.arg.stringList({ required: false, defaultValue: [] }),
+      },
       type: 'Transaction',
       cursor: 'block_requestkey',
-      totalCount(parent, args, context, info) {
+      async totalCount(parent, { events }, context, info) {
         return prismaClient.transaction.count({
           where: {
-            block: {
-              equals: parent.hash,
+            block: parent.hash,
+            requestkey: {
+              in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
           },
         });
       },
-      resolve(query, parent, args, context, info) {
+      async resolve(query, parent, { events }, context, info) {
         return prismaClient.transaction.findMany({
           ...query,
           where: {
-            block: {
-              equals: parent.hash,
+            block: parent.hash,
+            requestkey: {
+              in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
           },
         });
@@ -41,3 +49,20 @@ export default builder.prismaNode('Block', {
     }),
   }),
 });
+
+async function getTransactionsRequestkeyByEvent(
+  events: string[] | undefined,
+  parent: {
+    hash: string;
+  } & { [prismaModelName]?: 'Block' | undefined },
+): Promise<string[]> {
+  return (
+    await prismaClient.$queryRaw<{ requestkey: string }[]>`
+      SELECT t.requestkey
+      FROM transactions t
+      INNER JOIN events e
+      ON e.block = t.block AND e.requestkey = t.requestkey
+      WHERE e.qualname IN (${Prisma.join(events as string[])})
+      AND t.block = ${parent.hash}`
+  ).map((r) => r.requestkey);
+}

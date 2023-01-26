@@ -1,4 +1,5 @@
 import { prismaClient } from '../../db/prismaClient';
+import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 
 import { Block } from '@prisma/client';
@@ -8,21 +9,29 @@ const log: Debugger = _debug('graph:Subscription:newBlocks');
 
 builder.subscriptionField('newBlocks', (t) => {
   return t.prismaField({
+    args: {
+      chainIds: t.arg.intList({ required: false }),
+    },
     type: ['Block'],
     nullable: true,
-    subscribe: () => iteratorFn(),
+    subscribe: (parent, args, context, info) =>
+      iteratorFn(args.chainIds as number[] | undefined),
     resolve: (__, block) => block,
   });
 });
 
-async function* iteratorFn(): AsyncGenerator<Block[], void, unknown> {
-  let lastBlock = (await getLastBlocks())[0];
+async function* iteratorFn(
+  chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(
+    (__, i) => i,
+  ),
+): AsyncGenerator<Block[], void, unknown> {
+  let lastBlock = (await getLastBlocks(chainIds))[0];
 
   yield [lastBlock];
   log('yielding initial block with id %s', lastBlock.id);
 
   while (true) {
-    const newBlocks = await getLastBlocks(lastBlock.id);
+    const newBlocks = await getLastBlocks(chainIds, lastBlock.id);
 
     if (!nullishOrEmpty(newBlocks) && lastBlock.id !== newBlocks?.[0]?.id) {
       lastBlock = newBlocks[newBlocks.length - 1];
@@ -32,7 +41,10 @@ async function* iteratorFn(): AsyncGenerator<Block[], void, unknown> {
   }
 }
 
-async function getLastBlocks(id?: number): Promise<Block[]> {
+async function getLastBlocks(
+  chainIds: number[],
+  id?: number,
+): Promise<Block[]> {
   const defaultFilter: Parameters<typeof prismaClient.block.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -47,7 +59,10 @@ async function getLastBlocks(id?: number): Promise<Block[]> {
           where: { id: { gt: id } },
         };
 
-  const foundblocks = await prismaClient.block.findMany({ ...extendedFilter });
+  const foundblocks = await prismaClient.block.findMany({
+    ...extendedFilter,
+    where: { ...extendedFilter.where, chainid: { in: chainIds } },
+  });
 
   log("found '%s' blocks", foundblocks.length);
 
