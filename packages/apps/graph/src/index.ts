@@ -4,6 +4,7 @@ import './graph';
 import { builder } from './graph/builder';
 import { startDevelopmentWorker } from './utils/dev-database/startEmbeddedPostgres';
 import { dotenv } from './utils/dotenv';
+import { writeSchema } from './utils/write-schema';
 
 import { createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
@@ -24,6 +25,8 @@ const yoga = createYoga({
 
 // eslint-disable-next-line @rushstack/typedef-var
 const server = createServer(yoga);
+
+writeSchema();
 
 server.listen(4000, () => {
   console.info('Server is running on http://localhost:4000/graphql');

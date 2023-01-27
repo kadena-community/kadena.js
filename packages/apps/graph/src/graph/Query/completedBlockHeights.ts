@@ -3,11 +3,12 @@ import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
-builder.queryField('blocks', (t) => {
+builder.queryField('completedBlockHeights', (t) => {
   return t.prismaField({
     args: {
       completedHeights: t.arg.boolean({ required: false }),
-      count: t.arg.int({ required: false }),
+      heightCount: t.arg.int({ required: false }),
+      chainIds: t.arg.stringList({ required: false }),
     },
 
     type: [Block],
@@ -15,35 +16,41 @@ builder.queryField('blocks', (t) => {
     resolve: async (
       __query,
       __parent,
-      { completedHeights: onlyCompleted = true, count = 3 },
+      { completedHeights: onlyCompleted = false, heightCount = 3 },
     ) => {
-      const completedHeights = (await prismaClient.$queryRaw`
+      if (onlyCompleted === true) {
+        const completedHeights = (await prismaClient.$queryRaw`
         SELECT height
         FROM blocks b
         GROUP BY height
         HAVING COUNT(*) >= ${dotenv.CHAIN_COUNT} AND
         COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
         ORDER BY height DESC
-        LIMIT ${count}
+        LIMIT ${heightCount}
       `) as { height: number }[];
 
-      if (completedHeights.length > 0 && onlyCompleted === true) {
-        return prismaClient.block.findMany({
-          where: {
-            OR: [
-              {
-                height: {
-                  in: completedHeights.map((h) => h.height),
+        if (completedHeights.length > 0) {
+          return prismaClient.block.findMany({
+            where: {
+              AND: [
+                {
+                  OR: [
+                    {
+                      height: {
+                        in: completedHeights.map((h) => h.height),
+                      },
+                    },
+                    {
+                      height: {
+                        gt: completedHeights[0].height,
+                      },
+                    },
+                  ],
                 },
-              },
-              {
-                height: {
-                  gt: completedHeights[0].height,
-                },
-              },
-            ],
-          },
-        });
+              ],
+            },
+          });
+        }
       }
 
       return prismaClient.block.findMany({
@@ -56,7 +63,7 @@ builder.queryField('blocks', (t) => {
                 HAVING COUNT(*) > 1 AND
                 COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
                 ORDER BY height DESC
-                LIMIT ${count}
+                LIMIT ${heightCount}
               `,
           },
         },

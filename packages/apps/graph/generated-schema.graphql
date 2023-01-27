@@ -1,0 +1,68 @@
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+type Block implements Node {
+  chainid: BigInt!
+  creationtime: DateTime!
+  epoch: DateTime!
+  hash: ID!
+  height: BigInt!
+  id: ID!
+  powhash: String!
+  transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
+}
+
+type BlockTransactionsConnection {
+  edges: [BlockTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BlockTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+"""Floats that will have a value greater than 0."""
+scalar PositiveFloat
+
+type Query {
+  blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
+  completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  hello(name: String): String!
+  lastBlockHeight: BigInt
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node]!
+}
+
+type Subscription {
+  newBlocks(chainIds: [Int!]): [Block!]
+}
+
+type Transaction implements Node {
+  block: Block
+  code: String
+  data: String
+  gas: BigInt!
+  id: ID!
+  nonce: String!
+  reqKey: String! @deprecated(reason: "Use requestkey instead")
+}
