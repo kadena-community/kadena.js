@@ -10,12 +10,11 @@
     "_phase:build": "",
     "_phase:test": "",
     "build": "",
-    "postinstall": "npm run prisma:generate",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
-    "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {

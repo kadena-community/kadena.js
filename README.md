@@ -30,7 +30,7 @@ If any issues occur, you can run `rush update --purge`
 
 ## Requirements
 
-- node > LTS (node 16, as 18 isn't yet LTS)
+- node 16
 - rushjs
 
 See [installing perequisites](#installing-prerequisites)
@@ -45,7 +45,7 @@ several options, here used `n`. Can also use `asdf` (generic version manager),
 ```sh
 # `n` node version manager
 brew install n
-n lts
+n 16
 ```
 
 ### Install `rush`
