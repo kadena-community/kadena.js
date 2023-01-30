@@ -4,9 +4,10 @@ import { SpinnerRoundFilled } from 'spinners-react'
 import { Pact, signWithChainweaver } from '@kadena/client'
 import styles from '../styles/main.module.css'
 
-const NETWORK_ID = 'testnet04'
-const CHAIN_ID = '0'
-const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${CHAIN_ID}/pact`
+const NETWORK_ID = process.env.NEXT_PUBLIC_KADENA_NETWORK_ID
+const CHAIN_ID = process.env.NEXT_PUBLIC_KADENA_CHAIN_ID
+const HOST = process.env.NEXT_PUBLIC_KADENA_HOST
+const API_HOST = `https://${HOST}/chainweb/0.0/${NETWORK_ID}/chain/${CHAIN_ID}/pact`
 
 const accountKey = (account: string): string => account.split(':')[1]
 
