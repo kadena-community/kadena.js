@@ -1,0 +1,165 @@
+scalar Hash
+scalar MsFromPosixEpoch
+scalar Base64Url
+scalar Int64
+scalar BigInt
+scalar Base64UrlTransaction
+scalar Object
+
+type Query {
+  block: Block
+}
+
+type Signature {
+  sig: String
+}
+
+type Block {
+  creationTime: MsFromPosixEpoch
+  parent: Block
+  height: BigInt
+  hash: Hash
+  chainId: Int
+  weight: Base64Url
+  featureFlags: Int
+  epochStart: MsFromPosixEpoch
+  adjacents: [Block]
+  payloadHash: Base64Url # fk BlockPayload
+  chainwebVersion: ChainwebNetwork
+  target: Base64Url
+  nonce: Int64
+
+  payload: BlockPayload
+}
+
+type BlockPayload {
+  transactions: [Transaction] # pact realm
+  minerData: Account
+  transactionsHash: Base64Url
+  outputsHash: Base64Url
+  payloadHash: Base64Url
+  coinbase: CoinbaseTransaction
+}
+
+type CoinbaseTransaction {
+  gas: Int
+  result: CoinbaseTransactionResult
+  reqKey: String
+  logs: String
+  events: [EventData]
+  metaData: undefined
+  continuation: undefined
+  txId: number
+}
+
+type CoinbaseTransactionResult {
+  status: String
+  data: String
+}
+
+type Account {
+  name: String
+  guard: KeySet
+}
+
+type EventData {
+
+}
+
+type Account {
+  name: String
+  guard: KeySet
+}
+
+type KeySet {
+  """
+  "keys-all" | "keys-any" | "keys-2"
+  """
+  predicate: String
+  pubKeys: [String]
+}
+
+enum KeysetPredicateOptions {
+  KeysAllPredicate
+  KeysTwoPredicate
+  KeysAnyPredicate
+}
+
+type Transaction {
+  command: TransactionCommand
+  commandResult: TransactionCommandResult
+}
+
+# Pact realm
+type TransactionCommand {
+  hash: Hash
+  cmd: TransactionCommandPayload # json "cmd" haskell "payload"
+  sigs: [Signature]
+}
+
+type TransactionCommandPayload {
+  payload: TransactionCommandPayloadPayload
+  nonce: String
+  meta: TransactionCommandPayloadMeta
+  signers: [TransactionSigner]
+  networkId: String # chainweb || kuro
+}
+
+type TransactionCommandPayloadMeta {
+  # chainId: Int
+  # creationTime: MsFromPosixEpoch
+  # ttl: Int
+  # gasLimit: Int
+  # gasPrice: Int
+  # sender: String
+  # signer: String
+  # nonce: String
+}
+
+type TransactionCommandResult {
+}
+
+type TransactionSigner {
+  pubKey: String
+  capabilities: [TransactionCapability]
+}
+
+type TransactionCapability {
+  name: String
+  args: [String]
+}
+
+union TransactionCommandPayloadPayload =
+    TransactionCommandExecutionPayload
+  | TransactionCommandContinuationPayload
+
+type TransactionCommandExecutionPayload {
+  exec: ExecutionPayload
+}
+
+type ExecutionPayload {
+  data: Object
+  code: String
+}
+
+type TransactionCommandContinuationPayload {
+  cont: ContinuationPayload
+}
+
+type ContinuationPayload {
+  proof: String
+  pactId: String
+  rollback: Boolean # | null
+  step: Int
+  data: Object
+}
+
+enum ChainwebNetwork {
+  mainnet01
+  testnet04
+}
+
+type Cut {
+  height: BigInt
+  weight: Hash
+}
