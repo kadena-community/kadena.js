@@ -50,13 +50,16 @@ function mockFetchForPoll(status?: 'success' | 'failure'): void {
 }
 
 describe('Pact proxy', () => {
-  it('creates an instance of the proxy', async () => {
+  it('throws when using type `number`', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
-    const tx = pact.modules.coin
-      .transfer('alice', 'bob', 100.0)
-      .createCommand();
-    expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100)');
+    expect(() => {
+      const tx = pact.modules.coin
+        .transfer('alice', 'bob', 100.0)
+        .createCommand();
+    }).toThrow(
+      'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
+    );
   });
 
   it('generates two different commands when executed after each other', () => {
@@ -86,7 +89,7 @@ describe('Pact proxy', () => {
       'k:1',
       'chain1',
       'chain2',
-      100,
+      { int: '100' },
     ).createCommand();
 
     expect(getCode(tx2)).toBe(
@@ -100,7 +103,7 @@ describe('Pact proxy', () => {
       'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
     const receiver =
       'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-    const amount = 10;
+    const amount = { decimal: '10' };
     const signerPubKey = sender.split('k:')[1];
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,9 +116,7 @@ describe('Pact proxy', () => {
       amount,
     )
       .addCap('coin.GAS', signerPubKey)
-      .addCap('coin.TRANSFER', signerPubKey, sender, receiver, {
-        decimal: amount.toString(),
-      })
+      .addCap('coin.TRANSFER', signerPubKey, sender, receiver, amount)
       .addData({
         ks: {
           keys: [
@@ -141,7 +142,7 @@ describe('Pact proxy', () => {
     expect(JSON.parse(transaction.cmd).signers[0].clist[1].args).toEqual([
       'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
       'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8',
-      '10.0',
+      { decimal: '10' },
     ]);
   });
 
@@ -158,7 +159,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
     await builder.local('fake-api-host.local.co');
 
@@ -184,7 +185,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
     await builder.send('fake-api-host.local.co');
 
@@ -210,7 +211,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
 
     const { requestKeys } = await builder.send('fake-api-host.local.co');
@@ -243,7 +244,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
 
     expect(() => builder.poll('fake-api-host.local.co')).toThrow();
@@ -262,7 +263,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
 
     let expectingError;
@@ -284,7 +285,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: 1.234 },
     );
 
     (fetch as jest.Mock).mockResolvedValue({
@@ -336,7 +337,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: 1.234 },
     );
 
     (fetch as jest.Mock).mockResolvedValue({
@@ -387,7 +388,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: 1.234 },
     );
 
     await builder.send('fake-api-host.local.co');
@@ -424,7 +425,7 @@ describe('TransactionCommand', () => {
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94' as const;
   const receiver =
     'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-  const amount = 10;
+  const amount = { decimal: '10' };
   const senderPubKey = sender.split('k:')[1];
   const receiverPubKey = receiver.split('k:')[1];
 
