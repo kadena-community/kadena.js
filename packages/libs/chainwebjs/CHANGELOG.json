@@ -1,0 +1,17 @@
+{
+  "name": "@kadena/chainwebjs",
+  "entries": [
+    {
+      "version": "0.0.2",
+      "tag": "@kadena/chainwebjs_v0.0.2",
+      "date": "Thu, 02 Feb 2023 11:57:26 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added types for project"
+          }
+        ]
+      }
+    }
+  ]
+}
