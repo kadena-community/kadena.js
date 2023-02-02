@@ -11,7 +11,7 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "_phase:build": "tsc --noEmit",
+    "_phase:build": "npm run pactjs:generate:contract; tsc --noEmit",
     "_phase:test": "",
     "build": "tsc --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts --fix",

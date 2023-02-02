@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}
