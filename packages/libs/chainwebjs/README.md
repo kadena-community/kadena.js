@@ -1,10 +1,6 @@
 High level Javascript bindings and types for the [Kadena](https://kadena.io)
 [Chainweb REST API](https://api.chainweb.com).
 
-This package does not include the [Pact REST
-API](https://api.chainweb.com/openapi/pact.html) endpoints.
-High level bindings for the Pact API are provided by the [pact-lang-api
-package](https://www.npmjs.com/package/pact-lang-api).
 
 ### API Documentation
 
@@ -20,9 +16,9 @@ import chainweb from '@kadena/chainwebjs';
 
 ## Common parameters:
 
-*   `network`: the Kadena Chainweb network identifier. Default is `mainnet01`.
+*   `network`: the Kadena Chainweb network identifier. 
 *   `host`: the Chainweb API host URL, including the schema and possibly the
-    port. Default is `https://api.chainweb.com`.
+    port. 
 
 Currently, no authentication or extra headers are supported. If you need these
 features, you may request support by submitting an new issue in the Github
