@@ -1,6 +1,6 @@
 import { keyframes, styled } from '../../../styles/stitches.config';
 
-export const Container: any = styled('div', {
+export const Container = styled('div', {
   borderRadius: '$md',
   position: 'relative',
   display: 'flex',
@@ -14,7 +14,7 @@ export const Container: any = styled('div', {
   border: '1px solid $mauve7',
 });
 
-const BlockEntrance: any = keyframes({
+const BlockEntrance = keyframes({
   '0%': {
     transform: 'scale(0)',
     animationTimingFunction: 'ease-in',
@@ -29,7 +29,7 @@ const BlockEntrance: any = keyframes({
   },
 });
 
-export const Content: any = styled('div', {
+export const Content = styled('div', {
   zIndex: 2,
   animation: `${BlockEntrance} 0.4s`,
   height: '$blockWidth',

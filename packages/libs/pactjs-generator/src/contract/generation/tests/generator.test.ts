@@ -1,6 +1,9 @@
 import { generateDts } from '../generator';
 import { StringContractDefinition } from '../StringContractDefinition';
 
+const CODE_IMPORTS = `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+import type { IPactDecimal, IPactInt } from '@kadena/types';`;
+
 describe('generator', () => {
   it('creates a typescript definition from a contract', () => {
     const contract: string = `(module coin
@@ -12,19 +15,18 @@ describe('generator', () => {
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-    const expected =
-      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+    const expected = `${CODE_IMPORTS}
 declare module '@kadena/client' {
   export interface ICapabilities { }
   export interface IPactModules {
     "coin": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICapabilities> & IPactCommand
+      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
     }
   }
 }`
-        .split(/[\s\n]/)
-        .filter((x) => x !== '')
-        .join(' ');
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
     expect(dTs).toBe(expected);
   });
 
@@ -40,22 +42,21 @@ declare module '@kadena/client' {
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-    const expected =
-      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+    const expected = `${CODE_IMPORTS}
 declare module '@kadena/client' {
   export interface ICapabilities {
     "coin.GAS": [ ],
-    "coin.TRANSFER": [ sender: string, receiver: string, amount: number ]
+    "coin.TRANSFER": [ sender: string, receiver: string, amount: IPactDecimal ]
   }
   export interface IPactModules {
     "coin": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICapabilities> & IPactCommand
+      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
     }
   }
 }`
-        .split(/[\s\n]/)
-        .filter((x) => x !== '')
-        .join(' ');
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
     expect(dTs).toBe(expected);
   });
 
@@ -71,8 +72,7 @@ declare module '@kadena/client' {
       .filter((x) => x !== '')
       .join(' ');
 
-    const expected =
-      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+    const expected = `${CODE_IMPORTS}
 declare module '@kadena/client' {
   export interface ICapabilities {
   }
@@ -82,9 +82,9 @@ declare module '@kadena/client' {
     }
   }
 }`
-        .split(/[\s\n]/)
-        .filter((x) => x !== '')
-        .join(' ');
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
     expect(dTs).toBe(expected);
   });
 
@@ -126,19 +126,18 @@ declare module '@kadena/client' {
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-    const expected =
-      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+    const expected = `${CODE_IMPORTS}
 declare module '@kadena/client' {
   export interface ICapabilities { }
   export interface IPactModules {
     "free-namespace.the-free-module": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICapabilities> & IPactCommand
+      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
     }
   }
 }`
-        .split(/[\s\n]/)
-        .filter((x) => x !== '')
-        .join(' ');
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
     expect(dTs).toBe(expected);
   });
 
@@ -155,22 +154,21 @@ declare module '@kadena/client' {
       .split(/[\s\n]/)
       .filter((x) => x !== '')
       .join(' ');
-    const expected =
-      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+    const expected = `${CODE_IMPORTS}
 declare module '@kadena/client' {
   export interface ICapabilities {
     "free-namespace.the-free-module.GAS": [ ],
-    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: number ]
+    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: IPactDecimal ]
   }
   export interface IPactModules {
     "free-namespace.the-free-module": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<ICapabilities> & IPactCommand
+      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
     }
   }
 }`
-        .split(/[\s\n]/)
-        .filter((x) => x !== '')
-        .join(' ');
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
     expect(dTs).toBe(expected);
   });
 
@@ -192,22 +190,21 @@ declare module '@kadena/client' {
       .filter((x) => x !== '')
       .join(' ');
 
-    const expected =
-      `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+    const expected = `${CODE_IMPORTS}
 declare module '@kadena/client' {
   export interface IMyInterfaceName {
     "free-namespace.the-free-module.GAS": [ ],
-    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: number ]
+    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: IPactDecimal ]
   }
   export interface IPactModules {
     "free-namespace.the-free-module": {
-      "transfer": (from: string, to: string, amount: number) => ICommandBuilder<IMyInterfaceName> & IPactCommand
+      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<IMyInterfaceName> & IPactCommand
     }
   }
 }`
-        .split(/[\s\n]/)
-        .filter((x) => x !== '')
-        .join(' ');
+      .split(/[\s\n]/)
+      .filter((x) => x !== '')
+      .join(' ');
 
     expect(dTs).toBe(expected);
   });
