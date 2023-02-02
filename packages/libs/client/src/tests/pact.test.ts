@@ -54,9 +54,7 @@ describe('Pact proxy', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
     expect(() => {
-      const tx = pact.modules.coin
-        .transfer('alice', 'bob', 100.0)
-        .createCommand();
+      pact.modules.coin.transfer('alice', 'bob', 100.0).createCommand();
     }).toThrow(
       'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
     );
