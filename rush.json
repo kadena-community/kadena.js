@@ -471,7 +471,7 @@
       "shouldPublish": true,
       "versionPolicyName": "alpha"
     },
-    
+
     {
       "packageName": "@kadena/chainwebjs",
       "projectFolder": "packages/libs/chainwebjs",
@@ -526,8 +526,7 @@
       "packageName": "@kadena/create-kadena-app",
       "projectFolder": "packages/tools/create-kadena-app",
       "tags": ["tools"],
-      "shouldPublish": false,
-      "versionPolicyName": "alpha"
+      "shouldPublish": false
     },
 
     {
