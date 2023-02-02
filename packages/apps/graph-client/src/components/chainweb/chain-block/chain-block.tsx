@@ -1,4 +1,4 @@
-import { Block } from '../../__generated__/sdk';
+import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { Box } from '../../box';
 import { Text } from '../../text';
 
@@ -10,7 +10,7 @@ import React from 'react';
 
 interface IChainBlockProps {
   color: string;
-  block?: Block;
+  block?: IBlock;
   textColor: string;
 }
 

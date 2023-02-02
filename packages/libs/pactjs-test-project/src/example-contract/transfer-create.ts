@@ -1,4 +1,5 @@
 import { Pact, signWithChainweaver } from '@kadena/client';
+import { IPactDecimal } from '@kadena/types';
 
 const apiHost = (
   chainId: string,
@@ -19,7 +20,7 @@ async function main(): Promise<void> {
   const sender: string =
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
   const receiver: string = 'k:somepublickey';
-  const amount: number = 1000.0;
+  const amount: IPactDecimal = { decimal: '1000.0' };
   const data: Record<string, unknown> = {
     ks: {
       keys: ['somepublickey'],

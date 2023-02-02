@@ -17,6 +17,10 @@ export function parseType(
       }
       return arg;
     }
+    case 'number':
+      throw new Error(
+        'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
+      );
     case 'string':
       return `"${arg}"`;
     case 'function':

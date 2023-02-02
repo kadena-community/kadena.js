@@ -1,6 +1,6 @@
 import { ISendResponse, local, poll, send } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { createExp, PactNumber } from '@kadena/pactjs';
+import { createExp } from '@kadena/pactjs';
 import {
   ChainId,
   ChainwebNetworkId,
@@ -8,8 +8,6 @@ import {
   ICommand,
   ICommandPayload,
   ICommandResult,
-  IPactDecimal,
-  IPactInt,
   IPollResponse,
   ISignature,
   PactValue,
@@ -208,7 +206,7 @@ export class PactCommand
     const cmd: string =
       this.cmd !== undefined
         ? this.cmd
-        : JSON.stringify(unsignedTransactionCommand, pactCommandPropSerializer);
+        : JSON.stringify(unsignedTransactionCommand);
 
     // hash command
     const hash = blakeHash(cmd);
@@ -448,18 +446,3 @@ export const Pact: IPact = {
     return pactCreator();
   },
 };
-
-function pactCommandPropSerializer(
-  key: string,
-  value: IPactDecimal | IPactInt,
-): string {
-  if (typeof value === 'object') {
-    if ('decimal' in value) {
-      return new PactNumber(value.decimal).toDecimal() as string;
-    }
-    if ('int' in value) {
-      return new PactNumber(value.int).toInteger() as string;
-    }
-  }
-  return value;
-}

@@ -12,7 +12,7 @@ import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 
-const StyledMain: any = styled('main', {
+const StyledMain = styled('main', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -43,10 +43,10 @@ export default function Home(): JSX.Element {
   useEffect(() => {
     if (
       isEqual(previousRecentBlocks, recentBlocks) === false &&
-      recentBlocks?.blocks &&
-      recentBlocks?.blocks?.length > 0
+      recentBlocks?.completedBlockHeights &&
+      recentBlocks?.completedBlockHeights?.length > 0
     ) {
-      addBlocks(recentBlocks?.blocks);
+      addBlocks(recentBlocks?.completedBlockHeights);
     }
   }, [recentBlocks]);
 

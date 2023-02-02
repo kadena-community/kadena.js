@@ -13,7 +13,7 @@ export function ChainwebHeader(): JSX.Element {
       }}
     >
       <Box css={{ width: '$blockWidth', mx: '$1' }} />
-      {[...new Array(20)].map((_, index) => (
+      {[...new Array(20)].map((__, index) => (
         <Text
           key={`chainweb_header_${index}`}
           as="span"

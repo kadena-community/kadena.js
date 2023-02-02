@@ -1,8 +1,8 @@
 import { Arg, Defcap, Defun, Module, Output } from '../parsing/parser';
 
 const keywordsMap: Record<string, string> = {
-  decimal: 'number',
-  integer: 'number',
+  decimal: 'IPactDecimal',
+  integer: 'IPactInteger',
   time: 'Date',
   bool: 'boolean',
   guard: 'Function',
@@ -45,6 +45,7 @@ export function generateDts(
         ModuleName,
         `
 import type { ICommandBuilder, IPactCommand } from '@kadena/client';
+import type { IPactDecimal, IPactInt } from '@kadena/types';
 
 declare module '@kadena/client' {
   export interface ${capsInterfaceName} {

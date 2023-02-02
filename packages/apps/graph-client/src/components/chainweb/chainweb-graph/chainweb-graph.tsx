@@ -1,4 +1,4 @@
-import type { Block } from '../../__generated__/sdk';
+import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 
 import { ChainwebHeader } from './../chainweb-header';
 import { ChainwebRow } from './../chainweb-row';
@@ -6,7 +6,7 @@ import { ChainwebRow } from './../chainweb-row';
 import React from 'react';
 
 interface IChainwebGraphProps {
-  blocks: Record<number, Block[]>;
+  blocks: Record<number, IBlock[]>;
 }
 
 export function ChainwebGraph({ blocks }: IChainwebGraphProps): JSX.Element {

@@ -1,11 +1,12 @@
 import { Pact, signWithChainweaver } from '@kadena/client';
+import { IPactDecimal } from '@kadena/types';
 
 function main(): void {
   const sender =
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
   const receiver =
     'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-  const amount = 0.23;
+  const amount: IPactDecimal = { decimal: '0.23' };
   const signerAccount = sender.split('k:')[1];
 
   const transaction = Pact.modules.coin['transfer-create'](
