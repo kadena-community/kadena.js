@@ -1,4 +1,4 @@
-High level Javascript bindings and types for the [Kadena](https://kadena.io)
+High level Typescript bindings and types for the [Kadena](https://kadena.io)
 [Chainweb REST API](https://api.chainweb.com).
 
 
