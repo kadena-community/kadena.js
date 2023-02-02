@@ -11,7 +11,7 @@
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
     "_phase:build": "heft build --clean",
-    "_phase:test": "",
+    "_phase:test": "npm run test",
     "prebuild": "npm run build:lexer && npm run build:grammar",
     "build": "heft build --clean",
     "build:lexer": "tsc src/lexer.ts",

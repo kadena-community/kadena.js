@@ -12,7 +12,7 @@
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
     "_phase:build": "npm run pactjs:generate:contract; tsc --noEmit",
-    "_phase:test": "",
+    "_phase:test": "npm run test",
     "build": "tsc --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
