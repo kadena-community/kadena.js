@@ -1,3 +1,5 @@
+import { PactValue } from '@kadena/types';
+
 import { PactExpression } from '../PactExpression';
 
 declare module '../PactExpression' {
@@ -6,7 +8,7 @@ declare module '../PactExpression' {
     transfer: (
       sender: string,
       receiver: string,
-      amount: number,
+      amount: PactValue,
     ) => IPactBuilder;
   }
   interface IPactModules {
@@ -42,13 +44,15 @@ describe('PactExpression', () => {
   });
 
   it('creates an expression from a subelement with arguments', () => {
-    const pe = PactExpression().test.transfer('sender', 'receiver', 10);
+    const pe = PactExpression().test.transfer('sender', 'receiver', {
+      decimal: '10.0',
+    });
     expect(pe.generate()).toEqual('(test.transfer "sender" "receiver" 10.0)');
   });
 
   it('creates something that is not defined in the d.ts', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pe = (PactExpression() as any).something.that.is.not.defined("bogus")
-    expect(pe.generate()).toEqual('(something.that.is.not.defined "bogus")')
-  })
+    const pe = (PactExpression() as any).something.that.is.not.defined('bogus');
+    expect(pe.generate()).toEqual('(something.that.is.not.defined "bogus")');
+  });
 });

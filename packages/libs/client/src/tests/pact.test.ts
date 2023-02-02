@@ -4,6 +4,8 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
+import { PactNumber } from '@kadena/pactjs';
+
 import { IUnsignedTransaction } from '../interfaces/IUnsignedTransaction';
 import { ICommandBuilder, Pact, PactCommand } from '../pact';
 
@@ -51,17 +53,23 @@ describe('Pact proxy', () => {
   it('creates an instance of the proxy', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
-    const tx = pact.modules.coin.transfer('alice', 'bob', 100).createCommand();
-    expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100.0)');
+    const tx = pact.modules.coin
+      .transfer('alice', 'bob', 100.0)
+      .createCommand();
+    expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100)');
   });
 
   it('generates two different commands when executed after each other', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
 
-    const tx = pact.modules.coin.transfer('alice', 'bob', 100).createCommand();
+    const tx = pact.modules.coin
+      .transfer('alice', 'bob', new PactNumber(100).toPactDecimal())
+      .createCommand();
 
-    const tx2 = pact.modules.coin.transfer('bob', 'alice', 100).createCommand();
+    const tx2 = pact.modules.coin
+      .transfer('bob', 'alice', { decimal: '100' })
+      .createCommand();
 
     expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100.0)');
     expect(getCode(tx2)).toBe('(coin.transfer "bob" "alice" 100.0)');
@@ -70,7 +78,9 @@ describe('Pact proxy', () => {
   it('generates two different commands when generated asynchronously', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
-    const tx = pact.modules.coin.transfer('alice', 'bob', 100).createCommand();
+    const tx = pact.modules.coin
+      .transfer('alice', 'bob', { decimal: '100' })
+      .createCommand();
     const tx2 = pact.modules.coin['transfer-xchain'](
       'k:1',
       'k:1',
@@ -80,7 +90,7 @@ describe('Pact proxy', () => {
     ).createCommand();
 
     expect(getCode(tx2)).toBe(
-      '(coin.transfer-xchain "k:1" "k:1" "chain1" "chain2" 100.0)',
+      '(coin.transfer-xchain "k:1" "k:1" "chain1" "chain2" 100)',
     );
     expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100.0)');
   });
@@ -90,7 +100,7 @@ describe('Pact proxy', () => {
       'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
     const receiver =
       'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-    const amount = 0.23;
+    const amount = 10;
     const signerPubKey = sender.split('k:')[1];
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +113,9 @@ describe('Pact proxy', () => {
       amount,
     )
       .addCap('coin.GAS', signerPubKey)
-      .addCap('coin.TRANSFER', signerPubKey, sender, receiver, amount)
+      .addCap('coin.TRANSFER', signerPubKey, sender, receiver, {
+        decimal: amount.toString(),
+      })
       .addData({
         ks: {
           keys: [
@@ -125,6 +137,11 @@ describe('Pact proxy', () => {
 
     expect(JSON.parse(transaction.cmd).payload.exec.data.ks.keys).toEqual([
       '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+    ]);
+    expect(JSON.parse(transaction.cmd).signers[0].clist[1].args).toEqual([
+      'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+      'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8',
+      '10.0',
     ]);
   });
 
@@ -407,7 +424,7 @@ describe('TransactionCommand', () => {
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94' as const;
   const receiver =
     'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-  const amount = 0.23;
+  const amount = 10;
   const senderPubKey = sender.split('k:')[1];
   const receiverPubKey = receiver.split('k:')[1];
 
