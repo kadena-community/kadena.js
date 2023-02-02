@@ -2,6 +2,18 @@
   "name": "@kadena/pactjs-generator",
   "entries": [
     {
+      "version": "0.1.4",
+      "tag": "@kadena/pactjs-generator_v0.1.4",
+      "date": "Thu, 02 Feb 2023 16:30:09 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.3",
       "tag": "@kadena/pactjs-generator_v0.1.3",
       "date": "Mon, 16 Jan 2023 16:31:08 GMT",

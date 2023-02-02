@@ -1,6 +1,13 @@
 # Change Log - @kadena/pactjs-generator
 
-This log was last generated on Mon, 16 Jan 2023 16:31:08 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Feb 2023 16:30:09 GMT and should not be manually modified.
+
+## 0.1.4
+Thu, 02 Feb 2023 16:30:09 GMT
+
+### Patches
+
+- BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger
 
 ## 0.1.3
 Mon, 16 Jan 2023 16:31:08 GMT

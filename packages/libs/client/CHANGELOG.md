@@ -1,6 +1,13 @@
 # Change Log - @kadena/client
 
-This log was last generated on Thu, 02 Feb 2023 11:57:26 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Feb 2023 16:30:09 GMT and should not be manually modified.
+
+## 0.1.7
+Thu, 02 Feb 2023 16:30:09 GMT
+
+### Patches
+
+- BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger
 
 ## 0.1.6
 Thu, 02 Feb 2023 11:57:26 GMT
