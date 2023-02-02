@@ -52,7 +52,7 @@ export async function signWithChainweaver<T1 extends string, T2>(
 
   debug('calling sign api:', body);
 
-  const response = await fetch('http://127.0.0.1:9467/v1/quickSign', {
+  const response = await fetch('http://127.0.0.1:9467/v1/quicksign', {
     method: 'POST',
     body,
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -84,7 +84,7 @@ export async function signWithChainweaver<T1 extends string, T2>(
   } catch (error) {
     throw new Error(
       'An error occurred when adding signatures to the command' +
-        `\nResponse from v1/quickSign was \`${bodyText}\`. ` +
+        `\nResponse from v1/quicksign was \`${bodyText}\`. ` +
         `\nCode: \`${response.status}\`` +
         `\nText: \`${response.statusText}\` ` +
         `${error}`,

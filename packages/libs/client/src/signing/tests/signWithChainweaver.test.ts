@@ -16,7 +16,7 @@ import fetch from 'cross-fetch';
 describe('signWithChainweaver', () => {
   jest.setTimeout(1000);
 
-  it('makes a call on 127.0.0.1:9467/v1/quickSign with transaction', async () => {
+  it('makes a call on 127.0.0.1:9467/v1/quicksign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
       text: () => JSON.stringify({ results: [] }),
@@ -45,7 +45,7 @@ describe('signWithChainweaver', () => {
     const body = JSON.stringify({ reqs: [{ cmd, hash, sigs }] });
     await signWithChainweaver(unsignedCommand);
 
-    expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/quickSign', {
+    expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/quicksign', {
       body,
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       method: 'POST',
