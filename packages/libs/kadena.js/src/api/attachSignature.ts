@@ -1,4 +1,4 @@
-import { base64UrlEncodeArr, hashBin, sign } from '@kadena/cryptography-utils';
+import { hash, sign } from '@kadena/cryptography-utils';
 import type {
   CommandPayloadStringifiedJSON,
   IKeyPair,
@@ -15,10 +15,9 @@ export function attachSignature(
   msg: CommandPayloadStringifiedJSON,
   keyPairs: Array<IKeyPair>,
 ): Array<SignatureWithHash> {
-  const hshBin = hashBin(msg);
-  const hash = base64UrlEncodeArr(hshBin);
+  const h = hash(msg);
   if (!keyPairs.length) {
-    return [{ hash: hash, sig: undefined }];
+    return [{ hash: h, sig: undefined }];
   } else {
     return keyPairs.map((keyPair) => {
       if (
@@ -30,7 +29,7 @@ export function attachSignature(
         return sign(msg, keyPair);
       } else {
         return {
-          hash: hash,
+          hash: h,
           sig: undefined,
           publicKey: keyPair.publicKey,
         };
