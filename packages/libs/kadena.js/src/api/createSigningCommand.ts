@@ -3,7 +3,7 @@ import type {
   ChainId,
   EnvData,
   ISigningCap,
-  ISigningCommand,
+  ISigningRequest,
   NetworkId,
 } from '@kadena/types';
 
@@ -21,7 +21,7 @@ import type {
  * @param ttl The amount of time before the transaction expires.
  * @returns
  */
-export function createSigningCommand(
+export function createSigningRequest(
   code: string,
   data: EnvData,
   caps: ISigningCap[],
@@ -32,7 +32,7 @@ export function createSigningCommand(
   gasLimit: number,
   gasPrice: number,
   ttl: number,
-): ISigningCommand {
+): ISigningRequest {
   return {
     pactCode: code,
     envData: data,
