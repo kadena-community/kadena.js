@@ -1,4 +1,4 @@
-import type { ChainId, EnvData, ICap, NetworkId, Nonce } from './PactCommand';
+import type { ChainId, EnvData, ICap, NetworkId } from './PactCommand';
 
 /**
  * Pact capability object with role and description to be consumed in Signing API
@@ -24,7 +24,6 @@ export interface ISigningRequest {
   networkId: NetworkId;
   chainId: ChainId;
   sender: string;
-  nonce: Nonce;
   gasLimit: number;
   gasPrice: number;
   signingPubKey: string;
