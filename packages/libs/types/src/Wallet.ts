@@ -1,4 +1,4 @@
-import type { ICap } from './PactCommand';
+import type { ChainId, EnvData, ICap, NetworkId } from './PactCommand';
 
 /**
  * Pact capability object with role and description to be consumed in Signing API
@@ -11,4 +11,21 @@ export interface ISigningCap {
   role: string;
   description: string;
   cap: ICap;
+}
+
+/**
+ * The signing request is handled by the sign endpoint of wallets.
+ * See endpoint here: https://kadena-io.github.io/signing-api/#/definitions/SigningRequest
+ */
+export interface ISigningRequest {
+  pactCode: string;
+  envData: EnvData;
+  caps: ISigningCap[];
+  networkId: NetworkId;
+  chainId: ChainId;
+  sender: string;
+  gasLimit: number;
+  gasPrice: number;
+  signingPubKey: string;
+  ttl: number;
 }

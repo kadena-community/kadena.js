@@ -15,7 +15,7 @@ import { pullSigner } from './pullSigner';
 
 /**
  * Prepare an ExecMsg pact command for use in send or local execution.
- * To use in send, wrap result with 'createCommmand'.
+ * To use in send, wrap result with 'createSendRequest'.
  * @param keyPairs - array of ED25519 keypair and/or clist (list of capabilities associated with keypairs)
  * @param nonce - nonce value for ensuring unique hash - default to current time
  * @param pactCode - pact code to execute - required

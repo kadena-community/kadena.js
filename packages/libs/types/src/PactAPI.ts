@@ -8,6 +8,9 @@ import type {
 
 // TODO: Add descriptions
 /**
+ * A Request Key is a]the blake2b-256 bit hash of a Pact command.
+ * They might also be called Transaction IDs.
+ * A list of them are returned by the /send endpoint.
  * @alpha
  */
 export interface IRequestKeys {
