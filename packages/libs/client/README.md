@@ -384,38 +384,27 @@ If you don't wish to generate JS code for your contracts, or use templates, you 
 ```ts
 import { PactCommand } from '@kadena/client';
 
-var pactCommandBuilder = new PactCommand();
+var pactCommandBuilder = new PactCommand()
+  .addData({ // Add environment data to the transaction
+    person: "Randy",
+  })
+  .setMeta({ // Update the metadata with a new sender and chain, and set the chain
+    publicMeta: {
+      chainId: '8',
+      sender: 'k:abc',
+    },
+    networkId: 'testnet04',
+  })
+  .addCap({ // Update the capabilities
+    signer: 'k:abc'
+    capability:'coin.GAS'
+  })
+  .addSignatures([{ // Add signatures
+    pubkey: 'k:abc',
+    sig: 'xyz',
+  }]);
 
 pactCommandBuilder.code = '(format "Hello {}!" [(read-msg "person")])';
-
-// Add environment data to the transaction
-pactCommandBuilder.addData({
-  person: "Randy",
-});
-
-// Update the metadata to include a sender, and set the chain
-pactCommandBuilder.setMeta({
-  publicMeta: {
-    chainId: '8',
-    gasLimit: 2500,
-    gasPrice: 1.0e-8,
-    sender: 'k:abc',
-    ttl: 8 * 60 * 60, // 8 hours,
-  },
-  networkId: 'testnet04',
-});
-
-// Update the capabilities
-pactCommandBuilder.addCap({
-  signer: 'k:abc'
-  capability:'coin.GAS'
-});
-
-// Add signatures
-pactCommandBuilder.addSignatures([{
-  pubkey: 'k:abc',
-  sig: 'xyz',
-}]);
 
 // Send it or local it
 pactCommandBuilder.local('https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact');
