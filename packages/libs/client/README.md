@@ -33,7 +33,8 @@ Interaction with the Kadena Blockchain works in multiple ways. With
 Blockchain. The two ways are:
 
 [**1. contract based**](#contract-based-interaction-using-kadenaclient), and
-[**2. template based**](#template-based-interaction-using-kadenaclient).
+[**2. template based**](#template-based-interaction-using-kadenaclient), and
+[**3. modular pact command**](#using-the-pactcommand-class).
 
 There's also information on an
 [**Integrated way of signing using Chainweaver**](#integrated-sign-request-to-chainweaver-desktop).
@@ -202,7 +203,7 @@ Take note of the following:
   doesn't have any arguments, `coin.TRANSFER` does.
 - `setMeta`s object has a `sender` property, which is a `public-key`.
 
-## Manually singing the transaction
+## Manually signing the transaction
 
 To sign the transaction, you can use the builder to output the `command`. This
 can be pasted into the `SigData` of Chainweaver.
@@ -374,6 +375,52 @@ const commandBuilder = kadenaCoinTemplates['safe-transfer']({
 });
 
 const unsignedTransaction = commandBuilder.createTransaction();
+```
+
+# Using the PactCommand class
+
+If you don't wish to generate JS code for your contracts, or use templates, you can use the PactCommand class directly to build a command modularly, and then easily send it.
+
+```ts
+import { PactCommand } from '@kadena/client';
+
+var pactCommandBuilder = new PactCommand();
+
+pactCommandBuilder.code = '(format "Hello {}!" [(read-msg "person")])';
+
+// Add environment data to the transaction
+pactCommandBuilder.addData({
+  person: "Randy",
+});
+
+// Update the metadata to include a sender, and set the chain
+pactCommandBuilder.setMeta({
+  publicMeta: {
+    chainId: '8',
+    gasLimit: 2500,
+    gasPrice: 1.0e-8,
+    sender: 'k:abc',
+    ttl: 8 * 60 * 60, // 8 hours,
+  },
+  networkId: 'testnet04',
+});
+
+// Update the capabilities
+pactCommandBuilder.addCap({
+  signer: 'k:abc'
+  capability:'coin.GAS'
+});
+
+// Add signatures
+pactCommandBuilder.addSignatures([{
+  pubkey: 'k:abc',
+  sig: 'xyz',
+}]);
+
+// Send it or local it
+pactCommandBuilder.local('https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact');
+pactCommandBuilder.send('https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact');
+
 ```
 
 # Send a request to the blockchain
