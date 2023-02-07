@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/create-kadena-app",
+      "comment": "Added template for creating a VueJS project with Create-Kadena-App",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/create-kadena-app"
+}
