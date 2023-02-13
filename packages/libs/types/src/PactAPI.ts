@@ -6,7 +6,6 @@ import type {
   SPVProof,
 } from './PactCommand';
 
-// TODO: Add descriptions
 /**
  * A Request Key is a]the blake2b-256 bit hash of a Pact command.
  * They might also be called Transaction IDs.
