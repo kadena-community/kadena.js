@@ -27,7 +27,7 @@ let h: string = hash(commandPayload);
 
 // Signing is normally handled by wallets, but if you have the private key
 // available to you, you can also sign in this way:
-let keyPair: KeyPair = {
+let keyPair: IKeyPair = {
   publicKey:
     'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
   secretKey:
