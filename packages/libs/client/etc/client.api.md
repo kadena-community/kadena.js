@@ -28,7 +28,7 @@ export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 // @alpha (undocumented)
 export interface IChainweaverQuickSignRequestBody {
     // (undocumented)
-    reqs: IUnsignedTransaction[];
+    cmdSigDatas: IUnsignedChainweaverTransaction[];
 }
 
 // @alpha (undocumented)
@@ -126,11 +126,27 @@ export interface IPublicMeta {
 }
 
 // @alpha (undocumented)
+export interface ISigner {
+    // (undocumented)
+    pubKey: string;
+    // (undocumented)
+    sig: string | undefined;
+}
+
+// @alpha (undocumented)
 export interface ITemplate {
     // (undocumented)
     holes: TemplateHoles;
     // (undocumented)
     parts: TemplateParts;
+}
+
+// @alpha (undocumented)
+export interface IUnsignedChainweaverTransaction {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: ISigner[];
 }
 
 // @alpha (undocumented)
