@@ -31,18 +31,29 @@ export interface IChainweaverQuickSignRequestBody {
     cmdSigDatas: IUnsignedChainweaverTransaction[];
 }
 
-// @alpha (undocumented)
-export type IChainweaverSig = string;
+// @public (undocumented)
+export interface IChainweaverResponse {
+    // Warning: (ae-incompatible-release-tags) The symbol "commandSigData" is marked as @public, but its signature references "IChainweaverResponseCommand" which is marked as @alpha
+    //
+    // (undocumented)
+    commandSigData: IChainweaverResponseCommand;
+    // (undocumented)
+    outcome: {
+        hash: string;
+        result: 'success' | 'noSig';
+    };
+}
 
 // @alpha (undocumented)
-export interface IChainweaverSignedCommand {
+export interface IChainweaverResponseCommand {
     // (undocumented)
     cmd: string;
     // (undocumented)
-    sigs: {
-        [pubkey: string]: IChainweaverSig;
-    };
+    sigs: ISigner[];
 }
+
+// @alpha (undocumented)
+export type IChainweaverSig = string;
 
 // @alpha (undocumented)
 export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
@@ -52,8 +63,8 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
     addSignatures(...sig: {
-        pubkey: string;
-        sig: string;
+        pubKey: string;
+        sig: string | null;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
     createCommand(): ICommand;
@@ -102,7 +113,7 @@ export interface IPactCommand {
         }[];
     }[];
     // (undocumented)
-    sigs: (ISignature | undefined)[];
+    sigs: (ISignature | undefined | null)[];
     // (undocumented)
     type: string;
 }
@@ -130,7 +141,7 @@ export interface ISigner {
     // (undocumented)
     pubKey: string;
     // (undocumented)
-    sig: string | undefined;
+    sig: string | null;
 }
 
 // @alpha (undocumented)
@@ -179,8 +190,8 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     addData(data: IPactCommand['data']): this;
     // (undocumented)
     addSignatures(...sigs: {
-        pubkey: string;
-        sig: string;
+        pubKey: string;
+        sig: string | null;
     }[]): this;
     // (undocumented)
     cmd: string | undefined;

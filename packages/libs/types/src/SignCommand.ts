@@ -2,7 +2,7 @@
  * @alpha
  */
 export interface ISignature {
-  sig: string | undefined;
+  sig: string | undefined | null;
 }
 
 /**
@@ -10,7 +10,7 @@ export interface ISignature {
  */
 export interface ISignedSignatureWithHash extends ISignature {
   hash: string;
-  sig: string | undefined;
+  sig: string | undefined | null;
   pubKey: string;
 }
 
@@ -19,7 +19,7 @@ export interface ISignedSignatureWithHash extends ISignature {
  */
 export interface IUnsignedSignatureWithHash extends ISignature {
   hash: string;
-  sig: string | undefined;
+  sig: string | undefined | null;
   pubKey?: string;
 }
 

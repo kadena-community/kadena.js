@@ -1,5 +1,12 @@
+import {
+  IChainweaverResponse,
+  IChainweaverResponseCommand,
+} from '../interfaces/IChainweaverResponse';
 import { IPactCommand } from '../interfaces/IPactCommand';
-import { IUnsignedChainweaverTransaction } from '../interfaces/IUnsignedTransaction';
+import {
+  ISigner,
+  IUnsignedChainweaverTransaction,
+} from '../interfaces/IUnsignedTransaction';
 import { ICommandBuilder } from '../pact';
 
 import fetch from 'cross-fetch';
@@ -10,14 +17,6 @@ import _debug from 'debug';
  * @alpha
  */
 export type IChainweaverSig = string;
-
-/**
- * @alpha
- */
-export interface IChainweaverSignedCommand {
-  sigs: { [pubkey: string]: IChainweaverSig };
-  cmd: string;
-}
 
 /**
  * @alpha
@@ -42,16 +41,16 @@ export async function signWithChainweaver<T1 extends string, T2>(
         sigs: t.signers.map((signer, i) => {
           return {
             pubKey: signer.pubKey,
-            sig: t.sigs[i]?.sig,
+            sig: t.sigs[i]?.sig || null,
           };
         }),
       };
     }),
   };
+
   const body: string = JSON.stringify(quickSignRequest);
 
   debug('calling sign api:', body);
-  console.log(JSON.stringify(quickSignRequest), body);
 
   const response = await fetch('http://127.0.0.1:9467/v1/quicksign', {
     method: 'POST',
@@ -64,23 +63,13 @@ export async function signWithChainweaver<T1 extends string, T2>(
   // response is not JSON when not-ok, that's why we use try-catch
   try {
     const result = JSON.parse(bodyText) as {
-      results: IChainweaverSignedCommand[];
+      responses: IChainweaverResponse[];
     };
-    result.results.map((signedCommand, i) => {
-      transactions[i].addSignatures(
-        ...Object.keys(signedCommand.sigs).reduce(
-          (sigs, pubkey) => {
-            const sig = signedCommand.sigs[pubkey];
-            sigs.push({ pubkey, sig });
-            return sigs;
-          },
-          [] as {
-            pubkey: string;
-            sig: string;
-          }[],
-        ),
-      );
+
+    result.responses.map((signedCommand, i) => {
+      transactions[i].addSignatures(...signedCommand.commandSigData.sigs);
     });
+
     return transactions;
   } catch (error) {
     throw new Error(

@@ -210,7 +210,7 @@ export interface ISendRequestBody {
 // @alpha (undocumented)
 export interface ISignature {
     // (undocumented)
-    sig: string | undefined;
+    sig: string | undefined | null;
 }
 
 // @alpha (undocumented)
@@ -230,7 +230,7 @@ export interface ISignedSignatureWithHash extends ISignature {
     // (undocumented)
     pubKey: string;
     // (undocumented)
-    sig: string | undefined;
+    sig: string | undefined | null;
 }
 
 // @alpha
@@ -270,7 +270,7 @@ export interface IUnsignedSignatureWithHash extends ISignature {
     // (undocumented)
     pubKey?: string;
     // (undocumented)
-    sig: string | undefined;
+    sig: string | undefined | null;
 }
 
 // @alpha (undocumented)

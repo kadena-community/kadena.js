@@ -58,8 +58,8 @@ export interface ICommandBuilder<
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
     ...sig: {
-      pubkey: string;
-      sig: string;
+      pubKey: string;
+      sig: string | null;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   status: string;
@@ -214,7 +214,7 @@ export class PactCommand
     // convert to IUnsignedTransaction
     const command: ICommand = {
       hash,
-      sigs: this.sigs.map((s) => (s === undefined ? { sig: '' } : s)),
+      sigs: this.sigs.map((s) => (s === undefined ? { sig: null } : s)),
       cmd,
     };
 
@@ -377,10 +377,12 @@ export class PactCommand
     return poll({ requestKeys: [this.requestKey] }, apiHost);
   }
 
-  public addSignatures(...sigs: { pubkey: string; sig: string }[]): this {
-    sigs.forEach(({ pubkey, sig }) => {
+  public addSignatures(
+    ...sigs: { pubKey: string; sig: string | null }[]
+  ): this {
+    sigs.forEach(({ pubKey: key, sig }) => {
       const foundSignerIndex = this.signers.findIndex(
-        ({ pubKey }) => pubKey === pubkey,
+        ({ pubKey }) => pubKey === key,
       );
       if (foundSignerIndex === -1) {
         throw new Error('Cannot add signature, public key not present');

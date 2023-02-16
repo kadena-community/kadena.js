@@ -3,7 +3,7 @@
  */
 export interface ISigner {
   pubKey: string;
-  sig: string | undefined;
+  sig: string | null;
 }
 
 /**

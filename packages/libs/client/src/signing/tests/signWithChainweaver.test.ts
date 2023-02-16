@@ -7,7 +7,7 @@ jest.mock('cross-fetch', () => {
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { ICommandBuilder, Pact } from '../../pact';
 import {
-  IChainweaverSignedCommand,
+  IChainweaverResponseCommand,
   signWithChainweaver,
 } from '../signWithChainweaver';
 
@@ -36,8 +36,7 @@ describe('signWithChainweaver', () => {
     const { cmd, hash } = unsignedCommand.createCommand();
     const sigs = unsignedCommand.sigs.reduce((sigs, sig, i) => {
       const pubkey = unsignedCommand.signers[i].pubKey;
-      sigs[pubkey] =
-        sig === undefined ? null : sig.sig === undefined ? null : sig.sig;
+      sigs[pubkey] = sig?.sig || null;
       return sigs;
       // eslint-disable-next-line @rushstack/no-new-null
     }, {} as { [pubkey: string]: string | null });
@@ -80,8 +79,13 @@ describe('signWithChainweaver', () => {
   });
 
   it('adds signatures in multisig fashion to the transactions', async () => {
-    const mockedResponse: { results: IChainweaverSignedCommand[] } = {
-      results: [{ cmd: '', sigs: { 'gas-signer-pubkey': 'gas-key-sig' } }],
+    const mockedResponse: { responses: IChainweaverResponseCommand[] } = {
+      responses: [
+        {
+          cmd: '',
+          sigs: [{ pubKey: 'gas-signer-pubkey', sig: 'gas-key-sig' }],
+        },
+      ],
     };
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
@@ -106,9 +110,12 @@ describe('signWithChainweaver', () => {
     expect(unsignedCommand.sigs).toEqual([{ sig: 'gas-key-sig' }, undefined]);
 
     // set a new mock response for the second signature
-    const mockedResponse2: { results: IChainweaverSignedCommand[] } = {
+    const mockedResponse2: { results: IChainweaverResponseCommand[] } = {
       results: [
-        { cmd: '', sigs: { 'transfer-signer-pubkey': 'transfer-key-sig' } },
+        {
+          cmd: '',
+          sigs: [{ pubKey: 'transfer-signer-pubkey', sig: 'transfer-key-sig' }],
+        },
       ],
     };
     (fetch as jest.Mock).mockResolvedValue({
