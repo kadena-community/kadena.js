@@ -1,4 +1,4 @@
-import { ISigner } from 'IUnsignedTransaction';
+import { ISigner } from './IUnsignedTransaction';
 
 /**
  * @alpha

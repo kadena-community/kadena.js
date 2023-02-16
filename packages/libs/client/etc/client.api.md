@@ -31,27 +31,6 @@ export interface IChainweaverQuickSignRequestBody {
     cmdSigDatas: IUnsignedChainweaverTransaction[];
 }
 
-// @public (undocumented)
-export interface IChainweaverResponse {
-    // Warning: (ae-incompatible-release-tags) The symbol "commandSigData" is marked as @public, but its signature references "IChainweaverResponseCommand" which is marked as @alpha
-    //
-    // (undocumented)
-    commandSigData: IChainweaverResponseCommand;
-    // (undocumented)
-    outcome: {
-        hash: string;
-        result: 'success' | 'noSig';
-    };
-}
-
-// @alpha (undocumented)
-export interface IChainweaverResponseCommand {
-    // (undocumented)
-    cmd: string;
-    // (undocumented)
-    sigs: ISigner[];
-}
-
 // @alpha (undocumented)
 export type IChainweaverSig = string;
 

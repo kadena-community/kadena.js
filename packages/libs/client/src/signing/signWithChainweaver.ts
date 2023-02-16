@@ -1,7 +1,4 @@
-import {
-  IChainweaverResponse,
-  IChainweaverResponseCommand,
-} from '../interfaces/IChainweaverResponse';
+import { IChainweaverResponse } from '../interfaces/IChainweaverResponse';
 import { IPactCommand } from '../interfaces/IPactCommand';
 import {
   ISigner,

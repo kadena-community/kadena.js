@@ -312,7 +312,9 @@ export class PactCommand
       interval = 5000,
       timeout = 1000 * 60 * 3,
       onPoll = () => {},
-    } = { ...options };
+    } = {
+      ...options,
+    };
     const endTime = Date.now() + timeout;
     this.status = 'pending';
 
@@ -380,9 +382,9 @@ export class PactCommand
   public addSignatures(
     ...sigs: { pubKey: string; sig: string | null }[]
   ): this {
-    sigs.forEach(({ pubKey: key, sig }) => {
+    sigs.forEach(({ pubKey, sig }) => {
       const foundSignerIndex = this.signers.findIndex(
-        ({ pubKey }) => pubKey === key,
+        (signer) => signer.pubKey === pubKey,
       );
       if (foundSignerIndex === -1) {
         throw new Error('Cannot add signature, public key not present');
