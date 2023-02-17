@@ -1,9 +1,6 @@
 import { IChainweaverResponse } from '../interfaces/IChainweaverResponse';
 import { IPactCommand } from '../interfaces/IPactCommand';
-import {
-  ISigner,
-  IUnsignedChainweaverTransaction,
-} from '../interfaces/IUnsignedTransaction';
+import { IUnsignedChainweaverTransaction } from '../interfaces/IUnsignedTransaction';
 import { ICommandBuilder } from '../pact';
 
 import fetch from 'cross-fetch';

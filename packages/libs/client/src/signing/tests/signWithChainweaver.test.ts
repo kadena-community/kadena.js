@@ -4,12 +4,10 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
+import { IChainweaverResponse } from '../../interfaces/IChainweaverResponse';
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { ICommandBuilder, Pact } from '../../pact';
-import {
-  IChainweaverResponseCommand,
-  signWithChainweaver,
-} from '../signWithChainweaver';
+import { signWithChainweaver } from '../signWithChainweaver';
 
 import fetch from 'cross-fetch';
 
@@ -19,7 +17,7 @@ describe('signWithChainweaver', () => {
   it('makes a call on 127.0.0.1:9467/v1/quicksign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
-      text: () => JSON.stringify({ results: [] }),
+      text: () => JSON.stringify({ responses: [] }),
       json: () => {},
     });
 
@@ -33,15 +31,15 @@ describe('signWithChainweaver', () => {
         IPactCommand
     ).addCap('GAS', 'signer-key');
 
-    const { cmd, hash } = unsignedCommand.createCommand();
-    const sigs = unsignedCommand.sigs.reduce((sigs, sig, i) => {
-      const pubkey = unsignedCommand.signers[i].pubKey;
-      sigs[pubkey] = sig?.sig || null;
-      return sigs;
-      // eslint-disable-next-line @rushstack/no-new-null
-    }, {} as { [pubkey: string]: string | null });
+    const { cmd } = unsignedCommand.createCommand();
+    const sigs = unsignedCommand.sigs.map((sig, i) => {
+      return {
+        pubKey: unsignedCommand.signers[i].pubKey,
+        sig: sig || null,
+      };
+    });
 
-    const body = JSON.stringify({ reqs: [{ cmd, hash, sigs }] });
+    const body = JSON.stringify({ cmdSigDatas: [{ cmd, sigs }] });
     await signWithChainweaver(unsignedCommand);
 
     expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/quicksign', {
@@ -79,11 +77,17 @@ describe('signWithChainweaver', () => {
   });
 
   it('adds signatures in multisig fashion to the transactions', async () => {
-    const mockedResponse: { responses: IChainweaverResponseCommand[] } = {
+    const mockedResponse: { responses: IChainweaverResponse[] } = {
       responses: [
         {
-          cmd: '',
-          sigs: [{ pubKey: 'gas-signer-pubkey', sig: 'gas-key-sig' }],
+          commandSigData: {
+            cmd: '',
+            sigs: [{ pubKey: 'gas-signer-pubkey', sig: 'gas-key-sig' }],
+          },
+          outcome: {
+            hash: '',
+            result: 'success',
+          },
         },
       ],
     };
@@ -110,11 +114,19 @@ describe('signWithChainweaver', () => {
     expect(unsignedCommand.sigs).toEqual([{ sig: 'gas-key-sig' }, undefined]);
 
     // set a new mock response for the second signature
-    const mockedResponse2: { results: IChainweaverResponseCommand[] } = {
-      results: [
+    const mockedResponse2: { responses: IChainweaverResponse[] } = {
+      responses: [
         {
-          cmd: '',
-          sigs: [{ pubKey: 'transfer-signer-pubkey', sig: 'transfer-key-sig' }],
+          commandSigData: {
+            cmd: '',
+            sigs: [
+              { pubKey: 'transfer-signer-pubkey', sig: 'transfer-key-sig' },
+            ],
+          },
+          outcome: {
+            hash: '',
+            result: 'success',
+          },
         },
       ],
     };
