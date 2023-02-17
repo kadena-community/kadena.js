@@ -214,7 +214,7 @@ export class PactCommand
     // convert to IUnsignedTransaction
     const command: ICommand = {
       hash,
-      sigs: this.sigs.map((s) => (s === undefined ? { sig: null } : s)),
+      sigs: this.sigs.map((s) => (!s ? { sig: null } : s)),
       cmd,
     };
 
