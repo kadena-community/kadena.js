@@ -63,7 +63,6 @@ export interface ICommandBuilder<
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   status: string;
-  requestKey: string | undefined;
   // setSigner(
   //   fn: (
   //     ...transactions: (IPactCommand &
