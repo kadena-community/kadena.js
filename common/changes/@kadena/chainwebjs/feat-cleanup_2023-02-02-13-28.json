@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainwebjs",
+      "comment": "Cleanup readme",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainwebjs"
+}
