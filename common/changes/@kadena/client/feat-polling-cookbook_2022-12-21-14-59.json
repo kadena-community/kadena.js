@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Expose requestKey on PactCommand",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

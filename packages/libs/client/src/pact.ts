@@ -150,6 +150,7 @@ export class PactCommand
     this.signers = [];
     this.sigs = [];
     this.status = 'malleable';
+    this.requestKey = undefined;
   }
 
   /**
