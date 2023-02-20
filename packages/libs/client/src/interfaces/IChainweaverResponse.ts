@@ -5,10 +5,35 @@ import { ISigner } from './IUnsignedTransaction';
  */
 export interface IChainweaverResponse {
   commandSigData: IChainweaverResponseCommand;
-  outcome: {
-    hash: string;
-    result: 'success' | 'noSig';
-  };
+  outcome:
+    | {
+        hash: string;
+        result: 'success';
+      }
+    | {
+        msg: string;
+        result: 'failure';
+      }
+    | {
+        result: 'noSig';
+      };
+}
+
+/**
+ * @alpha
+ */
+export interface IChainweaverError {
+  error:
+    | {
+        type: 'reject';
+      }
+    | {
+        type: 'emptyList';
+      }
+    | {
+        type: 'other';
+        msg: string;
+      };
 }
 
 /**
