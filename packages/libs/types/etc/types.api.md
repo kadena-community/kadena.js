@@ -255,26 +255,18 @@ export interface ISigningCap {
     role: string;
 }
 
-// @public
+// @alpha
 export interface ISigningRequest {
-    // Warning: (ae-incompatible-release-tags) The symbol "caps" is marked as @public, but its signature references "ISigningCap" which is marked as @alpha
-    //
     // (undocumented)
     caps: ISigningCap[];
-    // Warning: (ae-incompatible-release-tags) The symbol "chainId" is marked as @public, but its signature references "ChainId" which is marked as @alpha
-    //
     // (undocumented)
     chainId: ChainId;
-    // Warning: (ae-incompatible-release-tags) The symbol "envData" is marked as @public, but its signature references "EnvData" which is marked as @alpha
-    //
     // (undocumented)
     envData: EnvData;
     // (undocumented)
     gasLimit: number;
     // (undocumented)
     gasPrice: number;
-    // Warning: (ae-incompatible-release-tags) The symbol "networkId" is marked as @public, but its signature references "NetworkId" which is marked as @alpha
-    //
     // (undocumented)
     networkId: NetworkId;
     // (undocumented)
