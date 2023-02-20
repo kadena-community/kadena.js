@@ -154,10 +154,9 @@ export type NonceType = string;
 // @alpha (undocumented)
 export const Pact: IPact;
 
-// @alpha (undocumented)
+// @alpha
 export class PactCommand implements IPactCommand, ICommandBuilder<Record<string, unknown>> {
     constructor();
-    // (undocumented)
     addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T[]): this;
     // (undocumented)
     addData(data: IPactCommand['data']): this;
@@ -195,7 +194,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     requestKey: string | undefined;
     send(apiHost: string): Promise<ISendResponse>;
-    // (undocumented)
     setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
     // (undocumented)
     signers: {

@@ -105,7 +105,7 @@ type TransactionStatus =
  * Used to build Command objects modularly by adding pact code, environment data, capabilities, and sigs
  * as necessary.
  * Once the command is complete and ready for use, you can either call `createCommand` to get the ICommand object,
- * or you can call `local` or `send` to send the command to \send or \local endpoints of a node with the provided URL.
+ * or you can call `local` or `send` to send the command to /send or /local endpoints of a node with the provided URL.
  *
  * @alpha
  */
@@ -239,9 +239,8 @@ export class PactCommand
    * Sets the meta data for the PactCommand.
    * Also used to change the networkId the command is sent to when local/send
    * are used.
-   * @param publicMeta
-   * @param networkId
-   * @returns
+   * @param publicMeta - undocumented
+   * @param networkId - undocumented
    */
   public setMeta(
     publicMeta: Partial<IPactCommand['publicMeta']>,
@@ -256,10 +255,9 @@ export class PactCommand
 
   /**
    * Adds the given capability to the PactCommand for the signer.
-   * @param capability The full reference to the pact capability, e.g. "coin.GAS"
-   * @param signer The public key of the signer who needs the capability
-   * @param args The arguments for the capability, e.g. ["sender", "receiver", 1.0]
-   * @returns
+   * @param capability - The full reference to the pact capability, e.g. "coin.GAS"
+   * @param signer - The public key of the signer who needs the capability
+   * @param args - The arguments for the capability, e.g. ["sender", "receiver", 1.0]
    */
   public addCap<T extends Array<PactValue> = Array<PactValue>>(
     capability: string,
