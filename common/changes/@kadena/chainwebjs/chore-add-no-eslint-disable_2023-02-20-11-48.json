@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainwebjs",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainwebjs"
+}
