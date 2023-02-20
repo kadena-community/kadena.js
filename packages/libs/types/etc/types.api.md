@@ -104,7 +104,7 @@ export interface IExecPayload {
     data: Exclude<EnvData, undefined> | null;
 }
 
-// @alpha (undocumented)
+// @alpha
 export interface IKeyPair {
     // (undocumented)
     clist?: Array<ICap>;
@@ -195,7 +195,7 @@ export interface IPollResponse {
     [key: IBase64Url]: ICommandResult;
 }
 
-// @alpha (undocumented)
+// @alpha
 export interface IRequestKeys {
     // (undocumented)
     requestKeys: Array<IBase64Url>;
@@ -253,6 +253,38 @@ export interface ISigningCap {
     description: string;
     // (undocumented)
     role: string;
+}
+
+// @public
+export interface ISigningRequest {
+    // Warning: (ae-incompatible-release-tags) The symbol "caps" is marked as @public, but its signature references "ISigningCap" which is marked as @alpha
+    //
+    // (undocumented)
+    caps: ISigningCap[];
+    // Warning: (ae-incompatible-release-tags) The symbol "chainId" is marked as @public, but its signature references "ChainId" which is marked as @alpha
+    //
+    // (undocumented)
+    chainId: ChainId;
+    // Warning: (ae-incompatible-release-tags) The symbol "envData" is marked as @public, but its signature references "EnvData" which is marked as @alpha
+    //
+    // (undocumented)
+    envData: EnvData;
+    // (undocumented)
+    gasLimit: number;
+    // (undocumented)
+    gasPrice: number;
+    // Warning: (ae-incompatible-release-tags) The symbol "networkId" is marked as @public, but its signature references "NetworkId" which is marked as @alpha
+    //
+    // (undocumented)
+    networkId: NetworkId;
+    // (undocumented)
+    pactCode: string;
+    // (undocumented)
+    sender: string;
+    // (undocumented)
+    signingPubKey: string;
+    // (undocumented)
+    ttl: number;
 }
 
 // @alpha
@@ -328,7 +360,7 @@ export type SignatureWithHash = ISignedSignatureWithHash | IUnsignedSignatureWit
 // @alpha (undocumented)
 export type SignCommand = SignatureWithHash;
 
-// @alpha (undocumented)
+// @alpha
 export type SignerScheme = 'ED25519';
 
 // @alpha
