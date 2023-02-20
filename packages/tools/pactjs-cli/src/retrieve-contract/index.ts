@@ -6,23 +6,26 @@ import { z } from 'zod';
 
 // eslint-disable-next-line @rushstack/typedef-var
 const Options = z.object({
-  /* eslint-disable @typescript-eslint/naming-convention */
   module: z.string({
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
     invalid_type_error: 'Error: -m, --module must be a string',
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
     required_error: 'Error: -m, --module is required',
   }),
   out: z.string({
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
     invalid_type_error: 'Error: -o, --out must be a string',
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
     required_error: 'Error: -o, --out is required',
   }),
   network: z.enum(['mainnet', 'testnet']),
   chain: z
     .number({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -c, --chain must be a number',
     })
     .min(0)
     .max(19),
-  /* eslint-enable @typescript-eslint/naming-convention */
 });
 
 export type TOptions = z.infer<typeof Options>;

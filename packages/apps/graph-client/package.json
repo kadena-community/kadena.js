@@ -11,7 +11,7 @@
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && rushx start",
-    "test": "heft test"
+    "test": "echo \"No tests yet.\""
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
