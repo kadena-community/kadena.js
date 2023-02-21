@@ -1,7 +1,7 @@
 {
   "name": "vuejs",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Vuejs starter project with @kadena/client integration",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",

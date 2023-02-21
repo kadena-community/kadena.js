@@ -17,8 +17,6 @@ const SUPPORTED_PROJECT_TEMPLATES: Array<string> = [
   'angular',
 ];
 
-const NOTIMPLEMENTED_PROJECT_TEMPLATES: Array<string> = ['angular'];
-
 const COPY_IGNORE_LIST: Array<string> = [
   '.next',
   'node_modules',
@@ -162,10 +160,6 @@ export function projectGenerateCommand(
             ', ',
           )}`,
         );
-      }
-
-      if (NOTIMPLEMENTED_PROJECT_TEMPLATES.includes(template)) {
-        program.error(`Support for "${template}" is coming soon`);
       }
 
       if (!isValidProjectName(name)) {

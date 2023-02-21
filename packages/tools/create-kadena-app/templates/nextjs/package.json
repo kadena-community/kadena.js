@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Nextjs starter project with @kadena/client integration",
   "scripts": {
     "build": "next build",
