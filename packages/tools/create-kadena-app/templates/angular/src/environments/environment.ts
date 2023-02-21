@@ -1,6 +1,6 @@
 import { ChainId, ChainwebNetworkId } from '@kadena/types';
 
-// this would normally be your mainnet configuration, but our test contract has only been deployed on testnet
+// this would normally be your mainnet configuration, but our test contract `free.cka-message-store` has only been deployed on testnet
 export const environment: {
   kadenaNetworkId: ChainwebNetworkId
   kadenaChainId: ChainId
