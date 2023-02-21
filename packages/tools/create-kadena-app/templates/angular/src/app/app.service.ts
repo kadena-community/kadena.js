@@ -13,19 +13,19 @@ export class AppService {
   async writeMessage(account:string, message:string) {
     try {
       const transactionBuilder = Pact.modules['free.cka-message-store']['write-message'](account, message)
-      .addCap('coin.GAS', accountKey(account))
-      .addCap('free.cka-message-store.ACCOUNT-OWNER' , accountKey(account), account)
-      .setMeta({
-        ttl: 28000,
-        gasLimit: 100000,
-        chainId: kadenaChainId,
-        gasPrice: 0.000001,
-        sender: account,
-      }, kadenaNetworkId)
+        .addCap('coin.GAS', accountKey(account))
+        .addCap('free.cka-message-store.ACCOUNT-OWNER' , accountKey(account), account)
+        .setMeta({
+          ttl: 28000,
+          gasLimit: 100000,
+          chainId: kadenaChainId,
+          gasPrice: 0.000001,
+          sender: account,
+        }, kadenaNetworkId)
 
-      // `signWithChainweaver` modifies the `transactionBuilder` that's passed, 
+      // `signWithChainweaver` modifies the `transactionBuilder` that's passed,
       //   so we use this further down
-      // It also returns an array with the transactionBuilders that are passed 
+      // It also returns an array with the transactionBuilders that are passed
       //   (if one is passed it'll be an array of 1)
 
       await signWithChainweaver(transactionBuilder)
