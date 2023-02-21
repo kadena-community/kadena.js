@@ -23,6 +23,11 @@ export class AppService {
         sender: account,
       }, kadenaNetworkId)
 
+      // `signWithChainweaver` modifies the `transactionBuilder` that's passed, 
+      //   so we use this further down
+      // It also returns an array with the transactionBuilders that are passed 
+      //   (if one is passed it'll be an array of 1)
+
       await signWithChainweaver(transactionBuilder)
 
       console.log(`Sending transaction: ${transactionBuilder.code}`)
