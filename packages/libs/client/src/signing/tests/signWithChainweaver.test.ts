@@ -141,4 +141,37 @@ describe('signWithChainweaver', () => {
       { sig: 'transfer-key-sig' },
     ]);
   });
+
+  it('Wallet signs but does not have the signer key and returns sig null', async () => {
+    const mockedResponse: { responses: IChainweaverResponse[] } = {
+      responses: [
+        {
+          commandSigData: {
+            cmd: '',
+            sigs: [{ pubKey: 'gas-signer-pubkey', sig: null }],
+          },
+          outcome: { result: 'noSig' },
+        },
+      ],
+    };
+
+    (fetch as jest.Mock).mockResolvedValue({
+      status: 200,
+      text: () => JSON.stringify(mockedResponse),
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pactModule = Pact.modules as any;
+
+    const unsignedCommand = (
+      pactModule.coin.transfer('k:from') as ICommandBuilder<{
+        GAS: [];
+      }> &
+        IPactCommand
+    ).addCap('GAS', 'gas-signer-pubkey');
+
+    await signWithChainweaver(unsignedCommand);
+
+    expect(unsignedCommand.sigs).toEqual([{ sig: null }]);
+  });
 });
