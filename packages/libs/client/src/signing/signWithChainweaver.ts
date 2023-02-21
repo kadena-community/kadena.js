@@ -35,7 +35,7 @@ export async function signWithChainweaver<T1 extends string, T2>(
         sigs: t.signers.map((signer, i) => {
           return {
             pubKey: signer.pubKey,
-            sig: t.sigs[i]?.sig || null,
+            sig: t.sigs[i]?.sig ?? null,
           };
         }),
       };
