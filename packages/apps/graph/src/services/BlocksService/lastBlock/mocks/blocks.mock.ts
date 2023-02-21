@@ -1,4 +1,4 @@
-/* eslint-disable max-lines */
+/* eslint-disable-next-line max-lines */
 import { Decimal } from '@prisma/client/runtime';
 
 // eslint-disable-next-line @rushstack/typedef-var

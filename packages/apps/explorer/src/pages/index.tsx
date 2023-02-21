@@ -14,7 +14,21 @@ import { GetServerSidePropsContext } from 'next';
 import React, { FC, useContext } from 'react';
 import { unstable_serialize } from 'swr';
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<
+  | {
+      props: {
+        fallbackApiData: {
+          [x: string]:
+            | import('/Users/albert/projects/kadena-community/kadena.js/packages/apps/explorer/src/network/info').NodeInfoResponseData
+            | undefined;
+        };
+        hasError?: undefined;
+      };
+    }
+  | { props: { hasError: boolean; fallbackApiData?: undefined } }
+> {
   try {
     const network = getNetworkCookie(context);
     const nodeInfoData = await nodeInfoAsync(APIRoute.Info, network);
@@ -22,12 +36,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       props: {
         fallbackApiData: {
-          [unstable_serialize([APIRoute.Info, network])]: nodeInfoData,
+          [unstable_serialize([APIRoute.Info, network])]:
+            nodeInfoData || undefined,
         },
       },
     };
   } catch (error) {
-    console.error(error || 'Error');
+    console.error(Boolean(error) || 'Error');
     return { props: { hasError: true } };
   }
 }

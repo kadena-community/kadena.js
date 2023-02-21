@@ -66,6 +66,7 @@ const TestTransactionDetailsComponent: FC = () => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TestTransactionDetailsDynamic: any = dynamic<any>(
   () => Promise.resolve(TestTransactionDetailsComponent),
   {

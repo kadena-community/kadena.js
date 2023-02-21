@@ -538,6 +538,14 @@
     },
 
     {
+      "packageName": "@kadena-dev/eslint-plugin",
+      "projectFolder": "packages/tools/eslint-plugin",
+      "cyclicDependencyProjects": ["@kadena-dev/eslint-plugin"],
+      "tags": ["tools"],
+      "shouldPublish": true
+    },
+
+    {
       "packageName": "@kadena-dev/heft-rig",
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
@@ -557,7 +565,7 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
-    }
+    },
 
     // {
     //   /**

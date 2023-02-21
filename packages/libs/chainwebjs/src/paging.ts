@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* ************************************************************************** */
 /* Paging Tools */
 
@@ -22,10 +21,13 @@ export async function* pageIterator<T>(
   let next = undefined;
   let c = 0;
   do {
+    /* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */
     const limit = n ? n - c : undefined;
     const page: IPagedResponse<T> = await query(next, limit);
     next = page.next;
+    /* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */
     c += page.limit || 0;
     yield page.items;
+    /* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */
   } while (next && (n ? c < n : true));
 }

@@ -11,7 +11,7 @@
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && rushx start",
-    "test": "heft test"
+    "test": "echo \"No tests yet.\""
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -50,6 +50,7 @@
     "@graphql-codegen/typescript-operations": "~2.5.10",
     "@graphql-codegen/typescript-react-apollo": "~3.3.7",
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",

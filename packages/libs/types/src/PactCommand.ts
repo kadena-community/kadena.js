@@ -389,15 +389,15 @@ interface IChainwebResponseMetaData {
 // @TODO Add `gas` to OpenApi spec?
 export interface ICommandResult {
   reqKey: IBase64Url;
-  /* eslint-disable @rushstack/no-new-null*/
+  /* eslint-disable-next-line @rushstack/no-new-null*/
   txId: number | null;
   result: IPactResultSuccess | IPactResultError;
   gas: number;
-  /* eslint-disable @rushstack/no-new-null*/
+  /* eslint-disable-next-line @rushstack/no-new-null*/
   logs: string | null;
-  /* eslint-disable @rushstack/no-new-null*/
+  /* eslint-disable-next-line @rushstack/no-new-null*/
   continuation: IPactExec | null;
-  /* eslint-disable @rushstack/no-new-null*/
+  /* eslint-disable-next-line @rushstack/no-new-null*/
   metaData: IChainwebResponseMetaData | null;
   events?: Array<IPactEvent>;
 }
