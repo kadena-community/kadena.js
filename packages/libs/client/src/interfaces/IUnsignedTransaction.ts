@@ -3,6 +3,7 @@
  */
 export interface ISigner {
   pubKey: string;
+  // eslint-disable-next-line @rushstack/no-new-null
   sig: string | null;
 }
 

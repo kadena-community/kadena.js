@@ -59,6 +59,7 @@ export interface ICommandBuilder<
   addSignatures(
     ...sig: {
       pubKey: string;
+      // eslint-disable-next-line @rushstack/no-new-null
       sig: string | null;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
@@ -380,6 +381,7 @@ export class PactCommand
   }
 
   public addSignatures(
+    // eslint-disable-next-line @rushstack/no-new-null
     ...sigs: { pubKey: string; sig: string | null }[]
   ): this {
     sigs.forEach(({ pubKey, sig }) => {

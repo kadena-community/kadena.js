@@ -17,6 +17,7 @@ export interface IPactCommand {
     }[];
   }[];
   type: string;
+  // eslint-disable-next-line @rushstack/no-new-null
   sigs: (ISignature | undefined | null)[];
 }
 
