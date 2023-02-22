@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ChainId, ChainwebNetworkId, ICap, ISignature } from '@kadena/types';
 
 /**

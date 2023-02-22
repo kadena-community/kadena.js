@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ISendResponse, local, poll, send } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
