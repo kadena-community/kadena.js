@@ -59,8 +59,7 @@ export interface ICommandBuilder<
   addSignatures(
     ...sig: {
       pubKey: string;
-      // eslint-disable-next-line @rushstack/no-new-null
-      sig: string | null;
+      sig: string;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   status: string;
@@ -215,7 +214,7 @@ export class PactCommand
     // convert to IUnsignedTransaction
     const command: ICommand = {
       hash,
-      sigs: this.sigs.map((s) => (!s ? { sig: null } : s)),
+      sigs: this.sigs.map((s) => (!s ? { sig: undefined } : s)),
       cmd,
     };
 
@@ -380,10 +379,7 @@ export class PactCommand
     return poll({ requestKeys: [this.requestKey] }, apiHost);
   }
 
-  public addSignatures(
-    // eslint-disable-next-line @rushstack/no-new-null
-    ...sigs: { pubKey: string; sig: string | null }[]
-  ): this {
+  public addSignatures(...sigs: { pubKey: string; sig: string }[]): this {
     sigs.forEach(({ pubKey, sig }) => {
       const foundSignerIndex = this.signers.findIndex(
         (signer) => signer.pubKey === pubKey,

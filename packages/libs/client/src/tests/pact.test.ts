@@ -4,7 +4,7 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
-import { IUnsignedTransaction } from '../interfaces/IUnsignedTransaction';
+import { IUnsignedTransaction } from '../interfaces/IPactCommand';
 import { ICommandBuilder, Pact, PactCommand } from '../pact';
 
 import fetch from 'cross-fetch';

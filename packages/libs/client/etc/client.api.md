@@ -25,14 +25,47 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
-// @alpha (undocumented)
-export interface IChainweaverQuickSignRequestBody {
+// @public (undocumented)
+export interface IChainweaverCap {
     // (undocumented)
-    cmdSigDatas: IUnsignedChainweaverTransaction[];
+    args: Array<number | string | Record<string, unknown>>;
+    // (undocumented)
+    name: string;
 }
 
-// @alpha (undocumented)
-export type IChainweaverSig = string;
+// @public (undocumented)
+export interface IChainweaverCapElement {
+    // (undocumented)
+    cap: IChainweaverCap;
+    // (undocumented)
+    description: string;
+    // (undocumented)
+    role: string;
+}
+
+// @public (undocumented)
+export interface IChainweaverSignBody {
+    // (undocumented)
+    caps: IChainweaverCapElement[];
+    // (undocumented)
+    chainId: string;
+    // (undocumented)
+    code: string;
+    // (undocumented)
+    data: Record<string, unknown>;
+    // (undocumented)
+    gasLimit: number;
+    // (undocumented)
+    gasPrice: number;
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    sender: string;
+    // (undocumented)
+    signingPubKey: string;
+    // (undocumented)
+    ttl: number;
+}
 
 // @alpha (undocumented)
 export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
@@ -43,7 +76,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     addSignatures(...sig: {
         pubKey: string;
-        sig: string | null;
+        sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
     createCommand(): ICommand;
@@ -92,7 +125,7 @@ export interface IPactCommand {
         }[];
     }[];
     // (undocumented)
-    sigs: (ISignature | undefined | null)[];
+    sigs: (ISignature | undefined)[];
     // (undocumented)
     type: string;
 }
@@ -116,11 +149,57 @@ export interface IPublicMeta {
 }
 
 // @alpha (undocumented)
-export interface ISigner {
+export interface IQuicksignError {
+    // (undocumented)
+    error: {
+        type: 'reject';
+    } | {
+        type: 'emptyList';
+    } | {
+        type: 'other';
+        msg: string;
+    };
+}
+
+// @alpha (undocumented)
+export interface IQuickSignRequestBody {
+    // (undocumented)
+    cmdSigDatas: IUnsignedQuicksignTransaction[];
+}
+
+// @alpha (undocumented)
+export interface IQuicksignResponse {
+    // (undocumented)
+    commandSigData: IQuicksignResponseCommand;
+    // (undocumented)
+    outcome: {
+        hash: string;
+        result: 'success';
+    } | {
+        msg: string;
+        result: 'failure';
+    } | {
+        result: 'noSig';
+    };
+}
+
+// @alpha (undocumented)
+export interface IQuicksignResponseCommand {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: IQuicksignSigner[];
+}
+
+// @alpha (undocumented)
+export type IQuicksignSig = string | null;
+
+// @alpha (undocumented)
+export interface IQuicksignSigner {
     // (undocumented)
     pubKey: string;
     // (undocumented)
-    sig: string | null;
+    sig: IQuicksignSig;
 }
 
 // @alpha (undocumented)
@@ -132,11 +211,11 @@ export interface ITemplate {
 }
 
 // @alpha (undocumented)
-export interface IUnsignedChainweaverTransaction {
+export interface IUnsignedQuicksignTransaction {
     // (undocumented)
     cmd: string;
     // (undocumented)
-    sigs: ISigner[];
+    sigs: IQuicksignSigner[];
 }
 
 // @alpha (undocumented)
@@ -147,7 +226,7 @@ export interface IUnsignedTransaction {
     hash: string;
     // (undocumented)
     sigs: {
-        [pubkey: string]: string | null;
+        [pubkey: string]: string | undefined;
     };
 }
 
@@ -170,7 +249,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     addSignatures(...sigs: {
         pubKey: string;
-        sig: string | null;
+        sig: string;
     }[]): this;
     // (undocumented)
     cmd: string | undefined;

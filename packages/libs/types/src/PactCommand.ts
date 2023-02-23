@@ -208,7 +208,12 @@ export interface IUserSig {
 export interface ICommand {
   cmd: CommandPayloadStringifiedJSON;
   hash: PactTransactionHash;
-  sigs: Array<ISignature>;
+  sigs: Array<ISignatureJson>;
+}
+
+export interface ISignatureJson {
+  // eslint-disable-next-line @rushstack/no-new-null
+  sig: string | null;
 }
 
 interface IPactResultSuccess {

@@ -17,8 +17,7 @@ export interface IPactCommand {
     }[];
   }[];
   type: string;
-  // eslint-disable-next-line @rushstack/no-new-null
-  sigs: (ISignature | undefined | null)[];
+  sigs: (ISignature | undefined)[];
 }
 
 /**
@@ -30,4 +29,13 @@ export interface IPublicMeta {
   gasLimit: number;
   gasPrice: number;
   ttl: number;
+}
+
+/**
+ * @alpha
+ */
+export interface IUnsignedTransaction {
+  hash: string;
+  sigs: { [pubkey: string]: string | undefined };
+  cmd: string;
 }

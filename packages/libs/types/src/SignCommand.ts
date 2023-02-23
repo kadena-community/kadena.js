@@ -2,8 +2,7 @@
  * @alpha
  */
 export interface ISignature {
-  // eslint-disable-next-line @rushstack/no-new-null
-  sig: string | undefined | null;
+  sig: string | undefined;
 }
 
 /**

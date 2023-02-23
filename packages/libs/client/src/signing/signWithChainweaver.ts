@@ -1,23 +1,14 @@
-import { IChainweaverResponse } from '../interfaces/IChainweaverResponse';
 import { IPactCommand } from '../interfaces/IPactCommand';
-import { IUnsignedChainweaverTransaction } from '../interfaces/IUnsignedTransaction';
 import { ICommandBuilder } from '../pact';
+import {
+  IQuickSignRequestBody,
+  IQuicksignResponse,
+  IQuicksignSigner,
+} from '../signing-api/v1/quicksign';
 
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
-
-/**
- * @alpha
- */
-export type IChainweaverSig = string;
-
-/**
- * @alpha
- */
-export interface IChainweaverQuickSignRequestBody {
-  cmdSigDatas: IUnsignedChainweaverTransaction[];
-}
 
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
@@ -27,7 +18,7 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
 export async function signWithChainweaver<T1 extends string, T2>(
   ...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]
 ): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]> {
-  const quickSignRequest: IChainweaverQuickSignRequestBody = {
+  const quickSignRequest: IQuickSignRequestBody = {
     cmdSigDatas: transactions.map((t) => {
       const command = t.createCommand();
       return {
@@ -57,11 +48,13 @@ export async function signWithChainweaver<T1 extends string, T2>(
   // response is not JSON when not-ok, that's why we use try-catch
   try {
     const result = JSON.parse(bodyText) as {
-      responses: IChainweaverResponse[];
+      responses: IQuicksignResponse[];
     };
 
     result.responses.map((signedCommand, i) => {
-      transactions[i].addSignatures(...signedCommand.commandSigData.sigs);
+      transactions[i].addSignatures(
+        ...signedCommand.commandSigData.sigs.filter(isASigner),
+      );
     });
 
     return transactions;
@@ -74,4 +67,16 @@ export async function signWithChainweaver<T1 extends string, T2>(
         `${error}`,
     );
   }
+}
+
+function isASigner(signer: IQuicksignSigner): signer is {
+  pubKey: string;
+  sig: string;
+} {
+  return (
+    'pubKey' in signer &&
+    'sig' in signer &&
+    signer.sig !== null &&
+    signer.pubKey.length > 0
+  );
 }

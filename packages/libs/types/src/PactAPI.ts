@@ -33,10 +33,12 @@ export interface ISendRequestBody {
  * @alpha
  */
 export type SendResponse = IRequestKeys;
+
 /**
  * @alpha
  */
 export type LocalRequestBody = ICommand;
+
 /**
  * @alpha
  */
