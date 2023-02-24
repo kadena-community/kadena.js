@@ -1,4 +1,4 @@
-import type { Block } from '../../../__generated__/sdk';
+import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { selectColor } from '../../../utils/selectColor';
 import { Box } from '../../box';
 import { Text } from '../../text';
@@ -8,7 +8,7 @@ import { ChainBlock } from './../chain-block';
 import React from 'react';
 
 interface IChainwebRowProps {
-  blocks: Block[];
+  blocks: IBlock[];
   height: number;
 }
 
@@ -16,7 +16,7 @@ export function ChainwebRow({
   blocks,
   height,
 }: IChainwebRowProps): JSX.Element {
-  const row: Array<Block | undefined> = new Array(20).fill(undefined);
+  const row: Array<IBlock | undefined> = new Array(20).fill(undefined);
   blocks.forEach((block) => (row[block.chainid] = block));
 
   return (

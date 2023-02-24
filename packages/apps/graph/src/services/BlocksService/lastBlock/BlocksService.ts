@@ -13,12 +13,12 @@ class BlocksService {
   >;
   private _interval: NodeJS.Timer | undefined;
   public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }>;
-  i: number = 0;
+  private _i: number = 0;
 
   public constructor(
     pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }>,
     // eslint-disable-next-line @typescript-eslint/no-parameter-properties
-    private mocks?: Block[],
+    private _mocks?: Block[],
   ) {
     this._prisma = new PrismaClient();
     this.pubsub = pubsub;
@@ -26,6 +26,7 @@ class BlocksService {
   }
 
   public start(): void {
+    log('start');
     if (this._interval) {
       clearInterval(this._interval);
     }
@@ -33,24 +34,26 @@ class BlocksService {
   }
 
   public stop(): void {
+    log('stop');
     if (this._interval) {
       clearInterval(this._interval);
     }
   }
 
   public async getLatestBlocks(): Promise<void> {
-    if (this.mocks) {
-      if (this.i % 10 === 0) {
+    log('getLatestBlocks');
+    if (this._mocks) {
+      if (this._i % 10 === 0) {
         console.log('publish 2 block');
         this.pubsub.publish('NEW_BLOCKS', [
-          this.mocks[this.i],
-          this.mocks[this.i + 1],
+          this._mocks[this._i],
+          this._mocks[this._i + 1],
         ]);
-        this.i += 2;
+        this._i += 2;
       } else {
         console.log('publish 1 block');
-        this.pubsub.publish('NEW_BLOCKS', [this.mocks[this.i]]);
-        this.i++;
+        this.pubsub.publish('NEW_BLOCKS', [this._mocks[this._i]]);
+        this._i++;
       }
       return;
     }

@@ -104,7 +104,7 @@ export interface IExecPayload {
     data: Exclude<EnvData, undefined> | null;
 }
 
-// @alpha (undocumented)
+// @alpha
 export interface IKeyPair {
     // (undocumented)
     clist?: Array<ICap>;
@@ -195,7 +195,7 @@ export interface IPollResponse {
     [key: IBase64Url]: ICommandResult;
 }
 
-// @alpha (undocumented)
+// @alpha
 export interface IRequestKeys {
     // (undocumented)
     requestKeys: Array<IBase64Url>;
@@ -259,6 +259,30 @@ export interface ISigningCap {
     description: string;
     // (undocumented)
     role: string;
+}
+
+// @alpha
+export interface ISigningRequest {
+    // (undocumented)
+    caps: ISigningCap[];
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    envData: EnvData;
+    // (undocumented)
+    gasLimit: number;
+    // (undocumented)
+    gasPrice: number;
+    // (undocumented)
+    networkId: NetworkId;
+    // (undocumented)
+    pactCode: string;
+    // (undocumented)
+    sender: string;
+    // (undocumented)
+    signingPubKey: string;
+    // (undocumented)
+    ttl: number;
 }
 
 // @alpha
@@ -334,7 +358,7 @@ export type SignatureWithHash = ISignedSignatureWithHash | IUnsignedSignatureWit
 // @alpha (undocumented)
 export type SignCommand = SignatureWithHash;
 
-// @alpha (undocumented)
+// @alpha
 export type SignerScheme = 'ED25519';
 
 // @alpha

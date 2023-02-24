@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-plugin",
+      "comment": "adds rule to disallow file wide eslint-disable",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-plugin"
+}

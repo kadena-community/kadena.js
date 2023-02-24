@@ -1,10 +1,10 @@
 {
   "changes": [
     {
-      "packageName": "@kadena/client",
+      "packageName": "@kadena/pactjs",
       "comment": "",
       "type": "none"
     }
   ],
-  "packageName": "@kadena/client"
+  "packageName": "@kadena/pactjs"
 }

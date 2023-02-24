@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "_phase:build": "",
+    "_phase:build": "npm run build",
     "lint": "npx eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
-    "_phase:test": "",
+    "_phase:test": "npm run test",
     "test": ""
   },
   "dependencies": {
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "eslint": "^8.15.0",
     "eslint-plugin-import": "^2.26.0",

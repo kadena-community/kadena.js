@@ -2,6 +2,35 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.7",
+      "tag": "@kadena/client_v0.1.7",
+      "date": "Thu, 02 Feb 2023 16:30:09 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.1.6",
+      "tag": "@kadena/client_v0.1.6",
+      "date": "Thu, 02 Feb 2023 11:57:26 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Do not convert js typeof 'number' to decimals"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.5",
       "tag": "@kadena/client_v0.1.5",
       "date": "Wed, 21 Dec 2022 12:17:18 GMT",

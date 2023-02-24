@@ -1,6 +1,6 @@
 {
   "name": "@kadena/create-kadena-app",
-  "version": "0.9.0",
+  "version": "0.1.0",
   "description": "create-kadena-app CLI tool to create a starter project with @kadena/client integration",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "_phase:build": "heft build --clean",
-    "_phase:test": "",
+    "_phase:test": "npm run test",
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",

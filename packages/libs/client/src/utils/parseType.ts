@@ -1,19 +1,31 @@
 import { PactNumber } from '@kadena/pactjs';
+import { PactLiteral } from '@kadena/types';
 
 /**
  * @internal
  */
 export function parseType(
-  arg: string | number | boolean | (() => string),
+  arg: PactLiteral | (() => string),
 ): string | number | boolean {
   switch (typeof arg) {
+    case 'object': {
+      if ('decimal' in arg) {
+        return new PactNumber(arg.decimal).toDecimal();
+      }
+      if ('int' in arg) {
+        return new PactNumber(arg.int).toInteger();
+      }
+      return arg;
+    }
+    case 'number':
+      throw new Error(
+        'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
+      );
     case 'string':
       return `"${arg}"`;
-    case 'number':
-      return new PactNumber(arg).toDecimal();
-    case 'boolean':
-      return arg;
     case 'function':
       return arg();
+    default:
+      return arg;
   }
 }

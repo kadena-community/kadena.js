@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/heft-rig",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena-dev/heft-rig"
+}

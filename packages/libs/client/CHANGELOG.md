@@ -1,6 +1,20 @@
 # Change Log - @kadena/client
 
-This log was last generated on Wed, 21 Dec 2022 12:17:18 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Feb 2023 16:30:09 GMT and should not be manually modified.
+
+## 0.1.7
+Thu, 02 Feb 2023 16:30:09 GMT
+
+### Patches
+
+- BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger
+
+## 0.1.6
+Thu, 02 Feb 2023 11:57:26 GMT
+
+### Patches
+
+- Do not convert js typeof 'number' to decimals
 
 ## 0.1.5
 Wed, 21 Dec 2022 12:17:18 GMT

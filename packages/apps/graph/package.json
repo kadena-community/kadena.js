@@ -7,15 +7,15 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "_phase:build": "",
-    "_phase:test": "",
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
     "build": "",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"no test specified\""
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",

@@ -8,6 +8,10 @@ module.exports = {
     '../mixins/strict-boolean-expressions.js',
     '../mixins/import-no-duplicates.js',
     '../mixins/simple-import-sort.js',
+    '../mixins/typedef-allow-implicitly-typed-parameters.js',
   ],
-  plugins: ['import', 'simple-import-sort'],
+  plugins: ['@kadena-dev/eslint-plugin', 'import', 'simple-import-sort'],
+  rules: {
+    '@kadena-dev/no-eslint-disable': 'error',
+  },
 };

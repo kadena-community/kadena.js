@@ -4,6 +4,8 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
+import { PactNumber } from '@kadena/pactjs';
+
 import { IUnsignedTransaction } from '../interfaces/IPactCommand';
 import { ICommandBuilder, Pact, PactCommand } from '../pact';
 
@@ -48,20 +50,27 @@ function mockFetchForPoll(status?: 'success' | 'failure'): void {
 }
 
 describe('Pact proxy', () => {
-  it('creates an instance of the proxy', async () => {
+  it('throws when using type `number`', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
-    const tx = pact.modules.coin.transfer('alice', 'bob', 100).createCommand();
-    expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100.0)');
+    expect(() => {
+      pact.modules.coin.transfer('alice', 'bob', 100.0).createCommand();
+    }).toThrow(
+      'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
+    );
   });
 
   it('generates two different commands when executed after each other', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
 
-    const tx = pact.modules.coin.transfer('alice', 'bob', 100).createCommand();
+    const tx = pact.modules.coin
+      .transfer('alice', 'bob', new PactNumber(100).toPactDecimal())
+      .createCommand();
 
-    const tx2 = pact.modules.coin.transfer('bob', 'alice', 100).createCommand();
+    const tx2 = pact.modules.coin
+      .transfer('bob', 'alice', { decimal: '100' })
+      .createCommand();
 
     expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100.0)');
     expect(getCode(tx2)).toBe('(coin.transfer "bob" "alice" 100.0)');
@@ -70,17 +79,19 @@ describe('Pact proxy', () => {
   it('generates two different commands when generated asynchronously', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pact = Pact as any;
-    const tx = pact.modules.coin.transfer('alice', 'bob', 100).createCommand();
+    const tx = pact.modules.coin
+      .transfer('alice', 'bob', { decimal: '100' })
+      .createCommand();
     const tx2 = pact.modules.coin['transfer-xchain'](
       'k:1',
       'k:1',
       'chain1',
       'chain2',
-      100,
+      { int: '100' },
     ).createCommand();
 
     expect(getCode(tx2)).toBe(
-      '(coin.transfer-xchain "k:1" "k:1" "chain1" "chain2" 100.0)',
+      '(coin.transfer-xchain "k:1" "k:1" "chain1" "chain2" 100)',
     );
     expect(getCode(tx)).toBe('(coin.transfer "alice" "bob" 100.0)');
   });
@@ -90,7 +101,7 @@ describe('Pact proxy', () => {
       'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
     const receiver =
       'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-    const amount = 0.23;
+    const amount = { decimal: '10' };
     const signerPubKey = sender.split('k:')[1];
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -126,6 +137,11 @@ describe('Pact proxy', () => {
     expect(JSON.parse(transaction.cmd).payload.exec.data.ks.keys).toEqual([
       '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
     ]);
+    expect(JSON.parse(transaction.cmd).signers[0].clist[1].args).toEqual([
+      'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+      'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8',
+      { decimal: '10' },
+    ]);
   });
 
   it('makes a well formatted /local call', async () => {
@@ -141,7 +157,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
     await builder.local('fake-api-host.local.co');
 
@@ -167,7 +183,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
     await builder.send('fake-api-host.local.co');
 
@@ -193,7 +209,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
 
     const { requestKeys } = await builder.send('fake-api-host.local.co');
@@ -226,7 +242,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
 
     expect(() => builder.poll('fake-api-host.local.co')).toThrow();
@@ -245,7 +261,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: '1.234' },
     );
 
     let expectingError;
@@ -267,7 +283,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: 1.234 },
     );
 
     (fetch as jest.Mock).mockResolvedValue({
@@ -319,7 +335,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: 1.234 },
     );
 
     (fetch as jest.Mock).mockResolvedValue({
@@ -370,7 +386,7 @@ describe('Pact proxy', () => {
     const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
       'from',
       'to',
-      1.234,
+      { decimal: 1.234 },
     );
 
     await builder.send('fake-api-host.local.co');
@@ -407,7 +423,7 @@ describe('TransactionCommand', () => {
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94' as const;
   const receiver =
     'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
-  const amount = 0.23;
+  const amount = { decimal: '10' };
   const senderPubKey = sender.split('k:')[1];
   const receiverPubKey = receiver.split('k:')[1];
 

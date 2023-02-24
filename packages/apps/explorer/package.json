@@ -62,7 +62,9 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@next/eslint-plugin-next": "^12.0.8",
+    "@rushstack/eslint-config": "~2.6.2",
     "@types/async": "^3.2.12",
     "@types/base64-arraybuffer": "^0.2.0",
     "@types/bcrypt": "^5.0.0",

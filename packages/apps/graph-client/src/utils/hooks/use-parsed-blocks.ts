@@ -1,9 +1,12 @@
+import { GetBlocksSubscription } from '../../__generated__/sdk';
+
 import { useCallback, useState } from 'react';
 
-interface IBlock {
-  height: number;
-  chainid: number;
-}
+export interface IBlock
+  extends Pick<
+    NonNullable<GetBlocksSubscription['newBlocks']>[number],
+    'transactions' | 'creationtime' | 'height' | 'chainid'
+  > {}
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;
   addBlocks: (blocks: IBlock[]) => void;
@@ -12,6 +15,9 @@ interface IUseParseBlocksReturn {
 export function useParsedBlocks(): IUseParseBlocksReturn {
   const [allBlocks, setAllBlocks] = useState<Record<number, IBlock[]>>({});
 
+  // TODO: maybe this can be useful:
+  // https://www.npmjs.com/package/graphql-lodash
+  // This way you can change the query to return the data in the format you want
   const addBlocks = useCallback(
     (newBlocks: IBlock[]) => {
       const groupedNewBlocks: Record<number, IBlock[]> = {};

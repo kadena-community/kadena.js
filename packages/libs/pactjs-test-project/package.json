@@ -11,8 +11,8 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "_phase:build": "",
-    "_phase:test": "",
+    "_phase:build": "npm run pactjs:generate:contract; tsc --noEmit",
+    "_phase:test": "npm run test",
     "build": "tsc --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",

@@ -6,8 +6,8 @@
   "scripts": {
     "build": "",
     "test": "",
-    "_phase:build": "",
-    "_phase:test": ""
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test"
   },
   "peerDependencies": {
     "@rushstack/heft": "^0.46.1"
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
     "@types/heft-jest": "~1.0.3",

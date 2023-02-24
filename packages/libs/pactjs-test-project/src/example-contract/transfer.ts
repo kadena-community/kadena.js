@@ -19,7 +19,7 @@ async function transactionMain(): Promise<void> {
     'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8';
   const onlyKey = (s: string): string => s.split(':')[1];
 
-  const amount: number = 0.1337;
+  const amount: { decimal: string } = { decimal: '0.1337' };
 
   const unsignedTransaction = Pact.modules.coin
     .transfer(

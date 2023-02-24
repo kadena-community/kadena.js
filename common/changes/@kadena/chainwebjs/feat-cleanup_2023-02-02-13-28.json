@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@kadena/chainwebjs",
-      "comment": "Added types for project",
-      "type": "patch"
+      "comment": "Cleanup readme",
+      "type": "none"
     }
   ],
   "packageName": "@kadena/chainwebjs"
