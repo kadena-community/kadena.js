@@ -73,12 +73,6 @@ function isASigner(signer: IQuicksignSigner): signer is {
   pubKey: string;
   sig: string;
 } {
-  console.log(
-    'pubKey' in signer &&
-      'sig' in signer &&
-      signer.sig !== null &&
-      signer.pubKey.length > 0,
-  );
   return (
     'pubKey' in signer &&
     'sig' in signer &&
