@@ -172,6 +172,6 @@ describe('signWithChainweaver', () => {
 
     await signWithChainweaver(unsignedCommand);
 
-    expect(unsignedCommand.sigs).toEqual([{ sig: null }]);
+    expect(unsignedCommand.sigs).toEqual([undefined]);
   });
 });
