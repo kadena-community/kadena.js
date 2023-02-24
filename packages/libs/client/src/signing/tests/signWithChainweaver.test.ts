@@ -142,7 +142,7 @@ describe('signWithChainweaver', () => {
     ]);
   });
 
-  it('Wallet signs but does not have the signer key and returns sig null', async () => {
+  it('signs but does not have the signer key and returns sig null', async () => {
     const mockedResponse: { responses: IQuicksignResponse[] } = {
       responses: [
         {
