@@ -32,7 +32,7 @@ test('/local should return result of tx queried', async () => {
   const signedCommand1: LocalRequestBody = {
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
-    sigs: [{ sig: cmdWithOneSignature1.sig }],
+    sigs: [{ sig: cmdWithOneSignature1?.sig || null }],
   };
 
   const commandResult1: LocalResponse = {

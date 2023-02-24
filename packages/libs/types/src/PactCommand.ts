@@ -1,7 +1,6 @@
 import type { Base16String } from './Base16String';
 import type { IBase64Url } from './Base64Url';
 import type { PactValue } from './PactValue';
-import type { ISignature } from './SignCommand';
 /**
  * A Chainweb transaction payload that executes arbitraty Pact code.
  *
@@ -211,6 +210,9 @@ export interface ICommand {
   sigs: Array<ISignatureJson>;
 }
 
+/**
+ * @alpha
+ */
 export interface ISignatureJson {
   // eslint-disable-next-line @rushstack/no-new-null
   sig: string | null;

@@ -25,7 +25,7 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IChainweaverCap {
     // (undocumented)
     args: Array<number | string | Record<string, unknown>>;
@@ -33,7 +33,7 @@ export interface IChainweaverCap {
     name: string;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IChainweaverCapElement {
     // (undocumented)
     cap: IChainweaverCap;
@@ -43,7 +43,7 @@ export interface IChainweaverCapElement {
     role: string;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IChainweaverSignBody {
     // (undocumented)
     caps: IChainweaverCapElement[];

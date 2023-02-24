@@ -10,8 +10,7 @@ export interface ISignature {
  */
 export interface ISignedSignatureWithHash extends ISignature {
   hash: string;
-  // eslint-disable-next-line @rushstack/no-new-null
-  sig: string | undefined | null;
+  sig: string | undefined;
   pubKey: string;
 }
 
@@ -20,8 +19,7 @@ export interface ISignedSignatureWithHash extends ISignature {
  */
 export interface IUnsignedSignatureWithHash extends ISignature {
   hash: string;
-  // eslint-disable-next-line @rushstack/no-new-null
-  sig: string | undefined | null;
+  sig: string | undefined;
   pubKey?: string;
 }
 

@@ -214,7 +214,8 @@ export class PactCommand
     // convert to IUnsignedTransaction
     const command: ICommand = {
       hash,
-      sigs: this.sigs.map((s) => (!s ? { sig: undefined } : s)),
+      // eslint-disable-next-line @rushstack/no-new-null
+      sigs: this.sigs.map((s) => ({ sig: s?.sig ?? null })),
       cmd,
     };
 
