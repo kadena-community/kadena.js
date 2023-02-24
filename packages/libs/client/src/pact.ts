@@ -428,15 +428,12 @@ export class PactCommand
   // }
 }
 
-function convertIUnsignedTransactionToICommand({
-  cmd,
-  hash,
-  sigs,
-}: IUnsignedTransaction): ICommand {
+function convertIUnsignedTransactionToICommand(
+  transaction: IUnsignedTransaction,
+): ICommand {
   return {
-    cmd,
-    hash,
-    sigs: sigs.map((s) => ({ sig: s?.sig ?? null })),
+    ...transaction,
+    sigs: transaction.sigs.map((s) => ({ sig: s?.sig ?? null })),
   };
 }
 
