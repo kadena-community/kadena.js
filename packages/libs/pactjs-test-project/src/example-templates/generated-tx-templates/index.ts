@@ -111,5 +111,5 @@ export default {
     ];
 
     return buildUnsignedTransaction(parts, holes, args);
-  },
-};
+  }
+}
