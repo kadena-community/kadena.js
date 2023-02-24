@@ -30,6 +30,12 @@ export type IQuicksignSig = string | null;
 /**
  * @alpha
  */
+export interface IQuicksignResponseBody {
+  responses: IQuicksignResponse[];
+}
+/**
+ * @alpha
+ */
 export interface IQuicksignResponse {
   commandSigData: IQuicksignResponseCommand;
   outcome:

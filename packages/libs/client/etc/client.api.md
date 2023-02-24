@@ -184,6 +184,12 @@ export interface IQuicksignResponse {
 }
 
 // @alpha (undocumented)
+export interface IQuicksignResponseBody {
+    // (undocumented)
+    responses: IQuicksignResponse[];
+}
+
+// @alpha (undocumented)
 export interface IQuicksignResponseCommand {
     // (undocumented)
     cmd: string;

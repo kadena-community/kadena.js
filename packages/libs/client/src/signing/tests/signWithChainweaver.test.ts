@@ -6,7 +6,10 @@ jest.mock('cross-fetch', () => {
 });
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { ICommandBuilder, Pact } from '../../pact';
-import { IQuicksignResponse } from '../../signing-api/v1/quicksign';
+import {
+  IQuicksignResponse,
+  IQuicksignResponseBody,
+} from '../../signing-api/v1/quicksign';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 import fetch from 'cross-fetch';
@@ -17,7 +20,7 @@ describe('signWithChainweaver', () => {
   it('makes a call on 127.0.0.1:9467/v1/quicksign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
-      text: () => JSON.stringify({ responses: [] }),
+      text: () => JSON.stringify({ responses: [] } as IQuicksignResponseBody),
       json: () => {},
     });
 
