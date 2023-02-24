@@ -7,7 +7,6 @@
 import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/types';
 import { ICap } from '@kadena/types';
-import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/types';
 import { IPollResponse } from '@kadena/types';
 import { ISendResponse } from '@kadena/chainweb-node-client';
@@ -79,7 +78,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    createCommand(): ICommand;
+    createCommand(): IUnsignedTransaction;
     // (undocumented)
     local(apiHost: string): Promise<ICommandResult>;
     // (undocumented)
@@ -149,7 +148,24 @@ export interface IPublicMeta {
 }
 
 // @alpha (undocumented)
-export interface IQuicksignError {
+export interface IQuickSignRequestBody {
+    // (undocumented)
+    cmdSigDatas: IUnsignedQuicksignTransaction[];
+}
+
+// @alpha (undocumented)
+export type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
+
+// @alpha (undocumented)
+export interface IQuicksignResponseCommand {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: IQuicksignSigner[];
+}
+
+// @alpha (undocumented)
+export interface IQuicksignResponseError {
     // (undocumented)
     error: {
         type: 'reject';
@@ -162,39 +178,20 @@ export interface IQuicksignError {
 }
 
 // @alpha (undocumented)
-export interface IQuickSignRequestBody {
+export interface IQuicksignResponseOutcomes {
     // (undocumented)
-    cmdSigDatas: IUnsignedQuicksignTransaction[];
-}
-
-// @alpha (undocumented)
-export interface IQuicksignResponse {
-    // (undocumented)
-    commandSigData: IQuicksignResponseCommand;
-    // (undocumented)
-    outcome: {
-        hash: string;
-        result: 'success';
-    } | {
-        msg: string;
-        result: 'failure';
-    } | {
-        result: 'noSig';
-    };
-}
-
-// @alpha (undocumented)
-export interface IQuicksignResponseBody {
-    // (undocumented)
-    responses: IQuicksignResponse[];
-}
-
-// @alpha (undocumented)
-export interface IQuicksignResponseCommand {
-    // (undocumented)
-    cmd: string;
-    // (undocumented)
-    sigs: IQuicksignSigner[];
+    responses: {
+        commandSigData: IQuicksignResponseCommand;
+        outcome: {
+            hash: string;
+            result: 'success';
+        } | {
+            msg: string;
+            result: 'failure';
+        } | {
+            result: 'noSig';
+        };
+    }[];
 }
 
 // @alpha (undocumented)
@@ -231,9 +228,7 @@ export interface IUnsignedTransaction {
     // (undocumented)
     hash: string;
     // (undocumented)
-    sigs: {
-        [pubkey: string]: string | undefined;
-    };
+    sigs: (ISignature | undefined)[];
 }
 
 // @alpha (undocumented)
@@ -260,7 +255,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     cmd: string | undefined;
     // (undocumented)
     code: string;
-    createCommand(): ICommand;
+    createCommand(): IUnsignedTransaction;
     // (undocumented)
     data: Record<string, unknown>;
     local(apiHost: string): Promise<ICommandResult>;

@@ -47,9 +47,11 @@ export async function signWithChainweaver<T1 extends string, T2>(
 
   // response is not JSON when not-ok, that's why we use try-catch
   try {
-    const result = JSON.parse(bodyText) as {
-      responses: IQuicksignResponse[];
-    };
+    const result = JSON.parse(bodyText) as IQuicksignResponse;
+
+    if ('error' in result) {
+      throw new Error();
+    }
 
     result.responses.map((signedCommand, i) => {
       transactions[i].addSignatures(
