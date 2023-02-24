@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "update ISignature to non-null ",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
