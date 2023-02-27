@@ -682,14 +682,14 @@ importers:
       typescript: ~4.6.3
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.46.0_eslint@8.29.0+typescript@4.6.4
+      eslint-plugin-import: 2.26.0_eslint@8.29.0
+      eslint-plugin-react: 7.31.11_eslint@8.29.0
+      eslint-plugin-simple-import-sort: 7.0.0_eslint@8.29.0
     devDependencies:
       '@kadena-dev/eslint-config': 'link:'
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0+typescript@4.6.4
       eslint: 8.29.0
-      eslint-plugin-import: 2.26.0_eslint@8.29.0
-      eslint-plugin-react: 7.31.11_eslint@8.29.0
-      eslint-plugin-simple-import-sort: 7.0.0_eslint@8.29.0
       typescript: 4.6.4
 
   ../../packages/tools/eslint-plugin:
@@ -7028,7 +7028,6 @@ packages:
       eslint: '>=5.0.0'
     dependencies:
       eslint: 8.29.0
-    dev: true
 
   /eslint-plugin-tsdoc/0.2.17:
     resolution: {integrity: sha512-xRmVi7Zx44lOBuYqG8vzTXuL6IdGOeF9nHX17bjJ8+VE6fsxpdGem0/SBTmAwgYMKYB1WBkqRJVQ+n8GK041pA==}
