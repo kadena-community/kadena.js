@@ -2,6 +2,18 @@
   "name": "@kadena-dev/eslint-config",
   "entries": [
     {
+      "version": "0.0.3",
+      "tag": "@kadena-dev/eslint-config_v0.0.3",
+      "date": "Mon, 27 Feb 2023 15:39:44 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix dependencies on @kadena-dev/eslint-plugin"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@kadena-dev/eslint-config_v0.0.2",
       "date": "Mon, 27 Feb 2023 14:25:39 GMT",

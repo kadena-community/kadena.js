@@ -1,6 +1,13 @@
 # Change Log - @kadena-dev/eslint-config
 
-This log was last generated on Mon, 27 Feb 2023 14:25:39 GMT and should not be manually modified.
+This log was last generated on Mon, 27 Feb 2023 15:39:44 GMT and should not be manually modified.
+
+## 0.0.3
+Mon, 27 Feb 2023 15:39:44 GMT
+
+### Patches
+
+- fix dependencies on @kadena-dev/eslint-plugin
 
 ## 0.0.2
 Mon, 27 Feb 2023 14:25:39 GMT
