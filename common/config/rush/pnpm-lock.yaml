@@ -680,12 +680,12 @@ importers:
       eslint-plugin-simple-import-sort: ~7.0.0
       typescript: ~4.6.3
     dependencies:
+      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@typescript-eslint/eslint-plugin': 5.46.0_eslint@8.29.0+typescript@4.6.4
       eslint-plugin-import: 2.26.0_eslint@8.29.0
       eslint-plugin-react: 7.31.11_eslint@8.29.0
       eslint-plugin-simple-import-sort: 7.0.0_eslint@8.29.0
     devDependencies:
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@rushstack/eslint-config': 2.6.2_eslint@8.29.0+typescript@4.6.4
       eslint: 8.29.0
       typescript: 4.6.4
