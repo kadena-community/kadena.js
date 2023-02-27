@@ -17,7 +17,6 @@
     "eslint-plugin-simple-import-sort": "~7.0.0"
   },
   "devDependencies": {
-    "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "eslint": "^8.15.0",
