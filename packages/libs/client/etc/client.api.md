@@ -7,6 +7,7 @@
 import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/types';
 import { ICap } from '@kadena/types';
+import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/types';
 import { IPollResponse } from '@kadena/types';
 import { ISendResponse } from '@kadena/chainweb-node-client';
@@ -20,6 +21,9 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 //
 // @internal (undocumented)
 export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
+
+// @alpha (undocumented)
+export function convertIUnsignedTransactionToICommand(transaction: IUnsignedTransaction): ICommand;
 
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;

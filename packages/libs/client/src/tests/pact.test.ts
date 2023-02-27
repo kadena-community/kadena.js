@@ -7,7 +7,11 @@ jest.mock('cross-fetch', () => {
 import { PactNumber } from '@kadena/pactjs';
 
 import { IUnsignedTransaction } from '../interfaces/IPactCommand';
-import { Pact, PactCommand } from '../pact';
+import {
+  convertIUnsignedTransactionToICommand,
+  Pact,
+  PactCommand,
+} from '../pact';
 
 import fetch from 'cross-fetch';
 
@@ -154,12 +158,16 @@ describe('Pact proxy', () => {
 
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
+    builder
+      .addCap('coin.GAS', 'senderPubKey')
+      .addSignatures({ pubKey: 'senderPubKey', sig: 'sender-sig' });
+
     await builder.local('fake-api-host.local.co');
 
     const body = builder.createCommand();
 
     expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/local', {
-      body: JSON.stringify(body),
+      body: JSON.stringify(convertIUnsignedTransactionToICommand(body)),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     });
@@ -376,6 +384,8 @@ describe('Pact proxy', () => {
   });
 });
 
+//TODO: Add timeout test case
+
 describe('TransactionCommand', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pact = Pact as any;
@@ -467,5 +477,36 @@ describe('TransactionCommand', () => {
 
     expect(transaction.cmd).not.toEqual(updatedTransaction.cmd);
     expect(transaction.hash).not.toEqual(updatedTransaction.hash);
+  });
+
+  it('adds formatted signatures to `sigs` when `addSignatures` is called', async () => {
+    const transaction = transactionCommand
+      .addCap('coin.GAS', senderPubKey)
+      .createCommand();
+
+    const updatedTransaction = transactionCommand
+      .addCap('coin.GAS', senderPubKey)
+      .addSignatures({
+        pubKey: senderPubKey,
+        sig: 'sender-sig',
+      })
+      .createCommand();
+
+    expect(transaction.sigs).toEqual([undefined]);
+    expect(updatedTransaction.sigs).toEqual([{ sig: 'sender-sig' }]);
+  });
+
+  it('throws error when `addSignatures` is called without signer', async () => {
+    expect(() => {
+      transactionCommand = pact.modules.coin['transfer-create'](
+        sender,
+        receiver,
+        () => "(read-keyset 'ks)",
+        amount,
+      ).addSignatures({
+        pubKey: senderPubKey,
+        sig: 'sender-sig',
+      });
+    }).toThrow();
   });
 });

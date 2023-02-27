@@ -428,7 +428,10 @@ export class PactCommand
   // }
 }
 
-function convertIUnsignedTransactionToICommand(
+/**
+ * @alpha
+ */
+export function convertIUnsignedTransactionToICommand(
   transaction: IUnsignedTransaction,
 ): ICommand {
   return {
