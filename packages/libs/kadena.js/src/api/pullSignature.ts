@@ -1,5 +1,5 @@
-import type { ISignature, SignatureWithHash } from '@kadena/types';
+import type { ISignatureJson, SignatureWithHash } from '@kadena/types';
 
-export function pullSignature({ sig }: SignatureWithHash): ISignature {
-  return { sig: sig };
+export function pullSignature({ sig }: SignatureWithHash): ISignatureJson {
+  return { sig: sig ?? null };
 }

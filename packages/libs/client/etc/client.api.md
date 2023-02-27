@@ -23,25 +23,51 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
 
 // @alpha (undocumented)
+export function convertIUnsignedTransactionToICommand(transaction: IUnsignedTransaction): ICommand;
+
+// @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
 // @alpha (undocumented)
-export interface IChainweaverQuickSignRequestBody {
+export interface IChainweaverCap {
     // (undocumented)
-    reqs: IUnsignedTransaction[];
+    args: Array<number | string | Record<string, unknown>>;
+    // (undocumented)
+    name: string;
 }
 
 // @alpha (undocumented)
-export type IChainweaverSig = string;
+export interface IChainweaverCapElement {
+    // (undocumented)
+    cap: IChainweaverCap;
+    // (undocumented)
+    description: string;
+    // (undocumented)
+    role: string;
+}
 
 // @alpha (undocumented)
-export interface IChainweaverSignedCommand {
+export interface IChainweaverSignBody {
     // (undocumented)
-    cmd: string;
+    caps: IChainweaverCapElement[];
     // (undocumented)
-    sigs: {
-        [pubkey: string]: IChainweaverSig;
-    };
+    chainId: string;
+    // (undocumented)
+    code: string;
+    // (undocumented)
+    data: Record<string, unknown>;
+    // (undocumented)
+    gasLimit: number;
+    // (undocumented)
+    gasPrice: number;
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    sender: string;
+    // (undocumented)
+    signingPubKey: string;
+    // (undocumented)
+    ttl: number;
 }
 
 // @alpha (undocumented)
@@ -52,11 +78,11 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
     addSignatures(...sig: {
-        pubkey: string;
+        pubKey: string;
         sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    createCommand(): ICommand;
+    createCommand(): IUnsignedTransaction;
     // (undocumented)
     local(apiHost: string): Promise<ICommandResult>;
     // (undocumented)
@@ -126,11 +152,77 @@ export interface IPublicMeta {
 }
 
 // @alpha (undocumented)
+export interface IQuickSignRequestBody {
+    // (undocumented)
+    cmdSigDatas: IUnsignedQuicksignTransaction[];
+}
+
+// @alpha (undocumented)
+export type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
+
+// @alpha (undocumented)
+export interface IQuicksignResponseCommand {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: IQuicksignSigner[];
+}
+
+// @alpha (undocumented)
+export interface IQuicksignResponseError {
+    // (undocumented)
+    error: {
+        type: 'reject';
+    } | {
+        type: 'emptyList';
+    } | {
+        type: 'other';
+        msg: string;
+    };
+}
+
+// @alpha (undocumented)
+export interface IQuicksignResponseOutcomes {
+    // (undocumented)
+    responses: {
+        commandSigData: IQuicksignResponseCommand;
+        outcome: {
+            hash: string;
+            result: 'success';
+        } | {
+            msg: string;
+            result: 'failure';
+        } | {
+            result: 'noSig';
+        };
+    }[];
+}
+
+// @alpha (undocumented)
+export type IQuicksignSig = string | null;
+
+// @alpha (undocumented)
+export interface IQuicksignSigner {
+    // (undocumented)
+    pubKey: string;
+    // (undocumented)
+    sig: IQuicksignSig;
+}
+
+// @alpha (undocumented)
 export interface ITemplate {
     // (undocumented)
     holes: TemplateHoles;
     // (undocumented)
     parts: TemplateParts;
+}
+
+// @alpha (undocumented)
+export interface IUnsignedQuicksignTransaction {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: IQuicksignSigner[];
 }
 
 // @alpha (undocumented)
@@ -140,9 +232,7 @@ export interface IUnsignedTransaction {
     // (undocumented)
     hash: string;
     // (undocumented)
-    sigs: {
-        [pubkey: string]: string | null;
-    };
+    sigs: (ISignature | undefined)[];
 }
 
 // @alpha (undocumented)
@@ -162,14 +252,14 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     addData(data: IPactCommand['data']): this;
     // (undocumented)
     addSignatures(...sigs: {
-        pubkey: string;
+        pubKey: string;
         sig: string;
     }[]): this;
     // (undocumented)
     cmd: string | undefined;
     // (undocumented)
     code: string;
-    createCommand(): ICommand;
+    createCommand(): IUnsignedTransaction;
     // (undocumented)
     data: Record<string, unknown>;
     local(apiHost: string): Promise<ICommandResult>;
