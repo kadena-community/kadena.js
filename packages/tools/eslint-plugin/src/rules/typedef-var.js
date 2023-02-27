@@ -1,6 +1,6 @@
 /* eslint-env es6 */
 const { rules } = require('@rushstack/eslint-plugin');
-const AST_NODE_TYPES = require('@typescript-eslint/experimental-utils');
+const { AST_NODE_TYPES } = require('@typescript-eslint/experimental-utils');
 
 const origTypedefVar = rules['typedef-var'];
 
