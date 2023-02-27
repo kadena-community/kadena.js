@@ -2,6 +2,32 @@
   "name": "@kadena-dev/eslint-config",
   "entries": [
     {
+      "version": "0.0.2",
+      "tag": "@kadena-dev/eslint-config_v0.0.2",
+      "date": "Mon, 27 Feb 2023 14:25:39 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Move eslint-plugins from devDependencies to dependencies so consuming projects do not need to include them"
+          },
+          {
+            "comment": "Disables @rushstack/typedev-var and adds @kadena-dev/typedev-var to the react config"
+          },
+          {
+            "comment": "adds rule to disallow file wide eslint-disable"
+          },
+          {
+            "comment": "add mixin to relax typedef rule for arguments in typed functions"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.1",
       "tag": "@kadena-dev/eslint-config_v0.0.1",
       "date": "Mon, 16 Jan 2023 16:31:08 GMT",
