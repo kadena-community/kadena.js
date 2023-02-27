@@ -30,32 +30,35 @@ export type IQuicksignSig = string | null;
 /**
  * @alpha
  */
-export interface IQuicksignResponseBody {
-  responses: IQuicksignResponse[];
-}
+export type IQuicksignResponse =
+  | IQuicksignResponseError
+  | IQuicksignResponseOutcomes;
+
 /**
  * @alpha
  */
-export interface IQuicksignResponse {
-  commandSigData: IQuicksignResponseCommand;
-  outcome:
-    | {
-        hash: string;
-        result: 'success';
-      }
-    | {
-        msg: string;
-        result: 'failure';
-      }
-    | {
-        result: 'noSig';
-      };
+export interface IQuicksignResponseOutcomes {
+  responses: {
+    commandSigData: IQuicksignResponseCommand;
+    outcome:
+      | {
+          hash: string;
+          result: 'success';
+        }
+      | {
+          msg: string;
+          result: 'failure';
+        }
+      | {
+          result: 'noSig';
+        };
+  }[];
 }
 
 /**
  * @alpha
  */
-export interface IQuicksignError {
+export interface IQuicksignResponseError {
   error:
     | {
         type: 'reject';

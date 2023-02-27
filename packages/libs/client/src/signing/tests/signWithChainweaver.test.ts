@@ -4,11 +4,12 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
+
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { ICommandBuilder, Pact } from '../../pact';
 import {
   IQuicksignResponse,
-  IQuicksignResponseBody,
+  IQuicksignResponseOutcomes,
 } from '../../signing-api/v1/quicksign';
 import { signWithChainweaver } from '../signWithChainweaver';
 
@@ -20,7 +21,7 @@ describe('signWithChainweaver', () => {
   it('makes a call on 127.0.0.1:9467/v1/quicksign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
-      text: () => JSON.stringify({ responses: [] } as IQuicksignResponseBody),
+      text: () => JSON.stringify({ responses: [] } as IQuicksignResponse),
       json: () => {},
     });
 
@@ -80,7 +81,7 @@ describe('signWithChainweaver', () => {
   });
 
   it('adds signatures in multisig fashion to the transactions', async () => {
-    const mockedResponse: { responses: IQuicksignResponse[] } = {
+    const mockedResponse: IQuicksignResponseOutcomes = {
       responses: [
         {
           commandSigData: {
@@ -117,7 +118,7 @@ describe('signWithChainweaver', () => {
     expect(unsignedCommand.sigs).toEqual([{ sig: 'gas-key-sig' }, undefined]);
 
     // set a new mock response for the second signature
-    const mockedResponse2: { responses: IQuicksignResponse[] } = {
+    const mockedResponse2: IQuicksignResponseOutcomes = {
       responses: [
         {
           commandSigData: {
@@ -146,7 +147,7 @@ describe('signWithChainweaver', () => {
   });
 
   it('signs but does not have the signer key and returns sig null', async () => {
-    const mockedResponse: { responses: IQuicksignResponse[] } = {
+    const mockedResponse: IQuicksignResponseOutcomes = {
       responses: [
         {
           commandSigData: {

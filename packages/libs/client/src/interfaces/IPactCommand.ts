@@ -36,6 +36,6 @@ export interface IPublicMeta {
  */
 export interface IUnsignedTransaction {
   hash: string;
-  sigs: { [pubkey: string]: string | undefined };
+  sigs: (ISignature | undefined)[];
   cmd: string;
 }

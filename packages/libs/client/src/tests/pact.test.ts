@@ -7,7 +7,7 @@ jest.mock('cross-fetch', () => {
 import { PactNumber } from '@kadena/pactjs';
 
 import { IUnsignedTransaction } from '../interfaces/IPactCommand';
-import { ICommandBuilder, Pact, PactCommand } from '../pact';
+import { Pact, PactCommand } from '../pact';
 
 import fetch from 'cross-fetch';
 
@@ -152,13 +152,8 @@ describe('Pact proxy', () => {
       json: () => {},
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
     await builder.local('fake-api-host.local.co');
 
     const body = builder.createCommand();
@@ -178,13 +173,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
     await builder.send('fake-api-host.local.co');
 
     const body = { cmds: [builder.createCommand()] };
@@ -204,13 +194,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     const { requestKeys } = await builder.send('fake-api-host.local.co');
     const body = { cmds: [builder.createCommand()] };
@@ -237,13 +222,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     expect(() => builder.poll('fake-api-host.local.co')).toThrow();
   });
@@ -256,13 +236,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     let expectingError;
 
@@ -278,13 +253,8 @@ describe('Pact proxy', () => {
   it('returns a response after polling a succeeding transaction', async () => {
     jest.useFakeTimers();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: 1.234 },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
@@ -330,13 +300,8 @@ describe('Pact proxy', () => {
   it('rejects the promise for pollUntil if the transaction failed', async () => {
     jest.useFakeTimers();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: 1.234 },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
@@ -381,13 +346,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: 1.234 },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     await builder.send('fake-api-host.local.co');
 
