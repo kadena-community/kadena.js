@@ -59,7 +59,7 @@ If any issues occur, you can run `rush update --purge`
 - node 16
 - rushjs
 
-See [installing perequisites](#installing-prerequisites)
+See [installing prerequisites](#installing-prerequisites)
 
 ## Installing prerequisites
 
