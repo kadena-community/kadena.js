@@ -8,8 +8,6 @@ module.exports = {
     //  when they are created by a function call.
     //  e.g. This is allowed: `export const StyledButton = styled('button', {})`
     '@kadena-dev/typedef-var': 'warn',
-    // suppress errors for missing 'import React' in files
-    'react/react-in-jsx-scope': 'off',
   },
 
   // rules: {
