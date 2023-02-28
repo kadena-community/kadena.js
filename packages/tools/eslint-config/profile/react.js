@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['./lib', 'next/core-web-vitals'],
+  extends: ['./lib', 'plugin:react/recommended'],
   plugins: ['import', 'simple-import-sort', 'react'],
   rules: {
     '@rushstack/typedef-var': 'off',
