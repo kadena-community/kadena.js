@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-config",
+      "comment": "Updated @kadena-dev/eslint-plugin react config extension to the config recommended by Next.js",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-config"
+}
