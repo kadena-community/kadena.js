@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['./lib', 'plugin:react/recommended'],
+  extends: ['./lib', 'next/core-web-vitals'],
   plugins: ['import', 'simple-import-sort', 'react'],
   rules: {
     '@rushstack/typedef-var': 'off',
@@ -8,6 +8,8 @@ module.exports = {
     //  when they are created by a function call.
     //  e.g. This is allowed: `export const StyledButton = styled('button', {})`
     '@kadena-dev/typedef-var': 'warn',
+    // suppress errors for missing 'import React' in files
+    'react/react-in-jsx-scope': 'off',
   },
 
   // rules: {
