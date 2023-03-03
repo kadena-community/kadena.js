@@ -8,6 +8,6 @@ export * from './api/createSendRequest';
 export * from './api/prepareContCommand';
 export * from './api/prepareExecCommand';
 export * from './api/pullAndCheckHashs';
-export * from './api/pullSignature';
+// export * from './api/pullSignature';
 export * from './api/pullSigner';
 export * from './wallet/createCap';

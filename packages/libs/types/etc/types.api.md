@@ -8,7 +8,7 @@
 export type Base16String = string;
 
 // @alpha (undocumented)
-export type ChainId = '' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19' | '20';
+export type ChainId = '' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
 
 // @alpha
 export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
@@ -76,6 +76,34 @@ export interface ICommandResult {
     // Warning: (ae-forgotten-export) The symbol "IPactResultSuccess" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "IPactResultError" needs to be exported by the entry point index.d.ts
     //
+    // (undocumented)
+    result: IPactResultSuccess | IPactResultError;
+    // (undocumented)
+    txId: number | null;
+}
+
+// @public (undocumented)
+export interface ICommandResultWithPreflight {
+    // Warning: (ae-incompatible-release-tags) The symbol "continuation" is marked as @public, but its signature references "IPactExec" which is marked as @alpha
+    //
+    // (undocumented)
+    continuation: IPactExec | null;
+    // Warning: (ae-incompatible-release-tags) The symbol "events" is marked as @public, but its signature references "IPactEvent" which is marked as @alpha
+    //
+    // (undocumented)
+    events?: Array<IPactEvent>;
+    // (undocumented)
+    gas: number;
+    // (undocumented)
+    logs: string | null;
+    // (undocumented)
+    metaData: IChainwebResponseMetaData | null;
+    // (undocumented)
+    preflightWarnings: [];
+    // Warning: (ae-incompatible-release-tags) The symbol "reqKey" is marked as @public, but its signature references "IBase64Url" which is marked as @alpha
+    //
+    // (undocumented)
+    reqKey: IBase64Url;
     // (undocumented)
     result: IPactResultSuccess | IPactResultError;
     // (undocumented)
@@ -195,6 +223,16 @@ export interface IPollResponse {
     [key: IBase64Url]: ICommandResult;
 }
 
+// @public (undocumented)
+export interface IPreflightResult {
+    // Warning: (ae-incompatible-release-tags) The symbol "preflight" is marked as @public, but its signature references "ICommandResult" which is marked as @alpha
+    //
+    // (undocumented)
+    preflight: ICommandResult;
+    // (undocumented)
+    preflightWarnings: [];
+}
+
 // @alpha
 export interface IRequestKeys {
     // (undocumented)
@@ -216,7 +254,7 @@ export interface ISignature {
 // @alpha (undocumented)
 export interface ISignatureJson {
     // (undocumented)
-    sig: string | null;
+    sig: string | undefined;
 }
 
 // @alpha (undocumented)

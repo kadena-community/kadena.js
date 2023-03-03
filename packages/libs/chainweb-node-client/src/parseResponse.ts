@@ -21,3 +21,14 @@ export async function parseResponse<T>(response: Response): Promise<T> {
     }
   }
 }
+
+export async function parsePreflight(
+  commandResult: IPreflightResult,
+): ICommandWithPreflightResult {
+  if (commandResult.preflight) {
+    return {
+      ...preflight,
+      preflightWarnings,
+    };
+  } else return commandResult;
+}

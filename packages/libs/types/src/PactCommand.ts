@@ -162,8 +162,7 @@ export type ChainId =
   | '16'
   | '17'
   | '18'
-  | '19'
-  | '20';
+  | '19';
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.
@@ -218,8 +217,7 @@ export interface ICommand {
  * @alpha
  */
 export interface ISignatureJson {
-  // eslint-disable-next-line @rushstack/no-new-null
-  sig: string | null;
+  sig: string | undefined;
 }
 
 /**
@@ -407,6 +405,33 @@ export interface ICommandResult {
   /* eslint-disable-next-line @rushstack/no-new-null*/
   metaData: IChainwebResponseMetaData | null;
   events?: Array<IPactEvent>;
+}
+
+/*
+ * @alpha
+ */
+export interface IPreflightResult {
+  preflight: ICommandResult;
+  preflightWarnings: [];
+}
+
+/*
+ * @alpha
+ */
+export interface ICommandResultWithPreflight {
+  reqKey: IBase64Url;
+  /* eslint-disable-next-line @rushstack/no-new-null*/
+  txId: number | null;
+  result: IPactResultSuccess | IPactResultError;
+  gas: number;
+  /* eslint-disable-next-line @rushstack/no-new-null*/
+  logs: string | null;
+  /* eslint-disable-next-line @rushstack/no-new-null*/
+  continuation: IPactExec | null;
+  /* eslint-disable-next-line @rushstack/no-new-null*/
+  metaData: IChainwebResponseMetaData | null;
+  events?: Array<IPactEvent>;
+  preflightWarnings: [];
 }
 
 // TODO: Move Chainweb Specific Types

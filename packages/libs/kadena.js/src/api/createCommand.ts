@@ -5,7 +5,7 @@ import type {
 } from '@kadena/types';
 
 import { pullAndCheckHashs } from './pullAndCheckHashs';
-import { pullSignature } from './pullSignature';
+// import { pullSignature  } from './pullSignature';
 /**
  * Makes a single command given signed data.
  * @param signatures {array} - array of signature objects, see 'sign'
@@ -18,7 +18,7 @@ export function createCommand(
 ): ICommand {
   return {
     hash: pullAndCheckHashs(signatures),
-    sigs: signatures.filter(({ sig }) => sig).map(pullSignature),
+    sigs: signatures,
     cmd,
   };
 }
