@@ -11,11 +11,11 @@
     "test": ""
   },
   "dependencies": {
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "~7.31.11",
-    "eslint-plugin-simple-import-sort": "~7.0.0",
-    "@kadena-dev/eslint-plugin": "workspace:*"
+    "eslint-plugin-simple-import-sort": "~7.0.0"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "~2.6.2",
