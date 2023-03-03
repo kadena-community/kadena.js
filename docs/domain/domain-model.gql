@@ -1,10 +1,10 @@
-scalar Hash
-scalar MsFromPosixEpoch
-scalar Base64Url
-scalar Int64
-scalar BigInt
+enum DateFormat {
+    POSIX_MS
+    ISO8601
+
+scalar Date
+scalar Base64Url # ???
 scalar Base64UrlTransaction
-scalar Object
 
 type Query {
   block: Block
@@ -14,32 +14,139 @@ type Signature {
   sig: String
 }
 
-type Block {
-  creationTime: MsFromPosixEpoch
-  parent: Block
-  height: BigInt
-  hash: Hash
-  chainId: Int
-  weight: Base64Url
-  featureFlags: Int
-  epochStart: MsFromPosixEpoch
-  adjacents: [Block]
-  payloadHash: Base64Url # fk BlockPayload
-  chainwebVersion: ChainwebNetwork
-  target: Base64Url
-  nonce: Int64
+# ############################################################################ #
+# Chainweb Realm
 
+# Note: this schema is not compatible with the current JSON encoding for `Block`
+# and `Cut`.
+#
+# The current schema uses chain ids as field keys for adjacent blocks (in
+# `Block`) and cut hashes (in `Cut`). Numeric field keys are not supported by
+# GraphQL. This schema uses arrays instead and includes the chain id key into
+# the array items. An alterantive (more verbose but also more type safe) schema
+# would use fields names like `CHAIN_0`, `CHAIN_1`, ..., CHAIN_19`.
+
+enum ChainwebNetwork {
+  mainnet01
+  testnet04
+}
+
+# [0,..,19] in the current API
+scalar ChainId
+
+# Should an enum be prefered over an scalar?
+# enum ChainId_ {
+#   CHAIN_0
+#   CHAIN_1
+#   CHAIN_2
+#   CHAIN_3
+#   CHAIN_4
+#   CHAIN_5
+#   CHAIN_6
+#   CHAIN_7
+#   CHAIN_8
+#   CHAIN_9
+#   CHAIN_10
+#   CHAIN_11
+#   CHAIN_12
+#   CHAIN_13
+#   CHAIN_14
+#   CHAIN_15
+#   CHAIN_16
+#   CHAIN_17
+#   CHAIN_18
+#   CHAIN_19
+# }
+
+
+# Hashes (32 bytes or 256 bits)
+scalar BlockHash
+scalar PayloadHash
+scalar CutHash
+scalar PayloadTransactionsHash
+scalar PayloadOutputsHash
+
+# 256 bits (without numerical semantics)
+scalar Word64
+
+# Unsigned Integer
+scalar BlockHeight
+
+# Unsigned fixed size 256 bit integer
+scalar BlockWeight
+
+# the only allowed values for `chain` are the adjacent chains of the chain
+# of the block.
+type AdjecentBlock {
+  chain: ChainId!
+  hash: BlockHash!
+}
+
+type Block {
+  creationTime(format: DateFormat = ISO8601): Date!
+  parent: BlockHash!
+  height: BlockHeight!
+  hash: BlockHash!
+  chainId: ChainId!
+  weight: BlockWeight!
+  featureFlags: Word64!
+  epochStart(format: DateFormat = ISO8601): Date!
+  adjacents: [AdjancentBlock!]!
+  payloadHash: PayloadHash!
+  chainwebVersion: ChainwebNetwork!
+  target: BlockWeight!
+  nonce: Word64!
+
+  # Nullable. The server is free to return null if this data isn't available
   payload: BlockPayload
 }
 
-type BlockPayload {
-  transactions: [Transaction] # pact realm
-  minerData: Account
-  transactionsHash: Base64Url
-  outputsHash: Base64Url
-  payloadHash: Base64Url
-  coinbase: CoinbaseTransaction
+# Cuts
+
+type CutItem {
+    chain: ChainId!
+    height: BlockHeight!
+    hash: BlockHash!
 }
+
+# On the P2P API a cut may also contains an optional list of block headers and
+# an optiona list of paylaods
+type Cut {
+    hashes: [CutItem!]! # one items for each chain
+    origin: String # Nullable
+    weight: BlockWeight!
+    height: BlockHeight!
+    instance: ChainwebNetwork!
+    id: CutHash!
+}
+
+# Note that chainweb is agnostic of any types from the pact realm. The current
+# API returns those values as binary data (encoded as Base64UrlWithoutPadding
+# text in JSON).
+#
+# This schema breaks this abstraction, by requiring from the service in the
+# chainweb realm insights into types from the pact realm.
+
+type BlockPayload {
+  transactions: [Transaction!]!
+  minerData: Account!
+  transactionsHash: PayloadTransactionsHash!
+  outputsHash: PayloadOutputsHash!
+  payloadHash: PayloadHash!
+  coinbase: CoinbaseTransaction!
+}
+
+type Transaction {
+  command: TransactionCommand!
+  # Nullable, because some services may only store transactions, but no outputs
+  commandResult: TransactionCommandResult
+}
+
+# ############################################################################ #
+# Pact Realm
+
+scalar TransactionHash
+scalar Object
 
 type CoinbaseTransaction {
   gas: Int
@@ -85,14 +192,9 @@ enum KeysetPredicateOptions {
   KeysAnyPredicate
 }
 
-type Transaction {
-  command: TransactionCommand
-  commandResult: TransactionCommandResult
-}
-
 # Pact realm
 type TransactionCommand {
-  hash: Hash
+  hash: TransactionHash!
   cmd: TransactionCommandPayload # json "cmd" haskell "payload"
   sigs: [Signature]
 }
@@ -154,12 +256,3 @@ type ContinuationPayload {
   data: Object
 }
 
-enum ChainwebNetwork {
-  mainnet01
-  testnet04
-}
-
-type Cut {
-  height: BigInt
-  weight: Hash
-}
