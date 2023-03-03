@@ -3,5 +3,9 @@ require('@rushstack/eslint-config/patch/modern-module-resolution');
 
 module.exports = {
   extends: ['./profile/lib'],
-  parserOptions: { tsconfigRootDir: __dirname },
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    // for js files
+    ecmaVersion: 'latest',
+  },
 };

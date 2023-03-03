@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-config",
+      "comment": "Sort aliases from tsconfig like internal packages",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-config"
+}
