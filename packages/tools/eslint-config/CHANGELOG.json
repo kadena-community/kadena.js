@@ -2,6 +2,21 @@
   "name": "@kadena-dev/eslint-config",
   "entries": [
     {
+      "version": "0.0.4",
+      "tag": "@kadena-dev/eslint-config_v0.0.4",
+      "date": "Fri, 03 Mar 2023 11:24:59 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Sort aliases from tsconfig like internal packages"
+          },
+          {
+            "comment": "Updated @kadena-dev/eslint-plugin react config extension to the config recommended by Next.js"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.3",
       "tag": "@kadena-dev/eslint-config_v0.0.3",
       "date": "Mon, 27 Feb 2023 15:39:44 GMT",

@@ -2,6 +2,18 @@
   "name": "@kadena-dev/heft-rig",
   "entries": [
     {
+      "version": "0.0.4",
+      "tag": "@kadena-dev/heft-rig_v0.0.4",
+      "date": "Fri, 03 Mar 2023 11:24:59 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.3",
       "tag": "@kadena-dev/heft-rig_v0.0.3",
       "date": "Mon, 27 Feb 2023 15:39:44 GMT",

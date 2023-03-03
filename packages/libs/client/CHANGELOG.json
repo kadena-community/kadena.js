@@ -2,6 +2,33 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.1.10",
+      "tag": "@kadena/client_v0.1.10",
+      "date": "Fri, 03 Mar 2023 11:24:59 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.1.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.1.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.1.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.1.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.9",
       "tag": "@kadena/client_v0.1.9",
       "date": "Mon, 27 Feb 2023 15:39:44 GMT",

@@ -1,6 +1,14 @@
 # Change Log - @kadena-dev/eslint-config
 
-This log was last generated on Mon, 27 Feb 2023 15:39:44 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+
+## 0.0.4
+Fri, 03 Mar 2023 11:24:59 GMT
+
+### Patches
+
+- Sort aliases from tsconfig like internal packages
+- Updated @kadena-dev/eslint-plugin react config extension to the config recommended by Next.js
 
 ## 0.0.3
 Mon, 27 Feb 2023 15:39:44 GMT

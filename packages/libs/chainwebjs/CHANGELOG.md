@@ -1,6 +1,11 @@
 # Change Log - @kadena/chainwebjs
 
-This log was last generated on Mon, 27 Feb 2023 15:39:44 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+
+## 0.0.5
+Fri, 03 Mar 2023 11:24:59 GMT
+
+_Version update only_
 
 ## 0.0.4
 Mon, 27 Feb 2023 15:39:44 GMT

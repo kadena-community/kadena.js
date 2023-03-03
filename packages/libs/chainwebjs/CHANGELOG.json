@@ -2,6 +2,21 @@
   "name": "@kadena/chainwebjs",
   "entries": [
     {
+      "version": "0.0.5",
+      "tag": "@kadena/chainwebjs_v0.0.5",
+      "date": "Fri, 03 Mar 2023 11:24:59 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.4",
       "tag": "@kadena/chainwebjs_v0.0.4",
       "date": "Mon, 27 Feb 2023 15:39:44 GMT",
