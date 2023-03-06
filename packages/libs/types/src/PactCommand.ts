@@ -217,7 +217,7 @@ export interface ICommand {
  * @alpha
  */
 export interface ISignatureJson {
-  sig: string | undefined;
+  sig: string;
 }
 
 /**
@@ -411,14 +411,31 @@ export interface ICommandResult {
  * @alpha
  */
 export interface IPreflightResult {
-  preflight: ICommandResult;
+  preflightResult: ICommandResult;
   preflightWarnings: [];
 }
 
-/*
+/**
+ * API result of attempting to execute a pact transaction.
+ *
+ * @param reqKey - Unique ID of a pact transaction, equivalent to the payload hash.
+ * @param txId - Database-internal transaction tracking ID.
+ *               Absent when transaction was not successful.
+ *               Expected to be non-negative 64-bit integers and
+ *               are expected to be monotonically increasing.
+ * @param result - Pact execution result, either a Pact error or the output (a PactValue) of the last pact expression in the transaction.
+ * @param gas - Gas units consummed by the transaction as a 64-bit integer.
+ * @param logs - Backend-specific value providing image of database logs.
+ * @param continuation - Describes the result of a defpact execution, if one occurred.
+ * @param metaData - Platform-specific information on the block that executed the transaction.
+ * @param events - Optional list of Pact events emitted during the transaction.
+ *
+ *
  * @alpha
  */
-export interface ICommandResultWithPreflight {
+// @TODO Should `txId` and `gas` be a BigInt since Haskell defines it as int64?
+// @TODO Add `gas` to OpenApi spec?
+export interface ILocalCommandResultWithPreflight {
   reqKey: IBase64Url;
   /* eslint-disable-next-line @rushstack/no-new-null*/
   txId: number | null;
@@ -431,8 +448,10 @@ export interface ICommandResultWithPreflight {
   /* eslint-disable-next-line @rushstack/no-new-null*/
   metaData: IChainwebResponseMetaData | null;
   events?: Array<IPactEvent>;
-  preflightWarnings: [];
+  preflightWarnings?: Array<string>;
 }
+
+export type ILocalCommandResult = IPreflightResult | ICommandResult;
 
 // TODO: Move Chainweb Specific Types
 /**

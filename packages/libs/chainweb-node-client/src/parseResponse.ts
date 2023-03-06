@@ -1,5 +1,8 @@
 import type { Response } from 'cross-fetch';
-
+import type {
+  ILocalCommandResultWithPreflight,
+  ILocalCommandResult,
+} from '@kadena/types';
 /**
  * Parses raw `fetch` response into a typed JSON value.
  *
@@ -22,13 +25,13 @@ export async function parseResponse<T>(response: Response): Promise<T> {
   }
 }
 
-export async function parsePreflight(
-  commandResult: IPreflightResult,
-): ICommandWithPreflightResult {
-  if (commandResult.preflight) {
+export function parsePreflight(
+  commandResult: ILocalCommandResult,
+): ILocalCommandResultWithPreflight {
+  if ('preflightResult' in commandResult) {
     return {
-      ...preflight,
-      preflightWarnings,
+      ...commandResult.preflightResult,
+      preflightWarnings: commandResult.preflightWarnings,
     };
   } else return commandResult;
 }

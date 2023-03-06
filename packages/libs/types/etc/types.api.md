@@ -82,34 +82,6 @@ export interface ICommandResult {
     txId: number | null;
 }
 
-// @public (undocumented)
-export interface ICommandResultWithPreflight {
-    // Warning: (ae-incompatible-release-tags) The symbol "continuation" is marked as @public, but its signature references "IPactExec" which is marked as @alpha
-    //
-    // (undocumented)
-    continuation: IPactExec | null;
-    // Warning: (ae-incompatible-release-tags) The symbol "events" is marked as @public, but its signature references "IPactEvent" which is marked as @alpha
-    //
-    // (undocumented)
-    events?: Array<IPactEvent>;
-    // (undocumented)
-    gas: number;
-    // (undocumented)
-    logs: string | null;
-    // (undocumented)
-    metaData: IChainwebResponseMetaData | null;
-    // (undocumented)
-    preflightWarnings: [];
-    // Warning: (ae-incompatible-release-tags) The symbol "reqKey" is marked as @public, but its signature references "IBase64Url" which is marked as @alpha
-    //
-    // (undocumented)
-    reqKey: IBase64Url;
-    // (undocumented)
-    result: IPactResultSuccess | IPactResultError;
-    // (undocumented)
-    txId: number | null;
-}
-
 // @alpha
 export interface IContPayload {
     // (undocumented)
@@ -146,6 +118,33 @@ export interface IKeyPair {
 export interface IListenRequestBody {
     // (undocumented)
     listen: IBase64Url;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "ILocalCommandResult" is marked as @public, but its signature references "ICommandResult" which is marked as @alpha
+//
+// @public (undocumented)
+export type ILocalCommandResult = IPreflightResult | ICommandResult;
+
+// @alpha
+export interface ILocalCommandResultWithPreflight {
+    // (undocumented)
+    continuation: IPactExec | null;
+    // (undocumented)
+    events?: Array<IPactEvent>;
+    // (undocumented)
+    gas: number;
+    // (undocumented)
+    logs: string | null;
+    // (undocumented)
+    metaData: IChainwebResponseMetaData | null;
+    // (undocumented)
+    preflightWarnings?: Array<string>;
+    // (undocumented)
+    reqKey: IBase64Url;
+    // (undocumented)
+    result: IPactResultSuccess | IPactResultError;
+    // (undocumented)
+    txId: number | null;
 }
 
 // @alpha
@@ -225,10 +224,10 @@ export interface IPollResponse {
 
 // @public (undocumented)
 export interface IPreflightResult {
-    // Warning: (ae-incompatible-release-tags) The symbol "preflight" is marked as @public, but its signature references "ICommandResult" which is marked as @alpha
+    // Warning: (ae-incompatible-release-tags) The symbol "preflightResult" is marked as @public, but its signature references "ICommandResult" which is marked as @alpha
     //
     // (undocumented)
-    preflight: ICommandResult;
+    preflightResult: ICommandResult;
     // (undocumented)
     preflightWarnings: [];
 }
@@ -254,7 +253,7 @@ export interface ISignature {
 // @alpha (undocumented)
 export interface ISignatureJson {
     // (undocumented)
-    sig: string | undefined;
+    sig: string;
 }
 
 // @alpha (undocumented)

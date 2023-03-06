@@ -1,11 +1,10 @@
 import type {
   ICommand,
-  ICommandResult,
   LocalRequestBody,
-  IPreflightResult,
-  ICommandResultWithPreflight,
+  ILocalCommandResultWithPreflight,
+  ILocalCommandResult,
 } from '@kadena/types';
-
+import type { IUnsignedTransaction } from '@kadena/client';
 import { parseResponse, parsePreflight } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
@@ -24,29 +23,25 @@ export function local(
   requestBody: LocalRequestBody,
   apiHost: string,
   { preflight = true, signatureVerification = true },
-): Promise<ICommandResultWithPreflight> {
-  return parsePreflight(
-    localRaw(requestBody, apiHost, {
-      preflight: preflight,
-      signatureVerification: signatureVerification,
-    }),
-  );
+): Promise<ILocalCommandResultWithPreflight> {
+  return localRaw(requestBody, apiHost, {
+    preflight: preflight,
+    signatureVerification: signatureVerification,
+  }).then((result) => parsePreflight(result));
 }
 
 /**
  * @alpha
  */
 export function localWithoutSignatureVerification(
-  requestBody: IUnsignedCommand,
+  requestBody: IUnsignedTransaction,
   apiHost: string,
   preflight = true,
-): Promise<ICommandResultWithPreflight> {
-  return parsePreflight(
-    localRaw(convertIUnsignedCommandToNoSig(requestBody), apiHost, {
-      signatureVerification: false,
-      preflight: preflight,
-    }),
-  );
+): Promise<ILocalCommandResultWithPreflight> {
+  return localRaw(convertIUnsignedTransactionToNoSig(requestBody), apiHost, {
+    signatureVerification: false,
+    preflight: preflight,
+  }).then((result) => parsePreflight(result));
 }
 
 /**
@@ -66,33 +61,24 @@ export function localRaw(
     preflight,
     signatureVerification,
   }: { signatureVerification: boolean; preflight: boolean },
-): Promise<ICommandResult | IPreflightResult> {
+): Promise<ILocalCommandResult> {
   const request = stringifyAndMakePOSTRequest(requestBody);
 
-  const response: Promise<ICommandResult> = fetch(
+  const response: Promise<ILocalCommandResult> = fetch(
     `${apiHost}/api/v1/local?preflight=${preflight}&signatureVerification=${signatureVerification}`,
     request,
-  ).then((r) => parseResponse<ICommandResult>(r));
+  ).then((r) => parseResponse<ILocalCommandResult>(r));
   return response;
 }
 
 /**
  * @alpha
  */
-export function convertIUnsignedCommandToNoSig(
-  transaction: IUnsignedCommand,
+export function convertIUnsignedTransactionToNoSig(
+  transaction: IUnsignedTransaction,
 ): ICommand {
   return {
     ...transaction,
     sigs: transaction.sigs.map((s) => ({ sig: s?.sig ?? 'noSig' })),
   };
-}
-
-/**
- * @alpha
- */
-export interface IUnsignedCommand {
-  cmd: string;
-  hash: string;
-  sigs: ISignatureJson;
 }
