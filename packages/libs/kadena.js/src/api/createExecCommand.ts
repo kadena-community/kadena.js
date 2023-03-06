@@ -9,7 +9,9 @@ import type {
 } from '@kadena/types';
 
 import { createSendRequest } from './createSendRequest';
+import { isFullySigned } from './isFullySigned';
 import { prepareExecCommand } from './prepareExecCommand';
+
 /**
  * Make a full 'send' endpoint exec command. See 'prepareExecCommand' for parameters.
  */
@@ -21,7 +23,9 @@ export function createExecCommand(
   meta: IMetaData,
   networkId?: NetworkId,
 ): ISendRequestBody {
-  return createSendRequest([
+  const command = isFullySigned(
     prepareExecCommand(keyPairs, nonce, pactCode, meta, networkId, envData),
-  ]);
+  );
+
+  return createSendRequest([command]);
 }

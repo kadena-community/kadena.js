@@ -12,6 +12,7 @@ import type {
 } from '@kadena/types';
 
 import { createSendRequest } from './createSendRequest';
+import { isFullySigned } from './isFullySigned';
 import { prepareContCommand } from './prepareContCommand';
 
 /**
@@ -28,7 +29,7 @@ export function createContCommand(
   proof: Proof,
   networkId: NetworkId,
 ): ISendRequestBody {
-  return createSendRequest([
+  const command = isFullySigned(
     prepareContCommand(
       keyPairs,
       nonce,
@@ -40,5 +41,6 @@ export function createContCommand(
       networkId,
       envData,
     ),
-  ]);
+  );
+  return createSendRequest([command]);
 }

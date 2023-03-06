@@ -257,16 +257,6 @@ export interface ISignatureJson {
 }
 
 // @alpha (undocumented)
-export interface ISignedCommand {
-    // (undocumented)
-    cmd: string;
-    // (undocumented)
-    hash: string;
-    // (undocumented)
-    sigs: ISignature[];
-}
-
-// @alpha (undocumented)
 export interface ISignedSignatureWithHash extends ISignature {
     // (undocumented)
     hash: string;
@@ -328,6 +318,22 @@ export interface ISPVRequestBody {
     requestKey: IBase64Url;
     // (undocumented)
     targetChainId: ChainId;
+}
+
+// @alpha (undocumented)
+export interface IUnsignedCommand {
+    // (undocumented)
+    cmd: CommandPayloadStringifiedJSON;
+    // (undocumented)
+    hash: PactTransactionHash;
+    // (undocumented)
+    sigs: Array<IUnsignedSignatureJson>;
+}
+
+// @alpha (undocumented)
+export interface IUnsignedSignatureJson {
+    // (undocumented)
+    sig: string | undefined;
 }
 
 // @alpha (undocumented)
