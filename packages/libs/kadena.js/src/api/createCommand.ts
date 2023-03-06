@@ -1,7 +1,7 @@
 import type {
   CommandPayloadStringifiedJSON,
   ICommand,
-  IUnsignedCommand,
+  IPartiallySigned,
   SignatureWithHash,
 } from '@kadena/types';
 
@@ -16,7 +16,7 @@ import { pullAndCheckHashs } from './pullAndCheckHashs';
 export function createCommand(
   signatures: Array<SignatureWithHash>,
   cmd: CommandPayloadStringifiedJSON,
-): IUnsignedCommand {
+): IPartiallySigned {
   return {
     hash: pullAndCheckHashs(signatures),
     sigs: signatures,

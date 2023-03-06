@@ -3,7 +3,7 @@ import type {
   ICommandPayload,
   IKeyPair,
   IMetaData,
-  IUnsignedCommand,
+  IPartiallySigned,
   NetworkId,
   Nonce,
   PactCode,
@@ -31,7 +31,7 @@ export function prepareExecCommand(
   meta: IMetaData,
   networkId?: NetworkId,
   envData?: EnvData,
-): IUnsignedCommand {
+): IPartiallySigned {
   const signers = keyPairs.map(pullSigner);
   const cmdJSON: ICommandPayload = {
     networkId: networkId !== undefined ? networkId : null,

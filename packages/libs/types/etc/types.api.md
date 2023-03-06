@@ -210,6 +210,12 @@ export interface IPactInt {
     int: string;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "IPartiallySigned" is marked as @public, but its signature references "IUnsignedCommand" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "IPartiallySigned" is marked as @public, but its signature references "ICommand" which is marked as @alpha
+//
+// @public (undocumented)
+export type IPartiallySigned = IUnsignedCommand | ICommand;
+
 // @alpha
 export interface IPollRequestBody {
     // (undocumented)
