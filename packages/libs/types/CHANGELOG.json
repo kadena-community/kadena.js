@@ -2,6 +2,69 @@
   "name": "@kadena/types",
   "entries": [
     {
+      "version": "0.1.2",
+      "tag": "@kadena/types_v0.1.2",
+      "date": "Fri, 03 Mar 2023 11:24:59 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.1.1",
+      "tag": "@kadena/types_v0.1.1",
+      "date": "Mon, 27 Feb 2023 15:39:44 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.3`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.1.0",
+      "tag": "@kadena/types_v0.1.0",
+      "date": "Mon, 27 Feb 2023 14:25:39 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "adds SigningRequest type and createSigningRequest for use in the sign endpoint of the Signing API"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add null type to IUnsignedTransaction sig"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.3",
       "tag": "@kadena/types_v0.0.3",
       "date": "Fri, 09 Dec 2022 12:07:57 GMT",

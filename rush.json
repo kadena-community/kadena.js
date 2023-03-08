@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.80.1",
+  "rushVersion": "5.93.1",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -532,7 +532,6 @@
     {
       "packageName": "@kadena-dev/eslint-config",
       "projectFolder": "packages/tools/eslint-config",
-      "cyclicDependencyProjects": ["@kadena-dev/eslint-config"],
       "tags": ["tools"],
       "shouldPublish": true
     },
@@ -565,7 +564,7 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
-    },
+    }
 
     // {
     //   /**

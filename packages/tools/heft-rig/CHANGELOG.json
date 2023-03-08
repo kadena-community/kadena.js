@@ -2,6 +2,50 @@
   "name": "@kadena-dev/heft-rig",
   "entries": [
     {
+      "version": "0.0.4",
+      "tag": "@kadena-dev/heft-rig_v0.0.4",
+      "date": "Fri, 03 Mar 2023 11:24:59 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.3",
+      "tag": "@kadena-dev/heft-rig_v0.0.3",
+      "date": "Mon, 27 Feb 2023 15:39:44 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.3`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.2",
+      "tag": "@kadena-dev/heft-rig_v0.0.2",
+      "date": "Mon, 27 Feb 2023 14:25:39 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adds dependency on eslint-plugin"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.1",
       "tag": "@kadena-dev/heft-rig_v0.0.1",
       "date": "Mon, 16 Jan 2023 16:31:08 GMT",
