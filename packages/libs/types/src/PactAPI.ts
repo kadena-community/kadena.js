@@ -3,6 +3,7 @@ import type {
   ChainId,
   ICommand,
   ICommandResult,
+  IUnsignedCommand,
   SPVProof,
 } from './PactCommand';
 
@@ -39,7 +40,7 @@ export type SendResponse = IRequestKeys;
 /**
  * @alpha
  */
-export type LocalRequestBody = ICommand;
+export type LocalRequestBody = ICommand | IUnsignedCommand;
 
 /**
  * @alpha

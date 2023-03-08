@@ -22,7 +22,10 @@ import fetch from 'cross-fetch';
 export function local(
   requestBody: LocalRequestBody,
   apiHost: string,
-  { preflight = true, signatureVerification = true },
+  {
+    preflight = true,
+    signatureVerification = true,
+  }: { preflight?: boolean; signatureVerification?: boolean } = {},
 ): Promise<ILocalCommandResultWithPreflight> {
   return localRaw(requestBody, apiHost, {
     preflight: preflight,

@@ -352,7 +352,7 @@ export interface IUserSig {
 export type ListenResponse = ICommandResult;
 
 // @alpha (undocumented)
-export type LocalRequestBody = ICommand;
+export type LocalRequestBody = ICommand | IUnsignedCommand;
 
 // @alpha (undocumented)
 export type LocalResponse = ICommandResult;
