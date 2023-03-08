@@ -564,7 +564,7 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
-    }
+    },
 
     // {
     //   /**
