@@ -195,6 +195,20 @@ export interface IUserSig {
   sig: Base16String;
 }
 
+/**
+ * @alpha
+ */
+export interface ISignatureJson {
+  sig: string;
+}
+
+/**
+ * @alpha
+ */
+export interface IUnsignedSignatureJson {
+  sig: string | undefined;
+}
+
 // TODO: function for gettig from ICommandPayload-> CommandPayloadStringifiedJSON
 // TODO: Change file name to just 'Command.ts'.
 
@@ -211,20 +225,6 @@ export interface ICommand {
   cmd: CommandPayloadStringifiedJSON;
   hash: PactTransactionHash;
   sigs: Array<ISignatureJson>;
-}
-
-/**
- * @alpha
- */
-export interface ISignatureJson {
-  sig: string;
-}
-
-/**
- * @alpha
- */
-export interface IUnsignedSignatureJson {
-  sig: string | undefined;
 }
 
 /**

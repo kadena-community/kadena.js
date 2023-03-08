@@ -48,6 +48,14 @@ export type LocalRequestBody = ICommand | IUnsignedCommand;
 export type LocalResponse = ICommandResult;
 
 /**
+ * @alpha
+ */
+export interface IPreflightResult {
+  preflightResult: ICommandResult;
+  preflightWarnings: [];
+}
+
+/**
  * Request type of /poll endpoint.
  *
  * @param requestKeys - List of request keys (or command hashes) to poll for.
