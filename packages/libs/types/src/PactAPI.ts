@@ -45,15 +45,12 @@ export type LocalRequestBody = ICommand | IUnsignedCommand;
 /**
  * @alpha
  */
-export type LocalResponse = ICommandResult;
+export type LocalResponse = ILocalCommandResult;
 
 /**
  * @alpha
  */
-export interface IPreflightResult {
-  preflightResult: ICommandResult;
-  preflightWarnings: [];
-}
+export type ILocalCommandResult = IPreflightResult | ICommandResult;
 
 /**
  * Request type of /poll endpoint.

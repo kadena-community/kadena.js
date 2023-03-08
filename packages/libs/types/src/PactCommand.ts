@@ -467,11 +467,6 @@ export interface ILocalCommandResultWithPreflight {
   preflightWarnings?: Array<string>;
 }
 
-/**
- * @alpha
- */
-export type ILocalCommandResult = IPreflightResult | ICommandResult;
-
 // TODO: Move Chainweb Specific Types
 /**
  * Stringified Chainweb chain numbers.
