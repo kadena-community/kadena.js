@@ -39,7 +39,7 @@ export function local(
 export function localWithoutSignatureVerification(
   requestBody: IUnsignedTransaction,
   apiHost: string,
-  preflight = true,
+  preflight: boolean = true,
 ): Promise<ILocalCommandResultWithPreflight> {
   return localRaw(convertIUnsignedTransactionToNoSig(requestBody), apiHost, {
     signatureVerification: false,
