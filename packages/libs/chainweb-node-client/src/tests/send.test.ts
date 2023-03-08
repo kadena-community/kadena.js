@@ -1,7 +1,7 @@
 jest.mock('cross-fetch');
 
-import { pactTestCommand, sign } from '@kadena/cryptography-utils';
-import type { ICommand, SignatureWithHash } from '@kadena/types';
+import { pactTestCommand, sign, isSigned } from '@kadena/cryptography-utils';
+import type { IUnsignedCommand, SignCommand } from '@kadena/types';
 
 import type { ISendRequestBody, ISendResponse } from '../send';
 import { send } from '../send';
@@ -23,8 +23,8 @@ test('/send should return request keys of txs submitted', async () => {
     secretKey:
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
-  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr, keyPair);
-  const signedCommand1: ICommand = {
+  const cmdWithOneSignature1: SignCommand = sign(commandStr, keyPair);
+  const signedCommand1: IUnsignedCommand = {
     cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
     sigs: [{ sig: cmdWithOneSignature1.sig }],
@@ -32,7 +32,7 @@ test('/send should return request keys of txs submitted', async () => {
   const expectedRequestKey1 = signedCommand1.hash;
 
   // A tx created for chain 0 of devnet using `pact -a`.
-  const signedCommand2: ICommand = {
+  const signedCommand2: IUnsignedCommand = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     sigs: [
       {
@@ -44,7 +44,7 @@ test('/send should return request keys of txs submitted', async () => {
   const expectedRequestKey2 = 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q';
 
   const sendReq: ISendRequestBody = {
-    cmds: [signedCommand1, signedCommand2],
+    cmds: [signedCommand1, signedCommand2].filter(isSigned),
   };
   const responseExpected: ISendResponse = {
     requestKeys: [expectedRequestKey1, expectedRequestKey2],
@@ -55,7 +55,7 @@ test('/send should return request keys of txs submitted', async () => {
 
 test('/send should return error if sent to wrong chain id', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
-  const signedCommand: ICommand = {
+  const signedCommand: IUnsignedCommand = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     sigs: [
       {
@@ -65,7 +65,7 @@ test('/send should return error if sent to wrong chain id', async () => {
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
   const sendReq: ISendRequestBody = {
-    cmds: [signedCommand],
+    cmds: [signedCommand].filter(isSigned),
   };
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
@@ -78,7 +78,7 @@ test('/send should return error if sent to wrong chain id', async () => {
 
 test('/send should return error if tx already exists on chain', async () => {
   // A tx created for chain 0 of devnet using `pact -a`.
-  const signedCommand: ICommand = {
+  const signedCommand: IUnsignedCommand = {
     hash: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
     sigs: [
       {
@@ -88,7 +88,7 @@ test('/send should return error if tx already exists on chain', async () => {
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
   const sendReq: ISendRequestBody = {
-    cmds: [signedCommand],
+    cmds: [signedCommand].filter(isSigned),
   };
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';

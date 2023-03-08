@@ -10,7 +10,6 @@ import {
   prepareContCommand,
   prepareExecCommand,
   pullAndCheckHashs,
-  // pullSignature,
   pullSigner,
 } from '../index';
 
@@ -25,7 +24,6 @@ test('Expects functions to be exposed', async () => {
   expect(prepareContCommand).toBeDefined();
   expect(prepareExecCommand).toBeDefined();
   expect(pullAndCheckHashs).toBeDefined();
-  // expect(pullSignature).toBeDefined();
   expect(pullSigner).toBeDefined();
   expect(createCap).toBeDefined();
 });

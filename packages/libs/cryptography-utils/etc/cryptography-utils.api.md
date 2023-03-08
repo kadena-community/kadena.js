@@ -5,7 +5,9 @@
 ```ts
 
 import type { IBase64Url } from '@kadena/types';
+import type { ICommand } from '@kadena/types';
 import type { IKeyPair } from '@kadena/types';
+import type { IUnsignedCommand } from '@kadena/types';
 import type { SignCommand } from '@kadena/types';
 
 // @alpha
@@ -34,6 +36,9 @@ export function hashBin(str: string): Uint8Array;
 
 // @alpha
 export function hexToBin(hexString: string): Uint8Array;
+
+// @alpha (undocumented)
+export function isSigned(command: IUnsignedCommand | ICommand): command is ICommand;
 
 // @alpha (undocumented)
 export const pactTestCommand: {

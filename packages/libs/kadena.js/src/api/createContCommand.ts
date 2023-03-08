@@ -1,3 +1,4 @@
+import { isSigned } from '@kadena/cryptography-utils';
 import type {
   EnvData,
   IKeyPair,
@@ -12,7 +13,6 @@ import type {
 } from '@kadena/types';
 
 import { createSendRequest } from './createSendRequest';
-import { isFullySigned } from './isFullySigned';
 import { prepareContCommand } from './prepareContCommand';
 
 /**
@@ -29,18 +29,16 @@ export function createContCommand(
   proof: Proof,
   networkId: NetworkId,
 ): ISendRequestBody {
-  const command = isFullySigned(
-    prepareContCommand(
-      keyPairs,
-      nonce,
-      proof,
-      pactId,
-      rollback,
-      step,
-      meta,
-      networkId,
-      envData,
-    ),
+  const command = prepareContCommand(
+    keyPairs,
+    nonce,
+    proof,
+    pactId,
+    rollback,
+    step,
+    meta,
+    networkId,
+    envData,
   );
-  return createSendRequest([command]);
+  return createSendRequest([command].filter(isSigned));
 }
