@@ -32,7 +32,9 @@ test('/local should return result of tx queried', async () => {
   const signedCommand1: LocalRequestBody = {
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
-    sigs: [{ sig: cmdWithOneSignature1?.sig }],
+    sigs: [
+      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+    ],
   };
 
   const commandResult1: LocalResponse = {
@@ -66,7 +68,7 @@ test('localWithoutSignatureVerification takes in unsigned transaction', async ()
   const signedCommand1: LocalRequestBody = {
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
-    sigs: [{ sig: undefined }],
+    sigs: [undefined],
   };
 
   const commandResult1: LocalResponse = {

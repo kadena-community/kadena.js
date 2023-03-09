@@ -16,10 +16,10 @@ import { pullAndCheckHashs } from './pullAndCheckHashs';
 export function createCommand(
   signatures: Array<SignatureWithHash>,
   cmd: CommandPayloadStringifiedJSON,
-): IUnsignedCommand | ICommand {
+): IUnsignedCommand {
   return {
     hash: pullAndCheckHashs(signatures),
-    sigs: signatures,
+    sigs: signatures.map(({ sig }) => (sig ? { sig: sig } : undefined)),
     cmd,
   };
 }

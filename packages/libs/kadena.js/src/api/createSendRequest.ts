@@ -1,4 +1,4 @@
-import { isSigned } from '@kadena/cryptography-utils';
+import { isSignedCommand } from '@kadena/cryptography-utils';
 import type { ISendRequestBody, IUnsignedCommand } from '@kadena/types';
 /**
  * Makes outer wrapper for a 'send' endpoint.
@@ -7,5 +7,5 @@ import type { ISendRequestBody, IUnsignedCommand } from '@kadena/types';
 export function createSendRequest(
   commands: Array<IUnsignedCommand>,
 ): ISendRequestBody {
-  return { cmds: commands.filter(isSigned) };
+  return { cmds: commands.filter(isSignedCommand) };
 }

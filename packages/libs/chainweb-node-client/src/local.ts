@@ -1,10 +1,11 @@
 import type {
   ICommand,
+  IUnsignedCommand,
   LocalRequestBody,
   ILocalCommandResultWithPreflight,
   ILocalCommandResult,
+  ISignatureJson,
 } from '@kadena/types';
-import type { IUnsignedTransaction } from '@kadena/client';
 import { parseResponse, parsePreflight } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
@@ -37,7 +38,7 @@ export function local(
  * @alpha
  */
 export function localWithoutSignatureVerification(
-  requestBody: IUnsignedTransaction,
+  requestBody: IUnsignedCommand,
   apiHost: string,
   preflight: boolean = true,
 ): Promise<ILocalCommandResultWithPreflight> {
@@ -78,10 +79,12 @@ export function localRaw(
  * @alpha
  */
 export function convertIUnsignedTransactionToNoSig(
-  transaction: IUnsignedTransaction,
+  transaction: IUnsignedCommand,
 ): ICommand {
   return {
     ...transaction,
-    sigs: transaction.sigs.map((s) => ({ sig: s?.sig ?? 'noSig' })),
+    sigs: transaction.sigs.map(
+      (s: ISignatureJson | undefined) => s ?? { sig: 'noSig' },
+    ),
   };
 }

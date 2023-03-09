@@ -38,7 +38,7 @@ export function hashBin(str: string): Uint8Array;
 export function hexToBin(hexString: string): Uint8Array;
 
 // @alpha (undocumented)
-export function isSigned(command: IUnsignedCommand | ICommand): command is ICommand;
+export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
 
 // @alpha (undocumented)
 export const pactTestCommand: {

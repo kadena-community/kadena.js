@@ -4,38 +4,48 @@
 
 ```ts
 
-import type { Base16String } from '@kadena/types';
 import type { ICap } from '@kadena/types';
 import type { ICommand } from '@kadena/types';
 import type { ICommandResult } from '@kadena/types';
 import type { IListenRequestBody } from '@kadena/types';
+import type { ILocalCommandResult } from '@kadena/types';
+import type { ILocalCommandResultWithPreflight } from '@kadena/types';
 import type { IPollRequestBody } from '@kadena/types';
 import type { IPollResponse } from '@kadena/types';
+import { ISendRequestBody } from '@kadena/types';
 import type { ISPVRequestBody } from '@kadena/types';
+import type { IUnsignedCommand } from '@kadena/types';
 import type { LocalRequestBody } from '@kadena/types';
 import type { PactValue } from '@kadena/types';
+import { SendResponse } from '@kadena/types';
 import type { SPVResponse } from '@kadena/types';
 
-// @alpha
-export interface ISendRequestBody {
-    // (undocumented)
-    cmds: Array<ICommand>;
-}
-
-// @alpha
-export interface ISendResponse {
-    // (undocumented)
-    requestKeys: Array<Base16String>;
-}
+// @alpha (undocumented)
+export function convertIUnsignedTransactionToNoSig(transaction: IUnsignedCommand): ICommand;
 
 // @alpha
 export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
 
 // @alpha
-export function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult>;
+export function local(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }?: {
+    preflight?: boolean;
+    signatureVerification?: boolean;
+}): Promise<ILocalCommandResultWithPreflight>;
+
+// @alpha
+export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
+    signatureVerification: boolean;
+    preflight: boolean;
+}): Promise<ILocalCommandResult>;
+
+// @alpha (undocumented)
+export function localWithoutSignatureVerification(requestBody: IUnsignedCommand, apiHost: string, preflight?: boolean): Promise<ILocalCommandResultWithPreflight>;
 
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;
+
+// @public (undocumented)
+export function parsePreflight(commandResult: ILocalCommandResult): ILocalCommandResultWithPreflight;
 
 // @alpha
 export function parseResponse<T>(response: Response): Promise<T>;
@@ -47,7 +57,7 @@ export function parseResponseTEXT(response: Response): Promise<string>;
 export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: ISendRequestBody, apiHost: string): Promise<ISendResponse>;
+export function send(requestBody: ISendRequestBody, apiHost: string): Promise<SendResponse>;
 
 // @alpha
 export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;

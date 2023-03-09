@@ -16,4 +16,4 @@ export * from './uint8ArrayToStr';
 export * from './unique';
 export * from './verifySig';
 export * from './tests/mockdata/Pact';
-export * from './isSigned';
+export * from './isSignedCommand';

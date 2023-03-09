@@ -323,13 +323,7 @@ export interface IUnsignedCommand {
     // (undocumented)
     hash: PactTransactionHash;
     // (undocumented)
-    sigs: Array<IUnsignedSignatureJson>;
-}
-
-// @alpha (undocumented)
-export interface IUnsignedSignatureJson {
-    // (undocumented)
-    sig: string | undefined;
+    sigs: Array<ISignatureJson | undefined>;
 }
 
 // @alpha (undocumented)
@@ -355,7 +349,7 @@ export type ListenResponse = ICommandResult;
 export type LocalRequestBody = ICommand | IUnsignedCommand;
 
 // @alpha (undocumented)
-export type LocalResponse = ICommandResult;
+export type LocalResponse = ILocalCommandResult;
 
 // @alpha (undocumented)
 export type NetworkId = string | undefined;

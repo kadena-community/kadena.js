@@ -1,9 +1,13 @@
 jest.mock('cross-fetch');
 
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
-import type { IUnsignedCommand, SignCommand } from '@kadena/types';
+import type {
+  IUnsignedCommand,
+  SignCommand,
+  ISendRequestBody,
+  SendResponse,
+} from '@kadena/types';
 import { createSendRequest } from 'kadena.js';
-import type { ISendRequestBody, ISendResponse } from '../send';
 import { send } from '../send';
 
 import { mockFetch } from './mockdata/mockFetch';
@@ -27,7 +31,9 @@ test('/send should return request keys of txs submitted', async () => {
   const signedCommand1: IUnsignedCommand = {
     cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
-    sigs: [{ sig: cmdWithOneSignature1.sig }],
+    sigs: [
+      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+    ],
   };
   const expectedRequestKey1 = signedCommand1.hash;
 
@@ -48,10 +54,10 @@ test('/send should return request keys of txs submitted', async () => {
     signedCommand2,
   ]);
 
-  const responseExpected: ISendResponse = {
+  const responseExpected: SendResponse = {
     requestKeys: [expectedRequestKey1, expectedRequestKey2],
   };
-  const responseActual: Response | ISendResponse = await send(sendReq, '');
+  const responseActual: Response | SendResponse = await send(sendReq, '');
   expect(responseExpected).toEqual(responseActual);
 });
 
@@ -70,7 +76,7 @@ test('/send should return error if sent to wrong chain id', async () => {
 
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
-  const responseActual: Promise<Response | ISendResponse> = send(
+  const responseActual: Promise<Response | SendResponse> = send(
     sendReq,
     '/wrongChain',
   );
@@ -91,7 +97,7 @@ test('/send should return error if tx already exists on chain', async () => {
   const sendReq: ISendRequestBody = createSendRequest([signedCommand]);
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
-  const responseActual: Promise<Response | ISendResponse> = send(
+  const responseActual: Promise<Response | SendResponse> = send(
     sendReq,
     '/duplicate',
   );

@@ -30,12 +30,3 @@ export interface IPublicMeta {
   gasPrice: number;
   ttl: number;
 }
-
-/**
- * @alpha
- */
-export interface IUnsignedTransaction {
-  hash: string;
-  sigs: (ISignature | undefined)[];
-  cmd: string;
-}

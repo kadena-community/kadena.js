@@ -1,4 +1,4 @@
-import { isSigned } from '@kadena/cryptography-utils';
+import { isSignedCommand } from '@kadena/cryptography-utils';
 import type {
   EnvData,
   IKeyPair,
@@ -40,5 +40,5 @@ export function createContCommand(
     networkId,
     envData,
   );
-  return createSendRequest([command].filter(isSigned));
+  return createSendRequest([command].filter(isSignedCommand));
 }

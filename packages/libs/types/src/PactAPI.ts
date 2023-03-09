@@ -3,6 +3,7 @@ import type {
   ChainId,
   ICommand,
   ICommandResult,
+  IPreflightResult,
   IUnsignedCommand,
   SPVProof,
 } from './PactCommand';
