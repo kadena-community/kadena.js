@@ -65,10 +65,10 @@ export const pactTestCommand: {
     nonce: string;
 };
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const pactTestCommand1: IUnsignedCommand;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const pactTestCommand2: IUnsignedCommand;
 
 // @alpha
