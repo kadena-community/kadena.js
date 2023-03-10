@@ -5,4 +5,5 @@ export interface IContractDefinition {
   getMethods(moduleName: string): Record<string, Defun> | undefined;
   getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
   get modulesWithFunctions(): Output;
+  getNamespace(moduleName: string): string;
 }
