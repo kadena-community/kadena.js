@@ -4,15 +4,15 @@
 
 ```ts
 
+import { Base16String } from '@kadena/types';
 import type { ICap } from '@kadena/types';
-import type { ICommand } from '@kadena/types';
+import { ICommand } from '@kadena/types';
 import type { ICommandResult } from '@kadena/types';
 import type { IListenRequestBody } from '@kadena/types';
 import type { ILocalCommandResult } from '@kadena/types';
 import type { ILocalCommandResultWithPreflight } from '@kadena/types';
 import type { IPollRequestBody } from '@kadena/types';
 import type { IPollResponse } from '@kadena/types';
-import { ISendRequestBody } from '@kadena/types';
 import type { ISPVRequestBody } from '@kadena/types';
 import type { IUnsignedCommand } from '@kadena/types';
 import type { LocalRequestBody } from '@kadena/types';
@@ -22,6 +22,18 @@ import type { SPVResponse } from '@kadena/types';
 
 // @alpha (undocumented)
 export function convertIUnsignedTransactionToNoSig(transaction: IUnsignedCommand): ICommand;
+
+// @alpha
+export interface ISendRequestBody {
+    // (undocumented)
+    cmds: Array<ICommand>;
+}
+
+// @alpha
+export interface ISendResponse {
+    // (undocumented)
+    requestKeys: Array<Base16String>;
+}
 
 // @alpha
 export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
@@ -44,7 +56,7 @@ export function localWithoutSignatureVerification(requestBody: IUnsignedCommand,
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export function parsePreflight(commandResult: ILocalCommandResult): ILocalCommandResultWithPreflight;
 
 // @alpha

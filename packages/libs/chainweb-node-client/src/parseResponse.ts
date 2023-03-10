@@ -24,7 +24,9 @@ export async function parseResponse<T>(response: Response): Promise<T> {
     }
   }
 }
-
+/**
+ * @alpha
+ */
 export function parsePreflight(
   commandResult: ILocalCommandResult,
 ): ILocalCommandResultWithPreflight {

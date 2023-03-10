@@ -5,11 +5,10 @@ import {
   ChainId,
   ChainwebNetworkId,
   ICap,
-  ICommand,
   ICommandPayload,
   ICommandResult,
   IPollResponse,
-  ISignature,
+  ISignatureJson,
   IUnsignedCommand,
   PactValue,
   SendResponse,
@@ -132,7 +131,7 @@ export class PactCommand
       args: ICap['args'];
     }[];
   }[];
-  public sigs: (ISignature | undefined)[];
+  public sigs: (ISignatureJson | undefined)[];
   // public signer:
   //   | ((
   //       ...transactions: (IPactCommand &

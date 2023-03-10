@@ -2,24 +2,23 @@
 // To run: `$ npm run start:pact`.
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
+import { listen, local, poll, send } from '@kadena/chainweb-node-client';
 import {
-  ISendResponse,
-  listen,
-  local,
-  poll,
-  send,
-} from '@kadena/chainweb-node-client';
-import {
-  ICommand,
   ICommandResult,
   IPollResponse,
   ISendRequestBody,
+  IUnsignedCommand,
   ListenResponse,
+  SendResponse,
 } from '@kadena/types';
 
 import { createSampleExecTx } from './mock-txs';
 
-import { createListenRequest, createPollRequest } from 'kadena.js';
+import {
+  createListenRequest,
+  createPollRequest,
+  createSendRequest,
+} from 'kadena.js';
 
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
 const pactServerKeyPair = {
@@ -27,14 +26,15 @@ const pactServerKeyPair = {
   secretKey: '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
 };
 const pactCode: string = '(+ 1 2)';
-const signedCommand: ICommand = createSampleExecTx(pactServerKeyPair, pactCode);
-const sendReq: ISendRequestBody = {
-  cmds: [signedCommand],
-};
+const signedCommand: IUnsignedCommand = createSampleExecTx(
+  pactServerKeyPair,
+  pactCode,
+);
+const sendReq: ISendRequestBody = createSendRequest([signedCommand]);
 
 describe('[Pact Server] Makes /send request', () => {
   it('Receives request key of transaction', async () => {
-    const actual: ISendResponse | Response = await send(
+    const actual: SendResponse | Response = await send(
       sendReq,
       pactServerApiHost,
     );

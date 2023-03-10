@@ -1,21 +1,14 @@
 // These tests expect devnet to be running at http://localhost:8080.
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
-import {
-  ISendResponse,
-  listen,
-  local,
-  poll,
-  send,
-  spv,
-} from '@kadena/chainweb-node-client';
+import { listen, local, poll, send, spv } from '@kadena/chainweb-node-client';
 import {
   ChainwebNetworkId,
-  ICommand,
   ICommandResult,
   IPactEvent,
   IPollResponse,
   ISendRequestBody,
+  IUnsignedCommand,
   LocalResponse,
   SendResponse,
 } from '@kadena/types';
@@ -23,7 +16,11 @@ import {
 import { createSampleContTx, createSampleExecTx } from './mock-txs';
 
 import { backOff } from 'exponential-backoff';
-import { createListenRequest, createPollRequest } from 'kadena.js';
+import {
+  createListenRequest,
+  createPollRequest,
+  createSendRequest,
+} from 'kadena.js';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =
@@ -36,16 +33,14 @@ const devnetKeyPair = {
 };
 const devnetAccount = `k:${devnetKeyPair.publicKey}`;
 
-const signedCommand1: ICommand = createSampleExecTx(
+const signedCommand1: IUnsignedCommand = createSampleExecTx(
   devnetKeyPair,
   `(+ 1 2)`,
   devnetNetwork,
 );
-const sendReq1: ISendRequestBody = {
-  cmds: [signedCommand1],
-};
+const sendReq1: ISendRequestBody = createSendRequest([signedCommand1]);
 
-const signedCommand2: ICommand = createSampleExecTx(
+const signedCommand2: IUnsignedCommand = createSampleExecTx(
   {
     ...devnetKeyPair,
     clist: [
@@ -69,9 +64,7 @@ const signedCommand2: ICommand = createSampleExecTx(
   { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
 );
 
-const sendReq2: ISendRequestBody = {
-  cmds: [signedCommand2],
-};
+const sendReq2: ISendRequestBody = createSendRequest([signedCommand2]);
 
 function sleep20Seconds(): Promise<unknown> {
   return ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
@@ -79,7 +72,7 @@ function sleep20Seconds(): Promise<unknown> {
 
 describe('[DevNet] Makes /send request of simple transaction', () => {
   it('Receives request key of transaction', async () => {
-    const actual: Response | ISendResponse = await send(
+    const actual: Response | SendResponse = await send(
       sendReq1,
       devnetApiHostChain0,
     );
@@ -92,7 +85,7 @@ describe('[DevNet] Makes /send request of simple transaction', () => {
 
 describe('[DevNet] Makes /send request to initiate a cross-chain transaction', () => {
   test('Receives request key of transaction', async () => {
-    const actual: Response | ISendResponse = await send(
+    const actual: Response | SendResponse = await send(
       sendReq2,
       devnetApiHostChain0,
     );
@@ -243,7 +236,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     const hash = signedCommand2.hash;
 
     // Submit /send request finishing cross-chain transfer in target chain
-    const contReqPayload: ICommand = createSampleContTx(
+    const contReqPayload: IUnsignedCommand = createSampleContTx(
       devnetNetwork,
       devnetKeyPair,
       hash,
@@ -251,8 +244,8 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
       proof.replace(/"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
       '1',
     );
-    const contReq: ISendRequestBody = { cmds: [contReqPayload] };
-    const actualContSendResp: ISendResponse | Response = await send(
+    const contReq: ISendRequestBody = createSendRequest([contReqPayload]);
+    const actualContSendResp: SendResponse | Response = await send(
       contReq,
       devnetApiHostChain1,
     );

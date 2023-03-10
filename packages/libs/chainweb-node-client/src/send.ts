@@ -1,8 +1,27 @@
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-import { ISendRequestBody, SendResponse } from '@kadena/types';
+import { SendResponse, Base16String, ICommand } from '@kadena/types';
 
-import fetch from 'cross-fetch';
+/**
+ * Request type of /send endpoint.
+ *
+ * @param cmds - Non-empty array of Pact commands (or transactions) to submit to server.
+ * @alpha
+ */
+export interface ISendRequestBody {
+  cmds: Array<ICommand>;
+}
+
+/**
+ * Response type of /send endpoint.
+ *
+ * @param requestKeys - List of request keys (or command hashes) of the transactions submitted.
+ *                      Can be sent to /poll and /listen to retrieve transaction results.
+ * @alpha
+ */
+export interface ISendResponse {
+  requestKeys: Array<Base16String>;
+}
 
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.

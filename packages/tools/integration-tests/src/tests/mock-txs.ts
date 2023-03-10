@@ -1,9 +1,9 @@
 import {
   ChainwebChainId,
   EnvData,
-  ICommand,
   IKeyPair,
   IMetaData,
+  IUnsignedCommand,
   NetworkId,
   PactTransactionHash,
   Proof,
@@ -16,7 +16,7 @@ export function createSampleExecTx(
   pactCode: string,
   network?: NetworkId,
   envData?: EnvData,
-): ICommand {
+): IUnsignedCommand {
   const nonce: string = 'step01';
   const meta: IMetaData = {
     creationTime: Math.round(new Date().getTime() / 1000) - 1,
@@ -36,7 +36,7 @@ export function createSampleContTx(
   envData: EnvData,
   proof: Proof,
   targetChainId: ChainwebChainId,
-): ICommand {
+): IUnsignedCommand {
   const nonce: string = 'step02';
   const meta: IMetaData = {
     creationTime: Math.round(new Date().getTime() / 1000) - 1,

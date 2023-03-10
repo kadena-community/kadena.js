@@ -5,17 +5,13 @@ jest.mock('cross-fetch', () => {
   };
 });
 import { PactNumber } from '@kadena/pactjs';
+import { IUnsignedCommand } from '@kadena/types';
 
-import { IUnsignedTransaction } from '../interfaces/IPactCommand';
-import {
-  convertIUnsignedTransactionToICommand,
-  Pact,
-  PactCommand,
-} from '../pact';
+import { Pact, PactCommand } from '../pact';
 
 import fetch from 'cross-fetch';
 
-function getCode(transaction: IUnsignedTransaction): string {
+function getCode(transaction: IUnsignedCommand): string {
   return JSON.parse(transaction.cmd).payload.exec.code;
 }
 
@@ -167,7 +163,7 @@ describe('Pact proxy', () => {
     const body = builder.createCommand();
 
     expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/local', {
-      body: JSON.stringify(convertIUnsignedTransactionToICommand(body)),
+      body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     });
