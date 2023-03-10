@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": " Add localWithoutSignatureVerification, changed local to use preflight=true as default ",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
