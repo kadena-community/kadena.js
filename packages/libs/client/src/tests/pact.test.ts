@@ -162,11 +162,14 @@ describe('Pact proxy', () => {
 
     const body = builder.createCommand();
 
-    expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/local', {
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
+    expect(fetch).toBeCalledWith(
+      'fake-api-host.local.co/api/v1/local&preflight=true&signatureVerification=true',
+      {
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      },
+    );
   });
 
   it('makes a well formatted /send call', async () => {

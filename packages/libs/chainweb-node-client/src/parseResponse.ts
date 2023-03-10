@@ -24,6 +24,7 @@ export async function parseResponse<T>(response: Response): Promise<T> {
     }
   }
 }
+
 /**
  * @alpha
  */

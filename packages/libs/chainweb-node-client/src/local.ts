@@ -4,6 +4,7 @@ import type {
   LocalRequestBody,
   ILocalCommandResultWithPreflight,
   ILocalCommandResult,
+  IPreflightResult,
   ISignatureJson,
 } from '@kadena/types';
 import { isSignedCommand } from '@kadena/cryptography-utils';
@@ -34,7 +35,10 @@ export function local(
   return localRaw(requestBody, apiHost, {
     preflight: preflight,
     signatureVerification: signatureVerification,
-  }).then((result) => parsePreflight(result));
+  }).then((result) => {
+    console.log('parseFlight', result);
+    parsePreflight(result);
+  });
 }
 
 /**
@@ -68,13 +72,13 @@ export function localRaw(
     preflight,
     signatureVerification,
   }: { signatureVerification: boolean; preflight: boolean },
-): Promise<ILocalCommandResult> {
+): Promise<ILocalCommandResult | IPreflightResult> {
   const request = stringifyAndMakePOSTRequest(requestBody);
 
   const response: Promise<ILocalCommandResult> = fetch(
     `${apiHost}/api/v1/local?preflight=${preflight}&signatureVerification=${signatureVerification}`,
     request,
-  ).then((r) => parseResponse<ILocalCommandResult>(r));
+  ).then((r) => parseResponse<ILocalCommandResult | IPreflightResult>(r));
   return response;
 }
 
@@ -84,7 +88,6 @@ export function localRaw(
 export function convertIUnsignedTransactionToNoSig(
   transaction: IUnsignedCommand,
 ): ICommand {
-  if (!transaction.sigs) throw new Error('Command is not formatted correctly');
   return {
     ...transaction,
     sigs: transaction.sigs.map(

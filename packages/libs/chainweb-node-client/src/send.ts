@@ -2,6 +2,8 @@ import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { SendResponse, Base16String, ICommand } from '@kadena/types';
 
+import fetch from 'cross-fetch';
+
 /**
  * Request type of /send endpoint.
  *

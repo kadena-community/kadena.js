@@ -302,7 +302,6 @@ export class PactCommand
    */
   public local(apiHost: string): Promise<ICommandResult> {
     log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
-
     return local(this.createCommand(), apiHost);
   }
 

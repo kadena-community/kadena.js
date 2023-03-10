@@ -5,6 +5,7 @@ import type {
   LocalResponse,
   SendResponse,
   SPVResponse,
+  IPreflightResult,
 } from '@kadena/types';
 
 import { testSPVProof } from './Pact';
@@ -52,6 +53,79 @@ export async function mockFetch(
           continuation: null,
           metaData: null,
           logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+        };
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(response),
+        });
+      } else {
+        throw new Error('Expected RequestInit body not found.');
+      }
+    }
+    case '/api/v1/local?preflight=false&signatureVerification=true': {
+      if (init?.body !== null && init?.body !== undefined) {
+        const response: LocalResponse = {
+          reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+          txId: null,
+          result: {
+            data: 3,
+            status: 'success',
+          },
+          gas: 0,
+          continuation: null,
+          metaData: null,
+          logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+        };
+
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(response),
+        });
+      } else {
+        throw new Error('Expected RequestInit body not found.');
+      }
+    }
+    case '/api/v1/local?preflight=true&signatureVerification=true': {
+      if (init?.body !== null && init?.body !== undefined) {
+        const response: IPreflightResult = {
+          preflightResult: {
+            reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+            txId: null,
+            result: {
+              data: 3,
+              status: 'success',
+            },
+            gas: 0,
+            continuation: null,
+            metaData: null,
+            logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+          },
+          preflightWarnings: [],
+        };
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(response),
+        });
+      } else {
+        throw new Error('Expected RequestInit body not found.');
+      }
+    }
+    case '/api/v1/local?preflight=true&signatureVerification=false': {
+      if (init?.body !== null && init?.body !== undefined) {
+        const response: IPreflightResult = {
+          preflightResult: {
+            reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+            txId: null,
+            result: {
+              data: 3,
+              status: 'success',
+            },
+            gas: 0,
+            continuation: null,
+            metaData: null,
+            logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+          },
+          preflightWarnings: [],
         };
         return Promise.resolve({
           ok: true,

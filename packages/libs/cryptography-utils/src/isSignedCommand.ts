@@ -8,7 +8,7 @@ export function isSignedCommand(
 ): command is ICommand {
   return (
     command.sigs.filter((s) => {
-      return (s && s.sig) ?? false;
-    }).length > 0
+      return !(s && s.sig);
+    }).length === 0
   );
 }
