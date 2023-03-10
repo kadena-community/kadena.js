@@ -7,7 +7,7 @@
 import type { IBase64Url } from '@kadena/types';
 import type { ICommand } from '@kadena/types';
 import type { IKeyPair } from '@kadena/types';
-import type { IUnsignedCommand } from '@kadena/types';
+import { IUnsignedCommand } from '@kadena/types';
 import type { SignCommand } from '@kadena/types';
 
 // @alpha
@@ -64,6 +64,12 @@ export const pactTestCommand: {
     };
     nonce: string;
 };
+
+// @public (undocumented)
+export const pactTestCommand1: IUnsignedCommand;
+
+// @public (undocumented)
+export const pactTestCommand2: IUnsignedCommand;
 
 // @alpha
 export function restoreKeyPairFromSecretKey(seed: string): IKeyPair;

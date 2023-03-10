@@ -4,6 +4,7 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
+import { convertIUnsignedTransactionToNoSig } from '@kadena/chainweb-node-client';
 import { PactNumber } from '@kadena/pactjs';
 import { IUnsignedCommand } from '@kadena/types';
 
@@ -164,6 +165,32 @@ describe('Pact proxy', () => {
 
     expect(fetch).toBeCalledWith(
       'fake-api-host.local.co/api/v1/local?preflight=true&signatureVerification=true',
+      {
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      },
+    );
+  });
+
+  it('makes a well formatted /local call with signatureVerification=false', async () => {
+    (fetch as jest.Mock).mockResolvedValue({
+      status: 200,
+      ok: true,
+      text: () => JSON.stringify({ results: [] }),
+      json: () => ({}),
+    });
+
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
+    builder.addCap('coin.GAS', 'senderPubKey');
+
+    await builder.localWithoutSignatureVerification('fake-api-host.local.co');
+
+    const body = convertIUnsignedTransactionToNoSig(builder.createCommand());
+
+    expect(fetch).toBeCalledWith(
+      'fake-api-host.local.co/api/v1/local?preflight=true&signatureVerification=false',
       {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
