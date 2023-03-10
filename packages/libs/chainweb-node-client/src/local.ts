@@ -84,8 +84,7 @@ export function localRaw(
 export function convertIUnsignedTransactionToNoSig(
   transaction: IUnsignedCommand,
 ): ICommand {
-  if (!transaction.sigs)
-    throw new Error('transaction is not formatted correctly');
+  if (!transaction.sigs) throw new Error('Command is not formatted correctly');
   return {
     ...transaction,
     sigs: transaction.sigs.map(
