@@ -1,4 +1,9 @@
-import { local, poll, send } from '@kadena/chainweb-node-client';
+import {
+  local,
+  localWithoutSignatureVerification,
+  poll,
+  send,
+} from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { createExp } from '@kadena/pactjs';
 import {
@@ -299,6 +304,20 @@ export class PactCommand
     log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
 
     return local(this.createCommand(), apiHost);
+  }
+
+  /**
+   * Sends a transaction to the ApiHost /local to test the transaction
+   * (i.e. it is checked whether the signatures are complete)
+   * @param apiHost - the chainweb host where to send the transaction to
+   * @alpha
+   */
+  public localWithoutSignatureVerification(
+    apiHost: string,
+  ): Promise<ICommandResult> {
+    log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
+
+    return localWithoutSignatureVerification(this.createCommand(), apiHost);
   }
 
   /**

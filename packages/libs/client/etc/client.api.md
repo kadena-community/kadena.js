@@ -250,6 +250,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     data: Record<string, unknown>;
     local(apiHost: string): Promise<ICommandResult>;
+    localWithoutSignatureVerification(apiHost: string): Promise<ICommandResult>;
     // (undocumented)
     networkId: Exclude<ChainwebNetworkId, undefined>;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;

@@ -52,7 +52,6 @@ export async function signWithChainweaver<T1 extends string, T2>(
     if ('error' in result) {
       throw new Error();
     }
-
     result.responses.map((signedCommand, i) => {
       transactions[i].addSignatures(
         ...signedCommand.commandSigData.sigs.filter(isASigner),

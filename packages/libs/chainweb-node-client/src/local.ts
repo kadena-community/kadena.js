@@ -6,6 +6,7 @@ import type {
   ILocalCommandResult,
   ISignatureJson,
 } from '@kadena/types';
+import { isSignedCommand } from '@kadena/cryptography-utils';
 import { parseResponse, parsePreflight } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
@@ -28,6 +29,8 @@ export function local(
     signatureVerification = true,
   }: { preflight?: boolean; signatureVerification?: boolean } = {},
 ): Promise<ILocalCommandResultWithPreflight> {
+  if (!isSignedCommand(requestBody))
+    throw new Error('Command is not fully signed');
   return localRaw(requestBody, apiHost, {
     preflight: preflight,
     signatureVerification: signatureVerification,
@@ -81,6 +84,8 @@ export function localRaw(
 export function convertIUnsignedTransactionToNoSig(
   transaction: IUnsignedCommand,
 ): ICommand {
+  if (!transaction.sigs)
+    throw new Error('transaction is not formatted correctly');
   return {
     ...transaction,
     sigs: transaction.sigs.map(
