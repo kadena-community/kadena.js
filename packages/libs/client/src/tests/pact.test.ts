@@ -149,7 +149,7 @@ describe('Pact proxy', () => {
       status: 200,
       ok: true,
       text: () => JSON.stringify({ results: [] }),
-      json: () => {},
+      json: () => ({}),
     });
 
     const builder = new PactCommand();
@@ -163,7 +163,7 @@ describe('Pact proxy', () => {
     const body = builder.createCommand();
 
     expect(fetch).toBeCalledWith(
-      'fake-api-host.local.co/api/v1/local&preflight=true&signatureVerification=true',
+      'fake-api-host.local.co/api/v1/local?preflight=true&signatureVerification=true',
       {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
