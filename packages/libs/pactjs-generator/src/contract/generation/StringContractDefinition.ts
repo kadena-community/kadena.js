@@ -12,10 +12,15 @@ export class StringContractDefinition implements IContractDefinition {
   private _contract: string;
   private _logger: ILogger;
 
-  public constructor(contract: string, logger: ILogger = () => {}) {
+  public constructor(
+    contract: string,
+    namespace: string = '',
+    logger: ILogger = () => {},
+  ) {
     this._contract = contract;
     this._logger = logger;
     this._raw = parser(this._contract, this._logger);
+    // TODO: add namespace to all modules
   }
 
   public getCapabilities(
