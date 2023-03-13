@@ -7,10 +7,12 @@
     "dev": "next dev",
     "lint": "next lint",
     "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest --watch",
+    "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@kadena/client": "^0.1.5",
+    "@kadena/client": "^0.1.10",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -18,11 +20,14 @@
   },
   "devDependencies": {
     "@kadena/pactjs-cli": "^0.0.8",
-    "@kadena/types": "^0.0.3",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "eslint": "^8.32.0",
     "eslint-config-next": "^13.1.2",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "typescript": "4.9.4"
   }
 }
