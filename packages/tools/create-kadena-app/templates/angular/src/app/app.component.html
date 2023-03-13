@@ -23,7 +23,7 @@
      </section>
      <section class="cardSection">
        <h4>Read Message</h4>
-       <textarea disabled>{{ messageFromChain }}</textarea>
+       <textarea id="messageToRead" disabled>{{ messageFromChain }}</textarea>
        <button type="button" (click)="readMessage()" [disabled]="account === ''">Read</button>
      </section>
    </div>
