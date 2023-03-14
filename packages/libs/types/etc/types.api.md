@@ -40,7 +40,7 @@ export interface ICommand {
     // (undocumented)
     hash: PactTransactionHash;
     // (undocumented)
-    sigs: Array<ISignature>;
+    sigs: Array<ISignatureJson>;
 }
 
 // @alpha
@@ -211,6 +211,12 @@ export interface ISendRequestBody {
 export interface ISignature {
     // (undocumented)
     sig: string | undefined;
+}
+
+// @alpha (undocumented)
+export interface ISignatureJson {
+    // (undocumented)
+    sig: string | null;
 }
 
 // @alpha (undocumented)

@@ -6,8 +6,12 @@ jest.mock('cross-fetch', () => {
 });
 import { PactNumber } from '@kadena/pactjs';
 
-import { IUnsignedTransaction } from '../interfaces/IUnsignedTransaction';
-import { ICommandBuilder, Pact, PactCommand } from '../pact';
+import { IUnsignedTransaction } from '../interfaces/IPactCommand';
+import {
+  convertIUnsignedTransactionToICommand,
+  Pact,
+  PactCommand,
+} from '../pact';
 
 import fetch from 'cross-fetch';
 
@@ -152,19 +156,18 @@ describe('Pact proxy', () => {
       json: () => {},
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
+    builder
+      .addCap('coin.GAS', 'senderPubKey')
+      .addSignatures({ pubKey: 'senderPubKey', sig: 'sender-sig' });
+
     await builder.local('fake-api-host.local.co');
 
     const body = builder.createCommand();
 
     expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/local', {
-      body: JSON.stringify(body),
+      body: JSON.stringify(convertIUnsignedTransactionToICommand(body)),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     });
@@ -178,13 +181,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
     await builder.send('fake-api-host.local.co');
 
     const body = { cmds: [builder.createCommand()] };
@@ -204,13 +202,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     const { requestKeys } = await builder.send('fake-api-host.local.co');
     const body = { cmds: [builder.createCommand()] };
@@ -237,13 +230,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     expect(() => builder.poll('fake-api-host.local.co')).toThrow();
   });
@@ -256,13 +244,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: '1.234' },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     let expectingError;
 
@@ -278,13 +261,8 @@ describe('Pact proxy', () => {
   it('returns a response after polling a succeeding transaction', async () => {
     jest.useFakeTimers();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: 1.234 },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
@@ -330,13 +308,8 @@ describe('Pact proxy', () => {
   it('rejects the promise for pollUntil if the transaction failed', async () => {
     jest.useFakeTimers();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: 1.234 },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,
@@ -381,13 +354,8 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pact = Pact as any;
-    const builder: ICommandBuilder<{}> = pact.modules.coin.transfer(
-      'from',
-      'to',
-      { decimal: 1.234 },
-    );
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
 
     await builder.send('fake-api-host.local.co');
 
@@ -415,6 +383,8 @@ describe('Pact proxy', () => {
     expect(onPoll.mock.lastCall[0].cmd).toBeDefined();
   });
 });
+
+//TODO: Add timeout test case
 
 describe('TransactionCommand', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -507,5 +477,36 @@ describe('TransactionCommand', () => {
 
     expect(transaction.cmd).not.toEqual(updatedTransaction.cmd);
     expect(transaction.hash).not.toEqual(updatedTransaction.hash);
+  });
+
+  it('adds formatted signatures to `sigs` when `addSignatures` is called', async () => {
+    const transaction = transactionCommand
+      .addCap('coin.GAS', senderPubKey)
+      .createCommand();
+
+    const updatedTransaction = transactionCommand
+      .addCap('coin.GAS', senderPubKey)
+      .addSignatures({
+        pubKey: senderPubKey,
+        sig: 'sender-sig',
+      })
+      .createCommand();
+
+    expect(transaction.sigs).toEqual([undefined]);
+    expect(updatedTransaction.sigs).toEqual([{ sig: 'sender-sig' }]);
+  });
+
+  it('throws error when `addSignatures` is called without signer', async () => {
+    expect(() => {
+      transactionCommand = pact.modules.coin['transfer-create'](
+        sender,
+        receiver,
+        () => "(read-keyset 'ks)",
+        amount,
+      ).addSignatures({
+        pubKey: senderPubKey,
+        sig: 'sender-sig',
+      });
+    }).toThrow();
   });
 });

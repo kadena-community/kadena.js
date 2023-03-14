@@ -1,0 +1,20 @@
+{
+  "name": "@kadena-dev/eslint-plugin",
+  "entries": [
+    {
+      "version": "0.0.2",
+      "tag": "@kadena-dev/eslint-plugin_v0.0.2",
+      "date": "Mon, 27 Feb 2023 14:25:39 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adds typedev-var that allows implicit types when created from a function call"
+          },
+          {
+            "comment": "adds rule to disallow file wide eslint-disable"
+          }
+        ]
+      }
+    }
+  ]
+}

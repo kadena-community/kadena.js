@@ -1,6 +1,25 @@
 # Change Log - @kadena/client
 
-This log was last generated on Thu, 02 Feb 2023 16:30:09 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+
+## 0.1.10
+Fri, 03 Mar 2023 11:24:59 GMT
+
+_Version update only_
+
+## 0.1.9
+Mon, 27 Feb 2023 15:39:44 GMT
+
+_Version update only_
+
+## 0.1.8
+Mon, 27 Feb 2023 14:25:39 GMT
+
+### Patches
+
+- Expose requestKey on PactCommand
+- update /quickSign to /quicksign in client/signWithChainweaver
+- Update with KIP 0015 signing api standard
 
 ## 0.1.7
 Thu, 02 Feb 2023 16:30:09 GMT

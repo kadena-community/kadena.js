@@ -1,3 +1,6 @@
+/**
+ * @alpha
+ */
 export interface IChainweaverSignBody {
   code: string;
   caps: IChainweaverCapElement[];
@@ -11,12 +14,18 @@ export interface IChainweaverSignBody {
   networkId: string;
 }
 
+/**
+ * @alpha
+ */
 export interface IChainweaverCapElement {
   role: string;
   description: string;
   cap: IChainweaverCap;
 }
 
+/**
+ * @alpha
+ */
 export interface IChainweaverCap {
   name: string;
   args: Array<number | string | Record<string, unknown>>;
