@@ -19,7 +19,7 @@
     "spinners-react": "^1.0.7"
   },
   "devDependencies": {
-    "@kadena/pactjs-cli": "^0.0.8",
+    "@kadena/pactjs-cli": "^0.0.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/node": "18.11.18",
