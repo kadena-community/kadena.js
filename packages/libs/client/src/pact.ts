@@ -300,23 +300,9 @@ export class PactCommand
    * @param apiHost - the chainweb host where to send the transaction to
    * @alpha
    */
-  public local(apiHost: string): Promise<ICommandResult> {
+  public local(apiHost: string): Promise<ILocalCommandResultWithPreflight> {
     log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
     return local(this.createCommand(), apiHost);
-  }
-
-  /**
-   * Sends a transaction to the ApiHost /local to test the transaction
-   * (i.e. it is checked whether the signatures are complete)
-   * @param apiHost - the chainweb host where to send the transaction to
-   * @alpha
-   */
-  public localWithoutSignatureVerification(
-    apiHost: string,
-  ): Promise<ICommandResult> {
-    log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
-
-    return localWithoutSignatureVerification(this.createCommand(), apiHost);
   }
 
   /**
@@ -402,10 +388,13 @@ export class PactCommand
    * @alpha
    */
   public async send(apiHost: string): Promise<SendResponse> {
-    const sendResponse = await send(
-      createSendRequest([this.createCommand()]),
-      apiHost,
-    );
+    if (isSignedCommand(this.createCommand())) {
+      const sendResponse = await send(
+        createSendRequest([this.createCommand()]),
+        apiHost,
+      );
+    } else throw Error();
+
     this.requestKey = sendResponse.requestKeys[0].toString();
     return sendResponse;
   }

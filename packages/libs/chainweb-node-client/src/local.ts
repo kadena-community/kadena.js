@@ -5,12 +5,92 @@ import type {
   ILocalCommandResultWithPreflight,
   ILocalCommandResult,
   ISignatureJson,
+  IPreflightResult,
+  ICommandResult,
 } from '@kadena/types';
 import { isSignedCommand } from '@kadena/cryptography-utils';
 import { parseResponse, parsePreflight } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 import fetch from 'cross-fetch';
+
+type CmdWithSigs = ICommand;
+type CmdOptionalSigs = ICommand | IUnsignedCommand;
+interface Options {
+  preflight: boolean;
+  signatureVerification: boolean;
+}
+interface OptionsTestSigTrue {
+  preflight: boolean;
+  signatureVerification: true;
+}
+interface OptionsPreflightTrue {
+  preflight: true;
+  signatureVerification: false;
+}
+interface OptionsBothTrue {
+  preflight: true;
+  signatureVerification: true;
+}
+interface OptionsBothFalse {
+  preflight: false;
+  signatureVerification: false;
+}
+
+/**
+ * API result of attempting to execute a pact transaction.
+ *
+ * @param reqKey - Unique ID of a pact transaction, equivalent to the payload hash.
+ * @param txId - Database-internal transaction tracking ID.
+ *               Absent when transaction was not successful.
+ *               Expected to be non-negative 64-bit integers and
+ *               are expected to be monotonically increasing.
+ * @param result - Pact execution result, either a Pact error or the output (a PactValue) of the last pact expression in the transaction.
+ * @param gas - Gas units consummed by the transaction as a 64-bit integer.
+ * @param logs - Backend-specific value providing image of database logs.
+ * @param continuation - Describes the result of a defpact execution, if one occurred.
+ * @param metaData - Platform-specific information on the block that executed the transaction.
+ * @param events - Optional list of Pact events emitted during the transaction.
+ * @param preflightWarnings - Optional list of Preflight warnings on /local result.
+ *
+ *
+ * @alpha
+ */
+// @TODO Should `txId` and `gas` be a BigInt since Haskell defines it as int64?
+// @TODO Add `gas` to OpenApi spec?
+type LocalResultWithPreflight = ILocalCommandResultWithPreflight;
+
+type LocalResultWithoutPreflight = Omit<
+  LocalResultWithPreflight,
+  'preflightWarnings'
+>;
+//   ^?
+
+export function local(
+  requestBody: ICommand,
+  apiHost: string,
+  options?: OptionsBothTrue,
+): LocalResultWithoutPreflight;
+export function local(
+  requestBody: ICommand,
+  apiHost: string,
+  options: OptionsTestSigTrue,
+): LocalResultWithoutPreflight;
+export function local(
+  requestBody: ICommand,
+  apiHost: string,
+  options: OptionsBothTrue,
+): LocalResultWithPreflight;
+export function local(
+  requestBody: IUnsignedCommand,
+  apiHost: string,
+  options: OptionsBothFalse,
+): LocalResultWithoutPreflight;
+export function local(
+  requestBody: IUnsignedCommand,
+  apiHost: string,
+  options: OptionsPreflightTrue,
+): LocalResultWithPreflight;
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -22,33 +102,18 @@ import fetch from 'cross-fetch';
  * @alpha
  */
 export function local(
-  requestBody: LocalRequestBody,
+  requestBody: ICommand | IUnsignedCommand,
   apiHost: string,
-  {
-    preflight = true,
-    signatureVerification = true,
-  }: { preflight?: boolean; signatureVerification?: boolean } = {},
+  options: Options = { preflight: true, signatureVerification: true },
 ): Promise<ILocalCommandResultWithPreflight> {
-  if (!isSignedCommand(requestBody))
-    throw new Error('Command is not fully signed');
-  return localRaw(requestBody, apiHost, {
-    preflight: preflight,
-    signatureVerification: signatureVerification,
-  }).then((result) => parsePreflight(result));
-}
-
-/**
- * @alpha
- */
-export function localWithoutSignatureVerification(
-  requestBody: IUnsignedCommand,
-  apiHost: string,
-  preflight: boolean = true,
-): Promise<ILocalCommandResultWithPreflight> {
-  return localRaw(convertIUnsignedTransactionToNoSig(requestBody), apiHost, {
-    signatureVerification: false,
-    preflight: preflight,
-  }).then((result) => parsePreflight(result));
+  // verify combinations, limited to the cases above
+  // on error, throw sensible error
+  if (options.signatureVerification) {
+    requestBody = convertIUnsignedTransactionToNoSig(requestBody);
+  }
+  return localRaw(requestBody, apiHost, options).then((result) =>
+    parsePreflight(result),
+  );
 }
 
 /**
@@ -68,11 +133,20 @@ export function localRaw(
     preflight,
     signatureVerification,
   }: { signatureVerification: boolean; preflight: boolean },
-): Promise<ILocalCommandResult> {
+): Promise<IPreflightResult | ICommandResult> {
   const request = stringifyAndMakePOSTRequest(requestBody);
+  const localUrlWithQueries = new URL(
+    `${apiHost}/api/v1/local?preflight=${preflight}&signatureVerification=${signatureVerification}`,
+  );
+
+  localUrlWithQueries.searchParams.append('preflight', preflight.toString());
+  localUrlWithQueries.searchParams.append(
+    'signatureVerification',
+    signatureVerification.toString(),
+  );
 
   const response: Promise<ILocalCommandResult> = fetch(
-    `${apiHost}/api/v1/local?preflight=${preflight}&signatureVerification=${signatureVerification}`,
+    localUrlWithQueries,
     request,
   ).then((r) => parseResponse<ILocalCommandResult>(r));
   return response;
