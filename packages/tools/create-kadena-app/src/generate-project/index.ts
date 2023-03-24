@@ -11,7 +11,14 @@ import {
 } from 'fs';
 import { join } from 'path';
 
-const SUPPORTED_PROJECT_TEMPLATES: Array<string> = [
+type ProjectTemplate = 'nextjs' | 'vuejs' | 'angular';
+
+interface IGenerateProjectOptions {
+  name: string;
+  template: ProjectTemplate;
+}
+
+const SUPPORTED_PROJECT_TEMPLATES: Array<ProjectTemplate> = [
   'nextjs',
   'vuejs',
   'angular',
@@ -23,11 +30,6 @@ const COPY_IGNORE_LIST: Array<string> = [
   'package-lock.json',
   '.pact-history',
 ];
-
-interface IGenerateProjectOptions {
-  name: string;
-  template: string;
-}
 
 const isValidProjectName = (name: string): boolean => {
   const pattern = /^(?!\.)([a-zA-Z0-9._-])+$/;
@@ -128,9 +130,18 @@ const generate =
 
     // Installing dependencies
     console.log('Installing dependencies ...');
-    executeCommand('npm', ['install'], {
-      cwd: targetDirectory,
-    });
+
+    if (args.template === 'vuejs') {
+      // In case of VueJS, we need to supress warnings because of a deprecated dependency
+      // see: https://github.com/vuejs/core/issues/7329
+      executeCommand('npm', ['install', '--loglevel=error'], {
+        cwd: targetDirectory,
+      });
+    } else {
+      executeCommand('npm', ['install'], {
+        cwd: targetDirectory,
+      });
+    }
 
     // Generating Pact types for demo contract
     console.log('Generating types for Pact smart contract');
