@@ -130,18 +130,9 @@ const generate =
 
     // Installing dependencies
     console.log('Installing dependencies ...');
-
-    if (args.template === 'vuejs') {
-      // In case of VueJS, we need to supress warnings because of a deprecated dependency
-      // see: https://github.com/vuejs/core/issues/7329
-      executeCommand('npm', ['install', '--loglevel=error'], {
-        cwd: targetDirectory,
-      });
-    } else {
-      executeCommand('npm', ['install'], {
-        cwd: targetDirectory,
-      });
-    }
+    executeCommand('npm', ['install'], {
+      cwd: targetDirectory,
+    });
 
     // Generating Pact types for demo contract
     console.log('Generating types for Pact smart contract');

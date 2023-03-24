@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.1.4",
+    "@angular/cli": "~15.1.4",
     "@angular/compiler-cli": "^15.1.0",
     "@kadena/pactjs-cli": "^0.0.9",
     "@types/jasmine": "~4.3.0",
