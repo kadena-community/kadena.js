@@ -81,7 +81,8 @@ export function contractGenerateCommand(
     )
     .option(
       '--network',
-      'The networkId to retrieve the contract from, i.e. testnet04. Defaults to mainnet01',
+      'The networkId to retrieve the contract from, i.e. testnet. Defaults to mainnet',
+      'mainnet',
     )
     .action((args: ContractGenerateOptions) => {
       try {

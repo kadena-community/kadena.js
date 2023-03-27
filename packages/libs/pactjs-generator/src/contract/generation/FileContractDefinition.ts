@@ -9,7 +9,6 @@ import { PathLike, readFileSync } from 'fs';
  * @alpha
  */
 export class FileContractDefinition implements IContractDefinition {
-  // TODO add public getNamespace(moduleName: string): string
   private _filePath: PathLike;
   private _logger: ILogger;
   private _raw: Output;

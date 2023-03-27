@@ -81,7 +81,6 @@ describe('generate', () => {
     mockedReadFileSync.mockRestore();
     mockedRetrieveContractFromChain.mockRestore();
   });
-
   describe('for a contract from a file', () => {
     beforeEach(() => {
       mockedReadFileSync.mockReturnValue(mockContract);
@@ -95,7 +94,6 @@ describe('generate', () => {
       mockedWriteFileSync.mockReset();
       mockedRetrieveContractFromChain.mockReset();
     });
-
     it('reads the contract from the file', async () => {
       await createAndRunProgram('file');
 
