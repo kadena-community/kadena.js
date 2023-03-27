@@ -16,7 +16,7 @@
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test && ./scripts/generate-test.sh"
+    "test": "heft test"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
