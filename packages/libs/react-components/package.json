@@ -19,7 +19,7 @@
     "test": "heft test"
   },
   "lint-staged": {
-    "src/**/*.tsx": [
+    "src/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write -u"
     ],
