@@ -11,7 +11,7 @@ import { PathLike } from 'fs';
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
     // Warning: (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
-    constructor(filePath: PathLike, logger?: ILogger);
+    constructor(filePath: PathLike, namespace?: string, logger?: ILogger);
     // Warning: (ae-forgotten-export) The symbol "Defcap" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -20,6 +20,8 @@ export class FileContractDefinition implements IContractDefinition {
     //
     // (undocumented)
     getMethods(moduleName: string): Record<string, Defun> | undefined;
+    // (undocumented)
+    getNamespace(moduleName: string): string;
     // (undocumented)
     get modules(): string[] | undefined;
     // Warning: (ae-forgotten-export) The symbol "Output" needs to be exported by the entry point index.d.ts
@@ -39,12 +41,14 @@ export function generateTemplates(templates: {
     template: ITemplate;
 }[], version: string): string;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IContractDefinition {
     // (undocumented)
     getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
     // (undocumented)
     getMethods(moduleName: string): Record<string, Defun> | undefined;
+    // (undocumented)
+    getNamespace(moduleName: string): string;
     // (undocumented)
     get modules(): string[] | undefined;
     // (undocumented)
@@ -64,7 +68,7 @@ export function parseTemplate(template: string): ITemplate;
 
 // @alpha (undocumented)
 export class StringContractDefinition implements IContractDefinition {
-    constructor(contract: string, logger?: ILogger);
+    constructor(contract: string, namespace?: string, logger?: ILogger);
     // (undocumented)
     getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
     // (undocumented)

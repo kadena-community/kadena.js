@@ -18,6 +18,12 @@ const Options = z.object({
     /* eslint-disable-next-line @typescript-eslint/naming-convention */
     required_error: 'Error: -o, --out is required',
   }),
+  api: z.string({
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
+    invalid_type_error: 'Error: --api must be a string',
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
+    required_error: 'Error: --api is required',
+  }),
   network: z.enum(['mainnet', 'testnet']),
   chain: z
     .number({

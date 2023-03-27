@@ -20,7 +20,16 @@ export class StringContractDefinition implements IContractDefinition {
     this._contract = contract;
     this._logger = logger;
     this._raw = parser(this._contract, this._logger);
-    // TODO: add namespace to all modules
+
+    this._setNamespace(namespace);
+  }
+
+  private _setNamespace(namespace: string): void {
+    if (!namespace) return;
+
+    Object.keys(this._raw).forEach((module) => {
+      this._raw[module].namespace = namespace;
+    });
   }
 
   public getCapabilities(

@@ -5,6 +5,9 @@ import {
   StringContractDefinition,
 } from '@kadena/pactjs-generator';
 
+import { networkMap } from '../utils/networkMap';
+import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
+
 import { ContractGenerateOptions } from './index';
 
 import { Command } from 'commander';
@@ -50,11 +53,21 @@ export const generate =
     program: Command,
     version: string,
   ): ((args: ContractGenerateOptions) => void) =>
-  (args: ContractGenerateOptions) => {
+  async (args: ContractGenerateOptions) => {
     let pactModule: IContractDefinition;
     if ('contract' in args) {
       console.log(`Generating Pact contract from ${args.contract}`);
-      pactModule = new StringContractDefinition(args.contract);
+
+      const pactCode = await retrieveContractFromChain(
+        args.contract,
+        args.api,
+        args.chain ?? 0,
+        args.network ?? ('mainnet' as keyof typeof networkMap),
+      );
+
+      const namespace = args.contract.split('.')[0];
+
+      pactModule = new StringContractDefinition(pactCode, namespace);
     } else {
       console.log(`Generating Pact contract from ${args.file}`);
       pactModule = new FileContractDefinition(join(process.cwd(), args.file!));
