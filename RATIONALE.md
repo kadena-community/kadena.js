@@ -11,7 +11,7 @@ We use rush to manage our monorepo. Have a look at
 
 Main reasons:
 
-- builds around the node/npm ecosystem, with at it's core the `package.json`.
+- builds around the node/npm ecosystem, with at its core the `package.json`.
   Not a proprietary or typescript-only approach
 - strict ruleset for linting, dependencies etc to have high quality open source
   libraries
@@ -19,7 +19,7 @@ Main reasons:
 # Eslint
 
 Whatever is auto-fixable, should be auto-fixed. We do not want unnecessary
-burden by thinking about coding standards. This allows contributers to focus on
+burden by thinking about coding standards. This allows contributors to focus on
 value adding, not on style:
 
 - use of semi-colons

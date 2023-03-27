@@ -96,7 +96,7 @@ watch the tests by running `rushx test -w`.
 - node 16
 - rushjs
 
-See [installing perequisites](#installing-prerequisites)
+See [installing prerequisites](#installing-prerequisites)
 
 ## Installing prerequisites
 
