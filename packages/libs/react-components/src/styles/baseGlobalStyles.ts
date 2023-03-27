@@ -1,7 +1,7 @@
-// NOTE: Refer to https://courses.joshwcomeau.com/css-for-js/treasure-trove/010-global-styles for more detailed explanation
+// NOTE: Refer to https://www.joshwcomeau.com/css/custom-css-reset/ for more detailed explanation
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const baseGlobalStyles: Record<string, any> = {
+export const baseGlobalStyles: Record<string, unknown> = {
   /*
   1. Use a more-intuitive box-sizing model.
 */

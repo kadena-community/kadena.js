@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
 
-import { colors, darkColors } from './colors';
+import { colors, colorsDark } from './colors';
 
 import type { CSS as StitchesCSS } from '@stitches/react';
 import { createStitches, PropertyValue } from '@stitches/react';
@@ -140,7 +140,7 @@ export const {
 
 export const darkTheme = createTheme('darkTheme', {
   colors: {
-    ...darkColors,
+    ...colorsDark,
   },
 });
 

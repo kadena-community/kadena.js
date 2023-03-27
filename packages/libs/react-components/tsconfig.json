@@ -2,7 +2,7 @@
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
     "types": ["heft-jest"],
-    "target": "es5",
+    "target": "ES2017",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,

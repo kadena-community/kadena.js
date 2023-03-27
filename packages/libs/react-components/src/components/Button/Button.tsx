@@ -1,7 +1,7 @@
 import { styled } from '../../styles/stitches.config';
 
 import type * as Stitches from '@stitches/react';
-import React, { MouseEventHandler, FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 
 const StyledButton = styled('button', {
   backgroundColor: '$$baseColor',

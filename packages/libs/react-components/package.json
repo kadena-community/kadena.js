@@ -14,12 +14,12 @@
   "scripts": {
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build-storybook": "storybook build",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "heft test"
   },
   "lint-staged": {
-    "src/**/*.ts": [
+    "src/**/*.tsx": [
       "eslint --fix",
       "prettier --write -u"
     ],

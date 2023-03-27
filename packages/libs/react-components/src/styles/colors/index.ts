@@ -9,7 +9,7 @@ export const colors: Record<string, string> = {
   red500: 'DarkRed',
 };
 
-export const darkColors: Record<string, string> = {
+export const colorsDark: Record<string, string> = {
   background: 'DarkSlateGray',
   fontColor: 'DarkSlateGray',
   gray500: 'Gainsboro',
