@@ -1,0 +1,17 @@
+{
+  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": "./src/"
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.jsx", "**/*.js"],
+  "exclude": ["node_modules", ".next", "out"]
+}
