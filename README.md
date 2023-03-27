@@ -1,10 +1,3 @@
-<p align="center">
-  <picture>
-    <source srcset="./common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="./common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
-
 # Kadena & Kadena.js
 
 Kadena was founded on the idea that blockchain could revolutionize how the world
@@ -25,12 +18,20 @@ is a Monorepo (mono repository) where we will store all our
 JavaScript/TypeScript solutions for our blockchain (libs, tooling, dApps, and so
 forth).
 
+<p align="center">
+  <picture>
+    <source srcset="./common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+    <img src="./common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+  </picture>
+</p>
+
 # Kadena.js
 
 Kadena.js is the source for several packages, tooling, and dapps that have any
 affiliation with Front-end development.
 
-At this moment Kadena.js will be the home of these packages:
+At this moment Kadena.js will be the home of these packages (see also
+[Definition of libraries in kadena.js](https://github.com/kadena-community/kadena.js/issues/42)):
 
 - `@kadena/cryptography-utils` contains hash/sign utils
 - `@kadena/chainweb-node-client` typed js wrapper with fetch to call
@@ -117,3 +118,23 @@ pnpm install --global @microsoft/rush
 ```
 
 Now go to [getting started](#getting-started)
+
+## How to publish
+
+- You need to be added to the `@kadena` and `@kadena-dev` NPM organizations
+  (depending on what you want to publish)
+- You need to have push rights on master, as the version bump needs to be done
+  against master (because of tags) (TODO: fix that this isn't necessary)
+- PRs need to be merged to master with the appropriate changelogs and version
+  policy (when using a sub 1.0.0 version, there cannot be any breaking changes
+  in the changelog)
+- On master
+  - make sure to checkout master
+  - stash all changes including untracked ones
+  - run a build + test for the full monorepo
+    - run the version bump command, this will be pushed to master (hence the
+      push rights on master)
+      - `rush version --bump -b master --ignore-git-hooks; rush publish --apply --publish --add-commit-details --set-access-level public --target-branch master`
+    - run the publish command. This will require you to fill in 2FA tokens for
+      every push for npm
+      - `rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master`
