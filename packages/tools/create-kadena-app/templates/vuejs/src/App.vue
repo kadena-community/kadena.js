@@ -98,7 +98,7 @@ export default {
         <h1 class="title">Welcome to <span>Kadena!</span></h1>
       </header>
       <p>
-        This is the Kadena starter template using nextjs to help you get started
+        This is the Kadena starter template using vuejs to help you get started
         on your blockchain development. Use the form below to interact with the
         Kadena blockchain using <code>@kadena/client</code> and edit
         <code>src/App.vue</code> to get started.
