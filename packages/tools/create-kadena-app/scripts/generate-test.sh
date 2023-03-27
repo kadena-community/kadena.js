@@ -26,3 +26,6 @@ node lib/index.js generate-project --name test-angular-project --template angula
 echo "Running tests in angular project"
 cd test-angular-project
 npm run test:ci
+
+echo "Exit code"
+echo $?
