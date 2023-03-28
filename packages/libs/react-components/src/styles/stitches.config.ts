@@ -5,7 +5,8 @@ import { colors, colorsDark } from './colors';
 import type { CSS as StitchesCSS } from '@stitches/react';
 import { createStitches, PropertyValue } from '@stitches/react';
 
-const sizes: Record<string, string> = {
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const sizes = {
   1: '0.25rem', // 4px
   2: '0.5rem', // 8px
   3: '0.75rem', // 12px
@@ -23,7 +24,9 @@ const sizes: Record<string, string> = {
   48: '12rem', // 192px
   56: '14rem', // 224px
   64: '16rem', // 256px
-};
+} as const;
+
+export type IThemeSizes = `$${keyof typeof sizes}`;
 
 export const {
   styled,

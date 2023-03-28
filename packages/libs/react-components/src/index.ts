@@ -10,4 +10,6 @@ export {
   createTheme,
   globalCss,
   baseGlobalStyles,
+  IThemeSizes,
+  IThemeColors,
 } from './styles';
