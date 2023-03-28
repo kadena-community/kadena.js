@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "@kadena-ui/react-components": "file:./../../../../javascript-monorepo/packages/libs/react-components",
+    "@kadena/react-components": "workspace:*",
     "@markdoc/markdoc": "~0.2.2",
     "@markdoc/next.js": "~0.2.2",
     "next": "13.0.6",

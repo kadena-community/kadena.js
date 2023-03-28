@@ -265,8 +265,8 @@ importers:
       '@babel/preset-typescript': ^7.21.0
       '@kadena-dev/eslint-config': 0.0.4
       '@kadena-dev/heft-rig': 0.0.4
-      '@kadena-ui/react-components': file:./../../../../javascript-monorepo/packages/libs/react-components
       '@kadena/pactjs-cli': ^0.0.12
+      '@kadena/react-components': workspace:*
       '@kadena/types': ^0.1.2
       '@markdoc/markdoc': ~0.2.2
       '@markdoc/next.js': ~0.2.2
@@ -293,7 +293,7 @@ importers:
       storybook-dark-mode: ^2.1.1
       typescript: ^4.9.5
     dependencies:
-      '@kadena-ui/react-components': link:../../../../javascript-monorepo/packages/libs/react-components
+      '@kadena/react-components': link:../../libs/react-components
       '@markdoc/markdoc': 0.2.2_5708dfd00fbb974a112e21bceda05a00
       '@markdoc/next.js': 0.2.2_3da3becf8685fd17fa736ac130645ec4
       next: 13.0.6_react-dom@18.2.0+react@18.2.0
