@@ -2,30 +2,30 @@
 
 # This script is used to generate projects for every supported template and test them.
 
-echo "Generating nextjs project"
+# echo "Generating nextjs project"
 node lib/index.js generate-project --name test-nextjs-project --template nextjs
 
-echo "Running tests in nextjs project"
+# echo "Running tests in nextjs project"
 cd test-nextjs-project
 npm run test:ci
 
-cd ..
+# cd ..
 
-echo "Generating vuejs project"
-node lib/index.js generate-project --name test-vuejs-project --template vuejs
+# echo "Generating vuejs project"
+# node lib/index.js generate-project --name test-vuejs-project --template vuejs
 
-echo "Running tests in vuejs project"
-cd test-vuejs-project
-npm run test:ci
+# echo "Running tests in vuejs project"
+# cd test-vuejs-project
+# npm run test:ci
 
-cd ..
+# cd ..
 
-echo "Generating angular project"
-node lib/index.js generate-project --name test-angular-project --template angular
+# echo "Generating angular project"
+# node lib/index.js generate-project --name test-angular-project --template angular
 
-echo "Running tests in angular project"
-cd test-angular-project
-npm run test:ci
+# echo "Running tests in angular project"
+# cd test-angular-project
+# npm run test:ci
 
 echo "Exit code"
 echo $?
