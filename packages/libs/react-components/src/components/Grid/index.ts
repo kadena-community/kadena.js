@@ -1,6 +1,7 @@
+import { IGridContainer, IGridItem } from '../../typings';
+
 import Container from './GridContainer';
 import Item from './GridItem';
-import { IGridContainer, IGridItem } from './types';
 
 import { FC } from 'react';
 

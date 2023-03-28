@@ -1,4 +1,3 @@
-import { sizes } from './../../styles';
 import { Grid } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -7,12 +6,7 @@ import React from 'react';
 const meta: Meta<typeof Grid.Container> = {
   title: 'Grid',
   component: Grid.Container,
-  argTypes: {
-    gap: {
-      options: Object.keys(sizes).map((key) => `$${key}`),
-      control: { type: 'select' },
-    },
-  },
+  argTypes: {},
 };
 
 export default meta;
@@ -26,7 +20,7 @@ type Story = StoryObj<typeof Grid.Container>;
 export const Primary: Story = {
   name: 'Grid',
   args: {
-    gap: '$2',
+    gap: { md: '$2', lg: '$4' },
   },
   render: ({ gap }) => (
     <>

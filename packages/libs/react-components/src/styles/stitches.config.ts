@@ -26,7 +26,14 @@ export const sizes = {
   64: '16rem', // 256px
 } as const;
 
-export type IThemeSizes = `$${keyof typeof sizes}`;
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const breakpoints = {
+  sm: `(min-width: ${640 / 16}rem)`,
+  md: `(min-width: ${768 / 16}rem)`,
+  lg: `(min-width: ${1024 / 16}rem)`,
+  xl: `(min-width: ${1280 / 16}rem)`,
+  '2xl': `(min-width: ${1536 / 16}rem)`,
+} as const;
 
 export const {
   styled,
@@ -87,13 +94,7 @@ export const {
       ...sizes,
     },
   },
-  media: {
-    sm: `(min-width: ${640 / 16}rem)`,
-    md: `(min-width: ${768 / 16}rem)`,
-    lg: `(min-width: ${1024 / 16}rem)`,
-    xl: `(min-width: ${1280 / 16}rem)`,
-    '2xl': `(min-width: ${1536 / 16}rem)`,
-  },
+  media: breakpoints,
   // NOTE: There is a typescript serialization error when using PropertyValue.
   // To enable these utils in an application, set `declaration: "false"` in the tsconfig.json.
   // This work around will not work for this library since we need to generate types for consuming applications.

@@ -1,5 +1,6 @@
+import { IGridItem } from '../../typings';
+
 import { styled } from './../../styles';
-import { IGridItem } from './types';
 
 import React, { FC } from 'react';
 
