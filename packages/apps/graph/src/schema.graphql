@@ -15,8 +15,10 @@
 # - events
 # - remove code (now misused)
 
-# non-fungibles
+# non-fungibles NFTs
 # domain shortname kda wallet service (https://www.aptosnames.com/)
+# - what tokens belong to an account (balance > 0)
+# -
 
 # - lijstje met basics voor ecosystem te thriven
 
@@ -35,6 +37,7 @@ type Query {
   blocks(filter: BlocksFilterInput): [Block!]!
   fungibles(filter: FungiblesFilterInput): [Fungible!]!
   fungible(module: String! = "coin"): Fungible
+  # TODO being able to filter events by argument and position of the argument
   events(filter: EventsFilterInput): [TransactionEvent!]!
 
   node(id: ID!): Node!
@@ -43,6 +46,7 @@ type Query {
 
 input EventsFilterInput {
   name: String!
+  arguments: [String!]!
   signer: String!
 }
 
@@ -161,7 +165,9 @@ type ChainAccount {
   """
   transactions: [Transaction!]!
   """
+  Sub selection of transfers
   All transfers where the sender or receiver is this account
+  Based on fungible.TRANSFER
   """
   transfers(module: String! = "coin"): [Transfer!]!
 }

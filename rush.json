@@ -512,6 +512,14 @@
     },
 
     {
+      "packageName": "@kadena/react-components",
+      "projectFolder": "packages/libs/react-components",
+      "tags": ["libs"],
+      "shouldPublish": false,
+      "versionPolicyName": "alpha"
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
