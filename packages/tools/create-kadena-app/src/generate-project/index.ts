@@ -27,7 +27,7 @@ const SUPPORTED_PROJECT_TEMPLATES: Array<ProjectTemplate> = [
 const COPY_IGNORE_LIST: Array<string> = [
   '.next',
   'node_modules',
-  // 'package-lock.json',
+  'package-lock.json',
   '.pact-history',
 ];
 
@@ -130,7 +130,7 @@ const generate =
 
     // Installing dependencies
     console.log('Installing dependencies ...');
-    executeCommand('npm', ['install', '--no-optional'], {
+    executeCommand('npm', ['install', '--loglevel=error'], {
       cwd: targetDirectory,
     });
 
