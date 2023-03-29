@@ -130,7 +130,7 @@ const generate =
 
     // Installing dependencies
     console.log('Installing dependencies ...');
-    executeCommand('npm', ['install'], {
+    executeCommand('npm', ['install', '--no-optional'], {
       cwd: targetDirectory,
     });
 
