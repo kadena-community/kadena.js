@@ -15,8 +15,8 @@
 node lib/index.js generate-project --name test-vuejs-project --template vuejs
 
 # echo "Running tests in vuejs project"
-# cd test-vuejs-project
-# npm run test:ci
+cd test-vuejs-project
+npm run test:ci
 
 # cd ..
 
