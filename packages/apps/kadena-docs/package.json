@@ -27,7 +27,6 @@
     "@babel/preset-typescript": "^7.21.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@kadena/pactjs-cli": "^0.0.12",
     "@kadena/types": "^0.1.2",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
@@ -51,6 +50,7 @@
     "storybook": "^7.0.0-rc.3",
     "storybook-dark-mode": "^2.1.1",
     "typescript": "^4.9.5",
-    "@kadena-dev/eslint-plugin": "workspace:*"
+    "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*"
   }
 }
