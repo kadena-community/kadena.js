@@ -39,6 +39,7 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
+    "@rushstack/heft-jest-plugin": "~0.3.16",
     "@storybook/addon-actions": "^7.0.0-rc.3",
     "@storybook/addon-essentials": "^7.0.0-rc.3",
     "@storybook/addon-interactions": "^7.0.0-rc.3",

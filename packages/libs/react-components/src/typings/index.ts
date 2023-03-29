@@ -9,7 +9,9 @@ export type IThemeSizes = `$${keyof typeof sizes}`;
 export type IThemeBreakpointProps = keyof typeof breakpoints;
 export type IStyleBreakpointProps = `@${keyof typeof breakpoints}`;
 
-export type ICSSPropType = Primitive | Record<IThemeBreakpointProps, Primitive>;
+export type ICSSPropType =
+  | Primitive
+  | Partial<Record<IThemeBreakpointProps, Primitive>>;
 
 export interface IGridContainerProps {
   children?: ReactNode;
@@ -21,7 +23,7 @@ export interface IGridContainerProps {
 
 export type IColSpan = number | 'auto';
 
-export interface IGridItem {
+export interface IGridItemProps {
   children?: ReactNode;
   colStart?: IColSpan;
   colEnd?: IColSpan;

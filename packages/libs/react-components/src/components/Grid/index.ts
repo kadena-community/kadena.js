@@ -1,4 +1,4 @@
-import { IGridContainer, IGridItem } from '../../typings';
+import { IGridContainerProps, IGridItemProps } from '../../typings';
 
 import Container from './GridContainer';
 import Item from './GridItem';
@@ -6,9 +6,9 @@ import Item from './GridItem';
 import { FC } from 'react';
 
 interface IGrid {
-  Container: FC<IGridContainer>;
-  Item: FC<IGridItem>;
+  Container: FC<IGridContainerProps>;
+  Item: FC<IGridItemProps>;
 }
 
-export { IGridContainer, IGridItem };
+export { IGridContainerProps, IGridItemProps };
 export const Grid: IGrid = { Container, Item };

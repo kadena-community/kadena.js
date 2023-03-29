@@ -1,4 +1,4 @@
-import { IGridItem } from '../../typings';
+import { IGridItemProps } from '../../typings';
 
 import { styled } from './../../styles';
 
@@ -9,13 +9,13 @@ const BaseItem = styled('div', {
 });
 
 const checkSpan = (
-  colStart: IGridItem['colStart'],
-  colEnd: IGridItem['colEnd'],
+  colStart: IGridItemProps['colStart'],
+  colEnd: IGridItemProps['colEnd'],
 ): string => {
   return `${colStart}/${colEnd}`;
 };
 
-const GridItem: FC<IGridItem> = ({
+const GridItem: FC<IGridItemProps> = ({
   children,
   colStart = 'auto',
   colEnd = 'auto',
