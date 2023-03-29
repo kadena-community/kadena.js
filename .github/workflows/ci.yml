@@ -1,6 +1,6 @@
 name: Rush CI (changelog, retest)
 on:
-  # push:
+  push:
     branches: ['feat/cka-test-in-build-test-fix']
   pull_request:
   # branches: ['feat/cka-test-in-build-test-fix']
