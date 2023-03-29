@@ -1,9 +1,17 @@
-import { IGridContainerProps } from '../../typings';
+import { ICSSPropType } from '../../typings';
 import { convertStyles } from '../../utils';
 
 import { styled } from './../../styles';
 
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
+
+export interface IGridContainerProps {
+  children?: ReactNode;
+  gap?: ICSSPropType;
+  templateAreas?: ICSSPropType;
+  templateRows?: ICSSPropType;
+  templateColumns?: ICSSPropType;
+}
 
 const BasicContainer = styled('div', {
   display: 'grid',

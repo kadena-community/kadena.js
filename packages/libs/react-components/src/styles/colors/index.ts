@@ -10,8 +10,6 @@ export const colors = {
   red500: 'DarkRed',
 } as const;
 
-export type IThemeColors = `$${keyof typeof colors}`;
-
 export const colorsDark: Record<string, string> = {
   background: 'DarkSlateGray',
   fontColor: 'DarkSlateGray',

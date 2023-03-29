@@ -1,12 +1,22 @@
-import { IGridItemProps } from '../../typings';
+import { IThemeColors, styled } from './../../styles';
 
-import { styled } from './../../styles';
-
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 const BaseItem = styled('div', {
   gridColumnStart: 'auto',
 });
+
+export type IColSpan = number | 'auto';
+
+export interface IGridItemProps {
+  children?: ReactNode;
+  colStart?: IColSpan;
+  colEnd?: IColSpan;
+  rowStart?: IColSpan;
+  rowEnd?: IColSpan;
+  area?: string;
+  bg?: IThemeColors;
+}
 
 const checkSpan = (
   colStart: IGridItemProps['colStart'],

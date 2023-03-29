@@ -15,7 +15,6 @@ describe('convertStyles', () => {
       '@md': { test: 1, 'he-man': 2 },
       '@lg': { 'he-man': 3 },
     };
-    console.log(result);
     expect(result).toEqual(expectedResult);
   });
 
@@ -26,7 +25,6 @@ describe('convertStyles', () => {
       '@md': { test: 1 },
       test2: 3,
     };
-    console.log(result);
     expect(result).toEqual(expectedResult);
   });
 });
