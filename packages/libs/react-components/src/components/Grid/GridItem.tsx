@@ -11,25 +11,22 @@ const BaseItem = styled('div', {
 const checkSpan = (
   colStart: IGridItem['colStart'],
   colEnd: IGridItem['colEnd'],
-  colSpan?: IGridItem['colSpan'],
 ): string => {
   return `${colStart}/${colEnd}`;
 };
 
 const GridItem: FC<IGridItem> = ({
   children,
-  colSpan,
   colStart = 'auto',
   colEnd = 'auto',
-  rowSpan,
   rowStart = 'auto',
   rowEnd = 'auto',
   area,
   bg,
 }) => {
   const styles = {
-    gridColumn: checkSpan(colStart, colEnd, colSpan),
-    gridRow: checkSpan(rowStart, rowEnd, rowSpan),
+    gridColumn: checkSpan(colStart, colEnd),
+    gridRow: checkSpan(rowStart, rowEnd),
     gridArea: area,
     backgroundColor: bg,
   };

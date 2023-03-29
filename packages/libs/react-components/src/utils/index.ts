@@ -1,1 +1,1 @@
-export * from './createSResponsiveStyles';
+export * from './convertStyles';

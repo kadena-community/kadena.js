@@ -1,9 +1,5 @@
-import {
-  IGridContainerProps,
-  IGridContainerStyles,
-  IGridContainerStylesReturned,
-} from '../../typings';
-import { createSResponsiveStyles } from '../../utils';
+import { IGridContainerProps } from '../../typings';
+import { convertStyles } from '../../utils';
 
 import { styled } from './../../styles';
 
@@ -22,17 +18,13 @@ const GridContainer: FC<IGridContainerProps> = ({
   templateRows,
   templateColumns,
 }) => {
-  // const styles = createSResponsiveStyles<
-  //   IGridContainerStyles,
-  //   IGridContainerStylesReturned
-  // >({
-  //   gridGap: gap,
-  //   gridTemplateAreas: templateAreas,
-  //   gridTemplateRows: templateRows,
-  //   gridTemplateColumns: templateColumns,
-  // });
+  const styles = convertStyles({
+    gridGap: gap ?? {},
+    gridTemplateColumns: templateColumns ?? {},
+    gridTemplateRows: templateRows ?? {},
+    gridTemplateAreas: templateAreas ?? {},
+  });
 
-  const styles = {};
   return <BasicContainer css={styles}>{children}</BasicContainer>;
 };
 
