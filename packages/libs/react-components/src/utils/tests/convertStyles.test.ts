@@ -1,5 +1,5 @@
 describe('convertStyles', () => {
-  test('should return the converted style', () => {
-    expect(11).toEqual(11);
+  it('should return the converted style', () => {
+    expect(1).toBe(2);
   });
 });
