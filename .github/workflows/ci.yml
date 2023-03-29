@@ -1,9 +1,9 @@
 name: Rush CI (changelog, retest)
 on:
-  push:
-    branches: ['feat/cka-test-in-build-test-fix']
+  # push:
+  #   branches: ['master']
   pull_request:
-  # branches: ['feat/cka-test-in-build-test-fix']
+    branches: ['master']
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
