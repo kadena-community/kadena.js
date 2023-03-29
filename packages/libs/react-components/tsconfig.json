@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["heft-jest"],
     "skipLibCheck": true,
-    "outDir": "lib/esm"
+    "outDir": "lib"
   }
 }
