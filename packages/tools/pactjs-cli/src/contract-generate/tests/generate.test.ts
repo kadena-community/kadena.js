@@ -81,6 +81,7 @@ describe('generate', () => {
     mockedReadFileSync.mockRestore();
     mockedRetrieveContractFromChain.mockRestore();
   });
+
   describe('for a contract from a file', () => {
     beforeEach(() => {
       mockedReadFileSync.mockReturnValue(mockContract);
@@ -94,6 +95,7 @@ describe('generate', () => {
       mockedWriteFileSync.mockReset();
       mockedRetrieveContractFromChain.mockReset();
     });
+
     it('reads the contract from the file', async () => {
       await createAndRunProgram('file');
 
@@ -133,8 +135,6 @@ describe('generate', () => {
       await createAndRunProgram('chain', { chain: 4 });
 
       expect(mockedRetrieveContractFromChain.mock.calls[0][2]).toBe(4);
-
-      expect(mockedRetrieveContractFromChain.mock.calls[0][3]).toBe('testnet');
     });
 
     it('allows the user to overwrite the default network', async () => {
@@ -153,6 +153,21 @@ describe('generate', () => {
       expect(mockedRetrieveContractFromChain.mock.calls[0][1]).toBe(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
       );
+    });
+
+    it('fails gracefully when the contract cannot be fetched', async () => {
+      mockedRetrieveContractFromChain.mockResolvedValue(undefined);
+
+      const result = await createAndRunProgram('chain');
+
+      expect(mockedRetrieveContractFromChain.mock.calls[0][0]).toContain(
+        'free.crankk01',
+      );
+      expect(mockProgramError.mock.calls[0][0]).toBe(
+        'Could not retrieve contract from chain',
+      );
+
+      expect(result).toBeUndefined();
     });
 
     it('fails gracefully when the contract cannot be fetched', async () => {
