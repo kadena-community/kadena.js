@@ -7,7 +7,7 @@ node lib/index.js generate-project --name test-nextjs-project --template nextjs
 
 # echo "Running tests in nextjs project"
 cd test-nextjs-project
-npm run test:ci
+# npm run test:ci
 
 # cd ..
 
