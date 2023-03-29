@@ -11,7 +11,7 @@
     "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "heft test"
+    "test": "rushx build && heft test --no-build"
   },
   "dependencies": {
     "@kadena/react-components": "workspace:*",
