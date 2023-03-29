@@ -12,7 +12,7 @@
   },
   "scripts": {
     "_phase:build": "heft build --clean",
-    "_phase:test": "npm run test",
+    "_phase:test": "npm run test --no-optional",
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
