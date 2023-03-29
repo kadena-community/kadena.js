@@ -48,5 +48,12 @@
     "@types/rimraf": "~3.0.2",
     "eslint": "^8.15.0",
     "ts-node": "~10.8.2"
+  },
+  "optionalDependencies": {
+    "@next/swc-android-arm-eabi": "13.2.4",
+    "@next/swc-android-arm64": "13.2.4",
+    "@next/swc-darwin-arm64": "13.2.4",
+    "@next/swc-darwin-x64": "13.2.4",
+    "@next/swc-freebsd-x64": "13.2.4"
   }
 }
