@@ -3,3 +3,5 @@ describe('start', () => {
     cy.visit('/');
   });
 });
+
+export {};
