@@ -3,7 +3,7 @@
 # This script is used to generate projects for every supported template and test them.
 
 # echo "Generating nextjs project"
-# node lib/index.js generate-project --name test-nextjs-project --template nextjs
+node lib/index.js generate-project --name test-nextjs-project --template nextjs
 
 # echo "Running tests in nextjs project"
 # cd test-nextjs-project
