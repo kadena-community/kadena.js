@@ -130,9 +130,13 @@ const generate =
 
     // Installing dependencies
     console.log('Installing dependencies ...');
-    executeCommand('npm', ['install'], {
-      cwd: targetDirectory,
-    });
+    executeCommand(
+      'npm',
+      ['install', '--no-optional', '--no-shrinkwrap', '--no-package-lock'],
+      {
+        cwd: targetDirectory,
+      },
+    );
 
     // Generating Pact types for demo contract
     console.log('Generating types for Pact smart contract');
