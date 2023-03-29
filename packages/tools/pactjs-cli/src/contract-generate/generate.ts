@@ -65,6 +65,10 @@ export const generate =
         args.network ?? ('mainnet' as keyof typeof networkMap),
       );
 
+      if (pactCode === undefined || pactCode.length === 0) {
+        program.error('Could not retrieve contract from chain');
+      }
+
       const namespace = args.contract.split('.')[0];
 
       pactModule = new StringContractDefinition(pactCode, namespace);

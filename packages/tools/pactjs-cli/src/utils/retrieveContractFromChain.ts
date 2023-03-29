@@ -6,7 +6,7 @@ export async function retrieveContractFromChain(
   apiHost: string,
   chain: number,
   network: keyof typeof networkMap,
-): Promise<string> {
+): Promise<string | undefined> {
   const now = new Date();
 
   const createBody = (hash: string = ''): string =>
@@ -23,5 +23,5 @@ export async function retrieveContractFromChain(
     createBody(hashFromResponse),
   );
 
-  return jsonResponse?.result.data.code ?? '';
+  return jsonResponse?.result.data.code;
 }
