@@ -6,10 +6,10 @@
 node lib/index.js generate-project --name test-nextjs-project --template nextjs
 
 # echo "Running tests in nextjs project"
-# cd test-nextjs-project
-# npm run test:ci
+cd test-nextjs-project
+npm run test:ci
 
-# cd ..
+cd ..
 
 # echo "Generating vuejs project"
 node lib/index.js generate-project --name test-vuejs-project --template vuejs
@@ -18,11 +18,11 @@ node lib/index.js generate-project --name test-vuejs-project --template vuejs
 cd test-vuejs-project
 npm run test:ci
 
-# cd ..
+cd ..
 
 # echo "Generating angular project"
-# node lib/index.js generate-project --name test-angular-project --template angular
+node lib/index.js generate-project --name test-angular-project --template angular
 
 # echo "Running tests in angular project"
-# cd test-angular-project
-# npm run test:ci
+cd test-angular-project
+npm run test:ci
