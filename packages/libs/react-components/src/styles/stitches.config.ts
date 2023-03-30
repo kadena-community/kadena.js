@@ -23,6 +23,8 @@ const sizes: Record<string, string> = {
   15: '3.75rem', // 60px
   16: '4rem', // 64px
   17: '4.25rem', // 68px
+  18: '4.5rem', // 72px
+  19: '4.75rem', // 76px
   20: '5rem', // 80px
   24: '6rem', // 96px
   25: '6.25rem', // 100px
@@ -105,6 +107,10 @@ export const {
   // We've updated to @stitches/react to v1.3.1-1 to fix this issue.
   // github issue: https://github.com/microsoft/TypeScript/issues/50720
   utils: {
+    size: (value: PropertyValue<'width'>) => ({
+      width: value,
+      height: value,
+    }),
     pr: (value: PropertyValue<'paddingRight'>) => ({
       paddingRight: value,
     }),
