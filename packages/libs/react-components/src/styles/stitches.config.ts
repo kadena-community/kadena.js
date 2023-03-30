@@ -27,7 +27,7 @@ export const sizes = {
 } as const;
 
 // eslint-disable-next-line @kadena-dev/typedef-var
-export const breakpoints = {
+export const media = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
@@ -94,7 +94,7 @@ export const {
       ...sizes,
     },
   },
-  media: breakpoints,
+  media,
   // NOTE: There is a typescript serialization error when using PropertyValue.
   // To enable these utils in an application, set `declaration: "false"` in the tsconfig.json.
   // This work around will not work for this library since we need to generate types for consuming applications.

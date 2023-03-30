@@ -5,7 +5,8 @@ export const convertStyles = (
 ): Record<string, Primitive | Record<string, Primitive>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const newStyles = {} as any;
-  Object.entries(styles).forEach(([key, value]) => {
+  Object.keys(styles).forEach((key) => {
+    const value = styles[key];
     if (value === undefined) return;
 
     if (typeof value === 'object') {
@@ -13,11 +14,7 @@ export const convertStyles = (
         if (newStyles['@' + mediaQueryKey] === undefined) {
           newStyles['@' + mediaQueryKey] = {};
         }
-
-        const prop = styles[key];
-        if (typeof prop === 'object') {
-          newStyles['@' + mediaQueryKey][key] = prop[mediaQueryKey];
-        }
+        newStyles['@' + mediaQueryKey][key] = value[mediaQueryKey];
       });
     }
     return (newStyles[key] = value);

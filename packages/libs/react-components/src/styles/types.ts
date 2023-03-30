@@ -1,7 +1,6 @@
-import { colors } from './colors';
-import { breakpoints, sizes } from './stitches.config';
+import { media, theme } from './stitches.config';
 
-export type IThemeColors = `$${keyof typeof colors}`;
-export type IThemeSizes = `$${keyof typeof sizes}`;
-export type IThemeBreakpointProps = keyof typeof breakpoints;
-export type IStyleBreakpointProps = `@${keyof typeof breakpoints}`;
+export type IThemeColors = `$${keyof typeof theme.colors}`;
+export type IThemeSizes = `$${keyof typeof theme.sizes}`;
+export type IThemeBreakpointProps = keyof typeof media;
+export type IStyleBreakpointProps = `@${keyof typeof media}`;

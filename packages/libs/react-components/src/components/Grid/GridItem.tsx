@@ -18,7 +18,7 @@ export interface IGridItemProps {
   bg?: IThemeColors;
 }
 
-const checkSpan = (
+const createSpan = (
   colStart: IGridItemProps['colStart'],
   colEnd: IGridItemProps['colEnd'],
 ): string => {
@@ -35,8 +35,8 @@ const GridItem: FC<IGridItemProps> = ({
   bg,
 }) => {
   const styles = {
-    gridColumn: checkSpan(colStart, colEnd),
-    gridRow: checkSpan(rowStart, rowEnd),
+    gridColumn: createSpan(colStart, colEnd),
+    gridRow: createSpan(rowStart, rowEnd),
     gridArea: area,
     backgroundColor: bg,
   };

@@ -27,10 +27,10 @@ const GridContainer: FC<IGridContainerProps> = ({
   templateColumns,
 }) => {
   const styles = convertStyles({
-    gridGap: gap ?? {},
-    gridTemplateColumns: templateColumns ?? {},
-    gridTemplateRows: templateRows ?? {},
-    gridTemplateAreas: templateAreas ?? {},
+    gridGap: gap,
+    gridTemplateColumns: templateColumns,
+    gridTemplateRows: templateRows,
+    gridTemplateAreas: templateAreas,
   });
 
   return <BasicContainer css={styles}>{children}</BasicContainer>;
