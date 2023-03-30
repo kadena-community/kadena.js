@@ -18,7 +18,7 @@
     "build-storybook": "storybook build",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
-    "test": "heft test "
+    "test": "heft test"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
