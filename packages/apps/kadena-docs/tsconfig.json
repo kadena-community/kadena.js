@@ -3,7 +3,6 @@
   "compilerOptions": {
     "types": ["heft-jest", "node"],
     "skipLibCheck": true,
-    "outDir": "lib",
     "allowJs": true,
     "noEmit": true,
     "incremental": true,
