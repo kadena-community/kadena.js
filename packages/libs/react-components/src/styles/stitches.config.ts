@@ -33,6 +33,15 @@ const sizes: Record<string, string> = {
   48: '12rem', // 192px
   56: '14rem', // 224px
   64: '16rem', // 256px
+  // NOTE: These are defined in global styles and vary in size depending on breakpoints
+  '2xs': 'var(--spacing-2xs)',
+  xs: 'var(--spacing-xs)',
+  sm: 'var(--spacing-sm)',
+  md: 'var(--spacing-md)',
+  lg: 'var(--spacing-lg)',
+  xl: 'var(--spacing-xl)',
+  '2xl': 'var(--spacing-2xl)',
+  '3xl': 'var(--spacing-3xl)',
 };
 
 export const {
