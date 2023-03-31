@@ -5,10 +5,9 @@ import {
   StringContractDefinition,
 } from '@kadena/pactjs-generator';
 
-import { networkMap } from '../utils/networkMap';
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { ContractGenerateOptions } from './index';
+import { ContractGenerateOptions } from './';
 
 import { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
@@ -61,8 +60,8 @@ export const generate =
       const pactCode = await retrieveContractFromChain(
         args.contract,
         args.api,
-        args.chain ?? 0,
-        args.network ?? ('mainnet' as keyof typeof networkMap),
+        args.chain,
+        args.network,
       );
 
       if (pactCode === undefined || pactCode.length === 0) {
@@ -104,7 +103,7 @@ export const generate =
       TARGET_PACKAGE,
     );
 
-    if (args.clean) {
+    if (args.clean === true) {
       console.log(`Cleaning ${targetDirectory}`);
       rimraf.sync(targetDirectory);
     }

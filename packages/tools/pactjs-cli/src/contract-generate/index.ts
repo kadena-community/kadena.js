@@ -2,22 +2,22 @@ import { networkMap } from '../utils/networkMap';
 
 import { generate } from './generate';
 
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import { z } from 'zod';
 
 export type ContractGenerateOptions =
   | {
       contract: string;
-      clean: boolean;
-      capsInterface: string | undefined;
+      clean?: boolean;
+      capsInterface?: string;
       api: string;
-      chain?: number;
-      network?: keyof typeof networkMap;
+      chain: number;
+      network: keyof typeof networkMap;
     }
   | {
       file: string;
-      clean: boolean;
-      capsInterface: string | undefined;
+      clean?: boolean;
+      capsInterface?: string;
     };
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -71,9 +71,13 @@ export function contractGenerateCommand(
       '--api',
       'The API to use for retrieving the contract, i.e. https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
     )
-    .option(
-      '--chain',
-      'The chainId to retrieve the contract from, i.e. 8. Defaults to 0.',
+    .addOption(
+      new Option(
+        '--chain <chainId>',
+        'The chainId to retrieve the contract from, i.e. 8. Defaults to 1.',
+      )
+        .argParser((value) => parseInt(value, 10))
+        .default(1),
     )
     .option(
       '--network',

@@ -4,6 +4,7 @@ jest.mock('../../utils/retrieveContractFromChain');
 
 import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
 import { generate } from '../generate';
+import { ContractGenerateOptions } from '..';
 
 import { mockContract } from './mockdata/contract';
 
@@ -44,7 +45,10 @@ const mockProgramError = jest.fn() as jest.Mock<typeof program.error>;
 // silence console.log
 jest.spyOn(console, 'log').mockImplementation(() => {});
 
-const createAndRunProgram = async (type: 'file' | 'chain'): Promise<void> => {
+const createAndRunProgram = async (
+  type: 'file' | 'chain',
+  options?: Partial<ContractGenerateOptions>,
+): Promise<void> => {
   const program = new Command('generate');
   (program.error as unknown) = mockProgramError;
   const action = generate(program, '0.0.0');
@@ -53,8 +57,7 @@ const createAndRunProgram = async (type: 'file' | 'chain'): Promise<void> => {
   if (type === 'file') {
     result = await action({
       file: 'some/path/to/contract.pact',
-      clean: false,
-      capsInterface: undefined,
+      ...options,
     });
   }
 
@@ -64,8 +67,7 @@ const createAndRunProgram = async (type: 'file' | 'chain'): Promise<void> => {
       api: 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
       chain: 0,
       network: 'mainnet',
-      clean: false,
-      capsInterface: undefined,
+      ...options,
     });
   }
 
@@ -129,11 +131,29 @@ describe('generate', () => {
       mockedRetrieveContractFromChain.mockReset();
     });
 
+    it('allows the user to overwrite the default chain', async () => {
+      await createAndRunProgram('chain', { chain: 4 });
+
+      expect(mockedRetrieveContractFromChain.mock.calls[0][2]).toBe(4);
+
+      expect(mockedRetrieveContractFromChain.mock.calls[0][3]).toBe('testnet');
+    });
+
+    it('allows the user to overwrite the default network', async () => {
+      await createAndRunProgram('chain', { network: 'testnet' });
+
+      expect(mockedRetrieveContractFromChain.mock.calls[0][3]).toBe('testnet');
+    });
+
     it('calls retrieveContractFromChain to read the contract from the chain', async () => {
       await createAndRunProgram('chain');
 
       expect(mockedRetrieveContractFromChain.mock.calls[0][0]).toContain(
         'free.crankk01',
+      );
+
+      expect(mockedRetrieveContractFromChain.mock.calls[0][1]).toBe(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
       );
     });
 

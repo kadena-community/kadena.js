@@ -42,12 +42,16 @@ export function retrieveContractCommand(
 ): void {
   program
     .command('retrieve-contract')
-    .description('Retrieve contract from api.chainweb.com in a /local call')
+    .description('Retrieve contract from an API in a /local call')
     .option(
       '-m, --module <module>',
       'The module you want to retrieve (e.g. "coin")',
     )
-    .option('-o, --out <file>', 'File to write the contract')
+    .option('-o, --out <file>', 'File to write the contract to')
+    .option(
+      '--api <url>',
+      'API to retrieve from (e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact")',
+    )
     .option(
       '-n, --network <network>',
       'Network to retrieve from (default "mainnet")',
