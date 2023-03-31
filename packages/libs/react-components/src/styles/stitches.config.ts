@@ -33,7 +33,6 @@ const sizes: Record<string, string> = {
   48: '12rem', // 192px
   56: '14rem', // 224px
   64: '16rem', // 256px
-
   // NOTE: These are defined in global styles and vary in size depending on breakpoints
   // See: https://github.com/stitchesjs/stitches/discussions/284
   '2xs': 'var(--spacing-2xs)',
