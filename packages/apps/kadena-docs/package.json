@@ -51,6 +51,7 @@
     "typescript": "^4.9.5",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
-    "@kadena/types": "workspace:*"
+    "@kadena/types": "workspace:*",
+    "jest": "~29.5.0"
   }
 }
