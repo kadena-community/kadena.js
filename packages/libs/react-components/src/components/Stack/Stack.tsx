@@ -1,6 +1,6 @@
 import { styled } from '../../styles/stitches.config';
 
-import type * as Stitches from '@stitches/react';
+import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 const FlexContainer = styled('div', {
@@ -95,13 +95,11 @@ const FlexContainer = styled('div', {
 });
 
 export interface IStackProps {
-  spacing?: Stitches.VariantProps<typeof FlexContainer>['spacing'];
-  direction?: Stitches.VariantProps<typeof FlexContainer>['direction'];
-  flexWrap?: Stitches.VariantProps<typeof FlexContainer>['flexWrap'];
-  alignItems?: Stitches.VariantProps<typeof FlexContainer>['alignItems'];
-  justifyContent?: Stitches.VariantProps<
-    typeof FlexContainer
-  >['justifyContent'];
+  spacing?: VariantProps<typeof FlexContainer>['spacing'];
+  direction?: VariantProps<typeof FlexContainer>['direction'];
+  flexWrap?: VariantProps<typeof FlexContainer>['flexWrap'];
+  alignItems?: VariantProps<typeof FlexContainer>['alignItems'];
+  justifyContent?: VariantProps<typeof FlexContainer>['justifyContent'];
   children: React.ReactNode;
 }
 
