@@ -23,7 +23,7 @@ const createSpan = (
   colStart: IGridItemProps['colStart'],
   colEnd: IGridItemProps['colEnd'],
 ): string => {
-  if (!colStart || !colEnd) return 'auto';
+  if (colStart === undefined || colEnd === undefined) return 'auto';
   return `${colStart}/${colEnd}`;
 };
 

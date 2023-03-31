@@ -9,6 +9,6 @@ export {
   globalCss,
   sizes,
   keyframes,
+  IThemeColors,
 } from './stitches.config';
-export * from './types';
 export { baseGlobalStyles } from './baseGlobalStyles';

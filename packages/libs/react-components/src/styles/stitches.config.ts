@@ -4,6 +4,7 @@ import { colors, colorsDark } from './colors';
 
 import type { CSS as StitchesCSS } from '@stitches/react';
 import { createStitches, PropertyValue } from '@stitches/react';
+import { ConfigType } from '@stitches/react/types/config';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const sizes = {
@@ -44,15 +45,15 @@ export const sizes = {
   xl: 'var(--spacing-xl)',
   '2xl': 'var(--spacing-2xl)',
   '3xl': 'var(--spacing-3xl)',
-};
+} as const;
 
-export const media = {
+export const media: ConfigType.Media = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
   '2xl': `(min-width: ${1536 / 16}rem)`,
-};
+} as const;
 
 export const {
   styled,
@@ -171,5 +172,7 @@ export const darkTheme = createTheme('darkTheme', {
     ...colorsDark,
   },
 });
+
+export type IThemeColors = `$${keyof typeof theme.colors}`;
 
 export type ThemeCSS = StitchesCSS<typeof config>;
