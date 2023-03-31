@@ -1,5 +1,6 @@
 import { IThemeColors, styled } from './../../styles';
 
+import type * as Stitches from '@stitches/react';
 import React, { FC, ReactNode } from 'react';
 
 const BaseItem = styled('div', {
@@ -14,7 +15,7 @@ export interface IGridItemProps {
   colEnd?: IColSpan;
   rowStart?: IColSpan;
   rowEnd?: IColSpan;
-  area?: string;
+  area?: Stitches.CSSProperties['gridArea'];
   bg?: IThemeColors;
 }
 
@@ -22,15 +23,16 @@ const createSpan = (
   colStart: IGridItemProps['colStart'],
   colEnd: IGridItemProps['colEnd'],
 ): string => {
+  if (!colStart || !colEnd) return 'auto';
   return `${colStart}/${colEnd}`;
 };
 
 const GridItem: FC<IGridItemProps> = ({
   children,
-  colStart = 'auto',
-  colEnd = 'auto',
-  rowStart = 'auto',
-  rowEnd = 'auto',
+  colStart,
+  colEnd,
+  rowStart,
+  rowEnd,
   area,
   bg,
 }) => {

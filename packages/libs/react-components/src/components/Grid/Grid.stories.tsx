@@ -21,11 +21,11 @@ type Story = StoryObj<typeof Grid.Container>;
 export const Primary: Story = {
   name: 'Grid',
   args: {
-    gap: { md: '$2', lg: '$4' },
+    spacing: 'xl',
   },
-  render: ({ gap }) => (
+  render: ({ spacing }) => (
     <>
-      <Grid.Container gap={gap}>
+      <Grid.Container spacing={spacing}>
         <Grid.Item bg="$background">1</Grid.Item>
         <Grid.Item bg="$background">2</Grid.Item>
         <Grid.Item bg="$background">3</Grid.Item>
@@ -40,7 +40,7 @@ export const Primary: Story = {
         <Grid.Item bg="$background">12</Grid.Item>
       </Grid.Container>
 
-      <Grid.Container gap={gap}>
+      <Grid.Container spacing={spacing}>
         <Grid.Item colStart={4} colEnd={7} bg="$blue500">
           1
         </Grid.Item>
@@ -58,16 +58,19 @@ export const Primary: Story = {
 export const GridAreas: Story = {
   name: 'GridTemplate areas',
   args: {
-    gap: '$2',
-  },
-  render: ({ gap }) => (
-    <Grid.Container
-      gap={gap}
-      templateAreas={`"header header"
+    spacing: 'md',
+    templateRows: '50px 1fr 30px',
+    templateColumns: `150px 1fr`,
+    templateAreas: `"header header"
                   "nav main"
-                  "nav footer"`}
-      templateRows={'50px 1fr 30px'}
-      templateColumns={'150px 1fr'}
+                  "nav footer"`,
+  },
+  render: ({ spacing, templateColumns, templateRows, templateAreas }) => (
+    <Grid.Container
+      spacing={spacing}
+      templateAreas={templateAreas}
+      templateRows={templateRows}
+      templateColumns={templateColumns}
     >
       <Grid.Item area="header" bg="$blue500">
         0
