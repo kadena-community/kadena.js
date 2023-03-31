@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Added stack component",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
