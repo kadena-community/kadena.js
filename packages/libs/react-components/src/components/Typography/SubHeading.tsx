@@ -3,7 +3,7 @@ import { styled } from '../../styles/stitches.config';
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
-const StyledText = styled('span', {
+const StyledSubHeading = styled('span', {
   variants: {
     font: {
       main: {
@@ -15,21 +15,10 @@ const StyledText = styled('span', {
     },
     bold: {
       true: {
-        fontWeight: '$medium',
+        fontWeight: '$bold',
       },
       false: {
         fontWeight: '$regular',
-      },
-    },
-    size: {
-      sm: {
-        fontSize: '$xs',
-      },
-      md: {
-        fontSize: '$sm',
-      },
-      lg: {
-        fontSize: '$base',
       },
     },
   },
@@ -37,22 +26,36 @@ const StyledText = styled('span', {
   defaultVariants: {
     font: 'main',
     bold: 'false',
-    size: 'lg',
   },
+
+  // NOTE: There is no bold version of the mono font in the design system.
+  compoundVariants: [
+    {
+      font: 'mono',
+      bold: true,
+      css: {
+        fontWeight: '$regular',
+      },
+    },
+  ],
 });
 
-export interface ITextProps {
-  as?: 'span' | 'p' | 'code';
-  font?: VariantProps<typeof StyledText>['font'];
-  bold?: VariantProps<typeof StyledText>['bold'];
-  size?: VariantProps<typeof StyledText>['size'];
+export interface ISubHeadingProps {
+  as?: 'h3' | 'h4' | 'h5' | 'h6';
+  font?: VariantProps<typeof StyledSubHeading>['font'];
+  bold?: VariantProps<typeof StyledSubHeading>['bold'];
   children: React.ReactNode;
 }
 
-export const Text: FC<ITextProps> = ({ as, font, bold, size, children }) => {
+export const SubHeading: FC<ISubHeadingProps> = ({
+  as,
+  font,
+  bold,
+  children,
+}) => {
   return (
-    <StyledText as={as} font={font} bold={bold} size={size}>
+    <StyledSubHeading as={as} font={font} bold={bold}>
       {children}
-    </StyledText>
+    </StyledSubHeading>
   );
 };
