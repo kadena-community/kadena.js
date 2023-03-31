@@ -33,7 +33,7 @@ export const Primary: Story = {
   render: ({ spacing }) => (
     <>
       <Grid.Container spacing={spacing}>
-        <Grid.Item bg="$background">1</Grid.Item>
+        <Grid.Item bg="$blue500">1</Grid.Item>
         <Grid.Item bg="$background">2</Grid.Item>
         <Grid.Item bg="$background">3</Grid.Item>
         <Grid.Item bg="$background">4</Grid.Item>

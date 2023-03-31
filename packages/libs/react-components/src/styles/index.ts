@@ -7,7 +7,6 @@ export {
   getCssText,
   createTheme,
   globalCss,
-  sizes,
   keyframes,
   IThemeColors,
 } from './stitches.config';

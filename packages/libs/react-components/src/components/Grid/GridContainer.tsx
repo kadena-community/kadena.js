@@ -1,20 +1,23 @@
 import { styled } from './../../styles';
 
-import type * as Stitches from '@stitches/react';
+import type { CSSProperties, VariantProps } from '@stitches/react';
 import React, { FC, ReactNode } from 'react';
 
 export interface IGridContainerProps {
   children?: ReactNode;
-  spacing?: Stitches.VariantProps<typeof BasicContainer>['spacing'];
-  templateRows?: Stitches.CSSProperties['gridTemplateRows'];
-  templateColumns?: Stitches.CSSProperties['gridTemplateColumns'];
-  templateAreas?: Stitches.CSSProperties['gridTemplateAreas'];
+  spacing?: VariantProps<typeof BasicContainer>['spacing'];
+  templateRows?: CSSProperties['gridTemplateRows'];
+  templateColumns?: CSSProperties['gridTemplateColumns'];
+  templateAreas?: CSSProperties['gridTemplateAreas'];
 }
 
 const BasicContainer = styled('div', {
   display: 'grid',
   gridTemplateColumns: 'repeat(12, 1fr)',
   gridGap: '$md',
+  defaultVariants: {
+    spacing: '$md',
+  },
   variants: {
     spacing: {
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -25,7 +28,7 @@ const BasicContainer = styled('div', {
         gridGap: '$xs',
       },
       sm: {
-        gridGap: '$3',
+        gridGap: '$sm',
       },
       md: {
         gridGap: '$md',

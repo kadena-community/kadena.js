@@ -7,7 +7,7 @@ import { createStitches, PropertyValue } from '@stitches/react';
 import { ConfigType } from '@stitches/react/types/config';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
-export const sizes = {
+const sizes = {
   1: '0.25rem', // 4px
   2: '0.5rem', // 8px
   3: '0.75rem', // 12px
@@ -45,7 +45,7 @@ export const sizes = {
   xl: 'var(--spacing-xl)',
   '2xl': 'var(--spacing-2xl)',
   '3xl': 'var(--spacing-3xl)',
-} as const;
+};
 
 export const media: ConfigType.Media = {
   sm: `(min-width: ${640 / 16}rem)`,
@@ -53,7 +53,7 @@ export const media: ConfigType.Media = {
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
   '2xl': `(min-width: ${1536 / 16}rem)`,
-} as const;
+};
 
 export const {
   styled,

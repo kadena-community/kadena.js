@@ -1,22 +1,24 @@
-import { IThemeColors, styled } from './../../styles';
+import { config } from '../../styles';
 
-import type * as Stitches from '@stitches/react';
+import { styled } from './../../styles';
+
+import type { CSSProperties, PropertyValue } from '@stitches/react';
 import React, { FC, ReactNode } from 'react';
 
 const BaseItem = styled('div', {
   gridColumnStart: 'auto',
 });
 
-export type IColSpan = number | 'auto';
+export type ColSpanType = number | 'auto';
 
 export interface IGridItemProps {
   children?: ReactNode;
-  colStart?: IColSpan;
-  colEnd?: IColSpan;
-  rowStart?: IColSpan;
-  rowEnd?: IColSpan;
-  area?: Stitches.CSSProperties['gridArea'];
-  bg?: IThemeColors;
+  colStart?: ColSpanType;
+  colEnd?: ColSpanType;
+  rowStart?: ColSpanType;
+  rowEnd?: ColSpanType;
+  area?: CSSProperties['gridArea'];
+  bg: PropertyValue<'backgroundColor', typeof config>;
 }
 
 const createSpan = (
