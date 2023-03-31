@@ -8,6 +8,7 @@ export {
   createTheme,
   globalCss,
   sizes,
+  keyframes,
 } from './stitches.config';
 export * from './types';
 export { baseGlobalStyles } from './baseGlobalStyles';

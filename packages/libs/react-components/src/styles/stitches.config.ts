@@ -13,27 +13,46 @@ export const sizes = {
   4: '1rem', // 16px
   5: '1.25rem', // 20px
   6: '1.5rem', // 24px
+  7: '1.75rem', // 28px
   8: '2rem', // 32px
+  9: '2.25rem', // 36px
   10: '2.5rem', // 40px
+  11: '2.75rem', // 44px
   12: '3rem', // 48px
+  13: '3.25rem', // 52px
+  14: '3.5rem', // 56px
+  15: '3.75rem', // 60px
   16: '4rem', // 64px
+  17: '4.25rem', // 68px
+  18: '4.5rem', // 72px
+  19: '4.75rem', // 76px
   20: '5rem', // 80px
   24: '6rem', // 96px
+  25: '6.25rem', // 100px
   32: '8rem', // 128px
   40: '10rem', // 160px
   48: '12rem', // 192px
   56: '14rem', // 224px
   64: '16rem', // 256px
-} as const;
+  // NOTE: These are defined in global styles and vary in size depending on breakpoints
+  // See: https://github.com/stitchesjs/stitches/discussions/284
+  '2xs': 'var(--spacing-2xs)',
+  xs: 'var(--spacing-xs)',
+  sm: 'var(--spacing-sm)',
+  md: 'var(--spacing-md)',
+  lg: 'var(--spacing-lg)',
+  xl: 'var(--spacing-xl)',
+  '2xl': 'var(--spacing-2xl)',
+  '3xl': 'var(--spacing-3xl)',
+};
 
-// eslint-disable-next-line @kadena-dev/typedef-var
 export const media = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
   '2xl': `(min-width: ${1536 / 16}rem)`,
-} as const;
+};
 
 export const {
   styled,
@@ -43,6 +62,7 @@ export const {
   getCssText,
   createTheme,
   globalCss,
+  keyframes,
 } = createStitches({
   theme: {
     colors: {
@@ -101,6 +121,10 @@ export const {
   // We've updated to @stitches/react to v1.3.1-1 to fix this issue.
   // github issue: https://github.com/microsoft/TypeScript/issues/50720
   utils: {
+    size: (value: PropertyValue<'width'>) => ({
+      width: value,
+      height: value,
+    }),
     pr: (value: PropertyValue<'paddingRight'>) => ({
       paddingRight: value,
     }),
