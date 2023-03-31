@@ -1,3 +1,5 @@
+import { theme } from '../../styles';
+
 import { Grid } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -6,7 +8,12 @@ import React from 'react';
 const meta: Meta<typeof Grid.Container> = {
   title: 'Grid',
   component: Grid.Container,
-  argTypes: {},
+  argTypes: {
+    spacing: {
+      options: Object.keys(theme.sizes).map((key) => key),
+      control: { type: 'select' },
+    },
+  },
 };
 
 export default meta;
