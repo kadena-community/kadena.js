@@ -1,4 +1,4 @@
-import type { ISPVRequestBody, SPVResponse } from '@kadena/types';
+import type { ISPVRequestBody, SPVResponse } from './interfaces/PactAPI';
 
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

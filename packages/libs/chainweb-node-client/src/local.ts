@@ -1,38 +1,55 @@
+import type { ICommand, IUnsignedCommand, ISignatureJson } from '@kadena/types';
 import type {
-  ICommand,
-  IUnsignedCommand,
+  ICommandResult,
   LocalRequestBody,
   ILocalCommandResultWithPreflight,
   ILocalCommandResult,
-  ISignatureJson,
   IPreflightResult,
-  ICommandResult,
-} from '@kadena/types';
-import { isSignedCommand } from '@kadena/cryptography-utils';
+} from './interfaces/PactAPI';
 import { parseResponse, parsePreflight } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 import fetch from 'cross-fetch';
 
-type CmdWithSigs = ICommand;
-type CmdOptionalSigs = ICommand | IUnsignedCommand;
-interface Options {
+// type CmdWithSigs = ICommand;
+// type CmdOptionalSigs = ICommand | IUnsignedCommand;
+
+/**
+ * @alpha
+ */
+export interface IOptions {
   preflight: boolean;
   signatureVerification: boolean;
 }
-interface OptionsTestSigTrue {
+
+/**
+ * @alpha
+ */
+export interface IOptionsTestSigTrue {
   preflight: boolean;
   signatureVerification: true;
 }
-interface OptionsPreflightTrue {
+
+/**
+ * @alpha
+ */
+export interface IOptionsPreflightTrue {
   preflight: true;
   signatureVerification: false;
 }
-interface OptionsBothTrue {
+
+/**
+ * @alpha
+ */
+export interface IOptionsBothTrue {
   preflight: true;
   signatureVerification: true;
 }
-interface OptionsBothFalse {
+
+/**
+ * @alpha
+ */
+export interface IOptionsBothFalse {
   preflight: false;
   signatureVerification: false;
 }
@@ -64,33 +81,51 @@ type LocalResultWithoutPreflight = Omit<
   LocalResultWithPreflight,
   'preflightWarnings'
 >;
-//   ^?
 
+/**
+ * @alpha
+ */
 export function local(
   requestBody: ICommand,
   apiHost: string,
-  options?: OptionsBothTrue,
-): LocalResultWithoutPreflight;
+  options?: IOptionsBothTrue,
+): Promise<LocalResultWithoutPreflight>;
+
+/**
+ * @alpha
+ */
 export function local(
   requestBody: ICommand,
   apiHost: string,
-  options: OptionsTestSigTrue,
-): LocalResultWithoutPreflight;
+  options: IOptionsTestSigTrue,
+): Promise<LocalResultWithoutPreflight>;
+
+/**
+ * @alpha
+ */
 export function local(
   requestBody: ICommand,
   apiHost: string,
-  options: OptionsBothTrue,
-): LocalResultWithPreflight;
+  options: IOptionsBothTrue,
+): Promise<LocalResultWithPreflight>;
+
+/**
+ * @alpha
+ */
 export function local(
   requestBody: IUnsignedCommand,
   apiHost: string,
-  options: OptionsBothFalse,
-): LocalResultWithoutPreflight;
+  options: IOptionsBothFalse,
+): Promise<LocalResultWithoutPreflight>;
+
+/**
+ * @alpha
+ */
 export function local(
   requestBody: IUnsignedCommand,
   apiHost: string,
-  options: OptionsPreflightTrue,
-): LocalResultWithPreflight;
+  options: IOptionsPreflightTrue,
+): Promise<LocalResultWithPreflight>;
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -104,7 +139,7 @@ export function local(
 export function local(
   requestBody: ICommand | IUnsignedCommand,
   apiHost: string,
-  options: Options = { preflight: true, signatureVerification: true },
+  options: IOptions = { preflight: true, signatureVerification: true },
 ): Promise<ILocalCommandResultWithPreflight> {
   // verify combinations, limited to the cases above
   // on error, throw sensible error
@@ -135,9 +170,7 @@ export function localRaw(
   }: { signatureVerification: boolean; preflight: boolean },
 ): Promise<IPreflightResult | ICommandResult> {
   const request = stringifyAndMakePOSTRequest(requestBody);
-  const localUrlWithQueries = new URL(
-    `${apiHost}/api/v1/local?preflight=${preflight}&signatureVerification=${signatureVerification}`,
-  );
+  const localUrlWithQueries = new URL(`${apiHost}/api/v1/local`);
 
   localUrlWithQueries.searchParams.append('preflight', preflight.toString());
   localUrlWithQueries.searchParams.append(
@@ -146,7 +179,7 @@ export function localRaw(
   );
 
   const response: Promise<ILocalCommandResult> = fetch(
-    localUrlWithQueries,
+    localUrlWithQueries.toString(),
     request,
   ).then((r) => parseResponse<ILocalCommandResult>(r));
   return response;
@@ -161,7 +194,7 @@ export function convertIUnsignedTransactionToNoSig(
   return {
     ...transaction,
     sigs: transaction.sigs.map(
-      (s: ISignatureJson | undefined) => s ?? { sig: 'noSig' },
+      (s: ISignatureJson | undefined) => s ?? { sig: '' },
     ),
   };
 }

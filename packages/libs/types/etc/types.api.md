@@ -10,12 +10,6 @@ export type Base16String = string;
 // @alpha (undocumented)
 export type ChainId = '' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
 
-// @alpha
-export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
-
-// @alpha
-export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development' | undefined;
-
 // @alpha (undocumented)
 export type CommandPayloadStringifiedJSON = string;
 
@@ -58,31 +52,6 @@ export interface ICommandPayload {
 }
 
 // @alpha
-export interface ICommandResult {
-    // (undocumented)
-    continuation: IPactExec | null;
-    // (undocumented)
-    events?: Array<IPactEvent>;
-    // (undocumented)
-    gas: number;
-    // (undocumented)
-    logs: string | null;
-    // Warning: (ae-forgotten-export) The symbol "IChainwebResponseMetaData" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    metaData: IChainwebResponseMetaData | null;
-    // (undocumented)
-    reqKey: IBase64Url;
-    // Warning: (ae-forgotten-export) The symbol "IPactResultSuccess" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "IPactResultError" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    result: IPactResultSuccess | IPactResultError;
-    // (undocumented)
-    txId: number | null;
-}
-
-// @alpha
 export interface IContPayload {
     // (undocumented)
     data: Exclude<EnvData, undefined> | null;
@@ -112,37 +81,6 @@ export interface IKeyPair {
     publicKey: string;
     // (undocumented)
     secretKey?: string;
-}
-
-// @alpha
-export interface IListenRequestBody {
-    // (undocumented)
-    listen: IBase64Url;
-}
-
-// @alpha (undocumented)
-export type ILocalCommandResult = IPreflightResult | ICommandResult;
-
-// @alpha
-export interface ILocalCommandResultWithPreflight {
-    // (undocumented)
-    continuation: IPactExec | null;
-    // (undocumented)
-    events?: Array<IPactEvent>;
-    // (undocumented)
-    gas: number;
-    // (undocumented)
-    logs: string | null;
-    // (undocumented)
-    metaData: IChainwebResponseMetaData | null;
-    // (undocumented)
-    preflightWarnings?: Array<string>;
-    // (undocumented)
-    reqKey: IBase64Url;
-    // (undocumented)
-    result: IPactResultSuccess | IPactResultError;
-    // (undocumented)
-    txId: number | null;
 }
 
 // @alpha
@@ -206,38 +144,6 @@ export interface IPactExec {
 export interface IPactInt {
     // (undocumented)
     int: string;
-}
-
-// @alpha
-export interface IPollRequestBody {
-    // (undocumented)
-    requestKeys: Array<IBase64Url>;
-}
-
-// @alpha (undocumented)
-export interface IPollResponse {
-    // (undocumented)
-    [key: IBase64Url]: ICommandResult;
-}
-
-// @alpha (undocumented)
-export interface IPreflightResult {
-    // (undocumented)
-    preflightResult: ICommandResult;
-    // (undocumented)
-    preflightWarnings: [];
-}
-
-// @alpha
-export interface IRequestKeys {
-    // (undocumented)
-    requestKeys: Array<IBase64Url>;
-}
-
-// @alpha
-export interface ISendRequestBody {
-    // (undocumented)
-    cmds: Array<ICommand>;
 }
 
 // @alpha (undocumented)
@@ -308,14 +214,6 @@ export interface ISigningRequest {
     ttl: number;
 }
 
-// @alpha
-export interface ISPVRequestBody {
-    // (undocumented)
-    requestKey: IBase64Url;
-    // (undocumented)
-    targetChainId: ChainId;
-}
-
 // @alpha (undocumented)
 export interface IUnsignedCommand {
     // (undocumented)
@@ -341,15 +239,6 @@ export interface IUserSig {
     // (undocumented)
     sig: Base16String;
 }
-
-// @alpha (undocumented)
-export type ListenResponse = ICommandResult;
-
-// @alpha (undocumented)
-export type LocalRequestBody = ICommand | IUnsignedCommand;
-
-// @alpha (undocumented)
-export type LocalResponse = ILocalCommandResult;
 
 // @alpha (undocumented)
 export type NetworkId = string | undefined;
@@ -382,9 +271,6 @@ export type Proof = IBase64Url | undefined;
 // @alpha (undocumented)
 export type Rollback = boolean;
 
-// @alpha
-export type SendResponse = IRequestKeys;
-
 // @alpha (undocumented)
 export type SignatureWithHash = ISignedSignatureWithHash | IUnsignedSignatureWithHash;
 
@@ -396,9 +282,6 @@ export type SignerScheme = 'ED25519';
 
 // @alpha
 export type SPVProof = string;
-
-// @alpha
-export type SPVResponse = SPVProof;
 
 // @alpha (undocumented)
 export type Step = number;

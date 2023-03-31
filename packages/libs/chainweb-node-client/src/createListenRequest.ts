@@ -1,10 +1,14 @@
 import { unique } from '@kadena/cryptography-utils';
-import type { IListenRequestBody, ISendRequestBody } from '@kadena/types';
+import type {
+  IListenRequestBody,
+  ISendRequestBody,
+} from './interfaces/PactAPI';
 
 /**
  * Given an exec 'send' message, prepare a message for 'listen' endpoint.
- * @param execMsg {object} JSON with "cmds" field, see 'mkPublicSend'. Only takes first element.
- * @return {object} with "requestKey" for polling.
+ * @alpha
+ * @param request - The JSON request object with "cmds" field, see 'mkPublicSend'. Only takes first element.
+ * @returns Object with "requestKey" for polling.
  */
 export function createListenRequest({
   cmds,

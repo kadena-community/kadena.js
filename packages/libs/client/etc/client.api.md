@@ -8,6 +8,8 @@ import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/types';
 import { ICap } from '@kadena/types';
 import { ICommandResult } from '@kadena/types';
+import { ILocalCommandResultWithPreflight } from '@kadena/types';
+import { IOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/types';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
@@ -81,7 +83,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     createCommand(): IUnsignedCommand;
     // (undocumented)
-    local(apiHost: string): Promise<ICommandResult>;
+    local(apiHost: string, options?: IOptions): Promise<ICommandResult>;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
     // (undocumented)
@@ -249,8 +251,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     createCommand(): IUnsignedCommand;
     // (undocumented)
     data: Record<string, unknown>;
-    local(apiHost: string): Promise<ICommandResult>;
-    localWithoutSignatureVerification(apiHost: string): Promise<ICommandResult>;
+    local(apiHost: string, options?: IOptions): Promise<ILocalCommandResultWithPreflight>;
     // (undocumented)
     networkId: Exclude<ChainwebNetworkId, undefined>;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;

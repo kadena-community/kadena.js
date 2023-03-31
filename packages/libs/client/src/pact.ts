@@ -1,17 +1,24 @@
 import {
+  createSendRequest,
+  IOptions,
+  IOptionsPreflightTrue,
   local,
-  localWithoutSignatureVerification,
   poll,
   send,
 } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { createExp } from '@kadena/pactjs';
+import {
+  createExp,
+  ensureSignedCommand,
+  isSignedCommand,
+} from '@kadena/pactjs';
 import {
   ChainId,
   ChainwebNetworkId,
   ICap,
   ICommandPayload,
   ICommandResult,
+  ILocalCommandResultWithPreflight,
   IPollResponse,
   ISignatureJson,
   IUnsignedCommand,
@@ -23,7 +30,6 @@ import { IPactCommand } from './interfaces/IPactCommand';
 import { parseType } from './utils/parseType';
 
 import debug, { Debugger } from 'debug';
-import { createSendRequest } from 'kadena.js';
 
 const log: Debugger = debug('pactjs:proxy');
 
@@ -49,7 +55,7 @@ export interface ICommandBuilder<
     signer: string,
     ...args: TCaps[TCap]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  local(apiHost: string): Promise<ICommandResult>;
+  local(apiHost: string, options?: IOptions): Promise<ICommandResult>;
   send(apiHost: string): Promise<SendResponse>;
   pollUntil(
     apiHost: string,
@@ -300,9 +306,21 @@ export class PactCommand
    * @param apiHost - the chainweb host where to send the transaction to
    * @alpha
    */
-  public local(apiHost: string): Promise<ILocalCommandResultWithPreflight> {
-    log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
-    return local(this.createCommand(), apiHost);
+  public local(
+    apiHost: string,
+    options?: IOptions,
+  ): Promise<ILocalCommandResultWithPreflight> {
+    const command = this.createCommand();
+    if (isSignedCommand(command)) {
+      log(`calling local with: ${JSON.stringify(command, null, 2)}`);
+      if (typeof options !== 'undefined') {
+        return local(command, apiHost, options as IOptionsPreflightTrue);
+      } else {
+        return local(command, apiHost);
+      }
+    } else {
+      throw new Error('Command is not signed');
+    }
   }
 
   /**
@@ -388,13 +406,8 @@ export class PactCommand
    * @alpha
    */
   public async send(apiHost: string): Promise<SendResponse> {
-    if (isSignedCommand(this.createCommand())) {
-      const sendResponse = await send(
-        createSendRequest([this.createCommand()]),
-        apiHost,
-      );
-    } else throw Error();
-
+    const command: ICommand = ensureSignedCommand(this.createCommand());
+    const sendResponse = await send(createSendRequest([command]), apiHost);
     this.requestKey = sendResponse.requestKeys[0].toString();
     return sendResponse;
   }

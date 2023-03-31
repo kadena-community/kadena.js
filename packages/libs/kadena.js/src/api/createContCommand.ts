@@ -1,3 +1,4 @@
+import { createSendRequest } from '@kadena/chainweb-node-client';
 import { isSignedCommand } from '@kadena/cryptography-utils';
 import type {
   EnvData,
@@ -12,7 +13,6 @@ import type {
   Step,
 } from '@kadena/types';
 
-import { createSendRequest } from './createSendRequest';
 import { prepareContCommand } from './prepareContCommand';
 
 /**

@@ -1,4 +1,4 @@
-import type { IPollRequestBody, IPollResponse } from '@kadena/types';
+import type { IPollRequestBody, IPollResponse } from './interfaces/PactAPI';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

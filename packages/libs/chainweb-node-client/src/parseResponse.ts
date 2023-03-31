@@ -2,7 +2,7 @@ import type { Response } from 'cross-fetch';
 import type {
   ILocalCommandResultWithPreflight,
   ILocalCommandResult,
-} from '@kadena/types';
+} from './interfaces/PactAPI';
 /**
  * Parses raw `fetch` response into a typed JSON value.
  *

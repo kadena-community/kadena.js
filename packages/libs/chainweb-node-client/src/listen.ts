@@ -1,4 +1,4 @@
-import type { ICommandResult, IListenRequestBody } from '@kadena/types';
+import type { ICommandResult, IListenRequestBody } from './interfaces/PactAPI';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

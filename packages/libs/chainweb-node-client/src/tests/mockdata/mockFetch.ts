@@ -6,9 +6,8 @@ import type {
   SendResponse,
   SPVResponse,
   IPreflightResult,
-} from '@kadena/types';
-
-import { testSPVProof } from './Pact';
+} from '../../interfaces/PactAPI';
+import { testSPVProof, testURL } from './Pact';
 
 /**
  * Mock implementation of node-fetch's `fetch` function.
@@ -62,7 +61,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/api/v1/local?preflight=false&signatureVerification=true': {
+    case `${testURL}/api/v1/local?preflight=false&signatureVerification=true`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: LocalResponse = {
           reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
@@ -85,7 +84,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/api/v1/local?preflight=true&signatureVerification=true': {
+    case `${testURL}/api/v1/local?preflight=true&signatureVerification=true`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPreflightResult = {
           preflightResult: {
@@ -110,7 +109,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/api/v1/local?preflight=true&signatureVerification=false': {
+    case `${testURL}/api/v1/local?preflight=true&signatureVerification=false`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPreflightResult = {
           preflightResult: {

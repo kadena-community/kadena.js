@@ -185,7 +185,10 @@ describe('Pact proxy', () => {
     builder.code = '(coin.transfer "from" "to" 1.234)';
     builder.addCap('coin.GAS', 'senderPubKey');
 
-    await builder.localWithoutSignatureVerification('fake-api-host.local.co');
+    await builder.local('fake-api-host.local.co', {
+      preflight: true,
+      signatureVerification: false,
+    });
 
     const body = convertIUnsignedTransactionToNoSig(builder.createCommand());
 

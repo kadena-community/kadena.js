@@ -1,6 +1,6 @@
 jest.mock('cross-fetch');
 
-import type { IPollRequestBody, IPollResponse } from '@kadena/types';
+import type { IPollRequestBody, IPollResponse } from '../interfaces/PactAPI';
 
 import { poll } from '../poll';
 

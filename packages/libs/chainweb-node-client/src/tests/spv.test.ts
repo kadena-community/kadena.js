@@ -1,6 +1,6 @@
 jest.mock('cross-fetch');
 
-import type { SPVResponse } from '@kadena/types';
+import type { SPVResponse } from '../interfaces/PactAPI';
 
 import { spv } from '../spv';
 

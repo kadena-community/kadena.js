@@ -2,8 +2,10 @@
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
 import { listen, local, poll, send, spv } from '@kadena/chainweb-node-client';
+import { ensureSignedCommand } from '@kadena/pactjs';
 import {
   ChainwebNetworkId,
+  ICommand,
   ICommandResult,
   IPactEvent,
   IPollResponse,
@@ -33,14 +35,17 @@ const devnetKeyPair = {
 };
 const devnetAccount = `k:${devnetKeyPair.publicKey}`;
 
-const signedCommand1: IUnsignedCommand = createSampleExecTx(
+const sampleCommand1: IUnsignedCommand = createSampleExecTx(
   devnetKeyPair,
   `(+ 1 2)`,
   devnetNetwork,
 );
-const sendReq1: ISendRequestBody = createSendRequest([signedCommand1]);
 
-const signedCommand2: IUnsignedCommand = createSampleExecTx(
+const signedSampleCommand1: ICommand = ensureSignedCommand(sampleCommand1);
+
+const sendReq1: ISendRequestBody = createSendRequest(signedSampleCommand1);
+
+const sampleCommand2: IUnsignedCommand = createSampleExecTx(
   {
     ...devnetKeyPair,
     clist: [
@@ -64,7 +69,11 @@ const signedCommand2: IUnsignedCommand = createSampleExecTx(
   { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
 );
 
-const sendReq2: ISendRequestBody = createSendRequest([signedCommand2]);
+const signedSampleCommand2: ICommand = ensureSignedCommand(sampleCommand2);
+
+const sendReq2: ISendRequestBody = {
+  cmds: [signedSampleCommand2],
+};
 
 function sleep20Seconds(): Promise<unknown> {
   return ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))(20000);
@@ -244,13 +253,14 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
       proof.replace(/"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
       '1',
     );
-    const contReq: ISendRequestBody = createSendRequest([contReqPayload]);
+    const signedContReqPayload: ICommand = throwIfUnsigned(contReqPayload);
+    const contReq: ISendRequestBody = createSendRequest(signedContReqPayload);
     const actualContSendResp: SendResponse | Response = await send(
       contReq,
       devnetApiHostChain1,
     );
     const expectedContSendResp: SendResponse = {
-      requestKeys: [contReqPayload.hash],
+      requestKeys: [signedContReqPayload.hash],
     };
     expect(actualContSendResp).toEqual(expectedContSendResp);
 
