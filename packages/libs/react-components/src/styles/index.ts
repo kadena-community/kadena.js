@@ -7,5 +7,6 @@ export {
   getCssText,
   createTheme,
   globalCss,
+  keyframes,
 } from './stitches.config';
 export { baseGlobalStyles } from './baseGlobalStyles';

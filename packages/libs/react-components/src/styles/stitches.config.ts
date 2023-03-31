@@ -43,6 +43,7 @@ export const {
   getCssText,
   createTheme,
   globalCss,
+  keyframes,
 } = createStitches({
   theme: {
     colors: {
