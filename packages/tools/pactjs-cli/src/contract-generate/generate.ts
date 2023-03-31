@@ -7,7 +7,7 @@ import {
 
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { ContractGenerateOptions } from './index';
+import { ContractGenerateOptions } from './';
 
 import { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
