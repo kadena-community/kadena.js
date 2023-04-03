@@ -1,5 +1,6 @@
 import { styled } from '../../styles/stitches.config';
 
+import * as variants from './variants';
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
@@ -7,82 +8,11 @@ const FlexContainer = styled('div', {
   display: 'flex',
 
   variants: {
-    direction: {
-      row: {
-        flexDirection: 'row',
-      },
-      column: {
-        flexDirection: 'column',
-      },
-    },
-    justifyContent: {
-      'flex-start': {
-        justifyContent: 'flex-start',
-      },
-      center: {
-        justifyContent: 'center',
-      },
-      'flex-end': {
-        justifyContent: 'flex-end',
-      },
-      'space-between': {
-        justifyContent: 'space-between',
-      },
-      'space-around': {
-        justifyContent: 'space-around',
-      },
-    },
-    alignItems: {
-      'flex-start': {
-        alignItems: 'flex-start',
-      },
-      center: {
-        alignItems: 'center',
-      },
-      'flex-end': {
-        alignItems: 'flex-end',
-      },
-      stretch: {
-        alignItems: 'stretch',
-      },
-    },
-    flexWrap: {
-      wrap: {
-        flexWrap: 'wrap',
-      },
-      nowrap: {
-        flexWrap: 'nowrap',
-      },
-    },
-    spacing: {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      '2xs': {
-        gap: '$2xs',
-      },
-      xs: {
-        gap: '$xs',
-      },
-      sm: {
-        gap: '$3',
-      },
-      md: {
-        gap: '$md',
-      },
-      lg: {
-        gap: '$lg',
-      },
-      xl: {
-        gap: '$xl',
-      },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      '2xl': {
-        gap: '$2xl',
-      },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      '3xl': {
-        gap: '$3xl',
-      },
-    },
+    direction: variants.direction,
+    justifyContent: variants.justifyContent,
+    alignItems: variants.alignItems,
+    flexWrap: variants.flexWrap,
+    spacing: variants.spacing,
   },
 
   defaultVariants: {

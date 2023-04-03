@@ -1,6 +1,7 @@
 import { styled } from '../../styles/stitches.config';
 
 import { Stack } from './Stack';
+import * as variants from './variants';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -16,6 +17,38 @@ const Item = styled('div', {
 const meta: Meta<typeof Stack> = {
   title: 'Stack',
   component: Stack,
+  argTypes: {
+    spacing: {
+      options: Object.keys(
+        variants.spacing,
+      ) as (keyof typeof variants.spacing)[],
+      control: { type: 'select' },
+    },
+    justifyContent: {
+      options: Object.keys(
+        variants.justifyContent,
+      ) as (keyof typeof variants.justifyContent)[],
+      control: { type: 'select' },
+    },
+    alignItems: {
+      options: Object.keys(
+        variants.alignItems,
+      ) as (keyof typeof variants.alignItems)[],
+      control: { type: 'select' },
+    },
+    direction: {
+      options: Object.keys(
+        variants.direction,
+      ) as (keyof typeof variants.direction)[],
+      control: { type: 'select' },
+    },
+    flexWrap: {
+      options: Object.keys(
+        variants.flexWrap,
+      ) as (keyof typeof variants.flexWrap)[],
+      control: { type: 'select' },
+    },
+  },
 };
 
 export default meta;
