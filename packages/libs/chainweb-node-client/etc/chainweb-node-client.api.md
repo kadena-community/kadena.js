@@ -90,7 +90,7 @@ export interface ILocalCommandResultWithPreflight {
 }
 
 // @alpha (undocumented)
-export type IOptions = IOptionsSigVerifyTrue | IOptionsSigVerifyFalse | IOptionsBothTrue | IOptionsBothFalse | IOptionsPreflightTrue | IOptionsPreflightFalse;
+export type IOptions = IOptionsSigVerifyTrue | IOptionsPreflightFalse | IOptionsSigVerifyFalse | IOptionsBothTrue | IOptionsBothFalse | IOptionsPreflightTrue;
 
 // @alpha (undocumented)
 export interface IOptionsBothFalse {
@@ -189,13 +189,13 @@ export type ListenResponse = ICommandResult;
 // Warning: (ae-forgotten-export) The symbol "CmdOptionalSigs" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsSigVerifyFalse): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight>;
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsSigVerifyFalse): Promise<LocalResultWithoutPreflight | LocalResultWithoutPreflight>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightFalse): Promise<LocalResultWithoutPreflight>;
 
 // Warning: (ae-forgotten-export) The symbol "CmdWithSigs" needs to be exported by the entry point index.d.ts
 //
-// @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight>;
-
 // @alpha (undocumented)
 export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<LocalResultWithPreflight>;
 
@@ -206,7 +206,7 @@ export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: I
 export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<LocalResultWithPreflight>;
 
 // @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightFalse): Promise<LocalResultWithoutPreflight>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | LocalResultWithPreflight>;
 
 // @alpha
 export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {

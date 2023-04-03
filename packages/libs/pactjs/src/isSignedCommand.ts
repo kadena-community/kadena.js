@@ -9,7 +9,7 @@ import type { ICommand, IUnsignedCommand } from '@kadena/types';
 export function isSignedCommand(
   command: IUnsignedCommand | ICommand,
 ): command is ICommand {
-  return command.sigs.every((s) => !!s?.sig);
+  return command.sigs.every((s) => s?.sig !== undefined);
 }
 
 /**

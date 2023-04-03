@@ -21,11 +21,11 @@ type CmdOptionalSigs = ICommand | IUnsignedCommand;
  */
 export type IOptions =
   | IOptionsSigVerifyTrue
+  | IOptionsPreflightFalse
   | IOptionsSigVerifyFalse
   | IOptionsBothTrue
   | IOptionsBothFalse
-  | IOptionsPreflightTrue
-  | IOptionsPreflightFalse;
+  | IOptionsPreflightTrue;
 
 /**
  * @alpha
@@ -82,16 +82,16 @@ export function local(
   requestBody: CmdOptionalSigs,
   apiHost: string,
   options?: IOptionsSigVerifyFalse,
-): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight>;
+): Promise<LocalResultWithoutPreflight | LocalResultWithoutPreflight>;
 
 /**
  * @alpha
  */
 export function local(
-  requestBody: CmdWithSigs,
+  requestBody: CmdOptionalSigs,
   apiHost: string,
-  options?: IOptionsSigVerifyTrue,
-): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight>;
+  options?: IOptionsPreflightFalse,
+): Promise<LocalResultWithoutPreflight>;
 
 /**
  * @alpha
@@ -124,10 +124,10 @@ export function local(
  * @alpha
  */
 export function local(
-  requestBody: CmdOptionalSigs,
+  requestBody: CmdWithSigs,
   apiHost: string,
-  options?: IOptionsPreflightFalse,
-): Promise<LocalResultWithoutPreflight>;
+  options?: IOptionsSigVerifyTrue,
+): Promise<LocalResultWithoutPreflight | LocalResultWithPreflight>;
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -144,13 +144,14 @@ export function local(
   options?: IOptions,
 ): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight> {
   const { signatureVerification = true, preflight = true } = options ?? {};
-  if (signatureVerification) {
+  if (!signatureVerification) {
     requestBody = convertIUnsignedTransactionToNoSig(requestBody);
   }
+
   const body = ensureSignedCommand(requestBody);
   return localRaw(body, apiHost, {
-    preflight: preflight,
-    signatureVerification: signatureVerification,
+    preflight,
+    signatureVerification,
   }).then((result) => parsePreflight(result));
 }
 
@@ -197,7 +198,7 @@ export function convertIUnsignedTransactionToNoSig(
   return {
     ...transaction,
     sigs: transaction.sigs.map(
-      (s: ISignatureJson | undefined) => s ?? { sig: '' },
+      (s: ISignatureJson | undefined) => s ?? { sig: 'a' },
     ),
   };
 }
