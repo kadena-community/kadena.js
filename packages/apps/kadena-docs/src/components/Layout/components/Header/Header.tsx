@@ -1,9 +1,11 @@
-import React, { FC } from 'react';
 import { styled } from '@kadena/react-components';
-import { DocsLogo } from '@/components/DocsLogo';
+
 import { NavItem } from './NavItem';
-import { useHeaderAnimation } from './useHeaderAnimation';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
+import { useHeaderAnimation } from './useHeaderAnimation';
+
+import { DocsLogo } from '@/components/DocsLogo';
+import React, { FC } from 'react';
 
 const StyledHeader = styled('header', {
   backgroundColor: '#1D1D1F',

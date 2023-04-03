@@ -57,57 +57,30 @@ const FlexContainer = styled('div', {
     spacing: {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       '2xs': {
-        gap: '$1',
+        gap: '$2xs',
       },
       xs: {
-        gap: '$2',
+        gap: '$xs',
       },
       sm: {
         gap: '$3',
       },
       md: {
-        gap: '$4',
+        gap: '$md',
       },
       lg: {
-        gap: '$6',
+        gap: '$lg',
       },
       xl: {
-        gap: '$7',
-        '@xl': {
-          gap: '$8',
-        },
-        '@2xl': {
-          gap: '$11',
-        },
+        gap: '$xl',
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       '2xl': {
-        gap: '$9',
-        '@lg': {
-          gap: '$10',
-        },
-        '@xl': {
-          gap: '$13',
-        },
-        '@2xl': {
-          gap: '$17',
-        },
+        gap: '$2xl',
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       '3xl': {
-        gap: '$10',
-        '@md': {
-          gap: '$12',
-        },
-        '@lg': {
-          gap: '$15',
-        },
-        '@xl': {
-          gap: '$15',
-        },
-        '@2xl': {
-          gap: '$25',
-        },
+        gap: '$3xl',
       },
     },
   },

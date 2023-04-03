@@ -1,9 +1,9 @@
+import { baseGlobalStyles, globalCss } from '@kadena/react-components';
+
+import { getLayout } from '@/utils';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import React from 'react';
-import type { MarkdocNextJsPageProps } from '@markdoc/next.js';
-import { getLayout } from '@/utils/getLayout';
-import { globalCss, baseGlobalStyles } from '@kadena/react-components';
+import React, { ComponentType } from 'react';
 
 const GlobalStyles = globalCss({
   ...baseGlobalStyles,
@@ -13,16 +13,13 @@ const GlobalStyles = globalCss({
 });
 GlobalStyles();
 
-export type MyAppProps = MarkdocNextJsPageProps;
-export default function App({
-  Component,
-  pageProps,
-}: AppProps<MyAppProps>): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const { markdoc } = pageProps;
 
   let title, description;
   let layoutType = 'default';
-  if (markdoc) {
+  if (markdoc !== undefined) {
     title = markdoc.frontmatter.title;
     description = markdoc.frontmatter.description;
     layoutType = markdoc.frontmatter.layout ?? 'default';
@@ -30,7 +27,8 @@ export default function App({
 
   const Layout = getLayout(layoutType);
 
-  const AnyComponent = Component as any;
+  // Fixes "Component' cannot be used as a JSX component."
+  const ReactComponent = Component as ComponentType;
   return (
     <>
       <Head>
@@ -39,7 +37,7 @@ export default function App({
         <meta name="description" content={description} />
       </Head>
       <Layout>
-        <AnyComponent {...pageProps} />
+        <ReactComponent {...pageProps} />
       </Layout>
     </>
   );

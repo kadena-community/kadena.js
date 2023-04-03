@@ -1,12 +1,13 @@
 import { styled } from '@kadena/react-components';
-import Link from 'next/link';
-import React, { FC, MouseEventHandler, ReactNode } from 'react';
 
-type IProps = {
+import Link from 'next/link';
+import React, { FC, ReactNode } from 'react';
+
+interface IProps {
   children?: ReactNode;
   href: string;
   active: boolean;
-};
+}
 
 const NavLink = styled(Link, {
   color: 'white',

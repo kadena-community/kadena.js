@@ -2,16 +2,15 @@
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
+    "_phase:build": "next build",
+    "_phase:test": "",
     "build": "next build",
     "cypress:open": "cypress open",
     "dev": "next dev",
     "lint": "next lint",
-    "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "rushx build && heft test"
+    "test": "jest"
   },
   "dependencies": {
     "@kadena/react-components": "workspace:*",
@@ -51,6 +50,7 @@
     "typescript": "^4.9.5",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
-    "@kadena/types": "workspace:*"
+    "@kadena/types": "workspace:*",
+    "jest": "~29.5.0"
   }
 }

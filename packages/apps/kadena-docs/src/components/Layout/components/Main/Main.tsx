@@ -1,9 +1,10 @@
-import React, { FC, ReactNode } from 'react';
-import { Header, Footer } from './components';
+import { Footer, Header } from '..';
 
-type IProps = {
+import React, { FC, ReactNode } from 'react';
+
+interface IProps {
   children?: ReactNode;
-};
+}
 
 export const Main: FC<IProps> = ({ children }) => {
   return (

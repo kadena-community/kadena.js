@@ -4,7 +4,6 @@ const withMarkdoc = require('@markdoc/next.js');
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  distDir: 'lib',
 };
 
 module.exports = nextConfig;

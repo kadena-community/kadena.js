@@ -1,0 +1,15 @@
+{
+  "extends": "@kadena-dev/heft-rig/profiles/default/config/jest.config.json",
+  "globals": {
+    "ts-jest": {
+      "tsConfig": "../tsconfig.json"
+    }
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  },
+  "verbose": true,
+  "collectCoverage": true
+}

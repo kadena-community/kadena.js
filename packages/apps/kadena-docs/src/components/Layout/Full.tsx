@@ -1,11 +1,9 @@
-import React, { FC, ReactNode } from 'react';
-import { Main } from './Main';
+import { Main } from './components/Main';
+import { ILayout } from './types';
 
-type IProps = {
-  children?: ReactNode;
-};
+import React, { FC } from 'react';
 
-export const Full: FC<IProps> = ({ children }) => {
+export const Full: FC<ILayout> = ({ children }) => {
   return (
     <Main>
       <h1>Full</h1>
@@ -13,3 +11,5 @@ export const Full: FC<IProps> = ({ children }) => {
     </Main>
   );
 };
+
+Full.displayName = 'Full';

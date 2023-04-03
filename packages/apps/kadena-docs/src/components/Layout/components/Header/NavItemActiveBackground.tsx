@@ -1,4 +1,5 @@
 import { styled } from '@kadena/react-components';
+
 import React, { FC } from 'react';
 
 const BackgroundWrapper = styled('div', {
@@ -8,12 +9,12 @@ const BackgroundWrapper = styled('div', {
   zIndex: 0,
 });
 
-type IProps = {
+interface IProps {
   ref: React.ForwardedRef<HTMLDivElement>;
-};
+}
 
 export const NavItemActiveBackground: FC<IProps> =
-  React.forwardRef<HTMLDivElement>(({}, ref) => {
+  React.forwardRef<HTMLDivElement>((props = {}, ref) => {
     return (
       <BackgroundWrapper ref={ref}>
         <svg
@@ -67,3 +68,5 @@ export const NavItemActiveBackground: FC<IProps> =
       </BackgroundWrapper>
     );
   });
+
+NavItemActiveBackground.displayName = 'NavItemActiveBackground';

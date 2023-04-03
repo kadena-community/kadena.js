@@ -1,11 +1,9 @@
-import React, { FC, ReactNode } from 'react';
-import { Main } from './Main';
+import { Main } from './components/Main';
+import { ILayout } from './types';
 
-type IProps = {
-  children?: ReactNode;
-};
+import React, { FC } from 'react';
 
-export const CodeSide: FC<IProps> = ({ children }) => {
+export const CodeSide: FC<ILayout> = ({ children }) => {
   return (
     <Main>
       <h1>Codeside</h1>
@@ -13,3 +11,5 @@ export const CodeSide: FC<IProps> = ({ children }) => {
     </Main>
   );
 };
+
+CodeSide.displayName = 'CodeSide';
