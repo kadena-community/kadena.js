@@ -14,9 +14,9 @@
   "scripts": {
     "_phase:build": "heft build --clean",
     "_phase:test": "heft test --no-build",
-    "build": "tsc & tsc -p ./tsconfig.cjs.json",
-    "build-storybook": "storybook build",
-    "build:test": "tsc & tsc -p ./tsconfig.test.json",
+    "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
+    "build:storybook": "storybook build",
+    "build:test": "tsc & tsc -p ./tsconfig.esm.json",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"

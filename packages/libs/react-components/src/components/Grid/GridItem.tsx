@@ -1,6 +1,4 @@
-import { config } from '../../styles';
-
-import { styled } from './../../styles';
+import { config, styled } from '../../styles';
 
 import type { CSSProperties, PropertyValue } from '@stitches/react';
 import React, { FC, ReactNode } from 'react';

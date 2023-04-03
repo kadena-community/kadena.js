@@ -11,6 +11,5 @@ export {
   createTheme,
   globalCss,
   baseGlobalStyles,
-  IThemeColors,
   keyframes,
 } from './styles';

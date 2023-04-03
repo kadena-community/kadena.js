@@ -6,8 +6,7 @@ import type { CSS as StitchesCSS } from '@stitches/react';
 import { createStitches, PropertyValue } from '@stitches/react';
 import { ConfigType } from '@stitches/react/types/config';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-const sizes = {
+const sizes: Record<string, string> = {
   1: '0.25rem', // 4px
   2: '0.5rem', // 8px
   3: '0.75rem', // 12px
@@ -172,7 +171,5 @@ export const darkTheme = createTheme('darkTheme', {
     ...colorsDark,
   },
 });
-
-export type IThemeColors = `$${keyof typeof theme.colors}`;
 
 export type ThemeCSS = StitchesCSS<typeof config>;
