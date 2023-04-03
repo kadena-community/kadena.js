@@ -8,7 +8,6 @@
     "cypress:open": "cypress open",
     "dev": "next dev",
     "lint": "next lint",
-    "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "test": "jest"

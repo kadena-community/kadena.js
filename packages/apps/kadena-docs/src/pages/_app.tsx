@@ -1,16 +1,17 @@
-import { NextComponentType, NextPageContext } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { ReactNode } from 'react';
+import React, { ComponentType } from 'react';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
-  const AnyComponent = Component as any;
+  // Fixes "Component' cannot be used as a JSX component."
+  const ReactComponent = Component as ComponentType;
   return (
     <>
       <Head>
         <title>Kadena Docs</title>
       </Head>
-      <AnyComponent {...pageProps} />
+      <ReactComponent {...pageProps} />
     </>
   );
 }
