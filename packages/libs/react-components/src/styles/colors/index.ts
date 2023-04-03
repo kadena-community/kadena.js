@@ -1,5 +1,6 @@
 // TODO: Update to match design system
-export const colors: Record<string, string> = {
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const colors = {
   background: 'Gainsboro',
   fontColor: 'Gainsboro',
   gray500: 'DarkSlateGray',
@@ -7,7 +8,7 @@ export const colors: Record<string, string> = {
   purple500: 'RebeccaPurple',
   green500: 'DarkGreen',
   red500: 'DarkRed',
-};
+} as const;
 
 export const colorsDark: Record<string, string> = {
   background: 'DarkSlateGray',
