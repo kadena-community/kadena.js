@@ -1,26 +1,14 @@
 import { styled } from '../../styles/stitches.config';
 
+import { bold as variantBold, font as variantFont } from './variants';
+
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 const StyledHeading = styled('span', {
   variants: {
-    font: {
-      main: {
-        fontFamily: '$main',
-      },
-      mono: {
-        fontFamily: '$mono',
-      },
-    },
-    bold: {
-      true: {
-        fontWeight: '$extraBold',
-      },
-      false: {
-        fontWeight: '$light',
-      },
-    },
+    font: variantFont,
+    bold: variantBold,
   },
 
   defaultVariants: {
@@ -47,7 +35,13 @@ export interface IHeadingProps {
   children: React.ReactNode;
 }
 
-export const Heading: FC<IHeadingProps> = ({ as, font, bold, children }) => {
+// TODO: add line height
+export const Heading: FC<IHeadingProps> = ({
+  as = 'h1',
+  font,
+  bold,
+  children,
+}) => {
   return (
     <StyledHeading as={as} font={font} bold={bold}>
       {children}

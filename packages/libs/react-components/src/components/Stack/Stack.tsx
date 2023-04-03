@@ -1,6 +1,7 @@
 import { styled } from '../../styles/stitches.config';
 
 import * as variants from './variants';
+
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 

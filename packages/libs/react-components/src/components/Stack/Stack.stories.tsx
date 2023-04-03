@@ -28,25 +28,25 @@ const meta: Meta<typeof Stack> = {
       options: Object.keys(
         variants.justifyContent,
       ) as (keyof typeof variants.justifyContent)[],
-      control: { type: 'select' },
+      control: { type: 'radio' },
     },
     alignItems: {
       options: Object.keys(
         variants.alignItems,
       ) as (keyof typeof variants.alignItems)[],
-      control: { type: 'select' },
+      control: { type: 'radio' },
     },
     direction: {
       options: Object.keys(
         variants.direction,
       ) as (keyof typeof variants.direction)[],
-      control: { type: 'select' },
+      control: { type: 'radio' },
     },
     flexWrap: {
       options: Object.keys(
         variants.flexWrap,
       ) as (keyof typeof variants.flexWrap)[],
-      control: { type: 'select' },
+      control: { type: 'radio' },
     },
   },
 };

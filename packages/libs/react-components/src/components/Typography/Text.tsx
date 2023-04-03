@@ -1,37 +1,15 @@
 import { styled } from '../../styles/stitches.config';
 
+import * as variants from './variants';
+
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 const StyledText = styled('span', {
   variants: {
-    font: {
-      main: {
-        fontFamily: '$main',
-      },
-      mono: {
-        fontFamily: '$mono',
-      },
-    },
-    bold: {
-      true: {
-        fontWeight: '$medium',
-      },
-      false: {
-        fontWeight: '$regular',
-      },
-    },
-    size: {
-      sm: {
-        fontSize: '$xs',
-      },
-      md: {
-        fontSize: '$sm',
-      },
-      lg: {
-        fontSize: '$base',
-      },
-    },
+    font: variants.font,
+    bold: variants.bold,
+    size: variants.textSize,
   },
 
   defaultVariants: {

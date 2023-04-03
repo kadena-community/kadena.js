@@ -1,26 +1,14 @@
 import { styled } from '../../styles/stitches.config';
 
+import { bold as variantBold, font as variantFont } from './variants';
+
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 const StyledSubHeading = styled('span', {
   variants: {
-    font: {
-      main: {
-        fontFamily: '$main',
-      },
-      mono: {
-        fontFamily: '$mono',
-      },
-    },
-    bold: {
-      true: {
-        fontWeight: '$bold',
-      },
-      false: {
-        fontWeight: '$regular',
-      },
-    },
+    font: variantFont,
+    bold: variantBold,
   },
 
   defaultVariants: {
@@ -48,7 +36,7 @@ export interface ISubHeadingProps {
 }
 
 export const SubHeading: FC<ISubHeadingProps> = ({
-  as,
+  as = 'h3',
   font,
   bold,
   children,
