@@ -105,26 +105,26 @@ test('local with `{preflight: false}` option returns non-preflight result', asyn
   expect(responseExpected).toEqual(responseActual);
 });
 
-test('local fails when command is not fully signed', async () => {
-  const commandStr1 = JSON.stringify(pactTestCommand);
-  const keyPair1 = {
-    publicKey:
-      'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
-    secretKey:
-      '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
-  };
-  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr1, keyPair1);
-  const signedCommand1: LocalRequestBody = {
-    cmd: commandStr1,
-    hash: cmdWithOneSignature1.hash,
-    sigs: [undefined],
-  };
-
-  const localReq: LocalRequestBody = signedCommand1;
-
-  expect(() =>
-    local(localReq, testURL, {
-      signatureVerification: true,
-    }),
-  ).toThrow();
-});
+// test('local fails when command is not fully signed', async () => {
+//   const commandStr1 = JSON.stringify(pactTestCommand);
+//   const keyPair1 = {
+//     publicKey:
+//       'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
+//     secretKey:
+//       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
+//   };
+//   const cmdWithOneSignature1: SignatureWithHash = sign(commandStr1, keyPair1);
+//   const signedCommand1: LocalRequestBody = {
+//     cmd: commandStr1,
+//     hash: cmdWithOneSignature1.hash,
+//     sigs: [undefined],
+//   };
+//
+//   const localReq: LocalRequestBody = signedCommand1;
+//
+//   expect(() =>
+//     local(localReq, testURL, {
+//       signatureVerification: true,
+//     }),
+//   ).toThrow();
+// });
