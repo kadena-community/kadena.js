@@ -66,6 +66,38 @@ export const baseGlobalStyles: Record<string, unknown> = {
   /*
     Kadena Design System
   */
+
+  // Spacing
+  ':root': {
+    '$spacing-2xs': '$sizes$1',
+    '$spacing-xs': '$sizes$2',
+    '$spacing-sm': '$sizes$3',
+    '$spacing-md': '$sizes$4',
+    '$spacing-lg': '$sizes$6',
+    '$spacing-xl': '$sizes$7',
+    '$spacing-2xl': '$sizes$9',
+    '$spacing-3xl': '$sizes$10',
+
+    '@md': {
+      '$spacing-3xl': '$sizes$12',
+    },
+    '@lg': {
+      '$spacing-2xl': '$sizes$10',
+      '$spacing-3xl': '$sizes$15',
+    },
+    '@xl': {
+      '$spacing-xl': '$sizes$8',
+      '$spacing-2xl': '$sizes$13',
+      '$spacing-3xl': '$sizes$20',
+    },
+    '@2xl': {
+      '$spacing-xl': '$sizes$11',
+      '$spacing-2xl': '$sizes$17',
+      '$spacing-3xl': '$sizes$25',
+    },
+  },
+
+  // Typography
   h1: {
     fontSize: '$5xl',
     '@md': {
