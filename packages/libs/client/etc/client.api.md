@@ -5,16 +5,13 @@
 ```ts
 
 import { ChainId } from '@kadena/types';
-import { ChainwebNetworkId } from '@kadena/types';
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ICap } from '@kadena/types';
-import { ICommandResult } from '@kadena/types';
-import { ILocalCommandResultWithPreflight } from '@kadena/types';
-import { IOptions } from '@kadena/chainweb-node-client';
-import { IPollResponse } from '@kadena/types';
+import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
-import { SendResponse } from '@kadena/types';
+import { SendResponse } from '@kadena/chainweb-node-client';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
@@ -83,7 +80,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     // (undocumented)
     createCommand(): IUnsignedCommand;
     // (undocumented)
-    local(apiHost: string, options?: IOptions): Promise<ICommandResult>;
+    local(apiHost: string, options?: any): Promise<any>;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
     // (undocumented)
@@ -251,7 +248,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     createCommand(): IUnsignedCommand;
     // (undocumented)
     data: Record<string, unknown>;
-    local(apiHost: string, options?: IOptions): Promise<ILocalCommandResultWithPreflight>;
+    local(apiHost: string, options?: any): Promise<any>;
     // (undocumented)
     networkId: Exclude<ChainwebNetworkId, undefined>;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;

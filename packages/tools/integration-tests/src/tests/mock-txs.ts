@@ -1,5 +1,5 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
-  ChainwebChainId,
   EnvData,
   IKeyPair,
   IMetaData,

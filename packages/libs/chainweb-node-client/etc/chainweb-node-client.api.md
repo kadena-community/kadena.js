@@ -90,12 +90,7 @@ export interface ILocalCommandResultWithPreflight {
 }
 
 // @alpha (undocumented)
-export interface IOptions {
-    // (undocumented)
-    preflight: boolean;
-    // (undocumented)
-    signatureVerification: boolean;
-}
+export type IOptions = IOptionsSigVerifyTrue | IOptionsSigVerifyFalse | IOptionsBothTrue | IOptionsBothFalse | IOptionsPreflightTrue | IOptionsPreflightFalse;
 
 // @alpha (undocumented)
 export interface IOptionsBothFalse {
@@ -114,17 +109,33 @@ export interface IOptionsBothTrue {
 }
 
 // @alpha (undocumented)
+export interface IOptionsPreflightFalse {
+    // (undocumented)
+    preflight: false;
+    // (undocumented)
+    signatureVerification?: boolean;
+}
+
+// @alpha (undocumented)
 export interface IOptionsPreflightTrue {
     // (undocumented)
     preflight: true;
+    // (undocumented)
+    signatureVerification?: boolean;
+}
+
+// @alpha (undocumented)
+export interface IOptionsSigVerifyFalse {
+    // (undocumented)
+    preflight?: boolean;
     // (undocumented)
     signatureVerification: false;
 }
 
 // @alpha (undocumented)
-export interface IOptionsTestSigTrue {
+export interface IOptionsSigVerifyTrue {
     // (undocumented)
-    preflight: boolean;
+    preflight?: boolean;
     // (undocumented)
     signatureVerification: true;
 }
@@ -175,24 +186,27 @@ export function listen(requestBody: IListenRequestBody, apiHost: string): Promis
 // @alpha (undocumented)
 export type ListenResponse = ICommandResult;
 
-// Warning: (ae-forgotten-export) The symbol "LocalResultWithoutPreflight" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "CmdOptionalSigs" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function local(requestBody: ICommand, apiHost: string, options?: IOptionsBothTrue): Promise<LocalResultWithoutPreflight>;
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsSigVerifyFalse): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight>;
 
-// @alpha (undocumented)
-export function local(requestBody: ICommand, apiHost: string, options: IOptionsTestSigTrue): Promise<LocalResultWithoutPreflight>;
-
-// Warning: (ae-forgotten-export) The symbol "LocalResultWithPreflight" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "CmdWithSigs" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function local(requestBody: ICommand, apiHost: string, options: IOptionsBothTrue): Promise<LocalResultWithPreflight>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight>;
 
 // @alpha (undocumented)
-export function local(requestBody: IUnsignedCommand, apiHost: string, options: IOptionsBothFalse): Promise<LocalResultWithoutPreflight>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<LocalResultWithPreflight>;
 
 // @alpha (undocumented)
-export function local(requestBody: IUnsignedCommand, apiHost: string, options: IOptionsPreflightTrue): Promise<LocalResultWithPreflight>;
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsBothFalse): Promise<LocalResultWithoutPreflight>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<LocalResultWithPreflight>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightFalse): Promise<LocalResultWithoutPreflight>;
 
 // @alpha
 export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
@@ -205,6 +219,12 @@ export type LocalRequestBody = ICommand | IUnsignedCommand;
 
 // @alpha (undocumented)
 export type LocalResponse = ILocalCommandResult;
+
+// @alpha (undocumented)
+export type LocalResultWithoutPreflight = Omit<LocalResultWithPreflight, 'preflightWarnings'>;
+
+// @alpha
+export type LocalResultWithPreflight = ILocalCommandResultWithPreflight;
 
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;

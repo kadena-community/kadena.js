@@ -1,10 +1,5 @@
-import {
-  ChainId,
-  ChainwebNetworkId,
-  ICap,
-  ISignatureJson,
-} from '@kadena/types';
-
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import { ChainId, ICap, ISignatureJson } from '@kadena/types';
 /**
  * @alpha
  */

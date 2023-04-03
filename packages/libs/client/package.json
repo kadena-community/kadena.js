@@ -37,7 +37,6 @@
     "@kadena/types": "workspace:*",
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
-    "kadena.js": "workspace:*",
     "yaml": "~2.1.1"
   },
   "devDependencies": {

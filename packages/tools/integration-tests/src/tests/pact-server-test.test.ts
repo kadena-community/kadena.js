@@ -2,26 +2,24 @@
 // To run: `$ npm run start:pact`.
 // Requires `pact` to be installed: https://github.com/kadena-io/pact
 
-import { listen, local, poll, send } from '@kadena/chainweb-node-client';
-import { ensureSignedCommand } from '@kadena/pactjs';
-import {
-  ICommand,
-  ICommandResult,
-  IPollResponse,
-  ISendRequestBody,
-  IUnsignedCommand,
-  ListenResponse,
-  SendResponse,
-} from '@kadena/types';
-
-import { createSampleExecTx } from './mock-txs';
-
 import {
   createListenRequest,
   createPollRequest,
   createSendRequest,
-} from 'kadena.js';
+  ICommandResult,
+  IPollResponse,
+  ISendRequestBody,
+  listen,
+  ListenResponse,
+  local,
+  poll,
+  send,
+  SendResponse,
+} from '@kadena/chainweb-node-client';
+import { ensureSignedCommand } from '@kadena/pactjs';
+import { ICommand, IUnsignedCommand } from '@kadena/types';
 
+import { createSampleExecTx } from './mock-txs';
 const pactServerApiHost: string = 'http://127.0.0.1:9001';
 const pactServerKeyPair = {
   publicKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
@@ -42,7 +40,7 @@ describe('[Pact Server] Makes /send request', () => {
       pactServerApiHost,
     );
     const expected = {
-      requestKeys: [signedCommand.hash],
+      requestKeys: [signedSampleCommand.hash],
     };
     expect(actual).toEqual(expected);
   });
@@ -51,11 +49,11 @@ describe('[Pact Server] Makes /send request', () => {
 describe('[Pact Server] Makes /local request', () => {
   it('Receives the expected transaction result', async () => {
     const actual: ICommandResult | Response = await local(
-      signedCommand,
+      signedSampleCommand,
       pactServerApiHost,
     );
     const expected: ICommandResult = {
-      reqKey: signedCommand.hash,
+      reqKey: signedSampleCommand.hash,
       txId: null,
       logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
       result: {
@@ -82,7 +80,7 @@ describe('[Pact Server] Makes /poll request', () => {
       gas: 0,
       logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
       metaData: null,
-      reqKey: signedCommand.hash,
+      reqKey: signedSampleCommand.hash,
       result: {
         data: 3,
         status: 'success',
@@ -104,7 +102,7 @@ describe('[Pact Server] Makes /listen request', () => {
       gas: 0,
       logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
       metaData: null,
-      reqKey: signedCommand.hash,
+      reqKey: signedSampleCommand.hash,
       result: {
         data: 3,
         status: 'success',

@@ -1,10 +1,12 @@
-import { createSendRequest } from '@kadena/chainweb-node-client';
-import { isSignedCommand } from '@kadena/cryptography-utils';
+import {
+  createSendRequest,
+  ISendRequestBody,
+} from '@kadena/chainweb-node-client';
+import { ensureSignedCommand } from '@kadena/pactjs';
 import type {
   EnvData,
   IKeyPair,
   IMetaData,
-  ISendRequestBody,
   NetworkId,
   Nonce,
   PactTransactionHash,
@@ -40,5 +42,6 @@ export function createContCommand(
     networkId,
     envData,
   );
-  return createSendRequest([command].filter(isSignedCommand));
+  const signedCommand = ensureSignedCommand(command);
+  return createSendRequest(signedCommand);
 }

@@ -1,29 +1,22 @@
 import {
+  ChainwebNetworkId,
   createSendRequest,
-  IOptions,
-  IOptionsPreflightTrue,
+  IPollResponse,
   local,
   poll,
   send,
+  SendResponse,
 } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import {
-  createExp,
-  ensureSignedCommand,
-  isSignedCommand,
-} from '@kadena/pactjs';
+import { createExp, ensureSignedCommand } from '@kadena/pactjs';
 import {
   ChainId,
-  ChainwebNetworkId,
   ICap,
+  ICommand,
   ICommandPayload,
-  ICommandResult,
-  ILocalCommandResultWithPreflight,
-  IPollResponse,
   ISignatureJson,
   IUnsignedCommand,
   PactValue,
-  SendResponse,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
@@ -55,7 +48,7 @@ export interface ICommandBuilder<
     signer: string,
     ...args: TCaps[TCap]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  local(apiHost: string, options?: IOptions): Promise<ICommandResult>;
+  local(apiHost: string, options?: any): Promise<any>;
   send(apiHost: string): Promise<SendResponse>;
   pollUntil(
     apiHost: string,
@@ -306,20 +299,14 @@ export class PactCommand
    * @param apiHost - the chainweb host where to send the transaction to
    * @alpha
    */
-  public local(
-    apiHost: string,
-    options?: IOptions,
-  ): Promise<ILocalCommandResultWithPreflight> {
+  public local(apiHost: string, options?: any): Promise<any> {
     const command = this.createCommand();
-    if (isSignedCommand(command)) {
-      log(`calling local with: ${JSON.stringify(command, null, 2)}`);
-      if (typeof options !== 'undefined') {
-        return local(command, apiHost, options as IOptionsPreflightTrue);
-      } else {
-        return local(command, apiHost);
-      }
+
+    log(`calling local with: ${JSON.stringify(command, null, 2)}`);
+    if (typeof options !== 'undefined') {
+      return local(command, apiHost, options);
     } else {
-      throw new Error('Command is not signed');
+      return local(command, apiHost);
     }
   }
 
