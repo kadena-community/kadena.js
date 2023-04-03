@@ -11,43 +11,45 @@ export interface IGridContainerProps {
   templateAreas?: CSSProperties['gridTemplateAreas'];
 }
 
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const spacingVariants = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '2xs': {
+    gridGap: '$2xs',
+  },
+  xs: {
+    gridGap: '$xs',
+  },
+  sm: {
+    gridGap: '$sm',
+  },
+  md: {
+    gridGap: '$md',
+  },
+  lg: {
+    gridGap: '$lg',
+  },
+  xl: {
+    gridGap: '$xl',
+  },
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '2xl': {
+    gridGap: '$2xl',
+  },
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '3xl': {
+    gridGap: '$3xl',
+  },
+} as const;
+
 const BasicContainer = styled('div', {
   display: 'grid',
   gridTemplateColumns: 'repeat(12, 1fr)',
-  gridGap: '$md',
   defaultVariants: {
     spacing: '$md',
   },
   variants: {
-    spacing: {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      '2xs': {
-        gridGap: '$2xs',
-      },
-      xs: {
-        gridGap: '$xs',
-      },
-      sm: {
-        gridGap: '$sm',
-      },
-      md: {
-        gridGap: '$md',
-      },
-      lg: {
-        gridGap: '$lg',
-      },
-      xl: {
-        gridGap: '$xl',
-      },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      '2xl': {
-        gap: '$2xl',
-      },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      '3xl': {
-        gap: '$3xl',
-      },
-    },
+    spacing: spacingVariants,
   },
 });
 

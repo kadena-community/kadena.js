@@ -1,5 +1,4 @@
-import { theme } from '../../styles';
-
+import { spacingVariants } from './GridContainer';
 import { Grid } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -10,7 +9,7 @@ const meta: Meta<typeof Grid.Container> = {
   component: Grid.Container,
   argTypes: {
     spacing: {
-      options: Object.keys(theme.sizes).map((key) => key),
+      options: Object.keys(spacingVariants),
       control: { type: 'select' },
     },
   },
@@ -32,7 +31,7 @@ export const Primary: Story = {
   },
   render: ({ spacing }) => (
     <>
-      <Grid.Container spacing={spacing}>
+      <Grid.Container spacing="2xl">
         <Grid.Item bg="$blue500">1</Grid.Item>
         <Grid.Item bg="$background">2</Grid.Item>
         <Grid.Item bg="$background">3</Grid.Item>
