@@ -2,7 +2,7 @@
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
   "scripts": {
-    "_phase:build": "heft build --clean",
+    "_phase:build": "next build",
     "_phase:test": "",
     "build": "next build",
     "cypress:open": "cypress open",
