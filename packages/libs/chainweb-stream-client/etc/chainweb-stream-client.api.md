@@ -13,7 +13,7 @@ export type AccountData = IChainwebEventData & IChainwebSSEMetaData;
 class ChainwebStream extends EventEmitter {
     constructor({ host, type, id, limit, }: IChainwebStreamConstructorArgs);
     // (undocumented)
-    connect(): void;
+    connect: () => void;
     // (undocumented)
     disconnect(): void;
     // (undocumented)

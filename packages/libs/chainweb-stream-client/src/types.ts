@@ -41,6 +41,9 @@ export interface IChainwebStreamConstructorArgs {
   host: string;
   // TODO network ? for sanity check/safety
   limit?: number;
+  connectTimeout?: number;
+  heartbeatTimeout?: number;
+  maxReconnects?: number;
 }
 
 export enum ConnectionState {
