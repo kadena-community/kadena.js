@@ -267,6 +267,7 @@ importers:
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
+      '@kadena/react-components': workspace:*
       '@kadena/types': workspace:*
       '@markdoc/markdoc': ~0.2.2
       '@markdoc/next.js': ~0.2.2
@@ -297,6 +298,7 @@ importers:
       storybook-dark-mode: ^2.1.1
       typescript: ^4.9.5
     dependencies:
+      '@kadena/react-components': link:../../libs/react-components
       '@markdoc/markdoc': 0.2.2_7b8ae5d34ed122987167c657b3c1d5cc
       '@markdoc/next.js': 0.2.2_da7827e4a0ba1091c159dbcab9862ca2
       next: 13.2.4_react-dom@18.2.0+react@18.2.0

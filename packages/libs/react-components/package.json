@@ -16,7 +16,7 @@
     "_phase:test": "heft test --no-build",
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
-    "build:test": "tsc & tsc -p ./tsconfig.esm.json",
+    "build:test": "tsc -p ./tsconfig.esm.json",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
