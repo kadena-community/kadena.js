@@ -10,15 +10,15 @@
     "lint": "next lint",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": ""
+    "test": "jest"
   },
   "dependencies": {
-    "@kadena/react-components": "workspace:*",
     "@markdoc/markdoc": "~0.2.2",
     "@markdoc/next.js": "~0.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "next": "~13.2.4"
+    "next": "~13.2.4",
+    "@kadena/react-components": "workspace:*"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
