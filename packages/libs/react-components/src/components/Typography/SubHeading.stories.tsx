@@ -1,19 +1,19 @@
+import { boldVariant, fontVariant } from './styles';
 import { SubHeading } from './SubHeading';
-import * as variants from './variants';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<typeof SubHeading> = {
-  title: 'SubHeading',
+  title: 'Typography/SubHeading',
   component: SubHeading,
   argTypes: {
     font: {
-      options: Object.keys(variants.font) as (keyof typeof variants.font)[],
+      options: Object.keys(fontVariant) as (keyof typeof fontVariant)[],
       control: { type: 'radio' },
     },
     bold: {
-      options: Object.keys(variants.bold) as (keyof typeof variants.bold)[],
+      options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
     as: {
@@ -29,7 +29,7 @@ export const Horizontal: Story = {
   name: 'SubHeading',
   args: {
     font: 'main',
-    bold: 'false',
+    bold: 'true',
     as: 'h3',
   },
   render: ({ font, bold, as }) => (

@@ -1,28 +1,24 @@
 import { styled } from '../../styles/stitches.config';
 
-import * as variants from './variants';
+import { BaseText, textSizeVariant } from './styles';
 
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
-const StyledText = styled('span', {
+const StyledText = styled(BaseText, {
   variants: {
-    font: variants.font,
-    bold: variants.bold,
-    size: variants.textSize,
+    size: textSizeVariant,
   },
 
   defaultVariants: {
-    font: 'main',
-    bold: 'false',
     size: 'lg',
   },
 });
 
 export interface ITextProps {
   as?: 'span' | 'p' | 'code';
-  font?: VariantProps<typeof StyledText>['font'];
-  bold?: VariantProps<typeof StyledText>['bold'];
+  font?: VariantProps<typeof BaseText>['font'];
+  bold?: VariantProps<typeof BaseText>['bold'];
   size?: VariantProps<typeof StyledText>['size'];
   children: React.ReactNode;
 }

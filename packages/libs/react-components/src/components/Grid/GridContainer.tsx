@@ -1,5 +1,5 @@
 import { styled } from './../../styles';
-import * as variants from './variants';
+import { spacingVariant } from './styles';
 
 import type { CSSProperties, VariantProps } from '@stitches/react';
 import React, { FC, ReactNode } from 'react';
@@ -19,7 +19,7 @@ const BasicContainer = styled('div', {
     spacing: '$md',
   },
   variants: {
-    spacing: variants.spacing,
+    spacing: spacingVariant,
   },
 });
 

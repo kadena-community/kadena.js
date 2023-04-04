@@ -1,6 +1,12 @@
 import { styled } from '../../styles/stitches.config';
 
-import * as variants from './variants';
+import {
+  alignItemsVariant,
+  directionVariant,
+  flexWrapVariant,
+  justifyContentVariant,
+  spacingVariant,
+} from './styles';
 
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
@@ -9,11 +15,11 @@ const FlexContainer = styled('div', {
   display: 'flex',
 
   variants: {
-    direction: variants.direction,
-    justifyContent: variants.justifyContent,
-    alignItems: variants.alignItems,
-    flexWrap: variants.flexWrap,
-    spacing: variants.spacing,
+    direction: directionVariant,
+    justifyContent: justifyContentVariant,
+    alignItems: alignItemsVariant,
+    flexWrap: flexWrapVariant,
+    spacing: spacingVariant,
   },
 
   defaultVariants: {

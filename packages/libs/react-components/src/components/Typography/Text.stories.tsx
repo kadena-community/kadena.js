@@ -1,25 +1,23 @@
+import { boldVariant, fontVariant, textSizeVariant } from './styles';
 import { Text } from './Text';
-import * as variants from './variants';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<typeof Text> = {
-  title: 'Text',
+  title: 'Typography/Text',
   component: Text,
   argTypes: {
     font: {
-      options: Object.keys(variants.font) as (keyof typeof variants.font)[],
+      options: Object.keys(fontVariant) as (keyof typeof fontVariant)[],
       control: { type: 'radio' },
     },
     bold: {
-      options: Object.keys(variants.bold) as (keyof typeof variants.bold)[],
+      options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
     size: {
-      options: Object.keys(
-        variants.textSize,
-      ) as (keyof typeof variants.textSize)[],
+      options: Object.keys(textSizeVariant) as (keyof typeof textSizeVariant)[],
       control: { type: 'radio' },
     },
     as: {

@@ -1,19 +1,19 @@
 import { Heading } from './Heading';
-import * as variants from './variants';
+import { boldVariant, fontVariant } from './styles';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<typeof Heading> = {
-  title: 'Heading',
+  title: 'Typography/Heading',
   component: Heading,
   argTypes: {
     font: {
-      options: Object.keys(variants.font) as (keyof typeof variants.font)[],
+      options: Object.keys(fontVariant) as (keyof typeof fontVariant)[],
       control: { type: 'radio' },
     },
     bold: {
-      options: Object.keys(variants.bold) as (keyof typeof variants.bold)[],
+      options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
     as: {
@@ -29,7 +29,7 @@ export const Horizontal: Story = {
   name: 'Heading',
   args: {
     font: 'main',
-    bold: 'false',
+    bold: 'true',
     as: 'h1',
   },
   render: ({ font, bold, as }) => (
