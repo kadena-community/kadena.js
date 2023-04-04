@@ -299,7 +299,7 @@ importers:
       typescript: ^4.9.5
     dependencies:
       '@kadena/react-components': link:../../libs/react-components
-      '@markdoc/markdoc': 0.2.2_76ac25b175f2b0cb7faf9278258424f0
+      '@markdoc/markdoc': 0.2.2_7b8ae5d34ed122987167c657b3c1d5cc
       '@markdoc/next.js': 0.2.2_da7827e4a0ba1091c159dbcab9862ca2
       next: 13.2.4_react-dom@18.2.0+react@18.2.0
       react: 18.2.0
@@ -326,7 +326,7 @@ importers:
       '@storybook/testing-library': 0.0.14-next.1
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
-      '@types/react': 18.0.31
+      '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
       cypress: 12.9.0
       eslint: 8.37.0
@@ -679,6 +679,8 @@ importers:
       '@storybook/addon-interactions': ^7.0.0-rc.3
       '@storybook/addon-links': ^7.0.0-rc.3
       '@storybook/addon-mdx-gfm': ^7.0.0-rc.3
+      '@storybook/csf': ~0.1.0
+      '@storybook/docs-mdx': ~0.1.0
       '@storybook/react': ^7.0.0-rc.3
       '@storybook/react-webpack5': ^7.0.0-rc.3
       '@storybook/testing-library': ^0.0.14-next.1
@@ -712,6 +714,8 @@ importers:
       '@storybook/addon-interactions': 7.0.0-rc.8_react-dom@18.2.0+react@18.2.0
       '@storybook/addon-links': 7.0.0-rc.8_react-dom@18.2.0+react@18.2.0
       '@storybook/addon-mdx-gfm': 7.0.0-rc.8
+      '@storybook/csf': 0.1.0
+      '@storybook/docs-mdx': 0.1.0
       '@storybook/react': 7.0.0-rc.8_2079b742d9aa961b617ccf5dc49dc6db
       '@storybook/react-webpack5': 7.0.0-rc.8_190119faab2fe2b153818774f926490e
       '@storybook/testing-library': 0.0.14-next.1
@@ -1256,7 +1260,7 @@ packages:
     resolution: {integrity: sha512-UlJQPkFqFULIcyW5sbzgbkxn2FKRgwWiRexcuaR8RNJRy8+LLveqPjwZV/bwrLZCN0eUHD/x8D0heK1ozuoo6Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.20.5
 
   /@babel/helper-member-expression-to-functions/7.21.0:
     resolution: {integrity: sha512-Muu8cdZwNN6mRRNG6lAYErJ5X3bRevgYR2O8wN0yn7jJSnGDu6eG59RfT29JHxGUovyfrh6Pj0XzmR7drNVL3Q==}
@@ -1270,6 +1274,22 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.20.5
+
+  /@babel/helper-module-transforms/7.20.2:
+    resolution: {integrity: sha512-zvBKyJXRbmK07XhMuujYoJ48B5yvvmM6+wcpv6Ivj4Yg6qO7NOZOSnvZN9CRl1zz1Z4cKf8YejmCMh8clOoOeA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/helper-environment-visitor': 7.18.9
+      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-simple-access': 7.20.2
+      '@babel/helper-split-export-declaration': 7.18.6
+      '@babel/helper-validator-identifier': 7.19.1
+      '@babel/template': 7.18.10
+      '@babel/traverse': 7.20.5
+      '@babel/types': 7.20.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@babel/helper-module-transforms/7.21.2:
     resolution: {integrity: sha512-79yj2AR4U/Oqq/WOV7Lx6hUjau1Zfo4cI+JLAVYeMV5XIlbOhmjEk5ulbTc9fMpmlojzZHkUUxAiK+UKn+hNQQ==}
@@ -1357,7 +1377,7 @@ packages:
     resolution: {integrity: sha512-bde1etTx6ZyTmobl9LLMMQsaizFVZrquTEHOqKeQESMKo4PlObf+8+JA25ZsIpZhT/WEd39+vOdLXAFG/nELpA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.20.5
 
   /@babel/helper-string-parser/7.19.4:
     resolution: {integrity: sha512-nHtDoQcuqFmwYNYPz3Rah5ph2p8PFeFCsZk9A/48dPc/rGocJ5J3hAAZ7pb76VWX3fZKu+uEr/FhH5jLx7umrw==}
@@ -2484,7 +2504,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/helper-module-transforms': 7.21.2
+      '@babel/helper-module-transforms': 7.20.2
       '@babel/helper-plugin-utils': 7.20.2
       '@babel/helper-simple-access': 7.20.2
     transitivePeerDependencies:
@@ -2498,7 +2518,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.3
-      '@babel/helper-module-transforms': 7.21.2
+      '@babel/helper-module-transforms': 7.20.2
       '@babel/helper-plugin-utils': 7.20.2
       '@babel/helper-simple-access': 7.20.2
     transitivePeerDependencies:
@@ -5153,7 +5173,7 @@ packages:
       - supports-color
     dev: false
 
-  /@markdoc/markdoc/0.2.2_76ac25b175f2b0cb7faf9278258424f0:
+  /@markdoc/markdoc/0.2.2_7b8ae5d34ed122987167c657b3c1d5cc:
     resolution: {integrity: sha512-0TiD9jmA5h5znN4lxo7HECAu3WieU5g5vUsfByeucrdR/x88hEilpt16EydFyJwJddQ/3w5HQgW7Ovy62r4cyw==}
     engines: {node: '>=14.7.0'}
     peerDependencies:
@@ -5165,7 +5185,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@types/react': 18.0.31
+      '@types/react': 18.0.33
       react: 18.2.0
     optionalDependencies:
       '@types/markdown-it': 12.2.3
@@ -5178,7 +5198,7 @@ packages:
       next: '*'
       react: '*'
     dependencies:
-      '@markdoc/markdoc': 0.2.2_76ac25b175f2b0cb7faf9278258424f0
+      '@markdoc/markdoc': 0.2.2_7b8ae5d34ed122987167c657b3c1d5cc
       js-yaml: 4.1.0
       next: 13.2.4_react-dom@18.2.0+react@18.2.0
       react: 18.2.0
@@ -7227,6 +7247,10 @@ packages:
     resolution: {integrity: sha512-JbgBf/EMBtx65iXtB3pOiX3818UeL9jZ+KAY241OAPqJVXjMQ5KaVOdg/57MSmd508HDIGx7CiImOMEmWwQ9/g==}
     dev: true
 
+  /@storybook/docs-mdx/0.1.0:
+    resolution: {integrity: sha512-JDaBR9lwVY4eSH5W8EGHrhODjygPd6QImRbwjAuJNEnY0Vw4ie3bPkeGfnacB3OBW6u/agqPv2aRlR46JcAQLg==}
+    dev: true
+
   /@storybook/docs-tools/7.0.0-rc.8:
     resolution: {integrity: sha512-5Qrs8gX7w4V+c/fF++10bWzQ06/iYzaXEPPoGYtEj1h0+I24zR7vxz8uR4NDG5pf2AY+noXUjqAssiXz2RvAQQ==}
     dependencies:
@@ -7997,7 +8021,7 @@ packages:
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 18.11.13
+      '@types/node': 16.18.7
 
   /@types/heft-jest/1.0.3:
     resolution: {integrity: sha512-Z8u264kbGYY4+NER7zMox9OKp270/igaHqhLnCvNJ8CrFl/CTC8zUE4V3c6FDjN/rukIVreuhkfLlbchTcW9Vg==}
@@ -8202,7 +8226,7 @@ packages:
   /@types/react-dom/18.0.11:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
-      '@types/react': 18.0.31
+      '@types/react': 18.0.33
     dev: true
 
   /@types/react-dom/18.0.9:
@@ -8240,8 +8264,8 @@ packages:
       csstype: 3.1.1
     dev: true
 
-  /@types/react/18.0.31:
-    resolution: {integrity: sha512-EEG67of7DsvRDU6BLLI0p+k1GojDLz9+lZsnCpCRTa/lOokvyPBvp8S5x+A24hME3yyQuIipcP70KJ6H7Qupww==}
+  /@types/react/18.0.33:
+    resolution: {integrity: sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
@@ -11664,7 +11688,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       es-get-iterator: 1.1.3
-      get-intrinsic: 1.1.3
+      get-intrinsic: 1.2.0
       is-arguments: 1.1.1
       is-array-buffer: 3.0.2
       is-date-object: 1.0.5
@@ -12155,7 +12179,7 @@ packages:
     resolution: {integrity: sha512-sPZmqHBe6JIiTfN5q2pEi//TwxmAFHwj/XEuYjTuse78i8KxaqMTTzxPoFKuzRpDpTJ+0NAbpfenkmH2rePtuw==}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.1.3
+      get-intrinsic: 1.2.0
       has-symbols: 1.0.3
       is-arguments: 1.1.1
       is-map: 2.0.2
