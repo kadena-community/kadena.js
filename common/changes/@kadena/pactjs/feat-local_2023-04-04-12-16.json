@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs",
+      "comment": "Added `isSignedCommand, ensureSignedCommand`",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs"
+}

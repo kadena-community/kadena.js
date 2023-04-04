@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "Removed localWithoutSignatureVerfication, added queries preflight, signatureVerification",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
