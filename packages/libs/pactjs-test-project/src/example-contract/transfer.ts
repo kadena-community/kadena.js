@@ -1,4 +1,4 @@
-import { ISendResponse, poll } from '@kadena/chainweb-node-client';
+import { poll, SendResponse } from '@kadena/chainweb-node-client';
 import { Pact, signWithChainweaver } from '@kadena/client';
 
 const apiHost = (
@@ -56,7 +56,7 @@ async function transactionMain(): Promise<void> {
 
   const sendResponses = await Promise.all(sendRequests);
   sendResponses.map(async function startPolling(
-    sendResponse: ISendResponse,
+    sendResponse: SendResponse,
   ): Promise<void> {
     console.log('sendResponse', sendResponse);
     const requestKey = (await sendRequests[0]).requestKeys[0];
