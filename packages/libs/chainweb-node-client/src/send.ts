@@ -2,7 +2,6 @@ import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { SendResponse, ISendRequestBody } from './interfaces/PactAPI';
 import fetch from 'cross-fetch';
-
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
  *
@@ -14,16 +13,18 @@ import fetch from 'cross-fetch';
  * @param apiHost - API host running a Pact-enabled server.
  * @alpha
  */
-export function send(
+export async function send(
   requestBody: ISendRequestBody,
   apiHost: string,
 ): Promise<SendResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);
+  const sendUrl = new URL(`${apiHost}/api/v1/send`);
 
-  const response: Promise<SendResponse> = fetch(
-    `${apiHost}/api/v1/send`,
-    request,
-  ).then((r) => parseResponse(r));
-
-  return response;
+  try {
+    const response = await fetch(sendUrl.toString(), request);
+    return await parseResponse<SendResponse>(response);
+  } catch (error) {
+    console.error('An error occurred while calling send API:', error);
+    throw error;
+  }
 }

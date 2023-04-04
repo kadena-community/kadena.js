@@ -25,7 +25,7 @@ export async function mockFetch(
   init?: RequestInit,
 ): Promise<object> {
   switch (url) {
-    case '/api/v1/send': {
+    case `${testURL}/api/v1/send`: {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
         const parsedBody: ISendRequestBody = JSON.parse(body.toString());
@@ -39,7 +39,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/api/v1/local': {
+    case `${testURL}/api/v1/local`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: LocalResponse = {
           reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
@@ -134,7 +134,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/api/v1/poll': {
+    case `${testURL}/api/v1/poll`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPollResponse = {
           'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8': {
@@ -158,7 +158,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/api/v1/listen': {
+    case `${testURL}/api/v1/listen`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: ListenResponse = {
           reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
@@ -180,7 +180,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/spv': {
+    case `${testURL}/spv`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: SPVResponse = testSPVProof;
         return Promise.resolve({
@@ -191,7 +191,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/tooyoung/spv': {
+    case `${testURL}/tooyoung/spv`: {
       if (init?.body !== null && init?.body !== undefined) {
         const errorMsg =
           'SPV target not reachable: target chain not reachable. Chainweb instance is too young';
@@ -203,7 +203,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/wrongChain/api/v1/send': {
+    case `${testURL}/wrongChain/api/v1/send`: {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
         const parsedBody: ISendRequestBody = JSON.parse(body.toString());
@@ -222,7 +222,7 @@ export async function mockFetch(
         throw new Error('Expected RequestInit body not found.');
       }
     }
-    case '/duplicate/api/v1/send': {
+    case `${testURL}/duplicate/api/v1/send`: {
       if (init?.body !== null && init?.body !== undefined) {
         const body = init.body;
         const parsedBody: ISendRequestBody = JSON.parse(body.toString());

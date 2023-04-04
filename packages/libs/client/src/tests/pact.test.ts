@@ -11,6 +11,7 @@ import { IUnsignedCommand } from '@kadena/types';
 import { Pact, PactCommand } from '../pact';
 
 import fetch from 'cross-fetch';
+const testURL: string = 'http://fake-api-host.local.co';
 
 function getCode(transaction: IUnsignedCommand): string {
   return JSON.parse(transaction.cmd).payload.exec.code;
@@ -159,12 +160,12 @@ describe('Pact proxy', () => {
       .addCap('coin.GAS', 'senderPubKey')
       .addSignatures({ pubKey: 'senderPubKey', sig: 'sender-sig' });
 
-    await builder.local('fake-api-host.local.co');
+    await builder.local(testURL);
 
     const body = builder.createCommand();
 
     expect(fetch).toBeCalledWith(
-      'fake-api-host.local.co/api/v1/local?preflight=true&signatureVerification=true',
+      `${testURL}/api/v1/local?preflight=true&signatureVerification=true`,
       {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
@@ -185,7 +186,7 @@ describe('Pact proxy', () => {
     builder.code = '(coin.transfer "from" "to" 1.234)';
     builder.addCap('coin.GAS', 'senderPubKey');
 
-    await builder.local('fake-api-host.local.co', {
+    await builder.local(testURL, {
       preflight: true,
       signatureVerification: false,
     });
@@ -193,7 +194,7 @@ describe('Pact proxy', () => {
     const body = convertIUnsignedTransactionToNoSig(builder.createCommand());
 
     expect(fetch).toBeCalledWith(
-      'fake-api-host.local.co/api/v1/local?preflight=true&signatureVerification=false',
+      `${testURL}/api/v1/local?preflight=true&signatureVerification=false`,
       {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
@@ -212,11 +213,11 @@ describe('Pact proxy', () => {
 
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
-    await builder.send('fake-api-host.local.co');
+    await builder.send(testURL);
 
     const body = { cmds: [builder.createCommand()] };
 
-    expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/send', {
+    expect(fetch).toBeCalledWith(`${testURL}/api/v1/send`, {
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -234,17 +235,17 @@ describe('Pact proxy', () => {
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
 
-    const { requestKeys } = await builder.send('fake-api-host.local.co');
+    const { requestKeys } = await builder.send(testURL);
     const body = { cmds: [builder.createCommand()] };
 
-    expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/send', {
+    expect(fetch).toBeCalledWith(`${testURL}/api/v1/send`, {
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     });
 
-    await builder.poll('fake-api-host.local.co');
-    expect(fetch).toBeCalledWith('fake-api-host.local.co/api/v1/poll', {
+    await builder.poll(testURL);
+    expect(fetch).toBeCalledWith(`${testURL}/api/v1/poll`, {
       body: JSON.stringify({ requestKeys }),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -262,7 +263,7 @@ describe('Pact proxy', () => {
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
 
-    expect(() => builder.poll('fake-api-host.local.co')).toThrow();
+    expect(() => builder.poll(testURL)).toThrow();
   });
 
   it('throws when trying to call .pollUntil() when no requestkey is present', async () => {
@@ -279,7 +280,7 @@ describe('Pact proxy', () => {
     let expectingError;
 
     try {
-      await builder.pollUntil('fake-api-host.local.co');
+      await builder.pollUntil(testURL);
     } catch (error) {
       expectingError = error;
     }
@@ -300,7 +301,7 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    await builder.send('fake-api-host.local.co');
+    await builder.send(testURL);
 
     // make fetch return an empty object
     mockFetchForPoll();
@@ -310,7 +311,7 @@ describe('Pact proxy', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     builder
-      .pollUntil('fake-api-host.local.co', {
+      .pollUntil(testURL, {
         interval: 1000,
         timeout: 5000,
       })
@@ -347,7 +348,7 @@ describe('Pact proxy', () => {
       json: () => ({ requestKeys: ['key1'] }),
     });
 
-    await builder.send('fake-api-host.local.co');
+    await builder.send(testURL);
 
     // make fetch return failed
     mockFetchForPoll('failure');
@@ -359,7 +360,7 @@ describe('Pact proxy', () => {
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await builder.pollUntil('fake-api-host.local.co');
+      await builder.pollUntil(testURL);
     } catch (error) {
       expectingError = error;
     }
@@ -386,12 +387,12 @@ describe('Pact proxy', () => {
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
 
-    await builder.send('fake-api-host.local.co');
+    await builder.send(testURL);
 
     mockFetchForPoll();
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    builder.pollUntil('fake-api-host.local.co', {
+    builder.pollUntil(testURL, {
       interval: 1000,
       onPoll,
     });

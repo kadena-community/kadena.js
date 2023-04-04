@@ -6,7 +6,7 @@ import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
 import { createSendRequest } from '../createSendRequest';
 import { send } from '../send';
 import { ensureSignedCommand } from '@kadena/pactjs';
-
+import { testURL } from './mockdata/Pact';
 import { mockFetch } from './mockdata/mockFetch';
 
 import fetch, { Response } from 'cross-fetch';
@@ -54,7 +54,7 @@ test('/send should return request keys of txs submitted', async () => {
   const responseExpected: SendResponse = {
     requestKeys: [expectedRequestKey1, expectedRequestKey2],
   };
-  const responseActual: Response | SendResponse = await send(sendReq, '');
+  const responseActual: Response | SendResponse = await send(sendReq, testURL);
   expect(responseExpected).toEqual(responseActual);
 });
 
@@ -76,7 +76,7 @@ test('/send should return error if sent to wrong chain id', async () => {
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
   const responseActual: Promise<Response | SendResponse> = send(
     sendReq,
-    '/wrongChain',
+    `${testURL}/wrongChain`,
   );
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
@@ -97,7 +97,7 @@ test('/send should return error if tx already exists on chain', async () => {
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
   const responseActual: Promise<Response | SendResponse> = send(
     sendReq,
-    '/duplicate',
+    `${testURL}/duplicate`,
   );
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });

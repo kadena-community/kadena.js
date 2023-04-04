@@ -11,6 +11,7 @@ import type {
 import { listen } from '../listen';
 
 import { mockFetch } from './mockdata/mockFetch';
+import { testURL } from './mockdata/Pact';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
@@ -37,7 +38,10 @@ test('/listen should return result of tx queried', async () => {
   };
   const localReq: IListenRequestBody = requestKey;
   const responseExpected: ListenResponse = commandResult1;
-  const responseActual: ICommandResult | Response = await listen(localReq, '');
+  const responseActual: ICommandResult | Response = await listen(
+    localReq,
+    testURL,
+  );
 
   expect(responseExpected).toEqual(responseActual);
 });

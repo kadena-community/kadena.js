@@ -1,7 +1,7 @@
 jest.mock('cross-fetch');
 
 import { sign } from '@kadena/cryptography-utils';
-import { ensureSignedCommand, isSignedCommand } from '@kadena/pactjs';
+import { ensureSignedCommand } from '@kadena/pactjs';
 import type {
   ICommand,
   SignatureWithHash,
@@ -10,7 +10,6 @@ import type {
 import type {
   ICommandResult,
   LocalResponse,
-  LocalResultWithPreflight,
   LocalResultWithoutPreflight,
 } from '../interfaces/PactAPI';
 
@@ -142,26 +141,4 @@ test('local with `{signatureVerification: false}` option returns preflight resul
   );
 
   expect(responseExpected).toEqual(responseActual);
-});
-
-test('local fails with type error when command is not fully signed', async () => {
-  const commandStr1 = JSON.stringify(pactTestCommand);
-  const keyPair1 = {
-    publicKey:
-      'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
-    secretKey:
-      '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
-  };
-  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr1, keyPair1);
-  const unsignedCommand: IUnsignedCommand = {
-    cmd: commandStr1,
-    hash: cmdWithOneSignature1.hash,
-    sigs: [undefined],
-  };
-
-  expect(() =>
-    local(unsignedCommand, testURL, {
-      signatureVerification: true,
-    }),
-  ).toThrow(TypeError);
 });

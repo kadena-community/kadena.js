@@ -48,6 +48,7 @@ export interface ICommandBuilder<
     signer: string,
     ...args: TCaps[TCap]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   local(apiHost: string, options?: any): Promise<any>;
   send(apiHost: string): Promise<SendResponse>;
   pollUntil(
@@ -299,6 +300,7 @@ export class PactCommand
    * @param apiHost - the chainweb host where to send the transaction to
    * @alpha
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public local(apiHost: string, options?: any): Promise<any> {
     const command = this.createCommand();
 

@@ -2,7 +2,6 @@ import type { ICommand, IUnsignedCommand, ISignatureJson } from '@kadena/types';
 import type {
   ICommandResult,
   LocalRequestBody,
-  ILocalCommandResult,
   IPreflightResult,
   LocalResultWithPreflight,
   LocalResultWithoutPreflight,
@@ -138,21 +137,24 @@ export function local(
  * @param apiHost - API host running a Pact-enabled server.
  * @alpha
  */
-export function local(
+export async function local(
   requestBody: LocalRequestBody,
   apiHost: string,
   options?: IOptions,
 ): Promise<LocalResultWithPreflight | LocalResultWithoutPreflight> {
   const { signatureVerification = true, preflight = true } = options ?? {};
+
   if (!signatureVerification) {
     requestBody = convertIUnsignedTransactionToNoSig(requestBody);
   }
 
   const body = ensureSignedCommand(requestBody);
-  return localRaw(body, apiHost, {
+  const result = await localRaw(body, apiHost, {
     preflight,
     signatureVerification,
-  }).then((result) => parsePreflight(result));
+  });
+
+  return parsePreflight(result);
 }
 
 /**
@@ -165,7 +167,7 @@ export function local(
  * @param options - option query to enable preflight and signatureVerification
  * @alpha
  */
-export function localRaw(
+export async function localRaw(
   requestBody: LocalRequestBody,
   apiHost: string,
   {
@@ -181,12 +183,13 @@ export function localRaw(
     'signatureVerification',
     signatureVerification.toString(),
   );
-
-  const response: Promise<ILocalCommandResult> = fetch(
-    localUrlWithQueries.toString(),
-    request,
-  ).then((r) => parseResponse<ILocalCommandResult>(r));
-  return response;
+  try {
+    const response = await fetch(localUrlWithQueries.toString(), request);
+    return await parseResponse<IPreflightResult | ICommandResult>(response);
+  } catch (error) {
+    console.error('An error occurred while calling local API:', error);
+    throw error;
+  }
 }
 
 /**
@@ -198,7 +201,7 @@ export function convertIUnsignedTransactionToNoSig(
   return {
     ...transaction,
     sigs: transaction.sigs.map(
-      (s: ISignatureJson | undefined) => s ?? { sig: 'a' },
+      (s: ISignatureJson | undefined) => s ?? { sig: '' },
     ),
   };
 }

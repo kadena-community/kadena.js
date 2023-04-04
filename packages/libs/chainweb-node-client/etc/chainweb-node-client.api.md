@@ -181,7 +181,7 @@ export interface ISPVRequestBody {
 }
 
 // @alpha
-export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult>;
 
 // @alpha (undocumented)
 export type ListenResponse = ICommandResult;
