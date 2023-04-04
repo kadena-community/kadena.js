@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "fixing the build",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
