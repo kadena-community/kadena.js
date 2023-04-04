@@ -1,0 +1,257 @@
+================================================================================
+empty expression
+================================================================================
+
+
+()
+
+--------------------------------------------------------------------------------
+
+(source
+  (list))
+
+================================================================================
+module
+================================================================================
+
+
+(module coin)
+
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))))
+
+================================================================================
+module body
+================================================================================
+(module coin GOVERNANCE (body))
+
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))
+    (expression
+      (symbol))
+    (expression
+      (list
+        (expression
+          (symbol))))))
+
+================================================================================
+module with expression
+================================================================================
+(module coin GOVERNANCE (+ 1 2))
+
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))
+    (expression
+      (symbol))
+    (expression
+      (list
+        (expression
+          (symbol))
+        (expression
+          (number))
+        (expression
+          (number))))))
+
+================================================================================
+module with defun
+================================================================================
+(module coin GOVERNANCE
+  (defun transfer ()))
+
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))
+    (expression
+      (symbol))
+    (expression
+      (list
+        (expression
+          (definition
+            (defun_declaration
+              (expression
+                (symbol))
+              (expression
+                (list)))))))))
+
+================================================================================
+defun with-capability
+================================================================================
+(module coin GOVERNANCE
+  (defun transfer ()
+    (with-capability (TRANSFER sender receiver amount)
+      (body))))
+
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))
+    (expression
+      (symbol))
+    (expression
+      (list
+        (expression
+          (definition
+            (defun_declaration
+              (expression
+                (symbol))
+              (expression
+                (list)))))
+        (expression
+          (list
+            (expression
+              (definition
+                (with_capability_declaration
+                  (expression
+                    (list
+                      (expression
+                        (symbol))
+                      (expression
+                        (symbol))
+                      (expression
+                        (symbol))
+                      (expression
+                        (symbol))))
+                  (expression
+                    (list
+                      (expression
+                        (symbol)))))))))))))
+
+================================================================================
+defpact
+================================================================================
+(module coin GOVERNANCE
+  (defpact transfer-crosschain:string
+    (sender:string
+      receiver:string
+      receiver-guard:guard
+      target-chain:string
+      amount:decimal)
+    (body)))
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))
+    (expression
+      (symbol))
+    (expression
+      (list
+        (expression
+          (definition
+            (defpact_declaration
+              (expression
+                (symbol))
+              (expression
+                (list
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))))
+              (expression
+                (list
+                  (expression
+                    (symbol)))))))))))
+
+================================================================================
+defpact with-capability
+================================================================================
+(module coin GOVERNANCE
+  (defpact transfer-crosschain
+    (sender
+      receiver
+      receiver-guard
+      target-chain
+      amount)
+    (with-capability (TRANSFER sender receiver amount)
+      (body))))
+--------------------------------------------------------------------------------
+
+(source
+  (list
+    (expression
+      (definition
+        (module_declaration
+          (expression
+            (symbol)))))
+    (expression
+      (symbol))
+    (expression
+      (list
+        (expression
+          (definition
+            (defpact_declaration
+              (expression
+                (symbol))
+              (expression
+                (list
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))
+                  (expression
+                    (symbol))))
+              (expression
+                (list
+                  (expression
+                    (definition
+                      (with_capability_declaration
+                        (expression
+                          (list
+                            (expression
+                              (symbol))
+                            (expression
+                              (symbol))
+                            (expression
+                              (symbol))
+                            (expression
+                              (symbol))))
+                        (expression
+                          (list
+                            (expression
+                              (symbol))))))))))))))))

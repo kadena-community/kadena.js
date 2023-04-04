@@ -1,0 +1,107 @@
+import { Pact, PactCommand } from '@kadena/client';
+
+type GasCapability = {
+  type: 'coin.GAS';
+  args: [];
+  signer: string;
+};
+
+type TransferCapability = {
+  type: 'coin.TRANSFER';
+  args: [KAccount, KAccount, number];
+  signer: string;
+};
+
+type KAccount = `k:${string}`;
+
+type CommandCapabilityMap = {
+  [key: `(coin.transfer "${KAccount}" "${KAccount}" ${number})`]: [
+    GasCapability,
+    TransferCapability,
+  ];
+  [
+    key: `(coin.transfer-create "${KAccount}" "${KAccount}" ${string} ${number})`
+  ]: [GasCapability, TransferCapability];
+};
+
+type CommandMap = {
+  transfer: (
+    from: KAccount,
+    to: KAccount,
+    amount: number,
+  ) => `(coin.transfer "${KAccount}" "${KAccount}" ${number})`;
+  'transfer-create': (
+    from: KAccount,
+    to: KAccount,
+    keyset: string,
+    amount: number,
+  ) => `(coin.transfer-create "${KAccount}" "${KAccount}" ${string} ${number})`;
+  readKeyset: (keyset: string) => `(read-keyset "${string}")`;
+};
+
+const commandMap: CommandMap = {
+  transfer: (from, to, amount) => `(coin.transfer "${from}" "${to}" ${amount})`,
+  'transfer-create': (from, to, keyset, amount) =>
+    `(coin.transfer-create "${from}" "${to}" ${keyset} ${amount})`,
+  readKeyset: (keyset) => `(read-keyset "${keyset}")`,
+};
+
+export const createCommand = <K extends keyof CommandMap>(
+  command: K,
+): CommandMap[K] => {
+  return commandMap[command];
+};
+
+export const buildTransaction = <T extends CommandCapabilityMap>(
+  command: (keyof T)[],
+  // caps: T
+) => {
+  return {
+    command,
+    // caps,
+  };
+};
+
+const transferToTo = createCommand('transfer')('k:from', 'k:to', 102);
+const transferBackSafe = createCommand('transfer')('k:to', 'k:from', 0.000001);
+
+const transaction = buildTransaction([transferToTo, transferBackSafe]);
+
+Pact.modules.coin.transfer(). //  `(coin.transfer "k:${string}" "k:${string}" ${number})`
+const customCmd = new PactCommand()
+customCmd.code = [transferToTo, transferBackSafe]
+
+
+const transfer = createCommand('transfer');
+const transferCreate = createCommand('transfer-create');
+const readKeyset = createCommand('readKeyset');
+const transferCmdString = transfer('k:1', 'k:2', 100);
+
+const transferCmd = buildTransaction(transfer('k:1', 'k:2', 3.0), [
+  {
+    type: 'coin.GAS',
+    args: [],
+    signer: '1',
+  },
+  {
+    type: 'coin.TRANSFER',
+    args: ['k:1', 'k:2', 100],
+    signer: '1',
+  },
+]);
+
+const transferCreateCmd = buildTransaction(
+  transferCreate('k:1', 'k:3', readKeyset('keyset-of-k:3'), 100),
+  [
+    {
+      type: 'coin.GAS',
+      args: [],
+      signer: '1',
+    },
+    {
+      type: 'coin.TRANSFER',
+      args: ['k:1', 'k:3', 100],
+      signer: '1',
+    },
+  ],
+);

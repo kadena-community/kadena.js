@@ -1,0 +1,20 @@
+{
+  "name": "tree-sitter-pact",
+  "version": "0.0.1",
+  "description": "pact grammar for tree-sitter",
+  "keywords": [
+    "parsing",
+    "incremental"
+  ],
+  "main": "bindings/node",
+  "scripts": {
+    "test": "tree-sitter test"
+  },
+  "dependencies": {
+    "nan": "^2.12.1",
+    "tree-sitter-clojure": "github:sogaiu/tree-sitter-clojure"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.7"
+  }
+}
