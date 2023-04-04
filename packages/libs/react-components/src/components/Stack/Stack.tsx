@@ -1,35 +1,7 @@
-import { styled } from '../../styles/stitches.config';
-
-import {
-  alignItemsVariant,
-  directionVariant,
-  flexWrapVariant,
-  justifyContentVariant,
-  spacingVariant,
-} from './styles';
+import { FlexContainer } from './styles';
 
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
-
-const FlexContainer = styled('div', {
-  display: 'flex',
-
-  variants: {
-    direction: directionVariant,
-    justifyContent: justifyContentVariant,
-    alignItems: alignItemsVariant,
-    flexWrap: flexWrapVariant,
-    spacing: spacingVariant,
-  },
-
-  defaultVariants: {
-    spacing: 'md',
-    direction: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    flexWrap: 'nowrap',
-  },
-});
 
 export interface IStackProps {
   spacing?: VariantProps<typeof FlexContainer>['spacing'];

@@ -1,19 +1,7 @@
-import { styled } from '../../styles/stitches.config';
-
-import { BaseText, textSizeVariant } from './styles';
+import { BaseText, Text as StyledText } from './styles';
 
 import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
-
-const StyledText = styled(BaseText, {
-  variants: {
-    size: textSizeVariant,
-  },
-
-  defaultVariants: {
-    size: 'lg',
-  },
-});
 
 export interface ITextProps {
   as?: 'span' | 'p' | 'code';

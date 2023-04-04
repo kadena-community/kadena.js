@@ -56,3 +56,13 @@ export const BaseText = styled('span', {
     },
   ],
 });
+
+export const Text = styled(BaseText, {
+  variants: {
+    size: textSizeVariant,
+  },
+
+  defaultVariants: {
+    size: 'lg',
+  },
+});

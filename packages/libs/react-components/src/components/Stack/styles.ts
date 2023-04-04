@@ -1,5 +1,6 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
+import { styled } from '../../styles/stitches.config';
 
 export const spacingVariant = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -81,3 +82,23 @@ export const directionVariant = {
     flexDirection: 'column',
   },
 } as const;
+
+export const FlexContainer = styled('div', {
+  display: 'flex',
+
+  variants: {
+    direction: directionVariant,
+    justifyContent: justifyContentVariant,
+    alignItems: alignItemsVariant,
+    flexWrap: flexWrapVariant,
+    spacing: spacingVariant,
+  },
+
+  defaultVariants: {
+    spacing: 'md',
+    direction: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexWrap: 'nowrap',
+  },
+});
