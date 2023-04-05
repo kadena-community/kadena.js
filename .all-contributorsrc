@@ -14,6 +14,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "sstraatemans",
+      "name": "Steven",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+      "profile": "https://github.com/sstraatemans",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
