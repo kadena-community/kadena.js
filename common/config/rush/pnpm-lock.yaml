@@ -609,7 +609,6 @@ importers:
       '@types/node': ^16.0.0
       '@types/react': ^18.0.28
       eslint: ^8.15.0
-      prettier: ^2.3.2
       react: ^18.2.0
       react-dom: ^18.2.0
       storybook: ^7.0.0-rc.3
@@ -645,7 +644,6 @@ importers:
       '@types/node': 16.18.7
       '@types/react': 18.0.29
       eslint: 8.29.0
-      prettier: 2.8.7
       storybook: 7.0.0-rc.8
       storybook-dark-mode: 2.1.1_react-dom@18.2.0+react@18.2.0
       typescript: 4.6.4
