@@ -1,4 +1,16 @@
 {
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+   "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "kadena.js",
+  "projectOwner": "kadena-community"
    "files":[
       "README.md"
    ],
@@ -41,6 +53,15 @@
          "contributions":[
             "code"
          ]
+      },
+      {
+        "login": "alber70g",
+        "name": "Albert G",
+        "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
+        "profile": "http://albertgroothedde.com",
+        "contributions": [
+          "review"
+        ]
       }
    ],
    "contributorsPerLine":7,
