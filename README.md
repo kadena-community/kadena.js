@@ -27,7 +27,7 @@ forth).
 
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -160,6 +160,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ash-vd"><img src="https://avatars.githubusercontent.com/u/9663397?v=4?s=100" width="100px;" alt="Ashwin van Dijk"/><br /><sub><b>Ashwin van Dijk</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=ash-vd" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sstraatemans"><img src="https://avatars.githubusercontent.com/u/4015521?v=4?s=100" width="100px;" alt="Steven"/><br /><sub><b>Steven</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=sstraatemans" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://albertgroothedde.com"><img src="https://avatars.githubusercontent.com/u/516972?v=4?s=100" width="100px;" alt="Albert G"/><br /><sub><b>Albert G</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/pulls?q=is%3Apr+reviewed-by%3Aalber70g" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://andortang.wordpress.com"><img src="https://avatars.githubusercontent.com/u/1508400?v=4?s=100" width="100px;" alt="Andy Tang"/><br /><sub><b>Andy Tang</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/pulls?q=is%3Apr+reviewed-by%3AEnoF" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>
