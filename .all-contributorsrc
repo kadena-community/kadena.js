@@ -14,6 +14,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ash-vd",
+      "name": "Ashwin van Dijk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9663397?v=4",
+      "profile": "https://github.com/ash-vd",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
