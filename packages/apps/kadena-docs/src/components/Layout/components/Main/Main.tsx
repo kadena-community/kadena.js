@@ -1,5 +1,3 @@
-import { Footer, Header } from '..';
-
 import React, { FC, ReactNode } from 'react';
 
 interface IProps {
@@ -9,9 +7,7 @@ interface IProps {
 export const Main: FC<IProps> = ({ children }) => {
   return (
     <>
-      <Header />
       <main>{children}</main>
-      <Footer />
     </>
   );
 };

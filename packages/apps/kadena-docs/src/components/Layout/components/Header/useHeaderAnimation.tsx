@@ -1,23 +1,27 @@
-import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface IUseHeaderReturn {
-  handleSelectItem: (e: MouseEvent<HTMLUListElement>) => void;
   listRef: React.RefObject<HTMLUListElement>;
   backgroundRef: React.RefObject<HTMLDivElement>;
-  active: number;
 }
 
 const getActiveItem = (
   list: HTMLUListElement,
-  clickedElement?: HTMLLIElement,
+  pathname: string,
+  clickedElement?: HTMLAnchorElement,
 ): { item?: HTMLLIElement; idx: number } => {
-  let item = list.firstChild as HTMLLIElement;
+
+  let item =  list.firstChild as HTMLLIElement;
   let idx = 0;
 
+
   Array.from(list.children).forEach((innerItem, innerIdx) => {
+    const anchor = innerItem.firstChild as HTMLAnchorElement;
     if (
-      (!clickedElement && innerItem.getAttribute('data-active') === 'true') ||
-      clickedElement === innerItem
+      (clickedElement === innerItem.firstChild)
+      ||
+      !clickedElement && pathname === anchor?.getAttribute('href')
     ) {
       item = innerItem as HTMLLIElement;
       idx = innerIdx;
@@ -30,41 +34,50 @@ const getActiveItem = (
 export const useHeaderAnimation = (): IUseHeaderReturn => {
   const listRef = useRef<HTMLUListElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<number>(1);
+  const activeRef = useRef<number>(0);
+  const router = useRouter();
 
   const selectItem = useCallback(
-    (active: number, clickedElement?: HTMLLIElement): void => {
+    (active: number, pathname: string, clickedElement?: HTMLAnchorElement): void => {
       const list = listRef.current;
       const bg = backgroundRef.current;
-      if (!list || !bg) return;
 
-      const { item: activeItem, idx } = getActiveItem(list, clickedElement);
-
+      if(!list || !bg) return;
+      const { item: activeItem, idx } = getActiveItem(list, pathname, clickedElement);
       const activeBox = activeItem?.getBoundingClientRect();
       const bgBox = bg?.getBoundingClientRect();
 
-      if (bgBox === undefined || activeBox === undefined) return;
+      console.log({ item: activeItem, idx }, activeBox)
 
+      if (bgBox === undefined || activeBox === undefined) return;
       //slow down the animation, when the distance between current and new Item is larger
       const newPosition = activeBox.x + activeBox.width / 2 - bgBox.width / 2;
+
       bg.style.transform = `translateX(${newPosition}px)`;
       bg.style.transitionDuration = `${0.3 + 0.1 * Math.abs(active - idx)}s`;
 
-      setActive(idx);
-    },
-    [],
-  );
+
+      activeRef.current = idx;
+    },[activeRef])
 
   useEffect(() => {
-    selectItem(active);
-  }, [listRef, backgroundRef, active, selectItem]);
+    selectItem(activeRef.current, router.pathname);
+  }, [activeRef,  selectItem]);
 
-  const handleSelectItem = (e: MouseEvent<HTMLUListElement>): void => {
-    const clickedElement = (e.target as HTMLElement)
-      .parentElement as HTMLLIElement;
 
-    selectItem(active, clickedElement);
-  };
+  useEffect(() => {
+    const changeUrl = (url: string):void => {
+      const elm = listRef.current?.querySelector(`[href="${url}"]`) as HTMLAnchorElement;
+      if(elm) {
+        selectItem(activeRef.current, router.pathname, elm);
+       }
+    }
 
-  return { handleSelectItem, listRef, backgroundRef, active };
+    router.events.on('routeChangeStart', changeUrl);
+
+    return () => router.events.off('routeChangeStart', changeUrl)
+  }, [activeRef, router.events, selectItem]);
+
+
+  return { listRef, backgroundRef };
 };

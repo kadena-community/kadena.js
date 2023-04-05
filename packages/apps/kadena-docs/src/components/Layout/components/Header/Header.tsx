@@ -37,7 +37,7 @@ const StyledUl = styled('ul', {
 });
 
 export const Header: FC = () => {
-  const { handleSelectItem, listRef, backgroundRef, active } =
+  const { listRef, backgroundRef } =
     useHeaderAnimation();
 
   return (
@@ -48,25 +48,14 @@ export const Header: FC = () => {
         <NavItemActiveBackground ref={backgroundRef} />
 
         <StyleNav>
-          <StyledUl ref={listRef} onClick={handleSelectItem}>
-            <NavItem href="/docs/pact" active={active === 0}>
+          <StyledUl ref={listRef}>
+            <NavItem href="/docs/pact">
               Pact
             </NavItem>
-            <NavItem href="/docs/kadenajs" active={active === 1}>
+            <NavItem href="/docs/kadenajs" >
               KadenaJS
             </NavItem>
-            <NavItem href="/docs/pact" active={active === 2}>
-              Pact
-            </NavItem>
-            <NavItem href="/docs/kadenajs" active={active === 3}>
-              KadenaJS
-            </NavItem>
-            <NavItem href="/docs/pact" active={active === 4}>
-              Pact
-            </NavItem>
-            <NavItem href="/docs/kadenajs" active={active === 5}>
-              KadenaJS
-            </NavItem>
+            
           </StyledUl>
         </StyleNav>
       </Wrapper>

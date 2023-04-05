@@ -1,5 +1,6 @@
 import { baseGlobalStyles, globalCss } from '@kadena/react-components';
 
+import { Footer,Header } from '@/components/Layout/components';
 import { getLayout } from '@/utils';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -36,9 +37,11 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
+      <Header />
       <Layout>
         <ReactComponent {...pageProps} />
       </Layout>
+      <Footer/>
     </>
   );
 }
