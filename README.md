@@ -138,3 +138,15 @@ Now go to [getting started](#getting-started)
     - run the publish command. This will require you to fill in 2FA tokens for
       every push for npm
       - `rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master`
+
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
