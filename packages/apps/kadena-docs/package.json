@@ -11,7 +11,7 @@
     "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "heft test --no-build --disable-code-coverage"
+    "test": "jest"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -58,6 +58,7 @@
     "eslint": "^8.36.0",
     "eslint-config-next": "13.0.6",
     "jest": "~29.5.0",
+    "jest-standard-reporter": "~2.0.0",
     "lint-staged": "~13.2.0",
     "prettier": "^2.8.5",
     "sort-package-json": "~2.4.1",
