@@ -23,6 +23,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "alber70g",
+      "name": "Albert G",
+      "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
+      "profile": "http://albertgroothedde.com",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
