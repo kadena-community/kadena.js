@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@kadena/react-components",
-      "comment": "Add prettier and a minimal README.md",
+      "comment": "Add a minimal README.md",
       "type": "none"
     }
   ],
