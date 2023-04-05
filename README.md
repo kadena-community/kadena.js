@@ -1,7 +1,4 @@
 # Kadena & Kadena.js
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Kadena was founded on the idea that blockchain could revolutionize how the world
 interacts and transacts. But to get to mass adoption, chain technology and the
@@ -27,6 +24,12 @@ forth).
     <img src="./common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
   </picture>
 </p>
+
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 
 # Kadena.js
 
