@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "_phase:build": "npm run build",
-    "_phase:test": "",
+    "_phase:test": "npm run test",
     "build": "next build",
     "cypress:open": "cypress open",
     "dev": "next dev",
@@ -11,7 +11,7 @@
     "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "heft test --no-build"
+    "test": "heft test --no-build --disable-code-coverage"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
