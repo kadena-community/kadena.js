@@ -431,7 +431,7 @@
       "packageName": "@kadena/kadena-docs",
       "projectFolder": "packages/apps/kadena-docs",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
+      "skipRushCheck": false,
       "shouldPublish": false
     },
 
