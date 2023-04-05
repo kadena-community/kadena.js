@@ -1,25 +1,17 @@
 {
-  "name": "@kadena/react-components",
-  "version": "0.0.1",
-  "description": "A react component library built on Kadena's Design System",
-  "license": "ISC",
-  "author": "",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "types/index.d.ts",
-  "files": [
-    "dist",
-    "types"
-  ],
+  "name": "@kadena/kadena-docs",
+  "version": "0.1.0",
   "scripts": {
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
-    "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
-    "build:storybook": "storybook build",
-    "build:test": "tsc & tsc -p ./tsconfig.esm.json",
-    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
+    "build": "next build",
+    "cypress:open": "cypress open",
+    "dev": "next dev",
+    "lint": "npx eslint ./src --ext .js,.ts,.jsx,.tsx --fix",
+    "lint-staged": "lint-staged",
+    "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "rushx build:test && heft test"
+    "test": "jest"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -31,19 +23,22 @@
     ]
   },
   "dependencies": {
-    "@radix-ui/react-switch": "^1.0.2",
-    "@stitches/react": "1.3.1-1",
+    "@kadena/react-components": "workspace:*",
+    "@markdoc/markdoc": "~0.2.2",
+    "@markdoc/next.js": "~0.2.2",
+    "next": "13.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
     "@rushstack/heft-jest-plugin": "~0.3.16",
@@ -52,17 +47,23 @@
     "@storybook/addon-interactions": "^7.0.0-rc.3",
     "@storybook/addon-links": "^7.0.0-rc.3",
     "@storybook/addon-mdx-gfm": "^7.0.0-rc.3",
-    "@storybook/csf": "~0.1.0",
-    "@storybook/docs-mdx": "~0.1.0",
     "@storybook/react": "^7.0.0-rc.3",
     "@storybook/react-webpack5": "^7.0.0-rc.3",
     "@storybook/testing-library": "^0.0.14-next.1",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "@types/react": "^18.0.28",
-    "eslint": "^8.15.0",
+    "@types/react": "^18.0.30",
+    "@types/react-dom": "18.0.11",
+    "cypress": "~12.9.0",
+    "eslint": "^8.36.0",
+    "eslint-config-next": "13.0.6",
+    "jest": "~29.5.0",
+    "jest-standard-reporter": "~2.0.0",
+    "lint-staged": "~13.2.0",
+    "prettier": "^2.8.5",
+    "sort-package-json": "~2.4.1",
     "storybook": "^7.0.0-rc.3",
     "storybook-dark-mode": "^2.1.1",
-    "typescript": "~4.6.3"
+    "typescript": "^4.9.5"
   }
 }
