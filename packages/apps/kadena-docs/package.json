@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
+    "_phase:test": "npm run test 2> /dev/null",
     "build": "next build",
     "cypress:open": "cypress open",
     "dev": "next dev",
