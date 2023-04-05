@@ -1,13 +1,6 @@
-import { styled } from '@kadena/react-components';
+import { AnimationBackgroundWrapper } from './styles';
 
 import React, { FC } from 'react';
-
-const BackgroundWrapper = styled('div', {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  zIndex: 0,
-});
 
 interface IProps {
   ref: React.ForwardedRef<HTMLDivElement>;
@@ -16,7 +9,7 @@ interface IProps {
 export const NavItemActiveBackground: FC<IProps> =
   React.forwardRef<HTMLDivElement>((props = {}, ref) => {
     return (
-      <BackgroundWrapper ref={ref}>
+      <AnimationBackgroundWrapper ref={ref}>
         <svg
           width="256"
           height="64"
@@ -65,7 +58,7 @@ export const NavItemActiveBackground: FC<IProps> =
             </linearGradient>
           </defs>
         </svg>
-      </BackgroundWrapper>
+      </AnimationBackgroundWrapper>
     );
   });
 
