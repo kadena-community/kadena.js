@@ -11,7 +11,14 @@ import {
 } from 'fs';
 import { join } from 'path';
 
-const SUPPORTED_PROJECT_TEMPLATES: Array<string> = [
+type ProjectTemplate = 'nextjs' | 'vuejs' | 'angular';
+
+interface IGenerateProjectOptions {
+  name: string;
+  template: ProjectTemplate;
+}
+
+const SUPPORTED_PROJECT_TEMPLATES: Array<ProjectTemplate> = [
   'nextjs',
   'vuejs',
   'angular',
@@ -23,11 +30,6 @@ const COPY_IGNORE_LIST: Array<string> = [
   'package-lock.json',
   '.pact-history',
 ];
-
-interface IGenerateProjectOptions {
-  name: string;
-  template: string;
-}
 
 const isValidProjectName = (name: string): boolean => {
   const pattern = /^(?!\.)([a-zA-Z0-9._-])+$/;
@@ -128,7 +130,7 @@ const generate =
 
     // Installing dependencies
     console.log('Installing dependencies ...');
-    executeCommand('npm', ['install'], {
+    executeCommand('npm', ['install', '--loglevel=error'], {
       cwd: targetDirectory,
     });
 
