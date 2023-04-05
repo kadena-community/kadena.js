@@ -12,12 +12,24 @@ export const fontVariant = {
   },
 } as const;
 
+export const asVariant = {
+  h1: { $$boldWeight: '$fontWeights$bold' },
+  h2: { $$boldWeight: '$fontWeights$bold' },
+  h3: { $$boldWeight: '$fontWeights$semiBold' },
+  h4: { $$boldWeight: '$fontWeights$semiBold' },
+  h5: { $$boldWeight: '$fontWeights$semiBold' },
+  h6: { $$boldWeight: '$fontWeights$semiBold' },
+  p: { $$boldWeight: '$fontWeights$medium' },
+  span: { $$boldWeight: '$fontWeights$medium' },
+  code: { $$boldWeight: '$fontWeights$medium' },
+} as const;
+
 export const boldVariant = {
   true: {
-    fontWeight: '$extraBold',
+    fontWeight: '$$boldWeight',
   },
   false: {
-    fontWeight: '$light',
+    fontWeight: '$regular',
   },
 } as const;
 
@@ -34,23 +46,36 @@ export const textSizeVariant = {
 };
 
 export const BaseText = styled('span', {
+  fontWeight: '$regular',
+  $$boldWeight: '$bold',
+
   variants: {
+    as: asVariant,
     font: fontVariant,
     bold: boldVariant,
   },
 
   defaultVariants: {
+    as: 'span',
     font: 'main',
     bold: 'false',
   },
 
-  // NOTE: There is no bold version of the mono font in the design system.
   compoundVariants: [
     {
-      font: 'mono',
-      bold: true,
+      font: 'main',
+      bold: false,
+      as: 'h1',
       css: {
-        fontWeight: '$regular',
+        fontWeight: '$light',
+      },
+    },
+    {
+      font: 'main',
+      bold: false,
+      as: 'h2',
+      css: {
+        fontWeight: '$light',
       },
     },
   ],
