@@ -2,8 +2,8 @@
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
   "scripts": {
-    "_phase:build": "next build",
-    "_phase:test": "",
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
     "build": "next build",
     "cypress:open": "cypress open",
     "dev": "next dev",

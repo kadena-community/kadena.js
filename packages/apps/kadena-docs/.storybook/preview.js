@@ -5,8 +5,6 @@ import {
 } from '@kadena-ui/react-components';
 import { themes } from '@storybook/theming';
 
-console.log(darkTheme);
-
 const globalStyles = globalCss({
   ...baseGlobalStyles,
 });
