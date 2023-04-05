@@ -33,7 +33,6 @@ export const textSizeVariant = {
   },
 };
 
-// TODO: Add lineheight
 export const BaseText = styled('span', {
   variants: {
     font: fontVariant,
