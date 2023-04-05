@@ -51,7 +51,8 @@ module body
 ================================================================================
 module with expression
 ================================================================================
-(module coin GOVERNANCE (+ 1 2))
+(module coin GOVERNANCE (+ 1 2)
+  (defun name (args) (body)))
 
 --------------------------------------------------------------------------------
 
@@ -104,7 +105,11 @@ module with defun
 defun with-capability
 ================================================================================
 (module coin GOVERNANCE
-  (defun transfer ()
+
+  @doc "Transfer coins from sender to receiver."
+  @doc "The sender must have sufficient funds to cover the\
+  \amout."
+  (defun transfer () ()
     (with-capability (TRANSFER sender receiver amount)
       (body))))
 

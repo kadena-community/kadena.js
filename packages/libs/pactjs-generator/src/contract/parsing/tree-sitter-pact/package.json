@@ -8,6 +8,7 @@
   ],
   "main": "bindings/node",
   "scripts": {
+    "start:watch": "chokidar ./lexer.js ./grammar.js ./corpus/statements.txt -c \"printf '\\u001bc' && tree-sitter generate && tree-sitter test\" ",
     "test": "tree-sitter test"
   },
   "dependencies": {
@@ -15,6 +16,15 @@
     "tree-sitter-clojure": "github:sogaiu/tree-sitter-clojure"
   },
   "devDependencies": {
+    "chokidar": "^3.5.3",
     "tree-sitter-cli": "^0.20.7"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.pact",
+      "file-types": [
+        "pact"
+      ]
+    }
+  ]
 }
