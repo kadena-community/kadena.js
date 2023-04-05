@@ -1,8 +1,8 @@
 import { baseGlobalStyles, globalCss } from '@kadena/react-components';
 
-import { Footer,Header } from '@/components/Layout/components';
+import { Footer, Header } from '@/components/Layout/components';
 import { getLayout } from '@/utils';
-import type { AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React, { ComponentType } from 'react';
 
@@ -27,7 +27,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   }
 
   const Layout = getLayout(layoutType);
-
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   return (
@@ -41,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       <Layout>
         <ReactComponent {...pageProps} />
       </Layout>
-      <Footer/>
+      <Footer />
     </>
   );
 }

@@ -1,0 +1,70 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "kadena.js",
+  "projectOwner": "kadena-community",
+  "contributors": [
+    {
+      "login": "Randynamic",
+      "name": "Randy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1035101?v=4",
+      "profile": "http://www.randynamic.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "eileenmguo",
+      "name": "eileenmguo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9022549?v=4",
+      "profile": "https://github.com/eileenmguo",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ash-vd",
+      "name": "Ashwin van Dijk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9663397?v=4",
+      "profile": "https://github.com/ash-vd",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "sstraatemans",
+      "name": "Steven",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+      "profile": "https://github.com/sstraatemans",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "alber70g",
+      "name": "Albert G",
+      "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
+      "profile": "http://albertgroothedde.com",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "EnoF",
+      "name": "Andy Tang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1508400?v=4",
+      "profile": "http://andortang.wordpress.com",
+      "contributions": [
+        "review"
+      ]
+    }
+  ]
+}

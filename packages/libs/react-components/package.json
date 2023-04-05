@@ -12,8 +12,8 @@
     "types"
   ],
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc -p ./tsconfig.esm.json",

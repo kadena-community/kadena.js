@@ -16,7 +16,7 @@ module.exports = {
   docs: {
     autodocs: true,
   },
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
 

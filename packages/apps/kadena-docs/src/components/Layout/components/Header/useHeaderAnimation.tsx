@@ -11,17 +11,14 @@ const getActiveItem = (
   pathname: string,
   clickedElement?: HTMLAnchorElement,
 ): { item?: HTMLLIElement; idx: number } => {
-
-  let item =  list.firstChild as HTMLLIElement;
+  let item = list.firstChild as HTMLLIElement;
   let idx = 0;
-
 
   Array.from(list.children).forEach((innerItem, innerIdx) => {
     const anchor = innerItem.firstChild as HTMLAnchorElement;
     if (
-      (clickedElement === innerItem.firstChild)
-      ||
-      !clickedElement && pathname === anchor?.getAttribute('href')
+      clickedElement === innerItem.firstChild ||
+      (!clickedElement && pathname === anchor?.getAttribute('href'))
     ) {
       item = innerItem as HTMLLIElement;
       idx = innerIdx;
@@ -38,16 +35,22 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
   const router = useRouter();
 
   const selectItem = useCallback(
-    (active: number, pathname: string, clickedElement?: HTMLAnchorElement): void => {
+    (
+      active: number,
+      pathname: string,
+      clickedElement?: HTMLAnchorElement,
+    ): void => {
       const list = listRef.current;
       const bg = backgroundRef.current;
 
-      if(!list || !bg) return;
-      const { item: activeItem, idx } = getActiveItem(list, pathname, clickedElement);
+      if (!list || !bg) return;
+      const { item: activeItem, idx } = getActiveItem(
+        list,
+        pathname,
+        clickedElement,
+      );
       const activeBox = activeItem?.getBoundingClientRect();
       const bgBox = bg?.getBoundingClientRect();
-
-      console.log({ item: activeItem, idx }, activeBox)
 
       if (bgBox === undefined || activeBox === undefined) return;
       //slow down the animation, when the distance between current and new Item is larger
@@ -56,28 +59,31 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
       bg.style.transform = `translateX(${newPosition}px)`;
       bg.style.transitionDuration = `${0.3 + 0.1 * Math.abs(active - idx)}s`;
 
-
       activeRef.current = idx;
-    },[activeRef])
+    },
+    [activeRef],
+  );
 
   useEffect(() => {
     selectItem(activeRef.current, router.pathname);
-  }, [activeRef,  selectItem]);
-
+  }, [activeRef, selectItem, router.pathname]);
 
   useEffect(() => {
-    const changeUrl = (url: string):void => {
-      const elm = listRef.current?.querySelector(`[href="${url}"]`) as HTMLAnchorElement;
-      if(elm) {
-        selectItem(activeRef.current, router.pathname, elm);
-       }
-    }
+    const changeUrl = (url: string): void => {
+      const elm = listRef.current?.querySelector(`[href="${url}"]`);
+      if (elm) {
+        selectItem(
+          activeRef.current,
+          router.pathname,
+          elm as HTMLAnchorElement,
+        );
+      }
+    };
 
     router.events.on('routeChangeStart', changeUrl);
 
-    return () => router.events.off('routeChangeStart', changeUrl)
-  }, [activeRef, router.events, selectItem]);
-
+    return () => router.events.off('routeChangeStart', changeUrl);
+  }, [activeRef, router.events, router.pathname, selectItem]);
 
   return { listRef, backgroundRef };
 };

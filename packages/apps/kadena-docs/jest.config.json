@@ -1,14 +1,10 @@
 {
-  "testEnvironment": "node",
+  "extends": "@kadena-dev/heft-rig/profiles/default/config/jest.config.json",
   "globals": {
     "ts-jest": {
-      "tsConfig": "./tsconfig.json"
+      "tsConfig": "../tsconfig.json"
     }
   },
-
-  "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>/src/$1"
-  },
-  "verbose": true,
+  "reporters": ["jest-standard-reporter"],
   "collectCoverage": false
 }
