@@ -8,6 +8,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
     'storybook-dark-mode',
+    'storybook-addon-next-router',
   ],
   framework: {
     name: '@storybook/react-webpack5',
