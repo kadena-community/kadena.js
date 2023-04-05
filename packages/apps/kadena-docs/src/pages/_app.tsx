@@ -1,6 +1,6 @@
 import { baseGlobalStyles, globalCss } from '@kadena/react-components';
 
-import { Footer, Header } from '@/components/Layout/components';
+import { Footer, Header } from '@/components';
 import { getLayout } from '@/utils';
 import { AppProps } from 'next/app';
 import Head from 'next/head';

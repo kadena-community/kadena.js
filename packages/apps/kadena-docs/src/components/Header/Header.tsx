@@ -37,8 +37,7 @@ const StyledUl = styled('ul', {
 });
 
 export const Header: FC = () => {
-  const { listRef, backgroundRef } =
-    useHeaderAnimation();
+  const { listRef, backgroundRef } = useHeaderAnimation();
 
   return (
     <StyledHeader>
@@ -49,13 +48,8 @@ export const Header: FC = () => {
 
         <StyleNav>
           <StyledUl ref={listRef}>
-            <NavItem href="/docs/pact">
-              Pact
-            </NavItem>
-            <NavItem href="/docs/kadenajs" >
-              KadenaJS
-            </NavItem>
-            
+            <NavItem href="/docs/pact">Pact</NavItem>
+            <NavItem href="/docs/kadenajs">KadenaJS</NavItem>
           </StyledUl>
         </StyleNav>
       </Wrapper>

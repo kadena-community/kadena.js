@@ -28,7 +28,7 @@ const NavLink = styled(Link, {
 
 export const NavItem: FC<IProps> = ({ children, href = '' }) => {
   const router = useRouter();
-  const active = href === router.pathname
+  const active = href === router.pathname;
   return (
     <li data-active={active}>
       <NavLink active={active} href={href}>
