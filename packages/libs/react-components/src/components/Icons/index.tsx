@@ -60,14 +60,15 @@ import Usb from './Usb';
 // create wrapper component expose all icons wrapped
 import React, { SVGProps } from 'react';
 
-const IconWrapper = (Component: React.FC<SVGProps<SVGSVGElement>>) => {
-  const WrappedIcon = ({
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const IconWrapper = (
+  Component: React.FC<SVGProps<SVGSVGElement>>,
+): React.FC<SVGProps<SVGSVGElement>> => {
+  const WrappedIcon: React.FC<SVGProps<SVGSVGElement>> = ({
     height = 20,
     width = 20,
     ...props
-  }: SVGProps<SVGSVGElement>) => (
-    <Component {...props} height={height} width={width} />
-  );
+  }) => <Component {...props} height={height} width={width} />;
   WrappedIcon.displayName = Component.displayName;
   return WrappedIcon;
 };
