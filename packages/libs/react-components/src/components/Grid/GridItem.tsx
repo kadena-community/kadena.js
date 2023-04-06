@@ -14,7 +14,7 @@ export interface IGridItemProps {
   rowStart?: ColSpanType;
   rowEnd?: ColSpanType;
   area?: CSSProperties['gridArea'];
-  bg: PropertyValue<'backgroundColor', typeof config>;
+  bg?: PropertyValue<'backgroundColor', typeof config>;
 }
 
 const createSpan = (
