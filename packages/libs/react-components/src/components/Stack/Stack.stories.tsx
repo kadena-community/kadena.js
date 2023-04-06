@@ -20,10 +20,11 @@ const Item = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  borderRadius: '$sm',
 });
 
 const meta: Meta<typeof Stack> = {
-  title: 'Stack',
+  title: 'Layout/Stack',
   component: Stack,
   argTypes: {
     spacing: {

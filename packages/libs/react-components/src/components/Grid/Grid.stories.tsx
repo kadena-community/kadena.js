@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<typeof Grid.Container> = {
-  title: 'Grid',
+  title: 'Layout/Grid',
   component: Grid.Container,
   argTypes: {
     spacing: {
