@@ -3,6 +3,87 @@
 
 import { styled } from '../../styles/stitches.config';
 
+export const elementVariant = {
+  h1: {
+    $$boldWeight: '$fontWeights$bold',
+    fontSize: '$5xl',
+    '@md': {
+      fontSize: '7xl',
+    },
+    '@lg': {
+      fontSize: '$9xl',
+    },
+    '@xl': {
+      fontSize: '$10xl',
+    },
+    '@2xl': {
+      fontSize: '$12xl',
+    },
+  },
+  h2: {
+    $$boldWeight: '$fontWeights$bold',
+    fontSize: '$4xl',
+    '@lg': {
+      fontSize: '$6xl',
+    },
+    '@xl': {
+      fontSize: '$8xl',
+    },
+    '@2xl': {
+      fontSize: '$9xl',
+    },
+  },
+  h3: {
+    $$boldWeight: '$fontWeights$semiBold',
+    fontSize: '$2xl',
+    '@lg': {
+      fontSize: '$4xl',
+    },
+    '@xl': {
+      fontSize: '$5xl',
+    },
+    '@2xl': {
+      fontSize: '$6xl',
+    },
+  },
+  h4: {
+    $$boldWeight: '$fontWeights$semiBold',
+    fontSize: '$xl',
+    '@lg': {
+      fontSize: '$2xl',
+    },
+    '@xl': {
+      fontSize: '$3xl',
+    },
+    '@2xl': {
+      fontSize: '$4xl',
+    },
+  },
+  h5: {
+    $$boldWeight: '$fontWeights$semiBold',
+    fontSize: '$lg',
+    '@xl': {
+      fontSize: '$xl',
+    },
+    '@2xl': {
+      fontSize: '$4xl',
+    },
+  },
+  h6: {
+    $$boldWeight: '$fontWeights$semiBold',
+    fontSize: '$base',
+    '@xl': {
+      fontSize: '$md',
+    },
+    '@2xl': {
+      fontSize: '$lg',
+    },
+  },
+  p: { $$boldWeight: '$fontWeights$medium' },
+  span: { $$boldWeight: '$fontWeights$medium' },
+  code: { $$boldWeight: '$fontWeights$medium' },
+} as const;
+
 export const fontVariant = {
   main: {
     fontFamily: '$main',
@@ -10,18 +91,6 @@ export const fontVariant = {
   mono: {
     fontFamily: '$mono',
   },
-} as const;
-
-export const asVariant = {
-  h1: { $$boldWeight: '$fontWeights$bold' },
-  h2: { $$boldWeight: '$fontWeights$bold' },
-  h3: { $$boldWeight: '$fontWeights$semiBold' },
-  h4: { $$boldWeight: '$fontWeights$semiBold' },
-  h5: { $$boldWeight: '$fontWeights$semiBold' },
-  h6: { $$boldWeight: '$fontWeights$semiBold' },
-  p: { $$boldWeight: '$fontWeights$medium' },
-  span: { $$boldWeight: '$fontWeights$medium' },
-  code: { $$boldWeight: '$fontWeights$medium' },
 } as const;
 
 export const boldVariant = {
@@ -50,13 +119,13 @@ export const BaseText = styled('span', {
   $$boldWeight: '$bold',
 
   variants: {
-    as: asVariant,
+    variant: elementVariant,
     font: fontVariant,
     bold: boldVariant,
   },
 
   defaultVariants: {
-    as: 'span',
+    variant: 'span',
     font: 'main',
     bold: 'false',
   },
@@ -65,7 +134,7 @@ export const BaseText = styled('span', {
     {
       font: 'main',
       bold: false,
-      as: 'h1',
+      variant: 'h1',
       css: {
         fontWeight: '$light',
       },
@@ -73,7 +142,7 @@ export const BaseText = styled('span', {
     {
       font: 'main',
       bold: false,
-      as: 'h2',
+      variant: 'h2',
       css: {
         fontWeight: '$light',
       },

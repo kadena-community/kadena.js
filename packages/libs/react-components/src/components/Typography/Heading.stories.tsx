@@ -1,5 +1,5 @@
 import { Heading } from './Heading';
-import { boldVariant, fontVariant } from './styles';
+import { boldVariant, elementVariant, fontVariant } from './styles';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -8,6 +8,13 @@ const meta: Meta<typeof Heading> = {
   title: 'Typography/Heading',
   component: Heading,
   argTypes: {
+    as: {
+      control: { type: 'select' },
+    },
+    variant: {
+      options: Object.keys(elementVariant) as (keyof typeof elementVariant)[],
+      control: { type: 'select' },
+    },
     font: {
       options: Object.keys(fontVariant) as (keyof typeof fontVariant)[],
       control: { type: 'radio' },
@@ -16,24 +23,22 @@ const meta: Meta<typeof Heading> = {
       options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
-    as: {
-      control: { type: 'select' },
-    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Heading>;
 
-export const Horizontal: Story = {
+export const Primary: Story = {
   name: 'Heading',
   args: {
+    as: 'h1',
+    variant: undefined,
     font: 'main',
     bold: 'true',
-    as: 'h1',
   },
-  render: ({ font, bold, as }) => (
-    <Heading font={font} bold={bold} as={as}>
+  render: ({ font, bold, as, variant }) => (
+    <Heading font={font} bold={bold} as={as} variant={variant}>
       Heading
     </Heading>
   ),
