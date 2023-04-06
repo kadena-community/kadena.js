@@ -27,7 +27,7 @@ forth).
 
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -162,6 +162,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="http://albertgroothedde.com"><img src="https://avatars.githubusercontent.com/u/516972?v=4?s=100" width="100px;" alt="Albert G"/><br /><sub><b>Albert G</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/pulls?q=is%3Apr+reviewed-by%3Aalber70g" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://andortang.wordpress.com"><img src="https://avatars.githubusercontent.com/u/1508400?v=4?s=100" width="100px;" alt="Andy Tang"/><br /><sub><b>Andy Tang</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/pulls?q=is%3Apr+reviewed-by%3AEnoF" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kate-hee-kyun-yun"><img src="https://avatars.githubusercontent.com/u/31594593?v=4?s=100" width="100px;" alt="Kate Hee Kyun Yun"/><br /><sub><b>Kate Hee Kyun Yun</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=ggobugi27" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://react.cs.uni-sb.de/people/kuhtz.html"><img src="https://avatars.githubusercontent.com/u/1369810?v=4?s=100" width="100px;" alt="Lars Kuhtz"/><br /><sub><b>Lars Kuhtz</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=larskuhtz" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
