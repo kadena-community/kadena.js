@@ -56,21 +56,28 @@ import { ShieldAccountVariantOutline } from './shieldAccountVariantOutline';
 import { SignatureFreehand } from './signatureFreehand';
 import { SlashForward } from './slashForward';
 import { StopCircle } from './stopCircle';
+import { IconContainer, sizeVariant } from './styles';
 import { TrailingIcon } from './trailingIcon';
 import { Twitter } from './twitter';
 import { UsbFlashDrive } from './usbFlashDrive';
 
 import React, { SVGProps } from 'react';
 
+export interface IIconProps {
+  size: keyof typeof sizeVariant;
+}
 const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Component: React.FC<SVGProps<SVGSVGElement>>,
-): React.FC<SVGProps<SVGSVGElement>> => {
-  const WrappedIcon: React.FC<SVGProps<SVGSVGElement>> = ({
-    height = 20,
-    width = 20,
+): React.FC<SVGProps<SVGSVGElement> & IIconProps> => {
+  const WrappedIcon: React.FC<SVGProps<SVGSVGElement> & IIconProps> = ({
+    size = 'md',
     ...props
-  }) => <Component {...props} height={height} width={width} />;
+  }) => (
+    <IconContainer size={size}>
+      <Component {...props} height={undefined} width={undefined} />
+    </IconContainer>
+  );
   WrappedIcon.displayName = Component.displayName;
   return WrappedIcon;
 };
