@@ -1,7 +1,7 @@
 import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
+import { Text } from '../Typography';
 
-import { styled } from './../../styles';
 import * as Icons from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -26,11 +26,6 @@ const meta: Meta<{ icon: string }> = {
 export default meta;
 type Story = StoryObj<{ icon: string }>;
 
-const IconName = styled('span', {
-  fontSize: '$sm',
-  textAlign: 'center',
-});
-
 export const Primary: Story = {
   name: 'Icon',
   args: {},
@@ -47,7 +42,7 @@ export const Primary: Story = {
               <Grid.Item key={k} bg="inherit">
                 <Stack direction="column" alignItems="center" spacing="xs">
                   <Icon />
-                  <IconName>{k}</IconName>
+                  <Text size="sm">{k}</Text>
                 </Stack>
               </Grid.Item>
             ))}
