@@ -39,7 +39,7 @@ export const Primary: Story = {
             .filter(([k]) => searchRegexp.test(k))
             // eslint-disable-next-line @typescript-eslint/naming-convention
             .map(([k, Icon]) => (
-              <Grid.Item key={k} bg="inherit">
+              <Grid.Item key={k}>
                 <Stack direction="column" alignItems="center" spacing="xs">
                   <Icon />
                   <Text size="sm">{k}</Text>
