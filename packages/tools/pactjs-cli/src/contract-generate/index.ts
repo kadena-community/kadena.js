@@ -69,19 +69,19 @@ export function contractGenerateCommand(
     )
     .option(
       '--api',
-      'The API to use for retrieving the contract, i.e. https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
+      'The API to use for retrieving the contract, e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact"',
     )
     .addOption(
       new Option(
         '--chain <chainId>',
-        'The chainId to retrieve the contract from, i.e. 8. Defaults to 1.',
+        'The chainId to retrieve the contract from, e.g. 8. Defaults to 1.',
       )
         .argParser((value) => parseInt(value, 10))
         .default(1),
     )
     .option(
       '--network',
-      'The networkId to retrieve the contract from, i.e. testnet. Defaults to mainnet',
+      'The networkId to retrieve the contract from, e.g. "testnet". Defaults to mainnet',
       'mainnet',
     )
     .action((args: ContractGenerateOptions) => {

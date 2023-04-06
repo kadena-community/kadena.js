@@ -42,7 +42,9 @@ export function retrieveContractCommand(
 ): void {
   program
     .command('retrieve-contract')
-    .description('Retrieve contract from an API in a /local call')
+    .description(
+      'Retrieve contract from a chainweb-api in a /local call (see also: https://github.com/kadena-io/chainweb-node#configuring-running-and-monitoring-the-health-of-a-chainweb-node).',
+    )
     .option(
       '-m, --module <module>',
       'The module you want to retrieve (e.g. "coin")',
