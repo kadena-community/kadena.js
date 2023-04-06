@@ -29,8 +29,10 @@ export const baseGlobalStyles: Record<string, unknown> = {
     5. Improve text rendering
   */
   body: {
-    lineHeight: 1.5,
+    lineHeight: '$base',
     '-webkit-font-smoothing': 'antialiased',
+    backgroundColor: '$background',
+    color: '$foreground',
   },
 
   /*
@@ -54,7 +56,6 @@ export const baseGlobalStyles: Record<string, unknown> = {
   'p, h1, h2, h3, h4, h5, h6': {
     fontFamily: '$main',
     overflowWrap: 'break-word',
-    lineHeight: 1.4,
   },
 
   /*
