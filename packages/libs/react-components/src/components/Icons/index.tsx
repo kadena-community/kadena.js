@@ -57,191 +57,76 @@ import TrailingIcon from './TrailingIcon';
 import Twitter from './Twitter';
 import Usb from './Usb';
 
+// create wrapper component expose all icons wrapped
 import React, { SVGProps } from 'react';
 
-export type Icons =
-  | 'bell'
-  | 'dialpad'
-  | 'eye'
-  | 'github'
-  | 'kcolon'
-  | 'progress-wrench'
-  | 'shield-account'
-  | 'application-brackets'
-  | 'close'
-  | 'key'
-  | 'information'
-  | 'application'
-  | 'bell-ring'
-  | 'eye-outline'
-  | 'car-brake-parking'
-  | 'twitter'
-  | 'copy'
-  | 'key-filled'
-  | 'loading'
-  | 'earth'
-  | 'signature'
-  | 'eye-off'
-  | 'folder-remove'
-  | 'linkedin'
-  | 'checkbox-blank'
-  | 'alert-box'
-  | 'radio-box-blank'
-  | 'check'
-  | 'plus'
-  | 'usb'
-  | 'stop-circle'
-  | 'forward-slash'
-  | 'checkbox-marked'
-  | 'alert-box-outline'
-  | 'radiobox-marked'
-  | 'history'
-  | 'check-decagram'
-  | 'script-text-key'
-  | 'qrcode'
-  | 'checkbox-intermediate'
-  | 'alert-circle-outline'
-  | 'chevron-down'
-  | 'form-textbox-password'
-  | 'check-decagram-outline'
-  | 'email'
-  | 'help-circle'
-  | 'leading-icon'
-  | 'chevron-up'
-  | 'exit-to-app'
-  | 'link'
-  | 'map-marker'
-  | 'refresh'
-  | 'badge-account'
-  | 'trailing-icon'
-  | 'application-cog-outline'
-  | 'account'
-  | 'magnify'
-  | 'flag-checkered';
-
-type IconProps = SVGProps<SVGSVGElement> & {
-  icon: Icons;
+const IconWrapper = (Component: React.FC<SVGProps<SVGSVGElement>>) => {
+  const WrappedIcon = ({
+    height = 20,
+    width = 20,
+    ...props
+  }: SVGProps<SVGSVGElement>) => (
+    <Component {...props} height={height} width={width} />
+  );
+  WrappedIcon.displayName = Component.displayName;
+  return WrappedIcon;
 };
 
-export default function Icon({ icon, ...props }: IconProps) {
-  switch (icon) {
-    case 'dialpad':
-      return <Dialpad {...props} />;
-    case 'kcolon':
-      return <KColon {...props} />;
-    case 'shield-account':
-      return <ShieldAccount {...props} />;
-    case 'application-brackets':
-      return <ApplicationBrackets {...props} />;
-    case 'bell':
-      return <Bell {...props} />;
-    case 'eye':
-      return <Eye {...props} />;
-    case 'progress-wrench':
-      return <ProgressWrench {...props} />;
-    case 'github':
-      return <Github {...props} />;
-    case 'close':
-      return <Close {...props} />;
-    case 'key':
-      return <Key {...props} />;
-    case 'information':
-      return <Information {...props} />;
-    case 'application':
-      return <Application {...props} />;
-    case 'bell-ring':
-      return <BellRing {...props} />;
-    case 'eye-outline':
-      return <EyeOutline {...props} />;
-    case 'car-brake-parking':
-      return <CarBrakeParking {...props} />;
-    case 'twitter':
-      return <Twitter {...props} />;
-    case 'copy':
-      return <Copy {...props} />;
-    case 'key-filled':
-      return <KeyFilled {...props} />;
-    case 'loading':
-      return <Loading {...props} />;
-    case 'earth':
-      return <Earth {...props} />;
-    case 'signature':
-      return <Signature {...props} />;
-    case 'eye-off':
-      return <EyeOff {...props} />;
-    case 'folder-remove':
-      return <FolderRemove {...props} />;
-    case 'linkedin':
-      return <LinkedIn {...props} />;
-    case 'checkbox-blank':
-      return <CheckboxBlank {...props} />;
-    case 'alert-box':
-      return <AlertBox {...props} />;
-    case 'radio-box-blank':
-      return <RadioBoxBlank {...props} />;
-    case 'check':
-      return <Check {...props} />;
-    case 'plus':
-      return <Plus {...props} />;
-    case 'usb':
-      return <Usb {...props} />;
-    case 'stop-circle':
-      return <StopCircle {...props} />;
-    case 'forward-slash':
-      return <ForwardSlash {...props} />;
-    case 'checkbox-marked':
-      return <CheckboxMarked {...props} />;
-    case 'alert-box-outline':
-      return <AlertBoxOutline {...props} />;
-    case 'radiobox-marked':
-      return <RadioboxMarked {...props} />;
-    case 'history':
-      return <History {...props} />;
-    case 'check-decagram':
-      return <CheckDecagram {...props} />;
-    case 'script-text-key':
-      return <ScriptTextKey {...props} />;
-    case 'qrcode':
-      return <QRCode {...props} />;
-    case 'checkbox-intermediate':
-      return <CheckboxIntermediate {...props} />;
-    case 'alert-circle-outline':
-      return <AlertCircleOutline {...props} />;
-    case 'chevron-down':
-      return <ChevronDown {...props} />;
-    case 'form-textbox-password':
-      return <FormTextboxPassword {...props} />;
-    case 'check-decagram-outline':
-      return <CheckDecagramOutline {...props} />;
-    case 'email':
-      return <Email {...props} />;
-    case 'help-circle':
-      return <HelpCircle {...props} />;
-    case 'leading-icon':
-      return <LeadingIcon {...props} />;
-    case 'chevron-up':
-      return <ChevronUp {...props} />;
-    case 'exit-to-app':
-      return <ExitToApp {...props} />;
-    case 'link':
-      return <Link {...props} />;
-    case 'map-marker':
-      return <MapMarker {...props} />;
-    case 'refresh':
-      return <Refresh {...props} />;
-    case 'badge-account':
-      return <BadgeAccount {...props} />;
-    case 'trailing-icon':
-      return <TrailingIcon {...props} />;
-    case 'application-cog-outline':
-      return <ApplicationCogOutline {...props} />;
-    case 'account':
-      return <Account {...props} />;
-    case 'magnify':
-      return <Magnify {...props} />;
-    case 'flag-checkered':
-      return <FlagCheckered {...props} />;
-    default:
-      return null;
-  }
-}
+export const AccountIcon = IconWrapper(Account);
+export const AlertBoxIcon = IconWrapper(AlertBox);
+export const AlertBoxOutlineIcon = IconWrapper(AlertBoxOutline);
+export const AlertCircleOutlineIcon = IconWrapper(AlertCircleOutline);
+export const ApplicationIcon = IconWrapper(Application);
+export const ApplicationBracketsIcon = IconWrapper(ApplicationBrackets);
+export const ApplicationCogOutlineIcon = IconWrapper(ApplicationCogOutline);
+export const BadgeAccountIcon = IconWrapper(BadgeAccount);
+export const BellIcon = IconWrapper(Bell);
+export const BellRingIcon = IconWrapper(BellRing);
+export const CarBrakeParkingIcon = IconWrapper(CarBrakeParking);
+export const CheckIcon = IconWrapper(Check);
+export const CheckboxBlankIcon = IconWrapper(CheckboxBlank);
+export const CheckboxIntermediateIcon = IconWrapper(CheckboxIntermediate);
+export const CheckboxMarkedIcon = IconWrapper(CheckboxMarked);
+export const CheckDecagramIcon = IconWrapper(CheckDecagram);
+export const CheckDecagramOutlineIcon = IconWrapper(CheckDecagramOutline);
+export const ChevronDownIcon = IconWrapper(ChevronDown);
+export const ChevronUpIcon = IconWrapper(ChevronUp);
+export const CloseIcon = IconWrapper(Close);
+export const CopyIcon = IconWrapper(Copy);
+export const DialpadIcon = IconWrapper(Dialpad);
+export const EarthIcon = IconWrapper(Earth);
+export const EmailIcon = IconWrapper(Email);
+export const ExitToAppIcon = IconWrapper(ExitToApp);
+export const EyeIcon = IconWrapper(Eye);
+export const EyeOffIcon = IconWrapper(EyeOff);
+export const EyeOutlineIcon = IconWrapper(EyeOutline);
+export const FlagCheckeredIcon = IconWrapper(FlagCheckered);
+export const FolderRemoveIcon = IconWrapper(FolderRemove);
+export const FormTextboxPasswordIcon = IconWrapper(FormTextboxPassword);
+export const ForwardSlashIcon = IconWrapper(ForwardSlash);
+export const GithubIcon = IconWrapper(Github);
+export const HelpCircleIcon = IconWrapper(HelpCircle);
+export const HistoryIcon = IconWrapper(History);
+export const InformationIcon = IconWrapper(Information);
+export const KColonIcon = IconWrapper(KColon);
+export const KeyIcon = IconWrapper(Key);
+export const KeyFilledIcon = IconWrapper(KeyFilled);
+export const LeadingIconIcon = IconWrapper(LeadingIcon);
+export const LinkIcon = IconWrapper(Link);
+export const LinkedInIcon = IconWrapper(LinkedIn);
+export const LoadingIcon = IconWrapper(Loading);
+export const MagnifyIcon = IconWrapper(Magnify);
+export const MapMarkerIcon = IconWrapper(MapMarker);
+export const PlusIcon = IconWrapper(Plus);
+export const ProgressWrenchIcon = IconWrapper(ProgressWrench);
+export const QRCodeIcon = IconWrapper(QRCode);
+export const RadioBoxBlankIcon = IconWrapper(RadioBoxBlank);
+export const RadioboxMarkedIcon = IconWrapper(RadioboxMarked);
+export const RefreshIcon = IconWrapper(Refresh);
+export const ScriptTextKeyIcon = IconWrapper(ScriptTextKey);
+export const ShieldAccountIcon = IconWrapper(ShieldAccount);
+export const SignatureIcon = IconWrapper(Signature);
+export const StopCircleIcon = IconWrapper(StopCircle);
+export const TrailingIconIcon = IconWrapper(TrailingIcon);
+export const TwitterIcon = IconWrapper(Twitter);
+export const UsbIcon = IconWrapper(Usb);

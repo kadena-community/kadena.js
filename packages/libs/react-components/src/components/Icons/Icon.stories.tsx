@@ -1,18 +1,11 @@
 import { Grid } from '../Grid';
+import { Stack } from '../Stack/Stack';
 
-import Icon, { Icons } from './';
+import { styled } from './../../styles';
+import * as Icons from './';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import React from 'react';
-
-const meta: Meta<typeof Icon> = {
-  title: 'Icons',
-  component: Icon,
-  argTypes: {},
-};
-
-export default meta;
-type Story = StoryObj<typeof Icon>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -20,78 +13,46 @@ type Story = StoryObj<typeof Icon>;
  * to learn how to use render functions.
  */
 
-const icons: Icons[] = [
-  'bell',
-  'dialpad',
-  'eye',
-  'github',
-  'kcolon',
-  'progress-wrench',
-  'shield-account',
-  'application-brackets',
-  'close',
-  'key',
-  'information',
-  'application',
-  'bell-ring',
-  'eye-outline',
-  'car-brake-parking',
-  'twitter',
-  'copy',
-  'key-filled',
-  'loading',
-  'earth',
-  'signature',
-  'eye-off',
-  'folder-remove',
-  'linkedin',
-  'checkbox-blank',
-  'alert-box',
-  'radio-box-blank',
-  'check',
-  'plus',
-  'usb',
-  'stop-circle',
-  'forward-slash',
-  'checkbox-marked',
-  'alert-box-outline',
-  'radiobox-marked',
-  'history',
-  'check-decagram',
-  'script-text-key',
-  'qrcode',
-  'checkbox-intermediate',
-  'alert-circle-outline',
-  'chevron-down',
-  'form-textbox-password',
-  'check-decagram-outline',
-  'email',
-  'help-circle',
-  'leading-icon',
-  'chevron-up',
-  'exit-to-app',
-  'link',
-  'map-marker',
-  'refresh',
-  'badge-account',
-  'trailing-icon',
-  'application-cog-outline',
-  'account',
-  'magnify',
-  'flag-checkered',
-];
+const meta = {
+  title: 'Icons',
+  component: Icons.AccountIcon,
+  argTypes: {
+    icon: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof Icons.AccountIcon>;
+
+const IconName = styled('span', {
+  fontSize: '$sm',
+  textAlign: 'center',
+});
+
 export const Primary: Story = {
   name: 'Icon',
   args: {},
-  render: ({}) => (
-    <>
-      <Grid.Container spacing="sm" templateColumns="repeat(8, 1fr)">
-        {icons.map((icon) => (
-          <Grid.Item key={icon} bg="inherit">
-            <Icon icon={icon} height={20} width={20} />
-          </Grid.Item>
-        ))}
-      </Grid.Container>
-    </>
-  ),
+  render: ({ icon = '' }: any) => {
+    const searchRegexp = new RegExp(icon, 'i');
+    return (
+      <>
+        <Grid.Container spacing="xl" templateColumns="repeat(6, 1fr)">
+          {Object.entries(Icons)
+            .filter(([k]) => searchRegexp.test(k))
+            .map(([k, Icon]) => (
+              <Grid.Item key={k} bg="inherit">
+                <Stack direction="column" alignItems="center" spacing="xs">
+                  <Icon />
+                  <IconName>{k}</IconName>
+                </Stack>
+              </Grid.Item>
+            ))}
+        </Grid.Container>
+      </>
+    );
+  },
 };
