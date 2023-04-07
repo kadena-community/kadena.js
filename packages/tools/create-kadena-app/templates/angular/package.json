@@ -2,12 +2,18 @@
   "name": "angular",
   "version": "0.1.0",
   "description": "Angular starter project with @kadena/client integration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/tools/create-kadena-app"
+  },
+  "license": "ISC",
   "scripts": {
     "build": "ng build",
     "ng": "ng",
     "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact",
     "start": "ng serve",
     "test": "ng test",
+    "test:ci": "ng test --no-progress --watch=false --browsers=ChromeHeadless",
     "watch": "ng build --watch --configuration development"
   },
   "dependencies": {
@@ -21,7 +27,7 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
-    "@kadena/client": "^0.1.7",
+    "@kadena/client": "^0.1.10",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

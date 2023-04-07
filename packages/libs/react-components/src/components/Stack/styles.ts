@@ -1,7 +1,8 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
+import { styled } from '../../styles/stitches.config';
 
-export const spacing = {
+export const spacingVariant = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xs': {
     gap: '$2xs',
@@ -31,7 +32,7 @@ export const spacing = {
   },
 } as const;
 
-export const justifyContent = {
+export const justifyContentVariant = {
   'flex-start': {
     justifyContent: 'flex-start',
   },
@@ -49,7 +50,7 @@ export const justifyContent = {
   },
 } as const;
 
-export const alignItems = {
+export const alignItemsVariant = {
   'flex-start': {
     alignItems: 'flex-start',
   },
@@ -64,7 +65,7 @@ export const alignItems = {
   },
 } as const;
 
-export const flexWrap = {
+export const flexWrapVariant = {
   wrap: {
     flexWrap: 'wrap',
   },
@@ -73,7 +74,7 @@ export const flexWrap = {
   },
 } as const;
 
-export const direction = {
+export const directionVariant = {
   row: {
     flexDirection: 'row',
   },
@@ -81,3 +82,23 @@ export const direction = {
     flexDirection: 'column',
   },
 } as const;
+
+export const FlexContainer = styled('div', {
+  display: 'flex',
+
+  variants: {
+    direction: directionVariant,
+    justifyContent: justifyContentVariant,
+    alignItems: alignItemsVariant,
+    flexWrap: flexWrapVariant,
+    spacing: spacingVariant,
+  },
+
+  defaultVariants: {
+    spacing: 'md',
+    direction: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexWrap: 'nowrap',
+  },
+});

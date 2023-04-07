@@ -92,10 +92,11 @@ export const {
       '12xl': '5.25rem', // 84px
     },
     fontWeights: {
+      light: 300,
       normal: 400,
       medium: 500,
-      bold: 700,
-      extraBold: 900,
+      semiBold: 700,
+      bold: 900,
     },
     radii: {
       sm: '4px',

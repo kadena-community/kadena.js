@@ -1,11 +1,9 @@
-import { config, styled } from '../../styles';
+import { config } from '../../styles';
+
+import { GridItem as BaseGridItem } from './styles';
 
 import type { CSSProperties, PropertyValue } from '@stitches/react';
 import React, { FC, ReactNode } from 'react';
-
-const BaseItem = styled('div', {
-  gridColumnStart: 'auto',
-});
 
 export type ColSpanType = number | 'auto';
 
@@ -16,7 +14,7 @@ export interface IGridItemProps {
   rowStart?: ColSpanType;
   rowEnd?: ColSpanType;
   area?: CSSProperties['gridArea'];
-  bg: PropertyValue<'backgroundColor', typeof config>;
+  bg?: PropertyValue<'backgroundColor', typeof config>;
 }
 
 const createSpan = (
@@ -43,7 +41,7 @@ const GridItem: FC<IGridItemProps> = ({
     backgroundColor: bg,
   };
 
-  return <BaseItem css={styles}>{children}</BaseItem>;
+  return <BaseGridItem css={styles}>{children}</BaseGridItem>;
 };
 
 export default GridItem;
