@@ -1,6 +1,5 @@
 import { getLayout } from '..';
 
-//@TODO: remove this, this is just for testing purposes, see that everything works
 describe('utils getLayout', () => {
   test('should return layout Code-Component when arg is "code" or "codeside"', () => {
     expect(getLayout('code').displayName).toEqual('CodeSide');
