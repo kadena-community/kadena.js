@@ -14,10 +14,10 @@ const getActiveItem = (
   let item = list.firstChild as HTMLLIElement;
   let idx = 0;
 
-  Array.from(list.children).forEach((innerItem, innerIdx) => {
+  Array.from(list.children).some((innerItem, innerIdx) => {
     const anchor = innerItem.firstChild as HTMLAnchorElement;
     if (
-      clickedElement === innerItem.firstChild ||
+      clickedElement === anchor ||
       (!clickedElement && pathname === anchor?.getAttribute('href'))
     ) {
       item = innerItem as HTMLLIElement;
@@ -71,13 +71,9 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
   useEffect(() => {
     const changeUrl = (url: string): void => {
       const elm = listRef.current?.querySelector(`[href="${url}"]`);
-      if (elm) {
-        selectItem(
-          activeRef.current,
-          router.pathname,
-          elm as HTMLAnchorElement,
-        );
-      }
+      if (!elm) return;
+
+      selectItem(activeRef.current, router.pathname, elm as HTMLAnchorElement);
     };
 
     router.events.on('routeChangeStart', changeUrl);
