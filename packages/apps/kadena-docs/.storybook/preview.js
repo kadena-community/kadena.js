@@ -4,6 +4,7 @@ import {
   baseGlobalStyles,
 } from '@kadena-ui/react-components';
 import { themes } from '@storybook/theming';
+import { RouterContext } from "next/dist/shared/lib/router-context"; // next 12
 
 const globalStyles = globalCss({
   ...baseGlobalStyles,
@@ -13,6 +14,9 @@ globalStyles();
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
+  nextRouter: {
+    Provider: RouterContext.Provider,
+  },
   controls: {
     matchers: {
       color: /(background|color)$/i,

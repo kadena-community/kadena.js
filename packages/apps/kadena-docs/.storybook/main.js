@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -6,6 +8,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
     'storybook-dark-mode',
+    'storybook-addon-next-router',
   ],
   framework: {
     name: '@storybook/react-webpack5',
@@ -13,5 +16,14 @@ module.exports = {
   },
   docs: {
     autodocs: true,
+  },
+  webpackFinal: async (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+
+      '@/components': path.resolve(__dirname, '../src/components'),
+    };
+
+    return config;
   },
 };

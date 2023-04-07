@@ -1,15 +1,14 @@
-import { Testing } from './Testing';
+import { Footer } from './Footer';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-//@TODO: remove this, this is just for testing purposes, see that everything works
-const meta: Meta<typeof Testing> = {
-  title: 'Testing',
-  component: Testing,
+const meta: Meta<typeof Footer> = {
+  title: 'Layout/Footer',
+  component: Footer,
 };
 
 export default meta;
-type Story = StoryObj<typeof Testing>;
+type Story = StoryObj<typeof Footer>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -17,5 +16,5 @@ type Story = StoryObj<typeof Testing>;
  * to learn how to use render functions.
  */
 export const Primary: Story = {
-  name: 'Testing',
+  name: 'Footer',
 };
