@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;
-  ref: React.ForwardedRef<HTMLDivElement>;
+  ref?: React.ForwardedRef<HTMLDivElement>;
 }
 
 export const Main: FC<IProps> = React.forwardRef(({ children }, ref) => {

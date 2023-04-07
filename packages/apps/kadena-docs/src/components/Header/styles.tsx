@@ -10,10 +10,7 @@ export const StyledHeader = styled('header', {
 export const Wrapper = styled('div', {
   display: 'flex',
   margin: '0',
-  padding: '10px 16px',
-  '@lg': {
-    margin: '0 200px',
-  },
+  padding: '$3 $4',
 });
 
 export const StyleNav = styled('nav', {
