@@ -93,18 +93,18 @@ const Home: React.FC = (): JSX.Element => {
         <div className={styles.card}>
           <h3 className={styles.cardTitle}>Interact with the blockchain</h3>
           <section className={styles.cardSection}>
-            <h4>My Account</h4>
-            <input onChange={handleAccountInputChange} value={account} placeholder="Please enter a valid k:account"></input>
+            <label htmlFor="account" className={styles.fieldLabel}>My Account</label>
+            <input id="account" onChange={handleAccountInputChange} value={account} placeholder="Please enter a valid k:account"></input>
           </section>
           <section className={styles.cardSection}>
-            <h4>Write Message</h4>
-            <textarea onChange={handleWriteMessageInputChange} value={messageToWrite} disabled={writeInProgress}></textarea>
-            <button onClick={() => writeMessage()} disabled={messageToWrite === '' || writeInProgress}>Write</button>
+            <label htmlFor="write-message" className={styles.fieldLabel}>Write Message</label>
+            <textarea id="write-message" onChange={handleWriteMessageInputChange} value={messageToWrite} disabled={writeInProgress}></textarea>
+            <button onClick={() => writeMessage()} disabled={account === '' || messageToWrite === '' || writeInProgress}>Write</button>
             {writeInProgress && <SpinnerRoundFilled size={30} color="#ed098f" />}
           </section>
           <section className={styles.cardSection}>
-            <h4>Read Message</h4>
-            <textarea disabled value={messageFromChain}></textarea>
+            <label htmlFor="read-message" className={styles.fieldLabel}>Read Message</label>
+            <textarea id="read-message" disabled value={messageFromChain}></textarea>
             <button onClick={() => readMessage()} disabled={account === ''}>Read</button>
           </section>
         </div>

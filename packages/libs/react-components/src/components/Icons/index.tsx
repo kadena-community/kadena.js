@@ -1,0 +1,133 @@
+import Account from './Account';
+import AlertBox from './AlertBox';
+import AlertBoxOutline from './AlertBoxOutline';
+import AlertCircleOutline from './AlertCircleOutline';
+import Application from './Application';
+import ApplicationBrackets from './ApplicationBrackets';
+import ApplicationCogOutline from './ApplicationCogOutline';
+import BadgeAccount from './BadgeAccount';
+import Bell from './Bell';
+import BellRing from './BellRing';
+import CarBrakeParking from './CarBrakeParking';
+import Check from './Check';
+import CheckboxBlank from './CheckboxBlank';
+import CheckboxIntermediate from './CheckboxIntermediate';
+import CheckboxMarked from './CheckboxMarked';
+import CheckDecagram from './CheckDecagram';
+import CheckDecagramOutline from './CheckDecagramOutline';
+import ChevronDown from './ChevronDown';
+import ChevronUp from './ChevronUp';
+import Close from './Close';
+import Copy from './Copy';
+import Dialpad from './Dialpad';
+import Earth from './Earth';
+import Email from './Email';
+import ExitToApp from './ExitToApp';
+import Eye from './Eye';
+import EyeOff from './EyeOff';
+import EyeOutline from './EyeOutline';
+import FlagCheckered from './FlagCheckered';
+import FolderRemove from './FolderRemove';
+import FormTextboxPassword from './FormTextboxPassword';
+import ForwardSlash from './ForwardSlash';
+import Github from './Github';
+import HelpCircle from './HelpCircle';
+import History from './History';
+import Information from './Information';
+import KColon from './KColon';
+import Key from './Key';
+import KeyFilled from './KeyFilled';
+import LeadingIcon from './LeadingIcon';
+import Link from './Link';
+import LinkedIn from './LinkedIn';
+import Loading from './Loading';
+import Magnify from './Magnify';
+import MapMarker from './MapMarker';
+import Plus from './Plus';
+import ProgressWrench from './ProgressWrench';
+import QRCode from './QRCode';
+import RadioBoxBlank from './RadioBoxBlank';
+import RadioboxMarked from './RadioboxMarked';
+import Refresh from './Refresh';
+import ScriptTextKey from './ScriptTextKey';
+import ShieldAccount from './ShieldAccount';
+import Signature from './Signature';
+import StopCircle from './StopCircle';
+import TrailingIcon from './TrailingIcon';
+import Twitter from './Twitter';
+import Usb from './Usb';
+
+// create wrapper component expose all icons wrapped
+import React, { SVGProps } from 'react';
+
+const IconWrapper = (
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Component: React.FC<SVGProps<SVGSVGElement>>,
+): React.FC<SVGProps<SVGSVGElement>> => {
+  const WrappedIcon: React.FC<SVGProps<SVGSVGElement>> = ({
+    height = 20,
+    width = 20,
+    ...props
+  }) => <Component {...props} height={height} width={width} />;
+  WrappedIcon.displayName = Component.displayName;
+  return WrappedIcon;
+};
+
+export const AccountIcon = IconWrapper(Account);
+export const AlertBoxIcon = IconWrapper(AlertBox);
+export const AlertBoxOutlineIcon = IconWrapper(AlertBoxOutline);
+export const AlertCircleOutlineIcon = IconWrapper(AlertCircleOutline);
+export const ApplicationIcon = IconWrapper(Application);
+export const ApplicationBracketsIcon = IconWrapper(ApplicationBrackets);
+export const ApplicationCogOutlineIcon = IconWrapper(ApplicationCogOutline);
+export const BadgeAccountIcon = IconWrapper(BadgeAccount);
+export const BellIcon = IconWrapper(Bell);
+export const BellRingIcon = IconWrapper(BellRing);
+export const CarBrakeParkingIcon = IconWrapper(CarBrakeParking);
+export const CheckIcon = IconWrapper(Check);
+export const CheckboxBlankIcon = IconWrapper(CheckboxBlank);
+export const CheckboxIntermediateIcon = IconWrapper(CheckboxIntermediate);
+export const CheckboxMarkedIcon = IconWrapper(CheckboxMarked);
+export const CheckDecagramIcon = IconWrapper(CheckDecagram);
+export const CheckDecagramOutlineIcon = IconWrapper(CheckDecagramOutline);
+export const ChevronDownIcon = IconWrapper(ChevronDown);
+export const ChevronUpIcon = IconWrapper(ChevronUp);
+export const CloseIcon = IconWrapper(Close);
+export const CopyIcon = IconWrapper(Copy);
+export const DialpadIcon = IconWrapper(Dialpad);
+export const EarthIcon = IconWrapper(Earth);
+export const EmailIcon = IconWrapper(Email);
+export const ExitToAppIcon = IconWrapper(ExitToApp);
+export const EyeIcon = IconWrapper(Eye);
+export const EyeOffIcon = IconWrapper(EyeOff);
+export const EyeOutlineIcon = IconWrapper(EyeOutline);
+export const FlagCheckeredIcon = IconWrapper(FlagCheckered);
+export const FolderRemoveIcon = IconWrapper(FolderRemove);
+export const FormTextboxPasswordIcon = IconWrapper(FormTextboxPassword);
+export const ForwardSlashIcon = IconWrapper(ForwardSlash);
+export const GithubIcon = IconWrapper(Github);
+export const HelpCircleIcon = IconWrapper(HelpCircle);
+export const HistoryIcon = IconWrapper(History);
+export const InformationIcon = IconWrapper(Information);
+export const KColonIcon = IconWrapper(KColon);
+export const KeyIcon = IconWrapper(Key);
+export const KeyFilledIcon = IconWrapper(KeyFilled);
+export const LeadingIconIcon = IconWrapper(LeadingIcon);
+export const LinkIcon = IconWrapper(Link);
+export const LinkedInIcon = IconWrapper(LinkedIn);
+export const LoadingIcon = IconWrapper(Loading);
+export const MagnifyIcon = IconWrapper(Magnify);
+export const MapMarkerIcon = IconWrapper(MapMarker);
+export const PlusIcon = IconWrapper(Plus);
+export const ProgressWrenchIcon = IconWrapper(ProgressWrench);
+export const QRCodeIcon = IconWrapper(QRCode);
+export const RadioBoxBlankIcon = IconWrapper(RadioBoxBlank);
+export const RadioboxMarkedIcon = IconWrapper(RadioboxMarked);
+export const RefreshIcon = IconWrapper(Refresh);
+export const ScriptTextKeyIcon = IconWrapper(ScriptTextKey);
+export const ShieldAccountIcon = IconWrapper(ShieldAccount);
+export const SignatureIcon = IconWrapper(Signature);
+export const StopCircleIcon = IconWrapper(StopCircle);
+export const TrailingIconIcon = IconWrapper(TrailingIcon);
+export const TwitterIcon = IconWrapper(Twitter);
+export const UsbIcon = IconWrapper(Usb);
