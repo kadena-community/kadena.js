@@ -119,6 +119,10 @@ export const {
     sizes: {
       ...sizes,
     },
+    zIndices: {
+      menu: 100,
+      modal: 999,
+    },
   },
   media,
   // NOTE: There is a typescript serialization error when using PropertyValue.
