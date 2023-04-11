@@ -515,6 +515,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
+      '@kadena/chainweb-node-client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/types': workspace:*
@@ -532,6 +533,7 @@ importers:
       webpack: ~5.73.0
       webpack-cli: ^4.9.2
     dependencies:
+      '@kadena/chainweb-node-client': link:../chainweb-node-client
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/pactjs': link:../pactjs
       '@kadena/types': link:../types
@@ -894,6 +896,7 @@ importers:
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena/chainweb-node-client': workspace:*
+      '@kadena/pactjs': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
@@ -907,6 +910,7 @@ importers:
       tweetnacl: ^1.0.3
     dependencies:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
+      '@kadena/pactjs': link:../../libs/pactjs
       '@kadena/types': link:../../libs/types
       blakejs: 1.2.1
       exponential-backoff: 3.1.0

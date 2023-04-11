@@ -4,17 +4,167 @@
 
 ```ts
 
-import type { Base16String } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
+import type { IBase64Url } from '@kadena/types';
 import type { ICap } from '@kadena/types';
 import type { ICommand } from '@kadena/types';
-import type { ICommandResult } from '@kadena/types';
-import type { IListenRequestBody } from '@kadena/types';
-import type { IPollRequestBody } from '@kadena/types';
-import type { IPollResponse } from '@kadena/types';
-import type { ISPVRequestBody } from '@kadena/types';
-import type { LocalRequestBody } from '@kadena/types';
+import type { IMetaData } from '@kadena/types';
+import type { IPactEvent } from '@kadena/types';
+import type { IPactExec } from '@kadena/types';
+import type { IUnsignedCommand } from '@kadena/types';
 import type { PactValue } from '@kadena/types';
-import type { SPVResponse } from '@kadena/types';
+import type { SPVProof } from '@kadena/types';
+
+// @alpha
+export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
+
+// @alpha
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
+
+// @alpha (undocumented)
+export function convertIUnsignedTransactionToNoSig(transaction: IUnsignedCommand): ICommand;
+
+// @alpha
+export function createListenRequest({ cmds, }: ISendRequestBody): IListenRequestBody;
+
+// @alpha
+export function createPollRequest({ cmds, }: ISendRequestBody): IPollRequestBody;
+
+// @alpha
+export function createSendRequest(commands: ICommand | ICommand[]): ISendRequestBody;
+
+// @alpha
+export interface ICommandResult {
+    // (undocumented)
+    continuation: IPactExec | null;
+    // (undocumented)
+    events?: Array<IPactEvent>;
+    // (undocumented)
+    gas: number;
+    // (undocumented)
+    logs: string | null;
+    // Warning: (ae-forgotten-export) The symbol "IChainwebResponseMetaData" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    metaData: IChainwebResponseMetaData | null;
+    // (undocumented)
+    reqKey: IBase64Url;
+    // Warning: (ae-forgotten-export) The symbol "IPactResultSuccess" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "IPactResultError" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    result: IPactResultSuccess | IPactResultError;
+    // (undocumented)
+    txId: number | null;
+}
+
+// @alpha
+export interface IListenRequestBody {
+    // (undocumented)
+    listen: IBase64Url;
+}
+
+// @alpha
+export interface ILocalCommandResult {
+    // (undocumented)
+    continuation: IPactExec | null;
+    // (undocumented)
+    events?: Array<IPactEvent>;
+    // (undocumented)
+    gas: number;
+    // (undocumented)
+    logs: string | null;
+    // (undocumented)
+    metaData: IChainwebResponseMetaData | null;
+    // (undocumented)
+    preflightWarnings?: Array<string>;
+    // (undocumented)
+    reqKey: IBase64Url;
+    // (undocumented)
+    result: IPactResultSuccess | IPactResultError;
+    // (undocumented)
+    txId: number | null;
+}
+
+// @alpha (undocumented)
+export type ILocalResult = IPreflightResult | ICommandResult;
+
+// @alpha (undocumented)
+export type IOptions = IOptionsSigVerifyTrue | IOptionsPreflightFalse | IOptionsSigVerifyFalse | IOptionsBothTrue | IOptionsBothFalse | IOptionsPreflightTrue;
+
+// @alpha (undocumented)
+export interface IOptionsBothFalse {
+    // (undocumented)
+    preflight: false;
+    // (undocumented)
+    signatureVerification: false;
+}
+
+// @alpha (undocumented)
+export interface IOptionsBothTrue {
+    // (undocumented)
+    preflight: true;
+    // (undocumented)
+    signatureVerification: true;
+}
+
+// @alpha (undocumented)
+export interface IOptionsPreflightFalse {
+    // (undocumented)
+    preflight: false;
+    // (undocumented)
+    signatureVerification?: boolean;
+}
+
+// @alpha (undocumented)
+export interface IOptionsPreflightTrue {
+    // (undocumented)
+    preflight: true;
+    // (undocumented)
+    signatureVerification?: boolean;
+}
+
+// @alpha (undocumented)
+export interface IOptionsSigVerifyFalse {
+    // (undocumented)
+    preflight?: boolean;
+    // (undocumented)
+    signatureVerification: false;
+}
+
+// @alpha (undocumented)
+export interface IOptionsSigVerifyTrue {
+    // (undocumented)
+    preflight?: boolean;
+    // (undocumented)
+    signatureVerification: true;
+}
+
+// @alpha
+export interface IPollRequestBody {
+    // (undocumented)
+    requestKeys: Array<IBase64Url>;
+}
+
+// @alpha (undocumented)
+export interface IPollResponse {
+    // (undocumented)
+    [key: IBase64Url]: ICommandResult;
+}
+
+// @alpha (undocumented)
+export interface IPreflightResult {
+    // (undocumented)
+    preflightResult: ICommandResult;
+    // (undocumented)
+    preflightWarnings: [];
+}
+
+// @alpha
+export interface IRequestKeys {
+    // (undocumented)
+    requestKeys: Array<IBase64Url>;
+}
 
 // @alpha
 export interface ISendRequestBody {
@@ -23,19 +173,58 @@ export interface ISendRequestBody {
 }
 
 // @alpha
-export interface ISendResponse {
+export interface ISPVRequestBody {
     // (undocumented)
-    requestKeys: Array<Base16String>;
+    requestKey: IBase64Url;
+    // (undocumented)
+    targetChainId: ChainId;
 }
 
 // @alpha
-export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult | Response>;
+export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult>;
+
+// @alpha (undocumented)
+export type ListenResponse = ICommandResult;
+
+// Warning: (ae-forgotten-export) The symbol "CmdOptionalSigs" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsSigVerifyFalse): Promise<LocalResultWithoutPreflight | LocalResultWithoutPreflight>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightFalse): Promise<LocalResultWithoutPreflight>;
+
+// Warning: (ae-forgotten-export) The symbol "CmdWithSigs" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<ILocalCommandResult>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsBothFalse): Promise<LocalResultWithoutPreflight>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<ILocalCommandResult>;
+
+// @alpha (undocumented)
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | ILocalCommandResult>;
 
 // @alpha
-export function local(requestBody: LocalRequestBody, apiHost: string): Promise<ICommandResult>;
+export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
+    signatureVerification: boolean;
+    preflight: boolean;
+}): Promise<IPreflightResult | ICommandResult>;
+
+// @alpha (undocumented)
+export type LocalRequestBody = ICommand | IUnsignedCommand;
+
+// @alpha (undocumented)
+export type LocalResultWithoutPreflight = Omit<ILocalCommandResult, 'preflightWarnings'>;
 
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;
+
+// @alpha (undocumented)
+export function parsePreflight(commandResult: ILocalResult): ILocalCommandResult;
 
 // @alpha
 export function parseResponse<T>(response: Response): Promise<T>;
@@ -47,10 +236,16 @@ export function parseResponseTEXT(response: Response): Promise<string>;
 export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: ISendRequestBody, apiHost: string): Promise<ISendResponse>;
+export function send(requestBody: ISendRequestBody, apiHost: string): Promise<SendResponse>;
+
+// @alpha
+export type SendResponse = IRequestKeys;
 
 // @alpha
 export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
+
+// @alpha
+export type SPVResponse = SPVProof;
 
 // @alpha
 export function stringifyAndMakePOSTRequest<T>(body: T): object;

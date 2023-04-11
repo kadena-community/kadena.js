@@ -4,6 +4,9 @@ import {
   send,
   spv,
   local,
+  createSendRequest,
+  createPollRequest,
+  createListenRequest,
   mkCap,
   parseResponse,
   parseResponseTEXT,
@@ -20,4 +23,7 @@ test('Expects functions to be exposed', async () => {
   expect(parseResponse).toBeDefined();
   expect(parseResponseTEXT).toBeDefined();
   expect(stringifyAndMakePOSTRequest).toBeDefined();
+  expect(createListenRequest).toBeDefined();
+  expect(createPollRequest).toBeDefined();
+  expect(createSendRequest).toBeDefined();
 });

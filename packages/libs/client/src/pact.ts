@@ -1,19 +1,25 @@
-import { ISendResponse, local, poll, send } from '@kadena/chainweb-node-client';
+import {
+  ChainwebNetworkId,
+  createSendRequest,
+  IPollResponse,
+  local,
+  poll,
+  send,
+  SendResponse,
+} from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { createExp } from '@kadena/pactjs';
+import { createExp, ensureSignedCommand } from '@kadena/pactjs';
 import {
   ChainId,
-  ChainwebNetworkId,
   ICap,
   ICommand,
   ICommandPayload,
-  ICommandResult,
-  IPollResponse,
-  ISignature,
+  ISignatureJson,
+  IUnsignedCommand,
   PactValue,
 } from '@kadena/types';
 
-import { IPactCommand, IUnsignedTransaction } from './interfaces/IPactCommand';
+import { IPactCommand } from './interfaces/IPactCommand';
 import { parseType } from './utils/parseType';
 
 import debug, { Debugger } from 'debug';
@@ -27,7 +33,7 @@ export interface ICommandBuilder<
   TCaps extends Record<string, TArgs>,
   TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps],
 > {
-  createCommand(): IUnsignedTransaction;
+  createCommand(): IUnsignedCommand;
   addData: (
     data: IPactCommand['data'],
   ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
@@ -42,8 +48,9 @@ export interface ICommandBuilder<
     signer: string,
     ...args: TCaps[TCap]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-  local(apiHost: string): Promise<ICommandResult>;
-  send(apiHost: string): Promise<ISendResponse>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  local(apiHost: string, options?: any): Promise<any>;
+  send(apiHost: string): Promise<SendResponse>;
   pollUntil(
     apiHost: string,
     options?: {
@@ -121,7 +128,7 @@ export class PactCommand
     gasPrice: number;
     ttl: number;
   };
-  public networkId: Exclude<ChainwebNetworkId, undefined>;
+  public networkId: ChainwebNetworkId;
   public signers: {
     pubKey: string;
     caps: {
@@ -129,7 +136,7 @@ export class PactCommand
       args: ICap['args'];
     }[];
   }[];
-  public sigs: (ISignature | undefined)[];
+  public sigs: (ISignatureJson | undefined)[];
   // public signer:
   //   | ((
   //       ...transactions: (IPactCommand &
@@ -188,7 +195,7 @@ export class PactCommand
    * @returns a command that can be send to the blockchain
    * (see https://api.chainweb.com/openapi/pact.html#tag/endpoint-send/paths/~1send/post)
    */
-  public createCommand(): IUnsignedTransaction {
+  public createCommand(): IUnsignedCommand {
     const dateInMs: number = Date.now();
 
     // convert to IUnsignedTransactionCommand
@@ -217,8 +224,8 @@ export class PactCommand
     // hash command
     const hash = blakeHash(cmd);
 
-    // TODO: convert to IUnsignedTransaction
-    const command: IUnsignedTransaction = {
+    // TODO: convert to IUnsignedCommand
+    const command: IUnsignedCommand = {
       hash,
       sigs: this.sigs,
       cmd,
@@ -293,13 +300,16 @@ export class PactCommand
    * @param apiHost - the chainweb host where to send the transaction to
    * @alpha
    */
-  public local(apiHost: string): Promise<ICommandResult> {
-    log(`calling local with: ${JSON.stringify(this.createCommand(), null, 2)}`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public local(apiHost: string, options?: any): Promise<any> {
+    const command = this.createCommand();
 
-    return local(
-      convertIUnsignedTransactionToICommand(this.createCommand()),
-      apiHost,
-    );
+    log(`calling local with: ${JSON.stringify(command, null, 2)}`);
+    if (typeof options !== 'undefined') {
+      return local(command, apiHost, options);
+    } else {
+      return local(command, apiHost);
+    }
   }
 
   /**
@@ -384,11 +394,9 @@ export class PactCommand
    * @param apiHost - the chainweb host where to send the transaction to
    * @alpha
    */
-  public async send(apiHost: string): Promise<ISendResponse> {
-    const sendResponse = await send(
-      { cmds: [convertIUnsignedTransactionToICommand(this.createCommand())] },
-      apiHost,
-    );
+  public async send(apiHost: string): Promise<SendResponse> {
+    const command: ICommand = ensureSignedCommand(this.createCommand());
+    const sendResponse = await send(createSendRequest([command]), apiHost);
     this.requestKey = sendResponse.requestKeys[0].toString();
     return sendResponse;
   }
@@ -426,18 +434,6 @@ export class PactCommand
   //   this.signer = fn;
   //   return this;
   // }
-}
-
-/**
- * @alpha
- */
-export function convertIUnsignedTransactionToICommand(
-  transaction: IUnsignedTransaction,
-): ICommand {
-  return {
-    ...transaction,
-    sigs: transaction.sigs.map((s) => ({ sig: s?.sig ?? null })),
-  };
 }
 
 /**

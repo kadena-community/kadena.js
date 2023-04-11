@@ -1,4 +1,4 @@
-import type { ISPVRequestBody, SPVResponse } from '@kadena/types';
+import type { ISPVRequestBody, SPVResponse } from './interfaces/PactAPI';
 
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
@@ -14,16 +14,17 @@ import fetch from 'cross-fetch';
  * @param apiHost - API host running a Pact-enabled server.
  * @alpha
  */
-export function spv(
+export async function spv(
   requestBody: ISPVRequestBody,
   apiHost: string,
 ): Promise<SPVResponse | Response> {
   const request = stringifyAndMakePOSTRequest(requestBody);
-
-  const response: Promise<SPVResponse | Response> = fetch(
-    `${apiHost}/spv`,
-    request,
-  ).then((r) => parseResponseTEXT(r));
-
-  return response;
+  const spvUrl = new URL(`${apiHost}/spv`);
+  try {
+    const response = await fetch(spvUrl.toString(), request);
+    return await parseResponseTEXT(response);
+  } catch (error) {
+    console.error('An error occurred while calling spv API:', error);
+    throw error;
+  }
 }

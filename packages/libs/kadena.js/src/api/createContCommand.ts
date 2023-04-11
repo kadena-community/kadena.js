@@ -1,8 +1,12 @@
+import {
+  createSendRequest,
+  ISendRequestBody,
+} from '@kadena/chainweb-node-client';
+import { ensureSignedCommand } from '@kadena/pactjs';
 import type {
   EnvData,
   IKeyPair,
   IMetaData,
-  ISendRequestBody,
   NetworkId,
   Nonce,
   PactTransactionHash,
@@ -11,7 +15,6 @@ import type {
   Step,
 } from '@kadena/types';
 
-import { createSendRequest } from './createSendRequest';
 import { prepareContCommand } from './prepareContCommand';
 
 /**
@@ -28,17 +31,17 @@ export function createContCommand(
   proof: Proof,
   networkId: NetworkId,
 ): ISendRequestBody {
-  return createSendRequest([
-    prepareContCommand(
-      keyPairs,
-      nonce,
-      proof,
-      pactId,
-      rollback,
-      step,
-      meta,
-      networkId,
-      envData,
-    ),
-  ]);
+  const command = prepareContCommand(
+    keyPairs,
+    nonce,
+    proof,
+    pactId,
+    rollback,
+    step,
+    meta,
+    networkId,
+    envData,
+  );
+  const signedCommand = ensureSignedCommand(command);
+  return createSendRequest(signedCommand);
 }

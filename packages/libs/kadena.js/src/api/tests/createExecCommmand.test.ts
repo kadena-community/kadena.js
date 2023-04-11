@@ -1,5 +1,6 @@
+import { createSendRequest } from '@kadena/chainweb-node-client';
+
 import { createExecCommand } from '../createExecCommand';
-import { createSendRequest } from '../createSendRequest';
 
 import {
   command,

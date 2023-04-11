@@ -4,13 +4,21 @@
 
 ```ts
 
+import type { ICommand } from '@kadena/types';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
+import type { IUnsignedCommand } from '@kadena/types';
 import { PactCode } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 
 // @alpha
 export function createExp(firstArg: string, ...args: PactValue[]): PactCode;
+
+// @alpha (undocumented)
+export function ensureSignedCommand(command: IUnsignedCommand | ICommand): ICommand;
+
+// @alpha
+export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
 
 // @alpha
 export class PactNumber {

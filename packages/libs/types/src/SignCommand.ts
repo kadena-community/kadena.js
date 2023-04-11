@@ -34,12 +34,3 @@ export type SignatureWithHash =
  * @alpha
  */
 export type SignCommand = SignatureWithHash;
-
-/**
- * @alpha
- */
-export interface ISignedCommand {
-  hash: string;
-  sigs: ISignature[];
-  cmd: string;
-}

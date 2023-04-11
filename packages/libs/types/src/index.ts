@@ -4,5 +4,4 @@ export * from './KeyPair';
 export * from './PactCommand';
 export * from './PactValue';
 export * from './SignCommand';
-export * from './PactAPI';
 export * from './Wallet';

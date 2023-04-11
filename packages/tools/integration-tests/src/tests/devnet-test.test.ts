@@ -2,28 +2,27 @@
 // To run devnet, follow instructions at https://github.com/kadena-io/devnet.
 
 import {
-  ISendResponse,
+  ChainwebNetworkId,
+  createListenRequest,
+  createPollRequest,
+  createSendRequest,
+  ICommandResult,
+  ILocalCommandResult,
+  IPollResponse,
+  ISendRequestBody,
   listen,
   local,
   poll,
   send,
+  SendResponse,
   spv,
 } from '@kadena/chainweb-node-client';
-import {
-  ChainwebNetworkId,
-  ICommand,
-  ICommandResult,
-  IPactEvent,
-  IPollResponse,
-  ISendRequestBody,
-  LocalResponse,
-  SendResponse,
-} from '@kadena/types';
+import { ensureSignedCommand } from '@kadena/pactjs';
+import { ICommand, IPactEvent, IUnsignedCommand } from '@kadena/types';
 
 import { createSampleContTx, createSampleExecTx } from './mock-txs';
 
 import { backOff } from 'exponential-backoff';
-import { createListenRequest, createPollRequest } from 'kadena.js';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =
@@ -36,16 +35,17 @@ const devnetKeyPair = {
 };
 const devnetAccount = `k:${devnetKeyPair.publicKey}`;
 
-const signedCommand1: ICommand = createSampleExecTx(
+const sampleCommand1: IUnsignedCommand = createSampleExecTx(
   devnetKeyPair,
   `(+ 1 2)`,
   devnetNetwork,
 );
-const sendReq1: ISendRequestBody = {
-  cmds: [signedCommand1],
-};
 
-const signedCommand2: ICommand = createSampleExecTx(
+const signedSampleCommand1: ICommand = ensureSignedCommand(sampleCommand1);
+
+const sendReq1: ISendRequestBody = createSendRequest(signedSampleCommand1);
+
+const sampleCommand2: IUnsignedCommand = createSampleExecTx(
   {
     ...devnetKeyPair,
     clist: [
@@ -69,8 +69,10 @@ const signedCommand2: ICommand = createSampleExecTx(
   { 'test-keyset': { pred: 'keys-all', keys: [devnetKeyPair.publicKey] } },
 );
 
+const signedSampleCommand2: ICommand = ensureSignedCommand(sampleCommand2);
+
 const sendReq2: ISendRequestBody = {
-  cmds: [signedCommand2],
+  cmds: [signedSampleCommand2],
 };
 
 function sleep20Seconds(): Promise<unknown> {
@@ -79,12 +81,12 @@ function sleep20Seconds(): Promise<unknown> {
 
 describe('[DevNet] Makes /send request of simple transaction', () => {
   it('Receives request key of transaction', async () => {
-    const actual: Response | ISendResponse = await send(
+    const actual: Response | SendResponse = await send(
       sendReq1,
       devnetApiHostChain0,
     );
     const expected: SendResponse = {
-      requestKeys: [signedCommand1.hash],
+      requestKeys: [signedSampleCommand1.hash],
     };
     expect(actual).toEqual(expected);
   });
@@ -92,12 +94,12 @@ describe('[DevNet] Makes /send request of simple transaction', () => {
 
 describe('[DevNet] Makes /send request to initiate a cross-chain transaction', () => {
   test('Receives request key of transaction', async () => {
-    const actual: Response | ISendResponse = await send(
+    const actual: Response | SendResponse = await send(
       sendReq2,
       devnetApiHostChain0,
     );
     const expected: SendResponse = {
-      requestKeys: [signedCommand2.hash],
+      requestKeys: [signedSampleCommand2.hash],
     };
     expect(actual).toEqual(expected);
   });
@@ -106,13 +108,13 @@ describe('[DevNet] Makes /send request to initiate a cross-chain transaction', (
 describe('[DevNet] Makes /local request of simple transaction', () => {
   it('Receives the expected transaction result', async () => {
     const actual: ICommandResult | Response = await local(
-      signedCommand1,
+      signedSampleCommand1,
       devnetApiHostChain0,
     );
     const { logs, metaData, ...actualWithoutLogsAndMetaData } =
       actual as ICommandResult;
-    const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
-      reqKey: signedCommand1.hash,
+    const expected: Omit<ILocalCommandResult, 'logs' | 'metaData'> = {
+      reqKey: signedSampleCommand1.hash,
       txId: null,
       result: {
         data: 3,
@@ -147,7 +149,7 @@ describe('[DevNet] Attempts to retrieve result of a simple transaction', () => {
   const expectedResult: Omit<ICommandResult, 'logs' | 'metaData' | 'txId'> = {
     continuation: null,
     gas: 5,
-    reqKey: signedCommand1.hash,
+    reqKey: signedSampleCommand1.hash,
     result: {
       data: 3,
       status: 'success',
@@ -217,7 +219,7 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
 
   it('/spv fails because instance is too young', async () => {
     const actual = spv(
-      { requestKey: signedCommand2.hash, targetChainId: '1' },
+      { requestKey: signedSampleCommand2.hash, targetChainId: '1' },
       devnetApiHostChain0,
     );
     const expected =
@@ -235,15 +237,15 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
     // Retrieve spv proof
     const actualSPVProof: string | Response = await backOff(() =>
       spv(
-        { requestKey: signedCommand2.hash, targetChainId: '1' },
+        { requestKey: signedSampleCommand2.hash, targetChainId: '1' },
         devnetApiHostChain0,
       ),
     );
     const proof = actualSPVProof as string;
-    const hash = signedCommand2.hash;
+    const hash = signedSampleCommand2.hash;
 
     // Submit /send request finishing cross-chain transfer in target chain
-    const contReqPayload: ICommand = createSampleContTx(
+    const contReqPayload: IUnsignedCommand = createSampleContTx(
       devnetNetwork,
       devnetKeyPair,
       hash,
@@ -251,13 +253,14 @@ describe('[DevNet] Finishes a cross-chain transfer', () => {
       proof.replace(/"/g, '').replace(/\\/g, ''), // NOTE: Prevents a Pact parsing error.
       '1',
     );
-    const contReq: ISendRequestBody = { cmds: [contReqPayload] };
-    const actualContSendResp: ISendResponse | Response = await send(
+    const signedContReqPayload: ICommand = ensureSignedCommand(contReqPayload);
+    const contReq: ISendRequestBody = createSendRequest(signedContReqPayload);
+    const actualContSendResp: SendResponse | Response = await send(
       contReq,
       devnetApiHostChain1,
     );
     const expectedContSendResp: SendResponse = {
-      requestKeys: [contReqPayload.hash],
+      requestKeys: [signedContReqPayload.hash],
     };
     expect(actualContSendResp).toEqual(expectedContSendResp);
 
