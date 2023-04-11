@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Add typography components",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

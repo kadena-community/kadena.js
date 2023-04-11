@@ -46,3 +46,8 @@
 .cardSection input, .cardSection textarea {
   width: 300px;
 }
+
+.fieldLabel {
+  margin: 1.25rem 0 0.5rem;
+  font-weight: bold;
+}

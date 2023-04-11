@@ -107,16 +107,17 @@ export default {
     <div class="card">
       <h3 class="cardTitle">Interact with the blockchain</h3>
       <section class="cardSection">
-        <h4>My Account</h4>
+        <label for="account" class="fieldLabel">My Account</label>
         <input
-          :id="account"
+          id="account"
           v-model="account"
           placeholder="Please enter a valid k:account"
         />
       </section>
       <section class="cardSection">
-        <h4>Write Message</h4>
+        <label for="write-message" class="fieldLabel">Write Message</label>
         <textarea
+          id="write-message"
           v-model="messageToWrite"
           :disabled="writeInProgress || !account"
         ></textarea>
@@ -134,8 +135,12 @@ export default {
         />
       </section>
       <section class="cardSection">
-        <h4>Read Message</h4>
-        <textarea disabled v-model="messageFromChain"></textarea>
+        <label for="read-message" class="fieldLabel">Read Message</label>
+        <textarea
+          id="read-message"
+          disabled
+          v-model="messageFromChain"
+        ></textarea>
         <button @click="readMessage" :disabled="!account">Read</button>
       </section>
     </div>
@@ -205,5 +210,10 @@ header {
 
 .title span {
   color: #ed098f;
+}
+
+.fieldLabel {
+  margin: 1.25rem 0 0.5rem;
+  font-weight: bold;
 }
 </style>

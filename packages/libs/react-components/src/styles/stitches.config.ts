@@ -67,6 +67,8 @@ export const {
   theme: {
     colors: {
       ...colors,
+      background: '$colors$neutral1',
+      foreground: '$colors$neutral6',
     },
     fonts: {
       main: 'Haas Grotesk Display, -apple-system, sans-serif',
@@ -92,10 +94,14 @@ export const {
       '12xl': '5.25rem', // 84px
     },
     fontWeights: {
+      light: 300,
       normal: 400,
       medium: 500,
-      bold: 700,
-      extraBold: 900,
+      semiBold: 700,
+      bold: 900,
+    },
+    lineHeights: {
+      base: 1.4,
     },
     radii: {
       sm: '4px',
@@ -105,7 +111,7 @@ export const {
     },
     shadows: {
       // TODO: Update to match design system
-      1: `0px 1px 2px 0 $colors$gray500`,
+      1: `0px 1px 2px 0 $colors$neutral3`,
     },
     space: {
       ...sizes,
@@ -169,6 +175,8 @@ export const {
 export const darkTheme = createTheme('darkTheme', {
   colors: {
     ...colorsDark,
+    background: '$colors$neutral1',
+    foreground: '$colors$neutral6',
   },
 });
 

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Add icon lib ",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
