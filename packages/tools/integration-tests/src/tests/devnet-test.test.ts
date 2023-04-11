@@ -7,11 +7,11 @@ import {
   createPollRequest,
   createSendRequest,
   ICommandResult,
+  ILocalCommandResult,
   IPollResponse,
   ISendRequestBody,
   listen,
   local,
-  LocalResponse,
   poll,
   send,
   SendResponse,
@@ -113,7 +113,7 @@ describe('[DevNet] Makes /local request of simple transaction', () => {
     );
     const { logs, metaData, ...actualWithoutLogsAndMetaData } =
       actual as ICommandResult;
-    const expected: Omit<LocalResponse, 'logs' | 'metaData'> = {
+    const expected: Omit<ILocalCommandResult, 'logs' | 'metaData'> = {
       reqKey: signedSampleCommand1.hash,
       txId: null,
       result: {
