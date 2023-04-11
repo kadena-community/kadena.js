@@ -7,7 +7,7 @@ export interface IPactCommand {
   code: string;
   data: Record<string, unknown>;
   publicMeta: IPublicMeta;
-  networkId: Exclude<ChainwebNetworkId, undefined>;
+  networkId: ChainwebNetworkId;
   // signers: ISigner[];
   signers: {
     pubKey: string;

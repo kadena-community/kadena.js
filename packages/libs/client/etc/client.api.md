@@ -112,7 +112,7 @@ export interface IPactCommand {
     // (undocumented)
     data: Record<string, unknown>;
     // (undocumented)
-    networkId: Exclude<ChainwebNetworkId, undefined>;
+    networkId: ChainwebNetworkId;
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
@@ -250,7 +250,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     data: Record<string, unknown>;
     local(apiHost: string, options?: any): Promise<any>;
     // (undocumented)
-    networkId: Exclude<ChainwebNetworkId, undefined>;
+    networkId: ChainwebNetworkId;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;

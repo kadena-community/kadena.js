@@ -128,7 +128,7 @@ export class PactCommand
     gasPrice: number;
     ttl: number;
   };
-  public networkId: Exclude<ChainwebNetworkId, undefined>;
+  public networkId: ChainwebNetworkId;
   public signers: {
     pubKey: string;
     caps: {

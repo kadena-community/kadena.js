@@ -2,7 +2,7 @@ import type {
   IPollResponse,
   ISendRequestBody,
   ListenResponse,
-  LocalResponse,
+  ILocalCommandResult,
   SendResponse,
   SPVResponse,
   IPreflightResult,
@@ -41,7 +41,7 @@ export async function mockFetch(
     }
     case `${testURL}/api/v1/local`: {
       if (init?.body !== null && init?.body !== undefined) {
-        const response: LocalResponse = {
+        const response: ILocalCommandResult = {
           reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
           txId: null,
           result: {
@@ -63,7 +63,7 @@ export async function mockFetch(
     }
     case `${testURL}/api/v1/local?preflight=false&signatureVerification=true`: {
       if (init?.body !== null && init?.body !== undefined) {
-        const response: LocalResponse = {
+        const response: ILocalCommandResult = {
           reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
           txId: null,
           result: {

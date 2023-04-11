@@ -197,16 +197,16 @@ export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: I
 // Warning: (ae-forgotten-export) The symbol "CmdWithSigs" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<LocalResult>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<ILocalCommandResult>;
 
 // @alpha (undocumented)
 export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsBothFalse): Promise<LocalResultWithoutPreflight>;
 
 // @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<LocalResult>;
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<ILocalCommandResult>;
 
 // @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | LocalResult>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | ILocalCommandResult>;
 
 // @alpha
 export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
@@ -218,13 +218,7 @@ export function localRaw(requestBody: LocalRequestBody, apiHost: string, { prefl
 export type LocalRequestBody = ICommand | IUnsignedCommand;
 
 // @alpha (undocumented)
-export type LocalResponse = ILocalCommandResult;
-
-// @alpha
-export type LocalResult = ILocalCommandResult;
-
-// @alpha (undocumented)
-export type LocalResultWithoutPreflight = Omit<LocalResult, 'preflightWarnings'>;
+export type LocalResultWithoutPreflight = Omit<ILocalCommandResult, 'preflightWarnings'>;
 
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;

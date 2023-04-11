@@ -124,41 +124,13 @@ export type LocalRequestBody = ICommand | IUnsignedCommand;
 /**
  * @alpha
  */
-export type LocalResponse = ILocalCommandResult;
-
-/**
- * @alpha
- */
 export type ILocalResult = IPreflightResult | ICommandResult;
-
-/**
- * API result of attempting to execute a pact transaction.
- *
- * @param reqKey - Unique ID of a pact transaction, equivalent to the payload hash.
- * @param txId - Database-internal transaction tracking ID.
- *               Absent when transaction was not successful.
- *               Expected to be non-negative 64-bit integers and
- *               are expected to be monotonically increasing.
- * @param result - Pact execution result, either a Pact error or the output (a PactValue) of the last pact expression in the transaction.
- * @param gas - Gas units consummed by the transaction as a 64-bit integer.
- * @param logs - Backend-specific value providing image of database logs.
- * @param continuation - Describes the result of a defpact execution, if one occurred.
- * @param metaData - Platform-specific information on the block that executed the transaction.
- * @param events - Optional list of Pact events emitted during the transaction.
- * @param preflightWarnings - Optional list of Preflight warnings on /local result.
- *
- *
- * @alpha
- */
-// @TODO Should `txId` and `gas` be a BigInt since Haskell defines it as int64?
-// @TODO Add `gas` to OpenApi spec?
-export type LocalResult = ILocalCommandResult;
 
 /**
  * @alpha
  */
 export type LocalResultWithoutPreflight = Omit<
-  LocalResult,
+  ILocalCommandResult,
   'preflightWarnings'
 >;
 

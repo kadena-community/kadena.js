@@ -3,7 +3,7 @@ import type {
   ICommandResult,
   LocalRequestBody,
   IPreflightResult,
-  LocalResult,
+  ILocalCommandResult,
   LocalResultWithoutPreflight,
 } from './interfaces/PactAPI';
 import { parseResponse, parsePreflight } from './parseResponse';
@@ -99,7 +99,7 @@ export function local(
   requestBody: CmdWithSigs,
   apiHost: string,
   options?: IOptionsBothTrue,
-): Promise<LocalResult>;
+): Promise<ILocalCommandResult>;
 
 /**
  * @alpha
@@ -117,7 +117,7 @@ export function local(
   requestBody: CmdOptionalSigs,
   apiHost: string,
   options?: IOptionsPreflightTrue,
-): Promise<LocalResult>;
+): Promise<ILocalCommandResult>;
 
 /**
  * @alpha
@@ -126,7 +126,7 @@ export function local(
   requestBody: CmdWithSigs,
   apiHost: string,
   options?: IOptionsSigVerifyTrue,
-): Promise<LocalResultWithoutPreflight | LocalResult>;
+): Promise<LocalResultWithoutPreflight | ILocalCommandResult>;
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -141,7 +141,7 @@ export async function local(
   requestBody: LocalRequestBody,
   apiHost: string,
   options?: IOptions,
-): Promise<LocalResult | LocalResultWithoutPreflight> {
+): Promise<ILocalCommandResult | LocalResultWithoutPreflight> {
   const { signatureVerification = true, preflight = true } = options ?? {};
 
   if (!signatureVerification) {

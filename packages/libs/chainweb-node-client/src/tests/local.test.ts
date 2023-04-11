@@ -9,7 +9,7 @@ import type {
 } from '@kadena/types';
 import type {
   ICommandResult,
-  LocalResponse,
+  ILocalCommandResult,
   LocalResultWithoutPreflight,
 } from '../interfaces/PactAPI';
 
@@ -43,7 +43,7 @@ test('local should return preflight result of tx queried ', async () => {
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
-  const commandResult1: LocalResponse = {
+  const commandResult1: ILocalCommandResult = {
     reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     txId: null,
     result: {
@@ -56,7 +56,7 @@ test('local should return preflight result of tx queried ', async () => {
     logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
     preflightWarnings: [],
   };
-  const responseExpected: LocalResponse = commandResult1;
+  const responseExpected: ILocalCommandResult = commandResult1;
   const responseActual: ICommandResult | Response = await local(
     signedCommand1,
     testURL,
@@ -83,7 +83,7 @@ test('local with `{preflight: false}` option returns non-preflight result', asyn
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
-  const commandResult1: LocalResponse = {
+  const commandResult1: ILocalCommandResult = {
     reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     txId: null,
     result: {
@@ -118,7 +118,7 @@ test('local with `{signatureVerification: false}` option returns preflight resul
     sigs: [undefined],
   };
 
-  const commandResult1: LocalResponse = {
+  const commandResult1: ILocalCommandResult = {
     reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     txId: null,
     result: {
