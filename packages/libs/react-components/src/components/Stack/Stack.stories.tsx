@@ -13,15 +13,18 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const Item = styled('div', {
-  backgroundColor: '$background',
+  backgroundColor: '$primarySurface',
+  color: '$foreground',
+  fontFamily: '$main',
   size: '$32',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  borderRadius: '$sm',
 });
 
 const meta: Meta<typeof Stack> = {
-  title: 'Stack',
+  title: 'Layout/Stack',
   component: Stack,
   argTypes: {
     spacing: {
