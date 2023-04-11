@@ -1,25 +1,29 @@
-import { styled } from '@kadena/react-components';
+import { config, styled } from '@kadena/react-components';
 
 import Link from 'next/link';
 
-export const StyledHeader = styled('header', {
-  backgroundColor: '#1D1D1F',
-  color: 'white',
-});
+export const StyledHeader: unknown = styled(
+  'header',
+  {
+    backgroundColor: '#1D1D1F',
+    color: 'white',
+  },
+  config,
+);
 
-export const Wrapper = styled('div', {
+export const Wrapper: unknown = styled('div', {
   display: 'flex',
   margin: '0',
   padding: '$3 $4',
 });
 
-export const StyleNav = styled('nav', {
+export const StyleNav: unknown = styled('nav', {
   display: 'flex',
   alignItems: 'center',
   zIndex: 1,
 });
 
-export const StyledUl = styled('ul', {
+export const StyledUl: unknown = styled('ul', {
   display: 'flex',
   gap: '$4',
   padding: 0,
@@ -27,7 +31,7 @@ export const StyledUl = styled('ul', {
   width: '100%',
 });
 
-export const NavLink = styled(Link, {
+export const NavLink: unknown = styled(Link, {
   color: 'white',
   fontFamily: '$main',
   textDecoration: 'none',
@@ -44,7 +48,7 @@ export const NavLink = styled(Link, {
   },
 });
 
-export const AnimationBackgroundWrapper = styled('div', {
+export const AnimationBackgroundWrapper: unknown = styled('div', {
   position: 'absolute',
   top: 0,
   left: 0,
