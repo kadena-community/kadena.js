@@ -1,3 +1,4 @@
+import { colors } from '../../styles/colors';
 import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
@@ -26,6 +27,12 @@ const meta: Meta<{ icon: string } & Icons.IIconProps> = {
         type: 'select',
       },
     },
+    color: {
+      options: Object.keys(colors),
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 
@@ -35,7 +42,7 @@ type Story = StoryObj<{ icon: string } & Icons.IIconProps>;
 export const Primary: Story = {
   name: 'Icon',
   args: {},
-  render: ({ icon = '', size }) => {
+  render: ({ icon = '', size, color }) => {
     // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
     const searchRegexp = new RegExp(icon, 'i');
     return (
@@ -47,7 +54,7 @@ export const Primary: Story = {
             .map(([k, Icon]) => (
               <Grid.Item key={k}>
                 <Stack direction="column" alignItems="center" spacing="xs">
-                  <Icon size={size} />
+                  <Icon size={size} color={color} />
                   <Text size="sm">{k}</Text>
                 </Stack>
               </Grid.Item>

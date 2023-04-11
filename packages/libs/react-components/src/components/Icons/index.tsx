@@ -1,70 +1,71 @@
-import { Account } from './account';
-import { AlertBox } from './alertBox';
-import { AlertBoxOutline } from './alertBoxOutline';
-import { AlertCircleOutline } from './alertCircleOutline';
-import { Application } from './application';
-import { ApplicationBrackets } from './applicationBrackets';
-import { ApplicationCogOutline } from './applicationCogOutline';
-import { Backburger } from './backburger';
-import { BadgeAccount } from './badgeAccount';
-import { Bell } from './bell';
-import { BellRing } from './bellRing';
-import { CarBrakeParking } from './carBrakeParking';
-import { Check } from './check';
-import { CheckboxBlankOutline } from './checkboxBlankOutline';
-import { CheckboxIntermediateVariant } from './checkboxIntermediateVariant';
-import { CheckboxMarked } from './checkboxMarked';
-import { CheckDecagram } from './checkDecagram';
-import { CheckDecagramOutline } from './checkDecagramOutline';
-import { ChevronDown } from './chevronDown';
-import { ChevronUp } from './chevronUp';
-import { Close } from './close';
-import { ContentCopy } from './contentCopy';
-import { Dialpad } from './dialpad';
-import { Earth } from './earth';
-import { EmailOutline } from './emailOutline';
-import { ExitToApp } from './exitToApp';
-import { Eye } from './eye';
-import { EyeOffOutline } from './eyeOffOutline';
-import { EyeOutline } from './eyeOutline';
-import { FlagCheckered } from './flagCheckered';
-import { FolderRemoveOutline } from './folderRemoveOutline';
-import { FormTextboxPassword } from './formTextboxPassword';
-import { Github } from './github';
-import { HelpCircle } from './helpCircle';
-import { History } from './history';
-import { Information } from './information';
-import { KeyIconFilled } from './keyIconFilled';
-import { KeyIconOutlined } from './keyIconOutlined';
-import { KIcon } from './kIcon';
-import { LeadingIcon } from './leadingIcon';
-import { Link } from './link';
-import { Linkedin } from './linkedin';
-import { Loading } from './loading';
-import { Magnify } from './magnify';
-import { MapMarker } from './mapMarker';
-import { MenuOpen } from './menuOpen';
-import { Plus } from './plus';
-import { ProgressWrench } from './progressWrench';
-import { QrcodeScan } from './qrcodeScan';
-import { RadioboxBlank } from './radioboxBlank';
-import { RadioboxMarked } from './radioboxMarked';
-import { Refresh } from './refresh';
-import { ScriptTextKey } from './scriptTextKey';
-import { ScriptTextKeyNew } from './scriptTextKeyNew';
-import { ShieldAccountVariantOutline } from './shieldAccountVariantOutline';
-import { SignatureFreehand } from './signatureFreehand';
-import { SlashForward } from './slashForward';
-import { StopCircle } from './stopCircle';
-import { IconContainer, sizeVariant } from './styles';
-import { TrailingIcon } from './trailingIcon';
-import { Twitter } from './twitter';
-import { UsbFlashDrive } from './usbFlashDrive';
+import { Account } from './Account';
+import { AlertBox } from './AlertBox';
+import { AlertBoxOutline } from './AlertBoxOutline';
+import { AlertCircleOutline } from './AlertCircleOutline';
+import { Application } from './Application';
+import { ApplicationBrackets } from './ApplicationBrackets';
+import { ApplicationCogOutline } from './ApplicationCogOutline';
+import { Backburger } from './Backburger';
+import { BadgeAccount } from './BadgeAccount';
+import { Bell } from './Bell';
+import { BellRing } from './BellRing';
+import { CarBrakeParking } from './CarBrakeParking';
+import { Check } from './Check';
+import { CheckboxBlankOutline } from './CheckboxBlankOutline';
+import { CheckboxIntermediateVariant } from './CheckboxIntermediateVariant';
+import { CheckboxMarked } from './CheckboxMarked';
+import { CheckDecagram } from './CheckDecagram';
+import { CheckDecagramOutline } from './CheckDecagramOutline';
+import { ChevronDown } from './ChevronDown';
+import { ChevronUp } from './ChevronUp';
+import { Close } from './Close';
+import { ContentCopy } from './ContentCopy';
+import { Dialpad } from './Dialpad';
+import { Earth } from './Earth';
+import { EmailOutline } from './EmailOutline';
+import { ExitToApp } from './ExitToApp';
+import { Eye } from './Eye';
+import { EyeOffOutline } from './EyeOffOutline';
+import { EyeOutline } from './EyeOutline';
+import { FlagCheckered } from './FlagCheckered';
+import { FolderRemoveOutline } from './FolderRemoveOutline';
+import { FormTextboxPassword } from './FormTextboxPassword';
+import { Github } from './Github';
+import { HelpCircle } from './HelpCircle';
+import { History } from './History';
+import { Information } from './Information';
+import { KeyIconFilled } from './KeyIconFilled';
+import { KeyIconOutlined } from './KeyIconOutlined';
+import { KIcon } from './KIcon';
+import { LeadingIcon } from './LeadingIcon';
+import { Link } from './Link';
+import { Linkedin } from './Linkedin';
+import { Loading } from './Loading';
+import { Magnify } from './Magnify';
+import { MapMarker } from './MapMarker';
+import { MenuOpen } from './MenuOpen';
+import { Plus } from './Plus';
+import { ProgressWrench } from './ProgressWrench';
+import { QrcodeScan } from './QrcodeScan';
+import { RadioboxBlank } from './RadioboxBlank';
+import { RadioboxMarked } from './RadioboxMarked';
+import { Refresh } from './Refresh';
+import { ScriptTextKey } from './ScriptTextKey';
+import { ScriptTextKeyNew } from './ScriptTextKeyNew';
+import { ShieldAccountVariantOutline } from './ShieldAccountVariantOutline';
+import { SignatureFreehand } from './SignatureFreehand';
+import { SlashForward } from './SlashForward';
+import { StopCircle } from './StopCircle';
+import { colorVariant, IconContainer, sizeVariant } from './styles';
+import { TrailingIcon } from './TrailingIcon';
+import { Twitter } from './Twitter';
+import { UsbFlashDrive } from './UsbFlashDrive';
 
 import React, { SVGProps } from 'react';
 
 export interface IIconProps {
-  size: keyof typeof sizeVariant;
+  size?: keyof typeof sizeVariant;
+  color?: keyof typeof colorVariant;
 }
 const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -72,9 +73,10 @@ const IconWrapper = (
 ): React.FC<SVGProps<SVGSVGElement> & IIconProps> => {
   const WrappedIcon: React.FC<SVGProps<SVGSVGElement> & IIconProps> = ({
     size = 'md',
+    color,
     ...props
   }) => (
-    <IconContainer size={size}>
+    <IconContainer size={size} color={color}>
       <Component {...props} height={undefined} width={undefined} />
     </IconContainer>
   );
