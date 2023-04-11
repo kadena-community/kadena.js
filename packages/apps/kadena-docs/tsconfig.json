@@ -1,28 +1,21 @@
 {
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
-    "types": [
-      "heft-jest",
-      "node"
-    ],
+    "types": ["heft-jest", "node"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "target": "ES2020",
-    "allowJs": false,
+    "target": "es5",
+    "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,
+    "strict": true,
     "incremental": true,
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
-    "declarationMap": false,
     "jsx": "preserve"
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

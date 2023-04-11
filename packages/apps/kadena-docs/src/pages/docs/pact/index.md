@@ -4,8 +4,6 @@ description: How to get started with Markdoc
 layout: full
 ---
 
-# Pact
-
 ## Section 1
 
 Cookie dragée bear claw ice cream jelly beans fruitcake danish tootsie roll.

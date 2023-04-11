@@ -4,6 +4,7 @@ import { ILayout } from '../types';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
 import { ISubElement } from '@/types/Layout';
+import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
 
 export const Full: FC<ILayout> = ({ children }) => {
@@ -11,8 +12,8 @@ export const Full: FC<ILayout> = ({ children }) => {
 
   const renderListItem = (item: ISubElement): ReactNode => {
     return (
-      <li>
-        {item.title}
+      <li key={item.slug}>
+        <Link href={`#${item.slug}`}>{item.title}</Link>
 
         {item.children.length > 0 && (
           <ul>{item.children.map(renderListItem)}</ul>
@@ -23,7 +24,6 @@ export const Full: FC<ILayout> = ({ children }) => {
   return (
     <Main ref={docRef}>
       <ul>{headers.map(renderListItem)}</ul>
-      <h1>Full</h1>
       {children}
     </Main>
   );
