@@ -1,3 +1,5 @@
+import { config } from '../../styles';
+
 import { Account } from './Account';
 import { AlertBox } from './AlertBox';
 import { AlertBoxOutline } from './AlertBoxOutline';
@@ -56,16 +58,17 @@ import { ShieldAccountVariantOutline } from './ShieldAccountVariantOutline';
 import { SignatureFreehand } from './SignatureFreehand';
 import { SlashForward } from './SlashForward';
 import { StopCircle } from './StopCircle';
-import { colorVariant, IconContainer, sizeVariant } from './styles';
+import { IconContainer } from './styles';
 import { TrailingIcon } from './TrailingIcon';
 import { Twitter } from './Twitter';
 import { UsbFlashDrive } from './UsbFlashDrive';
 
+import type { PropertyValue, VariantProps } from '@stitches/react';
 import React, { SVGProps } from 'react';
 
 export interface IIconProps {
-  size?: keyof typeof sizeVariant;
-  color?: keyof typeof colorVariant;
+  size?: VariantProps<typeof IconContainer>['size'];
+  color?: PropertyValue<'color', typeof config>;
 }
 const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -76,7 +79,7 @@ const IconWrapper = (
     color,
     ...props
   }) => (
-    <IconContainer size={size} color={color}>
+    <IconContainer size={size} css={{ color }}>
       <Component {...props} height={undefined} width={undefined} />
     </IconContainer>
   );

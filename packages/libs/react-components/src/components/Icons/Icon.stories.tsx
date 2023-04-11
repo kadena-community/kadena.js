@@ -3,6 +3,7 @@ import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
 
+import { sizeVariant } from './styles';
 import * as Icons from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -13,7 +14,7 @@ import React from 'react';
  * See https://storybook.js.org/docs/7.0/react/api/csf
  * to learn how to use render functions.
  */
-const meta: Meta<{ icon: string } & Icons.IIconProps> = {
+const meta: Meta<{ icon: string; color: string } & Icons.IIconProps> = {
   title: 'Icons',
   argTypes: {
     icon: {
@@ -22,13 +23,13 @@ const meta: Meta<{ icon: string } & Icons.IIconProps> = {
       },
     },
     size: {
-      options: ['sm', 'md', 'lg'],
+      options: Object.keys(sizeVariant),
       control: {
         type: 'select',
       },
     },
     color: {
-      options: Object.keys(colors),
+      options: Object.keys(colors).map((k) => `$${k}`),
       control: {
         type: 'select',
       },
@@ -37,7 +38,7 @@ const meta: Meta<{ icon: string } & Icons.IIconProps> = {
 };
 
 export default meta;
-type Story = StoryObj<{ icon: string } & Icons.IIconProps>;
+type Story = StoryObj<{ icon: string; color: string } & Icons.IIconProps>;
 
 export const Primary: Story = {
   name: 'Icon',
