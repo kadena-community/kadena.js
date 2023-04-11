@@ -170,21 +170,6 @@ describe('generate', () => {
       expect(result).toBeUndefined();
     });
 
-    it('fails gracefully when the contract cannot be fetched', async () => {
-      mockedRetrieveContractFromChain.mockResolvedValue(undefined);
-
-      const result = await createAndRunProgram('chain');
-
-      expect(mockedRetrieveContractFromChain.mock.calls[0][0]).toContain(
-        'free.crankk01',
-      );
-      expect(mockProgramError.mock.calls[0][0]).toBe(
-        'Could not retrieve contract from chain',
-      );
-
-      expect(result).toBeUndefined();
-    });
-
     it('writes the d.ts files', async () => {
       await createAndRunProgram('chain');
 

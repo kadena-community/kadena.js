@@ -14,7 +14,7 @@ export class StringContractDefinition implements IContractDefinition {
 
   public constructor(
     contract: string,
-    namespace: string = '',
+    namespace?: string,
     logger: ILogger = () => {},
   ) {
     this._contract = contract;
@@ -24,8 +24,8 @@ export class StringContractDefinition implements IContractDefinition {
     this._setNamespace(namespace);
   }
 
-  private _setNamespace(namespace: string): void {
-    if (!namespace) return;
+  private _setNamespace(namespace?: string): void {
+    if (namespace === undefined) return;
 
     Object.keys(this._raw).forEach((module) => {
       this._raw[module].namespace = namespace;
