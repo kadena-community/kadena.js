@@ -19,7 +19,7 @@ import type { SPVProof } from '@kadena/types';
 export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
 
 // @alpha
-export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development' | undefined;
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
 
 // @alpha (undocumented)
 export function convertIUnsignedTransactionToNoSig(transaction: IUnsignedCommand): ICommand;
@@ -64,11 +64,8 @@ export interface IListenRequestBody {
     listen: IBase64Url;
 }
 
-// @alpha (undocumented)
-export type ILocalCommandResult = IPreflightResult | ICommandResult;
-
 // @alpha
-export interface ILocalCommandResultWithPreflight {
+export interface ILocalCommandResult {
     // (undocumented)
     continuation: IPactExec | null;
     // (undocumented)
@@ -88,6 +85,9 @@ export interface ILocalCommandResultWithPreflight {
     // (undocumented)
     txId: number | null;
 }
+
+// @alpha (undocumented)
+export type ILocalResult = IPreflightResult | ICommandResult;
 
 // @alpha (undocumented)
 export type IOptions = IOptionsSigVerifyTrue | IOptionsPreflightFalse | IOptionsSigVerifyFalse | IOptionsBothTrue | IOptionsBothFalse | IOptionsPreflightTrue;
@@ -197,16 +197,16 @@ export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: I
 // Warning: (ae-forgotten-export) The symbol "CmdWithSigs" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<LocalResultWithPreflight>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<LocalResult>;
 
 // @alpha (undocumented)
 export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsBothFalse): Promise<LocalResultWithoutPreflight>;
 
 // @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<LocalResultWithPreflight>;
+export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<LocalResult>;
 
 // @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | LocalResultWithPreflight>;
+export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | LocalResult>;
 
 // @alpha
 export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
@@ -220,17 +220,17 @@ export type LocalRequestBody = ICommand | IUnsignedCommand;
 // @alpha (undocumented)
 export type LocalResponse = ILocalCommandResult;
 
-// @alpha (undocumented)
-export type LocalResultWithoutPreflight = Omit<LocalResultWithPreflight, 'preflightWarnings'>;
-
 // @alpha
-export type LocalResultWithPreflight = ILocalCommandResultWithPreflight;
+export type LocalResult = ILocalCommandResult;
+
+// @alpha (undocumented)
+export type LocalResultWithoutPreflight = Omit<LocalResult, 'preflightWarnings'>;
 
 // @alpha
 export function mkCap(name: string, args?: Array<PactValue>): ICap;
 
 // @alpha (undocumented)
-export function parsePreflight(commandResult: ILocalCommandResult): ILocalCommandResultWithPreflight;
+export function parsePreflight(commandResult: ILocalResult): ILocalCommandResult;
 
 // @alpha
 export function parseResponse<T>(response: Response): Promise<T>;

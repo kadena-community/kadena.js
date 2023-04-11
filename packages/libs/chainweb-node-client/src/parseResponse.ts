@@ -1,8 +1,5 @@
 import type { Response } from 'cross-fetch';
-import type {
-  ILocalCommandResultWithPreflight,
-  ILocalCommandResult,
-} from './interfaces/PactAPI';
+import type { ILocalCommandResult, ILocalResult } from './interfaces/PactAPI';
 /**
  * Parses raw `fetch` response into a typed JSON value.
  *
@@ -29,8 +26,8 @@ export async function parseResponse<T>(response: Response): Promise<T> {
  * @alpha
  */
 export function parsePreflight(
-  commandResult: ILocalCommandResult,
-): ILocalCommandResultWithPreflight {
+  commandResult: ILocalResult,
+): ILocalCommandResult {
   if ('preflightResult' in commandResult) {
     return {
       ...commandResult.preflightResult,
