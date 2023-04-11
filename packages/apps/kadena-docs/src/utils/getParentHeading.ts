@@ -1,9 +1,13 @@
-import { ISubElement } from '@/types/Layout';
+import { ISubHeaderElement } from '@/types/Layout';
 
+/**
+ * Function used for creating a nested list of all headers in a document.
+ * It finds the parentHeading where the child header should be nested
+ */
 export const getParentHeading = (
-  parent: ISubElement,
+  parent: ISubHeaderElement,
   newChild: HTMLHeadingElement,
-): ISubElement => {
+): ISubHeaderElement => {
   const orderArr = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
   const nodes = [parent];
   let child = parent.children[parent.children.length - 1] ?? parent;

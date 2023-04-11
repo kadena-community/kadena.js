@@ -1,23 +1,23 @@
-import { ISubElement, TagNameType } from '@/types/Layout';
+import { ISubHeaderElement, TagNameType } from '@/types/Layout';
 import { createSlug, getParentHeading } from '@/utils';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 interface IReturn {
   docRef: React.RefObject<HTMLDivElement>;
-  headers: ISubElement[];
+  headers: ISubHeaderElement[];
 }
 
 export const useCreateSubMenu = (): IReturn => {
   const router = useRouter();
   const docRef = useRef<HTMLDivElement>(null);
-  const [headers, setHeaders] = useState<ISubElement[]>([]);
+  const [headers, setHeaders] = useState<ISubHeaderElement[]>([]);
 
   useEffect(() => {
     if (docRef.current) {
       const doc = docRef.current;
 
-      const startArray: ISubElement[] = [
+      const startArray: ISubHeaderElement[] = [
         {
           tag: 'h1',
           children: [],
@@ -31,7 +31,7 @@ export const useCreateSubMenu = (): IReturn => {
       Array.from(elements).forEach((item) => {
         parent = getParentHeading(startArray[0], item);
 
-        const elm: ISubElement = {
+        const elm: ISubHeaderElement = {
           tag: item.tagName.toLowerCase() as TagNameType,
           title: item.firstChild?.nodeValue ?? '',
           slug: createSlug(item.firstChild?.nodeValue ?? ''),
