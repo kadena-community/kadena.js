@@ -1,7 +1,7 @@
 import { config, styled } from '@kadena/react-components';
 
 import Link from 'next/link';
-import { FC, ReactNode, Validator } from 'react';
+import { FC, ReactNode } from 'react';
 
 type StyledComponentType<T = HTMLElement> = FC<{
   children?: ReactNode | {};
