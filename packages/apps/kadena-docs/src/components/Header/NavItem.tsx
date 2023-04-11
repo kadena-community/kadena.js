@@ -10,12 +10,9 @@ interface IProps {
 
 export const NavItem: FC<IProps> = ({ children, href = '' }) => {
   const router = useRouter();
-  const active = href === router.pathname;
   return (
     <li>
-      <NavLink active={active} href={href}>
-        {children}
-      </NavLink>
+      <NavLink href={href}>{children}</NavLink>
     </li>
   );
 };

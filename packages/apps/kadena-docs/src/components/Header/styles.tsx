@@ -1,8 +1,15 @@
 import { config, styled } from '@kadena/react-components';
 
 import Link from 'next/link';
+import { FC, ReactNode, Validator } from 'react';
 
-export const StyledHeader: unknown = styled(
+type StyledComponentType<T = HTMLElement> = FC<{
+  children?: ReactNode | {};
+  ref?: React.ForwardedRef<T>;
+  href?: unknown;
+}>;
+
+export const StyledHeader: StyledComponentType = styled(
   'header',
   {
     backgroundColor: '#1D1D1F',
@@ -11,19 +18,19 @@ export const StyledHeader: unknown = styled(
   config,
 );
 
-export const Wrapper: unknown = styled('div', {
+export const Wrapper: StyledComponentType<HTMLDivElement> = styled('div', {
   display: 'flex',
   margin: '0',
   padding: '$3 $4',
 });
 
-export const StyleNav: unknown = styled('nav', {
+export const StyleNav: StyledComponentType = styled('nav', {
   display: 'flex',
   alignItems: 'center',
   zIndex: 1,
 });
 
-export const StyledUl: unknown = styled('ul', {
+export const StyledUl: StyledComponentType<HTMLUListElement> = styled('ul', {
   display: 'flex',
   gap: '$4',
   padding: 0,
@@ -31,7 +38,7 @@ export const StyledUl: unknown = styled('ul', {
   width: '100%',
 });
 
-export const NavLink: unknown = styled(Link, {
+export const NavLink: StyledComponentType<HTMLAnchorElement> = styled(Link, {
   color: 'white',
   fontFamily: '$main',
   textDecoration: 'none',
@@ -48,9 +55,10 @@ export const NavLink: unknown = styled(Link, {
   },
 });
 
-export const AnimationBackgroundWrapper: unknown = styled('div', {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  zIndex: 0,
-});
+export const AnimationBackgroundWrapper: StyledComponentType<HTMLDivElement> =
+  styled('div', {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 0,
+  });
