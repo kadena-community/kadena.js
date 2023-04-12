@@ -1,41 +1,45 @@
-import { styled } from '@kadena/react-components';
+import { config, styled } from '@kadena/react-components';
 
 import Link from 'next/link';
+import { FC, ReactNode } from 'react';
 
-export const StyledHeader = styled('header', {
-  gridArea: 'header',
-  position: 'fixed',
-  width: '100%',
-  top: 0,
-  backgroundColor: '#1D1D1F',
-  color: 'white',
-  zIndex: '$menu',
-});
+export type StyledComponentType<T = HTMLElement> = FC<{
+  children?: ReactNode | {};
+  ref?: React.ForwardedRef<T>;
+  href?: unknown;
+}>;
 
-export const Wrapper = styled('div', {
+export const StyledHeader: StyledComponentType = styled(
+  'header',
+  {
+    gridArea: 'header',
+    backgroundColor: '#1D1D1F',
+    color: 'white',
+  },
+  config,
+);
+
+export const Wrapper: StyledComponentType<HTMLDivElement> = styled('div', {
   display: 'flex',
   margin: '0',
   padding: '$3 $4',
 });
 
-export const StyleNav = styled('nav', {
+export const StyleNav: StyledComponentType = styled('nav', {
   display: 'flex',
   alignItems: 'center',
   zIndex: 1,
 });
 
-export const StyledUl = styled('ul', {
-  display: 'none',
+export const StyledUl: StyledComponentType<HTMLUListElement> = styled('ul', {
+  display: 'flex',
   gap: '$4',
   padding: 0,
   listStyle: 'none',
   width: '100%',
-  '@md': {
-    display: 'flex',
-  },
 });
 
-export const NavLink = styled(Link, {
+export const NavLink: StyledComponentType<HTMLAnchorElement> = styled(Link, {
   color: 'white',
   fontFamily: '$main',
   textDecoration: 'none',
@@ -43,7 +47,7 @@ export const NavLink = styled(Link, {
   borderRadius: '$sm',
 
   variants: {
-    active: {
+    'data-active': {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
         color: 'black',
@@ -52,9 +56,10 @@ export const NavLink = styled(Link, {
   },
 });
 
-export const AnimationBackgroundWrapper = styled('div', {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  zIndex: 0,
-});
+export const AnimationBackgroundWrapper: StyledComponentType<HTMLDivElement> =
+  styled('div', {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 0,
+  });

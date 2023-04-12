@@ -1,14 +1,17 @@
 jest.mock('cross-fetch');
 
-import { ICommandResult } from '@kadena/types';
-
 import fetch, { Response } from 'cross-fetch';
 
-import type { IListenRequestBody, ListenResponse } from '@kadena/types';
+import type {
+  IListenRequestBody,
+  ListenResponse,
+  ICommandResult,
+} from '../interfaces/PactAPI';
 
 import { listen } from '../listen';
 
 import { mockFetch } from './mockdata/mockFetch';
+import { testURL } from './mockdata/Pact';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
@@ -35,7 +38,10 @@ test('/listen should return result of tx queried', async () => {
   };
   const localReq: IListenRequestBody = requestKey;
   const responseExpected: ListenResponse = commandResult1;
-  const responseActual: ICommandResult | Response = await listen(localReq, '');
+  const responseActual: ICommandResult | Response = await listen(
+    localReq,
+    testURL,
+  );
 
   expect(responseExpected).toEqual(responseActual);
 });

@@ -16,11 +16,9 @@
     "noEmit": true,
     "incremental": true,
     "moduleResolution": "node",
+    "jsx": "preserve",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
-    "declarationMap": false,
-    "jsx": "preserve"
+    "isolatedModules": true
   },
   "exclude": [
     "node_modules"

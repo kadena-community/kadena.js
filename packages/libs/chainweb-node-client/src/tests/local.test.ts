@@ -1,17 +1,22 @@
 jest.mock('cross-fetch');
 
 import { sign } from '@kadena/cryptography-utils';
+import { ensureSignedCommand } from '@kadena/pactjs';
+import type {
+  ICommand,
+  SignatureWithHash,
+  IUnsignedCommand,
+} from '@kadena/types';
 import type {
   ICommandResult,
-  LocalRequestBody,
-  LocalResponse,
-  SignatureWithHash,
-} from '@kadena/types';
+  ILocalCommandResult,
+  LocalResultWithoutPreflight,
+} from '../interfaces/PactAPI';
 
 import { local } from '../local';
 
 import { mockFetch } from './mockdata/mockFetch';
-import { pactTestCommand } from './mockdata/Pact';
+import { pactTestCommand, testURL } from './mockdata/Pact';
 
 import fetch, { Response } from 'cross-fetch';
 
@@ -20,7 +25,7 @@ mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
 
-test('/local should return result of tx queried', async () => {
+test('local should return preflight result of tx queried ', async () => {
   const commandStr1 = JSON.stringify(pactTestCommand);
   const keyPair1 = {
     publicKey:
@@ -29,13 +34,56 @@ test('/local should return result of tx queried', async () => {
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
   const cmdWithOneSignature1: SignatureWithHash = sign(commandStr1, keyPair1);
-  const signedCommand1: LocalRequestBody = {
+  const sampleCommand1: IUnsignedCommand = {
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
-    sigs: [{ sig: cmdWithOneSignature1?.sig ?? null }],
+    sigs: [
+      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+    ],
   };
+  const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
-  const commandResult1: LocalResponse = {
+  const commandResult1: ILocalCommandResult = {
+    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    txId: null,
+    result: {
+      data: 3,
+      status: 'success',
+    },
+    gas: 0,
+    continuation: null,
+    metaData: null,
+    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+    preflightWarnings: [],
+  };
+  const responseExpected: ILocalCommandResult = commandResult1;
+  const responseActual: ICommandResult | Response = await local(
+    signedCommand1,
+    testURL,
+  );
+
+  expect(responseExpected).toEqual(responseActual);
+});
+
+test('local with `{preflight: false}` option returns non-preflight result', async () => {
+  const commandStr1 = JSON.stringify(pactTestCommand);
+  const keyPair1 = {
+    publicKey:
+      'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
+    secretKey:
+      '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
+  };
+  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr1, keyPair1);
+  const sampleCommand1: IUnsignedCommand = {
+    cmd: commandStr1,
+    hash: cmdWithOneSignature1.hash,
+    sigs: [
+      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+    ],
+  };
+  const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
+
+  const commandResult1: ILocalCommandResult = {
     reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
     txId: null,
     result: {
@@ -47,9 +95,50 @@ test('/local should return result of tx queried', async () => {
     metaData: null,
     logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
   };
-  const localReq: LocalRequestBody = signedCommand1;
-  const responseExpected: LocalResponse = commandResult1;
-  const responseActual: ICommandResult | Response = await local(localReq, '');
+  const responseExpected: LocalResultWithoutPreflight = commandResult1;
+  const responseActual = await local(signedCommand1, testURL, {
+    preflight: false,
+  });
+
+  expect(responseExpected).toEqual(responseActual);
+});
+
+test('local with `{signatureVerification: false}` option returns preflight result without signature verification', async () => {
+  const commandStr1 = JSON.stringify(pactTestCommand);
+  const keyPair1 = {
+    publicKey:
+      'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
+    secretKey:
+      '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
+  };
+  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr1, keyPair1);
+  const sampleCommand1: IUnsignedCommand = {
+    cmd: commandStr1,
+    hash: cmdWithOneSignature1.hash,
+    sigs: [undefined],
+  };
+
+  const commandResult1: ILocalCommandResult = {
+    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    txId: null,
+    result: {
+      data: 3,
+      status: 'success',
+    },
+    gas: 0,
+    continuation: null,
+    metaData: null,
+    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+    preflightWarnings: [],
+  };
+  const responseExpected = commandResult1;
+  const responseActual: LocalResultWithoutPreflight = await local(
+    sampleCommand1,
+    testURL,
+    {
+      signatureVerification: false,
+    },
+  );
 
   expect(responseExpected).toEqual(responseActual);
 });

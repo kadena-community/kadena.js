@@ -55,6 +55,30 @@ test('empty requestBody returns error in /local', async () => {
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
 
+test('empty requestBody returns error in /local?preflight=true&signatureVerification=true', async () => {
+  const expectedErrorMsg = 'Expected RequestInit body not found.';
+
+  const response = await fetch(
+    '/api/v1/local?preflight=true&signatureVerification=true',
+    undefined,
+  );
+  const responseActual: Promise<Response> = parseResponse(response as Response);
+
+  return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
+});
+
+test('empty requestBody returns error in /local?preflight=true&signatureVerification=false', async () => {
+  const expectedErrorMsg = 'Expected RequestInit body not found.';
+
+  const response = await fetch(
+    '/api/v1/local?preflight=true&signatureVerification=false',
+    undefined,
+  );
+  const responseActual: Promise<Response> = parseResponse(response as Response);
+
+  return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
+});
+
 test('empty requestBody returns error in /listen', async () => {
   const expectedErrorMsg = 'Expected RequestInit body not found.';
 
