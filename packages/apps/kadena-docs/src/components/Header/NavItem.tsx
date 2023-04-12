@@ -1,5 +1,6 @@
 import { NavLink } from './styles';
 
+import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 
 interface IProps {
@@ -8,9 +9,14 @@ interface IProps {
 }
 
 export const NavItem: FC<IProps> = ({ children, href = '' }) => {
+  const router = useRouter();
+  const active = href === router.pathname;
+
   return (
     <li>
-      <NavLink href={href}>{children}</NavLink>
+      <NavLink data-active={active} href={href}>
+        {children}
+      </NavLink>
     </li>
   );
 };

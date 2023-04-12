@@ -1,9 +1,14 @@
 {
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["heft-jest", "node"],
+    "types": [
+      "heft-jest",
+      "node"
+    ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "target": "ES2020",
     "allowJs": false,
@@ -11,7 +16,11 @@
     "noEmit": true,
     "incremental": true,
     "moduleResolution": "node",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

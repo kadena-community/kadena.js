@@ -16,16 +16,17 @@ export const getParentHeading = (
     orderArr.indexOf(child.tag.toLowerCase()) <
     orderArr.indexOf(newChild.tagName.toLowerCase())
   ) {
-    // when the items has the same tag, do not put it in children
+    const getLastChild = child.children[child.children.length - 1];
+
+    // when the items have the same tag, do not put it in children
     if (
-      child.children[child.children.length - 1] === undefined ||
-      child.children[child.children.length - 1].tag ===
-        newChild.tagName.toLowerCase()
+      getLastChild === undefined ||
+      getLastChild.tag === newChild.tagName.toLowerCase()
     ) {
       nodes.push(child);
       break;
     }
-    child = child.children[child.children.length - 1];
+    child = getLastChild;
     nodes.push(child);
   }
 

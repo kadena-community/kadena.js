@@ -46,7 +46,7 @@ export const NavLink: StyledComponentType<HTMLAnchorElement> = styled(Link, {
   borderRadius: '$sm',
 
   variants: {
-    active: {
+    'data-active': {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
         color: 'black',
