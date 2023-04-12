@@ -1,6 +1,6 @@
+import { Footer, Header } from './..';
 import { Menu, Template } from './styles';
 
-import { Footer, Header } from '@/components';
 import { getLayout } from '@/utils';
 import Head from 'next/head';
 import React, { FC, ReactNode } from 'react';

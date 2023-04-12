@@ -1,6 +1,6 @@
 import { config, styled } from '@kadena/react-components';
 
-import { Wrapper } from '../Layout/components/Main/styles';
+import { Wrapper } from '../Main/styles';
 
 import Link from 'next/link';
 import { FC, ReactNode } from 'react';
@@ -24,8 +24,9 @@ export const StyledHeader: StyledComponentType = styled(
 export const InnerWrapper: StyledComponentType<HTMLDivElement> = styled(
   Wrapper,
   {
+    position: 'relative',
     display: 'flex',
-    alignContent: 'center',
+    alignItems: 'center',
     padding: '$3 $4',
   },
 );

@@ -6,8 +6,6 @@ interface IProps {
   children?: ReactNode;
 }
 
-console.log(Text);
-
 const StyledText = styled('span', {
   color: '$neutral4',
   padding: '0 $3',

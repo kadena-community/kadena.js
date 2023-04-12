@@ -1,6 +1,6 @@
 import { styled } from '@kadena/react-components';
 
-import { StyledComponentType } from '@/components/Header/styles';
+import { StyledComponentType } from './../Header/styles';
 
 export const Wrapper: StyledComponentType<HTMLDivElement> = styled('div', {
   maxWidth: '1440px',

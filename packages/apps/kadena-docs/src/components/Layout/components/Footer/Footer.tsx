@@ -1,6 +1,7 @@
 import { styled } from '@kadena/react-components';
 
 import { InnerWrapper } from '../Header/styles';
+import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
@@ -18,6 +19,7 @@ export const Footer: FC = () => {
   return (
     <StyledFooter>
       <InnerWrapper>
+        <DocsLogo />
         <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
         <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
         <FooterLink href="https://kadena.io">Terms of Service</FooterLink>
