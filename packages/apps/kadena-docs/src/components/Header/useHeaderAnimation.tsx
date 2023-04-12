@@ -72,7 +72,6 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
     const changeUrl = (url: string): void => {
       const elm = listRef.current?.querySelector(`[href="${url}"]`);
       if (!elm) return;
-
       selectItem(activeRef.current, router.pathname, elm as HTMLAnchorElement);
     };
 

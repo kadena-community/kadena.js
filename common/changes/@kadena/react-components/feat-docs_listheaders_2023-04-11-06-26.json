@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "add Icons and Typography to the export",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

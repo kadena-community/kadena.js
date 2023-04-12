@@ -3,13 +3,17 @@ import {
   globalCss,
   baseGlobalStyles,
 } from '@kadena-ui/react-components';
+
+import * as test from '@kadena-ui/react-components';
+
 import { themes } from '@storybook/theming';
-import { RouterContext } from "next/dist/shared/lib/router-context"; // next 12
+import { RouterContext } from 'next/dist/shared/lib/router-context'; // next 12
 
 const globalStyles = globalCss({
   ...baseGlobalStyles,
 });
 
+console.log(test);
 globalStyles();
 
 export const parameters = {
