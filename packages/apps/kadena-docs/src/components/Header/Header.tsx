@@ -1,6 +1,7 @@
 import { NavItem } from './NavItem';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
-import { StyledHeader, StyledUl, StyleNav, Wrapper } from './styles';
+import { InnerWrapper, StyledHeader, StyledUl, StyleNav } from './styles';
+import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
 import { DocsLogo } from '@/components/DocsLogo';
@@ -11,7 +12,7 @@ export const Header: FC = () => {
 
   return (
     <StyledHeader>
-      <Wrapper>
+      <InnerWrapper>
         <DocsLogo />
 
         <NavItemActiveBackground ref={backgroundRef} />
@@ -22,7 +23,9 @@ export const Header: FC = () => {
             <NavItem href="/docs/kadenajs">KadenaJS</NavItem>
           </StyledUl>
         </StyleNav>
-      </Wrapper>
+
+        <ThemeToggle />
+      </InnerWrapper>
     </StyledHeader>
   );
 };

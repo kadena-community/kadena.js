@@ -2,6 +2,7 @@ import { baseGlobalStyles, globalCss } from '@kadena/react-components';
 
 import { Main } from '@/components/Layout/components/Main';
 import { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
 import React, { ComponentType } from 'react';
 
 const GlobalStyles = globalCss({
@@ -18,9 +19,11 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   return (
     <>
-      <Main {...pageProps}>
-        <ReactComponent {...pageProps} />
-      </Main>
+      <ThemeProvider>
+        <Main {...pageProps}>
+          <ReactComponent {...pageProps} />
+        </Main>
+      </ThemeProvider>
     </>
   );
 }

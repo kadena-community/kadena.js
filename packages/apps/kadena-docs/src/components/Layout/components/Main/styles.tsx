@@ -2,9 +2,14 @@ import { styled } from '@kadena/react-components';
 
 import { StyledComponentType } from '@/components/Header/styles';
 
+export const Wrapper: StyledComponentType<HTMLDivElement> = styled('div', {
+  maxWidth: '1440px',
+  margin: '0 auto',
+});
+
 export const Template: StyledComponentType<HTMLDivElement> = styled('div', {
   display: 'grid',
-  gridTemplateRows: '$17 1fr $17',
+  gridTemplateRows: '$17 1fr auto',
   gridTemplateAreas: `
       "header"
       "content"
@@ -12,15 +17,16 @@ export const Template: StyledComponentType<HTMLDivElement> = styled('div', {
     `,
 
   position: 'relative',
+  margin: '0 auto',
   minHeight: '100vh',
   '@md': {
     background: 'lightYellow',
 
-    gridTemplateColumns: '256px 1fr',
+    gridTemplateColumns: 'auto 256px minmax(auto, 1184px) auto',
     gridTemplateAreas: `
-        "header header"
-        "menu content"
-        "footer footer"
+        "header header header header"
+        ". menu content ."
+        "footer footer footer footer"
       `,
   },
 });

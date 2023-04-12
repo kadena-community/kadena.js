@@ -116,7 +116,6 @@ export const textSizeVariant = {
 
 export const BaseText = styled('span', {
   fontWeight: '$regular',
-  color: '$foreground',
   lineHeight: '$base',
   $$boldWeight: '$bold',
 

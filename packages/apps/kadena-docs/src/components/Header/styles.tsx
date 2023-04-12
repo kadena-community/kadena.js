@@ -1,5 +1,7 @@
 import { config, styled } from '@kadena/react-components';
 
+import { Wrapper } from '../Layout/components/Main/styles';
+
 import Link from 'next/link';
 import { FC, ReactNode } from 'react';
 
@@ -19,11 +21,14 @@ export const StyledHeader: StyledComponentType = styled(
   config,
 );
 
-export const Wrapper: StyledComponentType<HTMLDivElement> = styled('div', {
-  display: 'flex',
-  margin: '0',
-  padding: '$3 $4',
-});
+export const InnerWrapper: StyledComponentType<HTMLDivElement> = styled(
+  Wrapper,
+  {
+    display: 'flex',
+    alignContent: 'center',
+    padding: '$3 $4',
+  },
+);
 
 export const StyleNav: StyledComponentType = styled('nav', {
   display: 'flex',

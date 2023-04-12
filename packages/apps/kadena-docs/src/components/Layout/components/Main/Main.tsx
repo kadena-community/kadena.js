@@ -1,4 +1,4 @@
-import { styled } from '@kadena/react-components';
+import { Menu, Template } from './styles';
 
 import { Footer, Header } from '@/components';
 import { getLayout } from '@/utils';
@@ -16,48 +16,6 @@ interface IProps {
     };
   };
 }
-
-const Template = styled('div', {
-  display: 'grid',
-  gridTemplateRows: '$17 1fr $17',
-  gridTemplateAreas: `
-    "header"
-    "content"
-    "footer"
-  `,
-
-  position: 'relative',
-  minHeight: '100vh',
-  '@md': {
-    background: 'lightYellow',
-
-    gridTemplateColumns: '256px 1fr',
-    gridTemplateAreas: `
-      "header header"
-      "menu content"
-      "footer footer"
-    `,
-  },
-});
-
-const Menu = styled('div', {
-  gridArea: 'menu',
-  position: 'absolute',
-  top: '$17',
-  background: 'blue',
-  width: '100%',
-  height: 'calc(100% - $17 - $17)',
-  transform: 'translateX(-100%)',
-  transition: 'transform .3s ease, width .3s ease',
-
-  '@md': {
-    position: 'relative',
-    top: '0',
-    height: '100%',
-    width: '256px',
-    transform: 'translateX(0)',
-  },
-});
 
 export const Main: FC<IProps> = ({ children, markdoc }) => {
   let title, description;
@@ -80,6 +38,7 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
 
       <Template>
         <Header />
+
         <Menu>
           menu
           <p>sdf</p>
