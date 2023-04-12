@@ -7,3 +7,7 @@ export * from './poll';
 export * from './send';
 export * from './spv';
 export * from './stringifyAndMakePOSTRequest';
+export * from './createListenRequest';
+export * from './createPollRequest';
+export * from './createSendRequest';
+export * from './interfaces/PactAPI';

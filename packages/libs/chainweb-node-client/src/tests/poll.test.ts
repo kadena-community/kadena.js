@@ -1,11 +1,11 @@
 jest.mock('cross-fetch');
 
-import type { IPollRequestBody, IPollResponse } from '@kadena/types';
+import type { IPollRequestBody, IPollResponse } from '../interfaces/PactAPI';
 
 import { poll } from '../poll';
 
 import { mockFetch } from './mockdata/mockFetch';
-
+import { testURL } from './mockdata/Pact';
 import fetch from 'cross-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
@@ -35,7 +35,10 @@ test('/poll should return request keys of txs submitted', async () => {
   };
   const localReq: IPollRequestBody = signedCommand;
   const responseExpected: IPollResponse = commandResult;
-  const responseActual: Response | IPollResponse = await poll(localReq, '');
+  const responseActual: Response | IPollResponse = await poll(
+    localReq,
+    testURL,
+  );
 
   expect(responseExpected).toEqual(responseActual);
 });

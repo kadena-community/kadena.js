@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Update colors",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

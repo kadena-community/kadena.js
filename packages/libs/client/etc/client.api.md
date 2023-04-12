@@ -5,14 +5,13 @@
 ```ts
 
 import { ChainId } from '@kadena/types';
-import { ChainwebNetworkId } from '@kadena/types';
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ICap } from '@kadena/types';
-import { ICommand } from '@kadena/types';
-import { ICommandResult } from '@kadena/types';
-import { IPollResponse } from '@kadena/types';
-import { ISendResponse } from '@kadena/chainweb-node-client';
-import { ISignature } from '@kadena/types';
+import { IPollResponse } from '@kadena/chainweb-node-client';
+import { ISignatureJson } from '@kadena/types';
+import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
+import { SendResponse } from '@kadena/chainweb-node-client';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
@@ -21,9 +20,6 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 //
 // @internal (undocumented)
 export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
-
-// @alpha (undocumented)
-export function convertIUnsignedTransactionToICommand(transaction: IUnsignedTransaction): ICommand;
 
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
@@ -82,9 +78,9 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         sig: string;
     }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
-    createCommand(): IUnsignedTransaction;
+    createCommand(): IUnsignedCommand;
     // (undocumented)
-    local(apiHost: string): Promise<ICommandResult>;
+    local(apiHost: string, options?: any): Promise<any>;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
     // (undocumented)
@@ -94,7 +90,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
     }): Promise<this>;
     // (undocumented)
-    send(apiHost: string): Promise<ISendResponse>;
+    send(apiHost: string): Promise<SendResponse>;
     // (undocumented)
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
         sender: IPactCommand['publicMeta']['sender'];
@@ -116,7 +112,7 @@ export interface IPactCommand {
     // (undocumented)
     data: Record<string, unknown>;
     // (undocumented)
-    networkId: Exclude<ChainwebNetworkId, undefined>;
+    networkId: ChainwebNetworkId;
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
@@ -128,7 +124,7 @@ export interface IPactCommand {
         }[];
     }[];
     // (undocumented)
-    sigs: (ISignature | undefined)[];
+    sigs: (ISignatureJson | undefined)[];
     // (undocumented)
     type: string;
 }
@@ -226,16 +222,6 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @alpha (undocumented)
-export interface IUnsignedTransaction {
-    // (undocumented)
-    cmd: string;
-    // (undocumented)
-    hash: string;
-    // (undocumented)
-    sigs: (ISignature | undefined)[];
-}
-
-// @alpha (undocumented)
 export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
 
 // @alpha (undocumented)
@@ -259,12 +245,12 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     cmd: string | undefined;
     // (undocumented)
     code: string;
-    createCommand(): IUnsignedTransaction;
+    createCommand(): IUnsignedCommand;
     // (undocumented)
     data: Record<string, unknown>;
-    local(apiHost: string): Promise<ICommandResult>;
+    local(apiHost: string, options?: any): Promise<any>;
     // (undocumented)
-    networkId: Exclude<ChainwebNetworkId, undefined>;
+    networkId: ChainwebNetworkId;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
@@ -283,7 +269,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     };
     // (undocumented)
     requestKey: string | undefined;
-    send(apiHost: string): Promise<ISendResponse>;
+    send(apiHost: string): Promise<SendResponse>;
     setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
     // (undocumented)
     signers: {
@@ -294,7 +280,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         }[];
     }[];
     // (undocumented)
-    sigs: (ISignature | undefined)[];
+    sigs: (ISignatureJson | undefined)[];
     // Warning: (ae-forgotten-export) The symbol "TransactionStatus" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
