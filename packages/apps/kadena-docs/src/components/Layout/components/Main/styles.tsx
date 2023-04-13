@@ -59,4 +59,19 @@ export const Menu: StyledComponentType<HTMLDivElement> = styled('div', {
     width: '256px',
     transform: 'translateX(0)',
   },
+
+  variants: {
+    isOpen: {
+      true: {
+        transform: 'translateX(0)',
+        '@md': {},
+      },
+      false: {
+        transform: 'translateX(-100%)',
+        '@md': {
+          transform: 'translateX(0)',
+        },
+      },
+    },
+  },
 });

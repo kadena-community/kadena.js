@@ -9,7 +9,12 @@ import { useHeaderAnimation } from './useHeaderAnimation';
 
 import React, { FC } from 'react';
 
-export const Header: FC = () => {
+interface IProps {
+  toggleMenu: () => void;
+  isMenuOpen: boolean;
+}
+
+export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   const { listRef, backgroundRef } = useHeaderAnimation();
 
   return (
@@ -24,7 +29,7 @@ export const Header: FC = () => {
           </StyledUl>
         </StyleNav>
         <ThemeToggle />
-        <HamburgerMenuToggle />
+        <HamburgerMenuToggle toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
       </InnerWrapper>
     </StyledHeader>
   );

@@ -1,6 +1,6 @@
 import { baseGlobalStyles, globalCss } from '@kadena/react-components';
 
-import { Main } from '@/components/Layout/components/Main';
+import { Main } from '@/components/Layout/components';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import React, { ComponentType } from 'react';

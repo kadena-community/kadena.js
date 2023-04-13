@@ -3,7 +3,7 @@ import { Menu, Template } from './styles';
 
 import { getLayout } from '@/utils';
 import Head from 'next/head';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 
 interface IProps {
   children?: ReactNode;
@@ -18,6 +18,8 @@ interface IProps {
 }
 
 export const Main: FC<IProps> = ({ children, markdoc }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   let title, description;
   let layoutType = 'default';
   if (markdoc !== undefined) {
@@ -26,6 +28,9 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
     layoutType = markdoc.frontmatter.layout ?? 'default';
   }
 
+  const toggleMenu = (): void => {
+    setIsMenuOpen((v) => !v);
+  };
   const Layout = getLayout(layoutType);
 
   return (
@@ -37,9 +42,9 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
       </Head>
 
       <Template>
-        <Header />
+        <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
-        <Menu>
+        <Menu isOpen={isMenuOpen}>
           menu
           <p>sdf</p>
           <p>sdf</p>
