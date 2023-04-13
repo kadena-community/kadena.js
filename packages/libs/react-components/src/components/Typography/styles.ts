@@ -114,6 +114,21 @@ export const textSizeVariant = {
   },
 };
 
+export const transformVariant = {
+  capitalize: {
+    textTransform: 'capitalize',
+  },
+  uppercase: {
+    textTransform: 'uppercase',
+  },
+  lowercase: {
+    textTransform: 'lowercase',
+  },
+  none: {
+    textTransform: 'none',
+  },
+};
+
 export const BaseText = styled('span', {
   fontWeight: '$regular',
   color: '$foreground',
@@ -124,12 +139,14 @@ export const BaseText = styled('span', {
     variant: elementVariant,
     font: fontVariant,
     bold: boldVariant,
+    transform: transformVariant,
   },
 
   defaultVariants: {
     variant: 'span',
     font: 'main',
     bold: 'false',
+    transform: 'none',
   },
 
   compoundVariants: [

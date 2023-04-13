@@ -3,6 +3,7 @@ import {
   elementVariant,
   fontVariant,
   textSizeVariant,
+  transformVariant,
 } from './styles';
 import { Text } from './Text';
 
@@ -13,6 +14,9 @@ const meta: Meta<typeof Text> = {
   title: 'Typography/Text',
   component: Text,
   argTypes: {
+    children: {
+      control: { type: 'text' },
+    },
     as: {
       control: { type: 'select' },
     },
@@ -32,6 +36,12 @@ const meta: Meta<typeof Text> = {
       options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
+    transform: {
+      options: Object.keys(
+        transformVariant,
+      ) as (keyof typeof transformVariant)[],
+      control: { type: 'radio' },
+    },
   },
 };
 
@@ -41,15 +51,24 @@ type Story = StoryObj<typeof Text>;
 export const Primary: Story = {
   name: 'Text',
   args: {
+    children: 'text',
     as: 'span',
     variant: undefined,
     size: 'lg',
     font: 'main',
     bold: 'false',
+    transform: 'none',
   },
-  render: ({ font, bold, size, as, variant }) => (
-    <Text font={font} bold={bold} size={size} as={as} variant={variant}>
-      Text
+  render: ({ font, bold, size, as, variant, transform, children }) => (
+    <Text
+      font={font}
+      bold={bold}
+      size={size}
+      as={as}
+      variant={variant}
+      transform={transform}
+    >
+      {children}
     </Text>
   ),
 };
