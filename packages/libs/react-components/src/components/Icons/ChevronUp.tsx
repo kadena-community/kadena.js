@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SVGComponent: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+
+const ChevronUp: React.FC<SVGProps<SVGSVGElement>> = (
+  props: SVGProps<SVGSVGElement>,
+) => (
   <svg
-    width={12}
-    height={8}
-    viewBox="0 0 12 8"
-    fill="none"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M1.41 7.41L6 2.83L10.59 7.41L12 6L6 0L0 6L1.41 7.41Z"
-      fill="black"
+      fill="currentColor"
+      d="M7.41 15.41L12 10.83L16.59 15.41L18 14L12 8L6 14L7.41 15.41Z"
     />
   </svg>
 );
-export default SVGComponent;
+
+export { ChevronUp };

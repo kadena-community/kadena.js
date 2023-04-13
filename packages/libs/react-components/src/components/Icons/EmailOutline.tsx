@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
 
-const MenuOpen: React.FC<SVGProps<SVGSVGElement>> = (
+const EmailOutline: React.FC<SVGProps<SVGSVGElement>> = (
   props: SVGProps<SVGSVGElement>,
 ) => (
   <svg
@@ -13,9 +13,9 @@ const MenuOpen: React.FC<SVGProps<SVGSVGElement>> = (
   >
     <path
       fill="currentColor"
-      d="M3 15.61L4.41 17L9.42 12L4.41 7L3 8.39L6.56 12L3 15.61ZM21 6H8V8H21V6ZM21 13V11H11V13H21ZM21 18V16H8V18H21Z"
+      d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"
     />
   </svg>
 );
 
-export { MenuOpen };
+export { EmailOutline };

@@ -1,6 +1,6 @@
 export { Stack, IStackProps } from './components/Stack/Stack';
 export { Grid, IGridContainerProps, IGridItemProps } from './components/Grid';
-export * as Icons from './components/Icons';
+export { SystemIcons } from './components/Icons';
 export {
   Heading,
   Text,

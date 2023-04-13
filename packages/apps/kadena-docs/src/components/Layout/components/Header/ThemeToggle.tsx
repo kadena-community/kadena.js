@@ -1,4 +1,4 @@
-import { Icons } from '@kadena/react-components';
+import { SystemIcons } from '@kadena/react-components';
 
 import { useTheme } from 'next-themes';
 import React, { FC, useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ export const ThemeToggle: FC = () => {
 
   return (
     <button onClick={toggleTheme}>
-      <Icons.ThemeLightDarkIcon />
+      <SystemIcons.ThemeLightDark />
     </button>
   );
 };

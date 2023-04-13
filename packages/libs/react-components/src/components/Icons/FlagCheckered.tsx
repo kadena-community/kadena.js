@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SVGComponent: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+
+const FlagCheckered: React.FC<SVGProps<SVGSVGElement>> = (
+  props: SVGProps<SVGSVGElement>,
+) => (
   <svg
-    width={15}
-    height={17}
-    viewBox="0 0 15 17"
-    fill="none"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M9.4 2H15V12H8L7.6 10H2V17H0V0H9L9.4 2ZM9 10H11V8H13V6H11V4H9V6L8 4V2H6V4H4V2H2V4H4V6H2V8H4V6H6V8H8V6L9 8V10ZM6 6V4H8V6H6ZM9 6H11V8H9V6Z"
-      fill="black"
+      fill="currentColor"
+      d="M14.4 6H20V16H13L12.6 14H7V21H5V4H14L14.4 6ZM14 14H16V12H18V10H16V8H14V10L13 8V6H11V8H9V6H7V8H9V10H7V12H9V10H11V12H13V10L14 12V14ZM11 10V8H13V10H11ZM14 10H16V12H14V10Z"
     />
   </svg>
 );
-export default SVGComponent;
+
+export { FlagCheckered };

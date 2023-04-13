@@ -1,4 +1,4 @@
-import { Icons, styled } from '@kadena/react-components';
+import { styled, SystemIcons } from '@kadena/react-components';
 
 import React, { FC } from 'react';
 
@@ -17,7 +17,7 @@ const Button = styled('button', {
 export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   return (
     <Button onClick={toggleMenu}>
-      {isMenuOpen ? <Icons.CloseIcon /> : <Icons.MenuOpenIcon />}
+      {isMenuOpen ? <SystemIcons.Close /> : <SystemIcons.MenuOpen />}
     </Button>
   );
 };
