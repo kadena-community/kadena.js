@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SVGComponent: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+
+const ScriptTextKey: React.FC<SVGProps<SVGSVGElement>> = (
+  props: SVGProps<SVGSVGElement>,
+) => (
   <svg
-    width={21}
-    height={21}
-    viewBox="0 0 21 21"
-    fill="none"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M15.8 17C15.4 15.8 14.3 15 13 15C11.3 15 10 16.3 10 18C10 19.7 11.3 21 13 21C14.3 21 15.4 20.2 15.8 19H17V21H19V19H21V17H15.8ZM13 19.3C12.3 19.3 11.7 18.7 11.7 18C11.7 17.3 12.3 16.7 13 16.7C13.7 16.7 14.3 17.3 14.3 18C14.3 18.7 13.7 19.3 13 19.3ZM13 13C14.1 13 15.2 13.4 16 14V3C16 2.4 16.4 2 17 2C17.6 2 18 2.4 18 3V4H20V3C20 1.3 18.7 0 17 0H6C4.3 0 3 1.3 3 3V14H10C10.8 13.4 11.9 13 13 13ZM6 4H13V6H6V4ZM6 8H12V10H6V8ZM8.4 20H3C1.3 20 0 18.7 0 17V16H8.4C8.1 16.6 8 17.3 8 18C8 18.7 8.1 19.4 8.4 20Z"
-      fill="black"
+      fill="currentColor"
+      d="M17.8 19C17.4 17.8 16.3 17 15 17C13.3 17 12 18.3 12 20C12 21.7 13.3 23 15 23C16.3 23 17.4 22.2 17.8 21H19V23H21V21H23V19H17.8ZM15 21.3C14.3 21.3 13.7 20.7 13.7 20C13.7 19.3 14.3 18.7 15 18.7C15.7 18.7 16.3 19.3 16.3 20C16.3 20.7 15.7 21.3 15 21.3ZM15 15C16.1 15 17.2 15.4 18 16V5C18 4.4 18.4 4 19 4C19.6 4 20 4.4 20 5V6H22V5C22 3.3 20.7 2 19 2H8C6.3 2 5 3.3 5 5V16H12C12.8 15.4 13.9 15 15 15ZM8 6H15V8H8V6ZM8 10H14V12H8V10ZM10.4 22H5C3.3 22 2 20.7 2 19V18H10.4C10.1 18.6 10 19.3 10 20C10 20.7 10.1 21.4 10.4 22Z"
     />
   </svg>
 );
-export default SVGComponent;
+
+export { ScriptTextKey };

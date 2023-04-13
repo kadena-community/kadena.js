@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
 
-const Close: React.FC<SVGProps<SVGSVGElement>> = (
+const CheckboxIntermediateVariant: React.FC<SVGProps<SVGSVGElement>> = (
   props: SVGProps<SVGSVGElement>,
 ) => (
   <svg
@@ -13,9 +13,9 @@ const Close: React.FC<SVGProps<SVGSVGElement>> = (
   >
     <path
       fill="currentColor"
-      d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+      d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 17V7H17"
     />
   </svg>
 );
 
-export { Close };
+export { CheckboxIntermediateVariant };

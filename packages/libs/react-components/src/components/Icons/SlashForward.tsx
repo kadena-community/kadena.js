@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
 
-const Plus: React.FC<SVGProps<SVGSVGElement>> = (
+const SlashForward: React.FC<SVGProps<SVGSVGElement>> = (
   props: SVGProps<SVGSVGElement>,
 ) => (
   <svg
@@ -11,8 +11,8 @@ const Plus: React.FC<SVGProps<SVGSVGElement>> = (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <path fill="currentColor" d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+    <path fill="currentColor" d="M7 21L14.9 3H17L9.1 21H7Z" />
   </svg>
 );
 
-export { Plus };
+export { SlashForward };

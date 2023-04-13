@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SVGComponent: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+
+const ChevronDown: React.FC<SVGProps<SVGSVGElement>> = (
+  props: SVGProps<SVGSVGElement>,
+) => (
   <svg
-    width={12}
-    height={8}
-    viewBox="0 0 12 8"
-    fill="none"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M1.41 0.580002L6 5.17L10.59 0.580002L12 2L6 8L0 2L1.41 0.580002Z"
-      fill="black"
+      fill="currentColor"
+      d="M7.41 8.58L12 13.17L16.59 8.58L18 10L12 16L6 10L7.41 8.58Z"
     />
   </svg>
 );
-export default SVGComponent;
+
+export { ChevronDown };

@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SVGComponent: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+
+const CheckboxMarked: React.FC<SVGProps<SVGSVGElement>> = (
+  props: SVGProps<SVGSVGElement>,
+) => (
   <svg
-    width={18}
-    height={18}
-    viewBox="0 0 18 18"
-    fill="none"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M7 14L2 9L3.41 7.58L7 11.17L14.59 3.58L16 5M16 0H2C0.89 0 0 0.89 0 2V16C0 16.5304 0.210714 17.0391 0.585786 17.4142C0.960859 17.7893 1.46957 18 2 18H16C16.5304 18 17.0391 17.7893 17.4142 17.4142C17.7893 17.0391 18 16.5304 18 16V2C18 0.89 17.1 0 16 0Z"
-      fill="black"
+      fill="currentColor"
+      d="M10 17L5 12L6.41 10.58L10 14.17L17.59 6.58L19 8M19 3H5C3.89 3 3 3.89 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V5C21 3.89 20.1 3 19 3Z"
     />
   </svg>
 );
-export default SVGComponent;
+
+export { CheckboxMarked };
