@@ -1,4 +1,4 @@
-import { Heading, Icons, styled } from '@kadena/react-components';
+import { Heading, styled, SystemIcons } from '@kadena/react-components';
 
 import { TagNameType } from '@/types/Layout';
 import { createSlug } from '@/utils';
@@ -32,7 +32,7 @@ export const TaggedHeading: FC<IProp> = ({ children, as }) => {
     <StyleHeader as={as}>
       {children}
       <StyledLinkIcon id={slug} href={`#${slug}`}>
-        <Icons.LinkIcon />
+        <SystemIcons.Link />
       </StyledLinkIcon>
     </StyleHeader>
   );

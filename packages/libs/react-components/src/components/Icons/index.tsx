@@ -1,3 +1,5 @@
+/* eslint @kadena-dev/typedef-var: 0 */
+// TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
 import { config } from '../../styles';
 
 import { Account } from './Account';
@@ -87,68 +89,66 @@ const IconWrapper = (
   return WrappedIcon;
 };
 
-export const AccountIcon = IconWrapper(Account);
-export const AlertBoxIcon = IconWrapper(AlertBox);
-export const AlertBoxOutlineIcon = IconWrapper(AlertBoxOutline);
-export const AlertCircleOutlineIcon = IconWrapper(AlertCircleOutline);
-export const ApplicationIcon = IconWrapper(Application);
-export const ApplicationBracketsIcon = IconWrapper(ApplicationBrackets);
-export const ApplicationCogOutlineIcon = IconWrapper(ApplicationCogOutline);
-export const BackburgerIcon = IconWrapper(Backburger);
-export const BadgeAccountIcon = IconWrapper(BadgeAccount);
-export const BellIcon = IconWrapper(Bell);
-export const BellRingIcon = IconWrapper(BellRing);
-export const CarBrakeParkingIcon = IconWrapper(CarBrakeParking);
-export const CheckIcon = IconWrapper(Check);
-export const CheckboxBlankOutlineIcon = IconWrapper(CheckboxBlankOutline);
-export const CheckboxIntermediateVariantIcon = IconWrapper(
-  CheckboxIntermediateVariant,
-);
-export const CheckboxMarkedIcon = IconWrapper(CheckboxMarked);
-export const CheckDecagramIcon = IconWrapper(CheckDecagram);
-export const CheckDecagramOutlineIcon = IconWrapper(CheckDecagramOutline);
-export const ChevronDownIcon = IconWrapper(ChevronDown);
-export const ChevronUpIcon = IconWrapper(ChevronUp);
-export const CloseIcon = IconWrapper(Close);
-export const ContentCopyIcon = IconWrapper(ContentCopy);
-export const DialpadIcon = IconWrapper(Dialpad);
-export const EarthIcon = IconWrapper(Earth);
-export const EmailOutlineIcon = IconWrapper(EmailOutline);
-export const ExitToAppIcon = IconWrapper(ExitToApp);
-export const EyeIcon = IconWrapper(Eye);
-export const EyeOffOutlineIcon = IconWrapper(EyeOffOutline);
-export const EyeOutlineIcon = IconWrapper(EyeOutline);
-export const FlagCheckeredIcon = IconWrapper(FlagCheckered);
-export const FolderRemoveOutlineIcon = IconWrapper(FolderRemoveOutline);
-export const FormTextboxPasswordIcon = IconWrapper(FormTextboxPassword);
-export const GithubIcon = IconWrapper(Github);
-export const HelpCircleIcon = IconWrapper(HelpCircle);
-export const HistoryIcon = IconWrapper(History);
-export const InformationIcon = IconWrapper(Information);
-export const KeyIconFilledIcon = IconWrapper(KeyIconFilled);
-export const KeyIconOutlinedIcon = IconWrapper(KeyIconOutlined);
-export const KIconIcon = IconWrapper(KIcon);
-export const LeadingIconIcon = IconWrapper(LeadingIcon);
-export const LinkIcon = IconWrapper(Link);
-export const LinkedinIcon = IconWrapper(Linkedin);
-export const LoadingIcon = IconWrapper(Loading);
-export const MagnifyIcon = IconWrapper(Magnify);
-export const MapMarkerIcon = IconWrapper(MapMarker);
-export const MenuOpenIcon = IconWrapper(MenuOpen);
-export const PlusIcon = IconWrapper(Plus);
-export const ProgressWrenchIcon = IconWrapper(ProgressWrench);
-export const QrcodeScanIcon = IconWrapper(QrcodeScan);
-export const RadioboxBlankIcon = IconWrapper(RadioboxBlank);
-export const RadioboxMarkedIcon = IconWrapper(RadioboxMarked);
-export const RefreshIcon = IconWrapper(Refresh);
-export const ScriptTextKeyIcon = IconWrapper(ScriptTextKey);
-export const ScriptTextKeyNewIcon = IconWrapper(ScriptTextKeyNew);
-export const ShieldAccountVariantOutlineIcon = IconWrapper(
-  ShieldAccountVariantOutline,
-);
-export const SignatureFreehandIcon = IconWrapper(SignatureFreehand);
-export const SlashForwardIcon = IconWrapper(SlashForward);
-export const StopCircleIcon = IconWrapper(StopCircle);
-export const TrailingIconIcon = IconWrapper(TrailingIcon);
-export const TwitterIcon = IconWrapper(Twitter);
-export const UsbFlashDriveIcon = IconWrapper(UsbFlashDrive);
+export const SystemIcons = {
+  Account: IconWrapper(Account),
+  AlertBox: IconWrapper(AlertBox),
+  AlertBoxOutline: IconWrapper(AlertBoxOutline),
+  AlertCircleOutline: IconWrapper(AlertCircleOutline),
+  Application: IconWrapper(Application),
+  ApplicationBrackets: IconWrapper(ApplicationBrackets),
+  ApplicationCogOutline: IconWrapper(ApplicationCogOutline),
+  Backburger: IconWrapper(Backburger),
+  BadgeAccount: IconWrapper(BadgeAccount),
+  Bell: IconWrapper(Bell),
+  BellRing: IconWrapper(BellRing),
+  CarBrakeParking: IconWrapper(CarBrakeParking),
+  Check: IconWrapper(Check),
+  CheckboxBlankOutline: IconWrapper(CheckboxBlankOutline),
+  CheckboxIntermediateVariant: IconWrapper(CheckboxIntermediateVariant),
+  CheckboxMarked: IconWrapper(CheckboxMarked),
+  CheckDecagram: IconWrapper(CheckDecagram),
+  CheckDecagramOutline: IconWrapper(CheckDecagramOutline),
+  ChevronDown: IconWrapper(ChevronDown),
+  ChevronUp: IconWrapper(ChevronUp),
+  Close: IconWrapper(Close),
+  ContentCopy: IconWrapper(ContentCopy),
+  Dialpad: IconWrapper(Dialpad),
+  Earth: IconWrapper(Earth),
+  EmailOutline: IconWrapper(EmailOutline),
+  ExitToApp: IconWrapper(ExitToApp),
+  Eye: IconWrapper(Eye),
+  EyeOffOutline: IconWrapper(EyeOffOutline),
+  EyeOutline: IconWrapper(EyeOutline),
+  FlagCheckered: IconWrapper(FlagCheckered),
+  FolderRemoveOutline: IconWrapper(FolderRemoveOutline),
+  FormTextboxPassword: IconWrapper(FormTextboxPassword),
+  Github: IconWrapper(Github),
+  HelpCircle: IconWrapper(HelpCircle),
+  History: IconWrapper(History),
+  Information: IconWrapper(Information),
+  KeyIconFilled: IconWrapper(KeyIconFilled),
+  KeyIconOutlined: IconWrapper(KeyIconOutlined),
+  KIcon: IconWrapper(KIcon),
+  LeadingIcon: IconWrapper(LeadingIcon),
+  Link: IconWrapper(Link),
+  Linkedin: IconWrapper(Linkedin),
+  Loading: IconWrapper(Loading),
+  Magnify: IconWrapper(Magnify),
+  MapMarker: IconWrapper(MapMarker),
+  MenuOpen: IconWrapper(MenuOpen),
+  Plus: IconWrapper(Plus),
+  ProgressWrench: IconWrapper(ProgressWrench),
+  QrcodeScan: IconWrapper(QrcodeScan),
+  RadioboxBlank: IconWrapper(RadioboxBlank),
+  RadioboxMarked: IconWrapper(RadioboxMarked),
+  Refresh: IconWrapper(Refresh),
+  ScriptTextKey: IconWrapper(ScriptTextKey),
+  ScriptTextKeyNew: IconWrapper(ScriptTextKeyNew),
+  ShieldAccountVariantOutline: IconWrapper(ShieldAccountVariantOutline),
+  SignatureFreehand: IconWrapper(SignatureFreehand),
+  SlashForward: IconWrapper(SlashForward),
+  StopCircle: IconWrapper(StopCircle),
+  TrailingIcon: IconWrapper(TrailingIcon),
+  Twitter: IconWrapper(Twitter),
+  UsbFlashDrive: IconWrapper(UsbFlashDrive),
+} as const;
