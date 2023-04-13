@@ -7,9 +7,12 @@ import Link from 'next/link';
 export const StyledHeader: StyledComponent<'header'> = styled(
   'header',
   {
+    position: 'sticky',
+    top: 0,
     gridArea: 'header',
-    backgroundColor: '#1D1D1F',
+    backgroundColor: '$neutral5',
     color: 'white',
+    zIndex: '$menu',
   },
   config,
 );
@@ -27,7 +30,10 @@ export const StyleNav: StyledComponent<'nav'> = styled('nav', {
   zIndex: 1,
 });
 
-export const StyledUl: StyledComponent<'ul'> = styled('ul', {
+export const StyledUl: StyledComponent<
+  'ul',
+  { ref?: React.ForwardedRef<HTMLUListElement> }
+> = styled('ul', {
   display: 'flex',
   gap: '$4',
   padding: 0,
@@ -61,3 +67,7 @@ export const AnimationBackgroundWrapper: StyledComponent<'div'> = styled(
     zIndex: 0,
   },
 );
+
+export const Spacer: StyledComponent<'div'> = styled('div', {
+  flex: 1,
+});

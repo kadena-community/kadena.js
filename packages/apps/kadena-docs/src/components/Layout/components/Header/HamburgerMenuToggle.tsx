@@ -1,4 +1,4 @@
-import { Icons } from '@kadena/react-components';
+import { Icons, styled } from '@kadena/react-components';
 
 import React, { FC } from 'react';
 
@@ -7,10 +7,17 @@ interface IProps {
   isMenuOpen: boolean;
 }
 
+const Button = styled('button', {
+  display: 'block',
+  '@md': {
+    display: 'none',
+  },
+});
+
 export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   return (
-    <button onClick={toggleMenu}>
-      {isMenuOpen ? null : <Icons.MenuOpenIcon />}
-    </button>
+    <Button onClick={toggleMenu}>
+      {isMenuOpen ? <Icons.CloseIcon /> : <Icons.MenuOpenIcon />}
+    </Button>
   );
 };

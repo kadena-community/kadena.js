@@ -2,15 +2,15 @@ import * as React from 'react';
 import { SVGProps } from 'react';
 const SVGComponent: React.FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
-    width={14}
-    height={14}
-    viewBox="0 0 14 14"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z"
+      d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
       fill="black"
     />
   </svg>
