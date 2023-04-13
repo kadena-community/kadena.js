@@ -1,4 +1,8 @@
-import { baseGlobalStyles, globalCss } from '@kadena/react-components';
+import {
+  baseGlobalStyles,
+  darkTheme,
+  globalCss,
+} from '@kadena/react-components';
 
 import { Main } from '@/components/Layout/components';
 import { AppProps } from 'next/app';
@@ -19,7 +23,14 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   return (
     <>
-      <ThemeProvider>
+      <ThemeProvider
+        attribute="class"
+        enableSystem={true}
+        value={{
+          light: 'light',
+          dark: darkTheme.className,
+        }}
+      >
         <Main {...pageProps}>
           <ReactComponent {...pageProps} />
         </Main>

@@ -1,5 +1,6 @@
-import { Footer, Header } from './..';
-import { Menu, Template } from './styles';
+import { Heading } from '@kadena/react-components';
+
+import { Footer, Header, Menu, Template } from '../';
 
 import { getLayout } from '@/utils';
 import Head from 'next/head';
@@ -7,7 +8,6 @@ import React, { FC, ReactNode, useState } from 'react';
 
 interface IProps {
   children?: ReactNode;
-  ref?: React.ForwardedRef<HTMLDivElement>;
   markdoc: {
     frontmatter: {
       title: string;
@@ -45,6 +45,7 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
         <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
         <Menu isOpen={isMenuOpen}>
+          <Heading as="h6">Kadena Docs</Heading>
           menu
           <p>sdf</p>
           <p>sdf</p>

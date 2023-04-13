@@ -1,5 +1,6 @@
-import { NavItem } from '../Header/NavItem';
-import { StyledUl, StyleNav } from '../Header/styles';
+import { StyledUl, StyleNav } from '..';
+
+import { NavItem } from './NavItem';
 
 import React, { FC } from 'react';
 
@@ -7,7 +8,7 @@ interface IProps {
   ref?: React.ForwardedRef<HTMLUListElement>;
 }
 
-export const MenuItems: FC<IProps> = React.forwardRef((props, ref) => {
+export const MenuItems: FC<IProps> = React.forwardRef((props = {}, ref) => {
   return (
     <StyleNav>
       <StyledUl ref={ref}>

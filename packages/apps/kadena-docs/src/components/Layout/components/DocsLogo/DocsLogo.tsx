@@ -1,10 +1,14 @@
 import { useTheme } from 'next-themes';
 import React, { FC } from 'react';
 
-export const DocsLogo: FC = () => {
-  const { theme } = useTheme() ?? 'light';
+interface IProps {
+  overwriteTheme?: 'light' | 'dark';
+}
 
-  if (theme === 'dark') {
+export const DocsLogo: FC<IProps> = ({ overwriteTheme }) => {
+  const { theme } = useTheme();
+
+  if (overwriteTheme === 'dark' || (!overwriteTheme && theme === 'dark')) {
     return (
       <svg
         width="107"

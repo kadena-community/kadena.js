@@ -1,7 +1,6 @@
-import { styled } from '@kadena/react-components';
+import { darkTheme, styled } from '@kadena/react-components';
 
-import { InnerWrapper, Spacer } from '../Header/styles';
-import { DocsLogo } from '..';
+import { DocsLogo, InnerWrapper, Spacer } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
@@ -13,6 +12,10 @@ const StyledFooter = styled('footer', {
   gridArea: 'footer',
   zIndex: '$menu',
   background: '$neutral2',
+
+  [`.${darkTheme} &`]: {
+    background: '$neutral3',
+  },
 });
 
 export const Footer: FC = () => {

@@ -1,9 +1,9 @@
 import { MenuItems } from '../MenuItems';
+import { InnerWrapper, Spacer, StyledHeader } from '../styles';
 import { DocsLogo } from '..';
 
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
-import { InnerWrapper, Spacer, StyledHeader } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
@@ -15,13 +15,13 @@ interface IProps {
 }
 
 export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
-  const { listRef, backgroundRef } = useHeaderAnimation();
+  const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 
   return (
     <StyledHeader>
       <InnerWrapper>
-        <DocsLogo />
-        <NavItemActiveBackground ref={backgroundRef} />
+        <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
+        <DocsLogo overwriteTheme="dark" />
         <MenuItems ref={listRef} />
         <Spacer />
         <ThemeToggle />

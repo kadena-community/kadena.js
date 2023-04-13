@@ -1,4 +1,4 @@
-import { NavLink } from './styles';
+import { NavLink } from '../styles';
 
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';

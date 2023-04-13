@@ -1,4 +1,4 @@
-import { Content } from './components/Main/styles';
+import { Content } from './components';
 import { ILayout } from './types';
 
 import React, { FC } from 'react';
