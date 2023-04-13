@@ -22,20 +22,20 @@ export interface IChainwebAccountData extends IChainwebBaseData {
   toAccount: string;
 }
 
-export interface IChainwebSSEMetaData {
+export interface IChainwebStreamMetadata {
   meta: {
     id: string;
     confirmations: number;
   };
 }
 
-export type EventData = IChainwebEventData & IChainwebSSEMetaData;
+export type EventTransaction = IChainwebEventData & IChainwebStreamMetadata;
 
-export type AccountData = IChainwebEventData & IChainwebSSEMetaData;
+export type AccountTransaction = IChainwebEventData & IChainwebStreamMetadata;
 
-export type GenericData = EventData | AccountData;
+export type Transaction = EventTransaction | AccountTransaction;
 
-export interface IChainwebStreamConstructorArgs {
+export interface ChainwebStreamConstructorArgs {
   type: ChainwebStreamType;
   id: string;
   host: string;
@@ -44,12 +44,13 @@ export interface IChainwebStreamConstructorArgs {
   connectTimeout?: number;
   heartbeatTimeout?: number;
   maxReconnects?: number;
+  confirmationDepth?: number;
 }
 
 export enum ConnectionState {
   Connecting = 0,
   Connected = 1,
-  Closed = 2, // error; will transition to 0 almost immediately at first, then with exponential backoffs if not successful
+  Closed = 2, // error; will transition to 4 -> 0 almost immediately at first, then with exponential backoffs if not successful
   None = 3, // before initialization
   WaitReconnect = 4, // the waiting stage of exponential backoff reconnection strategy
   // Error = 5, // TODO? For eventsource that failed too many times to retry

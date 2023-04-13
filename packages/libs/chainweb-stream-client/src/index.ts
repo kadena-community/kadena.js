@@ -2,41 +2,75 @@ import EventEmitter from 'eventemitter2';
 import HeartbeatTimeoutError from './heartbeat-timeout-error.js';
 import ConnectTimeoutError from './connect-timeout-error.js';
 import {
-  IChainwebStreamConstructorArgs,
+  ChainwebStreamConstructorArgs,
   ChainwebStreamType,
-  GenericData,
+  Transaction,
   ConnectionState,
+  DebugMsgObject,
 } from './types.js';
 
 export * from './types.js';
 
-const CONFIRMATION_DEPTH: number = 6;
+// TODO confirmation depth should be sent from the backend
+// so that it is always in sync with the client
+const DEFAULT_CONFIRMATION_DEPTH: number = 6;
 const DEFAULT_CONNECT_TIMEOUT: number = 25_000;
 const DEFAULT_HEARTBEAT_TIMEOUT: number = 35_000;
 const DEFAULT_MAX_RECONNECTS: number = 6;
 const DEFAULT_LIMIT: number = 100;
 
 class ChainwebStream extends EventEmitter {
-  public host: string; // chainweb-stream backend host, full URI - e.g. https://sse.chainweb.com
-  public type: ChainwebStreamType; // event | account
-  public id: string; // module.event / module / account pubkey
+  // chainweb-stream backend host, full URI - e.g. https://sse.chainweb.com
+  public host: string;
+
+  public type: ChainwebStreamType;
+
+  // module.event / module / account pubkey
+  public id: string;
+
+  // limit for initial data stream
   public limit: number | undefined;
-  public connectTimeoutMs: number; // initial connection timeout in ms
-  public heartbeatTimeoutMs: number; // heartbeat timeout in ms
-  public maxReconnects: number; // maximum number of reconnection attempts
 
-  private _desiredState: ConnectionState = ConnectionState.None; // desired eventsource state
-  // TODO the "WaitReconnect" state is currently stored in desiredState. Is this correct design-wise?
+  // initial connection timeout in ms
+  public connectTimeoutMs: number;
 
+  // heartbeat timeout in ms
+  public heartbeatTimeoutMs: number;
+
+  // maximum number of reconnection attempts
+  // will emit error after
+  public maxReconnects: number;
+
+  // depth at which a block/transaction is considered confirmed
+  // TODO client <-> server should agree about this somehow, because of edge case:
+  // if backend CONFIRMATION_DEPTH < client CONFIRMATION_DEPTH, then the client will not emit and confirmed events
+  public confirmationDepth: number;
+
+  // desired eventsource state
+  private _desiredState: ConnectionState = ConnectionState.None;
+  // TODO the "WaitReconnect" state is currently stored in desiredState.
+  // Consider if this is the behavior we want
+
+  // underlying event source object
   private _eventSource?: EventSource;
-  private _lastHeight?: number; // last tracked height, used for resuming gracefully
 
-  private _failedConnectionAttempts: number = 0; // counter for failed connection attempts; used for exponential backoff
-  private _totalConnectionAttempts: number = 0; // total failed connection attempts; used to emit reconnect instead of connect
+  // last tracked height, used for resuming gracefully
+  private _lastHeight?: number;
 
-  private _connectTimer?: ReturnType<typeof setTimeout>; // connect timeout for better error handling on an unresponsive server with an open socket (ctrl+z the sse server to simulate this)
-  private _heartbeatTimer?: ReturnType<typeof setTimeout>; // heartbeat timer
-  private _reconnectTimer?: ReturnType<typeof setTimeout>; // reconnect timer
+  // counter for failed connection attempts; used for exponential backoff
+  private _failedConnectionAttempts: number = 0;
+
+  // total failed connection attempts; used to emit reconnect instead of connect
+  private _totalConnectionAttempts: number = 0;
+
+  // connect timeout for better error handling on an unresponsive server with an open socket (ctrl+z the sse server to simulate this)
+  private _connectTimer?: ReturnType<typeof setTimeout>;
+
+  // heartbeat timer
+  private _heartbeatTimer?: ReturnType<typeof setTimeout>;
+
+  // reconnect timer
+  private _reconnectTimer?: ReturnType<typeof setTimeout>;
 
   public constructor({
     host,
@@ -46,7 +80,8 @@ class ChainwebStream extends EventEmitter {
     connectTimeout,
     maxReconnects,
     heartbeatTimeout,
-  }: IChainwebStreamConstructorArgs) {
+    confirmationDepth,
+  }: ChainwebStreamConstructorArgs) {
     super();
     this.type = type;
     this.id = id;
@@ -55,14 +90,19 @@ class ChainwebStream extends EventEmitter {
     this.connectTimeoutMs = connectTimeout ?? DEFAULT_CONNECT_TIMEOUT;
     this.heartbeatTimeoutMs = heartbeatTimeout ?? DEFAULT_HEARTBEAT_TIMEOUT;
     this.maxReconnects = maxReconnects ?? DEFAULT_MAX_RECONNECTS;
+    this.confirmationDepth = confirmationDepth ?? DEFAULT_CONFIRMATION_DEPTH;
   }
 
+  /**
+   * Call to initialize connection
+   */
   public connect = (): void => {
     this._debug('connect');
     this._desiredState = ConnectionState.Connected;
     this._eventSource = new EventSource(this._makeConnectionURL());
     this._eventSource.onopen = this._handleConnect;
     this._eventSource.onerror = this._handleError;
+    // reset & set custom connect timeout handler
     if (this._connectTimer) {
       clearTimeout(this._connectTimer);
     }
@@ -72,6 +112,9 @@ class ChainwebStream extends EventEmitter {
     );
   };
 
+  /**
+   * Call to disconnect
+   */
   public disconnect = (): void => {
     this._desiredState = ConnectionState.Closed;
     this._eventSource?.close();
@@ -80,6 +123,9 @@ class ChainwebStream extends EventEmitter {
     this._debug('disconnect');
   };
 
+  /**
+   * .state getter - get current stream client state
+   */
   public get state(): ConnectionState {
     const { _eventSource } = this;
     // special case: are we waiting to reconnect? (expo backoff)
@@ -167,9 +213,9 @@ class ChainwebStream extends EventEmitter {
     // TODO fix any. MessageEvent fails for custom event (.addEventListener(initial))
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as GenericData | GenericData[];
+    const message = JSON.parse(msg.data) as Transaction | Transaction[];
 
-    const data: GenericData[] = Array.isArray(message) ? message : [message];
+    const data: Transaction[] = Array.isArray(message) ? message : [message];
 
     const newMinHeight = data.reduce(
       (highest, { height }) => (height > highest ? height : highest),
@@ -184,7 +230,7 @@ class ChainwebStream extends EventEmitter {
       const {
         meta: { confirmations },
       } = element;
-      if (confirmations >= CONFIRMATION_DEPTH) {
+      if (confirmations >= this.confirmationDepth) {
         this.emit('confirmed', element);
       } else {
         this.emit('unconfirmed', element);
@@ -201,7 +247,6 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _resetHeartbeatTimeout = (): void => {
-    // this._debug('_resetHeartbeatTimeout');
     this._stopHeartbeatMonitor();
     this._heartbeatTimer = setTimeout(
       this._handleHeartbeatTimeout,
