@@ -1,17 +1,10 @@
-import { config, styled } from '@kadena/react-components';
+import { config, styled, StyledComponent } from '@kadena/react-components';
 
 import { Wrapper } from '../Main/styles';
 
 import Link from 'next/link';
-import { FC, ReactNode } from 'react';
 
-export type StyledComponentType<T = HTMLElement> = FC<{
-  children?: ReactNode | {};
-  ref?: React.ForwardedRef<T>;
-  href?: unknown;
-}>;
-
-export const StyledHeader: StyledComponentType = styled(
+export const StyledHeader: StyledComponent<'header'> = styled(
   'header',
   {
     gridArea: 'header',
@@ -21,23 +14,20 @@ export const StyledHeader: StyledComponentType = styled(
   config,
 );
 
-export const InnerWrapper: StyledComponentType<HTMLDivElement> = styled(
-  Wrapper,
-  {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '$3 $4',
-  },
-);
+export const InnerWrapper: StyledComponent<typeof Wrapper> = styled(Wrapper, {
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '$3 $4',
+});
 
-export const StyleNav: StyledComponentType = styled('nav', {
+export const StyleNav: StyledComponent<'nav'> = styled('nav', {
   display: 'flex',
   alignItems: 'center',
   zIndex: 1,
 });
 
-export const StyledUl: StyledComponentType<HTMLUListElement> = styled('ul', {
+export const StyledUl: StyledComponent<'ul'> = styled('ul', {
   display: 'flex',
   gap: '$4',
   padding: 0,
@@ -45,7 +35,7 @@ export const StyledUl: StyledComponentType<HTMLUListElement> = styled('ul', {
   width: '100%',
 });
 
-export const NavLink: StyledComponentType<HTMLAnchorElement> = styled(Link, {
+export const NavLink: StyledComponent<typeof Link> = styled(Link, {
   color: 'white',
   fontFamily: '$main',
   textDecoration: 'none',
@@ -62,10 +52,12 @@ export const NavLink: StyledComponentType<HTMLAnchorElement> = styled(Link, {
   },
 });
 
-export const AnimationBackgroundWrapper: StyledComponentType<HTMLDivElement> =
-  styled('div', {
+export const AnimationBackgroundWrapper: StyledComponent<'div'> = styled(
+  'div',
+  {
     position: 'absolute',
     top: 0,
     left: 0,
     zIndex: 0,
-  });
+  },
+);

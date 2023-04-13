@@ -1,13 +1,11 @@
-import { styled } from '@kadena/react-components';
+import { styled, StyledComponent } from '@kadena/react-components';
 
-import { StyledComponentType } from './../Header/styles';
-
-export const Wrapper: StyledComponentType<HTMLDivElement> = styled('div', {
+export const Wrapper: StyledComponent<'div'> = styled('div', {
   maxWidth: '1440px',
   margin: '0 auto',
 });
 
-export const Template: StyledComponentType<HTMLDivElement> = styled('div', {
+export const Template: StyledComponent<'div'> = styled('div', {
   display: 'grid',
   gridTemplateRows: '$17 1fr auto',
   gridTemplateAreas: `
@@ -31,18 +29,21 @@ export const Template: StyledComponentType<HTMLDivElement> = styled('div', {
   },
 });
 
-export const Article: StyledComponentType<HTMLDivElement> = styled('div', {
+export const Article: StyledComponent<'div'> = styled('div', {
   flex: 1,
 });
 
-export const Content: StyledComponentType<HTMLDivElement> = styled('div', {
+export const Content: StyledComponent<'div'> = styled('div', {
   display: 'flex',
   gridArea: 'content',
 
   flex: 1,
 });
 
-export const Menu: StyledComponentType<HTMLDivElement> = styled('div', {
+export const Menu: StyledComponent<
+  'div',
+  { isOpen?: boolean | 'true' | 'false' | undefined }
+> = styled('div', {
   gridArea: 'menu',
   position: 'absolute',
   top: '$17',
