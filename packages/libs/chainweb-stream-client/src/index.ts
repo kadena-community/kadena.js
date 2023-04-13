@@ -14,12 +14,12 @@ const CONFIRMATION_DEPTH: number = 6;
 const DEFAULT_CONNECT_TIMEOUT: number = 25_000;
 const DEFAULT_HEARTBEAT_TIMEOUT: number = 35_000;
 const DEFAULT_MAX_RECONNECTS: number = 6;
-const LIMIT: number = 100;
+const DEFAULT_LIMIT: number = 100;
 
 class ChainwebStream extends EventEmitter {
   public host: string; // chainweb-stream backend host, full URI - e.g. https://sse.chainweb.com
-  public type: ChainwebStreamType;
-  public id: string;
+  public type: ChainwebStreamType; // event | account
+  public id: string; // module.event / module / account pubkey
   public limit: number | undefined;
   public connectTimeoutMs: number; // initial connection timeout in ms
   public heartbeatTimeoutMs: number; // heartbeat timeout in ms
@@ -51,9 +51,7 @@ class ChainwebStream extends EventEmitter {
     this.type = type;
     this.id = id;
     this.host = host.endsWith('/') ? host.substr(0, host.length - 1) : host; // strip trailing slash if provided
-    if (limit !== undefined) {
-      this.limit = limit;
-    }
+    this.limit = limit ?? DEFAULT_LIMIT;
     this.connectTimeoutMs = connectTimeout ?? DEFAULT_CONNECT_TIMEOUT;
     this.heartbeatTimeoutMs = heartbeatTimeout ?? DEFAULT_HEARTBEAT_TIMEOUT;
     this.maxReconnects = maxReconnects ?? DEFAULT_MAX_RECONNECTS;
@@ -74,13 +72,13 @@ class ChainwebStream extends EventEmitter {
     );
   };
 
-  public disconnect(): void {
+  public disconnect = (): void => {
     this._desiredState = ConnectionState.Closed;
     this._eventSource?.close();
     // TODO Should we null out this._eventSource?
     this._stopHeartbeatMonitor();
     this._debug('disconnect');
-  }
+  };
 
   public get state(): ConnectionState {
     const { _eventSource } = this;
@@ -127,10 +125,15 @@ class ChainwebStream extends EventEmitter {
   ): void => {
     this._failedConnectionAttempts += 1;
     this._totalConnectionAttempts += 1;
+
+    // close event source; crucial - chrome reconnects, firefox does not
     this._eventSource?.close();
+
+    // cancel connection timeout timer, if exists
     if (this._connectTimer) {
       clearTimeout(this._connectTimer);
     }
+
     let message = 'Connection error'; // default for "Event". No error information is available, presume disconnection
     if (err instanceof HeartbeatTimeoutError) {
       // special case: heartbeat timeout
@@ -139,16 +142,20 @@ class ChainwebStream extends EventEmitter {
       // special case: initial connection timeout
       message = `Connection timeout (timeout ${this.connectTimeoutMs} ms)`;
     }
+
     const willRetry = this._failedConnectionAttempts < this.maxReconnects;
     const timeout = this._getTimeout();
     this._debug('_handleError', { message, willRetry, timeout });
+
     if (!willRetry) {
       this.emit('error', message); // TODO need to wrap in Error ?
       this._desiredState = ConnectionState.Closed;
       return;
     }
+
     this.emit('warn', message);
-    this.emit('will-reconnect', message);
+    this.emit('will-reconnect');
+
     this._desiredState = ConnectionState.WaitReconnect;
     if (this._reconnectTimer) {
       clearTimeout(this._reconnectTimer);
@@ -157,7 +164,7 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _handleData = (msg: any): void => {
-    // TODO warning any
+    // TODO fix any. MessageEvent fails for custom event (.addEventListener(initial))
     this._debug('_handleData', { length: msg.data?.length });
 
     const message = JSON.parse(msg.data) as GenericData | GenericData[];

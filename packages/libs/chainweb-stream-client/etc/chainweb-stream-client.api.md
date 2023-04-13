@@ -11,17 +11,23 @@ export type AccountData = IChainwebEventData & IChainwebSSEMetaData;
 
 // @public (undocumented)
 class ChainwebStream extends EventEmitter {
-    constructor({ host, type, id, limit, }: IChainwebStreamConstructorArgs);
+    constructor({ host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, }: IChainwebStreamConstructorArgs);
     // (undocumented)
     connect: () => void;
     // (undocumented)
-    disconnect(): void;
+    connectTimeoutMs: number;
+    // (undocumented)
+    disconnect: () => void;
+    // (undocumented)
+    heartbeatTimeoutMs: number;
     // (undocumented)
     host: string;
     // (undocumented)
     id: string;
     // (undocumented)
     limit: number | undefined;
+    // (undocumented)
+    maxReconnects: number;
     // (undocumented)
     get state(): ConnectionState;
     // (undocumented)
@@ -102,11 +108,17 @@ export interface IChainwebSSEMetaData {
 // @public (undocumented)
 export interface IChainwebStreamConstructorArgs {
     // (undocumented)
+    connectTimeout?: number;
+    // (undocumented)
+    heartbeatTimeout?: number;
+    // (undocumented)
     host: string;
     // (undocumented)
     id: string;
     // (undocumented)
     limit?: number;
+    // (undocumented)
+    maxReconnects?: number;
     // (undocumented)
     type: ChainwebStreamType;
 }
