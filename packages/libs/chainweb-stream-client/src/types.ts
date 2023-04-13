@@ -54,3 +54,27 @@ export enum ConnectionState {
   WaitReconnect = 4, // the waiting stage of exponential backoff reconnection strategy
   // Error = 5, // TODO? For eventsource that failed too many times to retry
 }
+
+export interface DebugMsgObject {
+  // Unix timestamp (milliseconds)
+  ts: number;
+
+  // Internal method that triggered the debug event
+  method:
+    | 'connect'
+    | 'disconnect'
+    | '_handleConnect'
+    | '_handleError'
+    | '_handleData'
+    | '_handleHeartbeatTimeout';
+
+  /*
+   * certain events have event-specific fields as well:
+   */
+  consecutiveFailedAttempts?: number;
+  totalAttempts?: number;
+  message?: string;
+  willRetry?: boolean;
+  timeout?: number;
+  length?: number;
+}

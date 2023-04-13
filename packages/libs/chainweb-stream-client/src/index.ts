@@ -238,7 +238,12 @@ class ChainwebStream extends EventEmitter {
   }
 
   private _debug(caller: string, payload?: Record<string, any>): void {
-    this.emit('debug', { ts: new Date(), method: caller, ...payload });
+    const debugMsg: DebugMsgObject = {
+      ts: new Date().valueOf(),
+      method: caller as any,
+      ...payload,
+    };
+    this.emit('debug');
   }
 }
 
