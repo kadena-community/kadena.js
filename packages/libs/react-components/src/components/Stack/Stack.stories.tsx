@@ -1,21 +1,59 @@
 import { styled } from '../../styles/stitches.config';
 
 import { Stack } from './Stack';
+import {
+  alignItemsVariant,
+  directionVariant,
+  flexWrapVariant,
+  justifyContentVariant,
+  spacingVariant,
+} from './styles';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const Item = styled('div', {
-  backgroundColor: '$background',
+  backgroundColor: '$primarySurface',
+  color: '$foreground',
+  fontFamily: '$main',
   size: '$32',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  borderRadius: '$sm',
 });
 
 const meta: Meta<typeof Stack> = {
-  title: 'Stack',
+  title: 'Layout/Stack',
   component: Stack,
+  argTypes: {
+    spacing: {
+      options: Object.keys(spacingVariant) as (keyof typeof spacingVariant)[],
+      control: { type: 'select' },
+    },
+    justifyContent: {
+      options: Object.keys(
+        justifyContentVariant,
+      ) as (keyof typeof justifyContentVariant)[],
+      control: { type: 'radio' },
+    },
+    alignItems: {
+      options: Object.keys(
+        alignItemsVariant,
+      ) as (keyof typeof alignItemsVariant)[],
+      control: { type: 'radio' },
+    },
+    direction: {
+      options: Object.keys(
+        directionVariant,
+      ) as (keyof typeof directionVariant)[],
+      control: { type: 'radio' },
+    },
+    flexWrap: {
+      options: Object.keys(flexWrapVariant) as (keyof typeof flexWrapVariant)[],
+      control: { type: 'radio' },
+    },
+  },
 };
 
 export default meta;

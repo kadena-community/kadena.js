@@ -1,10 +1,9 @@
-import type { IPollRequestBody, IPollResponse } from '@kadena/types';
+import type { IPollRequestBody, IPollResponse } from './interfaces/PactAPI';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 import fetch from 'cross-fetch';
-
 /**
  * Allows polling for one or more transaction results by request key.
  * Returns an Array of the transaction results we polled for.
@@ -17,16 +16,18 @@ import fetch from 'cross-fetch';
  *
  * @alpha
  */
-export function poll(
+export async function poll(
   requestBody: IPollRequestBody,
   apiHost: string,
 ): Promise<IPollResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);
+  const pollUrl = new URL(`${apiHost}/api/v1/poll`);
 
-  const response: Promise<IPollResponse> = fetch(
-    `${apiHost}/api/v1/poll`,
-    request,
-  ).then((r) => parseResponse<IPollResponse>(r));
-
-  return response;
+  try {
+    const response = await fetch(pollUrl.toString(), request);
+    return await parseResponse<IPollResponse>(response);
+  } catch (error) {
+    console.error('An error occurred while calling poll API:', error);
+    throw error;
+  }
 }

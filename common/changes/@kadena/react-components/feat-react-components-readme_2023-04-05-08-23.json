@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Add a minimal README.md",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

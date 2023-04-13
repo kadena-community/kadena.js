@@ -1,15 +1,15 @@
-import { spacingVariants } from './GridContainer';
+import { spacingVariant } from './styles';
 import { Grid } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<typeof Grid.Container> = {
-  title: 'Grid',
+  title: 'Layout/Grid',
   component: Grid.Container,
   argTypes: {
     spacing: {
-      options: Object.keys(spacingVariants),
+      options: Object.keys(spacingVariant) as (keyof typeof spacingVariant)[],
       control: { type: 'select' },
     },
   },
@@ -31,31 +31,31 @@ export const Primary: Story = {
   },
   render: ({ spacing }) => (
     <>
-      <Grid.Container spacing="2xl">
-        <Grid.Item bg="$blue500">1</Grid.Item>
-        <Grid.Item bg="$background">2</Grid.Item>
-        <Grid.Item bg="$background">3</Grid.Item>
-        <Grid.Item bg="$background">4</Grid.Item>
-        <Grid.Item bg="$background">5</Grid.Item>
-        <Grid.Item bg="$background">6</Grid.Item>
-        <Grid.Item bg="$background">7</Grid.Item>
-        <Grid.Item bg="$background">8</Grid.Item>
-        <Grid.Item bg="$background">9</Grid.Item>
-        <Grid.Item bg="$background">10</Grid.Item>
-        <Grid.Item bg="$background">11</Grid.Item>
-        <Grid.Item bg="$background">12</Grid.Item>
+      <Grid.Container spacing={spacing}>
+        <Grid.Item bg="$neutral3">1</Grid.Item>
+        <Grid.Item bg="$neutral3">2</Grid.Item>
+        <Grid.Item bg="$neutral3">3</Grid.Item>
+        <Grid.Item bg="$neutral3">4</Grid.Item>
+        <Grid.Item bg="$neutral3">5</Grid.Item>
+        <Grid.Item bg="$neutral3">6</Grid.Item>
+        <Grid.Item bg="$neutral3">7</Grid.Item>
+        <Grid.Item bg="$neutral3">8</Grid.Item>
+        <Grid.Item bg="$neutral3">9</Grid.Item>
+        <Grid.Item bg="$neutral3">10</Grid.Item>
+        <Grid.Item bg="$neutral3">11</Grid.Item>
+        <Grid.Item bg="$neutral3">12</Grid.Item>
       </Grid.Container>
 
       <Grid.Container spacing={spacing}>
-        <Grid.Item colStart={4} colEnd={7} bg="$blue500">
+        <Grid.Item colStart={4} colEnd={7} bg="$primarySurface">
           1
         </Grid.Item>
-        <Grid.Item bg="$blue500">2</Grid.Item>
-        <Grid.Item bg="$blue500">3</Grid.Item>
-        <Grid.Item bg="$blue500">4</Grid.Item>
-        <Grid.Item bg="$blue500">5</Grid.Item>
-        <Grid.Item bg="$blue500">6</Grid.Item>
-        <Grid.Item bg="$blue500">7</Grid.Item>
+        <Grid.Item bg="$primarySurface">2</Grid.Item>
+        <Grid.Item bg="$primarySurface">3</Grid.Item>
+        <Grid.Item bg="$primarySurface">4</Grid.Item>
+        <Grid.Item bg="$primarySurface">5</Grid.Item>
+        <Grid.Item bg="$primarySurface">6</Grid.Item>
+        <Grid.Item bg="$primarySurface">7</Grid.Item>
       </Grid.Container>
     </>
   ),
@@ -78,16 +78,16 @@ export const GridAreas: Story = {
       templateRows={templateRows}
       templateColumns={templateColumns}
     >
-      <Grid.Item area="header" bg="$blue500">
+      <Grid.Item area="header" bg="$primarySurface">
         0
       </Grid.Item>
-      <Grid.Item area="nav" bg="$blue500">
+      <Grid.Item area="nav" bg="$primarySurface">
         1
       </Grid.Item>
-      <Grid.Item area="main" bg="$blue500">
+      <Grid.Item area="main" bg="$primarySurface">
         2
       </Grid.Item>
-      <Grid.Item area="footer" bg="$blue500">
+      <Grid.Item area="footer" bg="$primarySurface">
         3
       </Grid.Item>
     </Grid.Container>

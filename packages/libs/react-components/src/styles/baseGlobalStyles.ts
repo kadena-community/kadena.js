@@ -29,8 +29,10 @@ export const baseGlobalStyles: Record<string, unknown> = {
     5. Improve text rendering
   */
   body: {
-    lineHeight: 1.5,
+    lineHeight: '$base',
     '-webkit-font-smoothing': 'antialiased',
+    backgroundColor: '$background',
+    color: '$foreground',
   },
 
   /*
@@ -172,4 +174,8 @@ export const baseGlobalStyles: Record<string, unknown> = {
       fontSize: '$lg',
     },
   },
-};
+
+  code: {
+    fontFamily: '$mono',
+  },
+} as const;

@@ -1,9 +1,7 @@
-import type { ICommandResult, IListenRequestBody } from '@kadena/types';
+import type { ICommandResult, IListenRequestBody } from './interfaces/PactAPI';
 
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-
-import type { Response } from 'cross-fetch';
 
 import fetch from 'cross-fetch';
 
@@ -14,16 +12,18 @@ import fetch from 'cross-fetch';
  * @param apiHost - API host running a Pact-enabled server.
  * @alpha
  */
-export function listen(
+export async function listen(
   requestBody: IListenRequestBody,
   apiHost: string,
-): Promise<ICommandResult | Response> {
+): Promise<ICommandResult> {
   const request = stringifyAndMakePOSTRequest(requestBody);
+  const listenUrl = new URL(`${apiHost}/api/v1/listen`);
 
-  const response: Promise<ICommandResult | Response> = fetch(
-    `${apiHost}/api/v1/listen`,
-    request,
-  ).then((r) => parseResponse<ICommandResult>(r));
-
-  return response;
+  try {
+    const response = await fetch(listenUrl.toString(), request);
+    return await parseResponse<ICommandResult>(response);
+  } catch (error) {
+    console.error('An error occurred while calling listen API:', error);
+    throw error;
+  }
 }

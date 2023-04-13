@@ -12,8 +12,8 @@
     "types"
   ],
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
@@ -52,6 +52,8 @@
     "@storybook/addon-interactions": "^7.0.0-rc.3",
     "@storybook/addon-links": "^7.0.0-rc.3",
     "@storybook/addon-mdx-gfm": "^7.0.0-rc.3",
+    "@storybook/csf": "~0.1.0",
+    "@storybook/docs-mdx": "~0.1.0",
     "@storybook/react": "^7.0.0-rc.3",
     "@storybook/react-webpack5": "^7.0.0-rc.3",
     "@storybook/testing-library": "^0.0.14-next.1",

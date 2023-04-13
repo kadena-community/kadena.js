@@ -427,6 +427,14 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/kadena-docs",
+      "projectFolder": "packages/apps/kadena-docs",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": true,
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################

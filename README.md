@@ -25,6 +25,12 @@ forth).
   </picture>
 </p>
 
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+
 # Kadena.js
 
 Kadena.js is the source for several packages, tooling, and dapps that have any
@@ -138,3 +144,35 @@ Now go to [getting started](#getting-started)
     - run the publish command. This will require you to fill in 2FA tokens for
       every push for npm
       - `rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master`
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.randynamic.com"><img src="https://avatars.githubusercontent.com/u/1035101?v=4?s=100" width="100px;" alt="Randy"/><br /><sub><b>Randy</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=Randynamic" title="Documentation">📖</a> <a href="https://github.com/kadena-community/kadena.js/commits?author=Randynamic" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eileenmguo"><img src="https://avatars.githubusercontent.com/u/9022549?v=4?s=100" width="100px;" alt="eileenmguo"/><br /><sub><b>eileenmguo</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=eileenmguo" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ash-vd"><img src="https://avatars.githubusercontent.com/u/9663397?v=4?s=100" width="100px;" alt="Ashwin van Dijk"/><br /><sub><b>Ashwin van Dijk</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=ash-vd" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sstraatemans"><img src="https://avatars.githubusercontent.com/u/4015521?v=4?s=100" width="100px;" alt="Steven"/><br /><sub><b>Steven</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=sstraatemans" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://albertgroothedde.com"><img src="https://avatars.githubusercontent.com/u/516972?v=4?s=100" width="100px;" alt="Albert G"/><br /><sub><b>Albert G</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/pulls?q=is%3Apr+reviewed-by%3Aalber70g" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://andortang.wordpress.com"><img src="https://avatars.githubusercontent.com/u/1508400?v=4?s=100" width="100px;" alt="Andy Tang"/><br /><sub><b>Andy Tang</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/pulls?q=is%3Apr+reviewed-by%3AEnoF" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kate-hee-kyun-yun"><img src="https://avatars.githubusercontent.com/u/31594593?v=4?s=100" width="100px;" alt="Kate Hee Kyun Yun"/><br /><sub><b>Kate Hee Kyun Yun</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=ggobugi27" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://react.cs.uni-sb.de/people/kuhtz.html"><img src="https://avatars.githubusercontent.com/u/1369810?v=4?s=100" width="100px;" alt="Lars Kuhtz"/><br /><sub><b>Lars Kuhtz</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=larskuhtz" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nillo"><img src="https://avatars.githubusercontent.com/u/1943024?v=4?s=100" width="100px;" alt="de-nial-lo"/><br /><sub><b>de-nial-lo</b></sub></a><br /><a href="https://github.com/kadena-community/kadena.js/commits?author=nillo" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

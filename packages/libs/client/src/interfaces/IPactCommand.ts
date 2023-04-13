@@ -1,5 +1,5 @@
-import { ChainId, ChainwebNetworkId, ICap, ISignature } from '@kadena/types';
-
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import { ChainId, ICap, ISignatureJson } from '@kadena/types';
 /**
  * @alpha
  */
@@ -7,7 +7,7 @@ export interface IPactCommand {
   code: string;
   data: Record<string, unknown>;
   publicMeta: IPublicMeta;
-  networkId: Exclude<ChainwebNetworkId, undefined>;
+  networkId: ChainwebNetworkId;
   // signers: ISigner[];
   signers: {
     pubKey: string;
@@ -17,7 +17,7 @@ export interface IPactCommand {
     }[];
   }[];
   type: string;
-  sigs: (ISignature | undefined)[];
+  sigs: (ISignatureJson | undefined)[];
 }
 
 /**
@@ -29,13 +29,4 @@ export interface IPublicMeta {
   gasLimit: number;
   gasPrice: number;
   ttl: number;
-}
-
-/**
- * @alpha
- */
-export interface IUnsignedTransaction {
-  hash: string;
-  sigs: (ISignature | undefined)[];
-  cmd: string;
 }

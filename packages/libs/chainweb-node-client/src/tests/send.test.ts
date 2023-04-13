@@ -1,11 +1,12 @@
 jest.mock('cross-fetch');
 
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
-import type { ICommand, SignatureWithHash } from '@kadena/types';
-
-import type { ISendRequestBody, ISendResponse } from '../send';
+import type { IUnsignedCommand, SignCommand, ICommand } from '@kadena/types';
+import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
+import { createSendRequest } from '../createSendRequest';
 import { send } from '../send';
-
+import { ensureSignedCommand } from '@kadena/pactjs';
+import { testURL } from './mockdata/Pact';
 import { mockFetch } from './mockdata/mockFetch';
 
 import fetch, { Response } from 'cross-fetch';
@@ -23,12 +24,15 @@ test('/send should return request keys of txs submitted', async () => {
     secretKey:
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
-  const cmdWithOneSignature1: SignatureWithHash = sign(commandStr, keyPair);
-  const signedCommand1: ICommand = {
+  const cmdWithOneSignature1: SignCommand = sign(commandStr, keyPair);
+  const sampleCommand1: IUnsignedCommand = {
     cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
-    sigs: [{ sig: cmdWithOneSignature1?.sig ?? null }],
+    sigs: [
+      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+    ],
   };
+  const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
   const expectedRequestKey1 = signedCommand1.hash;
 
   // A tx created for chain 0 of devnet using `pact -a`.
@@ -42,14 +46,15 @@ test('/send should return request keys of txs submitted', async () => {
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
   const expectedRequestKey2 = 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q';
+  const sendReq: ISendRequestBody = createSendRequest([
+    signedCommand1,
+    signedCommand2,
+  ]);
 
-  const sendReq: ISendRequestBody = {
-    cmds: [signedCommand1, signedCommand2],
-  };
-  const responseExpected: ISendResponse = {
+  const responseExpected: SendResponse = {
     requestKeys: [expectedRequestKey1, expectedRequestKey2],
   };
-  const responseActual: Response | ISendResponse = await send(sendReq, '');
+  const responseActual: Response | SendResponse = await send(sendReq, testURL);
   expect(responseExpected).toEqual(responseActual);
 });
 
@@ -64,14 +69,14 @@ test('/send should return error if sent to wrong chain id', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: ISendRequestBody = {
-    cmds: [signedCommand],
-  };
+
+  const sendReq: ISendRequestBody = createSendRequest([signedCommand]);
+
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction metadata (chain id, chainweb version) conflicts with this endpoint';
-  const responseActual: Promise<Response | ISendResponse> = send(
+  const responseActual: Promise<Response | SendResponse> = send(
     sendReq,
-    '/wrongChain',
+    `${testURL}/wrongChain`,
   );
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });
@@ -87,14 +92,12 @@ test('/send should return error if tx already exists on chain', async () => {
     ],
     cmd: '{"networkId":"development","payload":{"exec":{"data":null,"code":"(+ 1 2)"}},"signers":[{"pubKey":"f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"}],"meta":{"creationTime":1655142318,"ttl":28800,"gasLimit":10000,"chainId":"0","gasPrice":1.0e-5,"sender":"k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f"},"nonce":"2022-06-13 17:45:18.211131 UTC"}',
   };
-  const sendReq: ISendRequestBody = {
-    cmds: [signedCommand],
-  };
+  const sendReq: ISendRequestBody = createSendRequest([signedCommand]);
   const expectedErrorMsg =
     'Error: Validation failed for hash "ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q": Transaction already exists on chain';
-  const responseActual: Promise<Response | ISendResponse> = send(
+  const responseActual: Promise<Response | SendResponse> = send(
     sendReq,
-    '/duplicate',
+    `${testURL}/duplicate`,
   );
   return expect(responseActual).rejects.toThrowError(expectedErrorMsg);
 });

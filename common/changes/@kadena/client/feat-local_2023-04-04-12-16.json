@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Removed localWithoutSignatureVerification",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
