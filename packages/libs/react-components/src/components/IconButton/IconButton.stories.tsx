@@ -1,5 +1,3 @@
-import { colors } from '../../styles/colors';
-
 import { SystemIcons } from './../../';
 import { IconButton, IIConButtonProps } from '.';
 
@@ -28,9 +26,8 @@ const meta: Meta<
       },
     },
     color: {
-      options: Object.keys(colors).map((k) => `$${k}`),
       control: {
-        type: 'select',
+        type: 'color',
       },
     },
   },

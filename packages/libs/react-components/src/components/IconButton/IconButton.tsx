@@ -1,5 +1,4 @@
 import { styled } from '../../styles';
-import { colors } from '../../styles/colors';
 import { SystemIcons } from '../Icons';
 
 import React, { FC } from 'react';
@@ -9,7 +8,6 @@ export interface IIConButtonProps
   icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   title: string;
-  color?: keyof typeof colors;
 }
 
 const Button = styled('button', {

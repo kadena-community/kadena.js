@@ -120,7 +120,7 @@ export const {
       ...sizes,
     },
     zIndices: {
-      menu: 100,
+      navMenu: 100,
       modal: 999,
     },
   },

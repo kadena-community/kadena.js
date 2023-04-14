@@ -6,6 +6,7 @@ import {
   transformVariant,
 } from './styles';
 
+import { styled } from '@stitches/react';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
