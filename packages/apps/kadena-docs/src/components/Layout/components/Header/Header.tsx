@@ -26,9 +26,11 @@ const SkipNav = styled('a', {
   color: '$neutral6',
   fontWeight: '$bold',
   transform: 'translateY(-40px)',
-  transition: 'transform .1s ease-in',
+  transition: 'transform .1s ease-in, opacity .1s ease-in',
+  opacity: 0,
   '&:focus': {
     transform: 'translateY(0px)',
+    opacity: 1,
   },
 });
 

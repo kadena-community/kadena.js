@@ -44,7 +44,36 @@ export const Content: StyledComponent<'div', { name?: string }> = styled(
 );
 
 export const MenuBack: StyledComponent<'div'> = styled('div', {
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
   background: 'rgba(0,0,0,.5)',
+  opacity: 0,
+  transform: 'translateX(-100%)',
+  transition: 'opacity .5s ease, transform .1s ease',
+  '@md': {
+    opacity: 0,
+    pointerEvent: 'none',
+  },
+
+  variants: {
+    isOpen: {
+      true: {
+        transform: 'translateX(0)',
+        opacity: 1,
+        '@md': {
+          transform: 'translateX(-100%)',
+          opacity: 0,
+        },
+      },
+      false: {
+        transform: 'translateX(-100%)',
+        opacity: 0,
+      },
+    },
+  },
 });
 
 export const Menu: StyledComponent<
