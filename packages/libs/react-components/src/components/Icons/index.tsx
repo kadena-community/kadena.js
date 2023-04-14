@@ -61,6 +61,7 @@ import { SignatureFreehand } from './SignatureFreehand';
 import { SlashForward } from './SlashForward';
 import { StopCircle } from './StopCircle';
 import { IconContainer } from './styles';
+import { ThemeLightDark } from './ThemeLightDark';
 import { TrailingIcon } from './TrailingIcon';
 import { Twitter } from './Twitter';
 import { UsbFlashDrive } from './UsbFlashDrive';
@@ -151,6 +152,7 @@ export const SystemIcons = {
   SignatureFreehand: IconWrapper(SignatureFreehand),
   SlashForward: IconWrapper(SlashForward),
   StopCircle: IconWrapper(StopCircle),
+  ThemeLightDark: IconWrapper(ThemeLightDark),
   TrailingIcon: IconWrapper(TrailingIcon),
   Twitter: IconWrapper(Twitter),
   UsbFlashDrive: IconWrapper(UsbFlashDrive),

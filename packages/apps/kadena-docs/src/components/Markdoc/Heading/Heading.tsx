@@ -1,7 +1,5 @@
-import { styled, SystemIcons } from '@kadena/react-components';
+import { Heading, styled, SystemIcons } from '@kadena/react-components';
 
-import { IHeadingLevelProps } from '@/components';
-import * as Headers from '@/components/Typography/Headers';
 import { createSlug } from '@/utils';
 import React, { FC } from 'react';
 
@@ -11,8 +9,7 @@ interface IProp {
   children: string;
 }
 
-const StyleHover = styled('span', {
-  background: 'green',
+const StyledHeader = styled(Heading, {
   a: {
     opacity: 0,
     transition: 'opacity .3s ease',
@@ -29,22 +26,15 @@ const StyledLinkIcon = styled('a', {
   paddingLeft: '$3',
 });
 
-const chooseHeader = (as: TagTypes): FC<IHeadingLevelProps> => {
-  return Headers[`HeadingLevel${as}`];
-};
-
 export const TaggedHeading: FC<IProp> = ({ children, as }) => {
   const slug = createSlug(children);
-  const Heading = chooseHeader(as);
 
   return (
-    <StyleHover>
-      <Heading>
-        {children}
-        <StyledLinkIcon id={slug} href={`#${slug}`}>
-          <SystemIcons.Link />
-        </StyledLinkIcon>
-      </Heading>
-    </StyleHover>
+    <StyledHeader as={as}>
+      {children}
+      <StyledLinkIcon id={slug} href={`#${slug}`}>
+        <SystemIcons.Link />
+      </StyledLinkIcon>
+    </StyledHeader>
   );
 };

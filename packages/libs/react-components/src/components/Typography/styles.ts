@@ -131,7 +131,6 @@ export const transformVariant = {
 
 export const BaseText = styled('span', {
   fontWeight: '$regular',
-  color: '$foreground',
   lineHeight: '$base',
   $$boldWeight: '$bold',
 
