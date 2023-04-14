@@ -1,6 +1,7 @@
-import { styled } from '../../styles';
+import { config, styled } from '../../styles';
 import { SystemIcons } from '../Icons';
 
+import { PropertyValue } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface IIConButtonProps
@@ -8,6 +9,8 @@ export interface IIConButtonProps
   icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   title: string;
+  color: React.HTMLAttributes<HTMLButtonElement>['color'] &
+    PropertyValue<'backgroundColor', typeof config>;
 }
 
 const Button = styled('button', {
