@@ -1,15 +1,18 @@
-import { Heading, styled, SystemIcons } from '@kadena/react-components';
+import { styled, SystemIcons } from '@kadena/react-components';
 
-import { TagNameType } from '@/types/Layout';
+import { IHeadingLevelProps } from '@/components';
+import * as Headers from '@/components/Typography/Headers';
 import { createSlug } from '@/utils';
 import React, { FC } from 'react';
 
+type TagTypes = 1 | 2 | 3 | 4;
 interface IProp {
-  as: TagNameType;
+  as: TagTypes;
   children: string;
 }
 
-const StyleHeader = styled(Heading, {
+const StyleHover = styled('span', {
+  background: 'green',
   a: {
     opacity: 0,
     transition: 'opacity .3s ease',
@@ -26,14 +29,22 @@ const StyledLinkIcon = styled('a', {
   paddingLeft: '$3',
 });
 
+const chooseHeader = (as: TagTypes): FC<IHeadingLevelProps> => {
+  return Headers[`HeadingLevel${as}`];
+};
+
 export const TaggedHeading: FC<IProp> = ({ children, as }) => {
   const slug = createSlug(children);
+  const Heading = chooseHeader(as);
+
   return (
-    <StyleHeader as={as}>
-      {children}
-      <StyledLinkIcon id={slug} href={`#${slug}`}>
-        <SystemIcons.Link />
-      </StyledLinkIcon>
-    </StyleHeader>
+    <StyleHover>
+      <Heading>
+        {children}
+        <StyledLinkIcon id={slug} href={`#${slug}`}>
+          <SystemIcons.Link />
+        </StyledLinkIcon>
+      </Heading>
+    </StyleHover>
   );
 };

@@ -21,7 +21,7 @@ const heading: Schema<Config, typeof TaggedHeading> = {
     return new Tag(
       // fix in the typing of MarkDoc.
       this.render as unknown as string,
-      { as: `h${attributes.level}` },
+      { as: attributes.level },
       children,
     );
   },

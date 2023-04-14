@@ -9,6 +9,7 @@ export interface ITextProps {
   font?: VariantProps<typeof BaseText>['font'];
   bold?: VariantProps<typeof BaseText>['bold'];
   size?: VariantProps<typeof StyledText>['size'];
+  transform?: VariantProps<typeof BaseText>['transform'];
   children: React.ReactNode;
 }
 
@@ -18,6 +19,7 @@ export const Text: FC<ITextProps> = ({
   font,
   bold,
   size,
+  transform,
   children,
 }) => {
   return (
@@ -27,6 +29,7 @@ export const Text: FC<ITextProps> = ({
       font={font}
       bold={bold}
       size={size}
+      transform={transform}
     >
       {children}
     </StyledText>
