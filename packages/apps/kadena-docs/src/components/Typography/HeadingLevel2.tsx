@@ -1,13 +1,13 @@
-import { Heading, IHeadingProps } from '@kadena/react-components';
+import { Heading } from '@kadena/react-components';
 
-import React, { FC, ReactNode } from 'react';
+import { IHeadingLevelProps } from './types';
 
-interface IProps {
-  children?: ReactNode;
-  bold?: IHeadingProps['bold'];
-}
+import React, { FC } from 'react';
 
-export const HeadingLevel2: FC<IProps> = ({ children, bold = true }) => {
+export const HeadingLevel2: FC<IHeadingLevelProps> = ({
+  children,
+  bold = true,
+}) => {
   return (
     <Heading as="h2" variant="h2" bold={bold}>
       {children}

@@ -1,8 +1,8 @@
-import { Heading, IHeadingProps } from '@kadena/react-components';
+import { Heading } from '@kadena/react-components';
 
 import { IHeadingLevelProps } from './types';
 
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 
 export const HeadingLevel1: FC<IHeadingLevelProps> = ({
   children,

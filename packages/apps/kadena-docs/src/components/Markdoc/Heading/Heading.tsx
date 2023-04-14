@@ -5,6 +5,7 @@ import {
   HeadingLevel2,
   HeadingLevel3,
   HeadingLevel4,
+  IHeadingLevelProps,
 } from '@/components';
 import { TagNameType } from '@/types/Layout';
 import { createSlug } from '@/utils';
@@ -33,7 +34,7 @@ const StyledLinkIcon = styled('a', {
   paddingLeft: '$3',
 });
 
-const chooseHeader = (as: string): FC => {
+const chooseHeader = (as: string): FC<IHeadingLevelProps> => {
   switch (as) {
     case 'h1':
       return HeadingLevel1;
