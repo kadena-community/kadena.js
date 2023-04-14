@@ -1,18 +1,13 @@
 import { styled, SystemIcons } from '@kadena/react-components';
 
-import {
-  HeadingLevel1,
-  HeadingLevel2,
-  HeadingLevel3,
-  HeadingLevel4,
-  IHeadingLevelProps,
-} from '@/components';
-import { TagNameType } from '@/types/Layout';
+import { IHeadingLevelProps } from '@/components';
+import * as Headers from '@/components/Typography/Headers';
 import { createSlug } from '@/utils';
 import React, { FC } from 'react';
 
+type TagTypes = 1 | 2 | 3 | 4;
 interface IProp {
-  as: TagNameType;
+  as: TagTypes;
   children: string;
 }
 
@@ -34,19 +29,8 @@ const StyledLinkIcon = styled('a', {
   paddingLeft: '$3',
 });
 
-const chooseHeader = (as: string): FC<IHeadingLevelProps> => {
-  switch (as) {
-    case 'h1':
-      return HeadingLevel1;
-    case 'h2':
-      return HeadingLevel2;
-    case 'h3':
-      return HeadingLevel3;
-    case 'h4':
-      return HeadingLevel4;
-    default:
-      return HeadingLevel2;
-  }
+const chooseHeader = (as: TagTypes): FC<IHeadingLevelProps> => {
+  return Headers[`HeadingLevel${as}`];
 };
 
 export const TaggedHeading: FC<IProp> = ({ children, as }) => {
