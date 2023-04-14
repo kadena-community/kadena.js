@@ -1,7 +1,7 @@
 ---
 title: Get started with KadenaJS
 description: How to get started with Markdoc
-layout: code
+layout: full
 ---
 
 ## Kadena 1
