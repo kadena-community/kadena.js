@@ -1,4 +1,4 @@
-import { Heading, styled } from '@kadena/react-components';
+import { Heading } from '@kadena/react-components';
 
 import { Article, Content } from '../components';
 import { ILayout } from '../types';

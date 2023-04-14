@@ -6,7 +6,7 @@ interface IProps {
 }
 
 export const DocsLogo: FC<IProps> = ({ overwriteTheme }) => {
-  const { theme } = useTheme();
+  const { theme } = useTheme() ?? 'dark';
 
   if (overwriteTheme === 'dark' || (!overwriteTheme && theme === 'dark')) {
     return (
