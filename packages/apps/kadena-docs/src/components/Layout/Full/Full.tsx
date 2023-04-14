@@ -27,7 +27,7 @@ export const Full: FC<ILayout> = ({ children }) => {
 
   return (
     <>
-      <Content>
+      <Content id="maincontent">
         <Article ref={docRef}>{children}</Article>
 
         <Aside>

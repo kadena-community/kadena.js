@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 
 export const Landing: FC<ILayout> = ({ children }) => {
   return (
-    <Content>
+    <Content id="maincontent">
       <h1>Landing</h1>
       {children}
     </Content>

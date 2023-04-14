@@ -33,12 +33,15 @@ export const Article: StyledComponent<'div'> = styled('div', {
   flex: 1,
 });
 
-export const Content: StyledComponent<'div'> = styled('div', {
-  display: 'flex',
-  gridArea: 'content',
-  flex: 1,
-  padding: '0 $10',
-});
+export const Content: StyledComponent<'div', { name?: string }> = styled(
+  'div',
+  {
+    display: 'flex',
+    gridArea: 'content',
+    flex: 1,
+    padding: '0 $10',
+  },
+);
 
 export const MenuBack: StyledComponent<'div'> = styled('div', {
   background: 'rgba(0,0,0,.5)',
