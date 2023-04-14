@@ -43,7 +43,10 @@ export const Content: StyledComponent<'div', { name?: string }> = styled(
   },
 );
 
-export const MenuBack: StyledComponent<'div'> = styled('div', {
+export const MenuBack: StyledComponent<
+  'div',
+  { isOpen?: boolean | 'true' | 'false' | undefined }
+> = styled('div', {
   position: 'absolute',
   top: 0,
   bottom: 0,
