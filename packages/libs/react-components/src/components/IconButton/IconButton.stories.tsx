@@ -5,7 +5,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<
-  { title: string; selectIcon: keyof typeof SystemIcons } & IIConButtonProps
+  {
+    title: string;
+    selectIcon: keyof typeof SystemIcons;
+    color: string;
+  } & IIConButtonProps
 > = {
   title: 'IconButton',
   argTypes: {
@@ -21,12 +25,21 @@ const meta: Meta<
         type: 'text',
       },
     },
+    color: {
+      control: {
+        type: 'color',
+      },
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<
-  { title: string; selectIcon: keyof typeof SystemIcons } & IIConButtonProps
+  {
+    title: string;
+    selectIcon: keyof typeof SystemIcons;
+    color: string;
+  } & IIConButtonProps
 >;
 
 /*
@@ -41,11 +54,11 @@ export const Primary: Story = {
     selectIcon: 'Account',
     title: 'test title',
   },
-  render: ({ selectIcon, onClick, title }) => {
+  render: ({ selectIcon, onClick, title, color }) => {
     const Icon = SystemIcons[selectIcon];
     return (
       <>
-        <IconButton title={title} onClick={onClick} icon={Icon} />
+        <IconButton title={title} onClick={onClick} icon={Icon} color={color} />
       </>
     );
   },

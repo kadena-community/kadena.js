@@ -1,4 +1,3 @@
-import { colors } from '../../styles/colors';
 import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
@@ -29,9 +28,8 @@ const meta: Meta<{ icon: string; color: string } & IIconProps> = {
       },
     },
     color: {
-      options: Object.keys(colors).map((k) => `$${k}`),
       control: {
-        type: 'select',
+        type: 'color',
       },
     },
   },

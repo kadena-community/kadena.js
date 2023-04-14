@@ -1,50 +1,48 @@
-import { styled, SystemIcons } from '@kadena/react-components';
+import {
+  Heading,
+  styled,
+  StyledComponent,
+  SystemIcons,
+} from '@kadena/react-components';
 
-import { IHeadingLevelProps } from '@/components';
-import * as Headers from '@/components/Typography/Headers';
 import { createSlug } from '@/utils';
 import React, { FC } from 'react';
 
-type TagTypes = 1 | 2 | 3 | 4;
+type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
-  as: TagTypes;
+  as: TagType;
   children: string;
 }
 
-const StyleHover = styled('span', {
-  background: 'green',
-  a: {
-    opacity: 0,
-    transition: 'opacity .3s ease',
-  },
-  '&:hover': {
+const StyledHeader: StyledComponent<typeof Heading, { as?: TagType }> = styled(
+  Heading,
+  {
     a: {
-      opacity: 1,
+      opacity: 0,
+      transition: 'opacity .3s ease',
+    },
+    '&:hover': {
+      a: {
+        opacity: 1,
+      },
     },
   },
-});
+);
 
 const StyledLinkIcon = styled('a', {
   display: 'inline-block',
   paddingLeft: '$3',
 });
 
-const chooseHeader = (as: TagTypes): FC<IHeadingLevelProps> => {
-  return Headers[`HeadingLevel${as}`];
-};
-
 export const TaggedHeading: FC<IProp> = ({ children, as }) => {
   const slug = createSlug(children);
-  const Heading = chooseHeader(as);
 
   return (
-    <StyleHover>
-      <Heading>
-        {children}
-        <StyledLinkIcon id={slug} href={`#${slug}`}>
-          <SystemIcons.Link />
-        </StyledLinkIcon>
-      </Heading>
-    </StyleHover>
+    <StyledHeader as={as}>
+      {children}
+      <StyledLinkIcon id={slug} href={`#${slug}`}>
+        <SystemIcons.Link />
+      </StyledLinkIcon>
+    </StyledHeader>
   );
 };

@@ -20,3 +20,5 @@ export {
   baseGlobalStyles,
   keyframes,
 } from './styles';
+
+export type { StyledComponent } from '@stitches/react/types/styled-component';
