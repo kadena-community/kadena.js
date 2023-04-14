@@ -1,25 +1,33 @@
-import { Heading, styled, SystemIcons } from '@kadena/react-components';
+import {
+  Heading,
+  styled,
+  StyledComponent,
+  SystemIcons,
+} from '@kadena/react-components';
 
 import { createSlug } from '@/utils';
 import React, { FC } from 'react';
 
-type TagTypes = 1 | 2 | 3 | 4;
+type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
-  as: TagTypes;
+  as: TagType;
   children: string;
 }
 
-const StyledHeader = styled(Heading, {
-  a: {
-    opacity: 0,
-    transition: 'opacity .3s ease',
-  },
-  '&:hover': {
+const StyledHeader: StyledComponent<typeof Heading, { as?: TagType }> = styled(
+  Heading,
+  {
     a: {
-      opacity: 1,
+      opacity: 0,
+      transition: 'opacity .3s ease',
+    },
+    '&:hover': {
+      a: {
+        opacity: 1,
+      },
     },
   },
-});
+);
 
 const StyledLinkIcon = styled('a', {
   display: 'inline-block',

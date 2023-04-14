@@ -1,4 +1,5 @@
 import { styled } from '../../styles';
+import { colors } from '../../styles/colors';
 import { SystemIcons } from '../Icons';
 
 import React, { FC } from 'react';
@@ -8,6 +9,7 @@ export interface IIConButtonProps
   icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   title: string;
+  color?: keyof typeof colors;
 }
 
 const Button = styled('button', {
@@ -15,6 +17,7 @@ const Button = styled('button', {
   justifyContent: 'center',
   alignItems: 'center',
   background: 'transparent',
+  borderRadius: '$lg',
   width: '$11',
   height: '$11',
   border: 0,
@@ -29,13 +32,19 @@ const Button = styled('button', {
 export const IconButton: FC<IIConButtonProps> = ({
   icon,
   onClick,
+  color = 'transparent',
   ...props
 }) => {
   const Icon = icon;
   const ariaLabel = props['aria-label'] ?? props.title;
 
   return (
-    <Button onClick={onClick} {...props} aria-label={ariaLabel}>
+    <Button
+      onClick={onClick}
+      {...props}
+      aria-label={ariaLabel}
+      css={{ backgroundColor: color }}
+    >
       <Icon size="md" />
     </Button>
   );
