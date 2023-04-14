@@ -133,7 +133,6 @@ export const BaseText = styled('span', {
   fontWeight: '$regular',
   lineHeight: '$base',
   $$boldWeight: '$bold',
-
   variants: {
     variant: elementVariant,
     font: fontVariant,

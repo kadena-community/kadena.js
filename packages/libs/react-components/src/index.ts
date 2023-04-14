@@ -21,4 +21,4 @@ export {
   keyframes,
 } from './styles';
 
-export { StyledComponent } from '@stitches/react/types/styled-component';
+export type { StyledComponent } from '@stitches/react/types/styled-component';
