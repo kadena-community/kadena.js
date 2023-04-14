@@ -1,6 +1,6 @@
 import { Heading } from '@kadena/react-components';
 
-import { IHeadingLevelProps } from './types';
+import { IHeadingLevelProps } from './';
 
 import React, { FC } from 'react';
 
