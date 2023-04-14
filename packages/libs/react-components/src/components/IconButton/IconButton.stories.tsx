@@ -4,23 +4,29 @@ import { IconButton, IIConButtonProps } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<{ selectIcon: keyof typeof SystemIcons } & IIConButtonProps> =
-  {
-    title: 'IconButton',
-    argTypes: {
-      onClick: { action: 'clicked' },
-      selectIcon: {
-        options: Object.keys(SystemIcons),
-        control: {
-          type: 'select',
-        },
+const meta: Meta<
+  { title: string; selectIcon: keyof typeof SystemIcons } & IIConButtonProps
+> = {
+  title: 'IconButton',
+  argTypes: {
+    onClick: { action: 'clicked' },
+    selectIcon: {
+      options: Object.keys(SystemIcons),
+      control: {
+        type: 'select',
       },
     },
-  };
+    title: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
+};
 
 export default meta;
 type Story = StoryObj<
-  { selectIcon: keyof typeof SystemIcons } & IIConButtonProps
+  { title: string; selectIcon: keyof typeof SystemIcons } & IIConButtonProps
 >;
 
 /*
@@ -33,12 +39,13 @@ export const Primary: Story = {
   name: 'IconButton',
   args: {
     selectIcon: 'Account',
+    title: 'test title',
   },
-  render: ({ selectIcon, onClick }) => {
+  render: ({ selectIcon, onClick, title }) => {
     const Icon = SystemIcons[selectIcon];
     return (
       <>
-        <IconButton onClick={onClick} icon={Icon} />
+        <IconButton title={title} onClick={onClick} icon={Icon} />
       </>
     );
   },
