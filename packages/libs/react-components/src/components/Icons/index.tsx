@@ -73,10 +73,13 @@ export interface IIconProps {
   size?: VariantProps<typeof IconContainer>['size'];
   color?: PropertyValue<'color', typeof config>;
 }
+
+export type IconType = SVGProps<SVGSVGElement> & IIconProps;
+
 const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Component: React.FC<SVGProps<SVGSVGElement>>,
-): React.FC<SVGProps<SVGSVGElement> & IIconProps> => {
+): React.FC<IconType> => {
   const WrappedIcon: React.FC<SVGProps<SVGSVGElement> & IIconProps> = ({
     size = 'md',
     color,
