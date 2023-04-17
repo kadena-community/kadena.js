@@ -32,6 +32,8 @@ const StyledHeader: StyledComponent<typeof Heading, { as?: TagType }> = styled(
 const StyledLinkIcon = styled('a', {
   display: 'inline-block',
   paddingLeft: '$3',
+  scrollMarginTop: '$20',
+  scrollSnapMarginTop: '$20',
 });
 
 export const TaggedHeading: FC<IProp> = ({ children, as }) => {

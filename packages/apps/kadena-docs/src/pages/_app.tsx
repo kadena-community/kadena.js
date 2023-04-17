@@ -1,9 +1,14 @@
-import { baseGlobalStyles, globalCss } from '@kadena/react-components';
+import {
+  baseGlobalStyles,
+  darkTheme,
+  globalCss,
+} from '@kadena/react-components';
 
 import { Footer, Header } from '@/components';
 import { getLayout } from '@/utils';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { ThemeProvider } from 'next-themes';
 import React, { ComponentType } from 'react';
 
 const GlobalStyles = globalCss({
@@ -36,11 +41,20 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
-      <Header />
-      <Layout>
-        <ReactComponent {...pageProps} />
-      </Layout>
-      <Footer />
+      <ThemeProvider
+        attribute="class"
+        enableSystem={true}
+        value={{
+          light: 'light',
+          dark: darkTheme.className,
+        }}
+      >
+        <Header />
+        <Layout>
+          <ReactComponent {...pageProps} />
+        </Layout>
+        <Footer />
+      </ThemeProvider>
     </>
   );
 }
