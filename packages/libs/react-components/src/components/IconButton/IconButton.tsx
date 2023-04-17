@@ -5,11 +5,11 @@ import { PropertyValue } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface IIConButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, "color"> {
+  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   title: string;
-  color: PropertyValue<'backgroundColor', typeof config>;
+  color?: PropertyValue<'backgroundColor', typeof config>;
 }
 
 const Button = styled('button', {
