@@ -10,7 +10,9 @@ export interface IMenuCardProps {
 
 const StyledSection = styled('section', {
   position: 'absolute',
+  top: 0,
   transition: 'transform .2s ease',
+  padding: '0 $6',
   width: '100%',
   defaultVariants: {
     active: false,

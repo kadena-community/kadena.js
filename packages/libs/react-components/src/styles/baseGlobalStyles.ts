@@ -178,4 +178,7 @@ export const baseGlobalStyles: Record<string, unknown> = {
   code: {
     fontFamily: '$mono',
   },
+  a: {
+    fontFamily: '$main',
+  },
 } as const;

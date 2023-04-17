@@ -75,6 +75,7 @@ export const {
       ...colors,
       background: '$colors$neutral1',
       foreground: '$colors$neutral6',
+      borderColor: '#70797b33',
     },
     fonts: {
       main: 'Haas Grotesk Display, -apple-system, sans-serif',
@@ -187,6 +188,7 @@ export const darkTheme = createTheme('darkTheme', {
     ...colorsDark,
     background: '$colors$neutral1',
     foreground: '$colors$neutral6',
+    borderColor: '#f0f0f033',
   },
 });
 
