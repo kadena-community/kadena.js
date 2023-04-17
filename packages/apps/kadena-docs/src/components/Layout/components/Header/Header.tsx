@@ -1,7 +1,7 @@
-import { styled } from '@kadena/react-components';
+import { IconButton, styled, SystemIcons } from '@kadena/react-components';
 
 import { MenuItems } from '../MenuItems';
-import { InnerWrapper, Spacer, StyledHeader } from '../styles';
+import { InnerWrapper, Spacer, StyledHeader, StyledNav } from '../styles';
 import { DocsLogo } from '..';
 
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
@@ -34,6 +34,18 @@ const SkipNav = styled('a', {
   },
 });
 
+const HeaderIconGroup = styled('div', {
+  display: 'flex',
+  marginLeft: '$6',
+});
+
+const HideOnMobile = styled('div', {
+  display: 'none',
+  '@md': {
+    display: 'flex',
+  },
+});
+
 export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 
@@ -41,12 +53,34 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
-        <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
-        <DocsLogo overwriteTheme="dark" />
-        <MenuItems ref={listRef} />
+        <HideOnMobile>
+          <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
+          <DocsLogo overwriteTheme="dark" />
+          <StyledNav>
+            <MenuItems ref={listRef} />
+          </StyledNav>
+        </HideOnMobile>
         <Spacer />
-        <ThemeToggle />
-        <HamburgerMenuToggle toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+
+        <HeaderIconGroup>
+          <IconButton
+            onClick={() => alert('todo, make an href')}
+            title="Go to our Twitter"
+            icon={SystemIcons.Twitter}
+          />
+          <IconButton
+            onClick={() => alert('todo, make an href')}
+            title="Go to our Github"
+            icon={SystemIcons.Github}
+          />
+        </HeaderIconGroup>
+        <HeaderIconGroup>
+          <ThemeToggle />
+          <HamburgerMenuToggle
+            toggleMenu={toggleMenu}
+            isMenuOpen={isMenuOpen}
+          />
+        </HeaderIconGroup>
       </InnerWrapper>
     </StyledHeader>
   );

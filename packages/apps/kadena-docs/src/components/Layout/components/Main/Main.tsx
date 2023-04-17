@@ -1,5 +1,4 @@
-import { Heading } from '@kadena/react-components';
-
+import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template } from '../';
 
 import { getLayout } from '@/utils';
@@ -45,11 +44,7 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
         <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
         <MenuBack isOpen={isMenuOpen} />
         <Menu isOpen={isMenuOpen}>
-          <Heading as="h6">Kadena Docs</Heading>
-          menu
-          <p>sdf</p>
-          <p>sdf</p>
-          <p>sdf</p>
+          <SideMenu />
         </Menu>
 
         <Layout>{children}</Layout>

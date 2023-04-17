@@ -1,4 +1,4 @@
-import { StyledUl, StyleNav } from '..';
+import { StyledNav, StyledUl } from '..';
 
 import { NavItem } from './NavItem';
 
@@ -10,12 +10,12 @@ interface IProps {
 
 export const MenuItems: FC<IProps> = React.forwardRef((props = {}, ref) => {
   return (
-    <StyleNav>
+    <StyledNav>
       <StyledUl ref={ref}>
         <NavItem href="/docs/pact">Pact</NavItem>
         <NavItem href="/docs/kadenajs">KadenaJS</NavItem>
       </StyledUl>
-    </StyleNav>
+    </StyledNav>
   );
 });
 

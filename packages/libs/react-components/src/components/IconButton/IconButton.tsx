@@ -9,7 +9,7 @@ export interface IIConButtonProps
   icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   title: string;
-  color: PropertyValue<'backgroundColor', typeof config>;
+  color?: PropertyValue<'backgroundColor', typeof config>;
 }
 
 const Button = styled('button', {

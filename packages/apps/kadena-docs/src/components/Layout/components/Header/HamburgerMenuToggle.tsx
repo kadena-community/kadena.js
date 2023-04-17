@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const Button = styled(IconButton, {
-  display: 'block',
+  display: 'flex',
   '@md': {
     display: 'none',
   },
@@ -20,6 +20,7 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
       title="Open the sidemenu"
       onClick={toggleMenu}
       icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
+      color="$neutral4"
     />
   );
 };

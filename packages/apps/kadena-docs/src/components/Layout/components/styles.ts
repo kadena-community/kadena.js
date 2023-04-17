@@ -91,6 +91,7 @@ export const Menu: StyledComponent<
   padding: '0 $6',
   borderRight: '1px solid rgba(112, 121, 123, 0.2)',
   background: '$background',
+  overflow: 'hidden',
   transform: 'translateX(-100%)',
   transition: 'transform .3s ease, width .3s ease',
 
@@ -125,7 +126,7 @@ export const StyledHeader: StyledComponent<'header'> = styled('header', {
   gridArea: 'header',
   backgroundColor: '$neutral5',
   color: 'white',
-  zIndex: '$menu',
+  zIndex: '$navMenu',
 
   [`.${darkTheme} &`]: {
     background: '$neutral2',
@@ -139,10 +140,13 @@ export const InnerWrapper: StyledComponent<typeof Wrapper> = styled(Wrapper, {
   padding: '$3 $4',
 });
 
-export const StyleNav: StyledComponent<'nav'> = styled('nav', {
-  display: 'flex',
+export const StyledNav: StyledComponent<'nav'> = styled('nav', {
+  display: 'none',
   alignItems: 'center',
   zIndex: 1,
+  '@md': {
+    display: 'flex',
+  },
 });
 
 export const StyledUl: StyledComponent<
@@ -182,6 +186,8 @@ export const AnimationBackgroundWrapper: StyledComponent<
   top: 0,
   left: 0,
   zIndex: 0,
+  opacity: 0,
+
   defaultVariants: {
     show: true,
   },
