@@ -1,4 +1,4 @@
-import { AnimationBackgroundWrapper } from '../';
+import { AnimationBackgroundWrapper } from '../styles';
 
 import React, { FC } from 'react';
 

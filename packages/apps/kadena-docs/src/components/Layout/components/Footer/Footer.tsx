@@ -1,22 +1,11 @@
-import { darkTheme, styled } from '@kadena/react-components';
-
-import { DocsLogo, InnerWrapper, Spacer } from '..';
+import { InnerWrapper, Spacer } from '../styles';
+import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
+import { StyledFooter } from './styles';
 
 import React, { FC } from 'react';
-
-const StyledFooter = styled('footer', {
-  position: 'relative',
-  gridArea: 'footer',
-  zIndex: '$menu',
-  background: '$neutral2',
-
-  [`.${darkTheme} &`]: {
-    background: '$neutral3',
-  },
-});
 
 export const Footer: FC = () => {
   return (
