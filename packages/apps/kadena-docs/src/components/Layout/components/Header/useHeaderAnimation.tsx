@@ -1,18 +1,19 @@
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface IUseHeaderReturn {
   listRef: React.RefObject<HTMLUListElement>;
   backgroundRef: React.RefObject<HTMLDivElement>;
+  hasPath: boolean;
 }
 
 const getActiveItem = (
   list: HTMLUListElement,
   pathname: string,
   clickedElement?: HTMLAnchorElement,
-): { item?: HTMLLIElement; idx: number } => {
+): { item?: HTMLLIElement; idx?: number } => {
   let item = list.firstChild as HTMLLIElement;
-  let idx = 0;
+  let idx;
 
   Array.from(list.children).some((innerItem, innerIdx) => {
     const anchor = innerItem.firstChild as HTMLAnchorElement;
@@ -32,6 +33,7 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
   const listRef = useRef<HTMLUListElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<number>(0);
+  const [hasPath, setHasPath] = useState<boolean>(false);
   const router = useRouter();
 
   const selectItem = useCallback(
@@ -49,12 +51,13 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
         pathname,
         clickedElement,
       );
-      const activeBox = activeItem?.getBoundingClientRect();
-      const bgBox = bg?.getBoundingClientRect();
 
-      if (bgBox === undefined || activeBox === undefined) return;
+      setHasPath(false);
+      if (idx === undefined || !activeItem) return;
+      setHasPath(true);
       //slow down the animation, when the distance between current and new Item is larger
-      const newPosition = activeBox.x + activeBox.width / 2 - bgBox.width / 2;
+      const newPosition =
+        activeItem.offsetLeft + activeItem.offsetWidth / 2 - bg.offsetWidth / 2;
 
       bg.style.transform = `translateX(${newPosition}px)`;
       bg.style.transitionDuration = `${0.3 + 0.1 * Math.abs(active - idx)}s`;
@@ -80,5 +83,5 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
     return () => router.events.off('routeChangeStart', changeUrl);
   }, [activeRef, router.events, router.pathname, selectItem]);
 
-  return { listRef, backgroundRef };
+  return { hasPath: hasPath, listRef, backgroundRef };
 };
