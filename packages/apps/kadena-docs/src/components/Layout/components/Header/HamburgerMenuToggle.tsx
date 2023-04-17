@@ -1,4 +1,6 @@
-import { IconButton, styled, SystemIcons } from '@kadena/react-components';
+import { SystemIcons } from '@kadena/react-components';
+
+import { HamburgerButton } from './styles';
 
 import React, { FC } from 'react';
 
@@ -7,16 +9,9 @@ interface IProps {
   isMenuOpen: boolean;
 }
 
-const Button = styled(IconButton, {
-  display: 'flex',
-  '@md': {
-    display: 'none',
-  },
-});
-
 export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   return (
-    <Button
+    <HamburgerButton
       title="Open the sidemenu"
       onClick={toggleMenu}
       icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}

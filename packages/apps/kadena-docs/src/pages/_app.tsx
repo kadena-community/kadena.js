@@ -19,6 +19,8 @@ const GlobalStyles = globalCss({
 });
 GlobalStyles();
 
+// @TODO: moving the layout stuff to a new Layout file
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
