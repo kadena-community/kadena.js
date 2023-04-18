@@ -11,8 +11,6 @@ export const styleVariant = {
     $$bgHoverColor: '$colors$primaryHighContrast',
     $$focusOutlineColor: '$colors$primaryHighContrast',
     $$disabledBackgroundColor: '$colors$neutral3',
-
-    $$tempColor: '$colors$tempBlue',
   },
 } as const;
 
@@ -36,15 +34,14 @@ export const StyledButton = styled('button', {
   },
   '&:active': {
     opacity: '0.8',
-    // backgroundColor: '$$tempColor',
   },
   '&:focus-visible': {
     outlineOffset: '2px',
     outline: '2px solid $$focusOutlineColor',
   },
   '&:disabled': {
-    background: '$$disabledBackgroundColor',
     opacity: 0.7,
+    background: '$$disabledBackgroundColor',
     color: '$$inverseColor',
     cursor: 'not-allowed',
   },

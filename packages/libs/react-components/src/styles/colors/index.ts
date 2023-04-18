@@ -4,9 +4,7 @@ import { neutral } from './neutral';
 export const colors = {
   ...neutral,
 
-  tempBlue: '#8FC8FF',
-
-  neutral1: '#FAFAFA', // TODO: neutral colors should be updated to use extended neutral color palette
+  neutral1: '#FAFAFA',
   neutral2: '#F0F0F0',
   neutral3: '#9EA1A6',
   neutral4: '#474F52',
@@ -21,9 +19,11 @@ export const colors = {
   secondaryAccent: '#ED098F',
   secondarySurface: '#FDC4E5',
   secondaryContrast: '#8A0553',
+
   successAccent: '#5EEA15',
   successSurface: '#E5FFD8',
   successContrast: '#113300',
+
   errorAccent: '#FF3338',
   errorSurface: '#FFDAD8',
   errorContrast: '#410006',
@@ -31,8 +31,6 @@ export const colors = {
 
 export const colorsDark = {
   ...neutral,
-
-  tempBlue: '#0C5269',
 
   neutral1: '#050505',
   neutral2: '#1D1D1F',
@@ -49,9 +47,11 @@ export const colorsDark = {
   secondaryAccent: '#ED098F',
   secondarySurface: '#8A0553',
   secondaryContrast: '#FDC4E5', // TODO: Replace this with highlighter color
+
   successAccent: '#5EEA15',
   successSurface: '#113300',
   successContrast: '#E5FFD8',
+
   errorAccent: '#FF3338',
   errorSurface: '#410006',
   errorContrast: '#FFDAD8',
