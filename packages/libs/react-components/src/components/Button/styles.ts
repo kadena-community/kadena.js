@@ -1,0 +1,59 @@
+/* eslint @kadena-dev/typedef-var: 0 */
+// TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
+
+import { styled } from '../../styles';
+
+export const styleVariant = {
+  primaryFilled: {
+    $$color: '$colors$neutral1',
+    $$inverseColor: '$colors$neutral6',
+    $$bgColor: '$colors$primaryContrast',
+    $$bgHoverColor: '$colors$primaryHighContrast',
+    $$focusOutlineColor: '$colors$primaryHighContrast',
+    $$disabledBackgroundColor: '$colors$neutral3',
+
+    $$tempColor: '$colors$tempBlue',
+  },
+} as const;
+
+export const StyledButton = styled('button', {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '$1',
+  transition: 'background-color 0.1s ease, color 0.1s ease',
+  borderRadius: '$sm',
+  cursor: 'pointer',
+  border: 0,
+  px: '$4',
+  py: '$3',
+  fontWeight: '$semiBold',
+  color: '$$color',
+  backgroundColor: '$$bgColor',
+  '&:hover': {
+    backgroundColor: '$$bgHoverColor',
+  },
+  '&:active': {
+    opacity: '0.8',
+    // backgroundColor: '$$tempColor',
+  },
+  '&:focus-visible': {
+    outlineOffset: '2px',
+    outline: '2px solid $$focusOutlineColor',
+  },
+  '&:disabled': {
+    background: '$$disabledBackgroundColor',
+    opacity: 0.7,
+    color: '$$inverseColor',
+    cursor: 'not-allowed',
+  },
+
+  variants: {
+    variant: styleVariant,
+  },
+
+  defaultVariants: {
+    variant: 'primaryFilled',
+  },
+});

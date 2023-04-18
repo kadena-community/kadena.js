@@ -4,7 +4,7 @@ import { SystemIcons } from '../Icons';
 import { PropertyValue } from '@stitches/react';
 import React, { FC } from 'react';
 
-export interface IIConButtonProps
+export interface IIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -29,7 +29,7 @@ const Button = styled('button', {
   },
 });
 
-export const IconButton: FC<IIConButtonProps> = ({
+export const IconButton: FC<IIconButtonProps> = ({
   icon,
   onClick,
   color = 'transparent',
