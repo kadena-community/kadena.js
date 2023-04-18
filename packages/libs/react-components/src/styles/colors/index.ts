@@ -19,6 +19,8 @@ export const colors = {
   errorAccent: '#FF3338',
   errorSurface: '#FFDAD8',
   errorContrast: '#410006',
+
+  primarySurfaceInverted: '#00498F',
 } as const;
 
 export const colorsDark = {
@@ -39,4 +41,6 @@ export const colorsDark = {
   errorAccent: '#FF3338',
   errorSurface: '#410006',
   errorContrast: '#FFDAD8',
+
+  primarySurfaceInverted: '#C2E1FF',
 };

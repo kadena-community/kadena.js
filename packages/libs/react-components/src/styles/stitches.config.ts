@@ -46,13 +46,19 @@ const sizes: Record<string, string> = {
   '3xl': 'var(--spacing-3xl)',
 };
 
-export const media: ConfigType.Media = {
+export const media: ConfigType.Media<{
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+  '2xl': string;
+}> = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
   '2xl': `(min-width: ${1536 / 16}rem)`,
-};
+} as const;
 
 export const {
   styled,
@@ -69,6 +75,7 @@ export const {
       ...colors,
       background: '$colors$neutral1',
       foreground: '$colors$neutral6',
+      borderColor: '#70797b33',
     },
     fonts: {
       main: 'Haas Grotesk Display, -apple-system, sans-serif',
@@ -181,6 +188,7 @@ export const darkTheme = createTheme('darkTheme', {
     ...colorsDark,
     background: '$colors$neutral1',
     foreground: '$colors$neutral6',
+    borderColor: '#f0f0f033',
   },
 });
 

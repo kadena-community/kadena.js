@@ -1,4 +1,4 @@
-import { IconButton, styled, SystemIcons } from '@kadena/react-components';
+import { IconButton, SystemIcons } from '@kadena/react-components';
 
 import {
   InnerWrapper,

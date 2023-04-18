@@ -7,7 +7,10 @@ export const Wrapper: StyledComponent<'div'> = styled('div', {
   margin: '0 auto',
 });
 
-export const Template: StyledComponent<'div'> = styled('div', {
+export const Template: StyledComponent<
+  'div',
+  { layout?: 'landing' | 'normal' | undefined }
+> = styled('div', {
   display: 'grid',
   gridTemplateRows: '$17 1fr auto',
   gridTemplateAreas: `
@@ -27,6 +30,28 @@ export const Template: StyledComponent<'div'> = styled('div', {
         "footer footer footer footer"
       `,
   },
+  defaultVariants: {
+    layout: 'landing',
+  },
+  variants: {
+    layout: {
+      normal: {},
+      landing: {
+        gridTemplateAreas: `
+            "header"
+            "content"
+            "footer"
+          `,
+        '@md': {
+          gridTemplateAreas: `
+              "header header header header"
+              ". content content ."
+              "footer footer footer footer"
+            `,
+        },
+      },
+    },
+  },
 });
 
 export const Article: StyledComponent<'div'> = styled('div', {
@@ -44,15 +69,17 @@ export const Content: StyledComponent<'div', { name?: string }> = styled(
 );
 
 export const MenuBack: StyledComponent<
-  'div',
+  'button',
   { isOpen?: boolean | 'true' | 'false' | undefined }
-> = styled('div', {
+> = styled('button', {
   position: 'absolute',
   top: 0,
   bottom: 0,
   left: 0,
   right: 0,
   background: 'rgba(0,0,0,.5)',
+  border: 0,
+  cursor: 'pointer',
   opacity: 0,
   transform: 'translateX(-100%)',
   transition: 'opacity .5s ease, transform .1s ease',
@@ -81,15 +108,17 @@ export const MenuBack: StyledComponent<
 
 export const Menu: StyledComponent<
   'div',
-  { isOpen?: boolean | 'true' | 'false' | undefined }
+  {
+    isOpen?: boolean | 'true' | 'false' | undefined;
+    inLayout?: boolean | 'true' | 'false' | undefined;
+  }
 > = styled('div', {
   gridArea: 'menu',
   position: 'absolute',
   top: '$17',
   height: 'calc(100% - $17 - $17)',
   width: '100%',
-  padding: '0 $6',
-  borderRight: '1px solid rgba(112, 121, 123, 0.2)',
+  borderRight: '1px solid $borderColor',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
@@ -106,6 +135,17 @@ export const Menu: StyledComponent<
   },
 
   variants: {
+    inLayout: {
+      true: {
+        display: 'block',
+      },
+      false: {
+        display: 'block',
+        '@md': {
+          display: 'none',
+        },
+      },
+    },
     isOpen: {
       true: {
         transform: 'translateX(0)',
