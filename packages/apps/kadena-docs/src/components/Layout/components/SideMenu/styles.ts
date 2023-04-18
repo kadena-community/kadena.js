@@ -97,6 +97,7 @@ export const StyledSection: StyledComponent<
   position: 'absolute',
   top: 0,
   transition: 'transform .2s ease',
+  margin: '$16 0',
   padding: '0 $6',
   width: '100%',
   defaultVariants: {
@@ -132,3 +133,38 @@ export const StyledSection: StyledComponent<
     },
   ],
 });
+
+const titleStyle = {
+  display: 'block',
+  background: 'transparent',
+  padding: '0 0 0 $8',
+  textAlign: 'left',
+  border: 0,
+  cursor: 'pointer',
+};
+
+export const SideMenuTitle: StyledComponent<'div'> = styled('div', titleStyle);
+
+export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
+  'button',
+  {
+    ...titleStyle,
+    '&:hover': {
+      '&::before': {
+        transform: 'rotate(45deg) translate(6px, 6px)',
+      },
+    },
+
+    '&::before': {
+      position: 'absolute',
+      left: '$2',
+      content: '',
+      width: '$2',
+      height: '$2',
+      borderLeft: '2px solid $neutral4',
+      borderBottom: '2px solid $neutral4',
+      transform: 'rotate(45deg) translate(12px, 0px)',
+      transition: 'transform .2s ease ',
+    },
+  },
+);

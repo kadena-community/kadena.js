@@ -1,7 +1,14 @@
 import { Heading, Text } from '@kadena/react-components';
 
 import { MenuCard } from './MenuCard';
-import { StyledItem, StyledLink, StyledSideMenu, StyledUl } from './styles';
+import {
+  SideMenuTitle,
+  SideMenuTitleBackButton,
+  StyledItem,
+  StyledLink,
+  StyledSideMenu,
+  StyledUl,
+} from './styles';
 import { useSideMenu } from './useSideMenu';
 
 import React, { FC } from 'react';
@@ -25,10 +32,26 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
 
   return (
     <StyledSideMenu>
+      {active === 0 && (
+        <SideMenuTitle>
+          <Heading as="h5" bold={true}>
+            Kadena Docs
+          </Heading>
+        </SideMenuTitle>
+      )}
+
+      {!hasMediumScreen && active === 1 && (
+        <>
+          <SideMenuTitleBackButton onClick={() => setActive(0)}>
+            <Heading as="h5" bold={true}>
+              {activeTitle}
+            </Heading>
+          </SideMenuTitleBackButton>
+        </>
+      )}
+      <input type="text" />
+
       <MenuCard active={active} idx={0} ref={menuRef}>
-        <Heading as="h5" bold={true}>
-          Kadena Docs
-        </Heading>
         <StyledUl onClick={clickMenu}>
           <StyledItem>
             <StyledLink href="/docs/pact" data-hassubmenu={true}>
@@ -49,10 +72,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
       </MenuCard>
       {hasSubmenu && (
         <MenuCard active={active} idx={1} ref={subMenuRef}>
-          {!hasMediumScreen && (
-            <button onClick={() => setActive(0)}>{activeTitle}</button>
-          )}
-
           <section onClick={clickSubMenu}>
             <Text as="p" bold={true}>
               TODO: fill with the correct menu content
