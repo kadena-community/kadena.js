@@ -4,10 +4,11 @@ import { Article, Content } from '../components';
 import { ILayout } from '../types';
 
 import { Aside } from './Aside';
+import { AsideLink } from './AsideLink';
+import { AsideList } from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
 import { ISubHeaderElement } from '@/types/Layout';
-import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
 
 const StickyAsideWrapper = styled('div', {
@@ -26,13 +27,13 @@ export const Full: FC<ILayout> = ({ children }) => {
 
   const renderListItem = (item: ISubHeaderElement): ReactNode => {
     return (
-      <li key={item.slug}>
-        <Link href={`#${item.slug}`}>{item.title}</Link>
-
+      <AsideLink href={`#${item.slug}`} key={item.slug} label={item.title}>
         {item.children.length > 0 && (
-          <ul>{item.children.map(renderListItem)}</ul>
+          <AsideList inner={true}>
+            {item.children.map(renderListItem)}
+          </AsideList>
         )}
-      </li>
+      </AsideLink>
     );
   };
 
@@ -44,8 +45,10 @@ export const Full: FC<ILayout> = ({ children }) => {
         <Aside>
           <StickyAsideWrapper>
             <StickyAside>
-              <Heading as="h5">On this page</Heading>
-              <ul>{headers.map(renderListItem)}</ul>
+              <Heading as="h6" bold={true} transform="uppercase">
+                On this page
+              </Heading>
+              <AsideList>{headers.map(renderListItem)}</AsideList>
             </StickyAside>
           </StickyAsideWrapper>
         </Aside>

@@ -2,7 +2,7 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 import Link from 'next/link';
 
-export const StyledSideMenu: StyledComponent<'nav'> = styled('nav', {
+export const StyledSideMenu: StyledComponent<'div'> = styled('div', {
   position: 'relative',
   marginTop: '$6',
 });
@@ -149,6 +149,7 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
   'button',
   {
     ...titleStyle,
+    display: 'block',
     '&:hover': {
       '&::before': {
         transform: 'rotate(45deg) translate(6px, 6px)',
@@ -165,6 +166,10 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
       borderBottom: '2px solid $neutral4',
       transform: 'rotate(45deg) translate(12px, 0px)',
       transition: 'transform .2s ease ',
+    },
+
+    '@md': {
+      display: 'none',
     },
   },
 );

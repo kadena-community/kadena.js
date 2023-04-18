@@ -40,7 +40,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
         </SideMenuTitle>
       )}
 
-      {!hasMediumScreen && active === 1 && (
+      {active === 1 && (
         <>
           <SideMenuTitleBackButton onClick={() => setActive(0)}>
             <Heading as="h5" bold={true}>
