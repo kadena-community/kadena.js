@@ -11,6 +11,7 @@ export const colors = {
 
   primaryAccent: '#2997FF',
   primarySurface: '#C2E1FF',
+  primaryContrast: '#00498F',
   secondaryAccent: '#ED098F',
   secondarySurface: '#FDC4E5',
   successAccent: '#5EEA15',
@@ -19,8 +20,6 @@ export const colors = {
   errorAccent: '#FF3338',
   errorSurface: '#FFDAD8',
   errorContrast: '#410006',
-
-  primarySurfaceInverted: '#00498F',
 } as const;
 
 export const colorsDark = {
@@ -33,6 +32,7 @@ export const colorsDark = {
 
   primaryAccent: '#2997FF',
   primarySurface: '#00498F',
+  primaryContrast: '#27B7E6',
   secondaryAccent: '#ED098F',
   secondarySurface: '#8A0553',
   successAccent: '#5EEA15',
@@ -41,6 +41,4 @@ export const colorsDark = {
   errorAccent: '#FF3338',
   errorSurface: '#410006',
   errorContrast: '#FFDAD8',
-
-  primarySurfaceInverted: '#C2E1FF',
 };

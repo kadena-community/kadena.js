@@ -78,7 +78,7 @@ export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
     transition: 'transform .2s ease ',
   },
   '&:hover': {
-    color: '$primarySurfaceInverted',
+    color: '$primaryContrast',
 
     '&::after': {
       opacity: 1,
