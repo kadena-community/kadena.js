@@ -1,18 +1,18 @@
 import { IconButton, SystemIcons } from '@kadena/react-components';
 
-import { InnerWrapper, Spacer } from '../styles';
+import { Spacer } from '../styles';
 import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
-import { Box, StyledFooter } from './styles';
+import { Box, InnerFooterWrapper, StyledFooter } from './styles';
 
 import React, { FC } from 'react';
 
 export const Footer: FC = () => {
   return (
     <StyledFooter>
-      <InnerWrapper>
+      <InnerFooterWrapper>
         <Box>
           <DocsLogo />
           <IconButton
@@ -40,7 +40,7 @@ export const Footer: FC = () => {
         <Box>
           <FooterText>Copyrights 2023 © Kadena LLC</FooterText>
         </Box>
-      </InnerWrapper>
+      </InnerFooterWrapper>
     </StyledFooter>
   );
 };
