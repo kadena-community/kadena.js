@@ -20,7 +20,6 @@ export const Button: FC<IButtonProps> = ({
   icon,
   onClick,
   href,
-  color = 'transparent',
   children,
   ...props
 }) => {
