@@ -24,9 +24,9 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
+        <DocsLogo overwriteTheme="dark" />
         <HideOnMobile>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
-          <DocsLogo overwriteTheme="dark" />
           <StyledNav>
             <MenuItems ref={listRef} />
           </StyledNav>

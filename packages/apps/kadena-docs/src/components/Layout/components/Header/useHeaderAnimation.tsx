@@ -1,3 +1,4 @@
+import { useMediumScreen } from '@/hooks';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -32,6 +33,7 @@ const getActiveItem = (
 };
 
 export const useHeaderAnimation = (): IUseHeaderReturn => {
+  const { hasMediumScreen } = useMediumScreen();
   const listRef = useRef<HTMLUListElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<number>(0);
@@ -72,7 +74,7 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
 
   useEffect(() => {
     selectItem(activeRef.current, router.pathname);
-  }, [activeRef, selectItem, router.pathname]);
+  }, [activeRef, selectItem, router.pathname, hasMediumScreen]);
 
   useEffect(() => {
     const changeUrl = (url: string): void => {

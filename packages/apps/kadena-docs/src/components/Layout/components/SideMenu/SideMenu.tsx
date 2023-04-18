@@ -5,7 +5,7 @@ import { LayoutType } from '../../types';
 import { MenuCard } from './MenuCard';
 import { StyledItem, StyledLink, StyledSideMenu, StyledUl } from './styles';
 
-import { useMediaQuery } from '@/hooks';
+import { useMediumScreen } from '@/hooks';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
 import React, {
@@ -30,7 +30,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, layout = 'full' }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const subMenuRef = useRef<HTMLDivElement>(null);
 
-  const hasMediumScreen = useMediaQuery('md');
+  const { hasMediumScreen } = useMediumScreen();
 
   useEffect(() => {
     setOldPathname(router.pathname);
