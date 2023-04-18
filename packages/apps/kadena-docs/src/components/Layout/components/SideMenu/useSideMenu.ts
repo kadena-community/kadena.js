@@ -26,24 +26,29 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
 
   const hasMediumScreen = useMediumScreen();
 
-  useEffect(() => {
-    setOldPathname(router.pathname);
-    let innerHasSubmenu = false;
+  const checkHasSubmenu = (): {
+    matchingItem?: HTMLAnchorElement;
+    hasSubMenu: boolean;
+  } => {
     const menuLinks = Array.from(menuRef.current?.querySelectorAll('a') ?? []);
-    const foundMenuItem = menuLinks.find((item) => {
+    const matchingItem = menuLinks.find((item) => {
       return hasSameBasePath(router.pathname, item.getAttribute('href') ?? '');
     });
 
-    if (!foundMenuItem) {
-      innerHasSubmenu = false;
-    } else if (foundMenuItem.getAttribute('data-hassubmenu') === 'true') {
-      innerHasSubmenu = true;
+    if (matchingItem?.getAttribute('data-hassubmenu') === 'true') {
+      return { matchingItem, hasSubMenu: true };
     }
+    return { matchingItem, hasSubMenu: false };
+  };
+
+  useEffect(() => {
+    setOldPathname(router.pathname);
+    const { matchingItem, hasSubMenu: innerHasSubmenu } = checkHasSubmenu();
 
     if (innerHasSubmenu) {
       setActive(1);
       setHasSubmenu(true);
-      setActiveTitle(foundMenuItem?.innerText ?? '');
+      setActiveTitle(matchingItem?.innerText ?? '');
     } else {
       setActive(0);
       setHasSubmenu(false);

@@ -10,3 +10,7 @@ export const StyledFooter: StyledComponent<'footer'> = styled('footer', {
     background: '$neutral3',
   },
 });
+
+export const Box: StyledComponent<'div'> = styled('div', {
+  display: 'flex',
+});
