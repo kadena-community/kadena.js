@@ -23,7 +23,7 @@ export const Menu: StyledComponent<
   transition: 'transform .3s ease, width .3s ease',
 
   '@sm': {
-    width: '256px',
+    width: '$leftSideWidth',
   },
   '@md': {
     position: 'relative',
@@ -74,7 +74,7 @@ export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
     borderRight: '2px solid $neutral4',
     borderTop: '2px solid $neutral4',
     opacity: 0,
-    transform: 'rotate(45deg) translate(-5px, 5px)',
+    transform: 'rotate(45deg) translate(-$1, $1)',
     transition: 'transform .2s ease ',
   },
   '&:hover': {
@@ -82,7 +82,7 @@ export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
 
     '&::after': {
       opacity: 1,
-      transform: 'rotate(45deg) translate(0px, 0px)',
+      transform: 'rotate(45deg) translate(0, 0)',
     },
   },
 });
@@ -152,7 +152,7 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
     display: 'block',
     '&:hover': {
       '&::before': {
-        transform: 'rotate(45deg) translate(6px, 6px)',
+        transform: 'rotate(45deg) translate($2, $2)',
       },
     },
 
@@ -164,7 +164,7 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
       height: '$2',
       borderLeft: '2px solid $neutral4',
       borderBottom: '2px solid $neutral4',
-      transform: 'rotate(45deg) translate(12px, 0px)',
+      transform: 'rotate(45deg) translate($3, 0)',
       transition: 'transform .2s ease ',
     },
 

@@ -125,6 +125,8 @@ export const {
     },
     sizes: {
       ...sizes,
+      leftSideWidth: '265px',
+      pageWidth: '1440px',
     },
     zIndices: {
       navMenu: 100,
