@@ -1,4 +1,3 @@
-import { LayoutType } from '../../types';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template } from '../';
 
@@ -55,10 +54,7 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
             isOneOfLayoutType(Layout, 'full', 'codeside') ? true : false
           }
         >
-          <SideMenu
-            closeMenu={closeMenu}
-            layout={Layout.displayName as LayoutType}
-          />
+          <SideMenu closeMenu={closeMenu} />
         </Menu>
 
         <Layout>{children}</Layout>

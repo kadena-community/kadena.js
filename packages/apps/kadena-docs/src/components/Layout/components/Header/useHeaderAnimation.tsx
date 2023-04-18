@@ -33,7 +33,7 @@ const getActiveItem = (
 };
 
 export const useHeaderAnimation = (): IUseHeaderReturn => {
-  const { hasMediumScreen } = useMediumScreen();
+  const hasMediumScreen = useMediumScreen();
   const listRef = useRef<HTMLUListElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<number>(0);
