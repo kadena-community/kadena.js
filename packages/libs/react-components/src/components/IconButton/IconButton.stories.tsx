@@ -1,5 +1,5 @@
 import { SystemIcons } from './../../';
-import { IconButton, IIConButtonProps } from '.';
+import { IconButton, IIconButtonProps } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -9,7 +9,7 @@ const meta: Meta<
     title: string;
     selectIcon: keyof typeof SystemIcons;
     color: string;
-  } & IIConButtonProps
+  } & IIconButtonProps
 > = {
   title: 'IconButton',
   argTypes: {
@@ -39,7 +39,7 @@ type Story = StoryObj<
     title: string;
     selectIcon: keyof typeof SystemIcons;
     color: string;
-  } & IIConButtonProps
+  } & IIconButtonProps
 >;
 
 /*
