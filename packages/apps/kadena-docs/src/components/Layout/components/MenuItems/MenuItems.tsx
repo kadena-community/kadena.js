@@ -14,6 +14,7 @@ export const MenuItems: FC<IProps> = React.forwardRef((props = {}, ref) => {
       <StyledUl ref={ref}>
         <NavItem href="/docs/pact">Pact</NavItem>
         <NavItem href="/docs/kadenajs">KadenaJS</NavItem>
+        <NavItem href="/docs/chainweb">Chainweb</NavItem>
       </StyledUl>
     </StyledNav>
   );

@@ -1,3 +1,4 @@
+import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -19,7 +20,8 @@ const getActiveItem = (
     const anchor = innerItem.firstChild as HTMLAnchorElement;
     if (
       clickedElement === anchor ||
-      (!clickedElement && pathname === anchor?.getAttribute('href'))
+      (!clickedElement &&
+        hasSameBasePath(pathname, anchor?.getAttribute('href') ?? ''))
     ) {
       item = innerItem as HTMLLIElement;
       idx = innerIdx;
@@ -53,6 +55,7 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
       );
 
       setHasPath(false);
+
       if (idx === undefined || !activeItem) return;
       setHasPath(true);
       //slow down the animation, when the distance between current and new Item is larger

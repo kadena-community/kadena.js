@@ -1,4 +1,4 @@
-import { styled } from '@kadena/react-components';
+import { StyledSection } from './styles';
 
 import React, { FC, ReactNode } from 'react';
 
@@ -6,52 +6,16 @@ export interface IMenuCardProps {
   children?: ReactNode;
   active: number;
   idx: number;
+  ref?: React.ForwardedRef<HTMLDivElement>;
 }
 
-const StyledSection = styled('section', {
-  position: 'absolute',
-  top: 0,
-  transition: 'transform .2s ease',
-  padding: '0 $6',
-  width: '100%',
-  defaultVariants: {
-    active: false,
-    l2r: true,
+export const MenuCard: FC<IMenuCardProps> = React.forwardRef(
+  ({ children, active, idx = 0 }, ref) => {
+    return (
+      <StyledSection l2r={idx === 0} active={active === idx} ref={ref}>
+        {children}
+      </StyledSection>
+    );
   },
-  variants: {
-    active: {
-      true: {
-        transform: 'translateX(0)',
-      },
-      false: {},
-    },
-    l2r: {
-      false: {},
-      true: {},
-    },
-  },
-  compoundVariants: [
-    {
-      active: false,
-      l2r: true,
-      css: {
-        transform: 'translateX(-100%)',
-      },
-    },
-    {
-      active: false,
-      l2r: false,
-      css: {
-        transform: 'translateX(100%)',
-      },
-    },
-  ],
-});
-
-export const MenuCard: FC<IMenuCardProps> = ({ children, active, idx = 0 }) => {
-  return (
-    <StyledSection l2r={idx === 0} active={active === idx}>
-      {children}
-    </StyledSection>
-  );
-};
+);
+MenuCard.displayName = 'MenuCard';

@@ -1,5 +1,6 @@
 import { NavLink } from '../styles';
 
+import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 
@@ -10,7 +11,7 @@ interface IProps {
 
 export const NavItem: FC<IProps> = ({ children, href = '' }) => {
   const router = useRouter();
-  const active = href === router.pathname;
+  const active = hasSameBasePath(href, router.pathname);
 
   return (
     <li>

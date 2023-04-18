@@ -1,7 +1,8 @@
+import { LayoutType } from '../../types';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template } from '../';
 
-import { getLayout } from '@/utils';
+import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import React, { FC, ReactNode, useState } from 'react';
 
@@ -30,6 +31,9 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);
   };
+
+  const closeMenu = (): void => setIsMenuOpen(false);
+
   const Layout = getLayout(layoutType);
 
   return (
@@ -39,12 +43,22 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
-
-      <Template>
+      <Template
+        layout={isOneOfLayoutType(Layout, 'landing') ? 'landing' : 'normal'}
+      >
         <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-        <MenuBack isOpen={isMenuOpen} />
-        <Menu isOpen={isMenuOpen}>
-          <SideMenu />
+
+        <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
+        <Menu
+          isOpen={isMenuOpen}
+          inLayout={
+            isOneOfLayoutType(Layout, 'full', 'codeside') ? true : false
+          }
+        >
+          <SideMenu
+            closeMenu={closeMenu}
+            layout={Layout.displayName as LayoutType}
+          />
         </Menu>
 
         <Layout>{children}</Layout>
