@@ -1,3 +1,4 @@
+import { Content } from '../components';
 import { ILayout } from '../types';
 
 import { useCreateSubMenu } from './useCreateSubmenu';
@@ -22,8 +23,10 @@ export const Full: FC<ILayout> = ({ children }) => {
   };
   return (
     <>
-      <ul>{headers.map(renderListItem)}</ul>
-      {children}
+      <Content id="maincontent">
+        <ul>{headers.map(renderListItem)}</ul>
+        {children}
+      </Content>
     </>
   );
 };
