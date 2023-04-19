@@ -52,9 +52,7 @@ Callback type: `(message: string) => void`
 
 Emitted when the client encounters an error that will be retried, signaling intent to reconnect.
 
-Currently this is synonymous to the `warn` event.
-
-Callback type: `() => void`
+Callback type: `({ attempts: number, timeout: number, message: string }) => void`
 
 ### debug
 
