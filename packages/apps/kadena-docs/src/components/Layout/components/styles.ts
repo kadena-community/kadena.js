@@ -126,7 +126,7 @@ export const Menu: StyledComponent<
   transition: 'transform .3s ease, width .3s ease',
 
   '@sm': {
-    width: '256px',
+    width: '$leftSideWidth',
   },
   '@md': {
     position: 'relative',
