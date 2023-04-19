@@ -426,11 +426,13 @@ importers:
       '@types/node': ^16.0.0
       eslint: ^8.15.0
       eventemitter2: ~6.4.9
+      eventsource: ~2.0.2
     dependencies:
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/pactjs': link:../pactjs
       '@kadena/types': link:../types
       eventemitter2: 6.4.9
+      eventsource: 2.0.2
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig

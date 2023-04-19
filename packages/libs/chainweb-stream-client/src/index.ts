@@ -1,15 +1,16 @@
+import EventSource from 'eventsource';
 import EventEmitter from 'eventemitter2';
-import HeartbeatTimeoutError from './heartbeat-timeout-error.js';
-import ConnectTimeoutError from './connect-timeout-error.js';
+import HeartbeatTimeoutError from './heartbeat-timeout-error';
+import ConnectTimeoutError from './connect-timeout-error';
 import {
   IChainwebStreamConstructorArgs,
   ChainwebStreamType,
   ITransaction,
   ConnectionState,
   IDebugMsgObject,
-} from './types.js';
+} from './types';
 
-export * from './types.js';
+export * from './types';
 
 // TODO confirmation depth should be sent from the backend
 // so that it is always in sync with the client
