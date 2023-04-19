@@ -20,6 +20,8 @@ export interface IChainwebAccountData extends IChainwebBaseData {
   token: string;
   fromAccount: string;
   toAccount: string;
+  crossChainId: number | null;
+  crossChainAccount: number | null;
 }
 
 export interface IChainwebStreamMetadata {
