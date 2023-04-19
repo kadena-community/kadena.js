@@ -294,7 +294,7 @@ class ChainwebStream extends EventEmitter {
       method: caller as any,
       ...payload,
     };
-    this.emit('debug');
+    this.emit('debug', debugMsg);
   }
 }
 
