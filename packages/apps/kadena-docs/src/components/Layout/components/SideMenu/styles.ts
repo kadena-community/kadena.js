@@ -74,7 +74,7 @@ export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
     borderRight: '2px solid $neutral4',
     borderTop: '2px solid $neutral4',
     opacity: 0,
-    transform: 'rotate(45deg) translate(-$1, $1)',
+    transform: 'rotate(45deg) translate(-$sizes$1, $sizes$1)',
     transition: 'transform .2s ease ',
   },
   '&:hover': {
@@ -134,25 +134,27 @@ export const StyledSection: StyledComponent<
   ],
 });
 
-const titleStyle = styled('div', {
+const TitleStyleBase: Record<string, string | number> = {
   display: 'block',
   background: 'transparent',
   padding: '0 0 0 $8',
   textAlign: 'left',
   border: 0,
   cursor: 'pointer',
-});
+};
 
-export const SideMenuTitle: StyledComponent<'div'> = styled('div', titleStyle);
+export const SideMenuTitle: StyledComponent<'div'> = styled(
+  'div',
+  TitleStyleBase,
+);
 
 export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
   'button',
   {
-    ...titleStyle,
-    display: 'block',
+    ...TitleStyleBase,
     '&:hover': {
       '&::before': {
-        transform: 'rotate(45deg) translate($2, $2)',
+        transform: 'translate(0, $sizes$2) rotate(45deg) ',
       },
     },
 
@@ -164,7 +166,7 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
       height: '$2',
       borderLeft: '2px solid $neutral4',
       borderBottom: '2px solid $neutral4',
-      transform: 'rotate(45deg) translate($3, 0)',
+      transform: 'translate($sizes$2, $sizes$2) rotate(45deg)',
       transition: 'transform .2s ease ',
     },
 
