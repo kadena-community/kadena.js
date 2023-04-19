@@ -200,7 +200,11 @@ class ChainwebStream extends EventEmitter {
     }
 
     this.emit('warn', message);
-    this.emit('will-reconnect');
+    this.emit('will-reconnect', {
+      attempt: this._failedConnectionAttempts,
+      timeout,
+      message,
+    });
 
     this._desiredState = ConnectionState.WaitReconnect;
     if (this._reconnectTimer) {
