@@ -1,0 +1,1 @@
+export { useMediumScreen } from './useMediumScreen';

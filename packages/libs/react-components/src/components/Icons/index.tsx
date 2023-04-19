@@ -61,6 +61,7 @@ import { SignatureFreehand } from './SignatureFreehand';
 import { SlashForward } from './SlashForward';
 import { StopCircle } from './StopCircle';
 import { IconContainer } from './styles';
+import { ThemeLightDark } from './ThemeLightDark';
 import { TrailingIcon } from './TrailingIcon';
 import { Twitter } from './Twitter';
 import { UsbFlashDrive } from './UsbFlashDrive';
@@ -72,10 +73,13 @@ export interface IIconProps {
   size?: VariantProps<typeof IconContainer>['size'];
   color?: PropertyValue<'color', typeof config>;
 }
+
+export type IconType = SVGProps<SVGSVGElement> & IIconProps;
+
 const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Component: React.FC<SVGProps<SVGSVGElement>>,
-): React.FC<SVGProps<SVGSVGElement> & IIconProps> => {
+): React.FC<IconType> => {
   const WrappedIcon: React.FC<SVGProps<SVGSVGElement> & IIconProps> = ({
     size = 'md',
     color,
@@ -148,6 +152,7 @@ export const SystemIcons = {
   SignatureFreehand: IconWrapper(SignatureFreehand),
   SlashForward: IconWrapper(SlashForward),
   StopCircle: IconWrapper(StopCircle),
+  ThemeLightDark: IconWrapper(ThemeLightDark),
   TrailingIcon: IconWrapper(TrailingIcon),
   Twitter: IconWrapper(Twitter),
   UsbFlashDrive: IconWrapper(UsbFlashDrive),

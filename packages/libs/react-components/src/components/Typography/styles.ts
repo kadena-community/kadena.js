@@ -79,9 +79,9 @@ export const elementVariant = {
       fontSize: '$lg',
     },
   },
-  p: { $$boldWeight: '$fontWeights$medium' },
-  span: { $$boldWeight: '$fontWeights$medium' },
-  code: { $$boldWeight: '$fontWeights$medium' },
+  p: { $$boldWeight: '$fontWeights$semiBold' },
+  span: { $$boldWeight: '$fontWeights$semiBold' },
+  code: { $$boldWeight: '$fontWeights$semiBold' },
 } as const;
 
 export const fontVariant = {
@@ -114,22 +114,37 @@ export const textSizeVariant = {
   },
 };
 
+export const transformVariant = {
+  capitalize: {
+    textTransform: 'capitalize',
+  },
+  uppercase: {
+    textTransform: 'uppercase',
+  },
+  lowercase: {
+    textTransform: 'lowercase',
+  },
+  none: {
+    textTransform: 'none',
+  },
+};
+
 export const BaseText = styled('span', {
   fontWeight: '$regular',
-  color: '$foreground',
   lineHeight: '$base',
   $$boldWeight: '$bold',
-
   variants: {
     variant: elementVariant,
     font: fontVariant,
     bold: boldVariant,
+    transform: transformVariant,
   },
 
   defaultVariants: {
     variant: 'span',
     font: 'main',
     bold: 'false',
+    transform: 'none',
   },
 
   compoundVariants: [

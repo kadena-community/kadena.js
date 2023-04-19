@@ -46,13 +46,19 @@ const sizes: Record<string, string> = {
   '3xl': 'var(--spacing-3xl)',
 };
 
-export const media: ConfigType.Media = {
+export const media: ConfigType.Media<{
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+  '2xl': string;
+}> = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
   '2xl': `(min-width: ${1536 / 16}rem)`,
-};
+} as const;
 
 export const {
   styled,
@@ -71,8 +77,8 @@ export const {
       foreground: '$colors$neutral6',
     },
     fonts: {
-      main: 'Haas Grotesk Display, -apple-system, sans-serif',
-      mono: 'Kadena Code, Menlo, monospace',
+      main: "'Haas Grotesk Display', -apple-system, sans-serif",
+      mono: "'Kadena Code', Menlo, monospace",
     },
     fontSizes: {
       xs: '0.75rem', // 12px
@@ -118,6 +124,12 @@ export const {
     },
     sizes: {
       ...sizes,
+      leftSideWidth: '265px',
+      pageWidth: '1440px',
+    },
+    zIndices: {
+      navMenu: 100,
+      modal: 999,
     },
   },
   media,

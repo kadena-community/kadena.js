@@ -4,9 +4,11 @@ description: How to get started with Markdoc
 layout: full
 ---
 
+# Pact
+
 ## Section 1
 
-Cookie dragée bear claw ice cream jelly beans fruitcake danish tootsie roll.
+Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll.
 Donut pastry tiramisu sesame snaps donut tootsie roll candy soufflé. Lollipop
 toffee ice cream jujubes cookie sugar plum croissant. Cookie toffee chocolate
 ice cream apple pie. Brownie gummies cupcake halvah sweet roll macaroon soufflé.
