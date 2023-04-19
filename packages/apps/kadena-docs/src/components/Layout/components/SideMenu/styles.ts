@@ -16,7 +16,7 @@ export const Menu: StyledComponent<
   top: '$17',
   height: 'calc(100% - $17 - $17)',
   width: '100%',
-  borderRight: '1px solid $borderColor',
+  borderRight: '1px solid $neutral3',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
@@ -53,7 +53,7 @@ export const StyledUl: StyledComponent<'ul'> = styled('ul', {
 });
 
 export const StyledItem: StyledComponent<'li'> = styled('li', {
-  borderBottom: '1px solid $borderColor',
+  borderBottom: '1px solid $neutral3',
   padding: '$4 0 $2',
 });
 

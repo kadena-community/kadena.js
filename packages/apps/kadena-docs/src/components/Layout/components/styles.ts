@@ -119,7 +119,7 @@ export const Menu: StyledComponent<
   top: '$17',
   height: 'calc(100% - $17 - $17)',
   width: '100%',
-  borderRight: '1px solid $borderColor',
+  borderRight: '1px solid $neutral3',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
