@@ -2,11 +2,11 @@ import EventEmitter from 'eventemitter2';
 import HeartbeatTimeoutError from './heartbeat-timeout-error.js';
 import ConnectTimeoutError from './connect-timeout-error.js';
 import {
-  ChainwebStreamConstructorArgs,
+  IChainwebStreamConstructorArgs,
   ChainwebStreamType,
-  Transaction,
+  ITransaction,
   ConnectionState,
-  DebugMsgObject,
+  IDebugMsgObject,
 } from './types.js';
 
 export * from './types.js';
@@ -81,7 +81,7 @@ class ChainwebStream extends EventEmitter {
     maxReconnects,
     heartbeatTimeout,
     confirmationDepth,
-  }: ChainwebStreamConstructorArgs) {
+  }: IChainwebStreamConstructorArgs) {
     super();
     this.type = type;
     this.id = id;
@@ -213,9 +213,9 @@ class ChainwebStream extends EventEmitter {
     // TODO fix any. MessageEvent fails for custom event (.addEventListener(initial))
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as Transaction | Transaction[];
+    const message = JSON.parse(msg.data) as ITransaction | ITransaction[];
 
-    const data: Transaction[] = Array.isArray(message) ? message : [message];
+    const data: ITransaction[] = Array.isArray(message) ? message : [message];
 
     const newMinHeight = data.reduce(
       (highest, { height }) => (height > highest ? height : highest),
@@ -284,7 +284,7 @@ class ChainwebStream extends EventEmitter {
   }
 
   private _debug(caller: string, payload?: Record<string, any>): void {
-    const debugMsg: DebugMsgObject = {
+    const debugMsg: IDebugMsgObject = {
       ts: new Date().valueOf(),
       method: caller as any,
       ...payload,

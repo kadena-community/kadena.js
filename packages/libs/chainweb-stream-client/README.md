@@ -20,7 +20,7 @@ Callback type: `() => void`
 
 Emitted when a confirmed transaction is received from the backend. Confirmation depends on the CONFIRMATION_DEPTH 
 
-Callback type: `(txn: Transaction) => void`
+Callback type: `(txn: ITransaction) => void`
 
 ### unconfirmed
 
@@ -28,7 +28,7 @@ Emitted when an unconfirmed transaction is received from the backend. Multiple u
 
 Hint: You can rely on the `.meta.id` value to de-duplicate the underlying unconfirmed transactions
 
-Callback type: `(txn: Transaction) => void`
+Callback type: `(txn: ITransaction) => void`
 
 ### data
 
@@ -60,6 +60,6 @@ Callback type: `() => void`
 
 Developer event emitted whenever anything significant happens. You can attach a console log to see what is going on internally if you are encountering unexpected behaviors.
 
-Callback type: `(dbg: DebugMsgObject) => void`
+Callback type: `(dbg: IDebugMsgObject) => void`
 
 

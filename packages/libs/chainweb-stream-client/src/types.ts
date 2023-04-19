@@ -1,21 +1,25 @@
 export type ChainwebStreamType = 'event' | 'account';
 
-export interface IChainwebBaseData {
+export interface ITransactionBase {
   blockTime: string;
   height: number;
   blockHash: string;
   requestKey: string;
   idx: number;
   chain: number;
+  meta: {
+    id: string;
+    confirmations: number;
+  };
 }
 
-export interface IChainwebEventData extends IChainwebBaseData {
+export interface IEventTransaction extends ITransactionBase {
   params: string[];
   name: string;
   moduleHash: string;
 }
 
-export interface IChainwebAccountData extends IChainwebBaseData {
+export interface IAccountTransaction extends ITransactionBase {
   amount: string;
   token: string;
   fromAccount: string;
@@ -24,20 +28,9 @@ export interface IChainwebAccountData extends IChainwebBaseData {
   crossChainAccount: number | null;
 }
 
-export interface IChainwebStreamMetadata {
-  meta: {
-    id: string;
-    confirmations: number;
-  };
-}
+export type ITransaction = IEventTransaction | IAccountTransaction;
 
-export type EventTransaction = IChainwebEventData & IChainwebStreamMetadata;
-
-export type AccountTransaction = IChainwebEventData & IChainwebStreamMetadata;
-
-export type Transaction = EventTransaction | AccountTransaction;
-
-export interface ChainwebStreamConstructorArgs {
+export interface IChainwebStreamConstructorArgs {
   type: ChainwebStreamType;
   id: string;
   host: string;
@@ -58,7 +51,7 @@ export enum ConnectionState {
   // Error = 5, // TODO? For eventsource that failed too many times to retry
 }
 
-export interface DebugMsgObject {
+export interface IDebugMsgObject {
   // Unix timestamp (milliseconds)
   ts: number;
 
