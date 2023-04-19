@@ -11,6 +11,7 @@ import {
 } from './styles';
 import { useSideMenu } from './useSideMenu';
 
+import menuItems from '@/data/menu.json';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -25,7 +26,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
     clickMenu,
     clickSubMenu,
     hasSubmenu,
-    hasMediumScreen,
     setActive,
     activeTitle,
   } = useSideMenu(closeMenu);
@@ -53,21 +53,16 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
 
       <MenuCard active={active} idx={0} ref={menuRef}>
         <StyledUl onClick={clickMenu}>
-          <StyledItem>
-            <StyledLink href="/docs/pact" data-hassubmenu={true}>
-              Pact
-            </StyledLink>
-          </StyledItem>
-          <StyledItem>
-            <StyledLink href="/docs/kadenajs" data-hassubmenu={false}>
-              KadenaJS
-            </StyledLink>
-          </StyledItem>
-          <StyledItem>
-            <StyledLink href="/docs/chainweb" data-hassubmenu={true}>
-              Chainweb
-            </StyledLink>
-          </StyledItem>
+          {menuItems.map((item) => (
+            <StyledItem key={item.label}>
+              <StyledLink
+                href={item.root}
+                data-hassubmenu={!!item.children.length}
+              >
+                {item.label}
+              </StyledLink>
+            </StyledItem>
+          ))}
         </StyledUl>
       </MenuCard>
       {hasSubmenu && (

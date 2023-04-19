@@ -1,5 +1,6 @@
 ---
 title: But how does it work
+label: but how?
 description: How to get started with Markdoc
 layout: full
 ---

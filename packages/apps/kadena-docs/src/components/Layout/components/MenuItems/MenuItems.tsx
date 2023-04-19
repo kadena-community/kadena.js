@@ -2,6 +2,7 @@ import { StyledNav, StyledUl } from '..';
 
 import { NavItem } from './NavItem';
 
+import menuItems from '@/data/menu.json';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -12,9 +13,11 @@ export const MenuItems: FC<IProps> = React.forwardRef((props = {}, ref) => {
   return (
     <StyledNav>
       <StyledUl ref={ref}>
-        <NavItem href="/docs/pact">Pact</NavItem>
-        <NavItem href="/docs/kadenajs">KadenaJS</NavItem>
-        <NavItem href="/docs/chainweb">Chainweb</NavItem>
+        {menuItems.map((item) => (
+          <NavItem key={item.label} href={item.root}>
+            {item.label}
+          </NavItem>
+        ))}
       </StyledUl>
     </StyledNav>
   );

@@ -1,5 +1,7 @@
 ---
 title: Get started with Chainweb
+order: 2
+label: Chainweb
 description: How to get started with Markdoc
 layout: code
 ---

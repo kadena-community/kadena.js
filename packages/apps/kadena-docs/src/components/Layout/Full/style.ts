@@ -8,6 +8,15 @@ export const AsideList: StyledComponent<
   margin: 0,
   padding: '0',
 
+  '& li::before': {
+    content: '∙',
+    color: '$primarySurfaceInverted',
+    fontWeight: '$bold',
+    display: 'inline-block',
+    width: '$sizes.$4',
+    margin: '0 $1',
+  },
+
   variants: {
     inner: {
       true: {

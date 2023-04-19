@@ -1,7 +1,13 @@
 import { useMediumScreen } from '@/hooks';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
-import { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;
@@ -26,7 +32,7 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
 
   const hasMediumScreen = useMediumScreen();
 
-  const checkHasSubmenu = (): {
+  const checkHasSubmenu = useCallback((): {
     matchingItem?: HTMLAnchorElement;
     hasSubMenu: boolean;
   } => {
@@ -39,7 +45,7 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
       return { matchingItem, hasSubMenu: true };
     }
     return { matchingItem, hasSubMenu: false };
-  };
+  }, [router.pathname]);
 
   useEffect(() => {
     setOldPathname(router.pathname);
@@ -68,6 +74,7 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
     router.pathname,
     router.events,
     hasSubmenu,
+    checkHasSubmenu,
   ]);
 
   const clickMenu: MouseEventHandler<HTMLUListElement> = (e) => {

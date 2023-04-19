@@ -134,7 +134,7 @@ export const StyledSection: StyledComponent<
   ],
 });
 
-const titleStyle = {
+const titleStyle: Record<string, string | number> = {
   display: 'block',
   background: 'transparent',
   padding: '0 0 0 $8',
