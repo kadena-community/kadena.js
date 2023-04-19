@@ -52,9 +52,9 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
+    "@types/eventsource": "=1.1.10",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "eventsource": "~2.0.2"
+    "eslint": "^8.15.0"
   }
 }

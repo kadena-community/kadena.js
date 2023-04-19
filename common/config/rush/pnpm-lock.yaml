@@ -422,6 +422,7 @@ importers:
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
+      '@types/eventsource': '=1.1.10'
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       eslint: ^8.15.0
@@ -438,6 +439,7 @@ importers:
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.38.0
       '@rushstack/heft': 0.46.7
+      '@types/eventsource': 1.1.10
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.23
       eslint: 8.38.0
@@ -448,7 +450,7 @@ importers:
       '@kadena-dev/heft-rig': workspace:*
       '@rushstack/eslint-config': ~2.6.2
       '@rushstack/heft': ~0.46.1
-      '@types/eventsource': ~1.1.10
+      '@types/eventsource': '=1.1.10'
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       base64url: ^3.0.1
@@ -468,7 +470,7 @@ importers:
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@rushstack/eslint-config': 2.6.2_eslint@8.38.0
       '@rushstack/heft': 0.46.7
-      '@types/eventsource': 1.1.11
+      '@types/eventsource': 1.1.10
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.23
       eslint: 8.38.0
@@ -7764,8 +7766,8 @@ packages:
   /@types/estree/0.0.51:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
 
-  /@types/eventsource/1.1.11:
-    resolution: {integrity: sha512-L7wLDZlWm5mROzv87W0ofIYeQP5K2UhoFnnUyEWLKM6UBb0ZNRgAqp98qE5DkgfBXdWfc2kYmw9KZm4NLjRbsw==}
+  /@types/eventsource/1.1.10:
+    resolution: {integrity: sha512-rYzRmJSnm44Xb7FICRXEjwe/26ZiiS+VMGmuD17PevMP56cGgLEsaM955sYQW0S+K7h+mPOL70vGf1hi4WDjVA==}
     dev: true
 
   /@types/express-serve-static-core/4.17.33:

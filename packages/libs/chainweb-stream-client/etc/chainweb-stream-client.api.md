@@ -7,16 +7,13 @@
 import EventEmitter from 'eventemitter2';
 
 // @public (undocumented)
-export type AccountData = IChainwebEventData & IChainwebSSEMetaData;
-
-// @public (undocumented)
 class ChainwebStream extends EventEmitter {
-    constructor({ host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, }: IChainwebStreamConstructorArgs);
+    constructor({ host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
     // (undocumented)
+    confirmationDepth: number;
     connect: () => void;
     // (undocumented)
     connectTimeoutMs: number;
-    // (undocumented)
     disconnect: () => void;
     // (undocumented)
     heartbeatTimeoutMs: number;
@@ -28,7 +25,6 @@ class ChainwebStream extends EventEmitter {
     limit: number | undefined;
     // (undocumented)
     maxReconnects: number;
-    // (undocumented)
     get state(): ConnectionState;
     // (undocumented)
     type: ChainwebStreamType;
@@ -53,15 +49,13 @@ export enum ConnectionState {
 }
 
 // @public (undocumented)
-export type EventData = IChainwebEventData & IChainwebSSEMetaData;
-
-// @public (undocumented)
-export type GenericData = EventData | AccountData;
-
-// @public (undocumented)
-export interface IChainwebAccountData extends IChainwebBaseData {
+export interface IAccountTransaction extends ITransactionBase {
     // (undocumented)
     amount: string;
+    // (undocumented)
+    crossChainAccount: number | null;
+    // (undocumented)
+    crossChainId: number | null;
     // (undocumented)
     fromAccount: string;
     // (undocumented)
@@ -71,42 +65,9 @@ export interface IChainwebAccountData extends IChainwebBaseData {
 }
 
 // @public (undocumented)
-export interface IChainwebBaseData {
-    // (undocumented)
-    blockHash: string;
-    // (undocumented)
-    blockTime: string;
-    // (undocumented)
-    chain: number;
-    // (undocumented)
-    height: number;
-    // (undocumented)
-    idx: number;
-    // (undocumented)
-    requestKey: string;
-}
-
-// @public (undocumented)
-export interface IChainwebEventData extends IChainwebBaseData {
-    // (undocumented)
-    moduleHash: string;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    params: string[];
-}
-
-// @public (undocumented)
-export interface IChainwebSSEMetaData {
-    // (undocumented)
-    meta: {
-        id: string;
-        confirmations: number;
-    };
-}
-
-// @public (undocumented)
 export interface IChainwebStreamConstructorArgs {
+    // (undocumented)
+    confirmationDepth?: number;
     // (undocumented)
     connectTimeout?: number;
     // (undocumented)
@@ -121,6 +82,60 @@ export interface IChainwebStreamConstructorArgs {
     maxReconnects?: number;
     // (undocumented)
     type: ChainwebStreamType;
+}
+
+// @public (undocumented)
+export interface IDebugMsgObject {
+    // (undocumented)
+    consecutiveFailedAttempts?: number;
+    // (undocumented)
+    length?: number;
+    // (undocumented)
+    message?: string;
+    // (undocumented)
+    method: 'connect' | 'disconnect' | '_handleConnect' | '_handleError' | '_handleData' | '_handleHeartbeatTimeout';
+    // (undocumented)
+    timeout?: number;
+    // (undocumented)
+    totalAttempts?: number;
+    // (undocumented)
+    ts: number;
+    // (undocumented)
+    willRetry?: boolean;
+}
+
+// @public (undocumented)
+export interface IEventTransaction extends ITransactionBase {
+    // (undocumented)
+    moduleHash: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    params: string[];
+}
+
+// @public (undocumented)
+export type ITransaction = IEventTransaction | IAccountTransaction;
+
+// @public (undocumented)
+export interface ITransactionBase {
+    // (undocumented)
+    blockHash: string;
+    // (undocumented)
+    blockTime: string;
+    // (undocumented)
+    chain: number;
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    idx: number;
+    // (undocumented)
+    meta: {
+        id: string;
+        confirmations: number;
+    };
+    // (undocumented)
+    requestKey: string;
 }
 
 // (No @packageDocumentation comment for this package)
