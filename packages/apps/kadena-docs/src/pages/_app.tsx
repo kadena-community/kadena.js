@@ -4,12 +4,10 @@ import {
   globalCss,
 } from '@kadena/react-components';
 
-import { Footer, Header } from '@/components/Layout/components';
-import { getLayout } from '@/utils';
+import { Main } from '@/components/Layout/components';
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
-import React, { ComponentType, useState } from 'react';
+import React, { ComponentType } from 'react';
 
 const GlobalStyles = globalCss({
   ...baseGlobalStyles,
@@ -19,35 +17,12 @@ const GlobalStyles = globalCss({
 });
 GlobalStyles();
 
-// @TODO: moving the layout stuff to a new Layout file
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
-  const { markdoc } = pageProps;
-
-  let title, description;
-  let layoutType = 'default';
-  if (markdoc !== undefined) {
-    title = markdoc.frontmatter.title;
-    description = markdoc.frontmatter.description;
-    layoutType = markdoc.frontmatter.layout ?? 'default';
-  }
-
-  const toggleMenu = (): void => {
-    setIsMenuOpen((v) => !v);
-  };
-  const Layout = getLayout(layoutType);
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta name="description" content={description} />
-      </Head>
       <ThemeProvider
         attribute="class"
         enableSystem={true}
@@ -56,11 +31,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           dark: darkTheme.className,
         }}
       >
-        <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-        <Layout>
+        <Main {...pageProps}>
           <ReactComponent {...pageProps} />
-        </Layout>
-        <Footer />
+        </Main>
       </ThemeProvider>
     </>
   );

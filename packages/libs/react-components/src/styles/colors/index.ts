@@ -15,7 +15,6 @@ export const colors = {
   primarySurface: '#C2E1FF',
   primaryContrast: '#00498F',
   primaryHighContrast: '#002F5C',
-
   secondaryAccent: '#ED098F',
   secondarySurface: '#FDC4E5',
   secondaryContrast: '#8A0553',
@@ -43,7 +42,6 @@ export const colorsDark = {
   primarySurface: '#00498F',
   primaryContrast: '#27B7E6',
   primaryHighContrast: '#B1E5F6',
-
   secondaryAccent: '#ED098F',
   secondarySurface: '#8A0553',
   secondaryContrast: '#FDC4E5', // TODO: Replace this with highlighter color
