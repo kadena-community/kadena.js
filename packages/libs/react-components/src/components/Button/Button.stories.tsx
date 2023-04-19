@@ -1,17 +1,16 @@
 import { SystemIcons } from './../../';
-import { IconButton, IIconButtonProps } from '.';
+import { Button, IButtonProps } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<
   {
-    title: string;
     selectIcon: keyof typeof SystemIcons;
-    color: string;
-  } & IIconButtonProps
+    text: string;
+  } & IButtonProps
 > = {
-  title: 'IconButton',
+  title: 'Button',
   argTypes: {
     onClick: { action: 'clicked' },
     selectIcon: {
@@ -25,9 +24,14 @@ const meta: Meta<
         type: 'text',
       },
     },
-    color: {
+    text: {
       control: {
-        type: 'color',
+        type: 'text',
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
       },
     },
   },
@@ -36,10 +40,9 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    title: string;
+    text: string;
     selectIcon: keyof typeof SystemIcons;
-    color: string;
-  } & IIconButtonProps
+  } & IButtonProps
 >;
 
 /*
@@ -49,16 +52,20 @@ type Story = StoryObj<
  */
 
 export const Primary: Story = {
-  name: 'IconButton',
+  name: 'Button',
   args: {
-    selectIcon: 'Account',
+    selectIcon: undefined,
     title: 'test title',
+    disabled: false,
+    text: 'Click me',
   },
-  render: ({ selectIcon, onClick, title, color }) => {
+  render: ({ selectIcon, onClick, title, disabled, text }) => {
     const Icon = SystemIcons[selectIcon];
     return (
       <>
-        <IconButton title={title} onClick={onClick} icon={Icon} color={color} />
+        <Button title={title} onClick={onClick} icon={Icon} disabled={disabled}>
+          {text}
+        </Button>
       </>
     );
   },

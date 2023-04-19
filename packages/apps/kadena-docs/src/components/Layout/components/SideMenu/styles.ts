@@ -91,7 +91,7 @@ export const StyledSection: StyledComponent<
   'section',
   {
     active?: boolean | 'true' | 'false' | undefined;
-    l2r?: boolean | 'true' | 'false' | undefined;
+    animateLeft2Right?: boolean | 'true' | 'false' | undefined;
   }
 > = styled('section', {
   position: 'absolute',
@@ -102,7 +102,7 @@ export const StyledSection: StyledComponent<
   width: '100%',
   defaultVariants: {
     active: false,
-    l2r: true,
+    animateLeft2Right: true,
   },
   variants: {
     active: {
@@ -111,7 +111,7 @@ export const StyledSection: StyledComponent<
       },
       false: {},
     },
-    l2r: {
+    animateLeft2Right: {
       false: {},
       true: {},
     },
@@ -119,14 +119,14 @@ export const StyledSection: StyledComponent<
   compoundVariants: [
     {
       active: false,
-      l2r: true,
+      animateLeft2Right: true,
       css: {
         transform: 'translateX(-100%)',
       },
     },
     {
       active: false,
-      l2r: false,
+      animateLeft2Right: false,
       css: {
         transform: 'translateX(100%)',
       },

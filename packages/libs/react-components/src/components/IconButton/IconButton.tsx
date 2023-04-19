@@ -4,10 +4,12 @@ import { SystemIcons } from '../Icons';
 import { PropertyValue } from '@stitches/react';
 import React, { FC } from 'react';
 
-export interface IIConButtonProps
+export interface IIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
+  as?: 'button' | 'a';
   icon: typeof SystemIcons[keyof typeof SystemIcons];
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  href?: string;
   title: string;
   color?: PropertyValue<'backgroundColor', typeof config>;
 }
@@ -29,9 +31,11 @@ const Button = styled('button', {
   },
 });
 
-export const IconButton: FC<IIConButtonProps> = ({
+export const IconButton: FC<IIconButtonProps> = ({
+  as = 'button',
   icon,
   onClick,
+  href,
   color = 'transparent',
   ...props
 }) => {
@@ -40,8 +44,10 @@ export const IconButton: FC<IIConButtonProps> = ({
 
   return (
     <Button
-      onClick={onClick}
       {...props}
+      as={as}
+      href={as === 'a' ? href : undefined}
+      onClick={as === 'button' ? onClick : undefined}
       aria-label={ariaLabel}
       css={{ backgroundColor: color }}
     >
