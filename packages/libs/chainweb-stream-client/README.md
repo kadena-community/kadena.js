@@ -30,6 +30,12 @@ Hint: You can rely on the `.meta.id` value to de-duplicate the underlying unconf
 
 Callback type: `(txn: Transaction) => void`
 
+### data
+
+Emitted when any transaction payload is received (unconfirmd and confirmed.)
+
+See: [unconfirmed](#unconfirmed)
+
 ### warn
 
 Emitted when the client encounters a retryable error, such as a stale connection that will be disconnected and retried.

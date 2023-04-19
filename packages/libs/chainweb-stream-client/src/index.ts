@@ -230,6 +230,7 @@ class ChainwebStream extends EventEmitter {
       const {
         meta: { confirmations },
       } = element;
+      this.emit('data', element);
       if (confirmations >= this.confirmationDepth) {
         this.emit('confirmed', element);
       } else {
