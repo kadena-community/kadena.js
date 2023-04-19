@@ -14,7 +14,6 @@ interface IReturn {
   clickMenu: MouseEventHandler<HTMLUListElement>;
   menuRef: React.RefObject<HTMLDivElement>;
   subMenuRef: React.RefObject<HTMLDivElement>;
-  hasMediumScreen: boolean;
   active: number;
   activeTitle: string;
   hasSubmenu: boolean;
@@ -112,7 +111,6 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
     clickMenu,
     menuRef,
     subMenuRef,
-    hasMediumScreen,
     active,
     activeTitle,
     hasSubmenu,

@@ -16,14 +16,14 @@ export const Menu: StyledComponent<
   top: '$17',
   height: 'calc(100% - $17 - $17)',
   width: '100%',
-  borderRight: '1px solid $borderColor',
+  borderRight: '1px solid $neutral3',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
   transition: 'transform .3s ease, width .3s ease',
 
   '@sm': {
-    width: '256px',
+    width: '$leftSideWidth',
   },
   '@md': {
     position: 'relative',
@@ -53,7 +53,7 @@ export const StyledUl: StyledComponent<'ul'> = styled('ul', {
 });
 
 export const StyledItem: StyledComponent<'li'> = styled('li', {
-  borderBottom: '1px solid $borderColor',
+  borderBottom: '1px solid $neutral3',
   padding: '$4 0 $2',
 });
 
@@ -74,15 +74,15 @@ export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
     borderRight: '2px solid $neutral4',
     borderTop: '2px solid $neutral4',
     opacity: 0,
-    transform: 'rotate(45deg) translate(-5px, 5px)',
+    transform: 'rotate(45deg) translate(-$sizes$1, $sizes$1)',
     transition: 'transform .2s ease ',
   },
   '&:hover': {
-    color: '$primarySurfaceInverted',
+    color: '$primaryContrast',
 
     '&::after': {
       opacity: 1,
-      transform: 'rotate(45deg) translate(0px, 0px)',
+      transform: 'rotate(45deg) translate(0, 0)',
     },
   },
 });
@@ -91,7 +91,7 @@ export const StyledSection: StyledComponent<
   'section',
   {
     active?: boolean | 'true' | 'false' | undefined;
-    l2r?: boolean | 'true' | 'false' | undefined;
+    animateLeft2Right?: boolean | 'true' | 'false' | undefined;
   }
 > = styled('section', {
   position: 'absolute',
@@ -102,7 +102,7 @@ export const StyledSection: StyledComponent<
   width: '100%',
   defaultVariants: {
     active: false,
-    l2r: true,
+    animateLeft2Right: true,
   },
   variants: {
     active: {
@@ -111,7 +111,7 @@ export const StyledSection: StyledComponent<
       },
       false: {},
     },
-    l2r: {
+    animateLeft2Right: {
       false: {},
       true: {},
     },
@@ -119,14 +119,14 @@ export const StyledSection: StyledComponent<
   compoundVariants: [
     {
       active: false,
-      l2r: true,
+      animateLeft2Right: true,
       css: {
         transform: 'translateX(-100%)',
       },
     },
     {
       active: false,
-      l2r: false,
+      animateLeft2Right: false,
       css: {
         transform: 'translateX(100%)',
       },
@@ -134,7 +134,7 @@ export const StyledSection: StyledComponent<
   ],
 });
 
-const titleStyle: Record<string, string | number> = {
+const TitleStyleBase: Record<string, string | number> = {
   display: 'block',
   background: 'transparent',
   padding: '0 0 0 $8',
@@ -143,16 +143,18 @@ const titleStyle: Record<string, string | number> = {
   cursor: 'pointer',
 };
 
-export const SideMenuTitle: StyledComponent<'div'> = styled('div', titleStyle);
+export const SideMenuTitle: StyledComponent<'div'> = styled(
+  'div',
+  TitleStyleBase,
+);
 
 export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
   'button',
   {
-    ...titleStyle,
-    display: 'block',
+    ...TitleStyleBase,
     '&:hover': {
       '&::before': {
-        transform: 'rotate(45deg) translate(6px, 6px)',
+        transform: 'translate(0, $sizes$2) rotate(45deg) ',
       },
     },
 
@@ -164,7 +166,7 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
       height: '$2',
       borderLeft: '2px solid $neutral4',
       borderBottom: '2px solid $neutral4',
-      transform: 'rotate(45deg) translate(12px, 0px)',
+      transform: 'translate($sizes$2, $sizes$2) rotate(45deg)',
       transition: 'transform .2s ease ',
     },
 

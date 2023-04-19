@@ -78,8 +78,8 @@ export const {
       borderColor: '#70797b33',
     },
     fonts: {
-      main: 'Haas Grotesk Display, -apple-system, sans-serif',
-      mono: 'Kadena Code, Menlo, monospace',
+      main: "'Haas Grotesk Display', -apple-system, sans-serif",
+      mono: "'Kadena Code', Menlo, monospace",
     },
     fontSizes: {
       xs: '0.75rem', // 12px
@@ -125,6 +125,8 @@ export const {
     },
     sizes: {
       ...sizes,
+      leftSideWidth: '265px',
+      pageWidth: '1440px',
     },
     zIndices: {
       navMenu: 100,

@@ -3,7 +3,7 @@ export const hasSameBasePath = (
   pathname2?: string,
 ): boolean => {
   return (
-    pathname1?.split('/').slice(0, 3).join('/') ===
-    pathname2?.split('/').slice(0, 3).join('/')
+    pathname1?.split('/').slice(0, 3).join('/').toLowerCase() ===
+    pathname2?.split('/').slice(0, 3).join('/').toLowerCase()
   );
 };

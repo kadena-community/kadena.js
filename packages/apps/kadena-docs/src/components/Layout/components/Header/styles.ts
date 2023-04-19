@@ -23,7 +23,7 @@ export const SkipNav: StyledComponent<'a'> = styled('a', {
   transition: 'transform .1s ease-in, opacity .1s ease-in',
   opacity: 0,
   '&:focus': {
-    transform: 'translateY(0px)',
+    transform: 'translateY(0)',
     opacity: 1,
   },
 });

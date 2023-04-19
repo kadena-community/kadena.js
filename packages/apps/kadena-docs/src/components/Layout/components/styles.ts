@@ -3,7 +3,7 @@ import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 import Link from 'next/link';
 
 export const Wrapper: StyledComponent<'div'> = styled('div', {
-  maxWidth: '1440px',
+  maxWidth: '$pageWidth',
   margin: '0 auto',
 });
 
@@ -23,7 +23,8 @@ export const Template: StyledComponent<
   margin: '0 auto',
   minHeight: '100vh',
   '@md': {
-    gridTemplateColumns: 'auto 256px minmax(auto, 1184px) auto',
+    gridTemplateColumns:
+      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
     gridTemplateAreas: `
         "header header header header"
         ". menu content ."
@@ -118,14 +119,14 @@ export const Menu: StyledComponent<
   top: '$17',
   height: 'calc(100% - $17 - $17)',
   width: '100%',
-  borderRight: '1px solid $borderColor',
+  borderRight: '1px solid $neutral3',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
   transition: 'transform .3s ease, width .3s ease',
 
   '@sm': {
-    width: '256px',
+    width: '$leftSideWidth',
   },
   '@md': {
     position: 'relative',

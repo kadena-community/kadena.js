@@ -12,7 +12,11 @@ export interface IMenuCardProps {
 export const MenuCard: FC<IMenuCardProps> = React.forwardRef(
   ({ children, active, idx = 0 }, ref) => {
     return (
-      <StyledSection l2r={idx === 0} active={active === idx} ref={ref}>
+      <StyledSection
+        animateLeft2Right={idx === 0}
+        active={active === idx}
+        ref={ref}
+      >
         {children}
       </StyledSection>
     );
