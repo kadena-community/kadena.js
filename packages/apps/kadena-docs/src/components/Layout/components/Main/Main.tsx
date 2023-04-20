@@ -1,22 +1,24 @@
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template } from '../';
 
+import { IMenuItem, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import React, { FC, ReactNode, useState } from 'react';
 
 interface IProps {
   children?: ReactNode;
+  menuItems: IMenuItem[];
   markdoc: {
     frontmatter: {
       title: string;
       description: string;
-      layout: 'code' | 'full' | 'landing';
+      layout: LayoutType;
     };
   };
 }
 
-export const Main: FC<IProps> = ({ children, markdoc }) => {
+export const Main: FC<IProps> = ({ children, markdoc, menuItems }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   let title, description;
@@ -45,7 +47,11 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
       <Template
         layout={isOneOfLayoutType(Layout, 'landing') ? 'landing' : 'normal'}
       >
-        <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+        <Header
+          toggleMenu={toggleMenu}
+          isMenuOpen={isMenuOpen}
+          menuItems={menuItems}
+        />
 
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
@@ -54,7 +60,7 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
             isOneOfLayoutType(Layout, 'full', 'codeside') ? true : false
           }
         >
-          <SideMenu closeMenu={closeMenu} />
+          <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
 
         <Layout>{children}</Layout>

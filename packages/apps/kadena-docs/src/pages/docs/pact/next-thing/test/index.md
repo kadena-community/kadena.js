@@ -1,7 +1,7 @@
 ---
-title: Next
-order: 5
-label: next thing
+title: Test
+order: 0
+label: test
 description: How to get started with Markdoc
 layout: full
 ---

@@ -3,9 +3,8 @@ import { Heading, styled } from '@kadena/react-components';
 import { Article, Content } from '../components';
 import { ILayout } from '../types';
 
-import { Aside } from './Aside';
 import { AsideLink } from './AsideLink';
-import { AsideList } from './style';
+import { Aside, AsideList } from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
 import { ISubHeaderElement } from '@/types/Layout';

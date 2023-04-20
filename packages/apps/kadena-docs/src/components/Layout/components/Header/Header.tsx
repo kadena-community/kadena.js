@@ -1,7 +1,13 @@
 import { IconButton, SystemIcons } from '@kadena/react-components';
 
-import { MenuItems } from '../MenuItems';
-import { InnerWrapper, Spacer, StyledHeader, StyledNav } from '../styles';
+import { NavItem } from '../MenuItems/NavItem';
+import {
+  InnerWrapper,
+  Spacer,
+  StyledHeader,
+  StyledNav,
+  StyledUl,
+} from '../styles';
 import { DocsLogo } from '..';
 
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
@@ -10,14 +16,16 @@ import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
+import { IMenuItem } from '@/types/Layout';
 import React, { FC } from 'react';
 
 interface IProps {
   toggleMenu: () => void;
   isMenuOpen: boolean;
+  menuItems: IMenuItem[];
 }
 
-export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
+export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 
   return (
@@ -28,7 +36,15 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
         <HideOnMobile>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
           <StyledNav>
-            <MenuItems ref={listRef} />
+            <StyledNav>
+              <StyledUl ref={listRef}>
+                {menuItems.map((item) => (
+                  <NavItem key={item.label} href={item.root}>
+                    {item.label} {item.order}
+                  </NavItem>
+                ))}
+              </StyledUl>
+            </StyledNav>
           </StyledNav>
         </HideOnMobile>
         <Spacer />

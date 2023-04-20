@@ -1,18 +1,9 @@
 [
   {
     "children": [],
-    "root": "/docs/chainweb",
-    "title": "Get started with Chainweb",
-    "order": 2,
-    "label": "Chainweb",
-    "description": "How to get started with Markdoc",
-    "layout": "code"
-  },
-  {
-    "children": [],
     "root": "/docs/kadenajs",
     "title": "Get started with KadenaJS",
-    "order": 1,
+    "order": 0,
     "label": "Kadena JS",
     "description": "How to get started with Markdoc",
     "layout": "landing"
@@ -21,26 +12,56 @@
     "children": [
       {
         "children": [],
-        "root": "/docs/pact/how-does-it-work",
+        "root": "/docs/pact/sdffsfs",
         "title": "But how does it work",
-        "label": "but how?",
+        "label": "but how22222?",
+        "order": 2,
+        "description": "How to get started with Markdoc",
+        "layout": "full"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/pact/next-thing/test",
+            "title": "Test",
+            "order": 0,
+            "label": "test",
+            "description": "How to get started with Markdoc",
+            "layout": "full"
+          }
+        ],
+        "root": "/docs/pact/next-thing",
+        "title": "Next",
+        "order": 5,
+        "label": "next thing",
         "description": "How to get started with Markdoc",
         "layout": "full"
       },
       {
         "children": [],
-        "root": "/docs/pact/next-thing",
-        "title": "Next",
-        "order": 0,
-        "label": "next thing",
+        "root": "/docs/pact/how-does-it-work",
+        "title": "But how does it work",
+        "label": "but how?",
+        "order": 5,
         "description": "How to get started with Markdoc",
         "layout": "full"
       }
     ],
     "root": "/docs/pact",
     "title": "Get started with Pact",
+    "order": 1,
     "label": "Pact",
     "description": "How to get started with Markdoc",
     "layout": "full"
+  },
+  {
+    "children": [],
+    "root": "/docs/chainweb",
+    "title": "Get started with Chainweb",
+    "order": 3,
+    "label": "Chainweb",
+    "description": "How to get started with Markdoc",
+    "layout": "landing"
   }
 ]

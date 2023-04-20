@@ -10,7 +10,7 @@ export const AsideList: StyledComponent<
 
   '& li::before': {
     content: '∙',
-    color: '$primarySurfaceInverted',
+    color: '$primaryHighContrast',
     fontWeight: '$bold',
     display: 'inline-block',
     width: '$sizes.$4',
@@ -31,10 +31,20 @@ export const AsideItem: StyledComponent<'li'> = styled('li', {
   lineHeight: '$base',
   a: {
     textDecoration: 'none',
-    color: '$primarySurfaceInverted',
+    color: '$primaryHighContrast',
     '&:hover': {
       textDecoration: 'underline',
       fontWeight: '$bold',
     },
+  },
+});
+
+export const Aside: StyledComponent<'aside'> = styled('aside', {
+  display: 'none',
+  width: '25%',
+  overflow: 'hidden',
+  paddingLeft: '$4',
+  '@md': {
+    display: 'block',
   },
 });

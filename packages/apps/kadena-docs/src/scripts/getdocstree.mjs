@@ -13,6 +13,35 @@ const getFrontMatter = (doc) => {
   return yaml.load(tree.children[0].value);
 };
 
+const minimumZeroValue = (value) => {
+  return value <= 0 ? 0 : value;
+};
+
+const pushToParent = (parent, child) => {
+  console.log('next?', child.label);
+  let added = false;
+  if (
+    !parent.length ||
+    child.order > parent.at(-1).order ||
+    child.order === undefined
+  ) {
+    added = true;
+    parent.push(child);
+
+    return parent;
+  }
+
+  parent.forEach((item, idx) => {
+    if (parseInt(child.order) <= parseInt(item.order) && !added) {
+      const minIdx = minimumZeroValue(idx);
+      parent.splice(minIdx, 0, child);
+      added = true;
+      return parent;
+    }
+  });
+  return parent;
+};
+
 const findPath = (dir) => {
   const [, ...dirArray] = dir.split('/');
   let file = dirArray.pop();
@@ -33,16 +62,13 @@ const createTree = (rootDir, parent = []) => {
   files.forEach((file) => {
     const currentFile = `${rootDir}/${file}`;
 
-    console.log(currentFile);
-
     const arr = [];
     let child = {
       children: arr,
     };
     child.root = findPath(currentFile);
-    if (!child.root) return;
 
-    parent.push(child);
+    if (!child.root) return;
 
     if (fs.statSync(`${currentFile}`).isFile()) {
       const doc = fs.readFileSync(`${currentFile}`, 'utf-8');
@@ -50,10 +76,14 @@ const createTree = (rootDir, parent = []) => {
     } else if (fs.statSync(`${currentFile}/index.md`).isFile()) {
       const doc = fs.readFileSync(`${currentFile}/index.md`, 'utf-8');
       Object.assign(child, getFrontMatter(doc));
+    } else {
+      throw new Error(currentFile);
     }
+    parent = pushToParent(parent, child);
 
     if (fs.statSync(currentFile).isDirectory()) {
       child.children = createTree(currentFile, child.children);
+
       return child.children;
     }
   });

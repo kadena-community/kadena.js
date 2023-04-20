@@ -1,9 +1,9 @@
 ---
 title: Get started with Chainweb
-order: 2
+order: 3
 label: Chainweb
 description: How to get started with Markdoc
-layout: code
+layout: landing
 ---
 
 ## chain 1

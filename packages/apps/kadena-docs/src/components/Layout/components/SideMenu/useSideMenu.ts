@@ -1,66 +1,50 @@
 import { useMediumScreen } from '@/hooks';
+import { IMenuItem } from '@/types/Layout';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 
 interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;
-  clickMenu: MouseEventHandler<HTMLUListElement>;
+  clickMenu: (item: IMenuItem) => void;
   menuRef: React.RefObject<HTMLDivElement>;
   subMenuRef: React.RefObject<HTMLDivElement>;
   active: number;
-  activeTitle: string;
-  hasSubmenu: boolean;
+  activeItem?: IMenuItem;
   setActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const useSideMenu = (closeMenu: () => void): IReturn => {
+export const useSideMenu = (
+  closeMenu: () => void,
+  menuItems: IMenuItem[],
+): IReturn => {
   const router = useRouter();
   const [oldPathname, setOldPathname] = useState<string>('');
   const [active, setActive] = useState<number>(1);
-  const [activeTitle, setActiveTitle] = useState<string>('');
-  const [hasSubmenu, setHasSubmenu] = useState<boolean>(false);
+  const [activeItem, setActiveItem] = useState<IMenuItem>();
   const menuRef = useRef<HTMLDivElement>(null);
   const subMenuRef = useRef<HTMLDivElement>(null);
 
   const hasMediumScreen = useMediumScreen();
 
-  const checkHasSubmenu = useCallback((): {
-    matchingItem?: HTMLAnchorElement;
-    hasSubMenu: boolean;
-  } => {
-    const menuLinks = Array.from(menuRef.current?.querySelectorAll('a') ?? []);
-    const matchingItem = menuLinks.find((item) => {
-      return hasSameBasePath(router.pathname, item.getAttribute('href') ?? '');
-    });
-
-    if (matchingItem?.getAttribute('data-hassubmenu') === 'true') {
-      return { matchingItem, hasSubMenu: true };
-    }
-    return { matchingItem, hasSubMenu: false };
-  }, [router.pathname]);
-
   useEffect(() => {
     setOldPathname(router.pathname);
-    const { matchingItem, hasSubMenu: innerHasSubmenu } = checkHasSubmenu();
 
-    if (innerHasSubmenu) {
+    const matchingItem = menuItems.find((item) =>
+      hasSameBasePath(item.root, router.pathname),
+    );
+
+    setActiveItem(matchingItem);
+    const hasSubMenu = matchingItem?.children.length ?? 0;
+
+    if (hasSubMenu) {
       setActive(1);
-      setHasSubmenu(true);
-      setActiveTitle(matchingItem?.innerText ?? '');
     } else {
       setActive(0);
-      setHasSubmenu(false);
     }
 
     router.events.on('routeChangeStart', (url) => {
-      if (hasSameBasePath(url, oldPathname) && innerHasSubmenu) {
+      if (hasSameBasePath(url, oldPathname) && hasSubMenu) {
         setActive(1);
       } else {
         setActive(0);
@@ -72,28 +56,18 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
     oldPathname,
     router.pathname,
     router.events,
-    hasSubmenu,
-    checkHasSubmenu,
+    menuItems,
   ]);
 
-  const clickMenu: MouseEventHandler<HTMLUListElement> = (e) => {
-    e.preventDefault();
-    const clickedItem = e.target as HTMLAnchorElement;
-
-    //check if the CURRENT pathname has a submenu.
+  const clickMenu = (item: IMenuItem): void => {
+    setActiveItem(item);
     if (
-      hasSameBasePath(
-        router.pathname,
-        clickedItem.getAttribute('href') ?? '',
-      ) &&
-      clickedItem.getAttribute('data-hassubmenu') === 'true'
+      hasSameBasePath(router.pathname, item.root ?? '') &&
+      item.children.length
     ) {
-      setActiveTitle(clickedItem.innerText);
       setActive(1);
-      setHasSubmenu(true);
     } else {
       closeMenu();
-      setHasSubmenu(false);
     }
   };
 
@@ -112,8 +86,7 @@ export const useSideMenu = (closeMenu: () => void): IReturn => {
     menuRef,
     subMenuRef,
     active,
-    activeTitle,
-    hasSubmenu,
     setActive,
+    activeItem,
   };
 };

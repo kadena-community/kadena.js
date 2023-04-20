@@ -1,7 +1,7 @@
 ---
 title: But how does it work
-label: but how?
-order: 5
+label: but how22222?
+order: 2
 description: How to get started with Markdoc
 layout: full
 ---
