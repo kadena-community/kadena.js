@@ -1,4 +1,4 @@
-import { IconButton, SystemIcons } from '@kadena/react-components';
+import { IconButton, Stack, SystemIcons } from '@kadena/react-components';
 
 import { Spacer } from '../styles';
 import { DocsLogo } from '..';
@@ -13,7 +13,7 @@ export const Footer: FC = () => {
   return (
     <StyledFooter>
       <InnerFooterWrapper>
-        <Box>
+        <Box justifyContent="space-around" alignItems="center">
           <DocsLogo />
           <IconButton
             title="Go to our Github"
@@ -32,12 +32,12 @@ export const Footer: FC = () => {
           />
         </Box>
         <Spacer />
-        <Box>
+        <Box justifyContent="space-around" alignItems="center">
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
           <FooterLink href="https://kadena.io">Terms of Service</FooterLink>
         </Box>
-        <Box>
+        <Box justifyContent="space-around" alignItems="center">
           <FooterText>Copyrights 2023 © Kadena LLC</FooterText>
         </Box>
       </InnerFooterWrapper>

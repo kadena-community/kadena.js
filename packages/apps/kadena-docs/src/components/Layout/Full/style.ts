@@ -13,7 +13,7 @@ export const AsideList: StyledComponent<
     color: '$primaryHighContrast',
     fontWeight: '$bold',
     display: 'inline-block',
-    width: '$sizes.$4',
+    width: '$4',
     margin: '0 $1',
   },
 

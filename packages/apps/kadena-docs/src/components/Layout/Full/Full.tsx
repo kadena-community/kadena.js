@@ -17,7 +17,7 @@ const StickyAsideWrapper = styled('div', {
 
 const StickyAside = styled('div', {
   position: 'sticky',
-  top: '40px',
+  top: '$10',
 });
 
 export const Full: FC<ILayout> = ({ children }) => {
@@ -43,7 +43,7 @@ export const Full: FC<ILayout> = ({ children }) => {
         <Aside>
           <StickyAsideWrapper>
             <StickyAside>
-              <Heading as="h6" bold={true} transform="uppercase">
+              <Heading as="h6" transform="uppercase">
                 On this page
               </Heading>
               <AsideList>{headers.map(renderListItem)}</AsideList>
