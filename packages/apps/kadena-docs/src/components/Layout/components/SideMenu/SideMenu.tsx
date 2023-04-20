@@ -30,7 +30,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     activeItem,
   } = useSideMenu(closeMenu, menuItems);
 
-  const hasSubmenu = activeItem?.children.length ?? 0;
+  const hasSubmenu = Boolean(activeItem?.children.length);
 
   return (
     <StyledSideMenu>

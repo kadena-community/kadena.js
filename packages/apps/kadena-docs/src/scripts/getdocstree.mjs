@@ -18,7 +18,6 @@ const minimumZeroValue = (value) => {
 };
 
 const pushToParent = (parent, child) => {
-  console.log('next?', child.label);
   let added = false;
   if (
     !parent.length ||

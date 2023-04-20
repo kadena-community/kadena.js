@@ -47,21 +47,4 @@ export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   );
 };
 
-MyApp.getInitialProps = async (context: AppContext): Promise<IAppProps> => {
-  const ctx = await App.getInitialProps(context); // error: Argument of type 'NextPageContext' is not assignable to parameter of type 'AppContext'.
-  const { pathname } = context.ctx;
-
-  const menuitems = (await import('../data/menu.json')).default as IMenuItem[];
-  const root = menuitems.map((item) => {
-    if (hasSameBasePath(item.root, pathname)) {
-      item.isActive = true;
-    } else {
-      item.children = [];
-    }
-    return item;
-  });
-
-  return { ...ctx, pageProps: { menuItems: root } };
-};
-
 export default MyApp;

@@ -1,7 +1,7 @@
 ---
-title: Test
-order: 0
-label: test
+title: Welcome to pact
+order: 5
+label: Welcome
 description: How to get started with Markdoc
 layout: full
 ---

@@ -1,7 +1,7 @@
 ---
-title: Next
-order: 5
-label: next thing
+title: Pact tutorial
+order: 0
+label: Tutorial
 description: How to get started with Markdoc
 layout: full
 ---

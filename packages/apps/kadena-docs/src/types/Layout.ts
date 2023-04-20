@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export type LayoutType = 'full' | 'code' | 'landing';
@@ -18,4 +20,8 @@ export interface IMenuItem {
   description: string;
   layout: LayoutType;
   children: IMenuItem[];
+}
+
+export interface ILayout {
+  children?: ReactNode;
 }

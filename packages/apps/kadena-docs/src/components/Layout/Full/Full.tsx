@@ -1,13 +1,12 @@
 import { Heading, styled } from '@kadena/react-components';
 
 import { Article, Content } from '../components';
-import { ILayout } from '../types';
 
 import { AsideLink } from './AsideLink';
 import { Aside, AsideList } from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
-import { ISubHeaderElement } from '@/types/Layout';
+import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import React, { FC, ReactNode } from 'react';
 
 const StickyAsideWrapper = styled('div', {

@@ -1,40 +1,22 @@
 [
   {
-    "children": [],
-    "root": "/docs/kadenajs",
-    "title": "Get started with KadenaJS",
-    "order": 0,
-    "label": "Kadena JS",
-    "description": "How to get started with Markdoc",
-    "layout": "landing"
-  },
-  {
     "children": [
-      {
-        "children": [],
-        "root": "/docs/pact/sdffsfs",
-        "title": "But how does it work",
-        "label": "but how22222?",
-        "order": 2,
-        "description": "How to get started with Markdoc",
-        "layout": "full"
-      },
       {
         "children": [
           {
             "children": [],
-            "root": "/docs/pact/next-thing/test",
-            "title": "Test",
+            "root": "/docs/pact/welcome/tutorial",
+            "title": "Pact tutorial",
             "order": 0,
-            "label": "test",
+            "label": "Tutorial",
             "description": "How to get started with Markdoc",
             "layout": "full"
           }
         ],
-        "root": "/docs/pact/next-thing",
-        "title": "Next",
+        "root": "/docs/pact/welcome",
+        "title": "Welcome to pact",
         "order": 5,
-        "label": "next thing",
+        "label": "Welcome",
         "description": "How to get started with Markdoc",
         "layout": "full"
       },
@@ -54,6 +36,15 @@
     "label": "Pact",
     "description": "How to get started with Markdoc",
     "layout": "full"
+  },
+  {
+    "children": [],
+    "root": "/docs/kadenajs",
+    "title": "Get started with KadenaJS",
+    "order": 1,
+    "label": "Kadena JS",
+    "description": "How to get started with Markdoc",
+    "layout": "landing"
   },
   {
     "children": [],
