@@ -4,7 +4,7 @@ import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 
-export const getFrontMatter = (doc) => {
+const getFrontMatter = (doc) => {
   const tree = fromMarkdown(doc.toString(), {
     extensions: [frontmatter()],
     mdastExtensions: [frontmatterFromMarkdown()],

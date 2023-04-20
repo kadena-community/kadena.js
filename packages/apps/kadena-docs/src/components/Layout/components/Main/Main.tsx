@@ -10,6 +10,7 @@ import React, { FC, ReactNode, useState } from 'react';
 const menuItems: IMenuItem[] = importedMenu as IMenuItem[];
 interface IProps {
   children?: ReactNode;
+  menuItems: IMenuItem[];
   markdoc: {
     frontmatter: {
       title: string;

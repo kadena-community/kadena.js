@@ -45,5 +45,14 @@
     "label": "Kadena JS",
     "description": "How to get started with Markdoc",
     "layout": "landing"
+  },
+  {
+    "children": [],
+    "root": "/docs/chainweb",
+    "title": "Get started with Chainweb",
+    "order": 3,
+    "label": "Chainweb",
+    "description": "How to get started with Markdoc",
+    "layout": "landing"
   }
 ]

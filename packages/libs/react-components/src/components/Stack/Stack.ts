@@ -2,6 +2,17 @@
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
 import { styled } from '../../styles/stitches.config';
 
+import type { VariantProps } from '@stitches/react';
+
+export interface IStackProps {
+  spacing?: VariantProps<typeof Stack>['spacing'];
+  direction?: VariantProps<typeof Stack>['direction'];
+  flexWrap?: VariantProps<typeof Stack>['flexWrap'];
+  alignItems?: VariantProps<typeof Stack>['alignItems'];
+  justifyContent?: VariantProps<typeof Stack>['justifyContent'];
+  children: React.ReactNode;
+}
+
 export const spacingVariant = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xs': {
@@ -83,7 +94,7 @@ export const directionVariant = {
   },
 } as const;
 
-export const FlexContainer = styled('div', {
+export const Stack = styled('div', {
   display: 'flex',
 
   variants: {

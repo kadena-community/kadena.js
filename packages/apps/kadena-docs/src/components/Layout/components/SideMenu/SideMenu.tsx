@@ -36,18 +36,14 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     <StyledSideMenu>
       {active === 0 && (
         <SideMenuTitle>
-          <Heading as="h5" bold={true}>
-            Kadena Docs
-          </Heading>
+          <Heading as="h5">Kadena Docs</Heading>
         </SideMenuTitle>
       )}
 
       {active === 1 && (
         <>
           <SideMenuTitleBackButton onClick={() => setActive(0)}>
-            <Heading as="h5" bold={true}>
-              {activeItem?.label}
-            </Heading>
+            <Heading as="h5">{activeItem?.label}</Heading>
           </SideMenuTitleBackButton>
         </>
       )}

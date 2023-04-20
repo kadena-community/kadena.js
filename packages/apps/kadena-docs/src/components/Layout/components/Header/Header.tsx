@@ -35,7 +35,6 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
         <DocsLogo overwriteTheme="dark" />
         <HideOnMobile>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
-          <DocsLogo overwriteTheme="dark" />
           <StyledNav>
             <StyledUl ref={listRef}>
               {menuItems.map((item) => (
