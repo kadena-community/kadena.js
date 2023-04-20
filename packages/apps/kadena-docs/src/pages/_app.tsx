@@ -5,9 +5,7 @@ import {
 } from '@kadena/react-components';
 
 import { Main } from '@/components/Layout/components';
-import { IMenuItem } from '@/types/Layout';
-import { hasSameBasePath } from '@/utils';
-import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import React, { ComponentType } from 'react';
 
@@ -18,12 +16,6 @@ const GlobalStyles = globalCss({
   },
 });
 GlobalStyles();
-
-interface IAppProps extends AppInitialProps {
-  pageProps: {
-    menuItems: IMenuItem[];
-  };
-}
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
