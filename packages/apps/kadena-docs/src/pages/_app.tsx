@@ -48,7 +48,7 @@ export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 };
 
 MyApp.getInitialProps = async (context: AppContext): Promise<IAppProps> => {
-  const ctx = await App.getInitialProps(context); // error: Argument of type 'NextPageContext' is not assignable to parameter of type 'AppContext'.
+  const ctx = await App.getInitialProps(context);
   const { pathname } = context.ctx;
 
   const menuitems = (await import('../data/menu.json')).default as IMenuItem[];
@@ -56,6 +56,8 @@ MyApp.getInitialProps = async (context: AppContext): Promise<IAppProps> => {
     if (hasSameBasePath(item.root, pathname)) {
       item.isActive = true;
     } else {
+      // remove all the extra children for the main menu items that are not active.
+      // these will not be used and makes the prop object smaller
       item.children = [];
     }
     return item;

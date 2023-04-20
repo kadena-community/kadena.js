@@ -1,4 +1,3 @@
-import { useMediumScreen } from '@/hooks';
 import { IMenuItem } from '@/types/Layout';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
@@ -25,8 +24,6 @@ export const useSideMenu = (
   const menuRef = useRef<HTMLDivElement>(null);
   const subMenuRef = useRef<HTMLDivElement>(null);
 
-  const hasMediumScreen = useMediumScreen();
-
   useEffect(() => {
     setOldPathname(router.pathname);
 
@@ -50,14 +47,7 @@ export const useSideMenu = (
         setActive(0);
       }
     });
-  }, [
-    hasMediumScreen,
-    setOldPathname,
-    oldPathname,
-    router.pathname,
-    router.events,
-    menuItems,
-  ]);
+  }, [setOldPathname, oldPathname, router.pathname, router.events, menuItems]);
 
   const clickMenu = (item: IMenuItem): void => {
     setActiveItem(item);
