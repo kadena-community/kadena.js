@@ -1,4 +1,4 @@
-import { ILayout, LayoutType } from '@/components/Layout/types';
+import { ILayout, LayoutType } from '@/types/Layout';
 import { FC } from 'react';
 
 export const isOneOfLayoutType = (
