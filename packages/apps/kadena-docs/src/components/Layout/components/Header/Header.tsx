@@ -10,37 +10,39 @@ import {
 import { DocsLogo } from '..';
 
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
+import { NavItem } from './NavItem';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
-import Link from 'next/link';
+import { IMenuItem } from '@/types/Layout';
 import React, { FC } from 'react';
 
 interface IProps {
   toggleMenu: () => void;
   isMenuOpen: boolean;
+  menuItems: IMenuItem[];
 }
 
-export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
+export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 
   return (
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
+        <DocsLogo overwriteTheme="dark" />
         <HideOnMobile>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
           <DocsLogo overwriteTheme="dark" />
           <StyledNav>
             <StyledUl ref={listRef}>
-              <li>
-                <Link href="/docs/pact">Pact</Link>
-              </li>
-              <li>
-                <Link href="/docs/kadenajs">KadenaJS</Link>
-              </li>
+              {menuItems.map((item) => (
+                <NavItem key={item.label} href={item.root}>
+                  {item.label}
+                </NavItem>
+              ))}
             </StyledUl>
           </StyledNav>
         </HideOnMobile>

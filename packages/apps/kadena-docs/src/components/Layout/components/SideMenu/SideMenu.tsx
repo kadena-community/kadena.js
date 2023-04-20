@@ -11,23 +11,26 @@ import {
 } from './styles';
 import { useSideMenu } from './useSideMenu';
 
+import { IMenuItem } from '@/types/Layout';
 import React, { FC } from 'react';
 
 interface IProps {
   closeMenu: () => void;
+  menuItems: IMenuItem[];
 }
 
-export const SideMenu: FC<IProps> = ({ closeMenu }) => {
+export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   const {
     active,
     menuRef,
     subMenuRef,
     clickMenu,
     clickSubMenu,
-    hasSubmenu,
     setActive,
-    activeTitle,
-  } = useSideMenu(closeMenu);
+    activeItem,
+  } = useSideMenu(closeMenu, menuItems);
+
+  const hasSubmenu = Boolean(activeItem?.children.length);
 
   return (
     <StyledSideMenu>
@@ -43,7 +46,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
         <>
           <SideMenuTitleBackButton onClick={() => setActive(0)}>
             <Heading as="h5" bold={true}>
-              {activeTitle}
+              {activeItem?.label}
             </Heading>
           </SideMenuTitleBackButton>
         </>
@@ -51,22 +54,18 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
       <input type="text" />
 
       <MenuCard active={active} idx={0} ref={menuRef}>
-        <StyledUl onClick={clickMenu}>
-          <StyledItem>
-            <StyledLink href="/docs/pact" data-hassubmenu={true}>
-              Pact
-            </StyledLink>
-          </StyledItem>
-          <StyledItem>
-            <StyledLink href="/docs/kadenajs" data-hassubmenu={false}>
-              KadenaJS
-            </StyledLink>
-          </StyledItem>
-          <StyledItem>
-            <StyledLink href="/docs/chainweb" data-hassubmenu={true}>
-              Chainweb
-            </StyledLink>
-          </StyledItem>
+        <StyledUl>
+          {menuItems.map((item) => (
+            <StyledItem key={item.label}>
+              <StyledLink
+                onClick={() => clickMenu(item)}
+                href={item.root}
+                data-hassubmenu={!!item.children.length}
+              >
+                {item.label}
+              </StyledLink>
+            </StyledItem>
+          ))}
         </StyledUl>
       </MenuCard>
       {hasSubmenu && (
@@ -76,10 +75,11 @@ export const SideMenu: FC<IProps> = ({ closeMenu }) => {
               TODO: fill with the correct menu content
             </Text>
 
-            <StyledLink href="/docs/pact">start</StyledLink>
-            <StyledLink href="/docs/pact/how-does-it-work">
-              How does it work?
-            </StyledLink>
+            {activeItem?.children.map((item) => (
+              <StyledLink key={item.label} href={item.root}>
+                {item.label}
+              </StyledLink>
+            ))}
           </section>
         </MenuCard>
       )}

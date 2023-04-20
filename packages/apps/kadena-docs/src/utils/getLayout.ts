@@ -1,5 +1,5 @@
 import * as Layouts from '@/components/Layout';
-import { ILayout } from '@/components/Layout/types';
+import { ILayout } from '@/types/Layout';
 import { FC } from 'react';
 
 export const getLayout = (layout: string): FC<ILayout> => {

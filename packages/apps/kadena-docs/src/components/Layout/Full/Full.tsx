@@ -1,9 +1,8 @@
 import { Content } from '../components';
-import { ILayout } from '../types';
 
 import { useCreateSubMenu } from './useCreateSubmenu';
 
-import { ISubHeaderElement } from '@/types/Layout';
+import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
 

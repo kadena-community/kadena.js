@@ -1,5 +1,4 @@
-import { ILayout } from './types';
-
+import { ILayout } from '@/types/Layout';
 import React, { FC } from 'react';
 
 export const CodeSide: FC<ILayout> = ({ children }) => {
