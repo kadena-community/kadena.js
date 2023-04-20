@@ -1,14 +1,15 @@
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template } from '../';
 
+import importedMenu from '@/data/menu.json';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import React, { FC, ReactNode, useState } from 'react';
 
+const menuItems: IMenuItem[] = importedMenu as IMenuItem[];
 interface IProps {
   children?: ReactNode;
-  menuItems: IMenuItem[];
   markdoc: {
     frontmatter: {
       title: string;
@@ -18,7 +19,7 @@ interface IProps {
   };
 }
 
-export const Main: FC<IProps> = ({ children, markdoc, menuItems }) => {
+export const Main: FC<IProps> = ({ children, markdoc }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   let title, description;
