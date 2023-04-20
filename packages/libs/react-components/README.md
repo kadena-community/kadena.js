@@ -99,11 +99,11 @@ In our theme we have color scales that represent a set of different shades for a
 color as well as theme specific tokens that return different colors depending on
 whether we are in light/dark theme.
 
-Due to the strict nature of our component library, we should use our disgression
+Due to the strict nature of our component library, we should use our disgretion
 to determine what subset of colors should be exposed for a certain component.
 For example, a text component would likely only be used in a small subset of
-colors on an interface - one approach to doing this would be to create a color
-variant with named options that map to each of these colors.
+colors on an interface - our approach to doing this would be to create a color
+variant with named options that map to each of the colors options.
 
 When it comes to dark theme, the default behavior when using theme specific
 tokens will effectively be the inverse of the opposing theme. This is not always
