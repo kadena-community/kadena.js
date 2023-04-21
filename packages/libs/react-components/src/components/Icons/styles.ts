@@ -19,6 +19,7 @@ export const sizeVariant = {
 
 export const IconContainer = styled('span', {
   display: 'flex',
+  color: '$foreground',
 
   variants: {
     size: sizeVariant,

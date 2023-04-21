@@ -1,7 +1,8 @@
-import { config, styled } from '../../styles';
 import { SystemIcons } from '../Icons';
 
-import { PropertyValue } from '@stitches/react';
+import { StyledButton } from './styles';
+
+import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface IIconButtonProps
@@ -11,47 +12,31 @@ export interface IIconButtonProps
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   title: string;
-  color?: PropertyValue<'backgroundColor', typeof config>;
+  color?: VariantProps<typeof StyledButton>['color'];
 }
-
-const Button = styled('button', {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: 'transparent',
-  borderRadius: '$lg',
-  width: '$11',
-  height: '$11',
-  border: 0,
-  color: 'inherit',
-  cursor: 'pointer',
-  transition: 'opacity .2s ease',
-  '&:hover': {
-    opacity: '.6',
-  },
-});
 
 export const IconButton: FC<IIconButtonProps> = ({
   as = 'button',
+  color = 'default',
+  href,
   icon,
   onClick,
-  href,
-  color = 'transparent',
+  title,
   ...props
 }) => {
   const Icon = icon;
-  const ariaLabel = props['aria-label'] ?? props.title;
+  const ariaLabel = props['aria-label'] ?? title;
 
   return (
-    <Button
+    <StyledButton
       {...props}
       as={as}
       href={as === 'a' ? href : undefined}
       onClick={as === 'button' ? onClick : undefined}
       aria-label={ariaLabel}
-      css={{ backgroundColor: color }}
+      color={color}
     >
       <Icon size="md" />
-    </Button>
+    </StyledButton>
   );
 };
