@@ -6,7 +6,15 @@ import { Grid } from './';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const Content = styled('div', {});
+const Content = styled('div', {
+  bg: '$primarySurface',
+  size: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '$sm',
+  padding: '$2',
+});
 
 const meta: Meta<typeof Grid.Container> = {
   title: 'Layout/Grid',
@@ -37,64 +45,61 @@ export const Primary: Story = {
     <>
       <Grid.Container spacing={spacing}>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>1</Content>
+          <Content>1</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>2</Content>
+          <Content>2</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>3</Content>
+          <Content>3</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>4</Content>
+          <Content>4</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>5</Content>
+          <Content>5</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>6</Content>
+          <Content>6</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>7</Content>
+          <Content>7</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>8</Content>
+          <Content>8</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>9</Content>
+          <Content>9</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>10</Content>
+          <Content>10</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>11</Content>
+          <Content>11</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$neutral3' }}>12</Content>
+          <Content>12</Content>
         </Grid.Item>
-      </Grid.Container>
-
-      <Grid.Container spacing={spacing}>
         <Grid.Item colStart={4} colEnd={7}>
-          <Content css={{ bg: '$primarySurface' }}>1</Content>
+          <Content>1</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$primarySurface' }}>2</Content>
+          <Content>2</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$primarySurface' }}>3</Content>
+          <Content>3</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$primarySurface' }}>4</Content>
+          <Content>4</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$primarySurface' }}>5</Content>
+          <Content>5</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$primarySurface' }}>6</Content>
+          <Content>6</Content>
         </Grid.Item>
         <Grid.Item>
-          <Content css={{ bg: '$primarySurface' }}>7</Content>
+          <Content>7</Content>
         </Grid.Item>
       </Grid.Container>
     </>
@@ -119,16 +124,16 @@ export const GridAreas: Story = {
       templateColumns={templateColumns}
     >
       <Grid.Item area="header">
-        <Content css={{ bg: '$primarySurface' }}>0</Content>
+        <Content>0</Content>
       </Grid.Item>
       <Grid.Item area="nav">
-        <Content css={{ bg: '$primarySurface' }}>1</Content>
+        <Content>1</Content>
       </Grid.Item>
       <Grid.Item area="main">
-        <Content css={{ bg: '$primarySurface' }}>2</Content>
+        <Content>2</Content>
       </Grid.Item>
       <Grid.Item area="footer">
-        <Content css={{ bg: '$primarySurface' }}>3</Content>
+        <Content>3</Content>
       </Grid.Item>
     </Grid.Container>
   ),
