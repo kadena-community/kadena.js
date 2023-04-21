@@ -34,6 +34,10 @@ export const StyledButton = styled('button', {
   '&:hover': {
     opacity: '.6',
   },
+  '&:focus-visible': {
+    outlineOffset: '2px',
+    outline: '2px solid $$svgColor',
+  },
   $$svgColor: 'inherit',
   svg: {
     color: '$$svgColor',
