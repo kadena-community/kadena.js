@@ -4,16 +4,13 @@ import { styled } from '../../styles/stitches.config';
 
 export const sizeVariant = {
   sm: {
-    width: '$sm',
-    height: '$sm',
+    size: '$sm',
   },
   md: {
-    width: '$lg',
-    height: '$lg',
+    size: '$lg',
   },
   lg: {
-    width: '$2xl',
-    height: '$2xl',
+    size: '$2xl',
   },
 } as const;
 
