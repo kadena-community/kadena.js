@@ -14,6 +14,8 @@ export interface ISubHeaderElement {
 export interface IMenuItem {
   root: string;
   title: string;
+  menu?: string;
+  header?: string;
   order?: number;
   label: string;
   isActive?: boolean;

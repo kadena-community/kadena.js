@@ -1,7 +1,9 @@
 ---
 title: Get started with Pact
+menu: Pact
+header: Introduction
+label: Introduction
 order: 1
-label: Pact
 description: How to get started with Markdoc
 layout: full
 ---

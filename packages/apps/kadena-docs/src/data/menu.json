@@ -2,25 +2,6 @@
   {
     "children": [
       {
-        "children": [
-          {
-            "children": [],
-            "root": "/docs/pact/welcome/tutorial",
-            "title": "Pact tutorial",
-            "order": 0,
-            "label": "Tutorial",
-            "description": "How to get started with Markdoc",
-            "layout": "full"
-          }
-        ],
-        "root": "/docs/pact/welcome",
-        "title": "Welcome to pact",
-        "order": 5,
-        "label": "Welcome",
-        "description": "How to get started with Markdoc",
-        "layout": "full"
-      },
-      {
         "children": [],
         "root": "/docs/pact/how-does-it-work",
         "title": "But how does it work",
@@ -28,21 +9,76 @@
         "order": 5,
         "description": "How to get started with Markdoc",
         "layout": "full"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "root": "/docs/pact/basics/build-in-functions/tutorial",
+                "title": "Pact tutorial",
+                "order": 0,
+                "label": "Tutorial",
+                "description": "How to get started with Markdoc",
+                "layout": "full"
+              }
+            ],
+            "root": "/docs/pact/basics/build-in-functions",
+            "title": "Welcome to pact",
+            "order": 5,
+            "label": "General buildin",
+            "header": "Build-in Functions",
+            "description": "How to get started with Markdoc",
+            "layout": "full"
+          }
+        ],
+        "root": "/docs/pact/basics",
+        "title": "Welcome to pact",
+        "order": 5,
+        "label": "General",
+        "header": "Basics",
+        "description": "How to get started with Markdoc",
+        "layout": "full"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/pact/atom-sdk/test",
+            "title": "Test",
+            "menu": "Pact",
+            "label": "Test",
+            "order": 1,
+            "description": "How to get started with Markdoc",
+            "layout": "full"
+          }
+        ],
+        "root": "/docs/pact/atom-sdk",
+        "title": "Welcome to pact",
+        "order": 5,
+        "label": "Quickstart",
+        "header": "Atom SDK",
+        "description": "How to get started with Markdoc",
+        "layout": "full"
       }
     ],
     "root": "/docs/pact",
     "title": "Get started with Pact",
+    "menu": "Pact",
+    "header": "Introduction",
+    "label": "Introduction",
     "order": 1,
-    "label": "Pact",
     "description": "How to get started with Markdoc",
     "layout": "full"
   },
   {
     "children": [],
     "root": "/docs/kadenajs",
-    "title": "Get started with KadenaJS",
+    "title": "KadenaJS",
+    "menu": "KadenaJS",
+    "header": "Introduction",
     "order": 1,
-    "label": "Kadena JS",
     "description": "How to get started with Markdoc",
     "layout": "landing"
   },

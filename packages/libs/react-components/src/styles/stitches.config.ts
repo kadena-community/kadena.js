@@ -57,7 +57,7 @@ export const media: ConfigType.Media<{
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
-  '2xl': `(min-width: ${1536 / 16}rem)`,
+  '2xl': `(min-width: ${1440 / 16}rem)`,
 } as const;
 
 export const {

@@ -4,6 +4,26 @@ import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 
+const isMarkDownFile = (name) => {
+  const extension = name.split('.').at(-1);
+  return extension.toLowerCase() === 'md';
+};
+
+const convertFile = (file) => {
+  const doc = fs.readFileSync(`${file}`, 'utf-8');
+  if (isMarkDownFile(file)) {
+    return getFrontMatter(doc);
+  } else {
+    const regex = /export const meta = ({.*});/s;
+    const match = doc.match(regex);
+    if (match) {
+      let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
+      metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
+      return JSON.parse(metaString);
+    }
+  }
+};
+
 const getFrontMatter = (doc) => {
   const tree = fromMarkdown(doc.toString(), {
     extensions: [frontmatter()],
@@ -70,11 +90,11 @@ const createTree = (rootDir, parent = []) => {
     if (!child.root) return;
 
     if (fs.statSync(`${currentFile}`).isFile()) {
-      const doc = fs.readFileSync(`${currentFile}`, 'utf-8');
-      Object.assign(child, getFrontMatter(doc));
+      const obj = convertFile(currentFile);
+      Object.assign(child, obj);
     } else if (fs.statSync(`${currentFile}/index.md`).isFile()) {
-      const doc = fs.readFileSync(`${currentFile}/index.md`, 'utf-8');
-      Object.assign(child, getFrontMatter(doc));
+      const obj = convertFile(`${currentFile}/index.md`);
+      Object.assign(child, obj);
     } else {
       throw new Error(currentFile);
     }

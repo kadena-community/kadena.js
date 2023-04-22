@@ -7,46 +7,6 @@ export const StyledSideMenu: StyledComponent<'div'> = styled('div', {
   marginTop: '$6',
 });
 
-export const Menu: StyledComponent<
-  'div',
-  { isOpen?: boolean | 'true' | 'false' | undefined }
-> = styled('div', {
-  gridArea: 'menu',
-  position: 'absolute',
-  top: '$17',
-  height: 'calc(100% - $17 - $17)',
-  width: '100%',
-  borderRight: '1px solid $neutral3',
-  background: '$background',
-  overflow: 'hidden',
-  transform: 'translateX(-100%)',
-  transition: 'transform .3s ease, width .3s ease',
-
-  '@sm': {
-    width: '$leftSideWidth',
-  },
-  '@md': {
-    position: 'relative',
-    top: '0',
-    height: '100%',
-    transform: 'translateX(0)',
-  },
-
-  variants: {
-    isOpen: {
-      true: {
-        transform: 'translateX(0)',
-      },
-      false: {
-        transform: 'translateX(-100%)',
-        '@md': {
-          transform: 'translateX(0)',
-        },
-      },
-    },
-  },
-});
-
 export const StyledUl: StyledComponent<'ul'> = styled('ul', {
   listStyle: 'none',
   padding: 0,
@@ -98,7 +58,7 @@ export const StyledSection: StyledComponent<
   top: 0,
   transition: 'transform .2s ease',
   margin: '$16 0',
-  padding: '0 $6',
+  padding: '0 $4',
   width: '100%',
   defaultVariants: {
     active: false,

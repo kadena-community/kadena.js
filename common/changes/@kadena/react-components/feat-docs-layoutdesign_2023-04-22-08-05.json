@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "add colors",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

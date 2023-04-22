@@ -40,11 +40,35 @@ export const AsideItem: StyledComponent<'li'> = styled('li', {
 });
 
 export const Aside: StyledComponent<'aside'> = styled('aside', {
+  position: 'relative',
   display: 'none',
   width: '25%',
-  overflow: 'hidden',
+
+  overflowY: 'hidden',
   paddingLeft: '$4',
+  background: '$background',
+  opacity: '0.8',
   '@md': {
     display: 'block',
+  },
+});
+
+export const StickyAsideWrapper: StyledComponent<'div'> = styled('div', {
+  position: 'fixed',
+  display: 'flex',
+  top: '$20',
+});
+
+export const StickyAside: StyledComponent<'div'> = styled('div', {
+  position: 'sticky',
+  top: '$10',
+});
+
+export const SideBackgroundWrapper: StyledComponent<'div'> = styled('div', {
+  position: 'absolute',
+  right: 'calc(-$64 - $32)',
+  top: '-$40',
+  '@md': {
+    right: '-$40',
   },
 });

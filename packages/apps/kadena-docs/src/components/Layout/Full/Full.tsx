@@ -1,24 +1,20 @@
-import { Heading, styled } from '@kadena/react-components';
+import { Heading } from '@kadena/react-components';
 
 import { Article, Content } from '../components';
+import { SideBackground } from '../components/Background';
 
 import { AsideLink } from './AsideLink';
-import { Aside, AsideList } from './style';
+import {
+  Aside,
+  AsideList,
+  SideBackgroundWrapper,
+  StickyAside,
+  StickyAsideWrapper,
+} from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import React, { FC, ReactNode } from 'react';
-
-const StickyAsideWrapper = styled('div', {
-  position: 'fixed',
-  display: 'flex',
-  top: '$20',
-});
-
-const StickyAside = styled('div', {
-  position: 'sticky',
-  top: '$10',
-});
 
 export const Full: FC<ILayout> = ({ children }) => {
   const { docRef, headers } = useCreateSubMenu();
@@ -40,6 +36,9 @@ export const Full: FC<ILayout> = ({ children }) => {
       <Content id="maincontent">
         <Article ref={docRef}>{children}</Article>
 
+        <SideBackgroundWrapper>
+          <SideBackground />
+        </SideBackgroundWrapper>
         <Aside>
           <StickyAsideWrapper>
             <StickyAside>
