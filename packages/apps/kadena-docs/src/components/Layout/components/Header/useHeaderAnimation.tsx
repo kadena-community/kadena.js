@@ -1,3 +1,5 @@
+import { useMediumScreen } from '@/hooks';
+import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -19,7 +21,8 @@ const getActiveItem = (
     const anchor = innerItem.firstChild as HTMLAnchorElement;
     if (
       clickedElement === anchor ||
-      (!clickedElement && pathname === anchor?.getAttribute('href'))
+      (!clickedElement &&
+        hasSameBasePath(pathname, anchor?.getAttribute('href') ?? ''))
     ) {
       item = innerItem as HTMLLIElement;
       idx = innerIdx;
@@ -30,6 +33,7 @@ const getActiveItem = (
 };
 
 export const useHeaderAnimation = (): IUseHeaderReturn => {
+  const hasMediumScreen = useMediumScreen();
   const listRef = useRef<HTMLUListElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<number>(0);
@@ -53,6 +57,7 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
       );
 
       setHasPath(false);
+
       if (idx === undefined || !activeItem) return;
       setHasPath(true);
       //slow down the animation, when the distance between current and new Item is larger
@@ -69,7 +74,7 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
 
   useEffect(() => {
     selectItem(activeRef.current, router.pathname);
-  }, [activeRef, selectItem, router.pathname]);
+  }, [activeRef, selectItem, router.pathname, hasMediumScreen]);
 
   useEffect(() => {
     const changeUrl = (url: string): void => {

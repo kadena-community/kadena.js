@@ -16,7 +16,7 @@ export const Heading: FC<IHeadingProps> = ({
   as = 'h1',
   variant,
   font,
-  bold,
+  bold = true,
   transform,
   children,
 }) => {

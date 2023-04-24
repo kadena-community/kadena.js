@@ -1,31 +1,55 @@
-import { Content } from '../components';
-import { ILayout } from '../types';
+import { Heading, styled } from '@kadena/react-components';
 
+import { Article, Content } from '../components';
+
+import { AsideLink } from './AsideLink';
+import { Aside, AsideList } from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
-import { ISubHeaderElement } from '@/types/Layout';
-import Link from 'next/link';
+import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import React, { FC, ReactNode } from 'react';
 
+const StickyAsideWrapper = styled('div', {
+  position: 'fixed',
+  display: 'flex',
+  top: '$20',
+});
+
+const StickyAside = styled('div', {
+  position: 'sticky',
+  top: '$10',
+});
+
 export const Full: FC<ILayout> = ({ children }) => {
-  const { headers } = useCreateSubMenu();
+  const { docRef, headers } = useCreateSubMenu();
 
   const renderListItem = (item: ISubHeaderElement): ReactNode => {
     return (
-      <li key={item.slug}>
-        <Link href={`#${item.slug}`}>{item.title}</Link>
-
+      <AsideLink href={`#${item.slug}`} key={item.slug} label={item.title}>
         {item.children.length > 0 && (
-          <ul>{item.children.map(renderListItem)}</ul>
+          <AsideList inner={true}>
+            {item.children.map(renderListItem)}
+          </AsideList>
         )}
-      </li>
+      </AsideLink>
     );
   };
+
   return (
     <>
       <Content id="maincontent">
-        <ul>{headers.map(renderListItem)}</ul>
-        {children}
+        <Article ref={docRef}>{children}</Article>
+
+        <Aside>
+          <StickyAsideWrapper>
+            <StickyAside>
+              <Heading as="h6" transform="uppercase">
+                On this page
+              </Heading>
+              <AsideList>{headers.map(renderListItem)}</AsideList>
+            </StickyAside>
+          </StickyAsideWrapper>
+        </Aside>
       </Content>
     </>
   );

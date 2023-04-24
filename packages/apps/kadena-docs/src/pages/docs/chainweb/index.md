@@ -1,12 +1,12 @@
 ---
-title: Get started with KadenaJS
-order: 1
-label: Kadena JS
+title: Get started with Chainweb
+order: 3
+label: Chainweb
 description: How to get started with Markdoc
 layout: landing
 ---
 
-## Kadena 1
+## chain 1
 
 Cookie dragée bear claw ice cream jelly beans fruitcake danish tootsie roll.
 Donut pastry tiramisu sesame snaps donut tootsie roll candy soufflé. Lollipop

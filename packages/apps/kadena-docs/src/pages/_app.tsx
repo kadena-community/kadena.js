@@ -18,7 +18,7 @@ const GlobalStyles = globalCss({
 GlobalStyles();
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   return (
@@ -37,4 +37,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       </ThemeProvider>
     </>
   );
-}
+};
+
+export default MyApp;

@@ -1,13 +1,13 @@
 import { styled } from '../../styles/stitches.config';
 
-import { Stack } from './Stack';
 import {
   alignItemsVariant,
   directionVariant,
   flexWrapVariant,
   justifyContentVariant,
   spacingVariant,
-} from './styles';
+  Stack,
+} from './Stack';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

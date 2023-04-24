@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Updated readme",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
