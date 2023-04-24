@@ -68,7 +68,10 @@ export const generate =
         program.error('Could not retrieve contract from chain');
       }
 
-      const namespace = args.contract.split('.')[0];
+      // if contract is namespaced, use the first part as the namespace
+      const namespace = args.contract.includes('.')
+        ? args.contract.split('.')[0]
+        : undefined;
 
       pactModule = new StringContractDefinition(pactCode, namespace);
     } else {

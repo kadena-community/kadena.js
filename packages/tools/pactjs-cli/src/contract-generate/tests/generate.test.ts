@@ -1,6 +1,25 @@
-jest.mock('fs');
-jest.mock('cross-fetch');
 jest.mock('../../utils/retrieveContractFromChain');
+
+const mockedStringContractDefinition = jest.fn().mockImplementation(() => ({
+  modulesWithFunctions: {
+    crankk01: {},
+  },
+}));
+const mockedFileContractDefinition = jest.fn().mockImplementation(() => ({
+  modulesWithFunctions: {
+    crankk01: {},
+  },
+}));
+const mockedGenerateDts = jest.fn().mockImplementation(() => {
+  return [];
+});
+
+jest.mock('@kadena/pactjs-generator', () => ({
+  ...jest.requireActual('@kadena/pactjs-generator'),
+  StringContractDefinition: mockedStringContractDefinition,
+  FileContractDefinition: mockedFileContractDefinition,
+  generateDts: mockedGenerateDts,
+}));
 
 import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
 import { generate } from '../generate';
@@ -9,36 +28,12 @@ import { ContractGenerateOptions } from '..';
 import { mockContract } from './mockdata/contract';
 
 import { Command, program } from 'commander';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-
-const mockedReadFileSync = readFileSync as jest.MockedFunction<
-  typeof readFileSync
->;
-mockedReadFileSync.mockImplementation(
-  mockedReadFileSync as jest.MockedFunction<typeof readFileSync>,
-);
-
-const mockedWriteFileSync = writeFileSync as jest.MockedFunction<
-  typeof writeFileSync
->;
-mockedWriteFileSync.mockImplementation(
-  mockedWriteFileSync as jest.MockedFunction<typeof writeFileSync>,
-);
-
-const mockedExistsSync = existsSync as jest.MockedFunction<typeof existsSync>;
-mockedExistsSync.mockImplementation(
-  mockedExistsSync as jest.MockedFunction<typeof existsSync>,
-);
 
 const mockedRetrieveContractFromChain =
   retrieveContractFromChain as jest.MockedFunction<
     typeof retrieveContractFromChain
   >;
-mockedRetrieveContractFromChain.mockImplementation(
-  mockedRetrieveContractFromChain as jest.MockedFunction<
-    typeof retrieveContractFromChain
-  >,
-);
+mockedRetrieveContractFromChain.mockResolvedValue(mockContract);
 
 const mockProgramError = jest.fn() as jest.Mock<typeof program.error>;
 
@@ -76,58 +71,28 @@ const createAndRunProgram = async (
 
 describe('generate', () => {
   afterAll(() => {
-    mockedExistsSync.mockRestore();
-    mockedWriteFileSync.mockRestore();
-    mockedReadFileSync.mockRestore();
     mockedRetrieveContractFromChain.mockRestore();
+    mockedGenerateDts.mockRestore();
   });
 
   describe('for a contract from a file', () => {
-    beforeEach(() => {
-      mockedReadFileSync.mockReturnValue(mockContract);
-      mockedExistsSync.mockReturnValue(true);
-      mockedWriteFileSync.mockReturnValue();
-    });
-
     afterEach(() => {
-      mockedReadFileSync.mockReset();
-      mockedExistsSync.mockReset();
-      mockedWriteFileSync.mockReset();
-      mockedRetrieveContractFromChain.mockReset();
+      mockedRetrieveContractFromChain.mockClear();
+      mockedGenerateDts.mockClear();
     });
 
-    it('reads the contract from the file', async () => {
+    it('calls generateDts with the right module and capsInterface', async () => {
       await createAndRunProgram('file');
 
-      expect(mockedReadFileSync.mock.calls[0][0]).toContain(
-        '/some/path/to/contract.pact',
-      );
-    });
+      expect(Object.keys(mockedGenerateDts.mock.calls[0][0])).toEqual([
+        'crankk01',
+      ]);
 
-    it('writes the d.ts files', async () => {
-      await createAndRunProgram('file');
-
-      expect(mockedWriteFileSync.mock.calls[0][0]).toContain(
-        '/node_modules/.kadena/pactjs-generated/crankk01.d.ts',
-      );
-
-      expect(mockedWriteFileSync.mock.calls[1][0]).toContain(
-        '/node_modules/.kadena/pactjs-generated/index.d.ts',
-      );
+      expect(mockedGenerateDts.mock.calls[0][1]).toBeUndefined();
     });
   });
   describe('for a contract from chain', () => {
-    beforeEach(() => {
-      mockedReadFileSync.mockReturnValue('{}'); // package.json and tsconfig.json
-      mockedExistsSync.mockReturnValue(true);
-      mockedWriteFileSync.mockReturnValue();
-      mockedRetrieveContractFromChain.mockResolvedValue(mockContract);
-    });
-
     afterEach(() => {
-      mockedReadFileSync.mockReset();
-      mockedExistsSync.mockReset();
-      mockedWriteFileSync.mockReset();
       mockedRetrieveContractFromChain.mockReset();
     });
 
@@ -170,16 +135,24 @@ describe('generate', () => {
       expect(result).toBeUndefined();
     });
 
-    it('writes the d.ts files', async () => {
+    it('sets the namespace to the one supplied', async () => {
       await createAndRunProgram('chain');
 
-      expect(mockedWriteFileSync.mock.calls[0][0]).toContain(
-        '/node_modules/.kadena/pactjs-generated/crankk01.d.ts',
-      );
+      expect(mockedStringContractDefinition.mock.calls[0][1]).toBe('free');
+    });
 
-      expect(mockedWriteFileSync.mock.calls[1][0]).toContain(
-        '/node_modules/.kadena/pactjs-generated/index.d.ts',
-      );
+    it("sets the namespace to undefined when there isn't one", async () => {
+      await createAndRunProgram('chain', { contract: 'coin' });
+
+      expect(mockedStringContractDefinition.mock.calls[0][1]).toBeUndefined();
+    });
+
+    it('calls generateDts with the right module', async () => {
+      await createAndRunProgram('chain');
+
+      expect(Object.keys(mockedGenerateDts.mock.calls[0][0])).toEqual([
+        'crankk01',
+      ]);
     });
   });
 });

@@ -68,19 +68,19 @@ export function contractGenerateCommand(
       'Generate d.ts from Pact contract from the blockchain',
     )
     .option(
-      '--api',
+      '--api <api>',
       'The API to use for retrieving the contract, e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact"',
     )
     .addOption(
       new Option(
-        '--chain <chainId>',
+        '--chain <chain>',
         'The chainId to retrieve the contract from, e.g. 8. Defaults to 1.',
       )
         .argParser((value) => parseInt(value, 10))
         .default(1),
     )
     .option(
-      '--network',
+      '--network <network>',
       'The networkId to retrieve the contract from, e.g. "testnet". Defaults to mainnet',
       'mainnet',
     )
