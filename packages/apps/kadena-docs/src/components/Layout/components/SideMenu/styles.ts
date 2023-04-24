@@ -17,7 +17,10 @@ export const StyledItem: StyledComponent<'li'> = styled('li', {
   padding: '$4 0 $2',
 });
 
-export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
+export const StyledLink: StyledComponent<
+  typeof Link,
+  { hassubmenu?: boolean | 'true' | 'false' }
+> = styled(Link, {
   position: 'relative',
   display: 'flex',
   alignItems: 'center',

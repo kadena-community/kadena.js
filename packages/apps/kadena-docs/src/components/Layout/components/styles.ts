@@ -211,7 +211,10 @@ export const StyledUl: StyledComponent<
   width: '100%',
 });
 
-export const NavLink: StyledComponent<typeof Link> = styled(Link, {
+export const NavLink: StyledComponent<
+  typeof Link,
+  { active?: boolean | 'true' | 'false' | undefined }
+> = styled(Link, {
   color: 'white',
   fontFamily: '$main',
   textDecoration: 'none',
@@ -219,11 +222,12 @@ export const NavLink: StyledComponent<typeof Link> = styled(Link, {
   borderRadius: '$sm',
 
   variants: {
-    'data-active': {
+    active: {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
         color: 'black',
       },
+      false: {},
     },
   },
 });

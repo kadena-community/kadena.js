@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-const Text = () => {
+const Text: FC = () => {
   const test = 'dfg';
   return <div>sdfsf {test}</div>;
 };
 
-export const meta = {
+export const meta: unknown = {
   title: 'Test',
   menu: 'Pact',
   label: 'Test',

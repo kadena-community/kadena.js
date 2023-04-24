@@ -8,7 +8,9 @@
         "label": "but how?",
         "order": 5,
         "description": "How to get started with Markdoc",
-        "layout": "full"
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
       },
       {
         "children": [
@@ -21,7 +23,9 @@
                 "order": 0,
                 "label": "Tutorial",
                 "description": "How to get started with Markdoc",
-                "layout": "full"
+                "layout": "full",
+                "isMenuOpen": false,
+                "isActive": false
               }
             ],
             "root": "/docs/pact/basics/build-in-functions",
@@ -30,7 +34,9 @@
             "label": "General buildin",
             "header": "Build-in Functions",
             "description": "How to get started with Markdoc",
-            "layout": "full"
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
           }
         ],
         "root": "/docs/pact/basics",
@@ -39,19 +45,17 @@
         "label": "General",
         "header": "Basics",
         "description": "How to get started with Markdoc",
-        "layout": "full"
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
       },
       {
         "children": [
           {
             "children": [],
             "root": "/docs/pact/atom-sdk/test",
-            "title": "Test",
-            "menu": "Pact",
-            "label": "Test",
-            "order": 1,
-            "description": "How to get started with Markdoc",
-            "layout": "full"
+            "isMenuOpen": false,
+            "isActive": false
           }
         ],
         "root": "/docs/pact/atom-sdk",
@@ -60,7 +64,9 @@
         "label": "Quickstart",
         "header": "Atom SDK",
         "description": "How to get started with Markdoc",
-        "layout": "full"
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
       }
     ],
     "root": "/docs/pact",
@@ -70,7 +76,9 @@
     "label": "Introduction",
     "order": 1,
     "description": "How to get started with Markdoc",
-    "layout": "full"
+    "layout": "full",
+    "isMenuOpen": false,
+    "isActive": false
   },
   {
     "children": [],
@@ -80,7 +88,9 @@
     "header": "Introduction",
     "order": 1,
     "description": "How to get started with Markdoc",
-    "layout": "landing"
+    "layout": "landing",
+    "isMenuOpen": false,
+    "isActive": false
   },
   {
     "children": [],
@@ -89,6 +99,8 @@
     "order": 3,
     "label": "Chainweb",
     "description": "How to get started with Markdoc",
-    "layout": "landing"
+    "layout": "landing",
+    "isMenuOpen": false,
+    "isActive": false
   }
 ]

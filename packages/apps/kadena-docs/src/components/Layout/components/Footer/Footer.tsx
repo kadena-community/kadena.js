@@ -1,4 +1,4 @@
-import { IconButton, Stack, SystemIcons } from '@kadena/react-components';
+import { IconButton, SystemIcons } from '@kadena/react-components';
 
 import { Spacer } from '../styles';
 import { DocsLogo } from '..';

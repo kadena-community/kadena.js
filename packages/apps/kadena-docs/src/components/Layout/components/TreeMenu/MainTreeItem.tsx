@@ -3,16 +3,24 @@ import { StyledButton, StyledLink, StyledTreeList } from './styles';
 import { IMenuItem } from '@/types/Layout';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
+type LevelType = 1 | 2 | 3;
 interface IProps {
   item: IMenuItem;
   menuOpen?: boolean;
   root?: boolean;
-  level?: number;
+  level?: LevelType;
 }
 
-export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(root ? true : false);
+export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
+  const [menuOpen, setMenuOpen] = useState<boolean>(item.isMenuOpen ?? false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const ref = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (!item.isMenuOpen) {
+      setMenuOpen(false);
+    }
+  }, [item.isMenuOpen]);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -20,7 +28,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
     const parentUl = ref.current.closest('ul');
     const ul = ref.current.querySelector('ul');
 
-    const parentScrollHeight = parentUl?.scrollHeight ?? 0;
+    const parentScrollHeight = isMounted ? parentUl?.scrollHeight ?? 0 : 0;
     const scrollHeight = ul?.scrollHeight ?? 0;
 
     if (!menuOpen) {
@@ -36,11 +44,13 @@ export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
         `${parentScrollHeight + scrollHeight}px`,
       );
     }
-  }, [ref, menuOpen]);
 
-  const nextLevel = (): number => {
+    setIsMounted(true);
+  }, [ref, menuOpen, setIsMounted, isMounted]);
+
+  const nextLevel = (): LevelType => {
     if (root) return level;
-    return level + 1;
+    return (level + 1) as LevelType;
   };
 
   return (
@@ -48,7 +58,11 @@ export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
       {root && (
         <>
           <li>
-            <StyledLink level={level} href={item.root}>
+            <StyledLink
+              level={`l${level}`}
+              href={item.root}
+              active={item.isActive}
+            >
               {item.label}
             </StyledLink>
           </li>
@@ -61,16 +75,20 @@ export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
         <li key={item.root} ref={ref}>
           <StyledButton
             onClick={() => setMenuOpen((v) => !v)}
-            level={level}
+            level={`l${level}`}
             menuOpen={menuOpen}
           >
             {item.header}
           </StyledButton>
 
-          <StyledTreeList menuOpen={menuOpen} level={nextLevel()}>
+          <StyledTreeList menuOpen={menuOpen} level={`l${nextLevel()}`}>
             {!root && (
               <li>
-                <StyledLink level={level + 1} href={item.root}>
+                <StyledLink
+                  level={`l${nextLevel()}`}
+                  href={item.root}
+                  active={item.isActive}
+                >
                   {item.label}
                 </StyledLink>
               </li>
@@ -84,7 +102,11 @@ export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
         <>
           {!root && (
             <li>
-              <StyledLink level={level} href={item.root}>
+              <StyledLink
+                level={`l${level}`}
+                href={item.root}
+                active={item.isActive}
+              >
                 {item.label}
               </StyledLink>
             </li>

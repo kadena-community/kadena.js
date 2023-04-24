@@ -18,7 +18,8 @@ export interface IMenuItem {
   header?: string;
   order?: number;
   label: string;
-  isActive?: boolean;
+  isActive: boolean;
+  isMenuOpen: boolean;
   description: string;
   layout: LayoutType;
   children: IMenuItem[];

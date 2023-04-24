@@ -1,21 +1,21 @@
 import { NavLink } from '../styles';
 
-import { hasSameBasePath } from '@/utils';
-import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;
   href: string;
+  active?: boolean;
 }
 
-export const NavItem: FC<IProps> = ({ children, href = '' }) => {
-  const router = useRouter();
-  const active = hasSameBasePath(href, router.pathname);
-
+export const NavItem: FC<IProps> = ({
+  children,
+  active = false,
+  href = '',
+}) => {
   return (
     <li>
-      <NavLink data-active={active} href={href}>
+      <NavLink active={active} href={href}>
         {children}
       </NavLink>
     </li>

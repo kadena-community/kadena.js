@@ -38,7 +38,11 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
           <StyledNav>
             <StyledUl ref={listRef}>
               {menuItems.map((item) => (
-                <NavItem key={item.root} href={item.root}>
+                <NavItem
+                  key={item.root}
+                  href={item.root}
+                  active={item.isMenuOpen}
+                >
                   {item.menu}
                 </NavItem>
               ))}

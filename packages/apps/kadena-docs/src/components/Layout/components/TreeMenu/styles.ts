@@ -9,7 +9,7 @@ export const StyledTreeList: StyledComponent<
   {
     menuOpen?: boolean | 'true' | 'false' | undefined;
     root?: boolean | 'true' | 'false' | undefined;
-    level?: number | '1' | '2' | '3' | undefined;
+    level?: 'l1' | 'l2' | 'l3' | undefined;
   }
 > = styled('ul', {
   padding: 0,
@@ -20,13 +20,13 @@ export const StyledTreeList: StyledComponent<
 
   defaultVariant: {
     menuOpen: false,
-    level: '1',
+    level: 'l1',
   },
   variants: {
     level: {
-      '1': {},
-      '2': {},
-      '3': {
+      l1: {},
+      l2: {},
+      l3: {
         marginLeft: '$1',
         borderLeft: '1px solid $borderColor',
       },
@@ -49,7 +49,7 @@ export const StyledTreeList: StyledComponent<
   },
 });
 
-const ListVariant = {
+const ListVariant: Record<string, string | Record<string, string>> = {
   '&::before': {
     content: '∙',
     fontWeight: '$bold',
@@ -58,7 +58,7 @@ const ListVariant = {
   },
 };
 
-const Level1Style = {
+const Level1Style: Record<string, string> = {
   display: 'block',
   borderBottom: '1px solid $neutral3',
   padding: '$4 0 $2',
@@ -66,7 +66,7 @@ const Level1Style = {
   fontWeight: '$bold',
 };
 
-const Level2Style = {
+const Level2Style: Record<string, string | number> = {
   display: 'block',
   py: '$2',
   px: '0',
@@ -74,7 +74,7 @@ const Level2Style = {
   border: 0,
 };
 
-const Level3Style = {
+const Level3Style: Record<string, string | number> = {
   display: 'block',
   px: '$3',
   py: '0',
@@ -85,7 +85,7 @@ const Level3Style = {
 export const StyledButton: StyledComponent<
   'button',
   {
-    level?: number | '1' | '2' | '3' | undefined;
+    level?: 'l1' | 'l2' | 'l3' | undefined;
     menuOpen?: boolean | 'true' | 'false' | undefined;
   }
 > = styled('button', {
@@ -98,16 +98,18 @@ export const StyledButton: StyledComponent<
   fontSize: '$base',
 
   defaultVariants: {
-    level: '1',
+    level: 'l1',
     menuOpen: false,
   },
   variants: {
     menuOpen: {
-      true: {},
+      true: {
+        color: '$primaryContrast',
+      },
       false: {},
     },
     level: {
-      '1': {
+      l1: {
         ...Level1Style,
         '&::after': {
           position: 'absolute',
@@ -118,7 +120,7 @@ export const StyledButton: StyledComponent<
           transition: 'transform .2s ease ',
         },
       },
-      '2': {
+      l2: {
         ...Level2Style,
         px: '$4',
 
@@ -134,7 +136,7 @@ export const StyledButton: StyledComponent<
           transition: 'transform .2s ease ',
         },
       },
-      '3': {
+      l3: {
         ...Level3Style,
         fontSize: '$sm',
       },
@@ -142,7 +144,7 @@ export const StyledButton: StyledComponent<
   },
   compoundVariants: [
     {
-      level: '1',
+      level: 'l1',
       menuOpen: true,
       css: {
         '&::after': {
@@ -151,7 +153,7 @@ export const StyledButton: StyledComponent<
       },
     },
     {
-      level: '2',
+      level: 'l2',
       menuOpen: true,
       css: {
         '&::before': {
@@ -164,24 +166,31 @@ export const StyledButton: StyledComponent<
 
 export const StyledLink: StyledComponent<
   typeof Link,
-  { level?: number | '1' | '2' | '3' | undefined }
+  { level?: 'l1' | 'l2' | 'l3'; active?: boolean | 'true' | 'false' }
 > = styled(Link, {
   textDecoration: 'none',
   color: '$primaryHighContrast',
   textTransform: 'capitalize',
   defaultVariants: {
-    level: '1',
+    level: 'l1',
+    active: false,
   },
   variants: {
+    active: {
+      false: {},
+      true: {
+        color: '$primaryContrast',
+      },
+    },
     level: {
-      '1': {
+      l1: {
         ...Level1Style,
       },
-      '2': {
+      l2: {
         ...ListVariant,
         ...Level2Style,
       },
-      '3': {
+      l3: {
         ...ListVariant,
         ...Level3Style,
         fontSize: '$sm',

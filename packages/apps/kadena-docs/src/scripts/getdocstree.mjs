@@ -11,17 +11,24 @@ const isMarkDownFile = (name) => {
 
 const convertFile = (file) => {
   const doc = fs.readFileSync(`${file}`, 'utf-8');
+  let data;
   if (isMarkDownFile(file)) {
-    return getFrontMatter(doc);
+    data = getFrontMatter(doc);
   } else {
     const regex = /export const meta = ({.*});/s;
     const match = doc.match(regex);
     if (match) {
       let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
       metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
-      return JSON.parse(metaString);
+      data = JSON.parse(metaString);
     }
   }
+
+  return {
+    ...data,
+    isMenuOpen: false,
+    isActive: false,
+  };
 };
 
 const getFrontMatter = (doc) => {

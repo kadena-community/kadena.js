@@ -15,8 +15,7 @@ import {
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
-import Link from 'next/link';
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 
 interface IProps {
   closeMenu: () => void;
@@ -58,7 +57,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           {menuItems.map((item) => (
             <StyledItem key={item.root}>
               <StyledLink
-                onClick={() => clickMenu(item)}
+                onClick={(e) => clickMenu(e, item)}
                 href={item.root}
                 data-hassubmenu={!!item.children.length}
               >
