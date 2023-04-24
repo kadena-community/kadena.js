@@ -18,18 +18,25 @@ export const Template: StyledComponent<
       "content"
       "footer"
     `,
-
   position: 'relative',
   margin: '0 auto',
   minHeight: '100vh',
   '@md': {
     gridTemplateColumns:
-      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
+      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
     gridTemplateAreas: `
         "header header header header"
         ". menu content ."
         "footer footer footer footer"
       `,
+  },
+  '@lg': {
+    gridTemplateColumns:
+      '$14 $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) $14',
+  },
+  '@2xl': {
+    gridTemplateColumns:
+      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
   },
   defaultVariants: {
     layout: 'landing',
@@ -62,10 +69,12 @@ export const Article: StyledComponent<'div'> = styled('div', {
 export const Content: StyledComponent<'div', { name?: string }> = styled(
   'div',
   {
+    position: 'relative',
     display: 'flex',
     gridArea: 'content',
     flex: 1,
-    padding: '0 $10',
+    padding: '0 0 0 $10',
+    overflowX: 'hidden',
   },
 );
 
@@ -119,6 +128,7 @@ export const Menu: StyledComponent<
   top: '$17',
   height: 'calc(100% - $17 - $17)',
   width: '100%',
+  zIndex: '$navMenu',
   borderRight: '1px solid $neutral3',
   background: '$background',
   overflow: 'hidden',
@@ -201,7 +211,10 @@ export const StyledUl: StyledComponent<
   width: '100%',
 });
 
-export const NavLink: StyledComponent<typeof Link> = styled(Link, {
+export const NavLink: StyledComponent<
+  typeof Link,
+  { active?: boolean | 'true' | 'false' | undefined }
+> = styled(Link, {
   color: 'white',
   fontFamily: '$main',
   textDecoration: 'none',
@@ -209,11 +222,12 @@ export const NavLink: StyledComponent<typeof Link> = styled(Link, {
   borderRadius: '$sm',
 
   variants: {
-    'data-active': {
+    active: {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
         color: 'black',
       },
+      false: {},
     },
   },
 });

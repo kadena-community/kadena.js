@@ -5,7 +5,7 @@ import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 
 interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;
-  clickMenu: (item: IMenuItem) => void;
+  clickMenu: (e: React.MouseEvent<HTMLAnchorElement>, item: IMenuItem) => void;
   menuRef: React.RefObject<HTMLDivElement>;
   subMenuRef: React.RefObject<HTMLDivElement>;
   active: number;
@@ -49,12 +49,16 @@ export const useSideMenu = (
     });
   }, [setOldPathname, oldPathname, router.pathname, router.events, menuItems]);
 
-  const clickMenu = (item: IMenuItem): void => {
+  const clickMenu = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    item: IMenuItem,
+  ): void => {
     setActiveItem(item);
     if (
       hasSameBasePath(router.pathname, item.root ?? '') &&
       item.children.length
     ) {
+      e.preventDefault();
       setActive(1);
     } else {
       closeMenu();

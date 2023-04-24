@@ -1,5 +1,6 @@
 ---
 title: But how does it work
+menu: But how does it work
 label: but how?
 order: 5
 description: How to get started with Markdoc
