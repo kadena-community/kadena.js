@@ -1,5 +1,3 @@
-import { styled, Text } from '@kadena/react-components';
-
 import { StyledButton, StyledLink, StyledTreeList } from './styles';
 
 import { IMenuItem } from '@/types/Layout';
@@ -14,23 +12,31 @@ interface IProps {
 
 export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(root ? true : false);
-  const ref = useRef<HTMLUListElement>();
+  const ref = useRef<HTMLLIElement>(null);
 
-  //   useEffect(() => {
-  //     if (!ref.current) return;
-  //     if (!menuOpen) {
-  //       ref.current.style.height = '0';
-  //     } else {
-  //       ref.current.closest('ul')?.setAttribute('style', { height: 'auto' });
+  useEffect(() => {
+    if (!ref.current) return;
 
-  //       console.log(
-  //         ref.current.scrollHeight + ref.current.closest('ul').scrollHeight,
-  //       );
-  //       ref.current.style.height = `${
-  //         ref.current.scrollHeight + ref.current.closest('ul').scrollHeight
-  //       }px`;
-  //     }
-  //   }, [ref, menuOpen]);
+    const parentUl = ref.current.closest('ul');
+    const ul = ref.current.querySelector('ul');
+
+    const parentScrollHeight = parentUl?.scrollHeight ?? 0;
+    const scrollHeight = ul?.scrollHeight ?? 0;
+
+    if (!menuOpen) {
+      ul?.style.setProperty('height', '0');
+      parentUl?.style.setProperty(
+        'height',
+        `${parentScrollHeight - scrollHeight}px`,
+      );
+    } else {
+      ul?.style.setProperty('height', `${scrollHeight}px`);
+      parentUl?.style.setProperty(
+        'height',
+        `${parentScrollHeight + scrollHeight}px`,
+      );
+    }
+  }, [ref, menuOpen]);
 
   const nextLevel = (): number => {
     if (root) return level;
@@ -52,22 +58,16 @@ export const MainTreeItem: FC<IProps> = ({ item, root, level = 1 }) => {
         </>
       )}
       {!root && item.children.length > 0 ? (
-        <li key={item.root}>
-          {root && (
-            <StyledLink level={level} href={item.root}>
-              {item.label}
-            </StyledLink>
-          )}
-          {!root && (
-            <StyledButton
-              onClick={() => setMenuOpen((v) => !v)}
-              level={level}
-              menuOpen={menuOpen}
-            >
-              {item.header}
-            </StyledButton>
-          )}
-          <StyledTreeList ref={ref} menuOpen={menuOpen}>
+        <li key={item.root} ref={ref}>
+          <StyledButton
+            onClick={() => setMenuOpen((v) => !v)}
+            level={level}
+            menuOpen={menuOpen}
+          >
+            {item.header}
+          </StyledButton>
+
+          <StyledTreeList menuOpen={menuOpen} level={nextLevel()}>
             {!root && (
               <li>
                 <StyledLink level={level + 1} href={item.root}>

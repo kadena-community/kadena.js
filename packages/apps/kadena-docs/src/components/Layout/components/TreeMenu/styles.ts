@@ -2,11 +2,14 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 import Link from 'next/link';
 
+// ref?: React.MutableRefObject<HTMLUListElement | null | undefined>;
+
 export const StyledTreeList: StyledComponent<
   'ul',
   {
     menuOpen?: boolean | 'true' | 'false' | undefined;
     root?: boolean | 'true' | 'false' | undefined;
+    level?: number | '1' | '2' | '3' | undefined;
   }
 > = styled('ul', {
   padding: 0,
@@ -17,19 +20,29 @@ export const StyledTreeList: StyledComponent<
 
   defaultVariant: {
     menuOpen: false,
+    level: '1',
   },
   variants: {
+    level: {
+      '1': {},
+      '2': {},
+      '3': {
+        marginLeft: '$1',
+        borderLeft: '1px solid $borderColor',
+      },
+    },
     root: {
       false: {},
-      true: {},
+      true: {
+        height: 'auto!important',
+      },
     },
     menuOpen: {
       false: {
-        maxHeight: 0,
+        height: 0,
         pointerEvent: 'none',
       },
       true: {
-        maxHeight: '2000px',
         pointerEvent: 'auto',
       },
     },
@@ -63,7 +76,7 @@ const Level2Style = {
 
 const Level3Style = {
   display: 'block',
-  px: '$6',
+  px: '$3',
   py: '0',
   cursor: 'pointer',
   border: 0,
@@ -96,6 +109,14 @@ export const StyledButton: StyledComponent<
     level: {
       '1': {
         ...Level1Style,
+        '&::after': {
+          position: 'absolute',
+          right: '$1',
+          content: '+',
+          fontWeight: '$light',
+          transform: 'translate(0, 0) rotate(0)',
+          transition: 'transform .2s ease ',
+        },
       },
       '2': {
         ...Level2Style,
@@ -120,6 +141,15 @@ export const StyledButton: StyledComponent<
     },
   },
   compoundVariants: [
+    {
+      level: '1',
+      menuOpen: true,
+      css: {
+        '&::after': {
+          transform: 'translate(1px, 1px)  rotate(45deg)',
+        },
+      },
+    },
     {
       level: '2',
       menuOpen: true,
