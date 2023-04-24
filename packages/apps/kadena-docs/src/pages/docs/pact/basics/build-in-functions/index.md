@@ -1,8 +1,8 @@
 ---
 title: Welcome to pact
-order: 5
+menu: Build-in Functions
 label: General buildin
-header: Build-in Functions
+order: 5
 description: How to get started with Markdoc
 layout: full
 ---

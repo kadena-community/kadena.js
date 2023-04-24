@@ -1,7 +1,6 @@
 ---
 title: Get started with Pact
 menu: Pact
-header: Introduction
 label: Introduction
 order: 1
 description: How to get started with Markdoc

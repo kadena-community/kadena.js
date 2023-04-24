@@ -1,8 +1,8 @@
 ---
 title: Welcome to pact
-order: 5
+menu: Basics
 label: General
-header: Basics
+order: 5
 description: How to get started with Markdoc
 layout: full
 ---

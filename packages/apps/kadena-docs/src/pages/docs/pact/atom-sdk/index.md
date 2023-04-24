@@ -1,8 +1,8 @@
 ---
 title: Welcome to pact
-order: 5
+menu: Atom SDK
 label: Quickstart
-header: Atom SDK
+order: 5
 description: How to get started with Markdoc
 layout: full
 ---

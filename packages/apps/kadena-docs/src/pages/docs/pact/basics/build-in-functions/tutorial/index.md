@@ -1,7 +1,8 @@
 ---
 title: Pact tutorial
-order: 0
+menu: Pact tutorial
 label: Tutorial
+order: 0
 description: How to get started with Markdoc
 layout: full
 ---

@@ -15,13 +15,13 @@ const convertFile = (file) => {
   if (isMarkDownFile(file)) {
     data = getFrontMatter(doc);
   } else {
-    const regex = /export const meta = ({.*});/s;
+    const regex = /export const meta: IPageMeta = ({.*});/s;
     const match = doc.match(regex);
-    if (match) {
-      let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
-      metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
-      data = JSON.parse(metaString);
-    }
+    if (!match) return;
+
+    let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
+    metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
+    data = JSON.parse(metaString);
   }
 
   return {

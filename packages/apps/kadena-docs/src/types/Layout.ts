@@ -11,17 +11,18 @@ export interface ISubHeaderElement {
   children: ISubHeaderElement[];
 }
 
-export interface IMenuItem {
-  root: string;
-  title: string;
-  menu?: string;
-  header?: string;
+export interface IPageMeta {
+  title: string; // title of the HEAD info
+  menu?: string; // name in the main menu
   order?: number;
-  label: string;
-  isActive: boolean;
-  isMenuOpen: boolean;
-  description: string;
+  label: string; // name of the pagdescription: string;
   layout: LayoutType;
+  description: string;
+}
+export interface IMenuItem extends IPageMeta {
+  root: string;
+  isActive: boolean; // checks that the actual item is active in the menu
+  isMenuOpen: boolean; // makes sure that the parent slide menu is open
   children: IMenuItem[];
 }
 

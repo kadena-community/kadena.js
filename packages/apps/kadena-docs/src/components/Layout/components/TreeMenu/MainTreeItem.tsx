@@ -78,7 +78,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
             level={`l${level}`}
             menuOpen={menuOpen}
           >
-            {item.header}
+            {item.menu}
           </StyledButton>
 
           <StyledTreeList menuOpen={menuOpen} level={`l${nextLevel()}`}>

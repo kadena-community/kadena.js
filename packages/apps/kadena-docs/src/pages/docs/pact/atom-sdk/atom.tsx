@@ -1,3 +1,4 @@
+import { IPageMeta } from '@/types/Layout';
 import React, { FC } from 'react';
 
 const Text: FC = () => {
@@ -5,10 +6,10 @@ const Text: FC = () => {
   return <div>sdfsf {test}</div>;
 };
 
-export const meta: unknown = {
-  title: 'Test',
+export const meta: IPageMeta = {
+  title: 'Pact',
   menu: 'Pact',
-  label: 'Test',
+  label: 'Pact Test',
   order: 1,
   description: 'How to get started with Markdoc',
   layout: 'full',
