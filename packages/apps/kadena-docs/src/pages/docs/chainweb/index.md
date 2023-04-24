@@ -1,7 +1,8 @@
 ---
 title: Get started with Chainweb
-order: 3
+menu: Chainweb
 label: Chainweb
+order: 3
 description: How to get started with Markdoc
 layout: landing
 ---

@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@kadena/react-components",
-      "comment": "add colors",
+      "comment": "change media breakpoint",
       "type": "none"
     }
   ],
