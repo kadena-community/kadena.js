@@ -1,9 +1,9 @@
-import { StyledButton, StyledLink, StyledTreeList } from './styles';
+import { Item } from './Item';
+import { StyledButton, StyledTreeList } from './styles';
 
-import { IMenuItem } from '@/types/Layout';
+import { IMenuItem, LevelType } from '@/types/Layout';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
-type LevelType = 1 | 2 | 3;
 interface IProps {
   item: IMenuItem;
   menuOpen?: boolean;
@@ -57,15 +57,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
     <>
       {root && (
         <>
-          <li>
-            <StyledLink
-              level={`l${level}`}
-              href={item.root}
-              active={item.isActive}
-            >
-              {item.label}
-            </StyledLink>
-          </li>
+          <Item item={item} level={level} />
           {item.children.map((v) => (
             <MainTreeItem key={v.root} level={nextLevel()} item={v} />
           ))}
@@ -82,36 +74,14 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
           </StyledButton>
 
           <StyledTreeList menuOpen={menuOpen} level={`l${nextLevel()}`}>
-            {!root && (
-              <li>
-                <StyledLink
-                  level={`l${nextLevel()}`}
-                  href={item.root}
-                  active={item.isActive}
-                >
-                  {item.label}
-                </StyledLink>
-              </li>
-            )}
+            {!root && <Item item={item} level={nextLevel()} />}
             {item.children.map((v) => {
               return <MainTreeItem key={v.root} level={nextLevel()} item={v} />;
             })}
           </StyledTreeList>
         </li>
       ) : (
-        <>
-          {!root && (
-            <li>
-              <StyledLink
-                level={`l${level}`}
-                href={item.root}
-                active={item.isActive}
-              >
-                {item.label}
-              </StyledLink>
-            </li>
-          )}
-        </>
+        <>{!root && <Item item={item} level={level} />}</>
       )}
     </>
   );

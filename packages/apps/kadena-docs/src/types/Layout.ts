@@ -29,3 +29,5 @@ export interface IMenuItem extends IPageMeta {
 export interface ILayout {
   children?: ReactNode;
 }
+
+export type LevelType = 1 | 2 | 3;
