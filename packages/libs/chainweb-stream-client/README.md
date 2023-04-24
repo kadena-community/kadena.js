@@ -1,3 +1,81 @@
+# Chainweb Stream Client
+
+[Chainweb-SSE]( https://github.com/kadena-io/chainweb-sse) client for browsers and node.js
+
+Stream account or module/event transactions from chainweb-SSE, including their confirmation depth/status updates.
+
+Introduces and normalizes the following features across environments:
+
+- Reconnect with exponential backoff
+- Initial connection timeout
+- Stale connection detection
+- Transaction confirmation status classification (unconfirmed/confirmed)
+
+## Status
+
+Alpha version / unstable.
+
+## Installation
+
+### With npm
+
+```
+npm install @kadena/chainweb-stream-client
+```
+
+### With yarn
+
+```
+yarn add @kadena/chainweb-stream-client
+```
+
+## Usage
+
+```
+import ChainwebStreamClient from '@kadena/chainweb-stream-client';
+
+const client = new ChainwebStreamClient({
+  type: 'event',
+  id: 'coin',
+  host: 'http://localhost:4000/',
+});
+
+client.on('confirmed', (txn) => console.log('confirmed', txn));
+
+client.connect();
+```
+
+Find more detailed examples under `src/examples`.
+
+## Considerations ⚠️
+
+### Ensure configuration compatibility
+
+Make sure that your client and server `confirmationDepth` and `heartbeatTimeout` values are compatible.
+
+If your client `heartbeatTimeout` is smaller than the server heartbeat interval, the client will keep disconnecting when the connection is silent (no data.)
+
+If your client `confirmationDepth` is larger than the server's, the `confirmed` event will never fire.
+
+### Handle temporary and permanent connection failures
+
+When the connection is interrupted or determined to be stale (no heartbeats received within the heartbeatTimeout interval), a reconnection attempt will be made (up to `maxReconnects` times.)
+
+It is recommended to handle the fired [will-reconnect](#will-reconnect) and [error](#error) events.
+
+## Constructor Options
+
+| Key                 | Required | Description | Example Values |
+| ----------------    | :------: | ----------- | ------ |
+| type                | Yes      | Transaction type to stream (event/account) | `event` | `account` |
+| id                  | Yes      | Account ID or module/event name | `k:abcdef01234..` |
+| host                | Yes      | Chainweb-SSE backend URL | `http://localhost:4000` |
+| limit               | No       | Initial data load limit  | 100 |
+| connectTimeout      | No       | Connection timeout in ms | 10_000 |
+| heartbeatTimeout    | No       | Stale connection timeout in ms | 30_000 |
+| maxReconnects       | No       | How many reconnections to attempt before giving up | 5 |
+| confirmationDepth   | No       | How many confirmations for a transaction to be considered final | 6 |
+
 ## Events
 
 ChainwebStreamClient is an EventEmitter. You can subscribe to the following events using `.on('event-name', callback)`.
