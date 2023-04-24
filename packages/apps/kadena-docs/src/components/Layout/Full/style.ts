@@ -43,11 +43,8 @@ export const Aside: StyledComponent<'aside'> = styled('aside', {
   position: 'relative',
   display: 'none',
   width: '25%',
-
-  overflowY: 'hidden',
+  overflow: 'hidden',
   paddingLeft: '$4',
-  background: '$background',
-  opacity: '0.8',
   '@md': {
     display: 'block',
   },
@@ -64,9 +61,10 @@ export const StickyAside: StyledComponent<'div'> = styled('div', {
   top: '$10',
 });
 
+//TODO: under construction
 export const SideBackgroundWrapper: StyledComponent<'div'> = styled('div', {
   position: 'absolute',
-  right: 'calc(-$64 - $32)',
+  right: '0',
   top: '-$40',
   '@md': {
     right: '-$40',

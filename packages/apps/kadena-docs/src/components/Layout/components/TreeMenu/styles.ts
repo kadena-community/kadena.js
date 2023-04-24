@@ -49,16 +49,7 @@ export const StyledTreeList: StyledComponent<
   },
 });
 
-const ListVariant: Record<string, string | Record<string, string>> = {
-  '&::before': {
-    content: '∙',
-    fontWeight: '$bold',
-    display: 'inline-block',
-    width: '$4',
-  },
-};
-
-const Level1Style: Record<string, string> = {
+const Level1ItemStyle: Record<string, string> = {
   display: 'block',
   borderBottom: '1px solid $neutral3',
   padding: '$4 0 $2',
@@ -66,7 +57,7 @@ const Level1Style: Record<string, string> = {
   fontWeight: '$bold',
 };
 
-const Level2Style: Record<string, string | number> = {
+const Level2ItemStyle: Record<string, string | number> = {
   display: 'block',
   py: '$2',
   px: '0',
@@ -74,7 +65,7 @@ const Level2Style: Record<string, string | number> = {
   border: 0,
 };
 
-const Level3Style: Record<string, string | number> = {
+const Level3ItemStyle: Record<string, string | number> = {
   display: 'block',
   px: '$3',
   py: '0',
@@ -110,7 +101,7 @@ export const StyledButton: StyledComponent<
     },
     level: {
       l1: {
-        ...Level1Style,
+        ...Level1ItemStyle,
         '&::after': {
           position: 'absolute',
           right: '$1',
@@ -121,7 +112,7 @@ export const StyledButton: StyledComponent<
         },
       },
       l2: {
-        ...Level2Style,
+        ...Level2ItemStyle,
         px: '$4',
 
         '&::before': {
@@ -137,7 +128,7 @@ export const StyledButton: StyledComponent<
         },
       },
       l3: {
-        ...Level3Style,
+        ...Level3ItemStyle,
         fontSize: '$sm',
       },
     },
@@ -164,6 +155,15 @@ export const StyledButton: StyledComponent<
   ],
 });
 
+const ListItemVariant: Record<string, string | Record<string, string>> = {
+  '&::before': {
+    content: '∙',
+    fontWeight: '$bold',
+    display: 'inline-block',
+    width: '$4',
+  },
+};
+
 export const StyledLink: StyledComponent<
   typeof Link,
   { level?: 'l1' | 'l2' | 'l3'; active?: boolean | 'true' | 'false' }
@@ -184,15 +184,15 @@ export const StyledLink: StyledComponent<
     },
     level: {
       l1: {
-        ...Level1Style,
+        ...Level1ItemStyle,
       },
       l2: {
-        ...ListVariant,
-        ...Level2Style,
+        ...ListItemVariant,
+        ...Level2ItemStyle,
       },
       l3: {
-        ...ListVariant,
-        ...Level3Style,
+        ...ListItemVariant,
+        ...Level3ItemStyle,
         fontSize: '$sm',
       },
     },

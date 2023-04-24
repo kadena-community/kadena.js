@@ -23,13 +23,16 @@ interface IProps {
 
 export const Main: FC<IProps> = ({ children, markdoc }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
   const { pathname } = useRouter();
 
+  /**
+   * with every menu change, this will check which menu needs to be opened in the sidemenu
+   */
   const menuItems = useMemo(() => {
     const checkSubTreeForActive = (tree: IMenuItem[]): void => {
       if (tree.length) {
         tree.map((item) => {
+          // is the menu open?
           if (pathname.startsWith(item.root)) {
             item.isMenuOpen = true;
           } else {
@@ -42,6 +45,7 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
             item.isActive = false;
           }
 
+          // is the actual item active
           if (item.children.length) {
             checkSubTreeForActive(item.children);
           }
