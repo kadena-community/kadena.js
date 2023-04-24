@@ -87,6 +87,10 @@ export const StyledButton: StyledComponent<
   background: 'transparent',
   textTransform: 'capitalize',
   fontSize: '$base',
+  color: '$foreground',
+  '&:hover': {
+    color: '$primaryHighContrast',
+  },
 
   defaultVariants: {
     level: 'l1',
@@ -169,8 +173,11 @@ export const StyledLink: StyledComponent<
   { level?: 'l1' | 'l2' | 'l3'; active?: boolean | 'true' | 'false' }
 > = styled(Link, {
   textDecoration: 'none',
-  color: '$primaryHighContrast',
+  color: '$foreground',
   textTransform: 'capitalize',
+  '&:hover': {
+    color: '$primaryHighContrast',
+  },
   defaultVariants: {
     level: 'l1',
     active: false,

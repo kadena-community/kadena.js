@@ -12,9 +12,10 @@ export const Template: StyledComponent<
   { layout?: 'landing' | 'normal' | undefined }
 > = styled('div', {
   display: 'grid',
-  gridTemplateRows: '$17 1fr auto',
+  gridTemplateRows: '$17 auto 1fr auto',
   gridTemplateAreas: `
       "header"
+      "pageheader"
       "content"
       "footer"
     `,
@@ -26,6 +27,7 @@ export const Template: StyledComponent<
       '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
     gridTemplateAreas: `
         "header header header header"
+        "pageheader pageheader pageheader pageheader"
         ". menu content ."
         "footer footer footer footer"
       `,
@@ -47,12 +49,14 @@ export const Template: StyledComponent<
       landing: {
         gridTemplateAreas: `
             "header"
+            "pageheader"
             "content"
             "footer"
           `,
         '@md': {
           gridTemplateAreas: `
               "header header header header"
+              "pageheader pageheader pageheader pageheader"
               ". content content ."
               "footer footer footer footer"
             `,

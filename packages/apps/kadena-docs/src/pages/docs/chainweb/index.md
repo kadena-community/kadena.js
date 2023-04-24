@@ -1,5 +1,6 @@
 ---
-title: Get started with Chainweb
+title: Chainweb
+subTitle: The safest, most user-friendly language for smart contracts
 menu: Chainweb
 label: Chainweb
 order: 3

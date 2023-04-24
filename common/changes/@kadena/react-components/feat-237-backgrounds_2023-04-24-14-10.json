@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "add backgroundoverlay color",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
