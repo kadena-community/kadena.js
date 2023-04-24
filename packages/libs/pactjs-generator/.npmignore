@@ -1,34 +1,13 @@
-# THIS IS A STANDARD TEMPLATE FOR .npmignore FILES IN THIS REPO.
+# Ignore source, test, and Storybook files.
+src/
+lib/test*/
+*.test.*
+*.stories.*
 
-# Ignore all files by default, to avoid accidentally publishing unintended files.
-*
-
-# Use negative patterns to bring back the specific things we want to publish.
-!/bin/**
-!/lib/**
-!/lib-*/**
-!/dist/**
-!ThirdPartyNotice.txt
-
-# Ignore certain patterns that should not get published.
-/dist/*.stats.*
-/lib/**/test/
-/lib-*/**/test/
-*.test.js
-
-# NOTE: These don't need to be specified, because NPM includes them automatically.
-#
-# package.json
-# README (and its variants)
-# CHANGELOG (and its variants)
-# LICENSE / LICENCE
-
-#--------------------------------------------
-# DO NOT MODIFY THE TEMPLATE ABOVE THIS LINE
-#--------------------------------------------
-
-# (Add your project-specific overrides here)
-!*.js
-!mixins/*.js
-!patch/*.js
-!profile/*.js
+# Ignore config, log, and temporary files.
+.*
+config/
+tsconfig*.json
+tsdoc-metadata.json
+rush-logs/
+temp/
