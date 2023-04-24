@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Ignore unnecessary files when bundling package",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}

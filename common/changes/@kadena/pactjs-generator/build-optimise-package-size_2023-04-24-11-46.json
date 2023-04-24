@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "Ignore unnecessary files when bundling package",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}

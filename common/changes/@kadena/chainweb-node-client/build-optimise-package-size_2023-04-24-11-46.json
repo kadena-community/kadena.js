@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "Ignore unnecessary files when bundling package",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
