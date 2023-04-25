@@ -640,6 +640,7 @@ importers:
       byline: ~5.0.0
       concurrently: ^7.2.2
       eslint: ^8.15.0
+      memfs: ~3.5.1
       moo: ~0.5.1
       nearley: ~2.20.1
       node-fetch: ~2.6.2
@@ -649,6 +650,7 @@ importers:
       yaml: ~2.1.1
     dependencies:
       byline: 5.0.0
+      memfs: 3.5.1
       moo: 0.5.2
       nearley: 2.20.1
       ramda: 0.28.0
@@ -7475,16 +7477,16 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
-  /@storybook/preview-api/7.0.6:
-    resolution: {integrity: sha512-uNsedNyiEccBV2EDUC/xcKTbmiNCYuVHbgOoWTmBz0ZqFo9bX0jxkpyYWHEhJM79qqVqmrpiQ5jbS8QKn8TIxQ==}
+  /@storybook/preview-api/7.0.7:
+    resolution: {integrity: sha512-R5pmGTodpu6hbwEg2RM2ulWtW3d426YzsisHrZJ+FT9lecWauN1y9xHCz7HdNzEFhT8r4YOa24L9ZS3mosZ7hA==}
     dependencies:
-      '@storybook/channel-postmessage': 7.0.6
-      '@storybook/channels': 7.0.6
-      '@storybook/client-logger': 7.0.6
-      '@storybook/core-events': 7.0.6
+      '@storybook/channel-postmessage': 7.0.7
+      '@storybook/channels': 7.0.7
+      '@storybook/client-logger': 7.0.7
+      '@storybook/core-events': 7.0.7
       '@storybook/csf': 0.1.0
       '@storybook/global': 5.0.0
-      '@storybook/types': 7.0.6
+      '@storybook/types': 7.0.7
       '@types/qs': 6.9.7
       dequal: 2.0.3
       lodash: 4.17.21
@@ -7762,8 +7764,8 @@ packages:
   /@storybook/testing-library/0.0.14-next.1:
     resolution: {integrity: sha512-1CAl40IKIhcPaCC4pYCG0b9IiYNymktfV/jTrX7ctquRY3akaN7f4A1SippVHosksft0M+rQTFE0ccfWW581fw==}
     dependencies:
-      '@storybook/client-logger': 7.0.6
-      '@storybook/instrumenter': 7.0.6
+      '@storybook/client-logger': 7.0.7
+      '@storybook/instrumenter': 7.0.7
       '@testing-library/dom': 8.20.0
       '@testing-library/user-event': 13.5.0_@testing-library+dom@8.20.0
       ts-dedent: 2.2.0
@@ -13721,7 +13723,6 @@ packages:
 
   /fs-monkey/1.0.3:
     resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
-    dev: true
 
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -16729,6 +16730,13 @@ packages:
     dependencies:
       fs-monkey: 1.0.3
     dev: true
+
+  /memfs/3.5.1:
+    resolution: {integrity: sha512-UWbFJKvj5k+nETdteFndTpYxdeTMox/ULeqX5k/dpaQJCCFmj5EeKv3dBcyO2xmkRAx2vppRu5dVG7SOtsGOzA==}
+    engines: {node: '>= 4.0.0'}
+    dependencies:
+      fs-monkey: 1.0.3
+    dev: false
 
   /memoize-one/6.0.0:
     resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==}

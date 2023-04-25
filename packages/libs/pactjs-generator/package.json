@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "byline": "~5.0.0",
+    "memfs": "~3.5.1",
     "moo": "~0.5.1",
     "nearley": "~2.20.1",
     "ramda": "~0.28.0",
