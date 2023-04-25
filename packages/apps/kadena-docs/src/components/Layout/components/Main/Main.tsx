@@ -98,7 +98,6 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         )}
         {layoutType === 'home' && (
           <>
-            home
             <HomeHeader />
           </>
         )}
