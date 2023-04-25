@@ -24,6 +24,7 @@ export const Full: FC<ILayout> = ({ children }) => {
       <AsideLink href={`#${item.slug}`} key={item.slug} label={item.title}>
         {item.children.length > 0 && (
           <AsideList inner={true}>
+            sd
             {item.children.map(renderListItem)}
           </AsideList>
         )}

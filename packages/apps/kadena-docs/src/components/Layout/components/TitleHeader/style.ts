@@ -34,4 +34,5 @@ export const StyledHeader: StyledComponent<'header'> = styled('header', {
 
 export const SubHeader: StyledComponent<'span'> = styled('span', {
   color: '$neutral4',
+  textAlign: 'center',
 });

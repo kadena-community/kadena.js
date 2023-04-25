@@ -9,7 +9,7 @@
         "label": "but how?",
         "order": 5,
         "description": "How to get started with Markdoc",
-        "layout": "full",
+        "layout": "codeside",
         "isMenuOpen": false,
         "isActive": false
       },
@@ -61,7 +61,7 @@
             "label": "Pact Test",
             "order": 1,
             "description": "How to get started with Markdoc",
-            "layout": "full",
+            "layout": "code",
             "isMenuOpen": false,
             "isActive": false
           }

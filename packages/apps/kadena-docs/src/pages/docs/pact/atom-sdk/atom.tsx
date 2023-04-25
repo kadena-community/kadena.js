@@ -12,7 +12,7 @@ Text.meta = {
   label: 'Pact Test',
   order: 1,
   description: 'How to get started with Markdoc',
-  layout: 'full',
+  layout: 'code',
 };
 
 export default Text;

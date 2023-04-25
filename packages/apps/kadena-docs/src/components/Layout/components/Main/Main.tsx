@@ -1,3 +1,4 @@
+import { CodeBackground } from '../../Code/styles';
 import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
@@ -26,8 +27,6 @@ interface IProps {
 export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
-
-  console.log(markdoc, pageProps);
 
   /**
    * with every menu change, this will check which menu needs to be opened in the sidemenu
@@ -63,12 +62,12 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
   }, [pathname]);
 
   let title, description, subTitle;
-  let layoutType = 'default';
+  let layoutType: LayoutType = 'full';
   if (markdoc !== undefined) {
     title = markdoc.frontmatter.title;
     subTitle = markdoc.frontmatter.subTitle;
     description = markdoc.frontmatter.description;
-    layoutType = markdoc.frontmatter.layout ?? 'default';
+    layoutType = markdoc.frontmatter.layout ?? 'full';
   }
 
   const toggleMenu = (): void => {
@@ -85,6 +84,9 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
+
+      {isOneOfLayoutType(layoutType, 'code') && <CodeBackground />}
+
       <Template
         layout={isOneOfLayoutType(Layout, 'landing') ? 'landing' : 'normal'}
       >
@@ -93,14 +95,10 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
           isMenuOpen={isMenuOpen}
           menuItems={menuItems}
         />
-        {layoutType === 'landing' && title && (
+        {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} />
         )}
-        {layoutType === 'home' && (
-          <>
-            <HomeHeader />
-          </>
-        )}
+        {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           isOpen={isMenuOpen}

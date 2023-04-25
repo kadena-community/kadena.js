@@ -8,7 +8,7 @@ export const getLayout = (layout: string): FC<ILayout> => {
       return Layouts.Full;
     case 'codeside':
     case 'code':
-      return Layouts.CodeSide;
+      return Layouts.Code;
     default:
       return Layouts.Landing;
   }
