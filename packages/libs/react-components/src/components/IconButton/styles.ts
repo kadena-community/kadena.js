@@ -6,6 +6,11 @@ import { styled } from '../../styles';
 export const colorVariant = {
   default: {
     background: 'transparent',
+    $$svgColor: '$colors$neutral5',
+  },
+  inverted: {
+    background: 'transparent',
+    $$svgColor: '$colors$neutral2',
   },
   primary: {
     background: '$primarySurface',
