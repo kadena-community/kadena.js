@@ -1,5 +1,5 @@
 import { SideMenu } from '../SideMenu';
-import { Footer, Header, Menu, MenuBack, Template } from '../';
+import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import importedMenu from '@/data/menu.json';
 import { IMenuItem, LayoutType } from '@/types/Layout';
@@ -15,6 +15,7 @@ interface IProps {
   markdoc: {
     frontmatter: {
       title: string;
+      subTitle: string;
       description: string;
       layout: LayoutType;
     };
@@ -58,10 +59,11 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
     return typedMenuItems;
   }, [pathname]);
 
-  let title, description;
+  let title, description, subTitle;
   let layoutType = 'default';
   if (markdoc !== undefined) {
     title = markdoc.frontmatter.title;
+    subTitle = markdoc.frontmatter.subTitle;
     description = markdoc.frontmatter.description;
     layoutType = markdoc.frontmatter.layout ?? 'default';
   }
@@ -89,6 +91,9 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
           isMenuOpen={isMenuOpen}
           menuItems={menuItems}
         />
+        {layoutType === 'landing' && title && (
+          <TitleHeader title={title} subTitle={subTitle} />
+        )}
 
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu

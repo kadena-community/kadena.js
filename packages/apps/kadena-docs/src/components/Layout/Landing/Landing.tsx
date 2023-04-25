@@ -1,4 +1,4 @@
-import { Content } from './components';
+import { Content } from '../components';
 
 import { ILayout } from '@/types/Layout';
 import React, { FC } from 'react';

@@ -74,6 +74,7 @@ export const {
     colors: {
       ...colors,
       background: '$colors$neutral1',
+      backgroundOverlayColor: 'rgba(250,250,250, .8)',
       foreground: '$colors$neutral6',
       borderColor: '#70797b33',
     },
@@ -189,6 +190,7 @@ export const darkTheme = createTheme('darkTheme', {
   colors: {
     ...colorsDark,
     background: '$colors$neutral1',
+    backgroundOverlayColor: 'rgba(5,5,5, .8)',
     foreground: '$colors$neutral6',
     borderColor: '#f0f0f033',
   },

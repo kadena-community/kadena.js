@@ -1,5 +1,5 @@
 ---
-title: Get started with Pact
+title: Pact
 menu: Pact
 label: Introduction
 order: 1

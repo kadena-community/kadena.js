@@ -17,6 +17,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
 import { IMenuItem } from '@/types/Layout';
+import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -32,7 +33,9 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
-        <DocsLogo overwriteTheme="dark" />
+        <Link href="/">
+          <DocsLogo overwriteTheme="dark" />
+        </Link>
         <HideOnMobile>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
           <StyledNav>
