@@ -1,6 +1,7 @@
 import { styled, StyledComponent } from '@kadena/react-components';
 
-import { InnerWrapper } from '../styles';
+import { InnerWrapper } from '@/components/Layout/components';
+
 export const StyledBackground: StyledComponent<'div'> = styled('div', {
   position: 'absolute',
   inset: 0,
@@ -18,8 +19,6 @@ export const StyledBackground: StyledComponent<'div'> = styled('div', {
 export const Wrapper: StyledComponent<typeof InnerWrapper> = styled(
   InnerWrapper,
   {
-    justifyContent: 'center',
-    flexDirection: 'column',
     background: '$backgroundOverlayColor',
     paddingTop: '$20',
     paddingBottom: '$10',
@@ -30,8 +29,5 @@ export const Wrapper: StyledComponent<typeof InnerWrapper> = styled(
 export const StyledHeader: StyledComponent<'header'> = styled('header', {
   position: 'relative',
   gridArea: 'pageheader',
-});
-
-export const SubHeader: StyledComponent<'span'> = styled('span', {
-  color: '$neutral4',
+  height: '300px',
 });

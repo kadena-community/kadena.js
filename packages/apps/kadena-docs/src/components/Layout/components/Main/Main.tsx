@@ -1,3 +1,4 @@
+import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
@@ -77,7 +78,6 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
   const closeMenu = (): void => setIsMenuOpen(false);
 
   const Layout = getLayout(layoutType);
-
   return (
     <>
       <Head>
@@ -96,7 +96,12 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         {layoutType === 'landing' && title && (
           <TitleHeader title={title} subTitle={subTitle} />
         )}
-
+        {layoutType === 'home' && (
+          <>
+            home
+            <HomeHeader />
+          </>
+        )}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           isOpen={isMenuOpen}
@@ -106,9 +111,7 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
-
         <Layout>{children}</Layout>
-
         <Footer />
       </Template>
     </>

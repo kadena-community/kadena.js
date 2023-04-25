@@ -1,8 +1,10 @@
 import { Stack } from '@kadena/react-components';
 
+import { HomeHeader } from '@/components/Layout/Landing/components';
+import { DocsPageFC } from '@/types/Layout';
 import React from 'react';
 
-export default function Home(): JSX.Element {
+const Home: DocsPageFC = () => {
   return (
     <>
       <Stack>
@@ -12,4 +14,15 @@ export default function Home(): JSX.Element {
       </Stack>
     </>
   );
-}
+};
+
+Home.meta = {
+  title: 'Pact',
+  menu: 'Pact',
+  label: 'Pact Test',
+  order: 1,
+  description: 'Home page',
+  layout: 'home',
+};
+
+export default Home;

@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-export type LayoutType = 'full' | 'code' | 'landing';
+export type LayoutType = 'full' | 'code' | 'landing' | 'home';
 
 export interface ISubHeaderElement {
   tag: TagNameType;
@@ -31,3 +31,7 @@ export interface ILayout {
 }
 
 export type LevelType = 1 | 2 | 3;
+
+export interface DocsPageFC extends FC {
+  meta: IPageMeta;
+}
