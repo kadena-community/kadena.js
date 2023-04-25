@@ -33,7 +33,7 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
-        <Link href="/">
+        <Link href="/" passHref>
           <DocsLogo overwriteTheme="dark" />
         </Link>
         <HideOnMobile>

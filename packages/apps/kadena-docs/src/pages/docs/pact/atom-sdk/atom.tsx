@@ -1,12 +1,12 @@
-import { IPageMeta } from '@/types/Layout';
-import React, { FC } from 'react';
+import { DocsPageFC } from '@/types/Layout';
+import React from 'react';
 
-const Text: FC = () => {
+const Text: DocsPageFC = () => {
   const test = 'dfg';
   return <div>sdfsf {test}</div>;
 };
 
-export const meta: IPageMeta = {
+Text.meta = {
   title: 'Pact',
   menu: 'Pact',
   label: 'Pact Test',
