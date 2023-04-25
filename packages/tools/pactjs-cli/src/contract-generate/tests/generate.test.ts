@@ -1,18 +1,16 @@
 jest.mock('../../utils/retrieveContractFromChain');
 
-const mockedStringContractDefinition = jest.fn().mockImplementation(() => ({
+const mockedStringContractDefinition = jest.fn().mockReturnValue({
   modulesWithFunctions: {
     crankk01: {},
   },
-}));
-const mockedFileContractDefinition = jest.fn().mockImplementation(() => ({
-  modulesWithFunctions: {
-    crankk01: {},
-  },
-}));
-const mockedGenerateDts = jest.fn().mockImplementation(() => {
-  return [];
 });
+const mockedFileContractDefinition = jest.fn().mockReturnValue({
+  modulesWithFunctions: {
+    crankk01: {},
+  },
+});
+const mockedGenerateDts = jest.fn().mockReturnValue([]);
 
 jest.mock('@kadena/pactjs-generator', () => ({
   ...jest.requireActual('@kadena/pactjs-generator'),
@@ -50,14 +48,14 @@ const createAndRunProgram = async (
   let result;
 
   if (type === 'file') {
-    result = await action({
+    result = action({
       file: 'some/path/to/contract.pact',
       ...options,
     });
   }
 
   if (type === 'chain') {
-    result = await action({
+    result = action({
       contract: 'free.crankk01',
       api: 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
       chain: 0,
