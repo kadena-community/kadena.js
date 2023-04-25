@@ -53,14 +53,22 @@ export const colorsDark = {
   primaryHighContrast: '#B1E5F6',
 
   secondaryAccent: '#ED098F',
-  secondarySurface: '#8A0553',
-  secondaryContrast: '#FDC4E5', // TODO: Replace this with highlighter color
+  secondarySurface: '#580335',
+  secondaryContrast: '#8A0553',
+  secondaryHighContrast: '#FDC4E5',
 
-  successAccent: '#5EEA15',
-  successSurface: '#113300',
-  successContrast: '#E5FFD8',
+  positiveAccent: '#5EEA15',
+  positiveSurface: '#113300',
+  positiveContrast: '#226600',
+  positiveHighContrast: '#E5FFD8',
 
-  errorAccent: '#FF3338',
-  errorSurface: '#410006',
-  errorContrast: '#FFDAD8',
+  warningAccent: '#FF9900',
+  warningSurface: '#3D2500',
+  warningContrast: '#704300',
+  warningHighContrast: '#FFE7C2',
+
+  negativeAccent: '#FF3338',
+  negativeSurface: '#410006',
+  negativeContrast: '#75000B',
+  negativeHighContrast: '#FFDAD8',
 };
