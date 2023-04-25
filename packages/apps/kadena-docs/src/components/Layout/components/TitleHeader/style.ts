@@ -7,7 +7,7 @@ export const StyledBackground: StyledComponent<'div'> = styled('div', {
   bottom: 0,
   right: 0,
   left: 0,
-  background: 'url("/assets/bg-horizontal.jpg")',
+  background: 'url("/assets/bg-horizontal.png")',
   backgroundRepeat: 'no-repeat',
   backgroundPositionX: 'center',
   backgroundPositionY: '90%',
@@ -33,4 +33,8 @@ export const Wrapper: StyledComponent<typeof InnerWrapper> = styled(
 export const StyledHeader: StyledComponent<'header'> = styled('header', {
   position: 'relative',
   gridArea: 'pageheader',
+});
+
+export const SubHeader: StyledComponent<'span'> = styled('span', {
+  color: '$neutral4',
 });
