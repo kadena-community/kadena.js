@@ -9,10 +9,10 @@ describe('parser', () => {
       (module coin GOVERNANCE
         (defun transfer:string (sender:string receiver:string amount:number))
       )`;
-    const contractDefinition = new StringContractDefinition(
+    const contractDefinition = new StringContractDefinition({
       contract,
-      // console.log,
-    );
+      //logger: console.log,
+    });
     expect(contractDefinition.modules).toEqual(['coin']);
     const methods = contractDefinition.getMethods('coin')!;
     expect(Object.keys(methods)).toHaveLength(1);
@@ -29,10 +29,10 @@ describe('parser', () => {
         (defun transfer:string (sender:string receiver:string amount:number))
         (defun untypedFn (firstArg secondArg))
       )`;
-    const contractDefinition = new StringContractDefinition(
+    const contractDefinition = new StringContractDefinition({
       contract,
-      // console.log,
-    );
+      // logger: console.log,
+    });
     expect(contractDefinition.modules).toEqual(['coin']);
     const methods = contractDefinition.getMethods('coin')!;
     expect(Object.keys(methods)).toHaveLength(2);
@@ -48,10 +48,10 @@ describe('parser', () => {
         (defun transfer:string (sender:string receiver:string amount:number))
         (defun untypedFn (firstArg secondArg))
       )`;
-    const contractDefinition = new StringContractDefinition(
+    const contractDefinition = new StringContractDefinition({
       contract,
-      // console.log,
-    );
+      // logger: console.log,
+    });
     expect(contractDefinition.modules).toEqual(['test-on-free']);
     expect(contractDefinition.getNamespace('test-on-free')).toEqual('free');
     const methods = contractDefinition.getMethods('test-on-free')!;
@@ -69,10 +69,10 @@ describe('parser', () => {
         (defun transfer:string (sender:string receiver:string amount:number))
         (defun untypedFn (firstArg secondArg))
       )`;
-    const contractDefinition = new StringContractDefinition(
+    const contractDefinition = new StringContractDefinition({
       contract,
-      // console.log,
-    );
+      // logger: console.log,
+    });
     expect(contractDefinition.modules).toEqual(['test-on-free']);
     expect(contractDefinition.getNamespace('test-on-free')).toEqual('free');
     const methods = contractDefinition.getMethods('test-on-free')!;
@@ -90,10 +90,10 @@ describe('parser', () => {
         (defun transfer:string (sender:string receiver:string amount:number))
         (defun untypedFn (firstArg secondArg))
       )`;
-    const contractDefinition = new StringContractDefinition(
+    const contractDefinition = new StringContractDefinition({
       contract,
-      // console.log,
-    );
+      // logger: console.log,
+    });
     expect(contractDefinition.modules).toEqual(['test-on-free']);
     expect(contractDefinition.getNamespace('test-on-free')).toEqual('free');
     const methods = contractDefinition.getMethods('test-on-free')!;
@@ -106,10 +106,10 @@ describe('parser', () => {
 
   it('lexer test.contract.pact', () => {
     const filePath = path.join(__dirname, './test.contract.pact');
-    const fileContractDefinition = new FileContractDefinition(
-      filePath,
-      // console.log,
-    );
+    const fileContractDefinition = new FileContractDefinition({
+      filePath: filePath,
+      // logger: console.log,
+    });
 
     expect(fileContractDefinition.modules).toEqual(['coin']);
     const methods = fileContractDefinition.getMethods('coin')!;
@@ -132,10 +132,10 @@ describe('parser', () => {
 
   it('marmalade.contract.pact', () => {
     const filePath = path.join(__dirname, './marmalade.contract.pact');
-    const fileContractDefinition = new FileContractDefinition(
+    const fileContractDefinition = new FileContractDefinition({
       filePath,
-      // console.log,
-    );
+      // logger: console.log,
+    });
 
     expect(fileContractDefinition.modules).toEqual(['ledger']);
     const methods = fileContractDefinition.getMethods('ledger')!;
@@ -148,10 +148,10 @@ describe('parser', () => {
         (defcap GAS ())
         (defcap TRANSFER (sender:string receiver:string amount:decimal))
       )`;
-    const contractDefinition = new StringContractDefinition(
+    const contractDefinition = new StringContractDefinition({
       contract,
-      // console.log,
-    );
+      // logger: console.log,
+    });
     expect(contractDefinition.modules).toEqual(['coin']);
     const capabilities = contractDefinition.getCapabilities('coin')!;
     expect(Object.keys(capabilities)).toEqual(['GAS', 'TRANSFER']);

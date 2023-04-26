@@ -73,10 +73,15 @@ export const generate =
         ? args.contract.split('.')[0]
         : undefined;
 
-      pactModule = new StringContractDefinition(pactCode, namespace);
+      pactModule = new StringContractDefinition({
+        contract: pactCode,
+        namespace,
+      });
     } else {
       console.log(`Generating Pact contract from ${args.file}`);
-      pactModule = new FileContractDefinition(join(process.cwd(), args.file!));
+      pactModule = new FileContractDefinition({
+        filePath: join(process.cwd(), args.file!),
+      });
     }
 
     const moduleDtss: Map<string, string> = generateDts(

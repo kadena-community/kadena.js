@@ -13,11 +13,15 @@ export class FileContractDefinition implements IContractDefinition {
   private _logger: ILogger;
   private _raw: Output;
 
-  public constructor(
-    filePath: PathLike,
-    namespace: string = '',
-    logger: ILogger = () => {},
-  ) {
+  public constructor({
+    filePath,
+    namespace,
+    logger = () => {},
+  }: {
+    filePath: PathLike;
+    namespace?: string;
+    logger?: ILogger;
+  }) {
     this._filePath = filePath;
     this._logger = logger;
     this._raw = parser(readFileSync(this._filePath, 'utf8'), this._logger);
@@ -25,8 +29,8 @@ export class FileContractDefinition implements IContractDefinition {
     this._setNamespace(namespace);
   }
 
-  private _setNamespace(namespace: string): void {
-    if (!namespace) return;
+  private _setNamespace(namespace?: string): void {
+    if (namespace === undefined) return;
 
     Object.keys(this._raw).forEach((module) => {
       this._raw[module].namespace = namespace;

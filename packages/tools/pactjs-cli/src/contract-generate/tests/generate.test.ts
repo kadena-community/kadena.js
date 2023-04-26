@@ -45,26 +45,23 @@ const createAndRunProgram = async (
   const program = new Command('generate');
   (program.error as unknown) = mockProgramError;
   const action = generate(program, '0.0.0');
-  let result;
 
   if (type === 'file') {
-    result = action({
+    return action({
       file: 'some/path/to/contract.pact',
       ...options,
     });
   }
 
   if (type === 'chain') {
-    result = action({
+    return action({
       contract: 'free.crankk01',
-      api: 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
+      api: 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact',
       chain: 0,
       network: 'mainnet',
       ...options,
     });
   }
-
-  return result;
 };
 
 describe('generate', () => {
@@ -114,7 +111,7 @@ describe('generate', () => {
       );
 
       expect(mockedRetrieveContractFromChain.mock.calls[0][1]).toBe(
-        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact',
       );
     });
 
@@ -133,16 +130,20 @@ describe('generate', () => {
       expect(result).toBeUndefined();
     });
 
-    it('sets the namespace to the one supplied', async () => {
+    it('sets the namespace to the one supplied with --contract', async () => {
       await createAndRunProgram('chain');
 
-      expect(mockedStringContractDefinition.mock.calls[0][1]).toBe('free');
+      expect(mockedStringContractDefinition.mock.calls[0][0].namespace).toBe(
+        'free',
+      );
     });
 
     it("sets the namespace to undefined when there isn't one", async () => {
       await createAndRunProgram('chain', { contract: 'coin' });
 
-      expect(mockedStringContractDefinition.mock.calls[0][1]).toBeUndefined();
+      expect(
+        mockedStringContractDefinition.mock.calls[0][0].namespace,
+      ).toBeUndefined();
     });
 
     it('calls generateDts with the right module', async () => {

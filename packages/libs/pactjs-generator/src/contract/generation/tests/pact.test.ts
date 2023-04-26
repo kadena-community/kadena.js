@@ -6,7 +6,7 @@ import path from 'path';
 describe('FileContractDefinition', () => {
   it('lists an array of modules and methods of the coin contract', () => {
     const filePath = path.join(__dirname, './coin.contract.pact');
-    const fileContractDefinition = new FileContractDefinition(filePath);
+    const fileContractDefinition = new FileContractDefinition({ filePath });
 
     expect(fileContractDefinition.modules).toEqual(['coin']);
     const methods = fileContractDefinition.getMethods('coin')!;
@@ -20,7 +20,7 @@ describe('StringContractDefinition', () => {
   (defun get-balance (address))
   (defun get-balance-two:number (address:string))
 )`;
-    const stringContractDefinition = new StringContractDefinition(contract);
+    const stringContractDefinition = new StringContractDefinition({ contract });
     expect(stringContractDefinition.modules).toEqual(['albert-coin']);
     expect(stringContractDefinition.getMethods('albert-coin')).toEqual({
       'get-balance': {

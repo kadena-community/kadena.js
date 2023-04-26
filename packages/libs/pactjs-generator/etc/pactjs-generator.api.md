@@ -10,8 +10,11 @@ import { PathLike } from 'fs';
 
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
-    // Warning: (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
-    constructor(filePath: PathLike, namespace?: string, logger?: ILogger);
+    constructor({ filePath, namespace, logger, }: {
+        filePath: PathLike;
+        namespace?: string;
+        logger?: ILogger;
+    });
     // Warning: (ae-forgotten-export) The symbol "Defcap" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -68,7 +71,11 @@ export function parseTemplate(template: string): ITemplate;
 
 // @alpha (undocumented)
 export class StringContractDefinition implements IContractDefinition {
-    constructor(contract: string, namespace?: string, logger?: ILogger);
+    constructor({ contract, namespace, logger, }: {
+        contract: string;
+        namespace?: string;
+        logger?: ILogger;
+    });
     // (undocumented)
     getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
     // (undocumented)
@@ -86,6 +93,10 @@ export type TemplateHoles = string[];
 
 // @alpha (undocumented)
 export type TemplateParts = string[];
+
+// Warnings were encountered during analysis:
+//
+// src/contract/generation/FileContractDefinition.ts:23:5 - (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
