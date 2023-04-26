@@ -24,7 +24,7 @@ export const HeaderWrapper: StyledComponent<'div'> = styled('div', {
     top: 0,
     left: 0,
     right: 0,
-    bottom: '40px',
+    bottom: '$10',
     backgroundColor: '$background',
   },
   '&::after': {

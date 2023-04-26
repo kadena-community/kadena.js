@@ -1,4 +1,4 @@
-import { AsideItem } from './style';
+import { AsideItem } from './AsideStyles';
 
 import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';

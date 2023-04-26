@@ -6,7 +6,7 @@ export const StyledSideMenu: StyledComponent<'div'> = styled('div', {
   position: 'relative',
   marginTop: '$6',
   height: '100%',
-  paddingBottom: '100px',
+  paddingBottom: '$25',
 });
 
 export const StyledUl: StyledComponent<'ul'> = styled('ul', {

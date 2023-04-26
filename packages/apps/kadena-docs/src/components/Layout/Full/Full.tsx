@@ -1,9 +1,16 @@
 import { Heading } from '@kadena/react-components';
 
-import { Article, Aside, CodeBackground, Content } from '../components';
+import {
+  Article,
+  Aside,
+  AsideLink,
+  AsideList,
+  CodeBackground,
+  Content,
+  StickyAside,
+  StickyAsideWrapper,
+} from '../components';
 
-import { AsideLink } from './AsideLink';
-import { AsideList, StickyAside, StickyAsideWrapper } from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
 import { ILayout, ISubHeaderElement } from '@/types/Layout';

@@ -87,28 +87,6 @@ export const Template: StyledComponent<
   },
 });
 
-export const Article: StyledComponent<'article'> = styled('article', {
-  width: '100%',
-  backgroundColor: 'transparent',
-});
-
-export const Content: StyledComponent<'div', { name?: string }> = styled(
-  'div',
-  {
-    display: 'flex',
-    position: 'relative',
-    gridColumn: '1 / span 1',
-    gridRow: '3 / span 1',
-    width: '100%',
-    height: '100%',
-
-    '@md': {
-      gridColumn: '3 / span 1',
-      gridRow: '3 / span 3',
-    },
-  },
-);
-
 export const MenuBack: StyledComponent<
   'button',
   { isOpen?: boolean | 'true' | 'false' | undefined }
