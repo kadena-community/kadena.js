@@ -22,6 +22,7 @@ import { CheckDecagramOutline } from './svgs/CheckDecagramOutline';
 import { ChevronDown } from './svgs/ChevronDown';
 import { ChevronUp } from './svgs/ChevronUp';
 import { Close } from './svgs/Close';
+import { Code } from './svgs/Code';
 import { ContentCopy } from './svgs/ContentCopy';
 import { Dialpad } from './svgs/Dialpad';
 import { Earth } from './svgs/Earth';
@@ -112,6 +113,7 @@ export const SystemIcons = {
   ChevronDown: IconWrapper(ChevronDown),
   ChevronUp: IconWrapper(ChevronUp),
   Close: IconWrapper(Close),
+  Code: IconWrapper(Code),
   ContentCopy: IconWrapper(ContentCopy),
   Dialpad: IconWrapper(Dialpad),
   Earth: IconWrapper(Earth),
