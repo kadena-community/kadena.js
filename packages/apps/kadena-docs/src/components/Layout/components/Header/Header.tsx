@@ -57,11 +57,13 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
             onClick={() => alert('todo, make an href')}
             title="Go to our Twitter"
             icon={SystemIcons.Twitter}
+            color="inverted"
           />
           <IconButton
             onClick={() => alert('todo, make an href')}
             title="Go to our Github"
             icon={SystemIcons.Github}
+            color="inverted"
           />
         </HeaderIconGroup>
         <HeaderIconGroup>

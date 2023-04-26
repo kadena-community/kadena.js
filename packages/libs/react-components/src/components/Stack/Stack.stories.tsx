@@ -15,7 +15,6 @@ import React from 'react';
 const Item = styled('div', {
   backgroundColor: '$primarySurface',
   color: '$foreground',
-  fontFamily: '$main',
   size: '$32',
   display: 'flex',
   alignItems: 'center',

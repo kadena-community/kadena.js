@@ -1,6 +1,7 @@
 import { Heading } from './Heading';
 import {
   boldVariant,
+  colorVariant,
   elementVariant,
   fontVariant,
   transformVariant,
@@ -31,6 +32,10 @@ const meta: Meta<typeof Heading> = {
       options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
+    color: {
+      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
+      control: { type: 'select' },
+    },
     transform: {
       options: Object.keys(
         transformVariant,
@@ -49,16 +54,18 @@ export const Primary: Story = {
     children: 'heading',
     as: 'h1',
     variant: undefined,
-    font: 'main',
-    bold: 'true',
-    transform: 'none',
+    font: undefined,
+    bold: undefined,
+    color: undefined,
+    transform: undefined,
   },
-  render: ({ font, bold, as, variant, transform, children }) => (
+  render: ({ font, bold, as, variant, transform, children, color }) => (
     <Heading
       font={font}
       bold={bold}
       as={as}
       variant={variant}
+      color={color}
       transform={transform}
     >
       {children}

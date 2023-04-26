@@ -13,7 +13,7 @@ import React from 'react';
  * See https://storybook.js.org/docs/7.0/react/api/csf
  * to learn how to use render functions.
  */
-const meta: Meta<{ icon: string; color: string } & IIconProps> = {
+const meta: Meta<{ icon: string } & IIconProps> = {
   title: 'Icons',
   argTypes: {
     icon: {
@@ -22,26 +22,24 @@ const meta: Meta<{ icon: string; color: string } & IIconProps> = {
       },
     },
     size: {
-      options: Object.keys(sizeVariant),
+      options: Object.keys(sizeVariant) as (keyof typeof sizeVariant)[],
       control: {
         type: 'select',
-      },
-    },
-    color: {
-      control: {
-        type: 'color',
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<{ icon: string; color: string } & IIconProps>;
+type Story = StoryObj<{ icon: string } & IIconProps>;
 
 export const Primary: Story = {
   name: 'System',
-  args: {},
-  render: ({ icon = '', size, color }) => {
+  args: {
+    icon: '',
+    size: 'md',
+  },
+  render: ({ icon, size }) => {
     // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
     const searchRegexp = new RegExp(icon, 'i');
     return (
@@ -53,7 +51,7 @@ export const Primary: Story = {
             .map(([k, Icon]) => (
               <Grid.Item key={k}>
                 <Stack direction="column" alignItems="center" spacing="xs">
-                  <Icon size={size} color={color} />
+                  <Icon size={size} />
                   <Text size="sm">System.{k}</Text>
                 </Stack>
               </Grid.Item>
