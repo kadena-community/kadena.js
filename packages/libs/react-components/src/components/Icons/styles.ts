@@ -20,6 +20,10 @@ export const sizeVariant = {
 export const IconContainer = styled('span', {
   display: 'flex',
 
+  '> svg': {
+    width: '100%',
+  },
+
   variants: {
     size: sizeVariant,
   },
