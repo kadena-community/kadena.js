@@ -2,27 +2,56 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 export const CodeBackground: StyledComponent<
   'div',
-  { layout?: 'code' | 'default' }
+  {
+    layout?: 'code' | 'default';
+    isOpen?: boolean | 'true' | 'false' | undefined;
+  }
 > = styled('div', {
   position: 'absolute',
   zIndex: 2,
   pointerEvents: 'none',
-  gridColumn: '1 / span 5',
-  gridRow: '2 / span 2',
-  display: 'block',
-  transform: 'translateX(100%)',
-  transition: 'transform .3s ease',
+  width: '100vw',
+  height: '100vh',
+
+  transform: 'translateX(100vw)',
 
   '@md': {
-    position: 'relative',
-    display: 'block',
+    position: 'absolute',
     transform: 'translateX(0)',
   },
 
   defaultVariants: {
     layout: 'default',
   },
+  compoundVariants: [
+    {
+      isOpen: true,
+      layout: 'code',
+      css: {
+        '&::before': {
+          '@md': {
+            '@md': {
+              backgroundPositionX: 'calc(100vw  - (200px + 80px))',
+            },
+          },
+        },
+        '&::after': {
+          '@md': {
+            '@md': {
+              left: 'calc(100vw  - (200px + 15px))',
+            },
+          },
+        },
+      },
+    },
+  ],
   variants: {
+    isOpen: {
+      true: {
+        transform: 'translateX(0)',
+      },
+      false: {},
+    },
     layout: {
       default: {
         '&::before': {
@@ -34,6 +63,7 @@ export const CodeBackground: StyledComponent<
           backgroundRepeat: 'no-repeat',
           backgroundPositionY: '-100px',
           backgroundPositionX: 'calc(100vw  - (200px + 120px))',
+
           '@2xl': {
             backgroundPositionX:
               'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (300px +  120px))',
@@ -49,10 +79,10 @@ export const CodeBackground: StyledComponent<
           backgroundImage: 'url("/assets/bg-vertical.png")',
           backgroundRepeat: 'no-repeat',
           backgroundPositionY: '-100px',
-          backgroundPositionX: 'calc(100vw  - (200px + 100px))',
+
           '@2xl': {
             backgroundPositionX:
-              'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (300px +  100px))',
+              'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (300px +  80px))',
           },
         },
       },
@@ -63,9 +93,11 @@ export const CodeBackground: StyledComponent<
     content: '',
     position: 'absolute',
     inset: 0,
-    left: 'calc(100vw  - (200px + 15px))',
     backgroundColor: '$backgroundOverlayColor',
     zIndex: 1,
+    '@md': {
+      left: 'calc(100vw  - (200px + 15px))',
+    },
     '@2xl': {
       left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - 300px)',
     },
@@ -78,22 +110,47 @@ export const Article: StyledComponent<'article'> = styled('article', {
   backgroundColor: 'transparent',
 });
 
-export const Aside: StyledComponent<'aside'> = styled('aside', {
+export const Aside: StyledComponent<
+  'aside',
+  {
+    layout?: 'code' | 'default';
+    isOpen?: boolean | 'true' | 'false' | undefined;
+  }
+> = styled('aside', {
   gridArea: 'aside',
   minWidth: '200px',
   width: '$sizes$asideWidth',
   overflow: 'hidden',
 
+  gridColumn: '4 / span 2',
+  gridRow: '2 / span 2',
+
   zIndex: '$sideMenu',
   padding: '0 $4',
   position: 'absolute',
-  transform: 'translateX(100%)',
-  transition: 'transform .3s ease',
+  transform: 'translateX(100vw)',
+
   '@md': {
-    position: 'relative',
     transform: 'translateX(0)',
-    gridColumn: '4 / span 2',
-    gridRow: '2 / span 2',
+  },
+  compoundVariants: [
+    {
+      isOpen: true,
+      layout: 'code',
+      css: {
+        transform: 'translateX(0)',
+      },
+    },
+  ],
+  variants: {
+    layout: {
+      code: {},
+      default: {},
+    },
+    isOpen: {
+      true: {},
+      false: {},
+    },
   },
 });
 

@@ -25,6 +25,7 @@ interface IProps {
 
 export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
 
   /**
@@ -71,6 +72,12 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
 
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);
+    setIsAsideOpen(false);
+  };
+
+  const toggleAside = (): void => {
+    setIsAsideOpen((v) => !v);
+    setIsMenuOpen(false);
   };
 
   const closeMenu = (): void => setIsMenuOpen(false);
@@ -95,8 +102,11 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
       >
         <Header
           toggleMenu={toggleMenu}
+          toggleAside={toggleAside}
           isMenuOpen={isMenuOpen}
+          isAsideOpen={isAsideOpen}
           menuItems={menuItems}
+          layout={layoutType}
         />
         {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} />
@@ -116,7 +126,7 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
-        <Layout>{children}</Layout>
+        <Layout isAsideOpen={isAsideOpen}>{children}</Layout>
         <Footer />
       </Template>
     </>

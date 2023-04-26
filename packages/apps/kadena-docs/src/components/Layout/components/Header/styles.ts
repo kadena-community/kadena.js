@@ -31,6 +31,7 @@ export const SkipNav: StyledComponent<'a'> = styled('a', {
 
 export const HeaderIconGroup: StyledComponent<'div'> = styled('div', {
   display: 'flex',
+  gap: '$1',
   marginLeft: '$6',
 });
 

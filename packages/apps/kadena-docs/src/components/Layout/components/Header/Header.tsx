@@ -10,23 +10,35 @@ import {
 } from '../styles';
 import { DocsLogo } from '..';
 
+import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
-import { IMenuItem } from '@/types/Layout';
+import { IMenuItem, LayoutType } from '@/types/Layout';
+import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
   toggleMenu: () => void;
   isMenuOpen: boolean;
+  toggleAside: () => void;
+  isAsideOpen: boolean;
   menuItems: IMenuItem[];
+  layout: LayoutType;
 }
 
-export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
+export const Header: FC<IProps> = ({
+  toggleMenu,
+  isMenuOpen,
+  toggleAside,
+  isAsideOpen,
+  menuItems,
+  layout,
+}) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 
   return (
@@ -57,13 +69,11 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
             onClick={() => alert('todo, make an href')}
             title="Go to our Twitter"
             icon={SystemIcons.Twitter}
-            color="inverted"
           />
           <IconButton
             onClick={() => alert('todo, make an href')}
             title="Go to our Github"
             icon={SystemIcons.Github}
-            color="inverted"
           />
         </HeaderIconGroup>
         <HeaderIconGroup>
@@ -72,6 +82,9 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
           />
+          {isOneOfLayoutType(layout, 'code') && (
+            <AsideToggle toggleAside={toggleAside} isAsideOpen={isAsideOpen} />
+          )}
         </HeaderIconGroup>
       </InnerWrapper>
     </StyledHeader>

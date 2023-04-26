@@ -22,7 +22,6 @@ export const ThemeToggle: FC = () => {
       title="Toggle theme"
       onClick={toggleTheme}
       icon={SystemIcons.ThemeLightDark}
-      color="inverted"
     />
   );
 };
