@@ -15,17 +15,26 @@ export const colors = {
   primarySurface: '#C2E1FF',
   primaryContrast: '#00498F',
   primaryHighContrast: '#002F5C',
+
   secondaryAccent: '#ED098F',
   secondarySurface: '#FDC4E5',
   secondaryContrast: '#8A0553',
+  secondaryHighContrast: '#580335',
 
-  successAccent: '#5EEA15',
-  successSurface: '#E5FFD8',
-  successContrast: '#113300',
+  positiveAccent: '#5EEA15',
+  positiveSurface: '#E5FFD8',
+  positiveContrast: '#226600',
+  positiveHighContrast: '#113300',
 
-  errorAccent: '#FF3338',
-  errorSurface: '#FFDAD8',
-  errorContrast: '#410006',
+  warningAccent: '#FF9900',
+  warningSurface: '#FFE7C2',
+  warningContrast: '#704300',
+  warningHighContrast: '#3D2500',
+
+  negativeAccent: '#FF3338',
+  negativeSurface: '#FFDAD8',
+  negativeContrast: '#75000B',
+  negativeHighContrast: '#410006',
 } as const;
 
 export const colorsDark = {
@@ -42,15 +51,24 @@ export const colorsDark = {
   primarySurface: '#00498F',
   primaryContrast: '#27B7E6',
   primaryHighContrast: '#B1E5F6',
+
   secondaryAccent: '#ED098F',
-  secondarySurface: '#8A0553',
-  secondaryContrast: '#FDC4E5', // TODO: Replace this with highlighter color
+  secondarySurface: '#580335',
+  secondaryContrast: '#8A0553',
+  secondaryHighContrast: '#FDC4E5',
 
-  successAccent: '#5EEA15',
-  successSurface: '#113300',
-  successContrast: '#E5FFD8',
+  positiveAccent: '#5EEA15',
+  positiveSurface: '#113300',
+  positiveContrast: '#226600',
+  positiveHighContrast: '#E5FFD8',
 
-  errorAccent: '#FF3338',
-  errorSurface: '#410006',
-  errorContrast: '#FFDAD8',
+  warningAccent: '#FF9900',
+  warningSurface: '#3D2500',
+  warningContrast: '#704300',
+  warningHighContrast: '#FFE7C2',
+
+  negativeAccent: '#FF3338',
+  negativeSurface: '#410006',
+  negativeContrast: '#75000B',
+  negativeHighContrast: '#FFDAD8',
 };

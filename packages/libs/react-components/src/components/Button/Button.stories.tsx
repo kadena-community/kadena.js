@@ -14,7 +14,7 @@ const meta: Meta<
   argTypes: {
     onClick: { action: 'clicked' },
     selectIcon: {
-      options: Object.keys(SystemIcons),
+      options: Object.keys(SystemIcons) as (keyof typeof SystemIcons)[],
       control: {
         type: 'select',
       },

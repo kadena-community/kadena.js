@@ -1,4 +1,5 @@
 import { SystemIcons } from './../../';
+import { colorVariant } from './styles';
 import { IconButton, IIconButtonProps } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -6,16 +7,14 @@ import React from 'react';
 
 const meta: Meta<
   {
-    title: string;
     selectIcon: keyof typeof SystemIcons;
-    color: string;
   } & IIconButtonProps
 > = {
   title: 'IconButton',
   argTypes: {
     onClick: { action: 'clicked' },
     selectIcon: {
-      options: Object.keys(SystemIcons),
+      options: Object.keys(SystemIcons) as (keyof typeof SystemIcons)[],
       control: {
         type: 'select',
       },
@@ -26,8 +25,9 @@ const meta: Meta<
       },
     },
     color: {
+      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
       control: {
-        type: 'color',
+        type: 'select',
       },
     },
   },
@@ -36,9 +36,7 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    title: string;
     selectIcon: keyof typeof SystemIcons;
-    color: string;
   } & IIconButtonProps
 >;
 
@@ -53,6 +51,7 @@ export const Primary: Story = {
   args: {
     selectIcon: 'Account',
     title: 'test title',
+    color: 'default',
   },
   render: ({ selectIcon, onClick, title, color }) => {
     const Icon = SystemIcons[selectIcon];

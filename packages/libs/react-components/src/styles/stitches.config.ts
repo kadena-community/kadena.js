@@ -141,6 +141,9 @@ export const {
   // We've updated to @stitches/react to v1.3.1-1 to fix this issue.
   // github issue: https://github.com/microsoft/TypeScript/issues/50720
   utils: {
+    bg: (value: PropertyValue<'backgroundColor'>) => ({
+      backgroundColor: value,
+    }),
     size: (value: PropertyValue<'width'>) => ({
       width: value,
       height: value,

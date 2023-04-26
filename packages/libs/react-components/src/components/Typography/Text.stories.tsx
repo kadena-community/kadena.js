@@ -1,5 +1,6 @@
 import {
   boldVariant,
+  colorVariant,
   elementVariant,
   fontVariant,
   textSizeVariant,
@@ -36,6 +37,10 @@ const meta: Meta<typeof Text> = {
       options: Object.keys(boldVariant) as (keyof typeof boldVariant)[],
       control: { type: 'boolean' },
     },
+    color: {
+      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
+      control: { type: 'select' },
+    },
     transform: {
       options: Object.keys(
         transformVariant,
@@ -54,12 +59,13 @@ export const Primary: Story = {
     children: 'text',
     as: 'span',
     variant: undefined,
-    size: 'lg',
-    font: 'main',
-    bold: 'false',
-    transform: 'none',
+    size: undefined,
+    font: undefined,
+    bold: undefined,
+    color: undefined,
+    transform: undefined,
   },
-  render: ({ font, bold, size, as, variant, transform, children }) => (
+  render: ({ font, bold, size, as, variant, transform, children, color }) => (
     <Text
       font={font}
       bold={bold}
@@ -67,6 +73,7 @@ export const Primary: Story = {
       as={as}
       variant={variant}
       transform={transform}
+      color={color}
     >
       {children}
     </Text>
