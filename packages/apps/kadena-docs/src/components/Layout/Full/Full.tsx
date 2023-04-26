@@ -1,12 +1,6 @@
 import { Heading } from '@kadena/react-components';
 
-import {
-  Article,
-  Aside,
-  CodeBackground,
-  CodeBackgroundOverlay,
-  Content,
-} from '../Code/styles';
+import { Article, Aside, CodeBackground, Content } from '../Code/styles';
 
 import { AsideLink } from './AsideLink';
 import { AsideList, StickyAside, StickyAsideWrapper } from './style';
