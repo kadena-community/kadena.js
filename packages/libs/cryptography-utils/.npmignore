@@ -2,7 +2,6 @@
 src/
 lib/test*/
 *.test.*
-*.stories.*
 
 # Ignore config, log, and temporary files.
 .*
