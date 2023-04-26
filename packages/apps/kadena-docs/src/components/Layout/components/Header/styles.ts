@@ -3,6 +3,7 @@ import { IconButton, styled, StyledComponent } from '@kadena/react-components';
 export const HamburgerButton: StyledComponent<typeof IconButton> = styled(
   IconButton,
   {
+    background: '$neutral4 !important',
     display: 'flex',
     '@md': {
       display: 'none',

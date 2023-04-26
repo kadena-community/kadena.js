@@ -30,6 +30,7 @@ export const baseGlobalStyles: Record<string, unknown> = {
   */
   body: {
     lineHeight: '$base',
+    fontFamily: '$main',
     '-webkit-font-smoothing': 'antialiased',
     backgroundColor: '$background',
     color: '$foreground',

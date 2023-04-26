@@ -1,7 +1,8 @@
 ---
-title: Get started with KadenaJS
+title: KadenaJS
+menu: KadenaJS
+label: Introduction
 order: 1
-label: Kadena JS
 description: How to get started with Markdoc
 layout: landing
 ---

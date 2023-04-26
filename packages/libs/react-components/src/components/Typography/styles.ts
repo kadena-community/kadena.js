@@ -129,6 +129,15 @@ export const transformVariant = {
   },
 };
 
+export const colorVariant = {
+  default: {
+    color: '$neutral4',
+  },
+  emphasize: {
+    color: '$neutral6',
+  },
+};
+
 export const BaseText = styled('span', {
   fontWeight: '$regular',
   lineHeight: '$base',
@@ -137,6 +146,7 @@ export const BaseText = styled('span', {
     variant: elementVariant,
     font: fontVariant,
     bold: boldVariant,
+    color: colorVariant,
     transform: transformVariant,
   },
 
@@ -144,6 +154,7 @@ export const BaseText = styled('span', {
     variant: 'span',
     font: 'main',
     bold: 'false',
+    color: 'default',
     transform: 'none',
   },
 

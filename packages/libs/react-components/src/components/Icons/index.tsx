@@ -1,77 +1,76 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-import { config } from '../../styles';
 
-import { Account } from './Account';
-import { AlertBox } from './AlertBox';
-import { AlertBoxOutline } from './AlertBoxOutline';
-import { AlertCircleOutline } from './AlertCircleOutline';
-import { Application } from './Application';
-import { ApplicationBrackets } from './ApplicationBrackets';
-import { ApplicationCogOutline } from './ApplicationCogOutline';
-import { Backburger } from './Backburger';
-import { BadgeAccount } from './BadgeAccount';
-import { Bell } from './Bell';
-import { BellRing } from './BellRing';
-import { CarBrakeParking } from './CarBrakeParking';
-import { Check } from './Check';
-import { CheckboxBlankOutline } from './CheckboxBlankOutline';
-import { CheckboxIntermediateVariant } from './CheckboxIntermediateVariant';
-import { CheckboxMarked } from './CheckboxMarked';
-import { CheckDecagram } from './CheckDecagram';
-import { CheckDecagramOutline } from './CheckDecagramOutline';
-import { ChevronDown } from './ChevronDown';
-import { ChevronUp } from './ChevronUp';
-import { Close } from './Close';
-import { ContentCopy } from './ContentCopy';
-import { Dialpad } from './Dialpad';
-import { Earth } from './Earth';
-import { EmailOutline } from './EmailOutline';
-import { ExitToApp } from './ExitToApp';
-import { Eye } from './Eye';
-import { EyeOffOutline } from './EyeOffOutline';
-import { EyeOutline } from './EyeOutline';
-import { FlagCheckered } from './FlagCheckered';
-import { FolderRemoveOutline } from './FolderRemoveOutline';
-import { FormTextboxPassword } from './FormTextboxPassword';
-import { Github } from './Github';
-import { HelpCircle } from './HelpCircle';
-import { History } from './History';
-import { Information } from './Information';
-import { KeyIconFilled } from './KeyIconFilled';
-import { KeyIconOutlined } from './KeyIconOutlined';
-import { KIcon } from './KIcon';
-import { LeadingIcon } from './LeadingIcon';
-import { Link } from './Link';
-import { Linkedin } from './Linkedin';
-import { Loading } from './Loading';
-import { Magnify } from './Magnify';
-import { MapMarker } from './MapMarker';
-import { MenuOpen } from './MenuOpen';
-import { Plus } from './Plus';
-import { ProgressWrench } from './ProgressWrench';
-import { QrcodeScan } from './QrcodeScan';
-import { RadioboxBlank } from './RadioboxBlank';
-import { RadioboxMarked } from './RadioboxMarked';
-import { Refresh } from './Refresh';
-import { ScriptTextKey } from './ScriptTextKey';
-import { ScriptTextKeyNew } from './ScriptTextKeyNew';
-import { ShieldAccountVariantOutline } from './ShieldAccountVariantOutline';
-import { SignatureFreehand } from './SignatureFreehand';
-import { SlashForward } from './SlashForward';
-import { StopCircle } from './StopCircle';
+import { Account } from './svgs/Account';
+import { AlertBox } from './svgs/AlertBox';
+import { AlertBoxOutline } from './svgs/AlertBoxOutline';
+import { AlertCircleOutline } from './svgs/AlertCircleOutline';
+import { Application } from './svgs/Application';
+import { ApplicationBrackets } from './svgs/ApplicationBrackets';
+import { ApplicationCogOutline } from './svgs/ApplicationCogOutline';
+import { Backburger } from './svgs/Backburger';
+import { BadgeAccount } from './svgs/BadgeAccount';
+import { Bell } from './svgs/Bell';
+import { BellRing } from './svgs/BellRing';
+import { CarBrakeParking } from './svgs/CarBrakeParking';
+import { Check } from './svgs/Check';
+import { CheckboxBlankOutline } from './svgs/CheckboxBlankOutline';
+import { CheckboxIntermediateVariant } from './svgs/CheckboxIntermediateVariant';
+import { CheckboxMarked } from './svgs/CheckboxMarked';
+import { CheckDecagram } from './svgs/CheckDecagram';
+import { CheckDecagramOutline } from './svgs/CheckDecagramOutline';
+import { ChevronDown } from './svgs/ChevronDown';
+import { ChevronUp } from './svgs/ChevronUp';
+import { Close } from './svgs/Close';
+import { Code } from './svgs/Code';
+import { ContentCopy } from './svgs/ContentCopy';
+import { Dialpad } from './svgs/Dialpad';
+import { Earth } from './svgs/Earth';
+import { EmailOutline } from './svgs/EmailOutline';
+import { ExitToApp } from './svgs/ExitToApp';
+import { Eye } from './svgs/Eye';
+import { EyeOffOutline } from './svgs/EyeOffOutline';
+import { EyeOutline } from './svgs/EyeOutline';
+import { FlagCheckered } from './svgs/FlagCheckered';
+import { FolderRemoveOutline } from './svgs/FolderRemoveOutline';
+import { FormTextboxPassword } from './svgs/FormTextboxPassword';
+import { Github } from './svgs/Github';
+import { HelpCircle } from './svgs/HelpCircle';
+import { History } from './svgs/History';
+import { Information } from './svgs/Information';
+import { KeyIconFilled } from './svgs/KeyIconFilled';
+import { KeyIconOutlined } from './svgs/KeyIconOutlined';
+import { KIcon } from './svgs/KIcon';
+import { LeadingIcon } from './svgs/LeadingIcon';
+import { Link } from './svgs/Link';
+import { Linkedin } from './svgs/Linkedin';
+import { Loading } from './svgs/Loading';
+import { Magnify } from './svgs/Magnify';
+import { MapMarker } from './svgs/MapMarker';
+import { MenuOpen } from './svgs/MenuOpen';
+import { Plus } from './svgs/Plus';
+import { ProgressWrench } from './svgs/ProgressWrench';
+import { QrcodeScan } from './svgs/QrcodeScan';
+import { RadioboxBlank } from './svgs/RadioboxBlank';
+import { RadioboxMarked } from './svgs/RadioboxMarked';
+import { Refresh } from './svgs/Refresh';
+import { ScriptTextKey } from './svgs/ScriptTextKey';
+import { ScriptTextKeyNew } from './svgs/ScriptTextKeyNew';
+import { ShieldAccountVariantOutline } from './svgs/ShieldAccountVariantOutline';
+import { SignatureFreehand } from './svgs/SignatureFreehand';
+import { SlashForward } from './svgs/SlashForward';
+import { StopCircle } from './svgs/StopCircle';
+import { ThemeLightDark } from './svgs/ThemeLightDark';
+import { TrailingIcon } from './svgs/TrailingIcon';
+import { Twitter } from './svgs/Twitter';
+import { UsbFlashDrive } from './svgs/UsbFlashDrive';
 import { IconContainer } from './styles';
-import { ThemeLightDark } from './ThemeLightDark';
-import { TrailingIcon } from './TrailingIcon';
-import { Twitter } from './Twitter';
-import { UsbFlashDrive } from './UsbFlashDrive';
 
-import type { PropertyValue, VariantProps } from '@stitches/react';
+import type { VariantProps } from '@stitches/react';
 import React, { SVGProps } from 'react';
 
 export interface IIconProps {
   size?: VariantProps<typeof IconContainer>['size'];
-  color?: PropertyValue<'color', typeof config>;
 }
 
 export type IconType = SVGProps<SVGSVGElement> & IIconProps;
@@ -82,10 +81,9 @@ const IconWrapper = (
 ): React.FC<IconType> => {
   const WrappedIcon: React.FC<SVGProps<SVGSVGElement> & IIconProps> = ({
     size = 'md',
-    color,
     ...props
   }) => (
-    <IconContainer size={size} css={{ color }}>
+    <IconContainer size={size}>
       <Component {...props} height={undefined} width={undefined} />
     </IconContainer>
   );
@@ -115,6 +113,7 @@ export const SystemIcons = {
   ChevronDown: IconWrapper(ChevronDown),
   ChevronUp: IconWrapper(ChevronUp),
   Close: IconWrapper(Close),
+  Code: IconWrapper(Code),
   ContentCopy: IconWrapper(ContentCopy),
   Dialpad: IconWrapper(Dialpad),
   Earth: IconWrapper(Earth),

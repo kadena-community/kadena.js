@@ -1,4 +1,7 @@
-import { Heading, Text } from '@kadena/react-components';
+import { Heading } from '@kadena/react-components';
+
+import { MainTreeItem } from '../TreeMenu';
+import { StyledTreeList } from '../TreeMenu/styles';
 
 import { MenuCard } from './MenuCard';
 import {
@@ -43,7 +46,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       {active === 1 && (
         <>
           <SideMenuTitleBackButton onClick={() => setActive(0)}>
-            <Heading as="h5">{activeItem?.label}</Heading>
+            <Heading as="h5">{activeItem?.menu}</Heading>
           </SideMenuTitleBackButton>
         </>
       )}
@@ -52,30 +55,24 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       <MenuCard active={active} idx={0} ref={menuRef}>
         <StyledUl>
           {menuItems.map((item) => (
-            <StyledItem key={item.label}>
+            <StyledItem key={item.root}>
               <StyledLink
-                onClick={() => clickMenu(item)}
+                onClick={(e) => clickMenu(e, item)}
                 href={item.root}
                 data-hassubmenu={!!item.children.length}
               >
-                {item.label}
+                {item.menu}
               </StyledLink>
             </StyledItem>
           ))}
         </StyledUl>
       </MenuCard>
-      {hasSubmenu && (
+      {hasSubmenu && activeItem && (
         <MenuCard active={active} idx={1} ref={subMenuRef}>
           <section onClick={clickSubMenu}>
-            <Text as="p" bold={true}>
-              TODO: fill with the correct menu content
-            </Text>
-
-            {activeItem?.children.map((item) => (
-              <StyledLink key={item.label} href={item.root}>
-                {item.label}
-              </StyledLink>
-            ))}
+            <StyledTreeList root={true}>
+              <MainTreeItem item={activeItem} root={true} />
+            </StyledTreeList>
           </section>
         </MenuCard>
       )}

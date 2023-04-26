@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "change media breakpoint",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

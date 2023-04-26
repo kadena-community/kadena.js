@@ -57,7 +57,7 @@ export const media: ConfigType.Media<{
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
-  '2xl': `(min-width: ${1536 / 16}rem)`,
+  '2xl': `(min-width: ${1440 / 16}rem)`,
 } as const;
 
 export const {
@@ -74,6 +74,7 @@ export const {
     colors: {
       ...colors,
       background: '$colors$neutral1',
+      backgroundOverlayColor: 'rgba(250,250,250, .8)',
       foreground: '$colors$neutral6',
       borderColor: '#70797b33',
     },
@@ -140,6 +141,9 @@ export const {
   // We've updated to @stitches/react to v1.3.1-1 to fix this issue.
   // github issue: https://github.com/microsoft/TypeScript/issues/50720
   utils: {
+    bg: (value: PropertyValue<'backgroundColor'>) => ({
+      backgroundColor: value,
+    }),
     size: (value: PropertyValue<'width'>) => ({
       width: value,
       height: value,
@@ -189,6 +193,7 @@ export const darkTheme = createTheme('darkTheme', {
   colors: {
     ...colorsDark,
     background: '$colors$neutral1',
+    backgroundOverlayColor: 'rgba(5,5,5, .8)',
     foreground: '$colors$neutral6',
     borderColor: '#f0f0f033',
   },

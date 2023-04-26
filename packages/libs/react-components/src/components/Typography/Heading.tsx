@@ -8,6 +8,7 @@ export interface IHeadingProps {
   variant?: VariantProps<typeof BaseText>['variant'];
   font?: VariantProps<typeof BaseText>['font'];
   bold?: VariantProps<typeof BaseText>['bold'];
+  color?: VariantProps<typeof BaseText>['color'];
   transform?: VariantProps<typeof BaseText>['transform'];
   children: React.ReactNode;
 }
@@ -17,6 +18,7 @@ export const Heading: FC<IHeadingProps> = ({
   variant,
   font,
   bold = true,
+  color = 'emphasize',
   transform,
   children,
 }) => {
@@ -26,6 +28,7 @@ export const Heading: FC<IHeadingProps> = ({
       variant={variant ?? as}
       font={font}
       bold={bold}
+      color={color}
       transform={transform}
     >
       {children}

@@ -15,7 +15,7 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
       title="Open the sidemenu"
       onClick={toggleMenu}
       icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
-      color="$neutral4"
+      color="inverted"
     />
   );
 };

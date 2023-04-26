@@ -1,7 +1,8 @@
 ---
-title: Pact tutorial
-order: 0
-label: Tutorial
+title: Welcome to pact
+menu: Build-in Functions
+label: General buildin
+order: 5
 description: How to get started with Markdoc
 layout: full
 ---
