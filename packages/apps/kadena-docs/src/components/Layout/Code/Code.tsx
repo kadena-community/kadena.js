@@ -9,7 +9,7 @@ export const Code: FC<ILayout> = ({ children, isAsideOpen }) => {
       <Content id="maincontent">
         <Article>{children}</Article>
       </Content>
-      <CodeBackground layout="code" isOpen={isAsideOpen} />
+      <CodeBackground isOpen={isAsideOpen} />
 
       <Aside layout="code" isOpen={isAsideOpen}>
         code

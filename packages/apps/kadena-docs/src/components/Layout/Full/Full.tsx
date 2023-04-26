@@ -3,9 +3,9 @@ import { Heading } from '@kadena/react-components';
 import {
   Article,
   Aside,
+  AsideBackground,
   AsideLink,
   AsideList,
-  CodeBackground,
   Content,
   StickyAside,
   StickyAsideWrapper,
@@ -37,7 +37,7 @@ export const Full: FC<ILayout> = ({ children }) => {
         <Article ref={docRef}>{children}</Article>
       </Content>
 
-      <CodeBackground />
+      <AsideBackground />
       <Aside>
         <StickyAsideWrapper>
           <StickyAside>
