@@ -1,4 +1,3 @@
-import { CodeBackground } from '../../Code/styles';
 import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
@@ -85,10 +84,14 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         <meta name="description" content={description} />
       </Head>
 
-      {isOneOfLayoutType(layoutType, 'code') && <CodeBackground />}
-
       <Template
-        layout={isOneOfLayoutType(Layout, 'landing') ? 'landing' : 'normal'}
+        layout={
+          isOneOfLayoutType(layoutType, 'landing')
+            ? 'landing'
+            : isOneOfLayoutType(layoutType, 'code')
+            ? 'code'
+            : 'normal'
+        }
       >
         <Header
           toggleMenu={toggleMenu}
@@ -103,7 +106,12 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         <Menu
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(Layout, 'full', 'codeside') ? true : false
+            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
+              ? true
+              : false
+          }
+          layout={
+            isOneOfLayoutType(layoutType, 'landing') ? 'landing' : 'normal'
           }
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />

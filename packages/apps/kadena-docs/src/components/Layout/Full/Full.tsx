@@ -1,16 +1,15 @@
 import { Heading } from '@kadena/react-components';
 
-import { Article, Content } from '../components';
-import { SideBackground } from '../components/Background';
+import {
+  Article,
+  Aside,
+  CodeBackground,
+  CodeBackgroundOverlay,
+  Content,
+} from '../Code/styles';
 
 import { AsideLink } from './AsideLink';
-import {
-  Aside,
-  AsideList,
-  SideBackgroundWrapper,
-  StickyAside,
-  StickyAsideWrapper,
-} from './style';
+import { AsideList, StickyAside, StickyAsideWrapper } from './style';
 import { useCreateSubMenu } from './useCreateSubmenu';
 
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
@@ -24,7 +23,6 @@ export const Full: FC<ILayout> = ({ children }) => {
       <AsideLink href={`#${item.slug}`} key={item.slug} label={item.title}>
         {item.children.length > 0 && (
           <AsideList inner={true}>
-            sd
             {item.children.map(renderListItem)}
           </AsideList>
         )}
@@ -36,21 +34,20 @@ export const Full: FC<ILayout> = ({ children }) => {
     <>
       <Content id="maincontent">
         <Article ref={docRef}>{children}</Article>
-
-        <SideBackgroundWrapper>
-          <SideBackground />
-        </SideBackgroundWrapper>
-        <Aside>
-          <StickyAsideWrapper>
-            <StickyAside>
-              <Heading as="h6" transform="uppercase">
-                On this page
-              </Heading>
-              <AsideList>{headers.map(renderListItem)}</AsideList>
-            </StickyAside>
-          </StickyAsideWrapper>
-        </Aside>
       </Content>
+
+      <CodeBackground />
+      <CodeBackgroundOverlay />
+      <Aside>
+        <StickyAsideWrapper>
+          <StickyAside>
+            <Heading as="h6" transform="uppercase">
+              On this page
+            </Heading>
+            <AsideList>{headers.map(renderListItem)}</AsideList>
+          </StickyAside>
+        </StickyAsideWrapper>
+      </Aside>
     </>
   );
 };

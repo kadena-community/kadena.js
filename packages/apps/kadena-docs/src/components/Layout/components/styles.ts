@@ -9,36 +9,34 @@ export const Wrapper: StyledComponent<'div'> = styled('div', {
 
 export const Template: StyledComponent<
   'div',
-  { layout?: 'landing' | 'normal' | undefined }
+  { layout?: 'landing' | 'normal' | 'code' | undefined }
 > = styled('div', {
   display: 'grid',
   gridTemplateRows: '$17 auto 1fr auto',
+  gridTemplateColumns: 'auto auto',
   gridTemplateAreas: `
-      "header"
-      "pageheader"
-      "content"
-      "footer"
+      "header header"
+      "pageheader pageheader"
+      "content content"
+      "footer footer"
     `,
   position: 'relative',
   margin: '0 auto',
   minHeight: '100vh',
   '@md': {
     gridTemplateColumns:
-      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
+      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 300px)) 300px 1%',
     gridTemplateAreas: `
-        "header header header header"
-        "pageheader pageheader pageheader pageheader"
-        ". menu content ."
-        "footer footer footer footer"
+        "header header header header header"
+        "pageheader pageheader pageheader pageheader pageheader"
+        ". menu content aside ."
+        "footer footer footer footer footer"
       `,
   },
-  '@lg': {
-    gridTemplateColumns:
-      '$14 $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) $14',
-  },
+
   '@2xl': {
     gridTemplateColumns:
-      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
+      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 300px)) 300px auto',
   },
   defaultVariants: {
     layout: 'landing',
@@ -46,6 +44,12 @@ export const Template: StyledComponent<
   variants: {
     layout: {
       normal: {},
+      code: {
+        gridTemplateColumns: '95vw 100vw',
+        '@md': {
+          gridTemplateColumns: 'auto auto',
+        },
+      },
       landing: {
         gridTemplateAreas: `
             "header"
@@ -53,12 +57,13 @@ export const Template: StyledComponent<
             "content"
             "footer"
           `,
+
         '@md': {
           gridTemplateAreas: `
-              "header header header header"
-              "pageheader pageheader pageheader pageheader"
-              ". content content ."
-              "footer footer footer footer"
+              "header header header header header"
+              "pageheader pageheader pageheader pageheader pageheader"
+              ". menu content content ."
+              "footer footer footer footer footer"
             `,
         },
       },
@@ -66,19 +71,25 @@ export const Template: StyledComponent<
   },
 });
 
-export const Article: StyledComponent<'div'> = styled('div', {
-  flex: 1,
+export const Article: StyledComponent<'article'> = styled('article', {
+  width: '100%',
+  backgroundColor: 'transparent',
 });
 
 export const Content: StyledComponent<'div', { name?: string }> = styled(
   'div',
   {
-    position: 'relative',
     display: 'flex',
-    gridArea: 'content',
-    flex: 1,
-    padding: '0 0 0 $10',
-    overflowX: 'hidden',
+    position: 'relative',
+    gridColumn: '1 / span 1',
+    gridRow: '3 / span 1',
+    width: '100%',
+    height: '100%',
+
+    '@md': {
+      gridColumn: '3 / span 1',
+      gridRow: '3 / span 3',
+    },
   },
 );
 
@@ -125,12 +136,13 @@ export const Menu: StyledComponent<
   {
     isOpen?: boolean | 'true' | 'false' | undefined;
     inLayout?: boolean | 'true' | 'false' | undefined;
+    layout?: 'landing' | 'normal' | undefined;
   }
 > = styled('div', {
   gridArea: 'menu',
+  gridRow: '2 / span 2',
+  height: '100%',
   position: 'absolute',
-  top: '$17',
-  height: 'calc(100% - $17 - $17)',
   width: '100%',
   zIndex: '$navMenu',
   borderRight: '1px solid $neutral3',
@@ -144,12 +156,28 @@ export const Menu: StyledComponent<
   },
   '@md': {
     position: 'relative',
-    top: '0',
-    height: '100%',
     transform: 'translateX(0)',
+    background: 'transparent',
   },
 
   variants: {
+    layout: {
+      landing: {
+        '@md': {
+          paddingTop: '220px',
+        },
+        '@lg': {
+          paddingTop: '260px',
+        },
+        '@xl': {
+          paddingTop: '280px',
+        },
+        '@2xl': {
+          paddingTop: '300px',
+        },
+      },
+      normal: {},
+    },
     inLayout: {
       true: {
         display: 'block',

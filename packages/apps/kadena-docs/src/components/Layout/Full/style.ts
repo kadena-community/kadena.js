@@ -39,17 +39,6 @@ export const AsideItem: StyledComponent<'li'> = styled('li', {
   },
 });
 
-export const Aside: StyledComponent<'aside'> = styled('aside', {
-  position: 'relative',
-  display: 'none',
-  width: '25%',
-  overflow: 'hidden',
-  paddingLeft: '$4',
-  '@md': {
-    display: 'block',
-  },
-});
-
 export const StickyAsideWrapper: StyledComponent<'div'> = styled('div', {
   position: 'fixed',
   display: 'flex',
@@ -59,14 +48,4 @@ export const StickyAsideWrapper: StyledComponent<'div'> = styled('div', {
 export const StickyAside: StyledComponent<'div'> = styled('div', {
   position: 'sticky',
   top: '$10',
-});
-
-//TODO: under construction
-export const SideBackgroundWrapper: StyledComponent<'div'> = styled('div', {
-  position: 'absolute',
-  right: '0',
-  top: '-$40',
-  '@md': {
-    right: '-$40',
-  },
 });
