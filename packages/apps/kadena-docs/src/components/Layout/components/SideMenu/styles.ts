@@ -5,6 +5,8 @@ import Link from 'next/link';
 export const StyledSideMenu: StyledComponent<'div'> = styled('div', {
   position: 'relative',
   marginTop: '$6',
+  height: '100%',
+  paddingBottom: '100px',
 });
 
 export const StyledUl: StyledComponent<'ul'> = styled('ul', {
@@ -63,6 +65,8 @@ export const StyledSection: StyledComponent<
   margin: '$16 0',
   padding: '0 $4',
   width: '100%',
+  height: '100%',
+  overflowY: 'scroll',
   defaultVariants: {
     active: false,
     animateLeft2Right: true,

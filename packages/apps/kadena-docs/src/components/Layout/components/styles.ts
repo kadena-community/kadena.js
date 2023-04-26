@@ -147,11 +147,12 @@ export const Menu: StyledComponent<
     layout?: 'landing' | 'normal' | undefined;
   }
 > = styled('div', {
+  position: 'absolute',
   gridArea: 'menu',
   gridRow: '2 / span 2',
   height: '100%',
-  position: 'absolute',
   width: '100%',
+  paddingBottom: '$40',
   zIndex: '$sideMenu',
   borderRight: '1px solid $borderColor',
   background: '$background',

@@ -133,7 +133,7 @@ export const Aside: StyledComponent<
   }
 > = styled('aside', {
   gridArea: 'aside',
-  overflow: 'hidden',
+  overflowY: 'scroll',
   height: '100%',
   width: '100%',
   gridColumn: '4 / span 2',
