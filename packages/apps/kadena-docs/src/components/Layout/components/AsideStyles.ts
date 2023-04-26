@@ -85,25 +85,27 @@ export const CodeBackground: StyledComponent<
           backgroundPositionY: '-100px',
           '@md': {
             backgroundColor: 'transparent',
-            backgroundPositionX: 'calc(100vw  - (300px + 80px))',
+            backgroundPositionX:
+              'calc(100vw  - (var(--asideMenuWidthMDCode) + 80px))',
           },
           '@lg': {
-            backgroundPositionX: 'calc(100vw  - (400px + 80px))',
+            backgroundPositionX:
+              'calc(100vw  - (var(--asideMenuWidthLGCode) + 80px))',
           },
           '@2xl': {
             backgroundPositionX:
-              'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (500px +  80px))',
+              'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (var(--asideMenuWidthXLCode) +  80px))',
           },
         },
         '&::after': {
           '@md': {
-            left: 'calc(100vw  - (300px + 15px))',
+            left: 'calc(100vw  - (var(--asideMenuWidthMDCode) + 15px))',
           },
           '@lg': {
-            left: 'calc(100vw  - (400px + 15px))',
+            left: 'calc(100vw  - (var(--asideMenuWidthLGCode) + 15px))',
           },
           '@2xl': {
-            left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - 500px)',
+            left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - var(--asideMenuWidthXLCode))',
           },
         },
       },
@@ -117,12 +119,6 @@ export const CodeBackground: StyledComponent<
     backgroundColor: '$backgroundOverlayColor',
     zIndex: 1,
   },
-});
-
-export const Article: StyledComponent<'article'> = styled('article', {
-  width: '100%',
-  padding: '0 $4',
-  backgroundColor: 'transparent',
 });
 
 export const Aside: StyledComponent<
@@ -153,31 +149,22 @@ export const Aside: StyledComponent<
       layout: 'code',
       css: {
         transform: 'translateX(0)',
+        width: '100%',
       },
     },
   ],
   variants: {
     layout: {
-      code: {},
+      code: {
+        '@2xl': {
+          maxWidth: 'var(--asideMenuWidthXLCode)',
+        },
+      },
       default: {},
     },
     isOpen: {
       true: {},
       false: {},
     },
-  },
-});
-
-export const Content: StyledComponent<'div'> = styled('div', {
-  display: 'flex',
-  position: 'relative',
-  gridColumn: '1 / span 2',
-  gridRow: '3 / span 1',
-  width: '100%',
-  height: '100%',
-
-  '@md': {
-    gridColumn: '3 / span 1',
-    gridRow: '3 / span 3',
   },
 });

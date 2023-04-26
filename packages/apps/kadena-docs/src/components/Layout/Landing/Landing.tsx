@@ -1,6 +1,4 @@
-import { Article } from '../Code/styles';
-
-import { Content } from './styles';
+import { Article, Content } from '../components';
 
 import { ILayout } from '@/types/Layout';
 import React, { FC } from 'react';

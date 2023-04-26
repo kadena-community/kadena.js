@@ -11,6 +11,12 @@ export const Template: StyledComponent<
   'div',
   { layout?: 'landing' | 'normal' | 'code' | undefined }
 > = styled('div', {
+  '--asideMenuWidthMDDefault': '200px',
+  '--asideMenuWidthLGDefault': '300px',
+  '--asideMenuWidthMDCode': '300px',
+  '--asideMenuWidthLGCode': '400px',
+  '--asideMenuWidthXLCode': '500px',
+
   display: 'grid',
   gridTemplateRows: '$17 auto 1fr auto',
   gridTemplateColumns: 'auto auto',
@@ -24,8 +30,6 @@ export const Template: StyledComponent<
   margin: '0 auto',
   minHeight: '100vh',
   '@md': {
-    gridTemplateColumns:
-      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 200px)) 200px 1%',
     gridTemplateAreas: `
         "header header header header header"
         "pageheader pageheader pageheader pageheader pageheader"
@@ -33,29 +37,33 @@ export const Template: StyledComponent<
         "footer footer footer footer footer"
       `,
   },
-
-  '@2xl': {
-    gridTemplateColumns:
-      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 300px)) 300px auto',
-  },
   defaultVariants: {
     layout: 'landing',
   },
   variants: {
     layout: {
-      normal: {},
-      code: {
+      normal: {
         '@md': {
           gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 300px)) 300px 1%',
-        },
-        '@lg': {
-          gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 400px)) 400px 1%',
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthMDDefault))) var(--asideMenuWidthMDDefault) 1%',
         },
         '@2xl': {
           gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 500px)) 500px auto',
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthLGDefault))) var(--asideMenuWidthLGDefault) auto',
+        },
+      },
+      code: {
+        '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthMDCode))) var(--asideMenuWidthMDCode) 1%',
+        },
+        '@lg': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthLGCode))) var(--asideMenuWidthLGCode) 1%',
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthXLCode))) var(--asideMenuWidthXLCode) auto',
         },
       },
       landing: {
