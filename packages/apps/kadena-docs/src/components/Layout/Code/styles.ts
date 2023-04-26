@@ -28,18 +28,15 @@ export const CodeBackground: StyledComponent<
       isOpen: true,
       layout: 'code',
       css: {
+        transform: 'translateX(0)',
         '&::before': {
           '@md': {
-            '@md': {
-              backgroundPositionX: 'calc(100vw  - (200px + 80px))',
-            },
+            '@md': {},
           },
         },
         '&::after': {
           '@md': {
-            '@md': {
-              left: 'calc(100vw  - (200px + 15px))',
-            },
+            '@md': {},
           },
         },
       },
@@ -47,9 +44,7 @@ export const CodeBackground: StyledComponent<
   ],
   variants: {
     isOpen: {
-      true: {
-        transform: 'translateX(0)',
-      },
+      true: {},
       false: {},
     },
     layout: {
@@ -69,6 +64,14 @@ export const CodeBackground: StyledComponent<
               'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (300px +  120px))',
           },
         },
+        '&::after': {
+          '@md': {
+            left: 'calc(100vw  - (200px + 15px))',
+          },
+          '@2xl': {
+            left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - 300px)',
+          },
+        },
       },
       code: {
         '&::before': {
@@ -76,13 +79,31 @@ export const CodeBackground: StyledComponent<
           position: 'absolute',
           pointerEvents: 'none',
           inset: 0,
+          backgroundColor: '$background',
           backgroundImage: 'url("/assets/bg-vertical.png")',
           backgroundRepeat: 'no-repeat',
           backgroundPositionY: '-100px',
-
+          '@md': {
+            backgroundColor: 'transparent',
+            backgroundPositionX: 'calc(100vw  - (300px + 80px))',
+          },
+          '@lg': {
+            backgroundPositionX: 'calc(100vw  - (400px + 80px))',
+          },
           '@2xl': {
             backgroundPositionX:
-              'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (300px +  80px))',
+              'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (500px +  80px))',
+          },
+        },
+        '&::after': {
+          '@md': {
+            left: 'calc(100vw  - (300px + 15px))',
+          },
+          '@lg': {
+            left: 'calc(100vw  - (400px + 15px))',
+          },
+          '@2xl': {
+            left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - 500px)',
           },
         },
       },
@@ -95,12 +116,6 @@ export const CodeBackground: StyledComponent<
     inset: 0,
     backgroundColor: '$backgroundOverlayColor',
     zIndex: 1,
-    '@md': {
-      left: 'calc(100vw  - (200px + 15px))',
-    },
-    '@2xl': {
-      left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - 300px)',
-    },
   },
 });
 
@@ -118,10 +133,9 @@ export const Aside: StyledComponent<
   }
 > = styled('aside', {
   gridArea: 'aside',
-  minWidth: '200px',
-  width: '$sizes$asideWidth',
   overflow: 'hidden',
-
+  height: '100%',
+  width: '100%',
   gridColumn: '4 / span 2',
   gridRow: '2 / span 2',
 

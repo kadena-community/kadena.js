@@ -7,10 +7,7 @@ export const Code: FC<ILayout> = ({ children, isAsideOpen }) => {
   return (
     <>
       <Content id="maincontent">
-        <Article>
-          {isAsideOpen?.toString()}
-          {children}
-        </Article>
+        <Article>{children}</Article>
       </Content>
       <CodeBackground layout="code" isOpen={isAsideOpen} />
 

@@ -44,7 +44,20 @@ export const Template: StyledComponent<
   variants: {
     layout: {
       normal: {},
-      code: {},
+      code: {
+        '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 300px)) 300px 1%',
+        },
+        '@lg': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 400px)) 400px 1%',
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 500px)) 500px auto',
+        },
+      },
       landing: {
         gridTemplateAreas: `
             "header"
