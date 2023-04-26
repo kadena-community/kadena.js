@@ -107,7 +107,7 @@ describe('parser', () => {
   it('lexer test.contract.pact', () => {
     const filePath = path.join(__dirname, './test.contract.pact');
     const fileContractDefinition = new FileContractDefinition({
-      filePath: filePath,
+      path: filePath,
       // logger: console.log,
     });
 
@@ -133,7 +133,7 @@ describe('parser', () => {
   it('marmalade.contract.pact', () => {
     const filePath = path.join(__dirname, './marmalade.contract.pact');
     const fileContractDefinition = new FileContractDefinition({
-      filePath,
+      path: filePath,
       // logger: console.log,
     });
 

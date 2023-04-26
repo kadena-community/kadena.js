@@ -18,7 +18,7 @@ describe('FileContractDefinition', () => {
   describe('namespace', () => {
     it('gets set when provided as an argument', () => {
       const contractDefinition = new FileContractDefinition({
-        filePath: './path/not-namespaced.pact',
+        path: './path/not-namespaced.pact',
         namespace: 'bar',
       });
 
@@ -27,7 +27,7 @@ describe('FileContractDefinition', () => {
 
     it('gets set to the one defined in the contract when NOT provided as an argument', () => {
       const contractDefinition = new FileContractDefinition({
-        filePath: './path/namespaced.pact',
+        path: './path/namespaced.pact',
       });
 
       expect(contractDefinition.getNamespace('foo')).toBe('free');
@@ -35,7 +35,7 @@ describe('FileContractDefinition', () => {
 
     it('does NOT get set when NOT defined in the contract and NOT provided as an argument', () => {
       const contractDefinition = new FileContractDefinition({
-        filePath: './path/not-namespaced.pact',
+        path: './path/not-namespaced.pact',
       });
 
       expect(contractDefinition.getNamespace('foo')).toBe('');
@@ -44,7 +44,7 @@ describe('FileContractDefinition', () => {
 
   it('returns the defcaps of the contract', () => {
     const contractDefinition = new FileContractDefinition({
-      filePath: './path/namespaced-with-defcaps.pact',
+      path: './path/namespaced-with-defcaps.pact',
     });
 
     expect(contractDefinition.getCapabilities('foo')).toEqual({
@@ -65,7 +65,7 @@ describe('FileContractDefinition', () => {
 
   it('returns the modules of the contract', () => {
     const contractDefinition = new FileContractDefinition({
-      filePath: './path/namespaced-with-defuns.pact',
+      path: './path/namespaced-with-defuns.pact',
     });
 
     expect(contractDefinition.modules).toEqual(['foo']);
@@ -73,7 +73,7 @@ describe('FileContractDefinition', () => {
 
   it('returns the methods of the contract', () => {
     const contractDefinition = new FileContractDefinition({
-      filePath: './path/namespaced-with-defuns.pact',
+      path: './path/namespaced-with-defuns.pact',
     });
 
     expect(contractDefinition.getMethods('foo')).toEqual({
@@ -96,7 +96,7 @@ describe('FileContractDefinition', () => {
 
   it('returns the modules with functions of the contract', () => {
     const contractDefinition = new FileContractDefinition({
-      filePath: './path/namespaced-with-defcaps-and-defuns.pact',
+      path: './path/namespaced-with-defcaps-and-defuns.pact',
     });
 
     expect(contractDefinition.modulesWithFunctions).toEqual({

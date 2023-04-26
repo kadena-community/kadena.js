@@ -80,7 +80,7 @@ export const generate =
     } else {
       console.log(`Generating Pact contract from ${args.file}`);
       pactModule = new FileContractDefinition({
-        filePath: join(process.cwd(), args.file!),
+        path: join(process.cwd(), args.file!),
       });
     }
 

@@ -10,8 +10,8 @@ import { PathLike } from 'fs';
 
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
-    constructor({ filePath, namespace, logger, }: {
-        filePath: PathLike;
+    constructor({ path, namespace, logger, }: {
+        path: PathLike;
         namespace?: string;
         logger?: ILogger;
     });

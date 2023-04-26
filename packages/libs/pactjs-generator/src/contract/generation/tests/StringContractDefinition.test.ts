@@ -4,7 +4,7 @@ describe('StringContractDefinition', () => {
   describe('namespace', () => {
     it('gets set when provided as an argument', () => {
       const contractDefinition = new StringContractDefinition({
-        contract: 'module foo',
+        contract: '(module foo)',
         namespace: 'bar',
       });
 
