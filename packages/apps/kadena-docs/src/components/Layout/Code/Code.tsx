@@ -1,10 +1,4 @@
-import {
-  Article,
-  Aside,
-  CodeBackground,
-  CodeBackgroundOverlay,
-  Content,
-} from './styles';
+import { Article, Aside, CodeBackground, Content } from './styles';
 
 import { ILayout } from '@/types/Layout';
 import React, { FC } from 'react';
@@ -15,8 +9,8 @@ export const Code: FC<ILayout> = ({ children }) => {
       <Content id="maincontent">
         <Article>{children}</Article>
       </Content>
-      <CodeBackground />
-      <CodeBackgroundOverlay />
+      <CodeBackground layout="code" />
+
       <Aside>code</Aside>
     </>
   );

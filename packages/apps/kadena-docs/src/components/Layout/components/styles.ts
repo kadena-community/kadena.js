@@ -25,7 +25,7 @@ export const Template: StyledComponent<
   minHeight: '100vh',
   '@md': {
     gridTemplateColumns:
-      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 300px)) 300px 1%',
+      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - 200px)) 200px 1%',
     gridTemplateAreas: `
         "header header header header header"
         "pageheader pageheader pageheader pageheader pageheader"
@@ -44,12 +44,7 @@ export const Template: StyledComponent<
   variants: {
     layout: {
       normal: {},
-      code: {
-        gridTemplateColumns: '95vw 100vw',
-        '@md': {
-          gridTemplateColumns: 'auto auto',
-        },
-      },
+      code: {},
       landing: {
         gridTemplateAreas: `
             "header"
@@ -144,8 +139,8 @@ export const Menu: StyledComponent<
   height: '100%',
   position: 'absolute',
   width: '100%',
-  zIndex: '$navMenu',
-  borderRight: '1px solid $neutral3',
+  zIndex: '$sideMenu',
+  borderRight: '1px solid $borderColor',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
@@ -164,16 +159,7 @@ export const Menu: StyledComponent<
     layout: {
       landing: {
         '@md': {
-          paddingTop: '220px',
-        },
-        '@lg': {
-          paddingTop: '260px',
-        },
-        '@xl': {
-          paddingTop: '280px',
-        },
-        '@2xl': {
-          paddingTop: '300px',
+          paddingTop: '290px',
         },
       },
       normal: {},

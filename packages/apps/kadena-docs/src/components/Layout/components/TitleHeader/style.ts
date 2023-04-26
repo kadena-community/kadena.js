@@ -6,7 +6,8 @@ export const HeaderWrapper: StyledComponent<'div'> = styled('div', {
   gridArea: 'pageheader',
   position: 'relative',
   display: 'grid',
-  gridTemplateRows: 'auto 40px',
+  height: '300px',
+  gridTemplateRows: '260px 40px',
   gridTemplateAreas: `
   "main"
   "shadow"
@@ -16,30 +17,30 @@ export const HeaderWrapper: StyledComponent<'div'> = styled('div', {
   '@md': {
     zIndex: 101,
   },
-});
 
-export const StyledBackground: StyledComponent<'div'> = styled('div', {
-  position: 'relative',
-  gridRowStart: '1',
-  gridRowEnd: '3',
-  gridColumn: '1 / 2',
-  background: 'url("/assets/bg-horizontal.png")',
-  backgroundRepeat: 'no-repeat',
-  backgroundPositionX: 'center',
-  backgroundPositionY: '95%',
-  transform: 'scaleX(-1)',
-  zIndex: 2,
-
-  '@md': {
-    transform: 'scaleX(1)',
+  '&::before': {
+    content: '',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: '40px',
+    backgroundColor: '$background',
   },
-});
+  '&::after': {
+    content: '',
+    position: 'absolute',
+    inset: 0,
+    background: 'url("/assets/bg-horizontal.png")',
+    backgroundRepeat: 'no-repeat',
+    backgroundPositionX: 'center',
+    backgroundPositionY: '95%',
+    transform: 'scaleX(-1)',
 
-export const StyledBackgroundColor: StyledComponent<'div'> = styled('div', {
-  position: 'relative',
-  gridArea: 'main',
-  backgroundColor: '$background',
-  zIndex: 1,
+    '@md': {
+      transform: 'scaleX(1)',
+    },
+  },
 });
 
 export const StyledHeader: StyledComponent<'header'> = styled('header', {

@@ -5,7 +5,7 @@ import {
 } from '@kadena/react-components';
 
 import { Main } from '@/components/Layout/components';
-import { DocsPageFC } from '@/types/Layout';
+import { IDocsPageFC } from '@/types/Layout';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import React from 'react';
@@ -21,7 +21,7 @@ GlobalStyles();
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   // Fixes "Component' cannot be used as a JSX component."
-  const ReactComponent = Component as DocsPageFC;
+  const ReactComponent = Component as IDocsPageFC;
 
   if (ReactComponent.meta !== undefined) {
     pageProps = { ...pageProps, markdoc: { frontmatter: ReactComponent.meta } };

@@ -37,7 +37,6 @@ export const Full: FC<ILayout> = ({ children }) => {
       </Content>
 
       <CodeBackground />
-      <CodeBackgroundOverlay />
       <Aside>
         <StickyAsideWrapper>
           <StickyAside>

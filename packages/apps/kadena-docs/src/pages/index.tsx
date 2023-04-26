@@ -1,9 +1,9 @@
 import { Stack } from '@kadena/react-components';
 
-import { DocsPageFC } from '@/types/Layout';
+import { IDocsPageFC } from '@/types/Layout';
 import React from 'react';
 
-const Home: DocsPageFC = () => {
+const Home: IDocsPageFC = () => {
   return (
     <>
       <Stack>

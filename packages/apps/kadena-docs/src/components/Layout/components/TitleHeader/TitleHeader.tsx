@@ -1,13 +1,6 @@
 import { Heading } from '@kadena/react-components';
 
-import {
-  HeaderWrapper,
-  StyledBackground,
-  StyledBackgroundColor,
-  StyledHeader,
-  SubHeader,
-  Wrapper,
-} from './style';
+import { HeaderWrapper, StyledHeader, SubHeader, Wrapper } from './style';
 
 import React, { FC } from 'react';
 
@@ -19,8 +12,6 @@ interface IProps {
 export const TitleHeader: FC<IProps> = ({ title, subTitle }) => {
   return (
     <HeaderWrapper>
-      <StyledBackgroundColor />
-      <StyledBackground />
       <StyledHeader>
         <Wrapper>
           <Heading as="h1">{title}</Heading>

@@ -1,7 +1,7 @@
-import { DocsPageFC } from '@/types/Layout';
+import { IDocsPageFC } from '@/types/Layout';
 import React from 'react';
 
-const Text: DocsPageFC = () => {
+const Text: IDocsPageFC = () => {
   return (
     <div>
       Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie
