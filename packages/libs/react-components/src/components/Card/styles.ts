@@ -2,17 +2,6 @@
 
 import { styled } from '../../styles';
 
-export const styleVariant = {
-  primaryFilled: {
-    $$color: '$colors$neutral1',
-    $$inverseColor: '$colors$neutral6',
-    $$bgColor: '$colors$primaryContrast',
-    $$bgHoverColor: '$colors$primaryHighContrast',
-    $$focusOutlineColor: '$colors$primaryHighContrast',
-    $$disabledBackgroundColor: '$colors$neutral3',
-  },
-} as const;
-
 export const CardColors: string[] = [
   'default',
   'primary',
@@ -35,7 +24,6 @@ export const StyledCard = styled('div', {
   boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.04)',
   borderRadius: '8px',
   variants: {
-    variant: styleVariant,
     color: {
       default: {
         backgroundColor: '$colors$defaultSurface',
@@ -66,9 +54,6 @@ export const StyledCard = styled('div', {
       true: { width: '100%' },
       height: { width: '100%' },
     },
-  },
-  defaultVariants: {
-    variant: 'primaryFilled',
   },
 });
 
