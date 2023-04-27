@@ -38,8 +38,8 @@ export const StyledCard = styled('div', {
     variant: styleVariant,
     color: {
       default: {
-        backgroundColor: '$colors$neutral2',
-        color: '$colors$neutral5',
+        backgroundColor: '$colors$defaultSurface',
+        color: '$colors$defaultContrast',
       },
       primary: {
         backgroundColor: '$colors$primarySurface',
