@@ -1,4 +1,11 @@
-import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
+import {
+  darkTheme,
+  IconButton,
+  styled,
+  StyledComponent,
+} from '@kadena/react-components';
+
+import { HeaderIconGroup } from './Header/styles';
 
 import Link from 'next/link';
 
@@ -185,6 +192,10 @@ export const StyledHeader: StyledComponent<'header'> = styled('header', {
 
   [`.${darkTheme} &`]: {
     background: '$neutral2',
+
+    [`& ${HeaderIconGroup} svg`]: {
+      color: '$neutral5',
+    },
   },
 });
 
