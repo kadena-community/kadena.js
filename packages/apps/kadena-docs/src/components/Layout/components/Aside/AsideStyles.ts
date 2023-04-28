@@ -7,7 +7,6 @@ export const BaseBackground: StyledComponent<
   }
 > = styled('div', {
   position: 'absolute',
-  zIndex: 2,
   pointerEvents: 'none',
   width: '100vw',
   height: '100vh',
@@ -100,6 +99,11 @@ export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
   BaseBackground,
   {
     '--shadowWidth': '$sizes$25',
+    display: 'none',
+    '@md': {
+      display: 'block',
+    },
+
     '&::before': {
       content: '',
       position: 'absolute',
@@ -134,6 +138,7 @@ export const Aside: StyledComponent<
     isOpen?: boolean | 'true' | 'false' | undefined;
   }
 > = styled('aside', {
+  display: 'none',
   gridArea: 'aside',
   overflowY: 'scroll',
   height: '100%',
@@ -147,6 +152,7 @@ export const Aside: StyledComponent<
   transform: 'translateX(100vw)',
 
   '@md': {
+    display: 'block',
     transform: 'translateX(0)',
   },
   compoundVariants: [

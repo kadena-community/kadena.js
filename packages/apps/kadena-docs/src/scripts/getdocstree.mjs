@@ -99,8 +99,11 @@ const createTree = (rootDir, parent = []) => {
     if (fs.statSync(`${currentFile}`).isFile()) {
       const obj = convertFile(currentFile);
       Object.assign(child, obj);
-    } else if (fs.statSync(`${currentFile}/index.md`).isFile()) {
+    } else if (fs.existsSync(`${currentFile}/index.md`)) {
       const obj = convertFile(`${currentFile}/index.md`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
+      const obj = convertFile(`${currentFile}/index.tsx`);
       Object.assign(child, obj);
     } else {
       throw new Error(currentFile);

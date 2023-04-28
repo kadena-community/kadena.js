@@ -2,14 +2,15 @@ import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
-import importedMenu from '@/data/menu.json';
+import { getData } from './getData';
+
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode, useMemo, useState } from 'react';
 
-const typedMenuItems: IMenuItem[] = importedMenu as IMenuItem[];
+const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
@@ -114,6 +115,7 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
         {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
+          data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
             isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
