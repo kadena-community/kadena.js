@@ -44,12 +44,13 @@ export const Primary: Story = {
     itemsCount: 3,
   },
   render: ({ itemsCount }) => {
+    const items = ItemArray.slice(0, itemsCount);
     return (
       <Breadcrumbs>
-        {Array.from(Array(itemsCount).keys()).map((i) => {
+        {items.map((item, idx) => {
           return (
-            <BreadcrumbItem key={i}>
-              <a href={`#{ItemArray[i]}`}>{ItemArray[i]}</a>
+            <BreadcrumbItem key={item}>
+              {idx < items.length - 1 ? <a href={`#{item}`}>{item}</a> : item}
             </BreadcrumbItem>
           );
         })}
