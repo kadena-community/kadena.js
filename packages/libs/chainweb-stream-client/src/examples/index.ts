@@ -1,6 +1,6 @@
 import ChainwebStreamClient, { ITransaction } from '../';
 
-const client = new ChainwebStreamClient({
+const client: ChainwebStreamClient = new ChainwebStreamClient({
   // required
   type: 'account',
   id: 'k:e7f7130f359fb1f8c87873bf858a0e9cbc3c1059f62ae715ec72e760b055e9f3',
@@ -26,7 +26,7 @@ client.on('connect', () => {
 });
 
 // connection was lost and will be retried; show warning to the user
-client.on('will-reconnect', (...args: any[]) => {
+client.on('will-reconnect', (...args) => {
   console.log('will-reconnect callback', ...args);
 });
 

@@ -20,6 +20,9 @@ const DEFAULT_HEARTBEAT_TIMEOUT: number = 35_000;
 const DEFAULT_MAX_RECONNECTS: number = 6;
 const DEFAULT_LIMIT: number = 100;
 
+/**
+ * @alpha
+ */
 class ChainwebStream extends EventEmitter {
   // chainweb-stream backend host, full URI - e.g. https://sse.chainweb.com
   public host: string;
@@ -214,8 +217,7 @@ class ChainwebStream extends EventEmitter {
     this._reconnectTimer = setTimeout(this.connect, timeout);
   };
 
-  private _handleData = (msg: any): void => {
-    // TODO fix any. MessageEvent fails for custom event (.addEventListener(initial))
+  private _handleData = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
     const message = JSON.parse(msg.data) as ITransaction | ITransaction[];
@@ -288,10 +290,10 @@ class ChainwebStream extends EventEmitter {
     return Math.pow(this._failedConnectionAttempts, 3) * 1000 + 100;
   }
 
-  private _debug(caller: string, payload?: Record<string, any>): void {
+  private _debug(caller: string, payload?: Partial<IDebugMsgObject>): void {
     const debugMsg: IDebugMsgObject = {
       ts: new Date().valueOf(),
-      method: caller as any,
+      method: caller,
       ...payload,
     };
     this.emit('debug', debugMsg);

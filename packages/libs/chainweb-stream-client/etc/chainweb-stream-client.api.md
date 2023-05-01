@@ -6,7 +6,7 @@
 
 import EventEmitter from 'eventemitter2';
 
-// @public (undocumented)
+// @alpha (undocumented)
 class ChainwebStream extends EventEmitter {
     constructor({ host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
     // (undocumented)
@@ -31,10 +31,10 @@ class ChainwebStream extends EventEmitter {
 }
 export default ChainwebStream;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type ChainwebStreamType = 'event' | 'account';
 
-// @public (undocumented)
+// @alpha (undocumented)
 export enum ConnectionState {
     // (undocumented)
     Closed = 2,
@@ -48,7 +48,7 @@ export enum ConnectionState {
     WaitReconnect = 4
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IAccountTransaction extends ITransactionBase {
     // (undocumented)
     amount: string;
@@ -64,7 +64,7 @@ export interface IAccountTransaction extends ITransactionBase {
     token: string;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IChainwebStreamConstructorArgs {
     // (undocumented)
     confirmationDepth?: number;
@@ -84,7 +84,7 @@ export interface IChainwebStreamConstructorArgs {
     type: ChainwebStreamType;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IDebugMsgObject {
     // (undocumented)
     consecutiveFailedAttempts?: number;
@@ -93,7 +93,7 @@ export interface IDebugMsgObject {
     // (undocumented)
     message?: string;
     // (undocumented)
-    method: 'connect' | 'disconnect' | '_handleConnect' | '_handleError' | '_handleData' | '_handleHeartbeatTimeout';
+    method: 'connect' | 'disconnect' | '_handleConnect' | '_handleError' | '_handleData' | '_handleHeartbeatTimeout' | string;
     // (undocumented)
     timeout?: number;
     // (undocumented)
@@ -104,7 +104,7 @@ export interface IDebugMsgObject {
     willRetry?: boolean;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IEventTransaction extends ITransactionBase {
     // (undocumented)
     moduleHash: string;
@@ -114,10 +114,10 @@ export interface IEventTransaction extends ITransactionBase {
     params: string[];
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type ITransaction = IEventTransaction | IAccountTransaction;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface ITransactionBase {
     // (undocumented)
     blockHash: string;

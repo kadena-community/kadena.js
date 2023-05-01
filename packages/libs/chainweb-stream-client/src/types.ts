@@ -1,5 +1,11 @@
+/**
+ * @alpha
+ */
 export type ChainwebStreamType = 'event' | 'account';
 
+/**
+ * @alpha
+ */
 export interface ITransactionBase {
   blockTime: string;
   height: number;
@@ -13,23 +19,38 @@ export interface ITransactionBase {
   };
 }
 
+/**
+ * @alpha
+ */
 export interface IEventTransaction extends ITransactionBase {
   params: string[];
   name: string;
   moduleHash: string;
 }
 
+/**
+ * @alpha
+ */
 export interface IAccountTransaction extends ITransactionBase {
   amount: string;
   token: string;
   fromAccount: string;
   toAccount: string;
+  // ignoring linting rule; this describes the existing chainweb-stream JSON structure
+  // eslint-disable-next-line @rushstack/no-new-null
   crossChainId: number | null;
+  // eslint-disable-next-line @rushstack/no-new-null
   crossChainAccount: number | null;
 }
 
+/**
+ * @alpha
+ */
 export type ITransaction = IEventTransaction | IAccountTransaction;
 
+/**
+ * @alpha
+ */
 export interface IChainwebStreamConstructorArgs {
   type: ChainwebStreamType;
   id: string;
@@ -42,6 +63,9 @@ export interface IChainwebStreamConstructorArgs {
   confirmationDepth?: number;
 }
 
+/**
+ * @alpha
+ */
 export enum ConnectionState {
   Connecting = 0,
   Connected = 1,
@@ -51,6 +75,9 @@ export enum ConnectionState {
   // Error = 5, // TODO? For eventsource that failed too many times to retry
 }
 
+/**
+ * @alpha
+ */
 export interface IDebugMsgObject {
   // Unix timestamp (milliseconds)
   ts: number;
@@ -62,7 +89,8 @@ export interface IDebugMsgObject {
     | '_handleConnect'
     | '_handleError'
     | '_handleData'
-    | '_handleHeartbeatTimeout';
+    | '_handleHeartbeatTimeout'
+    | string;
 
   /*
    * certain events have event-specific fields as well:
