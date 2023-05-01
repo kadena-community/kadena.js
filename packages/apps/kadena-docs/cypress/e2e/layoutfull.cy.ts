@@ -122,10 +122,12 @@ describe('full layout', () => {
 
         menu().find('h5').contains('Pact');
       });
-      it.only('opens a new page when Chainweb is clicked in the main menu', () => {
+      it('opens a new page when Chainweb is clicked in the main menu', () => {
         openMenu();
         menu().find('h5').contains('Pact').click();
         mainMenu().find('ul').children('li:nth-child(3)').click();
+        cy.wait(1000);
+        cy.percySnapshot('test');
       });
     });
   });
