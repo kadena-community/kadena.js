@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Publish initial chainweb-stream-client",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
