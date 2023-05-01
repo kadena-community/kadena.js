@@ -1,7 +1,10 @@
 import EventSource from 'eventsource';
 import EventEmitter from 'eventemitter2';
-import HeartbeatTimeoutError from './heartbeat-timeout-error';
-import ConnectTimeoutError from './connect-timeout-error';
+import {
+  parseError,
+  ConnectTimeoutError,
+  HeartbeatTimeoutError,
+} from './errors';
 import {
   IChainwebStreamConstructorArgs,
   ChainwebStreamType,
@@ -111,7 +114,7 @@ class ChainwebStream extends EventEmitter {
       clearTimeout(this._connectTimer);
     }
     this._connectTimer = setTimeout(
-      () => this._handleError(new ConnectTimeoutError()),
+      () => this._handleError(new ConnectTimeoutError(this.connectTimeoutMs)),
       this.connectTimeoutMs,
     );
   };
@@ -184,14 +187,7 @@ class ChainwebStream extends EventEmitter {
       clearTimeout(this._connectTimer);
     }
 
-    let message = 'Connection error'; // default for "Event". No error information is available, presume disconnection
-    if (err instanceof HeartbeatTimeoutError) {
-      // special case: heartbeat timeout
-      message = `Connection stale (no heartbeats for ${this.heartbeatTimeoutMs} ms)`;
-    } else if (err instanceof ConnectTimeoutError) {
-      // special case: initial connection timeout
-      message = `Connection timeout (timeout ${this.connectTimeoutMs} ms)`;
-    }
+    const message = parseError(err);
 
     const willRetry = this._failedConnectionAttempts < this.maxReconnects;
     const timeout = this._getTimeout();
@@ -264,7 +260,7 @@ class ChainwebStream extends EventEmitter {
 
   private _handleHeartbeatTimeout = (): void => {
     this._debug('_handleHeartbeatTimeout');
-    this._handleError(new HeartbeatTimeoutError());
+    this._handleError(new HeartbeatTimeoutError(this.heartbeatTimeoutMs));
   };
 
   private _makeConnectionURL(query?: string): string {
