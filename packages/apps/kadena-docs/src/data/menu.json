@@ -9,7 +9,7 @@
         "label": "but how?",
         "order": 5,
         "description": "How to get started with Markdoc",
-        "layout": "codeside",
+        "layout": "code",
         "isMenuOpen": false,
         "isActive": false
       },
@@ -111,7 +111,7 @@
             "label": "but how?",
             "order": 5,
             "description": "How to get started with Markdoc",
-            "layout": "codeside",
+            "layout": "code",
             "isMenuOpen": false,
             "isActive": false
           },
@@ -202,12 +202,25 @@
         "isActive": false
       },
       {
-        "children": [],
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/__tests/chainweb/tutorial",
+            "title": "Chainweb Tutorial",
+            "menu": "Tutorial",
+            "label": "Chainweb Tutorial",
+            "order": 3,
+            "description": "How to get started with Markdoc",
+            "layout": "landing",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
         "root": "/docs/__tests/chainweb",
         "title": "Chainweb",
         "subTitle": "The safest, most user-friendly language for smart contracts",
         "menu": "Chainweb",
-        "label": "Chainweb",
+        "label": "Introduction",
         "order": 3,
         "description": "How to get started with Markdoc",
         "layout": "landing",

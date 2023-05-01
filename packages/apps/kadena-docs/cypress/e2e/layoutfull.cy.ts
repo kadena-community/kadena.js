@@ -7,6 +7,7 @@ describe('full layout', () => {
   });
   describe('desktop', () => {
     it('shows the left sidemenu', () => {
+      cy.percySnapshot('test');
       menu().should('be.visible');
       cy.get('[data-cy="hamburgermenu"]').should('not.be.visible');
     });

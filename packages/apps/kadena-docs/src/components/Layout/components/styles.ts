@@ -102,6 +102,7 @@ export const MenuBack: StyledComponent<
   opacity: 0,
   transform: 'translateX(-100%)',
   transition: 'opacity .5s ease, transform .1s ease',
+  zIndex: 'calc($sideMenu - 1)',
   '@md': {
     opacity: 0,
     pointerEvent: 'none',
@@ -119,6 +120,7 @@ export const MenuBack: StyledComponent<
       },
       false: {
         transform: 'translateX(-100%)',
+        pointerEvents: 'none',
         opacity: 0,
       },
     },

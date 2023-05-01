@@ -1,8 +1,7 @@
 ---
-title: Chainweb
-subTitle: The safest, most user-friendly language for smart contracts
-menu: Chainweb
-label: Introduction
+title: Chainweb Tutorial
+menu: Tutorial
+label: Chainweb Tutorial
 order: 3
 description: How to get started with Markdoc
 layout: landing
