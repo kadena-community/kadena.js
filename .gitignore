@@ -63,6 +63,7 @@ jspm_packages/
 *.tgz
 
 # Optional config for 'rush publish'
+.npmrc
 .npmrc-publish
 
 # Yarn Integrity file
