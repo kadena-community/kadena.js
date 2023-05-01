@@ -11,11 +11,11 @@ export const Template: StyledComponent<
   'div',
   { layout?: 'landing' | 'normal' | 'code' | undefined }
 > = styled('div', {
-  '--asideMenuWidthMDDefault': '200px',
-  '--asideMenuWidthLGDefault': '300px',
-  '--asideMenuWidthMDCode': '300px',
-  '--asideMenuWidthLGCode': '400px',
-  '--asideMenuWidthXLCode': '500px',
+  $$asideMenuWidthMDDefault: '200px',
+  $$asideMenuWidthLGDefault: '300px',
+  $$asideMenuWidthMDCode: '300px',
+  $$asideMenuWidthLGCode: '400px',
+  $$asideMenuWidthXLCode: '500px',
 
   display: 'grid',
   gridTemplateRows: '$17 auto 1fr auto',
@@ -45,25 +45,25 @@ export const Template: StyledComponent<
       normal: {
         '@md': {
           gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthMDDefault))) var(--asideMenuWidthMDDefault) 1%',
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDDefault)) $$asideMenuWidthMDDefault 1%',
         },
         '@2xl': {
           gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthLGDefault))) var(--asideMenuWidthLGDefault) auto',
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGDefault)) $$asideMenuWidthLGDefault auto',
         },
       },
       code: {
         '@md': {
           gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthMDCode))) var(--asideMenuWidthMDCode) 1%',
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDCode)) $$asideMenuWidthMDCode 1%',
         },
         '@lg': {
           gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthLGCode))) var(--asideMenuWidthLGCode) 1%',
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGCode)) $$asideMenuWidthLGCode 1%',
         },
         '@2xl': {
           gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - var(--asideMenuWidthXLCode))) var(--asideMenuWidthXLCode) auto',
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthXLCode)) $$asideMenuWidthXLCode auto',
         },
       },
       landing: {
