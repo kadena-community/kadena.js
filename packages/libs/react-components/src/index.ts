@@ -4,6 +4,12 @@ export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
 export {
+  Breadcrumbs,
+  BreadcrumbItem,
+  IBreadcrumbs,
+  IBreadcrumbItem,
+} from './components/Breadcrumbs';
+export {
   Heading,
   Text,
   IHeadingProps,
