@@ -646,6 +646,7 @@ importers:
       byline: ~5.0.0
       concurrently: ^7.2.2
       eslint: ^8.15.0
+      memfs: ~3.5.1
       moo: ~0.5.1
       nearley: ~2.20.1
       node-fetch: ~2.6.2
@@ -655,6 +656,7 @@ importers:
       yaml: ~2.1.1
     dependencies:
       byline: 5.0.0
+      memfs: 3.5.1
       moo: 0.5.2
       nearley: 2.20.1
       ramda: 0.28.0
@@ -13984,7 +13986,6 @@ packages:
 
   /fs-monkey/1.0.3:
     resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
-    dev: true
 
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -17014,6 +17015,13 @@ packages:
     dependencies:
       fs-monkey: 1.0.3
     dev: true
+
+  /memfs/3.5.1:
+    resolution: {integrity: sha512-UWbFJKvj5k+nETdteFndTpYxdeTMox/ULeqX5k/dpaQJCCFmj5EeKv3dBcyO2xmkRAx2vppRu5dVG7SOtsGOzA==}
+    engines: {node: '>= 4.0.0'}
+    dependencies:
+      fs-monkey: 1.0.3
+    dev: false
 
   /memoize-one/6.0.0:
     resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==}

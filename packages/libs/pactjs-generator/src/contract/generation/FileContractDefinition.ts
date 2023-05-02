@@ -9,14 +9,32 @@ import { PathLike, readFileSync } from 'fs';
  * @alpha
  */
 export class FileContractDefinition implements IContractDefinition {
-  private _filePath: PathLike;
+  private _path: PathLike;
   private _logger: ILogger;
   private _raw: Output;
 
-  public constructor(filePath: PathLike, logger: ILogger = () => {}) {
-    this._filePath = filePath;
+  public constructor({
+    path,
+    namespace,
+    logger = () => {},
+  }: {
+    path: PathLike;
+    namespace?: string;
+    logger?: ILogger;
+  }) {
+    this._path = path;
     this._logger = logger;
-    this._raw = parser(readFileSync(this._filePath, 'utf8'), this._logger);
+    this._raw = parser(readFileSync(this._path, 'utf8'), this._logger);
+
+    this._setNamespace(namespace);
+  }
+
+  private _setNamespace(namespace?: string): void {
+    if (namespace === undefined) return;
+
+    Object.keys(this._raw).forEach((module) => {
+      this._raw[module].namespace = namespace;
+    });
   }
 
   public getCapabilities(
@@ -35,5 +53,9 @@ export class FileContractDefinition implements IContractDefinition {
 
   public getMethods(moduleName: string): Record<string, Defun> | undefined {
     return this._raw[moduleName].defuns;
+  }
+
+  public getNamespace(moduleName: string): string {
+    return this._raw[moduleName].namespace;
   }
 }
