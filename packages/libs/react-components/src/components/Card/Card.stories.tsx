@@ -11,8 +11,8 @@ type ColorKeys = keyof typeof colors;
 
 const meta: Meta<
   {
-    selectIcon: keyof typeof SystemIcons;
-    text: string;
+    color: ColorKeys;
+    expand: boolean;
   } & ICardProps
 > = {
   title: 'Layout/Card',
@@ -34,8 +34,8 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    text: string;
-    selectIcon: keyof typeof SystemIcons;
+    color: ColorKeys;
+    expand: boolean;
   } & ICardProps
 >;
 
