@@ -9,6 +9,7 @@ export const Article: StyledComponent<'article'> = styled('article', {
 export const Content: StyledComponent<'div'> = styled('div', {
   display: 'flex',
   position: 'relative',
+  paddingTop: '$10',
   gridColumn: '1 / span 1',
   gridRow: '3 / span 1',
   width: '100%',

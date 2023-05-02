@@ -16,7 +16,7 @@ export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
       {React.Children.map(children, (child, idx) => {
         if (
           child === undefined ||
-          child.type.displayName !== BreadcrumbItem.displayName
+          child?.type?.displayName !== BreadcrumbItem?.displayName
         )
           return null;
 
