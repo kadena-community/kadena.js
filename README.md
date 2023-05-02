@@ -36,40 +36,22 @@ forth).
 Kadena.js is the source for several packages, tooling, and dapps that have any
 affiliation with Front-end development.
 
-At this moment Kadena.js will be the home of these packages (see also
-[Definition of libraries in kadena.js](https://github.com/kadena-community/kadena.js/issues/42)):
+Kadena.js is the home of these packages:
 
-- `@kadena/cryptography-utils` contains hash/sign utils
-- `@kadena/chainweb-node-client` typed js wrapper with fetch to call
-  chainweb-node API endpoints (amongst
-  others [https://api.chainweb.com/openapi/pact.html](https://api.chainweb.com/openapi/pact.html)).
-  This will probably have some breakdown
-  - `api` one-to-one mapping of rest endpoints to typed js client
-  - `utils` functions like that use the `api` functions to get information
-- `@kadena/chainweb-data-client` typed js wrapper with fetch to call
-  chainweb-data API endpoints
-- `@kadena/pactjs-client` wrapper around chainweb-node-client with ability to
-  switch environments etc.
-- `@kadena/wallet-client` client for wallet to sign, connect, retrieve account
-  info, etc
-- `@kadena/marmalade-client` specific client for marmalade/NFTs
-- `@kadena/types` common used typescript definitions. Preferably this will all
-  move to the low-level libraries. Whenever you build something on top of those,
-  you can use those types.
-- =====
-- `@kadena/pactjs` runtime for generating pact expressions
-- `@kadena/pactjs-cli` cli to generate pact contract type definitions and
-  interface to pact client. deployment of contracts, etc
-- `@kadena/pactjs-generator` library that creates typescript definition from
-  contract, template, etc
-- `.kadena/pactjs-generated` library that does not exist on npm. It
-  is *generated* by `@kadena/pactjs-cli` and `@kadena/pactjs-generator` and is a
-  dependency of `@kadena/pactjs`
-- `@kadena/transaction-templates` a supportive library for transactions. As
-  there is no way to determine from pact alone which caps are needed for a given
-  transaction, and in turn which signatures are needed, we want to provide the
-  community a way to "publish" templates. These templates can be used
-  by `@kadena/pactjs-cli` to generate the necessary typescript definitions
+| Package                          | Description                                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@kadena/cryptography-utils`     | Hash/sign utils                                                                                                                                                                                                                                                                                                                                  |
+| `@kadena/chainweb-node-client`   | Typed JS wrapper with fetch to call chainweb-node API endpoints                                                                                                                                                                                                                                                                                  |
+| `@kadena/chainweb-data-client`   | Typed JS wrapper with fetch to call chainweb-data API endpoints                                                                                                                                                                                                                                                                                  |
+| `@kadena/pactjs-client`          | Wrapper around chainweb-node-client with ability to switch environments etc.                                                                                                                                                                                                                                                                     |
+| `@kadena/wallet-client`          | Client for wallet to sign, connect, retrieve account info, etc.                                                                                                                                                                                                                                                                                  |
+| `@kadena/marmalade-client`       | Specific client for marmalade/NFTs                                                                                                                                                                                                                                                                                                               |
+| `@kadena/types`                  | Common used TypeScript definitions. Preferably this will all move to the low-level libraries. Whenever you build something on top of those, you can use those types.                                                                                                                                                                             |
+| `@kadena/pactjs`                 | Runtime for generating pact expressions                                                                                                                                                                                                                                                                                                          |
+| `@kadena/pactjs-cli`             | CLI to generate pact contract type definitions and interface to pact client. deployment of contracts, etc                                                                                                                                                                                                                                        |
+| `@kadena/pactjs-generator`       | Library that creates TypeScript definition from contract, template, etc                                                                                                                                                                                                                                                                          |
+| `.kadena/pactjs-generated`       | Library that does not exist on npm. It is *generated* by `@kadena/pactjs-cli` and `@kadena/pactjs-generator` and is a dependency of `@kadena/pactjs`                                                                                                                                                                                             |
+| `@kadena/transaction-templates`  | Supportive library for transactions. As there is no way to determine from pact alone which caps are needed for a given transaction, and in turn which signatures are needed, we want to provide the community a way to "publish" templates. These templates can be used by `@kadena/pactjs-cli` to generate the necessary TypeScript definitions |
 
 As our ecosystem will grow so will the packages and dapps we will release under
 Kadena.js.
