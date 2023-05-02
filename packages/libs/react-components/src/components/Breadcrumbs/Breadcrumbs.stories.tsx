@@ -1,3 +1,5 @@
+import { ProcuctIcons } from '../ProductIcons';
+
 import { BreadcrumbItem, Breadcrumbs, IBreadcrumbs } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -15,10 +17,17 @@ const ItemArray: string[] = [
 const meta: Meta<
   {
     itemsCount: number;
+    selectIcon: keyof typeof ProcuctIcons;
   } & IBreadcrumbs
 > = {
   title: 'Breadcrumbs',
   argTypes: {
+    selectIcon: {
+      options: Object.keys(ProcuctIcons) as (keyof typeof ProcuctIcons)[],
+      control: {
+        type: 'select',
+      },
+    },
     itemsCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
     },
@@ -29,6 +38,7 @@ export default meta;
 type Story = StoryObj<
   {
     itemsCount: number;
+    selectIcon: keyof typeof ProcuctIcons;
   } & IBreadcrumbs
 >;
 
@@ -43,14 +53,14 @@ export const Primary: Story = {
   args: {
     itemsCount: 3,
   },
-  render: ({ itemsCount }) => {
+  render: ({ itemsCount, selectIcon }) => {
     const items = ItemArray.slice(0, itemsCount);
     return (
-      <Breadcrumbs>
+      <Breadcrumbs icon={ProcuctIcons[selectIcon]}>
         {items.map((item, idx) => {
           return (
             <BreadcrumbItem key={item}>
-              {idx < items.length - 1 ? <a href={`#{item}`}>{item}</a> : item}
+              <a href={`#{item}`}>{item}</a>
             </BreadcrumbItem>
           );
         })}

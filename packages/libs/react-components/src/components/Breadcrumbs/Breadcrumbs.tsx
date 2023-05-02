@@ -1,3 +1,5 @@
+import { ProcuctIcons } from '../ProductIcons';
+
 import { StyledBreadcrumbs } from './styles';
 import { BreadcrumbItem, IBreadcrumbItem } from '.';
 
@@ -5,20 +7,24 @@ import React, { FC, FunctionComponentElement } from 'react';
 
 export interface IBreadcrumbs {
   children?: FunctionComponentElement<IBreadcrumbItem>[];
+  icon?: typeof ProcuctIcons[keyof typeof ProcuctIcons];
 }
 
-export const Breadcrumbs: FC<IBreadcrumbs> = ({ children }) => {
-  console.log(children);
+export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
   return (
     <StyledBreadcrumbs>
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, (child, idx) => {
         if (
           child === undefined ||
           child.type.displayName !== BreadcrumbItem.displayName
         )
           return null;
 
-        return React.cloneElement<IBreadcrumbItem>(child, {});
+        if (idx === 0) {
+          return React.cloneElement<IBreadcrumbItem>(child, { icon });
+        }
+        const { icon: _, ...props } = child.props;
+        return React.cloneElement<IBreadcrumbItem>(child, { ...props });
       })}
     </StyledBreadcrumbs>
   );
