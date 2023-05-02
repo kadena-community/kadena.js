@@ -13,7 +13,7 @@ export const CardColors: string[] = [
 
 export const StyledCard = styled('div', {
   boxSizing: 'border-box',
-  backgroundColor: '$colors$neutral1',
+  backgroundColor: '$neutral1',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -55,14 +55,6 @@ export const StyledCard = styled('div', {
       height: { width: '100%' },
     },
   },
-});
-
-export const StyledCardHeader = styled('div', {
-  width: '100%',
-  fontFamily: '$main',
-  fontStyle: 'normal',
-  fontWeight: '700',
-  fontSize: '20px',
 });
 
 export const StyledCardBody = styled('div', {

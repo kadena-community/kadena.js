@@ -1,9 +1,9 @@
 import { colors } from '../../styles/colors';
 
-import { Button, SystemIcons } from './../../';
+import { Button, Heading, SystemIcons } from './../../';
 import { CardColors } from './styles';
 import { Card, ICardProps } from '.';
-import { CardBody, CardFooter, CardHeader } from './';
+import { CardBody, CardFooter } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -48,7 +48,7 @@ export const Primary: Story = {
   render: ({ color, expand }) => {
     return (
       <Card color={color} expand={expand}>
-        <CardHeader>Getting Started is Simple</CardHeader>
+        <Heading>Getting Started is Simple</Heading>
         <CardBody>
           Learn Kadena&apos;s core concepts & tools for development in 15
           minutes

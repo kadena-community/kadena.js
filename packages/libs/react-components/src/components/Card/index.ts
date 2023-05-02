@@ -1,5 +1,4 @@
 export {
-  StyledCardHeader as CardHeader,
   StyledCardBody as CardBody,
   StyledCardFooter as CardFooter,
 } from './styles';
