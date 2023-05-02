@@ -4,7 +4,7 @@ menu: But how does it work
 label: but how?
 order: 5
 description: How to get started with Markdoc
-layout: full
+layout: codeside
 ---
 
 ## More sections Section

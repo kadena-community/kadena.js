@@ -10,7 +10,7 @@ import { InnerWrapper } from '../styles';
 export const StyledFooter: StyledComponent<'footer'> = styled('footer', {
   position: 'relative',
   gridArea: 'footer',
-  zIndex: '$menu',
+  zIndex: '$navMenu',
   background: '$neutral2',
 
   [`.${darkTheme} &`]: {

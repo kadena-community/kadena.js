@@ -15,7 +15,7 @@ const convertFile = (file) => {
   if (isMarkDownFile(file)) {
     data = getFrontMatter(doc);
   } else {
-    const regex = /export const meta: IPageMeta = ({.*});/s;
+    const regex = /meta = ({.*});/s;
     const match = doc.match(regex);
     if (!match) return;
 
