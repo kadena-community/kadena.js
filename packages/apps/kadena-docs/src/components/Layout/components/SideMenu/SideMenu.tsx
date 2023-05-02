@@ -52,7 +52,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       )}
       <input type="text" />
 
-      <MenuCard active={active} idx={0} ref={menuRef}>
+      <MenuCard cyTestId="sidemenu-main" active={active} idx={0} ref={menuRef}>
         <StyledUl>
           {menuItems.map((item) => (
             <StyledItem key={item.root}>
@@ -68,12 +68,16 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         </StyledUl>
       </MenuCard>
       {hasSubmenu && activeItem && (
-        <MenuCard active={active} idx={1} ref={subMenuRef}>
-          <section onClick={clickSubMenu}>
-            <StyledTreeList root={true}>
-              <MainTreeItem item={activeItem} root={true} />
-            </StyledTreeList>
-          </section>
+        <MenuCard
+          cyTestId="sidemenu-submenu"
+          active={active}
+          idx={1}
+          ref={subMenuRef}
+          onClick={clickSubMenu}
+        >
+          <StyledTreeList root={true}>
+            <MainTreeItem item={activeItem} root={true} />
+          </StyledTreeList>
         </MenuCard>
       )}
     </StyledSideMenu>

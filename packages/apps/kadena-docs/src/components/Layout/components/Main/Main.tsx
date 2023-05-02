@@ -1,14 +1,16 @@
+import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
-import importedMenu from '@/data/menu.json';
+import { getData } from './getData';
+
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode, useMemo, useState } from 'react';
 
-const typedMenuItems: IMenuItem[] = importedMenu as IMenuItem[];
+const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
@@ -22,8 +24,9 @@ interface IProps {
   };
 }
 
-export const Main: FC<IProps> = ({ children, markdoc }) => {
+export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
 
   /**
@@ -60,22 +63,27 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
   }, [pathname]);
 
   let title, description, subTitle;
-  let layoutType = 'default';
+  let layoutType: LayoutType = 'full';
   if (markdoc !== undefined) {
     title = markdoc.frontmatter.title;
     subTitle = markdoc.frontmatter.subTitle;
     description = markdoc.frontmatter.description;
-    layoutType = markdoc.frontmatter.layout ?? 'default';
+    layoutType = markdoc.frontmatter.layout ?? 'full';
   }
 
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);
+    setIsAsideOpen(false);
+  };
+
+  const toggleAside = (): void => {
+    setIsAsideOpen((v) => !v);
+    setIsMenuOpen(false);
   };
 
   const closeMenu = (): void => setIsMenuOpen(false);
 
   const Layout = getLayout(layoutType);
-
   return (
     <>
       <Head>
@@ -83,30 +91,44 @@ export const Main: FC<IProps> = ({ children, markdoc }) => {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
+
       <Template
-        layout={isOneOfLayoutType(Layout, 'landing') ? 'landing' : 'normal'}
+        layout={
+          isOneOfLayoutType(layoutType, 'landing')
+            ? 'landing'
+            : isOneOfLayoutType(layoutType, 'code')
+            ? 'code'
+            : 'normal'
+        }
       >
         <Header
           toggleMenu={toggleMenu}
+          toggleAside={toggleAside}
           isMenuOpen={isMenuOpen}
+          isAsideOpen={isAsideOpen}
           menuItems={menuItems}
+          layout={layoutType}
         />
-        {layoutType === 'landing' && title && (
+        {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} />
         )}
-
+        {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
+          data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(Layout, 'full', 'codeside') ? true : false
+            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
+              ? true
+              : false
+          }
+          layout={
+            isOneOfLayoutType(layoutType, 'landing') ? 'landing' : 'normal'
           }
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
-
-        <Layout>{children}</Layout>
-
+        <Layout isAsideOpen={isAsideOpen}>{children}</Layout>
         <Footer />
       </Template>
     </>

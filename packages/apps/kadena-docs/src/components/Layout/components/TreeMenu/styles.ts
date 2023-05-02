@@ -51,7 +51,7 @@ export const StyledTreeList: StyledComponent<
 
 const Level1ItemStyle: Record<string, string> = {
   display: 'block',
-  borderBottom: '1px solid $neutral3',
+  borderBottom: '1px solid $borderColor',
   padding: '$4 0 $2',
   cursor: 'pointer',
   fontWeight: '$bold',
@@ -125,8 +125,8 @@ export const StyledButton: StyledComponent<
           content: '',
           width: '$2',
           height: '$2',
-          borderRight: '2px solid $neutral4',
-          borderTop: '2px solid $neutral4',
+          borderRight: '2px solid $borderColor',
+          borderTop: '2px solid $borderColor',
           transform: 'translate($sizes$2, $sizes$1) rotate(45deg)',
           transition: 'transform .2s ease ',
         },

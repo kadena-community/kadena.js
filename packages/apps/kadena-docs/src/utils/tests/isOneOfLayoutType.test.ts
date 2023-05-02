@@ -20,8 +20,6 @@ describe('utils isOneOfLayoutType', () => {
   });
 
   it('return true when layout displayName is same as one of the following args', () => {
-    expect(isOneOfLayoutType(Layouts.CodeSide, 'codeer', 'full')).toEqual(
-      false,
-    );
+    expect(isOneOfLayoutType(Layouts.Code, 'codeer', 'full')).toEqual(false);
   });
 });
