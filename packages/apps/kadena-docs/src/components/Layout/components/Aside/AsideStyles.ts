@@ -7,7 +7,6 @@ export const BaseBackground: StyledComponent<
   }
 > = styled('div', {
   position: 'absolute',
-  zIndex: 2,
   pointerEvents: 'none',
   width: '100vw',
   height: '100vh',
@@ -48,6 +47,7 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
       backgroundImage: 'url("/assets/bg-vertical.png")',
       backgroundRepeat: 'no-repeat',
       backgroundPositionY: '-100px',
+      backgroundPositionX: '-100px',
       '@md': {
         backgroundColor: 'transparent',
         backgroundPositionX:
@@ -74,11 +74,9 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
       },
     },
 
-    compoundVariants: [
-      {
-        isOpen: true,
-        layout: 'code',
-        css: {
+    variants: {
+      isOpen: {
+        true: {
           transform: 'translateX(0)',
           '&::before': {
             '@md': {
@@ -92,7 +90,7 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
           },
         },
       },
-    ],
+    },
   },
 );
 
@@ -100,6 +98,10 @@ export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
   BaseBackground,
   {
     $$shadowWidth: '$sizes$25',
+    display: 'none',
+    '@md': {
+      display: 'block',
+    },
     '&::before': {
       content: '',
       position: 'absolute',
@@ -110,7 +112,6 @@ export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
       backgroundPositionY: '-100px',
       backgroundPositionX:
         'calc(100vw  - ($$asideMenuWidthMDDefault + $$shadowWidth))',
-
       '@2xl': {
         backgroundPositionX:
           'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthLGDefault +  $$shadowWidth))',
@@ -134,6 +135,7 @@ export const Aside: StyledComponent<
     isOpen?: boolean | 'true' | 'false' | undefined;
   }
 > = styled('aside', {
+  display: 'none',
   gridArea: 'aside',
   overflowY: 'scroll',
   height: '100%',
@@ -147,6 +149,7 @@ export const Aside: StyledComponent<
   transform: 'translateX(100vw)',
 
   '@md': {
+    display: 'block',
     transform: 'translateX(0)',
   },
   compoundVariants: [
@@ -154,6 +157,7 @@ export const Aside: StyledComponent<
       isOpen: true,
       layout: 'code',
       css: {
+        display: 'block',
         transform: 'translateX(0)',
         width: '100%',
       },
@@ -162,7 +166,6 @@ export const Aside: StyledComponent<
   variants: {
     layout: {
       code: {
-        backgroundColor: '$background',
         '@md': {
           backgroundColor: 'initial',
         },

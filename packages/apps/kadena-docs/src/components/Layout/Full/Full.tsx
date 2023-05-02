@@ -38,7 +38,7 @@ export const Full: FC<ILayout> = ({ children }) => {
       </Content>
 
       <AsideBackground />
-      <Aside>
+      <Aside data-cy="aside">
         <StickyAsideWrapper>
           <StickyAside>
             <Heading as="h6" transform="uppercase">

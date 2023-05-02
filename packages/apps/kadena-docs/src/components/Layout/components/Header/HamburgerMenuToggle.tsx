@@ -12,6 +12,7 @@ interface IProps {
 export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   return (
     <HamburgerButton
+      data-cy="hamburgermenu"
       title="Open the sidemenu"
       onClick={toggleMenu}
       icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}

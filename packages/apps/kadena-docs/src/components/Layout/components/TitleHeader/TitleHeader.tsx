@@ -11,7 +11,7 @@ interface IProps {
 
 export const TitleHeader: FC<IProps> = ({ title, subTitle }) => {
   return (
-    <HeaderWrapper>
+    <HeaderWrapper data-cy="titleheader">
       <StyledHeader>
         <Wrapper>
           <Heading as="h1">{title}</Heading>
