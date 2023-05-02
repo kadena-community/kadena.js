@@ -8,14 +8,14 @@ export interface IMenuCardProps {
   idx: number;
   ref?: React.ForwardedRef<HTMLDivElement>;
   onClick?: MouseEventHandler<HTMLUListElement>;
-  cy?: string;
+  cyTestId?: string;
 }
 
 export const MenuCard: FC<IMenuCardProps> = React.forwardRef(
-  ({ children, onClick, active, idx = 0, cy }, ref) => {
+  ({ children, onClick, active, idx = 0, cyTestId }, ref) => {
     return (
       <StyledSection
-        data-cy={cy}
+        data-cy={cyTestId}
         animateLeft2Right={idx === 0}
         active={active === idx}
         ref={ref}
