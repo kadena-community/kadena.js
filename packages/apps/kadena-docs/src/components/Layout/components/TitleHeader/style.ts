@@ -6,8 +6,8 @@ export const HeaderWrapper: StyledComponent<'div'> = styled('div', {
   gridArea: 'pageheader',
   position: 'relative',
   display: 'grid',
-  height: '300px',
-  gridTemplateRows: '260px 40px',
+  height: 'calc($sizes$64 + $sizes$10)',
+  gridTemplateRows: '$sizes$64 $sizes$10',
   gridTemplateAreas: `
   "main"
   "shadow"

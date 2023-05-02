@@ -1,3 +1,3 @@
 export * from './Code';
 export * from './Full';
-export * from './Landing/Landing';
+export * from './Landing';

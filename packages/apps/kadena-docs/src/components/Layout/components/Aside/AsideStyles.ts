@@ -37,7 +37,7 @@ export const BaseBackground: StyledComponent<
 export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
   BaseBackground,
   {
-    '--shadowWidth': '$sizes$20',
+    $$shadowWidth: '$sizes$20',
     '&::before': {
       content: '',
       position: 'absolute',
@@ -47,37 +47,36 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
       backgroundImage: 'url("/assets/bg-vertical.png")',
       backgroundRepeat: 'no-repeat',
       backgroundPositionY: '-100px',
+      backgroundPositionX: '-100px',
       '@md': {
         backgroundColor: 'transparent',
         backgroundPositionX:
-          'calc(100vw  - (var(--asideMenuWidthMDCode) + var(--shadowWidth)))',
+          'calc(100vw  - ($$asideMenuWidthMDCode + $$shadowWidth))',
       },
       '@lg': {
         backgroundPositionX:
-          'calc(100vw  - (var(--asideMenuWidthLGCode) + var(--shadowWidth)))',
+          'calc(100vw  - ($$asideMenuWidthLGCode + $$shadowWidth))',
       },
       '@2xl': {
         backgroundPositionX:
-          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (var(--asideMenuWidthXLCode) +  var(--shadowWidth)))',
+          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthXLCode +  $$shadowWidth))',
       },
     },
     '&::after': {
       '@md': {
-        left: 'calc(100vw  - (var(--asideMenuWidthMDCode) +  $sizes$4))',
+        left: 'calc(100vw  - ($$asideMenuWidthMDCode +  $sizes$4))',
       },
       '@lg': {
-        left: 'calc(100vw  - (var(--asideMenuWidthLGCode) +  $sizes$4))',
+        left: 'calc(100vw  - ($$asideMenuWidthLGCode +  $sizes$4))',
       },
       '@2xl': {
-        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - var(--asideMenuWidthXLCode))',
+        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - $$asideMenuWidthXLCode)',
       },
     },
 
-    compoundVariants: [
-      {
-        isOpen: true,
-        layout: 'code',
-        css: {
+    variants: {
+      isOpen: {
+        true: {
           transform: 'translateX(0)',
           '&::before': {
             '@md': {
@@ -91,19 +90,18 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
           },
         },
       },
-    ],
+    },
   },
 );
 
 export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
   BaseBackground,
   {
-    '--shadowWidth': '$sizes$25',
+    $$shadowWidth: '$sizes$25',
     display: 'none',
     '@md': {
       display: 'block',
     },
-
     '&::before': {
       content: '',
       position: 'absolute',
@@ -113,19 +111,18 @@ export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
       backgroundRepeat: 'no-repeat',
       backgroundPositionY: '-100px',
       backgroundPositionX:
-        'calc(100vw  - (var(--asideMenuWidthMDDefault) + var(--shadowWidth)))',
-
+        'calc(100vw  - ($$asideMenuWidthMDDefault + $$shadowWidth))',
       '@2xl': {
         backgroundPositionX:
-          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - (var(--asideMenuWidthLGDefault) +  var(--shadowWidth)))',
+          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthLGDefault +  $$shadowWidth))',
       },
     },
     '&::after': {
       '@md': {
-        left: 'calc(100vw  - (var(--asideMenuWidthMDDefault) + $sizes$4))',
+        left: 'calc(100vw  - ($$asideMenuWidthMDDefault + $sizes$4))',
       },
       '@2xl': {
-        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - var(--asideMenuWidthLGDefault))',
+        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - $$asideMenuWidthLGDefault)',
       },
     },
   },
@@ -160,6 +157,7 @@ export const Aside: StyledComponent<
       isOpen: true,
       layout: 'code',
       css: {
+        display: 'block',
         transform: 'translateX(0)',
         width: '100%',
       },
@@ -168,8 +166,11 @@ export const Aside: StyledComponent<
   variants: {
     layout: {
       code: {
+        '@md': {
+          backgroundColor: 'initial',
+        },
         '@2xl': {
-          maxWidth: 'var(--asideMenuWidthXLCode)',
+          maxWidth: '$$asideMenuWidthXLCode',
         },
       },
       default: {},
