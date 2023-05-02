@@ -26,9 +26,6 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
     '&::before': {
       content: '∙',
     },
-    a: {
-      pointerEvents: 'none',
-    },
   },
   '&:first-child': {
     fontWeight: '$bold',

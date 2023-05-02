@@ -23,6 +23,8 @@ export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
         if (idx === 0) {
           return React.cloneElement<IBreadcrumbItem>(child, { icon });
         }
+
+        // eslint-disable-next-line
         const { icon: _, ...props } = child.props;
         return React.cloneElement<IBreadcrumbItem>(child, { ...props });
       })}

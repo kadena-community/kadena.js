@@ -60,7 +60,7 @@ export const Primary: Story = {
         {items.map((item, idx) => {
           return (
             <BreadcrumbItem key={item}>
-              <a href={`#{item}`}>{item}</a>
+              {idx < items.length - 1 ? <a href={`#{item}`}>{item}</a> : item}
             </BreadcrumbItem>
           );
         })}
