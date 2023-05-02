@@ -141,7 +141,10 @@ export const generate =
       if (existsSync(indexPath)) {
         console.log(`Appending to existing file ${indexPath}`);
         const indexDts: string = readFileSync(indexPath, 'utf8');
-        writeFileSync(indexPath, indexDts + exportStatement);
+        // Append the export to the file if it's not already there.
+        if (!indexDts.includes(exportStatement)) {
+          writeFileSync(indexPath, indexDts + exportStatement);
+        }
       } else {
         console.log(`Writing to new file ${indexPath}`);
         writeFileSync(indexPath, exportStatement);
