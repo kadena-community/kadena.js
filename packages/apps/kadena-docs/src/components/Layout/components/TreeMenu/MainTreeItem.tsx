@@ -66,6 +66,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
       {!root && item.children.length > 0 ? (
         <li key={item.root} ref={ref}>
           <StyledButton
+            data-active={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
             level={`l${level}`}
             menuOpen={menuOpen}

@@ -9,7 +9,7 @@
         "label": "but how?",
         "order": 5,
         "description": "How to get started with Markdoc",
-        "layout": "codeside",
+        "layout": "code",
         "isMenuOpen": false,
         "isActive": false
       },
@@ -96,6 +96,145 @@
     "order": 1,
     "description": "How to get started with Markdoc",
     "layout": "landing",
+    "isMenuOpen": false,
+    "isActive": false
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/__tests/pact/how-does-it-work",
+            "title": "But how does it work",
+            "menu": "But how does it work",
+            "label": "but how?",
+            "order": 5,
+            "description": "How to get started with Markdoc",
+            "layout": "code",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "root": "/docs/__tests/pact/basics/build-in-functions/tutorial",
+                    "title": "Pact tutorial",
+                    "menu": "Pact tutorial",
+                    "label": "Tutorial",
+                    "order": 0,
+                    "description": "How to get started with Markdoc",
+                    "layout": "full",
+                    "isMenuOpen": false,
+                    "isActive": false
+                  }
+                ],
+                "root": "/docs/__tests/pact/basics/build-in-functions",
+                "title": "Welcome to pact",
+                "menu": "Build-in Functions",
+                "label": "General buildin",
+                "order": 5,
+                "description": "How to get started with Markdoc",
+                "layout": "full",
+                "isMenuOpen": false,
+                "isActive": false
+              }
+            ],
+            "root": "/docs/__tests/pact/basics",
+            "title": "Welcome to pact",
+            "menu": "Basics",
+            "label": "General",
+            "order": 5,
+            "description": "How to get started with Markdoc",
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "root": "/docs/__tests/pact/atom-sdk/atom",
+                "title": "Pact",
+                "menu": "Pact",
+                "label": "Pact Test",
+                "order": 1,
+                "description": "How to get started with Markdoc",
+                "layout": "code",
+                "isMenuOpen": false,
+                "isActive": false
+              }
+            ],
+            "root": "/docs/__tests/pact/atom-sdk",
+            "title": "Welcome to pact",
+            "menu": "Atom SDK",
+            "label": "Quickstart",
+            "order": 5,
+            "description": "How to get started with Markdoc",
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/__tests/pact",
+        "title": "Pact",
+        "menu": "Pact",
+        "label": "Introduction",
+        "order": 1,
+        "description": "How to get started with Markdoc",
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [],
+        "root": "/docs/__tests/kadenajs",
+        "title": "KadenaJS",
+        "menu": "KadenaJS",
+        "label": "Introduction",
+        "order": 1,
+        "description": "How to get started with Markdoc",
+        "layout": "landing",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/__tests/chainweb/tutorial",
+            "title": "Chainweb Tutorial",
+            "menu": "Tutorial",
+            "label": "Chainweb Tutorial",
+            "order": 3,
+            "description": "How to get started with Markdoc",
+            "layout": "landing",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/__tests/chainweb",
+        "title": "Chainweb",
+        "subTitle": "The safest, most user-friendly language for smart contracts",
+        "menu": "Chainweb",
+        "label": "Introduction",
+        "order": 3,
+        "description": "How to get started with Markdoc",
+        "layout": "landing",
+        "isMenuOpen": false,
+        "isActive": false
+      }
+    ],
+    "root": "/docs/__tests",
+    "title": "Pact",
+    "menu": "Pact",
+    "label": "Pact Test",
+    "order": 1,
+    "description": "Home page",
+    "layout": "home",
     "isMenuOpen": false,
     "isActive": false
   },
