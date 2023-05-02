@@ -26,28 +26,28 @@ export const StyledCard = styled('div', {
   variants: {
     color: {
       default: {
-        backgroundColor: '$colors$defaultSurface',
-        color: '$colors$defaultContrast',
+        backgroundColor: '$defaultSurface',
+        color: '$defaultContrast',
       },
       primary: {
-        backgroundColor: '$colors$primarySurface',
-        color: '$colors$neutral5',
+        backgroundColor: '$primarySurface',
+        color: '$neutral5',
       },
       secondary: {
-        backgroundColor: '$colors$secondarySurface',
-        color: '$colors$neutral5',
+        backgroundColor: '$secondarySurface',
+        color: '$neutral5',
       },
       positive: {
-        backgroundColor: '$colors$positiveSurface',
-        color: '$colors$neutral5',
+        backgroundColor: '$positiveSurface',
+        color: '$neutral5',
       },
       warning: {
-        backgroundColor: '$colors$warningSurface',
-        color: '$colors$neutral5',
+        backgroundColor: '$warningSurface',
+        color: '$neutral5',
       },
       negative: {
-        backgroundColor: '$colors$negativeSurface',
-        color: '$colors$neutral5',
+        backgroundColor: '$negativeSurface',
+        color: '$neutral5',
       },
     },
     expand: {
