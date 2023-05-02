@@ -51,8 +51,7 @@ export const StyledCard = styled('div', {
       },
     },
     expand: {
-      true: { width: '100%' },
-      height: { width: '100%' },
+      true: { width: '100%', height: '100%' },
     },
   },
 });
