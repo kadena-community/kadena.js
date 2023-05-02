@@ -1,6 +1,7 @@
 import { colors } from '../../styles/colors';
 
-import { Button, Heading, SystemIcons } from './../../';
+import { Button, SystemIcons } from './../../';
+import { CardHeading } from './Card';
 import { CardColors } from './styles';
 import { Card, ICardProps } from '.';
 import { CardBody, CardFooter } from './';
@@ -48,7 +49,7 @@ export const Primary: Story = {
   render: ({ color, expand }) => {
     return (
       <Card color={color} expand={expand}>
-        <Heading>Getting Started is Simple</Heading>
+        <CardHeading>Getting Started is Simple</CardHeading>
         <CardBody>
           Learn Kadena&apos;s core concepts & tools for development in 15
           minutes
