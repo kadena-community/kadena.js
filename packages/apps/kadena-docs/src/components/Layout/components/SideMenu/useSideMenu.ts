@@ -31,7 +31,6 @@ export const useSideMenu = (
       hasSameBasePath(item.root, router.pathname),
     );
 
-    console.log(router.pathname, matchingItem);
     setActiveItem(matchingItem);
     const hasSubMenu = matchingItem?.children.length ?? 0;
 
