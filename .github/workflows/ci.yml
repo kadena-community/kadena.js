@@ -8,11 +8,12 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    name: Node.js v${{ matrix.NodeVersion }}
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         NodeVersion: [16, 18]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v3
         with:
