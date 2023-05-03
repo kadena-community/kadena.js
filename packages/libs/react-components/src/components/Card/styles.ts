@@ -17,12 +17,12 @@ export const StyledCard = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  padding: '24px',
+  padding: '$lg',
   minWidth: '546px',
   width: 'min-content',
   height: 'min-content',
-  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.04)',
-  borderRadius: '8px',
+  boxShadow: '$shadows$card',
+  borderRadius: '$radii$lg',
   variants: {
     color: {
       default: {
@@ -62,14 +62,14 @@ export const StyledCardBody = styled('div', {
   fontWeight: '$normal',
   fontSize: '$base',
   lineHeight: '$base',
-  marginTop: '20px',
+  marginTop: '$lg',
 });
 
 export const StyledCardFooter = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'flex-start',
-  padding: '24px 0px 0px',
+  paddingTop: '$lg',
   gap: '$sm',
   width: '100%',
 });

@@ -60,6 +60,15 @@ export const media: ConfigType.Media<{
   '2xl': `(min-width: ${1440 / 16}rem)`,
 } as const;
 
+function hexToRgb(hex: string): string {
+  const bigint = parseInt(hex.replace('#', ''), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `${r}, ${g}, ${b}`;
+}
+
 export const {
   styled,
   css,
@@ -120,6 +129,7 @@ export const {
     shadows: {
       // TODO: Update to match design system
       1: `0px 1px 2px 0 $colors$neutral3`,
+      card: `0px 0px 10px rgba(${hexToRgb(colors.neutral1)}, .04)`,
     },
     space: {
       ...sizes,
