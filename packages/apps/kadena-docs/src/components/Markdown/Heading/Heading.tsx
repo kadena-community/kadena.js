@@ -14,6 +14,10 @@ interface IProp {
   children: string;
 }
 
+export interface IHeader {
+  children: string;
+}
+
 const StyledHeader: StyledComponent<typeof Heading, { as?: TagType }> = styled(
   Heading,
   {
@@ -38,7 +42,6 @@ const StyledLinkIcon = styled('a', {
 
 export const TaggedHeading: FC<IProp> = ({ children, as }) => {
   const slug = createSlug(children);
-
   return (
     <StyledHeader as={as}>
       {children}

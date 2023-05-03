@@ -11,6 +11,28 @@ layout: full
 
 Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll.
 
+## Customizing Markdoc nodes
+
+You define custom nodes by passing a custom Node to your
+
+```javascript
+import { heading } from './schema/Heading.markdoc';
+import * as components from './components';
+
+const config = {
+  nodes: {
+    heading,
+  },
+};
+
+const ast = Markdoc.parse(doc);
+const content = Markdoc.transform(ast, config);
+
+const children = Markdoc.renderers.react(content, React, { components });
+```
+
+where `heading` looks something like:
+
 ## Section 2
 
 Halvah carrot cake cheesecake biscuit powder toffee fruitcake. Marshmallow jelly
