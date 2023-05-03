@@ -15,20 +15,22 @@ Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll
 
 You define custom nodes by passing a custom Node to your
 
-```js showLineNumbers /config/
-import { heading } from './schema/Heading.markdoc';
-import * as components from './components';
+```lisp
+(defun get-balance (id)
+    "Only users or admin can read balance."
+    (with-read payments-table id
+      { "balance":= balance, "keyset":= keyset }
+      (enforce-one "Access denied"
 
-const config = {
-  nodes: {
-    heading,
-  },
-};
+       [(enforce-keyset keyset)
+         (enforce-keyset 'admin-keyset)])
+      balance))
 
-const ast = Markdoc.parse(doc);
-const content = Markdoc.transform(ast, config);
 
-const children = Markdoc.renderers.react(content, React, { components });
+;; row 60: create accounts
+
+(create-account "Sarah" 100.25 (read-keyset "sarah-keyset"))
+(create-account "James" 250.0 (read-keyset "james-keyset"))
 ```
 
 where `heading` looks something like:

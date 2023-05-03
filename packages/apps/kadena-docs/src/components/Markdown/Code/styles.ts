@@ -2,6 +2,7 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 export const StyledCode: StyledComponent<'code'> = styled('code', {
   counterReset: 'line',
+  whiteSpace: 'break-spaces',
 
   '& > .line::before': {
     counterIncrement: 'line',

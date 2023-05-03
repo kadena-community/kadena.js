@@ -7,5 +7,9 @@ interface IProp {
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
-  return <StyledCode {...props}>{children}</StyledCode>;
+  return (
+    <StyledCode {...props} data-language="lisp">
+      {children}
+    </StyledCode>
+  );
 };
