@@ -18,9 +18,8 @@ export const StyledCard = styled('div', {
   flexDirection: 'column',
   alignItems: 'flex-start',
   padding: '$lg',
-  minWidth: '546px',
-  width: 'min-content',
-  height: 'min-content',
+  width: 'max-content',
+  height: 'max-content',
   boxShadow: '$shadows$card',
   borderRadius: '$radii$lg',
   variants: {
