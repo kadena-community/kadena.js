@@ -6,7 +6,7 @@ import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
-  return extension.toLowerCase() === 'md';
+  return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
 };
 
 const convertFile = (file) => {
@@ -96,11 +96,15 @@ const createTree = (rootDir, parent = []) => {
 
     if (!child.root) return;
 
+    console.log(currentFile);
     if (fs.statSync(`${currentFile}`).isFile()) {
       const obj = convertFile(currentFile);
       Object.assign(child, obj);
     } else if (fs.existsSync(`${currentFile}/index.md`)) {
       const obj = convertFile(`${currentFile}/index.md`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
+      const obj = convertFile(`${currentFile}/index.mdx`);
       Object.assign(child, obj);
     } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
       const obj = convertFile(`${currentFile}/index.tsx`);

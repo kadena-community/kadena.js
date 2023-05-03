@@ -3,7 +3,7 @@ title: Welcome to pact
 menu: Build-in Functions
 label: General buildin
 order: 5
-description: How to get started with Markdoc
+description: How to get started
 layout: full
 ---
 
