@@ -7,6 +7,7 @@ export const StyledCode: StyledComponent<'code'> = styled('code', {
   '& > .line::before': {
     counterIncrement: 'line',
     content: 'counter(line)',
+    overflowWrap: 'normal',
 
     /* Other styling */
     display: 'inline-block',

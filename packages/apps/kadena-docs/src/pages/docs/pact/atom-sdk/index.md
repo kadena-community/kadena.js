@@ -3,7 +3,7 @@ title: Welcome to pact
 menu: Atom SDK
 label: Quickstart
 order: 5
-description: How to get started with Markdoc
+description: How to get started
 layout: full
 ---
 
@@ -31,6 +31,7 @@ You define custom nodes by passing a custom Node to your
 
 (create-account "Sarah" 100.25 (read-keyset "sarah-keyset"))
 (create-account "James" 250.0 (read-keyset "james-keyset"))
+
 ```
 
 where `heading` looks something like:

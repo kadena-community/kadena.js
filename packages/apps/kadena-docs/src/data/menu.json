@@ -8,7 +8,7 @@
         "menu": "But how does it work",
         "label": "but how?",
         "order": 5,
-        "description": "How to get started with Markdoc",
+        "description": "How to get started",
         "layout": "code",
         "isMenuOpen": false,
         "isActive": false
@@ -24,7 +24,7 @@
                 "menu": "Pact tutorial",
                 "label": "Tutorial",
                 "order": 0,
-                "description": "How to get started with Markdoc",
+                "description": "How to get started",
                 "layout": "full",
                 "isMenuOpen": false,
                 "isActive": false
@@ -35,7 +35,7 @@
             "menu": "Build-in Functions",
             "label": "General buildin",
             "order": 5,
-            "description": "How to get started with Markdoc",
+            "description": "How to get started",
             "layout": "full",
             "isMenuOpen": false,
             "isActive": false
@@ -46,7 +46,7 @@
         "menu": "Basics",
         "label": "General",
         "order": 5,
-        "description": "How to get started with Markdoc",
+        "description": "How to get started",
         "layout": "full",
         "isMenuOpen": false,
         "isActive": false
@@ -60,7 +60,7 @@
             "menu": "Pact",
             "label": "Pact Test",
             "order": 1,
-            "description": "How to get started with Markdoc",
+            "description": "How to get started",
             "layout": "code",
             "isMenuOpen": false,
             "isActive": false
@@ -71,7 +71,7 @@
         "menu": "Atom SDK",
         "label": "Quickstart",
         "order": 5,
-        "description": "How to get started with Markdoc",
+        "description": "How to get started",
         "layout": "full",
         "isMenuOpen": false,
         "isActive": false
@@ -82,7 +82,7 @@
     "menu": "Pact",
     "label": "Introduction",
     "order": 1,
-    "description": "How to get started with Markdoc",
+    "description": "How to get started",
     "layout": "full",
     "isMenuOpen": false,
     "isActive": false
@@ -94,7 +94,7 @@
     "menu": "KadenaJS",
     "label": "Introduction",
     "order": 1,
-    "description": "How to get started with Markdoc",
+    "description": "How to get started",
     "layout": "landing",
     "isMenuOpen": false,
     "isActive": false
@@ -110,7 +110,7 @@
             "menu": "But how does it work",
             "label": "but how?",
             "order": 5,
-            "description": "How to get started with Markdoc",
+            "description": "How to get started",
             "layout": "code",
             "isMenuOpen": false,
             "isActive": false
@@ -126,7 +126,7 @@
                     "menu": "Pact tutorial",
                     "label": "Tutorial",
                     "order": 0,
-                    "description": "How to get started with Markdoc",
+                    "description": "How to get started",
                     "layout": "full",
                     "isMenuOpen": false,
                     "isActive": false
@@ -137,7 +137,7 @@
                 "menu": "Build-in Functions",
                 "label": "General buildin",
                 "order": 5,
-                "description": "How to get started with Markdoc",
+                "description": "How to get started",
                 "layout": "full",
                 "isMenuOpen": false,
                 "isActive": false
@@ -148,7 +148,7 @@
             "menu": "Basics",
             "label": "General",
             "order": 5,
-            "description": "How to get started with Markdoc",
+            "description": "How to get started",
             "layout": "full",
             "isMenuOpen": false,
             "isActive": false
@@ -162,7 +162,7 @@
                 "menu": "Pact",
                 "label": "Pact Test",
                 "order": 1,
-                "description": "How to get started with Markdoc",
+                "description": "How to get started",
                 "layout": "code",
                 "isMenuOpen": false,
                 "isActive": false
@@ -173,7 +173,7 @@
             "menu": "Atom SDK",
             "label": "Quickstart",
             "order": 5,
-            "description": "How to get started with Markdoc",
+            "description": "How to get started",
             "layout": "full",
             "isMenuOpen": false,
             "isActive": false
@@ -184,7 +184,7 @@
         "menu": "Pact",
         "label": "Introduction",
         "order": 1,
-        "description": "How to get started with Markdoc",
+        "description": "How to get started",
         "layout": "full",
         "isMenuOpen": false,
         "isActive": false
@@ -196,7 +196,7 @@
         "menu": "KadenaJS",
         "label": "Introduction",
         "order": 1,
-        "description": "How to get started with Markdoc",
+        "description": "How to get started",
         "layout": "landing",
         "isMenuOpen": false,
         "isActive": false
@@ -210,7 +210,7 @@
             "menu": "Tutorial",
             "label": "Chainweb Tutorial",
             "order": 3,
-            "description": "How to get started with Markdoc",
+            "description": "How to get started",
             "layout": "landing",
             "isMenuOpen": false,
             "isActive": false
@@ -222,7 +222,7 @@
         "menu": "Chainweb",
         "label": "Introduction",
         "order": 3,
-        "description": "How to get started with Markdoc",
+        "description": "How to get started",
         "layout": "landing",
         "isMenuOpen": false,
         "isActive": false
@@ -246,7 +246,7 @@
     "menu": "Chainweb",
     "label": "Chainweb",
     "order": 3,
-    "description": "How to get started with Markdoc",
+    "description": "How to get started",
     "layout": "landing",
     "isMenuOpen": false,
     "isActive": false
