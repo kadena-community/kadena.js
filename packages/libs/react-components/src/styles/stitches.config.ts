@@ -62,11 +62,8 @@ export const media: ConfigType.Media<{
 
 function hexToRgb(hex: string): string {
   const bigint = parseInt(hex.replace('#', ''), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  return `${r}, ${g}, ${b}`;
+  // eslint-disable-next-line no-bitwise
+  return `${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}`;
 }
 
 export const {

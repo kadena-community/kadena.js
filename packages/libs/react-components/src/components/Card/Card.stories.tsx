@@ -1,10 +1,9 @@
 import { colors } from '../../styles/colors';
 
 import { Button, SystemIcons } from './../../';
-import { CardHeading } from './Card';
 import { CardColors } from './styles';
 import { Card, ICardProps } from '.';
-import { CardBody, CardFooter } from './';
+import { CardBody, CardFooter, CardHeading } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
