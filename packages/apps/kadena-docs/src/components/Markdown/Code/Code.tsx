@@ -5,9 +5,5 @@ interface IProp {
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
-  return (
-    <pre>
-      <code {...props}>asd{children}</code>
-    </pre>
-  );
+  return <code {...props}>{children}</code>;
 };
