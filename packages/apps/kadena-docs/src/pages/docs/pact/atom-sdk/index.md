@@ -3,7 +3,7 @@ title: Welcome to pact
 menu: Atom SDK
 label: Quickstart
 order: 5
-description: How to get started with Markdoc
+description: How to get started
 layout: full
 ---
 
@@ -11,12 +11,11 @@ layout: full
 
 Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll.
 
-## Customizing Markdoc nodes
+## Customizing nodes
 
 You define custom nodes by passing a custom Node to your
 
 ```javascript
-import { heading } from './schema/Heading.markdoc';
 import * as components from './components';
 
 const config = {
@@ -25,10 +24,10 @@ const config = {
   },
 };
 
-const ast = Markdoc.parse(doc);
-const content = Markdoc.transform(ast, config);
+const ast = MDX.parse(doc);
+const content = MDX.transform(ast, config);
 
-const children = Markdoc.renderers.react(content, React, { components });
+const children = MDX.renderers.react(content, React, { components });
 ```
 
 where `heading` looks something like:
