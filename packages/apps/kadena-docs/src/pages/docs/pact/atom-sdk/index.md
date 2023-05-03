@@ -15,7 +15,7 @@ Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll
 
 You define custom nodes by passing a custom Node to your
 
-```javascript
+```js showLineNumbers /config/
 import { heading } from './schema/Heading.markdoc';
 import * as components from './components';
 
