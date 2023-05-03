@@ -1,7 +1,6 @@
 {
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
