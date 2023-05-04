@@ -22,13 +22,13 @@ export const StyledNotification = styled('div', {
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
-  padding: '0px',
 
   width: 'max-content',
   height: 'min-content',
 
   border: '1px solid $foreground',
   borderLeft: '$sizes$1 solid $foreground',
+  padding: '$md',
 
   variants: {
     color: {
@@ -70,7 +70,7 @@ export const StyledNotification = styled('div', {
 
     type: {
       simple: {
-        padding: '$md',
+        //padding: '$md',
         borderRadius: '$radii$md',
         borderLeft: '1px solid $foreground',
       },
@@ -105,17 +105,19 @@ export const StyledNotificationBody = styled('div', {
 });
 
 export const StyledButtonArea = styled('div', {
-  marginTop: '$lg',
+  //marginTop: '$lg',
 });
 
 export const Col = styled('div', {
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
-  alignItems: 'center',
-  width: 'max-content',
-  minWidth: '$2xl',
+  alignItems: 'flex-start',
+  width: 'min-content',
+  //minWidth: '$2xl',
+  //border: '1px solid red',
   height: '100%',
+  margin: '0',
   variants: {
     type: {
       body: {
@@ -127,23 +129,24 @@ export const Col = styled('div', {
 
 export const Row = styled('div', {
   display: 'flex',
+  margin: '0px $sm',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',
-  width: '100%',
+  alignItems: 'flex-end',
+  width: 'max-content',
   height: '100%',
-  padding: '0 $xs',
-
+  //border: '1px solid purple',
   variants: {
     type: {
       body: {
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'flex-start',
       },
       masterRow: {
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        padding: '$xs',
+        margin: '0',
+        width: '100%',
       },
       simple: {},
     },
@@ -170,7 +173,7 @@ export const StyledHeading = styled(Heading, {
 });
 
 export const StyledButton = styled(Button, {
-  margin: '$md 0',
+  marginTop: '$md',
 });
 
 export const StyledIconButton = styled(IconButton, {

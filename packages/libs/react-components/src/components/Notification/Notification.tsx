@@ -25,6 +25,8 @@ export interface INotificationProps {
   displayActionButton?: boolean;
 
   color?: string;
+
+  simplified?: boolean;
 }
 
 export const Notification: FC<INotificationProps> = ({
@@ -36,10 +38,11 @@ export const Notification: FC<INotificationProps> = ({
   actionButtonOnClick,
   displayActionButton = false,
   color = 'default',
+  simplified = false,
   ...props
 }) => {
-  const Icon = icon;
-  const isSimple = !displayActionButton && !description;
+  const Icon = icon!;
+  const isSimple = simplified || (!displayActionButton && !description);
 
   return (
     <StyledNotification
@@ -48,7 +51,9 @@ export const Notification: FC<INotificationProps> = ({
       type={isSimple ? 'simple' : 'full'}
     >
       <Row type="masterRow">
-        <Col>{Icon && <Icon size="md" color={color} />}</Col>
+        <Col>
+          <Icon size="md" color={color} />
+        </Col>
         <Col type="body">
           <Row type={isSimple ? 'simple' : 'body'}>
             <StyledHeading as="h6">{title}</StyledHeading>

@@ -29,6 +29,11 @@ const meta: Meta<
         type: 'text',
       },
     },
+    simplified: {
+      control: {
+        type: 'boolean',
+      },
+    },
     color: {
       options: NotificationColors,
       control: {
@@ -59,13 +64,6 @@ const meta: Meta<
         type: 'text',
       },
     },
-
-    /*
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-    },*/
   },
 };
 
@@ -94,6 +92,7 @@ export const Primary: Story = {
     displayActionButton: true,
     actionButtonLabel: 'Action label',
     color: 'default',
+    simplified: false,
   },
   render: ({
     selectIcon,
@@ -104,12 +103,14 @@ export const Primary: Story = {
     displayCloseButton,
     expand,
     color,
+    simplified,
   }) => {
     const Icon = SystemIcons[selectIcon];
 
     return (
       <>
         <Notification
+          simplified={simplified}
           icon={Icon}
           color={color}
           title={title}
