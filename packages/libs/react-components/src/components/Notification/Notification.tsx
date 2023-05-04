@@ -1,8 +1,7 @@
 import { SystemIcons } from '../Icons';
 
 import {
-  Col,
-  Row,
+  AbsoluteButton,
   StyledButton,
   StyledHeading,
   StyledIconButton,
@@ -31,8 +30,8 @@ export interface INotificationProps {
 
 export const Notification: FC<INotificationProps> = ({
   icon,
-  title = 'Notification title',
-  description = 'Notification text to inform users about the event that occurred!',
+  title,
+  description,
   displayCloseButton = false,
   actionButtonLabel,
   actionButtonOnClick,
@@ -42,43 +41,37 @@ export const Notification: FC<INotificationProps> = ({
   ...props
 }) => {
   const Icon = icon!;
-  const isSimple = simplified || (!displayActionButton && !description);
+  const isSimple =
+    simplified || (!displayActionButton && description === undefined)
+      ? true
+      : false;
 
   return (
     <StyledNotification
       {...props}
+      // eslint-disable-next-line
       color={color as any}
       type={isSimple ? 'simple' : 'full'}
     >
-      <Row type="masterRow">
-        <Col>
-          <Icon size="md" color={color} />
-        </Col>
-        <Col type="body">
-          <Row type={isSimple ? 'simple' : 'body'}>
-            <StyledHeading as="h6">{title}</StyledHeading>
-          </Row>
-          <Row>
-            {!isSimple && <StyledText as="p">{description}</StyledText>}
-          </Row>
-          <Row>
-            {displayActionButton && (
-              <StyledButton
-                onClick={actionButtonOnClick}
-                title={actionButtonLabel!}
-                icon={SystemIcons.TrailingIcon}
-              >
-                {actionButtonLabel}
-              </StyledButton>
-            )}{' '}
-          </Row>
-        </Col>
-        <Col>
-          {displayCloseButton && (
-            <StyledIconButton title="bla" icon={SystemIcons.Close!} />
-          )}
-        </Col>
-      </Row>
+      <AbsoluteButton position="left">
+        <Icon size="md" color={color} />
+      </AbsoluteButton>
+      <StyledHeading as="h6">{title}</StyledHeading>
+      {!isSimple && <StyledText as="p">{description}</StyledText>}
+      {displayActionButton && !isSimple && (
+        <StyledButton
+          onClick={actionButtonOnClick}
+          title={actionButtonLabel!}
+          icon={SystemIcons.TrailingIcon}
+        >
+          {actionButtonLabel}
+        </StyledButton>
+      )}
+      <AbsoluteButton position="right">
+        {displayCloseButton && !isSimple && (
+          <StyledIconButton title="bla" icon={SystemIcons.Close!} />
+        )}
+      </AbsoluteButton>
     </StyledNotification>
   );
 };
