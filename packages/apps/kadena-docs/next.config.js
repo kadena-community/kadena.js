@@ -1,10 +1,15 @@
 import remarkFrontmatter from 'remark-frontmatter';
 import rehypePrettyCode from 'rehype-pretty-code';
 import mdx from '@next/mdx';
+import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
+import { readFileSync } from 'fs';
 
 const options = {
   // Use one of Shiki's packaged themes
-  theme: 'one-dark-pro',
+  theme: {
+    light: 'github-light',
+    dark: 'github-dark',
+  },
 
   // Keep the background or use a custom background color?
   keepBackground: false,
@@ -25,6 +30,23 @@ const options = {
   onVisitHighlightedWord(node) {
     // Each word node has no className by default.
     node.properties.className = ['word'];
+  },
+
+  getHighlighter: (options) => {
+    const pactGrammer = JSON.parse(
+      readFileSync('./src/scripts/pact.tmLanguage.json'),
+    );
+    const myLanguage = {
+      id: 'Pact',
+      scopeName: 'source.pact',
+      grammar: pactGrammer,
+      aliases: ['pact'],
+    };
+
+    return getHighlighter({
+      ...options,
+      langs: [...BUNDLED_LANGUAGES, myLanguage],
+    });
   },
 };
 

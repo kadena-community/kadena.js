@@ -1,4 +1,4 @@
-import { Code } from './Code';
+import { Code, Pre, TitleWrapper } from './Code';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { Paragraph } from './Paragraph';
 
@@ -11,4 +11,5 @@ export const markDownComponents: Record<string, FC> = {
   h4: Heading4 as FC<JSX.IntrinsicElements['h4']>,
   p: Paragraph as FC<JSX.IntrinsicElements['p']>,
   code: Code as FC<JSX.IntrinsicElements['code']>,
+  div: TitleWrapper as FC<JSX.IntrinsicElements['div']>,
 };

@@ -16,6 +16,6 @@ export const Content: StyledComponent<'div'> = styled('div', {
 
   '@md': {
     gridColumn: '3 / span 1',
-    gridRow: '3 / span 3',
+    gridRow: '3 / span 1',
   },
 });

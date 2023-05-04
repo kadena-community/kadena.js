@@ -15,23 +15,10 @@ Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll
 
 You define custom nodes by passing a custom Node to your
 
-```lisp
-(defun get-balance (id)
-    "Only users or admin can read balance."
-    (with-read payments-table id
-      { "balance":= balance, "keyset":= keyset }
-      (enforce-one "Access denied"
-
-       [(enforce-keyset keyset)
-         (enforce-keyset 'admin-keyset)])
-      balance))
-
-
-;; row 60: create accounts
-
-(create-account "Sarah" 100.25 (read-keyset "sarah-keyset"))
-(create-account "James" 250.0 (read-keyset "james-keyset"))
-
+```pact title="hello-world.pact" js="dsf"
+(define-namespace
+  (defcap GOVERNANCE ()))
+)
 ```
 
 where `heading` looks something like:
