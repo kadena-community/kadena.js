@@ -18,6 +18,8 @@ export const ProductIconContainer = styled('span', {
   display: 'flex',
   '> svg': {
     width: '100%',
+
+    '.stroke': {},
   },
 
   variants: {
