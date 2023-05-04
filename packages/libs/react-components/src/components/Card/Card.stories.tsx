@@ -1,24 +1,21 @@
-import { colors } from '../../styles/colors';
-
 import { Button, SystemIcons } from './../../';
-import { CardColors } from './styles';
 import { Card, ICardProps } from '.';
-import { CardBody, CardFooter, CardHeading } from './';
+import { CardBody, CardColors, CardFooter, CardHeading } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-type ColorKeys = keyof typeof colors;
 
+type ColorType = 'default' | 'accent';
 const meta: Meta<
   {
-    color: ColorKeys;
+    color: ColorType;
     expand: boolean;
   } & ICardProps
 > = {
   title: 'Layout/Card',
   argTypes: {
     color: {
-      options: CardColors,
+      options: Object.values(CardColors),
       control: {
         type: 'select',
       },
@@ -34,7 +31,7 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    color: ColorKeys;
+    color: CardColors;
     expand: boolean;
   } & ICardProps
 >;
@@ -42,7 +39,7 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Card',
   args: {
-    color: 'default' as ColorKeys,
+    color: 'default' as CardColors,
     expand: false,
   },
   render: ({ color, expand }) => {

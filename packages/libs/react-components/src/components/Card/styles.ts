@@ -2,17 +2,12 @@
 
 import { styled } from '../../styles';
 
-export const CardColors: string[] = [
-  'default',
-  'primary',
-  'secondary',
-  'positive',
-  'warning',
-  'negative',
-];
+export enum CardColors {
+  Default = 'default',
+  Accent = 'accent',
+}
 
 export const StyledCard = styled('div', {
-  boxSizing: 'border-box',
   backgroundColor: '$neutral1',
   display: 'flex',
   flexDirection: 'column',
@@ -28,25 +23,9 @@ export const StyledCard = styled('div', {
         backgroundColor: '$defaultSurface',
         color: '$defaultContrast',
       },
-      primary: {
-        backgroundColor: '$primarySurface',
-        color: '$neutral5',
-      },
-      secondary: {
-        backgroundColor: '$secondarySurface',
-        color: '$neutral5',
-      },
-      positive: {
-        backgroundColor: '$positiveSurface',
-        color: '$neutral5',
-      },
-      warning: {
-        backgroundColor: '$warningSurface',
-        color: '$neutral5',
-      },
-      negative: {
-        backgroundColor: '$negativeSurface',
-        color: '$neutral5',
+      accent: {
+        backgroundColor: '$colors$neutral2',
+        color: '$contrast',
       },
     },
     expand: {

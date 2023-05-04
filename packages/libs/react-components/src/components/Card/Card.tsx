@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 
 export interface ICardProps {
   children: React.ReactNode;
-  color?: string;
+  color?: CardColors;
   expand?: boolean;
 }
 
@@ -23,11 +23,11 @@ export const CardHeading: FC<ICardHeadingProps> = ({
 export const Card: FC<ICardProps> = ({
   children,
   expand = false,
-  color = 'default',
+  color = CardColors.Default,
 }) => {
   return (
     // eslint-disable-next-line
-    <StyledCard color={color as any} expand={expand as any}>
+    <StyledCard color={color} expand={expand as any}>
       {children}
     </StyledCard>
   );

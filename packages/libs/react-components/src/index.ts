@@ -3,6 +3,7 @@ export { Grid, IGridContainerProps, IGridItemProps } from './components/Grid';
 export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
+export { Card, ICardProps } from './components/Card';
 export {
   Heading,
   Text,
