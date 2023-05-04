@@ -7,6 +7,5 @@ interface IProp {
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
-  console.log(props);
   return <StyledCode {...props}>{children}</StyledCode>;
 };
