@@ -1,4 +1,4 @@
-import { Code, Pre, TitleWrapper } from './Code';
+import { Code, TitleWrapper } from './Code';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { Paragraph } from './Paragraph';
 

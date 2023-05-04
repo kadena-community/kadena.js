@@ -1,4 +1,4 @@
-import { StyledCode, StyledCodeWrapper } from './styles';
+import { StyledCodeWrapper } from './styles';
 
 import React, { FC, ReactNode } from 'react';
 
