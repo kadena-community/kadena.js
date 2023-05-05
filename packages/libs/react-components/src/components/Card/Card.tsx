@@ -1,6 +1,6 @@
 import { Heading } from '../Typography';
 
-import { StyledCard } from './styles';
+import { CardColors, StyledCard } from './styles';
 
 import React, { FC } from 'react';
 
