@@ -36,6 +36,7 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
   },
 
   a: {
+    display: 'flex',
     color: '$neutral4',
     textDecoration: 'none',
     '&:hover': {
@@ -43,6 +44,7 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
     },
   },
   span: {
-    marginTop: 'calc($1 /2)',
+    marginTop: 'calc($1 / 2)',
+    marginRight: '$1',
   },
 });

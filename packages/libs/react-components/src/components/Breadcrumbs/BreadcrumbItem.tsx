@@ -13,8 +13,16 @@ export const BreadcrumbItem: FC<IBreadcrumbItem> = ({ children, icon }) => {
   const Icon = icon;
   return (
     <StyledBreadcrumbItem>
-      {Icon && <Icon size="sm" />}
-      {children}
+      {React.Children.map(children, (child) => {
+        if (!child) return;
+        if (!React.isValidElement(child)) return child;
+        return React.cloneElement(
+          child,
+          {},
+          Icon && <Icon size="sm" />,
+          child.props.children,
+        );
+      })}
     </StyledBreadcrumbItem>
   );
 };

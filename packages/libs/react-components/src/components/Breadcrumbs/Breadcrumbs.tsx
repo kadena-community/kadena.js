@@ -14,11 +14,12 @@ export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
   return (
     <StyledBreadcrumbs>
       {React.Children.map(children, (child, idx) => {
-        if (
-          child === undefined ||
-          child.type.displayName !== BreadcrumbItem.displayName
-        )
-          return null;
+        if (child === undefined || child.type !== BreadcrumbItem) {
+          throw new Error(
+            `${child?.type} is not a valid child for Breadcrumbs`,
+          );
+        }
+        console.log(child.type !== BreadcrumbItem);
 
         if (idx === 0) {
           return React.cloneElement<IBreadcrumbItem>(child, { icon });

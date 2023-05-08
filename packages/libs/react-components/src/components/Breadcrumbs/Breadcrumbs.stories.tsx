@@ -55,12 +55,13 @@ export const Primary: Story = {
   },
   render: ({ itemsCount, selectIcon }) => {
     const items = ItemArray.slice(0, itemsCount);
+    const Icon = ProductIcons[selectIcon];
     return (
-      <Breadcrumbs icon={ProductIcons[selectIcon]}>
+      <Breadcrumbs icon={Icon}>
         {items.map((item, idx) => {
           return (
             <BreadcrumbItem key={item}>
-              {idx < items.length - 1 ? <a href={`#{item}`}>{item}</a> : item}
+              {idx < items.length - 1 ? <a href={`#${item}`}>{item}</a> : item}
             </BreadcrumbItem>
           );
         })}
