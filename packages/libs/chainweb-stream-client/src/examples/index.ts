@@ -2,6 +2,7 @@ import ChainwebStreamClient, { ITransaction } from '../';
 
 const client: ChainwebStreamClient = new ChainwebStreamClient({
   // required
+  network: 'mainnet01',
   type: 'account',
   id: 'k:e7f7130f359fb1f8c87873bf858a0e9cbc3c1059f62ae715ec72e760b055e9f3',
   host: 'http://localhost:4000/',
