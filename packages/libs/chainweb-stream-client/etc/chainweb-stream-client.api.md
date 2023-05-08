@@ -8,7 +8,7 @@ import EventEmitter from 'eventemitter2';
 
 // @alpha (undocumented)
 class ChainwebStream extends EventEmitter {
-    constructor({ host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
+    constructor({ network, host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
     // (undocumented)
     confirmationDepth: number;
     connect: () => void;
@@ -25,6 +25,8 @@ class ChainwebStream extends EventEmitter {
     limit: number | undefined;
     // (undocumented)
     maxReconnects: number;
+    // (undocumented)
+    network: string;
     get state(): ConnectionState;
     // (undocumented)
     type: ChainwebStreamType;
@@ -65,6 +67,22 @@ export interface IAccountTransaction extends ITransactionBase {
 }
 
 // @alpha (undocumented)
+export interface IChainwebStreamConfig {
+    // (undocumented)
+    heartbeat: number;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    maxConf: number;
+    // (undocumented)
+    network: string;
+    // (undocumented)
+    type: ChainwebStreamType;
+    // (undocumented)
+    v: string;
+}
+
+// @public (undocumented)
 export interface IChainwebStreamConstructorArgs {
     // (undocumented)
     confirmationDepth?: number;
@@ -80,6 +98,10 @@ export interface IChainwebStreamConstructorArgs {
     limit?: number;
     // (undocumented)
     maxReconnects?: number;
+    // (undocumented)
+    network: string;
+    // Warning: (ae-incompatible-release-tags) The symbol "type" is marked as @public, but its signature references "ChainwebStreamType" which is marked as @alpha
+    //
     // (undocumented)
     type: ChainwebStreamType;
 }
@@ -112,6 +134,18 @@ export interface IEventTransaction extends ITransactionBase {
     name: string;
     // (undocumented)
     params: string[];
+}
+
+// @public (undocumented)
+export interface IInitialEvent {
+    // Warning: (ae-incompatible-release-tags) The symbol "config" is marked as @public, but its signature references "IChainwebStreamConfig" which is marked as @alpha
+    //
+    // (undocumented)
+    config: IChainwebStreamConfig;
+    // Warning: (ae-incompatible-release-tags) The symbol "data" is marked as @public, but its signature references "ITransaction" which is marked as @alpha
+    //
+    // (undocumented)
+    data: ITransaction[];
 }
 
 // @alpha (undocumented)

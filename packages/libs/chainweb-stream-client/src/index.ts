@@ -6,11 +6,13 @@ import {
   HeartbeatTimeoutError,
 } from './errors';
 import {
+  ConnectionState,
   IChainwebStreamConstructorArgs,
   ChainwebStreamType,
   ITransaction,
-  ConnectionState,
   IDebugMsgObject,
+  IInitialEvent,
+  IChainwebStreamConfig,
 } from './types';
 
 export * from './types';
@@ -18,15 +20,21 @@ export * from './types';
 // TODO confirmation depth should be sent from the backend
 // so that it is always in sync with the client
 const DEFAULT_CONFIRMATION_DEPTH: number = 6;
-const DEFAULT_CONNECT_TIMEOUT: number = 25_000;
+const DEFAULT_CONNECT_TIMEOUT: number = 28_000;
 const DEFAULT_HEARTBEAT_TIMEOUT: number = 35_000;
 const DEFAULT_MAX_RECONNECTS: number = 6;
 const DEFAULT_LIMIT: number = 100;
+
+// TODO
+// const WIRE_PROTOCOL_VERSION: string = "0.0.2";
 
 /**
  * @alpha
  */
 class ChainwebStream extends EventEmitter {
+  // chainweb network, e.g. mainnet01
+  public network: string;
+
   // chainweb-stream backend host, full URI - e.g. https://sse.chainweb.com
   public host: string;
 
@@ -80,6 +88,7 @@ class ChainwebStream extends EventEmitter {
   private _reconnectTimer?: ReturnType<typeof setTimeout>;
 
   public constructor({
+    network,
     host,
     type,
     id,
@@ -88,8 +97,10 @@ class ChainwebStream extends EventEmitter {
     maxReconnects,
     heartbeatTimeout,
     confirmationDepth,
-  }: IChainwebStreamConstructorArgs) {
+  }: /* TODO quiet, */
+  IChainwebStreamConstructorArgs) {
     super();
+    this.network = network;
     this.type = type;
     this.id = id;
     this.host = host.endsWith('/') ? host.substr(0, host.length - 1) : host; // strip trailing slash if provided
@@ -158,7 +169,7 @@ class ChainwebStream extends EventEmitter {
         'ChainwebStream._handleConnect called without an _eventSource. This should never happen',
       );
     }
-    _eventSource.addEventListener('initial', this._handleData);
+    _eventSource.addEventListener('initial', this._handleInitial);
     _eventSource.addEventListener('message', this._handleData);
     _eventSource.addEventListener('ping', this._resetHeartbeatTimeout);
     this._resetHeartbeatTimeout();
@@ -194,8 +205,8 @@ class ChainwebStream extends EventEmitter {
     this._debug('_handleError', { message, willRetry, timeout });
 
     if (!willRetry) {
-      this.emit('error', message); // TODO need to wrap in Error ?
-      this._desiredState = ConnectionState.Closed;
+      this._emitError(message);
+      this.disconnect();
       return;
     }
 
@@ -213,21 +224,35 @@ class ChainwebStream extends EventEmitter {
     this._reconnectTimer = setTimeout(this.connect, timeout);
   };
 
+  private _handleInitial = (msg: MessageEvent<string>): void => {
+    this._debug('_handleData', { length: msg.data?.length });
+
+    const message = JSON.parse(msg.data) as IInitialEvent;
+
+    const { config, data } = message;
+
+    if (!this._validateServerConfig(config)) {
+      return;
+    }
+
+    this._processData(data);
+  };
+
   private _handleData = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as ITransaction | ITransaction[];
+    const message = JSON.parse(msg.data) as ITransaction;
 
-    const data: ITransaction[] = Array.isArray(message) ? message : [message];
+    this._processData([message]);
 
-    const newMinHeight = data.reduce(
+    this._resetHeartbeatTimeout();
+  };
+
+  private _processData(data: ITransaction[]): void {
+    this._lastHeight = data.reduce(
       (highest, { height }) => (height > highest ? height : highest),
-      0,
+      this._lastHeight ?? 0,
     );
-
-    if (!this._lastHeight || newMinHeight > this._lastHeight) {
-      this._lastHeight = newMinHeight;
-    }
 
     for (const element of data) {
       const {
@@ -240,9 +265,62 @@ class ChainwebStream extends EventEmitter {
         this.emit('unconfirmed', element);
       }
     }
+  }
 
-    this._resetHeartbeatTimeout();
-  };
+  private _emitError(msg: string): void {
+    console.error(msg);
+    this.emit('error', msg);
+  }
+
+  private _validateServerConfig(config: IChainwebStreamConfig): boolean {
+    const { network, type, id, maxConf, heartbeat } = config;
+
+    const fail = (msg: string): false => {
+      this.disconnect();
+      this._emitError(msg);
+      return false;
+    };
+
+    if (network !== this.network) {
+      return fail(
+        `Network mismatch: wanted ${this.network}, server is ${network}.`,
+      );
+    }
+
+    if (type !== this.type) {
+      return fail(
+        `Parameter mismatch: Expected transactions of type "${this.type}" but received "${type}". This should never happen.`,
+      );
+    }
+
+    if (id !== this.id) {
+      return fail(
+        `Parameter mismatch: Expected transactions for ${this.id} but received ${id}. This should never happen.`,
+      );
+    }
+
+    if (maxConf < this.confirmationDepth) {
+      return fail(
+        `Configuration mismatch: Client confirmation depth (${this.confirmationDepth}) is larger than server (${maxConf}). Events will never be considered confirmed on the client.`,
+      );
+    }
+
+    if (heartbeat < this.heartbeatTimeoutMs) {
+      const newHeartbeatTimeoutMs = heartbeat + 2_500; // give a buffer of 2.5s
+
+      this.emit(
+        'warn',
+        `Configuration mismatch: Client heartbeat interval (${this.heartbeatTimeoutMs}ms) is larger than server heartbeat interval (${heartbeat}ms). Adapting to ${newHeartbeatTimeoutMs}ms to avoid reconnection loops`,
+      );
+
+      this.heartbeatTimeoutMs = newHeartbeatTimeoutMs;
+      this._resetHeartbeatTimeout(); // reset to the new interval
+    }
+
+    // TODO validate version
+
+    return true;
+  }
 
   private _stopHeartbeatMonitor = (): void => {
     if (this._heartbeatTimer) {
