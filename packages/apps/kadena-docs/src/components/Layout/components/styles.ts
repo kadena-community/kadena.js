@@ -1,9 +1,4 @@
-import {
-  darkTheme,
-  IconButton,
-  styled,
-  StyledComponent,
-} from '@kadena/react-components';
+import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 
 import { HeaderIconGroup } from './Header/styles';
 

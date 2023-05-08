@@ -3,7 +3,7 @@ title: Chainweb Tutorial
 menu: Tutorial
 label: Chainweb Tutorial
 order: 3
-description: How to get started with Markdoc
+description: How to get started
 layout: landing
 ---
 

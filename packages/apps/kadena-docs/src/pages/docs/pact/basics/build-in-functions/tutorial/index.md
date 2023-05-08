@@ -3,7 +3,7 @@ title: Pact tutorial
 menu: Pact tutorial
 label: Tutorial
 order: 0
-description: How to get started with Markdoc
+description: How to get started
 layout: full
 ---
 

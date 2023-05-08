@@ -5,7 +5,9 @@ import {
 } from '@kadena/react-components';
 
 import { Main } from '@/components/Layout/components';
+import { markDownComponents } from '@/components/Markdown';
 import { IDocsPageFC } from '@/types/Layout';
+import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import React from 'react';
@@ -24,11 +26,11 @@ export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const ReactComponent = Component as IDocsPageFC;
 
   if (ReactComponent.meta !== undefined) {
-    pageProps = { ...pageProps, markdoc: { frontmatter: ReactComponent.meta } };
+    pageProps = { ...pageProps, frontmatter: ReactComponent.meta };
   }
 
   return (
-    <>
+    <MDXProvider components={markDownComponents}>
       <ThemeProvider
         attribute="class"
         enableSystem={true}
@@ -41,7 +43,7 @@ export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
           <ReactComponent {...pageProps} />
         </Main>
       </ThemeProvider>
-    </>
+    </MDXProvider>
   );
 };
 
