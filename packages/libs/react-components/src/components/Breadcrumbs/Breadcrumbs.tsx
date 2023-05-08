@@ -1,4 +1,4 @@
-import { ProcuctIcons } from '../ProductIcons';
+import { ProductIcons } from '../ProductIcons';
 
 import { StyledBreadcrumbs } from './styles';
 import { BreadcrumbItem, IBreadcrumbItem } from '.';
@@ -7,7 +7,7 @@ import React, { FC, FunctionComponentElement } from 'react';
 
 export interface IBreadcrumbs {
   children?: FunctionComponentElement<IBreadcrumbItem>[];
-  icon?: typeof ProcuctIcons[keyof typeof ProcuctIcons];
+  icon?: typeof ProductIcons[keyof typeof ProductIcons];
 }
 
 export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
