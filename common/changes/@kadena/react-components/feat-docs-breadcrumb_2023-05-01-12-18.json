@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@kadena/react-components",
-      "comment": "add the breadcrumb component",
+      "comment": "Add the breadcrumbs component to the library",
       "type": "none"
     }
   ],
