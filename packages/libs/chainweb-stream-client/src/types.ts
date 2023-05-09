@@ -60,11 +60,17 @@ export interface IChainwebStreamConfig {
   v: string;
 }
 
+/**
+ * @alpha
+ */
 export interface IInitialEvent {
   config: IChainwebStreamConfig;
   data: ITransaction[];
 }
 
+/**
+ * @alpha
+ */
 export interface IChainwebStreamConstructorArgs {
   network: string;
   type: ChainwebStreamType;
