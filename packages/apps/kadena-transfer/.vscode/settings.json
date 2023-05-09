@@ -1,0 +1,81 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "eslint.nodePath": ".yarn/sdks",
+  "eslint.runtime": "node",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "files.exclude": {
+    "**/.cache": true,
+    "**/.DS_Store": true,
+    "**/.editorconfig": true,
+    "**/.eslintcache": true,
+    "**/.git": true,
+    "**/.gitattributes": true,
+    "**/.husky": true,
+    "**/.pnp.*": true,
+    "**/.prettierignore": true,
+    "**/node_modules": true,
+    "**/yarn.lock": true
+  },
+  "search.exclude": {
+    "**/dist/": true,
+    "**/.pnp.*": true,
+    "**/.yarn": true,
+    "**/yarn-error.log": true,
+    "**/yarn.lock": true
+  },
+  "terminal.integrated.env.linux": {
+    "CACHE_DIR": "${workspaceFolder}/.cache"
+  },
+  "terminal.integrated.env.osx": {
+    "CACHE_DIR": "${workspaceFolder}/.cache"
+  },
+  "terminal.integrated.env.windows": {
+    "CACHE_DIR": "${workspaceFolder}\\.cache"
+  },
+  "cSpell.ignoreWords": [
+    "browserslist",
+    "cloudfunctions",
+    "corejs",
+    "endregion",
+    "entrypoint",
+    "envalid",
+    "envars",
+    "eslintcache",
+    "esmodules",
+    "esnext",
+    "execa",
+    "firebaseapp",
+    "firestore",
+    "globby",
+    "hono",
+    "jamstack",
+    "kriasoft",
+    "localforage",
+    "miniflare",
+    "nodenext",
+    "notistack",
+    "oidc",
+    "pathinfo",
+    "pnpify",
+    "reactstarter",
+    "refetch",
+    "refetchable",
+    "sendgrid",
+    "signup",
+    "sourcemap",
+    "spdx",
+    "swapi",
+    "tslib",
+    "typechecking",
+    "webflow",
+    "yarnpkg",
+    "yarnrc"
+  ]
+}

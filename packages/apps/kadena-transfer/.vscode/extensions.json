@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "arcanis.vscode-zipfs",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "github.copilot",
+    "graphql.vscode-graphql",
+    "mikestead.dotenv",
+    "streetsidesoftware.code-spell-checker",
+    "vscode-icons-team.vscode-icons",
+    "zixuanchen.vitest-explorer"
+  ]
+}
