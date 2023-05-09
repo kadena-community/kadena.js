@@ -369,6 +369,9 @@ class ChainwebStream extends EventEmitter {
 
     // pass query string args. minHeight and limit for now.
     const urlParamArgs: string[][] = [];
+    if (this.limit !== undefined) {
+      urlParamArgs.push(['limit', String(this.limit)]);
+    }
     // TODO
     // This currently has a sliding window edge case when reconnecting
     // chains can currently be +/- 3 height from each other
@@ -377,9 +380,6 @@ class ChainwebStream extends EventEmitter {
     // i.e. the lowest possible height of the trailing chain
     // but in that case we would see duplicate events
     // Should we track emitted events and suppress duplicates?
-    if (this.limit !== undefined) {
-      urlParamArgs.push(['limit', String(this.limit)]);
-    }
     if (this._lastHeight !== undefined) {
       urlParamArgs.push(['minHeight', String(this._lastHeight)]);
     }
