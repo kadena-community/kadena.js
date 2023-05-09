@@ -11,23 +11,14 @@ layout: full
 
 Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie roll.
 
-## Customizing nodes
+## Customizing Markdoc nodes
 
 You define custom nodes by passing a custom Node to your
 
-```javascript
-import * as components from './components';
-
-const config = {
-  nodes: {
-    heading,
-  },
-};
-
-const ast = MDX.parse(doc);
-const content = MDX.transform(ast, config);
-
-const children = MDX.renderers.react(content, React, { components });
+```pact title="hello-world.pact" js="dsf"
+(define-namespace
+  (defcap GOVERNANCE ()))
+)
 ```
 
 where `heading` looks something like:

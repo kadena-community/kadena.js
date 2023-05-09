@@ -15,9 +15,15 @@ const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
+  frontmatter: {
+    title: string;
+    subTitle: string;
+    description: string;
+    layout: LayoutType;
+  };
 }
 
-export const Main: FC<IProps> = ({ children, ...pageProps }) => {
+export const Main: FC<IProps> = ({ children, frontmatter }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
@@ -30,6 +36,7 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
       if (tree.length) {
         tree.map((item) => {
           // is the menu open?
+          console.log(pathname, item.root, pathname.startsWith(item.root));
           if (pathname.startsWith(item.root)) {
             item.isMenuOpen = true;
           } else {
@@ -56,7 +63,13 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
   }, [pathname]);
 
   let title, description, subTitle;
-  const layoutType: LayoutType = 'full';
+  let layoutType: LayoutType = 'full';
+  if (frontmatter !== undefined) {
+    title = frontmatter.title;
+    subTitle = frontmatter.subTitle;
+    description = frontmatter.description;
+    layoutType = frontmatter.layout ?? 'full';
+  }
 
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);
