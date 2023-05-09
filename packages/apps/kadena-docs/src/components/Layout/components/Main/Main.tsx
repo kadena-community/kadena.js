@@ -56,7 +56,7 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
   }, [pathname]);
 
   let title, description, subTitle;
-  const layoutType: LayoutType = 'full';
+  const layoutType: LayoutType = 'landing';
 
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);

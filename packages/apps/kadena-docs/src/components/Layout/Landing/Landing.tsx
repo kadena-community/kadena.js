@@ -7,9 +7,11 @@ import React, { FC } from 'react';
 export const Landing: FC<ILayout> = ({ children }) => {
   return (
     <Content id="maincontent">
-      <Article>{children}</Article>
+      <Article>
+        {children}
 
-      <NotFound />
+        <NotFound />
+      </Article>
     </Content>
   );
 };
