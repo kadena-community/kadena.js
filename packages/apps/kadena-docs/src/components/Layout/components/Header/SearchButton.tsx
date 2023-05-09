@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 export const SearchButton: FC = () => {
   const { handleOpenSearch } = useOpenSearch();
   return (
-    <StyledSearchButton onClick={handleOpenSearch} color="positive">
+    <StyledSearchButton onClick={handleOpenSearch}>
       <SystemIcons.Magnify />
       <StyledSearchButtonSlash>
         <SystemIcons.SlashForward />
