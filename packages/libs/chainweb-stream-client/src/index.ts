@@ -372,16 +372,12 @@ class ChainwebStream extends EventEmitter {
     if (this.limit !== undefined) {
       urlParamArgs.push(['limit', String(this.limit)]);
     }
-    // TODO
-    // This currently has a sliding window edge case when reconnecting
-    // chains can currently be +/- 3 height from each other
-    // lastHeight can be the height of the leading chain
-    // to never miss events from other chains we need to send lastHeight - 3
-    // i.e. the lowest possible height of the trailing chain
-    // but in that case we would see duplicate events
-    // Should we track emitted events and suppress duplicates?
+    // TODO This reconnection strategy of -3 from last max height
+    // guarrantees that we will not miss events, but it also means
+    // that confirmed transactions will be emitted more than once
+    // Discussion here: https://github.com/kadena-community/kadena.js/issues/275
     if (this._lastHeight !== undefined) {
-      urlParamArgs.push(['minHeight', String(this._lastHeight)]);
+      urlParamArgs.push(['minHeight', String(this._lastHeight - 3)]);
     }
     if (urlParamArgs.length) {
       path += '?' + new URLSearchParams(urlParamArgs).toString();
