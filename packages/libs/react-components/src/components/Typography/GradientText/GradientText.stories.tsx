@@ -10,9 +10,6 @@ const meta: Meta<typeof GradientText> = {
     children: {
       control: { type: 'text' },
     },
-    as: {
-      control: { type: 'select' },
-    },
   },
 };
 
@@ -23,7 +20,6 @@ export const Primary: Story = {
   name: 'GradientText',
   args: {
     children: 'web3',
-    as: 'span',
   },
-  render: ({ as, children }) => <GradientText as={as}>{children}</GradientText>,
+  render: ({ children }) => <GradientText>{children}</GradientText>,
 };
