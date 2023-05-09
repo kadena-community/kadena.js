@@ -190,8 +190,12 @@ export const Text = styled(BaseText, {
 
 export const GradientText = styled('span', {
   fontWeight: '$bold',
-  background: 'linear-gradient(50deg, #ff00e9, #00c0ff 90%)',
+  backgroundColor: 'inherit',
+  backgroundImage: 'linear-gradient(50deg, #ff00e9, #00c0ff 90%)',
+  backgroundSize: '100%',
   color: 'white',
   '-webkit-background-clip': 'text',
+  '-moz-background-clip': 'text',
   '-webkit-text-fill-color': 'transparent',
+  '-moz-text-fill-color': 'transparent',
 });
