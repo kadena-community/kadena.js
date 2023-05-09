@@ -1,4 +1,9 @@
-import { IconButton, styled, StyledComponent } from '@kadena/react-components';
+import {
+  darkTheme,
+  IconButton,
+  styled,
+  StyledComponent,
+} from '@kadena/react-components';
 
 export const HamburgerButton: StyledComponent<typeof IconButton> = styled(
   IconButton,
@@ -39,5 +44,37 @@ export const HideOnMobile: StyledComponent<'div'> = styled('div', {
   display: 'none',
   '@md': {
     display: 'flex',
+  },
+});
+
+export const StyledSearchButton: StyledComponent<'button'> = styled('button', {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  background: '$neutral4',
+  borderRadius: '$lg',
+  border: 0,
+  cursor: 'pointer',
+  transition: 'opacity .2s ease',
+  '&:hover': {
+    opacity: '.6',
+  },
+  '&:focus-visible': {
+    outlineOffset: '2px',
+    outline: '2px solid $$svgColor',
+  },
+  svg: {
+    color: '$neutral100',
+  },
+  [`.${darkTheme} &`]: {
+    background: '$neutral3 !important',
+  },
+});
+
+export const StyledSearchButtonSlash: StyledComponent<'span'> = styled('span', {
+  background: '$neutral3',
+  borderRadius: '$lg',
+  [`.${darkTheme} &`]: {
+    background: '$neutral4',
   },
 });

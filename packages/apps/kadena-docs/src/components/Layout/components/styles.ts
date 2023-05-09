@@ -40,7 +40,7 @@ export const Template: StyledComponent<
       `,
   },
   defaultVariants: {
-    layout: 'landing',
+    layout: 'normal',
   },
   variants: {
     layout: {
@@ -69,6 +69,7 @@ export const Template: StyledComponent<
         },
       },
       landing: {
+        gridTemplateColumns: 'auto',
         gridTemplateAreas: `
             "header"
             "pageheader"
@@ -77,12 +78,19 @@ export const Template: StyledComponent<
           `,
 
         '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
+
           gridTemplateAreas: `
-              "header header header header header"
-              "pageheader pageheader pageheader pageheader pageheader"
-              ". menu content content ."
-              "footer footer footer footer footer"
+              "header header header header"
+              "pageheader pageheader pageheader pageheader"
+              ". menu content ."
+              "footer footer footer footer"
             `,
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
         },
       },
     },
