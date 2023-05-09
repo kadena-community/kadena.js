@@ -21,6 +21,7 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
 
+  console.log({ pageProps });
   /**
    * with every menu change, this will check which menu needs to be opened in the sidemenu
    */
