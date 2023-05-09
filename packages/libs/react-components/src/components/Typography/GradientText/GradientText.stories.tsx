@@ -1,4 +1,4 @@
-import { GradientText } from './GradientText';
+import { GradientText } from '..';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
