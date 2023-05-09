@@ -19,6 +19,7 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
       '&::before': {
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         margin: '0 $2',
         color: '$background',
         backgroundColor: '$primaryContrast',

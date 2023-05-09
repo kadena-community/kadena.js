@@ -107,7 +107,7 @@
     "label": "Overview",
     "order": 0,
     "description": "How to get started",
-    "layout": "landing",
+    "layout": "full",
     "isMenuOpen": false,
     "isActive": false
   },
