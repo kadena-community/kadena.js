@@ -305,12 +305,12 @@ class ChainwebStream extends EventEmitter {
       );
     }
 
-    if (heartbeat < this.heartbeatTimeoutMs) {
+    if (heartbeat > this.heartbeatTimeoutMs) {
       const newHeartbeatTimeoutMs = heartbeat + 2_500; // give a buffer of 2.5s
 
       this.emit(
         'warn',
-        `Configuration mismatch: Client heartbeat interval (${this.heartbeatTimeoutMs}ms) is larger than server heartbeat interval (${heartbeat}ms). Adapting to ${newHeartbeatTimeoutMs}ms to avoid reconnection loops`,
+        `Configuration mismatch: Client heartbeat interval (${this.heartbeatTimeoutMs}ms) is smaller than server heartbeat interval (${heartbeat}ms). Adapting to ${newHeartbeatTimeoutMs}ms to avoid reconnection loops`,
       );
 
       this.heartbeatTimeoutMs = newHeartbeatTimeoutMs;
