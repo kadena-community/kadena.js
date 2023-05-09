@@ -76,7 +76,6 @@ export interface IChainwebStreamConstructorArgs {
   type: ChainwebStreamType;
   id: string;
   host: string;
-  // TODO network ? for sanity check/safety
   limit?: number;
   connectTimeout?: number;
   heartbeatTimeout?: number;

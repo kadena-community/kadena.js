@@ -55,8 +55,7 @@ class ChainwebStream extends EventEmitter {
   public maxReconnects: number;
 
   // depth at which a block/transaction is considered confirmed
-  // TODO client <-> server should agree about this somehow, because of edge case:
-  // if backend CONFIRMATION_DEPTH < client CONFIRMATION_DEPTH, then the client will not emit and confirmed events
+  // must be less than or equal to the corresponding server configuration
   public confirmationDepth: number;
 
   // desired eventsource state
@@ -95,8 +94,7 @@ class ChainwebStream extends EventEmitter {
     maxReconnects,
     heartbeatTimeout,
     confirmationDepth,
-  }: /* TODO quiet, */
-  IChainwebStreamConstructorArgs) {
+  }: IChainwebStreamConstructorArgs) {
     super();
     this.network = network;
     this.type = type;
@@ -134,7 +132,7 @@ class ChainwebStream extends EventEmitter {
   public disconnect = (): void => {
     this._desiredState = ConnectionState.Closed;
     this._eventSource?.close();
-    // TODO Should we null out this._eventSource?
+    this._eventSource = undefined;
     this._stopHeartbeatMonitor();
     this._debug('disconnect');
   };
