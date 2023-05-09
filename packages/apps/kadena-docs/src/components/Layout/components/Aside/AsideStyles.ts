@@ -184,12 +184,12 @@ export const Aside: StyledComponent<
 
 export const AsideItem: StyledComponent<'li'> = styled('li', {
   lineHeight: '$base',
+
   a: {
     textDecoration: 'none',
     color: '$primaryHighContrast',
     '&:hover': {
       textDecoration: 'underline',
-      fontWeight: '$bold',
     },
   },
 });
@@ -198,12 +198,12 @@ export const AsideList: StyledComponent<
   'ul',
   { inner?: boolean | 'true' | 'false' | undefined }
 > = styled('ul', {
-  listStyle: 'none',
+  listStyle: 'initial',
+  listStylePosition: 'outside',
   margin: 0,
   padding: '0',
 
-  '& li::before': {
-    content: '∙',
+  '& li::marker': {
     color: '$primaryHighContrast',
     fontWeight: '$bold',
     display: 'inline-block',
