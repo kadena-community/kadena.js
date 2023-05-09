@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "comment": "append the export to index.d.ts if it's not already there",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/pactjs-cli"
+}

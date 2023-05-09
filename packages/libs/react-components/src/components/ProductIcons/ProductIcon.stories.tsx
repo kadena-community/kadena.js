@@ -3,7 +3,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
 
 import { sizeVariant } from './styles';
-import { IProcuctIconProps, ProcuctIcons } from './';
+import { IProcuctIconProps, ProductIcons } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -14,7 +14,7 @@ import React from 'react';
  * to learn how to use render functions.
  */
 const meta: Meta<{ icon: string } & IProcuctIconProps> = {
-  title: 'ProcuctIcons',
+  title: 'ProductIcons',
   argTypes: {
     icon: {
       control: {
@@ -45,7 +45,7 @@ export const Primary: Story = {
     return (
       <>
         <Grid.Container spacing="xl" templateColumns="repeat(6, 1fr)">
-          {Object.entries(ProcuctIcons)
+          {Object.entries(ProductIcons)
             .filter(([k]) => searchRegexp.test(k))
             // eslint-disable-next-line @typescript-eslint/naming-convention
             .map(([k, Icon]) => (
