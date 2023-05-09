@@ -14,8 +14,9 @@ export const BreadcrumbItem: FC<IBreadcrumbItem> = ({ children, icon }) => {
   return (
     <StyledBreadcrumbItem>
       {React.Children.map(children, (child) => {
+        if (typeof child === 'string' || !React.isValidElement(child))
+          return child;
         if (child === undefined) return;
-        if (!React.isValidElement(child)) return child;
         return React.cloneElement(
           child,
           {},

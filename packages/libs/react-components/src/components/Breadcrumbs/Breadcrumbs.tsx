@@ -19,7 +19,6 @@ export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
             `${child?.type} is not a valid child for Breadcrumbs`,
           );
         }
-        console.log(child.type !== BreadcrumbItem);
 
         if (idx === 0) {
           return React.cloneElement<IBreadcrumbItem>(child, { icon });
