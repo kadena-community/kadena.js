@@ -41,7 +41,6 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
     display: 'flex',
     color: '$neutral4',
     textDecoration: 'none',
-
     '&:hover': {
       textDecoration: 'underline',
     },
