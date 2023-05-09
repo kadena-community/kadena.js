@@ -14,19 +14,17 @@ import {
   IInitialEvent,
   IChainwebStreamConfig,
 } from './types';
+import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
 
 export * from './types';
 
-// TODO confirmation depth should be sent from the backend
-// so that it is always in sync with the client
+const CLIENT_PROTOCOL_VERSION: string = '0.0.2';
+
 const DEFAULT_CONFIRMATION_DEPTH: number = 6;
 const DEFAULT_CONNECT_TIMEOUT: number = 28_000;
 const DEFAULT_HEARTBEAT_TIMEOUT: number = 35_000;
 const DEFAULT_MAX_RECONNECTS: number = 6;
 const DEFAULT_LIMIT: number = 100;
-
-// TODO
-// const WIRE_PROTOCOL_VERSION: string = "0.0.2";
 
 /**
  * @alpha
@@ -273,7 +271,14 @@ class ChainwebStream extends EventEmitter {
   }
 
   private _validateServerConfig(config: IChainwebStreamConfig): boolean {
-    const { network, type, id, maxConf, heartbeat } = config;
+    const {
+      network,
+      type,
+      id,
+      maxConf,
+      heartbeat,
+      v: serverProtocolVersion,
+    } = config;
 
     const fail = (msg: string): false => {
       this.disconnect();
@@ -310,14 +315,32 @@ class ChainwebStream extends EventEmitter {
 
       this.emit(
         'warn',
-        `Configuration mismatch: Client heartbeat interval (${this.heartbeatTimeoutMs}ms) is smaller than server heartbeat interval (${heartbeat}ms). Adapting to ${newHeartbeatTimeoutMs}ms to avoid reconnection loops`,
+        `Configuration mismatch: Client heartbeat interval (${this.heartbeatTimeoutMs}ms) is smaller than server heartbeat interval (${heartbeat}ms). Adapting to ${newHeartbeatTimeoutMs}ms to avoid reconnection loops.`,
       );
 
       this.heartbeatTimeoutMs = newHeartbeatTimeoutMs;
       this._resetHeartbeatTimeout(); // reset to the new interval
     }
 
-    // TODO validate version
+    if (!isMajorCompatible(CLIENT_PROTOCOL_VERSION, serverProtocolVersion)) {
+      return fail(
+        `Protocol mismatch: Client protocol version ${CLIENT_PROTOCOL_VERSION} is incompatible with server protocol version ${serverProtocolVersion}.`,
+      );
+    }
+
+    if (!isMinorCompatible(CLIENT_PROTOCOL_VERSION, serverProtocolVersion)) {
+      if (isClientAhead(CLIENT_PROTOCOL_VERSION, serverProtocolVersion)) {
+        this.emit(
+          'warn',
+          `Client protocol version ${CLIENT_PROTOCOL_VERSION} is ahead of server protocol version ${serverProtocolVersion}. Some client features may not be supported by the server.`,
+        );
+      } else {
+        this.emit(
+          'warn',
+          `Server protocol version ${serverProtocolVersion} is ahead of client protocol version ${CLIENT_PROTOCOL_VERSION}. Some server features may not be supported by the client.`,
+        );
+      }
+    }
 
     return true;
   }
