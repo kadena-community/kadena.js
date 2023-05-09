@@ -15,17 +15,9 @@ const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
-  markdoc: {
-    frontmatter: {
-      title: string;
-      subTitle: string;
-      description: string;
-      layout: LayoutType;
-    };
-  };
 }
 
-export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
+export const Main: FC<IProps> = ({ children, ...pageProps }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
@@ -64,13 +56,7 @@ export const Main: FC<IProps> = ({ children, markdoc, ...pageProps }) => {
   }, [pathname]);
 
   let title, description, subTitle;
-  let layoutType: LayoutType = 'full';
-  if (markdoc !== undefined) {
-    title = markdoc.frontmatter.title;
-    subTitle = markdoc.frontmatter.subTitle;
-    description = markdoc.frontmatter.description;
-    layoutType = markdoc.frontmatter.layout ?? 'full';
-  }
+  const layoutType: LayoutType = 'full';
 
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);

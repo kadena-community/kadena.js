@@ -12,10 +12,12 @@ export const StyledBreadcrumbs: StyledComponent<'ul'> = styled('ul', {
 export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
   display: 'flex',
   padding: 0,
-  gap: '$2',
   color: '$neutral4',
   whiteSpace: 'nowrap',
-  marginLeft: '$2',
+
+  '&::before': {
+    margin: '0 $2',
+  },
 
   '&:not(:first-child):not(:last-child)': {
     '&::before': {
@@ -29,20 +31,22 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
   },
   '&:first-child': {
     fontWeight: '$bold',
-    marginLeft: '0',
     '&::before': {
       content: '',
+      margin: '0',
     },
   },
 
   a: {
+    display: 'flex',
     color: '$neutral4',
     textDecoration: 'none',
+
     '&:hover': {
       textDecoration: 'underline',
     },
   },
   span: {
-    marginTop: 'calc($1 /2)',
+    marginRight: '$1',
   },
 });

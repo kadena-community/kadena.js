@@ -27,7 +27,7 @@ Page.meta = {
   menu: 'Pact',
   label: 'Pact Test',
   order: 1,
-  description: 'How to get started with Markdoc',
+  description: 'How to get started',
   layout: 'code',
 };
 

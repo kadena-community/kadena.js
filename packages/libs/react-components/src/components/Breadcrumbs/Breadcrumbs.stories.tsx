@@ -1,4 +1,4 @@
-import { ProcuctIcons } from '../ProductIcons';
+import { ProductIcons } from '../ProductIcons';
 
 import { BreadcrumbItem, Breadcrumbs, IBreadcrumbs } from '.';
 
@@ -17,13 +17,13 @@ const ItemArray: string[] = [
 const meta: Meta<
   {
     itemsCount: number;
-    selectIcon: keyof typeof ProcuctIcons;
+    selectIcon: keyof typeof ProductIcons;
   } & IBreadcrumbs
 > = {
   title: 'Breadcrumbs',
   argTypes: {
     selectIcon: {
-      options: Object.keys(ProcuctIcons) as (keyof typeof ProcuctIcons)[],
+      options: Object.keys(ProductIcons) as (keyof typeof ProductIcons)[],
       control: {
         type: 'select',
       },
@@ -38,7 +38,7 @@ export default meta;
 type Story = StoryObj<
   {
     itemsCount: number;
-    selectIcon: keyof typeof ProcuctIcons;
+    selectIcon: keyof typeof ProductIcons;
   } & IBreadcrumbs
 >;
 
@@ -55,12 +55,13 @@ export const Primary: Story = {
   },
   render: ({ itemsCount, selectIcon }) => {
     const items = ItemArray.slice(0, itemsCount);
+    const Icon = ProductIcons[selectIcon];
     return (
-      <Breadcrumbs icon={ProcuctIcons[selectIcon]}>
+      <Breadcrumbs icon={Icon}>
         {items.map((item, idx) => {
           return (
             <BreadcrumbItem key={item}>
-              {idx < items.length - 1 ? <a href={`#{item}`}>{item}</a> : item}
+              {idx < items.length - 1 ? <a href={`#${item}`}>{item}</a> : item}
             </BreadcrumbItem>
           );
         })}

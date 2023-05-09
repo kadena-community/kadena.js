@@ -1,7 +1,7 @@
 import {
   BreadcrumbItem,
   Breadcrumbs as StyledBreadcrumbs,
-  ProcuctIcons,
+  ProductIcons,
 } from '@kadena/react-components';
 
 import { Box } from './styles';
@@ -43,7 +43,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
 
   return (
     <Box>
-      <StyledBreadcrumbs icon={ProcuctIcons.Pact}>
+      <StyledBreadcrumbs icon={ProductIcons.PactLanguage}>
         {items.map((item, idx) => (
           <BreadcrumbItem key={item.title}>
             {idx < items.length - 1 ? (

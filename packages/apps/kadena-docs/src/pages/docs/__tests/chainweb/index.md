@@ -4,7 +4,7 @@ subTitle: The safest, most user-friendly language for smart contracts
 menu: Chainweb
 label: Introduction
 order: 3
-description: How to get started with Markdoc
+description: How to get started
 layout: landing
 ---
 
