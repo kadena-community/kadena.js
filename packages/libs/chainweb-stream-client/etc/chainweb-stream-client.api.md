@@ -82,7 +82,7 @@ export interface IChainwebStreamConfig {
     v: string;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IChainwebStreamConstructorArgs {
     // (undocumented)
     confirmationDepth?: number;
@@ -100,8 +100,6 @@ export interface IChainwebStreamConstructorArgs {
     maxReconnects?: number;
     // (undocumented)
     network: string;
-    // Warning: (ae-incompatible-release-tags) The symbol "type" is marked as @public, but its signature references "ChainwebStreamType" which is marked as @alpha
-    //
     // (undocumented)
     type: ChainwebStreamType;
 }
@@ -136,14 +134,10 @@ export interface IEventTransaction extends ITransactionBase {
     params: string[];
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IInitialEvent {
-    // Warning: (ae-incompatible-release-tags) The symbol "config" is marked as @public, but its signature references "IChainwebStreamConfig" which is marked as @alpha
-    //
     // (undocumented)
     config: IChainwebStreamConfig;
-    // Warning: (ae-incompatible-release-tags) The symbol "data" is marked as @public, but its signature references "ITransaction" which is marked as @alpha
-    //
     // (undocumented)
     data: ITransaction[];
 }
