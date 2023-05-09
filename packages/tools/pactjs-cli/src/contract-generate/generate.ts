@@ -143,7 +143,9 @@ export const generate =
         const indexDts: string = readFileSync(indexPath, 'utf8');
         // Append the export to the file if it's not already there.
         if (!indexDts.includes(exportStatement)) {
-          writeFileSync(indexPath, indexDts + exportStatement);
+          const separator = indexDts.endsWith('\n') ? '' : '\n';
+          const newIndexDts = [indexDts, exportStatement].join(separator);
+          writeFileSync(indexPath, newIndexDts);
         }
       } else {
         console.log(`Writing to new file ${indexPath}`);
