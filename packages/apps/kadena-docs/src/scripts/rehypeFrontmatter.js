@@ -24,7 +24,10 @@ const rehypeFrontmatter = () => {
       if (!data) return node;
 
       const renderedString = renderer(data, node);
-      const { body } = parseAst(renderedString, { sourceType: 'module' });
+      const { body } = parseAst(renderedString, {
+        sourceType: 'module',
+        ecmaVersion: 'latest',
+      });
 
       return {
         type: 'mdxjsEsm',
