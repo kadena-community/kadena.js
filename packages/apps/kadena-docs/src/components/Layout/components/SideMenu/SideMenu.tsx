@@ -54,7 +54,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0} ref={menuRef}>
         <StyledUl>
-          {menuItems.map((item) => (
+          {menuItems?.map((item) => (
             <StyledItem key={item.root}>
               <StyledLink
                 onClick={(e) => clickMenu(e, item)}

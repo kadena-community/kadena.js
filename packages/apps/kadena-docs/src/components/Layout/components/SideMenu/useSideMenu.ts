@@ -27,7 +27,7 @@ export const useSideMenu = (
   useEffect(() => {
     setOldPathname(router.pathname);
 
-    const matchingItem = menuItems.find((item) =>
+    const matchingItem = menuItems?.find((item) =>
       hasSameBasePath(item.root, router.pathname),
     );
 

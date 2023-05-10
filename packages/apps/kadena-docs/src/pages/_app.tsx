@@ -33,6 +33,8 @@ export const MyApp = ({
     pageProps = { ...pageProps, frontmatter: ReactComponent.meta };
   }
 
+  console.log({ pageProps });
+
   return (
     <MDXProvider components={markDownComponents}>
       <ThemeProvider

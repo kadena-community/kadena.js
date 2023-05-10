@@ -299,6 +299,7 @@ importers:
       lint-staged: ~13.2.0
       mdast-util-from-markdown: ~1.3.0
       mdast-util-frontmatter: ~1.0.1
+      mdast-util-to-string: ~3.2.0
       micromark-extension-frontmatter: ~1.1.0
       next: 13.0.6
       next-themes: ~0.2.1
@@ -322,6 +323,7 @@ importers:
       '@next/mdx': 13.3.4_64a67b8d3589d83515f0801746210334
       acorn: 8.8.2
       js-yaml: 4.1.0
+      mdast-util-to-string: 3.2.0
       next: 13.0.6_react-dom@18.2.0+react@18.2.0
       next-themes: 0.2.1_f26ff3bd08f1cd28b0f73422c76f5ffd
       react: 18.2.0
@@ -17225,6 +17227,12 @@ packages:
     resolution: {integrity: sha512-tGvhT94e+cVnQt8JWE9/b3cUQZWS732TJxXHktvP+BYo62PpYD53Ls/6cC60rW21dW+txxiM4zMdc6abASvZKA==}
     dependencies:
       '@types/mdast': 3.0.11
+
+  /mdast-util-to-string/3.2.0:
+    resolution: {integrity: sha512-V4Zn/ncyN1QNSqSBxTrMOLpjr+IKdHl2v3KVLoWmDPscP4r9GcCi71gjgvUV1SFSKh92AjAG4peFuBl2/YgCJg==}
+    dependencies:
+      '@types/mdast': 3.0.11
+    dev: false
 
   /media-typer/0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
