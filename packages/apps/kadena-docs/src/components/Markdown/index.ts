@@ -1,7 +1,7 @@
 import { Code, TitleWrapper } from './Code';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { Paragraph } from './Paragraph';
-import { Table, Td, Thead, Tr } from './Table';
+import { Table } from './Table';
 
 import { FC } from 'react';
 
@@ -14,7 +14,4 @@ export const markDownComponents: Record<string, FC> = {
   code: Code as FC<JSX.IntrinsicElements['code']>,
   div: TitleWrapper as FC<JSX.IntrinsicElements['div']>,
   table: Table as FC<JSX.IntrinsicElements['table']>,
-  tr: Tr as FC<JSX.IntrinsicElements['tr']>,
-  td: Td as FC<JSX.IntrinsicElements['td']>,
-  thead: Thead as FC<JSX.IntrinsicElements['thead']>,
 };
