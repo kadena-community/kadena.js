@@ -436,7 +436,7 @@
     },
 
     {
-      "packageName": "@kadena/transfer",
+      "packageName": "@kadena/kadena-transfer",
       "projectFolder": "packages/apps/kadena-transfer",
       "reviewCategory": "prototypes",
       "skipRushCheck": true,
