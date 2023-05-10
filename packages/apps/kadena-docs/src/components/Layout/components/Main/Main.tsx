@@ -35,7 +35,6 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
       if (tree.length) {
         tree.map((item) => {
           // is the menu open?
-          console.log(pathname, item.root, pathname.startsWith(item.root));
           if (pathname.startsWith(item.root)) {
             item.isMenuOpen = true;
           } else {
