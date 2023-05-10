@@ -41,7 +41,7 @@ const IconWrapper = (
   return WrappedIcon;
 };
 
-export const ProcuctIcons = {
+export const ProductIcons = {
   Concepts: IconWrapper(Concepts),
   Contribute: IconWrapper(Contribute),
   KadenaOverview: IconWrapper(KadenaOverview),
