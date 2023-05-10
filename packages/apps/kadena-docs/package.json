@@ -38,7 +38,10 @@
     "next-themes": "~0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "remark-frontmatter": "~4.0.1"
+    "rehype-pretty-code": "~0.9.5",
+    "remark-frontmatter": "~4.0.1",
+    "remark-gfm": "~3.0.1",
+    "shiki": "~0.14.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",

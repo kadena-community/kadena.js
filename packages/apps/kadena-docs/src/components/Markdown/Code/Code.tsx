@@ -1,3 +1,5 @@
+import { StyledCode } from './styles';
+
 import React, { FC, ReactNode } from 'react';
 
 interface IProp {
@@ -5,5 +7,5 @@ interface IProp {
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
-  return <code {...props}>{children}</code>;
+  return <StyledCode {...props}>{children}</StyledCode>;
 };

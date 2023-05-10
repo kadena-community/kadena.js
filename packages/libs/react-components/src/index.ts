@@ -3,6 +3,13 @@ export { Grid, IGridContainerProps, IGridItemProps } from './components/Grid';
 export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
+export { ProductIcons } from './components/ProductIcons';
+export {
+  Breadcrumbs,
+  BreadcrumbItem,
+  IBreadcrumbs,
+  IBreadcrumbItem,
+} from './components/Breadcrumbs';
 export {
   Heading,
   Text,
