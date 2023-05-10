@@ -435,6 +435,14 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/transfer",
+      "projectFolder": "packages/apps/kadena-transfer",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": true,
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################
