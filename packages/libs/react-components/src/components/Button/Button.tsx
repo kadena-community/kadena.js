@@ -7,7 +7,7 @@ import React, { FC } from 'react';
 export interface IButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'a';
-  icon?: typeof SystemIcons[keyof typeof SystemIcons];
+  icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   children: React.ReactNode;

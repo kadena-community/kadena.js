@@ -1,14 +1,14 @@
 import { Button, SystemIcons } from './../../';
+import { CardColor } from './styles';
 import { Card, ICardProps } from '.';
 import { CardBody, CardColors, CardFooter, CardHeading } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-type ColorType = 'default' | 'accent';
 const meta: Meta<
   {
-    color: ColorType;
+    color: CardColor;
     expand: boolean;
   } & ICardProps
 > = {
@@ -31,7 +31,7 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    color: CardColors;
+    color: CardColor;
     expand: boolean;
   } & ICardProps
 >;
@@ -39,7 +39,7 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Card',
   args: {
-    color: 'default' as CardColors,
+    color: CardColors.Default,
     expand: false,
   },
   render: ({ color, expand }) => {

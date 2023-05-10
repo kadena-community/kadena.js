@@ -1,12 +1,13 @@
 import { Heading } from '../Typography';
 
-import { CardColors, StyledCard } from './styles';
+import { StyledCard } from './styles';
 
+import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface ICardProps {
   children: React.ReactNode;
-  color?: CardColors;
+  color?: VariantProps<typeof StyledCard>['color'];
   expand?: boolean;
 }
 
@@ -20,14 +21,9 @@ export const CardHeading: FC<ICardHeadingProps> = ({
   return <Heading as="h4">{children}</Heading>;
 };
 
-export const Card: FC<ICardProps> = ({
-  children,
-  expand = false,
-  color = CardColors.Default,
-}) => {
+export const Card: FC<ICardProps> = ({ children, expand, color }) => {
   return (
-    // eslint-disable-next-line
-    <StyledCard color={color} expand={expand as any}>
+    <StyledCard color={color} expand={expand}>
       {children}
     </StyledCard>
   );

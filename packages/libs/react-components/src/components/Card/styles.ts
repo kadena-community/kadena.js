@@ -2,34 +2,34 @@
 
 import { styled } from '../../styles';
 
-export enum CardColors {
-  Default = 'default',
-  Accent = 'accent',
-}
+import { VariantProps } from '@stitches/react';
 
 export const StyledCard = styled('div', {
-  backgroundColor: '$neutral1',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
   padding: '$lg',
   width: 'max-content',
   height: 'max-content',
-  boxShadow: '$shadows$card',
-  borderRadius: '$radii$lg',
+  boxShadow: '$card',
+  borderRadius: '$lg',
   variants: {
     color: {
       default: {
         backgroundColor: '$defaultSurface',
         color: '$defaultContrast',
       },
-      accent: {
-        backgroundColor: '$colors$neutral2',
-        color: '$contrast',
+      negative: {
+        backgroundColor: '$neutral5',
+        color: '$neutral2',
+        h4: {
+          color: '$neutral2',
+        },
       },
     },
     expand: {
       true: { width: '100%', height: '100%' },
+      false: { width: 'max-content', height: 'max-content' },
     },
   },
 });
@@ -51,3 +51,10 @@ export const StyledCardFooter = styled('div', {
   gap: '$sm',
   width: '100%',
 });
+
+export type CardColor = VariantProps<typeof StyledCard>['color'];
+
+export const CardColors: { [key: string]: CardColor } = {
+  Default: 'default',
+  Negative: 'negative',
+};
