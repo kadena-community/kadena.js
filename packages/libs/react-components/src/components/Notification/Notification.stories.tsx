@@ -1,5 +1,4 @@
 import { SystemIcons } from './../../';
-import { NotificationColors } from './styles';
 import { INotificationProps, Notification } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -29,13 +28,20 @@ const meta: Meta<
         type: 'text',
       },
     },
-    simplified: {
+    simple: {
       control: {
         type: 'boolean',
       },
     },
     color: {
-      options: NotificationColors,
+      options: [
+        'default',
+        'primary',
+        'secondary',
+        'positive',
+        'warning',
+        'negative',
+      ],
       control: {
         type: 'select',
       },
@@ -92,7 +98,7 @@ export const Primary: Story = {
     displayActionButton: true,
     actionButtonLabel: 'Action label',
     color: 'default',
-    simplified: false,
+    simple: false,
   },
   render: ({
     selectIcon,
@@ -103,14 +109,14 @@ export const Primary: Story = {
     displayCloseButton,
     expand,
     color,
-    simplified,
+    simple,
   }) => {
     const Icon = SystemIcons[selectIcon];
 
     return (
       <>
         <Notification
-          simplified={simplified}
+          simple={simple}
           icon={Icon}
           color={color}
           title={title}

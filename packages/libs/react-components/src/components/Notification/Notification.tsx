@@ -2,6 +2,7 @@ import { SystemIcons } from '../Icons';
 
 import {
   AbsoluteButton,
+  NotificationColor,
   StyledButton,
   StyledHeading,
   StyledIconButton,
@@ -23,42 +24,36 @@ export interface INotificationProps {
   actionButtonOnClick?: () => void;
   displayActionButton?: boolean;
 
-  color?: string;
+  color?: NotificationColor;
 
-  simplified?: boolean;
+  simple?: boolean;
 }
 
 export const Notification: FC<INotificationProps> = ({
   icon,
   title,
   description,
-  displayCloseButton = false,
+  displayCloseButton,
   actionButtonLabel,
   actionButtonOnClick,
-  displayActionButton = false,
-  color = 'default',
-  simplified = false,
-  ...props
+  displayActionButton,
+  color,
+  simple,
+  expand,
 }) => {
   const Icon = icon!;
   const isSimple =
-    simplified || (!displayActionButton && description === undefined)
-      ? true
-      : false;
+    simple === true ||
+    (displayActionButton === undefined && description === undefined);
 
   return (
-    <StyledNotification
-      {...props}
-      // eslint-disable-next-line
-      color={color as any}
-      type={isSimple ? 'simple' : 'full'}
-    >
+    <StyledNotification color={color} expand={expand} simple={isSimple}>
       <AbsoluteButton position="left">
-        <Icon size="md" color={color} />
+        <Icon size="md" />
       </AbsoluteButton>
       <StyledHeading as="h6">{title}</StyledHeading>
       {!isSimple && <StyledText as="p">{description}</StyledText>}
-      {displayActionButton && !isSimple && (
+      {displayActionButton !== undefined && !isSimple && (
         <StyledButton
           onClick={actionButtonOnClick}
           title={actionButtonLabel!}
@@ -67,11 +62,12 @@ export const Notification: FC<INotificationProps> = ({
           {actionButtonLabel}
         </StyledButton>
       )}
-      <AbsoluteButton position="right">
-        {displayCloseButton && !isSimple && (
+
+      {displayCloseButton !== undefined && !isSimple && (
+        <AbsoluteButton position="right">
           <StyledIconButton title="bla" icon={SystemIcons.Close!} />
-        )}
-      </AbsoluteButton>
+        </AbsoluteButton>
+      )}
     </StyledNotification>
   );
 };

@@ -3,14 +3,7 @@ import { styled } from '../../styles';
 import { Button } from '../Button';
 import { Heading, Text } from '../Typography';
 
-export const NotificationColors: string[] = [
-  'default',
-  'primary',
-  'secondary',
-  'positive',
-  'warning',
-  'negative',
-];
+import { VariantProps } from '@stitches/react';
 
 export const StyledNotification = styled('div', {
   margin: '0px $sm',
@@ -63,18 +56,21 @@ export const StyledNotification = styled('div', {
     },
 
     expand: {
-      true: { width: '100%', height: '100%', maxWidth: '100%' },
+      true: { width: '100%', maxWidth: '100%' },
     },
 
-    type: {
-      simple: {
+    simple: {
+      true: {
         borderRadius: '$radii$md',
         borderLeft: '1px solid $foreground',
       },
-      full: {},
     },
   },
 });
+
+export type NotificationColor = VariantProps<
+  typeof StyledNotification
+>['color'];
 
 export const StyledHeading = styled(Heading, {
   height: '100%',
