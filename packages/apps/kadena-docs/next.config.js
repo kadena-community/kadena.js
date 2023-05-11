@@ -1,9 +1,9 @@
 import remarkFrontmatter from 'remark-frontmatter';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.js';
-import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.js';
-import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.js';
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.js';
+import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.js';
+import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.js';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';

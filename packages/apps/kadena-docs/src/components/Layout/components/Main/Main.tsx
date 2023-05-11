@@ -2,6 +2,7 @@ import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { IMenuItem, ISubHeaderElement, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
@@ -98,6 +99,9 @@ export const Main: FC<IProps> = ({
           <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
         </Menu>
         <Layout isAsideOpen={isAsideOpen} aSideMenuTree={aSideMenuTree}>
+          {isOneOfLayoutType(layoutType, 'full', 'code') && (
+            <Breadcrumbs menuItems={leftMenuTree} />
+          )}
           {children}
         </Layout>
         <Footer />

@@ -1,4 +1,3 @@
-import yaml from 'js-yaml';
 import { parse as parseAst } from 'acorn';
 
 const getProps = (tree) => {
