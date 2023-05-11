@@ -139,3 +139,22 @@ our primitive and composed components.
 Since we are still in early development stages, things are still in flux and
 flexible to change. This is just a guideline that the team has discussed
 together as a starting point, but any suggestions for change are welcome!
+
+# Issues with ESM build
+
+Why is the ESM build not added to package.json
+
+```
+  "module": "dist/esm/index.js",
+```
+
+There's an issue where Nextjs uses the esm version for server and cjs for
+browser builds.
+
+See also
+https://github.com/vanilla-extract-css/vanilla-extract/issues/940#:~:text=Debugging%20your%20app,to%20unexpected%20results.
+
+And
+https://github.com/vanilla-extract-css/vanilla-extract/issues/940#issuecomment-1413571550
+
+https://github.com/vercel/next.js/issues/35581
