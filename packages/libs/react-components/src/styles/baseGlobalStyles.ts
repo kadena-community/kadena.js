@@ -181,5 +181,14 @@ export const baseGlobalStyles: Record<string, unknown> = {
   },
   a: {
     fontFamily: '$main',
+    color: '$neutral4',
+    textDecoration: 'underline',
+    '&:hover': {
+      color: '$neutral6',
+      textDecoration: 'none',
+    },
+  },
+  'li, table': {
+    fontFamily: '$main',
   },
 } as const;

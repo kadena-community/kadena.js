@@ -2,8 +2,8 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 export const Table: StyledComponent<'table'> = styled('table', {
   border: '1px solid $borderColor',
+  borderRadius: '$sm',
   borderSpacing: 0,
-  fontFamily: '$main',
   width: '100%',
   marginBottom: '$5',
 
@@ -13,6 +13,7 @@ export const Table: StyledComponent<'table'> = styled('table', {
     textAlign: 'left',
     wordBreak: 'break-word',
     verticalAlign: 'top',
+    background: '$neutral3',
   },
 
   '& td': {

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Add fontfamily for table",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
