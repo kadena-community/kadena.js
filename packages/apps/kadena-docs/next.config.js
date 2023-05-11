@@ -1,5 +1,9 @@
 import remarkFrontmatter from 'remark-frontmatter';
 import mdx from '@next/mdx';
+// import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+// const withVanillaExtract = createVanillaExtractPlugin();
+import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -18,6 +22,14 @@ const withMDX = mdx({
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.module.rules.push({
+      test: /\.css$/,
+      use: [MiniCssExtractPlugin.loader, 'css-loader'],
+    });
+    config.plugins.push(new VanillaExtractPlugin(), new MiniCssExtractPlugin());
+    return config;
+  },
 };
 
 export default withMDX(nextConfig);

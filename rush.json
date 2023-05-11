@@ -528,6 +528,14 @@
     },
 
     {
+      "packageName": "@kadena/react-ui",
+      "projectFolder": "packages/libs/react-ui",
+      "tags": ["libs"],
+      "shouldPublish": false,
+      "versionPolicyName": "alpha"
+    },
+
+    {
       "packageName": "@kadena/types",
       "projectFolder": "packages/libs/types",
       "tags": ["libs"],
