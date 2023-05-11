@@ -1,5 +1,6 @@
 import remarkFrontmatter from 'remark-frontmatter';
 import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeFrontmatter from './src/scripts/rehypeFrontmatter.js';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
@@ -57,7 +58,7 @@ const withMDX = mdx({
     // If you use remark-gfm, you'll need to use next.config.mjs
     // as the package is ESM only
     // https://github.com/remarkjs/remark-gfm#install
-    remarkPlugins: [remarkGfm, remarkFrontmatter],
+    remarkPlugins: [remarkGfm, remarkFrontmatter, rehypeFrontmatter],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.
     providerImportSource: '@mdx-js/react',

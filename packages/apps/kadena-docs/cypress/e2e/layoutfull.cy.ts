@@ -45,7 +45,7 @@ describe('full layout', () => {
       cy.location().should((loc) => {
         expect(loc.hash).to.eq('');
       });
-      aside().find('ul:first > li:nth-child(3) ').click();
+      aside().find('ul:first > li:nth-child(3) ').click(10, 10);
       cy.location().should((loc) => {
         expect(loc.hash).to.eq('#section-3');
       });
