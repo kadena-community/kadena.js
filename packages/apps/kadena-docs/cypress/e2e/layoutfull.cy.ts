@@ -41,7 +41,7 @@ describe('full layout', () => {
         .should('have.length', 1);
     });
 
-    it.only('deeplink on the page when an option of the aside menu is clicked', () => {
+    it('deeplink on the page when an option of the aside menu is clicked', () => {
       cy.location().should((loc) => {
         expect(loc.hash).to.eq('');
       });

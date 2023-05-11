@@ -1,1 +1,0 @@
-export { Kadena } from './Kadena';
