@@ -1,6 +1,3 @@
-import yaml from 'js-yaml';
-import { parse as parseAst } from 'acorn';
-import { toString } from 'mdast-util-to-string';
 import importedMenu from './../data/menu.json' assert { type: 'json' };
 
 const checkSubTreeForActive = (tree, pathname) => {
