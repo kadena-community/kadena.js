@@ -1,45 +1,36 @@
 import { Button, SystemIcons } from './../../';
-import { CardColor } from './styles';
+import { colorVariant, expandVariant } from './styles';
 import { Card, ICardProps } from '.';
-import { CardBody, CardColors, CardFooter, CardHeading } from './';
+import { CardBody, CardFooter, CardHeading } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<
-  {
-    color: CardColor;
-    expand: boolean;
-  } & ICardProps
-> = {
+const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
   argTypes: {
     color: {
-      options: Object.values(CardColors),
+      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
       control: {
         type: 'select',
       },
     },
     expand: {
+      options: Object.keys(expandVariant) as (keyof typeof expandVariant)[],
       control: {
-        type: 'boolean',
+        type: 'select',
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    color: CardColor;
-    expand: boolean;
-  } & ICardProps
->;
+type Story = StoryObj<ICardProps>;
 
 export const Primary: Story = {
   name: 'Card',
   args: {
-    color: CardColors.Default,
+    color: 'default',
     expand: false,
   },
   render: ({ color, expand }) => {
