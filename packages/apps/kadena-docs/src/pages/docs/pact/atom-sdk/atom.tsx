@@ -1,9 +1,11 @@
+import { Text } from '@kadena/react-components';
+
 import { IDocsPageFC } from '@/types/Layout';
 import React from 'react';
 
-const Text: IDocsPageFC = () => {
+const Page: IDocsPageFC = () => {
   return (
-    <div>
+    <Text>
       Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie
       roll. Donut pastry tiramisu sesame snaps donut tootsie roll candy soufflé.
       Lollipop toffee ice cream jujubes cookie sugar plum croissant. Cookie
@@ -16,11 +18,11 @@ const Text: IDocsPageFC = () => {
       Sesame snaps powder caramels sweet roll jelly tiramisu apple pie muffin
       icing. Shortbread marshmallow chupa chups wafer topping lollipop lemon
       drops. Pudding cheesecake cookie liquorice cake gingerbread tootsie roll.
-    </div>
+    </Text>
   );
 };
 
-Text.meta = {
+Page.meta = {
   title: 'Pact',
   menu: 'Pact',
   label: 'Pact Test',
@@ -29,4 +31,4 @@ Text.meta = {
   layout: 'code',
 };
 
-export default Text;
+export default Page;
