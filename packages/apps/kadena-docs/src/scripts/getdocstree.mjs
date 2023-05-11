@@ -96,6 +96,7 @@ const createTree = (rootDir, parent = []) => {
 
     if (!child.root) return;
 
+    console.log(currentFile);
     if (fs.statSync(`${currentFile}`).isFile()) {
       const obj = convertFile(currentFile);
       Object.assign(child, obj);
