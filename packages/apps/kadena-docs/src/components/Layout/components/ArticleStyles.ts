@@ -12,6 +12,7 @@ export const Content: StyledComponent<
 > = styled('div', {
   display: 'flex',
   position: 'relative',
+  paddingTop: '$10',
   gridColumn: '1 / span 2',
   gridRow: '3 / span 1',
   overflow: 'hidden',

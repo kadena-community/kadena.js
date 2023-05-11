@@ -4,6 +4,7 @@ import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import { getData } from './getData';
 
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
@@ -127,7 +128,12 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
-        <Layout isAsideOpen={isAsideOpen}>{children}</Layout>
+        <Layout isAsideOpen={isAsideOpen}>
+          {isOneOfLayoutType(layoutType, 'full', 'code') && (
+            <Breadcrumbs menuItems={menuItems} />
+          )}
+          {children}
+        </Layout>
         <Footer />
       </Template>
     </>
