@@ -10,7 +10,7 @@ export const NotFound: FC = () => {
     <Section>
       <Heading as="h5">Not finding the help you need?</Heading>
       <Text>Contact our support desk.</Text>
-      <Link href="/help" passHref>
+      <Link href="/help" passHref legacyBehavior>
         <Button as="a" title="Contact us">
           Contact us
         </Button>
