@@ -2,14 +2,13 @@ import { SystemIcons } from '../Icons';
 
 import {
   AbsoluteButton,
-  NotificationColor,
-  StyledButton,
   StyledHeading,
   StyledIconButton,
   StyledNotification,
   StyledText,
 } from './styles';
 
+import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface INotificationProps {
@@ -18,15 +17,13 @@ export interface INotificationProps {
   title: string;
   description?: string;
   displayCloseButton?: boolean;
-  expand?: boolean;
+  expand?: VariantProps<typeof StyledNotification>['expand'];
 
-  actionButtonLabel?: string;
-  actionButtonOnClick?: () => void;
-  displayActionButton?: boolean;
+  color?: VariantProps<typeof StyledNotification>['color'];
 
-  color?: NotificationColor;
+  simple?: VariantProps<typeof StyledNotification>['simple'];
 
-  simple?: boolean;
+  buttons?: React.ReactNode;
 }
 
 export const Notification: FC<INotificationProps> = ({
@@ -34,18 +31,14 @@ export const Notification: FC<INotificationProps> = ({
   title,
   description,
   displayCloseButton,
-  actionButtonLabel,
-  actionButtonOnClick,
-  displayActionButton,
   color,
   simple,
   expand,
+  buttons,
 }) => {
   const Icon = icon!;
-  const isSimple =
-    simple === true ||
-    (displayActionButton === undefined && description === undefined);
-
+  const isSimple = simple === 'true' || description === undefined;
+  console.log({ displayCloseButton, isSimple });
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
       <AbsoluteButton position="left">
@@ -53,19 +46,11 @@ export const Notification: FC<INotificationProps> = ({
       </AbsoluteButton>
       <StyledHeading as="h6">{title}</StyledHeading>
       {!isSimple && <StyledText as="p">{description}</StyledText>}
-      {displayActionButton !== undefined && !isSimple && (
-        <StyledButton
-          onClick={actionButtonOnClick}
-          title={actionButtonLabel!}
-          icon={SystemIcons.TrailingIcon}
-        >
-          {actionButtonLabel}
-        </StyledButton>
-      )}
+      {!isSimple && buttons && buttons}
 
-      {displayCloseButton !== undefined && !isSimple && (
+      {displayCloseButton === true && !isSimple && (
         <AbsoluteButton position="right">
-          <StyledIconButton title="bla" icon={SystemIcons.Close!} />
+          <StyledIconButton title="close-btn" icon={SystemIcons.Close!} />
         </AbsoluteButton>
       )}
     </StyledNotification>

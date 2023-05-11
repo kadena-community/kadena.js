@@ -1,4 +1,5 @@
-import { SystemIcons } from './../../';
+import { Button, SystemIcons } from './../../';
+import { colorVariant, simpleVariant } from './styles';
 import { INotificationProps, Notification } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -29,45 +30,27 @@ const meta: Meta<
       },
     },
     simple: {
-      control: {
-        type: 'boolean',
-      },
-    },
-    color: {
-      options: [
-        'default',
-        'primary',
-        'secondary',
-        'positive',
-        'warning',
-        'negative',
-      ],
+      options: Object.keys(simpleVariant) as (keyof typeof simpleVariant)[],
       control: {
         type: 'select',
       },
     },
-    displayCloseButton: {
+    color: {
+      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
       control: {
-        type: 'boolean',
+        type: 'select',
       },
     },
     expand: {
+      options: Object.keys(simpleVariant) as (keyof typeof simpleVariant)[],
       control: {
-        type: 'boolean',
+        type: 'select',
       },
     },
 
-    displayActionButton: {
+    displayCloseButton: {
       control: {
         type: 'boolean',
-      },
-    },
-
-    actionButtonOnClick: { action: 'clicked' },
-
-    actionButtonLabel: {
-      control: {
-        type: 'text',
       },
     },
   },
@@ -95,15 +78,11 @@ export const Primary: Story = {
       'Notification text to inform users about the event that occurred!',
     displayCloseButton: true,
     expand: false,
-    displayActionButton: true,
-    actionButtonLabel: 'Action label',
     color: 'default',
     simple: false,
   },
   render: ({
     selectIcon,
-    actionButtonLabel,
-    displayActionButton,
     title,
     description,
     displayCloseButton,
@@ -112,7 +91,7 @@ export const Primary: Story = {
     simple,
   }) => {
     const Icon = SystemIcons[selectIcon];
-
+    console.log({ color });
     return (
       <>
         <Notification
@@ -123,8 +102,11 @@ export const Primary: Story = {
           description={description}
           displayCloseButton={displayCloseButton}
           expand={expand}
-          displayActionButton={displayActionButton}
-          actionButtonLabel={actionButtonLabel}
+          buttons={
+            <Button title="Action label" icon={SystemIcons.TrailingIcon}>
+              Action label
+            </Button>
+          }
         />
       </>
     );
