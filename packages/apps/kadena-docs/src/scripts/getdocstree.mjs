@@ -15,12 +15,14 @@ const convertFile = (file) => {
   if (isMarkDownFile(file)) {
     data = getFrontMatter(doc);
   } else {
-    const regex = /meta = ({.*});/s;
+    const regex = /frontmatter\s*:\s*{[^}]+}/;
     const match = doc.match(regex);
     if (!match) return;
 
-    let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
+    let metaString = match[0].replace(/frontmatter:/, '');
+    metaString = metaString.replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
     metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
+
     data = JSON.parse(metaString);
   }
 

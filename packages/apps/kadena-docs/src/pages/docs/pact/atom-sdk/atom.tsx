@@ -35,17 +35,16 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getData(), getPathName()),
+      frontmatter: {
+        title: 'Pact',
+        menu: 'Pact Test it',
+        label: 'Pact Test',
+        order: 1,
+        description: 'How to get started',
+        layout: 'code',
+      },
     },
   };
-};
-
-Page.meta = {
-  title: 'Pact',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description: 'How to get started',
-  layout: 'code',
 };
 
 export default Page;

@@ -1,8 +1,17 @@
 import importedMenu from './../data/menu.json' assert { type: 'json' };
 
-const checkSubTreeForActive = (tree, pathname) => {
-  if (!tree.length) return tree;
+export const getData = () => {
+  const regex = /__tests/;
 
+  if (process.env.NEXT_PUBLIC_APP_DEV === 'test') {
+    return importedMenu.filter((item) => regex.test(item.root))[0].children;
+  }
+  return importedMenu.filter((item) => {
+    return !regex.test(item.root);
+  });
+};
+
+const checkSubTreeForActive = (tree, pathname) => {
   return tree.map((item) => {
     // is the menu open?
     if (`${pathname}/`.startsWith(`${item.root}/`)) {
@@ -51,7 +60,9 @@ const getPath = (filename) => {
 
 const remarkSideMenuToProps = () => {
   return async (tree, file) => {
-    const items = checkSubTreeForActive(importedMenu, getPath(file.history[0]));
+    const items = checkSubTreeForActive(getData(), getPath(file.history[0]));
+
+    console.log(items);
 
     tree.children.push({
       type: 'props',

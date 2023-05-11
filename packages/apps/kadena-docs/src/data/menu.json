@@ -6,7 +6,7 @@
         "root": "/docs/kadena/overview",
         "title": "Overview of Kadena",
         "menu": "Kadena",
-        "label": "Introduction",
+        "label": "What is Kadena",
         "order": 0,
         "description": "Kadena makes blockchain work for everyone.",
         "layout": "full",
@@ -102,12 +102,12 @@
       }
     ],
     "root": "/docs/kadena",
-    "title": "Kadena",
+    "title": "Overview of Kadena",
     "menu": "Kadena",
-    "label": "Overview",
+    "label": "Introduction",
     "order": 0,
-    "description": "How to get started",
-    "layout": "landing",
+    "description": "Kadena makes blockchain work for everyone.",
+    "layout": "full",
     "isMenuOpen": false,
     "isActive": false
   },
@@ -169,7 +169,7 @@
             "children": [],
             "root": "/docs/pact/atom-sdk/atom",
             "title": "Pact",
-            "menu": "Pact",
+            "menu": "Pact Test it",
             "label": "Pact Test",
             "order": 1,
             "description": "How to get started",
@@ -269,15 +269,7 @@
             "children": [
               {
                 "children": [],
-                "root": "/docs/__tests/pact/atom-sdk/atom",
-                "title": "Pact",
-                "menu": "Pact",
-                "label": "Pact Test",
-                "order": 1,
-                "description": "How to get started",
-                "layout": "code",
-                "isMenuOpen": false,
-                "isActive": false
+                "root": "/docs/__tests/pact/atom-sdk/atom"
               }
             ],
             "root": "/docs/__tests/pact/atom-sdk",

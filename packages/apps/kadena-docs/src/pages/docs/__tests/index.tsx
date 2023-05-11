@@ -1,6 +1,12 @@
 import { Stack } from '@kadena/react-components';
 
+import { getData } from '@/components/Layout/components/Main/getData';
 import { IDocsPageFC } from '@/types/Layout';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/checkSubTreeForActive';
+import { GetStaticProps } from 'next';
 import React from 'react';
 
 const Home: IDocsPageFC = () => {
@@ -22,13 +28,20 @@ const Home: IDocsPageFC = () => {
   );
 };
 
-Home.meta = {
-  title: 'Pact',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description: 'Home page',
-  layout: 'home',
+export const getStaticProps: GetStaticProps = async (context, ...args) => {
+  return {
+    props: {
+      leftMenuTree: checkSubTreeForActive(getData(), getPathName()),
+      frontmatter: {
+        title: 'Pact',
+        menu: 'Pact',
+        label: 'Pact Test',
+        order: 1,
+        description: 'Home page',
+        layout: 'home',
+      },
+    },
+  };
 };
 
 export default Home;
