@@ -43,7 +43,7 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
               <Heading as="h6" transform="uppercase">
                 On this page
               </Heading>
-              <AsideList>{aSideMenuTree?.map(renderListItem)}</AsideList>
+              <AsideList>{aSideMenuTree.map(renderListItem)}</AsideList>
             </StickyAside>
           </StickyAsideWrapper>
         )}
