@@ -53,7 +53,7 @@ export const Header: FC<IProps> = ({
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
           <StyledNav>
             <StyledUl ref={listRef}>
-              {menuItems?.map((item) => (
+              {menuItems.map((item) => (
                 <li key={item.root}>
                   <NavLink href={item.root} active={item.isMenuOpen}>
                     {item.menu}

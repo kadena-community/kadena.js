@@ -3,22 +3,21 @@ import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { IMenuItem, ISubHeaderElement, LayoutType } from '@/types/Layout';
+import {
+  IMenuItem,
+  IPageMeta,
+  ISubHeaderElement,
+  LayoutType,
+} from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { FC, ReactNode, useState } from 'react';
 
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];
-  frontmatter: {
-    title: string;
-    subTitle: string;
-    description: string;
-    layout: LayoutType;
-  };
+  frontmatter: IPageMeta;
   leftMenuTree: IMenuItem[];
 }
 
@@ -30,7 +29,6 @@ export const Main: FC<IProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
-  const { pathname } = useRouter();
 
   let title, description, subTitle;
   let layoutType: LayoutType = 'full';

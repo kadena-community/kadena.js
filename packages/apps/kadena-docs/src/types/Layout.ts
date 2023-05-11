@@ -13,6 +13,7 @@ export interface ISubHeaderElement {
 
 export interface IPageMeta {
   title: string; // title of the HEAD info
+  subTitle?: string;
   menu?: string; // name in the main menu
   order?: number;
   label: string; // name of the pagdescription: string;
@@ -29,7 +30,7 @@ export interface IMenuItem extends IPageMeta {
 export interface ILayout {
   children?: ReactNode;
   isAsideOpen?: boolean;
-  aSideMenuTree: ISubHeaderElement[];
+  aSideMenuTree?: ISubHeaderElement[];
 }
 
 export type LevelType = 1 | 2 | 3;

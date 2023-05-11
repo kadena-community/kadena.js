@@ -24,7 +24,10 @@ export const getPathName = (): string => {
   return `/${newPath}${lastInPath(path.parse(__filename).name)}`;
 };
 
-export const checkSubTreeForActive = (tree: IMenuItem[], pathname: string) => {
+export const checkSubTreeForActive = (
+  tree: IMenuItem[],
+  pathname: string,
+): IMenuItem[] => {
   return tree.map((item) => {
     // is the menu open?
     if (`${pathname}/`.startsWith(`${item.root}/`)) {

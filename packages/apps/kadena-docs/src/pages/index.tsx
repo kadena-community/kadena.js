@@ -1,7 +1,6 @@
 import { Stack } from '@kadena/react-components';
 
 import { getData } from '@/components/Layout/components/Main/getData';
-import { IDocsPageFC } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -28,7 +27,7 @@ const Home: FC = () => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context, ...args) => {
+export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getData(), getPathName()),

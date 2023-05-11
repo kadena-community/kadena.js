@@ -1,5 +1,5 @@
 export const createSlug = (str?: string): string => {
-  if (!str) return '';
+  if (str === undefined) return '';
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
