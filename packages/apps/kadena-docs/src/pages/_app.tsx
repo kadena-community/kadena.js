@@ -21,11 +21,7 @@ const GlobalStyles = globalCss({
 GlobalStyles();
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const MyApp = ({
-  Component,
-  pageProps,
-  ...props
-}: AppProps): JSX.Element => {
+export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as IDocsPageFC;
 

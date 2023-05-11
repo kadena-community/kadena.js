@@ -1,13 +1,9 @@
 import yaml from 'js-yaml';
 import { parse as parseAst } from 'acorn';
 
-const getFrontMatter = (node) => {
-  const { type, value } = node;
+const IsYamlFrontmatter = ({ type }) => type === 'yaml';
 
-  if (type === 'yaml') {
-    return yaml.load(value);
-  }
-};
+const getFrontMatter = ({ value }) => yaml.load(value);
 
 const renderer = (data) => {
   return `
@@ -18,12 +14,11 @@ const renderer = (data) => {
 };
 
 const rehypeFrontmatter = () => {
-  return async (tree, file) => {
+  return async (tree) => {
     tree.children = tree.children.map((node) => {
-      const data = getFrontMatter(node);
-      if (!data) return node;
+      if (!IsYamlFrontmatter(node)) return node;
 
-      const renderedString = renderer(data, node);
+      const renderedString = renderer(getFrontMatter(node));
       const { body } = parseAst(renderedString, {
         sourceType: 'module',
         ecmaVersion: 'latest',
