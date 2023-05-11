@@ -11,7 +11,7 @@ const meta: Meta<
     text: string;
   } & INotificationProps
 > = {
-  title: 'Notification',
+  title: 'Layout/Notification',
   argTypes: {
     selectIcon: {
       options: Object.keys(SystemIcons) as (keyof typeof SystemIcons)[],
@@ -91,7 +91,6 @@ export const Primary: Story = {
     simple,
   }) => {
     const Icon = SystemIcons[selectIcon];
-    console.log({ color });
     return (
       <>
         <Notification

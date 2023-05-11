@@ -38,7 +38,6 @@ export const Notification: FC<INotificationProps> = ({
 }) => {
   const Icon = icon!;
   const isSimple = simple === 'true' || description === undefined;
-  console.log({ displayCloseButton, isSimple });
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
       <AbsoluteButton position="left">
