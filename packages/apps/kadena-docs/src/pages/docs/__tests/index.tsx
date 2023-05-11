@@ -1,15 +1,10 @@
 import { Stack } from '@kadena/react-components';
 
-import { getData } from '@/components/Layout/components/Main/getData';
-import { IDocsPageFC } from '@/types/Layout';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/checkSubTreeForActive';
+import { checkSubTreeForActive } from '@/utils/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
-import React from 'react';
+import React, { FC } from 'react';
 
-const Home: IDocsPageFC = () => {
+const Home: FC = () => {
   return (
     <Stack>
       Cookie dragée bear claw ice cream jelly beans fruitcake danish tootsie
@@ -31,7 +26,7 @@ const Home: IDocsPageFC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getData(), getPathName()),
+      leftMenuTree: checkSubTreeForActive(),
       frontmatter: {
         title: 'Pact',
         menu: 'Pact',

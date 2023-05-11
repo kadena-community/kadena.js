@@ -34,7 +34,3 @@ export interface ILayout {
 }
 
 export type LevelType = 1 | 2 | 3;
-
-export interface IDocsPageFC extends FC {
-  meta: IPageMeta;
-}

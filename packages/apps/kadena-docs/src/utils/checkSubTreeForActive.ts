@@ -1,3 +1,5 @@
+import { getData } from './getData';
+
 import { IMenuItem } from '@/types/Layout';
 import path from 'path';
 
@@ -24,30 +26,35 @@ export const getPathName = (): string => {
   return `/${newPath}${lastInPath(path.parse(__filename).name)}`;
 };
 
-export const checkSubTreeForActive = (
-  tree: IMenuItem[],
-  pathname: string,
-): IMenuItem[] => {
-  return tree.map((item) => {
-    // is the menu open?
-    if (`${pathname}/`.startsWith(`${item.root}/`)) {
-      item.isMenuOpen = true;
-    } else {
-      item.isMenuOpen = false;
-    }
+export const checkSubTreeForActive = (): IMenuItem[] => {
+  const tree: IMenuItem[] = getData();
+  const path = getPathName();
 
-    console.log(pathname, item.root);
-    if (item.root === pathname) {
-      console.log('ACTIVE');
-      item.isActive = true;
-    } else {
-      item.isActive = false;
-    }
+  const activateSubTree = (
+    subTree: IMenuItem[],
+    pathname: string,
+  ): IMenuItem[] => {
+    return subTree.map((item) => {
+      // is the menu open?
+      if (`${pathname}/`.startsWith(`${item.root}/`)) {
+        item.isMenuOpen = true;
+      } else {
+        item.isMenuOpen = false;
+      }
 
-    // is the actual item active
-    if (item.children.length) {
-      item.children = checkSubTreeForActive(item.children, pathname);
-    }
-    return item;
-  });
+      if (item.root === pathname) {
+        item.isActive = true;
+      } else {
+        item.isActive = false;
+      }
+
+      // is the actual item active
+      if (item.children.length) {
+        item.children = activateSubTree(item.children, pathname);
+      }
+      return item;
+    });
+  };
+
+  return activateSubTree(tree, path);
 };

@@ -1,4 +1,4 @@
-import importedMenu from '../../../../data/menu.json';
+import importedMenu from './../data/menu.json';
 
 import { IMenuItem } from '@/types/Layout';
 

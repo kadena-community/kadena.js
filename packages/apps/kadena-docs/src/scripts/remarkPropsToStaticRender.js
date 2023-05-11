@@ -1,11 +1,13 @@
 import { parse as parseAst } from 'acorn';
 
+// find all the props objects in the tree
 const getProps = (tree) => {
   return tree.children.filter((branch) => {
     return branch.type === 'props';
   });
 };
 
+// add a getStaticProps to every MD or MDX file
 const renderer = (data) => {
   if (!data) return;
   const newData = data.reduce((acc, val) => {
@@ -23,7 +25,6 @@ const remarkPropsToStaticRender = () => {
     const props = getProps(tree);
 
     const renderedString = renderer(props);
-
     const { body } = parseAst(renderedString, {
       sourceType: 'module',
       ecmaVersion: 'latest',

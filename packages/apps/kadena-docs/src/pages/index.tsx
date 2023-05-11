@@ -1,10 +1,6 @@
 import { Stack } from '@kadena/react-components';
 
-import { getData } from '@/components/Layout/components/Main/getData';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/checkSubTreeForActive';
+import { checkSubTreeForActive } from '@/utils/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
@@ -30,7 +26,7 @@ const Home: FC = () => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getData(), getPathName()),
+      leftMenuTree: checkSubTreeForActive(),
       frontmatter: {
         title: 'Welcome to Kadena docs',
         menu: 'Pact',
