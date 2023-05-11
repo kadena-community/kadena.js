@@ -1,6 +1,9 @@
 import { getData } from '@/components/Layout/components/Main/getData';
 import { IDocsPageFC } from '@/types/Layout';
-import { checkSubTreeForActive } from '@/utils/checkSubTreeForActive';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import React from 'react';
 
@@ -119,23 +122,14 @@ const Text: IDocsPageFC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   console.log(2222, process.env.VERCEL_URL, args);
 
-  return { props: {} };
+  console.log('sdfs', getPathName());
+
+  return {
+    props: {
+      leftMenuTree: checkSubTreeForActive(getData(), getPathName()),
+    },
+  };
 };
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   let urlParams: string[] = [];
-//   if (params) {
-//     urlParams = (params[''] ?? []) as string[];
-//   }
-
-//   const url = urlParams.join('/');
-//   console.log(11111, params);
-//   return {
-//     props: {
-//       leftMenuTree: checkSubTreeForActive(getData(), url),
-//     },
-//   };
-// };
 
 Text.meta = {
   title: 'Pact',
