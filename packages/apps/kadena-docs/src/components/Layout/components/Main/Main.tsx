@@ -4,6 +4,7 @@ import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import { getData } from './getData';
 
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
@@ -14,14 +15,19 @@ const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
+  frontmatter: {
+    title: string;
+    subTitle: string;
+    description: string;
+    layout: LayoutType;
+  };
 }
 
-export const Main: FC<IProps> = ({ children, ...pageProps }) => {
+export const Main: FC<IProps> = ({ children, frontmatter }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
 
-  console.log({ pageProps });
   /**
    * with every menu change, this will check which menu needs to be opened in the sidemenu
    */
@@ -30,6 +36,7 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
       if (tree.length) {
         tree.map((item) => {
           // is the menu open?
+          console.log(pathname, item.root, pathname.startsWith(item.root));
           if (pathname.startsWith(item.root)) {
             item.isMenuOpen = true;
           } else {
@@ -55,9 +62,6 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
     return typedMenuItems;
   }, [pathname]);
 
-  let title, description, subTitle;
-  const layoutType: LayoutType = 'landing';
-
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);
     setIsAsideOpen(false);
@@ -70,20 +74,20 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
 
   const closeMenu = (): void => setIsMenuOpen(false);
 
-  const Layout = getLayout(layoutType);
+  const Layout = getLayout(frontmatter.layout);
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta name="description" content={description} />
+        <title>{frontmatter.title}</title>
+        <meta name="title" content={frontmatter.title} />
+        <meta name="description" content={frontmatter.description} />
       </Head>
 
       <Template
         layout={
-          isOneOfLayoutType(layoutType, 'landing')
+          isOneOfLayoutType(frontmatter.layout, 'landing')
             ? 'landing'
-            : isOneOfLayoutType(layoutType, 'code')
+            : isOneOfLayoutType(frontmatter.layout, 'code')
             ? 'code'
             : 'normal'
         }
@@ -94,28 +98,45 @@ export const Main: FC<IProps> = ({ children, ...pageProps }) => {
           isMenuOpen={isMenuOpen}
           isAsideOpen={isAsideOpen}
           menuItems={menuItems}
-          layout={layoutType}
+          layout={frontmatter.layout}
         />
-        {isOneOfLayoutType(layoutType, 'landing') && title && (
-          <TitleHeader title={title} subTitle={subTitle} />
-        )}
-        {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
+        {isOneOfLayoutType(frontmatter.layout, 'landing') &&
+          frontmatter.title && (
+            <TitleHeader
+              title={frontmatter.title}
+              subTitle={frontmatter.subTitle}
+            />
+          )}
+        {isOneOfLayoutType(frontmatter.layout, 'home') && <HomeHeader />}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
+            isOneOfLayoutType(
+              frontmatter.layout,
+              'full',
+              'code',
+              'codeside',
+              'landing',
+            )
               ? true
               : false
           }
           layout={
-            isOneOfLayoutType(layoutType, 'landing') ? 'landing' : 'normal'
+            isOneOfLayoutType(frontmatter.layout, 'landing')
+              ? 'landing'
+              : 'normal'
           }
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
-        <Layout isAsideOpen={isAsideOpen}>{children}</Layout>
+        <Layout isAsideOpen={isAsideOpen}>
+          {isOneOfLayoutType(frontmatter.layout, 'full', 'code') && (
+            <Breadcrumbs menuItems={menuItems} />
+          )}
+          {children}
+        </Layout>
         <Footer />
       </Template>
     </>

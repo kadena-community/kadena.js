@@ -110,8 +110,10 @@ export const {
     },
     lineHeights: {
       base: 1.4,
+      code: 1.9,
     },
     radii: {
+      xs: '2px',
       sm: '4px',
       md: '6px',
       lg: '8px',

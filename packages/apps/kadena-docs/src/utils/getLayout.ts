@@ -3,7 +3,6 @@ import { ILayout } from '@/types/Layout';
 import { FC } from 'react';
 
 export const getLayout = (layout: string): FC<ILayout> => {
-  console.log(layout);
   switch (layout.toLowerCase()) {
     case 'full':
       return Layouts.Full;
