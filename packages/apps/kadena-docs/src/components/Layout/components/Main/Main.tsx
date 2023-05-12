@@ -100,7 +100,7 @@ export const Main: FC<IProps> = ({
           isMenuOpen={isMenuOpen}
           isAsideOpen={isAsideOpen}
           menuItems={menuItems}
-          layout={frontmatter.layout}
+          layout={layoutType}
         />
         {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} />
