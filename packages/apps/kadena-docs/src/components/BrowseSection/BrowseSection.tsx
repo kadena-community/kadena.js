@@ -25,7 +25,17 @@ const BrowseSection: BrowseSectionType = ({ children, title }) => {
     <StyledSection>
       <Stack direction="column">
         {title && <Heading as="h5">{title}</Heading>}
-        <StyledList>{children}</StyledList>
+        <StyledList>
+          {React.Children.map(children, (child) => {
+            if (
+              !React.isValidElement(child) ||
+              (child.type !== LinkBlock && child.type !== LinkList)
+            ) {
+              throw new Error('not a child for the BrowseSection Component');
+            }
+            return child;
+          })}
+        </StyledList>
       </Stack>
     </StyledSection>
   );
