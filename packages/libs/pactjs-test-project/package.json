@@ -13,7 +13,7 @@
   "scripts": {
     "_phase:build": "npm run pactjs:generate:contract:file; tsc --noEmit",
     "_phase:test": "npm run test",
-    "build": "tsc --noEmit",
+    "build": "rushx postinstall && tsc --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact; pactjs contract-generate --file src/example-contract/marmalade.module.pact",
