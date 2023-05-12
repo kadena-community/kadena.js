@@ -7,7 +7,7 @@ import React, { FC } from 'react';
 
 export const NotFound: FC = () => {
   return (
-    <Section>
+    <Section direction="column" alignItems="center">
       <Heading as="h5">Not finding the help you need?</Heading>
       <Text>Contact our support desk.</Text>
       <Link href="/help" passHref legacyBehavior>

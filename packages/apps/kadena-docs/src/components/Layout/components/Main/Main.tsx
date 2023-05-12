@@ -5,7 +5,7 @@ import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 import { getData } from './getData';
 
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { IMenuItem, LayoutType } from '@/types/Layout';
+import { IMenuItem, IPageMeta } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -15,15 +15,18 @@ const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
-  frontmatter: {
-    title: string;
-    subTitle: string;
-    description: string;
-    layout: LayoutType;
-  };
+  frontmatter: IPageMeta;
 }
 
-export const Main: FC<IProps> = ({ children, frontmatter }) => {
+export const Main: FC<IProps> = ({
+  children,
+  frontmatter: {
+    title = '',
+    subTitle = '',
+    description = '',
+    layout: layoutType,
+  },
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
@@ -36,7 +39,6 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
       if (tree.length) {
         tree.map((item) => {
           // is the menu open?
-          console.log(pathname, item.root, pathname.startsWith(item.root));
           if (pathname.startsWith(item.root)) {
             item.isMenuOpen = true;
           } else {
@@ -74,20 +76,20 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
 
   const closeMenu = (): void => setIsMenuOpen(false);
 
-  const Layout = getLayout(frontmatter.layout);
+  const Layout = getLayout(layoutType);
   return (
     <>
       <Head>
-        <title>{frontmatter.title}</title>
-        <meta name="title" content={frontmatter.title} />
-        <meta name="description" content={frontmatter.description} />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
       </Head>
 
       <Template
         layout={
-          isOneOfLayoutType(frontmatter.layout, 'landing')
+          isOneOfLayoutType(layoutType, 'landing')
             ? 'landing'
-            : isOneOfLayoutType(frontmatter.layout, 'code')
+            : isOneOfLayoutType(layoutType, 'code')
             ? 'code'
             : 'normal'
         }
@@ -100,39 +102,27 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
           menuItems={menuItems}
           layout={frontmatter.layout}
         />
-        {isOneOfLayoutType(frontmatter.layout, 'landing') &&
-          frontmatter.title && (
-            <TitleHeader
-              title={frontmatter.title}
-              subTitle={frontmatter.subTitle}
-            />
-          )}
-        {isOneOfLayoutType(frontmatter.layout, 'home') && <HomeHeader />}
+        {isOneOfLayoutType(layoutType, 'landing') && title && (
+          <TitleHeader title={title} subTitle={subTitle} />
+        )}
+        {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(
-              frontmatter.layout,
-              'full',
-              'code',
-              'codeside',
-              'landing',
-            )
+            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
               ? true
               : false
           }
           layout={
-            isOneOfLayoutType(frontmatter.layout, 'landing')
-              ? 'landing'
-              : 'normal'
+            isOneOfLayoutType(layoutType, 'landing') ? 'landing' : 'normal'
           }
         >
           <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
         </Menu>
         <Layout isAsideOpen={isAsideOpen}>
-          {isOneOfLayoutType(frontmatter.layout, 'full', 'code') && (
+          {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <Breadcrumbs menuItems={menuItems} />
           )}
           {children}

@@ -1,9 +1,6 @@
-import { styled, StyledComponent } from '@kadena/react-components';
+import { Stack, styled, StyledComponent } from '@kadena/react-components';
 
-export const Section: StyledComponent<'section'> = styled('section', {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+export const Section: StyledComponent<typeof Stack> = styled(Stack, {
   padding: '$20 0',
   gap: '$2',
 });
