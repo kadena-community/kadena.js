@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-components';
+import { Heading } from '@kadena/react-components';
 
 import { IDocsPageFC } from '@/types/Layout';
 import React from 'react';
