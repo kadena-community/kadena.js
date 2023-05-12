@@ -22,8 +22,10 @@ export const StyledList: StyledComponent<'ul'> = styled('ul', {
 
 export const StyledListItem: StyledComponent<'li'> = styled('li', {
   gap: '$4',
+  padding: '0 $4',
+  flexBasis: '50%',
   '@md': {
-    flexBasis: '33.3%',
+    flexBasis: '30%',
   },
 });
 

@@ -20,11 +20,7 @@ const BrowseSection: BrowseSectionType = ({ children, title }) => {
   return (
     <StyledSection>
       <Stack direction="column">
-        {title && (
-          <Heading as="h3" variant="h5">
-            {title}
-          </Heading>
-        )}
+        {title && <Heading as="h5">{title}</Heading>}
         <StyledList>{children}</StyledList>
       </Stack>
     </StyledSection>

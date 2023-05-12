@@ -1,4 +1,4 @@
-import { Stack, Text } from '@kadena/react-components';
+import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
 import { IDocsPageFC } from '@/types/Layout';
@@ -7,6 +7,26 @@ import React from 'react';
 const Home: IDocsPageFC = () => {
   return (
     <>
+      <Heading as="h4">My Shortcuts</Heading>
+      <Stack direction="column" spacing="2xl">
+        <BrowseSection>
+          <BrowseSection.Section
+            title="Rest API"
+            subtitle="Built-in HTTP and SQL backend"
+            icon="RestApi"
+            href="/docs/pact"
+          />
+          <BrowseSection.Section
+            title="Concepts"
+            subtitle="Distinct Execution modes"
+            icon="Concepts"
+            href="/docs/kadenajs"
+          />
+        </BrowseSection>
+      </Stack>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <Heading as="h4">Browse by Resources</Heading>
       <Stack direction="column" spacing="2xl">
         <BrowseSection title="General">
           <BrowseSection.Section
