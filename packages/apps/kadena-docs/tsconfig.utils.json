@@ -1,0 +1,21 @@
+{
+  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "module": "ESNext",
+    "outDir": "dist/esm",
+    "allowJs": true,
+    "noEmit": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/utils/staticGeneration/*"]
+}

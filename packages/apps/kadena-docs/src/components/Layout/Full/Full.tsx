@@ -15,20 +15,18 @@ import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import React, { FC, ReactNode } from 'react';
 
-export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
-  const renderListItem = (item: ISubHeaderElement): ReactNode => {
-    const slug = createSlug(item.title);
-    return (
-      <AsideLink href={`#${slug}`} key={slug} label={item.title}>
-        {item.children.length > 0 && (
-          <AsideList inner={true}>
-            {item.children.map(renderListItem)}
-          </AsideList>
-        )}
-      </AsideLink>
-    );
-  };
+const renderListItem = (item: ISubHeaderElement): ReactNode => {
+  const slug = createSlug(item.title);
+  return (
+    <AsideLink href={`#${slug}`} key={slug} label={item.title}>
+      {item.children.length > 0 && (
+        <AsideList inner={true}>{item.children.map(renderListItem)}</AsideList>
+      )}
+    </AsideLink>
+  );
+};
 
+export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
   return (
     <>
       <Content id="maincontent">

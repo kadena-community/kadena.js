@@ -1,6 +1,6 @@
 import { Stack } from '@kadena/react-components';
 
-import { checkSubTreeForActive } from '@/utils/checkSubTreeForActive';
+import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 

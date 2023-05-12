@@ -1,6 +1,7 @@
-import { getData } from './getData';
+import { IMenuItem } from '../../types/Layout';
 
-import { IMenuItem } from '@/types/Layout';
+import { getData } from './../getData';
+
 import path from 'path';
 
 const isIndex = (filename: string): boolean => {
@@ -35,24 +36,25 @@ export const checkSubTreeForActive = (): IMenuItem[] => {
     pathname: string,
   ): IMenuItem[] => {
     return subTree.map((item) => {
+      const newItem = { ...item };
       // is the menu open?
-      if (`${pathname}/`.startsWith(`${item.root}/`)) {
-        item.isMenuOpen = true;
+      if (`${pathname}/`.startsWith(`${newItem.root}/`)) {
+        newItem.isMenuOpen = true;
       } else {
-        item.isMenuOpen = false;
+        newItem.isMenuOpen = false;
       }
 
-      if (item.root === pathname) {
-        item.isActive = true;
+      if (newItem.root === pathname) {
+        newItem.isActive = true;
       } else {
-        item.isActive = false;
+        newItem.isActive = false;
       }
 
       // is the actual item active
-      if (item.children.length) {
-        item.children = activateSubTree(item.children, pathname);
+      if (newItem.children.length) {
+        newItem.children = activateSubTree(newItem.children, pathname);
       }
-      return item;
+      return newItem;
     });
   };
 
