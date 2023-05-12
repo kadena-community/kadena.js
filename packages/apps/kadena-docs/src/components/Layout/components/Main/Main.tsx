@@ -18,7 +18,7 @@ interface IProps {
 
 export const Main: FC<IProps> = ({
   children,
-  frontmatter: { title, subTitle, description, layout },
+  frontmatter: { title, subTitle, description, layout: layoutType },
   aSideMenuTree,
   leftMenuTree,
 }) => {
@@ -37,7 +37,7 @@ export const Main: FC<IProps> = ({
 
   const closeMenu = (): void => setIsMenuOpen(false);
 
-  const Layout = getLayout(layout);
+  const Layout = getLayout(layoutType);
   return (
     <>
       <Head>
@@ -48,9 +48,9 @@ export const Main: FC<IProps> = ({
 
       <Template
         layout={
-          isOneOfLayoutType(layout, 'landing')
+          isOneOfLayoutType(layoutType, 'landing')
             ? 'landing'
-            : isOneOfLayoutType(layout, 'code')
+            : isOneOfLayoutType(layoutType, 'code')
             ? 'code'
             : 'normal'
         }
@@ -61,27 +61,29 @@ export const Main: FC<IProps> = ({
           isMenuOpen={isMenuOpen}
           isAsideOpen={isAsideOpen}
           menuItems={leftMenuTree}
-          layout={layout}
+          layout={layoutType}
         />
-        {isOneOfLayoutType(layout, 'landing') && title && (
+        {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} />
         )}
-        {isOneOfLayoutType(layout, 'home') && <HomeHeader />}
+        {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(layout, 'full', 'code', 'codeside', 'landing')
+            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
               ? true
               : false
           }
-          layout={isOneOfLayoutType(layout, 'landing') ? 'landing' : 'normal'}
+          layout={
+            isOneOfLayoutType(layoutType, 'landing') ? 'landing' : 'normal'
+          }
         >
           <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
         </Menu>
         <Layout isAsideOpen={isAsideOpen} aSideMenuTree={aSideMenuTree}>
-          {isOneOfLayoutType(layout, 'full', 'code') && (
+          {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <Breadcrumbs menuItems={leftMenuTree} />
           )}
           {children}
