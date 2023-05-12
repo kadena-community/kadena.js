@@ -24,7 +24,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
     const tree: IBreadcrumbItem[] = [];
 
     const checkSubTree = (subTree: IMenuItem[] = []): void => {
-      const i = subTree?.find((item) => item.isMenuOpen);
+      const i = subTree.find((item) => item.isMenuOpen);
       if (!i) return;
       tree.push({
         root: i.root,

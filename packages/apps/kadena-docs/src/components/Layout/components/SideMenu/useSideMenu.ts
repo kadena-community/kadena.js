@@ -1,13 +1,12 @@
 import { IMenuItem } from '@/types/Layout';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
-import { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
 interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;
   clickMenu: (e: React.MouseEvent<HTMLAnchorElement>, item: IMenuItem) => void;
   active: number;
-  activeItem?: IMenuItem;
   setActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -18,7 +17,6 @@ export const useSideMenu = (
   const router = useRouter();
   const [oldPathname, setOldPathname] = useState<string>('');
   const [active, setActive] = useState<number>(1);
-  const [activeItem, setActiveItem] = useState<IMenuItem>();
 
   useEffect(() => {
     setOldPathname(router.pathname);
@@ -27,7 +25,6 @@ export const useSideMenu = (
       hasSameBasePath(item.root, router.pathname),
     );
 
-    setActiveItem(matchingItem);
     const hasSubMenu = matchingItem?.children.length ?? 0;
 
     if (hasSubMenu) {
@@ -49,7 +46,6 @@ export const useSideMenu = (
     e: React.MouseEvent<HTMLAnchorElement>,
     item: IMenuItem,
   ): void => {
-    setActiveItem(item);
     if (
       hasSameBasePath(router.pathname, item.root ?? '') &&
       item.children.length
@@ -75,6 +71,5 @@ export const useSideMenu = (
     clickMenu,
     active,
     setActive,
-    activeItem,
   };
 };

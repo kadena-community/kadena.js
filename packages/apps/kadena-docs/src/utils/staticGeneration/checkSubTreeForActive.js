@@ -53,6 +53,5 @@ export const checkSubTreeForActive = (path) => {
   const tree = getData();
 
   if (!path) path = getPathName();
-  console.log(path);
   return tree.map(mapSubTree(path));
 };
