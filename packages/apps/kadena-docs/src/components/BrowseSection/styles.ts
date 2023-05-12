@@ -22,10 +22,13 @@ export const StyledList: StyledComponent<'ul'> = styled('ul', {
 
 export const StyledListItem: StyledComponent<'li'> = styled('li', {
   gap: '$4',
-  padding: '0 $4',
   flexBasis: '50%',
+  padding: '0 $4',
   '@md': {
     flexBasis: '30%',
+  },
+  '&:nth-child(3n + 1)': {
+    paddingLeft: 0,
   },
 });
 
@@ -38,6 +41,23 @@ export const ItemSubHeader: StyledComponent<'span'> = styled('span', {
 
 export const ItemStack: StyledComponent<typeof Stack> = styled(Stack, {
   gap: '0!important',
+});
+
+export const StyledLinkList: StyledComponent<'ul'> = styled('ul', {
+  padding: '0 $5',
+  listStyle: 'disc',
+  '& li': {
+    color: '$primaryContrast',
+    lineHeight: '$lg',
+    '& a': {
+      color: '$primaryContrast',
+      textDecoration: 'none',
+      '&:hover': {
+        color: '$primaryHighContrast',
+        textDecoration: 'underline',
+      },
+    },
+  },
 });
 
 export const StyledLink: StyledComponent<typeof Link> = styled(Link, {

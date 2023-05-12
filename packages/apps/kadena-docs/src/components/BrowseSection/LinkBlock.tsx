@@ -1,18 +1,18 @@
-import { Heading, ProductIcons, Stack, Text } from '@kadena/react-components';
+import { Heading, ProductIcons } from '@kadena/react-components';
 
 import { ItemStack, ItemSubHeader, StyledLink, StyledListItem } from './styles';
 
 import { ProductIconNames } from '@/types/Layout';
 import React, { FC } from 'react';
 
-export interface ISection {
+export interface ILinkBlock {
   title: string;
   subtitle: string;
   icon: ProductIconNames;
   href: string;
 }
 
-export const Section: FC<ISection> = ({ title, subtitle, icon, href }) => {
+export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, icon, href }) => {
   const Icon = ProductIcons[icon];
   return (
     <StyledListItem>

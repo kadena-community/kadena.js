@@ -1,6 +1,7 @@
 import { Heading, Stack } from '@kadena/react-components';
 
-import { ISection, Section } from './Section';
+import { ILinkBlock, LinkBlock } from './LinkBlock';
+import { ILinkList, LinkList } from './LinkList';
 import { StyledList, StyledSection } from './styles';
 
 import React, { FC, FunctionComponentElement } from 'react';
@@ -8,12 +9,15 @@ import React, { FC, FunctionComponentElement } from 'react';
 interface IProps {
   title?: string;
   children?:
-    | FunctionComponentElement<ISection>[]
-    | FunctionComponentElement<ISection>;
+    | FunctionComponentElement<ILinkBlock>[]
+    | FunctionComponentElement<ILinkBlock>
+    | FunctionComponentElement<ILinkList>[]
+    | FunctionComponentElement<ILinkList>;
 }
 
 type BrowseSectionType = FC<IProps> & {
-  Section: FC<ISection>;
+  LinkBlock: FC<ILinkBlock>;
+  LinkList: FC<ILinkList>;
 };
 
 const BrowseSection: BrowseSectionType = ({ children, title }) => {
@@ -26,6 +30,7 @@ const BrowseSection: BrowseSectionType = ({ children, title }) => {
     </StyledSection>
   );
 };
-BrowseSection.Section = Section;
+BrowseSection.LinkBlock = LinkBlock;
+BrowseSection.LinkList = LinkList;
 
 export { BrowseSection };
