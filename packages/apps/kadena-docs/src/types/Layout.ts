@@ -1,3 +1,5 @@
+import { ProductIcons } from '@kadena/react-components';
+
 import { FC, ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -36,3 +38,5 @@ export type LevelType = 1 | 2 | 3;
 export interface IDocsPageFC extends FC {
   meta: IPageMeta;
 }
+
+export type ProductIconNames = keyof typeof ProductIcons;

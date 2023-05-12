@@ -8,7 +8,7 @@ export const Article: StyledComponent<'article'> = styled('article', {
 
 export const Content: StyledComponent<
   'div',
-  { layout?: 'landing' | undefined }
+  { layout?: 'landing' | 'home' | undefined }
 > = styled('div', {
   display: 'flex',
   position: 'relative',
@@ -29,6 +29,11 @@ export const Content: StyledComponent<
   },
   variants: {
     layout: {
+      home: {
+        '@md': {
+          gridColumn: '2 / span 3',
+        },
+      },
       landing: {
         gridColumn: '1 / span 1',
 
