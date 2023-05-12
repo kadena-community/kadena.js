@@ -27,36 +27,33 @@ export const getPathName = (): string => {
   return `/${newPath}${lastInPath(path.parse(__filename).name)}`;
 };
 
+const mapSubTree =
+  (pathname: string): ((item: IMenuItem) => IMenuItem) =>
+  (item: IMenuItem): IMenuItem => {
+    const newItem = { ...item };
+    // is the menu open?
+    if (`${pathname}/`.startsWith(`${newItem.root}/`)) {
+      newItem.isMenuOpen = true;
+    } else {
+      newItem.isMenuOpen = false;
+    }
+
+    if (newItem.root === pathname) {
+      newItem.isActive = true;
+    } else {
+      newItem.isActive = false;
+    }
+
+    // is the actual item active
+    if (newItem.children.length) {
+      newItem.children = activateSubTree(newItem.children, pathname);
+    }
+    return newItem;
+  };
+
 export const checkSubTreeForActive = (): IMenuItem[] => {
   const tree: IMenuItem[] = getData();
   const path = getPathName();
 
-  const activateSubTree = (
-    subTree: IMenuItem[],
-    pathname: string,
-  ): IMenuItem[] => {
-    return subTree.map((item) => {
-      const newItem = { ...item };
-      // is the menu open?
-      if (`${pathname}/`.startsWith(`${newItem.root}/`)) {
-        newItem.isMenuOpen = true;
-      } else {
-        newItem.isMenuOpen = false;
-      }
-
-      if (newItem.root === pathname) {
-        newItem.isActive = true;
-      } else {
-        newItem.isActive = false;
-      }
-
-      // is the actual item active
-      if (newItem.children.length) {
-        newItem.children = activateSubTree(newItem.children, pathname);
-      }
-      return newItem;
-    });
-  };
-
-  return activateSubTree(tree, path);
+  return tree.map(mapSubTree(path));
 };
