@@ -18,7 +18,12 @@ interface IProps {
 
 export const Main: FC<IProps> = ({
   children,
-  frontmatter: { title, subTitle, description, layout: layoutType },
+  frontmatter: {
+    title = '',
+    subTitle = '',
+    description = '',
+    layout: layoutType,
+  },
   aSideMenuTree,
   leftMenuTree,
 }) => {

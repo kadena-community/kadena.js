@@ -23,7 +23,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
   const items = useMemo(() => {
     const tree: IBreadcrumbItem[] = [];
 
-    const checkSubTree = (subTree: IMenuItem[]): void => {
+    const checkSubTree = (subTree: IMenuItem[] = []): void => {
       const i = subTree?.find((item) => item.isMenuOpen);
       if (!i) return;
       tree.push({

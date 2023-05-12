@@ -1,1 +1,1 @@
-export { checkSubTreeForActive } from './checkSubTreeForActive';
+export { checkSubTreeForActive } from './checkSubTreeForActive.js';

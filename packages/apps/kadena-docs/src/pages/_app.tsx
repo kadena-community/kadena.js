@@ -24,6 +24,8 @@ export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as FC;
 
+  console.log(pageProps);
+
   return (
     <MDXProvider components={markDownComponents}>
       <ThemeProvider
