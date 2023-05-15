@@ -16,13 +16,11 @@ export const Content: StyledComponent<'div', { layout?: 'landing' | 'home' }> =
     overflow: 'hidden',
     width: '100%',
     height: '100%',
-
     '@md': {
       gridColumn: '3 / span 1',
       gridRow: '3 / span 1',
     },
-
-    ddefaultVariants: {
+    defaultVariants: {
       layout: 'full',
     },
     variants: {
