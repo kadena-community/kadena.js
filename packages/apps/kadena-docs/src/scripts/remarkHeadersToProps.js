@@ -7,13 +7,13 @@ const lastHeading = (parent, newChild) => {
   let child = parent.children[parent.children.length - 1] ?? parent;
 
   while (child.depth < newChild.depth) {
-    const getLastChild = child.children[child.children.length - 1];
+    const lastChild = child.children[child.children.length - 1];
     // when the items have the same tag, do not put it in children
-    if (getLastChild === undefined || getLastChild?.depth === newChild?.depth) {
+    if (lastChild === undefined || lastChild?.depth === newChild?.depth) {
       nodes.push(child);
       break;
     }
-    child = getLastChild;
+    child = lastChild;
     nodes.push(child);
   }
 
