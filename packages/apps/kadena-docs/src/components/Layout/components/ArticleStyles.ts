@@ -24,7 +24,7 @@ export const Content: StyledComponent<
     gridRow: '3 / span 1',
   },
 
-  ddefaultVariants: {
+  defaultVariants: {
     layout: 'full',
   },
   variants: {

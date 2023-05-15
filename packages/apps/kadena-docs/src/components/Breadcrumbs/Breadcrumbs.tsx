@@ -8,7 +8,6 @@ import { Box } from './styles';
 
 import { IMenuItem } from '@/types/Layout';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { FC, useMemo } from 'react';
 
 interface IProps {
@@ -21,7 +20,6 @@ interface IBreadcrumbItem {
 }
 
 export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
-  const { pathname } = useRouter();
   const items = useMemo(() => {
     const tree: IBreadcrumbItem[] = [];
 
@@ -39,7 +37,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
     checkSubTree(menuItems);
 
     return tree;
-  }, [menuItems, pathname]);
+  }, [menuItems]);
 
   return (
     <Box>

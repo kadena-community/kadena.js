@@ -5,7 +5,7 @@ import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 import { getData } from './getData';
 
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { IMenuItem, LayoutType } from '@/types/Layout';
+import { IMenuItem, IPageMeta } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -15,15 +15,18 @@ const typedMenuItems = getData();
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
-  frontmatter: {
-    title: string;
-    subTitle: string;
-    description: string;
-    layout: LayoutType;
-  };
+  frontmatter: IPageMeta;
 }
 
-export const Main: FC<IProps> = ({ children, frontmatter }) => {
+export const Main: FC<IProps> = ({
+  children,
+  frontmatter: {
+    title = '',
+    subTitle = '',
+    description = '',
+    layout: layoutType,
+  },
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const { pathname } = useRouter();
@@ -36,7 +39,6 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
       if (tree.length) {
         tree.map((item) => {
           // is the menu open?
-          console.log(pathname, item.root, pathname.startsWith(item.root));
           if (pathname.startsWith(item.root)) {
             item.isMenuOpen = true;
           } else {
@@ -61,15 +63,6 @@ export const Main: FC<IProps> = ({ children, frontmatter }) => {
 
     return typedMenuItems;
   }, [pathname]);
-
-  let title, description, subTitle;
-  let layoutType: LayoutType = 'full';
-  if (frontmatter !== undefined) {
-    title = frontmatter.title;
-    subTitle = frontmatter.subTitle;
-    description = frontmatter.description;
-    layoutType = frontmatter.layout ?? 'full';
-  }
 
   const toggleMenu = (): void => {
     setIsMenuOpen((v) => !v);
