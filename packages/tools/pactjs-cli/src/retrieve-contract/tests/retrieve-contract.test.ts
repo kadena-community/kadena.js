@@ -1,10 +1,10 @@
 jest.mock('fs');
 jest.mock('../../utils/retrieveContractFromChain');
-const path = require('path');
 
 import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
 
 import { writeFileSync } from 'fs';
+import path from 'path';
 
 const mockedWriteFileSync = writeFileSync as jest.MockedFunction<
   typeof writeFileSync
