@@ -1,5 +1,6 @@
 jest.mock('fs');
 jest.mock('../../utils/retrieveContractFromChain');
+const path = require('path');
 
 import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
 
@@ -63,7 +64,7 @@ describe('retrieve-contract', () => {
     await createAndRunProgram();
 
     expect(mockedWriteFileSync.mock.calls[0][0]).toContain(
-      '/some/path/to/contract.pact',
+      path.join('some', 'path', 'to', 'contract.pact'),
     );
     expect(mockedWriteFileSync.mock.calls[0][1]).toEqual('some code');
   });
