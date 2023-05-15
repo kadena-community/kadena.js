@@ -23,7 +23,7 @@ GlobalStyles();
 export const MyApp = ({
   component,
   pageProps,
-}: AppProps & { component: FC }): JSX.Element => {
+}: Omit<AppProps, 'Component'> & { component: FC }): JSX.Element => {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = component;
 
