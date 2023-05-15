@@ -1,11 +1,8 @@
 import { Heading } from '@kadena/react-components';
 
-import {
-  ItemStack,
-  ItemSubHeader,
-  StyledLinkList,
-  StyledListItem,
-} from './styles';
+import { LinkList as InnerLinkList } from '../LinkList';
+
+import { ItemStack, ItemSubHeader, StyledListItem } from './styles';
 
 import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
@@ -18,24 +15,7 @@ export interface ILinkList {
 export const LinkList: FC<ILinkList> = ({ title, children }) => {
   return (
     <StyledListItem>
-      <Heading as="h5">{title}</Heading>
-
-      <StyledLinkList>
-        {React.Children.map(children, (child) => {
-          if (
-            !React.isValidElement(child) ||
-            (child.type !== Link && child.props.href === undefined)
-          ) {
-            throw new Error('not a valid link');
-          }
-          return (
-            <li>
-              <a></a>
-              {child}
-            </li>
-          );
-        })}
-      </StyledLinkList>
+      <InnerLinkList title={title}>{children}</InnerLinkList>
     </StyledListItem>
   );
 };
