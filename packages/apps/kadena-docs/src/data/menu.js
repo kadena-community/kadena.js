@@ -1,4 +1,5 @@
-[
+
+export const menuData = [
   {
     "children": [
       {
@@ -269,7 +270,15 @@
             "children": [
               {
                 "children": [],
-                "root": "/docs/__tests/pact/atom-sdk/atom"
+                "root": "/docs/__tests/pact/atom-sdk/atom",
+                "title": "Pact",
+                "menu": "Pact Test it",
+                "label": "Pact Test",
+                "order": 1,
+                "description": "How to get started",
+                "layout": "code",
+                "isMenuOpen": false,
+                "isActive": false
               }
             ],
             "root": "/docs/__tests/pact/atom-sdk",

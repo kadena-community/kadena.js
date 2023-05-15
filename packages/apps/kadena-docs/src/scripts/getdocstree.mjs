@@ -81,7 +81,7 @@ const findPath = (dir) => {
 };
 
 const INITIALPATH = './src/pages/docs';
-const MENUFILE = './src/data/menu.json';
+const MENUFILE = './src/data/menu.js';
 const TREE = [];
 
 const createTree = (rootDir, parent = []) => {
@@ -128,4 +128,7 @@ const createTree = (rootDir, parent = []) => {
 
 const result = createTree(INITIALPATH, TREE);
 
-fs.writeFileSync(MENUFILE, JSON.stringify(result, null, 2));
+const fileStr = `
+export const menuData = ${JSON.stringify(result, null, 2)}`;
+
+fs.writeFileSync(MENUFILE, fileStr);

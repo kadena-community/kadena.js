@@ -5,7 +5,7 @@
   "scripts": {
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
-    "build": "NODE_NO_WARNINGS=1 next build",
+    "build": "next build",
     "createtree": "node ./src/scripts/getdocstree.mjs",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
