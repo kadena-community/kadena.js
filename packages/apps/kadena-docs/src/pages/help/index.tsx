@@ -1,9 +1,8 @@
 import { Heading } from '@kadena/react-components';
 
-import { IDocsPageFC } from '@/types/Layout';
-import React from 'react';
+import React, { FC } from 'react';
 
-const Help: IDocsPageFC = () => {
+const Help: FC = () => {
   return <Heading as="h2">This will be the help page</Heading>;
 };
 
