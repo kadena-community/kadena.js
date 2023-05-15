@@ -28,12 +28,7 @@ export const LinkList: FC<ILinkList> = ({ title, children }) => {
           ) {
             throw new Error('not a valid link');
           }
-          return (
-            <li>
-              <a></a>
-              {child}
-            </li>
-          );
+          return <li>{child}</li>;
         })}
       </StyledLinkList>
     </StyledListItem>
