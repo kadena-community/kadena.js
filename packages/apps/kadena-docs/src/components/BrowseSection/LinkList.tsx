@@ -1,11 +1,6 @@
 import { Heading } from '@kadena/react-components';
 
-import {
-  ItemStack,
-  ItemSubHeader,
-  StyledLinkList,
-  StyledListItem,
-} from './styles';
+import { StyledLinkList, StyledListItem } from './styles';
 
 import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';

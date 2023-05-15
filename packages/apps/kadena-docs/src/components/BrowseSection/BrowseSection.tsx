@@ -24,7 +24,7 @@ const BrowseSection: BrowseSectionType = ({ children, title }) => {
   return (
     <StyledSection>
       <Stack direction="column">
-        {title && <Heading as="h5">{title}</Heading>}
+        {Boolean(title) && <Heading as="h5">{title}</Heading>}
         <StyledList>
           {React.Children.map(children, (child) => {
             if (
