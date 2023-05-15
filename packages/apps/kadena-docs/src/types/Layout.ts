@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -30,10 +30,7 @@ export interface IMenuItem extends IPageMeta {
 export interface ILayout {
   children?: ReactNode;
   isAsideOpen?: boolean;
+  aSideMenuTree?: ISubHeaderElement[];
 }
 
 export type LevelType = 1 | 2 | 3;
-
-export interface IDocsPageFC extends FC {
-  meta: IPageMeta;
-}

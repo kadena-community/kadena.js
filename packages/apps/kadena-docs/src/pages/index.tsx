@@ -1,9 +1,10 @@
 import { Stack } from '@kadena/react-components';
 
-import { IDocsPageFC } from '@/types/Layout';
-import React from 'react';
+import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
+import { GetStaticProps } from 'next';
+import React, { FC } from 'react';
 
-const Home: IDocsPageFC = () => {
+const Home: FC = () => {
   return (
     <Stack>
       Cookie dragée bear claw ice cream jelly beans fruitcake danish tootsie
@@ -22,13 +23,20 @@ const Home: IDocsPageFC = () => {
   );
 };
 
-Home.meta = {
-  title: 'Pact',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description: 'Home page',
-  layout: 'home',
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      leftMenuTree: checkSubTreeForActive(),
+      frontmatter: {
+        title: 'Welcome to Kadena docs',
+        menu: 'Pact',
+        label: 'Pact Test',
+        order: 1,
+        description: 'Home page',
+        layout: 'home',
+      },
+    },
+  };
 };
 
 export default Home;
