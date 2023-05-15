@@ -1,11 +1,11 @@
 import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
-import { IDocsPageFC } from '@/types/Layout';
+import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import React from 'react';
-
-const Home: IDocsPageFC = () => {
+import React, { FC } from 'react';
+const Home: FC = () => {
   return (
     <>
       <Heading as="h4">My Shortcuts</Heading>
@@ -126,13 +126,20 @@ const Home: IDocsPageFC = () => {
   );
 };
 
-Home.meta = {
-  title: 'Pact',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description: 'Home page',
-  layout: 'home',
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      leftMenuTree: checkSubTreeForActive(),
+      frontmatter: {
+        title: 'Welcome to Kadena docs',
+        menu: 'Pact',
+        label: 'Pact Test',
+        order: 1,
+        description: 'Home page',
+        layout: 'home',
+      },
+    },
+  };
 };
 
 export default Home;

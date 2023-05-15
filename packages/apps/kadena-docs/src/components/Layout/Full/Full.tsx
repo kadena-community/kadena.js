@@ -11,42 +11,40 @@ import {
   StickyAsideWrapper,
 } from '../components';
 
-import { useCreateSubMenu } from './useCreateSubmenu';
-
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
+import { createSlug } from '@/utils';
 import React, { FC, ReactNode } from 'react';
 
-export const Full: FC<ILayout> = ({ children }) => {
-  const { docRef, headers } = useCreateSubMenu();
+const renderListItem = (item: ISubHeaderElement): ReactNode => {
+  const slug = createSlug(item.title);
+  return (
+    <AsideLink href={`#${slug}`} key={slug} label={item.title}>
+      {item.children.length > 0 && (
+        <AsideList inner={true}>{item.children.map(renderListItem)}</AsideList>
+      )}
+    </AsideLink>
+  );
+};
 
-  const renderListItem = (item: ISubHeaderElement): ReactNode => {
-    return (
-      <AsideLink href={`#${item.slug}`} key={item.slug} label={item.title}>
-        {item.children.length > 0 && (
-          <AsideList inner={true}>
-            {item.children.map(renderListItem)}
-          </AsideList>
-        )}
-      </AsideLink>
-    );
-  };
-
+export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
   return (
     <>
       <Content id="maincontent">
-        <Article ref={docRef}>{children}</Article>
+        <Article>{children}</Article>
       </Content>
 
       <AsideBackground />
       <Aside data-cy="aside">
-        <StickyAsideWrapper>
-          <StickyAside>
-            <Heading as="h6" transform="uppercase">
-              On this page
-            </Heading>
-            <AsideList>{headers.map(renderListItem)}</AsideList>
-          </StickyAside>
-        </StickyAsideWrapper>
+        {aSideMenuTree && (
+          <StickyAsideWrapper>
+            <StickyAside>
+              <Heading as="h6" transform="uppercase">
+                On this page
+              </Heading>
+              <AsideList>{aSideMenuTree.map(renderListItem)}</AsideList>
+            </StickyAside>
+          </StickyAsideWrapper>
+        )}
       </Aside>
     </>
   );

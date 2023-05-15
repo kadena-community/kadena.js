@@ -1,7 +1,7 @@
 ---
 title: Overview of Kadena
 menu: Kadena
-label: Introduction
+label: What is Kadena
 order: 0
 description: Kadena makes blockchain work for everyone.
 layout: full
