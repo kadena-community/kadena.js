@@ -16,7 +16,7 @@
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test && ./scripts/generate-test.sh"
+    "test": "heft test && ./scripts/generate-test.mjs"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -47,6 +47,7 @@
     "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
     "eslint": "^8.15.0",
-    "ts-node": "~10.8.2"
+    "ts-node": "~10.8.2",
+    "zx": "~7.2.2"
   }
 }
