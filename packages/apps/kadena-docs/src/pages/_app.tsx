@@ -19,14 +19,11 @@ const GlobalStyles = globalCss({
 });
 GlobalStyles();
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const MyApp = ({
-  component,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Component,
   pageProps,
-}: Omit<AppProps, 'Component'> & { component: FC }): JSX.Element => {
-  // Fixes "Component' cannot be used as a JSX component."
-  const ReactComponent = component;
-
+}: AppProps & { Component: FC }): JSX.Element => {
   return (
     <MDXProvider components={markDownComponents}>
       <ThemeProvider
@@ -38,7 +35,7 @@ export const MyApp = ({
         }}
       >
         <Main {...pageProps}>
-          <ReactComponent {...pageProps} />
+          <Component {...pageProps} />
         </Main>
       </ThemeProvider>
     </MDXProvider>

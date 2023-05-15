@@ -24,27 +24,29 @@ export const getPathName = () => {
   return `/${newPath}${lastInPath(path.parse(__filename).name)}`;
 };
 
+const IsMenuOpen = (pathname, itemRoot) =>
+  `${pathname}/`.startsWith(`${itemRoot}/`);
+
+const isPathRoot = (pathname, itemRoot) => itemRoot === pathname;
+
 const mapSubTree = (pathname) => (item) => {
   const newItem = { ...item };
-  // is the menu open?
-  if (`${pathname}/`.startsWith(`${newItem.root}/`)) {
+
+  if (IsMenuOpen(pathname, newItem.root)) {
     newItem.isMenuOpen = true;
   } else {
     newItem.isMenuOpen = false;
   }
 
-  if (newItem.root === pathname) {
+  if (isPathRoot(pathname, newItem.root)) {
     newItem.isActive = true;
   } else {
     newItem.isActive = false;
   }
 
   // is the actual item active
-  if (!newItem.children) {
-    newItem.children = [];
-  } else {
-    newItem.children = newItem.children.map(mapSubTree(pathname));
-  }
+  if (!newItem.children) newItem.children = [];
+  newItem.children = newItem.children.map(mapSubTree(pathname));
 
   return newItem;
 };

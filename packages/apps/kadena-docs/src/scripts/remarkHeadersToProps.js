@@ -2,8 +2,7 @@ import { toString } from 'mdast-util-to-string';
 
 const getTagName = (depth = 1) => `h${depth}`;
 
-const getParentHeading = (parent, newChild) => {
-  const orderArr = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+const lastHeading = (parent, newChild) => {
   const nodes = [parent];
   let child = parent.children[parent.children.length - 1] ?? parent;
 
@@ -31,17 +30,13 @@ const remarkHeadersToProps = () => {
   return async (tree) => {
     const headers = getHeaders(tree);
 
-    const startArray = [
-      {
-        tag: 'h1',
-        children: [],
-      },
-    ];
-
-    let parent = startArray[0];
+    let parent = {
+      tag: 'h1',
+      children: [],
+    };
 
     headers.forEach((item) => {
-      parent = getParentHeading(startArray[0], item);
+      parent = lastHeading(parent, item);
 
       const elm = {
         depth: item.depth,
@@ -55,7 +50,7 @@ const remarkHeadersToProps = () => {
     tree.children.push({
       type: 'props',
       data: {
-        aSideMenuTree: startArray[0].children,
+        aSideMenuTree: parent.children,
       },
     });
 
