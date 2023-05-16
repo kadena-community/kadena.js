@@ -22,7 +22,7 @@ export interface IInputGroupProps {
   status?: 'success' | 'error';
   disabled?: boolean;
   children: React.ReactNode;
-  className: string;
+  className?: 'string';
 }
 
 export const InputGroup: FC<IInputGroupProps> = ({
