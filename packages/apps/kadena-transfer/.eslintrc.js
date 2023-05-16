@@ -10,7 +10,7 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    '@kadena-dev/eslint-config/profile/next',
+    // '@kadena-dev/eslint-config/profile/next',
     'plugin:react/recommended',
     'standard-with-typescript',
     'plugin:@typescript-eslint/recommended',
