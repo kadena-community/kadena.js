@@ -6,6 +6,7 @@ import {
   StyledInfo,
   StyledInputGroupHeader,
   StyledInputGroupWrapper,
+  StyledInputs,
   StyledLabel,
   StyledTag,
 } from './styles';
@@ -13,8 +14,7 @@ import {
 import classnames from 'classnames';
 import React, { FC } from 'react';
 
-export interface IInputGroupProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'as'> {
+export interface IInputGroupProps {
   label?: string;
   tag?: string;
   info?: string;
@@ -22,6 +22,7 @@ export interface IInputGroupProps
   status?: 'success' | 'error';
   disabled?: boolean;
   children: React.ReactNode;
+  className: string;
 }
 
 export const InputGroup: FC<IInputGroupProps> = ({
@@ -54,7 +55,7 @@ export const InputGroup: FC<IInputGroupProps> = ({
           )}
         </StyledInputGroupHeader>
       )}
-      {children}
+      <StyledInputs>{children}</StyledInputs>
       {!!helper && (
         <StyledHelper className={classnames({ disabled }, status)}>
           <AlertBox />

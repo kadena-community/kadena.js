@@ -3,96 +3,91 @@
 
 import { styled } from '../../styles';
 
-export const styleVariant = {} as const;
-
 export const StyledInputGroupWrapper = styled('div', {
-  color: '$colors$neutral6',
+  color: '$foreground',
   '&.disabled': {
-    color: '$colors$neutral3',
+    color: '$neutral3',
   },
 });
 
 export const StyledInputGroupHeader = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  paddingBottom: '8px',
-  '*': {
-    display: 'inline-block',
-  },
+  pb: '$2',
 });
 
 export const StyledLabel = styled('label', {
-  fontWeight: '500',
-  fontSize: '14px',
+  fontWeight: '$medium',
+  fontSize: '$sm',
 });
 
 export const StyledTag = styled('span', {
-  marginLeft: '16px',
-  height: '18px',
-  backgroundColor: '$colors$neutral6',
-  color: '$colors$neutral1',
-  borderRadius: '2px',
-  padding: '2px 8px',
+  ml: '$4',
+  backgroundColor: '$foreground',
+  color: '$neutral1',
+  borderRadius: '$xs',
+  py: '$1',
+  px: '$2',
   display: 'inline-block',
-  fontSize: '12px',
-  lineHeight: '12px',
-  fontWeight: '500',
+  fontSize: '$xs',
+  lineHeight: '$base',
+  fontWeight: '$medium',
   '&.disabled': {
-    backgroundColor: '$colors$neutral3',
+    backgroundColor: '$neutral3',
   },
 });
 
 export const StyledInfo = styled('span', {
   marginLeft: 'auto',
-  fontSize: '12px',
+  fontSize: '$xs',
   display: 'flex',
   alignItems: 'center',
   '> span': {
-    paddingRight: '6px',
+    pr: '$1',
   },
 });
 
 export const StyledHelper = styled('span', {
-  marginTop: '14px',
+  mt: '$4',
   display: 'flex',
   alignItems: 'center',
-  fontSize: '12px',
+  fontSize: '$xs',
   '> span': {
-    paddingLeft: '10px',
+    pl: '$2',
   },
   '&:not(.disabled)': {
     '&.success > svg': {
-      color: '$colors$positiveAccent',
+      color: '$positiveAccent',
     },
     '&.error > svg': {
-      color: '$colors$negativeAccent',
+      color: '$negativeAccent',
     },
   },
   '&.disabled': {
     '& > svg': {
-      color: '$colors$neutral3',
+      color: '$neutral3',
     },
   },
 });
 
 export const StyledInputWrapper = styled('div', {
-  backgroundColor: '$colors$neutral1',
+  backgroundColor: '$background',
   display: 'flex',
-  borderRadius: '4px',
-  borderBottom: '1px solid $colors$neutral3',
-  height: '48px',
+  borderRadius: '$sm',
+  borderBottom: '1px solid $borderColor',
+  height: '$12',
   alignItems: 'center',
-  lineHeight: '2',
+  lineHeight: '$code',
   '&.success': {
-    borderColor: '$colors$positiveAccent',
+    borderColor: '$positiveAccent',
   },
   '&.error': {
-    borderColor: '$colors$negativeAccent',
+    borderColor: '$negativeAccent',
   },
   '&.disabled': {
-    backgroundColor: '$colors$neutral2',
-    borderColor: '$colors$neutral3',
-    color: '$colors$neutral4',
+    backgroundColor: '$neutral2',
+    borderColor: '$borderColor',
+    color: '$neutral3',
     '*': {
       color: 'inherit',
     },
@@ -100,31 +95,43 @@ export const StyledInputWrapper = styled('div', {
 });
 
 export const StyledLeadingText = styled('span', {
-  padding: '8px 16px',
-  backgroundColor: '$colors$neutral2',
-  borderRadius: '4px 0 0 4px',
+  px: '$4',
+  py: '$2',
+  backgroundColor: '$neutral2',
+  borderTopLeftRadius: '$sm',
+  borderBottomLeftRadius: '$sm',
   height: '100%',
 });
 
 export const StyledIconWrapper = styled('span', {
-  padding: '8px 16px',
-  fontSize: '16px',
-  '> *': {
-    display: 'flex',
-    alignItems: 'center',
-  },
+  px: '$4',
+  py: '$2',
+  fontSize: '$base',
 });
 
 export const StyledInput = styled('input', {
   background: 'none',
-  padding: '8px 0',
+  px: '$4',
   border: 'none',
   flex: '1',
   outline: 'none',
   fontSize: 'inherit',
-  color: '$colors$neutral6',
+  color: '$foreground',
   '&.hasLeadingText': {
-    paddingLeft: '16px',
-    paddingRight: '16px',
+    py: '$2',
+  },
+});
+
+export const StyledInputs = styled('div', {
+  '& > *': {
+    borderRadius: '0',
+    '&:first-child': {
+      borderTopRightRadius: '$sm',
+      borderTopLeftRadius: '$sm',
+    },
+    '&:last-child': {
+      borderBottomRightRadius: '$sm',
+      borderBottomLeftRadius: '$sm',
+    },
   },
 });
