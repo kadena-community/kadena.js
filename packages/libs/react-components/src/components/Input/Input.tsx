@@ -15,6 +15,7 @@ export interface IInputProps
     React.HTMLAttributes<HTMLInputElement>,
     'as' | 'disabled' | 'children'
   > {
+  className?: 'string';
   as?: 'input';
   leftPanel?: typeof SystemIcons[keyof typeof SystemIcons] | string;
   rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];

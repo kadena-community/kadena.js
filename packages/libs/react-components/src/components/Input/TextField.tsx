@@ -6,6 +6,7 @@ import React, { FC } from 'react';
 export interface ITextFieldProps
   extends Omit<IInputGroupProps, 'as' | 'children'> {
   inputProps: Omit<IInputProps, 'disabled' | 'status' | 'as' | 'children'>;
+  className?: 'string';
 }
 
 export const TextField: FC<ITextFieldProps> = ({
