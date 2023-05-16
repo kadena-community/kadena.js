@@ -4,23 +4,9 @@
 import 'zx/globals';
 
 import { rm } from 'fs/promises';
+import customLog from './custom-log.mjs';
 
-// the default log uses stderr for write output of commands, even for commands that do not generate errors or warnings.
-// This can cause Rush to treat everything as a warning message. This function changes this behavior.
-$.log = (entry) => {
-  switch (entry.kind) {
-    case 'stderr':
-      log(entry);
-      break;
-    case 'cmd':
-      console.log(entry.cmd);
-      break;
-    default:
-      if (entry.data) {
-        process.stdout.write(entry.data);
-      }
-  }
-};
+$.log = customLog;
 
 const generateAndTest = (template) =>
   within(async () => {
