@@ -9,10 +9,7 @@ export const Wrapper: StyledComponent<typeof InnerWrapper> = styled(
     alignItems: 'flex-start',
     width: '100%',
     background: '$backgroundOverlayColor',
-    paddingTop: '$20',
-    paddingLeft: '$12',
-    paddingRight: '$12',
-    paddingBottom: '$10',
+    padding: '$20 $12 $10',
     marginBottom: '$16',
   },
 );
