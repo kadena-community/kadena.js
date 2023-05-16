@@ -25,19 +25,21 @@ export interface IInputProps
 
 export const Input: FC<IInputProps> = ({
   className = '',
-  leftPanel: LeftPanel,
-  rightPanel: RightPanel,
+  leftPanel,
+  rightPanel,
   status,
   disabled,
   ...rest
 }) => {
+  const RightPanel = rightPanel;
+  const LeftPanel = leftPanel;
   const hasLeadingText = typeof LeftPanel === 'string';
   return (
     <StyledInputWrapper
       {...rest}
       className={classnames({ disabled }, className, status)}
     >
-      {LeftPanel &&
+      {LeftPanel !== undefined &&
         (hasLeadingText ? (
           <StyledLeadingText>{LeftPanel}</StyledLeadingText>
         ) : (

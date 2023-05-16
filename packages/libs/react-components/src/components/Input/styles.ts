@@ -2,7 +2,6 @@
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
 
 import { styled } from '../../styles';
-import { Text } from '../Typography';
 
 export const StyledInputGroupWrapper = styled('div', {
   color: '$foreground',

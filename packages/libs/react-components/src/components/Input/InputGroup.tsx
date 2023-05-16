@@ -35,19 +35,20 @@ export const InputGroup: FC<IInputGroupProps> = ({
   disabled,
   className = '',
 }) => {
+  const hasHeader = Boolean(label) || Boolean(tag) || Boolean(info);
   return (
     <StyledInputGroupWrapper className={classnames({ disabled }, className)}>
-      {!!(label || tag || info) && (
+      {hasHeader && (
         <StyledInputGroupHeader>
-          {!!label && (
+          {Boolean(label) && (
             <Text as={'label'} variant={'label'} size={'md'}>
               {label}
             </Text>
           )}
-          {!!tag && (
+          {Boolean(tag) && (
             <StyledTag className={classnames({ disabled })}>{tag}</StyledTag>
           )}
-          {!!info && (
+          {Boolean(info) && (
             <StyledInfo>
               <span>{info}</span>
               <AlertCircleOutline />
@@ -56,7 +57,7 @@ export const InputGroup: FC<IInputGroupProps> = ({
         </StyledInputGroupHeader>
       )}
       <StyledInputs>{children}</StyledInputs>
-      {!!helper && (
+      {Boolean(helper) && (
         <StyledHelper className={classnames({ disabled }, status)}>
           <AlertBox />
           <span>{helper}</span>
