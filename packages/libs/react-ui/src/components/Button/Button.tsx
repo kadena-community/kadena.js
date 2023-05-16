@@ -1,4 +1,4 @@
-import { buttonVariants } from './Button.css';
+import { colorVariants } from './Button.css';
 
 import React, { FC } from 'react';
 
@@ -10,12 +10,14 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
-  variant?: keyof typeof buttonVariants;
+  color?: keyof typeof colorVariants;
 }
 
+// TODO: Add icon support
 export const Button: FC<IButtonProps> = ({
   as = 'button',
-  variant = 'primaryFilled',
+  color = 'primary',
+  // variant = 'primaryFilled',
   onClick,
   href,
   children,
@@ -24,7 +26,7 @@ export const Button: FC<IButtonProps> = ({
   const ariaLabel = props['aria-label'] ?? props.title;
 
   if (as === 'a' && !href) {
-    <a className={buttonVariants[variant]} href={href}>
+    <a className={colorVariants[color]} href={href}>
       {children}
     </a>;
   }
@@ -32,7 +34,7 @@ export const Button: FC<IButtonProps> = ({
   return (
     <button
       {...props}
-      className={buttonVariants[variant]}
+      className={colorVariants[color]}
       onClick={onClick}
       aria-label={ariaLabel}
     >

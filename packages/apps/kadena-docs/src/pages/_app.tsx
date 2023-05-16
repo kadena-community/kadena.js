@@ -1,8 +1,9 @@
 import {
   baseGlobalStyles,
-  darkTheme,
+  darkTheme as stitchesDarkTheme,
   globalCss,
 } from '@kadena/react-components';
+import { darkThemeClass } from '@kadena/react-ui';
 
 import { Main } from '@/components/Layout/components';
 import { markDownComponents } from '@/components/Markdown';
@@ -34,14 +35,24 @@ export const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       <ThemeProvider
         attribute="class"
         enableSystem={true}
+        defaultTheme="light"
         value={{
           light: 'light',
-          dark: darkTheme.className,
+          dark: darkThemeClass,
         }}
       >
-        <Main {...pageProps}>
-          <ReactComponent {...pageProps} />
-        </Main>
+        <ThemeProvider
+          attribute="class"
+          enableSystem={true}
+          value={{
+            light: 'light',
+            dark: stitchesDarkTheme.className,
+          }}
+        >
+          <Main {...pageProps}>
+            <ReactComponent {...pageProps} />
+          </Main>
+        </ThemeProvider>
       </ThemeProvider>
     </MDXProvider>
   );

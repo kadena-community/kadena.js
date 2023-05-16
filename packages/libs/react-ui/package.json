@@ -4,7 +4,15 @@
   "description": "A react component library built on Kadena's Design System",
   "license": "ISC",
   "author": "",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./types/index.d.ts"
+    }
+  },
   "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
   "files": [
     "dist",
@@ -14,6 +22,7 @@
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
+    "build-storybook": "storybook build",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
@@ -51,17 +60,21 @@
     "@storybook/addon-interactions": "^7.0.0-rc.3",
     "@storybook/addon-links": "^7.0.0-rc.3",
     "@storybook/addon-mdx-gfm": "^7.0.0-rc.3",
+    "@storybook/blocks": "^7.0.12",
     "@storybook/csf": "~0.1.0",
     "@storybook/docs-mdx": "~0.1.0",
     "@storybook/react": "^7.0.0-rc.3",
     "@storybook/react-webpack5": "^7.0.0-rc.3",
     "@storybook/testing-library": "^0.0.14-next.1",
+    "@storybook/theming": "~7.0.12",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "@types/react": "^18.0.28",
     "@vanilla-extract/webpack-plugin": "~2.2.0",
     "eslint": "^8.15.0",
+    "eslint-plugin-storybook": "~0.6.12",
     "mini-css-extract-plugin": "~2.7.5",
+    "prop-types": "^15.8.1",
     "storybook": "^7.0.0-rc.3",
     "storybook-dark-mode": "^2.1.1",
     "typescript": "~4.6.3"

@@ -20,6 +20,7 @@ const withMDX = mdx({
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
+  transpilePackages: ['@kadena/react-ui'],
 };
 
 export default withVanillaExtract(withMDX(nextConfig));

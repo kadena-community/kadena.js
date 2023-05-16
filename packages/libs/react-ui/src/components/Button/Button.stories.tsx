@@ -1,8 +1,10 @@
 import { Button, IButtonProps } from './Button';
+import { colorVariants } from './Button.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
+// TODO: Add icon support
 const meta: Meta<
   {
     // selectIcon: keyof typeof SystemIcons;
@@ -10,6 +12,7 @@ const meta: Meta<
   } & IButtonProps
 > = {
   title: 'Button',
+  component: Button,
   argTypes: {
     onClick: { action: 'clicked' },
     // selectIcon: {
@@ -18,6 +21,12 @@ const meta: Meta<
     //     type: 'select',
     //   },
     // },
+    color: {
+      options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
+      control: {
+        type: 'select',
+      },
+    },
     title: {
       control: {
         type: 'text',
@@ -44,27 +53,72 @@ type Story = StoryObj<
   } & IButtonProps
 >;
 
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/7.0/react/api/csf
- * to learn how to use render functions.
- */
-
-export const Primary: Story = {
+export const Dynamic: Story = {
   name: 'Button',
   args: {
     // selectIcon: undefined,
     title: 'test title',
     disabled: false,
     text: 'Click me',
+    color: undefined,
   },
-  render: ({ onClick, title, disabled, text }) => {
+  render: ({ onClick, title, disabled, text, color }) => {
     return (
       <>
-        <Button title={title} onClick={onClick} disabled={disabled}>
+        <Button
+          title={title}
+          onClick={onClick}
+          disabled={disabled}
+          color={color}
+        >
           {text}
         </Button>
       </>
     );
+  },
+};
+
+export const Primary: Story = {
+  args: {
+    title: 'Primary Filled',
+    disabled: false,
+    children: 'Primary Filled',
+    color: 'primary',
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    title: 'Secondary Filled',
+    disabled: false,
+    children: 'Secondary Filled',
+    color: 'secondary',
+  },
+};
+
+export const Positive: Story = {
+  args: {
+    title: 'Positive Filled',
+    disabled: false,
+    children: 'Positive Filled',
+    color: 'positive',
+  },
+};
+
+export const Negative: Story = {
+  args: {
+    title: 'Negative Filled',
+    disabled: false,
+    children: 'Negative Filled',
+    color: 'negative',
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    title: 'Warning Filled',
+    disabled: false,
+    children: 'Warning Filled',
+    color: 'warning',
   },
 };
