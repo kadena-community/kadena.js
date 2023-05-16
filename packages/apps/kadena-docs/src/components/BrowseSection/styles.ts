@@ -43,23 +43,6 @@ export const ItemStack: StyledComponent<typeof Stack> = styled(Stack, {
   gap: '0!important',
 });
 
-export const StyledLinkList: StyledComponent<'ul'> = styled('ul', {
-  padding: '0 $5',
-  listStyle: 'disc',
-  '& li': {
-    color: '$primaryContrast',
-    lineHeight: '$lg',
-    '& a': {
-      color: '$primaryContrast',
-      textDecoration: 'none',
-      '&:hover': {
-        color: '$primaryHighContrast',
-        textDecoration: 'underline',
-      },
-    },
-  },
-});
-
 export const StyledLink: StyledComponent<typeof Link> = styled(Link, {
   flexBasis: '50%',
   display: 'flex',
