@@ -1,5 +1,6 @@
 import { AlertBox } from '../Icons/svgs/AlertBox';
 import { AlertCircleOutline } from '../Icons/svgs/AlertCircleOutline';
+import { Text } from '../Typography';
 
 import {
   StyledHelper,
@@ -7,7 +8,6 @@ import {
   StyledInputGroupHeader,
   StyledInputGroupWrapper,
   StyledInputs,
-  StyledLabel,
   StyledTag,
 } from './styles';
 
@@ -34,16 +34,16 @@ export const InputGroup: FC<IInputGroupProps> = ({
   status,
   disabled,
   className,
-  ...rest
 }) => {
   return (
-    <StyledInputGroupWrapper
-      {...rest}
-      className={classnames({ disabled }, className)}
-    >
+    <StyledInputGroupWrapper className={classnames({ disabled }, className)}>
       {!!(label || tag || info) && (
         <StyledInputGroupHeader>
-          {!!label && <StyledLabel>{label}</StyledLabel>}
+          {!!label && (
+            <Text as={'label'} variant={'label'} size={'md'}>
+              {label}
+            </Text>
+          )}
           {!!tag && (
             <StyledTag className={classnames({ disabled })}>{tag}</StyledTag>
           )}
