@@ -24,7 +24,7 @@ export interface IInputProps
 }
 
 export const Input: FC<IInputProps> = ({
-  className,
+  className = '',
   leftPanel: LeftPanel,
   rightPanel: RightPanel,
   status,

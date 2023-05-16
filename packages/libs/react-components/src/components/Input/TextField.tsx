@@ -10,7 +10,7 @@ export interface ITextFieldProps
 }
 
 export const TextField: FC<ITextFieldProps> = ({
-  className,
+  className = '',
   status,
   disabled,
   inputProps,

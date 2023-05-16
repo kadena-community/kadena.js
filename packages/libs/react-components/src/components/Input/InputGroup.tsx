@@ -33,7 +33,7 @@ export const InputGroup: FC<IInputGroupProps> = ({
   children,
   status,
   disabled,
-  className,
+  className = '',
 }) => {
   return (
     <StyledInputGroupWrapper className={classnames({ disabled }, className)}>
