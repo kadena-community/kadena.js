@@ -4,6 +4,7 @@ jest.mock('../../utils/retrieveContractFromChain');
 import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
 
 import { writeFileSync } from 'fs';
+import path from 'path';
 
 const mockedWriteFileSync = writeFileSync as jest.MockedFunction<
   typeof writeFileSync
@@ -63,7 +64,7 @@ describe('retrieve-contract', () => {
     await createAndRunProgram();
 
     expect(mockedWriteFileSync.mock.calls[0][0]).toContain(
-      '/some/path/to/contract.pact',
+      path.join('some', 'path', 'to', 'contract.pact'),
     );
     expect(mockedWriteFileSync.mock.calls[0][1]).toEqual('some code');
   });
