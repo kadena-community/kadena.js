@@ -5,7 +5,6 @@ import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForA
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
-
 const Home: FC = () => {
   return (
     <>
