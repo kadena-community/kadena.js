@@ -47,6 +47,7 @@
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/react-components": "workspace:*",
