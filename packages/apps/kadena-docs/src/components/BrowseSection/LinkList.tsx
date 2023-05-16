@@ -1,10 +1,7 @@
-import { Heading } from '@kadena/react-components';
-
 import { LinkList as InnerLinkList } from '../LinkList';
 
-import { ItemStack, ItemSubHeader, StyledListItem } from './styles';
+import { StyledListItem } from './styles';
 
-import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
 
 export interface ILinkList {

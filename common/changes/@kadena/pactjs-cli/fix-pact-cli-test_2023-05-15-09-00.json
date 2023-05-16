@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "comment": "use nodejs path util to make path-like strings for cross OS compability",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-cli"
+}

@@ -23,17 +23,12 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const {
-    active,
-    menuRef,
-    subMenuRef,
-    clickMenu,
-    clickSubMenu,
-    setActive,
-    activeItem,
-  } = useSideMenu(closeMenu, menuItems);
+  const { active, clickMenu, clickSubMenu, setActive } = useSideMenu(
+    closeMenu,
+    menuItems,
+  );
 
-  const hasSubmenu = Boolean(activeItem?.children.length);
+  const activeItem = menuItems.find((item) => item.isMenuOpen);
 
   return (
     <StyledSideMenu>
@@ -42,7 +37,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           <Heading as="h5">Kadena Docs</Heading>
         </SideMenuTitle>
       )}
-
       {active === 1 && (
         <>
           <SideMenuTitleBackButton onClick={() => setActive(0)}>
@@ -51,8 +45,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         </>
       )}
       <input type="text" />
-
-      <MenuCard cyTestId="sidemenu-main" active={active} idx={0} ref={menuRef}>
+      <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <StyledUl>
           {menuItems.map((item) => (
             <StyledItem key={item.root}>
@@ -67,12 +60,11 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           ))}
         </StyledUl>
       </MenuCard>
-      {hasSubmenu && activeItem && (
+      {activeItem && (
         <MenuCard
           cyTestId="sidemenu-submenu"
           active={active}
           idx={1}
-          ref={subMenuRef}
           onClick={clickSubMenu}
         >
           <StyledTreeList root={true}>

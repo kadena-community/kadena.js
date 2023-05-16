@@ -3,7 +3,7 @@
     {
       "packageName": "@kadena/react-components",
       "comment": "add a lineheight to the theme",
-      "type": "none"
+      "type": "patch"
     }
   ],
   "packageName": "@kadena/react-components"
