@@ -17,7 +17,6 @@ export interface IButtonProps
 export const Button: FC<IButtonProps> = ({
   as = 'button',
   color = 'primary',
-  // variant = 'primaryFilled',
   onClick,
   href,
   children,

@@ -37,6 +37,9 @@ export const vars = createGlobalTheme(':root', {
     lg: '8px',
     round: '999rem',
   },
+  borderWidths: {
+    md: '2px',
+  },
   shadows: {
     // TODO: Update to match design system
     1: `0px 1px 2px 0 $colors$neutral3`,

@@ -28,7 +28,7 @@ export const container = style([
     },
     ':focus-visible': {
       outlineOffset: '2px',
-      outlineWidth: '2px',
+      outlineWidth: vars.borderWidths.md,
       outlineStyle: 'solid',
       outlineColor: focusOutlineColor,
     },
