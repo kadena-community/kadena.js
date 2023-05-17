@@ -2,7 +2,7 @@ import { SystemIcons } from '../Icons';
 
 import { StyledButton } from './styles';
 
-import React, { FC, ReactEventHandler } from 'react';
+import React, { FC } from 'react';
 
 export interface IButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
