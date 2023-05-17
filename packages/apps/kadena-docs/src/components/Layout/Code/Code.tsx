@@ -7,6 +7,7 @@ import {
   StickyAsideWrapper,
 } from '../components';
 
+import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout } from '@/types/Layout';
 import React, { FC } from 'react';
 
@@ -14,7 +15,10 @@ export const Code: FC<ILayout> = ({ children, isAsideOpen }) => {
   return (
     <>
       <Content id="maincontent">
-        <Article>{children}</Article>
+        <Article>
+          {children}
+          <BottomPageSection />
+        </Article>
       </Content>
       <CodeBackground isOpen={isAsideOpen} />
 
