@@ -1,11 +1,9 @@
-import { Grid } from '../Grid';
-
 import { SystemIcons } from './../../';
 import { IInputGroupProps, InputGroup } from './InputGroup';
 import { Input } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
 
 const meta: Meta<
   {
