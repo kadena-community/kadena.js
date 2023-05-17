@@ -17,10 +17,6 @@ options.
 
 ## Getting started
 
-Since this library uses VE and is not pre-bundled, the consuming project will
-need to setup integration with VE. You can find integration instructions in the
-[VE docs](https://vanilla-extract.style/documentation/integrations/next/).
-
 Run the following commands to install dependencies and build the library:
 
 ```
@@ -30,6 +26,10 @@ cd packages/libs/react-ui
 rush install
 rushx build
 ```
+
+Since this library uses VE and is not pre-bundled, the consuming project will
+need to setup integration with VE. You can find integration instructions in the
+[VE docs](https://vanilla-extract.style/documentation/integrations/next/).
 
 ### Integration with Next.js projects within Kadena.js
 
@@ -61,7 +61,7 @@ rush add -p @vanilla-extract/next-plugin --dev
 
 If you don’t have a next.config.js file in the root of your project, create one.
 Add the plugin to your next.config.js file and add @kadena/react-ui to
-transpilePackages
+transpilePackages:
 
 ```
 const {
@@ -135,9 +135,9 @@ export const MyApp = ({ Component, pageProps }) {
 export default MyApp;
 ```
 
-> Note: We understand that just inverting colors is not enough to achieve a good
-> design in dark mode. We are using this color inversion in conjunction with
-> custom color selection to style dark mode within our applications
+> Note: We understand that just inverting colors is not enough to achieve good
+> UX in dark mode. We are using this color inversion in conjunction with custom
+> color selection to style dark mode within our applications
 
 ### Running Storybook
 
