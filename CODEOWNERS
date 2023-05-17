@@ -22,6 +22,7 @@
 /packages/libs/pactjs-test-project              @alber70g @randynamic @ggobugi27
 /packages/libs/react-components                 @eileenmguo @sstraatemans @isaozler
 /packages/libs/types                            @alber70g @randynamic @ggobugi27
+/packages/libs/react-ui                         @eileenmguo @sstraatemans @isaozler
 
 /packages/tools/cookbook                        @eileenmguo
 /packages/tools/create-kadena-app               @jermaine150
