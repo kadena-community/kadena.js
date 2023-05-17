@@ -15,7 +15,6 @@ export interface IInputProps
     React.HTMLAttributes<HTMLInputElement>,
     'as' | 'disabled' | 'children'
   > {
-  className?: 'string';
   as?: 'input';
   leftPanel?: typeof SystemIcons[keyof typeof SystemIcons] | string;
   rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
@@ -24,7 +23,6 @@ export interface IInputProps
 }
 
 export const Input: FC<IInputProps> = ({
-  className = '',
   leftPanel,
   rightPanel,
   status,
@@ -35,10 +33,7 @@ export const Input: FC<IInputProps> = ({
   const LeftPanel = leftPanel;
   const hasLeadingText = typeof LeftPanel === 'string';
   return (
-    <StyledInputWrapper
-      {...rest}
-      className={classnames({ disabled }, className, status)}
-    >
+    <StyledInputWrapper {...rest} className={classnames({ disabled }, status)}>
       {LeftPanel !== undefined &&
         (hasLeadingText ? (
           <StyledLeadingText>{LeftPanel}</StyledLeadingText>

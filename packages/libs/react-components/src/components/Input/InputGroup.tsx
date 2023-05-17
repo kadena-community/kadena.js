@@ -22,7 +22,6 @@ export interface IInputGroupProps {
   status?: 'success' | 'error';
   disabled?: boolean;
   children: React.ReactNode;
-  className?: 'string';
 }
 
 export const InputGroup: FC<IInputGroupProps> = ({
@@ -33,11 +32,10 @@ export const InputGroup: FC<IInputGroupProps> = ({
   children,
   status,
   disabled,
-  className = '',
 }) => {
   const hasHeader = Boolean(label) || Boolean(tag) || Boolean(info);
   return (
-    <StyledInputGroupWrapper className={classnames({ disabled }, className)}>
+    <StyledInputGroupWrapper className={classnames({ disabled })}>
       {hasHeader && (
         <StyledInputGroupHeader>
           {Boolean(label) && (
