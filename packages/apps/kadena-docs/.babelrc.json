@@ -12,8 +12,5 @@
     "@babel/preset-typescript",
     "@babel/preset-react"
   ],
-  "plugins": [
-    "@babel/plugin-syntax-import-assertions",
-    "@vanilla-extract/babel-plugin"
-  ]
+  "plugins": ["@babel/plugin-syntax-import-assertions"]
 }

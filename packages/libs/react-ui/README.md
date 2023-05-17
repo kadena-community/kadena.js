@@ -1,10 +1,154 @@
-# React Components
+# React UI
 
-Component library of Kadena.
+@kadena/react-ui is a library used to provide a styling environment and basic
+React components for reuse in Kadena applications. It uses
+[vanilla-extract/css](https://vanilla-extract.style) (will be referred to as VE)
+to establish a system of utility classes (defined as sprinkles) and css
+variables (defined in the theme) that align with Kadena's Design System and
+exposes them so that they can be used with any project or framework. A basic
+[Storybook](https://storybook.js.org/) integration has been implemented so that
+users can preview components visually and interact with their configuration
+options.
+
+> Warning: This library is in its early development stage so elements in the
+> styling environment may change as well as the API for components.
+> Additionally, installation and compatibility has only been tested with Next.js
+> projects within the Kadena.js monorepo.
 
 ## Getting started
 
-### Install
+Since this library uses VE and is not pre-bundled, the consuming project will
+need to setup integration with VE. You can find integration instructions in the
+[VE docs](https://vanilla-extract.style/documentation/integrations/next/).
+
+Run the following commands to install dependencies and build the library:
+
+```
+git clone git@github.com:kadena-community/kadena.js.git
+cd kadena.js
+cd packages/libs/react-ui
+rush install
+rushx build
+```
+
+### Integration with Next.js projects within Kadena.js
+
+Add @kadena/react-ui as a dependency in your `package.json`:
+
+```
+{
+  ...
+  "dependencies": {
+    "@kadena/react-ui": "workspace:*",
+    ...
+  }
+}
+```
+
+Then run the following commands to install the package and update the monorepo's
+state:
+
+```
+rush update
+```
+
+VE requires bundler configuration to handle CSS. To set this up in Next.js you
+will need to install the following plugin:
+
+```
+rush add -p @vanilla-extract/next-plugin --dev
+```
+
+If you don’t have a next.config.js file in the root of your project, create one.
+Add the plugin to your next.config.js file and add @kadena/react-ui to
+transpilePackages
+
+```
+const {
+  createVanillaExtractPlugin
+} = require('@vanilla-extract/next-plugin');
+const withVanillaExtract = createVanillaExtractPlugin();
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@kadena/react-ui'],
+};
+
+module.exports = withVanillaExtract(nextConfig);
+```
+
+If required, this plugin can be composed with other plugins:
+
+```
+const {
+  createVanillaExtractPlugin
+} = require('@vanilla-extract/next-plugin');
+const withVanillaExtract = createVanillaExtractPlugin();
+
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx$/
+});
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@kadena/react-ui'],
+};
+
+module.exports = withVanillaExtract(withMDX(nextConfig));
+```
+
+After the plugin is setup, you should be able to use styling utilities exported
+from @kadena/react-ui and components within your application.
+
+### Dark Theme
+
+We are utilizing the
+[theming](https://vanilla-extract.style/documentation/global-api/create-global-theme/)
+feature from VE to create CSS color variables that invert depending on the
+selected theme. By default the theme will have colors suitable for light mode,
+but to add dark theme integration you can export `darkThemeClass` from
+@kadena/react-ui and use it with your theme provider.
+
+You can use "next-themes" to set this up in Next.js projects by wrapping
+`Component` with the `ThemeProvider` in `__app.tsx`
+
+```
+import { darkThemeClass } from '@kadena/react-ui';
+import { ThemeProvider } from 'next-themes';
+
+export const MyApp = ({ Component, pageProps }) {
+  return (
+    <ThemeProvider
+      attribute="class"
+      enableSystem={true}
+      defaultTheme="light"
+      value={{
+        light: 'light',
+        dark: darkThemeClass,
+      }}
+    >
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
+};
+
+export default MyApp;
+```
+
+> Note: We understand that just inverting colors is not enough to achieve a good
+> design in dark mode. We are using this color inversion in conjunction with
+> custom color selection to style dark mode within our applications
+
+### Running Storybook
+
+After installing dependencies, you can start Storybook with the following
+command:
+
+```
+rushx storybook
+```
+
+### Installation outside of the Kadena.js monorepo
 
 The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
@@ -13,65 +157,28 @@ app.
 ```
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
-cd libs/react-components
+cd packages/libs/react-ui
 rush install
 rushx build
 cd ~/your-app-root
 ```
 
-Then in your package.json add:
+Add @kadena/react-ui as a dependency in your package.json:
 
 ```
 {
+  ...
   "dependencies": {
-    "@kadena/react-components": "link:../kadena.js/packages/libs/react-components"
+    "@kadena/react-ui": "link:../kadena.js/packages/libs/react-ui"
+    ...
   }
 }
 ```
 
-Then in your app init `stitches` with:
+Then, like other installations, you will need to follow the applicable
+integration instructions for VE.
 
-```
-import {
-  getCssText,
-  globalCss,
-  baseGlobalStyles,
-} from "@kadena/react-components";
-
-const globalStyles = globalCss(baseGlobalStyles as Record<string, any>);
-
-globalStyles();
-
-...
-
-export default function Root({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html >
-      <head>
-        <style
-          id="stitches"
-          dangerouslySetInnerHTML={{ __html: getCssText() }}
-        />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-### Running storybook
-
-You can start storybook after installing:
-
-```
-rushx storybook
-```
-
-## Component Library Guidelines
+## UI Library Guidelines
 
 We would like to maintain a strict component library with opinionated styles and
 isolated components that rely on wrapper or layout components for positioning.
@@ -80,18 +187,25 @@ components to maintain this goal.
 
 ### Styling
 
-We are currently using Stitches as our CSS solution although we are looking into
-other zero-runtime options like
-[vanilla-extract](https://vanilla-extract.style/) and
-[Tailwind CSS](https://tailwindcss.com/).
+We are currently using [vanilla-extract/css](https://vanilla-extract.style/) as
+it is a zero-runtime CSS-in-JS library that is framework agnostic.
 
 _Theming_
 
 We have defined a theme using elements of the Kadena Design System and these
 tokens should be used as property values in most cases to ensure consistency and
-alignment with the design. With stitches, we are also able to override this
-theme within projects to add additional tokens or update colors for a dark
+alignment with the design. With VE, we are also able to override this theme
+within projects to add additional CSS variables or update colors for a dark
 theme, for example.
+
+_Sprinkles_
+
+Sprinkles is an optional utility class built on top of VE that allows users to
+generate a set of custom utility classes (similar to Tailwind). @kadena/react-ui
+has setup sprinkles using the defined theme based on the Kadena Design System.
+When possible it is preferrable to use these utility classes and avoid creating
+unnecessary custom classes using the `style` function to keep the bundle
+smaller.
 
 _Colors_
 
@@ -107,9 +221,9 @@ variant with named options that map to each of the colors options.
 
 When it comes to dark theme, the default behavior when using theme specific
 tokens will effectively be the inverse of the opposing theme. This is not always
-ideal since visual cues can be lost. We have a task open for looking for a way
-to create localized theme tokens to allow for more customization in these
-circumstances
+ideal since visual cues can be lost. When using sprinkles, you can specify a
+different color for dark vs light mode and when using the style function, you
+can use a selector.
 
 Since the development of this library is happening in parallel with the
 development of our other products, the color sets are also still in flux. In
@@ -139,22 +253,3 @@ our primitive and composed components.
 Since we are still in early development stages, things are still in flux and
 flexible to change. This is just a guideline that the team has discussed
 together as a starting point, but any suggestions for change are welcome!
-
-# Issues with ESM build
-
-Why is the ESM build not added to package.json
-
-```
-  "module": "dist/esm/index.js",
-```
-
-There's an issue where Nextjs uses the esm version for server and cjs for
-browser builds.
-
-See also
-https://github.com/vanilla-extract-css/vanilla-extract/issues/940#:~:text=Debugging%20your%20app,to%20unexpected%20results.
-
-And
-https://github.com/vanilla-extract-css/vanilla-extract/issues/940#issuecomment-1413571550
-
-https://github.com/vercel/next.js/issues/35581
