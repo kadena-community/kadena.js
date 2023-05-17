@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<IResponse>) => {
   if (!APIKEY || !SERVER_PREFIX) {
     res.status(500).json({
       status: 500,
-      message: 'APIKEY missing',
+      message: 'APIKEY AND SERVER_PREFIX missing',
     });
     res.end();
   }
