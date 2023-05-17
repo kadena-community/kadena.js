@@ -11,6 +11,7 @@ import {
   StickyAsideWrapper,
 } from '../components';
 
+import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import React, { FC, ReactNode } from 'react';
@@ -30,7 +31,11 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
   return (
     <>
       <Content id="maincontent">
-        <Article>{children}</Article>
+        <Article>
+          {children}
+
+          <BottomPageSection />
+        </Article>
       </Content>
 
       <AsideBackground />
