@@ -6,33 +6,38 @@ import { Heading, Text } from '../Typography';
 
 export const colorVariant = {
   default: {
-    backgroundColor: `$neutral2`,
+    backgroundColor: '$neutral2',
     borderColor: '$neutral6',
     color: '$neutral6',
   },
+  inverted: {
+    backgroundColor: '$neutral6',
+    borderColor: '$neutral2',
+    color: '$neutral2',
+  },
   primary: {
-    backgroundColor: `$primarySurface`,
+    backgroundColor: '$primarySurface',
     borderColor: '$primaryAccent',
     color: '$primaryAccent',
   },
   secondary: {
-    backgroundColor: `$secondarySurface`,
+    backgroundColor: '$secondarySurface',
     borderColor: '$secondaryAccent',
     color: '$secondaryAccent',
   },
   positive: {
-    backgroundColor: `$positiveSurface`,
+    backgroundColor: '$positiveSurface',
     borderColor: '$positiveAccent',
     color: '$positiveAccent',
   },
   warning: {
-    backgroundColor: `$warningSurface`,
+    backgroundColor: '$warningSurface',
     borderColor: '$warningAccent',
     color: '$warningAccent',
     $$svgColor: '$warningAccent',
   },
   negative: {
-    backgroundColor: `$negativeSurface`,
+    backgroundColor: '$negativeSurface',
     borderColor: '$negativeAccent',
     color: '$negativeAccent',
   },
