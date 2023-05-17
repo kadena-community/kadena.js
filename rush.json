@@ -588,7 +588,14 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
-    }
+    },
+
+
+    {
+      "packageName": "common-scripts-precommit",
+      "projectFolder": "common/scripts/pre-commit",
+      "shouldPublish": false
+    },
 
     // {
     //   /**
