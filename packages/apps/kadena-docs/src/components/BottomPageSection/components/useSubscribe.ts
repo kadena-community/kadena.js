@@ -43,7 +43,7 @@ export const useSubscribe = (): IReturn => {
 
   const handleFormState = (event: ChangeEvent<HTMLInputElement>): void => {
     const { currentTarget } = event;
-    const email = currentTarget.value ?? '';
+    const email = currentTarget.value;
     setHasError(false);
     setMessage(undefined);
 
