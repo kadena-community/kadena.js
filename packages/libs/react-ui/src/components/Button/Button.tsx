@@ -24,7 +24,7 @@ export const Button: FC<IButtonProps> = ({
 }) => {
   const ariaLabel = props['aria-label'] ?? props.title;
 
-  if (as === 'a' && !href) {
+  if (as === 'a' && Boolean(href)) {
     <a className={colorVariants[color]} href={href}>
       {children}
     </a>;

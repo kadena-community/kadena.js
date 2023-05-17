@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/naming-convention: 0 */
+
 import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
 
 export const vars = createGlobalTheme(':root', {
