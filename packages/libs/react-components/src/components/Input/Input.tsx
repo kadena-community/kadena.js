@@ -13,7 +13,7 @@ import React, { FC } from 'react';
 export interface IInputProps
   extends Omit<
     React.HTMLAttributes<HTMLInputElement>,
-    'as' | 'disabled' | 'children'
+    'as' | 'disabled' | 'children' | 'className'
   > {
   as?: 'input';
   leftPanel?: typeof SystemIcons[keyof typeof SystemIcons] | string;

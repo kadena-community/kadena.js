@@ -4,7 +4,7 @@ import { IInputGroupProps, InputGroup } from './InputGroup';
 import React, { FC } from 'react';
 
 export interface ITextFieldProps
-  extends Omit<IInputGroupProps, 'as' | 'children'> {
+  extends Omit<IInputGroupProps, 'as' | 'children' | 'className'> {
   inputProps: Omit<IInputProps, 'disabled' | 'status' | 'as' | 'children'>;
 }
 
