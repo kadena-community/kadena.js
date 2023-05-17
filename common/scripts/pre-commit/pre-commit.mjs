@@ -1,4 +1,4 @@
-import { $, echo } from 'zx';
+import { $ } from 'zx';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
