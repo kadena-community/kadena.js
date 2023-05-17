@@ -1,19 +1,27 @@
 import { Heading } from '@kadena/react-components';
 
-import { IDocsPageFC } from '@/types/Layout';
-import React from 'react';
+import { checkSubTreeForActive } from '@/utils/staticGeneration';
+import { GetStaticProps } from 'next';
+import React, { FC } from 'react';
 
-const Help: IDocsPageFC = () => {
+const Help: FC = () => {
   return <Heading as="h2">This will be the help page</Heading>;
 };
 
-Help.meta = {
-  title: 'Help',
-  menu: 'Help',
-  label: 'Pact Test',
-  order: 1,
-  description: 'Help page',
-  layout: 'landing',
+export const getStaticProps: GetStaticProps = async (context, ...args) => {
+  return {
+    props: {
+      leftMenuTree: checkSubTreeForActive(),
+      frontmatter: {
+        title: 'Help',
+        menu: 'Help',
+        label: 'Help',
+        order: 0,
+        description: 'How to find stuff?',
+        layout: 'landing',
+      },
+    },
+  };
 };
 
 export default Help;
