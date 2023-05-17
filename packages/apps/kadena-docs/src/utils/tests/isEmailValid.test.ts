@@ -3,9 +3,9 @@ import { isEmailValid } from '../isEmailValid';
 describe('utils isEmailValid', () => {
   it('should validate a valid email address', () => {
     const validEmails = [
-      'test@example.com',
-      'user.name@example.co.uk',
-      'john.doe+label@example.com',
+      'he-man@theuniverse.com',
+      'snarfer.snarf@thundercats.co.uk',
+      'miles.mayhem+venom@venom.com',
     ];
 
     validEmails.forEach((email) => {
