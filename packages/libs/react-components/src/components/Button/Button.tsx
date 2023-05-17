@@ -2,17 +2,20 @@ import { SystemIcons } from '../Icons';
 
 import { StyledButton } from './styles';
 
-import React, { FC } from 'react';
+import React, { FC, ReactEventHandler } from 'react';
 
 export interface IButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'a';
   icon?: typeof SystemIcons[keyof typeof SystemIcons];
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | React.FormEventHandler<HTMLButtonElement>;
   href?: string;
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
+  type?: HTMLButtonElement['type'];
 }
 
 export const Button: FC<IButtonProps> = ({
@@ -21,6 +24,7 @@ export const Button: FC<IButtonProps> = ({
   onClick,
   href,
   children,
+  type = 'button',
   ...props
 }) => {
   const Icon = icon;

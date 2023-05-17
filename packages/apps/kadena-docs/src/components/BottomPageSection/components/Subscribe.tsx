@@ -1,40 +1,79 @@
-import { Button, Heading, Stack } from '@kadena/react-components';
+import { Button, Heading, Stack, Text } from '@kadena/react-components';
 
-import React, { ChangeEvent, FC, useState } from 'react';
+import { isEmailValid } from '@/utils';
+import React, { ChangeEvent, FC, MouseEvent, useState } from 'react';
 
 export const Subscribe: FC = () => {
   const [email, setEmail] = useState<string>('');
-  const handleSubscribe = async () => {
-    const res = await fetch('/api/subscribe', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-    });
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [message, setMessage] = useState<string | null>(null);
 
-    console.log(res.status);
-    const body = await res.json();
+  const disabled = !email || hasError;
+  const success = message && !hasError;
 
-    console.log(body);
+  const handleSubscribe = async (
+    e: MouseEvent<HTMLButtonElement, SubmitEvent>,
+  ) => {
+    e.preventDefault();
+
+    try {
+      if (disabled) return;
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+      });
+      const body = await res.json();
+
+      if (body.status > 200) {
+        setHasError(true);
+      }
+      setMessage(body.message);
+    } catch (e) {
+      setHasError(true);
+      setMessage('There was a problem, please try again later');
+    }
   };
 
   const handleFormState = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    const value = target.value ?? '';
-    setEmail(value);
+    const { currentTarget } = event;
+    const email = currentTarget.value ?? '';
+    setHasError(false);
+    setMessage(null);
+
+    if (!isEmailValid(email)) {
+      setHasError(true);
+    }
+    setEmail(email);
   };
 
   return (
     <section>
       <Heading as="h6">Recieve important developer updates</Heading>
-      <Stack spacing="2xs">
-        <input
-          onChange={handleFormState}
-          placeholder="Email address"
-          aria-label="fill in your email address to subscribe"
-        />
-        <Button onClick={handleSubscribe} title="Subscribe">
-          Subscribe
-        </Button>
-      </Stack>
+
+      {!success ? (
+        <>
+          <form>
+            <Stack spacing="2xs">
+              <input
+                onChange={handleFormState}
+                placeholder="Email address"
+                aria-label="fill in your email address to subscribe"
+              />
+              <Button
+                type="submit"
+                disabled={disabled}
+                onClick={handleSubscribe}
+                title="Subscribe"
+              >
+                Subscribe
+              </Button>
+            </Stack>
+          </form>
+          <Text bold={true}>{message}</Text>
+        </>
+      ) : (
+        <Text bold={true}>{message}</Text>
+      )}
     </section>
   );
 };
