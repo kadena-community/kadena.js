@@ -3,14 +3,17 @@ import { isEmailValid } from '@/utils';
 import mailchimp from '@mailchimp/mailchimp_marketing';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const APIKEY = process.env.MAILCHIMP_API;
-const SERVER_PREFIX = process.env.MAILCHIMP_SERVER_PREFIX;
+const APIKEY: string = process.env.MAILCHIMP_API ?? '';
+const SERVER_PREFIX: string = process.env.MAILCHIMP_SERVER_PREFIX ?? '';
 mailchimp.setConfig({
   apiKey: APIKEY,
   server: SERVER_PREFIX,
 });
 
-export default async (req: NextApiRequest, res: NextApiResponse<IResponse>) => {
+const subscribe = async (
+  req: NextApiRequest,
+  res: NextApiResponse<IResponse>,
+): Promise<void> => {
   if (req.method !== 'POST') {
     res.status(500).json({
       status: 500,
@@ -45,14 +48,23 @@ export default async (req: NextApiRequest, res: NextApiResponse<IResponse>) => {
   }
   const list = lists[0];
 
-  const result = mailchimp.lists.addListMember(list.id, {
+  const result = await mailchimp.lists.addListMember(list.id, {
     email_address: email,
-    status_if_new: 'pending',
     status: 'subscribed',
   });
+
+  if (result.statusCode > 400) {
+    res.status(500).json({
+      status: 500,
+      message: 'Something went wrong, please try again later',
+    });
+    res.end();
+  }
 
   res.status(500).json({
     status: 200,
     message: 'Thank you for subscribing',
   });
 };
+
+export default subscribe;
