@@ -1,7 +1,7 @@
+import { IIconButtonProps } from '../IconButton';
 import { SystemIcons } from '../Icons';
 
 import {
-  AbsoluteButton,
   StyledHeading,
   StyledIconButton,
   StyledNotification,
@@ -37,20 +37,27 @@ export const Notification: FC<INotificationProps> = ({
   buttons,
 }) => {
   const Icon = icon!;
-  const isSimple = simple === 'true' || description === undefined;
+  const isSimple = (simple as boolean) || description === undefined;
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
-      <AbsoluteButton position="left">
-        <Icon size="md" />
-      </AbsoluteButton>
+      <StyledIconButton
+        position="left"
+        color={color as IIconButtonProps['color']}
+        title="icon"
+        icon={Icon}
+      />
+
       <StyledHeading as="h6">{title}</StyledHeading>
       {!isSimple && <StyledText as="p">{description}</StyledText>}
       {!isSimple && buttons && buttons}
 
       {displayCloseButton === true && !isSimple && (
-        <AbsoluteButton position="right">
-          <StyledIconButton title="close-btn" icon={SystemIcons.Close!} />
-        </AbsoluteButton>
+        <StyledIconButton
+          position="right"
+          color={color as IIconButtonProps['color']}
+          title="close-btn"
+          icon={SystemIcons.Close!}
+        />
       )}
     </StyledNotification>
   );

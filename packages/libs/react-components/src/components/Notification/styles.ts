@@ -29,6 +29,7 @@ export const colorVariant = {
     backgroundColor: `$warningSurface`,
     borderColor: '$warningAccent',
     color: '$warningAccent',
+    $$svgColor: '$warningAccent',
   },
   negative: {
     backgroundColor: `$negativeSurface`,
@@ -51,7 +52,7 @@ export const simpleVariant = {
 };
 
 export const StyledNotification = styled('div', {
-  margin: '0px $sm',
+  margin: '0px',
 
   width: 'max-content',
   height: 'min-content',
@@ -84,34 +85,33 @@ export const StyledHeading = styled(Heading, {
   margin: '0',
 });
 
-export const StyledIconButton = styled(IconButton, {
-  padding: '0',
-  margin: '0',
-  height: 'min-content',
-  width: 'min-content',
-});
-
 export const StyledText = styled(Text, {
   textOverflow: 'wrap',
   width: '100%',
   margin: '$md 0',
 });
 
-export const AbsoluteButton = styled('div', {
+const positionVariant = {
+  left: {
+    right: 'auto',
+    left: '$sm',
+  },
+  right: {
+    left: 'auto',
+    right: '$sm',
+  },
+};
+
+export const StyledIconButton = styled(IconButton, {
+  margin: '0',
+  padding: '0',
+  height: 'min-content',
+  width: 'min-content',
   position: 'absolute',
   top: '$md',
   left: '0',
   right: '0',
   variants: {
-    position: {
-      left: {
-        right: 'auto',
-        left: '$sm',
-      },
-      right: {
-        left: 'auto',
-        right: '$sm',
-      },
-    },
+    position: positionVariant,
   },
 });

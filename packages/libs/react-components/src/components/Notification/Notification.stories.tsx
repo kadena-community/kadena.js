@@ -1,5 +1,5 @@
 import { Button, SystemIcons } from './../../';
-import { colorVariant, simpleVariant } from './styles';
+import { colorVariant } from './styles';
 import { INotificationProps, Notification } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -30,9 +30,8 @@ const meta: Meta<
       },
     },
     simple: {
-      options: Object.keys(simpleVariant) as (keyof typeof simpleVariant)[],
       control: {
-        type: 'select',
+        type: 'boolean',
       },
     },
     color: {
@@ -42,9 +41,8 @@ const meta: Meta<
       },
     },
     expand: {
-      options: Object.keys(simpleVariant) as (keyof typeof simpleVariant)[],
       control: {
-        type: 'select',
+        type: 'boolean',
       },
     },
 
@@ -72,7 +70,7 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Notification',
   args: {
-    selectIcon: 'Account',
+    selectIcon: 'Information',
     title: 'Notification title',
     description:
       'Notification text to inform users about the event that occurred!',
