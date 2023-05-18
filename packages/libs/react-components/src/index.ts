@@ -13,6 +13,7 @@ export {
 export {
   Heading,
   Text,
+  GradientText,
   IHeadingProps,
   ITextProps,
 } from './components/Typography';

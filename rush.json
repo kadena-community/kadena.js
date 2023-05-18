@@ -312,7 +312,7 @@
     /**
      * The list of shell commands to run before the Rush installation starts
      */
-    "preRushInstall": ["./common/scripts/add-lib-index-pactjs-cli.js"],
+    "preRushInstall": ["node ./common/scripts/add-lib-index-pactjs-cli.js"],
 
     /**
      * The list of shell commands to run after the Rush installation finishes
