@@ -8,7 +8,7 @@
 /packages/apps/graph                            @alber70g @randynamic @ggobugi27
 /packages/apps/graph-client                     @alber70g @randynamic @ggobugi27 @eileenmguo
 /packages/apps/kadena-docs                      @sstraatemans
-/packages/apps/kadena-transfer                  @MRVDH @KristinaSpasevska @nil-amrutlal-dept @rezaerami
+/packages/apps/transfer                  @MRVDH @KristinaSpasevska @nil-amrutlal-dept @rezaerami
 
 /packages/libs/bootstrap-lib                    @alber70g @randynamic @ggobugi27
 /packages/libs/chainweb-node-client             @alber70g @randynamic @ggobugi27
