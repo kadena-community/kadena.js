@@ -2,33 +2,35 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 import { type ChainId } from '@kadena/types';
 
-const NETWORK_ID = 'testnet04';
 const gasLimit = 6000;
 const gasPrice = 0.001;
 const ttl = 600;
 
-// const token = 'coin';
-// const acctName =
-// 'k:2a41f51efddc35f479c8fc21985d7fc2e4766859d7a7629be48a3017d8b9602a';
+export interface ChainResult {
+  chain: number;
+  data?: {
+    balance: string;
+    guard: { pred: string; keys: string[] };
+    account: string;
+  };
+}
 
-// export const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
-
-export async function checkBalance(
+export const checkBalance = async (
   server: string,
   token: string,
   accountName: string,
-): Promise<any> {
+): Promise<ChainResult[]> => {
   const arrPromises = [];
-
   // 1 - Create a new PactCommand
   const pactCommand = new PactCommand();
 
   // 2 - Bind to the Pact code
-  pactCommand.code = createExp(`${token}.get-balance "${accountName}"`);
+  pactCommand.code = createExp(`${token}.details "${accountName}"`);
 
   try {
     for (let i = 0; i < 20; i++) {
-      const host = `https://${server}/chainweb/0.0/${NETWORK_ID}/chain/${i}/pact`;
+      const NETWORK_ID = server.includes('testnet') ? 'testnet04' : 'mainnet01';
+      const API_HOST = `https://${server}/chainweb/0.0/${NETWORK_ID}/chain/${i}/pact`;
       // 3 - Set the meta data
       pactCommand.setMeta(
         {
@@ -40,23 +42,23 @@ export async function checkBalance(
         NETWORK_ID,
       );
       // 4 - Call the Pact local endpoint to retrieve the result
-      const data = pactCommand.local(host, {
+      const data = pactCommand.local(API_HOST, {
         signatureVerification: false,
         preflight: false,
       });
-      console.log('result', data);
-      console.log('host', host);
+
       arrPromises.push(data);
     }
     const responseArray = await Promise.all(arrPromises);
-    console.log('responseArray', responseArray);
 
-    const result = responseArray.map((item, index) => ({
+    const result: ChainResult[] = responseArray.map((item, index) => ({
       chain: index,
       data: item.result.data,
     }));
+
     return result;
   } catch (error) {
     console.log(error);
+    return [];
   }
-}
+};

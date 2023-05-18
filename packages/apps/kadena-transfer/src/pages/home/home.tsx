@@ -10,7 +10,7 @@ import Layout from '../../components/layout/layout';
 const Home = (): JSX.Element => {
   const navigate = useNavigate();
 
-  const handleClick = (): any => {
+  const handleClick = (): void => {
     navigate('/check-balance');
   };
 
@@ -20,31 +20,56 @@ const Home = (): JSX.Element => {
         <img src={logo} alt="logo" className="small-logo" />
         <div className="home-content">
           <h2 className="home-title">Kadena Transfer</h2>
-          <div className="home-link" onClick={() => handleClick()}>
+          <div
+            className="home-link"
+            onClick={() => {
+              handleClick();
+            }}
+          >
             <div className="icon-box">
               <img src={key} alt="balance-logo" className="icon" />
             </div>
             <p className="link-text">Generate KeyPair (save to file)</p>
           </div>
-          <div className="home-link" onClick={() => handleClick()}>
+          <div
+            className="home-link"
+            onClick={() => {
+              handleClick();
+            }}
+          >
             <div className="icon-box">
               <img src={account} alt="balance-logo" className="icon" />
             </div>
             <p className="link-text">Check account balance</p>
           </div>
-          <div className="home-link" onClick={() => handleClick()}>
+          <div
+            className="home-link"
+            onClick={() => {
+              handleClick();
+            }}
+          >
             <div className="icon-box">
               <img src={chain} alt="balance-logo" className="icon" />
             </div>
             <p className="link-text">Transfer</p>
           </div>
-          <div className="home-link" onClick={() => handleClick()}>
+          <div
+            className="home-link"
+            onClick={() => {
+              handleClick();
+            }}
+          >
             <div className="icon-box">
               <img src={chain} alt="balance-logo" className="icon" />
             </div>
             <p className="link-text">Transfer with Ledger</p>
           </div>
-          <div className="home-link" onClick={() => handleClick()}>
+          <div
+            className="home-link"
+            onClick={() => {
+              handleClick();
+            }}
+          >
             <div className="icon-box">
               <img src={chain} alt="balance-logo" className="icon" />
             </div>

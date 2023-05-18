@@ -95,19 +95,25 @@
 
 
 .main-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+
 
 }
 
 .form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+
+
+  /*box-sizing: border-box;*/
+}
+
+form {
   width: 65%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
-  /*box-sizing: border-box;*/
 }
 
 .account-form {
@@ -153,3 +159,63 @@
 .form-button {
   margin-top: 16px;
 }
+
+.result-container {
+  font-size: 1rem;
+}
+
+.total-container {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 4% auto;
+  padding: 8px;
+  border-radius: 4px;
+  background: rgba(5, 5, 5, 0.5);
+}
+
+.total-chunk {
+  width: 50%;
+}
+
+.account-total-value {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.table-container {
+  margin: 4% auto;
+}
+
+.table-container table {
+  width: 100%;
+  text-align: center;
+}
+
+.table-head {
+  font-weight: bold;
+  background: rgba(5, 5, 5, 0.5);
+}
+
+.table-head th {
+  padding: 1em;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #2d2d2d42;
+}
+tbody tr {
+  height: 2.8rem;
+}
+
+table#data-table td {
+  text-align: center;
+  padding: 0.3rem 0.5rem;
+}
+
+table td:nth-child(2) {
+  /*color: #9b9b9b;*/
+  overflow-wrap: anywhere;
+}
+
+
