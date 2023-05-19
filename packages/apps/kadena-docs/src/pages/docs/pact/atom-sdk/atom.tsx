@@ -1,9 +1,12 @@
-import { IDocsPageFC } from '@/types/Layout';
-import React from 'react';
+import { Text } from '@kadena/react-components';
 
-const Text: IDocsPageFC = () => {
+import { checkSubTreeForActive } from '@/utils/staticGeneration';
+import { GetStaticProps } from 'next';
+import React, { FC } from 'react';
+
+const Page: FC = () => {
   return (
-    <div>
+    <Text>
       Cookie **dragée** bear claw ice cream jelly beans fruitcake danish tootsie
       roll. Donut pastry tiramisu sesame snaps donut tootsie roll candy soufflé.
       Lollipop toffee ice cream jujubes cookie sugar plum croissant. Cookie
@@ -16,17 +19,24 @@ const Text: IDocsPageFC = () => {
       Sesame snaps powder caramels sweet roll jelly tiramisu apple pie muffin
       icing. Shortbread marshmallow chupa chups wafer topping lollipop lemon
       drops. Pudding cheesecake cookie liquorice cake gingerbread tootsie roll.
-    </div>
+    </Text>
   );
 };
 
-Text.meta = {
-  title: 'Pact',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description: 'How to get started',
-  layout: 'code',
+export const getStaticProps: GetStaticProps = async (context, ...args) => {
+  return {
+    props: {
+      leftMenuTree: checkSubTreeForActive(),
+      frontmatter: {
+        title: 'Pact',
+        menu: 'Pact Test it',
+        label: 'Pact Test',
+        order: 1,
+        description: 'How to get started',
+        layout: 'code',
+      },
+    },
+  };
 };
 
-export default Text;
+export default Page;
