@@ -1,0 +1,221 @@
+.header-container {
+  /*position: absolute;*/
+  /*top:0;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
+  /*right: 0;*/
+
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.header-logo-wallet-content {
+  max-height: 100px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.logo-text-container {
+  display: flex;
+  width: 60%;
+}
+
+.header-logo {
+  /*width: 30%;*/
+}
+
+.header-text {
+  /*width: 2em;*/
+  text-align: left;
+  margin-left: 16px;
+}
+
+.text-normal {
+  margin: 0 0 10px 10px;
+  font-size: 1rem;
+}
+
+.text-bold {
+  margin: 0 0 16px 10px;
+  font-weight: bold;
+}
+
+.wallet-not-connected {
+  width: 20%;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0;
+  gap: 4px;
+
+  background: rgba(25, 77, 0, 0.8);
+  border-radius: 2px;
+
+  font-size: 1rem;
+}
+
+.icon-image {
+  width: 10%;
+  margin-left: 8px;
+}
+
+.title-container {
+  max-height: 100px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.back {
+  width: 35%;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+
+}
+
+.chevron-left {
+  margin-right: 16px;
+}
+
+.chevron-right {
+  margin-left: 16px;
+}
+
+.title {
+}
+
+
+.main-content {
+
+
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+
+
+  /*box-sizing: border-box;*/
+}
+
+form {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.account-form {
+  width: 100%;
+  padding: 16px 0 16px 16px;
+  background: rgba(71, 79, 82, 0.4);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+.input-label {
+  font-size: 1rem;
+  margin-bottom: 12px;
+
+  font-weight: 500;
+  line-height: 17px;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 16px;
+
+  width: 92%;
+  height: 40px;
+
+  background: #050505;
+  border-bottom: 1px solid #5A5A5A;
+  border-radius: 4px;
+
+  color: #F0F0F0;
+}
+
+.form-button {
+  margin-top: 16px;
+}
+
+.result-container {
+  font-size: 1rem;
+}
+
+.total-container {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 4% auto;
+  padding: 8px;
+  border-radius: 4px;
+  background: rgba(5, 5, 5, 0.5);
+}
+
+.total-chunk {
+  width: 50%;
+}
+
+.account-total-value {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.table-container {
+  margin: 4% auto;
+}
+
+.table-container table {
+  width: 100%;
+  text-align: center;
+}
+
+.table-head {
+  font-weight: bold;
+  background: rgba(5, 5, 5, 0.5);
+}
+
+.table-head th {
+  padding: 1em;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #2d2d2d42;
+}
+tbody tr {
+  height: 2.8rem;
+}
+
+table#data-table td {
+  text-align: center;
+  padding: 0.3rem 0.5rem;
+}
+
+table td:nth-child(2) {
+  /*color: #9b9b9b;*/
+  overflow-wrap: anywhere;
+}
+
+
