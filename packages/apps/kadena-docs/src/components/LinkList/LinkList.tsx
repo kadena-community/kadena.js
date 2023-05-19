@@ -13,7 +13,7 @@ export interface ILinkList {
 export const LinkList: FC<ILinkList> = ({ children, title }) => {
   return (
     <div>
-      {title && <Heading as="h6">{title}</Heading>}
+      {Boolean(title) && <Heading as="h6">{title}</Heading>}
       <StyledLinkList>
         {React.Children.map(children, (child) => {
           if (

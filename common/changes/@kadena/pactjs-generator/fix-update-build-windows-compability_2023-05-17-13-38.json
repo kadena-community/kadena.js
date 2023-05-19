@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "fixing the issue regards \"rush install\" and \"rush build\" on windows",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}
