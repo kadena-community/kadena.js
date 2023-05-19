@@ -80,7 +80,8 @@ export const Primary: Story = {
     return (
       <Input
         onChange={onChange}
-        leftPanel={leadingText || SystemIcons[leftPanelIcon]}
+        leadingText={leadingText}
+        leftPanel={SystemIcons[leftPanelIcon]}
         rightPanel={SystemIcons[rightPanelIcon]}
         disabled={disabled}
         placeholder={'This is a placeholder'}

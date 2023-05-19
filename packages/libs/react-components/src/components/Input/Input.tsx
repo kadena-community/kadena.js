@@ -7,7 +7,6 @@ import {
   StyledLeadingText,
 } from './styles';
 
-import classnames from 'classnames';
 import React, { FC } from 'react';
 
 export interface IInputProps
@@ -16,37 +15,36 @@ export interface IInputProps
     'as' | 'disabled' | 'children' | 'className'
   > {
   as?: 'input';
-  leftPanel?: typeof SystemIcons[keyof typeof SystemIcons] | string;
+  leadingText?: string;
+  leftPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   disabled?: boolean;
   status?: 'success' | 'error';
 }
 
 export const Input: FC<IInputProps> = ({
+  leadingText,
   leftPanel,
   rightPanel,
   status,
-  disabled,
+  disabled = false,
   ...rest
 }) => {
   const RightPanel = rightPanel;
   const LeftPanel = leftPanel;
-  const hasLeadingText = typeof LeftPanel === 'string';
+  const variant = disabled ? 'disabled' : status;
+
   return (
-    <StyledInputWrapper {...rest} className={classnames({ disabled }, status)}>
-      {LeftPanel !== undefined &&
-        (hasLeadingText ? (
-          <StyledLeadingText>{LeftPanel}</StyledLeadingText>
-        ) : (
-          <StyledIconWrapper>
-            <LeftPanel size="md" />
-          </StyledIconWrapper>
-        ))}
-      <StyledInput
-        className={classnames({ hasLeadingText })}
-        disabled={disabled}
-        {...rest}
-      />
+    <StyledInputWrapper {...rest} variant={variant}>
+      {Boolean(leadingText) && (
+        <StyledLeadingText>{leadingText}</StyledLeadingText>
+      )}
+      {LeftPanel && (
+        <StyledIconWrapper>
+          <LeftPanel size="md" />
+        </StyledIconWrapper>
+      )}
+      <StyledInput variant={variant} disabled={disabled} {...rest} />
       {RightPanel && (
         <StyledIconWrapper>
           <RightPanel size="md" />

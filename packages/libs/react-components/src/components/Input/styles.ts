@@ -2,11 +2,51 @@
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
 
 import { styled } from '../../styles';
+import { Text } from '../Typography';
+
+export const styleVariant = {
+  neutral: {
+    $$color: '$colors$foreground',
+    $$accentColor: '$colors$foreground',
+    $$borderColor: '$colors$borderColor',
+    $$tagBg: '$colors$foreground',
+    $$tagColor: '$colors$background',
+    $$background: '$colors$background',
+  },
+  success: {
+    $$color: '$colors$foreground',
+    $$accentColor: '$colors$positiveAccent',
+    $$borderColor: '$colors$positiveAccent',
+    $$tagBg: '$colors$foreground',
+    $$tagColor: '$colors$background',
+    $$background: '$colors$background',
+  },
+  error: {
+    $$color: '$colors$foreground',
+    $$accentColor: '$colors$negativeAccent',
+    $$borderColor: '$colors$negativeAccent',
+    $$tagBg: '$colors$foreground',
+    $$tagColor: '$colors$background',
+    $$background: '$colors$background',
+  },
+  disabled: {
+    $$color: '$colors$neutral3',
+    $$accentColor: '$colors$neutral3',
+    $$borderColor: '$colors$borderColor',
+    $$tagBg: '$colors$neutral3',
+    $$tagColor: '$colors$background',
+    $$background: '$colors$neutral2',
+  },
+} as const;
 
 export const StyledInputGroupWrapper = styled('div', {
-  color: '$foreground',
-  '&.disabled': {
-    color: '$neutral3',
+  color: '$$color',
+
+  variants: {
+    variant: styleVariant,
+  },
+  defaultVariants: {
+    variant: 'neutral',
   },
 });
 
@@ -18,8 +58,8 @@ export const StyledInputGroupHeader = styled('div', {
 
 export const StyledTag = styled('span', {
   ml: '$4',
-  backgroundColor: '$foreground',
-  color: '$neutral1',
+  backgroundColor: '$$tagBg',
+  color: '$$tagColor',
   borderRadius: '$xs',
   py: '$1',
   px: '$2',
@@ -27,8 +67,12 @@ export const StyledTag = styled('span', {
   fontSize: '$xs',
   lineHeight: '$base',
   fontWeight: '$medium',
-  '&.disabled': {
-    backgroundColor: '$neutral3',
+
+  variants: {
+    variant: styleVariant,
+  },
+  defaultVariants: {
+    variant: 'neutral',
   },
 });
 
@@ -50,42 +94,38 @@ export const StyledHelper = styled('span', {
   '> span': {
     pl: '$2',
   },
-  '&:not(.disabled)': {
-    '&.success > svg': {
-      color: '$positiveAccent',
-    },
-    '&.error > svg': {
-      color: '$negativeAccent',
-    },
+
+  '& > svg': {
+    color: '$$accentColor',
   },
-  '&.disabled': {
-    '& > svg': {
-      color: '$neutral3',
-    },
+
+  variants: {
+    variant: styleVariant,
+  },
+  defaultVariants: {
+    variant: 'neutral',
   },
 });
 
 export const StyledInputWrapper = styled('div', {
-  backgroundColor: '$background',
+  backgroundColor: '$$background',
   display: 'flex',
   borderRadius: '$sm',
-  borderBottom: '1px solid $borderColor',
+  borderBottom: '1px solid $$borderColor',
+  color: '$$color',
   height: '$12',
   alignItems: 'center',
   lineHeight: '$code',
-  '&.success': {
-    borderColor: '$positiveAccent',
+  borderColor: '$$accentColor',
+  '*': {
+    color: 'inherit',
   },
-  '&.error': {
-    borderColor: '$negativeAccent',
+
+  variants: {
+    variant: styleVariant,
   },
-  '&.disabled': {
-    backgroundColor: '$neutral2',
-    borderColor: '$borderColor',
-    color: '$neutral3',
-    '*': {
-      color: 'inherit',
-    },
+  defaultVariants: {
+    variant: 'neutral',
   },
 });
 
@@ -96,12 +136,18 @@ export const StyledLeadingText = styled('span', {
   borderTopLeftRadius: '$sm',
   borderBottomLeftRadius: '$sm',
   height: '100%',
+  '& + *': {
+    px: '$4',
+  },
 });
 
 export const StyledIconWrapper = styled('span', {
   px: '$4',
   py: '$2',
   fontSize: '$base',
+  '& + *': {
+    pl: '0',
+  },
 });
 
 export const StyledInput = styled('input', {
@@ -111,10 +157,18 @@ export const StyledInput = styled('input', {
   flex: '1',
   outline: 'none',
   fontSize: 'inherit',
-  color: '$foreground',
-  '&.hasLeadingText': {
-    py: '$2',
+  color: '$$color',
+
+  variants: {
+    variant: styleVariant,
   },
+  defaultVariants: {
+    variant: 'neutral',
+  },
+});
+
+export const StyledText = styled(Text, {
+  color: '$$color',
 });
 
 export const StyledInputs = styled('div', {

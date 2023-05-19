@@ -86,13 +86,13 @@ export const Primary: Story = {
           disabled={disabled}
         >
           <Input
-            leftPanel="Leading"
+            leadingText="Leading"
             placeholder={'This is a placeholder'}
             disabled={disabled}
             status={status}
           />
           <Input
-            leftPanel="Leading"
+            leadingText="Leading"
             placeholder={'This is a placeholder'}
             disabled={disabled}
             status={status}

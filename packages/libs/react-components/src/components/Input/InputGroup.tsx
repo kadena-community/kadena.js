@@ -1,6 +1,5 @@
 import { AlertBox } from '../Icons/svgs/AlertBox';
 import { AlertCircleOutline } from '../Icons/svgs/AlertCircleOutline';
-import { Text } from '../Typography';
 
 import {
   StyledHelper,
@@ -9,9 +8,9 @@ import {
   StyledInputGroupWrapper,
   StyledInputs,
   StyledTag,
+  StyledText,
 } from './styles';
 
-import classnames from 'classnames';
 import React, { FC } from 'react';
 
 export interface IInputGroupProps {
@@ -31,21 +30,21 @@ export const InputGroup: FC<IInputGroupProps> = ({
   helper,
   children,
   status,
-  disabled,
+  disabled = false,
 }) => {
   const hasHeader = Boolean(label) || Boolean(tag) || Boolean(info);
+  const variant = disabled ? 'disabled' : status;
+
   return (
-    <StyledInputGroupWrapper className={classnames({ disabled })}>
+    <StyledInputGroupWrapper variant={variant}>
       {hasHeader && (
         <StyledInputGroupHeader>
           {Boolean(label) && (
-            <Text as={'label'} variant={'label'} size={'md'}>
+            <StyledText as={'label'} variant={'label'} size={'md'}>
               {label}
-            </Text>
+            </StyledText>
           )}
-          {Boolean(tag) && (
-            <StyledTag className={classnames({ disabled })}>{tag}</StyledTag>
-          )}
+          {Boolean(tag) && <StyledTag variant={variant}>{tag}</StyledTag>}
           {Boolean(info) && (
             <StyledInfo>
               <span>{info}</span>
@@ -56,7 +55,7 @@ export const InputGroup: FC<IInputGroupProps> = ({
       )}
       <StyledInputs>{children}</StyledInputs>
       {Boolean(helper) && (
-        <StyledHelper className={classnames({ disabled }, status)}>
+        <StyledHelper variant={variant}>
           <AlertBox />
           <span>{helper}</span>
         </StyledHelper>

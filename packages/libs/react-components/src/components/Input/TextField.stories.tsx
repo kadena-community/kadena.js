@@ -120,7 +120,8 @@ export const Primary: Story = {
       tag={tag}
       helper={helper}
       inputProps={{
-        leftPanel: leadingText || SystemIcons[leftPanelIcon],
+        leadingText,
+        leftPanel: SystemIcons[leftPanelIcon],
         rightPanel: SystemIcons[rightPanelIcon],
         onChange,
         placeholder: 'This is a placeholder',
