@@ -1,6 +1,8 @@
-import React from 'react';
-import logo from './logo.png';
 import './App.css';
+
+import logo from './logo.png';
+
+import React from 'react';
 
 function App() {
   return (
