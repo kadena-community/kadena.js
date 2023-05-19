@@ -32,6 +32,7 @@
     "@babel/plugin-syntax-import-assertions": "~7.20.0",
     "@kadena/react-components": "workspace:*",
     "@kadena/react-ui": "workspace:*",
+    "@mailchimp/mailchimp_marketing": "~3.0.80",
     "@mdx-js/loader": "~2.3.0",
     "@mdx-js/react": "~2.3.0",
     "@next/mdx": "~13.3.4",
