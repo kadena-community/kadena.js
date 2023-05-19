@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/transfer",
+  "name": "@kadena/kadena-transfer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

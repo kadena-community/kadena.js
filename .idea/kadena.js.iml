@@ -6,8 +6,8 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
     </content>
-    <content url="file://$MODULE_DIR$/packages/apps/transfer/node_modules/@kadena/client" />
-    <content url="file://$MODULE_DIR$/packages/apps/transfer/node_modules/@kadena/pactjs" />
+    <content url="file://$MODULE_DIR$/packages/apps/kadena-transfer/node_modules/@kadena/client" />
+    <content url="file://$MODULE_DIR$/packages/apps/kadena-transfer/node_modules/@kadena/pactjs" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
