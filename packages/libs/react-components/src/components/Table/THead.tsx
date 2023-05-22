@@ -1,4 +1,3 @@
-import { StyledTHead } from './styles';
 import { Tr } from './Tr';
 import { CompoundType } from './types';
 
@@ -10,7 +9,7 @@ export interface ITHead {
 
 export const THead: FC<ITHead> = ({ children }) => {
   return (
-    <StyledTHead>
+    <thead>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
@@ -20,6 +19,6 @@ export const THead: FC<ITHead> = ({ children }) => {
 
         return child;
       })}
-    </StyledTHead>
+    </thead>
   );
 };

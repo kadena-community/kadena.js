@@ -1,4 +1,3 @@
-import { StyledTBody } from './styles';
 import { Tr } from './Tr';
 import { CompoundType } from './types';
 
@@ -10,7 +9,7 @@ export interface ITBody {
 
 export const TBody: FC<ITBody> = ({ children }) => {
   return (
-    <StyledTBody>
+    <tbody>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
@@ -20,6 +19,6 @@ export const TBody: FC<ITBody> = ({ children }) => {
 
         return child;
       })}
-    </StyledTBody>
+    </tbody>
   );
 };
