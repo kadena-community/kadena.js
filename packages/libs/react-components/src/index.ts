@@ -4,6 +4,7 @@ export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
 export { ProductIcons } from './components/ProductIcons';
+export { Table } from './components/Table';
 export {
   Breadcrumbs,
   BreadcrumbItem,
