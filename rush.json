@@ -443,6 +443,14 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/next-transfer",
+      "projectFolder": "packages/apps/next-transfer",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": true,
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################
