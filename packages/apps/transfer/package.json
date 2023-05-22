@@ -8,8 +8,8 @@
     "build": "next build",
     "dev": "next dev",
     "eject": "react-scripts eject",
-    "generate": "rushx generate:icons",
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
+    "postinstall": "rushx generate:icons",
     "lint": "next lint",
     "lint-staged": "lint-staged",
     "lint:fix": "eslint --fix .",
@@ -71,6 +71,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "lint-staged": "~13.2.0",
     "prettier": "^2.8.8",
+    "sort-package-json": "~2.4.1",
     "typescript": "^4.9.5"
   },
   "engines": {
@@ -78,5 +79,8 @@
   },
   "volta": {
     "node": "18.16.0"
-  }
+  },
+  "package.json": [
+    "sort-package-json"
+  ]
 }

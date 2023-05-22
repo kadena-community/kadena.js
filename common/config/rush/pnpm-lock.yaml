@@ -422,6 +422,7 @@ importers:
       react-dom: ^18.2.0
       react-router-dom: ^6.11.1
       react-scripts: 5.0.1
+      sort-package-json: ~2.4.1
       typescript: 5.0.4
     dependencies:
       '@kadena/client': link:../../libs/client
@@ -467,6 +468,7 @@ importers:
       eslint-plugin-react-hooks: 4.6.0_eslint@8.41.0
       lint-staged: 13.2.2
       prettier: 2.8.8
+      sort-package-json: 2.4.1
 
   ../../packages/libs/bootstrap-lib:
     specifiers:
