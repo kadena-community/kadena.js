@@ -2,10 +2,11 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 import { type ChainId } from '@kadena/types';
 
-const gasLimit = 6000;
-const gasPrice = 0.001;
-const ttl = 600;
+const gasLimit: number = 6000;
+const gasPrice: number = 0.001;
+const ttl: number = 600;
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface ChainResult {
   chain: number;
   data?: {
@@ -51,12 +52,10 @@ export const checkBalance = async (
     }
     const responseArray = await Promise.all(arrPromises);
 
-    const result: ChainResult[] = responseArray.map((item, index) => ({
+    return responseArray.map((item, index) => ({
       chain: index,
       data: item.result.data,
     }));
-
-    return result;
   } catch (error) {
     console.log(error);
     return [];
