@@ -17,6 +17,8 @@ import { createSlug } from '@/utils';
 import React, { FC, ReactNode } from 'react';
 
 const renderListItem = (item: ISubHeaderElement): ReactNode => {
+  if (!item.title) return null;
+
   const slug = createSlug(item.title);
   return (
     <AsideLink href={`#${slug}`} key={slug} label={item.title}>
@@ -39,7 +41,7 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
       </Content>
 
       <AsideBackground />
-      <Aside data-cy="aside">
+      <Aside data-cy="aside" data-gta="aside">
         {aSideMenuTree && (
           <StickyAsideWrapper>
             <StickyAside>

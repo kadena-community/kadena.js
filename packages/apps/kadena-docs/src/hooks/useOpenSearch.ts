@@ -1,3 +1,4 @@
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useEffect } from 'react';
 
 interface IReturnProps {
@@ -8,6 +9,7 @@ export const useOpenSearch = (): IReturnProps => {
   const handleOpenSearch = (): void => {
     // TODO: new story will use, probably a context to open a modal for the search
     alert('open search modal');
+    analyticsEvent(EVENT_NAMES['click:open_searchmodal']);
   };
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import {
   globalCss,
 } from '@kadena/react-components';
 
+import { Analytics } from '@/components';
 import { Main } from '@/components/Layout/components';
 import { markDownComponents } from '@/components/Markdown';
 import { MDXProvider } from '@mdx-js/react';
@@ -25,20 +26,23 @@ export const MyApp = ({
   pageProps,
 }: AppProps & { Component: FC }): JSX.Element => {
   return (
-    <MDXProvider components={markDownComponents}>
-      <ThemeProvider
-        attribute="class"
-        enableSystem={true}
-        value={{
-          light: 'light',
-          dark: darkTheme.className,
-        }}
-      >
-        <Main {...pageProps}>
-          <Component {...pageProps} />
-        </Main>
-      </ThemeProvider>
-    </MDXProvider>
+    <>
+      <MDXProvider components={markDownComponents}>
+        <ThemeProvider
+          attribute="class"
+          enableSystem={true}
+          value={{
+            light: 'light',
+            dark: darkTheme.className,
+          }}
+        >
+          <Main {...pageProps}>
+            <Component {...pageProps} />
+          </Main>
+        </ThemeProvider>
+      </MDXProvider>
+      <Analytics />
+    </>
   );
 };
 

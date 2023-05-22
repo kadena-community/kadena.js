@@ -287,6 +287,7 @@ importers:
       '@storybook/react': ^7.0.0-rc.3
       '@storybook/react-webpack5': ^7.0.0-rc.3
       '@storybook/testing-library': ^0.0.14-next.1
+      '@types/gtag.js': ~0.0.12
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
@@ -325,6 +326,7 @@ importers:
       '@mdx-js/loader': 2.3.0
       '@mdx-js/react': 2.3.0_react@18.2.0
       '@next/mdx': 13.3.4_64a67b8d3589d83515f0801746210334
+      '@types/gtag.js': 0.0.12
       acorn: 8.8.2
       js-yaml: 4.1.0
       mdast-util-to-string: 3.2.0
@@ -8307,6 +8309,10 @@ packages:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
       '@types/node': 16.18.7
+
+  /@types/gtag.js/0.0.12:
+    resolution: {integrity: sha512-YQV9bUsemkzG81Ea295/nF/5GijnD2Af7QhEofh7xu+kvCN6RdodgNwwGWXB5GMI3NoyvQo0odNctoH/qLMIpg==}
+    dev: false
 
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
