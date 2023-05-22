@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@babel/plugin-syntax-import-assertions": "~7.20.0",
+    "@google-analytics/data": "~3.2.2",
     "@kadena/react-components": "workspace:*",
     "@mailchimp/mailchimp_marketing": "~3.0.80",
     "@mdx-js/loader": "~2.3.0",
