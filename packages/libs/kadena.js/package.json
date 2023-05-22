@@ -14,7 +14,8 @@
   "homepage": "tbd",
   "repository": {
     "type": "git",
-    "url": "git://github.com/kadena-io/kadena.js.git"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/kadena.js"
   },
   "license": "MIT",
   "author": "Randynamic",
@@ -41,7 +42,7 @@
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "build:prod": "webpack --mode=production",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "serve-coverage": "python -m SimpleHTTPServer",
     "test": "heft test"
   },
