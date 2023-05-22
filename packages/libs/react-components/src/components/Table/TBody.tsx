@@ -1,10 +1,11 @@
 import { StyledTBody } from './styles';
-import { ITr, Tr } from './Tr';
+import { Tr } from './Tr';
+import { CompoundType } from './types';
 
-import React, { FC, FunctionComponentElement } from 'react';
+import React, { FC } from 'react';
 
 export interface ITBody {
-  children?: FunctionComponentElement<ITr> | FunctionComponentElement<ITr>[];
+  children?: CompoundType<typeof Tr>;
 }
 
 export const TBody: FC<ITBody> = ({ children }) => {

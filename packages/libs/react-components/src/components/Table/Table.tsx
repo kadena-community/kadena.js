@@ -1,20 +1,17 @@
 import { StyledTable } from './styles';
-import { ITBody, TBody } from './TBody';
-import { ITHead, THead } from './THead';
+import { TBody } from './TBody';
+import { THead } from './THead';
 import { Tr } from './Tr';
+import { CompoundType } from './types';
 
-import React, { FC, FunctionComponentElement } from 'react';
+import React, { FC } from 'react';
 
 export interface ITable {
-  children?:
-    | FunctionComponentElement<ITBody>
-    | FunctionComponentElement<ITBody>[]
-    | FunctionComponentElement<ITHead>
-    | FunctionComponentElement<ITHead>[];
+  children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;
 }
 interface ITableComposition extends FC<ITable> {
-  TBody: typeof TBody;
-  THead: typeof THead;
+  Body: typeof TBody;
+  Head: typeof THead;
   Tr: typeof Tr;
 }
 
@@ -35,6 +32,6 @@ export const Table: ITableComposition = ({ children }) => {
   );
 };
 
-Table.TBody = TBody;
-Table.THead = THead;
+Table.Body = TBody;
+Table.Head = THead;
 Table.Tr = Tr;

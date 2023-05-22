@@ -1,22 +1,18 @@
 import { StyledTr, Td, Th } from './styles';
+import { CompoundType } from './types';
 
-import { StyledComponent } from '@stitches/react/types/styled-component';
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 
-export interface ITR {
-  children?: ReactNode;
+export interface ITr {
+  children?: CompoundType<typeof Td> | CompoundType<typeof Th>;
 }
-
-export interface ITrComp {
-  children?: ReactNode;
-}
-export interface ITr extends FC<ITrComp> {
-  Td: StyledComponent<'td'>;
-  Th: StyledComponent<'th'>;
+export interface ITrComp extends FC<ITr> {
+  Td: typeof Td;
+  Th: typeof Th;
 }
 
 // eslint-disable-next-line react/prop-types
-export const Tr: ITr = ({ children }) => {
+export const Tr: ITrComp = ({ children }) => {
   return (
     <StyledTr>
       {React.Children.map(children, (child) => {

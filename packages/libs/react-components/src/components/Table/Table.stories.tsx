@@ -43,7 +43,14 @@ export const Primary: Story = {
   render: ({ rowCount, columnCount }) => {
     return (
       <Table>
-        <Table.TBody>
+        <Table.Head>
+          <Table.Tr>
+            {Array.from(Array(columnCount)).map((id, tdIdx) => {
+              return <Table.Tr.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Th>;
+            })}
+          </Table.Tr>
+        </Table.Head>
+        <Table.Body>
           {Array.from(Array(rowCount)).map((id, idx) => {
             return (
               <Table.Tr key={`tr${idx}`}>
@@ -55,7 +62,7 @@ export const Primary: Story = {
               </Table.Tr>
             );
           })}
-        </Table.TBody>
+        </Table.Body>
       </Table>
     );
   },
