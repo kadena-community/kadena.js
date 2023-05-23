@@ -5,7 +5,6 @@ label: Introduction
 order: 1
 description: How to get started
 layout: landing
-icon: KadenaOverview
 ---
 
 ## Kadena 1

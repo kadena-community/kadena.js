@@ -43,12 +43,12 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
   }, [menuItems]);
 
   let Icon;
-  if (items[0].icon) {
-    Icon = ProductIcons[items[0].icon];
+  if (items[0]?.icon) {
+    Icon = ProductIcons[items[0]?.icon];
   }
 
   return (
-    <Box>
+    <Box data-cy="breadcrumbs">
       <StyledBreadcrumbs icon={Icon}>
         {items.map((item, idx) => (
           <BreadcrumbItem key={item.title}>

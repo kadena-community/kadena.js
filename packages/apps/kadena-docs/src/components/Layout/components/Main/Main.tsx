@@ -43,6 +43,7 @@ export const Main: FC<IProps> = ({
 
   const closeMenu = (): void => setIsMenuOpen(false);
   const Layout = getLayout(layoutType);
+
   return (
     <>
       <Head>

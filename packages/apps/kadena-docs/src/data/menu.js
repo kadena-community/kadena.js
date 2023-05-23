@@ -302,6 +302,7 @@ export const menuData = [
         "order": 1,
         "description": "How to get started",
         "layout": "full",
+        "icon": "PactLanguage",
         "isMenuOpen": false,
         "isActive": false
       },
@@ -340,6 +341,7 @@ export const menuData = [
         "order": 3,
         "description": "How to get started",
         "layout": "landing",
+        "icon": "SmartContract",
         "isMenuOpen": false,
         "isActive": false
       }

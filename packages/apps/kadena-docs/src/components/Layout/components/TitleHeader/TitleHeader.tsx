@@ -8,17 +8,21 @@ import React, { FC } from 'react';
 interface IProps {
   title: string;
   subTitle?: string;
-  icon: ProductIconNames;
+  icon?: ProductIconNames;
 }
 
 export const TitleHeader: FC<IProps> = ({ title, subTitle, icon }) => {
-  const Icon = ProductIcons[icon];
+  let Icon;
+  if (icon) {
+    Icon = ProductIcons[icon];
+  }
+
   return (
     <HeaderWrapper data-cy="titleheader">
       <StyledHeader>
         <Wrapper>
           <Stack alignItems="center">
-            {Boolean(Icon) && <Icon size="lg" />}
+            {Icon && <Icon size="lg" />}
             <Heading as="h1">{title}</Heading>
           </Stack>
           {subTitle !== undefined && (
