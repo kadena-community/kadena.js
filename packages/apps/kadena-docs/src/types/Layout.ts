@@ -21,6 +21,7 @@ export interface IPageMeta {
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
+  icon?: ProductIconNames;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;

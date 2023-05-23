@@ -128,7 +128,7 @@ const createTree = (rootDir, parent = []) => {
 
 const result = createTree(INITIALPATH, TREE);
 
-const fileStr = `
+const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
 export const menuData = ${JSON.stringify(result, null, 2)}`;
 
 fs.writeFileSync(MENUFILE, fileStr);
