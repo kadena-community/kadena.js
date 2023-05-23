@@ -99,7 +99,7 @@ export const Primary: Story = {
           description={description}
           displayCloseButton={displayCloseButton}
           expand={expand}
-          buttons={
+          footerContent={
             <Button title="Action label" icon={SystemIcons.TrailingIcon}>
               Action label
             </Button>
