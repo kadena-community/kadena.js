@@ -82,6 +82,7 @@ export const elementVariant = {
   p: { $$boldWeight: '$fontWeights$semiBold' },
   span: { $$boldWeight: '$fontWeights$semiBold' },
   code: { $$boldWeight: '$fontWeights$semiBold' },
+  label: { $$boldWeight: '$fontWeights$medium' },
 } as const;
 
 export const fontVariant = {
@@ -186,4 +187,16 @@ export const Text = styled(BaseText, {
   defaultVariants: {
     size: 'lg',
   },
+});
+
+export const GradientText = styled('span', {
+  fontWeight: '$bold',
+  backgroundColor: 'inherit',
+  backgroundImage: 'linear-gradient(50deg, #ff00e9, #00c0ff 90%)',
+  backgroundSize: '100%',
+  color: 'white',
+  '-webkit-background-clip': 'text',
+  '-moz-background-clip': 'text',
+  '-webkit-text-fill-color': 'transparent',
+  '-moz-text-fill-color': 'transparent',
 });

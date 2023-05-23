@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "add producticons to the library",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

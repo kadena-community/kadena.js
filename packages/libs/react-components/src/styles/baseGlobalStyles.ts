@@ -7,6 +7,7 @@ export const baseGlobalStyles: Record<string, unknown> = {
 */
   '*, *::before, *::after': {
     boxSizing: 'border-box',
+    fontFamily: '$main',
   },
 
   /*
@@ -179,7 +180,7 @@ export const baseGlobalStyles: Record<string, unknown> = {
   code: {
     fontFamily: '$mono',
   },
-  a: {
+  'a, li': {
     fontFamily: '$main',
   },
 } as const;

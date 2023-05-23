@@ -9,7 +9,7 @@ describe('generator', () => {
     const contract: string = `(module coin
       (defun transfer:string (from:string to:string amount:decimal))
     )`;
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
     const dTs = generateDts(parsedContract.modulesWithFunctions)
       .get('coin')!
       .split(/[\s\n]/)
@@ -36,7 +36,7 @@ declare module '@kadena/client' {
       (defcap GAS ())
       (defcap TRANSFER (sender:string receiver:string amount:decimal))
     )`;
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
     const dTs = generateDts(parsedContract.modulesWithFunctions)
       .get('coin')!
       .split(/[\s\n]/)
@@ -65,7 +65,7 @@ declare module '@kadena/client' {
       (defun transfer:string (from:string to:string amount))
     )`;
 
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
     const dTs = generateDts(parsedContract.modulesWithFunctions)
       .get('module-with-dashes')!
       .split(/[\s\n]/)
@@ -95,7 +95,7 @@ declare module '@kadena/client' {
   (defcap TRANSFER (from:string to:string amount))
 )`;
 
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
     generateDts(parsedContract.modulesWithFunctions);
     const contractCaps = parsedContract.getCapabilities('module-with-dashes')!;
     const contractMethods = parsedContract.getMethods('module-with-dashes')!;
@@ -120,7 +120,7 @@ declare module '@kadena/client' {
     (module the-free-module
       (defun transfer:string (from:string to:string amount:decimal))
     )`;
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
     const dTs = generateDts(parsedContract.modulesWithFunctions)
       .get('the-free-module')!
       .split(/[\s\n]/)
@@ -148,7 +148,7 @@ declare module '@kadena/client' {
     (defcap GAS ())
     (defcap TRANSFER (sender:string receiver:string amount:decimal))
   )`;
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
     const dTs = generateDts(parsedContract.modulesWithFunctions)
       .get('the-free-module')!
       .split(/[\s\n]/)
@@ -179,7 +179,7 @@ declare module '@kadena/client' {
     (defcap GAS ())
     (defcap TRANSFER (sender:string receiver:string amount:decimal)))`;
 
-    const parsedContract = new StringContractDefinition(contract);
+    const parsedContract = new StringContractDefinition({ contract });
 
     const dTs = generateDts(
       parsedContract.modulesWithFunctions,

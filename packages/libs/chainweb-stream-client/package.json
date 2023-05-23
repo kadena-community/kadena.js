@@ -1,0 +1,61 @@
+{
+  "name": "@kadena/chainweb-stream-client",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/chainweb-stream-client"
+  },
+  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Albert"
+    },
+    {
+      "name": "Linda"
+    },
+    {
+      "name": "Hee Kyun"
+    },
+    {
+      "name": "Randy"
+    }
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "_phase:build": "heft build --clean",
+    "_phase:test": "heft test --no-build",
+    "build": "heft build --clean",
+    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "test": "rushx build && heft test --no-build"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write -u"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "eventemitter2": "~6.4.9",
+    "eventsource": "~2.0.2"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/eventsource": "=1.1.10",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0"
+  }
+}

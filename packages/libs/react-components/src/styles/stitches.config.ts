@@ -76,7 +76,7 @@ export const {
       background: '$colors$neutral1',
       backgroundOverlayColor: 'rgba(250,250,250, .8)',
       foreground: '$colors$neutral6',
-      borderColor: '#70797b33',
+      borderColor: 'rgba(112, 121, 123, 0.2)',
     },
     fonts: {
       main: "'Haas Grotesk Display', -apple-system, sans-serif",
@@ -110,8 +110,11 @@ export const {
     },
     lineHeights: {
       base: 1.4,
+      lg: 1.9,
+      code: 1.9,
     },
     radii: {
+      xs: '2px',
       sm: '4px',
       md: '6px',
       lg: '8px',
@@ -130,7 +133,8 @@ export const {
       pageWidth: '1440px',
     },
     zIndices: {
-      navMenu: 100,
+      navMenu: 998,
+      sideMenu: 100,
       modal: 999,
     },
   },
@@ -195,7 +199,7 @@ export const darkTheme = createTheme('darkTheme', {
     background: '$colors$neutral1',
     backgroundOverlayColor: 'rgba(5,5,5, .8)',
     foreground: '$colors$neutral6',
-    borderColor: '#f0f0f033',
+    borderColor: 'rgba(240, 240, 240, 0.2)',
   },
 });
 

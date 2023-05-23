@@ -63,6 +63,7 @@ jspm_packages/
 *.tgz
 
 # Optional config for 'rush publish'
+.npmrc
 .npmrc-publish
 
 # Yarn Integrity file
@@ -90,3 +91,6 @@ packages/*/*/temp
 
 # Pact command history
 .pact-history
+
+# Intelij idea files
+.idea

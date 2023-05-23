@@ -1,5 +1,7 @@
 import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 
+import { HeaderIconGroup } from './Header/styles';
+
 import Link from 'next/link';
 
 export const Wrapper: StyledComponent<'div'> = styled('div', {
@@ -9,78 +11,91 @@ export const Wrapper: StyledComponent<'div'> = styled('div', {
 
 export const Template: StyledComponent<
   'div',
-  { layout?: 'landing' | 'normal' | undefined }
+  { layout?: 'landing' | 'normal' | 'code' | undefined }
 > = styled('div', {
+  $$asideMenuWidthMDDefault: '200px',
+  $$asideMenuWidthLGDefault: '300px',
+  $$asideMenuWidthMDCode: '300px',
+  $$asideMenuWidthLGCode: '400px',
+  $$asideMenuWidthXLCode: '500px',
+
   display: 'grid',
   gridTemplateRows: '$17 auto 1fr auto',
+  gridTemplateColumns: 'auto auto',
   gridTemplateAreas: `
-      "header"
-      "pageheader"
-      "content"
-      "footer"
+      "header header"
+      "pageheader pageheader"
+      "content content"
+      "footer footer"
     `,
   position: 'relative',
   margin: '0 auto',
   minHeight: '100vh',
   '@md': {
-    gridTemplateColumns:
-      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
     gridTemplateAreas: `
-        "header header header header"
-        "pageheader pageheader pageheader pageheader"
-        ". menu content ."
-        "footer footer footer footer"
+        "header header header header header"
+        "pageheader pageheader pageheader pageheader pageheader"
+        ". menu content aside ."
+        "footer footer footer footer footer"
       `,
   },
-  '@lg': {
-    gridTemplateColumns:
-      '$14 $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) $14',
-  },
-  '@2xl': {
-    gridTemplateColumns:
-      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
-  },
   defaultVariants: {
-    layout: 'landing',
+    layout: 'normal',
   },
   variants: {
     layout: {
-      normal: {},
+      normal: {
+        '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDDefault)) $$asideMenuWidthMDDefault 1%',
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGDefault)) $$asideMenuWidthLGDefault auto',
+        },
+      },
+      code: {
+        '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDCode)) $$asideMenuWidthMDCode 1%',
+        },
+        '@lg': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGCode)) $$asideMenuWidthLGCode 1%',
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthXLCode)) $$asideMenuWidthXLCode auto',
+        },
+      },
       landing: {
+        gridTemplateColumns: 'auto',
         gridTemplateAreas: `
             "header"
             "pageheader"
             "content"
             "footer"
           `,
+
         '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
+
           gridTemplateAreas: `
               "header header header header"
               "pageheader pageheader pageheader pageheader"
-              ". content content ."
+              ". menu content ."
               "footer footer footer footer"
             `,
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
         },
       },
     },
   },
 });
-
-export const Article: StyledComponent<'div'> = styled('div', {
-  flex: 1,
-});
-
-export const Content: StyledComponent<'div', { name?: string }> = styled(
-  'div',
-  {
-    position: 'relative',
-    display: 'flex',
-    gridArea: 'content',
-    flex: 1,
-    padding: '0 0 0 $10',
-    overflowX: 'hidden',
-  },
-);
 
 export const MenuBack: StyledComponent<
   'button',
@@ -97,6 +112,7 @@ export const MenuBack: StyledComponent<
   opacity: 0,
   transform: 'translateX(-100%)',
   transition: 'opacity .5s ease, transform .1s ease',
+  zIndex: 'calc($sideMenu - 1)',
   '@md': {
     opacity: 0,
     pointerEvent: 'none',
@@ -114,6 +130,7 @@ export const MenuBack: StyledComponent<
       },
       false: {
         transform: 'translateX(-100%)',
+        pointerEvents: 'none',
         opacity: 0,
       },
     },
@@ -125,15 +142,17 @@ export const Menu: StyledComponent<
   {
     isOpen?: boolean | 'true' | 'false' | undefined;
     inLayout?: boolean | 'true' | 'false' | undefined;
+    layout?: 'landing' | 'normal' | undefined;
   }
 > = styled('div', {
-  gridArea: 'menu',
   position: 'absolute',
-  top: '$17',
-  height: 'calc(100% - $17 - $17)',
+  gridArea: 'menu',
+  gridRow: '2 / span 2',
+  height: '100%',
   width: '100%',
-  zIndex: '$navMenu',
-  borderRight: '1px solid $neutral3',
+  paddingBottom: '$40',
+  zIndex: '$sideMenu',
+  borderRight: '1px solid $borderColor',
   background: '$background',
   overflow: 'hidden',
   transform: 'translateX(-100%)',
@@ -144,12 +163,19 @@ export const Menu: StyledComponent<
   },
   '@md': {
     position: 'relative',
-    top: '0',
-    height: '100%',
     transform: 'translateX(0)',
+    background: 'transparent',
   },
 
   variants: {
+    layout: {
+      landing: {
+        '@md': {
+          paddingTop: '290px',
+        },
+      },
+      normal: {},
+    },
     inLayout: {
       true: {
         display: 'block',
@@ -185,6 +211,10 @@ export const StyledHeader: StyledComponent<'header'> = styled('header', {
 
   [`.${darkTheme} &`]: {
     background: '$neutral2',
+
+    [`& ${HeaderIconGroup} svg`]: {
+      color: '$neutral5',
+    },
   },
 });
 

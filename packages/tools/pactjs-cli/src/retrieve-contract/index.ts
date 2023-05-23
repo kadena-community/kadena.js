@@ -18,6 +18,12 @@ const Options = z.object({
     /* eslint-disable-next-line @typescript-eslint/naming-convention */
     required_error: 'Error: -o, --out is required',
   }),
+  api: z.string({
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
+    invalid_type_error: 'Error: --api must be a string',
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
+    required_error: 'Error: --api is required',
+  }),
   network: z.enum(['mainnet', 'testnet']),
   chain: z
     .number({
@@ -36,12 +42,18 @@ export function retrieveContractCommand(
 ): void {
   program
     .command('retrieve-contract')
-    .description('Retrieve contract from api.chainweb.com in a /local call')
+    .description(
+      'Retrieve contract from a chainweb-api in a /local call (see also: https://github.com/kadena-io/chainweb-node#configuring-running-and-monitoring-the-health-of-a-chainweb-node).',
+    )
     .option(
       '-m, --module <module>',
       'The module you want to retrieve (e.g. "coin")',
     )
-    .option('-o, --out <file>', 'File to write the contract')
+    .option('-o, --out <file>', 'File to write the contract to')
+    .option(
+      '--api <url>',
+      'API to retrieve from (e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact")',
+    )
     .option(
       '-n, --network <network>',
       'Network to retrieve from (default "mainnet")',

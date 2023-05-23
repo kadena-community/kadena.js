@@ -4,9 +4,18 @@ export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
 export { Notification, INotificationProps } from './components/Notification';
+export { ProductIcons } from './components/ProductIcons';
+export { Table } from './components/Table';
+export {
+  Breadcrumbs,
+  BreadcrumbItem,
+  IBreadcrumbs,
+  IBreadcrumbItem,
+} from './components/Breadcrumbs';
 export {
   Heading,
   Text,
+  GradientText,
   IHeadingProps,
   ITextProps,
 } from './components/Typography';

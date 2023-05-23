@@ -124,7 +124,7 @@
    * LTS schedule: https://nodejs.org/en/about/releases/
    * LTS versions: https://nodejs.org/en/download/releases/
    */
-  "nodeSupportedVersionRange": ">=12.13.0 <13.0.0 || >=14.15.0 <15.0.0 || >=16.13.0 <17.0.0",
+  "nodeSupportedVersionRange": ">=16.13.0 <17.0.0 || >=18.12.0 <19.0.0",
 
   /**
    * Odd-numbered major versions of Node.js are experimental.  Even-numbered releases
@@ -312,7 +312,7 @@
     /**
      * The list of shell commands to run before the Rush installation starts
      */
-    "preRushInstall": ["./common/scripts/add-lib-index-pactjs-cli.js"],
+    "preRushInstall": ["node ./common/scripts/add-lib-index-pactjs-cli.js"],
 
     /**
      * The list of shell commands to run after the Rush installation finishes
@@ -475,6 +475,14 @@
     {
       "packageName": "@kadena/chainweb-node-client",
       "projectFolder": "packages/libs/chainweb-node-client",
+      "tags": ["libs"],
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
+    },
+
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "projectFolder": "packages/libs/chainweb-stream-client",
       "tags": ["libs"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
