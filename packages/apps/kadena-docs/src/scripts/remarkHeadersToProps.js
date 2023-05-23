@@ -37,10 +37,9 @@ const remarkHeadersToProps = () => {
         children: [],
       },
     ];
-    let parent = startArray[0];
 
     headers.forEach((item) => {
-      parent = lastHeading(startArray[0], item);
+      const parent = lastHeading(startArray[0], item);
 
       const elm = {
         depth: item.depth,
