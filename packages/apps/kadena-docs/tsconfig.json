@@ -16,13 +16,5 @@
     "isolatedModules": true
   },
   "exclude": ["node_modules", "./cypress"],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "../../../../../src/**/*.ts",
-    "../../../../../src/**/*.tsx",
-    "environment.d.ts"
-  ] // see the last entry in array
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "environment.d.ts"] // see the last entry in array
 }
