@@ -17,7 +17,24 @@ export interface ITopDoc {
   url: string;
 }
 
+let client: BetaAnalyticsDataClient;
+const getClient = (): BetaAnalyticsDataClient | undefined => {
+  if (!CLIENTEMAIL || !CLIENTKEY) return;
+
+  if (client) return client;
+
+  return new BetaAnalyticsDataClient({
+    credentials: {
+      client_email: CLIENTEMAIL,
+      private_key: CLIENTKEY,
+    },
+  });
+};
+
 export const getTopDocs = async (): Promise<ITopDoc[]> => {
+  const analyticsDataClient = await getClient();
+  if (!analyticsDataClient) return [];
+
   const [response] = await analyticsDataClient.runReport({
     property: `properties/377468115`,
     limit: 5,
