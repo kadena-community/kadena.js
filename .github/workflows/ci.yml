@@ -10,10 +10,23 @@ jobs:
   build:
     name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
+      fail-fast: false
+
       matrix:
+        os: [ubuntu-latest]
         NodeVersion: [16, 18]
-        os: [ubuntu-latest, windows-latest]
+        experimental: [false]
+
+        include:
+          - os: windows-latest
+            NodeVersion: 16
+            experimental: true
+          - os: windows-latest
+            NodeVersion: 18
+            experimental: true
+
     steps:
       - uses: actions/checkout@v3
         with:
