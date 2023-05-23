@@ -270,7 +270,7 @@ export class PactCommand
   public addCap<T extends Array<PactValue> = Array<PactValue>>(
     capability: string,
     signer: string,
-    ...args: T[]
+    ...args: T
   ): this {
     this._unfinalizeTransaction();
 
