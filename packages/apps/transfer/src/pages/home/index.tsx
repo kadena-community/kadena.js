@@ -26,7 +26,7 @@ const Home: FC = () => {
     {
       icon: Chain,
       title: 'Transfer',
-      href: '/check-balance',
+      href: '/coin-transfer',
     },
     {
       icon: Chain,
