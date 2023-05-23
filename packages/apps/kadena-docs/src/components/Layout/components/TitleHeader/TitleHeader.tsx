@@ -12,10 +12,7 @@ interface IProps {
 }
 
 export const TitleHeader: FC<IProps> = ({ title, subTitle, icon }) => {
-  let Icon;
-  if (icon) {
-    Icon = ProductIcons[icon];
-  }
+  const Icon = icon ? ProductIcons[icon] : null;
 
   return (
     <HeaderWrapper data-cy="titleheader">
