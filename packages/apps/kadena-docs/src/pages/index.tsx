@@ -1,7 +1,9 @@
 import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
+import { ITopDoc } from '@/types/ApiResponse';
 import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
+import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -128,12 +130,68 @@ const Home: FC = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const result = await fetch('http://localhost:3000/api/topdocs');
-  const topDocs = await result.json();
+  const CLIENTEMAIL: string = process.env.NEXT_PUBLIC_GA_CLIENT_EMAIL ?? '';
+  const CLIENTKEY: string = process.env.NEXT_PUBLIC_GA_PRIVATE_KEY ?? '';
+
+  const runReport = async (
+    client: BetaAnalyticsDataClient,
+  ): Promise<ITopDoc[]> => {
+    const [response] = await client.runReport({
+      property: `properties/377468115`,
+      limit: 5,
+      dateRanges: [
+        {
+          startDate: '2023-03-31',
+          endDate: 'today',
+        },
+      ],
+      dimensions: [
+        {
+          // And also get the page title
+          name: 'pageTitle',
+        },
+        {
+          // And also get the page title
+          name: 'pagePath',
+        },
+      ],
+      metrics: [
+        {
+          name: 'activeUsers',
+        },
+      ],
+    });
+
+    const topDocs =
+      response.rows?.map((item): ITopDoc => {
+        const label = item.dimensionValues
+          ? `${item.dimensionValues[0].value}`
+          : '';
+        const url = item.dimensionValues
+          ? `${item.dimensionValues[1].value}`
+          : '';
+        return {
+          label,
+          url,
+        };
+      }) ?? [];
+
+    return topDocs;
+  };
+
+  const analyticsDataClient: BetaAnalyticsDataClient =
+    new BetaAnalyticsDataClient({
+      credentials: {
+        client_email: CLIENTEMAIL,
+        private_key: CLIENTKEY,
+      },
+    });
+
+  const result = await runReport(analyticsDataClient);
 
   return {
     props: {
-      topDocs: topDocs.body,
+      topDocs: result,
       leftMenuTree: checkSubTreeForActive(),
       frontmatter: {
         title: 'Welcome to Kadena docs',
