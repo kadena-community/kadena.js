@@ -12,7 +12,7 @@ mailchimp.setConfig({
 
 const subscribe = async (
   req: NextApiRequest,
-  res: NextApiResponse<IResponse>,
+  res: NextApiResponse<IResponse<{}>>,
 ): Promise<void> => {
   if (req.method !== 'POST') {
     res.status(500).json({

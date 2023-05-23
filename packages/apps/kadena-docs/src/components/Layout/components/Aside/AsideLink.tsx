@@ -11,10 +11,10 @@ interface IProps {
 }
 
 export const AsideLink: FC<IProps> = ({ children, href, label }) => {
-  const handleAnalytics = () => {
+  const handleAnalytics = (): void => {
     analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
       label,
-      href,
+      url: href,
     });
   };
   return (

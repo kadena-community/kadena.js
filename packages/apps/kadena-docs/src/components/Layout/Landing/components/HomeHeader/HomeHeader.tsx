@@ -3,10 +3,15 @@ import { GradientText, Heading, Stack } from '@kadena/react-components';
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 
 import { LinkList } from '@/components/LinkList';
+import { ITopDoc } from '@/types/ApiResponse';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
-export const HomeHeader: FC = () => {
+interface IProps {
+  topDocs: ITopDoc[];
+}
+
+export const HomeHeader: FC<IProps> = ({ topDocs }) => {
   return (
     <StyledHeader>
       <Wrapper>
@@ -24,11 +29,11 @@ export const HomeHeader: FC = () => {
           </Stack>
           <div style={{ width: '150px' }}></div>
           <LinkList title="Most viewed docs">
-            <Link href="/docs/pact">Pact language resources</Link>
-            <Link href="/docs/pact">Whitepapers</Link>
-            <Link href="/docs/pact">KadenaJS</Link>
-            <Link href="/docs/pact">Quickstart</Link>
-            <Link href="/docs/pact">Pact REST Api</Link>
+            {topDocs?.map((item) => (
+              <Link key={item.url} href={item.url}>
+                {item.label}
+              </Link>
+            ))}
           </LinkList>
         </Stack>
       </Wrapper>

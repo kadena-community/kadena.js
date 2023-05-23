@@ -2,7 +2,6 @@ import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
 import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -129,46 +128,12 @@ const Home: FC = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const analyticsDataClient = new BetaAnalyticsDataClient({
-    credentials: {
-      client_email: process.env.NEXT_PUBLIC_GA_CLIENT_EMAIL,
-      private_key: process.env.NEXT_PUBLIC_GA_PRIVATE_KEY,
-    },
-  });
-
-  async function runReport(): Promise<void> {
-    const [response] = await analyticsDataClient.runReport({
-      property: `properties/377468115`,
-      dateRanges: [
-        {
-          startDate: '2023-03-31',
-          endDate: 'today',
-        },
-      ],
-      dimensions: [
-        {
-          // And also get the page title
-          name: 'pageTitle',
-        },
-        {
-          // And also get the page title
-          name: 'pagePath',
-        },
-      ],
-      metrics: [
-        {
-          name: 'activeUsers',
-        },
-      ],
-    });
-
-    console.log(response);
-  }
-
-  await runReport();
+  const result = await fetch('http://localhost:3000/api/topdocs');
+  const topDocs = await result.json();
 
   return {
     props: {
+      topDocs: topDocs.body,
       leftMenuTree: checkSubTreeForActive(),
       frontmatter: {
         title: 'Welcome to Kadena docs',

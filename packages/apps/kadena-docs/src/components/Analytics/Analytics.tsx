@@ -1,8 +1,9 @@
+import { analyticsPageView } from '@/utils/analytics';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { FC, useEffect } from 'react';
 
-const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
+const TRACKING_ID: string = process.env.NEXT_PUBLIC_TRACKING_ID ?? '';
 
 export const Analytics: FC = () => {
   const router = useRouter();
@@ -11,6 +12,7 @@ export const Analytics: FC = () => {
     if (!TRACKING_ID) return;
 
     gtag('config', TRACKING_ID, {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       send_page_view: false, //manually send page views to have full control
     });
     gtag('event', 'page_view', {
@@ -18,12 +20,12 @@ export const Analytics: FC = () => {
       send_to: TRACKING_ID,
     });
   }, []);
-  // 👇 send page views on route change
+
   useEffect(() => {
-    const handleRouteChange = (url: string) => {
+    const handleRouteChange = (url: string): void => {
       if (!TRACKING_ID) return;
       // manually send page views
-      gtag('event', 'page_view', {
+      analyticsPageView({
         page_path: url,
         send_to: TRACKING_ID,
       });

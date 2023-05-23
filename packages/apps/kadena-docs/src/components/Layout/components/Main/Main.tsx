@@ -3,6 +3,7 @@ import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { ITopDoc } from '@/types/ApiResponse';
 import { IMenuItem, IPageMeta, ISubHeaderElement } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
@@ -14,6 +15,7 @@ interface IProps {
   aSideMenuTree: ISubHeaderElement[];
   frontmatter: IPageMeta;
   leftMenuTree: IMenuItem[];
+  topDocs: ITopDoc[];
 }
 
 export const Main: FC<IProps> = ({
@@ -24,6 +26,7 @@ export const Main: FC<IProps> = ({
     description = '',
     layout: layoutType,
   },
+  topDocs,
   aSideMenuTree,
   leftMenuTree,
 }) => {
@@ -71,7 +74,9 @@ export const Main: FC<IProps> = ({
         {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} />
         )}
-        {isOneOfLayoutType(layoutType, 'home') && <HomeHeader />}
+        {isOneOfLayoutType(layoutType, 'home') && (
+          <HomeHeader topDocs={topDocs} />
+        )}
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           data-cy="menu"
