@@ -15,5 +15,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./cypress"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "../../../../../src/**/*.ts",
+    "../../../../../src/**/*.tsx",
+    "environment.d.ts"
+  ] // see the last entry in array
 }

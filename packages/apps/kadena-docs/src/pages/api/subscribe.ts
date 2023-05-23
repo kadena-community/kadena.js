@@ -2,7 +2,7 @@ import { isEmailValid } from '@/utils';
 import mailchimp from '@mailchimp/mailchimp_marketing';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-interface IResponse<T> {
+export interface IResponse<T> {
   status: number;
   message: string;
   body?: T;

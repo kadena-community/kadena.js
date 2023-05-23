@@ -4,14 +4,6 @@ import { BetaAnalyticsDataClient } from '@google-analytics/data';
 const CLIENTEMAIL: string = process.env.NEXT_PUBLIC_GA_CLIENT_EMAIL ?? '';
 const CLIENTKEY: string = process.env.NEXT_PUBLIC_GA_PRIVATE_KEY ?? '';
 
-const analyticsDataClient: BetaAnalyticsDataClient =
-  new BetaAnalyticsDataClient({
-    credentials: {
-      client_email: CLIENTEMAIL,
-      private_key: CLIENTKEY,
-    },
-  });
-
 export interface ITopDoc {
   label: string;
   url: string;
@@ -21,7 +13,7 @@ let client: BetaAnalyticsDataClient;
 const getClient = (): BetaAnalyticsDataClient | undefined => {
   if (!CLIENTEMAIL || !CLIENTKEY) return;
 
-  if (client) return client;
+  if (client === undefined) return client;
 
   return new BetaAnalyticsDataClient({
     credentials: {
