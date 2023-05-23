@@ -7,7 +7,7 @@ describe('full layout', () => {
     cy.visit('/docs/__tests/pact/atom-sdk');
   });
   describe('desktop', () => {
-    it.only('shows the breadcrumbs with icon', () => {
+    it('shows the breadcrumbs with icon', () => {
       breadcrumbs().find('li').should('have.length', 2);
       breadcrumbs().find('svg').should('exist');
     });
