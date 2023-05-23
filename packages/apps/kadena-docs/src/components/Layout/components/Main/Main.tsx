@@ -3,7 +3,7 @@ import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { ITopDoc } from '@/types/ApiResponse';
+import { ITopDoc } from '@/data/getTopDocs';
 import { IMenuItem, IPageMeta, ISubHeaderElement } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';

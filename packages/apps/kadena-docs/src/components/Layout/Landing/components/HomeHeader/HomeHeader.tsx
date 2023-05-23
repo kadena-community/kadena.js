@@ -3,7 +3,7 @@ import { GradientText, Heading, Stack } from '@kadena/react-components';
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 
 import { LinkList } from '@/components/LinkList';
-import { ITopDoc } from '@/types/ApiResponse';
+import { ITopDoc } from '@/data/getTopDocs';
 import Link from 'next/link';
 import React, { FC } from 'react';
 

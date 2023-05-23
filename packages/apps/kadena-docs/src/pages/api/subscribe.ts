@@ -1,10 +1,16 @@
-import { IResponse } from '@/types/ApiResponse';
 import { isEmailValid } from '@/utils';
 import mailchimp from '@mailchimp/mailchimp_marketing';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+interface IResponse<T> {
+  status: number;
+  message: string;
+  body?: T;
+}
+
 const APIKEY: string = process.env.MAILCHIMP_API ?? '';
 const SERVER_PREFIX: string = process.env.MAILCHIMP_SERVER_PREFIX ?? '';
+
 mailchimp.setConfig({
   apiKey: APIKEY,
   server: SERVER_PREFIX,
