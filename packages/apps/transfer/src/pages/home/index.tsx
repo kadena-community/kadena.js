@@ -46,22 +46,21 @@ const Home: FC = () => {
 
   return (
     <StyledHomeContainer>
-      <StyledSmallLogo width={'65px'} />
+      <StyledSmallLogo width="65px" />
       <StyledHomeContent>
         <StyledHomeTitle>Kadena Transfer</StyledHomeTitle>
         <StyledHomeButton
-          key={`item-generate-key-pair`}
           onClick={downloadKeyPair}
         >
           <StyledIconBox>
-            <Key width="40px" height={'40px'} />
+            <Key width="40px" height="40px" />
           </StyledIconBox>
           <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
         </StyledHomeButton>
         {menu.map((item) => (
           <StyledHomeLink key={`item-${item.title}`} href={item.href}>
             <StyledIconBox>
-              <item.icon width="40px" height={'40px'} />
+              <item.icon width="40px" height="40px"/>
             </StyledIconBox>
             <StyledLinkText>{item.title}</StyledLinkText>
           </StyledHomeLink>
