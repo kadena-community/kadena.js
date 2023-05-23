@@ -28,13 +28,15 @@ export const HomeHeader: FC<IProps> = ({ topDocs }) => {
             </SubHeader>
           </Stack>
           <div style={{ width: '150px' }}></div>
-          <LinkList title="Most viewed docs">
-            {topDocs?.map((item) => (
-              <Link key={item.url} href={item.url}>
-                {item.label}
-              </Link>
-            ))}
-          </LinkList>
+          {topDocs.length > 0 && (
+            <LinkList title="Most viewed docs">
+              {topDocs.map((item) => (
+                <Link key={item.url} href={item.url}>
+                  {item.label}
+                </Link>
+              ))}
+            </LinkList>
+          )}
         </Stack>
       </Wrapper>
     </StyledHeader>

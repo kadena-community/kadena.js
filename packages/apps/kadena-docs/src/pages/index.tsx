@@ -179,15 +179,18 @@ export const getStaticProps: GetStaticProps = async () => {
     return topDocs;
   };
 
-  const analyticsDataClient: BetaAnalyticsDataClient =
-    new BetaAnalyticsDataClient({
-      credentials: {
-        client_email: CLIENTEMAIL,
-        private_key: CLIENTKEY,
-      },
-    });
+  let result: ITopDoc[] = [];
+  if (CLIENTEMAIL && CLIENTKEY) {
+    const analyticsDataClient: BetaAnalyticsDataClient =
+      new BetaAnalyticsDataClient({
+        credentials: {
+          client_email: CLIENTEMAIL,
+          private_key: CLIENTKEY,
+        },
+      });
 
-  const result = await runReport(analyticsDataClient);
+    result = await runReport(analyticsDataClient);
+  }
 
   return {
     props: {
