@@ -385,6 +385,7 @@ importers:
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena/client': workspace:*
+      '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@kadena/react-components': workspace:*
@@ -426,6 +427,7 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@kadena/client': link:../../libs/client
+      '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       '@kadena/pactjs': link:../../libs/pactjs
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@kadena/react-components': link:../../libs/react-components

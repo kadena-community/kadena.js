@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

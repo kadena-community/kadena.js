@@ -8,7 +8,7 @@
     "build": "next build",
     "dev": "next dev",
     "eject": "react-scripts eject",
-    "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
+    "generate:icons": "npx @svgr/cli --out-dir src/resources/svg/generated -- src/resources/svg",
     "postinstall": "rushx generate:icons",
     "lint": "next lint",
     "lint-staged": "lint-staged",
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/react-components": "workspace:*",

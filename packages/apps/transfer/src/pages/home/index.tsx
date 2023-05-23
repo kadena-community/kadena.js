@@ -1,4 +1,5 @@
 import {
+  StyledHomeButton,
   StyledHomeContainer,
   StyledHomeContent,
   StyledHomeLink,
@@ -9,15 +10,14 @@ import {
 } from './styles';
 
 import { Account, Chain, Key } from '@/resources/svg/generated';
+import {
+  downloadKeyPairToBrowser,
+  generateKeyPair,
+} from '@/services/key-pairs';
 import React, { FC } from 'react';
 
 const Home: FC = () => {
   const menu = [
-    {
-      icon: Key,
-      title: 'Generate KeyPair (save to file)',
-      href: '/check-balance',
-    },
     {
       icon: Account,
       title: 'Check account balance',
@@ -39,11 +39,25 @@ const Home: FC = () => {
       href: '/check-balance',
     },
   ];
+
+  const downloadKeyPair = () => {
+    downloadKeyPairToBrowser(generateKeyPair());
+  };
+
   return (
     <StyledHomeContainer>
       <StyledSmallLogo width={'65px'} />
       <StyledHomeContent>
         <StyledHomeTitle>Kadena Transfer</StyledHomeTitle>
+        <StyledHomeButton
+          key={`item-generate-key-pair`}
+          onClick={downloadKeyPair}
+        >
+          <StyledIconBox>
+            <Key width="40px" height={'40px'} />
+          </StyledIconBox>
+          <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
+        </StyledHomeButton>
         {menu.map((item) => (
           <StyledHomeLink key={`item-${item.title}`} href={item.href}>
             <StyledIconBox>
