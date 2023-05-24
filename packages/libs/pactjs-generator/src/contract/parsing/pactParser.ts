@@ -49,14 +49,14 @@ const managed = oneOf(
 const capabilityBody = seq(
   maybe($('managed', managed)),
   $('bodyPointer', pointerSnapshot),
-  lookUp({ 'compose-capability': block($('noKey', atom)) }),
+  lookUp({ 'compose-capability': block($(atom)) }),
 );
 
 const functionBody = seq(
   $('bodyPointer', pointerSnapshot),
   lookUp({
-    'required-capability': block($('noKey', atom)),
-    'with-capability': block($('noKey', atom)),
+    'required-capability': block($(atom)),
+    'with-capability': block($(atom)),
   }),
 );
 

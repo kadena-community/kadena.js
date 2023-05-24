@@ -12,6 +12,66 @@
         "fungible-v2",
         "fungible-xchain-v1"
       ],
+      "schemas": [
+        {
+          "name": "coin-schema",
+          "doc": "The coin contract token schema",
+          "properties": [
+            {
+              "name": "balance",
+              "type": "decimal"
+            },
+            {
+              "name": "guard",
+              "type": "guard"
+            }
+          ]
+        },
+        {
+          "name": "crosschain-schema",
+          "doc": "Schema for yielded value in cross-chain transfers",
+          "properties": [
+            {
+              "name": "receiver",
+              "type": "string"
+            },
+            {
+              "name": "receiver-guard",
+              "type": "guard"
+            },
+            {
+              "name": "amount",
+              "type": "decimal"
+            },
+            {
+              "name": "source-chain",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "allocation-schema",
+          "doc": "Genesis allocation registry",
+          "properties": [
+            {
+              "name": "balance",
+              "type": "decimal"
+            },
+            {
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "name": "guard",
+              "type": "guard"
+            },
+            {
+              "name": "redeemed",
+              "type": "bool"
+            }
+          ]
+        }
+      ],
       "capabilities": [
         {
           "name": "GOVERNANCE",
