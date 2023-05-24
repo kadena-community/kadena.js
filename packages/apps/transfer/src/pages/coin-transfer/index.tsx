@@ -33,7 +33,7 @@ import {
 } from '@/services/transfer/coin-transfer';
 import React, { FC, useState } from 'react';
 
-const GetBalance: FC = () => {
+const CoinTransfer: FC = () => {
   const NETWORK_ID = 'testnet04';
   const chainId = '1';
   const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
@@ -44,11 +44,12 @@ const GetBalance: FC = () => {
   const [inputPrivateKey, setPrivateKey] = useState<string>('');
   const [results, setResults] = useState<TransferResult>({});
 
-  const getBalance = async (
+  const coinTransfer = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     try {
       event.preventDefault();
+
       const pactCommand = await transferCreate(
         inputSenderAccount,
         inputReceiverAccount,
@@ -71,6 +72,10 @@ const GetBalance: FC = () => {
       setResults({ ...pollResult });
     } catch (e) {
       console.log(e);
+      if (e.statsus || e.requestKey) {
+        setResults({ ...e });
+        return;
+      }
       setResults({ requestKey: 'Could not create request', status: e.message });
     }
   };
@@ -103,7 +108,7 @@ const GetBalance: FC = () => {
 
       <StyledMainContent>
         <StyledFormContainer>
-          <StyledForm onSubmit={getBalance}>
+          <StyledForm onSubmit={coinTransfer}>
             <StyledAccountForm>
               <StyledField>
                 <StyledInputLabel>Sender Account</StyledInputLabel>
@@ -172,4 +177,4 @@ const GetBalance: FC = () => {
   );
 };
 
-export default GetBalance;
+export default CoinTransfer;

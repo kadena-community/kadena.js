@@ -3,7 +3,7 @@ import { PactCommand } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
 import { ChainId } from '@kadena/types';
 
-import { generateApiHost, onlyKey } from '../utils/utils';
+import { convertDecimal, generateApiHost, onlyKey } from '../utils/utils';
 
 const gasLimit = 2300;
 const gasPrice = 0.00001;
@@ -22,8 +22,14 @@ export async function transferCreate(
   chainId: ChainId,
   networkId: ChainwebNetworkId,
 ): Promise<PactCommand> {
+  if (isNaN(Number(amount))) {
+    throw new Error('Amount must be a number');
+  }
+
   const pactCommand = new PactCommand();
-  pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${amount})`;
+  pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${convertDecimal(
+    amount,
+  )})`;
 
   pactCommand
     .addCap('coin.GAS', onlyKey(fromAccount))
