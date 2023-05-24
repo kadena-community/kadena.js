@@ -55,6 +55,6 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^20.2.3",
-    "eslint": "^8.15.0"
+    "eslint": "8.41.0"
   }
 }

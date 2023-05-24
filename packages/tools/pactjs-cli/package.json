@@ -49,6 +49,6 @@
     "@types/node": "^20.2.3",
     "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
-    "eslint": "^8.15.0"
+    "eslint": "8.41.0"
   }
 }
