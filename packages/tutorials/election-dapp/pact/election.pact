@@ -129,7 +129,7 @@
     "Get the votes count by cid"
 
     ;; Read the row using cid as key and select only the `votes` column
-    (at 'votes (read candidates cid ['votes]))
+    (at 'votes (read candidates cid ["votes"]))
   )
 
   (defun insert-candidate (candidate)

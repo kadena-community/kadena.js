@@ -1,4 +1,4 @@
-const { PactCommand, signWithChainweaver  } = require('@kadena/client');
+const { PactCommand, signWithChainweaver } = require('@kadena/client');
 const fs = require('fs');
 
 const NETWORK_ID = 'testnet04';
