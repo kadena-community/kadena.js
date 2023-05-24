@@ -115,6 +115,9 @@ export const StyledAccountForm = styled('div', {
   background: 'rgba(71, 79, 82, 0.4)',
   borderRadius: '4px',
   boxSizing: 'borderBox',
+  '> *': {
+    mb: '$8 ',
+  },
 });
 
 export const StyledField = styled('div', {
@@ -136,6 +139,7 @@ export const StyledInputField = styled('input', {
   padding: '16px',
   outline: 'none',
   background: '#050505',
+  border: 'none',
   borderBottom: '1px solid #5A5A5A',
   borderRadius: '4px',
   color: '#F0F0F0',
