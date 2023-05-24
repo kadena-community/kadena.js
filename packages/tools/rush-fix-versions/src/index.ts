@@ -68,7 +68,9 @@ ${mismatchedVersion.versions
     );
 
     // update the package.json files
-    packageJsons?.forEach(({ path, contents }) => {
+    packageJsons?.forEach(({ path }) => {
+      const contents = JSON.parse(readFileSync(path, 'utf-8'));
+
       if (contents.dependencies[mismatchedVersion.dependencyName]) {
         contents.dependencies[mismatchedVersion.dependencyName] =
           answers[mismatchedVersion.dependencyName];
@@ -98,7 +100,7 @@ async function getPackageJsonsThatNeedChange(
   rushCheckJson: IRushCheckJson,
   rushJson: IRushJson,
   rootPath: string,
-): Promise<{ path: string; contents: IPackageJson }[] | undefined> {
+): Promise<{ path: string }[] | undefined> {
   const projectsThatNeedChange = rushCheckJson.mismatchedVersions
     .find((m) => m.dependencyName === packageName)
     ?.versions.find((v) => v.version !== newVersion)?.projects;
@@ -119,7 +121,6 @@ async function getPackageJsonsThatNeedChange(
     return Promise.all(
       packageJsonPaths.map((packageJsonPath) => ({
         path: packageJsonPath,
-        contents: JSON.parse(readFileSync(packageJsonPath, 'utf-8')),
       })),
     );
   }
