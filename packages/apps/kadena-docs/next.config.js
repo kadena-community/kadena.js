@@ -4,6 +4,7 @@ import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.js'
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.js';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.js';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.js';
+import remarkAdmonitions from './src/scripts/remarkAdmonitions.js';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
@@ -68,6 +69,7 @@ const withMDX = mdx({
       remarkHeadersToProps,
       remarkSideMenuToProps,
       remarkPropsToStaticRender,
+      remarkAdmonitions,
     ],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.
