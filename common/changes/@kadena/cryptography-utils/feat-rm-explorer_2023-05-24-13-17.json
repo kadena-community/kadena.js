@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Upgrade to typescript 5.0.4",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}
