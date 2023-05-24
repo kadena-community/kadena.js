@@ -18,11 +18,13 @@ import {
 
 import { Token } from 'moo';
 
-const typeRule = seq(
+// :string :object{schema-one} {kind:string,value:string} | string
+const typeRule: IParser = seq(
   id(':'),
   oneOf(seq($('kind', atom), id('{'), $('value', dotedAtom), id('}')), $(atom)),
 );
 
+// (defun|defcap name (a:string,b:object{schema-one},c) @doc "test doc")
 const method = (
   type: 'defun' | 'defcap',
   bodyParser: IParser = skipTheRest,
@@ -41,23 +43,33 @@ const method = (
     bodyParser,
   );
 
+// @managed property manager | @manage
 const managed = oneOf(
   seq(id('@managed'), $('property', atom), $('manager', atom)),
   id('@managed', true),
 );
 
+// .... (compose-capability CAP)
 const capabilityBody = seq(
   maybe($('managed', managed)),
-  $('bodyPointer', pointerSnapshot),
   lookUp({ 'compose-capability': block($(atom)) }),
 );
 
 const functionBody = seq(
+  // add the pointer index to the output in order to refer to that to determine all function calls
   $('bodyPointer', pointerSnapshot),
   lookUp({
     'required-capability': block($(atom)),
     'with-capability': block($(atom)),
   }),
+);
+
+const schema = block(
+  id('defschema'),
+  $('name', atom),
+  maybe(id('@doc')),
+  maybe($('doc', str)),
+  list($('properties', seq($('name', atom), $('type', typeRule)))),
 );
 
 const moduleRule = block(
@@ -72,16 +84,7 @@ const moduleRule = block(
     $('capabilities', method('defcap', capabilityBody)),
     block(id('use'), $('usedModule', atom)),
     block(id('implements'), $('usedInterface', atom)),
-    $(
-      'schemas',
-      block(
-        id('defschema'),
-        $('name', atom),
-        maybe(id('@doc')),
-        maybe($('doc', str)),
-        list($('properties', seq($('name', atom), $('type', typeRule)))),
-      ),
-    ),
+    $('schemas', schema),
     // skip other type of block
     block(),
   ),

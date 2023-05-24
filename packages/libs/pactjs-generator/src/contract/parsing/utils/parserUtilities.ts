@@ -31,45 +31,6 @@ export const atom = (pointer: IPointer) => {
 
 export const pointerSnapshot = (pointer: IPointer) => pointer.snapshot();
 
-// check this has an issue
-export const dotedAtom = (pointer: IPointer) => {
-  let token: Token | undefined = undefined;
-  const result: string[] = [];
-
-  let snapshot = pointer.snapshot();
-
-  const getResult = () => {
-    pointer.reset(snapshot);
-    if (result.length) {
-      return result.join('.');
-    }
-    return FAILED;
-  };
-
-  let dotTurn = false;
-
-  while ((token = pointer.next())) {
-    switch (token.type) {
-      case 'atom':
-        if (dotTurn) {
-          return getResult();
-        }
-        result.push(token.value);
-        break;
-      case 'dot':
-        if (!dotTurn) {
-          return FAILED;
-        }
-        break;
-      default:
-        return getResult();
-    }
-    snapshot = pointer.snapshot();
-    dotTurn = !dotTurn;
-  }
-  return FAILED;
-};
-
 interface IInspect {
   (name: string, parser: IParser): (pointer: IPointer) => any;
   (parser: IParser): (pointer: IPointer) => any;
@@ -230,6 +191,21 @@ export const lookUp = (parsers: Record<string, IParser>) => {
     return returnValue;
   };
 };
+
+const asString = (parser: IParser) => (pointer: IPointer) => {
+  const start = pointer.snapshot();
+  const result = parser(pointer) as any;
+  const end = pointer.snapshot();
+  if (result === FAILED) return FAILED;
+  pointer.reset(start);
+  let val = '';
+  for (let i = start; i < end; i += 1) {
+    val += pointer.next()?.value;
+  }
+  return val;
+};
+
+export const dotedAtom = asString(seq(list(seq(atom, id('.'))), atom));
 
 /**
  * run the children on the same area

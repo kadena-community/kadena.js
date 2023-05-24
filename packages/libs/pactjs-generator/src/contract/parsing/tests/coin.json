@@ -74,28 +74,23 @@
       ],
       "capabilities": [
         {
-          "name": "GOVERNANCE",
-          "bodyPointer": 58
+          "name": "GOVERNANCE"
         },
         {
           "name": "GAS",
-          "doc": "Magic capability to protect gas buy and redeem",
-          "bodyPointer": 70
+          "doc": "Magic capability to protect gas buy and redeem"
         },
         {
           "name": "COINBASE",
-          "doc": "Magic capability to protect miner reward",
-          "bodyPointer": 78
+          "doc": "Magic capability to protect miner reward"
         },
         {
           "name": "GENESIS",
-          "doc": "Magic capability constraining genesis transactions",
-          "bodyPointer": 86
+          "doc": "Magic capability constraining genesis transactions"
         },
         {
           "name": "REMEDIATE",
-          "doc": "Magic capability for remediation transactions",
-          "bodyPointer": 94
+          "doc": "Magic capability for remediation transactions"
         },
         {
           "name": "DEBIT",
@@ -105,8 +100,7 @@
               "type": "string"
             }
           ],
-          "doc": "Capability for managing debiting operations",
-          "bodyPointer": 105
+          "doc": "Capability for managing debiting operations"
         },
         {
           "name": "CREDIT",
@@ -116,8 +110,7 @@
               "type": "string"
             }
           ],
-          "doc": "Capability for managing crediting operations",
-          "bodyPointer": 136
+          "doc": "Capability for managing crediting operations"
         },
         {
           "name": "ROTATE",
@@ -128,8 +121,7 @@
             }
           ],
           "doc": "Autonomously managed capability for guard rotation",
-          "managed": true,
-          "bodyPointer": 157
+          "managed": true
         },
         {
           "name": "TRANSFER",
@@ -152,7 +144,6 @@
             "property": "amount",
             "manager": "TRANSFER-mgr"
           },
-          "bodyPointer": 178,
           "compose-capability": [
             "DEBIT",
             "CREDIT"
@@ -183,7 +174,6 @@
             "property": "amount",
             "manager": "TRANSFER_XCHAIN-mgr"
           },
-          "bodyPointer": 287,
           "compose-capability": [
             "DEBIT"
           ]
@@ -208,8 +198,7 @@
               "name": "source-chain",
               "type": "string"
             }
-          ],
-          "bodyPointer": 357
+          ]
         },
         {
           "name": "RELEASE_ALLOCATION",
@@ -223,8 +212,7 @@
               "type": "decimal"
             }
           ],
-          "doc": "Event for allocation release, can be used for sig scoping.",
-          "bodyPointer": 373
+          "doc": "Event for allocation release, can be used for sig scoping."
         }
       ],
       "functions": [
