@@ -1,0 +1,29 @@
+{
+  "name": "@kadena/rush-fix-versions",
+  "version": "0.0.1",
+  "description": "Tool to assist with making consistent versions across rush monorepo",
+  "main": "lib/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "heft build"
+  },
+  "keywords": [
+    "rush"
+  ],
+  "author": "Albert Groothedde",
+  "license": "ISC",
+  "dependencies": {
+    "execa": "^7.1.1",
+    "inquirer": "^9.2.6"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/heft": "~0.46.1",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^16.0.0",
+    "jsonc-parser": "~3.2.0"
+  }
+}
