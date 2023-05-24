@@ -71,6 +71,7 @@ const GetBalance: FC = () => {
       setResults({ ...pollResult });
     } catch (e) {
       console.log(e);
+      setResults({ requestKey: 'Could not create request', status: e.message });
     }
   };
 

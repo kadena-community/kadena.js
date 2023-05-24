@@ -48,7 +48,11 @@ export async function transferCreate(
 
   pactCommand.createCommand();
 
-  const signature = sign(pactCommand.cmd ?? '', {
+  if (pactCommand.cmd === undefined) {
+    throw new Error('Failed to create transaction');
+  }
+
+  const signature = sign(pactCommand.cmd, {
     secretKey: fromPrivateKey,
     publicKey: onlyKey(fromAccount),
   });
@@ -59,7 +63,7 @@ export async function transferCreate(
 
   pactCommand.addSignatures({
     pubKey: onlyKey(fromAccount),
-    sig: signature.sig ?? '',
+    sig: signature.sig,
   });
 
   console.log(`Sending transaction: ${pactCommand.code}`);
