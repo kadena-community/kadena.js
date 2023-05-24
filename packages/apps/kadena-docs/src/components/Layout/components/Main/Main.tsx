@@ -2,6 +2,7 @@ import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
+import { LastModifiedDate } from '@/components';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ITopDoc } from '@/data/getTopDocs';
 import { IMenuItem, IPageMeta, ISubHeaderElement } from '@/types/Layout';
@@ -25,6 +26,7 @@ export const Main: FC<IProps> = ({
     subTitle = '',
     description = '',
     layout: layoutType,
+    lastModifiedDate,
   },
   topDocs,
   aSideMenuTree,
@@ -94,7 +96,10 @@ export const Main: FC<IProps> = ({
         </Menu>
         <Layout isAsideOpen={isAsideOpen} aSideMenuTree={aSideMenuTree}>
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
-            <Breadcrumbs menuItems={leftMenuTree} />
+            <>
+              <Breadcrumbs menuItems={leftMenuTree} />
+              <LastModifiedDate time={lastModifiedDate} />
+            </>
           )}
           {children}
         </Layout>
