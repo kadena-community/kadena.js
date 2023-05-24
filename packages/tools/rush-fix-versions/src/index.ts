@@ -2,7 +2,7 @@ import { $ } from 'execa';
 import { readFileSync, writeFileSync } from 'fs';
 import inquirer from 'inquirer';
 import { parse } from 'jsonc-parser';
-import { join } from 'path';
+import { basename, dirname, join } from 'path';
 
 interface IMismatchedVersion {
   dependencyName: string;
@@ -53,77 +53,91 @@ ${mismatchedVersion.versions
   type Version = string;
 
   // ask which version to use
-  const answers: { [key: PackageName]: Version } = await inquirer.prompt(
+  const newVersions: { [key: PackageName]: Version } = await inquirer.prompt(
     questions,
   );
 
-  rushCheckJson.mismatchedVersions.forEach(async (mismatchedVersion) => {
-    // search for the package by packageName in rushJson
-    const packageJsons = await getPackageJsonsThatNeedChange(
-      mismatchedVersion.dependencyName,
-      answers[mismatchedVersion.dependencyName],
-      rushCheckJson,
-      rushJson,
-      gitRootPath,
-    );
-
-    // update the package.json files
-    packageJsons?.forEach(({ path }) => {
-      const contents = JSON.parse(readFileSync(path, 'utf-8'));
-
-      if (contents.dependencies[mismatchedVersion.dependencyName]) {
-        contents.dependencies[mismatchedVersion.dependencyName] =
-          answers[mismatchedVersion.dependencyName];
+  const packageJsonsToFix = Object.keys(newVersions)
+    .map((newVersionPackageName) => {
+      const projects = rushCheckJson.mismatchedVersions
+        .find((m) => m.dependencyName === newVersionPackageName)
+        ?.versions.filter(
+          (v) => v.version !== newVersions[newVersionPackageName],
+        )
+        .map((v) => v.projects)
+        .reduce((a, b) => a.concat(b), []);
+      if (!projects) {
+        throw new Error(`Could not find projects for ${newVersionPackageName}`);
       }
-      if (contents.devDependencies[mismatchedVersion.dependencyName]) {
-        contents.devDependencies[mismatchedVersion.dependencyName] =
-          answers[mismatchedVersion.dependencyName];
+      return projects.map((p) => getPackageJson(p, rushJson, gitRootPath));
+    })
+    .reduce((a, b) => a.concat(b), [])
+    .reduce((acc, curr) => {
+      if (acc.find((a) => a.path === curr.path)) {
+        return acc;
+      } else {
+        acc.push(curr);
+        return acc;
       }
+    }, [] as { path: string; contents: IPackageJson }[]);
 
-      // write the package.json files
-      const packageJsonContents = JSON.stringify(contents, null, 2);
+  packageJsonsToFix.forEach(({ path, contents }) => {
+    console.log(`Fixing ${dirname(path)}/${basename(path)}`);
 
-      console.log(
-        `Writing ${path}, changed ${mismatchedVersion.dependencyName} to ${
-          answers[mismatchedVersion.dependencyName]
-        }`,
-      );
+    const fixedPackages: string[] = [];
+    Object.keys(newVersions).forEach((newVersionPackageName) => {
+      const newVersion = newVersions[newVersionPackageName];
 
-      writeFileSync(path, packageJsonContents + '\n');
+      if (contents.dependencies[newVersionPackageName] !== undefined) {
+        contents.dependencies[newVersionPackageName] = newVersion;
+        fixedPackages.push(newVersionPackageName);
+        console.log(`  updating ${newVersionPackageName} to ${newVersion}`);
+      }
+      if (contents.devDependencies[newVersionPackageName] !== undefined) {
+        contents.devDependencies[newVersionPackageName] = newVersion;
+        fixedPackages.push(newVersionPackageName);
+        console.log(
+          `  updating ${newVersionPackageName} to ${newVersion} (dev)`,
+        );
+      }
     });
+
+    console.log(`Writing ${path}`);
+
+    // write the package.json files
+    const packageJsonContents = JSON.stringify(contents, null, 2);
+    writeFileSync(path, packageJsonContents + '\n');
   });
 }
 
-async function getPackageJsonsThatNeedChange(
-  packageName: string,
-  newVersion: string,
-  rushCheckJson: IRushCheckJson,
+function getPackageJson(
+  p: string,
   rushJson: IRushJson,
-  rootPath: string,
-): Promise<{ path: string }[] | undefined> {
-  const projectsThatNeedChange = rushCheckJson.mismatchedVersions
-    .find((m) => m.dependencyName === packageName)
-    ?.versions.find((v) => v.version !== newVersion)?.projects;
-
-  if (projectsThatNeedChange) {
-    const projectFolders = rushJson.projects
-      .filter((p) => projectsThatNeedChange.includes(p.packageName))
-      .map((p) => p.projectFolder);
-
-    if (projectFolders.length === 0) {
-      throw new Error(`Could not find projectFolder for ${packageName}`);
-    }
-
-    const packageJsonPaths = projectFolders.map((projectFolder) =>
-      join(rootPath, projectFolder, 'package.json'),
-    );
-
-    return Promise.all(
-      packageJsonPaths.map((packageJsonPath) => ({
-        path: packageJsonPath,
-      })),
-    );
+  gitRootPath: string,
+): {
+  path: string;
+  contents: IPackageJson;
+} {
+  const project = rushJson.projects.find(
+    (project) => project.packageName === p,
+  );
+  if (!project) {
+    throw new Error(`Could not find project ${p} in rush.json`);
   }
+
+  const packageJsonPath = join(
+    gitRootPath,
+    project.projectFolder,
+    'package.json',
+  );
+  const packageJsonContents = JSON.parse(
+    readFileSync(packageJsonPath, 'utf-8'),
+  );
+
+  return {
+    path: packageJsonPath,
+    contents: packageJsonContents,
+  };
 }
 
 main().catch((e) => {

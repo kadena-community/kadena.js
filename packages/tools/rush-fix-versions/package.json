@@ -5,7 +5,10 @@
   "main": "lib/index.js",
   "type": "module",
   "scripts": {
-    "build": "heft build"
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
+    "build": "heft build",
+    "test": ""
   },
   "keywords": [
     "rush"

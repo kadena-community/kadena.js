@@ -2,7 +2,7 @@
 
 # This script is used to generate projects for every supported template and test them.
 
-# echo "Generating nextjs project"
+# # echo "Generating nextjs project"
 node lib/index.js generate-project --name test-nextjs-project --template nextjs
 
 # echo "Running tests in nextjs project"
@@ -25,4 +25,4 @@ node lib/index.js generate-project --name test-angular-project --template angula
 
 # echo "Running tests in angular project"
 cd test-angular-project
-npm run test:ci
+./node_modules/.bin/cross-env NG_CLI_ANALYTICS=false npm run test:ci
