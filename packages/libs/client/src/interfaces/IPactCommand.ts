@@ -18,6 +18,7 @@ export interface IPactCommand {
   }[];
   type: string;
   sigs: (ISignatureJson | undefined)[];
+  requestKey?: string;
 }
 
 /**
