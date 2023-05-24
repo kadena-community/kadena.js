@@ -8,6 +8,7 @@ interface IProps {
 }
 
 export const LastModifiedDate: FC<IProps> = ({ time }) => {
+  if (!time) return null;
   const dateString = formatISODate(new Date(time));
   return (
     <Stack justifyContent="flex-end">
