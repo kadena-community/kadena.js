@@ -72,6 +72,16 @@ const moduleRule = block(
     $('capabilities', method('defcap', capabilityBody)),
     block(id('use'), $('usedModule', atom)),
     block(id('implements'), $('usedInterface', atom)),
+    $(
+      'schemas',
+      block(
+        id('defschema'),
+        $('name', atom),
+        maybe(id('@doc')),
+        maybe($('doc', str)),
+        list($('properties', seq($('name', atom), $('type', typeRule)))),
+      ),
+    ),
     // skip other type of block
     block(),
   ),
