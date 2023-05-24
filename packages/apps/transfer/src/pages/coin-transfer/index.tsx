@@ -29,7 +29,7 @@ import {
 import { KLogoComponent } from '@/resources/svg/generated';
 import {
   type TransferResult,
-  makeTransferCreate,
+  transferCreate,
 } from '@/services/transfer/coin-transfer';
 import React, { FC, useState } from 'react';
 
@@ -49,11 +49,13 @@ const GetBalance: FC = () => {
   ): Promise<void> => {
     try {
       event.preventDefault();
-      const pactCommand = await makeTransferCreate(
+      const pactCommand = await transferCreate(
         inputSenderAccount,
         inputReceiverAccount,
         inputCoinAmount,
         inputPrivateKey,
+        chainId,
+        NETWORK_ID,
       );
 
       const requestKey = pactCommand.requestKey;

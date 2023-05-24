@@ -1,11 +1,10 @@
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
+import { ChainId } from '@kadena/types';
 
-import { onlyKey } from '../utils/utils';
+import { generateApiHost, onlyKey } from '../utils/utils';
 
-const NETWORK_ID = 'testnet04';
-const chainId = '1';
-export const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
 const gasLimit = 2300;
 const gasPrice = 0.00001;
 const ttl = 28800;
@@ -15,11 +14,13 @@ export interface TransferResult {
   status?: string;
 }
 
-export async function makeTransferCreate(
+export async function transferCreate(
   fromAccount: string,
   toAccount: string,
   amount: string,
   fromPrivateKey: string,
+  chainId: ChainId,
+  networkId: ChainwebNetworkId,
 ): Promise<PactCommand> {
   const pactCommand = new PactCommand();
   pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${amount})`;
@@ -42,7 +43,7 @@ export async function makeTransferCreate(
         chainId: chainId,
         sender: fromAccount,
       },
-      NETWORK_ID,
+      networkId,
     );
 
   pactCommand.createCommand();
@@ -63,6 +64,13 @@ export async function makeTransferCreate(
 
   console.log(`Sending transaction: ${pactCommand.code}`);
 
-  await pactCommand.send(API_HOST);
+  await pactCommand.send(generateApiHost(networkId, chainId));
   return pactCommand;
 }
+
+export async function crossTranser(
+  fromAccount: string,
+  toAccount: string,
+  amount: string,
+  fromPrivateKey: string,
+): Promise<void> {}
