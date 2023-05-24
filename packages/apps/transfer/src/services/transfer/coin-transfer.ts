@@ -67,10 +67,3 @@ export async function transferCreate(
   await pactCommand.send(generateApiHost(networkId, chainId));
   return pactCommand;
 }
-
-export async function crossTranser(
-  fromAccount: string,
-  toAccount: string,
-  amount: string,
-  fromPrivateKey: string,
-): Promise<void> {}
