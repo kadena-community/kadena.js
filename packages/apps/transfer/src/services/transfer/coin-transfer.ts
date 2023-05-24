@@ -1,35 +1,39 @@
 import { PactCommand } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
-import { createExp, ensureSignedCommand } from '@kadena/pactjs';
+
+import { onlyKey } from '../utils/utils';
 
 const NETWORK_ID = 'testnet04';
 const chainId = '1';
+export const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
 const gasLimit = 2300;
 const gasPrice = 0.00001;
 const ttl = 28800;
-export const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
+
+export interface TransferResult {
+  requestKey?: string;
+  status?: string;
+}
 
 export async function makeTransferCreate(
   fromAccount: string,
   toAccount: string,
   amount: string,
-  fromPublicKey: string,
-  toPublicKey: string,
   fromPrivateKey: string,
-): Promise<void> {
+): Promise<PactCommand> {
   const pactCommand = new PactCommand();
   pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${amount})`;
 
-  const numberAmount = Number(amount);
-
   pactCommand
-    .addCap('coin.GAS', fromPublicKey)
-    .addCap('coin.TRANSFER', fromPublicKey, [
+    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap<any>(
+      'coin.TRANSFER',
+      onlyKey(fromAccount),
       fromAccount,
       toAccount,
-      numberAmount,
-    ])
-    .addData({ ks: { pred: 'keys-all', keys: [toPublicKey] } })
+      Number(amount),
+    )
+    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
     .setMeta(
       {
         gasLimit: gasLimit,
@@ -45,32 +49,20 @@ export async function makeTransferCreate(
 
   const signature = sign(pactCommand.cmd ?? '', {
     secretKey: fromPrivateKey,
-    publicKey: fromPublicKey,
+    publicKey: onlyKey(fromAccount),
   });
 
-  if (!signature.sig) {
-    throw new Error('Signature not found');
+  if (signature.sig === undefined) {
+    throw new Error('Failed to sign transaction');
   }
 
   pactCommand.addSignatures({
-    pubKey: fromPublicKey,
+    pubKey: onlyKey(fromAccount),
     sig: signature.sig ?? '',
   });
 
   console.log(`Sending transaction: ${pactCommand.code}`);
-  const response = await pactCommand.send(API_HOST);
-  // const response = await pactCommand.local(API_HOST);
 
-  console.log('Send response: ', response);
-  const requestKey = response.requestKeys[0];
-
-  const pollResult = await pactCommand.pollUntil(API_HOST, {
-    onPoll: async (transaction, pollRequest): Promise<void> => {
-      console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-      console.log(await pollRequest);
-    },
-  });
-
-  console.log('Polling Completed.');
-  console.log(pollResult);
+  await pactCommand.send(API_HOST);
+  return pactCommand;
 }

@@ -3,7 +3,7 @@ import { styled } from '@kadena/react-components';
 import { Chain, ChevronLeft } from '@/resources/svg/generated';
 import Link from 'next/link';
 
-export const StyledCheckBalanceWrapper = styled('div', {
+export const StyledKadenaTransferWrapper = styled('div', {
   padding: '40px',
   color: 'white',
 });

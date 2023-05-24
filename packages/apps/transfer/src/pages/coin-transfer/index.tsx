@@ -3,7 +3,6 @@ import { Button } from '@kadena/react-components';
 import {
   StyledAccountForm,
   StyledBack,
-  StyledCheckBalanceWrapper,
   StyledChevronLeft,
   StyledField,
   StyledForm,
@@ -15,10 +14,10 @@ import {
   StyledIconImage,
   StyledInputField,
   StyledInputLabel,
+  StyledKadenaTransferWrapper,
   StyledLogoTextContainer,
   StyledMainContent,
   StyledResultContainer,
-  StyledTableContainer,
   StyledTextBold,
   StyledTextNormal,
   StyledTitle,
@@ -26,44 +25,55 @@ import {
   StyledTotalChunk,
   StyledTotalContainer,
   StyledWalletNotConnected,
-} from '@/pages/check-balance/styles';
+} from '@/pages/coin-transfer/styles';
 import { KLogoComponent } from '@/resources/svg/generated';
 import {
-  type ChainResult,
-  checkBalance,
-} from '@/services/accounts/get-balance';
+  type TransferResult,
+  makeTransferCreate,
+} from '@/services/transfer/coin-transfer';
 import React, { FC, useState } from 'react';
 
 const GetBalance: FC = () => {
-  const [inputServerValue, setServerValue] = useState<string>('');
-  const [inputTokenValue, setTokenValue] = useState<string>('');
-  const [inputAccountValue, setAccountValue] = useState<string>('');
-  const [results, setResults] = useState<ChainResult[]>([]);
+  const NETWORK_ID = 'testnet04';
+  const chainId = '1';
+  const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
+
+  const [inputSenderAccount, setSenderAccount] = useState<string>('');
+  const [inputReceiverAccount, setReceiverAccount] = useState<string>('');
+  const [inputCoinAmount, setCoinAmount] = useState<string>('');
+  const [inputPrivateKey, setPrivateKey] = useState<string>('');
+  const [results, setResults] = useState<TransferResult>({});
 
   const getBalance = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     try {
       event.preventDefault();
-      const data = await checkBalance(
-        inputServerValue,
-        inputTokenValue,
-        inputAccountValue,
+      const pactCommand = await makeTransferCreate(
+        inputSenderAccount,
+        inputReceiverAccount,
+        inputCoinAmount,
+        inputPrivateKey,
       );
-      setResults(data);
+
+      const requestKey = pactCommand.requestKey;
+
+      const pollResult = await pactCommand.pollUntil(API_HOST, {
+        onPoll: async (transaction, pollRequest): Promise<void> => {
+          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+          setResults({ ...transaction });
+          console.log(await pollRequest);
+        },
+      });
+
+      setResults({ ...pollResult });
     } catch (e) {
       console.log(e);
     }
   };
 
-  const calculateTotal = (): number =>
-    results.reduce(
-      (acc, item) => acc + parseFloat(item.data?.balance ?? '0'),
-      0,
-    );
-
   return (
-    <StyledCheckBalanceWrapper>
+    <StyledKadenaTransferWrapper>
       <StyledHeaderContainer>
         <StyledHeaderLogoWalletContent>
           <StyledLogoTextContainer>
@@ -84,7 +94,7 @@ const GetBalance: FC = () => {
             <StyledChevronLeft width={'20px'} height={'20px'} />
             <span>Back</span>
           </StyledBack>
-          <StyledTitle>Transfer Kadena Coins</StyledTitle>
+          <StyledTitle>Kadena Coin Transfer</StyledTitle>
         </StyledTitleContainer>
       </StyledHeaderContainer>
 
@@ -93,87 +103,69 @@ const GetBalance: FC = () => {
           <StyledForm onSubmit={getBalance}>
             <StyledAccountForm>
               <StyledField>
-                <StyledInputLabel>Target Chainweb Server</StyledInputLabel>
+                <StyledInputLabel>Sender Account</StyledInputLabel>
 
                 <StyledInputField
                   type="text"
                   id="server"
-                  placeholder="Enter Node Server"
-                  onChange={(e) => setServerValue(e.target.value)}
-                  value={inputServerValue}
+                  placeholder="Enter account name of the sender"
+                  onChange={(e) => setSenderAccount(e.target.value)}
+                  value={inputSenderAccount}
                 />
               </StyledField>
               <StyledField>
-                <StyledInputLabel>Token Name</StyledInputLabel>
+                <StyledInputLabel>Receiver Account</StyledInputLabel>
                 <StyledInputField
                   type="text"
                   id="server"
-                  placeholder="Enter Token Name"
-                  onChange={(e) => setTokenValue(e.target.value)}
-                  value={inputTokenValue}
+                  placeholder="Enter account name of the receiver"
+                  onChange={(e) => setReceiverAccount(e.target.value)}
+                  value={inputReceiverAccount}
                 />
               </StyledField>
               <StyledField>
-                <StyledInputLabel>Your Account Name</StyledInputLabel>
+                <StyledInputLabel>Amount</StyledInputLabel>
                 <StyledInputField
                   type="text"
                   id="server"
-                  placeholder="Enter Your Account"
-                  onChange={(e) => setAccountValue(e.target.value)}
-                  value={inputAccountValue}
+                  placeholder="Enter amount to transfer"
+                  onChange={(e) => setCoinAmount(e.target.value)}
+                  value={inputCoinAmount}
+                />
+              </StyledField>
+              <StyledField>
+                <StyledInputLabel>Sign</StyledInputLabel>
+                <StyledInputField
+                  type="text"
+                  id="server"
+                  placeholder="Enter private key to sign the transaction"
+                  onChange={(e) => setPrivateKey(e.target.value)}
+                  value={inputPrivateKey}
                 />
               </StyledField>
             </StyledAccountForm>
             <StyledFormButton>
-              <Button title="Get Account Balance">Get Account Balance</Button>
+              <Button title="Make Transfer">Make Transfer</Button>
             </StyledFormButton>
           </StyledForm>
         </StyledFormContainer>
 
-        {results.length > 0 ? (
+        {Object.keys(results).length > 0 ? (
           <StyledResultContainer>
             <StyledTotalContainer>
               <StyledTotalChunk>
-                <p>Account Name</p>
-                <p>{inputAccountValue}</p>
+                <p>Request Key</p>
+                <p>{results.requestKey}</p>
               </StyledTotalChunk>
               <StyledTotalChunk>
-                <p>Total Balance</p>
-                <p>{calculateTotal().toFixed(3)} KDA</p>
+                <p>Status</p>
+                <p>{results.status}</p>
               </StyledTotalChunk>
             </StyledTotalContainer>
-            <StyledTableContainer>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Chain</th>
-                    <th>Guard</th>
-                    <th>Quantity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {results.map((result) => {
-                    console.log(result);
-                    return (
-                      <tr key={result.chain}>
-                        <td>{result.chain}</td>
-                        <td>
-                          <p>{result.data?.guard.pred}</p>
-                          {result.data?.guard.keys.map((key) => (
-                            <span key={key}>{key}</span>
-                          ))}
-                        </td>
-                        <td>{result.data?.balance ?? 'N/A'}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </StyledTableContainer>
           </StyledResultContainer>
         ) : null}
       </StyledMainContent>
-    </StyledCheckBalanceWrapper>
+    </StyledKadenaTransferWrapper>
   );
 };
 
