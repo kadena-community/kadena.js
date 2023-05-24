@@ -49,7 +49,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
-    "@types/node": "^20.2.3",
+    "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
     "ts-node": "~10.8.2"
   }
