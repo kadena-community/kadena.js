@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
 
-const UsefulTools: React.FC<SVGProps<SVGSVGElement>> = (
-  props: SVGProps<SVGSVGElement>,
-) => (
+const UsefulTools: React.FC<SVGProps<SVGSVGElement>> = ({
+  dangerouslySetInnerHTML,
+  ...props
+}: SVGProps<SVGSVGElement>) => (
   <svg
     width={40}
     height={40}

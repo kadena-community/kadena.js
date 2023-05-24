@@ -26,6 +26,7 @@ export const Button: FC<IButtonProps> = ({
   onClick,
   href,
   children,
+  dangerouslySetInnerHTML,
   ...props
 }) => {
   const Icon = icon;

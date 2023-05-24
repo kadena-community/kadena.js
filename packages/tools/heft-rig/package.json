@@ -13,17 +13,17 @@
     "@rushstack/heft": "^0.46.1"
   },
   "dependencies": {
-    "@microsoft/api-extractor": "~7.28.2",
-    "@rushstack/heft-jest-plugin": "~0.3.16",
+    "@microsoft/api-extractor": "~7.35.0",
+    "@rushstack/heft-jest-plugin": "~0.5.12",
     "eslint": "^8.15.0",
-    "jest-environment-node": "~27.4.2",
-    "typescript": "~4.6.3"
+    "jest-environment-node": "~29.5.0",
+    "typescript": "~5.0.4"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "eslint": "^8.15.0"
   }

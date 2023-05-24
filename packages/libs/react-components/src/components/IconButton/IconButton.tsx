@@ -22,6 +22,7 @@ export const IconButton: FC<IIconButtonProps> = ({
   icon,
   onClick,
   title,
+  dangerouslySetInnerHTML,
   ...props
 }) => {
   const Icon = icon;

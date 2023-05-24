@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
 
-const KIcon: React.FC<SVGProps<SVGSVGElement>> = (
-  props: SVGProps<SVGSVGElement>,
-) => (
+const KIcon: React.FC<SVGProps<SVGSVGElement>> = ({
+  dangerouslySetInnerHTML,
+  ...props
+}: SVGProps<SVGSVGElement>) => (
   <svg
     width={24}
     height={24}

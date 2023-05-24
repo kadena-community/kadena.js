@@ -28,6 +28,7 @@ export const Input: FC<IInputProps> = ({
   rightPanel,
   status,
   disabled = false,
+  dangerouslySetInnerHTML,
   ...rest
 }) => {
   const RightPanel = rightPanel;
