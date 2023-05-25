@@ -6,6 +6,14 @@ export { SystemIcons } from './components/Icons';
 export { ProductIcons } from './components/ProductIcons';
 export { Table } from './components/Table';
 export {
+  Input,
+  IInputProps,
+  IInputGroupProps,
+  InputGroup,
+  TextField,
+  ITextFieldProps,
+} from './components/Input';
+export {
   Breadcrumbs,
   BreadcrumbItem,
   IBreadcrumbs,
