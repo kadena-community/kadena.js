@@ -5,43 +5,56 @@ const getHeaders = (tree) => {
 };
 
 const isStart = (branch) => {
-  if (head.children.length === 0) return false;
+  if (branch.children.length === 0) return false;
+  return branch.children[0].value === ':::note';
+};
 
-  return head.children[0].value === ':::note';
+let STARTELM;
+const getStartElm = () => {
+  return STARTELM;
+};
+
+const setStartElm = (startElm) => {
+  STARTELM = startElm;
+};
+
+const clearStartElm = () => {
+  STARTELM = undefined;
+};
+
+const reduceToNotifications = (acc, head) => {
+  if (!head.children) return [...acc, head];
+
+  if (isStart(head)) {
+    setStartElm(head);
+    return [...acc, head];
+  }
+  const startElm = getStartElm();
+  if (getStartElm()) {
+    startElm.type = 'element';
+    startElm.data = {
+      hName: 'kda-notification',
+      hProperties: { 'data-cy': 'sdfaasf', className: ['testthis'] },
+    };
+    startElm.children[0].value = '';
+    startElm.children = [...startElm.children, head];
+
+    if (head.children[0].value === ':::') {
+      head.children[0].value = '';
+      clearStartElm();
+    }
+
+    // do not return the current head
+    return acc;
+  }
+
+  return [...acc, head];
 };
 
 const remarkAdmonitions = () => {
   return async (tree) => {
     let startElm;
-    const newChildren = tree.children.reduce((acc, head) => {
-      if (!head.children) return [...acc, head];
-
-      if (head.children[0].value === ':::note') {
-        startElm = head;
-        return [...acc, head];
-      }
-
-      if (startElm) {
-        startElm.type = 'element';
-        startElm.data = {
-          hName: 'kda-notification',
-          hProperties: { 'data-cy': 'sdfsf', className: ['testthis'] },
-        };
-        startElm.children[0].value = '';
-        startElm.children = [...startElm.children, head];
-
-        if (head.children[0].value === ':::') {
-          head.children[0].value = '';
-          console.log(head.children);
-          startElm = undefined;
-        }
-
-        return acc;
-      }
-      // } else {
-      return [...acc, head];
-      //}
-    }, []);
+    const newChildren = tree.children.reduce(reduceToNotifications, []);
 
     tree.children = newChildren;
     return tree;
