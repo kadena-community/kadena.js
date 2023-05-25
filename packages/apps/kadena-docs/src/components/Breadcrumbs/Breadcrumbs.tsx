@@ -6,7 +6,7 @@ import {
 
 import { Box } from './styles';
 
-import { IMenuItem } from '@/types/Layout';
+import { IMenuItem, ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
 import React, { FC, useMemo } from 'react';
 
@@ -17,6 +17,7 @@ interface IProps {
 interface IBreadcrumbItem {
   root: string;
   title: string;
+  icon?: ProductIconNames;
 }
 
 export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
@@ -25,10 +26,12 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
 
     const checkSubTree = (subTree: IMenuItem[]): void => {
       const i = subTree.find((item) => item.isMenuOpen);
+
       if (!i) return;
       tree.push({
         root: i.root,
         title: i.menu ?? i.title,
+        icon: i.icon,
       });
 
       return checkSubTree(i.children);
@@ -39,9 +42,14 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
     return tree;
   }, [menuItems]);
 
+  let Icon;
+  if (items[0]?.icon) {
+    Icon = ProductIcons[items[0]?.icon];
+  }
+
   return (
-    <Box>
-      <StyledBreadcrumbs icon={ProductIcons.PactLanguage}>
+    <Box data-cy="breadcrumbs">
+      <StyledBreadcrumbs icon={Icon}>
         {items.map((item, idx) => (
           <BreadcrumbItem key={item.title}>
             {idx < items.length - 1 ? (
