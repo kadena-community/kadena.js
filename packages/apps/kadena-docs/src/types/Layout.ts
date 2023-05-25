@@ -22,6 +22,7 @@ export interface IPageMeta {
   layout: LayoutType;
   description: string;
   lastModifiedDate: number;
+  icon?: ProductIconNames;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;

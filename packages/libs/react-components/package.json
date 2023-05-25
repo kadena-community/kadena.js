@@ -60,7 +60,7 @@
     "@storybook/testing-library": "^0.0.14-next.1",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "@types/react": "^18.0.28",
+    "@types/react": "^18.0.30",
     "eslint": "^8.15.0",
     "storybook": "^7.0.0-rc.3",
     "storybook-dark-mode": "^2.1.1",

@@ -23,7 +23,7 @@
 /packages/libs/react-components                 @eileenmguo @sstraatemans @isaozler
 /packages/libs/types                            @alber70g @randynamic @ggobugi27
 
-/packages/tools/cookbook                        @eileenmguo
+/packages/tools/cookbook                        @eileenmguo @ash-vd
 /packages/tools/create-kadena-app               @jermaine150
 /packages/tools/eslint-config                   @alber70g @randynamic @ggobugi27
 /packages/tools/eslint-plugin                   @alber70g @randynamic @ggobugi27

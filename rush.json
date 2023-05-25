@@ -404,18 +404,9 @@
     // ##  Deployables
     // #########################
     {
-      "packageName": "@kadena/explorer",
-      "projectFolder": "packages/apps/explorer",
-      "reviewCategory": "prototypes",
-      "skipRushCheck": true,
-      "shouldPublish": false
-    },
-
-    {
       "packageName": "@kadena/graph",
       "projectFolder": "packages/apps/graph",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -423,7 +414,6 @@
       "packageName": "@kadena/graph-client",
       "projectFolder": "packages/apps/graph-client",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -431,7 +421,6 @@
       "packageName": "@kadena/kadena-docs",
       "projectFolder": "packages/apps/kadena-docs",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -588,6 +577,13 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
+    },
+
+    {
+      "packageName": "@kadena/rush-fix-versions",
+      "projectFolder": "packages/tools/rush-fix-versions",
+      "tags": ["tools"],
+      "shouldPublish": false
     }
 
     // {
