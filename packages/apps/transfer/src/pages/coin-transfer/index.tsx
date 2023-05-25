@@ -29,6 +29,7 @@ import {
 import { KLogoComponent } from '@/resources/svg/generated';
 import {
   type TransferResult,
+  crossTransfer,
   transferCreate,
 } from '@/services/transfer/coin-transfer';
 import React, { FC, useState } from 'react';
@@ -42,6 +43,7 @@ const CoinTransfer: FC = () => {
   const [inputReceiverAccount, setReceiverAccount] = useState<string>('');
   const [inputCoinAmount, setCoinAmount] = useState<string>('');
   const [inputPrivateKey, setPrivateKey] = useState<string>('');
+  const [inputTargetChain, setTargetChain] = useState<boolean>(false);
   const [results, setResults] = useState<TransferResult>({});
 
   const coinTransfer = async (
@@ -56,6 +58,43 @@ const CoinTransfer: FC = () => {
         inputCoinAmount,
         inputPrivateKey,
         chainId,
+        NETWORK_ID,
+      );
+
+      const requestKey = pactCommand.requestKey;
+
+      const pollResult = await pactCommand.pollUntil(API_HOST, {
+        onPoll: async (transaction, pollRequest): Promise<void> => {
+          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+          setResults({ ...transaction });
+          console.log(await pollRequest);
+        },
+      });
+
+      setResults({ ...pollResult });
+    } catch (e) {
+      console.log(e);
+      if (e.statsus || e.requestKey) {
+        setResults({ ...e });
+        return;
+      }
+      setResults({ requestKey: 'Could not create request', status: e.message });
+    }
+  };
+
+  const coinCrossTransfer = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    try {
+      event.preventDefault();
+
+      const pactCommand = await crossTransfer(
+        inputSenderAccount,
+        chainId,
+        inputReceiverAccount,
+        '0',
+        inputCoinAmount,
+        inputPrivateKey,
         NETWORK_ID,
       );
 
@@ -108,7 +147,7 @@ const CoinTransfer: FC = () => {
 
       <StyledMainContent>
         <StyledFormContainer>
-          <StyledForm onSubmit={coinTransfer}>
+          <StyledForm onSubmit={coinCrossTransfer}>
             <StyledAccountForm>
               <StyledField>
                 <StyledInputLabel>Sender Account</StyledInputLabel>

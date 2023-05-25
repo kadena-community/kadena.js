@@ -77,3 +77,65 @@ export async function transferCreate(
   await pactCommand.send(generateApiHost(networkId, chainId));
   return pactCommand;
 }
+
+export async function crossTransfer(
+  fromAccount: string,
+  fromChainId: ChainId,
+  toAccount: string,
+  toChainId: ChainId,
+  amount: string,
+  fromPrivateKey: string,
+  networkId: ChainwebNetworkId,
+): Promise<PactCommand> {
+  const pactCommand = new PactCommand();
+  pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${amount})`;
+
+  pactCommand
+    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap<any>(
+      'coin.TRANSFER_XCHAIN',
+      fromAccount,
+      toAccount,
+      {
+        decimal: convertDecimal(amount),
+      },
+      toChainId,
+    )
+    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
+    .setMeta(
+      {
+        gasLimit: gasLimit,
+        gasPrice: gasPrice,
+        ttl: ttl,
+        chainId: fromChainId,
+        sender: fromAccount,
+      },
+      networkId,
+    );
+
+  pactCommand.createCommand();
+  console.log('Before Ading Signature', pactCommand);
+  if (pactCommand.cmd === undefined) {
+    throw new Error('Failed to create transaction');
+  }
+
+  const signature = sign(pactCommand.cmd, {
+    secretKey: fromPrivateKey,
+    publicKey: onlyKey(fromAccount),
+  });
+
+  if (signature.sig === undefined) {
+    throw new Error('Failed to sign transaction');
+  }
+
+  // pactCommand.addSignatures({
+  //   pubKey: onlyKey(fromAccount),
+  //   sig: signature.sig,
+  // });
+
+  // console.log(`Sending transaction: ${pactCommand.code}`);
+  // console.log('After Signature', pactCommand);
+
+  await pactCommand.local(generateApiHost(networkId, fromChainId));
+  return pactCommand;
+}
