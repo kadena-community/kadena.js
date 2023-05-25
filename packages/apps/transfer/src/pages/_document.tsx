@@ -4,7 +4,7 @@ import React from 'react';
 const Document = () => (
   <Html lang="en">
     <Head />
-    <body>
+    <body className="darkTheme">
       <Main />
       <NextScript />
     </body>

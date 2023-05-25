@@ -1,5 +1,6 @@
-import { Button } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-components';
 
+import { Option, Select } from '@/components/Global';
 import {
   StyledAccountForm,
   StyledBack,
@@ -92,36 +93,33 @@ const GetBalance: FC = () => {
         <StyledFormContainer>
           <StyledForm onSubmit={getBalance}>
             <StyledAccountForm>
-              <StyledField>
-                <StyledInputLabel>Target Chainweb Server</StyledInputLabel>
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter Node Server"
-                  onChange={(e) => setServerValue(e.target.value)}
-                  value={inputServerValue}
-                />
-              </StyledField>
-              <StyledField>
-                <StyledInputLabel>Token Name</StyledInputLabel>
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter Token Name"
-                  onChange={(e) => setTokenValue(e.target.value)}
-                  value={inputTokenValue}
-                />
-              </StyledField>
-              <StyledField>
-                <StyledInputLabel>Your Account Name</StyledInputLabel>
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter Your Account"
-                  onChange={(e) => setAccountValue(e.target.value)}
-                  value={inputAccountValue}
-                />
-              </StyledField>
+              <TextField
+                label="Target Chainweb Server"
+                inputProps={{
+                  placeholder: 'Enter Node Server',
+                  // @ts-ignore
+                  onChange: (e) => setServerValue(e?.target?.value),
+                  value: inputServerValue,
+                }}
+              />
+              <TextField
+                label="Token Name"
+                inputProps={{
+                  placeholder: 'Enter Token Name',
+                  // @ts-ignore
+                  onChange: (e) => setTokenValue(e?.target?.value),
+                  value: inputTokenValue,
+                }}
+              />
+              <TextField
+                label="Your Account Name"
+                inputProps={{
+                  placeholder: 'Enter Your Account',
+                  // @ts-ignore
+                  onChange: (e) => setAccountValue(e?.target?.value),
+                  value: inputAccountValue,
+                }}
+              />
             </StyledAccountForm>
             <StyledFormButton>
               <Button title="Get Account Balance">Get Account Balance</Button>
