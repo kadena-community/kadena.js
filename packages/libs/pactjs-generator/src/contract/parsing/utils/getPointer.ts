@@ -21,7 +21,6 @@ export const getPointer = (contract: string) => {
       return tokens[idx];
     },
     reset: (val: number) => {
-      // throw new Error("RESET IS CALLED");
       idx = val;
     },
     snapshot: (log = false) => {
@@ -32,7 +31,7 @@ export const getPointer = (contract: string) => {
   };
 };
 
-export const getBlockPinter = (pointer: IPointer, initCounter = 1) => {
+export const getBlockPointer = (pointer: IPointer, initCounter = 1) => {
   let counter = initCounter;
   const snapshots: Record<number, number> = {};
   return {
