@@ -4,12 +4,15 @@ const getHeaders = (tree) => {
   });
 };
 
-const isStart = () => {};
+const isStart = (branch) => {
+  if (head.children.length === 0) return false;
+
+  return head.children[0].value === ':::note';
+};
 
 const remarkAdmonitions = () => {
   return async (tree) => {
     let startElm;
-    let endElm;
     const newChildren = tree.children.reduce((acc, head) => {
       if (!head.children) return [...acc, head];
 
@@ -20,8 +23,10 @@ const remarkAdmonitions = () => {
 
       if (startElm) {
         startElm.type = 'element';
-        startElm.tagName = 'kda-test';
-        startElm.prop = 'test';
+        startElm.data = {
+          hName: 'kda-notification',
+          hProperties: { 'data-cy': 'sdfsf', className: ['testthis'] },
+        };
         startElm.children[0].value = '';
         startElm.children = [...startElm.children, head];
 
