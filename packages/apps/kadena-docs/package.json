@@ -91,6 +91,6 @@
     "storybook": "^7.0.0-rc.3",
     "storybook-addon-next-router": "~4.0.2",
     "storybook-dark-mode": "^2.1.1",
-    "typescript": "~5.0.4"
+    "typescript": "^5.0.4"
   }
 }
