@@ -36,6 +36,11 @@ async function main(): Promise<void> {
     readFileSync(gitRootPath + '/rush.json', 'utf-8'),
   );
 
+  if (rushCheckJson.mismatchedVersions.length === 0) {
+    console.log('No mismatched versions found');
+    return;
+  }
+
   const questions = rushCheckJson.mismatchedVersions.map(
     (mismatchedVersion) => ({
       type: 'list',
