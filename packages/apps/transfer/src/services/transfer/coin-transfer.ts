@@ -33,7 +33,7 @@ export async function transferCreate(
 
   pactCommand
     .addCap('coin.GAS', onlyKey(fromAccount))
-    .addCap<any>(
+    .addCap(
       'coin.TRANSFER',
       onlyKey(fromAccount),
       fromAccount,
