@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/rush-fix-versions",
+      "comment": "Add ability to run fix versions with rush",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/rush-fix-versions"
+}

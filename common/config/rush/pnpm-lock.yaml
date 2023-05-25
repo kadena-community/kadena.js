@@ -91,7 +91,7 @@ importers:
       react: ^18.2.0
       react-dom: ^18.2.0
       ts-node: ~10.8.2
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@apollo/client': 3.7.15_30c50e0ebe73d138eec12db09601b888
       '@graphql-yoga/apollo-link': 1.0.1_b5b2f639c0eec55d061222df8d0eb31d
@@ -193,7 +193,7 @@ importers:
       storybook: ^7.0.20
       storybook-addon-next-router: ~4.0.2
       storybook-dark-mode: ^3.0.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@babel/plugin-syntax-import-assertions': 7.20.0
       '@google-analytics/data': 3.2.2
@@ -653,7 +653,7 @@ importers:
       react-dom: ^18.2.0
       storybook: ^7.0.20
       storybook-dark-mode: ^3.0.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@radix-ui/react-switch': 1.0.3_83abc126e8ece0dfb48a4a38aad474ad
       '@stitches/react': 1.3.1-1_react@18.2.0
@@ -729,7 +729,7 @@ importers:
       react-dom: ^18.2.0
       storybook: ^7.0.20
       storybook-dark-mode: ^3.0.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@vanilla-extract/css': 1.11.1
       '@vanilla-extract/recipes': 0.4.0_@vanilla-extract+css@1.11.1
@@ -875,7 +875,7 @@ importers:
       eslint-plugin-import: ^2.26.0
       eslint-plugin-react: ~7.31.11
       eslint-plugin-simple-import-sort: ~7.0.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@typescript-eslint/eslint-plugin': 5.59.9_eslint@8.42.0+typescript@5.0.4
@@ -895,7 +895,7 @@ importers:
       eslint: ^8.15.0
       eslint-module-utils: ^2.7.1
       is-core-module: ^2.8.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@typescript-eslint/experimental-utils': 5.53.0_eslint@8.42.0+typescript@5.0.4
       eslint-module-utils: 2.8.0_eslint@8.42.0
@@ -917,7 +917,7 @@ importers:
       '@types/heft-jest': ~1.0.3
       eslint: ^8.15.0
       jest-environment-node: ~27.4.2
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@microsoft/api-extractor': 7.35.3
       '@rushstack/heft-jest-plugin': 0.5.13_@rushstack+heft@0.50.7

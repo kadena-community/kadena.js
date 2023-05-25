@@ -20,6 +20,6 @@
   "devDependencies": {
     "@rushstack/eslint-config": "~3.3.0",
     "eslint": "^8.15.0",
-    "typescript": "~5.0.4"
+    "typescript": "^5.0.4"
   }
 }
