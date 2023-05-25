@@ -25,6 +25,7 @@ export const Main: FC<IProps> = ({
     subTitle = '',
     description = '',
     layout: layoutType,
+    icon: pageIcon,
   },
   topDocs,
   aSideMenuTree,
@@ -44,8 +45,8 @@ export const Main: FC<IProps> = ({
   };
 
   const closeMenu = (): void => setIsMenuOpen(false);
-
   const Layout = getLayout(layoutType);
+
   return (
     <>
       <Head>
@@ -72,7 +73,7 @@ export const Main: FC<IProps> = ({
           layout={layoutType}
         />
         {isOneOfLayoutType(layoutType, 'landing') && title && (
-          <TitleHeader title={title} subTitle={subTitle} />
+          <TitleHeader title={title} subTitle={subTitle} icon={pageIcon} />
         )}
         {isOneOfLayoutType(layoutType, 'home') && (
           <HomeHeader topDocs={topDocs} />
