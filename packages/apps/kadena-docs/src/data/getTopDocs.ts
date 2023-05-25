@@ -13,7 +13,7 @@ let client: BetaAnalyticsDataClient;
 const getClient = (): BetaAnalyticsDataClient | undefined => {
   if (!CLIENTEMAIL || !CLIENTKEY) return;
 
-  if (client === undefined) return client;
+  if (client !== undefined) return client;
 
   return new BetaAnalyticsDataClient({
     credentials: {
