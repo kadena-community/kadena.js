@@ -116,6 +116,8 @@ export interface IPactCommand {
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
+    requestKey?: string;
+    // (undocumented)
     signers: {
         pubKey: string;
         caps: {
@@ -233,7 +235,7 @@ export const Pact: IPact;
 // @alpha
 export class PactCommand implements IPactCommand, ICommandBuilder<Record<string, unknown>> {
     constructor();
-    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T[]): this;
+    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T): this;
     // (undocumented)
     addData(data: IPactCommand['data']): this;
     // (undocumented)
