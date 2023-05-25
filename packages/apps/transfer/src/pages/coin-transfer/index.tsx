@@ -147,7 +147,7 @@ const CoinTransfer: FC = () => {
 
       <StyledMainContent>
         <StyledFormContainer>
-          <StyledForm onSubmit={coinCrossTransfer}>
+          <StyledForm onSubmit={coinTransfer}>
             <StyledAccountForm>
               <StyledField>
                 <StyledInputLabel>Sender Account</StyledInputLabel>

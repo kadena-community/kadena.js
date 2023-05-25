@@ -88,12 +88,15 @@ export async function crossTransfer(
   networkId: ChainwebNetworkId,
 ): Promise<PactCommand> {
   const pactCommand = new PactCommand();
-  pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${amount})`;
+  pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${convertDecimal(
+    amount,
+  )})`;
 
   pactCommand
     .addCap('coin.GAS', onlyKey(fromAccount))
-    .addCap<any>(
+    .addCap(
       'coin.TRANSFER_XCHAIN',
+      onlyKey(fromAccount),
       fromAccount,
       toAccount,
       {
@@ -114,7 +117,7 @@ export async function crossTransfer(
     );
 
   pactCommand.createCommand();
-  console.log('Before Ading Signature', pactCommand);
+
   if (pactCommand.cmd === undefined) {
     throw new Error('Failed to create transaction');
   }
@@ -128,14 +131,13 @@ export async function crossTransfer(
     throw new Error('Failed to sign transaction');
   }
 
-  // pactCommand.addSignatures({
-  //   pubKey: onlyKey(fromAccount),
-  //   sig: signature.sig,
-  // });
+  pactCommand.addSignatures({
+    pubKey: onlyKey(fromAccount),
+    sig: signature.sig,
+  });
 
-  // console.log(`Sending transaction: ${pactCommand.code}`);
-  // console.log('After Signature', pactCommand);
+  console.log(`Sending transaction: ${pactCommand.code}`);
 
-  await pactCommand.local(generateApiHost(networkId, fromChainId));
+  await pactCommand.send(generateApiHost(networkId, fromChainId));
   return pactCommand;
 }
