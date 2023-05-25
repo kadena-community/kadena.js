@@ -1,5 +1,6 @@
 import { Button } from '@kadena/react-components';
 
+import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
 import {
   StyledAccountForm,
   StyledBack,
@@ -29,35 +30,38 @@ import {
 import { KLogoComponent } from '@/resources/svg/generated';
 import {
   type TransferResult,
-  crossTransfer,
-  transferCreate,
+  coinTransfer,
 } from '@/services/transfer/coin-transfer';
+import { convertIntToChainId } from '@/services/utils/utils';
 import React, { FC, useState } from 'react';
 
 const CoinTransfer: FC = () => {
   const NETWORK_ID = 'testnet04';
   const chainId = '1';
   const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
+  const numberOfChains = 20;
 
   const [inputSenderAccount, setSenderAccount] = useState<string>('');
   const [inputReceiverAccount, setReceiverAccount] = useState<string>('');
   const [inputCoinAmount, setCoinAmount] = useState<string>('');
   const [inputPrivateKey, setPrivateKey] = useState<string>('');
-  const [inputTargetChain, setTargetChain] = useState<boolean>(false);
+  const [inputSenderChain, setSenderChain] = useState<number>(1);
+  const [inputReceiverChain, setReceiverChain] = useState<number>(1);
   const [results, setResults] = useState<TransferResult>({});
 
-  const coinTransfer = async (
+  const handleTransfer = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     try {
       event.preventDefault();
 
-      const pactCommand = await transferCreate(
+      const pactCommand = await coinTransfer(
         inputSenderAccount,
+        convertIntToChainId(inputSenderChain),
         inputReceiverAccount,
+        convertIntToChainId(inputReceiverChain),
         inputCoinAmount,
         inputPrivateKey,
-        chainId,
         NETWORK_ID,
       );
 
@@ -82,41 +86,16 @@ const CoinTransfer: FC = () => {
     }
   };
 
-  const coinCrossTransfer = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    try {
-      event.preventDefault();
-
-      const pactCommand = await crossTransfer(
-        inputSenderAccount,
-        chainId,
-        inputReceiverAccount,
-        '0',
-        inputCoinAmount,
-        inputPrivateKey,
-        NETWORK_ID,
+  const renderChainOptions = (): JSX.Element[] => {
+    const options = [];
+    for (let i = 0; i < numberOfChains; i++) {
+      options.push(
+        <StyledOption value={i} key={i}>
+          Chain {i}
+        </StyledOption>,
       );
-
-      const requestKey = pactCommand.requestKey;
-
-      const pollResult = await pactCommand.pollUntil(API_HOST, {
-        onPoll: async (transaction, pollRequest): Promise<void> => {
-          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-          setResults({ ...transaction });
-          console.log(await pollRequest);
-        },
-      });
-
-      setResults({ ...pollResult });
-    } catch (e) {
-      console.log(e);
-      if (e.statsus || e.requestKey) {
-        setResults({ ...e });
-        return;
-      }
-      setResults({ requestKey: 'Could not create request', status: e.message });
     }
+    return options;
   };
 
   return (
@@ -147,7 +126,7 @@ const CoinTransfer: FC = () => {
 
       <StyledMainContent>
         <StyledFormContainer>
-          <StyledForm onSubmit={coinTransfer}>
+          <StyledForm onSubmit={handleTransfer}>
             <StyledAccountForm>
               <StyledField>
                 <StyledInputLabel>Sender Account</StyledInputLabel>
@@ -161,6 +140,15 @@ const CoinTransfer: FC = () => {
                 />
               </StyledField>
               <StyledField>
+                <StyledInputLabel>Sender Chain</StyledInputLabel>
+                <StyledSelect
+                  value={inputSenderChain}
+                  onChange={(e) => setSenderChain(parseInt(e.target.value))}
+                >
+                  {renderChainOptions()}
+                </StyledSelect>
+              </StyledField>
+              <StyledField>
                 <StyledInputLabel>Receiver Account</StyledInputLabel>
                 <StyledInputField
                   type="text"
@@ -169,6 +157,15 @@ const CoinTransfer: FC = () => {
                   onChange={(e) => setReceiverAccount(e.target.value)}
                   value={inputReceiverAccount}
                 />
+              </StyledField>
+              <StyledField>
+                <StyledInputLabel>Receiver Chain</StyledInputLabel>
+                <StyledSelect
+                  value={inputReceiverChain}
+                  onChange={(e) => setReceiverChain(parseInt(e.target.value))}
+                >
+                  {renderChainOptions()}
+                </StyledSelect>
               </StyledField>
               <StyledField>
                 <StyledInputLabel>Amount</StyledInputLabel>
