@@ -1,3 +1,5 @@
+import { ChainId } from '@kadena/types';
+
 export const onlyKey = (account: string): string => {
   return account.split(':')[1];
 };
@@ -11,4 +13,8 @@ export const convertDecimal = (decimal: string): string => {
     return decimal;
   }
   return Number(decimal).toFixed(1);
+};
+
+export const convertIntToChainId = (value: number): ChainId => {
+  return value.toString() as ChainId;
 };

@@ -10,7 +10,6 @@ const gasPrice: number = 0.001;
 const ttl: number = 600;
 export const API_HOST: string = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const listModules = async () => {
   // 1 - Create a new PactCommand
   const pactCommand = new PactCommand();

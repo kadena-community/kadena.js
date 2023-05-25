@@ -5,13 +5,44 @@ import { ChainId } from '@kadena/types';
 
 import { convertDecimal, generateApiHost, onlyKey } from '../utils/utils';
 
-const gasLimit = 2300;
-const gasPrice = 0.00001;
-const ttl = 28800;
+const gasLimit: number = 2300;
+const gasPrice: number = 0.00001;
+const ttl: number = 28800;
 
 export interface TransferResult {
   requestKey?: string;
   status?: string;
+}
+
+export async function coinTransfer(
+  fromAccount: string,
+  fromChainId: ChainId,
+  toAccount: string,
+  toChainId: ChainId,
+  amount: string,
+  fromPrivateKey: string,
+  networkId: ChainwebNetworkId,
+): Promise<PactCommand> {
+  if (fromChainId === toChainId) {
+    return transferCreate(
+      fromAccount,
+      toAccount,
+      amount,
+      fromPrivateKey,
+      fromChainId,
+      networkId,
+    );
+  }
+
+  return crossTransfer(
+    fromAccount,
+    fromChainId,
+    toAccount,
+    toChainId,
+    amount,
+    fromPrivateKey,
+    networkId,
+  );
 }
 
 export async function transferCreate(
