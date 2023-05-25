@@ -91,7 +91,7 @@ importers:
       react: ^18.2.0
       react-dom: ^18.2.0
       ts-node: ~10.8.2
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@apollo/client': 3.7.2_30c50e0ebe73d138eec12db09601b888
       '@graphql-yoga/apollo-link': 1.0.1_ea9d15b42d4f19a701510e5c29bc245f
@@ -191,7 +191,7 @@ importers:
       storybook: ^7.0.0-rc.3
       storybook-addon-next-router: ~4.0.2
       storybook-dark-mode: ^2.1.1
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@babel/plugin-syntax-import-assertions': 7.20.0
       '@google-analytics/data': 3.2.2
@@ -649,7 +649,7 @@ importers:
       react-dom: ^18.2.0
       storybook: ^7.0.0-rc.3
       storybook-dark-mode: ^2.1.1
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@radix-ui/react-switch': 1.0.2_react-dom@18.2.0+react@18.2.0
       '@stitches/react': 1.3.1-1_react@18.2.0
@@ -786,7 +786,7 @@ importers:
       eslint-plugin-import: ^2.26.0
       eslint-plugin-react: ~7.31.11
       eslint-plugin-simple-import-sort: ~7.0.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@typescript-eslint/eslint-plugin': 5.46.0_eslint@8.29.0+typescript@5.0.4
@@ -806,7 +806,7 @@ importers:
       eslint: ^8.15.0
       eslint-module-utils: ^2.7.1
       is-core-module: ^2.8.0
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@typescript-eslint/experimental-utils': 5.53.0_eslint@8.29.0+typescript@5.0.4
       eslint-module-utils: 2.7.4_eslint@8.29.0
@@ -828,7 +828,7 @@ importers:
       '@types/heft-jest': ~1.0.3
       eslint: ^8.15.0
       jest-environment-node: ~27.4.2
-      typescript: ~5.0.4
+      typescript: ^5.0.4
     dependencies:
       '@microsoft/api-extractor': 7.35.0
       '@rushstack/heft-jest-plugin': 0.5.12_@rushstack+heft@0.50.6

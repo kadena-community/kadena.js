@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { $ } from 'execa';
 import { readFileSync, writeFileSync } from 'fs';
 import inquirer from 'inquirer';

@@ -1,0 +1,8 @@
+{
+  "name": "build-rush-fix-versions",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@kadena/rush-fix-versions": "file:../../../packages/tools/rush-fix-versions"
+  }
+}
