@@ -22,7 +22,7 @@ export interface IPageMeta {
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
-  lastModifiedDate: Date;
+  lastModifiedDate?: Date;
   icon?: ProductIconNames;
 }
 export interface IMenuItem extends IPageMeta {
@@ -42,8 +42,8 @@ export type LevelType = 1 | 2 | 3;
 
 export type ProductIconNames = keyof typeof ProductIcons;
 
-export interface PageProps {
-  children: React.ReactNode;
+export interface IPageProps {
+  children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];
   frontmatter: IPageMeta;

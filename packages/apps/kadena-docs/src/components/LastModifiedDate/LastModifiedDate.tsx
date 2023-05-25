@@ -4,7 +4,7 @@ import { formatISODate } from '@/utils/dates';
 import React, { FC } from 'react';
 
 interface IProps {
-  date: Date;
+  date?: Date;
 }
 
 export const LastModifiedDate: FC<IProps> = ({ date }) => {

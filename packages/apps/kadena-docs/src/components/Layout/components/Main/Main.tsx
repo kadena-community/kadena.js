@@ -4,18 +4,12 @@ import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
 import { LastModifiedDate } from '@/components';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { ITopDoc } from '@/data/getTopDocs';
-import {
-  IMenuItem,
-  IPageMeta,
-  ISubHeaderElement,
-  PageProps,
-} from '@/types/Layout';
+import { IPageProps } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 
-export const Main: FC<PageProps> = ({
+export const Main: FC<IPageProps> = ({
   children,
   frontmatter: {
     title = '',
