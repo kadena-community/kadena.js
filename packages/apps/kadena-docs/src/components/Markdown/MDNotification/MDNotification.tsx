@@ -9,11 +9,7 @@ interface IProps {
 export const MDNotification: FC<IProps> = ({ children, ...props }) => {
   return (
     <div {...props}>
-      <Notification
-        title="test"
-        description={children}
-        icon={SystemIcons.Account}
-      />
+      <Notification title="test" expand icon={SystemIcons.Account} />
     </div>
   );
 };
