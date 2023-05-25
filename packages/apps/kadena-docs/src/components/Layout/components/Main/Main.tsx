@@ -5,21 +5,17 @@ import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 import { LastModifiedDate } from '@/components';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ITopDoc } from '@/data/getTopDocs';
-import { IMenuItem, IPageMeta, ISubHeaderElement } from '@/types/Layout';
+import {
+  IMenuItem,
+  IPageMeta,
+  ISubHeaderElement,
+  PageProps,
+} from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
 import React, { FC, ReactNode, useState } from 'react';
 
-interface IProps {
-  children?: ReactNode;
-  menuItems: IMenuItem[];
-  aSideMenuTree: ISubHeaderElement[];
-  frontmatter: IPageMeta;
-  leftMenuTree: IMenuItem[];
-  topDocs: ITopDoc[];
-}
-
-export const Main: FC<IProps> = ({
+export const Main: FC<PageProps> = ({
   children,
   frontmatter: {
     title = '',
@@ -99,7 +95,7 @@ export const Main: FC<IProps> = ({
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <>
               <Breadcrumbs menuItems={leftMenuTree} />
-              <LastModifiedDate time={lastModifiedDate} />
+              <LastModifiedDate date={lastModifiedDate} />
             </>
           )}
           {children}

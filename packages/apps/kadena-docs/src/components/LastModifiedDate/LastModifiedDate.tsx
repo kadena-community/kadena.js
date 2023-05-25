@@ -4,12 +4,12 @@ import { formatISODate } from '@/utils/dates';
 import React, { FC } from 'react';
 
 interface IProps {
-  time: number;
+  date: Date;
 }
 
-export const LastModifiedDate: FC<IProps> = ({ time }) => {
-  if (!time) return null;
-  const dateString = formatISODate(new Date(time));
+export const LastModifiedDate: FC<IProps> = ({ date }) => {
+  if (!date) return null;
+  const dateString = formatISODate(date);
   return (
     <Stack justifyContent="flex-end">
       <Text size="sm">

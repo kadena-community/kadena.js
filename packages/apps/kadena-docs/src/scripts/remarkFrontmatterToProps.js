@@ -11,8 +11,10 @@ const getFrontMatter = (node) => {
 
 const getModifiedDate = (file) => {
   const stats = fs.statSync(file);
-  if (!stats.isFile()) return;
-  return stats.mtimeMs;
+  if (!stats.isFile() || !stats.mtimeMs) return;
+
+  const date = new Date(stats.mtimeMs);
+  return date.toISOString();
 };
 
 const getFileName = (file) => {

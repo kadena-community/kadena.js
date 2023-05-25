@@ -7,6 +7,7 @@ import {
 import { Analytics } from '@/components';
 import { Main } from '@/components/Layout/components';
 import { markDownComponents } from '@/components/Markdown';
+import { IPageMeta, PageProps } from '@/types/Layout';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
@@ -20,11 +21,30 @@ const GlobalStyles = globalCss({
 });
 GlobalStyles();
 
+type ImportedPagePropsType = Omit<PageProps, 'frontmatter'> & {
+  frontmatter: Omit<IPageMeta, 'lastModifiedDate'> & {
+    lastModifiedDate: string;
+  };
+};
+
+const deserializePageProps = (props: ImportedPagePropsType): PageProps => {
+  const newProps = JSON.parse(JSON.stringify(props)) as PageProps;
+  newProps.frontmatter.lastModifiedDate = new Date(
+    props.frontmatter.lastModifiedDate,
+  );
+
+  return newProps;
+};
+
 export const MyApp = ({
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Component,
   pageProps,
-}: AppProps & { Component: FC }): JSX.Element => {
+}: AppProps<ImportedPagePropsType> & {
+  Component: FC<PageProps>;
+}): JSX.Element => {
+  const props = deserializePageProps(pageProps);
+
   return (
     <>
       <MDXProvider components={markDownComponents}>
@@ -36,8 +56,8 @@ export const MyApp = ({
             dark: darkTheme.className,
           }}
         >
-          <Main {...pageProps}>
-            <Component {...pageProps} />
+          <Main {...props}>
+            <Component {...props} />
           </Main>
         </ThemeProvider>
       </MDXProvider>
