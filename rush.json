@@ -482,7 +482,6 @@
       "projectFolder": "packages/libs/chainwebjs",
       "tags": ["libs"],
       "shouldPublish": false,
-      "versionPolicyName": "alpha"
     },
 
     {
@@ -513,7 +512,6 @@
       "projectFolder": "packages/libs/react-components",
       "tags": ["libs"],
       "shouldPublish": false,
-      "versionPolicyName": "alpha"
     },
 
     {

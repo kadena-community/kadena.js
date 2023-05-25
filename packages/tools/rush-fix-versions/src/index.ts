@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { $ } from 'execa';
 import { readFileSync, writeFileSync } from 'fs';
 import inquirer from 'inquirer';
@@ -33,6 +35,11 @@ async function main(): Promise<void> {
   const rushJson: IRushJson = parse(
     readFileSync(gitRootPath + '/rush.json', 'utf-8'),
   );
+
+  if (rushCheckJson.mismatchedVersions.length === 0) {
+    console.log('No mismatched versions found');
+    return;
+  }
 
   const questions = rushCheckJson.mismatchedVersions.map(
     (mismatchedVersion) => ({
