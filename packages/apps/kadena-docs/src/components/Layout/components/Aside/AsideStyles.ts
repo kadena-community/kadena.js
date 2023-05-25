@@ -10,11 +10,11 @@ export const BaseBackground: StyledComponent<
   pointerEvents: 'none',
   width: '100vw',
   height: '100vh',
-
+  zIndex: 0,
   transform: 'translateX(100vw)',
 
   '@md': {
-    position: 'absolute',
+    position: 'fixed',
     transform: 'translateX(0)',
   },
 
@@ -43,6 +43,8 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
       position: 'absolute',
       pointerEvents: 'none',
       inset: 0,
+      top: '$10',
+      bottom: '$16',
       backgroundColor: '$background',
       backgroundImage: 'url("/assets/bg-vertical.png")',
       backgroundRepeat: 'no-repeat',
@@ -107,6 +109,8 @@ export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
       position: 'absolute',
       pointerEvents: 'none',
       inset: 0,
+      top: '$10',
+      zIndex: 0,
       backgroundImage: 'url("/assets/bg-code.png")',
       backgroundRepeat: 'no-repeat',
       backgroundPositionY: '-100px',
@@ -137,7 +141,6 @@ export const Aside: StyledComponent<
 > = styled('aside', {
   display: 'none',
   gridArea: 'aside',
-  overflowY: 'scroll',
   height: '100%',
   width: '100%',
   gridColumn: '4 / span 2',
@@ -222,12 +225,14 @@ export const AsideList: StyledComponent<
 });
 
 export const StickyAsideWrapper: StyledComponent<'div'> = styled('div', {
-  position: 'fixed',
+  position: 'sticky',
   display: 'flex',
-  top: '$20',
+  top: '$10',
+  paddingLeft: '$4',
 });
 
 export const StickyAside: StyledComponent<'div'> = styled('div', {
-  position: 'sticky',
-  top: '$10',
+  paddingTop: '$10',
+  height: 'calc(100vh - $20)',
+  overflowY: 'scroll',
 });

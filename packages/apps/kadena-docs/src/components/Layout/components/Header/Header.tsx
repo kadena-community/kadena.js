@@ -5,6 +5,7 @@ import {
   NavLink,
   Spacer,
   StyledHeader,
+  StyledLogo,
   StyledNav,
   StyledUl,
 } from '../styles';
@@ -46,9 +47,12 @@ export const Header: FC<IProps> = ({
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
-        <Link href="/" passHref>
-          <DocsLogo overwriteTheme="dark" />
-        </Link>
+        <StyledLogo>
+          <Link href="/" passHref>
+            <DocsLogo overwriteTheme="dark" />
+          </Link>
+        </StyledLogo>
+
         <HideOnMobile>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
           <StyledNav>
