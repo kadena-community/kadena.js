@@ -1,0 +1,8 @@
+{
+  "name": "knip",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "knip": "^2.12.2"
+  }
+}

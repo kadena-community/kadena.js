@@ -94,6 +94,15 @@
       "incremental": false,
       "watchForChanges": false,
       "disableBuildCache": false
+    },
+
+    {
+      "commandKind": "global",
+      "name": "knip",
+      "summary": "Find unused files, dependencies and exports",
+      "safeForSimultaneousRushProcesses": false,
+      "autoinstallerName": "knip",
+      "shellCommand": "knip"
     }
 
     // {
@@ -295,6 +304,13 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "parameterKind": "string",
+      "longName": "--workspace",
+      "description": "Analyze a single workspace",
+      "argumentName": "DIR",
+      "associatedCommands": ["knip"]
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.
