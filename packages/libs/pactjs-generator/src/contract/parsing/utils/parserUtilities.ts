@@ -14,8 +14,7 @@ import { getBlockPointer, IPointer } from './getPointer';
 import { trim } from './trim';
 import { ExceptKeywords, UnionToIntersection } from './typeUtilities';
 
-export const FAILED = Symbol('Rule failed');
-export const NO_KEY = 'noKey';
+export const FAILED = Symbol('FAILED');
 
 export interface IParser<T extends any = any> {
   (pointer: IPointer): typeof FAILED | T;

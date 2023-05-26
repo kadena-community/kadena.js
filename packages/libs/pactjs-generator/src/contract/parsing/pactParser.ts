@@ -17,14 +17,11 @@ import {
   oneOf,
   pointerSnapshot,
   repeat,
-  rule,
   seq,
   skipTheRest,
   skipToken,
   str,
 } from './utils/parserUtilities';
-
-import { Token } from 'moo';
 
 interface ISchema {
   name: string;
