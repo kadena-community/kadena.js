@@ -1,19 +1,23 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @rushstack/typedef-var */
 
+import { unwrapData } from './utils/dataWrapper';
 import { getBlockPointer, getPointer, IPointer } from './utils/getPointer';
 import {
   $,
+  asString,
   atom,
   block,
   dotedAtom,
   FAILED,
   id,
+  ids,
   IParser,
   maybe,
   oneOf,
   pointerSnapshot,
   repeat,
+  rule,
   seq,
   skipTheRest,
   skipToken,
@@ -22,8 +26,50 @@ import {
 
 import { Token } from 'moo';
 
+interface ISchema {
+  name: string;
+  doc?: string;
+  properties?: Array<{
+    name: string;
+    type: string | { kind: string; value: string };
+  }>;
+}
+
+interface IMethod {
+  name: string;
+  returnType?: string | { kind: string; value: string };
+  doc?: string;
+  parameters?: Array<{
+    name: string;
+    type: string | { kind: string; value: string };
+  }>;
+}
+
+interface IFunction extends IMethod {
+  requiredCapabilities?: string[];
+  withCapabilities?: string[];
+  functionCalls?: string[];
+}
+
+interface ICapability extends IMethod {
+  composeCapabilities?: string[];
+}
+
+export interface IPactTree {
+  namespace?: string[];
+  module?: Array<{
+    name: string;
+    doc: string;
+    usedModules?: string[];
+    usedInterface?: string[];
+    functions?: IFunction[];
+    capabilities?: ICapability[];
+    schemas?: ISchema[];
+  }>;
+}
+
 // :string :object{schema-one} {kind:string,value:string} | string
-const typeRule: IParser = seq(
+const typeRule = seq(
   id(':'),
   oneOf(
     // type
@@ -63,9 +109,8 @@ const managed = oneOf(
 // .... (compose-capability CAP)
 const capabilityBody = seq(
   maybe($('managed', managed)),
-  // lookUp({ 'compose-capability': block($('composedCapabilities', atom)) }),
   repeat(
-    $('composedCapabilities', seq(id('compose-capability'), block($(atom)))),
+    $('composedCapabilities', seq(id('compose-capability'), id('('), $(atom))),
     skipToken,
   ),
 );
@@ -73,13 +118,9 @@ const capabilityBody = seq(
 const functionBody = seq(
   // add the pointer index to the output in order to refer to that to determine all function calls
   $('bodyPointer', pointerSnapshot),
-  // lookUp({
-  //   'required-capability': block($('requiredCapabilities', atom)),
-  //   'with-capability': block($('withCapabilities', atom)),
-  // }),
   repeat(
-    $('requiredCapabilities', seq(id('required-capability'), block($(atom)))),
-    $('withCapabilities', seq(id('with-capability'), block($(atom)))),
+    $('requiredCapabilities', seq(id('required-capability'), id('('), $(atom))),
+    $('withCapabilities', seq(id('with-capability'), id('('), $(atom))),
     skipToken,
   ),
 );
@@ -107,7 +148,7 @@ const moduleRule = block(
     block(id('use'), $('usedModule', atom)),
     block(id('implements'), $('usedInterface', atom)),
     $('schemas', schema),
-    // skip other type of block
+    // skip other type of blocks
     block(),
   ),
 );
@@ -118,81 +159,68 @@ export const parser = repeat(
   $('module', moduleRule),
 );
 
+const functionCall = (fns: string[], modules: string[]) =>
+  repeat(
+    $(
+      'functionCalls',
+      seq(
+        id('('),
+        oneOf(
+          // call internal functions
+          $(ids(fns)),
+          // calling functions from other modules
+          $(asString(seq(ids(modules), id('.'), atom))),
+        ),
+      ),
+    ),
+    // if token is not match skip it and check the next one
+    skipToken,
+  );
+
 const getFunctionCalls = (
   fun: any,
   pointer: IPointer,
   fnList: string[],
+  usedModules: string[],
 ): string[] => {
   const callList: string[] = [];
-  if (fun.bodyPointer) {
+
+  if (fun.bodyPointer !== undefined) {
     pointer.reset(fun.bodyPointer);
-    const blockPinter = getBlockPointer(pointer, 0);
-    let token: Token | undefined = undefined;
-    while ((token = blockPinter.next())) {
-      if (
-        token.type === 'atom' &&
-        fnList.includes(token.value) &&
-        token.value !== fun.name &&
-        !callList.includes(token.value)
-      ) {
-        callList.push(token.value);
-      }
+    const blockPointer = getBlockPointer(pointer);
+    const data = functionCall(fnList, usedModules)(blockPointer);
+    if (data !== FAILED) {
+      return unwrapData(data).functionCalls || [];
     }
   }
+
   return callList;
 };
 
 export function pactParser(contract: string): IPactTree {
   const pointer = getPointer(contract);
-  const tree = parser(pointer);
-  if (tree === FAILED) {
+  const result = parser(pointer);
+  if (result === FAILED) {
     console.error('there is no rule match with this token', pointer.next());
     throw new Error('parsing error');
   }
+  const tree = unwrapData(result);
   // adding function calls to the tree
-  tree.module?.forEach((mod) => {
-    if (!mod.functions) return;
+  tree?.module?.forEach((mod) => {
+    if (!mod?.functions) return;
     const fnList: string[] = mod.functions
       .map(({ name }) => name!)
       .filter(Boolean);
     mod.functions.forEach((fun) => {
-      (fun as any).functionCalls = getFunctionCalls(fun, pointer, fnList);
+      (fun as any).functionCalls = getFunctionCalls(
+        fun,
+        pointer,
+        fnList,
+        mod.usedModule || [],
+      );
       delete (fun as any).bodyPointer;
     });
   });
 
   return tree;
-}
-
-interface IMethod {
-  name: string;
-  returnType: string | { kind: string; value: string };
-  doc: string;
-  parameters?: Array<{
-    name: string;
-    type: string | { kind: string; value: string };
-  }>;
-}
-
-interface IFunction extends IMethod {
-  requiredCapabilities?: string[];
-  withCapabilities?: string[];
-  functionCalls?: string[];
-}
-
-interface ICapability extends IMethod {
-  composeCapabilities?: string[];
-}
-
-export interface IPactTree {
-  namespace?: string[];
-  module?: Array<{
-    name: string;
-    doc: string;
-    usedModules?: string[];
-    usedInterface?: string[];
-    functions?: IFunction[];
-    capabilities?: ICapability[];
-    schemas?: Array<{}>;
-  }>;
 }

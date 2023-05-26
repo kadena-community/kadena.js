@@ -1,12 +1,20 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @rushstack/typedef-var */
 
+import {
+  ExWrappedData,
+  IsWrappedData,
+  isWrappedData,
+  unwrapData,
+  UnwrappedObjects,
+  wrapData,
+  WrappedData,
+} from './dataWrapper';
 import { getBlockPointer, IPointer } from './getPointer';
 import { trim } from './trim';
-import { UnionToIntersection } from './typeUtilities';
+import { ExceptKeywords, UnionToIntersection } from './typeUtilities';
 
 export const FAILED = Symbol('Rule failed');
-export const INSPECT = 'INSPECT';
 export const NO_KEY = 'noKey';
 
 export interface IParser<T extends any = any> {
@@ -14,26 +22,17 @@ export interface IParser<T extends any = any> {
   isRule?: boolean;
 }
 
-export interface IInspect {
-  [INSPECT]: true;
-}
-
-type RuleReturn<T> = typeof FAILED | (T & IInspect);
+type RuleReturn<T, N extends string | undefined = string | undefined> =
+  | typeof FAILED
+  | ExWrappedData<T, N>;
 
 type RuleReturnType<T extends IParser> = Exclude<ReturnType<T>, typeof FAILED>;
-
-type HasInspect<T> = T extends IInspect ? T : never;
-
-export interface INoFailedParser<T extends any = any> {
-  (pointer: IPointer): typeof FAILED | T;
-  isRule?: boolean;
-}
 interface IRule {
   <P extends IParser>(parser: P): P;
 }
-const rule: IRule = (parser: IParser) => {
+export const rule: IRule = (parser) => {
   if (parser.isRule === true) return parser;
-  const wrapperParser = (pointer: IPointer): any => {
+  const wrapperParser: IParser = (pointer): unknown => {
     const snapshot = pointer.snapshot();
     const result = parser(pointer);
     if (result === FAILED) {
@@ -56,6 +55,18 @@ export const id: IId = (value: string, returnValue = value) =>
     return token?.value === value ? returnValue : FAILED;
   });
 
+export const ids = (list: string[]): IParser<string> => {
+  // console.log('ids', list);
+  return rule((pointer: IPointer) => {
+    const token = pointer.next();
+    if (!token) return FAILED;
+    if (list.includes(token.value)) {
+      return token.value;
+    }
+    return FAILED;
+  });
+};
+
 export const str: IParser<string> = rule((pointer: IPointer) => {
   const token = pointer.next();
   if (!token || token.type !== 'string') return FAILED;
@@ -70,10 +81,16 @@ export const atom: IParser<string> = rule((pointer: IPointer) => {
 export const pointerSnapshot: IParser<number> = rule((pointer: IPointer) =>
   pointer.snapshot(),
 );
+
 interface IInspector {
-  <T extends string, P extends IParser>(name: T, parser: P): (
-    pointer: IPointer,
-  ) => RuleReturn<{ [key in T]: RuleReturnType<P> }>;
+  /**
+   *
+   * @param name name can be any string, except for "inspect," which is a reserved name.
+   */
+  <T extends string, P extends IParser>(
+    name: ExceptKeywords<T, 'inspect'>,
+    parser: P,
+  ): (pointer: IPointer) => RuleReturn<RuleReturnType<P>, T>;
   <P extends IParser>(parser: P): (
     pointer: IPointer,
   ) => RuleReturn<RuleReturnType<P>>;
@@ -81,21 +98,12 @@ interface IInspector {
 
 export const $: IInspector = (one: string | IParser, second?: IParser) =>
   rule((pointer: IPointer) => {
-    const name = typeof one === 'string' ? one : NO_KEY;
+    const name = typeof one === 'string' ? one : undefined;
+    if (name === 'inspect') throw new Error('inspect is a reserved name');
     const parser = second || (one as IParser);
     const result = parser(pointer);
     if (result === FAILED) return FAILED;
-
-    // unwrap if the result has only "noKey"
-    if (
-      typeof result === 'object' &&
-      Object.keys(result).length === 1 &&
-      result[NO_KEY]
-    ) {
-      return { [name]: result[NO_KEY], [INSPECT]: true as const };
-    }
-
-    return { [name]: result, [INSPECT]: true as const };
+    return wrapData(result, name);
   });
 
 interface IOneOf {
@@ -111,32 +119,42 @@ export const oneOf: IOneOf = (...parsers) =>
     }
     return FAILED;
   });
-
-const shouldInspect = (result: any) =>
-  Boolean(result) && typeof result === 'object' && Boolean(result[INSPECT]);
 interface ISeq {
   <T extends Array<IParser>>(...parsers: T): IParser<
-    { [INSPECT]: true } & UnionToIntersection<
-      HasInspect<RuleReturnType<T[number]>>
+    WrappedData<
+      UnionToIntersection<
+        UnwrappedObjects<IsWrappedData<RuleReturnType<T[number]>>>
+      >,
+      undefined
     >
   >;
 }
 
 export const seq: ISeq = (...parsers) =>
   rule((pointer: IPointer) => {
-    let returnValue: RuleReturn<any> = {};
+    const results: WrappedData<any, any>[] = [];
     for (let i = 0; i < parsers.length; i++) {
       const parser = parsers[i];
       const result = parser(pointer);
       if (result === FAILED) {
-        pointer.snapshot();
         return FAILED;
       }
-      if (shouldInspect(result)) {
-        returnValue = { ...returnValue, ...result };
+      if (isWrappedData(result)) {
+        results.push(result);
       }
     }
-    return returnValue;
+    if (results.length === 1) return results[0];
+    if (results.length === 0) return wrapData(undefined);
+
+    const returnValue = results.reduce(
+      (acc, item) => ({
+        ...acc,
+        ...unwrapData(item),
+      }),
+      {},
+    );
+
+    return wrapData(returnValue);
   });
 
 type MakeArr<Type> = {
@@ -145,8 +163,13 @@ type MakeArr<Type> = {
 
 interface IRepeat {
   <T extends Array<IParser>>(...parsers: T): IParser<
-    { [INSPECT]: true } & Partial<
-      UnionToIntersection<MakeArr<HasInspect<RuleReturnType<T[number]>>>>
+    WrappedData<
+      Partial<
+        UnionToIntersection<
+          MakeArr<UnwrappedObjects<IsWrappedData<RuleReturnType<T[number]>>>>
+        >
+      >,
+      undefined
     >
   >;
 }
@@ -157,39 +180,47 @@ interface IRepeat {
 export const repeat: IRepeat = (...parsers: IParser[]) => {
   const oneOfParser = oneOf(...parsers);
   return rule((pointer: IPointer) => {
-    const results: any[] = [];
-    //@ts-ignore
-    results[INSPECT] = true;
+    const results: WrappedData[] = [];
     while (!pointer.done()) {
       const result = oneOfParser(pointer);
       if (result === FAILED) {
         break;
       }
-      if (shouldInspect(result)) {
+      if (isWrappedData(result)) {
         results.push(result);
       }
     }
 
-    // flat the array as an object
-    const returnValue = results.reduce(
-      (acc, item) => {
-        if (typeof item === 'object') {
-          const keys = Object.keys(item);
-          if (keys.length === 1) {
-            const [key] = keys;
-            acc[key] = acc[key] || [];
-            acc[key].push(item[key]);
-          } else {
-            acc['not-categorized'] = acc['not-categorized'] || [];
-            acc['not-categorized'].push(item);
-          }
-        }
-        return acc;
-      },
-      { [INSPECT]: true },
-    );
+    const pushUnique = <T>(arr: T[] = [], item: any): T[] => {
+      if (!arr.includes(item)) {
+        arr.push(item);
+      }
+      return arr;
+    };
 
-    return returnValue;
+    // flat the array as an object
+    const returnValue = results.reduce((acc, item) => {
+      const name = item.name;
+      if (name) {
+        acc[name] = pushUnique(acc[name], item.data);
+      } else {
+        if (typeof item.data === 'object') {
+          const keys = Object.keys(item.data);
+          keys.forEach((key) => {
+            acc[key] = pushUnique(acc[key], item.data);
+          });
+        } else if (item.data !== undefined) {
+          acc['not-categorized'] = pushUnique(
+            acc['not-categorized'],
+            item.data,
+          );
+        }
+      }
+
+      return acc;
+    }, {} as Record<string, any[]>);
+
+    return wrapData(returnValue as any);
   });
 };
 
@@ -210,13 +241,13 @@ export const block: ISeq = (...parsers: IParser[]) => {
     if (token?.type !== 'lparen') return FAILED;
     const blockPinter: IPointer = getBlockPointer(pointer);
     return seqParser(blockPinter);
-  });
+  }) as any;
 };
 
 interface IMaybe {
-  <T extends IParser>(parser: T): INoFailedParser<
-    RuleReturnType<T> | undefined
-  >;
+  <T extends IParser>(parser: T): (
+    pointer: IPointer,
+  ) => RuleReturnType<T> | undefined;
 }
 
 export const maybe: IMaybe = (parser: IParser) =>
@@ -225,49 +256,7 @@ export const maybe: IMaybe = (parser: IParser) =>
     return result === FAILED ? undefined : result;
   });
 
-interface ILookUp {
-  <Type extends Record<string | symbol, IParser>>(
-    parsers: Type,
-  ): INoFailedParser<{
-    [Property in keyof Type]: RuleReturnType<Type[Property]>[];
-  }>;
-}
-/**
- * should be always the last parser in the block
- */
-export const lookUp: ILookUp = (parsers: Record<string, IParser>) => {
-  const needles = Object.keys(parsers);
-  return rule((pointer: IPointer) => {
-    const returnValue: Record<string | symbol, any> = {};
-    while (!pointer.done()) {
-      const token = pointer.next();
-      if (token?.value && needles.includes(token.value)) {
-        const parser = parsers[token.value] as IParser;
-        const result = parser(pointer);
-        if (result === FAILED) {
-          break;
-        }
-
-        const key = token.value;
-
-        const resultKeys = Object.keys(result);
-        if (!resultKeys.length) return;
-        returnValue[key] = returnValue[key] || [];
-        if (resultKeys.length === 1 && resultKeys[0] === 'noKey') {
-          returnValue[key].push(result.noKey);
-        } else {
-          returnValue[key].push(result);
-        }
-        // inspect implicitly to make the api cleaner
-        // @ts-ignore
-        returnValue[INSPECT] = true;
-      }
-    }
-    return returnValue as any;
-  });
-};
-
-const asString = (parser: IParser): IParser<string> =>
+export const asString = (parser: IParser): IParser<string> =>
   rule((pointer: IPointer) => {
     const start = pointer.snapshot();
     const result = parser(pointer) as any;

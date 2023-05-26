@@ -98,6 +98,9 @@
     )
 
     (TEST-USE.ok "ok" 1)
+    (TEST-USE.LAL "ok" 1)
+    (TRANSFER_XCHAIN-mgr)
+    (TRANSFER_XCHAIN-mgr)
 
     (let ((newbal (- managed requested)))
       (enforce (>= newbal 0.0)

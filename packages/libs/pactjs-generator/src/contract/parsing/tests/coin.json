@@ -1,1072 +1,639 @@
 {
-  "INSPECT": true,
-  "not-categorized": [
+  "module": [
     {
-      "module": {
-        "name": "coin",
-        "INSPECT": true,
-        "governance": "GOVERNANCE",
-        "doc": "'coin' represents the Kadena Coin Contract. This contract provides both the \\\n  \\buy/redeem gas support in the form of 'fund-tx', as well as transfer,       \\\n  \\credit, debit, coinbase, account creation and query, as well as SPV burn    \\\n  \\create. To access the coin contract, you may use its fully-qualified name,  \\\n  \\or issue the '(use coin)' command in the body of a module declaration.",
-        "not-categorized": [
-          {
-            "usedModule": "TEST-USE",
-            "INSPECT": true
-          },
-          {
-            "usedModule": "TEST-USE-2",
-            "INSPECT": true
-          },
-          {
-            "usedInterface": "fungible-v2",
-            "INSPECT": true
-          },
-          {
-            "usedInterface": "fungible-xchain-v1",
-            "INSPECT": true
-          },
-          {
-            "schemas": {
-              "name": "coin-schema",
-              "INSPECT": true,
-              "doc": "The coin contract token schema",
-              "not-categorized": [
-                {
-                  "properties": {
-                    "name": "balance",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ]
+      "name": "coin",
+      "governance": "GOVERNANCE",
+      "doc": "'coin' represents the Kadena Coin Contract. This contract provides both the \\\n  \\buy/redeem gas support in the form of 'fund-tx', as well as transfer,       \\\n  \\credit, debit, coinbase, account creation and query, as well as SPV burn    \\\n  \\create. To access the coin contract, you may use its fully-qualified name,  \\\n  \\or issue the '(use coin)' command in the body of a module declaration.",
+      "usedModule": [
+        "TEST-USE",
+        "TEST-USE-2"
+      ],
+      "usedInterface": [
+        "fungible-v2",
+        "fungible-xchain-v1"
+      ],
+      "schemas": [
+        {
+          "name": "coin-schema",
+          "doc": "The coin contract token schema",
+          "properties": [
+            {
+              "name": "balance",
+              "type": "decimal"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "GOVERNANCE",
-              "INSPECT": true
+            {
+              "name": "guard",
+              "type": "guard"
+            }
+          ]
+        },
+        {
+          "name": "crosschain-schema",
+          "doc": "Schema for yielded value in cross-chain transfers",
+          "properties": [
+            {
+              "name": "receiver",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "GAS",
-              "INSPECT": true,
-              "doc": "Magic capability to protect gas buy and redeem"
+            {
+              "name": "receiver-guard",
+              "type": "guard"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "COINBASE",
-              "INSPECT": true,
-              "doc": "Magic capability to protect miner reward"
+            {
+              "name": "amount",
+              "type": "decimal"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "GENESIS",
-              "INSPECT": true,
-              "doc": "Magic capability constraining genesis transactions"
+            {
+              "name": "source-chain",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "allocation-schema",
+          "doc": "Genesis allocation registry",
+          "properties": [
+            {
+              "name": "balance",
+              "type": "decimal"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "REMEDIATE",
-              "INSPECT": true,
-              "doc": "Magic capability for remediation transactions"
+            {
+              "name": "date",
+              "type": "time"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "DEBIT",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "sender",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Capability for managing debiting operations"
+            {
+              "name": "guard",
+              "type": "guard"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "CREDIT",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "receiver",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Capability for managing crediting operations"
+            {
+              "name": "redeemed",
+              "type": "bool"
+            }
+          ]
+        }
+      ],
+      "capabilities": [
+        {
+          "name": "GOVERNANCE"
+        },
+        {
+          "name": "GAS",
+          "doc": "Magic capability to protect gas buy and redeem"
+        },
+        {
+          "name": "COINBASE",
+          "doc": "Magic capability to protect miner reward"
+        },
+        {
+          "name": "GENESIS",
+          "doc": "Magic capability constraining genesis transactions"
+        },
+        {
+          "name": "REMEDIATE",
+          "doc": "Magic capability for remediation transactions"
+        },
+        {
+          "name": "DEBIT",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
+            }
+          ],
+          "doc": "Capability for managing debiting operations"
+        },
+        {
+          "name": "CREDIT",
+          "parameters": [
+            {
+              "name": "receiver",
+              "type": "string"
+            }
+          ],
+          "doc": "Capability for managing crediting operations"
+        },
+        {
+          "name": "ROTATE",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            }
+          ],
+          "doc": "Autonomously managed capability for guard rotation",
+          "managed": true
+        },
+        {
+          "name": "TRANSFER",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "ROTATE",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Autonomously managed capability for guard rotation",
-              "managed": true
+            {
+              "name": "receiver",
+              "type": "string"
             },
-            "INSPECT": true
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "managed": {
+            "property": "amount",
+            "manager": "TRANSFER-mgr"
           },
-          {
-            "capabilities": {
-              "name": "TRANSFER",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "bool",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "composedCapabilities": {
-                    "noKey": "DEBIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "composedCapabilities": {
-                    "noKey": "CREDIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "managed": {
-                "property": "amount",
-                "INSPECT": true,
-                "manager": "TRANSFER-mgr"
-              }
+          "composedCapabilities": [
+            "DEBIT",
+            "CREDIT"
+          ]
+        },
+        {
+          "name": "TRANSFER_XCHAIN",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
             },
-            "INSPECT": true
+            {
+              "name": "receiver",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "decimal"
+            },
+            {
+              "name": "target-chain",
+              "type": "string"
+            }
+          ],
+          "managed": {
+            "property": "amount",
+            "manager": "TRANSFER_XCHAIN-mgr"
           },
-          {
-            "functions": {
-              "name": "TRANSFER-mgr",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "decimal",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "managed",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "requested",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 228
+          "composedCapabilities": [
+            "DEBIT"
+          ]
+        },
+        {
+          "name": "TRANSFER_XCHAIN_RECD",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
             },
-            "INSPECT": true
+            {
+              "name": "receiver",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "decimal"
+            },
+            {
+              "name": "source-chain",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "RELEASE_ALLOCATION",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Event for allocation release, can be used for sig scoping."
+        }
+      ],
+      "functions": [
+        {
+          "name": "TRANSFER-mgr",
+          "returnType": "decimal",
+          "parameters": [
+            {
+              "name": "managed",
+              "type": "decimal"
+            },
+            {
+              "name": "requested",
+              "type": "decimal"
+            }
+          ],
+          "functionCalls": [
+            "TEST-USE.ok",
+            "TEST-USE.LAL",
+            "TRANSFER_XCHAIN-mgr"
+          ]
+        },
+        {
+          "name": "TRANSFER_XCHAIN-mgr",
+          "returnType": "decimal",
+          "parameters": [
+            {
+              "name": "managed",
+              "type": "decimal"
+            },
+            {
+              "name": "requested",
+              "type": "decimal"
+            }
+          ],
+          "functionCalls": []
+        },
+        {
+          "name": "enforce-unit",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Enforce minimum precision allowed for coin transactions",
+          "functionCalls": []
+        },
+        {
+          "name": "validate-account",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            }
+          ],
+          "doc": "Enforce that an account name conforms to the coin contract \\\n         \\minimum and maximum length requirements, as well as the    \\\n         \\latin-1 character set.",
+          "functionCalls": []
+        },
+        {
+          "name": "gas-only",
+          "doc": "Predicate for gas-only user guards.",
+          "functionCalls": []
+        },
+        {
+          "name": "gas-guard",
+          "parameters": [
+            {
+              "name": "guard",
+              "type": "guard"
+            }
+          ],
+          "doc": "Predicate for gas + single key user guards",
+          "functionCalls": [
+            "gas-only"
+          ]
+        },
+        {
+          "name": "buy-gas",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
+            },
+            {
+              "name": "total",
+              "type": "decimal"
+            }
+          ],
+          "doc": "This function describes the main 'gas buy' operation. At this point \\\n    \\MINER has been chosen from the pool, and will be validated. The SENDER   \\\n    \\of this transaction has specified a gas limit LIMIT (maximum gas) for    \\\n    \\the transaction, and the price is the spot price of gas at that time.    \\\n    \\The gas buy will be executed prior to executing SENDER's code.",
+          "withCapabilities": [
+            "DEBIT"
+          ],
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "debit"
+          ]
+        },
+        {
+          "name": "redeem-gas",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "miner",
+              "type": "string"
+            },
+            {
+              "name": "miner-guard",
+              "type": "guard"
+            },
+            {
+              "name": "sender",
+              "type": "string"
+            },
+            {
+              "name": "total",
+              "type": "decimal"
+            }
+          ],
+          "doc": "This function describes the main 'redeem gas' operation. At this    \\\n    \\point, the SENDER's transaction has been executed, and the gas that      \\\n    \\was charged has been calculated. MINER will be credited the gas cost,    \\\n    \\and SENDER will receive the remainder up to the limit",
+          "withCapabilities": [
+            "CREDIT"
+          ],
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "credit"
+          ]
+        },
+        {
+          "name": "create-account",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            },
+            {
+              "name": "guard",
+              "type": "guard"
+            }
+          ],
+          "functionCalls": [
+            "validate-account",
+            "enforce-reserved"
+          ]
+        },
+        {
+          "name": "get-balance",
+          "returnType": "decimal",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            }
+          ],
+          "functionCalls": []
+        },
+        {
+          "name": "details",
+          "returnType": {
+            "kind": "object",
+            "value": "fungible-v2.account-details"
           },
-          {
-            "capabilities": {
-              "name": "TRANSFER_XCHAIN",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "bool",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "composedCapabilities": {
-                    "noKey": "DEBIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "managed": {
-                "property": "amount",
-                "INSPECT": true,
-                "manager": "TRANSFER_XCHAIN-mgr"
-              }
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            }
+          ],
+          "functionCalls": []
+        },
+        {
+          "name": "rotate",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "TRANSFER_XCHAIN-mgr",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "decimal",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "managed",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "requested",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 321
+            {
+              "name": "new-guard",
+              "type": "guard"
+            }
+          ],
+          "withCapabilities": [
+            "ROTATE"
+          ],
+          "functionCalls": []
+        },
+        {
+          "name": "precision",
+          "returnType": "integer",
+          "functionCalls": []
+        },
+        {
+          "name": "transfer",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "TRANSFER_XCHAIN_RECD",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "bool",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "sender",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "receiver",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "source-chain",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ]
+            {
+              "name": "receiver",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "capabilities": {
-              "name": "RELEASE_ALLOCATION",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Event for allocation release, can be used for sig scoping."
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "withCapabilities": [
+            "TRANSFER"
+          ],
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "debit",
+            "credit"
+          ]
+        },
+        {
+          "name": "transfer-create",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "sender",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "enforce-unit",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "bool",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Enforce minimum precision allowed for coin transactions",
-              "bodyPointer": 429
+            {
+              "name": "receiver",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "validate-account",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Enforce that an account name conforms to the coin contract \\\n         \\minimum and maximum length requirements, as well as the    \\\n         \\latin-1 character set.",
-              "bodyPointer": 459
+            {
+              "name": "receiver-guard",
+              "type": "guard"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "gas-only",
-              "INSPECT": true,
-              "doc": "Predicate for gas-only user guards.",
-              "bodyPointer": 523
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "withCapabilities": [
+            "TRANSFER"
+          ],
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "debit",
+            "credit"
+          ]
+        },
+        {
+          "name": "coinbase",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "gas-guard",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Predicate for gas + single key user guards",
-              "bodyPointer": 539
+            {
+              "name": "account-guard",
+              "type": "guard"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "buy-gas",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "DEBIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "This function describes the main 'gas buy' operation. At this point \\\n    \\MINER has been chosen from the pool, and will be validated. The SENDER   \\\n    \\of this transaction has specified a gas limit LIMIT (maximum gas) for    \\\n    \\the transaction, and the price is the spot price of gas at that time.    \\\n    \\The gas buy will be executed prior to executing SENDER's code.",
-              "bodyPointer": 568
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Internal function for the initial creation of coins.  This function \\\n    \\cannot be used outside of the coin contract.",
+          "withCapabilities": [
+            "CREDIT"
+          ],
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "credit"
+          ]
+        },
+        {
+          "name": "remediate",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "redeem-gas",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "CREDIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "withCapabilities": {
-                    "noKey": "CREDIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "This function describes the main 'redeem gas' operation. At this    \\\n    \\point, the SENDER's transaction has been executed, and the gas that      \\\n    \\was charged has been calculated. MINER will be credited the gas cost,    \\\n    \\and SENDER will receive the remainder up to the limit",
-              "bodyPointer": 625
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Allows for remediation transactions. This function \\\n         \\is protected by the REMEDIATE capability",
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit"
+          ]
+        },
+        {
+          "name": "debit",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "create-account",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 770
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Debit AMOUNT from ACCOUNT balance",
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit"
+          ]
+        },
+        {
+          "name": "credit",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "get-balance",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "decimal",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 804
+            {
+              "name": "guard",
+              "type": "guard"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "details",
-              "INSPECT": true,
-              "returnType": {
-                "kind": "object",
-                "INSPECT": true,
-                "value": "fungible-v2.account-details"
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 831
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Credit AMOUNT to ACCOUNT balance",
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "enforce-reserved"
+          ]
+        },
+        {
+          "name": "check-reserved",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            }
+          ],
+          "doc": " Checks ACCOUNT for reserved name and returns type if \\\n    \\ found or empty string. Reserved names start with a \\\n    \\ single char and colon, e.g. 'c:foo', which would return 'c' as type.",
+          "functionCalls": []
+        },
+        {
+          "name": "enforce-reserved",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "rotate",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "ROTATE",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 872
+            {
+              "name": "guard",
+              "type": "guard"
+            }
+          ],
+          "doc": "Enforce reserved account name protocols.",
+          "functionCalls": [
+            "check-reserved"
+          ]
+        },
+        {
+          "name": "create-allocation-account",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "precision",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "integer",
-                "INSPECT": true
-              },
-              "bodyPointer": 911
+            {
+              "name": "date",
+              "type": "time"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "transfer",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "TRANSFER",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 929
+            {
+              "name": "keyset-ref",
+              "type": "string"
             },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "transfer-create",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "TRANSFER",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "bodyPointer": 1009
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "coinbase",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "CREDIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Internal function for the initial creation of coins.  This function \\\n    \\cannot be used outside of the coin contract.",
-              "bodyPointer": 1078
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "remediate",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Allows for remediation transactions. This function \\\n         \\is protected by the REMEDIATE capability",
-              "bodyPointer": 1130
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "debit",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Debit AMOUNT from ACCOUNT balance",
-              "bodyPointer": 1249
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "credit",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Credit AMOUNT to ACCOUNT balance",
-              "bodyPointer": 1325
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "check-reserved",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "string",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": " Checks ACCOUNT for reserved name and returns type if \\\n    \\ found or empty string. Reserved names start with a \\\n    \\ single char and colon, e.g. 'c:foo', which would return 'c' as type.",
-              "bodyPointer": 1438
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "enforce-reserved",
-              "INSPECT": true,
-              "returnType": {
-                "noKey": "bool",
-                "INSPECT": true
-              },
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Enforce reserved account name protocols.",
-              "bodyPointer": 1485
-            },
-            "INSPECT": true
-          },
-          {
-            "schemas": {
-              "name": "crosschain-schema",
-              "INSPECT": true,
-              "doc": "Schema for yielded value in cross-chain transfers",
-              "not-categorized": [
-                {
-                  "properties": {
-                    "name": "receiver",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "receiver-guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "source-chain",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ]
-            },
-            "INSPECT": true
-          },
-          {
-            "schemas": {
-              "name": "allocation-schema",
-              "INSPECT": true,
-              "doc": "Genesis allocation registry",
-              "not-categorized": [
-                {
-                  "properties": {
-                    "name": "balance",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "date",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "time",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "guard",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "guard",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "properties": {
-                    "name": "redeemed",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "bool",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ]
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "create-allocation-account",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "parameters": {
-                    "name": "account",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "date",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "time",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "keyset-ref",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "string",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "parameters": {
-                    "name": "amount",
-                    "INSPECT": true,
-                    "type": {
-                      "noKey": "decimal",
-                      "INSPECT": true
-                    }
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Add an entry to the coin allocation table. This function \\\n         \\also creates a corresponding empty coin contract account \\\n         \\of the same name and guard. Requires GENESIS capability. ",
-              "bodyPointer": 1803
-            },
-            "INSPECT": true
-          },
-          {
-            "functions": {
-              "name": "release-allocation",
-              "INSPECT": true,
-              "not-categorized": [
-                {
-                  "withCapabilities": {
-                    "noKey": "RELEASE_ALLOCATION",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                },
-                {
-                  "withCapabilities": {
-                    "noKey": "CREDIT",
-                    "INSPECT": true
-                  },
-                  "INSPECT": true
-                }
-              ],
-              "doc": "Release funds associated with allocation ACCOUNT into main ledger.   \\\n         \\ACCOUNT must already exist in main ledger. Allocation is deactivated \\\n         \\after release.",
-              "bodyPointer": 1878
-            },
-            "INSPECT": true
-          }
-        ]
-      },
-      "INSPECT": true
+            {
+              "name": "amount",
+              "type": "decimal"
+            }
+          ],
+          "doc": "Add an entry to the coin allocation table. This function \\\n         \\also creates a corresponding empty coin contract account \\\n         \\of the same name and guard. Requires GENESIS capability. ",
+          "functionCalls": [
+            "validate-account",
+            "enforce-unit",
+            "create-account"
+          ]
+        },
+        {
+          "name": "release-allocation",
+          "parameters": [
+            {
+              "name": "account",
+              "type": "string"
+            }
+          ],
+          "doc": "Release funds associated with allocation ACCOUNT into main ledger.   \\\n         \\ACCOUNT must already exist in main ledger. Allocation is deactivated \\\n         \\after release.",
+          "withCapabilities": [
+            "RELEASE_ALLOCATION",
+            "CREDIT"
+          ],
+          "functionCalls": [
+            "validate-account",
+            "credit"
+          ]
+        }
+      ]
     }
   ]
 }
