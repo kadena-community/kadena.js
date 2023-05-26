@@ -67,7 +67,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <StyledTreeList root={true}>
+          <StyledTreeList role="list" root={true}>
             <MainTreeItem item={activeItem} root={true} />
           </StyledTreeList>
         </MenuCard>
