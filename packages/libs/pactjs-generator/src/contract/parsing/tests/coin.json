@@ -276,6 +276,9 @@
         {
           "name": "gas-only",
           "doc": "Predicate for gas-only user guards.",
+          "requiredCapabilities": [
+            "GAS"
+          ],
           "functionCalls": []
         },
         {
@@ -305,6 +308,9 @@
             }
           ],
           "doc": "This function describes the main 'gas buy' operation. At this point \\\n    \\MINER has been chosen from the pool, and will be validated. The SENDER   \\\n    \\of this transaction has specified a gas limit LIMIT (maximum gas) for    \\\n    \\the transaction, and the price is the spot price of gas at that time.    \\\n    \\The gas buy will be executed prior to executing SENDER's code.",
+          "requiredCapabilities": [
+            "GAS"
+          ],
           "withCapabilities": [
             "DEBIT"
           ],
@@ -336,6 +342,9 @@
             }
           ],
           "doc": "This function describes the main 'redeem gas' operation. At this    \\\n    \\point, the SENDER's transaction has been executed, and the gas that      \\\n    \\was charged has been calculated. MINER will be credited the gas cost,    \\\n    \\and SENDER will receive the remainder up to the limit",
+          "requiredCapabilities": [
+            "GAS"
+          ],
           "withCapabilities": [
             "CREDIT"
           ],
@@ -487,6 +496,9 @@
             }
           ],
           "doc": "Internal function for the initial creation of coins.  This function \\\n    \\cannot be used outside of the coin contract.",
+          "requiredCapabilities": [
+            "COINBASE"
+          ],
           "withCapabilities": [
             "CREDIT"
           ],
@@ -510,6 +522,9 @@
             }
           ],
           "doc": "Allows for remediation transactions. This function \\\n         \\is protected by the REMEDIATE capability",
+          "requiredCapabilities": [
+            "REMEDIATE"
+          ],
           "functionCalls": [
             "validate-account",
             "enforce-unit"
@@ -529,6 +544,9 @@
             }
           ],
           "doc": "Debit AMOUNT from ACCOUNT balance",
+          "requiredCapabilities": [
+            "DEBIT"
+          ],
           "functionCalls": [
             "validate-account",
             "enforce-unit"
@@ -552,6 +570,9 @@
             }
           ],
           "doc": "Credit AMOUNT to ACCOUNT balance",
+          "requiredCapabilities": [
+            "CREDIT"
+          ],
           "functionCalls": [
             "validate-account",
             "enforce-unit",
@@ -609,6 +630,9 @@
             }
           ],
           "doc": "Add an entry to the coin allocation table. This function \\\n         \\also creates a corresponding empty coin contract account \\\n         \\of the same name and guard. Requires GENESIS capability. ",
+          "requiredCapabilities": [
+            "GENESIS"
+          ],
           "functionCalls": [
             "validate-account",
             "enforce-unit",

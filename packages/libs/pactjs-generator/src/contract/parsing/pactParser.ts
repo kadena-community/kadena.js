@@ -116,7 +116,7 @@ const functionBody = seq(
   // add the pointer index to the output in order to refer to that to determine all function calls
   $('bodyPointer', pointerSnapshot),
   repeat(
-    $('requiredCapabilities', seq(id('required-capability'), id('('), $(atom))),
+    $('requiredCapabilities', seq(id('require-capability'), id('('), $(atom))),
     $('withCapabilities', seq(id('with-capability'), id('('), $(atom))),
     skipToken,
   ),
@@ -138,7 +138,7 @@ const moduleRule = block(
   $('governance', atom),
   maybe(id('@doc')),
   maybe($('doc', str)),
-
+  maybe(seq(id('@model'), id('['), repeat(block()), id(']'))),
   repeat(
     $('functions', method('defun', functionBody)),
     $('capabilities', method('defcap', capabilityBody)),
