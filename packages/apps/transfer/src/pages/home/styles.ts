@@ -47,6 +47,21 @@ export const StyledHomeLink = styled(Link, {
   color: 'inherit',
 });
 
+export const StyledHomeButton = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  padding: '16px',
+  margin: '12px 0',
+  background: 'rgba(5, 5, 5, 0.5)',
+  borderRadius: '4px',
+  flex: 'none',
+  alignSelf: 'stretch',
+  flexGrow: '0',
+  fontSize: '1.2rem',
+  cursor: 'pointer',
+  color: 'inherit',
+});
+
 export const StyledIconBox = styled('span', {
   display: 'inline-block',
 });
