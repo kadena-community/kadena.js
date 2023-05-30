@@ -11,6 +11,7 @@ export const StyledFigure: StyledComponent<'figure'> = styled('figure', {
   '& img': {
     height: '100%',
   },
+
   '& figcaption': {
     textAlign: 'center',
   },
