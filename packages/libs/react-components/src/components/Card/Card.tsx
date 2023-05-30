@@ -7,8 +7,8 @@ import React, { FC } from 'react';
 
 export interface ICardProps {
   children: React.ReactNode;
-  color?: VariantProps<typeof StyledCard>['color'];
-  expand?: boolean;
+  fullWidth?: VariantProps<typeof StyledCard>['fullWidth'];
+  stack?: boolean;
 }
 
 export interface ICardHeadingProps {
@@ -21,9 +21,9 @@ export const CardHeading: FC<ICardHeadingProps> = ({
   return <Heading as="h4">{children}</Heading>;
 };
 
-export const Card: FC<ICardProps> = ({ children, expand, color }) => {
+export const Card: FC<ICardProps> = ({ children, fullWidth, stack }) => {
   return (
-    <StyledCard color={color} expand={expand}>
+    <StyledCard stack={stack} fullWidth={fullWidth}>
       {children}
     </StyledCard>
   );

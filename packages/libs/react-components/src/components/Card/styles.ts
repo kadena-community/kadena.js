@@ -2,37 +2,43 @@
 
 import { styled } from '../../styles';
 
-export const colorVariant = {
-  default: {
-    backgroundColor: '$neutral1',
-    color: '$neutral6',
-  },
-  negative: {
-    backgroundColor: '$neutral6',
-    color: '$neutral1',
-    h4: {
-      color: '$neutral1',
-    },
-  },
-};
-
-export const expandVariant = {
+export const fullWidthVariant = {
   true: { width: '100%', height: '100%' },
   false: { width: 'max-content', height: 'max-content' },
 };
 
+export const stackVariant = {
+  true: {
+    margin: 0,
+    borderRadius: 0,
+    '&:not(:last-child)': {
+      borderBottom: '1px solid $neutral3',
+    },
+    '&:first-child': {
+      borderRadius: '$sm $sm 0 0',
+    },
+    '&:last-child': {
+      borderRadius: '0 0 $sm $sm',
+    },
+  },
+  false: {
+    margin: '$md 0',
+  },
+};
+
 export const StyledCard = styled('div', {
+  backgroundColor: '$neutral2',
+  color: '$neutral6',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
   padding: '$lg',
   width: 'max-content',
   height: 'max-content',
-  boxShadow: '$card',
-  borderRadius: '$lg',
+  borderRadius: '$sm',
   variants: {
-    color: colorVariant,
-    expand: expandVariant,
+    fullWidth: fullWidthVariant,
+    stack: stackVariant,
   },
 });
 

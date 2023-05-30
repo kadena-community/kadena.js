@@ -1,5 +1,5 @@
 import { Button, SystemIcons } from './../../';
-import { colorVariant, expandVariant } from './styles';
+import { fullWidthVariant, stackVariant } from './styles';
 import { Card, ICardProps } from '.';
 import { CardBody, CardFooter, CardHeading } from './';
 
@@ -9,14 +9,16 @@ import React from 'react';
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
   argTypes: {
-    color: {
-      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
+    stack: {
+      options: Object.keys(stackVariant) as (keyof typeof stackVariant)[],
       control: {
         type: 'select',
       },
     },
-    expand: {
-      options: Object.keys(expandVariant) as (keyof typeof expandVariant)[],
+    fullWidth: {
+      options: Object.keys(
+        fullWidthVariant,
+      ) as (keyof typeof fullWidthVariant)[],
       control: {
         type: 'select',
       },
@@ -30,24 +32,40 @@ type Story = StoryObj<ICardProps>;
 export const Primary: Story = {
   name: 'Card',
   args: {
-    color: 'default',
-    expand: false,
+    stack: false,
+    fullWidth: false,
   },
-  render: ({ color, expand }) => {
+  render: ({ stack, fullWidth }) => {
     return (
-      <Card color={color} expand={expand}>
-        <CardHeading>Getting Started is Simple</CardHeading>
-        <CardBody>
-          Learn Kadena&apos;s core concepts & tools for development in 15
-          minutes
-        </CardBody>
-        <CardFooter>
-          <Button title={'Button'} icon={SystemIcons.Information}>
-            Get Started
-          </Button>
-          <Button title={'Button'}>Hello World Tutorial</Button>
-        </CardFooter>
-      </Card>
+      <>
+        <Card stack={stack} fullWidth={fullWidth}>
+          <CardHeading>Getting Started is Simple</CardHeading>
+          <CardBody>
+            Learn Kadena&apos;s core concepts & tools for development in 15
+            minutes
+          </CardBody>
+          <CardFooter>
+            <Button title={'Button'} icon={SystemIcons.Information}>
+              Get Started
+            </Button>
+            <Button title={'Button'}>Hello World Tutorial</Button>
+          </CardFooter>
+        </Card>
+
+        <Card stack={stack} fullWidth={fullWidth}>
+          <CardHeading>Getting Started is Simple</CardHeading>
+          <CardBody>
+            Learn Kadena&apos;s core concepts & tools for development in 15
+            minutes
+          </CardBody>
+          <CardFooter>
+            <Button title={'Button'} icon={SystemIcons.Information}>
+              Get Started
+            </Button>
+            <Button title={'Button'}>Hello World Tutorial</Button>
+          </CardFooter>
+        </Card>
+      </>
     );
   },
 };
