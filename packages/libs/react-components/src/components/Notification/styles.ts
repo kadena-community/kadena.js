@@ -1,6 +1,5 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 
-import { IconButton } from '../..';
 import { styled } from '../../styles';
 import { Heading, Text } from '../Typography';
 
@@ -34,7 +33,6 @@ export const colorVariant = {
     backgroundColor: '$warningSurface',
     borderColor: '$warningAccent',
     color: '$warningAccent',
-    $$svgColor: '$warningAccent',
   },
   negative: {
     backgroundColor: '$negativeSurface',
@@ -107,7 +105,7 @@ const positionVariant = {
   },
 };
 
-export const StyledIconButton = styled(IconButton, {
+export const StyledIconContainer = styled('div', {
   margin: '0',
   padding: '0',
   height: 'min-content',

@@ -1,9 +1,11 @@
-import { IIconButtonProps } from '../IconButton';
+/* eslint @kadena-dev/typedef-var: 0 */
+// TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
+
 import { SystemIcons } from '../Icons';
 
 import {
   StyledHeading,
-  StyledIconButton,
+  StyledIconContainer,
   StyledNotification,
   StyledText,
 } from './styles';
@@ -17,30 +19,20 @@ export interface INotificationProps {
   children?: React.ReactNode;
   displayCloseButton?: boolean;
   expand?: VariantProps<typeof StyledNotification>['expand'];
-
   color?: VariantProps<typeof StyledNotification>['color'];
-
   simple?: VariantProps<typeof StyledNotification>['simple'];
-
-  footerContent?: React.ReactNode;
 }
 
 export const NotificationBody = ({
   children,
 }: {
   children: React.ReactNode;
-}) => {
+}): JSX.Element => {
   return <StyledText as="p">{children}</StyledText>;
 };
 
-export const NotificationFooter = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  //return <StyledHeading as="h6">{children}</StyledHeading>
-  return <StyledText as="p">{children}</StyledText>;
-};
+// For now they are identical, so we can just export a rename of NotificationBody for the Footer
+export const NotificationFooter = NotificationBody;
 
 export const Notification: FC<INotificationProps> = ({
   icon,
@@ -50,29 +42,22 @@ export const Notification: FC<INotificationProps> = ({
   color,
   simple,
   expand,
-  footerContent,
 }) => {
   const Icon = icon!;
   const isSimple = (simple as boolean) || children === undefined;
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
-      <StyledIconButton
-        position="left"
-        color={color as IIconButtonProps['color']}
-        title="icon"
-        icon={Icon}
-      />
+      <StyledIconContainer position="left">
+        <Icon size="md" />
+      </StyledIconContainer>
 
       <StyledHeading as="h6">{title}</StyledHeading>
       {!isSimple && children}
 
       {displayCloseButton === true && !isSimple && (
-        <StyledIconButton
-          position="right"
-          color={color as IIconButtonProps['color']}
-          title="close-btn"
-          icon={SystemIcons.Close!}
-        />
+        <StyledIconContainer position="right">
+          <SystemIcons.Close size="md" />
+        </StyledIconContainer>
       )}
     </StyledNotification>
   );
