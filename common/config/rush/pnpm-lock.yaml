@@ -5842,7 +5842,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.6.0
-      tslib: 2.4.1
+      tslib: 2.5.3
     dev: true
 
   /@graphql-tools/utils/9.1.1_graphql@16.6.0:
