@@ -1,12 +1,12 @@
 import { StyledLayout } from './styles';
 
-import React, { type ReactNode } from 'react';
+import React, { type ReactNode, FC } from 'react';
 
 interface IProps {
   children?: ReactNode;
 }
 
-export const Layout = ({ children }: IProps) => (
+export const Layout: FC<IProps> = ({ children }: IProps) => (
   <StyledLayout className="layout">
     <main>{children}</main>
   </StyledLayout>
