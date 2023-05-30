@@ -16,28 +16,28 @@ export const colorVariant = {
   },
   primary: {
     backgroundColor: '$primarySurface',
-    borderColor: '$primaryAccent',
-    color: '$primaryAccent',
+    borderColor: '$primaryContrast',
+    color: '$primaryContrast',
   },
   secondary: {
     backgroundColor: '$secondarySurface',
-    borderColor: '$secondaryAccent',
-    color: '$secondaryAccent',
+    borderColor: '$secondaryContrast',
+    color: '$secondaryContrast',
   },
   positive: {
     backgroundColor: '$positiveSurface',
-    borderColor: '$positiveAccent',
-    color: '$positiveAccent',
+    borderColor: '$positiveContrast',
+    color: '$positiveContrast',
   },
   warning: {
     backgroundColor: '$warningSurface',
-    borderColor: '$warningAccent',
-    color: '$warningAccent',
+    borderColor: '$warningContrast',
+    color: '$warningContrast',
   },
   negative: {
     backgroundColor: '$negativeSurface',
-    borderColor: '$negativeAccent',
-    color: '$negativeAccent',
+    borderColor: '$negativeContrast',
+    color: '$negativeContrast',
   },
 };
 
