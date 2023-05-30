@@ -23,8 +23,6 @@ const remarkFigureOutOfParagraph = () => {
         };
 
         delete newNode.children;
-
-        console.log(newNode);
         return newNode;
       }
 

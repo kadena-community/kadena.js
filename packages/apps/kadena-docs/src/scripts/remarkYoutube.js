@@ -13,8 +13,7 @@ const getYouTubeVideoId = (link) => {
   if (match && match[5]) {
     return match[5];
   }
-
-  return null; // Return null if the link is not a valid YouTube link
+  return;
 };
 
 const remarkYoutube = () => {

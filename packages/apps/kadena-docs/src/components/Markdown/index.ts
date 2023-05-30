@@ -4,7 +4,7 @@ import { Code, TitleWrapper } from './Code';
 import { Figure } from './Figure';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { Paragraph } from './Paragraph';
-import { UnorderdList } from './UnorderdList';
+import { UnorderedList } from './UnorderedList';
 import { Youtube } from './Youtube';
 
 import { FC } from 'react';
@@ -23,7 +23,7 @@ export const markDownComponents: Record<string, FC> = {
   h4: Heading4 as FC<JSX.IntrinsicElements['h4']>,
   p: Paragraph as FC<JSX.IntrinsicElements['p']>,
   code: Code as FC<JSX.IntrinsicElements['code']>,
-  ul: UnorderdList as FC<JSX.IntrinsicElements['ul']>,
+  ul: UnorderedList as FC<JSX.IntrinsicElements['ul']>,
   div: TitleWrapper as FC<JSX.IntrinsicElements['div']>,
   img: Figure as FC<JSX.IntrinsicElements['img']>,
   table: Table as FC<JSX.IntrinsicElements['table']>,
