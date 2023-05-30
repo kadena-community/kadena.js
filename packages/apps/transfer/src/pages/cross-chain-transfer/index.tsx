@@ -2,26 +2,13 @@ import { Button, TextField } from '@kadena/react-components';
 
 import {
   StyledAccountForm,
-  StyledBack,
-  StyledCheckBalanceWrapper,
-  StyledChevronLeft,
   StyledForm,
   StyledFormButton,
   StyledFormContainer,
-  StyledHeaderContainer,
-  StyledHeaderLogoWalletContent,
-  StyledHeaderText,
-  StyledIconImage,
-  StyledLogoTextContainer,
   StyledMainContent,
-  StyledTextBold,
-  StyledTextNormal,
-  StyledTitle,
-  StyledTitleContainer,
-  StyledWalletNotConnected,
 } from './styles';
 
-import { KLogoComponent } from '@/resources/svg/generated';
+import MainLayout from '@/components/Common/Layout/MainLayout';
 import React, { FC, useState } from 'react';
 
 const CoinTransfer: FC = () => {
@@ -39,31 +26,7 @@ const CoinTransfer: FC = () => {
   };
 
   return (
-    <StyledCheckBalanceWrapper>
-      <StyledHeaderContainer>
-        <StyledHeaderLogoWalletContent>
-          <StyledLogoTextContainer>
-            <KLogoComponent width="100px" />
-            <StyledHeaderText>
-              <StyledTextBold>K:Transfer</StyledTextBold>
-              <StyledTextNormal>Kadena Testnet</StyledTextNormal>
-            </StyledHeaderText>
-          </StyledLogoTextContainer>
-          <StyledWalletNotConnected>
-            <p>Connect your wallet</p>
-            <StyledIconImage width={'40px'} height={'40px'} />
-          </StyledWalletNotConnected>
-        </StyledHeaderLogoWalletContent>
-
-        <StyledTitleContainer>
-          <StyledBack href={'/'}>
-            <StyledChevronLeft width={'20px'} height={'20px'} />
-            <span>Back</span>
-          </StyledBack>
-          <StyledTitle>Finish Cross Chain Transfer</StyledTitle>
-        </StyledTitleContainer>
-      </StyledHeaderContainer>
-
+    <MainLayout title="Finish Cross Chain Transfer">
       <StyledMainContent>
         <StyledFormContainer>
           <StyledForm onSubmit={handleSubmit}>
@@ -125,7 +88,7 @@ const CoinTransfer: FC = () => {
           </StyledForm>
         </StyledFormContainer>
       </StyledMainContent>
-    </StyledCheckBalanceWrapper>
+    </MainLayout>
   );
 };
 
