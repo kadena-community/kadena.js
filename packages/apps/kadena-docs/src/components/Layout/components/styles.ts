@@ -296,6 +296,6 @@ export const Spacer: StyledComponent<'div'> = styled('div', {
   flex: 1,
 });
 
-export const StyledLogo: StyledComponent<'div'> = styled('div', {
+export const StyledLogoWrapper: StyledComponent<'div'> = styled('div', {
   zIndex: '$navMenu',
 });

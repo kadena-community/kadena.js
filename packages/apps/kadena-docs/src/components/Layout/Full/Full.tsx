@@ -29,7 +29,7 @@ const renderListItem = (item: ISubHeaderElement): ReactNode => {
   );
 };
 
-export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
+export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
   return (
     <>
       <Content id="maincontent">
@@ -42,7 +42,7 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
 
       <AsideBackground />
       <Aside data-cy="aside">
-        {aSideMenuTree && (
+        {aSideMenuTree.length > 0 && (
           <StickyAsideWrapper>
             <StickyAside>
               <Heading as="h6" transform="uppercase">

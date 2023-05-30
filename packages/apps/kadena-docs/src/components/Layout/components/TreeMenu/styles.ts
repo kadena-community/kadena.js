@@ -16,7 +16,7 @@ export const StyledTreeList: StyledComponent<
   listStyle: 'none',
   overflowY: 'hidden',
 
-  transition: 'all .3s ease',
+  transition: 'all .5s ease',
 
   defaultVariant: {
     menuOpen: false,
