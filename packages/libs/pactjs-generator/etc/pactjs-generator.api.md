@@ -8,12 +8,13 @@
 
 import { PathLike } from 'fs';
 
-// Warning: (ae-forgotten-export) The symbol "IContractDefinition" needs to be exported by the entry point index.d.ts
-//
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
-    // Warning: (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
-    constructor(filePath: PathLike, logger?: ILogger);
+    constructor({ path, namespace, logger, }: {
+        path: PathLike;
+        namespace?: string;
+        logger?: ILogger;
+    });
     // Warning: (ae-forgotten-export) The symbol "Defcap" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -22,6 +23,8 @@ export class FileContractDefinition implements IContractDefinition {
     //
     // (undocumented)
     getMethods(moduleName: string): Record<string, Defun> | undefined;
+    // (undocumented)
+    getNamespace(moduleName: string): string;
     // (undocumented)
     get modules(): string[] | undefined;
     // Warning: (ae-forgotten-export) The symbol "Output" needs to be exported by the entry point index.d.ts
@@ -42,6 +45,20 @@ export function generateTemplates(templates: {
 }[], version: string): string;
 
 // @alpha (undocumented)
+export interface IContractDefinition {
+    // (undocumented)
+    getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
+    // (undocumented)
+    getMethods(moduleName: string): Record<string, Defun> | undefined;
+    // (undocumented)
+    getNamespace(moduleName: string): string;
+    // (undocumented)
+    get modules(): string[] | undefined;
+    // (undocumented)
+    get modulesWithFunctions(): Output;
+}
+
+// @alpha (undocumented)
 export interface ITemplate {
     // (undocumented)
     holes: TemplateHoles;
@@ -53,10 +70,33 @@ export interface ITemplate {
 export function parseTemplate(template: string): ITemplate;
 
 // @alpha (undocumented)
+export class StringContractDefinition implements IContractDefinition {
+    constructor({ contract, namespace, logger, }: {
+        contract: string;
+        namespace?: string;
+        logger?: ILogger;
+    });
+    // (undocumented)
+    getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
+    // (undocumented)
+    getMethods(moduleName: string): Record<string, Defun> | undefined;
+    // (undocumented)
+    getNamespace(moduleName: string): string;
+    // (undocumented)
+    get modules(): string[] | undefined;
+    // (undocumented)
+    get modulesWithFunctions(): Output;
+}
+
+// @alpha (undocumented)
 export type TemplateHoles = string[];
 
 // @alpha (undocumented)
 export type TemplateParts = string[];
+
+// Warnings were encountered during analysis:
+//
+// src/contract/generation/FileContractDefinition.ts:23:5 - (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

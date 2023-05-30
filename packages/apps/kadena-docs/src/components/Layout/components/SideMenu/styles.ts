@@ -5,6 +5,8 @@ import Link from 'next/link';
 export const StyledSideMenu: StyledComponent<'div'> = styled('div', {
   position: 'relative',
   marginTop: '$6',
+  height: '100%',
+  paddingBottom: '$25',
 });
 
 export const StyledUl: StyledComponent<'ul'> = styled('ul', {
@@ -13,7 +15,7 @@ export const StyledUl: StyledComponent<'ul'> = styled('ul', {
 });
 
 export const StyledItem: StyledComponent<'li'> = styled('li', {
-  borderBottom: '1px solid $neutral3',
+  borderBottom: '1px solid $borderColor',
   padding: '$4 0 $2',
 });
 
@@ -63,6 +65,8 @@ export const StyledSection: StyledComponent<
   margin: '$16 0',
   padding: '0 $4',
   width: '100%',
+  height: '100%',
+  overflowY: 'scroll',
   defaultVariants: {
     active: false,
     animateLeft2Right: true,
@@ -127,8 +131,8 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
       content: '',
       width: '$2',
       height: '$2',
-      borderLeft: '2px solid $neutral4',
-      borderBottom: '2px solid $neutral4',
+      borderLeft: '2px solid $borderColor',
+      borderBottom: '2px solid $borderColor',
       transform: 'translate($sizes$2, $sizes$2) rotate(45deg)',
       transition: 'transform .2s ease ',
     },

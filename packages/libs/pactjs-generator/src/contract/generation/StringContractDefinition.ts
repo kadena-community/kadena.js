@@ -6,16 +6,33 @@ import { IContractDefinition } from './IContractDefinition';
 /**
  * @alpha
  */
-
 export class StringContractDefinition implements IContractDefinition {
   private _raw: Output;
   private _contract: string;
   private _logger: ILogger;
 
-  public constructor(contract: string, logger: ILogger = () => {}) {
+  public constructor({
+    contract,
+    namespace,
+    logger = () => {},
+  }: {
+    contract: string;
+    namespace?: string;
+    logger?: ILogger;
+  }) {
     this._contract = contract;
     this._logger = logger;
     this._raw = parser(this._contract, this._logger);
+
+    this._setNamespace(namespace);
+  }
+
+  private _setNamespace(namespace?: string): void {
+    if (namespace === undefined) return;
+
+    Object.keys(this._raw).forEach((module) => {
+      this._raw[module].namespace = namespace;
+    });
   }
 
   public getCapabilities(

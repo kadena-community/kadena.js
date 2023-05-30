@@ -10,30 +10,43 @@ import {
 } from '../styles';
 import { DocsLogo } from '..';
 
+import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
+import { SearchButton } from './SearchButton';
 import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
-import { IMenuItem } from '@/types/Layout';
+import { IMenuItem, LayoutType } from '@/types/Layout';
+import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
   toggleMenu: () => void;
   isMenuOpen: boolean;
+  toggleAside: () => void;
+  isAsideOpen: boolean;
   menuItems: IMenuItem[];
+  layout: LayoutType;
 }
 
-export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
+export const Header: FC<IProps> = ({
+  toggleMenu,
+  isMenuOpen,
+  toggleAside,
+  isAsideOpen,
+  menuItems,
+  layout,
+}) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 
   return (
     <StyledHeader>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
-        <Link href="/">
+        <Link href="/" passHref>
           <DocsLogo overwriteTheme="dark" />
         </Link>
         <HideOnMobile>
@@ -68,10 +81,16 @@ export const Header: FC<IProps> = ({ toggleMenu, isMenuOpen, menuItems }) => {
         </HeaderIconGroup>
         <HeaderIconGroup>
           <ThemeToggle />
+          <HideOnMobile>
+            <SearchButton />
+          </HideOnMobile>
           <HamburgerMenuToggle
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
           />
+          {isOneOfLayoutType(layout, 'code') && (
+            <AsideToggle toggleAside={toggleAside} isAsideOpen={isAsideOpen} />
+          )}
         </HeaderIconGroup>
       </InnerWrapper>
     </StyledHeader>

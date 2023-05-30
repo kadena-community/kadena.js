@@ -45,9 +45,9 @@ export const lexer: Lexer = moo.compile({
   assign: ':=',
   colon: ':',
   // https://regex101.com/r/OVdomu/1/
-  string: { match: /"(?:[^"\\]|\\.|\\\n)*"/, lineBreaks: true },
+  string: { match: /"(?:[^"\\]|\\.|\\\r?\n)*"/, lineBreaks: true },
   ws: /[ \t]+/,
-  nl: { match: /\n/, lineBreaks: true },
+  nl: { match: /\r?\n/, lineBreaks: true },
 });
 
 /**

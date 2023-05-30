@@ -9,7 +9,12 @@ interface IItem {
 }
 export const Item: FC<IItem> = ({ item, level }) => (
   <li>
-    <StyledLink level={`l${level}`} href={item.root} active={item.isActive}>
+    <StyledLink
+      level={`l${level}`}
+      href={item.root}
+      active={item.isActive}
+      data-active={item.isActive}
+    >
       {item.label}
     </StyledLink>
   </li>

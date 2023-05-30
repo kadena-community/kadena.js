@@ -35,5 +35,6 @@
 //     }
 //   }
 // }
+import '@percy/cypress';
 
 export {};

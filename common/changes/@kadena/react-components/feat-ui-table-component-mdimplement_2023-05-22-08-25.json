@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "fix fontfamily for all elements",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

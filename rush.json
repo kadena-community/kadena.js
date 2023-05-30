@@ -124,7 +124,7 @@
    * LTS schedule: https://nodejs.org/en/about/releases/
    * LTS versions: https://nodejs.org/en/download/releases/
    */
-  "nodeSupportedVersionRange": ">=12.13.0 <13.0.0 || >=14.15.0 <15.0.0 || >=16.13.0 <17.0.0",
+  "nodeSupportedVersionRange": ">=16.13.0 <17.0.0 || >=18.12.0 <19.0.0",
 
   /**
    * Odd-numbered major versions of Node.js are experimental.  Even-numbered releases
@@ -312,7 +312,7 @@
     /**
      * The list of shell commands to run before the Rush installation starts
      */
-    "preRushInstall": ["./common/scripts/add-lib-index-pactjs-cli.js"],
+    "preRushInstall": ["node ./common/scripts/add-lib-index-pactjs-cli.js"],
 
     /**
      * The list of shell commands to run after the Rush installation finishes
@@ -404,18 +404,9 @@
     // ##  Deployables
     // #########################
     {
-      "packageName": "@kadena/explorer",
-      "projectFolder": "packages/apps/explorer",
-      "reviewCategory": "prototypes",
-      "skipRushCheck": true,
-      "shouldPublish": false
-    },
-
-    {
       "packageName": "@kadena/graph",
       "projectFolder": "packages/apps/graph",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -423,7 +414,6 @@
       "packageName": "@kadena/graph-client",
       "projectFolder": "packages/apps/graph-client",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -431,7 +421,6 @@
       "packageName": "@kadena/kadena-docs",
       "projectFolder": "packages/apps/kadena-docs",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -481,11 +470,18 @@
     },
 
     {
+      "packageName": "@kadena/chainweb-stream-client",
+      "projectFolder": "packages/libs/chainweb-stream-client",
+      "tags": ["libs"],
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
+    },
+
+    {
       "packageName": "@kadena/chainwebjs",
       "projectFolder": "packages/libs/chainwebjs",
       "tags": ["libs"],
       "shouldPublish": false,
-      "versionPolicyName": "alpha"
     },
 
     {
@@ -516,7 +512,6 @@
       "projectFolder": "packages/libs/react-components",
       "tags": ["libs"],
       "shouldPublish": false,
-      "versionPolicyName": "alpha"
     },
 
     {
@@ -580,6 +575,13 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
+    },
+
+    {
+      "packageName": "@kadena/rush-fix-versions",
+      "projectFolder": "packages/tools/rush-fix-versions",
+      "tags": ["tools"],
+      "shouldPublish": false
     }
 
     // {

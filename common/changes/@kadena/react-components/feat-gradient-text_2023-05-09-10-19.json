@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Gradient Text component added",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

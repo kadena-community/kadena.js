@@ -6,7 +6,7 @@ import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
-  return extension.toLowerCase() === 'md';
+  return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
 };
 
 const convertFile = (file) => {
@@ -15,12 +15,14 @@ const convertFile = (file) => {
   if (isMarkDownFile(file)) {
     data = getFrontMatter(doc);
   } else {
-    const regex = /export const meta: IPageMeta = ({.*});/s;
+    const regex = /frontmatter\s*:\s*{[^}]+}/;
     const match = doc.match(regex);
     if (!match) return;
 
-    let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
+    let metaString = match[0].replace(/frontmatter:/, '');
+    metaString = metaString.replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
     metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
+
     data = JSON.parse(metaString);
   }
 
@@ -79,7 +81,7 @@ const findPath = (dir) => {
 };
 
 const INITIALPATH = './src/pages/docs';
-const MENUFILE = './src/data/menu.json';
+const MENUFILE = './src/data/menu.js';
 const TREE = [];
 
 const createTree = (rootDir, parent = []) => {
@@ -96,11 +98,18 @@ const createTree = (rootDir, parent = []) => {
 
     if (!child.root) return;
 
+    console.log(currentFile);
     if (fs.statSync(`${currentFile}`).isFile()) {
       const obj = convertFile(currentFile);
       Object.assign(child, obj);
-    } else if (fs.statSync(`${currentFile}/index.md`).isFile()) {
+    } else if (fs.existsSync(`${currentFile}/index.md`)) {
       const obj = convertFile(`${currentFile}/index.md`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
+      const obj = convertFile(`${currentFile}/index.mdx`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
+      const obj = convertFile(`${currentFile}/index.tsx`);
       Object.assign(child, obj);
     } else {
       throw new Error(currentFile);
@@ -119,4 +128,7 @@ const createTree = (rootDir, parent = []) => {
 
 const result = createTree(INITIALPATH, TREE);
 
-fs.writeFileSync(MENUFILE, JSON.stringify(result, null, 2));
+const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
+export const menuData = ${JSON.stringify(result, null, 2)}`;
+
+fs.writeFileSync(MENUFILE, fileStr);

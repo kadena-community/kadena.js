@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "adding gradient text component to the export",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

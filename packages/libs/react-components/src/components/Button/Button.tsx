@@ -5,10 +5,15 @@ import { StyledButton } from './styles';
 import React, { FC } from 'react';
 
 export interface IButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'as' | 'disabled'
+  > {
   as?: 'button' | 'a';
   icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | React.FormEventHandler<HTMLButtonElement>;
   href?: string;
   children: React.ReactNode;
   title: string;

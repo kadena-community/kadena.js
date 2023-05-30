@@ -16,7 +16,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/chainwebjs"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/chainwebjs"
   },
   "license": "MIT",
   "author": "Lars Kuhtz <lars@kadena.io>",
@@ -47,7 +48,7 @@
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "test": "rushx build && heft test --no-build"
   },
@@ -72,7 +73,7 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~2.6.2",
     "@rushstack/heft": "~0.46.1",
-    "@types/eventsource": "~1.1.10",
+    "@types/eventsource": "=1.1.10",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0"
