@@ -30,7 +30,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
       if (!i) return;
       tree.push({
         root: i.root,
-        title: i.menu ?? i.title,
+        title: i.label ?? i.title,
         icon: i.icon,
       });
 
@@ -51,7 +51,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
     <Box data-cy="breadcrumbs">
       <StyledBreadcrumbs icon={Icon}>
         {items.map((item, idx) => (
-          <BreadcrumbItem key={item.title}>
+          <BreadcrumbItem key={item.root}>
             {idx < items.length - 1 ? (
               <Link href={item.root}>{item.title}</Link>
             ) : (

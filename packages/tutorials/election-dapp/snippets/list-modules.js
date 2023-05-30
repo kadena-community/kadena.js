@@ -1,4 +1,4 @@
-const { PactCommand  } = require('@kadena/client');
+const { PactCommand } = require('@kadena/client');
 const { createExp } = require('@kadena/pactjs');
 
 const NETWORK_ID = 'testnet04';
