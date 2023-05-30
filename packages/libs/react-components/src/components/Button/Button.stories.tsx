@@ -2,6 +2,7 @@ import { SystemIcons } from './../../';
 import { Button, IButtonProps } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
+import Link from 'next/link';
 import React from 'react';
 
 const meta: Meta<
@@ -66,6 +67,31 @@ export const Primary: Story = {
         <Button title={title} onClick={onClick} icon={Icon} disabled={disabled}>
           {text}
         </Button>
+      </>
+    );
+  },
+};
+
+export const Secondary: Story = {
+  name: 'LinkButton',
+  args: {
+    title: 'test title',
+    text: 'Click me, I am a link',
+    href: 'https://kadena.io',
+    selectIcon: undefined,
+    disabled: false,
+  },
+  render: ({ href, text, title, selectIcon, disabled }) => {
+    const url = new URL(href!);
+    const Icon = SystemIcons[selectIcon!];
+
+    return (
+      <>
+        <Link href={url} passHref legacyBehavior>
+          <Button title={title} as="a" icon={Icon} disabled={disabled}>
+            {text}
+          </Button>
+        </Link>
       </>
     );
   },
