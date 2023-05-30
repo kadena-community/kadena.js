@@ -28,16 +28,6 @@ const Home: FC = () => {
       title: 'Transfer',
       href: '/coin-transfer',
     },
-    {
-      icon: Chain,
-      title: 'Transfer With Ledger',
-      href: '/check-balance',
-    },
-    {
-      icon: Chain,
-      title: 'Finish CrossChain Transfer',
-      href: '/check-balance',
-    },
   ];
   return (
     <StyledHomeContainer>
