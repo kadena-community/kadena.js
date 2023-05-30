@@ -25,7 +25,9 @@
     ]
   },
   "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/react-components": "workspace:*",

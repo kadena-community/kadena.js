@@ -261,7 +261,9 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
+      '@kadena/chainweb-node-client': workspace:*
       '@kadena/client': workspace:*
+      '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@kadena/react-components': workspace:*
@@ -302,7 +304,9 @@ importers:
       sort-package-json: ~2.4.1
       typescript: 4.9.4
     dependencies:
+      '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
       '@kadena/client': link:../../libs/client
+      '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       '@kadena/pactjs': link:../../libs/pactjs
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@kadena/react-components': link:../../libs/react-components
