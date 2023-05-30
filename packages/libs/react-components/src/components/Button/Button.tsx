@@ -4,6 +4,12 @@ import { StyledButton } from './styles';
 
 import React, { FC } from 'react';
 
+export enum IButtonVariants {
+  primaryFilled = 'primaryFilled',
+  secondaryFilled = 'secondaryFilled',
+  positiveFilled = 'positiveFilled',
+}
+
 export interface IButtonProps
   extends Omit<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -18,6 +24,7 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
+  variant?: IButtonVariants;
 }
 
 export const Button: FC<IButtonProps> = ({

@@ -12,6 +12,22 @@ export const styleVariant = {
     $$focusOutlineColor: '$colors$primaryHighContrast',
     $$disabledBackgroundColor: '$colors$neutral3',
   },
+  secondaryFilled: {
+    $$color: '$colors$neutral1',
+    $$inverseColor: '$colors$neutral6',
+    $$bgColor: '$colors$secondaryContrast',
+    $$bgHoverColor: '$colors$secondaryHighContrast',
+    $$focusOutlineColor: '$colors$secondaryHighContrast',
+    $$disabledBackgroundColor: '$colors$neutral3',
+  },
+  positiveFilled: {
+    $$color: '$colors$neutral1',
+    $$inverseColor: '$colors$neutral6',
+    $$bgColor: '$colors$positiveContrast',
+    $$bgHoverColor: '$colors$positiveHighContrast',
+    $$focusOutlineColor: '$colors$positiveHighContrast',
+    $$disabledBackgroundColor: '$colors$neutral3',
+  },
 } as const;
 
 export const StyledButton = styled('button', {
