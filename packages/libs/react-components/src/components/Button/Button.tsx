@@ -1,14 +1,8 @@
 import { SystemIcons } from '../Icons';
 
-import { StyledButton } from './styles';
+import { StyledButton, StyledButtonVariants } from './styles';
 
 import React, { FC } from 'react';
-
-export enum IButtonVariants {
-  primaryFilled = 'primaryFilled',
-  secondaryFilled = 'secondaryFilled',
-  positiveFilled = 'positiveFilled',
-}
 
 export interface IButtonProps
   extends Omit<
@@ -24,7 +18,7 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
-  variant?: IButtonVariants;
+  variant?: StyledButtonVariants;
 }
 
 export const Button: FC<IButtonProps> = ({

@@ -1,7 +1,8 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
 import { styled } from '../../styles';
+
+import type * as Stitches from '@stitches/react';
 
 export const styleVariant = {
   primaryFilled: {
@@ -70,3 +71,5 @@ export const StyledButton = styled('button', {
     variant: 'primaryFilled',
   },
 });
+
+export type StyledButtonVariants = Stitches.VariantProps<typeof StyledButton>;
