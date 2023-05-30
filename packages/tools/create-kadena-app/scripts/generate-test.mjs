@@ -7,11 +7,14 @@ import { rm } from 'fs/promises';
 import customLog from './custom-log.mjs';
 
 $.log = customLog;
+$.env.NG_CLI_ANALYTICS = false;
 
 const generateAndTest = (template) =>
   within(async () => {
     const directory = `test-${template}-project`;
     const script = path.join('lib', 'index.js');
+    // we need this if somehow the directory is already there (e.g. a previous failed build)
+    await rm(directory, { recursive: true, force: true });
 
     await echo(`Generating ${template} project`);
     await $`node ${script} generate-project --name ${directory} --template ${template}`;
@@ -23,6 +26,6 @@ const generateAndTest = (template) =>
     await rm(directory, { recursive: true, force: true });
   });
 
+await generateAndTest('angular');
 await generateAndTest('nextjs');
 await generateAndTest('vuejs');
-await generateAndTest('angular');

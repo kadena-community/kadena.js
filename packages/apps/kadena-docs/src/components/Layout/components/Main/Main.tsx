@@ -2,29 +2,22 @@ import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
+import { LastModifiedDate } from '@/components';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { ITopDoc } from '@/data/getTopDocs';
-import { IMenuItem, IPageMeta, ISubHeaderElement } from '@/types/Layout';
+import { IPageProps } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 
-interface IProps {
-  children?: ReactNode;
-  menuItems: IMenuItem[];
-  aSideMenuTree: ISubHeaderElement[];
-  frontmatter: IPageMeta;
-  leftMenuTree: IMenuItem[];
-  topDocs: ITopDoc[];
-}
-
-export const Main: FC<IProps> = ({
+export const Main: FC<IPageProps> = ({
   children,
   frontmatter: {
     title = '',
     subTitle = '',
     description = '',
     layout: layoutType,
+    lastModifiedDate,
+    icon: pageIcon,
   },
   topDocs,
   aSideMenuTree,
@@ -44,8 +37,8 @@ export const Main: FC<IProps> = ({
   };
 
   const closeMenu = (): void => setIsMenuOpen(false);
-
   const Layout = getLayout(layoutType);
+
   return (
     <>
       <Head>
@@ -72,7 +65,7 @@ export const Main: FC<IProps> = ({
           layout={layoutType}
         />
         {isOneOfLayoutType(layoutType, 'landing') && title && (
-          <TitleHeader title={title} subTitle={subTitle} />
+          <TitleHeader title={title} subTitle={subTitle} icon={pageIcon} />
         )}
         {isOneOfLayoutType(layoutType, 'home') && (
           <HomeHeader topDocs={topDocs} />
@@ -94,7 +87,10 @@ export const Main: FC<IProps> = ({
         </Menu>
         <Layout isAsideOpen={isAsideOpen} aSideMenuTree={aSideMenuTree}>
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
-            <Breadcrumbs menuItems={leftMenuTree} />
+            <>
+              <Breadcrumbs menuItems={leftMenuTree} />
+              <LastModifiedDate date={lastModifiedDate} />
+            </>
           )}
           {children}
         </Layout>
