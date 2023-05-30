@@ -53,8 +53,8 @@ export const colorVariants = styleVariants(colors, (color) => {
   return [
     container,
     sprinkles({
-      color: `${color}Surface` as Sprinkles['color'],
-      bg: `${color}Contrast` as Sprinkles['color'],
+      color: `${color}Surface`,
+      bg: `${color}Contrast`,
     }),
     {
       vars: {
