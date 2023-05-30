@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "module": "ESNext",
+    "moduleResolution": "Node"
+  },
+  "ts-node": {
+    "esm": true
+  }
+}

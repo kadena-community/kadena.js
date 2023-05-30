@@ -1,11 +1,16 @@
 describe('full layout', () => {
   const aside = () => cy.get('[data-cy="aside"]');
   const menu = () => cy.get('[data-cy="menu"]');
+  const breadcrumbs = () => cy.get('[data-cy="breadcrumbs"]');
 
   beforeEach(() => {
     cy.visit('/docs/__tests/pact/atom-sdk');
   });
   describe('desktop', () => {
+    it('shows the breadcrumbs with icon', () => {
+      breadcrumbs().find('li').should('have.length', 2);
+      breadcrumbs().find('svg').should('exist');
+    });
     it('shows the left sidemenu', () => {
       cy.percySnapshot('test');
       menu().should('be.visible');

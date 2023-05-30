@@ -1,8 +1,8 @@
-import { IResponse } from '../../src/types/ApiResponse';
+import { IResponse } from '../../src/pages/api/subscribe';
 
 describe('Subscribe to mailList', () => {
   const subscribe = () => cy.get('[data-cy="subscribe"]');
-  const getData = (data: IResponse) => {
+  const getData = (data: IResponse<{}>) => {
     cy.intercept(
       {
         method: 'POST', // Route all GET requests

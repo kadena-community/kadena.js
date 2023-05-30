@@ -33,6 +33,12 @@ describe('landing page layout', () => {
         .contains(
           'The safest, most user-friendly language for smart contracts',
         );
+
+      header().find('svg').should('exist');
+
+      cy.get('header').first().find('nav > ul > li:nth-child(2)').click();
+      header().find('h1').contains('KadenaJS');
+      header().find('svg').should('not.exist');
     });
   });
 });

@@ -1,5 +1,6 @@
 import { ProductIcons } from '@kadena/react-components';
 
+import { ITopDoc } from '@/data/getTopDocs';
 import { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -21,6 +22,8 @@ export interface IPageMeta {
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
+  lastModifiedDate?: Date;
+  icon?: ProductIconNames;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
@@ -38,3 +41,12 @@ export interface ILayout {
 export type LevelType = 1 | 2 | 3;
 
 export type ProductIconNames = keyof typeof ProductIcons;
+
+export interface IPageProps {
+  children?: ReactNode;
+  menuItems: IMenuItem[];
+  aSideMenuTree: ISubHeaderElement[];
+  frontmatter: IPageMeta;
+  leftMenuTree: IMenuItem[];
+  topDocs: ITopDoc[];
+}

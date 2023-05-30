@@ -16,8 +16,8 @@
     "_phase:test": "npm run test",
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
-    "build:test": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
-    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
+    "build:test": "tsc & tsc -p ./tsconfig.esm.json",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
@@ -33,6 +33,7 @@
   "dependencies": {
     "@radix-ui/react-switch": "^1.0.2",
     "@stitches/react": "1.3.1-1",
+    "classnames": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -59,7 +60,7 @@
     "@storybook/testing-library": "^0.0.14-next.1",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "@types/react": "^18.0.28",
+    "@types/react": "^18.0.30",
     "eslint": "^8.15.0",
     "storybook": "^7.0.0-rc.3",
     "storybook-dark-mode": "^2.1.1",

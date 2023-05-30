@@ -17,6 +17,8 @@ import { createSlug } from '@/utils';
 import React, { FC, ReactNode } from 'react';
 
 const renderListItem = (item: ISubHeaderElement): ReactNode => {
+  if (item.title === undefined) return null;
+
   const slug = createSlug(item.title);
   return (
     <AsideLink href={`#${slug}`} key={slug} label={item.title}>

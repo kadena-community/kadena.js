@@ -92,3 +92,6 @@ packages/*/*/temp
 
 # Pact command history
 .pact-history
+
+# Intelij idea files
+.idea
