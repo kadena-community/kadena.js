@@ -1,7 +1,7 @@
 import { Head, Html, Main, NextScript } from 'next/document';
-import React from 'react';
+import React, { FC } from 'react';
 
-const Document = () => (
+const Document: FC = () => (
   <Html lang="en">
     <Head />
     <body className="darkTheme">

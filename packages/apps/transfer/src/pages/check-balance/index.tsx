@@ -1,12 +1,10 @@
 import { Button, TextField } from '@kadena/react-components';
 
-import { Option, Select } from '@/components/Global';
 import {
   StyledAccountForm,
   StyledBack,
   StyledCheckBalanceWrapper,
   StyledChevronLeft,
-  StyledField,
   StyledForm,
   StyledFormButton,
   StyledFormContainer,
@@ -14,8 +12,6 @@ import {
   StyledHeaderLogoWalletContent,
   StyledHeaderText,
   StyledIconImage,
-  StyledInputField,
-  StyledInputLabel,
   StyledLogoTextContainer,
   StyledMainContent,
   StyledResultContainer,
