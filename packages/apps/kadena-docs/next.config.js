@@ -6,6 +6,7 @@ import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.js';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.js';
 import remarkYoutube from './src/scripts/remarkYoutube.js';
 import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.js';
+import remarkCheckImageSize from './src/scripts/remarkCheckImageSize.js';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
@@ -72,6 +73,7 @@ const withMDX = mdx({
       remarkPropsToStaticRender,
       remarkYoutube,
       remarkFigureOutOfParagraph,
+      remarkCheckImageSize,
     ],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.

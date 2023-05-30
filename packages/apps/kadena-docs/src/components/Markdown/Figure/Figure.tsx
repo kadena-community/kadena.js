@@ -6,28 +6,30 @@ import Image from 'next/image';
 import React, { FC, ReactNode } from 'react';
 
 interface IProps {
-  children?: ReactNode;
   alt: string;
   src: string;
+  width: number;
+  height: number;
 }
 
-export const Figure: FC<IProps> = ({ children, alt, src }) => {
+export const Figure: FC<IProps> = ({ alt, src, width, height }) => {
   return (
-    <StyledFigure>
-      {children}
-      <Image
-        src={src}
-        alt={alt}
-        width="0"
-        height="0"
-        sizes="100vw"
-        style={{ width: '100%', height: 'auto' }}
-      />
-      <figcaption>
-        <Text size="sm" as="span">
-          {alt}
-        </Text>
-      </figcaption>
-    </StyledFigure>
+    <>
+      <StyledFigure>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          sizes="100vw"
+          style={{ maxWidth: width, height: 'auto' }}
+        />
+        <figcaption>
+          <Text size="sm" as="span">
+            {alt}
+          </Text>
+        </figcaption>
+      </StyledFigure>
+    </>
   );
 };
