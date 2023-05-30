@@ -6,25 +6,27 @@
 
 const remarkFigureOutOfParagraph = () => {
   return async (tree) => {
-    const children = tree.children.map((branch) => {
-      const { type } = branch;
+    const children = tree.children.map((node) => {
+      const { type } = node;
 
       if (
         type == 'paragraph' &&
-        branch.children &&
-        branch.children[0].type === 'image'
+        node.children &&
+        node.children[0].type === 'image'
       ) {
-        const leaf = branch.children[0] ?? null;
+        const leaf = node.children[0] ?? null;
 
-        const newBranch = {
+        const newNode = {
           ...leaf,
-          ...branch,
+          ...node,
           type: 'image',
         };
-        return newBranch;
+
+        delete newNode.children;
+        return newNode;
       }
 
-      return branch;
+      return node;
     });
 
     tree.children = children;

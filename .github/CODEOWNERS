@@ -4,10 +4,10 @@
 
 /common                                         @alber70g @randynamic @ggobugi27
 
-/packages/apps/explorer                         @alber70g @randynamic @ggobugi27
 /packages/apps/graph                            @alber70g @randynamic @ggobugi27
 /packages/apps/graph-client                     @alber70g @randynamic @ggobugi27 @eileenmguo
 /packages/apps/kadena-docs                      @eileenmguo @sstraatemans @isaozler @ash-vd
+/packages/apps/kadena-transfer                  @MRVDH @KristinaSpasevska @nil-amrutlal-dept @rezaerami
 
 /packages/libs/bootstrap-lib                    @alber70g @randynamic @ggobugi27
 /packages/libs/chainweb-node-client             @alber70g @randynamic @ggobugi27
@@ -30,5 +30,3 @@
 /packages/tools/heft-rig                        @alber70g @randynamic @ggobugi27
 /packages/tools/integration-tests               @alber70g @randynamic @ggobugi27
 /packages/tools/pactjs-cli                      @alber70g @randynamic @ggobugi27 @ash-vd
-
-/packages/tutorials                             @jermaine150 @randynamic
