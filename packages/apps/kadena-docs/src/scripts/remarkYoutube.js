@@ -13,21 +13,20 @@ const getYouTubeVideoId = (link) => {
   if (match && match[5]) {
     return match[5];
   }
-
   return;
 };
 
 const remarkYoutube = () => {
   return async (tree) => {
-    const children = tree.children.map((branch) => {
-      if (branch.children && branch.children[0]) {
-        const leaf = branch.children[0] ?? null;
+    const children = tree.children.map((node) => {
+      if (node.children && node.children[0]) {
+        const leaf = node.children[0] ?? null;
         const videoId = getYouTubeVideoId(leaf.url);
 
         if (videoId) {
-          const newBranch = {
+          const newNode = {
             ...leaf,
-            ...branch,
+            ...node,
             type: 'element',
             value: leaf.url,
             data: {
@@ -39,11 +38,11 @@ const remarkYoutube = () => {
             },
           };
 
-          delete newBranch.children;
-          return newBranch;
+          delete newNode.children;
+          return newNode;
         }
       }
-      return branch;
+      return node;
     });
 
     tree.children = children;

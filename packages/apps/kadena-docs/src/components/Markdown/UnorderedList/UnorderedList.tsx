@@ -6,6 +6,6 @@ interface IProp {
   children: string;
 }
 
-export const UnorderdList: FC<IProp> = ({ children }) => {
+export const UnorderedList: FC<IProp> = ({ children }) => {
   return <StyledList>{children}</StyledList>;
 };
