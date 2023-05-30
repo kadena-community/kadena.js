@@ -4,9 +4,13 @@
       "name": "coin",
       "governance": "GOVERNANCE",
       "doc": "'coin' represents the Kadena Coin Contract. This contract provides both the \\\n  \\buy/redeem gas support in the form of 'fund-tx', as well as transfer,       \\\n  \\credit, debit, coinbase, account creation and query, as well as SPV burn    \\\n  \\create. To access the coin contract, you may use its fully-qualified name,  \\\n  \\or issue the '(use coin)' command in the body of a module declaration.",
-      "usedModule": [
-        "TEST-USE",
-        "TEST-USE-2"
+      "usedModules": [
+        {
+          "name": "TEST-USE"
+        },
+        {
+          "name": "TEST-USE-2"
+        }
       ],
       "usedInterface": [
         "fungible-v2",
@@ -229,11 +233,15 @@
               "type": "decimal"
             }
           ],
-          "functionCalls": [
-            "TEST-USE.ok",
-            "TEST-USE.LAL",
-            "TRANSFER_XCHAIN-mgr"
-          ]
+          "functionCalls": {
+            "external": [
+              "TEST-USE.ok",
+              "TEST-USE.LAL"
+            ],
+            "internal": [
+              "TRANSFER_XCHAIN-mgr"
+            ]
+          }
         },
         {
           "name": "TRANSFER_XCHAIN-mgr",
@@ -248,7 +256,7 @@
               "type": "decimal"
             }
           ],
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "enforce-unit",
@@ -260,7 +268,7 @@
             }
           ],
           "doc": "Enforce minimum precision allowed for coin transactions",
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "validate-account",
@@ -271,7 +279,7 @@
             }
           ],
           "doc": "Enforce that an account name conforms to the coin contract \\\n         \\minimum and maximum length requirements, as well as the    \\\n         \\latin-1 character set.",
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "gas-only",
@@ -279,7 +287,7 @@
           "requiredCapabilities": [
             "GAS"
           ],
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "gas-guard",
@@ -290,9 +298,11 @@
             }
           ],
           "doc": "Predicate for gas + single key user guards",
-          "functionCalls": [
-            "gas-only"
-          ]
+          "functionCalls": {
+            "internal": [
+              "gas-only"
+            ]
+          }
         },
         {
           "name": "buy-gas",
@@ -314,11 +324,13 @@
           "withCapabilities": [
             "DEBIT"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "debit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "debit"
+            ]
+          }
         },
         {
           "name": "redeem-gas",
@@ -348,11 +360,13 @@
           "withCapabilities": [
             "CREDIT"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "credit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "credit"
+            ]
+          }
         },
         {
           "name": "create-account",
@@ -367,10 +381,12 @@
               "type": "guard"
             }
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-reserved"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-reserved"
+            ]
+          }
         },
         {
           "name": "get-balance",
@@ -381,7 +397,7 @@
               "type": "string"
             }
           ],
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "details",
@@ -395,7 +411,7 @@
               "type": "string"
             }
           ],
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "rotate",
@@ -413,12 +429,12 @@
           "withCapabilities": [
             "ROTATE"
           ],
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "precision",
           "returnType": "integer",
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "transfer",
@@ -440,12 +456,14 @@
           "withCapabilities": [
             "TRANSFER"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "debit",
-            "credit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "debit",
+              "credit"
+            ]
+          }
         },
         {
           "name": "transfer-create",
@@ -471,12 +489,14 @@
           "withCapabilities": [
             "TRANSFER"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "debit",
-            "credit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "debit",
+              "credit"
+            ]
+          }
         },
         {
           "name": "coinbase",
@@ -502,11 +522,13 @@
           "withCapabilities": [
             "CREDIT"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "credit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "credit"
+            ]
+          }
         },
         {
           "name": "remediate",
@@ -525,10 +547,12 @@
           "requiredCapabilities": [
             "REMEDIATE"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit"
+            ]
+          }
         },
         {
           "name": "debit",
@@ -547,10 +571,12 @@
           "requiredCapabilities": [
             "DEBIT"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit"
+            ]
+          }
         },
         {
           "name": "credit",
@@ -573,11 +599,13 @@
           "requiredCapabilities": [
             "CREDIT"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "enforce-reserved"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "enforce-reserved"
+            ]
+          }
         },
         {
           "name": "check-reserved",
@@ -589,7 +617,7 @@
             }
           ],
           "doc": " Checks ACCOUNT for reserved name and returns type if \\\n    \\ found or empty string. Reserved names start with a \\\n    \\ single char and colon, e.g. 'c:foo', which would return 'c' as type.",
-          "functionCalls": []
+          "functionCalls": {}
         },
         {
           "name": "enforce-reserved",
@@ -605,9 +633,11 @@
             }
           ],
           "doc": "Enforce reserved account name protocols.",
-          "functionCalls": [
-            "check-reserved"
-          ]
+          "functionCalls": {
+            "internal": [
+              "check-reserved"
+            ]
+          }
         },
         {
           "name": "create-allocation-account",
@@ -633,11 +663,13 @@
           "requiredCapabilities": [
             "GENESIS"
           ],
-          "functionCalls": [
-            "validate-account",
-            "enforce-unit",
-            "create-account"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "enforce-unit",
+              "create-account"
+            ]
+          }
         },
         {
           "name": "release-allocation",
@@ -652,10 +684,12 @@
             "RELEASE_ALLOCATION",
             "CREDIT"
           ],
-          "functionCalls": [
-            "validate-account",
-            "credit"
-          ]
+          "functionCalls": {
+            "internal": [
+              "validate-account",
+              "credit"
+            ]
+          }
         }
       ]
     }

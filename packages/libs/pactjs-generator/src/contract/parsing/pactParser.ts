@@ -45,7 +45,10 @@ interface IMethod {
 interface IFunction extends IMethod {
   requiredCapabilities?: string[];
   withCapabilities?: string[];
-  functionCalls?: string[];
+  functionCalls?: {
+    internal: string[];
+    external: string[];
+  };
 }
 
 interface ICapability extends IMethod {
@@ -57,7 +60,8 @@ export interface IPactTree {
   module?: Array<{
     name: string;
     doc: string;
-    usedModules?: string[];
+    governance: string;
+    usedModules?: Array<{ name: string; hash?: string }>;
     usedInterface?: string[];
     functions?: IFunction[];
     capabilities?: ICapability[];
@@ -131,18 +135,22 @@ const schema = block(
   repeat($('properties', seq($('name', atom), $('type', typeRule)))),
 );
 
+// (module name governance) @doc "doc"
 const moduleRule = block(
   // module
   id('module'),
   $('name', atom),
-  $('governance', atom),
+  $('governance', oneOf(atom, str, asString(block()))),
   maybe(id('@doc')),
   maybe($('doc', str)),
   maybe(seq(id('@model'), id('['), repeat(block()), id(']'))),
   repeat(
     $('functions', method('defun', functionBody)),
     $('capabilities', method('defcap', capabilityBody)),
-    block(id('use'), $('usedModule', atom)),
+    block(
+      id('use'),
+      $('usedModules', seq($('name', atom), $('hash', maybe(str)))),
+    ),
     block(id('implements'), $('usedInterface', atom)),
     $('schemas', schema),
     // skip other type of blocks
@@ -158,18 +166,8 @@ export const parser = repeat(
 
 const functionCall = (fns: string[], modules: string[]) =>
   repeat(
-    $(
-      'functionCalls',
-      seq(
-        id('('),
-        oneOf(
-          // call internal functions
-          $(ids(fns)),
-          // calling functions from other modules
-          $(asString(seq(ids(modules), id('.'), atom))),
-        ),
-      ),
-    ),
+    $('internal', seq(id('('), $(ids(fns)))),
+    $('external', seq(id('('), $(asString(seq(ids(modules), id('.'), atom))))),
     // if token is not match skip it and check the next one
     skipToken,
   );
@@ -179,19 +177,17 @@ const getFunctionCalls = (
   pointer: IPointer,
   fnList: string[],
   usedModules: string[],
-): string[] => {
-  const callList: string[] = [];
-
+): { internal?: string[]; external?: string[] } => {
   if (fun.bodyPointer !== undefined) {
     pointer.reset(fun.bodyPointer);
     const blockPointer = getBlockPointer(pointer);
     const data = functionCall(fnList, usedModules)(blockPointer);
     if (data !== FAILED) {
-      return unwrapData(data).functionCalls || [];
+      return unwrapData(data);
     }
   }
 
-  return callList;
+  return {};
 };
 
 export function pactParser(contract: string): IPactTree {
@@ -208,12 +204,15 @@ export function pactParser(contract: string): IPactTree {
     const fnList: string[] = mod.functions
       .map(({ name }) => name!)
       .filter(Boolean);
+    const usedModules = mod.usedModules
+      ? mod.usedModules.map(({ name }) => name)
+      : [];
     mod.functions.forEach((fun) => {
       (fun as any).functionCalls = getFunctionCalls(
         fun,
         pointer,
         fnList,
-        mod.usedModule || [],
+        usedModules,
       );
       delete (fun as any).bodyPointer;
     });

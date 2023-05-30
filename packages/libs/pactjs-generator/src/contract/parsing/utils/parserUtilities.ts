@@ -1,6 +1,3 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-/* eslint-disable @rushstack/typedef-var */
-
 import {
   ExWrappedData,
   IsWrappedData,
@@ -14,10 +11,11 @@ import { getBlockPointer, IPointer } from './getPointer';
 import { trim } from './trim';
 import { ExceptKeywords, UnionToIntersection } from './typeUtilities';
 
+// eslint-disable-next-line @rushstack/typedef-var
 export const FAILED = Symbol('FAILED');
 
-export interface IParser<T extends any = any> {
-  (pointer: IPointer): typeof FAILED | T;
+export interface IParser<T extends any = any, F = typeof FAILED> {
+  (pointer: IPointer): F | T;
   isRule?: boolean;
 }
 
@@ -29,9 +27,9 @@ type RuleReturnType<T extends IParser> = Exclude<ReturnType<T>, typeof FAILED>;
 interface IRule {
   <P extends IParser>(parser: P): P;
 }
-export const rule: IRule = (parser) => {
-  if (parser.isRule === true) return parser;
-  const wrapperParser: IParser = (pointer): unknown => {
+export const rule: IRule = (parser: IParser) => {
+  if (parser.isRule === true) return parser as IParser;
+  const wrapperParser = (pointer: IPointer): unknown => {
     const snapshot = pointer.snapshot();
     const result = parser(pointer);
     if (result === FAILED) {
@@ -243,17 +241,13 @@ export const block: ISeq = (...parsers: IParser[]) => {
   }) as any;
 };
 
-interface IMaybe {
-  <T extends IParser>(parser: T): (
-    pointer: IPointer,
-  ) => RuleReturnType<T> | undefined;
-}
-
-export const maybe: IMaybe = (parser: IParser) =>
+export const maybe = <T extends unknown>(
+  parser: IParser<T>,
+): IParser<T, never> =>
   rule((pointer: IPointer) => {
     const result = parser(pointer);
     return result === FAILED ? undefined : result;
-  });
+  }) as any;
 
 export const asString = (parser: IParser): IParser<string> =>
   rule((pointer: IPointer) => {
@@ -270,4 +264,6 @@ export const asString = (parser: IParser): IParser<string> =>
   });
 
 // match first.second.third
-export const dotedAtom = asString(seq(repeat(seq(atom, id('.'))), atom));
+export const dotedAtom: IParser<string> = asString(
+  seq(repeat(seq(atom, id('.'))), atom),
+);
