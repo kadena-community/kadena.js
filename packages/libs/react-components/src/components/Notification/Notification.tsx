@@ -12,10 +12,9 @@ import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface INotificationProps {
-  icon?: typeof SystemIcons[keyof typeof SystemIcons];
-
+  icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
   title: string;
-  description?: string;
+  children?: React.ReactNode;
   displayCloseButton?: boolean;
   expand?: VariantProps<typeof StyledNotification>['expand'];
 
@@ -26,10 +25,27 @@ export interface INotificationProps {
   footerContent?: React.ReactNode;
 }
 
+export const NotificationBody = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return <StyledText as="p">{children}</StyledText>;
+};
+
+export const NotificationFooter = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  //return <StyledHeading as="h6">{children}</StyledHeading>
+  return <StyledText as="p">{children}</StyledText>;
+};
+
 export const Notification: FC<INotificationProps> = ({
   icon,
   title,
-  description,
+  children,
   displayCloseButton,
   color,
   simple,
@@ -37,7 +53,7 @@ export const Notification: FC<INotificationProps> = ({
   footerContent,
 }) => {
   const Icon = icon!;
-  const isSimple = (simple as boolean) || description === undefined;
+  const isSimple = (simple as boolean) || children === undefined;
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
       <StyledIconButton
@@ -48,8 +64,7 @@ export const Notification: FC<INotificationProps> = ({
       />
 
       <StyledHeading as="h6">{title}</StyledHeading>
-      {!isSimple && <StyledText as="p">{description}</StyledText>}
-      {!isSimple && footerContent}
+      {!isSimple && children}
 
       {displayCloseButton === true && !isSimple && (
         <StyledIconButton
