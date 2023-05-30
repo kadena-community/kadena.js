@@ -14,27 +14,41 @@ export interface TransferResult {
   status?: string;
 }
 
-export async function coinTransfer(
-  fromAccount: string,
-  fromChainId: ChainId,
-  toAccount: string,
-  toChainId: ChainId,
-  amount: string,
-  fromPrivateKey: string,
-  networkId: ChainwebNetworkId,
-): Promise<PactCommand> {
+export async function coinTransfer({
+  fromAccount,
+  fromChainId,
+  toAccount,
+  toChainId,
+  amount,
+  fromPrivateKey,
+  networkId,
+  predicate = 'keys-all',
+  keys = [onlyKey(toAccount)],
+}: {
+  fromAccount: string;
+  fromChainId: ChainId;
+  toAccount: string;
+  toChainId: ChainId;
+  amount: string;
+  fromPrivateKey: string;
+  networkId: ChainwebNetworkId;
+  predicate?: string;
+  keys?: string[];
+}): Promise<PactCommand> {
   if (fromChainId === toChainId) {
-    return transferCreate(
+    return transferCreate({
       fromAccount,
       toAccount,
       amount,
       fromPrivateKey,
       fromChainId,
       networkId,
-    );
+      predicate,
+      keys,
+    });
   }
 
-  return crossTransfer(
+  return crossTransfer({
     fromAccount,
     fromChainId,
     toAccount,
@@ -42,17 +56,30 @@ export async function coinTransfer(
     amount,
     fromPrivateKey,
     networkId,
-  );
+    predicate,
+    keys,
+  });
 }
 
-export async function transferCreate(
-  fromAccount: string,
-  toAccount: string,
-  amount: string,
-  fromPrivateKey: string,
-  chainId: ChainId,
-  networkId: ChainwebNetworkId,
-): Promise<PactCommand> {
+export async function transferCreate({
+  fromAccount,
+  fromChainId,
+  toAccount,
+  amount,
+  fromPrivateKey,
+  networkId,
+  predicate,
+  keys,
+}: {
+  fromAccount: string;
+  fromChainId: ChainId;
+  toAccount: string;
+  amount: string;
+  fromPrivateKey: string;
+  networkId: ChainwebNetworkId;
+  predicate: string;
+  keys: string[];
+}): Promise<PactCommand> {
   if (isNaN(Number(amount))) {
     throw new Error('Amount must be a number');
   }
@@ -71,13 +98,13 @@ export async function transferCreate(
       toAccount,
       Number(amount),
     )
-    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
+    .addData({ ks: { pred: predicate, keys: keys } })
     .setMeta(
       {
         gasLimit: gasLimit,
         gasPrice: gasPrice,
         ttl: ttl,
-        chainId: chainId,
+        chainId: fromChainId,
         sender: fromAccount,
       },
       networkId,
@@ -105,19 +132,31 @@ export async function transferCreate(
 
   console.log(`Sending transaction: ${pactCommand.code}`);
 
-  await pactCommand.send(generateApiHost(networkId, chainId));
+  await pactCommand.send(generateApiHost(networkId, fromChainId));
   return pactCommand;
 }
 
-export async function crossTransfer(
-  fromAccount: string,
-  fromChainId: ChainId,
-  toAccount: string,
-  toChainId: ChainId,
-  amount: string,
-  fromPrivateKey: string,
-  networkId: ChainwebNetworkId,
-): Promise<PactCommand> {
+export async function crossTransfer({
+  fromAccount,
+  fromChainId,
+  toAccount,
+  toChainId,
+  amount,
+  fromPrivateKey,
+  networkId,
+  predicate,
+  keys,
+}: {
+  fromAccount: string;
+  fromChainId: ChainId;
+  toAccount: string;
+  toChainId: ChainId;
+  amount: string;
+  fromPrivateKey: string;
+  networkId: ChainwebNetworkId;
+  predicate: string;
+  keys: string[];
+}): Promise<PactCommand> {
   const pactCommand = new PactCommand();
   pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${convertDecimal(
     amount,
@@ -135,7 +174,7 @@ export async function crossTransfer(
       },
       toChainId,
     )
-    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
+    .addData({ ks: { pred: predicate, keys: keys } })
     .setMeta(
       {
         gasLimit: gasLimit,

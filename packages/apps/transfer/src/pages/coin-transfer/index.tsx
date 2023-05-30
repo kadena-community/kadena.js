@@ -41,12 +41,12 @@ const CoinTransfer: FC = () => {
   const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
   const numberOfChains = 20;
 
-  const [inputSenderAccount, setSenderAccount] = useState<string>('');
-  const [inputReceiverAccount, setReceiverAccount] = useState<string>('');
-  const [inputCoinAmount, setCoinAmount] = useState<string>('');
-  const [inputPrivateKey, setPrivateKey] = useState<string>('');
-  const [inputSenderChain, setSenderChain] = useState<number>(1);
-  const [inputReceiverChain, setReceiverChain] = useState<number>(1);
+  const [senderAccount, setSenderAccount] = useState<string>('');
+  const [receiverAccount, setReceiverAccount] = useState<string>('');
+  const [coinAmount, setCoinAmount] = useState<string>('');
+  const [privateKey, setPrivateKey] = useState<string>('');
+  const [senderChain, setSenderChain] = useState<number>(1);
+  const [receiverChain, setReceiverChain] = useState<number>(1);
   const [results, setResults] = useState<TransferResult>({});
 
   const handleTransfer = async (
@@ -55,15 +55,15 @@ const CoinTransfer: FC = () => {
     try {
       event.preventDefault();
 
-      const pactCommand = await coinTransfer(
-        inputSenderAccount,
-        convertIntToChainId(inputSenderChain),
-        inputReceiverAccount,
-        convertIntToChainId(inputReceiverChain),
-        inputCoinAmount,
-        inputPrivateKey,
-        NETWORK_ID,
-      );
+      const pactCommand = await coinTransfer({
+        fromAccount: senderAccount,
+        fromChainId: convertIntToChainId(senderChain),
+        toAccount: receiverAccount,
+        toChainId: convertIntToChainId(receiverChain),
+        amount: coinAmount,
+        fromPrivateKey: privateKey,
+        networkId: NETWORK_ID,
+      });
 
       const requestKey = pactCommand.requestKey;
 
@@ -136,13 +136,13 @@ const CoinTransfer: FC = () => {
                   id="server"
                   placeholder="Enter account name of the sender"
                   onChange={(e) => setSenderAccount(e.target.value)}
-                  value={inputSenderAccount}
+                  value={senderAccount}
                 />
               </StyledField>
               <StyledField>
                 <StyledInputLabel>Sender Chain</StyledInputLabel>
                 <StyledSelect
-                  value={inputSenderChain}
+                  value={senderChain}
                   onChange={(e) => setSenderChain(parseInt(e.target.value))}
                 >
                   {renderChainOptions()}
@@ -155,13 +155,13 @@ const CoinTransfer: FC = () => {
                   id="server"
                   placeholder="Enter account name of the receiver"
                   onChange={(e) => setReceiverAccount(e.target.value)}
-                  value={inputReceiverAccount}
+                  value={receiverAccount}
                 />
               </StyledField>
               <StyledField>
                 <StyledInputLabel>Receiver Chain</StyledInputLabel>
                 <StyledSelect
-                  value={inputReceiverChain}
+                  value={receiverChain}
                   onChange={(e) => setReceiverChain(parseInt(e.target.value))}
                 >
                   {renderChainOptions()}
@@ -174,7 +174,7 @@ const CoinTransfer: FC = () => {
                   id="server"
                   placeholder="Enter amount to transfer"
                   onChange={(e) => setCoinAmount(e.target.value)}
-                  value={inputCoinAmount}
+                  value={coinAmount}
                 />
               </StyledField>
               <StyledField>
@@ -184,7 +184,7 @@ const CoinTransfer: FC = () => {
                   id="server"
                   placeholder="Enter private key to sign the transaction"
                   onChange={(e) => setPrivateKey(e.target.value)}
-                  value={inputPrivateKey}
+                  value={privateKey}
                 />
               </StyledField>
             </StyledAccountForm>
