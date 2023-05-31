@@ -365,6 +365,180 @@ export const menuData = [
   {
     "children": [
       {
+        "children": [],
+        "root": "/docs/build/quickstart",
+        "title": "Kadena Quickstart",
+        "description": "Learn Kadena’s core concepts & tools for development in 15 minutes",
+        "menu": "Build",
+        "label": "Quickstart",
+        "order": 1,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [],
+        "root": "/docs/build/tools",
+        "title": "Useful Tools",
+        "description": "Useful Tools",
+        "menu": "Build",
+        "label": "Tools",
+        "order": 2,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [],
+        "root": "/docs/build/pact-lang-api-cookbook",
+        "title": "Pact-lang-API Cookbook",
+        "description": "Common use cases for `pact-lang-api`",
+        "menu": "Build",
+        "label": "Cookbook",
+        "order": 3,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/build/guides/marmalade-tutorial",
+            "title": "Marmalade Tutorial",
+            "description": "Marmalade Tutorial",
+            "menu": "Build",
+            "label": "Marmalade Tutorial",
+            "order": 1,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/build/guides/pact-local-api-queries",
+            "title": "Pact Local API queries",
+            "description": "Pact Local API queries",
+            "menu": "Build",
+            "label": "Pact Local API queries",
+            "order": 2,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/build/guides/building-a-voting-dapp",
+            "title": "Building a voting dApp",
+            "description": "Building a voting dApp",
+            "menu": "Build",
+            "label": "Building a voting dApp",
+            "order": 3,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/build/guides/safe-rotate-and-drain",
+            "title": "Safe Rotate and Drain",
+            "description": "Safe Rotate and Drain",
+            "menu": "Build",
+            "label": "Safe Rotate and Drain",
+            "order": 4,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/build/guides/safe-transfer",
+            "title": "Safe Transfer",
+            "description": "Safe Transfer",
+            "menu": "Build",
+            "label": "Safe Transfer",
+            "order": 5,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/build/guides",
+        "title": "A Step-By-Step Guide to Writing Pact Smart Contract",
+        "description": "A Step-By-Step Guide to Writing Pact Smart Contract",
+        "menu": "Build",
+        "label": "Pact Smart Contract",
+        "order": 4,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/build/support/technical-grants",
+            "title": "Technical Grants",
+            "description": "Get rewarded for your contributions to the growth of Kadena",
+            "menu": "Technical Grants",
+            "label": "Technical Grants",
+            "order": 5,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/build/support",
+        "title": "Developer Program",
+        "description": "Exclusive resources and support for you to build your best dApp",
+        "menu": "Support",
+        "label": "Developer Program",
+        "order": 5,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/build/resources/kuro-layer-2",
+            "title": "Kuro layer 2 - guides",
+            "description": "Kuro layer 2 - guides",
+            "menu": "Resources",
+            "label": "Pact Kuro layer 2",
+            "order": 2,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/build/resources",
+        "title": "Pact Resources",
+        "description": "Resources to start building on Kadena with Pact.",
+        "menu": "Resources",
+        "label": "Pact Resources",
+        "order": 6,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      }
+    ],
+    "root": "/docs/build",
+    "title": "Build on Kadena",
+    "menu": "Build",
+    "subTitle": "Build your best ideas with us",
+    "label": "Introduction",
+    "order": 1,
+    "description": "Build on Kadena",
+    "layout": "landing",
+    "icon": "Contribute",
+    "isMenuOpen": false,
+    "isActive": false
+  },
+  {
+    "children": [
+      {
         "children": [
           {
             "children": [],
