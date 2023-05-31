@@ -10,7 +10,7 @@
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
     "build": "",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
