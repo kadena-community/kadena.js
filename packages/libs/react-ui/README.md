@@ -3,7 +3,7 @@
 @kadena/react-ui is a library used to provide a styling environment and basic
 React components for reuse in Kadena applications. It uses
 [vanilla-extract/css](https://vanilla-extract.style) (will be referred to as VE)
-to establish a system of utility classes (defined as sprinkles) and css
+to establish a system of utility classes (defined as sprinkles) and CSS
 variables (defined in the theme) that align with Kadena's Design System and
 exposes them so that they can be used with any project or framework. A basic
 [Storybook](https://storybook.js.org/) integration has been implemented so that
@@ -77,25 +77,8 @@ const nextConfig = {
 module.exports = withVanillaExtract(nextConfig);
 ```
 
-If required, this plugin can be composed with other plugins:
-
-```
-const {
-  createVanillaExtractPlugin
-} = require('@vanilla-extract/next-plugin');
-const withVanillaExtract = createVanillaExtractPlugin();
-
-const withMDX = require('@next/mdx')({
-  extension: /\.mdx$/
-});
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  transpilePackages: ['@kadena/react-ui'],
-};
-
-module.exports = withVanillaExtract(withMDX(nextConfig));
-```
+If required, this plugin can be composed with other plugins. See
+[VE Next.js integration docs](https://vanilla-extract.style/documentation/integrations/next/#setup).
 
 After the plugin is setup, you should be able to use styling utilities exported
 from @kadena/react-ui and components within your application.

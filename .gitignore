@@ -3,7 +3,6 @@ packages/*/*/lib
 packages/*/*/lib-commonjs
 packages/*/*/.parcel-cache
 packages/*/*/dist
-packages/*/*/types
 
 # lock-files that don't belong here
 package-lock.json

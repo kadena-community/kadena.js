@@ -22,7 +22,6 @@
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
-    "build-storybook": "storybook build",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.cjs.json",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
