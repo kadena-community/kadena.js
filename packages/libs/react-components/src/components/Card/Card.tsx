@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 export interface ICardProps {
   children: React.ReactNode;
   fullWidth?: VariantProps<typeof StyledCard>['fullWidth'];
-  stack?: boolean;
+  stack?: VariantProps<typeof StyledCard>['stack'];
 }
 
 export interface ICardHeadingProps {
