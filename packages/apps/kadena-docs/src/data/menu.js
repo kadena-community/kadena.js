@@ -264,108 +264,6 @@ export const menuData = [
     "children": [
       {
         "children": [],
-        "root": "/docs/pact/how-does-it-work",
-        "title": "But how does it work",
-        "menu": "But how does it work",
-        "label": "but how?",
-        "order": 5,
-        "description": "How to get started",
-        "layout": "code",
-        "isMenuOpen": false,
-        "isActive": false
-      },
-      {
-        "children": [
-          {
-            "children": [
-              {
-                "children": [],
-                "root": "/docs/pact/basics/build-in-functions/tutorial",
-                "title": "Pact tutorial",
-                "menu": "Pact tutorial",
-                "label": "Tutorial",
-                "order": 0,
-                "description": "How to get started",
-                "layout": "full",
-                "isMenuOpen": false,
-                "isActive": false
-              }
-            ],
-            "root": "/docs/pact/basics/build-in-functions",
-            "title": "Welcome to pact",
-            "menu": "Build-in Functions",
-            "label": "General buildin",
-            "order": 5,
-            "description": "How to get started",
-            "layout": "full",
-            "isMenuOpen": false,
-            "isActive": false
-          }
-        ],
-        "root": "/docs/pact/basics",
-        "title": "Welcome to pact",
-        "menu": "Basics",
-        "label": "General",
-        "order": 5,
-        "description": "How to get started",
-        "layout": "full",
-        "isMenuOpen": false,
-        "isActive": false
-      },
-      {
-        "children": [
-          {
-            "children": [],
-            "root": "/docs/pact/atom-sdk/atom",
-            "title": "Pact",
-            "menu": "Pact Test it",
-            "label": "Pact Test",
-            "order": 1,
-            "description": "How to get started",
-            "layout": "code",
-            "isMenuOpen": false,
-            "isActive": false
-          }
-        ],
-        "root": "/docs/pact/atom-sdk",
-        "title": "Welcome to pact",
-        "menu": "Atom SDK",
-        "label": "Quickstart",
-        "order": 5,
-        "description": "How to get started",
-        "layout": "full",
-        "isMenuOpen": false,
-        "isActive": false
-      }
-    ],
-    "root": "/docs/pact",
-    "title": "Pact",
-    "menu": "Pact",
-    "label": "Introduction",
-    "order": 1,
-    "description": "How to get started",
-    "layout": "full",
-    "icon": "PactLanguage",
-    "isMenuOpen": false,
-    "isActive": false
-  },
-  {
-    "children": [],
-    "root": "/docs/kadenajs",
-    "title": "KadenaJS",
-    "menu": "KadenaJS",
-    "label": "Introduction",
-    "order": 1,
-    "description": "How to get started",
-    "layout": "landing",
-    "icon": "KadenaOverview",
-    "isMenuOpen": false,
-    "isActive": false
-  },
-  {
-    "children": [
-      {
-        "children": [],
         "root": "/docs/build/quickstart",
         "title": "Kadena Quickstart",
         "description": "Learn Kadena’s core concepts & tools for development in 15 minutes",
@@ -678,16 +576,66 @@ export const menuData = [
     "isActive": false
   },
   {
-    "children": [],
-    "root": "/docs/chainweb",
-    "title": "Chainweb",
-    "subTitle": "The safest, most user-friendly language for smart contracts",
-    "menu": "Chainweb",
-    "label": "Chainweb",
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/pact/beginner/web-editor",
+            "title": "Web Editor",
+            "description": "Kadena makes blockchain work for everyone.",
+            "menu": "Web Editor",
+            "label": "Web Editor",
+            "order": 2,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/pact/beginner/hello-world",
+            "title": "Hello World",
+            "description": "Kadena makes blockchain work for everyone.",
+            "menu": "Hello World",
+            "label": "Hello World",
+            "order": 2,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/pact/beginner/language-basics",
+            "title": "Language Basics",
+            "description": "Kadena makes blockchain work for everyone.",
+            "menu": "Language Basics",
+            "label": "Language Basics",
+            "order": 4,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/pact/beginner",
+        "title": "Welcome to Pact",
+        "description": "Kadena makes blockchain work for everyone.",
+        "menu": "Beginner",
+        "label": "Welcome to Pact",
+        "order": 2,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      }
+    ],
+    "root": "/docs/pact",
+    "title": "Learn Pact",
+    "menu": "Pact",
+    "subTitle": "Welcome to the Pact Developer Tutorials",
+    "label": "Introduction",
     "order": 3,
-    "description": "How to get started",
+    "description": "Kadena makes blockchain work for everyone.",
     "layout": "landing",
-    "icon": "SmartContract",
+    "icon": "PactDeveloper",
     "isMenuOpen": false,
     "isActive": false
   }
