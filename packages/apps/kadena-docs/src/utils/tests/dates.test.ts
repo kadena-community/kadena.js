@@ -6,8 +6,9 @@ describe('utils dates', () => {
       const currentDate = new Date();
       const expectedDate = new Date();
       expectedDate.setMonth(expectedDate.getMonth() - 1);
-      if (expectedDate.getMonth() === currentDate.getMonth())
+      if (expectedDate.getMonth() === currentDate.getMonth()) {
         expectedDate.setDate(0);
+      }
 
       const result = getOneMonthAgo(currentDate);
 
