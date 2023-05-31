@@ -86,6 +86,9 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
   transpilePackages: ['@kadena/react-ui'],
+  experimental: {
+    appDir: false,
+  },
 };
 
 export default withVanillaExtract(withMDX(nextConfig));
