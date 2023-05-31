@@ -185,7 +185,10 @@ export const Aside: StyledComponent<
   },
 });
 
-export const AsideItem: StyledComponent<'li'> = styled('li', {
+export const AsideItem: StyledComponent<
+  'li',
+  { isActive?: boolean | 'true' | 'false' }
+> = styled('li', {
   lineHeight: '$base',
 
   a: {
@@ -193,6 +196,20 @@ export const AsideItem: StyledComponent<'li'> = styled('li', {
     color: '$primaryHighContrast',
     '&:hover': {
       textDecoration: 'underline',
+    },
+  },
+
+  defaultVariants: {
+    isActive: false,
+  },
+  variants: {
+    isActive: {
+      true: {
+        '& a': {
+          color: '$neutral6',
+        },
+      },
+      false: {},
     },
   },
 });

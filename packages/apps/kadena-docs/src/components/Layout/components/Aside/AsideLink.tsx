@@ -8,9 +8,15 @@ interface IProps {
   children?: ReactNode;
   href: string;
   label: string;
+  isActive?: boolean;
 }
 
-export const AsideLink: FC<IProps> = ({ children, href, label }) => {
+export const AsideLink: FC<IProps> = ({
+  children,
+  href,
+  label,
+  isActive = false,
+}) => {
   const handleAnalytics = (): void => {
     analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
       label,
@@ -18,7 +24,7 @@ export const AsideLink: FC<IProps> = ({ children, href, label }) => {
     });
   };
   return (
-    <AsideItem onClick={handleAnalytics}>
+    <AsideItem onClick={handleAnalytics} isActive={isActive}>
       <Link href={href}>{label}</Link>
       {children}
     </AsideItem>
