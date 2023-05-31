@@ -3,8 +3,11 @@ import { Button } from '@kadena/react-components';
 import {
   StyledAccountForm,
   StyledBack,
+  StyledCheckbox,
+  StyledCheckboxLabel,
   StyledChevronLeft,
   StyledField,
+  StyledFieldCheckbox,
   StyledForm,
   StyledFormButton,
   StyledFormContainer,
@@ -29,6 +32,7 @@ import {
 import { KLogoComponent } from '@/resources/svg/generated';
 import {
   type TransferResult,
+  safeTransferCreate,
   transferCreate,
 } from '@/services/transfer/coin-transfer';
 import React, { FC, useState } from 'react';
@@ -41,7 +45,9 @@ const CoinTransfer: FC = () => {
   const [inputSenderAccount, setSenderAccount] = useState<string>('');
   const [inputReceiverAccount, setReceiverAccount] = useState<string>('');
   const [inputCoinAmount, setCoinAmount] = useState<string>('');
-  const [inputPrivateKey, setPrivateKey] = useState<string>('');
+  const [inputPrivateKeySender, setPrivateKeySender] = useState<string>('');
+  const [inputSafeTransfer, setSafeTransfer] = useState<boolean>(false);
+  const [inputPrivateKeyReceiver, setPrivateKeyReceiver] = useState<string>('');
   const [results, setResults] = useState<TransferResult>({});
 
   const coinTransfer = async (
@@ -50,14 +56,24 @@ const CoinTransfer: FC = () => {
     try {
       event.preventDefault();
 
-      const pactCommand = await transferCreate(
-        inputSenderAccount,
-        inputReceiverAccount,
-        inputCoinAmount,
-        inputPrivateKey,
-        chainId,
-        NETWORK_ID,
-      );
+      const pactCommand = inputSafeTransfer
+        ? await safeTransferCreate(
+            inputSenderAccount,
+            inputReceiverAccount,
+            inputCoinAmount,
+            inputPrivateKeySender,
+            inputPrivateKeyReceiver,
+            chainId,
+            NETWORK_ID,
+          )
+        : await transferCreate(
+            inputSenderAccount,
+            inputReceiverAccount,
+            inputCoinAmount,
+            inputPrivateKeySender,
+            chainId,
+            NETWORK_ID,
+          );
 
       const requestKey = pactCommand.requestKey;
 
@@ -115,7 +131,6 @@ const CoinTransfer: FC = () => {
 
                 <StyledInputField
                   type="text"
-                  id="server"
                   placeholder="Enter account name of the sender"
                   onChange={(e) => setSenderAccount(e.target.value)}
                   value={inputSenderAccount}
@@ -125,7 +140,6 @@ const CoinTransfer: FC = () => {
                 <StyledInputLabel>Receiver Account</StyledInputLabel>
                 <StyledInputField
                   type="text"
-                  id="server"
                   placeholder="Enter account name of the receiver"
                   onChange={(e) => setReceiverAccount(e.target.value)}
                   value={inputReceiverAccount}
@@ -135,22 +149,45 @@ const CoinTransfer: FC = () => {
                 <StyledInputLabel>Amount</StyledInputLabel>
                 <StyledInputField
                   type="text"
-                  id="server"
                   placeholder="Enter amount to transfer"
                   onChange={(e) => setCoinAmount(e.target.value)}
                   value={inputCoinAmount}
                 />
               </StyledField>
               <StyledField>
-                <StyledInputLabel>Sign</StyledInputLabel>
+                <StyledInputLabel>Sender Sign</StyledInputLabel>
                 <StyledInputField
                   type="text"
-                  id="server"
                   placeholder="Enter private key to sign the transaction"
-                  onChange={(e) => setPrivateKey(e.target.value)}
-                  value={inputPrivateKey}
+                  onChange={(e) => setPrivateKeySender(e.target.value)}
+                  value={inputPrivateKeySender}
                 />
               </StyledField>
+
+              <StyledFieldCheckbox>
+                <StyledCheckbox
+                  type="checkbox"
+                  id={'safe-transfer'}
+                  placeholder="Enter private key to sign the transaction"
+                  onChange={(e) => setSafeTransfer(!inputSafeTransfer)}
+                  value={inputSafeTransfer.toString()}
+                />
+                <StyledCheckboxLabel htmlFor="safe-transfer">
+                  Safe Transfer
+                </StyledCheckboxLabel>
+              </StyledFieldCheckbox>
+
+              {inputSafeTransfer ? (
+                <StyledField>
+                  <StyledInputLabel>Receiver Sign</StyledInputLabel>
+                  <StyledInputField
+                    type="text"
+                    placeholder="Enter receiver's private key to sign the transaction"
+                    onChange={(e) => setPrivateKeyReceiver(e.target.value)}
+                    value={inputPrivateKeyReceiver}
+                  />
+                </StyledField>
+              ) : null}
             </StyledAccountForm>
             <StyledFormButton>
               <Button title="Make Transfer">Make Transfer</Button>

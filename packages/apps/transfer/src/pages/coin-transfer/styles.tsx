@@ -198,3 +198,21 @@ export const StyledTableHead = styled('div', {
     padding: '1em',
   },
 });
+
+export const StyledFieldCheckbox = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flexStart',
+  margin: '40px 0',
+});
+export const StyledCheckbox = styled('input', {
+  width: '20px',
+});
+
+export const StyledCheckboxLabel = styled('label', {
+  fontSize: '1rem',
+  marginLeft: '12px',
+  color: 'white',
+  fontWeight: '500',
+  lineHeight: '17px',
+});
