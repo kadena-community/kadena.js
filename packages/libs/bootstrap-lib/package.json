@@ -5,7 +5,8 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/bootstrap-lib"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/bootstrap-lib"
   },
   "license": "ISC",
   "contributors": [
@@ -28,7 +29,7 @@
     "_phase:build": "npm run build",
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {

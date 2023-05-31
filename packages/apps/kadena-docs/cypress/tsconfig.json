@@ -3,7 +3,5 @@
   "compilerOptions": {
     "baseUrl": "./",
     "types": ["cypress", "node", "./support"]
-  },
-  "include": ["**/*.ts"],
-  "exclude": []
+  }
 }

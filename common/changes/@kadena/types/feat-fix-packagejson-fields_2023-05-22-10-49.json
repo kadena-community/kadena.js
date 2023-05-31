@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/types",
+      "comment": "Fix usage of `repository` and `npx` in package.json",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/types"
+}
