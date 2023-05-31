@@ -26,6 +26,11 @@ const Home: FC = () => {
       title: 'Transfer',
       href: '/coin-transfer',
     },
+    {
+      icon: Chain,
+      title: 'Code Explorer',
+      href: '/code-viewer',
+    },
   ];
 
   return (
@@ -38,12 +43,6 @@ const Home: FC = () => {
             <Key width="40px" height="40px" />
           </StyledIconBox>
           <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
-        </StyledHomeButton>
-        <StyledHomeButton onClick={codeViewer}>
-          <StyledIconBox>
-            <Key width="40px" height="40px" />
-          </StyledIconBox>
-          <StyledLinkText>Test Code View</StyledLinkText>
         </StyledHomeButton>
         {menu.map((item) => (
           <StyledHomeLink key={`item-${item.title}`} href={item.href}>
