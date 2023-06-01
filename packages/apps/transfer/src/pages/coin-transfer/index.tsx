@@ -4,6 +4,7 @@ import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
 import {
   StyledAccountForm,
   StyledBack,
+  StyledChainContainer,
   StyledChevronLeft,
   StyledField,
   StyledForm,
@@ -139,15 +140,17 @@ const CoinTransfer: FC = () => {
                   value={senderAccount}
                 />
               </StyledField>
-              <StyledField>
-                <StyledInputLabel>Sender Chain</StyledInputLabel>
-                <StyledSelect
-                  value={senderChain}
-                  onChange={(e) => setSenderChain(parseInt(e.target.value))}
-                >
-                  {renderChainOptions()}
-                </StyledSelect>
-              </StyledField>
+              <StyledTotalChunk>
+                <StyledChainContainer>
+                  <StyledInputLabel>Sender Chain</StyledInputLabel>
+                  <StyledSelect
+                    value={senderChain}
+                    onChange={(e) => setSenderChain(parseInt(e.target.value))}
+                  >
+                    {renderChainOptions()}
+                  </StyledSelect>
+                </StyledChainContainer>
+              </StyledTotalChunk>
               <StyledField>
                 <StyledInputLabel>Receiver Account</StyledInputLabel>
                 <StyledInputField
@@ -158,7 +161,7 @@ const CoinTransfer: FC = () => {
                   value={receiverAccount}
                 />
               </StyledField>
-              <StyledField>
+              <StyledChainContainer>
                 <StyledInputLabel>Receiver Chain</StyledInputLabel>
                 <StyledSelect
                   value={receiverChain}
@@ -166,7 +169,7 @@ const CoinTransfer: FC = () => {
                 >
                   {renderChainOptions()}
                 </StyledSelect>
-              </StyledField>
+              </StyledChainContainer>
               <StyledField>
                 <StyledInputLabel>Amount</StyledInputLabel>
                 <StyledInputField

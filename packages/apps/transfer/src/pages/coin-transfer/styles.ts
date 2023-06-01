@@ -163,38 +163,10 @@ export const StyledTotalChunk = styled('div', {
   width: '50%',
 });
 
-export const StyledAccountTotalValue = styled('div', {
-  fontWeight: 'bold',
-  fontSize: '1.5rem',
-});
-
-export const StyledTableContainer = styled('div', {
-  margin: '4% auto',
-  table: {
-    width: '100%',
-    textAlign: 'center',
-    tbody: {
-      tr: {
-        height: '2.8rem',
-        '&:nth-child(odd)': {
-          backgroundColor: '#2d2d2d42',
-        },
-      },
-      td: {
-        textAlign: 'center',
-        padding: '0.3rem 0.5rem',
-        '&:nth-child(2)': {
-          overflowWrap: 'anywhere',
-        },
-      },
-    },
-  },
-});
-
-export const StyledTableHead = styled('div', {
-  fontWeight: 'bold',
-  background: 'rgba(5 5 5 0.5)',
-  th: {
-    padding: '1em',
-  },
+export const StyledChainContainer = styled('div', {
+  width: '40%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flexStart',
+  margin: '20px 0',
 });
