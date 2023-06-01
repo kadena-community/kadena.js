@@ -96,6 +96,8 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         sender: IPactCommand['publicMeta']['sender'];
     }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
     // (undocumented)
+    setNonceCreator(nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    // (undocumented)
     status: string;
 }
 
@@ -113,6 +115,8 @@ export interface IPactCommand {
     data: Record<string, unknown>;
     // (undocumented)
     networkId: ChainwebNetworkId;
+    // (undocumented)
+    nonce?: NonceType;
     // (undocumented)
     publicMeta: IPublicMeta;
     // (undocumented)
@@ -253,6 +257,8 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     local(apiHost: string, options?: any): Promise<any>;
     // (undocumented)
     networkId: ChainwebNetworkId;
+    // (undocumented)
+    nonce: NonceType | undefined;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
@@ -273,6 +279,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     requestKey: string | undefined;
     send(apiHost: string): Promise<SendResponse>;
     setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
+    setNonceCreator(nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType): this;
     // (undocumented)
     signers: {
         pubKey: string;
