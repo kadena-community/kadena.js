@@ -1,7 +1,6 @@
 import { Button, SystemIcons } from './../../';
 import { fullWidthVariant, stackVariant } from './styles';
 import { Card, ICardProps } from '.';
-import { CardBody, CardFooter, CardHeading } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -38,33 +37,33 @@ export const Primary: Story = {
   render: ({ stack, fullWidth }) => {
     return (
       <>
-        <Card stack={stack} fullWidth={fullWidth}>
-          <CardHeading>Getting Started is Simple</CardHeading>
-          <CardBody>
+        <Card.Container stack={stack} fullWidth={fullWidth}>
+          <Card.Heading>Getting Started is Simple</Card.Heading>
+          <Card.Body>
             Learn Kadena&apos;s core concepts & tools for development in 15
             minutes
-          </CardBody>
-          <CardFooter>
+          </Card.Body>
+          <Card.Footer>
             <Button title={'Button'} icon={SystemIcons.Information}>
               Get Started
             </Button>
             <Button title={'Button'}>Hello World Tutorial</Button>
-          </CardFooter>
-        </Card>
+          </Card.Footer>
+        </Card.Container>
 
-        <Card stack={stack} fullWidth={fullWidth}>
-          <CardHeading>Getting Started is Simple</CardHeading>
-          <CardBody>
+        <Card.Container stack={stack} fullWidth={fullWidth}>
+          <Card.Heading>Getting Started is Simple</Card.Heading>
+          <Card.Body>
             Learn Kadena&apos;s core concepts & tools for development in 15
             minutes
-          </CardBody>
-          <CardFooter>
+          </Card.Body>
+          <Card.Footer>
             <Button title={'Button'} icon={SystemIcons.Information}>
               Get Started
             </Button>
             <Button title={'Button'}>Hello World Tutorial</Button>
-          </CardFooter>
-        </Card>
+          </Card.Footer>
+        </Card.Container>
       </>
     );
   },
