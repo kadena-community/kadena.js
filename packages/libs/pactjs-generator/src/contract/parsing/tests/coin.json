@@ -1,4 +1,9 @@
 {
+  "usedModules": [
+    {
+      "name": "TEST-USE"
+    }
+  ],
   "module": [
     {
       "name": "coin",

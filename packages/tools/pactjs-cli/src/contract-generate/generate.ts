@@ -2,6 +2,7 @@ import {
   FileContractDefinition,
   generateDts,
   IContractDefinition,
+  pactParser,
   StringContractDefinition,
 } from '@kadena/pactjs-generator';
 
@@ -54,6 +55,43 @@ export const generate =
   ): ((args: ContractGenerateOptions) => void) =>
   async (args: ContractGenerateOptions) => {
     let pactModule: IContractDefinition;
+    console.log(args);
+    if (args.newParser && 'contract' in args) {
+      console.log(`Generating Pact contract from ${args.contract}`);
+
+      const getContract = async (name: string) => {
+        console.log('fetching', name);
+        const mod = await retrieveContractFromChain(
+          name,
+          args.api,
+          args.chain,
+          args.network,
+        );
+        if (!mod) {
+          console.warn(name, 'return undefined');
+        } else {
+          console.log(name, 'length:', mod.length);
+        }
+        return mod || '';
+      };
+
+      const pactCode = await getContract(args.contract);
+
+      if (pactCode === undefined || pactCode.length === 0) {
+        program.error('Could not retrieve contract from chain');
+      }
+
+      const slags = args.contract.split('.');
+      const namespace = slags.length === 2 ? slags[0] : '';
+
+      const modules = await pactParser(pactCode, getContract, namespace);
+
+      writeFileSync(
+        join(process.cwd(), 'modules.json'),
+        JSON.stringify(modules, null, 2),
+      );
+      process.exit(0);
+    }
     if ('contract' in args) {
       console.log(`Generating Pact contract from ${args.contract}`);
 

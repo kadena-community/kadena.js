@@ -58,6 +58,21 @@ export interface IContractDefinition {
     get modulesWithFunctions(): Output;
 }
 
+// @public (undocumented)
+export interface IPactTree {
+    // Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    module?: IModule[];
+    // (undocumented)
+    namespace?: string[];
+    // (undocumented)
+    usedModules?: Array<{
+        name: string;
+        hash?: string;
+    }>;
+}
+
 // @alpha (undocumented)
 export interface ITemplate {
     // (undocumented)
@@ -65,6 +80,9 @@ export interface ITemplate {
     // (undocumented)
     parts: TemplateParts;
 }
+
+// @public (undocumented)
+export function pactParser(mainContract: string, getContract: (fullName: string) => Promise<string>, namespace?: string): Promise<Record<string, IModule | null>>;
 
 // @alpha (undocumented)
 export function parseTemplate(template: string): ITemplate;

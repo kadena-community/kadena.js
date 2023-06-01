@@ -263,7 +263,9 @@ export const asString = (parser: IParser): IParser<string> =>
     return val;
   });
 
-// match first.second.third
+/**
+ * @example namespace.module.function
+ */
 export const dotedAtom: IParser<string> = asString(
-  seq(repeat(seq(atom, id('.'))), atom),
+  seq(seq(atom, id('.')), repeat(seq(atom, id('.'))), atom),
 );

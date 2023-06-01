@@ -1,3 +1,5 @@
+
+
 (module coin GOVERNANCE
 
   @doc "'coin' represents the Kadena Coin Contract. This contract provides both the \
@@ -16,8 +18,6 @@
           (<= (length account) 256)))
     ]
 
-  (use TEST-USE)
-  (use TEST-USE-2)
 
   (implements fungible-v2)
   (implements fungible-xchain-v1)
@@ -37,6 +37,7 @@
   (defschema coin-schema
     @doc "The coin contract token schema"
     @model [ (invariant (>= balance 0.0)) ]
+
 
     balance:decimal
     guard:guard)
@@ -96,6 +97,7 @@
     ( managed:decimal
       requested:decimal
     )
+
 
     (TEST-USE.ok "ok" 1)
     (TEST-USE.LAL "ok" 1)

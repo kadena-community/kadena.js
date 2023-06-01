@@ -27,3 +27,7 @@ export * from './template/parsing/parseTemplate';
  * @alpha
  */
 export * from './template/generation/generateTemplates';
+/**
+ * @alpha
+ */
+export * from './contract/parsing/pactParser';

@@ -12,11 +12,13 @@ export type ContractGenerateOptions =
       capsInterface?: string;
       api: string;
       chain: number;
+      newParser?: boolean;
       network: keyof typeof networkMap;
     }
   | {
       file: string;
       clean?: boolean;
+      newParser?: boolean;
       capsInterface?: string;
     };
 
@@ -57,6 +59,7 @@ export function contractGenerateCommand(
     .command('contract-generate')
     .description('Generate client based on a contract')
     .option('-c, --clean', 'Clean existing generated files')
+    .option('-n, --newParser', 'use new parser')
     .option(
       '-i, --caps-interface',
       'Custom name for the interface of the caps. ' +
