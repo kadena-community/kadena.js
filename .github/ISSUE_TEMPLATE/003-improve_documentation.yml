@@ -1,0 +1,50 @@
+name: Improve documentation
+description: Suggestion improvements to content on an existing page or file.
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to suggest an improvement to our documentation. Please fill out this form as completely as possible.
+
+        ✅ I have read the [Code of Conduct](https://github.com/kadena-community/kadena.js/blob/master/CODE_OF_CONDUCT.md)
+        ✅ The improvement was not suggested before
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What page or file should be improved?
+      description: Please link to the page or file you'd like to see updated.
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: What part(s) of the article would you like to see updated?
+      description: |
+        - Give as much detail as you can to help us understand the change you want to see.
+        - Why should it be changed?
+        - What use cases does it support?
+        - What is the expected outcome?
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional information
+      description:
+        Add any other details, context or screenshots about the feature request
+        you may have here.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: willing-to-pr
+    attributes:
+      label: Participation
+      options:
+        - label: I am willing to submit a pull request for this improvement.
+          required: false
