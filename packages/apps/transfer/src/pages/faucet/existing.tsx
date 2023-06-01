@@ -13,8 +13,8 @@ export const getStaticProps: GetStaticProps = async () => {
 const ExistingFaucetPage: NextPageWithLayout = (props) => {
   return (
     <StyledContainer className="grid grid-cols-1 divide-y">
-      <StyledSection className="bg-[#474F52]/50 px-10 py-8">
-        <StyledHeader className="flex justify-between mb-6">
+      <StyledSection>
+        <StyledHeader>
           <h2>Account</h2>
           <a href="#">Fill in public key as your account name +</a>
         </StyledHeader>
