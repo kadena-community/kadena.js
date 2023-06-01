@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Adds `setNonceCreator()` to allow the user to set a custom nonce",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
