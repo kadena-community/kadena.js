@@ -1,11 +1,18 @@
 import { Button, TextField } from '@kadena/react-components';
 
 import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
+import dynamic from 'next/dynamic';
+
+const AceViewer = dynamic(import('@/components/Global/Ace'), {
+  ssr: false,
+});
+
 import {
   StyledAccountForm,
   StyledBack,
-  StyledCheckBalanceWrapper,
   StyledChevronLeft,
+  StyledCodeViewerContainer,
+  StyledCodeViewerWrapper,
   StyledField,
   StyledForm,
   StyledFormButton,
@@ -17,23 +24,26 @@ import {
   StyledInputLabel,
   StyledLogoTextContainer,
   StyledMainContent,
+  StyledResultContainer,
   StyledTextBold,
   StyledTextNormal,
   StyledTitle,
   StyledTitleContainer,
+  StyledTotalChunk,
+  StyledTotalContainer,
   StyledWalletNotConnected,
 } from '@/pages/code-viewer/styles';
 import { KLogoComponent } from '@/resources/svg/generated';
-import { codeViewer } from '@/services/modules/code-viewer';
+import { type CodeResult, codeViewer } from '@/services/modules/code-viewer';
+import { convertIntToChainId } from '@/services/utils/utils';
 import React, { FC, useState } from 'react';
 
 const GetCode: FC = () => {
   const [moduleName, setModuleName] = useState<string>('');
   const [senderChain, setChain] = useState<number>(1);
-  // const [results, setResults] = useState<ChainResult[]>([]);
+  const [results, setResults] = useState<CodeResult>({});
 
-  const NETWORK_ID = 'testnet04';
-  const chainId = '1';
+  const networkdId = 'testnet04';
   const numberOfChains = 20;
 
   const getCode = async (
@@ -41,9 +51,13 @@ const GetCode: FC = () => {
   ): Promise<void> => {
     try {
       event.preventDefault();
-      const data = await codeViewer(moduleName, chainId);
-      console.log(data);
-      // setResults(data);
+      const data = await codeViewer(
+        moduleName,
+        convertIntToChainId(senderChain),
+        networkdId,
+      );
+
+      setResults(data);
     } catch (e) {
       console.log(e);
     }
@@ -62,7 +76,7 @@ const GetCode: FC = () => {
   };
 
   return (
-    <StyledCheckBalanceWrapper>
+    <StyledCodeViewerWrapper>
       <StyledHeaderContainer>
         <StyledHeaderLogoWalletContent>
           <StyledLogoTextContainer>
@@ -92,7 +106,7 @@ const GetCode: FC = () => {
           <StyledForm onSubmit={getCode}>
             <StyledAccountForm>
               <StyledField>
-                <StyledInputLabel>Chain</StyledInputLabel>
+                <StyledInputLabel>Select Chain</StyledInputLabel>
                 <StyledSelect
                   value={senderChain}
                   placeholder="Select Chain"
@@ -116,8 +130,31 @@ const GetCode: FC = () => {
             </StyledFormButton>
           </StyledForm>
         </StyledFormContainer>
+
+        {results.status ? (
+          <StyledResultContainer>
+            <StyledTotalContainer>
+              <StyledTotalChunk>
+                <p>Request Key</p>
+                <p>{results.reqKey}</p>
+              </StyledTotalChunk>
+              <StyledTotalChunk>
+                <p>Status</p>
+                <p>{results.status}</p>
+              </StyledTotalChunk>
+            </StyledTotalContainer>
+          </StyledResultContainer>
+        ) : null}
+
+        {results.code ? (
+          <StyledResultContainer>
+            <StyledCodeViewerContainer>
+              <AceViewer code={results.code}></AceViewer>
+            </StyledCodeViewerContainer>
+          </StyledResultContainer>
+        ) : null}
       </StyledMainContent>
-    </StyledCheckBalanceWrapper>
+    </StyledCodeViewerWrapper>
   );
 };
 

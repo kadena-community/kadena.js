@@ -3,7 +3,7 @@ import { styled } from '@kadena/react-components';
 import { Chain, ChevronLeft } from '@/resources/svg/generated';
 import Link from 'next/link';
 
-export const StyledCheckBalanceWrapper = styled('div', {
+export const StyledCodeViewerWrapper = styled('div', {
   padding: '40px',
   color: 'white',
 });
@@ -135,22 +135,23 @@ export const StyledInputLabel = styled('label', {
   lineHeight: '17px',
 });
 
-export const StyledInputField = styled('input', {
-  padding: '16px',
-  outline: 'none',
-  background: '#050505',
-  border: 'none',
-  borderBottom: '1px solid #5A5A5A',
-  borderRadius: '4px',
-  color: '#F0F0F0',
-});
-
 export const StyledFormButton = styled('div', {
   marginTop: '16px',
 });
 
 export const StyledResultContainer = styled('div', {
   fontSize: '1rem',
+});
+
+export const StyledCodeViewerContainer = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+
+  margin: '4% auto',
+  padding: '8px',
+  borderRadius: '4px',
+  background: 'rgba(5, 5, 5, 0.5)',
 });
 
 export const StyledTotalContainer = styled('div', {
@@ -165,40 +166,4 @@ export const StyledTotalContainer = styled('div', {
 
 export const StyledTotalChunk = styled('div', {
   width: '50%',
-});
-
-export const StyledAccountTotalValue = styled('div', {
-  fontWeight: 'bold',
-  fontSize: '1.5rem',
-});
-
-export const StyledTableContainer = styled('div', {
-  margin: '4% auto',
-  table: {
-    width: '100%',
-    textAlign: 'center',
-    tbody: {
-      tr: {
-        height: '2.8rem',
-        '&:nth-child(odd)': {
-          backgroundColor: '#2d2d2d42',
-        },
-      },
-      td: {
-        textAlign: 'center',
-        padding: '0.3rem 0.5rem',
-        '&:nth-child(2)': {
-          overflowWrap: 'anywhere',
-        },
-      },
-    },
-  },
-});
-
-export const StyledTableHead = styled('div', {
-  fontWeight: 'bold',
-  background: 'rgba(5 5 5 0.5)',
-  th: {
-    padding: '1em',
-  },
 });
