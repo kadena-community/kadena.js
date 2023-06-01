@@ -92,13 +92,13 @@ export async function safeTransferCreate(
   }
 
   // sender need to send extra coins to the receiver which will be returned by the receiver
-  const amountWithExtra = Number(amount) + 0.00001;
+  const amountWithExtra = Number(amount) + 0.000000000001;
 
   const pactCommand = new PactCommand();
   pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${convertDecimal(
     amountWithExtra.toString(),
   )})(coin.transfer "${toAccount}" "${fromAccount}" ${convertDecimal(
-    '0.00001',
+    '0.000000000001',
   )})`;
 
   pactCommand
