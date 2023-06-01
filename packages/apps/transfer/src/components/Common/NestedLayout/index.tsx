@@ -10,7 +10,7 @@ import {
   StyledNavItem,
 } from './styles';
 
-import Image from 'next/image';
+import { KLogoComponent } from '@/resources/svg/generated';
 import React, { FC, ReactNode } from 'react';
 
 interface IProps {
@@ -22,7 +22,7 @@ export const NestedLayout: FC<IProps> = (props) => {
   return (
     <StyledContainer className="p-6">
       <StyledHeader className="flex justify-between">
-        <Image src="" alt="Kadena logo" />
+        <KLogoComponent width={64} />
         <StyledHeaderTitle className="grow">
           <p>K:faucet</p>
           <p>Kadena Testnet Faucet (chain #1)</p>
