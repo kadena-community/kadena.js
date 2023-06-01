@@ -13,6 +13,8 @@ import { Pact, PactCommand } from '../pact';
 import fetch from 'cross-fetch';
 const testURL: string = 'http://fake-api-host.local.co';
 
+jest.useFakeTimers().setSystemTime(new Date('2023-03-22'));
+
 function getCode(transaction: IUnsignedCommand): string {
   return JSON.parse(transaction.cmd).payload.exec.code;
 }
@@ -526,7 +528,7 @@ describe('TransactionCommand', () => {
     expect(updatedTransaction.sigs).toEqual([{ sig: 'sender-sig' }]);
   });
 
-  it('throws error when `addSignatures` is called without signer', async () => {
+  it('throws an error when `addSignatures` is called without signer', async () => {
     expect(() => {
       transactionCommand = pact.modules.coin['transfer-create'](
         sender,
@@ -538,5 +540,14 @@ describe('TransactionCommand', () => {
         sig: 'sender-sig',
       });
     }).toThrow();
+  });
+
+  it('allows setting a custom nonceCreator', async () => {
+    const transaction = transactionCommand
+      .setNonceCreator((t, dateInMs) => `${t.type} ${dateInMs} custom-nonce`)
+      .createCommand();
+
+    const parsedCmd = JSON.parse(transaction.cmd);
+    expect(parsedCmd.nonce).toEqual('exec 1679443211000 custom-nonce');
   });
 });
