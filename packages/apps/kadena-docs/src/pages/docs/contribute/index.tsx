@@ -10,13 +10,24 @@ const Home: FC = () => {
   return (
     <Stack direction="column" spacing="2xl">
       <BrowseSection>
-        <BrowseSection.LinkList title="Connect with our community">
-          <a href="https://discord.gg/Z2fq23YJgg">Discord Channel</a>
-          <a href="https://github.com/kadena-io/pact">Pact GitHub</a>
-          <a href="https://stackoverflow.com/search?q=pact-lang">#pact-lang</a>
-          <a href="https://kadena.io/subscribe/">Newsletter</a>
-          <a href="https://twitter.com/kadena_io">Twitter</a>
-        </BrowseSection.LinkList>
+        <BrowseSection.LinkBlock
+          title="Run a Node"
+          subtitle=" "
+          icon="RestApi"
+          href="node/overview"
+        />
+        <BrowseSection.LinkBlock
+          title="Ambassadors"
+          subtitle=" "
+          icon="Contribute"
+          href="ambassadors/overview"
+        />
+        <BrowseSection.LinkBlock
+          title="Kadena DAO"
+          subtitle=" "
+          icon="Concepts"
+          href="kadena-dao"
+        />
       </BrowseSection>
     </Stack>
   );

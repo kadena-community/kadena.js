@@ -807,5 +807,142 @@ export const menuData = [
     "icon": "PactDeveloper",
     "isMenuOpen": false,
     "isActive": false
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/contribute/node/start-mining",
+            "title": "Start Mining",
+            "description": "Resources",
+            "menu": "Start Mining",
+            "label": "Start Mining",
+            "order": 2,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/contribute/node/interact-with-nodes",
+            "title": "Interact with Nodes",
+            "description": "Resources",
+            "menu": "Interact with Nodes",
+            "label": "Interact with Nodes",
+            "order": 3,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/contribute/node/troubleshooting-chainweb",
+            "title": "Troubleshooting Chainweb",
+            "description": "If you're running a node and getting something like this the following, then it means that peer synchronization has failed",
+            "menu": "Troubleshooting Chainweb",
+            "label": "Troubleshooting Chainweb",
+            "order": 4,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/contribute/node",
+        "title": "Run a node",
+        "description": "Resources",
+        "menu": "Run a node",
+        "label": "Introduction",
+        "order": 2,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "root": "/docs/contribute/ambassadors/content-creator",
+            "title": "Content Creator",
+            "description": "Content Creators amplify Kadena’s brand by educating the wider community about Kadena through informative collateral whether visual or audio.",
+            "menu": "Content Creator",
+            "label": "Content Creator",
+            "order": 2,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/contribute/ambassadors/moderator",
+            "title": "Moderator",
+            "description": "Moderators are essential to keeping our official online social media channels up to date as well as providing a welcoming environment for community members to come together and monitoring those discussions.",
+            "menu": "Moderator",
+            "label": "Moderator",
+            "order": 3,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          },
+          {
+            "children": [],
+            "root": "/docs/contribute/ambassadors/community-channel-leader",
+            "title": "Communnity Channel Leader",
+            "description": "Community channels serve as a home for community members to discuss niche topics about Kadena or share news about Kadena not otherwise discussed in the main channel. To foster community growth on a more organic level, Kadena plans to help fund community channels by token awards to Community Channel Leaders who create the group and the community events.",
+            "menu": "Communnity Channel Leader",
+            "label": "Communnity Channel Leader",
+            "order": 4,
+            "layout": "full",
+            "isMenuOpen": false,
+            "isActive": false
+          }
+        ],
+        "root": "/docs/contribute/ambassadors",
+        "title": "Ambassador Overview",
+        "description": "Join a community of passionate individuals in helping spread Kadena's brand and mission",
+        "menu": "Ambassadors",
+        "label": "Ambassadors",
+        "order": 3,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [],
+        "root": "/docs/contribute/kadena-dao",
+        "title": "Kadena DAO",
+        "description": "Meaningful Initiatives Driven by the Voice of the Community",
+        "menu": "Kadena DAO",
+        "label": "Kadena DAO",
+        "order": 4,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      },
+      {
+        "children": [],
+        "root": "/docs/contribute/docs",
+        "title": "Contribute to Kadena Docs",
+        "description": "How to contribute to the docs from docs.kadena.io, GitHub, or a local environment.",
+        "menu": "Docs",
+        "label": "Docs",
+        "order": 5,
+        "layout": "full",
+        "isMenuOpen": false,
+        "isActive": false
+      }
+    ],
+    "root": "/docs/contribute",
+    "title": "Contribute",
+    "menu": "Contribute",
+    "subTitle": "Be a part of our ecosystem",
+    "label": "Contribute",
+    "order": 4,
+    "description": "Be a part of our ecosystem",
+    "layout": "landing",
+    "icon": "Contribute",
+    "isMenuOpen": false,
+    "isActive": false
   }
 ]
