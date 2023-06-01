@@ -12,6 +12,7 @@ export const StyledContainer = styled('div', {
 export const StyledHeader = styled('header', {
   display: 'flex',
   justifyContent: 'space-between',
+  columnGap: '1.5rem', // 24px
 });
 
 export const StyledHeaderTitle = styled('div', {
@@ -28,6 +29,25 @@ export const StyledNav = styled('nav', { flexBasis: '25%;' });
 
 export const StyledBackButton = styled(BackButton, {
   marginBottom: '3rem', // 48px
+});
+
+export const StyledNavItem = styled(NavItem, {
+  display: 'block',
+
+  variants: {
+    first: {
+      true: {
+        borderTopLeftRadius: '0.25rem', // 4px
+        borderTopRightRadius: '0.25rem', // 4px
+      },
+    },
+    last: {
+      true: {
+        borderBottomLeftRadius: '0.25rem', // 4px
+        borderBottomRightRadius: '0.25rem', // 4px
+      },
+    },
+  },
 });
 
 export const StyledTopNavItem = styled(NavItem, {
@@ -55,4 +75,14 @@ export const StyledLink = styled(Link, {
   lineHeight: '2.5rem', // 40px
   backgroundColor: 'rgb(80 80 80 / 0.5)',
   fontWeight: 400,
+
+  variants: {
+    active: {
+      true: {
+        backgroundColor: 'rgb(5 5 5 / 0.5)',
+        fontWeight: 500,
+        textDecoration: 'underline',
+      },
+    },
+  },
 });
