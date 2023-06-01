@@ -2,6 +2,34 @@
   "name": "@kadena/cryptography-utils",
   "entries": [
     {
+      "version": "0.3.0",
+      "tag": "@kadena/cryptography-utils_v0.3.0",
+      "date": "Thu, 01 Jun 2023 20:12:28 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fix usage of `repository` and `npx` in package.json"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Added `isSignedCommand` function"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.4",
       "tag": "@kadena/cryptography-utils_v0.1.4",
       "date": "Fri, 03 Mar 2023 11:24:59 GMT",

@@ -2,6 +2,42 @@
   "name": "@kadena/pactjs-cli",
   "entries": [
     {
+      "version": "0.1.0",
+      "tag": "@kadena/pactjs-cli_v0.1.0",
+      "date": "Thu, 01 Jun 2023 20:12:28 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add --contract option to retrieve a contract from the chain"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Fix usage of `repository` and `npx` in package.json"
+          },
+          {
+            "comment": "use nodejs path util to make path-like strings for cross OS compability"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "append the export to index.d.ts if it's not already there"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/pactjs-generator\" to `0.1.8`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.12",
       "tag": "@kadena/pactjs-cli_v0.0.12",
       "date": "Fri, 03 Mar 2023 11:24:59 GMT",

@@ -1,6 +1,17 @@
 # Change Log - @kadena/pactjs-cli
 
-This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Jun 2023 20:12:28 GMT and should not be manually modified.
+
+## 0.1.0
+Thu, 01 Jun 2023 20:12:28 GMT
+
+### Minor changes
+
+- Add --contract option to retrieve a contract from the chain
+
+### Patches
+
+- append the export to index.d.ts if it's not already there
 
 ## 0.0.12
 Fri, 03 Mar 2023 11:24:59 GMT

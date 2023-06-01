@@ -2,6 +2,34 @@
   "name": "@kadena/pactjs-generator",
   "entries": [
     {
+      "version": "0.1.8",
+      "tag": "@kadena/pactjs-generator_v0.1.8",
+      "date": "Thu, 01 Jun 2023 20:12:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Set the namespace for each module"
+          },
+          {
+            "comment": "fixing the issue regards \"rush install\" and \"rush build\" on windows"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Fix usage of `repository` and `npx` in package.json"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.7",
       "tag": "@kadena/pactjs-generator_v0.1.7",
       "date": "Fri, 03 Mar 2023 11:24:59 GMT",
