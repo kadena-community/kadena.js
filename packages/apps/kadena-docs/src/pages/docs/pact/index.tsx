@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
         title: 'Learn Pact',
         menu: 'Pact',
         subTitle: 'Welcome to the Pact Developer Tutorials',
-        label: 'Introduction',
+        label: 'Pact',
         order: 3,
         description: 'Kadena makes blockchain work for everyone.',
         layout: 'landing',

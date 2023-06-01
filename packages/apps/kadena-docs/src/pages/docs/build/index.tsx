@@ -1,6 +1,5 @@
-import { Heading, Stack, Text } from '@kadena/react-components';
+import { Stack } from '@kadena/react-components';
 
-import { BrowseSection } from '@/components';
 import { getTopDocs } from '@/data/getTopDocs';
 import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
