@@ -11,17 +11,17 @@ export interface ICardChildComponentProps {
   children: React.ReactNode;
 }
 
-export const CardHeading: FC<ICardChildComponentProps> = ({
+export const Heading: FC<ICardChildComponentProps> = ({
   children,
 }: ICardChildComponentProps) => {
   // TODO: implement with heading tag
   return <h4>{children}</h4>;
 };
 
-export const CardBody: FC<ICardChildComponentProps> = ({ children }) => {
+export const Body: FC<ICardChildComponentProps> = ({ children }) => {
   return <div className={StyledCardBody}>{children}</div>;
 };
-export const CardFooter: FC<ICardChildComponentProps> = ({ children }) => {
+export const Footer: FC<ICardChildComponentProps> = ({ children }) => {
   return <div className={StyledCardFooter}>{children}</div>;
 };
 
@@ -31,7 +31,7 @@ export interface ICardProps {
   stack?: keyof typeof stackVariant;
 }
 
-export const Card: FC<ICardProps> = ({
+export const Container: FC<ICardProps> = ({
   children,
   fullWidth = 'false',
   stack = 'false',
@@ -46,4 +46,18 @@ export const Card: FC<ICardProps> = ({
       {children}
     </div>
   );
+};
+
+interface ICard {
+  Container: FC<ICardProps>;
+  Heading: FC<ICardChildComponentProps>;
+  Body: FC<ICardChildComponentProps>;
+  Footer: FC<ICardChildComponentProps>;
+}
+
+export const Card: ICard = {
+  Container,
+  Heading,
+  Body,
+  Footer,
 };
