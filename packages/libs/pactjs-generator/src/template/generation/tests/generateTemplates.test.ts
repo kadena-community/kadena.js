@@ -4,6 +4,9 @@ import { generateTemplates } from '../generateTemplates';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+const normalizeLineEndings = (str: string, normalized = '\n'): string =>
+  str.replace(/\\r?\\n/g, normalized);
+
 describe('generateDts', () => {
   it('generates a ts for `Hello, ${name}!`', () => {
     const ts = generateTemplates(
@@ -42,7 +45,7 @@ export default {
         .filter((x) => x !== '')
         .join(' ');
 
-    expect(ts).toBe(expected);
+    expect(normalizeLineEndings(ts)).toBe(normalizeLineEndings(expected));
   });
 
   it('generates a ts for a full template', () => {
@@ -156,6 +159,6 @@ import { buildUnsignedTransaction, ICommandBuilder } from '@kadena/client';
         .filter((x) => x !== '')
         .join(' ');
 
-    expect(ts).toBe(expected);
+    expect(normalizeLineEndings(ts)).toBe(normalizeLineEndings(expected));
   });
 });
