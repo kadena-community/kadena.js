@@ -3,12 +3,11 @@ import {
   StyledBody,
   StyledBodyContainer,
   StyledBodyTitle,
-  StyledBottomNavItem,
   StyledContainer,
   StyledHeader,
   StyledHeaderTitle,
   StyledNav,
-  StyledTopNavItem,
+  StyledNavItem,
 } from './styles';
 
 import Image from 'next/image';
@@ -30,22 +29,19 @@ export const NestedLayout: FC<IProps> = (props) => {
         </StyledHeaderTitle>
         <a href="#">Connect your wallet</a>
       </StyledHeader>
-      <StyledBodyContainer className="flex flex-row gap-x-10">
-        <StyledNav className="basis-1/4">
-          <StyledBackButton className="mb-12" />
+      <StyledBodyContainer>
+        <StyledNav>
+          <StyledBackButton />
           <ul>
             <li>
-              <StyledTopNavItem href="/faucet/new" className="rounded-t">
+              <StyledNavItem href="/faucet/new" first>
                 New Account
-              </StyledTopNavItem>
+              </StyledNavItem>
             </li>
             <li>
-              <StyledBottomNavItem
-                href="/faucet/existing"
-                className="rounded-b"
-              >
+              <StyledNavItem href="/faucet/existing" last>
                 Existing Account
-              </StyledBottomNavItem>
+              </StyledNavItem>
             </li>
           </ul>
         </StyledNav>

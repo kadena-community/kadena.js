@@ -11,6 +11,16 @@ export const StyledSection = styled('section', {
   paddingRight: '2.5rem', // 40px
   paddingTop: '2rem', // 32px
   paddingBottom: '2rem', // 32px
+
+  '&:first-child': {
+    borderTopLeftRadius: '0.25rem', // 4px
+    borderTopRightRadius: '0.25rem', // 4px
+  },
+
+  '&:last-child': {
+    borderBottomLeftRadius: '0.25rem', // 4px
+    borderBottomRightRadius: '0.25rem', // 4px
+  },
 });
 
 export const StyledHeader = styled('header', {
