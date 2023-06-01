@@ -1,14 +1,28 @@
 import '@/resources/styles/globals.css';
 
 import { Layout } from '@/components/Common';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import React, { FC } from 'react';
+import type { FC, ReactElement, ReactNode } from 'react';
+import React from 'react';
 
-const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
-  <Layout>
-    {/* @ts-ignore */}
-    <Component {...pageProps} />
-  </Layout>
-);
+// @see; https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const App: FC<AppPropsWithLayout> = ({
+  Component,
+  pageProps,
+}: AppPropsWithLayout) => {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
+
+  return getLayout(<Component {...pageProps} />);
+};
 
 export default App;
