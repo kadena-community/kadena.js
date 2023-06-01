@@ -6,7 +6,7 @@
   "scripts": {
     "build": "",
     "_phase:build": "npm run build",
-    "lint": "npx eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
+    "lint": "eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
     "_phase:test": "npm run test",
     "test": ""
   },
