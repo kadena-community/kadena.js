@@ -8,6 +8,8 @@ import remarkYoutube from './src/scripts/remarkYoutube.js';
 import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.js';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+const withVanillaExtract = createVanillaExtractPlugin();
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
 import { readFileSync } from 'fs';
 
@@ -83,6 +85,7 @@ const withMDX = mdx({
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
+  transpilePackages: ['@kadena/react-ui'],
 };
 
-export default withMDX(nextConfig);
+export default withVanillaExtract(withMDX(nextConfig));

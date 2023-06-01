@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-config",
+      "comment": "Updated React profile to detect react version",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-config"
+}
