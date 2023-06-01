@@ -79,7 +79,7 @@ const responsiveProperties = defineProperties({
     marginBottom: vars.sizes,
     marginLeft: vars.sizes,
     marginRight: vars.sizes,
-    width: { ...vars.sizes, full: '100%' },
+    width: { ...vars.sizes, full: '100%', 'max-content': 'max-content' },
     height: vars.sizes,
     gap: vars.sizes,
     overflow: ['hidden'],
