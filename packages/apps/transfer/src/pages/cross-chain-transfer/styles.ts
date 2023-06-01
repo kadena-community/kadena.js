@@ -1,8 +1,5 @@
 import { styled } from '@kadena/react-components';
 
-import { Chain, ChevronLeft } from '@/resources/svg/generated';
-import Link from 'next/link';
-
 export const StyledMainContent = styled('main', {});
 
 export const StyledFormContainer = styled('div', {
@@ -31,22 +28,4 @@ export const StyledAccountForm = styled('div', {
 
 export const StyledFormButton = styled('div', {
   marginTop: '16px',
-});
-
-export const StyledResultContainer = styled('div', {
-  fontSize: '1rem',
-});
-
-export const StyledTotalContainer = styled('div', {
-  display: 'flex',
-  justifyContent: 'space-between',
-
-  margin: '4% auto',
-  padding: '8px',
-  borderRadius: '4px',
-  background: 'rgba(5, 5, 5, 0.5)',
-});
-
-export const StyledTotalChunk = styled('div', {
-  width: '50%',
 });

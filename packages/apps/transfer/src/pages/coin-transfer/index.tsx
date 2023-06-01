@@ -1,34 +1,17 @@
-import { Button } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-components';
 
-import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
+import MainLayout from '@/components/Common/Layout/MainLayout';
+import { StyledOption } from '@/components/Global/Select/styles';
 import {
   StyledAccountForm,
-  StyledBack,
-  StyledChainContainer,
-  StyledChevronLeft,
-  StyledField,
   StyledForm,
   StyledFormButton,
   StyledFormContainer,
-  StyledHeaderContainer,
-  StyledHeaderLogoWalletContent,
-  StyledHeaderText,
-  StyledIconImage,
-  StyledInputField,
-  StyledInputLabel,
-  StyledKadenaTransferWrapper,
-  StyledLogoTextContainer,
   StyledMainContent,
   StyledResultContainer,
-  StyledTextBold,
-  StyledTextNormal,
-  StyledTitle,
-  StyledTitleContainer,
   StyledTotalChunk,
   StyledTotalContainer,
-  StyledWalletNotConnected,
 } from '@/pages/coin-transfer/styles';
-import { KLogoComponent } from '@/resources/svg/generated';
 import {
   type TransferResult,
   coinTransfer,
@@ -100,96 +83,47 @@ const CoinTransfer: FC = () => {
   };
 
   return (
-    <StyledKadenaTransferWrapper>
-      <StyledHeaderContainer>
-        <StyledHeaderLogoWalletContent>
-          <StyledLogoTextContainer>
-            <KLogoComponent width="100px" />
-            <StyledHeaderText>
-              <StyledTextBold>K:Transfer</StyledTextBold>
-              <StyledTextNormal>Kadena Testnet</StyledTextNormal>
-            </StyledHeaderText>
-          </StyledLogoTextContainer>
-          <StyledWalletNotConnected>
-            <p>Connect your wallet</p>
-            <StyledIconImage width={'40px'} height={'40px'} />
-          </StyledWalletNotConnected>
-        </StyledHeaderLogoWalletContent>
-
-        <StyledTitleContainer>
-          <StyledBack href={'/'}>
-            <StyledChevronLeft width={'20px'} height={'20px'} />
-            <span>Back</span>
-          </StyledBack>
-          <StyledTitle>Kadena Coin Transfer</StyledTitle>
-        </StyledTitleContainer>
-      </StyledHeaderContainer>
-
+    <MainLayout title="Kadena Coin Transfer">
       <StyledMainContent>
         <StyledFormContainer>
           <StyledForm onSubmit={handleTransfer}>
             <StyledAccountForm>
-              <StyledField>
-                <StyledInputLabel>Sender Account</StyledInputLabel>
-
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter account name of the sender"
-                  onChange={(e) => setSenderAccount(e.target.value)}
-                  value={senderAccount}
-                />
-              </StyledField>
-              <StyledTotalChunk>
-                <StyledChainContainer>
-                  <StyledInputLabel>Sender Chain</StyledInputLabel>
-                  <StyledSelect
-                    value={senderChain}
-                    onChange={(e) => setSenderChain(parseInt(e.target.value))}
-                  >
-                    {renderChainOptions()}
-                  </StyledSelect>
-                </StyledChainContainer>
-              </StyledTotalChunk>
-              <StyledField>
-                <StyledInputLabel>Receiver Account</StyledInputLabel>
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter account name of the receiver"
-                  onChange={(e) => setReceiverAccount(e.target.value)}
-                  value={receiverAccount}
-                />
-              </StyledField>
-              <StyledChainContainer>
-                <StyledInputLabel>Receiver Chain</StyledInputLabel>
-                <StyledSelect
-                  value={receiverChain}
-                  onChange={(e) => setReceiverChain(parseInt(e.target.value))}
-                >
-                  {renderChainOptions()}
-                </StyledSelect>
-              </StyledChainContainer>
-              <StyledField>
-                <StyledInputLabel>Amount</StyledInputLabel>
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter amount to transfer"
-                  onChange={(e) => setCoinAmount(e.target.value)}
-                  value={coinAmount}
-                />
-              </StyledField>
-              <StyledField>
-                <StyledInputLabel>Sign</StyledInputLabel>
-                <StyledInputField
-                  type="text"
-                  id="server"
-                  placeholder="Enter private key to sign the transaction"
-                  onChange={(e) => setPrivateKey(e.target.value)}
-                  value={privateKey}
-                />
-              </StyledField>
+              <TextField
+                label="Sender Account"
+                inputProps={{
+                  placeholder: 'Enter account name of the sender',
+                  // @ts-ignore
+                  onChange: (e) => setSenderAccount(e?.target?.value),
+                  value: senderAccount,
+                }}
+              />
+              <TextField
+                label="Receiver Account"
+                inputProps={{
+                  placeholder: 'Enter account name of the receiver',
+                  // @ts-ignore
+                  onChange: (e) => setReceiverAccount(e?.target?.value),
+                  value: receiverAccount,
+                }}
+              />
+              <TextField
+                label="Amount"
+                inputProps={{
+                  placeholder: 'Enter amount to transfer',
+                  // @ts-ignore
+                  onChange: (e) => setCoinAmount(e?.target?.value),
+                  value: coinAmount,
+                }}
+              />
+              <TextField
+                label="Sign"
+                inputProps={{
+                  placeholder: 'Enter private key to sign the transaction',
+                  // @ts-ignore
+                  onChange: (e) => setPrivateKey(e?.target?.value),
+                  value: privateKey,
+                }}
+              />
             </StyledAccountForm>
             <StyledFormButton>
               <Button title="Make Transfer">Make Transfer</Button>
@@ -212,7 +146,7 @@ const CoinTransfer: FC = () => {
           </StyledResultContainer>
         ) : null}
       </StyledMainContent>
-    </StyledKadenaTransferWrapper>
+    </MainLayout>
   );
 };
 
