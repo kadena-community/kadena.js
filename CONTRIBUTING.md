@@ -12,8 +12,7 @@ Do you want to file a bug? Please [open a new issue][1].
 
 ## Development
 
-Please [install Node.js][2] and [install pnpm][3] if you haven't already.
-Install Rush:
+[Install Node.js][2] if you haven't already. Then install Rush:
 
 ```bash
 pnpm install --global @microsoft/rush
@@ -25,6 +24,7 @@ Clone the repository and install dependencies:
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 rush install
+rush build
 ```
 
 Also see the Rush guide on [Getting started as a developer][4].
