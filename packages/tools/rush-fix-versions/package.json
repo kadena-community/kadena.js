@@ -10,6 +10,9 @@
     "build": "heft build",
     "test": ""
   },
+  "bin": {
+    "rush-fix-versions": "./lib/index.js"
+  },
   "keywords": [
     "rush"
   ],

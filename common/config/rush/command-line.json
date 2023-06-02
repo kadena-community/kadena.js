@@ -69,10 +69,11 @@
       "name": "fix-versions",
       "summary": "Runs fix-versions to get consistent versions across projects",
       "safeForSimultaneousRushProcesses": false,
-      "autoinstallerName": "build-rush-fix-versions",
-      // This will invoke packages/tools/rush-fix-versions/lib/index.js
-      "shellCommand": "node ./packages/tools/rush-fix-versions/lib/index.js"
+      "autoinstallerName": "rush-fix-versions",
+      // This will invoke ./common/autoinstallers/rush-fix-versions/node_modules/.bin/rush-fix-versions
+      "shellCommand": "rush-fix-versions"
     },
+
     {
       "commandKind": "bulk",
       "name": "precommit",

@@ -1,5 +1,5 @@
 {
-  "name": "build-rush-fix-versions",
+  "name": "rush-fix-versions",
   "version": "1.0.0",
   "private": true,
   "scripts": {
