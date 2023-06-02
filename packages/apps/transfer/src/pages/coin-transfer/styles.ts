@@ -50,26 +50,3 @@ export const StyledTotalContainer = styled('div', {
 export const StyledTotalChunk = styled('div', {
   width: '50%',
 });
-
-export const StyledTableContainer = styled('div', {
-  margin: '4% auto',
-  table: {
-    width: '100%',
-    textAlign: 'center',
-    tbody: {
-      tr: {
-        height: '2.8rem',
-        '&:nth-child(odd)': {
-          backgroundColor: '#2d2d2d42',
-        },
-      },
-      td: {
-        textAlign: 'center',
-        padding: '0.3rem 0.5rem',
-        '&:nth-child(2)': {
-          overflowWrap: 'anywhere',
-        },
-      },
-    },
-  },
-});

@@ -1,30 +1,17 @@
 import { Button, TextField } from '@kadena/react-components';
 
+import MainLayout from '@/components/Common/Layout/MainLayout';
 import {
   StyledAccountForm,
-  StyledBack,
-  StyledCheckBalanceWrapper,
-  StyledChevronLeft,
   StyledForm,
   StyledFormButton,
   StyledFormContainer,
-  StyledHeaderContainer,
-  StyledHeaderLogoWalletContent,
-  StyledHeaderText,
-  StyledIconImage,
-  StyledLogoTextContainer,
   StyledMainContent,
   StyledResultContainer,
   StyledTableContainer,
-  StyledTextBold,
-  StyledTextNormal,
-  StyledTitle,
-  StyledTitleContainer,
   StyledTotalChunk,
   StyledTotalContainer,
-  StyledWalletNotConnected,
 } from '@/pages/check-balance/styles';
-import { KLogoComponent } from '@/resources/svg/generated';
 import {
   type ChainResult,
   checkBalance,
@@ -60,31 +47,7 @@ const GetBalance: FC = () => {
     );
 
   return (
-    <StyledCheckBalanceWrapper>
-      <StyledHeaderContainer>
-        <StyledHeaderLogoWalletContent>
-          <StyledLogoTextContainer>
-            <KLogoComponent width="100px" />
-            <StyledHeaderText>
-              <StyledTextBold>K:Transfer</StyledTextBold>
-              <StyledTextNormal>Kadena Testnet</StyledTextNormal>
-            </StyledHeaderText>
-          </StyledLogoTextContainer>
-          <StyledWalletNotConnected>
-            <p>Connect your wallet</p>
-            <StyledIconImage width={'40px'} height={'40px'} />
-          </StyledWalletNotConnected>
-        </StyledHeaderLogoWalletContent>
-
-        <StyledTitleContainer>
-          <StyledBack href={'/'}>
-            <StyledChevronLeft width={'20px'} height={'20px'} />
-            <span>Back</span>
-          </StyledBack>
-          <StyledTitle>Check account balance</StyledTitle>
-        </StyledTitleContainer>
-      </StyledHeaderContainer>
-
+    <MainLayout title="Check Account Balance">
       <StyledMainContent>
         <StyledFormContainer>
           <StyledForm onSubmit={getBalance}>
@@ -166,7 +129,7 @@ const GetBalance: FC = () => {
           </StyledResultContainer>
         ) : null}
       </StyledMainContent>
-    </StyledCheckBalanceWrapper>
+    </MainLayout>
   );
 };
 
