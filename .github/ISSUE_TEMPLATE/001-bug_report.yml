@@ -5,12 +5,23 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: |
-        Thank you for taking the time to file a bug report. Please fill out this form as completely as possible.
+      value:
+        Thank you for taking the time to file a bug report. Please fill out this
+        form as completely as possible.
 
-        ✅ I have read the [Code of Conduct](https://github.com/kadena-community/kadena.js/blob/master/CODE_OF_CONDUCT.md)
-        ✅ The bug was not reported before
-        ✅ I am using the **latest version** of the relevant package(s)
+  - type: checkboxes
+    id: initial-checks
+    attributes:
+      label: 'Please confirm the following:'
+      options:
+        - label:
+            I have read the [Code of
+            Conduct](https://github.com/kadena-community/kadena.js/blob/master/CODE_OF_CONDUCT.md)
+          required: true
+        - label: The bug was not reported before
+          required: true
+        - label: I am using the **latest version** of the relevant package(s)
+          required: true
 
   - type: input
     id: os
