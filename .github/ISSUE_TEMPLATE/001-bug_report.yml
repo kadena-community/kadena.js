@@ -39,6 +39,22 @@ body:
     validations:
       required: false
 
+  - type: dropdown
+    id: package
+    attributes:
+      label: What package is the bug report about?
+      options:
+        - '@kadena/chainweb-node-client'
+        - '@kadena/chainweb-stream-client'
+        - '@kadena/chainwebjs'
+        - '@kadena/client'
+        - '@kadena/cryptography-utils'
+        - '@kadena/pactjs'
+        - '@kadena/pactjs-generator'
+        - Other... (please describe in bug report)
+    validations:
+      required: false
+
   - type: textarea
     id: description
     attributes:
