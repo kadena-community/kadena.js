@@ -6,9 +6,14 @@ import {
   StyledAccountForm,
   StyledForm,
   StyledFormButton,
-  StyledFormContainer,
   StyledMainContent,
+  StyledNavItem,
+  StyledNavItemIcon,
+  StyledNavItemSelectedText,
+  StyledNavItemText,
   StyledResultContainer,
+  StyledSelectedNavItem,
+  StyledSidebar,
   StyledTotalChunk,
   StyledTotalContainer,
 } from '@/pages/coin-transfer/styles';
@@ -86,67 +91,75 @@ const CoinTransfer: FC = () => {
   return (
     <MainLayout title="Kadena Coin Transfer">
       <StyledMainContent>
-        <StyledFormContainer>
-          <StyledForm onSubmit={handleTransfer}>
-            <StyledAccountForm>
-              <TextField
-                label="Sender Account"
-                inputProps={{
-                  placeholder: 'Enter account name of the sender',
-                  // @ts-ignore
-                  onChange: (e) => setSenderAccount(e?.target?.value),
-                  value: senderAccount,
-                }}
-              />
-              <Select
-                label="Select the chain of the sender"
-                leadingText="Chain"
-                onChange={(e) => setSenderChain(parseInt(e.target.value))}
-                value={senderChain}
-              >
-                {renderChainOptions()}
-              </Select>
-              <TextField
-                label="Receiver Account"
-                inputProps={{
-                  placeholder: 'Enter account name of the receiver',
-                  // @ts-ignore
-                  onChange: (e) => setReceiverAccount(e?.target?.value),
-                  value: receiverAccount,
-                }}
-              />
-              <Select
-                label="Select the chain of the receiver"
-                leadingText="Chain"
-                onChange={(e) => setReceiverChain(parseInt(e.target.value))}
-                value={receiverChain}
-              >
-                {renderChainOptions()}
-              </Select>
-              <TextField
-                label="Amount"
-                inputProps={{
-                  placeholder: 'Enter amount to transfer',
-                  // @ts-ignore
-                  onChange: (e) => setCoinAmount(e?.target?.value),
-                  value: coinAmount,
-                }}
-              />
-              <TextField
-                label="Sign"
-                inputProps={{
-                  placeholder: 'Enter private key to sign the transaction',
-                  // @ts-ignore
-                  onChange: (e) => setPrivateKey(e?.target?.value),
-                  value: privateKey,
-                }}
-              />
-            </StyledAccountForm>
-            <StyledFormButton>
-              <Button title="Make Transfer">Make Transfer</Button>
-            </StyledFormButton>
-          </StyledForm>
-        </StyledFormContainer>
+        <StyledSidebar>
+          <StyledSelectedNavItem href="/coin-transfer">
+            <StyledNavItemIcon>K:</StyledNavItemIcon>
+            <StyledNavItemSelectedText>Transfer</StyledNavItemSelectedText>
+          </StyledSelectedNavItem>
+          <StyledNavItem href="/coin-transfer/cross-chain-transfer-finisher">
+            <StyledNavItemIcon>K:</StyledNavItemIcon>
+            <StyledNavItemText>Cross Chain Transfer Finisher</StyledNavItemText>
+          </StyledNavItem>
+        </StyledSidebar>
+        <StyledForm onSubmit={handleTransfer}>
+          <StyledAccountForm>
+            <TextField
+              label="Sender Account"
+              inputProps={{
+                placeholder: 'Enter account name of the sender',
+                // @ts-ignore
+                onChange: (e) => setSenderAccount(e?.target?.value),
+                value: senderAccount,
+              }}
+            />
+            <Select
+              label="Select the chain of the sender"
+              leadingText="Chain"
+              onChange={(e) => setSenderChain(parseInt(e.target.value))}
+              value={senderChain}
+            >
+              {renderChainOptions()}
+            </Select>
+            <TextField
+              label="Receiver Account"
+              inputProps={{
+                placeholder: 'Enter account name of the receiver',
+                // @ts-ignore
+                onChange: (e) => setReceiverAccount(e?.target?.value),
+                value: receiverAccount,
+              }}
+            />
+            <Select
+              label="Select the chain of the receiver"
+              leadingText="Chain"
+              onChange={(e) => setReceiverChain(parseInt(e.target.value))}
+              value={receiverChain}
+            >
+              {renderChainOptions()}
+            </Select>
+            <TextField
+              label="Amount"
+              inputProps={{
+                placeholder: 'Enter amount to transfer',
+                // @ts-ignore
+                onChange: (e) => setCoinAmount(e?.target?.value),
+                value: coinAmount,
+              }}
+            />
+            <TextField
+              label="Sign"
+              inputProps={{
+                placeholder: 'Enter private key to sign the transaction',
+                // @ts-ignore
+                onChange: (e) => setPrivateKey(e?.target?.value),
+                value: privateKey,
+              }}
+            />
+          </StyledAccountForm>
+          <StyledFormButton>
+            <Button title="Make Transfer">Make Transfer</Button>
+          </StyledFormButton>
+        </StyledForm>
 
         {Object.keys(results).length > 0 ? (
           <StyledResultContainer>
