@@ -18,7 +18,8 @@ Do you want to file a bug? Please [open a new issue][1].
 pnpm install --global @microsoft/rush
 ```
 
-Clone the repository and install dependencies:
+As an external contributor, you will need to fork the repo before you can
+contribute. Then you can clone the repository and install dependencies:
 
 ```bash
 git clone git@github.com:kadena-community/kadena.js.git
