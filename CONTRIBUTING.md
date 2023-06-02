@@ -83,7 +83,6 @@ Follow these steps to publish the updated packages:
 rush build
 rush test
 rush version --bump -b master --ignore-git-hooks
-rush publish --apply --publish --add-commit-details --set-access-level public --target-branch master
 rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master
 ```
 
