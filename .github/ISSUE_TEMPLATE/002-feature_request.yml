@@ -43,7 +43,7 @@ body:
         A clear and concise description of any alternative solutions or features
         you've considered.
 
-  - type: input
+  - type: textarea
     id: additional-context
     attributes:
       label: Do you have any additional context?

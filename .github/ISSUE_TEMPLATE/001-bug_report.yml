@@ -47,7 +47,7 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     id: reproduction
     attributes:
       label: Steps to reproduce the behavior
@@ -57,7 +57,7 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     id: expected-behavior
     attributes:
       label: What did you expect to happen?
