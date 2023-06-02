@@ -14,7 +14,7 @@ import {
   StyledText,
 } from './styles';
 
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 
 export interface ISelectProps {
   label?: string;
@@ -24,10 +24,12 @@ export interface ISelectProps {
   status?: 'success' | 'error';
   disabled?: boolean;
   children: React.ReactNode;
+  value: string | number;
   as?: 'select';
   leadingText?: string;
   leftPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
   rightPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export const Select: FC<ISelectProps> = ({
@@ -36,10 +38,12 @@ export const Select: FC<ISelectProps> = ({
   info,
   helper,
   status,
+  value,
   disabled = false,
   leadingText,
   leftPanel,
   rightPanel,
+  onChange,
   ...rest
 }) => {
   const hasHeader = Boolean(label) || Boolean(tag) || Boolean(info);
@@ -47,6 +51,11 @@ export const Select: FC<ISelectProps> = ({
   const RightPanel = rightPanel;
   const LeftPanel = leftPanel;
 
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (onChange) {
+      onChange(event);
+    }
+  };
   return (
     <StyledSelectGroupWrapper variant={variant}>
       {hasHeader && (
@@ -75,7 +84,13 @@ export const Select: FC<ISelectProps> = ({
               <LeftPanel size="md" />
             </StyledIconWrapper>
           )}
-          <StyledSelect variant={variant} disabled={disabled} {...rest} />
+          <StyledSelect
+            variant={variant}
+            disabled={disabled}
+            onChange={handleSelectChange}
+            value={value}
+            {...rest}
+          />
           {RightPanel && (
             <StyledIconWrapper>
               <RightPanel size="md" />

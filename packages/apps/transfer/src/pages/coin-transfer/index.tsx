@@ -1,7 +1,7 @@
 import { Button, TextField } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { StyledOption } from '@/components/Global/Select/styles';
+import { Option, Select } from '@/components/Global';
 import {
   StyledAccountForm,
   StyledForm,
@@ -74,9 +74,10 @@ const CoinTransfer: FC = () => {
     const options = [];
     for (let i = 0; i < numberOfChains; i++) {
       options.push(
-        <StyledOption value={i} key={i}>
-          Chain {i}
-        </StyledOption>,
+        <Option value={i} key={i}>
+          {' '}
+          {i}
+        </Option>,
       );
     }
     return options;
@@ -97,6 +98,14 @@ const CoinTransfer: FC = () => {
                   value: senderAccount,
                 }}
               />
+              <Select
+                label="Select the chain of the sender"
+                leadingText="Chain"
+                onChange={(e) => setSenderChain(parseInt(e.target.value))}
+                value={senderChain}
+              >
+                {renderChainOptions()}
+              </Select>
               <TextField
                 label="Receiver Account"
                 inputProps={{
@@ -106,6 +115,14 @@ const CoinTransfer: FC = () => {
                   value: receiverAccount,
                 }}
               />
+              <Select
+                label="Select the chain of the receiver"
+                leadingText="Chain"
+                onChange={(e) => setReceiverChain(parseInt(e.target.value))}
+                value={receiverChain}
+              >
+                {renderChainOptions()}
+              </Select>
               <TextField
                 label="Amount"
                 inputProps={{

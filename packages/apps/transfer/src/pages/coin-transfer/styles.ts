@@ -1,8 +1,5 @@
 import { styled } from '@kadena/react-components';
 
-import { Chain, ChevronLeft } from '@/resources/svg/generated';
-import Link from 'next/link';
-
 export const StyledMainContent = styled('main', {});
 
 export const StyledFormContainer = styled('div', {
