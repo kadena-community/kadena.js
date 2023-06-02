@@ -489,7 +489,7 @@
       "packageName": "@kadena/chainwebjs",
       "projectFolder": "packages/libs/chainwebjs",
       "tags": ["libs"],
-      "shouldPublish": false,
+      "shouldPublish": false
     },
 
     {
@@ -519,7 +519,14 @@
       "packageName": "@kadena/react-components",
       "projectFolder": "packages/libs/react-components",
       "tags": ["libs"],
-      "shouldPublish": false,
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/react-ui",
+      "projectFolder": "packages/libs/react-ui",
+      "tags": ["libs"],
+      "shouldPublish": false
     },
 
     {

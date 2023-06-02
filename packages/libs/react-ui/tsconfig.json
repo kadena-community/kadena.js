@@ -1,0 +1,13 @@
+{
+  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "compilerOptions": {
+    "types": ["heft-jest"],
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "declarationDir": "types",
+    "outDir": "dist/esm",
+    "allowJs": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*"]
+}
