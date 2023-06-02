@@ -23,7 +23,7 @@ const AceViewerComponent: FC<AceEditorProps> = ({ code }) => {
         showLineNumbers: true,
         tabSize: 2,
       }}
-      width="95%"
+      width="94%"
       style={{ margin: '0 auto' }}
       fontSize={14}
       showPrintMargin={false}
