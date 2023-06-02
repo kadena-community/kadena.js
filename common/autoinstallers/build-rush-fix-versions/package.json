@@ -6,6 +6,6 @@
     "postinstall": "cd ../../../packages/tools/rush-fix-versions && npm run build"
   },
   "dependencies": {
-    "@kadena/rush-fix-versions": "file:../../../packages/tools/rush-fix-versions"
+    "@kadena-dev/rush-fix-versions": "file:../../../packages/tools/rush-fix-versions"
   }
 }

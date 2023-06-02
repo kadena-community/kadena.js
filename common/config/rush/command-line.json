@@ -71,7 +71,7 @@
       "safeForSimultaneousRushProcesses": false,
       "autoinstallerName": "build-rush-fix-versions",
       // This will invoke packages/tools/rush-fix-versions/lib/index.js
-      "shellCommand": "./packages/tools/rush-fix-versions/lib/index.js"
+      "shellCommand": "node ./packages/tools/rush-fix-versions/lib/index.js"
     },
     {
       "commandKind": "bulk",
