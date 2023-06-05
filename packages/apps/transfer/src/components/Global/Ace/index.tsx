@@ -1,3 +1,4 @@
+// eslint-disable-next-line simple-import-sort/imports
 import 'ace-builds/src-noconflict/mode-clojure';
 import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/theme-monokai';
