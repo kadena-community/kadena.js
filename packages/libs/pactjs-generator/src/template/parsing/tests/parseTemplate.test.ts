@@ -1,27 +1,13 @@
-import { ITemplate, parseTemplate } from '../parseTemplate';
+import { parseTemplate } from '../parseTemplate';
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
-
-const sanitize = (input: string | string[] | ITemplate): string => {
-  if (typeof input === 'string') {
-    return input
-      .split(/[\n\s]/)
-      .filter((x) => x !== '')
-      .join(' ')
-      .replace(/\\n|\\r/gm, '');
-  } else if (Array.isArray(input)) {
-    return input.map((item) => sanitize(item)).join(' ');
-  } else {
-    return '';
-  }
-};
 
 describe('parseTemplate', () => {
   it('parses a simple template `Hello {{name}}`', () => {
     const result = parseTemplate(`Hello {{name}}`);
     const expected = { parts: ['Hello ', ''], holes: ['name'] };
-    expect(sanitize(result)).toEqual(expected);
+    expect(result).toEqual(expected);
   });
 
   it('parses a command template', () => {
@@ -93,6 +79,6 @@ docs:
         'amount',
       ],
     };
-    expect(sanitize(result)).toEqual(sanitize(expected));
+    expect(result).toEqual(expected);
   });
 });
