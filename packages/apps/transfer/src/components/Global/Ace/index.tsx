@@ -2,13 +2,9 @@
 import React, { FC } from 'react';
 import AceEditor from 'react-ace';
 
-// eslint-disable-next
 import 'ace-builds/src-noconflict/mode-clojure';
-// eslint-disable-next
 import 'ace-builds/src-noconflict/mode-lisp';
-// eslint-disable-next
 import 'ace-builds/src-noconflict/theme-monokai';
-// eslint-disable-next
 import 'ace-builds/src-noconflict/theme-one_dark';
 
 export interface AceEditorProps {
