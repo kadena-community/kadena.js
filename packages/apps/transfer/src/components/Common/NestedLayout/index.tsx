@@ -1,4 +1,5 @@
 import {
+  StyledAccount,
   StyledBackButton,
   StyledBody,
   StyledBodyContainer,
@@ -6,6 +7,7 @@ import {
   StyledContainer,
   StyledHeader,
   StyledHeaderTitle,
+  StyledLogoPlusColon,
   StyledNav,
   StyledNavItem,
 } from './styles';
@@ -35,11 +37,13 @@ export const NestedLayout: FC<IProps> = (props) => {
           <ul>
             <li>
               <StyledNavItem href="/faucet/new" first>
+                <StyledLogoPlusColon width="14px" />
                 New Account
               </StyledNavItem>
             </li>
             <li>
               <StyledNavItem href="/faucet/existing" last>
+                <StyledAccount width="14px" />
                 Existing Account
               </StyledNavItem>
             </li>

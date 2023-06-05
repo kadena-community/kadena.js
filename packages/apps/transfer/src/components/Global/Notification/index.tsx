@@ -2,6 +2,7 @@
 
 import { StyledBody, StyledContainer } from './styles';
 
+import { Exclamation } from '@/resources/svg/generated';
 import React, { type FC, useCallback, useState } from 'react';
 
 interface INotificationProps {
@@ -21,7 +22,7 @@ const Notification: FC<INotificationProps> = ({ title, body }) => {
 
   return (
     <StyledContainer>
-      <div>Icon</div>
+      <Exclamation />
       <StyledBody>
         <div>{title}</div>
         <div dangerouslySetInnerHTML={{ __html: body }} />

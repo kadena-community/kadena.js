@@ -3,6 +3,7 @@ import { styled } from '@kadena/react-components';
 import BackButton from './BackButton';
 import NavItem from './NavItem';
 
+import { Account, KLogoColon } from '@/resources/svg/generated';
 import Link from 'next/link';
 
 export const StyledContainer = styled('div', {
@@ -85,4 +86,12 @@ export const StyledLink = styled(Link, {
       },
     },
   },
+});
+
+export const StyledLogoPlusColon = styled(KLogoColon, {
+  display: 'inline-flex',
+});
+
+export const StyledAccount = styled(Account, {
+  display: 'inline-flex',
 });
