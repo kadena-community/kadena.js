@@ -28,7 +28,12 @@ rush install
 rush build
 ```
 
-Also see the Rush guide on [Getting started as a developer][4].
+Make sure to read some of the Rush documentation, specifically the "Developer
+tutorials" such as:
+
+- [Getting started as a developer][3]
+- [Everyday Rush commands][4]
+- [Other helpful commands][5]
 
 Each package has its own instructions to start development. See the package
 directory for more information.
@@ -89,5 +94,6 @@ rush publish --apply --publish --include-all --add-commit-details --set-access-l
 
 [1]: https://github.com/kadena-community/kadena.js/issues/new/choose
 [2]: https://nodejs.org/en/download/package-manager
-[3]: https://pnpm.io/installation
-[4]: https://rushjs.io/pages/developer/new_developer/
+[3]: https://rushjs.io/pages/developer/new_developer/
+[4]: https://rushjs.io/pages/developer/everyday_commands/
+[5]: https://rushjs.io/pages/developer/other_commands/
