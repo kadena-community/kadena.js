@@ -11,7 +11,7 @@
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
-    "dev": "NEXT_PUBLIC_APP_DEV=test next dev",
+    "dev": "next dev",
     "lint": "eslint ./src --ext .js,.ts,.jsx,.tsx --fix",
     "lint-staged": "lint-staged",
     "start": "next start",
