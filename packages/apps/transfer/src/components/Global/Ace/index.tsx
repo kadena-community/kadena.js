@@ -1,7 +1,10 @@
 // eslint-disable-next-line simple-import-sort/imports
 import 'ace-builds/src-noconflict/mode-clojure';
+// eslint-disable-next-line simple-import-sort/imports
 import 'ace-builds/src-noconflict/mode-lisp';
+// eslint-disable-next-line simple-import-sort/imports
 import 'ace-builds/src-noconflict/theme-monokai';
+// eslint-disable-next-line simple-import-sort/imports
 import 'ace-builds/src-noconflict/theme-one_dark';
 
 import React, { FC } from 'react';
