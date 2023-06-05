@@ -70,6 +70,7 @@
     "@types/node": "^16.0.0",
     "@types/react": "^18.0.30",
     "@vanilla-extract/webpack-plugin": "~2.2.0",
+    "classnames": "^2.3.1",
     "eslint": "^8.15.0",
     "eslint-plugin-storybook": "~0.6.12",
     "mini-css-extract-plugin": "~2.7.5",
