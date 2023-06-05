@@ -1,15 +1,13 @@
 import { styled } from '@kadena/react-components';
 
-export const StyledMainContent = styled('main', {});
-
-export const StyledFormContainer = styled('div', {
+export const StyledMainContent = styled('main', {
   display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
+  justifyContent: 'flex-start',
+  gap: '$16',
 });
 
 export const StyledForm = styled('form', {
-  width: '65%',
+  width: '75%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-end',

@@ -8,7 +8,7 @@ export const StyledLayout = styled('div', {
 });
 
 export const StyledBack = styled(Link, {
-  width: '35%',
+  width: '25%',
   textAlign: 'left',
   fontSize: '1rem',
   cursor: 'pointer',
@@ -71,6 +71,7 @@ export const StyledTitleContainer = styled('div', {
   justifyContent: 'flexStart',
   alignItems: 'center',
   margin: '2rem 0',
+  gap: '$16',
 });
 
 export const StyledWalletNotConnected = styled('div', {
@@ -92,4 +93,5 @@ export const StyledWalletNotConnected = styled('div', {
 export const StyledTitle = styled('h2', {
   fontSize: '2rem',
   fontWeight: 'normal',
+  width: '75%',
 });
