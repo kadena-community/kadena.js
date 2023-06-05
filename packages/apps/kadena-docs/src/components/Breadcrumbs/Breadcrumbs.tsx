@@ -30,7 +30,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
       if (!i) return;
       tree.push({
         root: i.root,
-        title: i.label ?? i.title,
+        title: i.title,
         icon: i.icon,
       });
 
