@@ -1,9 +1,9 @@
 {
-  "name": "common-scripts-precommit",
+  "name": "@kadena-dev/pre-commit-scripts",
   "version": "0.0.0",
   "scripts": {
     "build": "echo OK",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No tests to run\""
   },
   "dependencies": {
     "zx": "~7.2.2"

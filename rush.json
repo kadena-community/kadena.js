@@ -585,7 +585,7 @@
     },
 
     {
-      "packageName": "common-scripts-precommit",
+      "packageName": "@kadena-dev/pre-commit-scripts",
       "projectFolder": "common/scripts/pre-commit",
       "shouldPublish": false
     },
