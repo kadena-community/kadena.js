@@ -7,7 +7,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { IPageProps } from '@/types/Layout';
 import { getLayout, isOneOfLayoutType } from '@/utils';
 import Head from 'next/head';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 export const Main: FC<IPageProps> = ({
   children,

@@ -15,7 +15,7 @@ import {
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC } from 'react';
 
 interface IProps {
   closeMenu: () => void;

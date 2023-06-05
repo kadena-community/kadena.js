@@ -17,16 +17,14 @@ import { createSlug } from '@/utils';
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
 export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
-  const scrollRef = useRef(null);
-  const menuRef = useRef(null);
-  const [activeItem, setActiveItem] = useState();
-  const [entry, setEntry] = useState<IntersectionObserverEntry>();
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLUListElement | null>(null);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
-    const { target, isIntersecting, intersectionRatio } = entry;
+    const { isIntersecting } = entry;
 
-    const menuItem = menuRef.current.querySelector(
+    const menuItem = menuRef.current?.querySelector(
       `a[href="${
         window.location.pathname + entry.target.getAttribute('href')
       }"]`,
@@ -34,7 +32,6 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
 
     if (!menuItem) return;
 
-    console.log(menuItem);
     if (isIntersecting) {
       setActiveItem(entry.target.getAttribute('href'));
     } else {
@@ -64,7 +61,6 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
 
     const slug = `#${createSlug(item.title)}`;
 
-    console.log(slug, activeItem);
     return (
       <AsideLink
         href={slug}

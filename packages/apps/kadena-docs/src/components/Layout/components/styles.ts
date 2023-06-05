@@ -69,12 +69,12 @@ export const Template: StyledComponent<
         },
       },
       landing: {
-        gridTemplateColumns: 'auto',
+        gridTemplateColumns: 'auto auto',
         gridTemplateAreas: `
-            "header"
-            "pageheader"
-            "content"
-            "footer"
+            "header header"
+            "pageheader pageheader"
+            "content content"
+            "footer footer"
           `,
 
         '@md': {
