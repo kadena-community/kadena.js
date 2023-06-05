@@ -1,0 +1,7 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@kadena-dev/rush-fix-versions': file:../../../packages/tools/rush-fix-versions
+
+dependencies:
+  '@kadena-dev/rush-fix-versions': link:../../../packages/tools/rush-fix-versions

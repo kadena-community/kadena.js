@@ -1,6 +1,13 @@
 # Change Log - @kadena/chainweb-node-client
 
-This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Jun 2023 20:18:44 GMT and should not be manually modified.
+
+## 0.3.0
+Thu, 01 Jun 2023 20:18:44 GMT
+
+### Minor changes
+
+-  Add localWithoutSignatureVerification, changed local to use preflight=true as default 
 
 ## 0.1.4
 Fri, 03 Mar 2023 11:24:59 GMT
