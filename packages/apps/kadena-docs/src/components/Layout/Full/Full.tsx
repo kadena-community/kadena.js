@@ -11,11 +11,14 @@ import {
   StickyAsideWrapper,
 } from '../components';
 
+import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import React, { FC, ReactNode } from 'react';
 
 const renderListItem = (item: ISubHeaderElement): ReactNode => {
+  if (item.title === undefined) return null;
+
   const slug = createSlug(item.title);
   return (
     <AsideLink href={`#${slug}`} key={slug} label={item.title}>
@@ -30,7 +33,11 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
   return (
     <>
       <Content id="maincontent">
-        <Article>{children}</Article>
+        <Article>
+          {children}
+
+          <BottomPageSection />
+        </Article>
       </Content>
 
       <AsideBackground />

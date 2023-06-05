@@ -3,7 +3,8 @@
   "compilerOptions": {
     "types": [
       "heft-jest",
-      "node"
+      "node",
+      "@types/gtag.js"
     ],
     "paths": {
       "@/*": [
@@ -18,9 +19,23 @@
     "moduleResolution": "node",
     "jsx": "preserve",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "exclude": [
-    "node_modules"
-  ]
+    "node_modules",
+    "./cypress"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "environment.d.ts",
+    ".next/types/**/*.ts"
+  ] // see the last entry in array
 }

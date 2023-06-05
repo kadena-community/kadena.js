@@ -82,6 +82,7 @@ export const elementVariant = {
   p: { $$boldWeight: '$fontWeights$semiBold' },
   span: { $$boldWeight: '$fontWeights$semiBold' },
   code: { $$boldWeight: '$fontWeights$semiBold' },
+  label: { $$boldWeight: '$fontWeights$medium' },
 } as const;
 
 export const fontVariant = {

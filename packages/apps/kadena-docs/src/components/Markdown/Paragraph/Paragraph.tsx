@@ -8,7 +8,7 @@ interface IProp {
 }
 
 const StyledBodyText = styled(BodyText, {
-  marginBottom: '$5',
+  margin: '$5 0',
 });
 
 export const Paragraph: FC<IProp> = ({ children }) => {

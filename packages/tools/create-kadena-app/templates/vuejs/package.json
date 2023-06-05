@@ -4,7 +4,8 @@
   "description": "Vuejs starter project with @kadena/client integration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/tools/create-kadena-app"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/create-kadena-app/templates/vuejs"
   },
   "license": "ISC",
   "scripts": {

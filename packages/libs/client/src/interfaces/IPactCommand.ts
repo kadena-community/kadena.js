@@ -1,5 +1,7 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ChainId, ICap, ISignatureJson } from '@kadena/types';
+
+import { NonceType } from '../pact';
 /**
  * @alpha
  */
@@ -18,6 +20,8 @@ export interface IPactCommand {
   }[];
   type: string;
   sigs: (ISignatureJson | undefined)[];
+  requestKey?: string;
+  nonce?: NonceType;
 }
 
 /**

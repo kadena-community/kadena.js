@@ -4,7 +4,7 @@ import type { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface ITextProps {
-  as?: 'span' | 'p' | 'code';
+  as?: 'span' | 'p' | 'code' | 'label';
   variant?: VariantProps<typeof BaseText>['variant'];
   font?: VariantProps<typeof BaseText>['font'];
   bold?: VariantProps<typeof BaseText>['bold'];

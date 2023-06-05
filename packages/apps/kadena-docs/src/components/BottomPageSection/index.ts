@@ -1,0 +1,1 @@
+export { BottomPageSection } from './BottomPageSection';

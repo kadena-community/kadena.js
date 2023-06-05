@@ -1,6 +1,14 @@
 # Change Log - @kadena/pactjs-generator
 
-This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Jun 2023 20:18:44 GMT and should not be manually modified.
+
+## 0.1.8
+Thu, 01 Jun 2023 20:18:44 GMT
+
+### Patches
+
+- Set the namespace for each module
+- fixing the issue regards "rush install" and "rush build" on windows
 
 ## 0.1.7
 Fri, 03 Mar 2023 11:24:59 GMT

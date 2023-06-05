@@ -312,7 +312,7 @@
     /**
      * The list of shell commands to run before the Rush installation starts
      */
-    "preRushInstall": ["./common/scripts/add-lib-index-pactjs-cli.js"],
+    "preRushInstall": ["node ./common/scripts/add-lib-index-pactjs-cli.js"],
 
     /**
      * The list of shell commands to run after the Rush installation finishes
@@ -404,18 +404,9 @@
     // ##  Deployables
     // #########################
     {
-      "packageName": "@kadena/explorer",
-      "projectFolder": "packages/apps/explorer",
-      "reviewCategory": "prototypes",
-      "skipRushCheck": true,
-      "shouldPublish": false
-    },
-
-    {
       "packageName": "@kadena/graph",
       "projectFolder": "packages/apps/graph",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -423,7 +414,6 @@
       "packageName": "@kadena/graph-client",
       "projectFolder": "packages/apps/graph-client",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -431,7 +421,6 @@
       "packageName": "@kadena/kadena-docs",
       "projectFolder": "packages/apps/kadena-docs",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
       "shouldPublish": false
     },
 
@@ -492,8 +481,7 @@
       "packageName": "@kadena/chainwebjs",
       "projectFolder": "packages/libs/chainwebjs",
       "tags": ["libs"],
-      "shouldPublish": false,
-      "versionPolicyName": "alpha"
+      "shouldPublish": false
     },
 
     {
@@ -523,8 +511,14 @@
       "packageName": "@kadena/react-components",
       "projectFolder": "packages/libs/react-components",
       "tags": ["libs"],
-      "shouldPublish": false,
-      "versionPolicyName": "alpha"
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/react-ui",
+      "projectFolder": "packages/libs/react-ui",
+      "tags": ["libs"],
+      "shouldPublish": false
     },
 
     {
@@ -590,12 +584,19 @@
       "versionPolicyName": "alpha"
     },
 
-
     {
       "packageName": "common-scripts-precommit",
       "projectFolder": "common/scripts/pre-commit",
       "shouldPublish": false
     },
+
+    {
+      "packageName": "@kadena-dev/rush-fix-versions",
+      "projectFolder": "packages/tools/rush-fix-versions",
+      "tags": ["tools"],
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
+    }
 
     // {
     //   /**

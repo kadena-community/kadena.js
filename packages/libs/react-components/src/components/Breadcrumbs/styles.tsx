@@ -1,4 +1,4 @@
-import { styled } from '../../styles';
+import { styled } from '../../styles/stitches.config';
 
 import { StyledComponent } from '@stitches/react/types/styled-component';
 

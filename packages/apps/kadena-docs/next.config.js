@@ -4,8 +4,12 @@ import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.js'
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.js';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.js';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.js';
+import remarkYoutube from './src/scripts/remarkYoutube.js';
+import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.js';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+const withVanillaExtract = createVanillaExtractPlugin();
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
 import { readFileSync } from 'fs';
 
@@ -68,6 +72,8 @@ const withMDX = mdx({
       remarkHeadersToProps,
       remarkSideMenuToProps,
       remarkPropsToStaticRender,
+      remarkYoutube,
+      remarkFigureOutOfParagraph,
     ],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.
@@ -79,6 +85,7 @@ const withMDX = mdx({
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
+  transpilePackages: ['@kadena/react-ui'],
 };
 
-export default withMDX(nextConfig);
+export default withVanillaExtract(withMDX(nextConfig));

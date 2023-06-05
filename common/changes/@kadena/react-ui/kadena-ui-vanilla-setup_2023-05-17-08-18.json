@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-ui",
+      "comment": "Initial package setup",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-ui"
+}

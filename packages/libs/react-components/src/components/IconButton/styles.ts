@@ -16,9 +16,17 @@ export const colorVariant = {
     background: '$primarySurface',
     $$svgColor: '$colors$primaryHighContrast',
   },
+  secondary: {
+    background: '$secondarySurface',
+    $$svgColor: '$colors$secondaryHighContrast',
+  },
   positive: {
     background: '$positiveSurface',
     $$svgColor: '$colors$positiveHighContrast',
+  },
+  warning: {
+    background: '$warningSurface',
+    $$svgColor: '$colors$warningHighContrast',
   },
   negative: {
     background: '$negativeSurface',
