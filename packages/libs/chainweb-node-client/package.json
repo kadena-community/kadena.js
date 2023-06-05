@@ -1,11 +1,12 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/chainweb-node-client"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/chainweb-node-client"
   },
   "license": "ISC",
   "contributors": [
@@ -30,7 +31,7 @@
     "build": "heft build --clean",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
     "postinstall": "npm run generate:openapi-types",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {

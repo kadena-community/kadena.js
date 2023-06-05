@@ -9,6 +9,11 @@ module.exports = {
     //  e.g. This is allowed: `export const StyledButton = styled('button', {})`
     '@kadena-dev/typedef-var': 'warn',
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
 
   // rules: {
   //   '@typescript-eslint/explicit-function-return-type': {

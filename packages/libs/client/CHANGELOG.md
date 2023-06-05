@@ -1,6 +1,18 @@
 # Change Log - @kadena/client
 
-This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Jun 2023 20:18:44 GMT and should not be manually modified.
+
+## 0.3.0
+Thu, 01 Jun 2023 20:18:44 GMT
+
+### Minor changes
+
+- Add localWithoutSignatureVerification function in command builder
+- Adds `setNonceCreator()` to allow the user to set a custom nonce
+
+### Patches
+
+- Fix type for addCap, add requestKey to IPactCommand
 
 ## 0.1.10
 Fri, 03 Mar 2023 11:24:59 GMT

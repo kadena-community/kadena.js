@@ -110,8 +110,11 @@ export const {
     },
     lineHeights: {
       base: 1.4,
+      lg: 1.9,
+      code: 1.9,
     },
     radii: {
+      xs: '2px',
       sm: '4px',
       md: '6px',
       lg: '8px',
@@ -120,6 +123,7 @@ export const {
     shadows: {
       // TODO: Update to match design system
       1: `0px 1px 2px 0 $colors$neutral3`,
+      card: `0px 0px 10px $colors$neutral2`,
     },
     space: {
       ...sizes,

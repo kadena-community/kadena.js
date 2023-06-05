@@ -15,12 +15,14 @@ const convertFile = (file) => {
   if (isMarkDownFile(file)) {
     data = getFrontMatter(doc);
   } else {
-    const regex = /meta = ({.*});/s;
+    const regex = /frontmatter\s*:\s*{[^}]+}/;
     const match = doc.match(regex);
     if (!match) return;
 
-    let metaString = match[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
+    let metaString = match[0].replace(/frontmatter:/, '');
+    metaString = metaString.replace(/(\w+):/g, '"$1":').replace(/'/g, '"');
     metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
+
     data = JSON.parse(metaString);
   }
 
@@ -79,7 +81,7 @@ const findPath = (dir) => {
 };
 
 const INITIALPATH = './src/pages/docs';
-const MENUFILE = './src/data/menu.json';
+const MENUFILE = './src/data/menu.js';
 const TREE = [];
 
 const createTree = (rootDir, parent = []) => {
@@ -126,4 +128,7 @@ const createTree = (rootDir, parent = []) => {
 
 const result = createTree(INITIALPATH, TREE);
 
-fs.writeFileSync(MENUFILE, JSON.stringify(result, null, 2));
+const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
+export const menuData = ${JSON.stringify(result, null, 2)}`;
+
+fs.writeFileSync(MENUFILE, fileStr);

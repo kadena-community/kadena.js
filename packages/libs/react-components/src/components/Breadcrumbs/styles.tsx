@@ -1,4 +1,4 @@
-import { styled } from '../../styles';
+import { styled } from '../../styles/stitches.config';
 
 import { StyledComponent } from '@stitches/react/types/styled-component';
 
@@ -12,10 +12,12 @@ export const StyledBreadcrumbs: StyledComponent<'ul'> = styled('ul', {
 export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
   display: 'flex',
   padding: 0,
-  gap: '$2',
   color: '$neutral4',
   whiteSpace: 'nowrap',
-  marginLeft: '$2',
+
+  '&::before': {
+    margin: '0 $2',
+  },
 
   '&:not(:first-child):not(:last-child)': {
     '&::before': {
@@ -29,9 +31,9 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
   },
   '&:first-child': {
     fontWeight: '$bold',
-    marginLeft: '0',
     '&::before': {
       content: '',
+      margin: '0',
     },
   },
 
@@ -44,7 +46,6 @@ export const StyledBreadcrumbItem: StyledComponent<'li'> = styled('li', {
     },
   },
   span: {
-    marginTop: 'calc($1 / 2)',
     marginRight: '$1',
   },
 });

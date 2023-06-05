@@ -3,7 +3,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
 
 import { sizeVariant } from './styles';
-import { IProcuctIconProps, ProductIcons } from './';
+import { IProductIconProps, ProductIcons } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -13,7 +13,7 @@ import React from 'react';
  * See https://storybook.js.org/docs/7.0/react/api/csf
  * to learn how to use render functions.
  */
-const meta: Meta<{ icon: string } & IProcuctIconProps> = {
+const meta: Meta<{ icon: string } & IProductIconProps> = {
   title: 'ProductIcons',
   argTypes: {
     icon: {
@@ -31,7 +31,7 @@ const meta: Meta<{ icon: string } & IProcuctIconProps> = {
 };
 
 export default meta;
-type Story = StoryObj<{ icon: string } & IProcuctIconProps>;
+type Story = StoryObj<{ icon: string } & IProductIconProps>;
 
 export const Primary: Story = {
   name: 'System',

@@ -164,4 +164,16 @@ describe('parser', () => {
     expect(capabilities.TRANSFER.args.receiver.type).toBe('string');
     expect(capabilities.TRANSFER.args.amount.type).toBe('decimal');
   });
+
+  it('parses a file with carriage return newline (windows)', () => {
+    const contract = `
+      (module coin GOVERNANCE
+        @doc "This is a comment"\r\n
+        (defcap GAS ())\r\n
+      )`;
+    const contractDefinition = new StringContractDefinition({
+      contract,
+    });
+    expect(contractDefinition.modules).toEqual(['coin']);
+  });
 });
