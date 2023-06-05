@@ -25,6 +25,11 @@ const Home: FC = () => {
       title: 'Transfer',
       href: '/coin-transfer',
     },
+    {
+      icon: Chain,
+      title: 'Module explorer',
+      href: '/code-viewer',
+    },
   ];
 
   return (
