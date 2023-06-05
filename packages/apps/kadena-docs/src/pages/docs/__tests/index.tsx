@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
         label: 'Pact Test',
         order: 99,
         description: 'Home page',
-        layout: 'home',
+        layout: 'landing',
         icon: 'PactLanguage',
       },
     },

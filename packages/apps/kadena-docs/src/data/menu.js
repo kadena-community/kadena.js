@@ -941,7 +941,7 @@ export const menuData = [
     "label": "Pact Test",
     "order": 99,
     "description": "Home page",
-    "layout": "home",
+    "layout": "landing",
     "icon": "PactLanguage",
     "isMenuOpen": false,
     "isActive": false
