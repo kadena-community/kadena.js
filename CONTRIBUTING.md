@@ -15,7 +15,7 @@ Do you want to file a bug? Please [open a new issue][1].
 [Install Node.js][2] if you haven't already. Then install Rush:
 
 ```bash
-pnpm install --global @microsoft/rush
+npm install --global @microsoft/rush
 ```
 
 As an external contributor, you will need to fork the repo before you can
