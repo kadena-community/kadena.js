@@ -22,7 +22,6 @@ export const getPathName = (filename) => {
     .reverse()
     .join('/');
 
-  console.log(`/${newPath}${lastInPath(path.parse(filename).name)}`);
   return `/${newPath}${lastInPath(path.parse(filename).name)}`;
 };
 

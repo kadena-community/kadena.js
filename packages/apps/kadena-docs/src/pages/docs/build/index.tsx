@@ -12,7 +12,6 @@ const Home: FC = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log('build', __filename);
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),

@@ -24,7 +24,6 @@ const getPath = (filename) => {
 
 const remarkSideMenuToProps = () => {
   return async (tree, file) => {
-    console.log(3, { file });
     const items = checkSubTreeForActive(getPath(file.history[0]));
 
     tree.children.push({

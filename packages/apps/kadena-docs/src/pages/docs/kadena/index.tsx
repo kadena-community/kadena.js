@@ -127,7 +127,6 @@ const Home: FC = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log('kadena', __filename);
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),

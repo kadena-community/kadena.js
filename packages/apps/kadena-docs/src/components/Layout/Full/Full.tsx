@@ -14,35 +14,37 @@ import {
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
+import { useRouter } from 'next/router';
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
 export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const [activeItem, setActiveItem] = useState<string | null>(null);
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
     const { isIntersecting } = entry;
 
-    const menuItem = menuRef.current?.querySelector(
-      `a[href="${
-        window.location.pathname + entry.target.getAttribute('href')
-      }"]`,
-    );
-
-    if (!menuItem) return;
-
     if (isIntersecting) {
       setActiveItem(entry.target.getAttribute('href'));
-    } else {
     }
   };
 
   useEffect(() => {
+    if (activeItem === null) {
+      const hashPath =
+        router.asPath.split('#').length === 2
+          ? '#' + router.asPath.split('#')[1]
+          : '';
+
+      setActiveItem(hashPath);
+    }
+
     if (!scrollRef.current) return;
 
     const observer = new IntersectionObserver(updateEntry, {
-      threshold: 1,
+      rootMargin: '20% 0% -65% 0px',
     });
 
     const headings = scrollRef.current.querySelectorAll(
@@ -54,7 +56,7 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
     });
 
     return () => observer.disconnect();
-  }, [scrollRef.current, menuRef.current]);
+  }, [activeItem, router.asPath]);
 
   const renderListItem = (item: ISubHeaderElement): ReactNode => {
     if (item.title === undefined) return null;
@@ -82,17 +84,14 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
       <Content id="maincontent">
         <Article ref={scrollRef}>
           {children}
-
           <BottomPageSection />
         </Article>
       </Content>
-
       <AsideBackground />
       <Aside data-cy="aside">
         {aSideMenuTree.length > 0 && (
           <StickyAsideWrapper>
             <StickyAside>
-              1{activeItem}1
               <Heading as="h6" transform="uppercase">
                 On this page
               </Heading>

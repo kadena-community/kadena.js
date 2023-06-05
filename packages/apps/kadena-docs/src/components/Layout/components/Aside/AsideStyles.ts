@@ -1,5 +1,7 @@
 import { styled, StyledComponent } from '@kadena/react-components';
 
+import Link from 'next/link';
+
 export const BaseBackground: StyledComponent<
   'div',
   {
@@ -185,18 +187,17 @@ export const Aside: StyledComponent<
   },
 });
 
-export const AsideItem: StyledComponent<
-  'li',
-  { isActive?: boolean | 'true' | 'false' }
-> = styled('li', {
+export const AsideItem: StyledComponent<'li'> = styled('li', {
   lineHeight: '$base',
+});
 
-  a: {
-    textDecoration: 'none',
-    color: '$primaryHighContrast',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
+export const AsideItemLink: StyledComponent<
+  typeof Link,
+  { isActive?: boolean | 'true' | 'false' }
+> = styled(Link, {
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
   },
 
   defaultVariants: {
@@ -205,11 +206,12 @@ export const AsideItem: StyledComponent<
   variants: {
     isActive: {
       true: {
-        '& a': {
-          color: '$neutral6',
-        },
+        color: '$neutral6',
+        textDecoration: 'underline',
       },
-      false: {},
+      false: {
+        color: '$primaryHighContrast',
+      },
     },
   },
 });
