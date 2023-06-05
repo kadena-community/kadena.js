@@ -8,7 +8,7 @@ describe('full layout', () => {
   });
   describe('desktop', () => {
     it('shows the breadcrumbs with icon', () => {
-      breadcrumbs().find('li').should('have.length', 3);
+      breadcrumbs().find('li').should('have.length', 2);
       breadcrumbs().find('svg').should('exist');
     });
     it('shows the left sidemenu', () => {
@@ -73,11 +73,11 @@ describe('full layout', () => {
     });
 
     describe('test the functionality of the sidemenu', () => {
-      it.only('shows the aside menu', () => {
+      it('shows the aside menu', () => {
         openMenu();
 
         // check if everything is there
-        menu().find('h5').contains('Test');
+        menu().find('h5').contains('Pact');
         secondMenu().find('ul:first > li').should('have.length', 4);
         secondMenu().find('ul:first > li:nth-child(4)').contains('Atom SDK');
 

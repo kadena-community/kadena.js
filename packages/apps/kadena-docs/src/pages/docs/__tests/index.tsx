@@ -29,11 +29,12 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
       leftMenuTree: checkSubTreeForActive(),
       frontmatter: {
         title: 'Pact',
-        menu: 'Pact',
+        menu: 'Test',
         label: 'Pact Test',
-        order: 1,
+        order: 99,
         description: 'Home page',
         layout: 'home',
+        icon: 'PactLanguage',
       },
     },
   };
