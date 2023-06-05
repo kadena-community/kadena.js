@@ -17,7 +17,7 @@
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
-    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },

@@ -69,6 +69,9 @@ export interface ICommandBuilder<
       sig: string;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  setNonceCreator(
+    nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType,
+  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   status: string;
   // setSigner(
   //   fn: (
@@ -147,6 +150,7 @@ export class PactCommand
   public cmd: string | undefined;
   public requestKey: string | undefined;
   public status: TransactionStatus;
+  public nonce: NonceType | undefined;
 
   public constructor() {
     this.code = '';
@@ -163,6 +167,7 @@ export class PactCommand
     this.sigs = [];
     this.status = 'malleable';
     this.requestKey = undefined;
+    this.nonce = undefined;
   }
 
   /**
@@ -188,6 +193,24 @@ export class PactCommand
    */
   public nonceCreator(t: IPactCommand, dateInMs: number): NonceType {
     return 'kjs ' + new Date(dateInMs).toISOString();
+  }
+
+  /**
+   * Sets the function that creates the nonce for the transaction.
+   * This nonceCreater function gets called in `createCommand()`.
+   * @param nonceCreator
+   *   - `t` - transaction
+   *   - `dateInMs` - date in milliseconds from epoch
+   *
+   * @returns the transaction object
+   * @alpha
+   */
+  public setNonceCreator(
+    nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType,
+  ): this {
+    this.nonceCreator = nonceCreator;
+
+    return this;
   }
 
   /**
