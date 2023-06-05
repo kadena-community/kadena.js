@@ -48,7 +48,10 @@ export const localQuestions: IQuestion[] = [
     message: 'On which network are you testing?',
     name: 'network',
     type: 'input',
-    when: ({ task }: IAnswers) => isTruthy(task?.includes('local')),
+    when: ({ task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return false;
+    },
   },
   {
     message: 'What is the endpoint',

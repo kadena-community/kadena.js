@@ -1,3 +1,4 @@
+import { devnetQuestions } from './devnet.js';
 import { localQuestions } from './local.js';
 import { IAnswers, IQuestion } from './questions.js';
 
@@ -34,7 +35,11 @@ export const questions: IQuestion[] = [
     message: 'Rerunning previous commands...',
     type: 'rerun',
     name: 'rerun',
-    when: ({ task }: IAnswers) => !!task?.includes('rerun'),
+    when: ({ task }: IAnswers) => {
+      if (Array.isArray(task)) return task?.includes('rerun');
+      return false;
+    },
   },
   ...localQuestions,
+  ...devnetQuestions,
 ];

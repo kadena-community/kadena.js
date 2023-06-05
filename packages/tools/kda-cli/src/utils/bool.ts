@@ -1,6 +1,7 @@
 export const isTruthy = (
   value?: boolean | object | number | string | string[],
 ): boolean => {
+  if (typeof value === 'boolean') return value;
   if (value === undefined) return false;
   if (value === null) return false;
   if (value === '') return false;

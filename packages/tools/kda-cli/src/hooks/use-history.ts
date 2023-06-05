@@ -8,7 +8,11 @@ const readOrCreateHistory = (): Record<string, HistoryValue> => {
   }
 };
 
-export type HistoryValue = string | string[] | Record<string, unknown>;
+export type HistoryValue =
+  | string
+  | boolean
+  | string[]
+  | Record<string, unknown>;
 
 const isSuggestiable = (value: unknown): value is string[] => {
   return Array.isArray(value);

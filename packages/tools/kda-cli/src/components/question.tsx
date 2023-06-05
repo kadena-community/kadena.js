@@ -5,7 +5,7 @@ import { Execute } from './execute.js';
 import { MultiInput } from './multi-input.js';
 import { Rerun } from './rerun.js';
 
-import { MultiSelect, Select, TextInput } from '@inkjs/ui';
+import { ConfirmInput, MultiSelect, Select, TextInput } from '@inkjs/ui';
 import { Box, Text } from 'ink';
 import React from 'react';
 
@@ -19,6 +19,7 @@ const getComponent = (
   | typeof MultiInput
   | typeof Execute
   | typeof Rerun
+  | typeof ConfirmInput
   | typeof TextInput => {
   switch (type) {
     case 'multi-select':
@@ -31,6 +32,8 @@ const getComponent = (
       return Execute;
     case 'rerun':
       return Rerun;
+    case 'confirm':
+      return ConfirmInput;
     case 'input':
     default:
       return TextInput;
@@ -79,6 +82,14 @@ export const QuestionWrapper = ({
         action={action}
         type={type}
         message={message}
+        onCancel={() => {
+          onSave(false);
+          onAnswer({ [name]: false });
+        }}
+        onConfirm={() => {
+          onSave(true);
+          onAnswer({ [name]: true });
+        }}
         onSubmit={(value: string | string[]) => {
           onSave(value);
           onAnswer({ [name]: value });

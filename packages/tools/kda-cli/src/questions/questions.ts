@@ -1,5 +1,5 @@
 export interface IAnswers {
-  [key: string]: string | string[];
+  [key: string]: string | boolean | string[];
 }
 
 interface IChoice {
