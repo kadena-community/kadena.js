@@ -9,7 +9,8 @@ export const container = style([
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    padding: 'lg',
+    paddingX: 'lg',
+    paddingY: 'md',
     borderRadius: 'sm',
   }),
 ]);
@@ -59,24 +60,3 @@ export const stackVariant = styleVariants(booleans, (stack) => {
     },
   ];
 });
-
-export const StyledCardBody = style([
-  sprinkles({
-    width: 'full',
-    fontFamily: 'main',
-    fontWeight: 'normal',
-    fontSize: 'base',
-    marginTop: 'lg',
-  }),
-]);
-
-export const StyledCardFooter = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingTop: 'lg',
-    gap: 'sm',
-    width: 'full',
-  }),
-]);

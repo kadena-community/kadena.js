@@ -38,36 +38,24 @@ export const Primary: Story = {
   render: ({ stack, fullWidth }) => {
     return (
       <>
-        <Card.Container stack={stack} fullWidth={fullWidth}>
-          <Card.Heading>Getting Started is Simple</Card.Heading>
-          <Card.Body>
+        <Card stack={stack} fullWidth={fullWidth}>
+          <h4>Getting Started is Simple</h4>
+          <div>
             Learn Kadena&apos;s core concepts & tools for development in 15
             minutes
-          </Card.Body>
-          <Card.Footer>
-            {/*}
-            <Button title={'Button'} icon={SystemIcons.Information}>
-              Get Started
-            </Button>
-    */}
-            <Button title={'Button'}>Hello World Tutorial</Button>
-          </Card.Footer>
-        </Card.Container>
-        <Card.Container stack={stack} fullWidth={fullWidth}>
-          <Card.Heading>Getting Started is Simple</Card.Heading>
-          <Card.Body>
+          </div>
+
+          <Button title={'Button'}>Hello World Tutorial</Button>
+        </Card>
+        <Card stack={stack} fullWidth={fullWidth}>
+          <h4>Getting Started is Simple</h4>
+          <div>
             Learn Kadena&apos;s core concepts & tools for development in 15
             minutes
-          </Card.Body>
-          <Card.Footer>
-            {/*}
-            <Button title={'Button'} icon={SystemIcons.Information}>
-              Get Started
-            </Button>
-    */}
-            <Button title={'Button'}>Hello World Tutorial</Button>
-          </Card.Footer>
-        </Card.Container>
+          </div>
+
+          <Button title={'Button'}>Hello World Tutorial</Button>
+        </Card>
       </>
     );
   },
