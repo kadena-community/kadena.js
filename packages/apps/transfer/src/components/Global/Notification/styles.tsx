@@ -1,8 +1,7 @@
 import { styled } from '@kadena/react-components';
 
 export const StyledContainer = styled('div', {
-  borderLeftWidth: '4px',
-  borderColor: '#FF8A00',
+  borderLeft: '4px solid #FF8A00',
   padding: '1rem', // 16px
   borderRadius: '0.25rem', // 4px
   backgroundColor: 'rgb(112 67 0 / 0.8)',
