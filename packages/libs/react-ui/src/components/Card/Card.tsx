@@ -1,5 +1,6 @@
-import { fullWidthVariant, stackVariant } from './Card.css';
+import { container, fullWidthClass, stackClass } from './Card.css';
 
+import className from 'classnames';
 import React, { FC } from 'react';
 
 export interface ICardChildComponentProps {
@@ -8,23 +9,15 @@ export interface ICardChildComponentProps {
 
 export interface ICardProps {
   children: React.ReactNode;
-  fullWidth?: keyof typeof fullWidthVariant;
-  stack?: keyof typeof stackVariant;
+  fullWidth?: boolean;
+  stack?: boolean;
 }
 
-export const Card: FC<ICardProps> = ({
-  children,
-  fullWidth = 'false',
-  stack = 'false',
-}) => {
-  return (
-    <div
-      className={`
-        ${fullWidthVariant[fullWidth]} 
-        ${stackVariant[stack]} 
-    `}
-    >
-      {children}
-    </div>
-  );
+export const Card: FC<ICardProps> = ({ children, fullWidth, stack }) => {
+  const classList = className(container, {
+    [fullWidthClass]: fullWidth,
+    [stackClass]: stack,
+  });
+
+  return <div className={classList}>{children}</div>;
 };

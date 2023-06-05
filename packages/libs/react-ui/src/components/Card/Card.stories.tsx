@@ -1,7 +1,6 @@
 import { Button } from '../Button/Button';
 
 import { Card, ICardProps } from './Card';
-import { fullWidthVariant, stackVariant } from './Card.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -10,17 +9,13 @@ const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
   argTypes: {
     stack: {
-      options: Object.keys(stackVariant) as (keyof typeof stackVariant)[],
       control: {
-        type: 'select',
+        type: 'boolean',
       },
     },
     fullWidth: {
-      options: Object.keys(
-        fullWidthVariant,
-      ) as (keyof typeof fullWidthVariant)[],
       control: {
-        type: 'select',
+        type: 'boolean',
       },
     },
   },
@@ -32,8 +27,8 @@ type Story = StoryObj<ICardProps>;
 export const Primary: Story = {
   name: 'Card',
   args: {
-    stack: 'false',
-    fullWidth: 'false',
+    stack: false,
+    fullWidth: false,
   },
   render: ({ stack, fullWidth }) => {
     return (

@@ -1,6 +1,6 @@
 import { sprinkles, vars } from '../../styles';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
@@ -12,51 +12,32 @@ export const container = style([
     paddingX: 'lg',
     paddingY: 'md',
     borderRadius: 'sm',
+    marginY: 'md',
+    border: 'none',
   }),
+  {
+    width: 'max-content',
+  },
 ]);
 
-const booleans: Record<string, boolean> = {
-  true: true,
-  false: false,
-};
+export const fullWidthClass = style([{ width: '100%' }]);
 
-export const fullWidthVariant = styleVariants(booleans, (fullWidth) => {
-  return [
-    container,
-    sprinkles({
-      width: fullWidth ? 'full' : 'max-content',
-    }),
-  ];
-});
-
-export const stackVariant = styleVariants(booleans, (stack) => {
-  const selectors = {
-    '&:not(:last-child)': {
-      borderBottom: `1px solid ${vars.colors.neutral3}`,
+export const stackClass = style([
+  {
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  {
+    selectors: {
+      '&:not(:last-child)': {
+        borderBottom: `1px solid ${vars.colors.neutral3}`,
+      },
+      '&:first-child': {
+        borderRadius: `${vars.radii.sm} ${vars.radii.sm} 0 0`,
+      },
+      '&:last-child': {
+        borderRadius: `0 0 ${vars.radii.sm} ${vars.radii.sm}`,
+      },
     },
-    '&:first-child': {
-      borderRadius: `${vars.radii.sm} ${vars.radii.sm} 0 0`,
-    },
-    '&:last-child': {
-      borderRadius: `0 0 ${vars.radii.sm} ${vars.radii.sm}`,
-    },
-  };
-
-  return [
-    container,
-    sprinkles(
-      stack
-        ? {
-            marginY: 0,
-          }
-        : {
-            marginY: 'md',
-            borderRadius: 'sm',
-            border: 'none',
-          },
-    ),
-    {
-      selectors: stack ? selectors : {},
-    },
-  ];
-});
+  },
+]);
