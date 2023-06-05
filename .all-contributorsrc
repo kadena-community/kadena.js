@@ -93,6 +93,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "webpro",
+      "name": "Lars Kappert",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456426?v=4",
+      "profile": "https://webpro.nl",
+      "contributions": [
+        "doc"
+      ]
     }
-  ]
+  ],
+  "commitType": "docs"
 }
