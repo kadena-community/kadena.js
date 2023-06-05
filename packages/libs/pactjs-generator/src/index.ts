@@ -21,6 +21,11 @@ export * from './contract/generation/generator';
 /**
  * @alpha
  */
+export * from './contract/generation/generatorV2';
+
+/**
+ * @alpha
+ */
 export * from './template/parsing/parseTemplate';
 
 /**

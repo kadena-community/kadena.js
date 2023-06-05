@@ -1,6 +1,7 @@
 import {
   FileContractDefinition,
   generateDts,
+  generateDts2,
   IContractDefinition,
   pactParser,
   StringContractDefinition,
@@ -54,45 +55,35 @@ export const generate =
     version: string,
   ): ((args: ContractGenerateOptions) => void) =>
   async (args: ContractGenerateOptions) => {
-    let pactModule: IContractDefinition;
-    console.log(args);
+    let pactModule: IContractDefinition | undefined = undefined;
+    let moduleDtss: Map<string, string> | undefined = undefined;
     if (args.newParser && 'contract' in args) {
       console.log(`Generating Pact contract from ${args.contract}`);
 
       const getContract = async (name: string) => {
         console.log('fetching', name);
-        const mod = await retrieveContractFromChain(
+        const content = await retrieveContractFromChain(
           name,
           args.api,
           args.chain,
           args.network,
         );
-        if (!mod) {
+        if (!content) {
           console.warn(name, 'return undefined');
         } else {
-          console.log(name, 'length:', mod.length);
+          console.log(name, 'length:', content.length);
         }
-        return mod || '';
+        return content || '';
       };
-
-      const pactCode = await getContract(args.contract);
-
-      if (pactCode === undefined || pactCode.length === 0) {
-        program.error('Could not retrieve contract from chain');
-      }
 
       const slags = args.contract.split('.');
       const namespace = slags.length === 2 ? slags[0] : '';
 
-      const modules = await pactParser(pactCode, getContract, namespace);
+      const modules = await pactParser(args.contract, namespace, getContract);
 
-      writeFileSync(
-        join(process.cwd(), 'modules.json'),
-        JSON.stringify(modules, null, 2),
-      );
-      process.exit(0);
-    }
-    if ('contract' in args) {
+      moduleDtss = new Map();
+      moduleDtss.set(args.contract, generateDts2(args.contract, modules));
+    } else if ('contract' in args) {
       console.log(`Generating Pact contract from ${args.contract}`);
 
       const pactCode = await retrieveContractFromChain(
@@ -122,10 +113,16 @@ export const generate =
       });
     }
 
-    const moduleDtss: Map<string, string> = generateDts(
-      pactModule.modulesWithFunctions,
-      args.capsInterface,
-    );
+    if (pactModule) {
+      moduleDtss = generateDts(
+        pactModule.modulesWithFunctions,
+        args.capsInterface,
+      );
+    }
+
+    if (!moduleDtss) {
+      throw new Error('No module is generated');
+    }
 
     // walk up in file tree from process.cwd() to get the package.json
     const targetPackageJson: string | undefined = shallowFindFile(

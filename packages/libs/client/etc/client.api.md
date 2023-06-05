@@ -24,6 +24,12 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
+// @public (undocumented)
+export interface ICapV2 {
+    // (undocumented)
+    addCap(cap: string, signer: string, ...args: any[]): this;
+}
+
 // @alpha (undocumented)
 export interface IChainweaverCap {
     // (undocumented)
@@ -95,6 +101,39 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
         sender: IPactCommand['publicMeta']['sender'];
     }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    // (undocumented)
+    status: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "ICommandBuilderV2" is marked as @public, but its signature references "IPactCommand" which is marked as @alpha
+//
+// @public (undocumented)
+export interface ICommandBuilderV2 extends IPactCommand {
+    // (undocumented)
+    addData: (data: IPactCommand['data']) => this;
+    // (undocumented)
+    addSignatures(...sig: {
+        pubKey: string;
+        sig: string;
+    }[]): ICommandBuilderV2;
+    // (undocumented)
+    createCommand(): IUnsignedCommand;
+    // (undocumented)
+    local(apiHost: string, options?: any): Promise<any>;
+    // (undocumented)
+    poll(apiHost: string): Promise<IPollResponse>;
+    // (undocumented)
+    pollUntil(apiHost: string, options?: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (transaction: ICommandBuilderV2, pollRequest: Promise<IPollResponse>) => void;
+    }): Promise<this>;
+    // (undocumented)
+    send(apiHost: string): Promise<SendResponse>;
+    // (undocumented)
+    setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
+        sender: IPactCommand['publicMeta']['sender'];
+    }, networkId?: IPactCommand['networkId']) => this;
     // (undocumented)
     status: string;
 }

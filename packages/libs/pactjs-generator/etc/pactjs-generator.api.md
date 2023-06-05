@@ -7,6 +7,7 @@
 /// <reference types="node" />
 
 import { PathLike } from 'fs';
+import { Token } from 'moo';
 
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
@@ -39,10 +40,27 @@ export class FileContractDefinition implements IContractDefinition {
 export function generateDts(modules: Output, capsInterfaceName?: string): Map<ModuleName, string>;
 
 // @alpha (undocumented)
+export function generateDts2(moduleFullName: string, modules: Record<string, IModule>): string;
+
+// @alpha (undocumented)
 export function generateTemplates(templates: {
     name: string;
     template: ITemplate;
 }[], version: string): string;
+
+// @public (undocumented)
+export const getModuleFullName: (mod: {
+    name: string;
+    namespace?: string;
+}) => string;
+
+// Warning: (ae-forgotten-export) The symbol "IMethod" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export interface ICapability extends IMethod {
+    // (undocumented)
+    composeCapabilities?: string[];
+}
 
 // @alpha (undocumented)
 export interface IContractDefinition {
@@ -59,9 +77,72 @@ export interface IContractDefinition {
 }
 
 // @public (undocumented)
+export interface IFunction extends IMethod {
+    // (undocumented)
+    allExtractedCaps?: Array<{
+        name: string;
+        fullModuleName: string;
+        reason: 'with-capability' | 'compose-capability';
+        origin: string;
+        capability: ICapability;
+    }>;
+    // (undocumented)
+    bodyPointer?: number;
+    // (undocumented)
+    externalFnCalls?: Array<{
+        namespace?: string;
+        module: string;
+        func: string;
+    }>;
+    // (undocumented)
+    functionCalls?: {
+        internal: string[];
+        external: Array<{
+            namespace?: string;
+            module: string;
+            func: string;
+        }>;
+    };
+    // (undocumented)
+    requiredCapabilities?: string[];
+    // (undocumented)
+    withCapabilities?: string[];
+}
+
+// @public (undocumented)
+export interface IModule {
+    // (undocumented)
+    capabilities?: ICapability[];
+    // (undocumented)
+    doc: string;
+    // (undocumented)
+    functions?: IFunction[];
+    // (undocumented)
+    governance: string;
+    // (undocumented)
+    kind: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    namespace: string;
+    // (undocumented)
+    schemas?: ISchema[];
+    // (undocumented)
+    usedInterface?: Array<{
+        name: string;
+        namespace?: string;
+    }>;
+    // (undocumented)
+    usedModules?: Array<{
+        name: string;
+        namespace?: string;
+        hash?: string;
+        imports?: string[];
+    }>;
+}
+
+// @public (undocumented)
 export interface IPactTree {
-    // Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     module?: IModule[];
     // (undocumented)
@@ -70,6 +151,22 @@ export interface IPactTree {
     usedModules?: Array<{
         name: string;
         hash?: string;
+    }>;
+}
+
+// @public (undocumented)
+export interface ISchema {
+    // (undocumented)
+    doc?: string;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    properties?: Array<{
+        name: string;
+        type: string | {
+            kind: string;
+            value: string;
+        };
     }>;
 }
 
@@ -82,7 +179,9 @@ export interface ITemplate {
 }
 
 // @public (undocumented)
-export function pactParser(mainContract: string, getContract: (fullName: string) => Promise<string>, namespace?: string): Promise<Record<string, IModule | null>>;
+export function pactParser(file: string, namespace: string | undefined, getContract: (fullName: string) => Promise<string>): Promise<{
+    [k: string]: IModuleWithPointer;
+}>;
 
 // @alpha (undocumented)
 export function parseTemplate(template: string): ITemplate;
@@ -115,6 +214,7 @@ export type TemplateParts = string[];
 // Warnings were encountered during analysis:
 //
 // src/contract/generation/FileContractDefinition.ts:23:5 - (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
+// src/contract/parsing/pactParser.ts:318:53 - (ae-forgotten-export) The symbol "IModuleWithPointer" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

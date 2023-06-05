@@ -52,13 +52,21 @@ export const id: IId = (value: string, returnValue = value) =>
     return token?.value === value ? returnValue : FAILED;
   });
 
-export const ids = (list: string[]): IParser<string> => {
-  // console.log('ids', list);
+interface IIds {
+  (list: string[]): IParser<string>;
+  <T>(list: string[], mapper: (idx: number, list: string[]) => T): IParser<T>;
+}
+
+export const ids: IIds = (
+  list: string[],
+  mapper = (idx: number, list: string[]) => list[idx],
+) => {
   return rule((pointer: IPointer) => {
     const token = pointer.next();
     if (!token) return FAILED;
-    if (list.includes(token.value)) {
-      return token.value;
+    const findIndex = list.findIndex((item) => item === token.value);
+    if (findIndex >= 0) {
+      return mapper(findIndex, list);
     }
     return FAILED;
   });
