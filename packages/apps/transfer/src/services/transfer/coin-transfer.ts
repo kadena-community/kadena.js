@@ -90,8 +90,6 @@ export async function transferCreate({
     amount,
   ).toDecimal()})`;
 
-  console.log(`PACT NUMBER: ${new PactNumber(amount).toPactDecimal()}`);
-
   pactCommand
     .addCap('coin.GAS', onlyKey(fromAccount))
     .addCap(
