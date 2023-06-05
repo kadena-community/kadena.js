@@ -1,6 +1,0 @@
-{
-  "reporters": ["jest-standard-reporter"],
-  "moduleNameMapper": {
-    "@/(.*)": "<rootDir>/src/$1"
-  }
-}
