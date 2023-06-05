@@ -7,7 +7,11 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
   fontSize: '$sm',
   fontFamily: '$mono',
   lineHeight: '$code',
+  margin: '$5 0',
 
+  '& code': {
+    wordBreak: 'break-all',
+  },
   '& [data-rehype-pretty-code-title]': {
     display: 'flex',
     alignItems: 'center',
@@ -36,6 +40,11 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
     '&[data-language="typescript"]': {
       '&::before': {
         content: 'TS',
+      },
+    },
+    '&[data-language="bash"]': {
+      '&::before': {
+        content: 'B',
       },
     },
   },
