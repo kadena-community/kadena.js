@@ -23,7 +23,7 @@ import {
   str,
 } from './parserUtilities';
 
-// :string :object{schema-one} {kind:string,value:string} | string
+// :string :object{schema-one} {kind:object,value:schema-one} | string
 const typeRule = seq(
   id(':'),
   oneOf(
@@ -131,30 +131,17 @@ const implementsRule = block(
   ),
 );
 
-// (module name governance) @doc "doc"
+// (module name governance @doc "doc" ... )
+// (interface name @doc "doc" ... )
 const moduleRule = block(
-  // module
-  $('kind', id('module') as IParser<string>),
-  $('name', atom),
-  $('governance', oneOf(atom, str, asString(block()))),
-  maybe(id('@doc')),
-  maybe($('doc', str)),
-  maybe(seq(id('@model'), id('['), repeat(block()), id(']'))),
-  repeat(
-    $('functions', method('defun', functionBody)),
-    $('capabilities', method('defcap', capabilityBody)),
-    $('usedModules', use),
-    $('usedInterface', implementsRule),
-    $('schemas', schema),
-    // skip other type of blocks
-    block(),
+  oneOf(
+    seq(
+      $('kind', id('module') as IParser<string>),
+      $('name', atom),
+      $('governance', oneOf(atom, str, asString(block()))),
+    ),
+    seq($('kind', id('interface') as IParser<string>), $('name', atom)),
   ),
-);
-
-const interfaceRule = block(
-  // module
-  $('kind', id('interface') as IParser<string>),
-  $('name', atom),
   maybe(id('@doc')),
   maybe($('doc', str)),
   maybe(seq(id('@model'), id('['), repeat(block()), id(']'))),
@@ -174,7 +161,7 @@ const addLocation = $('location', pointerSnapshot);
 export const parser = repeat(
   $('namespaces', block(addLocation, id('namespace'), $('name', str))),
   $('usedModules', seq(addLocation, use)),
-  $('modules', seq(addLocation, $('module', oneOf(moduleRule, interfaceRule)))),
+  $('modules', seq(addLocation, $('module', moduleRule))),
 );
 
 // use this function to get the list of all function calls inside a function
