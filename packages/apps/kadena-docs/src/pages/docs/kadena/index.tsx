@@ -41,7 +41,7 @@ const Home: FC = () => {
               title="Concepts"
               subtitle="Distinct Execution modes"
               icon="Concepts"
-              href="/docs/kadenajs"
+              href="/docs/kadena"
             />
           </BrowseSection>
         </Stack>
@@ -78,7 +78,7 @@ const Home: FC = () => {
               title="Smart Contracts"
               subtitle="Explore all products"
               icon="SmartContract"
-              href="/docs/kadenajs"
+              href="/docs/kadena"
             />
             <BrowseSection.LinkBlock
               title="Syntax"
@@ -90,7 +90,7 @@ const Home: FC = () => {
               title="Contribute"
               subtitle="Explore all products"
               icon="Contribute"
-              href="/docs/chainweb"
+              href="/docs/build"
             />
           </BrowseSection>
 
@@ -105,7 +105,7 @@ const Home: FC = () => {
               title="Useful Tools"
               subtitle="Explore all products"
               icon="UsefulTools"
-              href="/docs/kadenajs"
+              href="/docs/kadena"
             />
             <BrowseSection.LinkBlock
               title="Pact Developer Tutorials"
@@ -117,7 +117,7 @@ const Home: FC = () => {
               title="Quickstart"
               subtitle="Explore all products"
               icon="QuickStart"
-              href="/docs/chainweb"
+              href="/docs/build"
             />
           </BrowseSection>
         </Stack>
