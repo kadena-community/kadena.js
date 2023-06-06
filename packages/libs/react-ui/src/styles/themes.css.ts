@@ -86,6 +86,9 @@ export const vars = createGlobalTheme(':root', {
     '3xl': 'var(--spacing-3xl)',
   },
   colors: {
+    foreground: '#050505',
+    background: '#FAFAFA',
+
     neutral1: '#FAFAFA',
     neutral2: '#F0F0F0',
     neutral3: '#9EA1A6',
@@ -121,6 +124,9 @@ export const vars = createGlobalTheme(':root', {
 });
 
 export const darkThemeClass = createTheme(vars.colors, {
+  foreground: '#FAFAFA',
+  background: '#050505',
+
   neutral1: '#050505',
   neutral2: '#1D1D1F',
   neutral3: '#474F52',
