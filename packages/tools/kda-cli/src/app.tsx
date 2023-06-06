@@ -1,5 +1,6 @@
 import { OnAnswer, QuestionWrapper } from './components/question.js';
 import { Summary } from './components/summary.js';
+import { useHistory } from './hooks/use-history.js';
 import { questions } from './questions/init.js';
 import {
   getNextQuestion,
@@ -7,22 +8,25 @@ import {
   IQuestionAnswer,
 } from './questions/questions.js';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 interface IProps {
   task?: string;
 }
 export default function App({ task = '' }: IProps): JSX.Element {
-  const [qna, setQNA] = useState<IQuestionAnswer>({
-    current: questions[0],
-    answers: {},
-    questions,
-    answeredQuestions: [],
-  });
+  const [qna, setQNA] = useState<IQuestionAnswer>(
+    getNextQuestion({
+      current: undefined,
+      answers: { task },
+      questions,
+      answeredQuestions: [],
+    }),
+  );
   const onAnswer = useCallback<OnAnswer>(
     (answer: IAnswers) => {
       if (!qna.current) throw new Error('No current question');
       const mergedAnswers = { ...qna.answers, ...answer };
+
       const nextQNA = getNextQuestion({
         ...qna,
         answers: mergedAnswers,
@@ -36,12 +40,19 @@ export default function App({ task = '' }: IProps): JSX.Element {
     },
     [qna, setQNA],
   );
+  const { onSet } = useHistory('previous');
+  useEffect(() => {
+    if (!qna.current)
+      onSet({
+        answers: qna.answers,
+        executions: qna.answeredQuestions.filter(
+          ({ question }) => question.type === 'execute',
+        ),
+      });
+  }, [onSet, qna.answers, qna.answeredQuestions, qna.current]);
   return (
     <>
-      <Summary
-        answers={qna.answers}
-        answeredQuestions={qna.answeredQuestions}
-      />
+      <Summary answeredQuestions={qna.answeredQuestions} />
       {qna.current && (
         <QuestionWrapper
           {...qna.current}

@@ -36,8 +36,8 @@ const findNextQuestion = (
   answers: IAnswers,
 ): IQuestion | undefined => {
   const index = questions.indexOf(question);
-  if (index === -1) return undefined;
   const next = questions[index + 1];
+  console.log('next', next);
   if (next?.when && !next.when(answers))
     return findNextQuestion(next, questions, answers);
   return next;
@@ -48,9 +48,15 @@ export const getNextQuestion = ({
   answers,
   answeredQuestions,
 }: IQuestionAnswer): IQuestionAnswer => {
+  console.log('yeah', current);
+
   if (!current)
     return {
-      current: questions[0],
+      current: findNextQuestion(
+        { type: 'input', message: '', name: '' },
+        questions,
+        answers,
+      ),
       questions,
       answers,
       answeredQuestions,

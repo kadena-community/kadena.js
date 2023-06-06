@@ -42,6 +42,7 @@ export const Rerun = (): ReturnType<typeof SummaryView> => {
     },
     [currentExecution?.question?.name, answers],
   );
+  console.log({ currentExecution, history, answers });
 
   if (currentExecution === undefined) {
     return (

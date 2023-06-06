@@ -1,8 +1,8 @@
-import { HistoryValue, useHistory } from '../hooks/use-history.js';
-import { IAnswers, IQuestionAnswer } from '../questions/questions.js';
+import { HistoryValue } from '../hooks/use-history.js';
+import { IQuestionAnswer } from '../questions/questions.js';
 
 import { Box, Text } from 'ink';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const Answer = ({
   value,
@@ -49,21 +49,10 @@ export const SummaryView = ({
 );
 
 interface ISummaryProps {
-  answers: IAnswers;
   answeredQuestions: IQuestionAnswer['answeredQuestions'];
 }
 export const Summary = ({
-  answers,
   answeredQuestions,
 }: ISummaryProps): ReturnType<typeof SummaryView> => {
-  const { onSet } = useHistory('previous');
-  useEffect(() => {
-    onSet({
-      answers,
-      executions: answeredQuestions.filter(
-        ({ question }) => question.type === 'execute',
-      ),
-    });
-  }, []);
   return <SummaryView answeredQuestions={answeredQuestions} />;
 };

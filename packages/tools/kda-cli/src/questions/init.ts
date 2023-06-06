@@ -30,12 +30,17 @@ export const questions: IQuestion[] = [
         value: 'local',
       },
     ],
+    when: ({ task }: IAnswers) => {
+      console.log({ task });
+      return true;
+    },
   },
   {
     message: 'Rerunning previous commands...',
     type: 'rerun',
     name: 'rerun',
     when: ({ task }: IAnswers) => {
+      console.log({ task });
       if (Array.isArray(task)) return task?.includes('rerun');
       return false;
     },
