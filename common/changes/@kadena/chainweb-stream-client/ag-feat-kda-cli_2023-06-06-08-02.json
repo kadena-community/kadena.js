@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Update to typescript 4.7",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
