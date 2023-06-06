@@ -1,19 +1,28 @@
-import { Notification, SystemIcons } from '@kadena/react-components';
-import { NotificationBody } from '@kadena/react-components/types/components/Notification';
+import {
+  Notification,
+  NotificationBody,
+  styled,
+  SystemIcons,
+} from '@kadena/react-components';
 
 import React, { FC, ReactNode } from 'react';
 
+const Wrapper = styled('div', {
+  margin: '$5 0',
+});
+
 interface IProps {
   children: ReactNode;
+  title: string;
+  label: 'info' | 'note' | 'tip' | 'caution' | 'danger' | 'warning';
 }
 
-export const MDNotification: FC<IProps> = ({ children, ...props }) => {
-  console.log({ children, props });
+export const MDNotification: FC<IProps> = ({ children, title, label }) => {
   return (
-    <div {...props}>
-      <Notification title="test" expand icon={SystemIcons.Account}>
-        <Notification.Body>{children}</Notification.Body>
+    <Wrapper>
+      <Notification title={title} expand icon={SystemIcons.Account}>
+        <NotificationBody>{children}</NotificationBody>
       </Notification>
-    </div>
+    </Wrapper>
   );
 };

@@ -1,12 +1,24 @@
-const getHeaders = (tree) => {
-  return tree.children.filter((branch) => {
-    return branch.type === 'paragraph';
-  });
-};
+const NOTETYPES = ['info', 'note', 'tip', 'caution', 'danger', 'warning'];
+const STARTNOTER_EGEXP = /^:::\s?([a-z]*)\s(.*)$/gi;
 
 const isStart = (branch) => {
   if (branch.children.length === 0) return false;
-  return branch.children[0].value === ':::info Tip';
+  const value = branch.children[0].value ?? '';
+
+  return value.match(STARTNOTER_EGEXP);
+};
+
+const getProps = (branch) => {
+  if (branch.children.length === 0) return false;
+  const value = branch.children[0].value ?? '';
+
+  const match = STARTNOTER_EGEXP.exec(value);
+  if (!match) return {};
+
+  return {
+    label: match[1],
+    title: match[2],
+  };
 };
 
 let STARTELM;
@@ -22,27 +34,28 @@ const clearStartElm = () => {
   STARTELM = undefined;
 };
 
-const reduceToNotifications = (acc, head) => {
-  if (!head.children) return [...acc, head];
+const reduceToNotifications = (acc, branch) => {
+  if (!branch.children) return [...acc, branch];
 
-  console.log(head);
+  if (isStart(branch)) {
+    setStartElm(branch);
 
-  if (isStart(head)) {
-    setStartElm(head);
-    return [...acc, head];
+    const props = getProps(branch);
+    branch.type = 'element';
+    branch.data = {
+      hName: 'kda-notification',
+      hProperties: props,
+    };
+
+    return [...acc, branch];
   }
   const startElm = getStartElm();
-  if (getStartElm()) {
-    startElm.type = 'element';
-    startElm.data = {
-      hName: 'kda-notification',
-      hProperties: { 'data-cy': 'sdfaasf', className: ['testthis'] },
-    };
+  if (startElm) {
     startElm.children[0].value = '';
-    startElm.children = [...startElm.children, head];
+    startElm.children = [...startElm.children, branch];
 
-    if (head.children[0].value === ':::') {
-      head.children[0].value = '';
+    if (branch.children[0].value === ':::') {
+      branch.children[0].value = '';
       clearStartElm();
     }
 
@@ -50,7 +63,7 @@ const reduceToNotifications = (acc, head) => {
     return acc;
   }
 
-  return [...acc, head];
+  return [...acc, branch];
 };
 
 const remarkAdmonitions = () => {
