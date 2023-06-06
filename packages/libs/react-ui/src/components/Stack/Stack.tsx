@@ -1,8 +1,8 @@
 import {
   alignItemsClass,
   container,
-  directionColumnClass,
-  flexWrappedClass,
+  directionClass,
+  flexWrapClass,
   justifyContentClass,
   spacingClass,
 } from './Stack.css';
@@ -12,8 +12,8 @@ import React, { FC } from 'react';
 
 export interface IStackProps {
   spacing?: keyof typeof spacingClass;
-  direction?: boolean;
-  flexWrap?: boolean;
+  direction?: keyof typeof directionClass;
+  flexWrap?: keyof typeof flexWrapClass;
   alignItems?: keyof typeof alignItemsClass;
   justifyContent?: keyof typeof justifyContentClass;
   children: React.ReactNode;
@@ -21,8 +21,8 @@ export interface IStackProps {
 
 export const Stack: FC<IStackProps> = ({
   spacing = 'md',
-  direction = false,
-  flexWrap = false,
+  direction = 'row',
+  flexWrap = 'nowrap',
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
   children,
@@ -32,10 +32,8 @@ export const Stack: FC<IStackProps> = ({
     spacingClass[spacing],
     alignItemsClass[alignItems],
     justifyContentClass[justifyContent],
-    {
-      [flexWrappedClass]: flexWrap,
-      [directionColumnClass]: direction,
-    },
+    flexWrapClass[flexWrap],
+    directionClass[direction],
   );
   return <div className={classList}>{children}</div>;
 };

@@ -1,11 +1,10 @@
 import { Stack } from './Stack';
 import {
   alignItemsClass,
-  Item,
-  ItemSizeClass,
   justifyContentClass,
   spacingClass,
 } from './Stack.css';
+import { Item, ItemSizeClass } from './stories.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import className from 'classnames';
@@ -45,7 +44,7 @@ export const Horizontal: Story = {
   name: 'Horizontal Stack',
   args: {
     spacing: 'md',
-    direction: false,
+    direction: 'row',
   },
   render: ({ spacing, direction }) => (
     <>
@@ -65,7 +64,7 @@ export const Vertical: Story = {
   name: 'Vertical Stack',
   args: {
     spacing: 'md',
-    direction: true,
+    direction: 'column',
   },
   render: ({ spacing, direction }) => (
     <>
@@ -85,7 +84,7 @@ export const Centered: Story = {
   name: 'Align Items Center Stack',
   args: {
     spacing: 'md',
-    direction: false,
+    direction: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -112,7 +111,7 @@ export const SpaceBetween: Story = {
   name: 'Space Between Stack',
   args: {
     spacing: 'md',
-    direction: false,
+    direction: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -139,10 +138,10 @@ export const Wrapped: Story = {
   name: 'Wrapped Stack',
   args: {
     spacing: 'md',
-    direction: false,
+    direction: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    flexWrap: true,
+    flexWrap: 'wrap',
   },
   render: ({ spacing, direction, alignItems, justifyContent, flexWrap }) => (
     <>
