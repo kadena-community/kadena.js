@@ -23,7 +23,7 @@
     "_phase:test": "npm run test",
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
-    "build:test": "tsc & tsc -p ./tsconfig.cjs.json",
+    "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
