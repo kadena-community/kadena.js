@@ -1,4 +1,4 @@
-import { AsideLink, AsideList } from '../components';
+import { AsideLink, AsideList } from './';
 
 import { ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
@@ -12,7 +12,6 @@ interface IProps {
   item: ISubHeaderElement;
   setActiveItem: React.Dispatch<React.SetStateAction<string>>;
   activeItem?: string;
-  slug: string;
 }
 
 export const ListItem: FC<IProps> = ({
@@ -20,11 +19,11 @@ export const ListItem: FC<IProps> = ({
   setActiveItem,
   activeItem,
   scrollArea,
-  slug,
 }) => {
   const router = useRouter();
 
   if (item.title === undefined) return null;
+  const slug = `#${createSlug(item.title)}`;
 
   const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {
     ev.preventDefault();
@@ -55,11 +54,9 @@ export const ListItem: FC<IProps> = ({
       {item.children.length > 0 && (
         <AsideList inner={true}>
           {item.children.map((innerItem) => {
-            const innerSlug = createSlug(innerItem.title);
             return (
               <ListItem
-                key={innerSlug}
-                slug={innerSlug}
+                key={innerItem.title}
                 scrollArea={scrollArea}
                 item={innerItem}
                 activeItem={activeItem}

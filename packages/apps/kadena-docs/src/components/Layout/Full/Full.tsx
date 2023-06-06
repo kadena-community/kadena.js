@@ -7,11 +7,10 @@ import {
   AsideLink,
   AsideList,
   Content,
+  ListItem,
   StickyAside,
   StickyAsideWrapper,
 } from '../components';
-
-import { ListItem } from './ListItem';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
@@ -68,58 +67,6 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
     return () => observer.disconnect();
   }, [activeItem, router.asPath]);
 
-  const renderListItem = (item: ISubHeaderElement): ReactNode => {
-    if (item.title === undefined) return null;
-
-    const slug = `#${createSlug(item.title)}`;
-
-    const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {
-      ev.preventDefault();
-
-      analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
-        label: item.title,
-        url: slug,
-      });
-
-      document?.querySelector(slug)?.scrollIntoView({
-        behavior: 'smooth',
-      });
-
-      setTimeout(async () => {
-        await router.push(slug);
-        setActiveItem(slug);
-      }, 500);
-    };
-
-    return (
-      <AsideLink
-        href={slug}
-        key={slug}
-        label={item.title}
-        isActive={activeItem === slug}
-        onClick={handleItemClick}
-      >
-        {item.children.length > 0 && (
-          <AsideList inner={true}>
-            {item.children.map((innerItem) => {
-              const innerSlug = createSlug(innerItem.title);
-              return (
-                <ListItem
-                  key={innerSlug}
-                  slug={innerSlug}
-                  scrollArea={scrollRef.current}
-                  item={innerItem}
-                  activeItem={activeItem}
-                  setActiveItem={setActiveItem}
-                />
-              );
-            })}
-          </AsideList>
-        )}
-      </AsideLink>
-    );
-  };
-
   return (
     <>
       <Content id="maincontent">
@@ -137,7 +84,18 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
                 On this page
               </Heading>
               <AsideList ref={menuRef}>
-                {aSideMenuTree.map(renderListItem)}
+                {aSideMenuTree.map((innerItem) => {
+                  const innerSlug = createSlug(innerItem.title);
+                  return (
+                    <ListItem
+                      key={innerSlug}
+                      scrollArea={scrollRef.current}
+                      item={innerItem}
+                      activeItem={activeItem}
+                      setActiveItem={setActiveItem}
+                    />
+                  );
+                })}
               </AsideList>
             </StickyAside>
           </StickyAsideWrapper>
