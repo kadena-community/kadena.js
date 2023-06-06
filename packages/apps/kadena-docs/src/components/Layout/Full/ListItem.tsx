@@ -12,6 +12,7 @@ interface IProps {
   item: ISubHeaderElement;
   setActiveItem: React.Dispatch<React.SetStateAction<string>>;
   activeItem?: string;
+  slug: string;
 }
 
 export const ListItem: FC<IProps> = ({
@@ -19,12 +20,11 @@ export const ListItem: FC<IProps> = ({
   setActiveItem,
   activeItem,
   scrollArea,
+  slug,
 }) => {
   const router = useRouter();
 
   if (item.title === undefined) return null;
-
-  const slug = `#${createSlug(item.title)}`;
 
   const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {
     ev.preventDefault();
@@ -54,15 +54,19 @@ export const ListItem: FC<IProps> = ({
     >
       {item.children.length > 0 && (
         <AsideList inner={true}>
-          {item.children.map((innerItem) => (
-            <ListItem
-              key={innerItem.slug}
-              scrollArea={scrollArea}
-              item={innerItem}
-              activeItem={activeItem}
-              setActiveItem={setActiveItem}
-            />
-          ))}
+          {item.children.map((innerItem) => {
+            const innerSlug = createSlug(innerItem.title);
+            return (
+              <ListItem
+                key={innerSlug}
+                slug={innerSlug}
+                scrollArea={scrollArea}
+                item={innerItem}
+                activeItem={activeItem}
+                setActiveItem={setActiveItem}
+              />
+            );
+          })}
         </AsideList>
       )}
     </AsideLink>

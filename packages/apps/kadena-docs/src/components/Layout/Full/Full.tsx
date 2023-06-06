@@ -101,15 +101,19 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
       >
         {item.children.length > 0 && (
           <AsideList inner={true}>
-            {item.children.map((innerItem) => (
-              <ListItem
-                key={innerItem.slug}
-                scrollArea={scrollRef.current}
-                item={innerItem}
-                activeItem={activeItem}
-                setActiveItem={setActiveItem}
-              />
-            ))}
+            {item.children.map((innerItem) => {
+              const innerSlug = createSlug(innerItem.title);
+              return (
+                <ListItem
+                  key={innerSlug}
+                  slug={innerSlug}
+                  scrollArea={scrollRef.current}
+                  item={innerItem}
+                  activeItem={activeItem}
+                  setActiveItem={setActiveItem}
+                />
+              );
+            })}
           </AsideList>
         )}
       </AsideLink>
