@@ -36,18 +36,19 @@ export default function App({ task = '' }: IProps): JSX.Element {
     },
     [qna, setQNA],
   );
-  if (!qna.current || task)
-    return (
+  return (
+    <>
       <Summary
         answers={qna.answers}
         answeredQuestions={qna.answeredQuestions}
       />
-    );
-  return (
-    <QuestionWrapper
-      {...qna.current}
-      onAnswer={onAnswer}
-      answers={qna.answers}
-    />
+      {qna.current && (
+        <QuestionWrapper
+          {...qna.current}
+          onAnswer={onAnswer}
+          answers={qna.answers}
+        />
+      )}
+    </>
   );
 }
