@@ -2,7 +2,10 @@ import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
 import { getTopDocs } from '@/data/getTopDocs';
-import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -134,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       topDocs: topDocs,
-      leftMenuTree: checkSubTreeForActive(),
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Welcome to Kadena docs',
         menu: 'Pact',
