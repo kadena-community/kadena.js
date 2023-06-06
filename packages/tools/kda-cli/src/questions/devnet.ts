@@ -37,7 +37,7 @@ const setupEnvFor = async (layer: 'l1' | 'l2'): Promise<void> => {
   return writeFileSync(envFile, getEnvL1(env), 'utf-8');
 };
 
-export const devnetQuestions: IQuestion[] = [
+export const setupQuestions: IQuestion[] = [
   {
     message: 'Will you be developing for L2?',
     name: 'setupL2',
@@ -105,4 +105,47 @@ export const devnetQuestions: IQuestion[] = [
       return { prepare: 'success' };
     },
   },
+];
+
+export const startQuestions: IQuestion[] = [
+  {
+    message: 'Starting L1 devnet...',
+    name: 'startDevnet',
+    type: 'execute',
+    when: ({ task }: IAnswers) => {
+      if (Array.isArray(task)) return task?.includes('start');
+      return false;
+    },
+    action: async () => {
+      await spawned(
+        `cd ${process.env.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml up --remove-orphans -d`,
+        true,
+      );
+      return { start: 'success' };
+    },
+  },
+  {
+    message: 'Starting L2 devnet...',
+    name: 'startDevnetL2',
+    type: 'execute',
+    when: ({ task }: IAnswers) => {
+      if (!Array.isArray(task)) return false;
+      if (!task?.includes('start')) return false;
+      return true;
+    },
+    action: async () => {
+      const exitCode = await spawned(`ls ${process.env.HOME}/.devnet/l2`);
+      if (exitCode !== 0) return { start: 'skipped' };
+      await spawned(
+        `cd ${process.env.HOME}/.devnet/l2 && docker compose -f docker-compose.minimal-l2.yaml up --remove-orphans -d`,
+        true,
+      );
+      return { start: 'success' };
+    },
+  },
+];
+
+export const devnetQuestions: IQuestion[] = [
+  ...setupQuestions,
+  ...startQuestions,
 ];
