@@ -1,6 +1,8 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @rushstack/typedef-var */
+// In this module, we generate new functions by composing other functions. In order to allow TypeScript to automatically infer the types,
+// I had to disable these rules.
 
 import {
   $,
@@ -33,7 +35,6 @@ const typeRule = seq(
 );
 
 // (defun|defcap name (a:string,b:object{schema-one},c) @doc "test doc")
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const method = <T extends IParser>(
   type: 'defun' | 'defcap',
   bodyParser: T = skipTheRest as T,

@@ -14,7 +14,7 @@ import { ExceptKeywords, UnionToIntersection } from './typeUtilities';
 // eslint-disable-next-line @rushstack/typedef-var
 export const FAILED = Symbol('FAILED');
 
-export interface IParser<T extends any = any, F = typeof FAILED> {
+export interface IParser<T extends unknown = unknown, F = typeof FAILED> {
   (pointer: IPointer): F | T;
   isRule?: boolean;
 }
@@ -24,26 +24,24 @@ type RuleReturn<T, N extends string | undefined = string | undefined> =
   | ExWrappedData<T, N>;
 
 type RuleReturnType<T extends IParser> = Exclude<ReturnType<T>, typeof FAILED>;
-interface IRule {
-  <P extends IParser>(parser: P): P;
-}
-export const rule: IRule = (parser: IParser) => {
-  if (parser.isRule === true) return parser as IParser;
-  const wrapperParser = (pointer: IPointer): unknown => {
+
+export const rule = <P extends IParser>(parser: P): P => {
+  if (parser.isRule === true) return parser;
+  const wrapperParser = ((pointer) => {
     const snapshot = pointer.snapshot();
     const result = parser(pointer);
     if (result === FAILED) {
       pointer.reset(snapshot);
     }
     return result;
-  };
+  }) as P;
   wrapperParser.isRule = true;
-  return wrapperParser as any;
+  return wrapperParser;
 };
 
 interface IId {
   <T extends string>(value: T): IParser<T>;
-  <T extends any>(value: string, returnValue: T): IParser<T>;
+  <T extends unknown>(value: string, returnValue: T): IParser<T>;
 }
 
 export const id: IId = (value: string, returnValue = value) =>
@@ -206,7 +204,7 @@ export const repeat: IRepeat = (...parsers: IParser[]) => {
     // flat the array as an object
     const returnValue = results.reduce((acc, item) => {
       const name = item.name;
-      if (name) {
+      if (name !== undefined && name) {
         acc[name] = pushUnique(acc[name], item.data);
       } else {
         if (typeof item.data === 'object') {
@@ -260,7 +258,7 @@ export const maybe = <T extends unknown>(
 export const asString = (parser: IParser): IParser<string> =>
   rule((pointer: IPointer) => {
     const start = pointer.snapshot();
-    const result = parser(pointer) as any;
+    const result: any = parser(pointer);
     const end = pointer.snapshot();
     if (result === FAILED) return FAILED;
     pointer.reset(start);

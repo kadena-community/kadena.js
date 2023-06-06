@@ -7,7 +7,6 @@
 /// <reference types="node" />
 
 import { PathLike } from 'fs';
-import { Token } from 'moo';
 
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
@@ -48,11 +47,10 @@ export function generateTemplates(templates: {
     template: ITemplate;
 }[], version: string): string;
 
+// Warning: (ae-forgotten-export) The symbol "IModuleLike" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-export const getModuleFullName: (mod: {
-    name: string;
-    namespace?: string;
-}) => string;
+export const getModuleFullName: ({ name, namespace, }: IModuleLike) => string;
 
 // Warning: (ae-forgotten-export) The symbol "IMethod" needs to be exported by the entry point index.d.ts
 //
@@ -147,11 +145,10 @@ export interface IPactTree {
     module?: IModule[];
     // (undocumented)
     namespace?: string[];
+    // Warning: (ae-forgotten-export) The symbol "IUsedModules" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    usedModules?: Array<{
-        name: string;
-        hash?: string;
-    }>;
+    usedModules?: Array<IUsedModules>;
 }
 
 // @public (undocumented)
@@ -179,8 +176,12 @@ export interface ITemplate {
 }
 
 // @public (undocumented)
-export function pactParser(file: string, namespace: string | undefined, getContract: (fullName: string) => Promise<string>): Promise<{
-    [k: string]: IModuleWithPointer;
+export function pactParser({ contractNames, files, getContract, }: {
+    contractNames?: string[];
+    files?: string[];
+    getContract: (fullName: string) => Promise<string>;
+}): Promise<{
+    [k: string]: IModule;
 }>;
 
 // @alpha (undocumented)
@@ -214,7 +215,6 @@ export type TemplateParts = string[];
 // Warnings were encountered during analysis:
 //
 // src/contract/generation/FileContractDefinition.ts:23:5 - (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
-// src/contract/parsing/pactParser.ts:318:53 - (ae-forgotten-export) The symbol "IModuleWithPointer" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -1,7 +1,3 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-/* eslint-disable @rushstack/typedef-var */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { unwrapData } from './utils/dataWrapper';
 import { getCapabilities } from './utils/getCapabilities';
 import { getBlockPointer, getPointer, IPointer } from './utils/getPointer';
@@ -71,9 +67,17 @@ export interface IModule {
   schemas?: ISchema[];
 }
 
+interface IUsedModules {
+  name: string;
+  hash?: string;
+  location?: number;
+  namespace?: string;
+  imports?: string[];
+}
+
 export interface IPactTree {
   namespace?: string[];
-  usedModules?: Array<{ name: string; hash?: string }>;
+  usedModules?: Array<IUsedModules>;
   module?: IModule[];
 }
 
@@ -81,7 +85,7 @@ export interface IPactTree {
 const getNamespace = (
   moduleLoc: number,
   allNamespaces?: Array<{ location: number; name: string }>,
-) => {
+): string => {
   if (!allNamespaces) return '';
   const { name } = allNamespaces.reduce(
     (namespace, { location, name }) => {
@@ -98,33 +102,30 @@ const getNamespace = (
 // return the list of modules used in the module including the modules used in root level
 const getUsedModules = (
   moduleLoc: number,
-  allUsedModules?: Array<{
-    location: number;
-    name: string;
-    namespace: string;
-    hash?: string;
-  }>,
-) => {
+  allUsedModules?: IUsedModules[],
+): Array<Omit<IUsedModules, 'location'>> => {
   if (!allUsedModules) return [];
   const list = allUsedModules.reduce((list, { location, ...mod }) => {
-    if (location < moduleLoc) {
+    if (location !== undefined && location < moduleLoc) {
       return [...list, mod];
     }
     return list;
-  }, [] as Array<{ name: string; namespace: string; hash?: string; imports?: Array<string> }>);
+  }, [] as Exclude<IPactTree['usedModules'], undefined>);
 
   return list;
 };
 
 // returns the list of modules used in the functions of the module without using "use" keyword in the module
-function getUsedModulesInFunctions(functions?: IFunction[]) {
+function getUsedModulesInFunctions(
+  functions?: IFunction[],
+): Required<IModuleLike>[] {
   if (!functions) return [];
 
   return functions.flatMap((fun) => {
     const externalFnCalls = fun.externalFnCalls;
     if (!externalFnCalls) return [];
     return externalFnCalls.map(({ namespace, module: name }) => ({
-      namespace: namespace || '',
+      namespace: namespace ?? '',
       name,
     }));
   });
@@ -132,13 +133,13 @@ function getUsedModulesInFunctions(functions?: IFunction[]) {
 
 const isNotDuplicated =
   <T>(isEqual: (a: T, b: T) => boolean) =>
-  (a: T, idx: number, list: T[]) =>
+  (a: T, idx: number, list: T[]): boolean =>
     list.findIndex((b) => isEqual(a, b)) === idx;
 
-const isNotDuplicatedModule = isNotDuplicated<{
-  name: string;
-  namespace?: string;
-}>((a, b) => a.name === b.name && a.namespace === b.namespace);
+// eslint-disable-next-line @rushstack/typedef-var
+const isNotDuplicatedModule = isNotDuplicated<IModuleLike>(
+  (a, b) => a.name === b.name && a.namespace === b.namespace,
+);
 
 function fileParser(
   contract: string,
@@ -167,51 +168,92 @@ function fileParser(
   return [extModules, pointer];
 }
 
-// fetch/read the contract file only once
-const moduleLoader = (getContract: (fullName: string) => Promise<string>) => {
-  const contents: Record<string, Promise<string>> = {};
-  return (fullName: string) => {
-    if (contents[fullName] === undefined) {
-      contents[fullName] = getContract(fullName);
-    }
-    return contents[fullName];
+interface IModuleLike {
+  name: string;
+  namespace?: string;
+}
+
+export const getModuleFullName = ({
+  name,
+  namespace = '',
+}: IModuleLike): string => (namespace !== '' ? `${namespace}.${name}` : name);
+
+interface IModuleLoader {
+  getModule(moduleFullName: string): Promise<IModuleWithPointer | undefined>;
+  parserFile(content: string): void;
+  getStorage(): Map<string, IModuleWithPointer>;
+}
+
+const moduleLoader = (
+  fetchModule: (moduleFullName: string) => Promise<string>,
+): IModuleLoader => {
+  const storage = new Map<string, IModuleWithPointer>();
+
+  const parseModule = (content: string, namespace?: string): void => {
+    const [modules, pointer] = fileParser(content, namespace);
+    modules.forEach((mod) => {
+      storage.set(getModuleFullName(mod), { ...mod, pointer });
+    });
+  };
+
+  const cache = new Map<string, Promise<string>>();
+  const fetchContract = (name: string): Promise<string> => {
+    if (cache.has(name)) return cache.get(name)!;
+    const pr = fetchModule(name);
+    cache.set(name, pr);
+    return pr;
+  };
+
+  return {
+    async getModule(moduleFullName: string) {
+      const slogs = moduleFullName.split('.');
+      const namespace = slogs.length === 2 ? slogs[0] : '';
+
+      const mod = storage.get(moduleFullName);
+      if (mod !== undefined) return mod;
+
+      const content = await fetchContract(moduleFullName);
+      if (content) {
+        parseModule(content, namespace);
+      }
+
+      return storage.get(moduleFullName)!;
+    },
+    parserFile(content: string) {
+      parseModule(content);
+    },
+    getStorage() {
+      return storage;
+    },
   };
 };
 
-export const getModuleFullName = (mod: { name: string; namespace?: string }) =>
-  mod.namespace ? `${mod.namespace}.${mod.name}` : mod.name;
-
-type IModuleWithPointer = IModule & { pointer?: IPointer };
+interface IModuleWithPointer extends IModule {
+  pointer?: IPointer;
+}
 
 // parse a module and its dependencies
-async function parserAllModules(
+async function loadModuleDependencies(
   fullName: string,
-  namespace: string,
-  getContent: (name: string) => Promise<string>,
+  getModule: (name: string) => Promise<IModuleWithPointer | undefined>,
 ): Promise<Array<IModuleWithPointer>> {
-  const content = await getContent(fullName);
-  const [modules, pointer] = fileParser(content, namespace);
-  const dependencies = await Promise.all(
-    modules.map(async (mod) => {
-      (mod as any).pointer = pointer;
-      const interfaceOrModule = [
-        ...(mod.usedModules || []),
-        ...(mod.usedInterface || []),
-      ];
-      if (interfaceOrModule.length === 0) return [];
-      const mods = await Promise.all(
-        interfaceOrModule.map(async (usedModule) =>
-          parserAllModules(
-            getModuleFullName(usedModule),
-            usedModule.namespace || '',
-            getContent,
-          ),
-        ),
-      );
-      return mods.flat();
-    }),
+  const module = await getModule(fullName);
+  // skip this module if its not available
+  if (!module) return [];
+
+  const interfaceOrModule = [
+    ...(module.usedModules || []),
+    ...(module.usedInterface || []),
+  ];
+
+  const mods = await Promise.all(
+    interfaceOrModule.map(async (usedModule) =>
+      loadModuleDependencies(getModuleFullName(usedModule), getModule),
+    ),
   );
-  return [...modules, ...dependencies.flat()].filter(isNotDuplicatedModule);
+  const dependencies = mods.flat();
+
+  return [module, ...dependencies].filter(isNotDuplicatedModule);
 }
 
 // check function body again for checking function calls, internal and external
@@ -245,8 +287,8 @@ function addFunctionCalls(
   mod: IModule,
   allModule: Map<string, IModule>,
   pointer: IPointer,
-) {
-  if (mod.kind !== 'module') return mod;
+): void {
+  if (mod.kind !== 'module') return;
 
   const usedModules = mod.usedModules;
   let externalFunctions: Array<{
@@ -278,21 +320,23 @@ function addFunctionCalls(
   }
   const internalFunctions = mod.functions.map(({ name }) => name);
   mod.functions = mod.functions.map((fun) => {
-    if (!fun.bodyPointer) {
+    if (fun.bodyPointer === undefined) {
       return fun;
     }
-    console.log('body', fun.name, fun.bodyPointer);
+
     const { internal = [], external = [] } = getFunctionCalls(
       fun.bodyPointer,
       pointer,
       internalFunctions,
       externalFunctions,
     );
+
     fun.functionCalls = {
       internal,
       external: [...external, ...(fun.externalFnCalls || [])],
     };
     delete fun.bodyPointer;
+
     return fun;
   });
 }
@@ -301,8 +345,8 @@ function addFunctionCalls(
 function addFunctionCapabilities(
   mod: IModule,
   allModule: Map<string, IModule>,
-) {
-  if (mod.kind !== 'module' || !mod.functions) return mod;
+): void {
+  if (mod.kind !== 'module' || !mod.functions) return;
   mod.functions.forEach((fun) => {
     fun.allExtractedCaps = getCapabilities(
       allModule,
@@ -312,29 +356,54 @@ function addFunctionCapabilities(
   });
 }
 
-export async function pactParser(
-  file: string,
-  namespace: string = '',
-  getContract: (fullName: string) => Promise<string>,
-) {
-  const modules = await parserAllModules(
-    file,
-    namespace,
-    moduleLoader(getContract),
+export async function pactParser({
+  contractNames,
+  files,
+  getContract,
+}: {
+  contractNames?: string[];
+  files?: string[];
+  getContract: (fullName: string) => Promise<string>;
+}): Promise<{ [k: string]: IModule }> {
+  const loader = moduleLoader(getContract);
+
+  // parse files if presented
+  if (files !== undefined) {
+    files.forEach((content) => {
+      loader.parserFile(content);
+    });
+  }
+
+  // fetch and parse contracts by name if presented
+  if (contractNames !== undefined) {
+    await Promise.all(
+      contractNames.map((contract) => {
+        return loader.getModule(contract);
+      }),
+    );
+  }
+
+  const parsedModules = loader.getStorage();
+
+  if (parsedModules.size === 0) {
+    throw new Error('no module loaded');
+  }
+
+  // load all dependencies
+  await Promise.all(
+    [...parsedModules.keys()].map((name) => {
+      return loadModuleDependencies(name, loader.getModule);
+    }),
   );
 
-  const allModules = new Map<string, IModuleWithPointer>();
+  const allModules = loader.getStorage();
 
-  modules.forEach((mod) => {
-    allModules.set(getModuleFullName(mod), mod);
-  });
-
-  modules.forEach((mod) => {
+  allModules.forEach((mod) => {
     addFunctionCalls(mod, allModules, mod.pointer!);
     delete mod.pointer;
   });
 
-  modules.forEach((mod) => {
+  allModules.forEach((mod) => {
     addFunctionCapabilities(mod, allModules);
   });
 

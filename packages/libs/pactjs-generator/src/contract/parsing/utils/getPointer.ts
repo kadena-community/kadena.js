@@ -12,7 +12,7 @@ export interface IPointer {
 export const getPointer = (contract: string) => {
   const tokensToSkip = ['model', 'comment', 'ws', 'nl'];
   const tokens = getLexerOutput(contract).filter(
-    (token) => !token.type || !tokensToSkip.includes(token.type),
+    (token) => token.type === undefined || !tokensToSkip.includes(token.type),
   );
   let idx = -1;
   return {

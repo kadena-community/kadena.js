@@ -21,7 +21,7 @@ jest.mock('@kadena/pactjs-generator', () => ({
 
 import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
 import { generate } from '../generate';
-import { ContractGenerateOptions } from '..';
+import { IContractGenerateOptions } from '..';
 
 import { mockContract } from './mockdata/contract';
 
@@ -40,7 +40,7 @@ jest.spyOn(console, 'log').mockImplementation(() => {});
 
 const createAndRunProgram = async (
   type: 'file' | 'chain',
-  options?: Partial<ContractGenerateOptions>,
+  options?: Partial<IContractGenerateOptions>,
 ): Promise<void> => {
   const program = new Command('generate');
   (program.error as unknown) = mockProgramError;
@@ -48,14 +48,14 @@ const createAndRunProgram = async (
 
   if (type === 'file') {
     return action({
-      file: 'some/path/to/contract.pact',
+      file: ['some/path/to/contract.pact'],
       ...options,
     });
   }
 
   if (type === 'chain') {
     return action({
-      contract: 'free.crankk01',
+      contract: ['free.crankk01'],
       api: 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact',
       chain: 0,
       network: 'mainnet',
@@ -139,7 +139,7 @@ describe('generate', () => {
     });
 
     it("sets the namespace to undefined when there isn't one", async () => {
-      await createAndRunProgram('chain', { contract: 'coin' });
+      await createAndRunProgram('chain', { contract: ['coin'] });
 
       expect(
         mockedStringContractDefinition.mock.calls[0][0].namespace,

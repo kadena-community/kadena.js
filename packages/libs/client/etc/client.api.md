@@ -115,7 +115,7 @@ export interface ICommandBuilderV2 extends IPactCommand {
     addSignatures(...sig: {
         pubKey: string;
         sig: string;
-    }[]): ICommandBuilderV2;
+    }[]): this;
     // (undocumented)
     createCommand(): IUnsignedCommand;
     // (undocumented)
@@ -330,8 +330,10 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     type: 'exec';
 }
 
+// Warning: (ae-forgotten-export) The symbol "IPactCommandSignable" needs to be exported by the entry point index.d.ts
+//
 // @alpha (undocumented)
-export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;
+export function signWithChainweaver<T extends IPactCommandSignable>(...transactions: T[]): Promise<T[]>;
 
 // @alpha (undocumented)
 export type TemplateHoles = string[];

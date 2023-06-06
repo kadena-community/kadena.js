@@ -36,7 +36,7 @@ export interface ICommandBuilderV2 extends IPactCommand {
       pubKey: string;
       sig: string;
     }[]
-  ): ICommandBuilderV2;
+  ): this;
   status: string;
   // setSigner(
   //   fn: (

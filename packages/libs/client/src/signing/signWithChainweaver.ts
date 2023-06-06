@@ -1,5 +1,6 @@
+import { IUnsignedCommand } from '@kadena/types';
+
 import { IPactCommand } from '../interfaces/IPactCommand';
-import { ICommandBuilder } from '../pact';
 import {
   IQuickSignRequestBody,
   IQuicksignResponse,
@@ -12,12 +13,22 @@ import _debug from 'debug';
 
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
+interface IPactCommandSignable extends IPactCommand {
+  createCommand(): IUnsignedCommand;
+  addSignatures(
+    ...sig: {
+      pubKey: string;
+      sig: string;
+    }[]
+  ): this;
+}
+
 /**
  * @alpha
  */
-export async function signWithChainweaver<T1 extends string, T2>(
-  ...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]
-): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]> {
+export async function signWithChainweaver<T extends IPactCommandSignable>(
+  ...transactions: T[]
+): Promise<T[]> {
   const quickSignRequest: IQuickSignRequestBody = {
     cmdSigDatas: transactions.map((t) => {
       const command = t.createCommand();

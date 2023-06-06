@@ -5,28 +5,28 @@ import { generate } from './generate';
 import { Command, Option } from 'commander';
 import { z } from 'zod';
 
-export type ContractGenerateOptions =
-  | {
-      contract: string;
-      clean?: boolean;
-      capsInterface?: string;
-      api: string;
-      chain: number;
-      newParser?: boolean;
-      network: keyof typeof networkMap;
-    }
-  | {
-      file: string;
-      clean?: boolean;
-      newParser?: boolean;
-      capsInterface?: string;
-    };
+export interface IContractGenerateOptions {
+  clean?: boolean;
+  capsInterface?: string;
+  file?: string[];
+  contract?: string[];
+  api?: string;
+  chain?: number;
+  network?: keyof typeof networkMap;
+}
+
+function asList(value: string, prev?: string[]): string[] {
+  if (prev === undefined) {
+    return [value];
+  }
+  return [...prev, value];
+}
 
 // eslint-disable-next-line @rushstack/typedef-var
 const Options = z
   .object({
-    file: z.string().optional(),
-    contract: z.string().optional(),
+    file: z.string().array().optional(),
+    contract: z.string().array().optional(),
     clean: z.boolean().optional(),
     capsInterface: z.string().optional(),
     api: z.string().optional(),
@@ -59,16 +59,20 @@ export function contractGenerateCommand(
     .command('contract-generate')
     .description('Generate client based on a contract')
     .option('-c, --clean', 'Clean existing generated files')
-    .option('-n, --newParser', 'use new parser')
     .option(
       '-i, --caps-interface',
       'Custom name for the interface of the caps. ' +
         'Can be used to create a type definition with a limited set of capabilities.',
     )
-    .option('-f, --file <file>', 'Generate d.ts from Pact contract file')
+    .option(
+      '-f, --file <file>',
+      'Generate d.ts from Pact contract file',
+      asList,
+    )
     .option(
       '--contract <contractName>',
       'Generate d.ts from Pact contract from the blockchain',
+      asList,
     )
     .option(
       '--api <api>',
@@ -87,7 +91,7 @@ export function contractGenerateCommand(
       'The networkId to retrieve the contract from, e.g. "testnet". Defaults to mainnet',
       'mainnet',
     )
-    .action((args: ContractGenerateOptions) => {
+    .action((args: IContractGenerateOptions) => {
       try {
         Options.parse(args);
       } catch (e) {

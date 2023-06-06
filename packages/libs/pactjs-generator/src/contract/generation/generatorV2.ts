@@ -78,7 +78,7 @@ function genFunCapsInterface(func: IFunction): string {
       cap.capability.doc !== undefined
         ? `/**\n* ${cap.capability.doc}\n*/`
         : '';
-    const addCap = `addCap(${parameters.join(', ')}): this`;
+    const addCap = `addCap(\n${parameters.map(indent).join(', \n')}): this`;
     return { comment, addCap };
   });
 
@@ -91,9 +91,9 @@ const getFunctionType = (func: IFunction): string => {
   const comment = func.doc !== undefined ? `/**\n* ${func.doc}\n*/\n` : '';
 
   return indent(
-    `${comment}"${func.name}": (${getParameters(func.parameters).join(
-      ', ',
-    )}) => Builder<${capInterfaceName}>`,
+    `${comment}"${func.name}": (\n${getParameters(func.parameters)
+      .map(indent)
+      .join(',\n')}) => Builder<${capInterfaceName}>`,
   );
 };
 
@@ -120,9 +120,16 @@ export function generateDts2(
 import type { ICommandBuilderV2, IPactCommand, ICapV2 } from '@kadena/client';
 import type { IPactDecimal, IPactInt } from '@kadena/types';
 
+interface ICapability_Coin_GAS {
+  addCap(
+    cap: "coin.GAS",
+    signer: string
+  ): this
+}
+
 ${capsInterfaces}
 
-type Builder<T> = ICommandBuilderV2 & T
+type Builder<T> = ICommandBuilderV2 & ICapability_Coin_GAS & T
 
 declare module '@kadena/client' {
 
