@@ -1,4 +1,5 @@
-import { getModuleFullName, IFunction, IModule } from '../parsing/pactParser';
+import { IFunction, IModule } from '../parsing/pactParser';
+import { getModuleFullName } from '../parsing/utils/utils';
 
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',

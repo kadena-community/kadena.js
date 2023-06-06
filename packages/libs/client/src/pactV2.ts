@@ -1,12 +1,18 @@
 import { IPollResponse, SendResponse } from '@kadena/chainweb-node-client';
-import { IUnsignedCommand } from '@kadena/types';
+import { IUnsignedCommand, PactValue } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
 
+/**
+ * @alpha
+ */
 export interface ICapV2 {
-  addCap(cap: string, signer: string, ...args: any[]): this;
+  addCap(cap: string, signer: string, ...args: PactValue[]): this;
 }
 
+/**
+ * @alpha
+ */
 export interface ICommandBuilderV2 extends IPactCommand {
   createCommand(): IUnsignedCommand;
   addData: (data: IPactCommand['data']) => this;
@@ -38,10 +44,4 @@ export interface ICommandBuilderV2 extends IPactCommand {
     }[]
   ): this;
   status: string;
-  // setSigner(
-  //   fn: (
-  //     ...transactions: (IPactCommand &
-  //       ICommandBuilder<Record<string, unknown>>)[]
-  //   ) => Promise<this>,
-  // ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }

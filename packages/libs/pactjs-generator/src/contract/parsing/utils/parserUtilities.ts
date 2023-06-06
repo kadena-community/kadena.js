@@ -1,11 +1,14 @@
+/* eslint-disable @kadena-dev/no-eslint-disable */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   ExWrappedData,
   IsWrappedData,
   isWrappedData,
+  IWrappedData,
   unwrapData,
   UnwrappedObjects,
   wrapData,
-  WrappedData,
 } from './dataWrapper';
 import { getBlockPointer, IPointer } from './getPointer';
 import { trim } from './trim';
@@ -124,7 +127,7 @@ export const oneOf: IOneOf = (...parsers) =>
   });
 interface ISeq {
   <T extends Array<IParser>>(...parsers: T): IParser<
-    WrappedData<
+    IWrappedData<
       UnionToIntersection<
         UnwrappedObjects<IsWrappedData<RuleReturnType<T[number]>>>
       >,
@@ -135,7 +138,7 @@ interface ISeq {
 
 export const seq: ISeq = (...parsers) =>
   rule((pointer: IPointer) => {
-    const results: WrappedData<any, any>[] = [];
+    const results: IWrappedData<any, any>[] = [];
     for (let i = 0; i < parsers.length; i++) {
       const parser = parsers[i];
       const result = parser(pointer);
@@ -166,7 +169,7 @@ type MakeArr<Type> = {
 
 interface IRepeat {
   <T extends Array<IParser>>(...parsers: T): IParser<
-    WrappedData<
+    IWrappedData<
       Partial<
         UnionToIntersection<
           MakeArr<UnwrappedObjects<IsWrappedData<RuleReturnType<T[number]>>>>
@@ -183,7 +186,7 @@ interface IRepeat {
 export const repeat: IRepeat = (...parsers: IParser[]) => {
   const oneOfParser = oneOf(...parsers);
   return rule((pointer: IPointer) => {
-    const results: WrappedData[] = [];
+    const results: IWrappedData[] = [];
     while (!pointer.done()) {
       const result = oneOfParser(pointer);
       if (result === FAILED) {

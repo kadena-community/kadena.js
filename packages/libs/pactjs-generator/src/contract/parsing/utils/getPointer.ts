@@ -9,7 +9,7 @@ export interface IPointer {
   done: () => boolean;
 }
 
-export const getPointer = (contract: string) => {
+export const getPointer = (contract: string): IPointer => {
   const tokensToSkip = ['model', 'comment', 'ws', 'nl'];
   const tokens = getLexerOutput(contract).filter(
     (token) => token.type === undefined || !tokensToSkip.includes(token.type),
@@ -31,7 +31,10 @@ export const getPointer = (contract: string) => {
   };
 };
 
-export const getBlockPointer = (pointer: IPointer, initCounter = 1) => {
+export const getBlockPointer = (
+  pointer: IPointer,
+  initCounter = 1,
+): IPointer => {
   let counter = initCounter;
   const snapshots: Record<number, number> = {};
   return {

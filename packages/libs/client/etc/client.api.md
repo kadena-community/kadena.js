@@ -24,10 +24,10 @@ export function buildUnsignedTransaction(parts: string[], holes: string[], args:
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface ICapV2 {
     // (undocumented)
-    addCap(cap: string, signer: string, ...args: any[]): this;
+    addCap(cap: string, signer: string, ...args: PactValue[]): this;
 }
 
 // @alpha (undocumented)
@@ -105,9 +105,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
     status: string;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "ICommandBuilderV2" is marked as @public, but its signature references "IPactCommand" which is marked as @alpha
-//
-// @public (undocumented)
+// @alpha (undocumented)
 export interface ICommandBuilderV2 extends IPactCommand {
     // (undocumented)
     addData: (data: IPactCommand['data']) => this;

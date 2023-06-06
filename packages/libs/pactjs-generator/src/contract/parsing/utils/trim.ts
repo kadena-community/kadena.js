@@ -1,4 +1,4 @@
-export const trim = (str: string, term: string) => {
+export const trim = (str: string, term: string): string => {
   let value = str;
   if (value.startsWith(term)) {
     value = value.substring(term.length);

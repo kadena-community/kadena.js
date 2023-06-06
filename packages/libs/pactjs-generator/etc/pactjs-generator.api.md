@@ -38,6 +38,8 @@ export class FileContractDefinition implements IContractDefinition {
 // @alpha (undocumented)
 export function generateDts(modules: Output, capsInterfaceName?: string): Map<ModuleName, string>;
 
+// Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
+//
 // @alpha (undocumented)
 export function generateDts2(moduleFullName: string, modules: Record<string, IModule>): string;
 
@@ -46,19 +48,6 @@ export function generateTemplates(templates: {
     name: string;
     template: ITemplate;
 }[], version: string): string;
-
-// Warning: (ae-forgotten-export) The symbol "IModuleLike" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export const getModuleFullName: ({ name, namespace, }: IModuleLike) => string;
-
-// Warning: (ae-forgotten-export) The symbol "IMethod" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export interface ICapability extends IMethod {
-    // (undocumented)
-    composeCapabilities?: string[];
-}
 
 // @alpha (undocumented)
 export interface IContractDefinition {
@@ -74,99 +63,6 @@ export interface IContractDefinition {
     get modulesWithFunctions(): Output;
 }
 
-// @public (undocumented)
-export interface IFunction extends IMethod {
-    // (undocumented)
-    allExtractedCaps?: Array<{
-        name: string;
-        fullModuleName: string;
-        reason: 'with-capability' | 'compose-capability';
-        origin: string;
-        capability: ICapability;
-    }>;
-    // (undocumented)
-    bodyPointer?: number;
-    // (undocumented)
-    externalFnCalls?: Array<{
-        namespace?: string;
-        module: string;
-        func: string;
-    }>;
-    // (undocumented)
-    functionCalls?: {
-        internal: string[];
-        external: Array<{
-            namespace?: string;
-            module: string;
-            func: string;
-        }>;
-    };
-    // (undocumented)
-    requiredCapabilities?: string[];
-    // (undocumented)
-    withCapabilities?: string[];
-}
-
-// @public (undocumented)
-export interface IModule {
-    // (undocumented)
-    capabilities?: ICapability[];
-    // (undocumented)
-    doc: string;
-    // (undocumented)
-    functions?: IFunction[];
-    // (undocumented)
-    governance: string;
-    // (undocumented)
-    kind: string;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    namespace: string;
-    // (undocumented)
-    schemas?: ISchema[];
-    // (undocumented)
-    usedInterface?: Array<{
-        name: string;
-        namespace?: string;
-    }>;
-    // (undocumented)
-    usedModules?: Array<{
-        name: string;
-        namespace?: string;
-        hash?: string;
-        imports?: string[];
-    }>;
-}
-
-// @public (undocumented)
-export interface IPactTree {
-    // (undocumented)
-    module?: IModule[];
-    // (undocumented)
-    namespace?: string[];
-    // Warning: (ae-forgotten-export) The symbol "IUsedModules" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    usedModules?: Array<IUsedModules>;
-}
-
-// @public (undocumented)
-export interface ISchema {
-    // (undocumented)
-    doc?: string;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    properties?: Array<{
-        name: string;
-        type: string | {
-            kind: string;
-            value: string;
-        };
-    }>;
-}
-
 // @alpha (undocumented)
 export interface ITemplate {
     // (undocumented)
@@ -175,7 +71,7 @@ export interface ITemplate {
     parts: TemplateParts;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export function pactParser({ contractNames, files, getContract, }: {
     contractNames?: string[];
     files?: string[];

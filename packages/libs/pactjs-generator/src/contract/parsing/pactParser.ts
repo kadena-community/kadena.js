@@ -3,8 +3,9 @@ import { getCapabilities } from './utils/getCapabilities';
 import { getBlockPointer, getPointer, IPointer } from './utils/getPointer';
 import { functionCalls, parser } from './utils/pactGrammar';
 import { FAILED } from './utils/parserUtilities';
+import { getModuleFullName, IModuleLike } from './utils/utils';
 
-export interface ISchema {
+interface ISchema {
   name: string;
   doc?: string;
   properties?: Array<{
@@ -75,7 +76,7 @@ interface IUsedModules {
   imports?: string[];
 }
 
-export interface IPactTree {
+interface IPactTree {
   namespace?: string[];
   usedModules?: Array<IUsedModules>;
   module?: IModule[];
@@ -130,8 +131,11 @@ function getUsedModulesInFunctions(
     }));
   });
 }
+type IsNotDuplicated = <T>(
+  isEqual: (a: T, b: T) => boolean,
+) => (a: T, idx: number, list: T[]) => boolean;
 
-const isNotDuplicated =
+const isNotDuplicated: IsNotDuplicated =
   <T>(isEqual: (a: T, b: T) => boolean) =>
   (a: T, idx: number, list: T[]): boolean =>
     list.findIndex((b) => isEqual(a, b)) === idx;
@@ -167,16 +171,6 @@ function fileParser(
 
   return [extModules, pointer];
 }
-
-interface IModuleLike {
-  name: string;
-  namespace?: string;
-}
-
-export const getModuleFullName = ({
-  name,
-  namespace = '',
-}: IModuleLike): string => (namespace !== '' ? `${namespace}.${name}` : name);
 
 interface IModuleLoader {
   getModule(moduleFullName: string): Promise<IModuleWithPointer | undefined>;
@@ -356,6 +350,9 @@ function addFunctionCapabilities(
   });
 }
 
+/**
+ * @alpha
+ */
 export async function pactParser({
   contractNames,
   files,

@@ -1,4 +1,4 @@
-export const trim = (str: string, term: string) => {
+export const trim = (str: string, term: string): string => {
   let value = str;
   if (value.startsWith(term)) {
     value = value.substring(term.length);
@@ -9,8 +9,19 @@ export const trim = (str: string, term: string) => {
   return value;
 };
 
-export const pushUnique = (arr: any[], item: any): void => {
+type Primitive = string | boolean | undefined | number;
+export const pushUnique = (arr: Primitive[], item: Primitive): void => {
   if (!arr.includes(item)) {
     arr.push(item);
   }
 };
+
+export interface IModuleLike {
+  name: string;
+  namespace?: string;
+}
+
+export const getModuleFullName = ({
+  name,
+  namespace = '',
+}: IModuleLike): string => (namespace !== '' ? `${namespace}.${name}` : name);
