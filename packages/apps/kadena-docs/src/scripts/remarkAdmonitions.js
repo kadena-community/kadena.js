@@ -1,6 +1,8 @@
-const NOTETYPES = ['info', 'note', 'tip', 'caution', 'danger', 'warning'];
-const STARTNOTER_EGEXP = /^:::\s?([a-z]*)\s(.*)$/gi;
+const STARTNOTER_EGEXP = /^:::\s?(\w+)\s?([\w\s]+)?$/;
+let STARTELM;
 
+// check the branch with the start of a notification
+// notifications start with ':::' followed by a label and maybe a title
 const isStart = (branch) => {
   if (branch.children.length === 0) return false;
   const value = branch.children[0].value ?? '';
@@ -8,6 +10,7 @@ const isStart = (branch) => {
   return value.match(STARTNOTER_EGEXP);
 };
 
+// get the props (label and title) for the notification
 const getProps = (branch) => {
   if (branch.children.length === 0) return false;
   const value = branch.children[0].value ?? '';
@@ -21,7 +24,6 @@ const getProps = (branch) => {
   };
 };
 
-let STARTELM;
 const getStartElm = () => {
   return STARTELM;
 };
@@ -34,6 +36,9 @@ const clearStartElm = () => {
   STARTELM = undefined;
 };
 
+/**
+ * the reduce function will make all the branches between the start and end of a notification a child of the start branch
+ */
 const reduceToNotifications = (acc, branch) => {
   if (!branch.children) return [...acc, branch];
 
@@ -49,6 +54,7 @@ const reduceToNotifications = (acc, branch) => {
 
     return [...acc, branch];
   }
+
   const startElm = getStartElm();
   if (startElm) {
     startElm.children[0].value = '';
@@ -59,7 +65,8 @@ const reduceToNotifications = (acc, branch) => {
       clearStartElm();
     }
 
-    // do not return the current head
+    // if in the middle of the notification do not return the branch.
+    // the branch is now a child of the startbranch
     return acc;
   }
 
