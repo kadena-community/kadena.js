@@ -22,7 +22,7 @@ export const ListItem: FC<IProps> = ({
 }) => {
   const router = useRouter();
 
-  if (item.title === undefined) return null;
+  if (item.title === undefined || item.title === '') return null;
   const slug = `#${createSlug(item.title)}`;
 
   const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {

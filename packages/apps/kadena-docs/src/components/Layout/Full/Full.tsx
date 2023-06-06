@@ -4,7 +4,6 @@ import {
   Article,
   Aside,
   AsideBackground,
-  AsideLink,
   AsideList,
   Content,
   ListItem,
@@ -13,18 +12,10 @@ import {
 } from '../components';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout, ISubHeaderElement } from '@/types/Layout';
+import { ILayout } from '@/types/Layout';
 import { createSlug } from '@/utils';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useRouter } from 'next/router';
-import React, {
-  FC,
-  MouseEvent,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -42,10 +33,8 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
 
   useEffect(() => {
     if (activeItem === null) {
-      const hashPath =
-        router.asPath.split('#').length === 2
-          ? '#' + router.asPath.split('#')[1]
-          : '';
+      const hash = router.asPath.split('#');
+      const hashPath = hash.length === 2 ? '#' + hash[1] : '';
 
       setActiveItem(hashPath);
     }
