@@ -5,23 +5,81 @@ import { ChainId } from '@kadena/types';
 
 import { convertDecimal, generateApiHost, onlyKey } from '../utils/utils';
 
-const gasLimit = 2300;
-const gasPrice = 0.00001;
-const ttl = 28800;
+const gasLimit: number = 2300;
+const gasPrice: number = 0.00001;
+const ttl: number = 28800;
 
 export interface TransferResult {
   requestKey?: string;
   status?: string;
 }
 
-export async function transferCreate(
-  fromAccount: string,
-  toAccount: string,
-  amount: string,
-  fromPrivateKey: string,
-  chainId: ChainId,
-  networkId: ChainwebNetworkId,
-): Promise<PactCommand> {
+export async function coinTransfer({
+  fromAccount,
+  fromChainId,
+  toAccount,
+  toChainId,
+  amount,
+  fromPrivateKey,
+  networkId,
+  predicate = 'keys-all',
+  keys = [onlyKey(toAccount)],
+}: {
+  fromAccount: string;
+  fromChainId: ChainId;
+  toAccount: string;
+  toChainId: ChainId;
+  amount: string;
+  fromPrivateKey: string;
+  networkId: ChainwebNetworkId;
+  predicate?: string;
+  keys?: string[];
+}): Promise<PactCommand> {
+  if (fromChainId === toChainId) {
+    return transferCreate({
+      fromAccount,
+      toAccount,
+      amount,
+      fromPrivateKey,
+      fromChainId,
+      networkId,
+      predicate,
+      keys,
+    });
+  }
+
+  return crossTransfer({
+    fromAccount,
+    fromChainId,
+    toAccount,
+    toChainId,
+    amount,
+    fromPrivateKey,
+    networkId,
+    predicate,
+    keys,
+  });
+}
+
+export async function transferCreate({
+  fromAccount,
+  fromChainId,
+  toAccount,
+  amount,
+  fromPrivateKey,
+  networkId,
+  predicate,
+  keys,
+}: {
+  fromAccount: string;
+  fromChainId: ChainId;
+  toAccount: string;
+  amount: string;
+  fromPrivateKey: string;
+  networkId: ChainwebNetworkId;
+  predicate: string;
+  keys: string[];
+}): Promise<PactCommand> {
   if (isNaN(Number(amount))) {
     throw new Error('Amount must be a number');
   }
@@ -40,13 +98,13 @@ export async function transferCreate(
       toAccount,
       Number(amount),
     )
-    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
+    .addData({ ks: { pred: predicate, keys: keys } })
     .setMeta(
       {
         gasLimit: gasLimit,
         gasPrice: gasPrice,
         ttl: ttl,
-        chainId: chainId,
+        chainId: fromChainId,
         sender: fromAccount,
       },
       networkId,
@@ -74,6 +132,82 @@ export async function transferCreate(
 
   console.log(`Sending transaction: ${pactCommand.code}`);
 
-  await pactCommand.send(generateApiHost(networkId, chainId));
+  await pactCommand.send(generateApiHost(networkId, fromChainId));
+  return pactCommand;
+}
+
+export async function crossTransfer({
+  fromAccount,
+  fromChainId,
+  toAccount,
+  toChainId,
+  amount,
+  fromPrivateKey,
+  networkId,
+  predicate,
+  keys,
+}: {
+  fromAccount: string;
+  fromChainId: ChainId;
+  toAccount: string;
+  toChainId: ChainId;
+  amount: string;
+  fromPrivateKey: string;
+  networkId: ChainwebNetworkId;
+  predicate: string;
+  keys: string[];
+}): Promise<PactCommand> {
+  const pactCommand = new PactCommand();
+  pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${convertDecimal(
+    amount,
+  )})`;
+
+  pactCommand
+    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap(
+      'coin.TRANSFER_XCHAIN',
+      onlyKey(fromAccount),
+      fromAccount,
+      toAccount,
+      {
+        decimal: convertDecimal(amount),
+      },
+      toChainId,
+    )
+    .addData({ ks: { pred: predicate, keys: keys } })
+    .setMeta(
+      {
+        gasLimit: gasLimit,
+        gasPrice: gasPrice,
+        ttl: ttl,
+        chainId: fromChainId,
+        sender: fromAccount,
+      },
+      networkId,
+    );
+
+  pactCommand.createCommand();
+
+  if (pactCommand.cmd === undefined) {
+    throw new Error('Failed to create transaction');
+  }
+
+  const signature = sign(pactCommand.cmd, {
+    secretKey: fromPrivateKey,
+    publicKey: onlyKey(fromAccount),
+  });
+
+  if (signature.sig === undefined) {
+    throw new Error('Failed to sign transaction');
+  }
+
+  pactCommand.addSignatures({
+    pubKey: onlyKey(fromAccount),
+    sig: signature.sig,
+  });
+
+  console.log(`Sending transaction: ${pactCommand.code}`);
+
+  await pactCommand.send(generateApiHost(networkId, fromChainId));
   return pactCommand;
 }
