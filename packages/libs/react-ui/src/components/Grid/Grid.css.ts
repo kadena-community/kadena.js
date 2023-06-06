@@ -15,7 +15,7 @@ export const GridItemClass = style([
   },
 ]);
 
-const gaps: Record<string, string> = {
+const gaps: Record<string, keyof typeof vars.sizes> = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xs': '2xs',
   xs: 'xs',
@@ -33,7 +33,7 @@ export const gapVariants = styleVariants(gaps, (gap) => {
   return [
     GridContainerClass,
     {
-      gridGap: vars.sizes[gap as keyof typeof vars.sizes],
+      gridGap: vars.sizes[gap],
     },
   ];
 });
