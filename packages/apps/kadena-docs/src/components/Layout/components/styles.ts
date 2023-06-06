@@ -69,12 +69,12 @@ export const Template: StyledComponent<
         },
       },
       landing: {
-        gridTemplateColumns: 'auto',
+        gridTemplateColumns: 'auto auto',
         gridTemplateAreas: `
-            "header"
-            "pageheader"
-            "content"
-            "footer"
+            "header header"
+            "pageheader pageheader"
+            "content content"
+            "footer footer"
           `,
 
         '@md': {
@@ -294,4 +294,8 @@ export const AnimationBackgroundWrapper: StyledComponent<
 
 export const Spacer: StyledComponent<'div'> = styled('div', {
   flex: 1,
+});
+
+export const StyledLogoWrapper: StyledComponent<'div'> = styled('div', {
+  zIndex: '$navMenu',
 });

@@ -51,18 +51,18 @@ export const MyApp = ({
         <ThemeProvider
           attribute="class"
           enableSystem={true}
-          defaultTheme="light"
           value={{
             light: 'light',
-            dark: darkThemeClass,
+            dark: stitchesDarkTheme.className,
           }}
         >
           <ThemeProvider
             attribute="class"
             enableSystem={true}
+            defaultTheme="light"
             value={{
               light: 'light',
-              dark: stitchesDarkTheme.className,
+              dark: darkThemeClass,
             }}
           >
             <Main {...props}>
