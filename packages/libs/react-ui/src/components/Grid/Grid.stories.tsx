@@ -1,4 +1,5 @@
-import { ContentClass, gapVariants } from './Grid.css';
+import { gapVariants } from './Grid.css';
+import { ContentClass } from './stories.css';
 import { Grid } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';

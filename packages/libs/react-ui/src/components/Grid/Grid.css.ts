@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '../../styles';
+import { vars } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -37,20 +37,3 @@ export const gapVariants = styleVariants(gaps, (gap) => {
     },
   ];
 });
-
-// used in the stories
-export const ContentClass = style([
-  sprinkles({
-    backgroundColor: 'primarySurface',
-    borderRadius: 'sm',
-    padding: 2,
-    color: 'neutral6',
-  }),
-  {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-]);
