@@ -145,7 +145,46 @@ export const startQuestions: IQuestion[] = [
   },
 ];
 
+const stopQuestions: IQuestion[] = [
+  {
+    message: 'Stopping L1 devnet...',
+    name: 'stopDevnet',
+    type: 'execute',
+    when: ({ task }: IAnswers) => {
+      if (Array.isArray(task)) return task?.includes('stop');
+      return false;
+    },
+    action: async () => {
+      await spawned(
+        `cd ${process.env.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml down`,
+        true,
+      );
+      return { stop: 'success' };
+    },
+  },
+  {
+    message: 'Stopping L2 devnet...',
+    name: 'stopDevnetL2',
+    type: 'execute',
+    when: ({ task }: IAnswers) => {
+      if (!Array.isArray(task)) return false;
+      if (!task?.includes('stop')) return false;
+      return true;
+    },
+    action: async () => {
+      const exitCode = await spawned(`ls ${process.env.HOME}/.devnet/l2`);
+      if (exitCode !== 0) return { stop: 'skipped' };
+      await spawned(
+        `cd ${process.env.HOME}/.devnet/l2 && docker compose -f docker-compose.minimal-l2.yaml down`,
+        true,
+      );
+      return { stop: 'success' };
+    },
+  },
+];
+
 export const devnetQuestions: IQuestion[] = [
   ...setupQuestions,
   ...startQuestions,
+  ...stopQuestions,
 ];
