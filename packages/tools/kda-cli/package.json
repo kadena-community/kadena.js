@@ -21,7 +21,8 @@
     "@kadena/cryptography-utils": "workspace:*",
     "ink": "^4.1.0",
     "meow": "^11.0.0",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "cross-spawn": "~7.0.3"
   },
   "devDependencies": {
     "@kadena-dev/heft-rig": "workspace:*",
@@ -36,7 +37,8 @@
     "prettier": "~2.8.8",
     "ts-node": "~10.8.2",
     "typescript": "5.0.4",
-    "xo": "^0.53.1"
+    "xo": "^0.53.1",
+    "@types/cross-spawn": "~6.0.2"
   },
   "ava": {
     "extensions": {
