@@ -47,6 +47,8 @@ const setupMacDockerCompose = (env: 'l1' | 'l2') => {
   const dcFile = readFileSync(getDockerFile(env), 'utf-8');
   const { services, ...dcJson } = parse(dcFile);
 
+  console.log('orig', dcJson);
+
   const newServices = Object.entries(services).reduce((s, [key, value]) => {
     if (key === 'api-proxy')
       return {
@@ -63,7 +65,7 @@ const setupMacDockerCompose = (env: 'l1' | 'l2') => {
         platform: 'linux/amd64',
       },
     };
-  }, dcJson);
+  }, services);
 
   writeFileSync(
     getDockerFile(env),
