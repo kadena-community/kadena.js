@@ -9,7 +9,8 @@ export const iconContainer = style([
 ]);
 
 export const sizeVariants = styleVariants({
-  sm: [iconContainer, sprinkles({ size: 'sm' })],
-  md: [iconContainer, sprinkles({ size: 'lg' })],
-  lg: [iconContainer, sprinkles({ size: '2xl' })],
+  sm: [iconContainer, sprinkles({ size: 4 })],
+  md: [iconContainer, sprinkles({ size: 6 })],
+  lg: [iconContainer, sprinkles({ size: 8 })],
+  xl: [iconContainer, sprinkles({ size: 10 })],
 });
