@@ -10,6 +10,14 @@ In a later version some might be installed via the cli tool.
 - [node v16+](https://nodejs.org/en)
 - [docker](https://docs.docker.com/get-docker/)
 
+Login to docker with your
+[github account](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+, use the gh access token as password:
+
+```
+docker login ghcr.io -u <your gh username>
+```
+
 ## Install
 
 Note that the package is not yet published, so for now you need to clone this

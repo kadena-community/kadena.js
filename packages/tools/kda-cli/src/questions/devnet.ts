@@ -44,17 +44,28 @@ const getDockerFile = (env: 'l1' | 'l2') => {
   return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal.yaml`;
 };
 const setupMacDockerCompose = (env: 'l1' | 'l2') => {
-  const dcFile = readFileSync(
-    `${process.env.HOME}/.devnet/${env}/docker-compose.minimal.yaml`,
-    'utf-8',
-  );
-  const dcJson = parse(dcFile);
-  dcJson.services['bootstrap-node'].platform = 'linux/amd64';
-  dcJson.services['simulation-miner'].platform = 'linux/amd64';
-  dcJson.services['api-proxy'].platform = 'linux/amd64';
-  dcJson.services.test.platform = 'linux/amd64';
-  dcJson.services.pact.platform = 'linux/amd64';
-  writeFileSync(getDockerFile(env), stringify(dcJson), 'utf-8');
+  const dcFile = readFileSync(getDockerFile(env), 'utf-8');
+  const { services, ...dcJson } = parse(dcFile);
+
+  const newDcJson = Object.entries(services).reduce((s, [key, value]) => {
+    if (key === 'api-proxy')
+      return {
+        ...s,
+        [key]: {
+          ...(value as object),
+          platform: 'linux/arm64/v8',
+        },
+      };
+    return {
+      ...s,
+      [key]: {
+        ...(value as object),
+        platform: 'linux/amd64',
+      },
+    };
+  }, dcJson);
+
+  writeFileSync(getDockerFile(env), stringify(newDcJson), 'utf-8');
 };
 
 export const setupQuestions: IQuestion[] = [
