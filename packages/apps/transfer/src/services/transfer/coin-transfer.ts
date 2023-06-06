@@ -1,9 +1,15 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
+import { createExp, PactNumber } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { convertDecimal, generateApiHost, onlyKey } from '../utils/utils';
+import { getPublicKey } from '../accounts/get-public-key';
+import {
+  convertDecimal,
+  decimalFormatter,
+  generateApiHost,
+} from '../utils/utils';
 
 const gasLimit = 2300;
 const gasPrice = 0.00001;
@@ -26,21 +32,25 @@ export async function transferCreate(
     throw new Error('Amount must be a number');
   }
 
+  const fromPublicKey = await getPublicKey(networkId, chainId, fromAccount);
+  const toPublicKey = await getPublicKey(networkId, chainId, toAccount);
+
   const pactCommand = new PactCommand();
+
   pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${convertDecimal(
     amount,
   )})`;
 
   pactCommand
-    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap('coin.GAS', fromPublicKey)
     .addCap(
       'coin.TRANSFER',
-      onlyKey(fromAccount),
+      fromPublicKey,
       fromAccount,
       toAccount,
       Number(amount),
     )
-    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
+    .addData({ ks: { pred: 'keys-all', keys: [toPublicKey] } })
     .setMeta(
       {
         gasLimit: gasLimit,
@@ -60,7 +70,7 @@ export async function transferCreate(
 
   const signature = sign(pactCommand.cmd, {
     secretKey: fromPrivateKey,
-    publicKey: onlyKey(fromAccount),
+    publicKey: fromPublicKey,
   });
 
   if (signature.sig === undefined) {
@@ -68,7 +78,7 @@ export async function transferCreate(
   }
 
   pactCommand.addSignatures({
-    pubKey: onlyKey(fromAccount),
+    pubKey: fromPublicKey,
     sig: signature.sig,
   });
 
@@ -91,33 +101,29 @@ export async function safeTransferCreate(
     throw new Error('Amount must be a number');
   }
 
+  const fromPublicKey = await getPublicKey(networkId, chainId, fromAccount);
+  const toPublicKey = await getPublicKey(networkId, chainId, toAccount);
+
+  const extra = parseFloat('0.000000000001');
+  const extraStringified = decimalFormatter.format(extra);
+
   // sender need to send extra coins to the receiver which will be returned by the receiver
-  const amountWithExtra = Number(amount) + 0.000000000001;
+  const amountWithExtra = decimalFormatter.format(Number(amount) + extra);
 
   const pactCommand = new PactCommand();
-  pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${convertDecimal(
-    amountWithExtra.toString(),
-  )})(coin.transfer "${toAccount}" "${fromAccount}" ${convertDecimal(
-    '0.000000000001',
-  )})`;
+  pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${amountWithExtra})(coin.transfer "${toAccount}" "${fromAccount}" ${extraStringified})`;
 
   pactCommand
-    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap('coin.GAS', fromPublicKey)
     .addCap(
       'coin.TRANSFER',
-      onlyKey(fromAccount),
+      fromPublicKey,
       fromAccount,
       toAccount,
-      Number(amountWithExtra),
+      parseFloat(amountWithExtra),
     )
-    .addCap(
-      'coin.TRANSFER',
-      onlyKey(toAccount),
-      toAccount,
-      fromAccount,
-      Number('0.1'),
-    )
-    .addData({ ks: { pred: 'keys-all', keys: [onlyKey(toAccount)] } })
+    .addCap('coin.TRANSFER', toPublicKey, toAccount, fromAccount, extra)
+    .addData({ ks: { pred: 'keys-all', keys: [toPublicKey] } })
     .setMeta(
       {
         gasLimit: gasLimit,
@@ -137,12 +143,12 @@ export async function safeTransferCreate(
 
   const signatureSender = sign(pactCommand.cmd, {
     secretKey: fromPrivateKey,
-    publicKey: onlyKey(fromAccount),
+    publicKey: fromPublicKey,
   });
 
   const signatureReceiver = sign(pactCommand.cmd, {
     secretKey: toPrivateKey,
-    publicKey: onlyKey(toAccount),
+    publicKey: toPublicKey,
   });
 
   if (
@@ -154,11 +160,11 @@ export async function safeTransferCreate(
 
   pactCommand.addSignatures(
     {
-      pubKey: onlyKey(fromAccount),
+      pubKey: fromPublicKey,
       sig: signatureSender.sig,
     },
     {
-      pubKey: onlyKey(toAccount),
+      pubKey: toPublicKey,
       sig: signatureReceiver.sig,
     },
   );

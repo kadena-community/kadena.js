@@ -3,7 +3,9 @@ export const onlyKey = (account: string): string => {
 };
 
 export const generateApiHost = (networkId: string, chainId: string): string => {
-  return `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+  const server =
+    networkId === 'mainnet01' ? 'api.chainweb.com' : 'api.testnet.chainweb.com';
+  return `https://${server}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 };
 
 export const convertDecimal = (decimal: string): string => {
@@ -12,3 +14,8 @@ export const convertDecimal = (decimal: string): string => {
   }
   return Number(decimal).toFixed(1);
 };
+
+export const decimalFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 12,
+});
