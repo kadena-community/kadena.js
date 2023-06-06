@@ -11,7 +11,7 @@ const meta: Meta<
     text: string;
   } & IButtonProps
 > = {
-  title: 'Button',
+  title: 'Components/Button',
   component: Button,
   argTypes: {
     onClick: { action: 'clicked' },

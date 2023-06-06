@@ -74,7 +74,11 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
             {item.menu}
           </StyledButton>
 
-          <StyledTreeList menuOpen={menuOpen} level={`l${nextLevel()}`}>
+          <StyledTreeList
+            role="list"
+            menuOpen={menuOpen}
+            level={`l${nextLevel()}`}
+          >
             {!root && <Item item={item} level={nextLevel()} />}
             {item.children.map((v) => {
               return <MainTreeItem key={v.root} level={nextLevel()} item={v} />;
