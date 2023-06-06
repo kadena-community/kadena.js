@@ -1,12 +1,12 @@
 import questionsTest, {TestFn} from 'ava';
 import {
-	Answers,
+	IAnswers,
 	getNextQuestion,
-	Question,
-} from '../source/questions/questions.js';
+	IQuestion,
+} from '../src/questions/questions.js';
 
 type Context = {
-	questions: Question[];
+	questions: IQuestion[];
 };
 const test = questionsTest as TestFn<Context>;
 test.before(t => {
@@ -47,13 +47,13 @@ test.before(t => {
 					value: 'pineapple',
 				},
 			],
-			when: ({food}: Answers) => food === 'pizza',
+			when: ({food}: IAnswers) => food === 'pizza',
 		},
 		{
 			type: 'execute',
 			message: 'Logging the answers',
 			name: 'logging',
-			action: async (answers: Answers) => {
+			action: async (answers: IAnswers) => {
 				console.log('question and answers', answers);
 				return answers;
 			},
@@ -64,7 +64,7 @@ test.before(t => {
 const nextQuestionTest = test.macro(
 	async (
 		t,
-		{current, answers}: {current?: number; answers: Answers},
+		{current, answers}: {current?: number; answers: IAnswers},
 		expected: number,
 	) => {
 		const {questions} = t.context;
