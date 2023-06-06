@@ -62,7 +62,7 @@ const responsiveProperties = defineProperties({
   },
   defaultCondition: 'xs',
   properties: {
-    display: ['none', 'flex', 'block', 'inline', 'inline-block'],
+    display: ['none', 'flex', 'block', 'inline', 'inline-block', 'grid'],
     flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
     justifyContent: [
       'flex-start',
@@ -80,7 +80,7 @@ const responsiveProperties = defineProperties({
     marginBottom: vars.sizes,
     marginLeft: vars.sizes,
     marginRight: vars.sizes,
-    width: { ...vars.sizes, full: '100%' },
+    width: { ...vars.sizes, '100%': '100%' },
     height: vars.sizes,
     gap: vars.sizes,
     overflow: ['hidden'],
