@@ -17,7 +17,7 @@ export default function App({ task = '' }: IProps): JSX.Element {
   const [qna, setQNA] = useState<IQuestionAnswer>(
     getNextQuestion({
       current: undefined,
-      answers: { task },
+      answers: { task: [task].filter(Boolean) },
       questions,
       answeredQuestions: [],
     }),

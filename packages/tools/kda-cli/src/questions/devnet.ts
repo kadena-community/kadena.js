@@ -19,6 +19,10 @@ const replaceValue =
 
 const composeEnv = (servicePort: number, stratumPort: number): StringReducer =>
   compose(
+    replaceValue(
+      'CHAINWEB_NODE_IMAGE',
+      'ghcr.io/kadena-io/chainweb-node:sha-7e11817',
+    ),
     replaceValue('HOST_SERVICE_PORT', servicePort),
     replaceValue('HOST_STRATUM_PORT', stratumPort),
   );
@@ -27,7 +31,7 @@ const getEnvL1: StringReducer = composeEnv(8080, 1917);
 const getEnvL2: StringReducer = composeEnv(8081, 1918);
 
 const setupEnvFor = async (layer: 'l1' | 'l2'): Promise<void> => {
-  const envFile = `~/devnet/${layer}/.env`;
+  const envFile = `${process.env.HOME}/.devnet/${layer}/.env`;
   const env = readFileSync(envFile, 'utf-8');
   if (layer === 'l2') return writeFileSync(envFile, getEnvL2(env), 'utf-8');
   return writeFileSync(envFile, getEnvL1(env), 'utf-8');
@@ -51,12 +55,12 @@ export const devnetQuestions: IQuestion[] = [
       if (Array.isArray(task)) return task?.includes('setup');
       return false;
     },
-    action: async (answers: IAnswers) => {
-      await spawned('mkdir -p ~/.devnet');
+    action: async () => {
+      await spawned(`mkdir -p ${process.env.HOME}/.devnet`);
       await spawned(
-        'git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ~/.devnet/l1',
+        `git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ${process.env.HOME}/.devnet/l1`,
       );
-      return answers;
+      return { clone: 'success' };
     },
   },
   {
@@ -67,12 +71,12 @@ export const devnetQuestions: IQuestion[] = [
       if (setupL2 === true) return true;
       return false;
     },
-    action: async (answers: IAnswers) => {
-      await spawned('mkdir -p ~/.devnet');
+    action: async () => {
+      await spawned(`mkdir -p ${process.env.HOME}/.devnet`);
       await spawned(
-        'git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ~/.devnet/l2',
+        `git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ${process.env.HOME}/.devnet/l2`,
       );
-      return answers;
+      return { clone: 'success' };
     },
   },
   {
@@ -83,9 +87,22 @@ export const devnetQuestions: IQuestion[] = [
       if (Array.isArray(task)) return task?.includes('setup');
       return false;
     },
-    action: async (answers: IAnswers) => {
+    action: async () => {
       await setupEnvFor('l1');
-      return answers;
+      return { prepare: 'success' };
+    },
+  },
+  {
+    message: 'Prepare L2 devnet environment...',
+    name: 'prepareDevnetL2',
+    type: 'execute',
+    when: ({ setupL2 }: IAnswers) => {
+      if (setupL2 === true) return true;
+      return false;
+    },
+    action: async () => {
+      await setupEnvFor('l2');
+      return { prepare: 'success' };
     },
   },
 ];

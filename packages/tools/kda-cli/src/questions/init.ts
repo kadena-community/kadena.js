@@ -31,8 +31,8 @@ export const questions: IQuestion[] = [
       },
     ],
     when: ({ task }: IAnswers) => {
-      console.log({ task });
-      return true;
+      if (Array.isArray(task)) return task.length === 0;
+      return false;
     },
   },
   {
@@ -40,7 +40,6 @@ export const questions: IQuestion[] = [
     type: 'rerun',
     name: 'rerun',
     when: ({ task }: IAnswers) => {
-      console.log({ task });
       if (Array.isArray(task)) return task?.includes('rerun');
       return false;
     },
