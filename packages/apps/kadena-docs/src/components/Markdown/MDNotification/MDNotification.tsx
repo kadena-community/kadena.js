@@ -11,9 +11,8 @@ export const MDNotification: FC<IProps> = ({ children, ...props }) => {
   console.log({ children, props });
   return (
     <div {...props}>
-      1{children}1
       <Notification title="test" expand icon={SystemIcons.Account}>
-        <NotificationBody>{children}</NotificationBody>
+        <Notification.Body>{children}</Notification.Body>
       </Notification>
     </div>
   );

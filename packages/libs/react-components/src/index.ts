@@ -3,7 +3,12 @@ export { Grid, IGridContainerProps, IGridItemProps } from './components/Grid';
 export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
-export { Notification, INotificationProps } from './components/Notification';
+export {
+  Notification,
+  INotificationProps,
+  NotificationFooter,
+  NotificationBody,
+} from './components/Notification';
 export { Card, ICardProps } from './components/Card';
 export { ProductIcons } from './components/ProductIcons';
 export { Table } from './components/Table';
