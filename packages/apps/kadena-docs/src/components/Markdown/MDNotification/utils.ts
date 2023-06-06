@@ -12,7 +12,8 @@ export type IconType =
   | (typeof SystemIcons)['Bell']
   | undefined;
 
-export const getColor = (label: LabelType): INotificationProps['color'] => {
+export const getColor = (label?: LabelType): INotificationProps['color'] => {
+  if (!label) return;
   switch (label) {
     case 'note':
     case 'info':
@@ -29,7 +30,8 @@ export const getColor = (label: LabelType): INotificationProps['color'] => {
   }
 };
 
-export const getIcon = (label: LabelType): IconType => {
+export const getIcon = (label?: LabelType): IconType => {
+  if (!label) return undefined;
   switch (label) {
     case 'note':
     case 'info':

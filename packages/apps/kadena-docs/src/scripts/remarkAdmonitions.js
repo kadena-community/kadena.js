@@ -10,9 +10,14 @@ const isStart = (branch) => {
   return value.match(STARTNOTER_EGEXP);
 };
 
+const isEnd = (branch) => {
+  if (branch.children.length === 0) return false;
+  return branch.children[0].value === ':::';
+};
+
 // get the props (label and title) for the notification
 const getProps = (branch) => {
-  if (branch.children.length === 0) return false;
+  if (branch.children.length === 0) return {};
   const value = branch.children[0].value ?? '';
 
   const match = STARTNOTER_EGEXP.exec(value);
@@ -47,6 +52,7 @@ const reduceToNotifications = (acc, branch) => {
 
     const props = getProps(branch);
     branch.type = 'element';
+    branch.children[0].value = '';
     branch.data = {
       hName: 'kda-notification',
       hProperties: props,
@@ -57,15 +63,13 @@ const reduceToNotifications = (acc, branch) => {
 
   const startElm = getStartElm();
   if (startElm) {
-    startElm.children[0].value = '';
-    startElm.children = [...startElm.children, branch];
-
-    if (branch.children[0].value === ':::') {
-      branch.children[0].value = '';
+    if (isEnd(branch)) {
       clearStartElm();
+    } else {
+      startElm.children = [...startElm.children, branch];
     }
 
-    // if in the middle of the notification do not return the branch.
+    // if in the middle or end of the notification do not return the branch.
     // the branch is now a child of the startbranch
     return acc;
   }

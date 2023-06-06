@@ -14,11 +14,11 @@ const Wrapper = styled('div', {
 
 interface IProps {
   children: ReactNode;
-  title: string;
-  label: LabelType;
+  title?: string;
+  label?: LabelType;
 }
 
-export const MDNotification: FC<IProps> = ({ children, title, label }) => {
+export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
   return (
     <Wrapper>
       <Notification
