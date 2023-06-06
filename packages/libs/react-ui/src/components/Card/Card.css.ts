@@ -14,10 +14,8 @@ export const container = style([
     borderRadius: 'sm',
     marginY: 'md',
     border: 'none',
-  }),
-  {
     width: 'max-content',
-  },
+  }),
 ]);
 
 export const fullWidthClass = style([{ width: '100%' }]);
