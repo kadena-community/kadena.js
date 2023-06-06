@@ -1,4 +1,4 @@
-import { GridItemClass } from './Grid.css';
+import { gridItemClass } from './Grid.css';
 
 import React, { CSSProperties, FC, ReactNode } from 'react';
 
@@ -34,7 +34,7 @@ const GridItem: FC<IGridItemProps> = ({
         };
 
   return (
-    <div className={GridItemClass} style={styles}>
+    <div className={gridItemClass} style={styles}>
       {children}
     </div>
   );
