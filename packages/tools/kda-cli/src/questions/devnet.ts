@@ -3,6 +3,7 @@ import { spawned } from '../utils/spawn.js';
 import { IAnswers, IQuestion } from './questions.js';
 
 import { readFileSync, writeFileSync } from 'fs';
+import { parse, stringify } from 'yaml';
 
 type StringReducer = (str: string) => string;
 
@@ -37,10 +38,38 @@ const setupEnvFor = async (layer: 'l1' | 'l2'): Promise<void> => {
   return writeFileSync(envFile, getEnvL1(env), 'utf-8');
 };
 
+const getDockerFile = (env: 'l1' | 'l2') => {
+  if (env === 'l2')
+    return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal-l2.yaml`;
+  return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal.yaml`;
+};
+const setupMacDockerCompose = (env: 'l1' | 'l2') => {
+  const dcFile = readFileSync(
+    `${process.env.HOME}/.devnet/${env}/docker-compose.minimal.yaml`,
+    'utf-8',
+  );
+  const dcJson = parse(dcFile);
+  dcJson.services['bootstrap-node'].platform = 'linux/amd64';
+  dcJson.services['simulation-miner'].platform = 'linux/amd64';
+  dcJson.services['api-proxy'].platform = 'linux/amd64';
+  dcJson.services.test.platform = 'linux/amd64';
+  dcJson.services.pact.platform = 'linux/amd64';
+  writeFileSync(getDockerFile(env), stringify(dcJson), 'utf-8');
+};
+
 export const setupQuestions: IQuestion[] = [
   {
     message: 'Will you be developing for L2?',
     name: 'setupL2',
+    type: 'confirm',
+    when: ({ task }: IAnswers) => {
+      if (Array.isArray(task)) return task?.includes('setup');
+      return false;
+    },
+  },
+  {
+    message: 'Are you using a mac with a M chip?',
+    name: 'setupM1',
     type: 'confirm',
     when: ({ task }: IAnswers) => {
       if (Array.isArray(task)) return task?.includes('setup');
@@ -89,6 +118,7 @@ export const setupQuestions: IQuestion[] = [
     },
     action: async () => {
       await setupEnvFor('l1');
+      setupMacDockerCompose('l1');
       return { prepare: 'success' };
     },
   },
@@ -102,6 +132,7 @@ export const setupQuestions: IQuestion[] = [
     },
     action: async () => {
       await setupEnvFor('l2');
+      setupMacDockerCompose('l2');
       return { prepare: 'success' };
     },
   },

@@ -22,7 +22,8 @@
     "ink": "^4.1.0",
     "meow": "^11.0.0",
     "react": "^18.2.0",
-    "cross-spawn": "~7.0.3"
+    "cross-spawn": "~7.0.3",
+    "yaml": "~2.1.1"
   },
   "devDependencies": {
     "@kadena-dev/heft-rig": "workspace:*",
