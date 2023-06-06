@@ -2,7 +2,7 @@ import { sprinkles, vars } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const Item = style([
+export const item = style([
   sprinkles({
     borderRadius: 'sm',
     backgroundColor: 'primarySurface',
@@ -16,9 +16,9 @@ export const Item = style([
   },
 ]);
 
-export const ItemSizeClass = styleVariants(vars.sizes, (size) => {
+export const itemSizeClass = styleVariants(vars.sizes, (size) => {
   return [
-    Item,
+    item,
     {
       width: size,
       height: size,
