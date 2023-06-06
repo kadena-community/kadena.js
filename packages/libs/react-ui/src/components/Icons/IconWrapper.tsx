@@ -16,9 +16,9 @@ export const IconWrapper = (
     size = 'md',
     ...props
   }) => (
-    <div className={sizeVariants[size]}>
+    <span className={sizeVariants[size]}>
       <Component {...props} height="100%" width="100%" />
-    </div>
+    </span>
   );
 
   WrappedIcon.displayName = Component.displayName;

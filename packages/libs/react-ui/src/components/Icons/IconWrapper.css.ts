@@ -13,4 +13,5 @@ export const sizeVariants = styleVariants({
   md: [iconContainer, sprinkles({ size: 6 })],
   lg: [iconContainer, sprinkles({ size: 8 })],
   xl: [iconContainer, sprinkles({ size: 10 })],
+  heroHeader: [iconContainer, sprinkles({ size: 24 })],
 });
