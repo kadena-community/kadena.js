@@ -6,6 +6,7 @@ label: Introduction
 order: 3
 description: How to get started
 layout: landing
+icon: SmartContract
 ---
 
 ## chain 1

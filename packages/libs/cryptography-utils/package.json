@@ -1,11 +1,12 @@
 {
   "name": "@kadena/cryptography-utils",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/cryptography-utils"
   },
   "license": "ISC",
   "contributors": [
@@ -28,7 +29,7 @@
     "_phase:build": "heft build --clean",
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "test": "rushx build && heft test --no-build"
   },

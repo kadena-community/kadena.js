@@ -6,7 +6,7 @@ const getHeaders = (tree) => {
 
 const isStart = (branch) => {
   if (branch.children.length === 0) return false;
-  return branch.children[0].value === ':::note';
+  return branch.children[0].value === ':::info Tip';
 };
 
 let STARTELM;
@@ -24,6 +24,8 @@ const clearStartElm = () => {
 
 const reduceToNotifications = (acc, head) => {
   if (!head.children) return [...acc, head];
+
+  console.log(head);
 
   if (isStart(head)) {
     setStartElm(head);
@@ -53,7 +55,6 @@ const reduceToNotifications = (acc, head) => {
 
 const remarkAdmonitions = () => {
   return async (tree) => {
-    let startElm;
     const newChildren = tree.children.reduce(reduceToNotifications, []);
 
     tree.children = newChildren;

@@ -1,1 +1,6 @@
-export { Notification, INotificationProps } from './Notification';
+export {
+  NotificationFooter,
+  NotificationBody,
+  Notification,
+  INotificationProps,
+} from './Notification';

@@ -1,6 +1,11 @@
 import { Button, SystemIcons } from './../../';
 import { colorVariant } from './styles';
-import { INotificationProps, Notification } from '.';
+import {
+  INotificationProps,
+  Notification,
+  NotificationBody,
+  NotificationFooter,
+} from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -20,11 +25,6 @@ const meta: Meta<
       },
     },
     title: {
-      control: {
-        type: 'text',
-      },
-    },
-    description: {
       control: {
         type: 'text',
       },
@@ -72,8 +72,6 @@ export const Primary: Story = {
   args: {
     selectIcon: 'Information',
     title: 'Notification title',
-    description:
-      'Notification text to inform users about the event that occurred!',
     displayCloseButton: true,
     expand: false,
     color: 'default',
@@ -82,7 +80,6 @@ export const Primary: Story = {
   render: ({
     selectIcon,
     title,
-    description,
     displayCloseButton,
     expand,
     color,
@@ -96,15 +93,18 @@ export const Primary: Story = {
           icon={Icon}
           color={color}
           title={title}
-          description={description}
           displayCloseButton={displayCloseButton}
           expand={expand}
-          footerContent={
+        >
+          <NotificationBody>
+            Notification text to inform users about the event that occurred!
+          </NotificationBody>
+          <NotificationFooter>
             <Button title="Action label" icon={SystemIcons.TrailingIcon}>
               Action label
             </Button>
-          }
-        />
+          </NotificationFooter>
+        </Notification>
       </>
     );
   },

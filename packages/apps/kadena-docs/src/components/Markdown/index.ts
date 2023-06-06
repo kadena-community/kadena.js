@@ -1,14 +1,21 @@
 import { Table } from '@kadena/react-components';
 
 import { Code, TitleWrapper } from './Code';
+import { Figure } from './Figure';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
+import { UnorderedList } from './UnorderedList';
+import { Youtube } from './Youtube';
 
 import { FC } from 'react';
 
 export type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
   'kda-notification': React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >;
+  'kda-youtube': React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >;
@@ -21,7 +28,9 @@ export const markDownComponents: Record<string, FC> = {
   h4: Heading4 as FC<JSX.IntrinsicElements['h4']>,
   p: Paragraph as FC<JSX.IntrinsicElements['p']>,
   code: Code as FC<JSX.IntrinsicElements['code']>,
+  ul: UnorderedList as FC<JSX.IntrinsicElements['ul']>,
   div: TitleWrapper as FC<JSX.IntrinsicElements['div']>,
+  img: Figure as FC<JSX.IntrinsicElements['img']>,
   table: Table as FC<JSX.IntrinsicElements['table']>,
   tbody: Table.Body as FC<JSX.IntrinsicElements['tbody']>,
   thead: Table.Head as FC<JSX.IntrinsicElements['thead']>,
@@ -31,4 +40,5 @@ export const markDownComponents: Record<string, FC> = {
   'kda-notification': MDNotification as FC<
     ExtendedIntrinsicElements['kda-notification']
   >,
+  'kda-youtube': Youtube as FC<ExtendedIntrinsicElements['kda-youtube']>,
 };

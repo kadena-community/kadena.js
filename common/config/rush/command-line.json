@@ -65,6 +65,16 @@
     },
 
     {
+      "commandKind": "global",
+      "name": "fix-versions",
+      "summary": "Runs fix-versions to get consistent versions across projects",
+      "safeForSimultaneousRushProcesses": false,
+      "autoinstallerName": "rush-fix-versions",
+      // This will invoke ./common/autoinstallers/rush-fix-versions/node_modules/.bin/rush-fix-versions
+      "shellCommand": "rush-fix-versions"
+    },
+
+    {
       "commandKind": "bulk",
       "name": "precommit",
       "summary": "Runs precommit in all projects",

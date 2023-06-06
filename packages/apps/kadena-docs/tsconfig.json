@@ -1,9 +1,15 @@
 {
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["heft-jest", "node", "@types/gtag.js"],
+    "types": [
+      "heft-jest",
+      "node",
+      "@types/gtag.js"
+    ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "target": "ES2020",
     "allowJs": false,
@@ -13,8 +19,23 @@
     "moduleResolution": "node",
     "jsx": "preserve",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
-  "exclude": ["node_modules", "./cypress"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "environment.d.ts"] // see the last entry in array
+  "exclude": [
+    "node_modules",
+    "./cypress"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "environment.d.ts",
+    ".next/types/**/*.ts"
+  ] // see the last entry in array
 }

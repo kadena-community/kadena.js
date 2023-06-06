@@ -1,6 +1,5 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 
-import { IconButton } from '../..';
 import { styled } from '../../styles';
 import { Heading, Text } from '../Typography';
 
@@ -17,29 +16,28 @@ export const colorVariant = {
   },
   primary: {
     backgroundColor: '$primarySurface',
-    borderColor: '$primaryAccent',
-    color: '$primaryAccent',
+    borderColor: '$primaryContrast',
+    color: '$primaryContrast',
   },
   secondary: {
     backgroundColor: '$secondarySurface',
-    borderColor: '$secondaryAccent',
-    color: '$secondaryAccent',
+    borderColor: '$secondaryContrast',
+    color: '$secondaryContrast',
   },
   positive: {
     backgroundColor: '$positiveSurface',
-    borderColor: '$positiveAccent',
-    color: '$positiveAccent',
+    borderColor: '$positiveContrast',
+    color: '$positiveContrast',
   },
   warning: {
     backgroundColor: '$warningSurface',
-    borderColor: '$warningAccent',
-    color: '$warningAccent',
-    $$svgColor: '$warningAccent',
+    borderColor: '$warningContrast',
+    color: '$warningContrast',
   },
   negative: {
     backgroundColor: '$negativeSurface',
-    borderColor: '$negativeAccent',
-    color: '$negativeAccent',
+    borderColor: '$negativeContrast',
+    color: '$negativeContrast',
   },
 };
 
@@ -107,7 +105,7 @@ const positionVariant = {
   },
 };
 
-export const StyledIconButton = styled(IconButton, {
+export const StyledIconContainer = styled('div', {
   margin: '0',
   padding: '0',
   height: 'min-content',
