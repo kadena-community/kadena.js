@@ -1,18 +1,20 @@
 import { styled } from '@kadena/react-components';
 
-import { Chain, ChevronLeft } from '@/resources/svg/generated';
-import Link from 'next/link';
-
-export const StyledMainContent = styled('main', {});
-
-export const StyledFormContainer = styled('div', {
+export const StyledMainContent = styled('main', {
   display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
+  justifyContent: 'flex-start',
+  gap: '$16',
+});
+
+export const StyledSidebar = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  width: '25%',
+  height: '100%',
 });
 
 export const StyledForm = styled('form', {
-  width: '65%',
+  width: '75%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-end',
