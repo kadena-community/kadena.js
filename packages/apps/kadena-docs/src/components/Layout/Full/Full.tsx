@@ -11,23 +11,33 @@ import {
   StickyAsideWrapper,
 } from '../components';
 
+import { ListItem } from './ListItem';
+
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout, ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useRouter } from 'next/router';
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  MouseEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
-  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [activeItem, setActiveItem] = useState<string>('');
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
     const { isIntersecting } = entry;
 
     if (isIntersecting) {
-      setActiveItem(entry.target.getAttribute('href'));
+      setActiveItem(entry.target.getAttribute('href') ?? '');
     }
   };
 
@@ -63,16 +73,43 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
 
     const slug = `#${createSlug(item.title)}`;
 
+    const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {
+      ev.preventDefault();
+
+      analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
+        label: item.title,
+        url: slug,
+      });
+
+      document?.querySelector(slug)?.scrollIntoView({
+        behavior: 'smooth',
+      });
+
+      setTimeout(async () => {
+        await router.push(slug);
+        setActiveItem(slug);
+      }, 500);
+    };
+
     return (
       <AsideLink
         href={slug}
         key={slug}
         label={item.title}
         isActive={activeItem === slug}
+        onClick={handleItemClick}
       >
         {item.children.length > 0 && (
           <AsideList inner={true}>
-            {item.children.map(renderListItem)}
+            {item.children.map((innerItem) => (
+              <ListItem
+                key={innerItem.slug}
+                scrollArea={scrollRef.current}
+                item={innerItem}
+                activeItem={activeItem}
+                setActiveItem={setActiveItem}
+              />
+            ))}
           </AsideList>
         )}
       </AsideLink>
