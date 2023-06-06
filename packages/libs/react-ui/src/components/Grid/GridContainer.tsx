@@ -1,6 +1,5 @@
-import { gapVariants, GridContainerClass } from './Grid.css';
+import { gapVariants } from './Grid.css';
 
-import classNames from 'classnames';
 import React, { CSSProperties, FC, ReactNode } from 'react';
 
 export interface IGridContainerProps {
@@ -24,10 +23,8 @@ const GridContainer: FC<IGridContainerProps> = ({
     gridTemplateColumns: templateColumns,
   };
 
-  const classList = classNames(GridContainerClass, gapVariants[spacing]);
-
   return (
-    <div className={classList} style={styles}>
+    <div className={gapVariants[spacing]} style={styles}>
       {children}
     </div>
   );
