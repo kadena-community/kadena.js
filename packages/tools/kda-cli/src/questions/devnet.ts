@@ -47,7 +47,7 @@ const setupMacDockerCompose = (env: 'l1' | 'l2') => {
   const dcFile = readFileSync(getDockerFile(env), 'utf-8');
   const { services, ...dcJson } = parse(dcFile);
 
-  const newDcJson = Object.entries(services).reduce((s, [key, value]) => {
+  const newServices = Object.entries(services).reduce((s, [key, value]) => {
     if (key === 'api-proxy')
       return {
         ...s,
@@ -65,7 +65,11 @@ const setupMacDockerCompose = (env: 'l1' | 'l2') => {
     };
   }, dcJson);
 
-  writeFileSync(getDockerFile(env), stringify(newDcJson), 'utf-8');
+  writeFileSync(
+    getDockerFile(env),
+    stringify({ ...dcJson, services: newServices }),
+    'utf-8',
+  );
 };
 
 export const setupQuestions: IQuestion[] = [
