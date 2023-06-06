@@ -13,7 +13,7 @@
     "@rushstack/heft": "^0.46.1"
   },
   "dependencies": {
-    "@microsoft/api-extractor": "~7.35.0",
+    "@microsoft/api-extractor": "~7.28.2",
     "@rushstack/heft-jest-plugin": "~0.3.16",
     "eslint": "^8.15.0",
     "jest-environment-node": "~27.4.2",
