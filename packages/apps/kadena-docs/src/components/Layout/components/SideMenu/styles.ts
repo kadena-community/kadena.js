@@ -142,3 +142,10 @@ export const SideMenuTitleBackButton: StyledComponent<'button'> = styled(
     },
   },
 );
+
+export const ShowOnMobile: StyledComponent<'div'> = styled('div', {
+  display: 'block',
+  '@md': {
+    display: 'none',
+  },
+});

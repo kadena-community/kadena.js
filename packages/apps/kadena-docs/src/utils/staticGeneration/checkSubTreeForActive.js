@@ -11,17 +11,18 @@ const lastInPath = (filename) => {
   return `/${filename}`;
 };
 
-export const getPathName = () => {
+export const getPathName = (filename) => {
   const endPoint = 'docs';
 
-  const dirArray = __dirname.split('/');
+  const dirArray = filename.split('/');
+
   const newPath = dirArray
     .reverse()
-    .slice(0, dirArray.indexOf(endPoint) + 1)
+    .slice(1, dirArray.indexOf(endPoint) + 1)
     .reverse()
     .join('/');
 
-  return `/${newPath}${lastInPath(path.parse(__filename).name)}`;
+  return `/${newPath}${lastInPath(path.parse(filename).name)}`;
 };
 
 const IsMenuOpen = (pathname, itemRoot) =>
@@ -54,6 +55,8 @@ const mapSubTree = (pathname) => (item) => {
 export const checkSubTreeForActive = (path) => {
   const tree = getData();
 
-  if (!path) path = getPathName();
+  if (!path) {
+    throw new Error('no path');
+  }
   return tree.map(mapSubTree(path));
 };

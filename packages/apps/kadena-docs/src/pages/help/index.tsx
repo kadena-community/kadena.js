@@ -1,6 +1,9 @@
 import { Heading } from '@kadena/react-components';
 
-import { checkSubTreeForActive } from '@/utils/staticGeneration';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
@@ -11,7 +14,7 @@ const Help: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(),
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Help',
         menu: 'Help',
