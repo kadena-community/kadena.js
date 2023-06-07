@@ -305,6 +305,14 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "longName": "--update-snapshots",
+      "shortName": "-u",
+      "parameterKind": "flag",
+      "description": "Update unit test snapshots for all projects",
+      "associatedCommands": ["test", "retest"],
+      "associatedPhases": ["_phase:test"]
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.
