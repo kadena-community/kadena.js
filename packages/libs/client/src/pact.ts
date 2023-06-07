@@ -14,9 +14,11 @@ import {
   ICap,
   ICommand,
   ICommandPayload,
+  IContPayload,
   ISignatureJson,
   IUnsignedCommand,
   PactValue,
+  Type,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
@@ -146,11 +148,16 @@ export class PactCommand
   //         ICommandBuilder<Record<string, unknown>>)[]
   //     ) => Promise<this>)
   //   | undefined;
-  public type: 'exec' = 'exec';
+  // public type: 'exec' = 'exec';
+  public type: Type;
   public cmd: string | undefined;
   public requestKey: string | undefined;
   public status: TransactionStatus;
   public nonce: NonceType | undefined;
+  public proof: IContPayload['proof'];
+  public step: IContPayload['step'];
+  public pactId: IContPayload['pactId'];
+  public rollback: IContPayload['rollback'];
 
   public constructor() {
     this.code = '';
@@ -168,6 +175,11 @@ export class PactCommand
     this.status = 'malleable';
     this.requestKey = undefined;
     this.nonce = undefined;
+    this.type = 'exec';
+    this.proof = null;
+    this.step = 1;
+    this.pactId = '';
+    this.rollback = false;
   }
 
   /**
@@ -238,6 +250,18 @@ export class PactCommand
       nonce: this.nonceCreator(this, dateInMs),
     };
 
+    if (this.type === 'cont') {
+      unsignedTransactionCommand.payload = {
+        cont: {
+          pactId: this.pactId,
+          step: this.step,
+          proof: this.proof,
+          rollback: this.rollback,
+          data: this.data,
+        },
+      };
+    }
+
     // stringify command
     const cmd: string =
       this.cmd !== undefined
@@ -263,6 +287,17 @@ export class PactCommand
     this._unfinalizeTransaction();
 
     this.data = data;
+    return this;
+  }
+
+  public addContData(data: IContPayload): this {
+    this._unfinalizeTransaction();
+
+    this.type = 'cont';
+    this.pactId = data.pactId;
+    this.step = data.step;
+    this.proof = data.proof;
+    this.rollback = data.rollback;
     return this;
   }
 

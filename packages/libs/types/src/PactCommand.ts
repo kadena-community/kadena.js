@@ -163,6 +163,10 @@ export type ChainId =
   | '17'
   | '18'
   | '19';
+/**
+ * @alpha
+ */
+export type Type = 'cont' | 'exec';
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.

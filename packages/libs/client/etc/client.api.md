@@ -7,11 +7,13 @@
 import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ICap } from '@kadena/types';
+import { IContPayload } from '@kadena/types';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 import { SendResponse } from '@kadena/chainweb-node-client';
+import { Type } from '@kadena/types';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
@@ -241,6 +243,8 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     constructor();
     addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T): this;
     // (undocumented)
+    addContData(data: IContPayload): this;
+    // (undocumented)
     addData(data: IPactCommand['data']): this;
     // (undocumented)
     addSignatures(...sigs: {
@@ -261,12 +265,16 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     nonce: NonceType | undefined;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
+    pactId: IContPayload['pactId'];
+    // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
     pollUntil(apiHost: string, options?: {
         interval?: number;
         timeout?: number;
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
     }): Promise<this>;
+    // (undocumented)
+    proof: IContPayload['proof'];
     // (undocumented)
     publicMeta: {
         chainId: ChainId;
@@ -277,6 +285,8 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     };
     // (undocumented)
     requestKey: string | undefined;
+    // (undocumented)
+    rollback: IContPayload['rollback'];
     send(apiHost: string): Promise<SendResponse>;
     setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
     setNonceCreator(nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType): this;
@@ -295,7 +305,9 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     status: TransactionStatus;
     // (undocumented)
-    type: 'exec';
+    step: IContPayload['step'];
+    // (undocumented)
+    type: Type;
 }
 
 // @alpha (undocumented)
