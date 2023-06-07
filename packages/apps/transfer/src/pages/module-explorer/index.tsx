@@ -14,12 +14,12 @@ import {
   StyledCodeViewerContainer,
   StyledForm,
   StyledFormButton,
-  StyledFormContainer,
   StyledMainContent,
   StyledResultContainer,
+  StyledSidebar,
   StyledTotalChunk,
   StyledTotalContainer,
-} from '@/pages/code-viewer/styles';
+} from '@/pages/module-explorer/styles';
 import {
   type ModuleResult,
   describeModule,
@@ -65,34 +65,33 @@ const GetCode: FC = () => {
   };
 
   return (
-    <MainLayout title="Kadena Coin Transfer">
+    <MainLayout title="Kadena Module Explorer">
       <StyledMainContent>
-        <StyledFormContainer>
-          <StyledForm onSubmit={getCode}>
-            <StyledAccountForm>
-              <Select
-                label="Select the module chain"
-                leadingText="Chain"
-                onChange={(e) => setModuleChain(parseInt(e.target.value))}
-                value={moduleChain}
-              >
-                {renderChainOptions()}
-              </Select>
-              <TextField
-                label="Module Name"
-                inputProps={{
-                  placeholder: 'Enter desired module name',
-                  // @ts-ignore
-                  onChange: (e) => setModuleName(e?.target?.value),
-                  value: moduleName,
-                }}
-              />
-            </StyledAccountForm>
-            <StyledFormButton>
-              <Button title="Get Code">Get Code</Button>
-            </StyledFormButton>
-          </StyledForm>
-        </StyledFormContainer>
+        <StyledSidebar />
+        <StyledForm onSubmit={getCode}>
+          <StyledAccountForm>
+            <Select
+              label="Select the module chain"
+              leadingText="Chain"
+              onChange={(e) => setModuleChain(parseInt(e.target.value))}
+              value={moduleChain}
+            >
+              {renderChainOptions()}
+            </Select>
+            <TextField
+              label="Module Name"
+              inputProps={{
+                placeholder: 'Enter desired module name',
+                // @ts-ignore
+                onChange: (e) => setModuleName(e?.target?.value),
+                value: moduleName,
+              }}
+            />
+          </StyledAccountForm>
+          <StyledFormButton>
+            <Button title="Get Code">Get Code</Button>
+          </StyledFormButton>
+        </StyledForm>
 
         {results.status ? (
           <StyledResultContainer>

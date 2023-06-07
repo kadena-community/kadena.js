@@ -2,6 +2,7 @@ import {
   StyledHomeButton,
   StyledHomeContainer,
   StyledHomeContent,
+  StyledHomeContentContainer,
   StyledHomeLink,
   StyledHomeTitle,
   StyledIconBox,
@@ -14,7 +15,7 @@ import { downloadKeyPairToBrowser } from '@/services/key-pairs/key-pairs';
 import React, { FC } from 'react';
 
 const Home: FC = () => {
-  const menu = [
+  const transferMenu = [
     {
       icon: Account,
       title: 'Check account balance',
@@ -28,30 +29,56 @@ const Home: FC = () => {
     {
       icon: Chain,
       title: 'Module explorer',
-      href: '/code-viewer',
+      href: '/module-explorer',
+    },
+  ];
+
+  const faucetMenu = [
+    {
+      icon: Account,
+      title: 'Existing account',
+      href: '/',
+    },
+    {
+      icon: Chain,
+      title: 'New account',
+      href: '/',
     },
   ];
 
   return (
     <StyledHomeContainer>
       <StyledSmallLogo width="65px" />
-      <StyledHomeContent>
-        <StyledHomeTitle>Kadena Transfer</StyledHomeTitle>
-        <StyledHomeButton onClick={downloadKeyPairToBrowser}>
-          <StyledIconBox>
-            <Key width="40px" height="40px" />
-          </StyledIconBox>
-          <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
-        </StyledHomeButton>
-        {menu.map((item) => (
-          <StyledHomeLink key={`item-${item.title}`} href={item.href}>
+      <StyledHomeContentContainer>
+        <StyledHomeContent>
+          <StyledHomeTitle>Kadena Transfer</StyledHomeTitle>
+          <StyledHomeButton onClick={downloadKeyPairToBrowser}>
             <StyledIconBox>
-              <item.icon width="40px" height="40px" />
+              <Key width="40px" height="40px" />
             </StyledIconBox>
-            <StyledLinkText>{item.title}</StyledLinkText>
-          </StyledHomeLink>
-        ))}
-      </StyledHomeContent>
+            <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
+          </StyledHomeButton>
+          {transferMenu.map((item) => (
+            <StyledHomeLink key={`item-${item.title}`} href={item.href}>
+              <StyledIconBox>
+                <item.icon width="40px" height="40px" />
+              </StyledIconBox>
+              <StyledLinkText>{item.title}</StyledLinkText>
+            </StyledHomeLink>
+          ))}
+        </StyledHomeContent>
+        <StyledHomeContent>
+          <StyledHomeTitle>Kadena Testnet Faucet</StyledHomeTitle>
+          {faucetMenu.map((item) => (
+            <StyledHomeLink key={`item-${item.title}`} href={item.href}>
+              <StyledIconBox>
+                <item.icon width="40px" height="40px" />
+              </StyledIconBox>
+              <StyledLinkText>{item.title}</StyledLinkText>
+            </StyledHomeLink>
+          ))}
+        </StyledHomeContent>
+      </StyledHomeContentContainer>
     </StyledHomeContainer>
   );
 };

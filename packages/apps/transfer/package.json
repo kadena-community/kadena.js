@@ -13,7 +13,8 @@
     "lint": "next lint",
     "lint-staged": "lint-staged",
     "lint:fix": "eslint --fix .",
-    "start": "next start"
+    "start": "next start",
+    "test": ""
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -57,30 +58,12 @@
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "env-cmd": "^10.1.0",
-    "eslint": "8.41.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-next": "13.4.3",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard-with-typescript": "^34.0.1",
-    "eslint-import-resolver-typescript": "^3.5.1",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.7.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "lint-staged": "~13.2.0",
     "prettier": "^2.3.2",
     "sort-package-json": "~2.4.1",
     "typescript": "4.9.4"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "volta": {
     "node": "18.16.0"
-  },
-  "package.json": [
-    "sort-package-json"
-  ]
+  }
 }
