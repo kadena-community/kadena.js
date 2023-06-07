@@ -1,13 +1,6 @@
 import { Button, TextField } from '@kadena/react-components';
 
-import {
-  StyledNavItem,
-  StyledNavItemIcon,
-  StyledNavItemSelectedText,
-  StyledNavItemText,
-  StyledSelectedNavItem,
-  StyledSidebar,
-} from '../styles';
+import MainLayout from '../../components/Common/Layout/MainLayout';
 
 import {
   StyledAccountForm,
@@ -16,10 +9,13 @@ import {
   StyledMainContent,
 } from './styles';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
+import { Option, Select, SidebarMenu } from '@/components/Global';
+import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 
 const CoinTransfer: FC = () => {
+  const router = useRouter();
+
   const [chainWebServer, setChainWebServer] =
     useState<string>('api.chainweb.com');
   const [requestKey, setRequestKey] = useState<string>('');
@@ -36,18 +32,7 @@ const CoinTransfer: FC = () => {
   return (
     <MainLayout title="Kadena Cross Chain Transfer Finisher">
       <StyledMainContent>
-        <StyledSidebar>
-          <StyledNavItem href="/coin-transfer">
-            <StyledNavItemIcon>K:</StyledNavItemIcon>
-            <StyledNavItemText>Transfer</StyledNavItemText>
-          </StyledNavItem>
-          <StyledSelectedNavItem href="/coin-transfer/cross-chain-transfer-finisher">
-            <StyledNavItemIcon>K:</StyledNavItemIcon>
-            <StyledNavItemSelectedText>
-              Cross Chain Transfer Finisher
-            </StyledNavItemSelectedText>
-          </StyledSelectedNavItem>
-        </StyledSidebar>
+        <SidebarMenu />
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
             <TextField

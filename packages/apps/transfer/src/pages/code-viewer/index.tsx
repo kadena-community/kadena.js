@@ -8,7 +8,7 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 
-import { Select } from '@/components/Global';
+import { Select, SidebarMenu } from '@/components/Global';
 import {
   StyledAccountForm,
   StyledCodeViewerContainer,
@@ -67,6 +67,7 @@ const GetCode: FC = () => {
   return (
     <MainLayout title="Kadena Coin Transfer">
       <StyledMainContent>
+        <SidebarMenu />
         <StyledFormContainer>
           <StyledForm onSubmit={getCode}>
             <StyledAccountForm>

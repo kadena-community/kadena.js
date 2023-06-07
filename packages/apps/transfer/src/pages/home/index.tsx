@@ -16,14 +16,14 @@ import React, { FC } from 'react';
 const Home: FC = () => {
   const menu = [
     {
-      icon: Account,
-      title: 'Check account balance',
-      href: '/check-balance',
+      icon: Chain,
+      title: 'Cross-chain Transfer Tracker',
+      href: '/cross-chain-transfer-tracker',
     },
     {
       icon: Chain,
-      title: 'Transfer',
-      href: '/coin-transfer',
+      title: 'Cross-chain Transfer Finisher',
+      href: '/cross-chain-transfer-finisher',
     },
     {
       icon: Chain,
@@ -36,13 +36,8 @@ const Home: FC = () => {
     <StyledHomeContainer>
       <StyledSmallLogo width="65px" />
       <StyledHomeContent>
-        <StyledHomeTitle>Kadena Transfer</StyledHomeTitle>
-        <StyledHomeButton onClick={downloadKeyPairToBrowser}>
-          <StyledIconBox>
-            <Key width="40px" height="40px" />
-          </StyledIconBox>
-          <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
-        </StyledHomeButton>
+        <StyledHomeTitle>Kadena Cross Chain Transfers</StyledHomeTitle>
+
         {menu.map((item) => (
           <StyledHomeLink key={`item-${item.title}`} href={item.href}>
             <StyledIconBox>
