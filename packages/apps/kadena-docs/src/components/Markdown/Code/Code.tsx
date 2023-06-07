@@ -10,5 +10,5 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
   if (typeof children === 'string') {
     return <StyledInlineCode>{children}</StyledInlineCode>;
   }
-  return <StyledCode {...props}>sss{children}</StyledCode>;
+  return <StyledCode {...props}>{children}</StyledCode>;
 };
