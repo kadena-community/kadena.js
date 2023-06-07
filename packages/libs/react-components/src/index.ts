@@ -18,7 +18,7 @@ export {
 export { Card, ICardProps } from './components/Card';
 export { ProductIcons } from './components/ProductIcons';
 export { Table } from './components/Table';
-export { Hr } from './components/Hr';
+export { Divider } from './components/Divider';
 export {
   Breadcrumbs,
   BreadcrumbItem,
