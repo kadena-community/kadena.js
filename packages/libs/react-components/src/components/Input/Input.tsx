@@ -20,6 +20,7 @@ export interface IInputProps
   rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   disabled?: boolean;
   status?: 'success' | 'error';
+  type?: string;
 }
 
 export const Input: FC<IInputProps> = ({

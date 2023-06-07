@@ -54,10 +54,42 @@ const subscribe = async (
   }
   const list = lists[0];
 
-  const result = await mailchimp.lists.addListMember(list.id, {
-    email_address: email,
-    status: 'subscribed',
-  });
+  let result;
+  try {
+    result = await mailchimp.lists.addListMember(list.id, {
+      email_address: email,
+      status: 'subscribed',
+    });
+  } catch (err) {
+    if (
+      err.status === 400 &&
+      err.response.body.title.toLowerCase() === 'member exists'
+    ) {
+      res.status(400).json({
+        status: 200,
+        message: 'Thank you for subscribing...again',
+      });
+      res.end();
+    }
+
+    res.status(500).json({
+      status: 500,
+      message: 'Something went wrong, please try again later',
+    });
+    res.end();
+  }
+
+  if (
+    result.statusCode === 400 &&
+    result.text.title.toLowerCase() === 'member exists'
+  ) {
+    console.log(111);
+    res.status(400).json({
+      status: 200,
+      message: 'Thank you for subscribing...again',
+    });
+    res.end();
+  }
 
   if (result.statusCode > 400) {
     res.status(500).json({

@@ -1,4 +1,5 @@
 import { Subscribe } from './components/Subscribe';
+import { Wrapper } from './style';
 
 import React, { FC } from 'react';
 
@@ -6,9 +7,10 @@ export const BottomPageSection: FC = () => {
   return (
     <>
       <hr />
-      <section>
+      <Wrapper>
+        <div />
         <Subscribe />
-      </section>
+      </Wrapper>
     </>
   );
 };

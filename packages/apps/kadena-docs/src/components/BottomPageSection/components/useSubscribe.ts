@@ -15,7 +15,7 @@ export const useSubscribe = (): IReturn => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
 
-  const canSubmit = true; //Boolean(email) && !hasError;
+  const canSubmit = Boolean(email) && !hasError;
   const hasSuccess = Boolean(message) && !hasError;
 
   const handleSubscribe = async (

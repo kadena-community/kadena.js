@@ -24,44 +24,47 @@ export const Subscribe: FC = () => {
 
   return (
     <section data-cy="subscribe">
-      <Heading as="h6">Recieve important developer updates</Heading>
+      <Stack direction="column" spacing="sm">
+        <Heading as="h6">Recieve important developer updates</Heading>
 
-      {!hasSuccess ? (
-        <>
-          <form>
-            <Stack spacing="2xs">
-              <TextField
-                inputProps={{
-                  placeholder: 'Email address',
-                  onChange: handleFormState,
-                  'aria-label': 'Fill in email address',
-                  leftPanel: () => <SystemIcons.At />,
-                }}
-              />
-              <Button
-                type="submit"
-                disabled={!canSubmit}
-                onClick={handleSubscribe}
-                title="Subscribe"
-              >
-                Subscribe
-              </Button>
-            </Stack>
-          </form>
+        {!hasSuccess ? (
+          <>
+            <form>
+              <Stack spacing="sm">
+                <TextField
+                  inputProps={{
+                    type: 'email',
+                    placeholder: 'Email address',
+                    onChange: handleFormState,
+                    'aria-label': 'Fill in email address',
+                    leftPanel: () => <SystemIcons.At />,
+                  }}
+                />
+                <Button
+                  type="submit"
+                  disabled={!canSubmit}
+                  onClick={handleSubscribe}
+                  title="Subscribe"
+                >
+                  Subscribe
+                </Button>
+              </Stack>
+            </form>
 
-          {message && (
-            <Notification color="warning" expand>
+            {message && (
+              <Notification color="warning" expand>
+                <NotificationBody>{message}</NotificationBody>
+              </Notification>
+            )}
+          </>
+        ) : (
+          message && (
+            <Notification color="positive" expand>
               <NotificationBody>{message}</NotificationBody>
             </Notification>
-          )}
-        </>
-      ) : (
-        message && (
-          <Notification color="positive" expand>
-            <NotificationBody>{message}</NotificationBody>
-          </Notification>
-        )
-      )}
+          )
+        )}
+      </Stack>
     </section>
   );
 };
