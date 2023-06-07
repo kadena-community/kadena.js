@@ -85,12 +85,20 @@ export const setupQuestions: IQuestion[] = [
     },
   },
   {
-    message: 'Are you using a mac with a M chip?',
-    name: 'setupM1',
+    message: 'Are you using a mac?',
+    name: 'macOS',
     type: 'confirm',
     when: ({ task }: IAnswers) => {
       if (Array.isArray(task)) return task?.includes('setup');
       return false;
+    },
+  },
+  {
+    message: 'Are you using a mac with a M chip?',
+    name: 'setupM1',
+    type: 'confirm',
+    when: ({ macOS }: IAnswers) => {
+      return macOS === true;
     },
   },
   {
@@ -152,7 +160,7 @@ export const setupQuestions: IQuestion[] = [
       setupMacDockerCompose('l2');
       return { prepare: 'success' };
     },
-  },
+  }
 ];
 
 export const startQuestions: IQuestion[] = [
