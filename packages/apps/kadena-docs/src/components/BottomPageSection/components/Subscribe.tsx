@@ -1,4 +1,10 @@
-import { Button, Heading, Stack, Text } from '@kadena/react-components';
+import {
+  Button,
+  Heading,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/react-components';
 
 import { useSubscribe } from './useSubscribe';
 
@@ -22,6 +28,11 @@ export const Subscribe: FC = () => {
         <>
           <form>
             <Stack spacing="2xs">
+              <TextField
+                inputProps={{
+                  placeholder: 'Email address',
+                }}
+              />
               <input
                 type="text"
                 onChange={handleFormState}
