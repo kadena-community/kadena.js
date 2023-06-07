@@ -14,7 +14,7 @@ import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface INotificationProps {
-  icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  icon?: typeof SystemIcons[keyof typeof SystemIcons];
   title: string;
   children?: React.ReactNode;
   displayCloseButton?: boolean;
@@ -28,7 +28,7 @@ export const NotificationBody = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  return <StyledText as="p">{children}</StyledText>;
+  return <StyledText as="div">{children}</StyledText>;
 };
 
 // For now they are identical, so we can just export a rename of NotificationBody for the Footer
