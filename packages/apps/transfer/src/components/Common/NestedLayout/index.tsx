@@ -22,10 +22,10 @@ interface IProps {
 export const NestedLayout: FC<IProps> = (props) => {
   const { children } = props;
   return (
-    <StyledContainer className="p-6">
-      <StyledHeader className="flex justify-between">
+    <StyledContainer>
+      <StyledHeader>
         <KLogoComponent width={64} />
-        <StyledHeaderTitle className="grow">
+        <StyledHeaderTitle>
           <p>K:faucet</p>
           <p>Kadena Testnet Faucet (chain #1)</p>
         </StyledHeaderTitle>
@@ -50,10 +50,8 @@ export const NestedLayout: FC<IProps> = (props) => {
           </ul>
         </StyledNav>
 
-        <StyledBody className="basis-3/4">
-          <StyledBodyTitle className="mb-12">
-            {children.props.title}
-          </StyledBodyTitle>
+        <StyledBody>
+          <StyledBodyTitle>{children.props.title}</StyledBodyTitle>
           {children}
         </StyledBody>
       </StyledBodyContainer>
