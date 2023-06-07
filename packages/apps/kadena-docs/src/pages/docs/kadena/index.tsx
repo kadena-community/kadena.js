@@ -1,8 +1,10 @@
 import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
-import { getTopDocs } from '@/data/getTopDocs';
-import { checkSubTreeForActive } from '@/utils/staticGeneration/checkSubTreeForActive';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -39,7 +41,7 @@ const Home: FC = () => {
               title="Concepts"
               subtitle="Distinct Execution modes"
               icon="Concepts"
-              href="/docs/kadenajs"
+              href="/docs/kadena"
             />
           </BrowseSection>
         </Stack>
@@ -76,7 +78,7 @@ const Home: FC = () => {
               title="Smart Contracts"
               subtitle="Explore all products"
               icon="SmartContract"
-              href="/docs/kadenajs"
+              href="/docs/kadena"
             />
             <BrowseSection.LinkBlock
               title="Syntax"
@@ -88,7 +90,7 @@ const Home: FC = () => {
               title="Contribute"
               subtitle="Explore all products"
               icon="Contribute"
-              href="/docs/chainweb"
+              href="/docs/build"
             />
           </BrowseSection>
 
@@ -103,7 +105,7 @@ const Home: FC = () => {
               title="Useful Tools"
               subtitle="Explore all products"
               icon="UsefulTools"
-              href="/docs/kadenajs"
+              href="/docs/kadena"
             />
             <BrowseSection.LinkBlock
               title="Pact Developer Tutorials"
@@ -115,7 +117,7 @@ const Home: FC = () => {
               title="Quickstart"
               subtitle="Explore all products"
               icon="QuickStart"
-              href="/docs/chainweb"
+              href="/docs/build"
             />
           </BrowseSection>
         </Stack>
@@ -125,12 +127,9 @@ const Home: FC = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const topDocs = await getTopDocs();
-
   return {
     props: {
-      topDocs: topDocs,
-      leftMenuTree: checkSubTreeForActive(),
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Intro to Kadena',
         menu: 'Kadena',
