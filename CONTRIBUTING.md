@@ -35,8 +35,15 @@ tutorials" such as:
 - [Everyday Rush commands][4]
 - [Other helpful commands][5]
 
-Each package has its own instructions to start development. See the package
-directory for more information.
+### Switch branches
+
+Depending on the changes, you may need to invoke the following commands when
+switching branches to keep everything in check:
+
+```bash
+rush update
+rush build -t <package name>
+```
 
 ## Tests
 
@@ -50,7 +57,7 @@ rushx test -w   # Keep running tests during development
 
 Before making a pull request, please discuss your ideas first.
 
-Make sure to generate the changelog before it gets merged:
+Make sure to update the changelog before it gets merged:
 
 ```bash
 rush change
