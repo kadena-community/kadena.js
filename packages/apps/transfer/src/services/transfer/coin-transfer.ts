@@ -5,7 +5,7 @@ import { PactNumber } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
 import { getPublicKeys } from '../../services/accounts/get-public-keys';
-import { generateApiHost, onlyKey } from '../utils/utils';
+import { generateApiHost } from '../utils/utils';
 
 const gasLimit: number = 2300;
 const gasPrice: number = 0.00001;
