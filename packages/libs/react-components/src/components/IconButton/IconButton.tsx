@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 export interface IIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   as?: 'button' | 'a';
-  icon: (typeof SystemIcons)[keyof typeof SystemIcons];
+  icon: typeof SystemIcons[keyof typeof SystemIcons];
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   title: string;
