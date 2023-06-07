@@ -1,9 +1,13 @@
 import { getLexerOutput } from '../lexer';
 
-import { Token } from 'moo';
+interface IToken {
+  value: string;
+  // TODO: complete this list and remove string
+  type?: 'lparen' | 'rparen' | 'dot' | 'string' | 'namespace' | 'arom' | string;
+}
 
 export interface IPointer {
-  next: () => Token | undefined;
+  next: () => IToken | undefined;
   reset: (id: number) => void;
   snapshot: (log?: boolean) => number;
   done: () => boolean;
@@ -11,7 +15,7 @@ export interface IPointer {
 
 export const getPointer = (contract: string): IPointer => {
   const tokensToSkip = ['model', 'comment', 'ws', 'nl'];
-  const tokens = getLexerOutput(contract).filter(
+  const tokens: IToken[] = getLexerOutput(contract).filter(
     (token) => token.type === undefined || !tokensToSkip.includes(token.type),
   );
   let idx = -1;

@@ -1,6 +1,8 @@
 import { IFunction, IModule } from '../parsing/pactParser';
 import { getModuleFullName } from '../parsing/utils/utils';
 
+import { EOL } from 'os';
+
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',
   integer: 'IPactInt',
@@ -33,9 +35,9 @@ const getFuncCapInterfaceName = (func: IFunction): string => {
 
 const indent = (str: string): string =>
   str
-    .split('\n')
+    .split(EOL)
     .map((line) => `  ${line}`)
-    .join('\n');
+    .join(EOL);
 
 const getParameters = (
   list?: Array<{
@@ -77,24 +79,30 @@ function genFunCapsInterface(func: IFunction): string {
     }
     const comment =
       cap.capability.doc !== undefined
-        ? `/**\n* ${cap.capability.doc}\n*/`
+        ? `/**${EOL}* ${cap.capability.doc}${EOL}*/`
         : '';
-    const addCap = `addCap(\n${parameters.map(indent).join(', \n')}): this`;
+    const addCap = `addCap(${EOL}${parameters
+      .map(indent)
+      .join(`, ${EOL}`)}): this`;
     return { comment, addCap };
   });
 
-  const capStr = cap.map((c) => `${c.comment}\n${c.addCap},`).join('\n');
-  return `interface ${interfaceName} {\n${indent(capStr)}\n}`;
+  const capStr = cap.map((c) => `${c.comment}${EOL}${c.addCap},`).join(EOL);
+  return `interface ${interfaceName} {${EOL}${indent(capStr)}${EOL}}`;
 }
 
 const getFunctionType = (func: IFunction): string => {
   const capInterfaceName = getFuncCapInterfaceName(func) || 'ICapV2';
-  const comment = func.doc !== undefined ? `/**\n* ${func.doc}\n*/\n` : '';
+  const comment =
+    func.doc !== undefined ? `/**${EOL}* ${func.doc}${EOL}*/${EOL}` : '';
 
+  const parameters = getParameters(func.parameters);
+  const lnBreak = parameters.length > 1;
+  const nl = lnBreak ? EOL : '';
   return indent(
-    `${comment}"${func.name}": (\n${getParameters(func.parameters)
-      .map(indent)
-      .join(',\n')}) => Builder<${capInterfaceName}>`,
+    `${comment}"${func.name}": (${nl}${parameters
+      .map((d) => (lnBreak ? indent(d) : d))
+      .join(`,${nl}`)}) => Builder<${capInterfaceName}>`,
   );
 };
 
@@ -115,7 +123,7 @@ export function generateDts2(
   }
 
   const capsInterfaces =
-    module.functions?.map(genFunCapsInterface).filter(Boolean).join('\n') || '';
+    module.functions?.map(genFunCapsInterface).filter(Boolean).join(EOL) || '';
 
   const dts = `
 import type { ICommandBuilderV2, IPactCommand, ICapV2 } from '@kadena/client';
@@ -136,7 +144,7 @@ declare module '@kadena/client' {
 
   export interface IPactModules {
     "${getModuleFullName(module)}": {
-${indent(module.functions.map(getFunctionType).join(',\n'))}
+${indent(module.functions.map(getFunctionType).join(`,${EOL}${EOL}`))}
     }
   }
 }`;
