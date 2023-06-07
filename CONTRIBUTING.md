@@ -58,6 +58,18 @@ rush change
 
 ## Conventions
 
+### Git/GitHub
+
+- Try to keep pull requests focused and small.
+- Use prefixed branch names such as `feat/feature-title`, `fix/fix-title`,
+  `chore/chore-title`
+- Using Asana? [Attach a pull request to the Asana task][6].
+- Before merging a pull request, make sure the commit messages are good.
+- Prefer a rebase over merge commits, for both [updating branches][7] and
+  [merging pull requests][8].
+
+### Code
+
 This repository uses a combination of TypeScript, ESLint and Prettier to adhere
 to coding standards. We try to automate and auto-fix as much as possible using
 the following commands:
@@ -67,7 +79,7 @@ rush build   # Compile & build all packages (using TypeScript)
 rush lint    # Lint (and fix) all packages (using ESLint)
 ```
 
-Use `rushx` to do the same for only the current package.
+Use `rushx` instead of `rush` to do the same for only the current package.
 
 For everything else, please discuss.
 
@@ -97,3 +109,8 @@ rush publish --apply --publish --include-all --add-commit-details --set-access-l
 [3]: https://rushjs.io/pages/developer/new_developer/
 [4]: https://rushjs.io/pages/developer/everyday_commands/
 [5]: https://rushjs.io/pages/developer/other_commands/
+[6]: https://asana.com/guide/help/api/github#gl-key
+[7]:
+  https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch
+[8]:
+  https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
