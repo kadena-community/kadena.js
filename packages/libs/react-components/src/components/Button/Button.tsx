@@ -1,6 +1,6 @@
 import { SystemIcons } from '../Icons';
 
-import { StyledButton } from './styles';
+import { StyledButton, StyledButtonVariants } from './styles';
 
 import React, { FC } from 'react';
 
@@ -18,6 +18,7 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
+  variant?: StyledButtonVariants;
 }
 
 export const Button: FC<IButtonProps> = ({

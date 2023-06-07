@@ -1,9 +1,10 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
+import { PactNumber } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { convertDecimal, generateApiHost, onlyKey } from '../utils/utils';
+import { generateApiHost, onlyKey } from '../utils/utils';
 
 const gasLimit: number = 2300;
 const gasPrice: number = 0.00001;
@@ -85,9 +86,9 @@ export async function transferCreate({
   }
 
   const pactCommand = new PactCommand();
-  pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${convertDecimal(
+  pactCommand.code = `(coin.transfer-create "${fromAccount}" "${toAccount}" (read-keyset "ks") ${new PactNumber(
     amount,
-  )})`;
+  ).toDecimal()})`;
 
   pactCommand
     .addCap('coin.GAS', onlyKey(fromAccount))
@@ -96,7 +97,7 @@ export async function transferCreate({
       onlyKey(fromAccount),
       fromAccount,
       toAccount,
-      Number(amount),
+      Number(new PactNumber(amount).toDecimal()),
     )
     .addData({ ks: { pred: predicate, keys: keys } })
     .setMeta(
@@ -158,9 +159,9 @@ export async function crossTransfer({
   keys: string[];
 }): Promise<PactCommand> {
   const pactCommand = new PactCommand();
-  pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${convertDecimal(
+  pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${new PactNumber(
     amount,
-  )})`;
+  ).toDecimal()})`;
 
   pactCommand
     .addCap('coin.GAS', onlyKey(fromAccount))
@@ -169,9 +170,7 @@ export async function crossTransfer({
       onlyKey(fromAccount),
       fromAccount,
       toAccount,
-      {
-        decimal: convertDecimal(amount),
-      },
+      new PactNumber(amount).toPactDecimal(),
       toChainId,
     )
     .addData({ ks: { pred: predicate, keys: keys } })

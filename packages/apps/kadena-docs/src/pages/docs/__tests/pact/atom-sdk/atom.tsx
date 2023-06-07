@@ -1,4 +1,7 @@
-import { checkSubTreeForActive } from '@/utils/staticGeneration';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
@@ -24,7 +27,7 @@ const Page: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(),
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Pact',
         menu: 'Pact Test it',
