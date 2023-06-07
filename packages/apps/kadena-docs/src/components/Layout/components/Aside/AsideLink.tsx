@@ -1,25 +1,27 @@
-import { AsideItem } from './AsideStyles';
+import { AsideItem, AsideItemLink } from './AsideStyles';
 
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import Link from 'next/link';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, MouseEventHandler, ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;
   href: string;
   label: string;
+  isActive: boolean;
+  onClick: MouseEventHandler<HTMLAnchorElement>;
 }
 
-export const AsideLink: FC<IProps> = ({ children, href, label }) => {
-  const handleAnalytics = (): void => {
-    analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
-      label,
-      url: href,
-    });
-  };
+export const AsideLink: FC<IProps> = ({
+  children,
+  href,
+  label,
+  isActive,
+  onClick,
+}) => {
   return (
-    <AsideItem onClick={handleAnalytics}>
-      <Link href={href}>{label}</Link>
+    <AsideItem>
+      <AsideItemLink href={href} onClick={onClick} isActive={isActive}>
+        {label}
+      </AsideItemLink>
       {children}
     </AsideItem>
   );
