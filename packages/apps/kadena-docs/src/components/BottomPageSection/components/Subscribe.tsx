@@ -5,7 +5,6 @@ import {
   NotificationBody,
   Stack,
   SystemIcons,
-  Text,
   TextField,
 } from '@kadena/react-components';
 
