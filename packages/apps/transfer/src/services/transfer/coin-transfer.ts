@@ -4,7 +4,8 @@ import { sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { generateApiHost, onlyKey } from '../utils/utils';
+import { getPublicKeys } from '../../services/accounts/get-public-keys';
+import { generateApiHost } from '../utils/utils';
 
 const gasLimit: number = 2300;
 const gasPrice: number = 0.00001;
@@ -23,8 +24,6 @@ export async function coinTransfer({
   amount,
   fromPrivateKey,
   networkId,
-  predicate = 'keys-all',
-  keys = [onlyKey(toAccount)],
 }: {
   fromAccount: string;
   fromChainId: ChainId;
@@ -33,8 +32,6 @@ export async function coinTransfer({
   amount: string;
   fromPrivateKey: string;
   networkId: ChainwebNetworkId;
-  predicate?: string;
-  keys?: string[];
 }): Promise<PactCommand> {
   if (fromChainId === toChainId) {
     return transferCreate({
@@ -44,8 +41,6 @@ export async function coinTransfer({
       fromPrivateKey,
       fromChainId,
       networkId,
-      predicate,
-      keys,
     });
   }
 
@@ -57,8 +52,6 @@ export async function coinTransfer({
     amount,
     fromPrivateKey,
     networkId,
-    predicate,
-    keys,
   });
 }
 
@@ -69,8 +62,6 @@ export async function transferCreate({
   amount,
   fromPrivateKey,
   networkId,
-  predicate,
-  keys,
 }: {
   fromAccount: string;
   fromChainId: ChainId;
@@ -78,11 +69,23 @@ export async function transferCreate({
   amount: string;
   fromPrivateKey: string;
   networkId: ChainwebNetworkId;
-  predicate: string;
-  keys: string[];
 }): Promise<PactCommand> {
   if (isNaN(Number(amount))) {
     throw new Error('Amount must be a number');
+  }
+
+  const fromAccountGuard = await getPublicKeys(
+    networkId,
+    fromChainId,
+    fromAccount,
+  );
+  if (fromAccountGuard === undefined) {
+    throw new Error('Sender account does not exist');
+  }
+
+  const toAccountGuard = await getPublicKeys(networkId, fromChainId, toAccount);
+  if (toAccountGuard === undefined) {
+    throw new Error('Receiver account does not exist');
   }
 
   const pactCommand = new PactCommand();
@@ -91,15 +94,15 @@ export async function transferCreate({
   ).toDecimal()})`;
 
   pactCommand
-    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap('coin.GAS', fromAccountGuard.keys[0])
     .addCap(
       'coin.TRANSFER',
-      onlyKey(fromAccount),
+      fromAccountGuard.keys[0],
       fromAccount,
       toAccount,
       Number(new PactNumber(amount).toDecimal()),
     )
-    .addData({ ks: { pred: predicate, keys: keys } })
+    .addData({ ks: { pred: toAccountGuard.pred, keys: toAccountGuard.keys } })
     .setMeta(
       {
         gasLimit: gasLimit,
@@ -119,7 +122,7 @@ export async function transferCreate({
 
   const signature = sign(pactCommand.cmd, {
     secretKey: fromPrivateKey,
-    publicKey: onlyKey(fromAccount),
+    publicKey: fromAccountGuard.keys[0],
   });
 
   if (signature.sig === undefined) {
@@ -127,7 +130,7 @@ export async function transferCreate({
   }
 
   pactCommand.addSignatures({
-    pubKey: onlyKey(fromAccount),
+    pubKey: fromAccountGuard.keys[0],
     sig: signature.sig,
   });
 
@@ -145,8 +148,6 @@ export async function crossTransfer({
   amount,
   fromPrivateKey,
   networkId,
-  predicate,
-  keys,
 }: {
   fromAccount: string;
   fromChainId: ChainId;
@@ -155,25 +156,37 @@ export async function crossTransfer({
   amount: string;
   fromPrivateKey: string;
   networkId: ChainwebNetworkId;
-  predicate: string;
-  keys: string[];
 }): Promise<PactCommand> {
+  const fromAccountGuard = await getPublicKeys(
+    networkId,
+    fromChainId,
+    fromAccount,
+  );
+  if (fromAccountGuard === undefined) {
+    throw new Error('Sender account does not exist');
+  }
+
+  const toAccountGuard = await getPublicKeys(networkId, toChainId, toAccount);
+  if (toAccountGuard === undefined) {
+    throw new Error('Sender account does not exist');
+  }
+
   const pactCommand = new PactCommand();
   pactCommand.code = `(coin.transfer-crosschain "${fromAccount}" "${toAccount}" (read-keyset "ks") "${toChainId}" ${new PactNumber(
     amount,
   ).toDecimal()})`;
 
   pactCommand
-    .addCap('coin.GAS', onlyKey(fromAccount))
+    .addCap('coin.GAS', fromAccountGuard.keys[0])
     .addCap(
       'coin.TRANSFER_XCHAIN',
-      onlyKey(fromAccount),
+      fromAccountGuard.keys[0],
       fromAccount,
       toAccount,
       new PactNumber(amount).toPactDecimal(),
       toChainId,
     )
-    .addData({ ks: { pred: predicate, keys: keys } })
+    .addData({ ks: { pred: toAccountGuard.pred, keys: toAccountGuard.keys } })
     .setMeta(
       {
         gasLimit: gasLimit,
@@ -193,7 +206,7 @@ export async function crossTransfer({
 
   const signature = sign(pactCommand.cmd, {
     secretKey: fromPrivateKey,
-    publicKey: onlyKey(fromAccount),
+    publicKey: fromAccountGuard.keys[0],
   });
 
   if (signature.sig === undefined) {
@@ -201,7 +214,7 @@ export async function crossTransfer({
   }
 
   pactCommand.addSignatures({
-    pubKey: onlyKey(fromAccount),
+    pubKey: fromAccountGuard.keys[0],
     sig: signature.sig,
   });
 
