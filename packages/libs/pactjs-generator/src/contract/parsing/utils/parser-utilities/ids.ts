@@ -1,5 +1,3 @@
-import { IPointer } from '../getPointer';
-
 import { FAILED, IParser, rule } from './rule';
 
 interface IIds {
@@ -11,7 +9,7 @@ export const ids: IIds = (
   list: string[],
   mapper = (idx: number, list: string[]) => list[idx],
 ) => {
-  return rule((pointer: IPointer) => {
+  return rule((pointer) => {
     const token = pointer.next();
     if (!token) return FAILED;
     const findIndex = list.findIndex((item) => item === token.value);

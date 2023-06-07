@@ -30,7 +30,7 @@ interface IRepeat {
 /**
  * should be always the last parser in the block
  */
-export const repeat: IRepeat = (...parsers: IParser[]) => {
+export const repeat: IRepeat = (...parsers) => {
   const oneOfParser = oneOf(...parsers);
   return rule((pointer) => {
     const results: IWrappedData[] = [];
@@ -44,7 +44,7 @@ export const repeat: IRepeat = (...parsers: IParser[]) => {
       }
     }
 
-    const pushUnique = <T>(arr: T[] = [], item: any): T[] => {
+    const pushUnique = <T>(arr: T[] = [], item: T): T[] => {
       if (!arr.includes(item)) {
         arr.push(item);
       }
@@ -71,8 +71,9 @@ export const repeat: IRepeat = (...parsers: IParser[]) => {
       }
 
       return acc;
-    }, {} as Record<string, any[]>);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }, {} as any);
 
-    return wrapData(returnValue as any);
+    return wrapData(returnValue);
   });
 };

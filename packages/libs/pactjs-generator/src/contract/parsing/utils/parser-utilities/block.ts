@@ -1,15 +1,15 @@
-import { getBlockPointer, IPointer } from '../getPointer';
+import { getBlockPointer } from '../getPointer';
 
-import { FAILED, IParser, rule } from './rule';
+import { FAILED, rule } from './rule';
 import { ISeq, seq } from './seq';
 import { skipTheRest } from './skip';
 
-export const block: ISeq = (...parsers: IParser[]) => {
+export const block: ISeq = (...parsers) => {
   const seqParser = seq(...parsers, skipTheRest);
-  return rule((pointer: IPointer) => {
+  return rule((pointer) => {
     const token = pointer.next();
     if (token?.type !== 'lparen') return FAILED;
     const blockPinter = getBlockPointer(pointer);
     return seqParser(blockPinter);
-  }) as any;
+  });
 };

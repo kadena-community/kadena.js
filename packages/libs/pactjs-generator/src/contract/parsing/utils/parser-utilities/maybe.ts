@@ -1,11 +1,13 @@
-import { IPointer } from '../getPointer';
+import { IWrappedData, wrapData } from '../dataWrapper';
 
 import { FAILED, IParser, rule } from './rule';
 
-export const maybe = <T extends unknown>(
-  parser: IParser<T>,
-): IParser<T, never> =>
-  rule((pointer: IPointer) => {
+interface IMaybe {
+  <T>(parser: IParser<T>): IParser<T | IWrappedData<undefined>, never>;
+}
+
+export const maybe: IMaybe = (parser) =>
+  rule((pointer) => {
     const result = parser(pointer);
-    return result === FAILED ? undefined : result;
-  }) as any;
+    return result === FAILED ? wrapData(undefined) : result;
+  });

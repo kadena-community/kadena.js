@@ -4,7 +4,7 @@ import { IPointer } from '../getPointer';
 // eslint-disable-next-line @rushstack/typedef-var
 export const FAILED = Symbol('FAILED');
 
-export interface IParser<T extends unknown = unknown, F = typeof FAILED> {
+export interface IParser<T = unknown, F = typeof FAILED> {
   (pointer: IPointer): F | T;
   isRule?: boolean;
 }

@@ -19,7 +19,7 @@ interface IInspector {
 }
 
 export const $: IInspector = (one: string | IParser, second?: IParser) =>
-  rule((pointer: IPointer) => {
+  rule((pointer) => {
     const name = typeof one === 'string' ? one : undefined;
     if (name === 'inspect') throw new Error('inspect is a reserved name');
     const parser = second || (one as IParser);

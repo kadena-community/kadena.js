@@ -23,6 +23,7 @@ export interface ISeq {
 
 export const seq: ISeq = (...parsers) =>
   rule((pointer) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const results: IWrappedData<any, any>[] = [];
     for (let i = 0; i < parsers.length; i++) {
       const parser = parsers[i];
