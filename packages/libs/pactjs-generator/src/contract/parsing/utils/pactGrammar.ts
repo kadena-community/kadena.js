@@ -21,7 +21,7 @@ import {
   skipTheRest,
   skipToken,
   str,
-} from './parserUtilities';
+} from './parser-utilities';
 
 // :string :object{schema-one} {kind:object,value:schema-one} | string
 const typeRule = seq(

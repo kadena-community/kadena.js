@@ -2,7 +2,7 @@ import { unwrapData } from './utils/dataWrapper';
 import { getCapabilities } from './utils/getCapabilities';
 import { getBlockPointer, getPointer, IPointer } from './utils/getPointer';
 import { functionCalls, parser } from './utils/pactGrammar';
-import { FAILED } from './utils/parserUtilities';
+import { FAILED } from './utils/parser-utilities';
 import { getModuleFullName, IModuleLike } from './utils/utils';
 
 interface ISchema {
@@ -159,15 +159,17 @@ function fileParser(
   const { modules, namespaces, usedModules } = tree;
 
   const extModules =
-    modules?.map(({ location, module: mod }) => ({
-      ...mod,
-      namespace: getNamespace(location, namespaces) || namespace,
-      usedModules: [
-        ...(mod.usedModules || []),
-        ...getUsedModules(location, usedModules),
-        ...getUsedModulesInFunctions(mod.functions),
-      ].filter(isNotDuplicatedModule),
-    })) || [];
+    modules !== undefined
+      ? modules.map(({ location, module: mod }) => ({
+          ...mod,
+          namespace: getNamespace(location, namespaces) || namespace,
+          usedModules: [
+            ...(mod.usedModules || []),
+            ...getUsedModules(location, usedModules),
+            ...getUsedModulesInFunctions(mod.functions),
+          ].filter(isNotDuplicatedModule),
+        }))
+      : [];
 
   return [extModules, pointer];
 }
