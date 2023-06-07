@@ -5,9 +5,9 @@ import {
   StyledAccountForm,
   StyledForm,
   StyledFormButton,
-  StyledFormContainer,
   StyledMainContent,
   StyledResultContainer,
+  StyledSidebar,
   StyledTableContainer,
   StyledTotalChunk,
   StyledTotalContainer,
@@ -49,42 +49,41 @@ const GetBalance: FC = () => {
   return (
     <MainLayout title="Check Account Balance">
       <StyledMainContent>
-        <StyledFormContainer>
-          <StyledForm onSubmit={getBalance}>
-            <StyledAccountForm>
-              <TextField
-                label="Target Chainweb Server"
-                inputProps={{
-                  placeholder: 'Enter Node Server',
-                  // @ts-ignore
-                  onChange: (e) => setServerValue(e?.target?.value),
-                  value: inputServerValue,
-                }}
-              />
-              <TextField
-                label="Token Name"
-                inputProps={{
-                  placeholder: 'Enter Token Name',
-                  // @ts-ignore
-                  onChange: (e) => setTokenValue(e?.target?.value),
-                  value: inputTokenValue,
-                }}
-              />
-              <TextField
-                label="Your Account Name"
-                inputProps={{
-                  placeholder: 'Enter Your Account',
-                  // @ts-ignore
-                  onChange: (e) => setAccountValue(e?.target?.value),
-                  value: inputAccountValue,
-                }}
-              />
-            </StyledAccountForm>
-            <StyledFormButton>
-              <Button title="Get Account Balance">Get Account Balance</Button>
-            </StyledFormButton>
-          </StyledForm>
-        </StyledFormContainer>
+        <StyledSidebar />
+        <StyledForm onSubmit={getBalance}>
+          <StyledAccountForm>
+            <TextField
+              label="Target Chainweb Server"
+              inputProps={{
+                placeholder: 'Enter Node Server',
+                // @ts-ignore
+                onChange: (e) => setServerValue(e?.target?.value),
+                value: inputServerValue,
+              }}
+            />
+            <TextField
+              label="Token Name"
+              inputProps={{
+                placeholder: 'Enter Token Name',
+                // @ts-ignore
+                onChange: (e) => setTokenValue(e?.target?.value),
+                value: inputTokenValue,
+              }}
+            />
+            <TextField
+              label="Your Account Name"
+              inputProps={{
+                placeholder: 'Enter Your Account',
+                // @ts-ignore
+                onChange: (e) => setAccountValue(e?.target?.value),
+                value: inputAccountValue,
+              }}
+            />
+          </StyledAccountForm>
+          <StyledFormButton>
+            <Button title="Get Account Balance">Get Account Balance</Button>
+          </StyledFormButton>
+        </StyledForm>
 
         {results.length > 0 ? (
           <StyledResultContainer>
