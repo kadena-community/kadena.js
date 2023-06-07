@@ -4,6 +4,12 @@ export { IconButton, IIconButtonProps } from './components/IconButton';
 export { Button, IButtonProps } from './components/Button';
 export { SystemIcons } from './components/Icons';
 export {
+  ITextFieldProps,
+  TextField,
+  InputGroup,
+  IInputGroupProps,
+} from './components/Input';
+export {
   Notification,
   INotificationProps,
   NotificationFooter,

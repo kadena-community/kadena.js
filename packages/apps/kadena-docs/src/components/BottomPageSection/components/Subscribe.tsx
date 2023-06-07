@@ -1,4 +1,13 @@
-import { Button, Heading, Stack, Text } from '@kadena/react-components';
+import {
+  Button,
+  Heading,
+  Notification,
+  NotificationBody,
+  Stack,
+  SystemIcons,
+  Text,
+  TextField,
+} from '@kadena/react-components';
 
 import { useSubscribe } from './useSubscribe';
 
@@ -22,11 +31,13 @@ export const Subscribe: FC = () => {
         <>
           <form>
             <Stack spacing="2xs">
-              <input
-                type="text"
-                onChange={handleFormState}
-                placeholder="Email address"
-                aria-label="fill in your email address to subscribe"
+              <TextField
+                inputProps={{
+                  placeholder: 'Email address',
+                  onChange: handleFormState,
+                  'aria-label': 'Fill in email address',
+                  leftPanel: () => <SystemIcons.At />,
+                }}
               />
               <Button
                 type="submit"
@@ -38,10 +49,19 @@ export const Subscribe: FC = () => {
               </Button>
             </Stack>
           </form>
-          <Text bold={true}>{message}</Text>
+
+          {message && (
+            <Notification color="warning" expand>
+              <NotificationBody>{message}</NotificationBody>
+            </Notification>
+          )}
         </>
       ) : (
-        <Text bold={true}>{message}</Text>
+        message && (
+          <Notification color="positive" expand>
+            <NotificationBody>{message}</NotificationBody>
+          </Notification>
+        )
       )}
     </section>
   );

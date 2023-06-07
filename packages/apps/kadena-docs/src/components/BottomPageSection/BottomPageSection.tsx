@@ -4,8 +4,11 @@ import React, { FC } from 'react';
 
 export const BottomPageSection: FC = () => {
   return (
-    <section>
-      <Subscribe />
-    </section>
+    <>
+      <hr />
+      <section>
+        <Subscribe />
+      </section>
+    </>
   );
 };

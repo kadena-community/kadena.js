@@ -35,7 +35,7 @@ export const Input: FC<IInputProps> = ({
   const variant = disabled ? 'disabled' : status;
 
   return (
-    <StyledInputWrapper {...rest} variant={variant}>
+    <StyledInputWrapper variant={variant}>
       {Boolean(leadingText) && (
         <StyledLeadingText>{leadingText}</StyledLeadingText>
       )}

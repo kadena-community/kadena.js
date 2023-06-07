@@ -77,6 +77,12 @@ export const baseGlobalStyles: Record<string, unknown> = {
       color: '$primaryHighContrast',
     },
   },
+  hr: {
+    borderColor: '$borderColor',
+    borderWidth: '1px',
+    borderBottomWidth: '0',
+    margin: '$10 0',
+  },
 
   // Spacing
   ':root': {
