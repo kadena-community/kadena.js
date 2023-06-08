@@ -1,4 +1,4 @@
-import { TextField } from '@kadena/react-components';
+import { SystemIcons, TextField } from '@kadena/react-components';
 
 import {
   checkSubTreeForActive,
@@ -17,7 +17,14 @@ const Search: FC = () => {
   };
   return (
     <section>
-      <TextField inputProps={{ onChange }} />
+      <TextField
+        inputProps={{
+          onChange,
+          placeholder: 'Search',
+          leftPanel: () => <SystemIcons.Magnify />,
+          'aria-label': 'Search',
+        }}
+      />
       <div>{query}</div>
     </section>
   );
