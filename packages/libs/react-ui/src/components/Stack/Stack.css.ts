@@ -1,6 +1,6 @@
-import { sprinkles, vars } from '../../styles';
+import { sprinkles } from '../../styles';
 
-import { CSSProperties, style, styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
@@ -13,91 +13,39 @@ export const container = style([
   }),
 ]);
 
-export const spacingClass = styleVariants(
-  {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    '2xs': '2xs',
-    xs: 'xs',
-    sm: 'sm',
-    md: 'md',
-    lg: 'lg',
-    xl: 'xl',
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    '2xl': '2xl',
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    '3xl': '3xl',
-  } as Record<string, keyof typeof vars.sizes>,
-  (gap) => {
-    return [
-      container,
-      sprinkles({
-        gap,
-      }),
-    ];
-  },
-);
+export const spacingClass = styleVariants({
+  '2xs': [container, sprinkles({ gap: '2xs' })],
+  xs: [container, sprinkles({ gap: 'xs' })],
+  sm: [container, sprinkles({ gap: 'sm' })],
+  md: [container, sprinkles({ gap: 'md' })],
+  lg: [container, sprinkles({ gap: 'lg' })],
 
-export const justifyContentClass = styleVariants(
-  {
-    'flex-start': 'flex-start',
-    center: 'center',
-    'flex-end': 'flex-end',
-    'space-between': 'space-between',
-    'space-around': 'space-around',
-  },
-  (justify) => {
-    return [
-      container,
-      {
-        justifyContent: justify,
-      },
-    ];
-  },
-);
+  xl: [container, sprinkles({ gap: 'xl' })],
+  '2xl': [container, sprinkles({ gap: '2xl' })],
+  '3xl': [container, sprinkles({ gap: '3xl' })],
+});
 
-export const alignItemsClass = styleVariants(
-  {
-    'flex-start': 'flex-start',
-    center: 'center',
-    'flex-end': 'flex-end',
-    stretch: 'stretch',
-  },
-  (align) => {
-    return [
-      container,
-      {
-        alignItems: align,
-      },
-    ];
-  },
-);
+export const justifyContentClass = styleVariants({
+  flexStart: [container, sprinkles({ justifyContent: 'flex-start' })],
+  center: [container, sprinkles({ justifyContent: 'center' })],
+  flexEnd: [container, sprinkles({ justifyContent: 'flex-end' })],
+  spaceBetween: [container, sprinkles({ justifyContent: 'space-between' })],
+  spaceAround: [container, sprinkles({ justifyContent: 'space-around' })],
+});
 
-export const flexWrapClass = styleVariants(
-  {
-    wrap: 'wrap',
-    nowrap: 'nowrap',
-  } as Record<string, CSSProperties['flexWrap']>,
-  (wrap) => {
-    return [
-      container,
-      {
-        flexWrap: wrap,
-      },
-    ];
-  },
-);
+export const alignItemsClass = styleVariants({
+  flexStart: [container, sprinkles({ alignItems: 'flex-start' })],
+  center: [container, sprinkles({ alignItems: 'center' })],
+  flexEnd: [container, sprinkles({ alignItems: 'flex-end' })],
+  stretch: [container, sprinkles({ alignItems: 'stretch' })],
+});
 
-export const directionClass = styleVariants(
-  {
-    column: 'column',
-    row: 'row',
-  } as Record<string, CSSProperties['flexDirection']>,
-  (direction) => {
-    return [
-      container,
-      {
-        flexDirection: direction,
-      },
-    ];
-  },
-);
+export const flexWrapClass = styleVariants({
+  wrap: [container, sprinkles({ flexWrap: 'wrap' })],
+  nowrap: [container, sprinkles({ flexWrap: 'nowrap' })],
+});
+
+export const directionClass = styleVariants({
+  column: [container, sprinkles({ flexDirection: 'column' })],
+  row: [container, sprinkles({ flexDirection: 'row' })],
+});
