@@ -1,4 +1,4 @@
-import { Button } from './../../';
+import { Button, SystemIcon } from './../../';
 import { INotificationProps, Notification } from './Notification';
 import { colorVariants } from './Notification.css';
 
@@ -7,19 +7,18 @@ import React from 'react';
 
 const meta: Meta<
   {
-    //selectIcon: keyof typeof SystemIcons;
+    //selectIcon: string;
     text: string;
   } & INotificationProps
 > = {
   title: 'Layout/Notification',
   argTypes: {
-    /*
-    selectIcon: {
-      options: Object.keys(SystemIcons) as (keyof typeof SystemIcons)[],
+    icon: {
+      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
       },
-    },*/
+    },
     title: {
       control: {
         type: 'text',
@@ -44,12 +43,11 @@ const meta: Meta<
         type: 'boolean',
       },
     },
-    /*
     displayCloseButton: {
       control: {
         type: 'boolean',
       },
-    },*/
+    },
   },
 };
 
@@ -69,17 +67,17 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Notification',
   args: {
-    //selectIcon: 'Information',
+    icon: SystemIcon.Information,
     title: 'Notification title',
-    //displayCloseButton: true,
+    displayCloseButton: true,
     expand: false,
     color: undefined,
     //simple: false,
   },
   render: ({
-    //selectIcon,
+    icon,
     title,
-    //displayCloseButton,
+    displayCloseButton: displayCloseButton,
     expand,
     color,
     simple,
@@ -109,11 +107,78 @@ export const Primary: Story = {
     );*/
     return (
       <Notification
+        icon={icon}
         simple={simple}
         expand={expand}
         color={color}
         title={title}
+        displayCloseButton={displayCloseButton}
         footer={<Button title="click-me">Click me!</Button>}
+      >
+        Notification text to inform users about the event that occurred!
+      </Notification>
+    );
+  },
+};
+
+export const Header: Story = {
+  name: 'Notification - Header',
+  args: {
+    icon: SystemIcon.Information,
+    title: 'Notification with a header!',
+    displayCloseButton: true,
+    expand: false,
+    color: undefined,
+    //simple: false,
+  },
+  render: ({
+    icon,
+    title,
+    displayCloseButton: displayCloseButton,
+    expand,
+    color,
+    simple,
+  }) => {
+    //const Icon = SystemIcons[selectIcon];
+    /*
+    return (
+      <>
+        <Notification
+          simple={simple}
+          icon={Icon}
+          color={color}
+          title={title}
+          displayCloseButton={displayCloseButton}
+          expand={expand}
+        >
+          <NotificationBody>
+            Notification text to inform users about the event that occurred!
+          </NotificationBody>
+          <NotificationFooter>
+            <Button title="Action label" icon={SystemIcons.TrailingIcon}>
+              Action label
+            </Button>
+          </NotificationFooter>
+        </Notification>
+      </>
+    );*/
+    return (
+      <Notification
+        icon={icon}
+        simple={simple}
+        expand={expand}
+        color={color}
+        title={title}
+        displayCloseButton={displayCloseButton}
+        footer={<Button title="click-me">Click me!</Button>}
+        headerIcons={
+          <>
+            <SystemIcon.Link size="md" />
+            <SystemIcon.Bell size="md" />
+            <SystemIcon.EmailOutline size="md" />
+            <SystemIcon.QrcodeScan size="md" />
+          </>
+        }
       >
         Notification text to inform users about the event that occurred!
       </Notification>

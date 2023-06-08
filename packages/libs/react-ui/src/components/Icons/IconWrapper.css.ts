@@ -5,6 +5,7 @@ import { style, styleVariants } from '@vanilla-extract/css';
 export const iconContainer = style([
   sprinkles({
     color: 'foreground',
+    display: 'flex',
   }),
 ]);
 

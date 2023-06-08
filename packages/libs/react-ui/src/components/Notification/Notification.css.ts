@@ -1,6 +1,12 @@
 import { ColorType, sprinkles, vars } from '../../styles';
 
-import { createVar, style, styleVariants } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  globalStyle,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 const contrastColor = createVar(),
   surfaceColor = createVar();
@@ -10,17 +16,17 @@ export const containerClass = style([
     borderWidth: 'md',
     display: 'flex',
     justifyContent: 'flex-start',
-    flexDirection: 'column',
     alignItems: 'flex-start',
-    paddingX: '2xl',
-  }),
-  {
+    //paddingX: 'md',
     width: 'max-content',
     height: 'min-content',
-    border: `1px solid ${contrastColor}`,
-    color: contrastColor,
-    backgroundColor: surfaceColor,
+  }),
+  {
+    border: `1px solid ${fallbackVar(contrastColor, vars.colors.neutral6)}`,
+    color: fallbackVar(contrastColor, vars.colors.neutral6),
+    backgroundColor: fallbackVar(surfaceColor, vars.colors.neutral2),
     borderLeftWidth: vars.sizes['1'],
+    position: 'relative',
   },
 ]);
 
@@ -31,14 +37,18 @@ export const footerClass = style([
 ]);
 
 export const expandClass = style([
+  sprinkles({}),
   {
-    width: '100%',
+    width: '100% !important',
   },
 ]);
 
 export const simpleClass = style([
+  sprinkles({
+    borderRadius: 'md',
+    paddingRight: 'xl',
+  }),
   {
-    borderRadius: vars.radii.md,
     borderLeftWidth: 1,
   },
 ]);
@@ -61,30 +71,71 @@ export const simpleContentClass = style([
   }),
 ]);
 
-// cannot use ColorType due to "default" having no go-to config
-const colors: Record<string, string> = {
-  default: 'default',
-  primary: 'primary',
-  secondary: 'secondary',
-  positive: 'positive',
-  warning: 'warning',
-  negative: 'negative',
-};
-
-export const colorVariants = styleVariants(colors, (color) => {
-  return [
-    containerClass,
-    {
-      vars: {
-        [contrastColor]:
-          color === 'default'
-            ? vars.colors.neutral6
-            : vars.colors[`${color as ColorType}Contrast`],
-        [surfaceColor]:
-          color === 'default'
-            ? vars.colors.neutral2
-            : vars.colors[`${color as ColorType}Surface`],
+export const colorVariants = styleVariants(
+  {
+    default: 'default',
+    primary: 'primary',
+    secondary: 'secondary',
+    positive: 'positive',
+    warning: 'warning',
+    negative: 'negative',
+  },
+  (color) => {
+    return [
+      containerClass,
+      {
+        vars: {
+          [contrastColor]:
+            color === 'default'
+              ? vars.colors.neutral6
+              : vars.colors[`${color as ColorType}Contrast`],
+          [surfaceColor]:
+            color === 'default'
+              ? vars.colors.neutral2
+              : vars.colors[`${color as ColorType}Surface`],
+        },
       },
-    },
-  ];
+    ];
+  },
+);
+
+export const iconContainerClass = style([
+  sprinkles({
+    marginX: 'md',
+    marginTop: 'sm',
+    display: 'flex',
+    right: 0,
+  }),
+  {
+    position: 'relative',
+    // marginLeft:'auto'
+  },
+]);
+
+export const iconContainerFullWidthClass = style([
+  sprinkles({
+    marginTop: 'sm',
+    marginRight: 'md',
+  }),
+  { marginLeft: 'auto' },
+]);
+
+export const headerContainerClass = style([
+  sprinkles({
+    margin: 0,
+    padding: 0,
+    width: 'min-content',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: 'md',
+  }),
+  {
+    position: 'absolute',
+    right: '100%',
+  },
+]);
+
+globalStyle(`${headerContainerClass} > span`, {
+  marginLeft: vars.sizes.md,
 });
