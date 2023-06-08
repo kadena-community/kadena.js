@@ -14,8 +14,8 @@ import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface INotificationProps {
-  icon?: typeof SystemIcons[keyof typeof SystemIcons];
-  title: string;
+  icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  title?: string;
   children?: React.ReactNode;
   displayCloseButton?: boolean;
   expand?: VariantProps<typeof StyledNotification>['expand'];
@@ -36,7 +36,7 @@ export const NotificationFooter = NotificationBody;
 
 export const Notification: FC<INotificationProps> = ({
   icon,
-  title,
+  title = '',
   children,
   displayCloseButton,
   color,
@@ -47,11 +47,13 @@ export const Notification: FC<INotificationProps> = ({
   const isSimple = (simple as boolean) || children === undefined;
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
-      <StyledIconContainer position="left">
-        <Icon size="md" />
-      </StyledIconContainer>
+      {Boolean(Icon) && (
+        <StyledIconContainer position="left">
+          <Icon size="md" />
+        </StyledIconContainer>
+      )}
 
-      <StyledHeading as="h6">{title}</StyledHeading>
+      {title && <StyledHeading as="h6">{title}</StyledHeading>}
       {!isSimple && children}
 
       {displayCloseButton === true && !isSimple && (
