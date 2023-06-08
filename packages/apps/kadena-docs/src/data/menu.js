@@ -781,7 +781,7 @@ export const menuData = [
       },
       {
         "children": [],
-        "root": "/docs/contribute/docs",
+        "root": "/docs/contribute/contribute",
         "title": "Contribute to Kadena Docs",
         "description": "How to contribute to the docs from docs.kadena.io, GitHub, or a local environment.",
         "menu": "Docs",
