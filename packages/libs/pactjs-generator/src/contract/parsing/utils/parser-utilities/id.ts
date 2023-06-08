@@ -1,7 +1,7 @@
 import { FAILED, IParser, rule } from './rule';
 
 interface IId {
-  <T extends string>(value: T): IParser<T>;
+  (value: string): IParser<string>;
   <T>(value: string, returnValue: T): IParser<T>;
 }
 

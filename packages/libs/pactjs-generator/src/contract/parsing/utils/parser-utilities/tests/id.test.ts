@@ -9,7 +9,7 @@ describe('id parser', () => {
     expect(result).toBe('test');
   });
 
-  it('should return FAILED if token type is not atom, (e.g. string or keywords)', () => {
+  it('should return FAILED if the token value is not the same as input', () => {
     const pointer = getPointer('test');
     const result = id('ok')(pointer);
     expect(result).toBe(FAILED);

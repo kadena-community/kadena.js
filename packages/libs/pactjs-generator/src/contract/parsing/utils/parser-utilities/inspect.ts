@@ -1,4 +1,4 @@
-import { wrapData } from '../dataWrapper';
+import { IWrappedData, wrapData } from '../dataWrapper';
 import { IPointer } from '../getPointer';
 import { ExceptKeywords } from '../typeUtilities';
 
@@ -15,7 +15,7 @@ interface IInspector {
   ): (pointer: IPointer) => RuleReturn<RuleReturnType<P>, T>;
   <P extends IParser>(parser: P): (
     pointer: IPointer,
-  ) => RuleReturn<RuleReturnType<P>>;
+  ) => RuleReturn<RuleReturnType<P>, undefined>;
 }
 
 export const $: IInspector = (one: string | IParser, second?: IParser) =>
@@ -25,5 +25,6 @@ export const $: IInspector = (one: string | IParser, second?: IParser) =>
     const parser = second || (one as IParser);
     const result = parser(pointer);
     if (result === FAILED) return FAILED;
-    return wrapData(result, name);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return wrapData(result, name) as any;
   });
