@@ -13,8 +13,7 @@ interface IProps {
 export const BottomPageSection: FC<IProps> = ({ filenameForEdit }) => {
   return (
     <>
-      {Boolean(filenameForEdit) && <EditPage filename={filenameForEdit} />}
-
+      <EditPage filename={filenameForEdit} />
       <Divider />
       <Wrapper>
         <div />

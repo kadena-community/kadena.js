@@ -24,6 +24,7 @@ const getFileName = (file) => {
 
 const getFileNameInPackage = (file) => {
   const filename = getFileName(file);
+  if (!filename) return '';
   const endPoint = 'packages';
 
   const dirArray = filename.split('/');
@@ -34,7 +35,6 @@ const getFileNameInPackage = (file) => {
     .reverse()
     .join('/');
 
-  console.log(11, newPath);
   return `/${newPath}`;
 };
 
