@@ -26,7 +26,7 @@ const Home: FC = () => {
     {
       icon: Chain,
       title: 'Module Explorer',
-      href: '/code-viewer',
+      href: '/module-explorer',
     },
   ];
 

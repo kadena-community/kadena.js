@@ -16,6 +16,13 @@ export const StyledSmallLogo = styled(KLogoComponent, {
   marginBottom: '20px',
 });
 
+export const StyledHomeContentContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  width: '100%',
+  justifyContent: 'space-evenly',
+});
+
 export const StyledHomeContent = styled('div', {
   maxWidth: '600px',
   width: '100%',
@@ -23,13 +30,13 @@ export const StyledHomeContent = styled('div', {
   flexDirection: 'column',
   background: 'rgba(71, 79, 82, 0.5)',
   borderRadius: '4px',
-  padding: '20px',
+  padding: '24px',
 });
 
 export const StyledHomeTitle = styled('h2', {
   fontWeight: 'bolder',
   fontSize: '2.5rem',
-  margin: '1.5rem 0',
+  margin: '0 0 1.5rem 0',
 });
 
 export const StyledHomeLink = styled(Link, {
@@ -45,6 +52,9 @@ export const StyledHomeLink = styled(Link, {
   fontSize: '1.2rem',
   cursor: 'pointer',
   color: 'inherit',
+  '&:last-child': {
+    marginBottom: '0',
+  },
 });
 
 export const StyledHomeButton = styled('div', {

@@ -27,7 +27,7 @@ export const SidebarMenu: FC = (props) => {
     {
       icon: Chain,
       title: 'Module Explorer',
-      href: '/code-viewer',
+      href: '/module-explorer',
     },
   ];
 
