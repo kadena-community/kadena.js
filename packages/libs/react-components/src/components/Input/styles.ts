@@ -113,7 +113,7 @@ export const StyledInputWrapper = styled('div', {
   borderRadius: '$sm',
   borderBottom: '1px solid $$borderColor',
   color: '$$color',
-  height: '$12',
+  height: '$10',
   alignItems: 'center',
   lineHeight: '$code',
   borderColor: '$$accentColor',

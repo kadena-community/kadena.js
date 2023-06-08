@@ -26,10 +26,10 @@ describe('Subscribe to mailList', () => {
     subscribe().should('be.visible');
 
     subscribe()
-      .find('input[type="text"]')
+      .find('input[type="email"]')
       .type('he-man@masteroftheuniverse.com{enter}', { delay: 10 });
 
-    subscribe().find('input[type="text"]').should('not.exist');
+    subscribe().find('input[type="email"]').should('not.exist');
 
     subscribe().contains('Thank you for subscribing');
   });
@@ -41,10 +41,10 @@ describe('Subscribe to mailList', () => {
     });
 
     subscribe()
-      .find('input[type="text"]')
+      .find('input[type="email"]')
       .type('he-man@masteroftheuniverse.com{enter}', { delay: 10 });
 
-    subscribe().find('input[type="text"]').should('exist');
+    subscribe().find('input[type="email"]').should('exist');
     subscribe().contains('Something went wrong');
   });
 
@@ -55,7 +55,7 @@ describe('Subscribe to mailList', () => {
     });
 
     subscribe()
-      .find('input[type="text"]')
+      .find('input[type="email"]')
       .type('!!skeletor@thundercars.com', { delay: 10 });
     subscribe()
       .find('button[type="submit"]')
