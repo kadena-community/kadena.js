@@ -45,6 +45,8 @@ export const MyApp = ({
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
 
+  console.log(props.frontmatter);
+
   return (
     <>
       <MDXProvider components={markDownComponents}>
