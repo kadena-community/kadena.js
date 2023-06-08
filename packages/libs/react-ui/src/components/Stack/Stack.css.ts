@@ -14,7 +14,6 @@ export const spacingClass = styleVariants({
   sm: [sprinkles({ gap: 'sm' })],
   md: [sprinkles({ gap: 'md' })],
   lg: [sprinkles({ gap: 'lg' })],
-
   xl: [sprinkles({ gap: 'xl' })],
   '2xl': [sprinkles({ gap: '2xl' })],
   '3xl': [sprinkles({ gap: '3xl' })],
