@@ -1,5 +1,6 @@
 import { SystemIcons, TextField } from '@kadena/react-components';
 
+import { useConversation, useStream } from '@/hooks';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -10,6 +11,7 @@ import { useRouter } from 'next/router';
 import React, {
   ChangeEvent,
   FC,
+  FormEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -25,6 +27,24 @@ const Search: FC = () => {
   const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>();
   const [isInitiated, setIsInitiated] = useState<boolean>(false);
+  const [conversation, dispatch] = useConversation();
+  const [startStream, isStreaming, outputStream, metadata] = useStream();
+
+  useEffect(() => {
+    if (outputStream.length > 0 && !isStreaming) {
+      dispatch({ type: 'commit', value: outputStream, metadata });
+    }
+  }, [isStreaming, outputStream]);
+
+  useEffect(() => {
+    if (conversation.input.length > 0 && !isStreaming) {
+      startStream(conversation.input, conversation);
+    }
+  }, [conversation.input]);
+
+  useEffect(() => {
+    console.log(conversation);
+  }, [conversation]);
 
   useEffect(() => {
     if (Boolean(q) && query === undefined && !isInitiated) {
@@ -51,18 +71,50 @@ const Search: FC = () => {
     },
     [updateQuery],
   );
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    if (!query) return;
+    dispatch({ type: 'setInput', value: query });
+  };
+
   return (
     <section>
-      <TextField
-        inputProps={{
-          defaultValue: query,
-          onChange,
-          placeholder: 'Search',
-          leftPanel: () => <SystemIcons.Magnify />,
-          'aria-label': 'Search',
-        }}
-      />
+      <form onSubmit={handleSubmit}>
+        <TextField
+          inputProps={{
+            defaultValue: query,
+            onChange,
+            placeholder: 'Search',
+            leftPanel: () => <SystemIcons.Magnify />,
+            'aria-label': 'Search',
+          }}
+        />
+      </form>
       <div>{query}</div>
+
+      <h2>input</h2>
+      {conversation.input ? <div>{conversation.input}</div> : null}
+
+      <h2>output</h2>
+      {conversation?.history.map((interaction, index, conversation) => (
+        <>
+          {interaction.input}
+          <div>{interaction.output}</div>
+          <div>
+            {interaction.metadata.map((item, index) => {
+              return (
+                <>
+                  <a href={item.url}>{item.title}</a>
+                  {index + 1 < interaction.metadata.length ? ' ● ' : null}
+                </>
+              );
+            })}
+          </div>
+        </>
+      ))}
+
+      <div>{outputStream}</div>
     </section>
   );
 };
