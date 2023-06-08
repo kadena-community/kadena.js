@@ -1,6 +1,8 @@
 import { Stack } from './Stack';
 import {
   alignItemsClass,
+  directionClass,
+  flexWrapClass,
   justifyContentClass,
   spacingClass,
 } from './Stack.css';
@@ -29,10 +31,12 @@ const meta: Meta<typeof Stack> = {
       control: { type: 'radio' },
     },
     direction: {
-      control: { type: 'boolean' },
+      options: Object.keys(directionClass) as (keyof typeof directionClass)[],
+      control: { type: 'select' },
     },
     flexWrap: {
-      control: { type: 'boolean' },
+      options: Object.keys(flexWrapClass) as (keyof typeof flexWrapClass)[],
+      control: { type: 'select' },
     },
   },
 };
