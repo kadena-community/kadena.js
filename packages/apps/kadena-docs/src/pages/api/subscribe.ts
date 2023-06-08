@@ -11,6 +11,18 @@ export interface IResponse<T> {
 const APIKEY: string = process.env.MAILCHIMP_API ?? '';
 const SERVER_PREFIX: string = process.env.MAILCHIMP_SERVER_PREFIX ?? '';
 
+const CreateResponse = (
+  res: NextApiResponse<IResponse<{}>>,
+  status: number,
+  message: string,
+): void => {
+  res.status(500).json({
+    status,
+    message,
+  });
+  res.end();
+};
+
 mailchimp.setConfig({
   apiKey: APIKEY,
   server: SERVER_PREFIX,
@@ -21,56 +33,46 @@ const subscribe = async (
   res: NextApiResponse<IResponse<{}>>,
 ): Promise<void> => {
   if (req.method !== 'POST') {
-    res.status(500).json({
-      status: 500,
-      message: 'You can only use the method POST',
-    });
-    res.end();
+    CreateResponse(res, 500, 'You can only use the method POST');
   }
 
   if (!APIKEY || !SERVER_PREFIX) {
-    res.status(500).json({
-      status: 500,
-      message: 'APIKEY AND SERVER_PREFIX missing',
-    });
-    res.end();
+    CreateResponse(res, 500, 'APIKEY AND SERVER_PREFIX missing');
   }
 
   const { email } = JSON.parse(req.body);
   if (!isEmailValid(email)) {
-    res.status(500).json({
-      status: 500,
-      message: 'Not a valid email address',
-    });
+    CreateResponse(res, 500, 'Not a valid email address');
   }
 
   const { lists } = await mailchimp.lists.getAllLists();
   if (lists.length === 0) {
-    res.status(500).json({
-      status: 500,
-      message: 'No Maillist found, sorry for the inconvenience',
-    });
-    res.end();
+    CreateResponse(res, 500, 'No Maillist found, sorry for the inconvenience');
   }
   const list = lists[0];
 
-  const result = await mailchimp.lists.addListMember(list.id, {
-    email_address: email,
-    status: 'subscribed',
-  });
-
-  if (result.statusCode > 400) {
-    res.status(500).json({
-      status: 500,
-      message: 'Something went wrong, please try again later',
+  let result;
+  try {
+    result = await mailchimp.lists.addListMember(list.id, {
+      email_address: email,
+      status: 'subscribed',
     });
-    res.end();
+  } catch (err) {
+    if (
+      err.status === 400 &&
+      err.response.body.title.toLowerCase() === 'member exists'
+    ) {
+      CreateResponse(res, 200, 'Thank you for subscribing...again');
+    }
+
+    CreateResponse(res, 500, 'Something went wrong, please try again later');
   }
 
-  res.status(500).json({
-    status: 200,
-    message: 'Thank you for subscribing',
-  });
+  if (result.statusCode > 400) {
+    CreateResponse(res, 500, 'Something went wrong, please try again later');
+  }
+
+  CreateResponse(res, 200, 'Thank you for subscribing');
 };
 
 export default subscribe;
