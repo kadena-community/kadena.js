@@ -4,21 +4,58 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive';
+import debounce from 'lodash.debounce';
 import { GetStaticProps } from 'next';
-import React, { ChangeEvent, FC, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+interface IQuery {
+  q?: string;
+}
 
 const Search: FC = () => {
+  const router = useRouter();
+  const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>();
+  const [isInitiated, setIsInitiated] = useState<boolean>(false);
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { currentTarget } = event;
-    const value = currentTarget.value;
-    setQuery(value);
-  };
+  useEffect(() => {
+    if (Boolean(q) && query === undefined && !isInitiated) {
+      setIsInitiated(true);
+      setQuery(q);
+    }
+  }, [q, setQuery, query, setIsInitiated, isInitiated]);
+
+  const updateQuery = useMemo(() => {
+    const update = async (value: string): Promise<void> => {
+      setQuery(value);
+      await router.push(`${router.route}?q=${value}`);
+    };
+
+    return debounce(update, 500);
+  }, [router]);
+
+  const onChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      const { currentTarget } = event;
+      const value = currentTarget.value;
+
+      updateQuery(value);
+    },
+    [updateQuery],
+  );
   return (
     <section>
       <TextField
         inputProps={{
+          defaultValue: query,
           onChange,
           placeholder: 'Search',
           leftPanel: () => <SystemIcons.Magnify />,
