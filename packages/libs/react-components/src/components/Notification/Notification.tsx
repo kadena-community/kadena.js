@@ -47,7 +47,7 @@ export const Notification: FC<INotificationProps> = ({
   const isSimple = (simple as boolean) || children === undefined;
   return (
     <StyledNotification color={color} expand={expand} simple={isSimple}>
-      {Icon && (
+      {Boolean(Icon) && (
         <StyledIconContainer position="left">
           <Icon size="md" />
         </StyledIconContainer>
