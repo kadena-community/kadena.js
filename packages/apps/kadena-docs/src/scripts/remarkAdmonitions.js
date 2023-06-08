@@ -1,4 +1,5 @@
 const STARTNOTER_EGEXP = /^:::\s?(\w+)\s?([\w\s]+)?$/;
+const ENDNOTER_EGEXP = /:::\s*$/m;
 let STARTELM;
 
 // check the branch with the start of a notification
@@ -12,7 +13,15 @@ const isStart = (branch) => {
 
 const isEnd = (branch) => {
   if (branch.children.length === 0) return false;
-  return branch.children[0].value === ':::';
+
+  const endLeaf = branch.children.find((item) =>
+    item.value?.match(ENDNOTER_EGEXP),
+  );
+  if (endLeaf) {
+    endLeaf.value = endLeaf.value?.replace(':::', '');
+    return Boolean(endLeaf);
+  }
+  return false;
 };
 
 // get the props (label and title) for the notification
@@ -58,6 +67,10 @@ const reduceToNotifications = (acc, branch) => {
       hProperties: props,
     };
 
+    if (isEnd(branch)) {
+      clearStartElm();
+    }
+
     return [...acc, branch];
   }
 
@@ -65,9 +78,8 @@ const reduceToNotifications = (acc, branch) => {
   if (startElm) {
     if (isEnd(branch)) {
       clearStartElm();
-    } else {
-      startElm.children = [...startElm.children, branch];
     }
+    startElm.children = [...startElm.children, branch];
 
     // if in the middle or end of the notification do not return the branch.
     // the branch is now a child of the startbranch
