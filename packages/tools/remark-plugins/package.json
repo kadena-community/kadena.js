@@ -1,0 +1,22 @@
+{
+  "name": "@kadena-dev/remark-plugins",
+  "version": "1.0.0",
+  "description": "Kadena monorepo Remark plugins",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "remark-frontmatter": "^4.0.1",
+    "remark-gfm": "^3.0.1",
+    "remark-order-reference-links": "^0.0.1",
+    "remark-parse": "^10.0.2",
+    "remark-prettier": "^2.0.0",
+    "remark-reference-links": "^6.0.1",
+    "unist-util-is": "^5.2.1",
+    "unist-util-remove": "^3.1.1",
+    "unist-util-visit": "^4.1.2"
+  }
+}
