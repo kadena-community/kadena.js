@@ -1,4 +1,4 @@
-import { vars } from '../../styles';
+import { sprinkles } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -15,26 +15,13 @@ export const gridItemClass = style([
   },
 ]);
 
-export const gapVariants = styleVariants(
-  {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    '2xs': '2xs',
-    xs: 'xs',
-    sm: 'sm',
-    md: 'md',
-    lg: 'lg',
-    xl: 'xl',
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    '2xl': '2xl',
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    '3xl': '3xl',
-  } as Record<string, keyof typeof vars.sizes>,
-  (gap) => {
-    return [
-      gridContainerClass,
-      {
-        gridGap: vars.sizes[gap],
-      },
-    ];
-  },
-);
+export const gapVariants = styleVariants({
+  '2xs': [sprinkles({ gridGap: '2xs' })],
+  xs: [sprinkles({ gridGap: 'xs' })],
+  sm: [sprinkles({ gridGap: 'sm' })],
+  md: [sprinkles({ gridGap: 'md' })],
+  lg: [sprinkles({ gridGap: 'lg' })],
+  xl: [sprinkles({ gridGap: 'xl' })],
+  '2xl': [sprinkles({ gridGap: '2xl' })],
+  '3xl': [sprinkles({ gridGap: '3xl' })],
+});

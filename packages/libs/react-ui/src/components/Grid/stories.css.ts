@@ -9,11 +9,9 @@ export const ContentClass = style([
     padding: 2,
     color: 'neutral6',
     display: 'flex',
-  }),
-  {
     width: '100%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }),
 ]);

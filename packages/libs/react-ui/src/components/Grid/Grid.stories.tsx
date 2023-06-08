@@ -33,42 +33,12 @@ export const Primary: Story = {
   render: ({ spacing }) => (
     <>
       <Grid.Container spacing={spacing}>
-        <Grid.Item>
-          <div className={ContentClass}>1</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>2</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>3</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>4</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>5</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>6</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>7</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>8</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>9</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>10</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>11</div>
-        </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>12</div>
-        </Grid.Item>
+        {Array.from(new Array(12)).map((i) => (
+          <Grid.Item key={i}>
+            <div className={ContentClass}>i</div>
+          </Grid.Item>
+        ))}
+
         <Grid.Item colStart={4} colEnd={7}>
           <div className={ContentClass}>1</div>
         </Grid.Item>
