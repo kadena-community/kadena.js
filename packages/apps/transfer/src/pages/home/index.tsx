@@ -1,5 +1,4 @@
 import {
-  StyledHomeButton,
   StyledHomeContainer,
   StyledHomeContent,
   StyledHomeLink,
@@ -9,25 +8,24 @@ import {
   StyledSmallLogo,
 } from './styles';
 
-import { Account, Chain, Key } from '@/resources/svg/generated';
-import { downloadKeyPairToBrowser } from '@/services/key-pairs/key-pairs';
+import { Chain } from '@/resources/svg/generated';
 import React, { FC } from 'react';
 
 const Home: FC = () => {
   const menu = [
     {
       icon: Chain,
-      title: 'Cross-chain Transfer Tracker',
+      title: 'Cross Chain Transfer Tracker',
       href: '/cross-chain-transfer-tracker',
     },
     {
       icon: Chain,
-      title: 'Cross-chain Transfer Finisher',
+      title: 'Cross Chain Transfer Finisher',
       href: '/cross-chain-transfer-finisher',
     },
     {
       icon: Chain,
-      title: 'Module explorer',
+      title: 'Module Explorer',
       href: '/code-viewer',
     },
   ];
@@ -36,7 +34,7 @@ const Home: FC = () => {
     <StyledHomeContainer>
       <StyledSmallLogo width="65px" />
       <StyledHomeContent>
-        <StyledHomeTitle>Kadena Cross Chain Transfers</StyledHomeTitle>
+        <StyledHomeTitle>Cross Chain Transfers</StyledHomeTitle>
 
         {menu.map((item) => (
           <StyledHomeLink key={`item-${item.title}`} href={item.href}>

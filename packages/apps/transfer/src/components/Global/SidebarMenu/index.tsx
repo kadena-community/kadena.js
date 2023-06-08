@@ -1,37 +1,32 @@
-import { Button, TextField } from '@kadena/react-components';
-
 import {
   StyledNavItem,
-  StyledNavItemIcon,
   StyledNavItemSelectedText,
   StyledNavItemText,
   StyledSelectedNavItem,
   StyledSidebar,
 } from './styles';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
-import { Account, Chain, Key } from '@/resources/svg/generated';
+import { Chain } from '@/resources/svg/generated';
 import { useRouter } from 'next/router';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 export const SidebarMenu: FC = (props) => {
   const { pathname } = useRouter();
-  console.log('PATHNAAAME', pathname);
 
   const menu = [
     {
       icon: Chain,
-      title: 'Cross-chain Transfer Tracker',
+      title: 'Cross Chain Transfer Tracker',
       href: '/cross-chain-transfer-tracker',
     },
     {
       icon: Chain,
-      title: 'Cross-chain Transfer Finisher',
+      title: 'Cross Chain Transfer Finisher',
       href: '/cross-chain-transfer-finisher',
     },
     {
       icon: Chain,
-      title: 'Module explorer',
+      title: 'Module Explorer',
       href: '/code-viewer',
     },
   ];
