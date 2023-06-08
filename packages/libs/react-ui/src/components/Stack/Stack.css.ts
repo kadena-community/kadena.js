@@ -9,13 +9,16 @@ export const container = style([
 ]);
 
 export const spacingClass = styleVariants({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xs': [sprinkles({ gap: '2xs' })],
   xs: [sprinkles({ gap: 'xs' })],
   sm: [sprinkles({ gap: 'sm' })],
   md: [sprinkles({ gap: 'md' })],
   lg: [sprinkles({ gap: 'lg' })],
   xl: [sprinkles({ gap: 'xl' })],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xl': [sprinkles({ gap: '2xl' })],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '3xl': [sprinkles({ gap: '3xl' })],
 });
 
