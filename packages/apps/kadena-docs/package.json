@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
+    "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
+    "7d:query": "npx 7d",
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
     "build": "npm run createtree && next build",
@@ -51,6 +54,8 @@
     "shiki": "~0.14.2"
   },
   "devDependencies": {
+    "7-docs": "~0.1.6",
+    "@7-docs/cli": "~0.1.6",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
