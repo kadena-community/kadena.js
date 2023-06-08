@@ -15,7 +15,7 @@ const CreateResponse = (
   res: NextApiResponse<IResponse<{}>>,
   status: number,
   message: string,
-) => {
+): void => {
   res.status(500).json({
     status,
     message,
