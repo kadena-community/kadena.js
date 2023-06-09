@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/naming-convention: 0, @kadena-dev/typedef-var: 0 */
+
 import { sprinkles } from '../../../styles';
 import {
   colorVariants,

@@ -1,3 +1,5 @@
+/* eslint @kadena-dev/typedef-var: 0 */
+
 import { sprinkles } from '../../styles';
 
 export const fontVariants = {
