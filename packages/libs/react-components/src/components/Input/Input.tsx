@@ -21,6 +21,7 @@ export interface IInputProps
   disabled?: boolean;
   value?: string | number;
   status?: 'success' | 'error';
+  type?: string;
 }
 
 export const Input: FC<IInputProps> = ({
@@ -37,7 +38,7 @@ export const Input: FC<IInputProps> = ({
   const variant = disabled ? 'disabled' : status;
 
   return (
-    <StyledInputWrapper {...rest} variant={variant}>
+    <StyledInputWrapper variant={variant}>
       {Boolean(leadingText) && (
         <StyledLeadingText>{leadingText}</StyledLeadingText>
       )}

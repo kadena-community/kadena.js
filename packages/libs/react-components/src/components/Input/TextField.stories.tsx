@@ -1,4 +1,4 @@
-import { SystemIcons } from './../../';
+import { Button, Stack, SystemIcons } from './../../';
 import { TextField } from './TextField';
 import { IInputGroupProps, IInputProps } from '.';
 
@@ -127,5 +127,28 @@ export const Primary: Story = {
         placeholder: 'This is a placeholder',
       }}
     />
+  ),
+};
+
+export const InlineWithButton: Story = {
+  name: 'Inline with button',
+  args: {
+    leftPanelIcon: undefined,
+    label: 'Label',
+  },
+  render: ({ leftPanelIcon, label, onChange }) => (
+    <Stack>
+      <TextField
+        inputProps={{
+          leftPanel: SystemIcons[leftPanelIcon],
+          onChange,
+          placeholder: 'This is a placeholder',
+          'aria-label': label,
+        }}
+      />
+      <Button title="Submit" onClick={() => {}}>
+        Submit
+      </Button>
+    </Stack>
   ),
 };

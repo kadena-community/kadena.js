@@ -792,6 +792,7 @@ importers:
       '@vanilla-extract/css': ~1.11.0
       '@vanilla-extract/sprinkles': ~1.6.0
       '@vanilla-extract/webpack-plugin': ~2.2.0
+      classnames: ^2.3.1
       eslint: ^8.15.0
       eslint-plugin-storybook: ~0.6.12
       mini-css-extract-plugin: ~2.7.5
@@ -804,6 +805,7 @@ importers:
     dependencies:
       '@vanilla-extract/css': 1.11.0
       '@vanilla-extract/sprinkles': 1.6.0_@vanilla-extract+css@1.11.0
+      classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:

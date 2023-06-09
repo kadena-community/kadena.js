@@ -4,6 +4,7 @@ import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.js'
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.js';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.js';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.js';
+import remarkAdmonitions from './src/scripts/remarkAdmonitions.js';
 import remarkYoutube from './src/scripts/remarkYoutube.js';
 import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.js';
 import remarkGfm from 'remark-gfm';
@@ -72,6 +73,7 @@ const withMDX = mdx({
       remarkHeadersToProps,
       remarkSideMenuToProps,
       remarkPropsToStaticRender,
+      remarkAdmonitions,
       remarkYoutube,
       remarkFigureOutOfParagraph,
     ],
