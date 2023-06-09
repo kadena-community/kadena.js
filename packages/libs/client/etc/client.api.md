@@ -7,7 +7,6 @@
 import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ICap } from '@kadena/types';
-import { IContPayload } from '@kadena/types';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
@@ -22,6 +21,78 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 //
 // @internal (undocumented)
 export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
+
+// @alpha
+export class ContCommand implements IContCommand, IContCommandBuilder<Record<string, unknown>> {
+    constructor();
+    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T): this;
+    // (undocumented)
+    addData(data: IContCommand['data']): this;
+    // (undocumented)
+    addSignatures(...sigs: {
+        pubKey: string;
+        sig: string;
+    }[]): this;
+    // (undocumented)
+    cmd: string | undefined;
+    createCommand(): IUnsignedCommand;
+    // (undocumented)
+    data: Record<string, unknown>;
+    local(apiHost: string, options?: any): Promise<any>;
+    // (undocumented)
+    networkId: ChainwebNetworkId;
+    // (undocumented)
+    nonce: NonceType | undefined;
+    nonceCreator(t: IContCommand, dateInMs: number): NonceType;
+    // (undocumented)
+    pactId: string;
+    // (undocumented)
+    poll(apiHost: string): Promise<IPollResponse>;
+    pollUntil(apiHost: string, options?: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (transaction: IContCommand & IContCommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
+    }): Promise<this>;
+    // (undocumented)
+    proof: string;
+    // (undocumented)
+    publicMeta: {
+        chainId: ChainId;
+        sender: string;
+        gasLimit: number;
+        gasPrice: number;
+        ttl: number;
+    };
+    // (undocumented)
+    requestKey: string | undefined;
+    // (undocumented)
+    rollback: boolean;
+    send(apiHost: string): Promise<SendResponse>;
+    setMeta(publicMeta: Partial<IContCommand['publicMeta']>, networkId?: IContCommand['networkId']): this;
+    setNonceCreator(nonceCreator: (t: IContCommand, dateInMs: number) => NonceType): this;
+    setPactId(pactId: IContCommand['pactId']): this;
+    setProof(proof: IContCommand['proof']): this;
+    setRollback(rollback: IContCommand['rollback']): this;
+    setStep(step: IContCommand['step']): this;
+    // (undocumented)
+    signers: {
+        pubKey: string;
+        caps: {
+            name: string;
+            args: ICap['args'];
+        }[];
+    }[];
+    // (undocumented)
+    sigs: (ISignatureJson | undefined)[];
+    // Warning: (ae-forgotten-export) The symbol "TransactionStatus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    status: TransactionStatus_2;
+    // (undocumented)
+    step: number;
+    // (undocumented)
+    type: 'cont';
+}
 
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
@@ -104,6 +175,71 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
 }
 
 // @alpha (undocumented)
+export interface IContCommand {
+    // (undocumented)
+    data: Record<string, unknown>;
+    // (undocumented)
+    networkId: ChainwebNetworkId;
+    // (undocumented)
+    nonce?: NonceType;
+    // (undocumented)
+    pactId: string;
+    // (undocumented)
+    proof: string;
+    // (undocumented)
+    publicMeta: IPublicMeta;
+    // (undocumented)
+    rollback: boolean;
+    // (undocumented)
+    signers: {
+        pubKey: string;
+        caps: {
+            name: string;
+            args: ICap['args'];
+        }[];
+    }[];
+    // (undocumented)
+    step: number;
+    // (undocumented)
+    type: Type;
+}
+
+// @alpha (undocumented)
+export interface IContCommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
+    // (undocumented)
+    addCap<TCap extends keyof TCaps>(caps: TCap, signer: string, ...args: TCaps[TCap]): IContCommandBuilder<TCaps, TArgs> & IContCommand;
+    // (undocumented)
+    addData: (data: IContCommand['data']) => IContCommandBuilder<TCaps, TArgs> & IContCommand;
+    // (undocumented)
+    addSignatures(...sig: {
+        pubKey: string;
+        sig: string;
+    }[]): IContCommandBuilder<TCaps, TArgs> & IContCommand;
+    // (undocumented)
+    createCommand(): IUnsignedCommand;
+    // (undocumented)
+    local(apiHost: string, options?: any): Promise<any>;
+    // (undocumented)
+    poll(apiHost: string): Promise<IPollResponse>;
+    // (undocumented)
+    pollUntil(apiHost: string, options?: {
+        interval?: number;
+        timeout?: number;
+        onPoll?: (transaction: IContCommand & IContCommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
+    }): Promise<this>;
+    // (undocumented)
+    send(apiHost: string): Promise<SendResponse>;
+    // (undocumented)
+    setMeta: (publicMeta: Partial<IContCommand['publicMeta']> & {
+        sender: IContCommand['publicMeta']['sender'];
+    }, networkId?: IContCommand['networkId']) => IContCommandBuilder<TCaps, TArgs> & IContCommand;
+    // (undocumented)
+    setNonceCreator(nonceCreator: (t: IContCommand, dateInMs: number) => NonceType): IContCommandBuilder<TCaps, TArgs> & IContCommand;
+    // (undocumented)
+    status: string;
+}
+
+// @alpha (undocumented)
 export interface IPact {
     // (undocumented)
     modules: IPactModules;
@@ -134,7 +270,7 @@ export interface IPactCommand {
     // (undocumented)
     sigs: (ISignatureJson | undefined)[];
     // (undocumented)
-    type: string;
+    type: Type;
 }
 
 // @alpha (undocumented)
@@ -243,8 +379,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     constructor();
     addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T): this;
     // (undocumented)
-    addContData(data: IContPayload): this;
-    // (undocumented)
     addData(data: IPactCommand['data']): this;
     // (undocumented)
     addSignatures(...sigs: {
@@ -265,16 +399,12 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     nonce: NonceType | undefined;
     nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
     // (undocumented)
-    pactId: IContPayload['pactId'];
-    // (undocumented)
     poll(apiHost: string): Promise<IPollResponse>;
     pollUntil(apiHost: string, options?: {
         interval?: number;
         timeout?: number;
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
     }): Promise<this>;
-    // (undocumented)
-    proof: IContPayload['proof'];
     // (undocumented)
     publicMeta: {
         chainId: ChainId;
@@ -285,8 +415,6 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     };
     // (undocumented)
     requestKey: string | undefined;
-    // (undocumented)
-    rollback: IContPayload['rollback'];
     send(apiHost: string): Promise<SendResponse>;
     setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
     setNonceCreator(nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType): this;
@@ -305,9 +433,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     status: TransactionStatus;
     // (undocumented)
-    step: IContPayload['step'];
-    // (undocumented)
-    type: Type;
+    type: 'exec';
 }
 
 // @alpha (undocumented)

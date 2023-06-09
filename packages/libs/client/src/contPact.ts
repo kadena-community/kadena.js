@@ -8,7 +8,7 @@ import {
   SendResponse,
 } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { createExp, ensureSignedCommand } from '@kadena/pactjs';
+import { ensureSignedCommand } from '@kadena/pactjs';
 import {
   ChainId,
   ICap,
@@ -19,8 +19,8 @@ import {
   PactValue,
 } from '@kadena/types';
 
-import { IPactCommand } from './interfaces/IPactCommand';
-import { parseType } from './utils/parseType';
+import { IContCommand } from './interfaces/IPactCommand';
+import { IPact, NonceType } from '.';
 
 import debug, { Debugger } from 'debug';
 
@@ -29,25 +29,25 @@ const log: Debugger = debug('pactjs:proxy');
 /**
  * @alpha
  */
-export interface ICommandBuilder<
+export interface IContCommandBuilder<
   TCaps extends Record<string, TArgs>,
   TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps],
 > {
   createCommand(): IUnsignedCommand;
   addData: (
-    data: IPactCommand['data'],
-  ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    data: IContCommand['data'],
+  ) => IContCommandBuilder<TCaps, TArgs> & IContCommand;
   setMeta: (
-    publicMeta: Partial<IPactCommand['publicMeta']> & {
-      sender: IPactCommand['publicMeta']['sender'];
+    publicMeta: Partial<IContCommand['publicMeta']> & {
+      sender: IContCommand['publicMeta']['sender'];
     },
-    networkId?: IPactCommand['networkId'],
-  ) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    networkId?: IContCommand['networkId'],
+  ) => IContCommandBuilder<TCaps, TArgs> & IContCommand;
   addCap<TCap extends keyof TCaps>(
     caps: TCap,
     signer: string,
     ...args: TCaps[TCap]
-  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  ): IContCommandBuilder<TCaps, TArgs> & IContCommand;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   local(apiHost: string, options?: any): Promise<any>;
   send(apiHost: string): Promise<SendResponse>;
@@ -57,7 +57,8 @@ export interface ICommandBuilder<
       interval?: number;
       timeout?: number;
       onPoll?: (
-        transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+        transaction: IContCommand &
+          IContCommandBuilder<Record<string, unknown>>,
         pollRequest: Promise<IPollResponse>,
       ) => void;
     },
@@ -68,40 +69,12 @@ export interface ICommandBuilder<
       pubKey: string;
       sig: string;
     }[]
-  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  ): IContCommandBuilder<TCaps, TArgs> & IContCommand;
   setNonceCreator(
-    nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType,
-  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+    nonceCreator: (t: IContCommand, dateInMs: number) => NonceType,
+  ): IContCommandBuilder<TCaps, TArgs> & IContCommand;
   status: string;
-  // setSigner(
-  //   fn: (
-  //     ...transactions: (IPactCommand &
-  //       ICommandBuilder<Record<string, unknown>>)[]
-  //   ) => Promise<this>,
-  // ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
 }
-
-/**
- * @alpha
- */
-export interface IPactModules {}
-
-/**
- * @alpha
- */
-export interface IPact {
-  modules: IPactModules;
-}
-
-/**
- * @alpha
- */
-export type NonceType = string;
-
-/**
- * @alpha
- */
-export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
 
 type TransactionStatus =
   | 'malleable'
@@ -119,10 +92,9 @@ type TransactionStatus =
  *
  * @alpha
  */
-export class PactCommand
-  implements IPactCommand, ICommandBuilder<Record<string, unknown>>
+export class ContCommand
+  implements IContCommand, IContCommandBuilder<Record<string, unknown>>
 {
-  public code: string;
   public data: Record<string, unknown>;
   public publicMeta: {
     chainId: ChainId;
@@ -140,24 +112,17 @@ export class PactCommand
     }[];
   }[];
   public sigs: (ISignatureJson | undefined)[];
-  // public signer:
-  //   | ((
-  //       ...transactions: (IPactCommand &
-  //         ICommandBuilder<Record<string, unknown>>)[]
-  //     ) => Promise<this>)
-  //   | undefined;
-  public type: 'exec' = 'exec';
+  public type: 'cont' = 'cont';
   public cmd: string | undefined;
-  public requestKey: string | undefined;
-  public status: TransactionStatus;
   public nonce: NonceType | undefined;
-  // public proof: IContPayload['proof'];
-  // public step: IContPayload['step'];
-  // public pactId: IContPayload['pactId'];
-  // public rollback: IContPayload['rollback'];
+  public proof: string;
+  public step: number;
+  public pactId: string;
+  public rollback: boolean;
+  public status: TransactionStatus;
+  public requestKey: string | undefined;
 
   public constructor() {
-    this.code = '';
     this.data = {};
     this.publicMeta = {
       chainId: '1',
@@ -170,13 +135,12 @@ export class PactCommand
     this.signers = [];
     this.sigs = [];
     this.status = 'malleable';
-    this.requestKey = undefined;
     this.nonce = undefined;
-    this.type = 'exec';
-    // this.proof = null;
-    // this.step = 1;
-    // this.pactId = '';
-    // this.rollback = false;
+    this.type = 'cont';
+    this.proof = '';
+    this.step = 1;
+    this.pactId = '';
+    this.rollback = false;
   }
 
   /**
@@ -193,14 +157,14 @@ export class PactCommand
   }
 
   /**
-   * A function that is generated based on IPactCommand and the creation date.
+   * A function that is generated based on IContCommand and the creation date.
    * This is called during execution of `createCommand()` and adds `nonce` to
    * the command.
    * @param t - transaction
    * @param dateInMs - date in milliseconds from epoch
    * @returns string that will be created during `createCommand()`
    */
-  public nonceCreator(t: IPactCommand, dateInMs: number): NonceType {
+  public nonceCreator(t: IContCommand, dateInMs: number): NonceType {
     return 'kjs ' + new Date(dateInMs).toISOString();
   }
 
@@ -215,7 +179,7 @@ export class PactCommand
    * @alpha
    */
   public setNonceCreator(
-    nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType,
+    nonceCreator: (t: IContCommand, dateInMs: number) => NonceType,
   ): this {
     this.nonceCreator = nonceCreator;
 
@@ -234,9 +198,12 @@ export class PactCommand
     const unsignedTransactionCommand: ICommandPayload = {
       networkId: this.networkId,
       payload: {
-        exec: {
+        cont: {
+          pactId: this.pactId,
+          step: this.step,
+          proof: this.proof,
+          rollback: this.rollback,
           data: this.data,
-          code: this.code,
         },
       },
       signers: this.signers.map((signer) => ({
@@ -247,28 +214,12 @@ export class PactCommand
       nonce: this.nonceCreator(this, dateInMs),
     };
 
-    // if (this.type === 'cont') {
-    //   unsignedTransactionCommand.payload = {
-    //     cont: {
-    //       pactId: this.pactId,
-    //       step: this.step,
-    //       proof: this.proof,
-    //       rollback: this.rollback,
-    //       data: this.data,
-    //     },
-    //   };
-    // }
-
     // stringify command
-    const cmd: string =
-      this.cmd !== undefined
-        ? this.cmd
-        : JSON.stringify(unsignedTransactionCommand);
+    const cmd: string = JSON.stringify(unsignedTransactionCommand);
 
     // hash command
-    const hash = blakeHash(cmd);
+    const hash = blakeHash(JSON.stringify(unsignedTransactionCommand));
 
-    // TODO: convert to IUnsignedCommand
     const command: IUnsignedCommand = {
       hash,
       sigs: this.sigs,
@@ -280,34 +231,67 @@ export class PactCommand
     return command;
   }
 
-  public addData(data: IPactCommand['data']): this {
+  public addData(data: IContCommand['data']): this {
     this._unfinalizeTransaction();
 
     this.data = data;
     return this;
   }
 
-  // public addContData(data: IContPayload): this {
-  //   this._unfinalizeTransaction();
+  /**
+   * Sets the proof for the PactCommand.
+   * @param proof - undocumented
+   */
+  public setProof(proof: IContCommand['proof']): this {
+    this._unfinalizeTransaction();
 
-  //   this.type = 'cont';
-  //   this.pactId = data.pactId;
-  //   this.step = data.step;
-  //   this.proof = data.proof;
-  //   this.rollback = data.rollback;
-  //   return this;
-  // }
+    this.proof = proof;
+    return this;
+  }
 
   /**
-   * Sets the meta data for the PactCommand.
+   * Sets the step for the ContPactCommand.
+   * @param step - undocumented
+   */
+  public setStep(step: IContCommand['step']): this {
+    this._unfinalizeTransaction();
+
+    this.step = step;
+    return this;
+  }
+
+  /**
+   * Sets the pactId for the ContPactCommand.
+   * @param pactId - undocumented
+   */
+  public setPactId(pactId: IContCommand['pactId']): this {
+    this._unfinalizeTransaction();
+
+    this.pactId = pactId;
+    return this;
+  }
+
+  /**
+   * Sets the rollback for the ContPactCommand.
+   * @param rollback - undocumented
+   */
+  public setRollback(rollback: IContCommand['rollback']): this {
+    this._unfinalizeTransaction();
+
+    this.rollback = rollback;
+    return this;
+  }
+
+  /**
+   * Sets the meta data for the ContPactCommand.
    * Also used to change the networkId the command is sent to when local/send
    * are used.
    * @param publicMeta - undocumented
    * @param networkId - undocumented
    */
   public setMeta(
-    publicMeta: Partial<IPactCommand['publicMeta']>,
-    networkId: IPactCommand['networkId'] = 'mainnet01',
+    publicMeta: Partial<IContCommand['publicMeta']>,
+    networkId: IContCommand['networkId'] = 'mainnet01',
   ): this {
     this._unfinalizeTransaction();
 
@@ -317,7 +301,7 @@ export class PactCommand
   }
 
   /**
-   * Adds the given capability to the PactCommand for the signer.
+   * Adds the given capability to the ContPactCommand for the signer.
    * @param capability - The full reference to the pact capability, e.g. "coin.GAS"
    * @param signer - The public key of the signer who needs the capability
    * @param args - The arguments for the capability, e.g. ["sender", "receiver", 1.0]
@@ -386,7 +370,8 @@ export class PactCommand
       interval?: number;
       timeout?: number;
       onPoll?: (
-        transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+        transaction: IContCommand &
+          IContCommandBuilder<Record<string, unknown>>,
         pollRequest: Promise<IPollResponse>,
       ) => void;
     },
@@ -482,7 +467,7 @@ export class PactCommand
 
   // public setSigner(
   //   fn: (
-  //     ...transactions: (IPactCommand &
+  //     ...transactions: (IContCommand &
   //       ICommandBuilder<Record<string, unknown>>)[]
   //   ) => Promise<this>,
   // ): this {
@@ -490,49 +475,3 @@ export class PactCommand
   //   return this;
   // }
 }
-
-/**
- * @alpha
- */
-export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand {
-  const pactCommand = Object.assign(new PactCommand(), tpl);
-  log(`createPactCommandFromTemplate returns ${pactCommand}`);
-  return pactCommand;
-}
-
-const pactCreator = (): IPact => {
-  const transaction: PactCommand = new PactCommand();
-  const ThePact: IPact = new Proxy(function () {} as unknown as IPact, {
-    get(target: unknown, p: string): IPact {
-      log('get', p);
-      if (typeof p === 'string')
-        if (transaction.code.length !== 0) {
-          transaction.code += '.' + p;
-        } else {
-          transaction.code += p;
-        }
-      return ThePact;
-    },
-    apply(
-      target: unknown,
-      that: unknown,
-      args: Array<string | number | boolean>,
-    ) {
-      // when the expression is called, finalize the call
-      // e.g.: `Pact.modules.coin.transfer(...someArgs)`
-      log('apply', args);
-      transaction.code = createExp(transaction.code, ...args.map(parseType));
-      return transaction;
-    },
-  }) as IPact;
-  return ThePact;
-};
-
-/**
- * @alpha
- */
-export const Pact: IPact = {
-  get modules() {
-    return pactCreator();
-  },
-};
