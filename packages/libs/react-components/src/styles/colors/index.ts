@@ -1,4 +1,3 @@
-/* eslint @kadena-dev/typedef-var: 0 */
 import { neutral } from './neutral';
 
 export const colors = {

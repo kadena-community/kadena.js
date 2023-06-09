@@ -1,5 +1,3 @@
-/* eslint @kadena-dev/typedef-var: 0 */
-
 import { styled } from '../../styles';
 
 export const fullWidthVariant = {

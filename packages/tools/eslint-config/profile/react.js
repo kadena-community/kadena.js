@@ -7,17 +7,11 @@ module.exports = {
     // @kadena-dev/typedef-var allows for inferred types in exported constants
     //  when they are created by a function call.
     //  e.g. This is allowed: `export const StyledButton = styled('button', {})`
-    '@kadena-dev/typedef-var': 'warn',
+    '@kadena-dev/typedef-var': 'off',
   },
   settings: {
     react: {
       version: 'detect',
     },
   },
-
-  // rules: {
-  //   '@typescript-eslint/explicit-function-return-type': {
-  //     allowExpressions: true,
-  //   }
-  // }
 };

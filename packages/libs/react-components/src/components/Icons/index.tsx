@@ -1,6 +1,3 @@
-/* eslint @kadena-dev/typedef-var: 0 */
-// TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
 import { Account } from './svgs/Account';
 import { AlertBox } from './svgs/AlertBox';
 import { AlertBoxOutline } from './svgs/AlertBoxOutline';

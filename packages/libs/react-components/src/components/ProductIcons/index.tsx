@@ -1,6 +1,3 @@
-/* eslint @kadena-dev/typedef-var: 0 */
-// TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
 import { Concepts } from './svgs/Concepts';
 import { Contribute } from './svgs/Contribute';
 import { KadenaOverview } from './svgs/KadenaOverview';
