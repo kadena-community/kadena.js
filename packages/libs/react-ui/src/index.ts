@@ -7,4 +7,10 @@ export {
   Text,
   ITextProps,
 } from './components';
-export { sprinkles, Sprinkles, vars, darkThemeClass } from './styles';
+export {
+  sprinkles,
+  Sprinkles,
+  vars,
+  darkThemeClass,
+  ColorType,
+} from './styles';

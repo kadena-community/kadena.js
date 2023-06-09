@@ -3,7 +3,7 @@ import { ColorType, sprinkles, vars } from '../../styles';
 import { createVar, style, styleVariants } from '@vanilla-extract/css';
 import { recipe, RecipeVariants } from '@vanilla-extract/recipes';
 
-export const elementVariant = {
+export const elementVariants = {
   h1: [
     sprinkles({
       fontWeight: 'bold',
@@ -75,35 +75,35 @@ export const elementVariant = {
   label: [sprinkles({ fontWeight: 'medium' })],
 };
 
-export const fontVariant = {
+export const fontVariants = {
   main: [sprinkles({ fontFamily: 'main' })],
   mono: [sprinkles({ fontFamily: 'mono' })],
 };
 
-export const boldVariant = {
+export const boldVariants = {
   true: [sprinkles({ fontWeight: 'semiBold' })],
   false: [],
 };
 
-export const transformVariant = {
+export const transformVariants = {
   uppercase: [sprinkles({ textTransform: 'uppercase' })],
   lowercase: [sprinkles({ textTransform: 'lowercase' })],
   capitalize: [sprinkles({ textTransform: 'capitalize' })],
   none: [sprinkles({ textTransform: 'none' })],
 };
 
-export const colorVariant = {
+export const colorVariants = {
   default: [sprinkles({ color: 'neutral4' })],
   emphasize: [sprinkles({ color: 'neutral6' })],
 };
 
 export const baseText = recipe({
   variants: {
-    variant: elementVariant,
-    font: fontVariant,
-    bold: boldVariant,
-    transform: transformVariant,
-    color: colorVariant,
+    variant: elementVariants,
+    font: fontVariants,
+    bold: boldVariants,
+    transform: transformVariants,
+    color: colorVariants,
   },
 
   compoundVariants: [
