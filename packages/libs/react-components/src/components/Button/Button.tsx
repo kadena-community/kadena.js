@@ -18,7 +18,6 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
-  variant?: StyledButtonVariants;
   target?: string;
 }
 
