@@ -22,7 +22,8 @@ const GridContainer: FC<IGridContainerProps> = ({
     gridTemplateRows: templateRows,
     gridTemplateColumns: templateColumns,
   };
-
+  // TODO: Investigate alternative ways to using the style attribute
+  // https://github.com/kadena-community/kadena.js/pull/360#discussion_r1221843805
   return (
     <div className={gapVariants[spacing]} style={styles}>
       {children}
