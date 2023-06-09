@@ -15,7 +15,7 @@ export const styleVariant = {
 } as const;
 
 export const StyledButton = styled('button', {
-  display: 'flex',
+  display: 'inline-flex',
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
@@ -29,7 +29,9 @@ export const StyledButton = styled('button', {
   fontWeight: '$semiBold',
   color: '$$color',
   backgroundColor: '$$bgColor',
+  textDecoration: 'none',
   '&:hover': {
+    color: '$$color',
     backgroundColor: '$$bgHoverColor',
   },
   '&:active': {

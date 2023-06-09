@@ -22,6 +22,22 @@ const getFileName = (file) => {
   return file.history[0];
 };
 
+const getFileNameInPackage = (file) => {
+  const filename = getFileName(file);
+  if (!filename) return '';
+  const endPoint = 'packages';
+
+  const dirArray = filename.split('/');
+
+  const newPath = dirArray
+    .reverse()
+    .slice(0, dirArray.indexOf(endPoint) + 1)
+    .reverse()
+    .join('/');
+
+  return `/${newPath}`;
+};
+
 const remarkFrontmatterToProps = () => {
   return async (tree, file) => {
     tree.children = tree.children.map((node) => {
@@ -33,6 +49,7 @@ const remarkFrontmatterToProps = () => {
         data: {
           frontmatter: {
             ...data,
+            filename: getFileNameInPackage(file),
             lastModifiedDate: getModifiedDate(getFileName(file)),
           },
         },
