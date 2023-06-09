@@ -8,6 +8,8 @@ export {
   TextField,
   InputGroup,
   IInputGroupProps,
+  Input,
+  IInputProps,
 } from './components/Input';
 export {
   Notification,
@@ -19,14 +21,6 @@ export { Card, ICardProps } from './components/Card';
 export { ProductIcons } from './components/ProductIcons';
 export { Table } from './components/Table';
 export { Divider } from './components/Divider';
-export {
-  Input,
-  IInputProps,
-  IInputGroupProps,
-  InputGroup,
-  TextField,
-  ITextFieldProps,
-} from './components/Input';
 export {
   Breadcrumbs,
   BreadcrumbItem,
