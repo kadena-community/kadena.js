@@ -11,13 +11,17 @@ import { BottomPageSection } from '@/components/BottomPageSection';
 import { ILayout } from '@/types/Layout';
 import React, { FC } from 'react';
 
-export const Code: FC<ILayout> = ({ children, isAsideOpen }) => {
+export const Code: FC<ILayout> = ({
+  children,
+  isAsideOpen,
+  filenameForEdit,
+}) => {
   return (
     <>
       <Content id="maincontent">
         <Article>
           {children}
-          <BottomPageSection />
+          <BottomPageSection filenameForEdit={filenameForEdit} />
         </Article>
       </Content>
       <CodeBackground isOpen={isAsideOpen} />

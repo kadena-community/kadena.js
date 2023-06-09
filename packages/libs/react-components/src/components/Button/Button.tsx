@@ -19,6 +19,7 @@ export interface IButtonProps
   title: string;
   disabled?: boolean;
   variant?: StyledButtonVariants;
+  target?: string;
 }
 
 export const Button: FC<IButtonProps> = ({

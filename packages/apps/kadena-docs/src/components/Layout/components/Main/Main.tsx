@@ -18,6 +18,7 @@ export const Main: FC<IPageProps> = ({
     layout: layoutType,
     lastModifiedDate,
     icon: pageIcon,
+    filename: filenameForEdit = '',
   },
   topDocs,
   aSideMenuTree,
@@ -85,7 +86,11 @@ export const Main: FC<IPageProps> = ({
         >
           <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
         </Menu>
-        <Layout isAsideOpen={isAsideOpen} aSideMenuTree={aSideMenuTree}>
+        <Layout
+          isAsideOpen={isAsideOpen}
+          aSideMenuTree={aSideMenuTree}
+          filenameForEdit={filenameForEdit}
+        >
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <>
               <Breadcrumbs menuItems={leftMenuTree} />
