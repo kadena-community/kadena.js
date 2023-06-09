@@ -16,8 +16,8 @@ export interface IInputProps
   > {
   as?: 'input';
   leadingText?: string;
-  leftPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
-  rightPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  leftPanel?: typeof SystemIcons[keyof typeof SystemIcons];
+  rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   disabled?: boolean;
   status?: 'success' | 'error';
   type?: string;
