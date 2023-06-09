@@ -14,7 +14,7 @@ import { VariantProps } from '@stitches/react';
 import React, { FC } from 'react';
 
 export interface INotificationProps {
-  icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  icon?: typeof SystemIcons[keyof typeof SystemIcons];
   title: string;
   children?: React.ReactNode;
   displayCloseButton?: boolean;
