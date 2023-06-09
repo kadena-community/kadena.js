@@ -1,5 +1,4 @@
 import { getPointer } from '../../getPointer';
-import { atom } from '../atom';
 import { FAILED, rule } from '../rule';
 
 describe('rule parser', () => {

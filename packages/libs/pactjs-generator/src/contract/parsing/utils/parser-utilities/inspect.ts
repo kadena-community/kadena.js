@@ -1,4 +1,4 @@
-import { IWrappedData, wrapData } from '../dataWrapper';
+import { wrapData } from '../dataWrapper';
 import { IPointer } from '../getPointer';
 import { ExceptKeywords } from '../typeUtilities';
 

@@ -4,7 +4,6 @@ import { $ } from '../inspect';
 import { FAILED } from '../rule';
 import { seq } from '../seq';
 import { skipTheRest, skipToken } from '../skip';
-import { str } from '../str';
 
 describe('skipTheRest parser', () => {
   it('should skip all of the tokens an pointer.done() should returns true after that', () => {

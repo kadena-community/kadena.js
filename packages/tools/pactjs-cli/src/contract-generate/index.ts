@@ -13,6 +13,7 @@ export interface IContractGenerateOptions {
   api?: string;
   chain?: number;
   network?: keyof typeof networkMap;
+  typeVersion?: number;
 }
 
 function asList(value: string, prev?: string[]): string[] {
@@ -31,6 +32,7 @@ const Options = z
     capsInterface: z.string().optional(),
     api: z.string().optional(),
     chain: z.number().optional(),
+    typeVersion: z.number(),
     network: z.enum(['mainnet', 'testnet']),
   })
   .refine(({ file, contract }) => {
@@ -85,6 +87,14 @@ export function contractGenerateCommand(
       )
         .argParser((value) => parseInt(value, 10))
         .default(1),
+    )
+    .addOption(
+      new Option(
+        '--type-version <number>',
+        'creating definition file(s) based on specific interface. could be 1 or 2. Default is 2',
+      )
+        .argParser((value) => parseInt(value, 10))
+        .default(2),
     )
     .option(
       '--network <network>',
