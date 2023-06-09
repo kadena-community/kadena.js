@@ -1,6 +1,6 @@
 import { SystemIcons } from '../Icons';
 
-import { StyledButton, StyledButtonVariants } from './styles';
+import { StyledButton } from './styles';
 
 import React, { FC } from 'react';
 
