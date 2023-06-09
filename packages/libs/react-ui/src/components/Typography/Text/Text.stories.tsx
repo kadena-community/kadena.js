@@ -1,10 +1,11 @@
+import { Text } from './Text';
 import {
   colorVariant,
   elementVariant,
   fontVariant,
+  sizeVariant,
   transformVariant,
-} from './typography.css';
-import { Text } from './';
+} from './Text.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -22,6 +23,10 @@ const meta: Meta<typeof Text> = {
     variant: {
       options: Object.keys(elementVariant) as (keyof typeof elementVariant)[],
       control: { type: 'select' },
+    },
+    size: {
+      options: Object.keys(sizeVariant) as (keyof typeof sizeVariant)[],
+      control: { type: 'radio' },
     },
     font: {
       options: Object.keys(fontVariant) as (keyof typeof fontVariant)[],
@@ -52,15 +57,17 @@ export const Primary: Story = {
     children: 'text',
     as: 'span',
     variant: undefined,
+    size: undefined,
     font: undefined,
     bold: undefined,
     color: undefined,
     transform: undefined,
   },
-  render: ({ font, bold, as, variant, transform, children, color }) => (
+  render: ({ font, bold, size, as, variant, transform, children, color }) => (
     <Text
       font={font}
       bold={bold}
+      size={size}
       as={as}
       variant={variant}
       transform={transform}

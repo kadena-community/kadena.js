@@ -1,12 +1,11 @@
 import { sprinkles } from '../../../styles';
 import {
-  boldVariants,
   colorVariants,
   fontVariants,
   transformVariants,
 } from '../typography.css';
 
-import { styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const elementVariant = styleVariants({
   p: [sprinkles({ fontWeight: 'normal' })],
@@ -15,13 +14,13 @@ export const elementVariant = styleVariants({
   label: [sprinkles({ fontWeight: 'medium' })],
 });
 
-export const textSizeVariant = styleVariants({
+export const sizeVariant = styleVariants({
   sm: [sprinkles({ fontSize: 'xs' })],
   md: [sprinkles({ fontSize: 'sm' })],
   lg: [sprinkles({ fontSize: 'base' })],
 });
 
 export const fontVariant = styleVariants(fontVariants);
-export const boldVariant = styleVariants(boldVariants);
 export const transformVariant = styleVariants(transformVariants);
 export const colorVariant = styleVariants(colorVariants);
+export const boldClass = style([sprinkles({ fontWeight: 'semiBold' })]);

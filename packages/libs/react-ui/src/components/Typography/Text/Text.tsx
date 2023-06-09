@@ -1,11 +1,13 @@
 import {
+  boldClass,
   colorVariant,
   elementVariant,
   fontVariant,
   sizeVariant,
   transformVariant,
-} from '../typography.css';
+} from './Text.css';
 
+import className from 'classnames';
 import React, { FC } from 'react';
 
 export interface ITextProps {
@@ -20,26 +22,33 @@ export interface ITextProps {
 }
 
 export const Text: FC<ITextProps> = ({
-  as,
-  variant,
-  font,
-  bold,
-  size,
-  color,
-  transform,
+  as = 'span',
+  variant = as,
+  font = variant === 'code' ? 'mono' : 'main',
+  bold = false,
+  size = 'lg',
+  color = 'default',
+  transform = 'none',
   children,
 }) => {
-  // const className = c;
+  const classList = className(
+    elementVariant[variant],
+    fontVariant[font],
+    sizeVariant[size],
+    colorVariant[color],
+    transformVariant[transform],
+    { [boldClass]: bold },
+  );
 
   switch (as) {
     case 'p':
-      return <p className={className}>{children}</p>;
+      return <p className={classList}>{children}</p>;
     case 'code':
-      return <code className={className}>{children}</code>;
+      return <code className={classList}>{children}</code>;
     case 'label':
-      return <label className={className}>{children}</label>;
+      return <label className={classList}>{children}</label>;
     case 'span':
     default:
-      return <span className={className}>{children}</span>;
+      return <span className={classList}>{children}</span>;
   }
 };
