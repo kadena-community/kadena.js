@@ -1,10 +1,6 @@
-import {
-  StyledNavItem,
-  StyledNavItemSelectedText,
-  StyledNavItemText,
-  StyledSelectedNavItem,
-  StyledSidebar,
-} from './styles';
+import { NavLink } from '../NavLink';
+
+import { StyledSidebar } from './styles';
 
 import { Chain } from '@/resources/svg/generated';
 import { useRouter } from 'next/router';
@@ -34,19 +30,9 @@ export const SidebarMenu: FC = (props) => {
   return (
     <StyledSidebar>
       {menu.map((item, index) => (
-        <div key={index}>
-          {item.href === pathname ? (
-            <StyledSelectedNavItem href={item.href}>
-              <StyledNavItemSelectedText>
-                {item.title}
-              </StyledNavItemSelectedText>
-            </StyledSelectedNavItem>
-          ) : (
-            <StyledNavItem href={item.href}>
-              <StyledNavItemText>{item.title}</StyledNavItemText>
-            </StyledNavItem>
-          )}
-        </div>
+        <NavLink key={index} href={item.href}>
+          {item.title}
+        </NavLink>
       ))}
     </StyledSidebar>
   );

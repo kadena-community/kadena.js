@@ -3,7 +3,6 @@ import { Button, TextField } from '@kadena/react-components';
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
 import dynamic from 'next/dynamic';
-
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
@@ -45,6 +44,7 @@ const GetCode: FC = () => {
         convertIntToChainId(moduleChain),
         networkdId,
       );
+      console.log(data.code);
 
       setResults(data);
     } catch (e) {
@@ -65,10 +65,10 @@ const GetCode: FC = () => {
   };
 
   return (
-    <MainLayout title="Kadena Coin Transfer">
+    <MainLayout title="Kadena Module Explorer">
       <StyledMainContent>
         <SidebarMenu />
-        <StyledSidebar />
+
         <StyledForm onSubmit={getCode}>
           <StyledAccountForm>
             <Select
@@ -108,15 +108,15 @@ const GetCode: FC = () => {
             </StyledTotalContainer>
           </StyledResultContainer>
         ) : null}
-
-        {results.code ? (
-          <StyledResultContainer>
-            <StyledCodeViewerContainer>
-              <AceViewer code={results.code}></AceViewer>
-            </StyledCodeViewerContainer>
-          </StyledResultContainer>
-        ) : null}
       </StyledMainContent>
+
+      {results.code ? (
+        <StyledResultContainer>
+          <StyledCodeViewerContainer>
+            <AceViewer code={results.code}></AceViewer>
+          </StyledCodeViewerContainer>
+        </StyledResultContainer>
+      ) : null}
     </MainLayout>
   );
 };

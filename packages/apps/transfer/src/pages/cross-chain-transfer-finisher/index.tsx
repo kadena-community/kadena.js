@@ -20,12 +20,19 @@ import React, { FC, useState } from 'react';
 const CrossChainTransferFinisher: FC = () => {
   const { network } = useAppContext();
 
-  const chainServerText =
-    network.toString() === 'Mainnet' ? 'mainnet01' : 'testnet04';
-  const chainServer =
-    network.toString() === 'Mainnet'
-      ? 'api.chainweb.com'
-      : 'api.testnet.chainweb.com';
+  const chainNetwork: {
+    Mainnet: { server: string; network: string };
+    Testnet: { server: string; network: string };
+  } = {
+    Mainnet: {
+      server: 'api.chainweb.com',
+      network: 'mainnet01',
+    },
+    Testnet: {
+      server: 'api.testnet.chainweb.com',
+      network: 'testnet04',
+    },
+  };
 
   const [requestKey, setRequestKey] = useState<string>('');
   const [kadenaXChainGas, setKadenaXChainGas] =
@@ -80,8 +87,8 @@ const CrossChainTransferFinisher: FC = () => {
                     placeholder: 'Enter Chain Server',
                     // @ts-ignore
                     onChange: (e) => setChainWebServer(e?.target?.value),
-                    value: chainServer,
-                    leadingText: chainServerText,
+                    value: chainNetwork[network].server,
+                    leadingText: chainNetwork[network].network,
                   }}
                 />
                 <TextField

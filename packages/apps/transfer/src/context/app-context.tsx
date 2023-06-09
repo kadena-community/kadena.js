@@ -21,7 +21,7 @@ const useAppContext = (): NetworkState => {
   const context = useContext(AppContext);
 
   if (!context) {
-    throw new Error('Please use ThemeProvider in parent component');
+    throw new Error('Please use AppContextProvider in parent component');
   }
 
   return context;
