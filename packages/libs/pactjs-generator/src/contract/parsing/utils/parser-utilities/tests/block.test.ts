@@ -1,8 +1,11 @@
 import { getPointer } from '../../getPointer';
 import { asString } from '../asString';
+import { atom } from '../atom';
 import { block } from '../block';
 import { id } from '../id';
+import { $ } from '../inspect';
 import { FAILED } from '../rule';
+import { seq } from '../seq';
 
 describe('block rule', () => {
   it('should match with ( ...anything )', () => {
@@ -21,5 +24,21 @@ describe('block rule', () => {
     const pointer = getPointer('( this ( is not important ) )');
     const result = asString(block(id('this')), ' ')(pointer);
     expect(result).toBe('( this ( is not important ) )');
+  });
+
+  it('should return wrapped value with object as data that has a key for each inspected value in the child rules', () => {
+    const pointer = getPointer('(name: alice title: developer)');
+    const result = block(
+      $('name', seq(id('name'), id(':'), $(atom))),
+      $('title', seq(id('title'), id(':'), $(atom))),
+    )(pointer);
+    if (result === FAILED) {
+      expect(result).not.toBe(FAILED);
+      return;
+    }
+    expect(typeof result.data).toBe('object');
+    expect(Object.keys(result.data)).toHaveLength(2);
+    expect(result.data.name).toBe('alice');
+    expect(result.data.title).toBe('developer');
   });
 });
