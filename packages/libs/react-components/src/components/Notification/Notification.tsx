@@ -15,7 +15,7 @@ import React, { FC } from 'react';
 
 export interface INotificationProps {
   icon?: typeof SystemIcons[keyof typeof SystemIcons];
-  title: string;
+  title?: string;
   children?: React.ReactNode;
   displayCloseButton?: boolean;
   expand?: VariantProps<typeof StyledNotification>['expand'];
