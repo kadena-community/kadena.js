@@ -10,7 +10,7 @@ export interface IButtonProps
     'as' | 'disabled'
   > {
   as?: 'button' | 'a';
-  icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  icon?: typeof SystemIcons[keyof typeof SystemIcons];
   onClick?:
     | React.MouseEventHandler<HTMLButtonElement>
     | React.FormEventHandler<HTMLButtonElement>;
@@ -18,6 +18,7 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
+  target?: string;
 }
 
 export const Button: FC<IButtonProps> = ({

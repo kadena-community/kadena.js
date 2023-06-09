@@ -6,6 +6,8 @@ export {
   ProductIcon,
   Text,
   ITextProps,
+  ICardProps,
+  Card,
 } from './components';
 export {
   sprinkles,

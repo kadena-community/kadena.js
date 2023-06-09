@@ -1,4 +1,12 @@
-import { Button, Heading, Stack, Text } from '@kadena/react-components';
+import {
+  Button,
+  Heading,
+  Notification,
+  NotificationBody,
+  Stack,
+  SystemIcons,
+  TextField,
+} from '@kadena/react-components';
 
 import { useSubscribe } from './useSubscribe';
 
@@ -16,33 +24,47 @@ export const Subscribe: FC = () => {
 
   return (
     <section data-cy="subscribe">
-      <Heading as="h6">Recieve important developer updates</Heading>
+      <Stack direction="column" spacing="sm">
+        <Heading as="h6">Recieve important developer updates</Heading>
 
-      {!hasSuccess ? (
-        <>
-          <form>
-            <Stack spacing="2xs">
-              <input
-                type="text"
-                onChange={handleFormState}
-                placeholder="Email address"
-                aria-label="fill in your email address to subscribe"
-              />
-              <Button
-                type="submit"
-                disabled={!canSubmit}
-                onClick={handleSubscribe}
-                title="Subscribe"
-              >
-                Subscribe
-              </Button>
-            </Stack>
-          </form>
-          <Text bold={true}>{message}</Text>
-        </>
-      ) : (
-        <Text bold={true}>{message}</Text>
-      )}
+        {!hasSuccess ? (
+          <>
+            <form>
+              <Stack spacing="sm">
+                <TextField
+                  inputProps={{
+                    type: 'email',
+                    placeholder: 'Email address',
+                    onChange: handleFormState,
+                    'aria-label': 'Fill in email address',
+                    leftPanel: () => <SystemIcons.At />,
+                  }}
+                />
+                <Button
+                  type="submit"
+                  disabled={!canSubmit}
+                  onClick={handleSubscribe}
+                  title="Subscribe"
+                >
+                  Subscribe
+                </Button>
+              </Stack>
+            </form>
+
+            {Boolean(message) && (
+              <Notification color="warning" expand>
+                <NotificationBody>{message}</NotificationBody>
+              </Notification>
+            )}
+          </>
+        ) : (
+          Boolean(message) && (
+            <Notification color="positive" expand>
+              <NotificationBody>{message}</NotificationBody>
+            </Notification>
+          )
+        )}
+      </Stack>
     </section>
   );
 };

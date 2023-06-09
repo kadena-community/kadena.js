@@ -16,10 +16,11 @@ export interface IInputProps
   > {
   as?: 'input';
   leadingText?: string;
-  leftPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
-  rightPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  leftPanel?: typeof SystemIcons[keyof typeof SystemIcons];
+  rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   disabled?: boolean;
   status?: 'success' | 'error';
+  type?: string;
 }
 
 export const Input: FC<IInputProps> = ({
@@ -35,7 +36,7 @@ export const Input: FC<IInputProps> = ({
   const variant = disabled ? 'disabled' : status;
 
   return (
-    <StyledInputWrapper {...rest} variant={variant}>
+    <StyledInputWrapper variant={variant}>
       {Boolean(leadingText) && (
         <StyledLeadingText>{leadingText}</StyledLeadingText>
       )}
