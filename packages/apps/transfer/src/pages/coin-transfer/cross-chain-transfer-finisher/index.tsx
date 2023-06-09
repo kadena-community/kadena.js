@@ -17,9 +17,11 @@ import {
 } from './styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const CoinTransfer: FC = () => {
+  const { t } = useTranslation('common');
   const [chainWebServer, setChainWebServer] =
     useState<string>('api.chainweb.com');
   const [requestKey, setRequestKey] = useState<string>('');
@@ -34,65 +36,65 @@ const CoinTransfer: FC = () => {
   };
 
   return (
-    <MainLayout title="Kadena Cross Chain Transfer Finisher">
+    <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
         <StyledSidebar>
           <StyledNavItem href="/coin-transfer">
             <StyledNavItemIcon>K:</StyledNavItemIcon>
-            <StyledNavItemText>Transfer</StyledNavItemText>
+            <StyledNavItemText>{t('Transfer')}</StyledNavItemText>
           </StyledNavItem>
           <StyledSelectedNavItem href="/coin-transfer/cross-chain-transfer-finisher">
             <StyledNavItemIcon>K:</StyledNavItemIcon>
             <StyledNavItemSelectedText>
-              Cross Chain Transfer Finisher
+              {t('Cross Chain Transfer Finisher')}
             </StyledNavItemSelectedText>
           </StyledSelectedNavItem>
         </StyledSidebar>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
             <TextField
-              label="Chain Server"
+              label={t('Chain Server')}
               inputProps={{
-                placeholder: 'Enter Chain Server',
+                placeholder: t('Enter Chain Server'),
                 // @ts-ignore
                 onChange: (e) => setChainWebServer(e?.target?.value),
                 value: chainWebServer,
-                leadingText: 'mainnet01',
+                leadingText: t('mainnet01'),
               }}
             />
             <TextField
-              label="Request Key"
-              info={requestKey ? '' : 'Not a Cross Chain Request Key'}
+              label={t('Request Key')}
+              info={requestKey ? '' : t('Not a Cross Chain Request Key')}
               inputProps={{
-                placeholder: 'Enter Request Key',
+                placeholder: t('Enter Request Key'),
                 // @ts-ignore
                 onChange: (e) => setRequestKey(e?.target?.value),
                 value: requestKey,
               }}
             />
             <TextField
-              label="Gas Payer Account"
-              helper="only single pubkey accounts are supported"
+              label={t('Gas Payer Account')}
+              helper={t('only single pubkey accounts are supported')}
               inputProps={{
-                placeholder: 'Enter Your Account',
+                placeholder: t('Enter Your Account'),
                 // @ts-ignore
                 onChange: (e) => setKadenaXChainGas(e?.target?.value),
                 value: kadenaXChainGas,
               }}
             />
             <TextField
-              label="Gas Price"
+              label={t('Gas Price')}
               inputProps={{
-                placeholder: 'Enter Gas Payer',
+                placeholder: t('Enter Gas Payer'),
                 // @ts-ignore
                 onChange: (e) => setGasPrice(e?.target?.value),
                 value: gasPrice,
               }}
             />
             <TextField
-              label="Gas Limit"
+              label={t('Gas Limit')}
               inputProps={{
-                placeholder: 'Enter Gas Limit',
+                placeholder: t('Enter Gas Limit'),
                 // @ts-ignore
                 onChange: (e) => setGasLimit(e?.target?.value),
                 value: gasLimit,
@@ -100,8 +102,8 @@ const CoinTransfer: FC = () => {
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title="Finish Cross Chain Transfer">
-              Finish Cross Chain Transfer
+            <Button title={t('Finish Cross Chain Transfer')}>
+              {t('Finish Cross Chain Transfer')}
             </Button>
           </StyledFormButton>
         </StyledForm>
