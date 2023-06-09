@@ -16,9 +16,11 @@ import {
   type ChainResult,
   checkBalance,
 } from '@/services/accounts/get-balance';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const GetBalance: FC = () => {
+  const { t } = useTranslation('common');
   const [inputServerValue, setServerValue] = useState<string>('');
   const [inputTokenValue, setTokenValue] = useState<string>('');
   const [inputAccountValue, setAccountValue] = useState<string>('');
@@ -53,27 +55,27 @@ const GetBalance: FC = () => {
         <StyledForm onSubmit={getBalance}>
           <StyledAccountForm>
             <TextField
-              label="Target Chainweb Server"
+              label={t('Target Chainweb Server')}
               inputProps={{
-                placeholder: 'Enter Node Server',
+                placeholder: t('Enter Node Server'),
                 // @ts-ignore
                 onChange: (e) => setServerValue(e?.target?.value),
                 value: inputServerValue,
               }}
             />
             <TextField
-              label="Token Name"
+              label={t('Token Name')}
               inputProps={{
-                placeholder: 'Enter Token Name',
+                placeholder: t('Enter Token Name'),
                 // @ts-ignore
                 onChange: (e) => setTokenValue(e?.target?.value),
                 value: inputTokenValue,
               }}
             />
             <TextField
-              label="Your Account Name"
+              label={t('Your Account Name')}
               inputProps={{
-                placeholder: 'Enter Your Account',
+                placeholder: t('Enter Your Account'),
                 // @ts-ignore
                 onChange: (e) => setAccountValue(e?.target?.value),
                 value: inputAccountValue,
@@ -81,7 +83,9 @@ const GetBalance: FC = () => {
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title="Get Account Balance">Get Account Balance</Button>
+            <Button title={t('Get Account Balance')}>
+              {t('Get Account Balance')}
+            </Button>
           </StyledFormButton>
         </StyledForm>
 
@@ -89,11 +93,11 @@ const GetBalance: FC = () => {
           <StyledResultContainer>
             <StyledTotalContainer>
               <StyledTotalChunk>
-                <p>Account Name</p>
+                <p>{t('Account Name')}</p>
                 <p>{inputAccountValue}</p>
               </StyledTotalChunk>
               <StyledTotalChunk>
-                <p>Total Balance</p>
+                <p>{t('Total Balance')}</p>
                 <p>{calculateTotal().toFixed(3)} KDA</p>
               </StyledTotalChunk>
             </StyledTotalContainer>
@@ -101,9 +105,9 @@ const GetBalance: FC = () => {
               <table>
                 <thead>
                   <tr>
-                    <th>Chain</th>
-                    <th>Guard</th>
-                    <th>Quantity</th>
+                    <th>{t('Chain')}</th>
+                    <th>{t('Guard')}</th>
+                    <th>{t('Quantity')}</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -22,9 +22,11 @@ import {
   coinTransfer,
 } from '@/services/transfer/coin-transfer';
 import { convertIntToChainId } from '@/services/utils/utils';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const CoinTransfer: FC = () => {
+  const { t } = useTranslation('common');
   const NETWORK_ID = 'testnet04';
   const chainId = '1';
   const API_HOST = `https://api.testnet.chainweb.com/chainweb/0.0/${NETWORK_ID}/chain/${chainId}/pact`;
@@ -89,67 +91,71 @@ const CoinTransfer: FC = () => {
   };
 
   return (
-    <MainLayout title="Kadena Coin Transfer">
+    <MainLayout title={t('Kadena Coin Transfer')}>
       <StyledMainContent>
         <StyledSidebar>
           <StyledSelectedNavItem href="/coin-transfer">
             <StyledNavItemIcon>K:</StyledNavItemIcon>
-            <StyledNavItemSelectedText>Transfer</StyledNavItemSelectedText>
+            <StyledNavItemSelectedText>
+              {t('Transfer')}
+            </StyledNavItemSelectedText>
           </StyledSelectedNavItem>
           <StyledNavItem href="/coin-transfer/cross-chain-transfer-finisher">
             <StyledNavItemIcon>K:</StyledNavItemIcon>
-            <StyledNavItemText>Cross Chain Transfer Finisher</StyledNavItemText>
+            <StyledNavItemText>
+              {t('Cross Chain Transfer Finisher')}
+            </StyledNavItemText>
           </StyledNavItem>
         </StyledSidebar>
         <StyledForm onSubmit={handleTransfer}>
           <StyledAccountForm>
             <TextField
-              label="Sender Account"
+              label={t('Sender Account')}
               inputProps={{
-                placeholder: 'Enter account name of the sender',
+                placeholder: t('Enter account name of the sender'),
                 // @ts-ignore
                 onChange: (e) => setSenderAccount(e?.target?.value),
                 value: senderAccount,
               }}
             />
             <Select
-              label="Select the chain of the sender"
-              leadingText="Chain"
+              label={t('Select the chain of the sender')}
+              leadingText={t('Chain')}
               onChange={(e) => setSenderChain(parseInt(e.target.value))}
               value={senderChain}
             >
               {renderChainOptions()}
             </Select>
             <TextField
-              label="Receiver Account"
+              label={t('Receiver Account')}
               inputProps={{
-                placeholder: 'Enter account name of the receiver',
+                placeholder: t('Enter account name of the receiver'),
                 // @ts-ignore
                 onChange: (e) => setReceiverAccount(e?.target?.value),
                 value: receiverAccount,
               }}
             />
             <Select
-              label="Select the chain of the receiver"
-              leadingText="Chain"
+              label={t('Select the chain of the receiver')}
+              leadingText={t('Chain')}
               onChange={(e) => setReceiverChain(parseInt(e.target.value))}
               value={receiverChain}
             >
               {renderChainOptions()}
             </Select>
             <TextField
-              label="Amount"
+              label={t('Amount')}
               inputProps={{
-                placeholder: 'Enter amount to transfer',
+                placeholder: t('Enter amount to transfer'),
                 // @ts-ignore
                 onChange: (e) => setCoinAmount(e?.target?.value),
                 value: coinAmount,
               }}
             />
             <TextField
-              label="Sign"
+              label={t('Sign')}
               inputProps={{
-                placeholder: 'Enter private key to sign the transaction',
+                placeholder: t('Enter private key to sign the transaction'),
                 // @ts-ignore
                 onChange: (e) => setPrivateKey(e?.target?.value),
                 value: privateKey,
@@ -157,7 +163,7 @@ const CoinTransfer: FC = () => {
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title="Make Transfer">Make Transfer</Button>
+            <Button title={t('Make Transfer')}>{t('Make Transfer')}</Button>
           </StyledFormButton>
         </StyledForm>
 
@@ -165,7 +171,7 @@ const CoinTransfer: FC = () => {
           <StyledResultContainer>
             <StyledTotalContainer>
               <StyledTotalChunk>
-                <p>Request Key</p>
+                <p>{t('Request Key')}</p>
                 <p>{results.requestKey}</p>
               </StyledTotalChunk>
               <StyledTotalChunk>

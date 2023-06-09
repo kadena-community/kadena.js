@@ -25,9 +25,11 @@ import {
   describeModule,
 } from '@/services/modules/describe-module';
 import { convertIntToChainId } from '@/services/utils/utils';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const GetCode: FC = () => {
+  const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleChain, setModuleChain] = useState<number>(1);
   const [results, setResults] = useState<ModuleResult>({});
@@ -65,23 +67,23 @@ const GetCode: FC = () => {
   };
 
   return (
-    <MainLayout title="Kadena Module Explorer">
+    <MainLayout title={t('Kadena Module Explorer')}>
       <StyledMainContent>
         <StyledSidebar />
         <StyledForm onSubmit={getCode}>
           <StyledAccountForm>
             <Select
-              label="Select the module chain"
-              leadingText="Chain"
+              label={t('Select the module chain')}
+              leadingText={t('Chain')}
               onChange={(e) => setModuleChain(parseInt(e.target.value))}
               value={moduleChain}
             >
               {renderChainOptions()}
             </Select>
             <TextField
-              label="Module Name"
+              label={t('Module Name')}
               inputProps={{
-                placeholder: 'Enter desired module name',
+                placeholder: t('Enter desired module name'),
                 // @ts-ignore
                 onChange: (e) => setModuleName(e?.target?.value),
                 value: moduleName,
@@ -89,7 +91,7 @@ const GetCode: FC = () => {
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title="Get Code">Get Code</Button>
+            <Button title={t('Get Code')}>{t('Get Code')}</Button>
           </StyledFormButton>
         </StyledForm>
 
@@ -97,11 +99,11 @@ const GetCode: FC = () => {
           <StyledResultContainer>
             <StyledTotalContainer>
               <StyledTotalChunk>
-                <p>Request Key</p>
+                <p>{t('Request Key')}</p>
                 <p>{results.reqKey}</p>
               </StyledTotalChunk>
               <StyledTotalChunk>
-                <p>Status</p>
+                <p>{t('Status')}</p>
                 <p>{results.status}</p>
               </StyledTotalChunk>
             </StyledTotalContainer>
