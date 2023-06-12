@@ -10,7 +10,7 @@ import {
 } from './styles';
 
 import routes from '@/constants/routes';
-import { Account, Chain, Key } from '@/resources/svg/generated';
+import { Account, Chain } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
 
