@@ -28,3 +28,8 @@ export const StyledNavItemText = styled('span', {
     textDecorationLine: 'underline',
   },
 });
+
+export const StyledNavItemIcon = styled('div', {
+  paddingRight: '11px',
+  fontWeight: '500',
+});

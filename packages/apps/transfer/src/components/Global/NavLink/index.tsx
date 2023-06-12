@@ -1,4 +1,4 @@
-import { StyledNavItem, StyledNavItemText } from './styles';
+import { StyledNavItem, StyledNavItemIcon, StyledNavItemText } from './styles';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,6 +23,7 @@ export const NavLink = ({
 
   return (
     <StyledNavItem href={href} {...props}>
+      <StyledNavItemIcon>K:</StyledNavItemIcon>
       <StyledNavItemText {...props}>{children}</StyledNavItemText>
     </StyledNavItem>
   );
