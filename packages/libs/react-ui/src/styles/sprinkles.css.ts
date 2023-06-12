@@ -1,5 +1,3 @@
-/* eslint @typescript-eslint/naming-convention: 0 */
-
 import { darkThemeClass, vars } from './themes.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
