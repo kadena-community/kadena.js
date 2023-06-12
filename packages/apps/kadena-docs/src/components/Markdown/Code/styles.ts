@@ -1,5 +1,11 @@
 import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 
+export const StyledInlineCode: StyledComponent<'code'> = styled('code', {
+  padding: 'calc($1 / 4) $1',
+  backgroundColor: '$neutral2',
+  borderRadius: '$sm',
+});
+
 export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
   backgroundColor: '$neutral2',
   borderLeft: '4px solid $borderColor',

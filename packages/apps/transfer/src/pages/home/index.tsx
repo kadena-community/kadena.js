@@ -12,23 +12,26 @@ import {
 
 import { Account, Chain, Key } from '@/resources/svg/generated';
 import { downloadKeyPairToBrowser } from '@/services/key-pairs/key-pairs';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
 
 const Home: FC = () => {
+  const { t } = useTranslation('common');
+
   const transferMenu = [
     {
       icon: Account,
-      title: 'Check account balance',
+      title: t('Check account balance'),
       href: '/check-balance',
     },
     {
       icon: Chain,
-      title: 'Transfer',
+      title: t('Transfer'),
       href: '/coin-transfer',
     },
     {
       icon: Chain,
-      title: 'Module explorer',
+      title: t('Module explorer'),
       href: '/module-explorer',
     },
   ];
@@ -36,12 +39,12 @@ const Home: FC = () => {
   const faucetMenu = [
     {
       icon: Account,
-      title: 'Existing account',
+      title: t('Existing account'),
       href: '/',
     },
     {
       icon: Chain,
-      title: 'New account',
+      title: t('New account'),
       href: '/',
     },
   ];
@@ -51,12 +54,14 @@ const Home: FC = () => {
       <StyledSmallLogo width="65px" />
       <StyledHomeContentContainer>
         <StyledHomeContent>
-          <StyledHomeTitle>Kadena Transfer</StyledHomeTitle>
+          <StyledHomeTitle>{t('Kadena Transfer')}</StyledHomeTitle>
           <StyledHomeButton onClick={downloadKeyPairToBrowser}>
             <StyledIconBox>
               <Key width="40px" height="40px" />
             </StyledIconBox>
-            <StyledLinkText>Generate KeyPair (save to file)</StyledLinkText>
+            <StyledLinkText>
+              {t('Generate KeyPair (save to file)')}
+            </StyledLinkText>
           </StyledHomeButton>
           {transferMenu.map((item) => (
             <StyledHomeLink key={`item-${item.title}`} href={item.href}>
@@ -68,7 +73,7 @@ const Home: FC = () => {
           ))}
         </StyledHomeContent>
         <StyledHomeContent>
-          <StyledHomeTitle>Kadena Testnet Faucet</StyledHomeTitle>
+          <StyledHomeTitle>{t('Kadena Testnet Faucet')}</StyledHomeTitle>
           {faucetMenu.map((item) => (
             <StyledHomeLink key={`item-${item.title}`} href={item.href}>
               <StyledIconBox>

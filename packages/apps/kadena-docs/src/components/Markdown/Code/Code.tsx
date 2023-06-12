@@ -1,4 +1,4 @@
-import { StyledCode } from './styles';
+import { StyledCode, StyledInlineCode } from './styles';
 
 import React, { FC, ReactNode } from 'react';
 
@@ -7,5 +7,8 @@ interface IProp {
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
+  if (typeof children === 'string') {
+    return <StyledInlineCode>{children}</StyledInlineCode>;
+  }
   return <StyledCode {...props}>{children}</StyledCode>;
 };

@@ -221,6 +221,8 @@ export class PactCommand
   public createCommand(): IUnsignedCommand {
     const dateInMs: number = Date.now();
 
+    this.nonce = this.nonceCreator(this, dateInMs);
+
     // convert to IUnsignedTransactionCommand
     const unsignedTransactionCommand: ICommandPayload = {
       networkId: this.networkId,
@@ -235,7 +237,7 @@ export class PactCommand
         clist: signer.caps,
       })),
       meta: { ...this.publicMeta, creationTime: Math.floor(dateInMs / 1000) },
-      nonce: this.nonceCreator(this, dateInMs),
+      nonce: this.nonce,
     };
 
     // stringify command

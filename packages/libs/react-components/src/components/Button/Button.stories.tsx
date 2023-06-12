@@ -69,17 +69,11 @@ export const Primary: Story = {
     disabled: false,
     text: 'Click me',
   },
-  render: ({ selectIcon, onClick, title, disabled, text, selectVariant }) => {
+  render: ({ selectIcon, onClick, title, disabled, text }) => {
     const Icon = SystemIcons[selectIcon];
     return (
       <>
-        <Button
-          title={title}
-          onClick={onClick}
-          icon={Icon}
-          disabled={disabled}
-          variant={selectVariant}
-        >
+        <Button title={title} onClick={onClick} icon={Icon} disabled={disabled}>
           {text}
         </Button>
       </>
