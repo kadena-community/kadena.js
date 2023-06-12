@@ -6,6 +6,8 @@ export {
   ProductIcon,
   Text,
   ITextProps,
+  Stack,
+  IStackProps,
   ICardProps,
   Card,
 } from './components';
