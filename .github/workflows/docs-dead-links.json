@@ -14,5 +14,6 @@
       "replacement": "packages/apps/kadena-docs/public/$1"
     }
   ],
+  "file-extension": ["md", "mdx"],
   "aliveStatusCodes": [0, 429, 200, 203, 403]
 }
