@@ -8,7 +8,7 @@ import EventEmitter from 'eventemitter2';
 
 // @alpha (undocumented)
 class ChainwebStream extends EventEmitter {
-    constructor({ host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
+    constructor({ network, host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
     // (undocumented)
     confirmationDepth: number;
     connect: () => void;
@@ -25,6 +25,8 @@ class ChainwebStream extends EventEmitter {
     limit: number | undefined;
     // (undocumented)
     maxReconnects: number;
+    // (undocumented)
+    network: string;
     get state(): ConnectionState;
     // (undocumented)
     type: ChainwebStreamType;
@@ -65,6 +67,22 @@ export interface IAccountTransaction extends ITransactionBase {
 }
 
 // @alpha (undocumented)
+export interface IChainwebStreamConfig {
+    // (undocumented)
+    heartbeat: number;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    maxConf: number;
+    // (undocumented)
+    network: string;
+    // (undocumented)
+    type: ChainwebStreamType;
+    // (undocumented)
+    v: string;
+}
+
+// @alpha (undocumented)
 export interface IChainwebStreamConstructorArgs {
     // (undocumented)
     confirmationDepth?: number;
@@ -80,6 +98,8 @@ export interface IChainwebStreamConstructorArgs {
     limit?: number;
     // (undocumented)
     maxReconnects?: number;
+    // (undocumented)
+    network: string;
     // (undocumented)
     type: ChainwebStreamType;
 }
@@ -112,6 +132,14 @@ export interface IEventTransaction extends ITransactionBase {
     name: string;
     // (undocumented)
     params: string[];
+}
+
+// @alpha (undocumented)
+export interface IInitialEvent {
+    // (undocumented)
+    config: IChainwebStreamConfig;
+    // (undocumented)
+    data: ITransaction[];
 }
 
 // @alpha (undocumented)

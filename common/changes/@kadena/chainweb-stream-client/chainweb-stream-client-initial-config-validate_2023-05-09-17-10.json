@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Added wire protocol compatibility checks",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
