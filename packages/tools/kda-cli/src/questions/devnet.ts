@@ -141,9 +141,9 @@ export const setupQuestions: IQuestion[] = [
       if (Array.isArray(task)) return task?.includes('setup');
       return false;
     },
-    action: async () => {
+    action: async ({ macOS }) => {
       await setupEnvFor('l1');
-      setupMacDockerCompose('l1');
+      if (macOS) setupMacDockerCompose('l1');
       return { prepare: 'success' };
     },
   },
@@ -155,9 +155,9 @@ export const setupQuestions: IQuestion[] = [
       if (setupL2 === true) return true;
       return false;
     },
-    action: async () => {
+    action: async ({ macOS }) => {
       await setupEnvFor('l2');
-      setupMacDockerCompose('l2');
+      if (macOS) setupMacDockerCompose('l2');
       return { prepare: 'success' };
     },
   }

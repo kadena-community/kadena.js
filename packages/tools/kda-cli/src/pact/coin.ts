@@ -32,6 +32,16 @@ export const decimalFormatter: Intl.NumberFormat = new Intl.NumberFormat(
   },
 );
 
+export const setTransferCreateCommand =
+  (from: KAccount, to: KAccount, toKs: string, amount: number): Reducer =>
+  async (payload) => {
+    return {
+      ...(await payload),
+      command: `(coin.transfer-create "${from}" "${to}" (read-keyset '${toKs}) ${decimalFormatter.format(
+        amount,
+      )})`,
+    };
+  };
 export const setTransactionCommand =
   (from: KAccount, to: KAccount, amount: number): Reducer =>
   async (payload) => {

@@ -1,4 +1,4 @@
-import { hash } from '@kadena/cryptography-utils';
+import { hash, sign } from '@kadena/cryptography-utils';
 
 import { isFalsy } from '../utils/bool.js';
 
@@ -341,6 +341,25 @@ export const signWithChainweaver: Reducer = async (payload) => {
   };
 };
 
+export const signWithKeypair =
+  ({
+    secretKey,
+    publicKey,
+  }: {
+    secretKey: string;
+    publicKey: string;
+  }): Reducer =>
+  async (payload) => {
+    const payloadData = getPayload(await payload);
+    const payloadString = JSON.stringify(payloadData);
+    const { sig } = sign(payloadString, { secretKey, publicKey });
+    return {
+      ...payload,
+      nonce: payloadData.nonce,
+      sigs: [{ sig }],
+    };
+  };
+
 const getBaseUrl = <T extends Partial<Payload | SignedPayload>>(
   payload: T,
 ): string => {
@@ -405,7 +424,12 @@ export const send: Reducer = async (payload) => {
       ],
     }),
   });
-  if (!response.ok) throw new Error('Failed to send');
+
+  if (!response.ok) {
+    console.log('hash', hash(pactPayload));
+    console.error(await response.text());
+    throw new Error('Failed to send');
+  }
   const data = await response.json();
   return {
     ...unpackedPayload,

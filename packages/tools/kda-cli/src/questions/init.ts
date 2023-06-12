@@ -1,4 +1,5 @@
 import { devnetQuestions } from './devnet.js';
+import { fundQuestions } from './fund.js';
 import { localQuestions } from './local.js';
 import { IAnswers, IQuestion } from './questions.js';
 
@@ -26,6 +27,10 @@ export const questions: IQuestion[] = [
         value: 'stop',
       },
       {
+        label: 'Fund devnet accounts',
+        value: 'fund',
+      },
+      {
         label: 'Test a function of a smart contract',
         value: 'local',
       },
@@ -46,4 +51,5 @@ export const questions: IQuestion[] = [
   },
   ...localQuestions,
   ...devnetQuestions,
+  ...fundQuestions,
 ];
