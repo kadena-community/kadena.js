@@ -151,10 +151,6 @@ export class PactCommand
   public requestKey: string | undefined;
   public status: TransactionStatus;
   public nonce: NonceType | undefined;
-  // public proof: IContPayload['proof'];
-  // public step: IContPayload['step'];
-  // public pactId: IContPayload['pactId'];
-  // public rollback: IContPayload['rollback'];
 
   public constructor() {
     this.code = '';
@@ -173,10 +169,6 @@ export class PactCommand
     this.requestKey = undefined;
     this.nonce = undefined;
     this.type = 'exec';
-    // this.proof = null;
-    // this.step = 1;
-    // this.pactId = '';
-    // this.rollback = false;
   }
 
   /**
@@ -249,18 +241,6 @@ export class PactCommand
       nonce: this.nonce,
     };
 
-    // if (this.type === 'cont') {
-    //   unsignedTransactionCommand.payload = {
-    //     cont: {
-    //       pactId: this.pactId,
-    //       step: this.step,
-    //       proof: this.proof,
-    //       rollback: this.rollback,
-    //       data: this.data,
-    //     },
-    //   };
-    // }
-
     // stringify command
     const cmd: string =
       this.cmd !== undefined
@@ -288,17 +268,6 @@ export class PactCommand
     this.data = data;
     return this;
   }
-
-  // public addContData(data: IContPayload): this {
-  //   this._unfinalizeTransaction();
-
-  //   this.type = 'cont';
-  //   this.pactId = data.pactId;
-  //   this.step = data.step;
-  //   this.proof = data.proof;
-  //   this.rollback = data.rollback;
-  //   return this;
-  // }
 
   /**
    * Sets the meta data for the PactCommand.
