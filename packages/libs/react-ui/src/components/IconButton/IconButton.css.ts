@@ -19,11 +19,11 @@ export const container = style([
     borderRadius: 'lg',
     cursor: 'pointer',
     size: 11,
+    border: 'none',
   }),
   {
     backgroundColor: fallbackVar(surfaceColor, 'transparent'),
     color: fallbackVar(highContrastColor, vars.colors.neutral5),
-    border: 0,
     transition: 'opacity .2s ease',
     selectors: {
       '&:hover': {
@@ -31,7 +31,7 @@ export const container = style([
       },
       '&:focus-visible': {
         outlineOffset: '2px',
-        outline: '2px solid $$svgColor',
+        outline: `2px solid ${highContrastColor}`,
       },
     },
   },

@@ -10,7 +10,7 @@ const meta: Meta<
     selectIcon: keyof typeof SystemIcon;
   } & IIconButtonProps
 > = {
-  title: 'IconButton',
+  title: 'Components/IconButton',
   argTypes: {
     onClick: { action: 'clicked' },
     selectIcon: {
@@ -52,20 +52,11 @@ export const Primary: Story = {
     selectIcon: 'Account',
     title: 'test title',
     color: 'default',
-    as: 'button',
   },
-  render: ({ selectIcon, onClick, title, color, as }) => {
+  render: ({ selectIcon, onClick, title, color }) => {
     const Icon = SystemIcon[selectIcon];
     return (
-      <>
-        <IconButton
-          as={as}
-          title={title}
-          onClick={onClick}
-          icon={Icon}
-          color={color}
-        />
-      </>
+      <IconButton title={title} onClick={onClick} icon={Icon} color={color} />
     );
   },
 };
