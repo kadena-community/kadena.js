@@ -6,15 +6,12 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
-    "declarationMap": false,
     "jsx": "preserve",
     "paths": {
       "@/*": ["./src/*"]
