@@ -4,6 +4,7 @@
 // In this module, we generate new functions by composing other functions. In order to allow TypeScript to automatically infer the types,
 // I had to disable these rules.
 
+import { IWrappedData } from './dataWrapper';
 import {
   $,
   asString,
@@ -24,7 +25,7 @@ import {
 } from './parser-utilities';
 
 // :string :object{schema-one} {kind:object,value:schema-one} | string
-const typeRule = seq(
+export const typeRule = seq(
   id(':'),
   oneOf(
     // types with interface/schema
@@ -63,7 +64,9 @@ const managed = oneOf(
 
 // .... (compose-capability CAP)
 const capabilityBody = seq(
-  maybe($('managed', managed)),
+  // TODO: fix the issue with typing here
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  maybe($('managed', managed) as IParser<IWrappedData<any, 'managed'>>),
   repeat(
     $('composeCapabilities', seq(id('compose-capability'), id('('), $(atom))),
     skipToken,
@@ -131,9 +134,12 @@ const implementsRule = block(
   ),
 );
 
+export const defun = method('defun', functionBody);
+export const defcap = method('defcap', capabilityBody);
+
 // (module name governance @doc "doc" ... )
 // (interface name @doc "doc" ... )
-const moduleRule = block(
+export const moduleRule = block(
   oneOf(
     seq(
       $('kind', id('module') as IParser<string>),
@@ -146,8 +152,8 @@ const moduleRule = block(
   maybe($('doc', str)),
   maybe(seq(id('@model'), id('['), repeat(block()), id(']'))),
   repeat(
-    $('functions', method('defun', functionBody)),
-    $('capabilities', method('defcap', capabilityBody)),
+    $('functions', defun),
+    $('capabilities', defcap),
     $('usedModules', use),
     $('usedInterface', implementsRule),
     $('schemas', schema),
