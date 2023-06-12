@@ -23,7 +23,6 @@ const Home: FC = () => {
       icon: Chain,
       title: t('Cross Chain Transfer Tracker'),
       href: '/cross-chain-transfer-tracker',
-      // title: t('Transfer'),
     },
     {
       icon: Chain,

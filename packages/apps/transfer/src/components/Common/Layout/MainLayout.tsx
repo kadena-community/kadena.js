@@ -36,19 +36,19 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
           <StyledLogoTextContainer>
             <KLogoComponent width="100px" />
             <StyledHeaderText>
-              <StyledTextBold>K:Transfer</StyledTextBold>
+              <StyledTextBold>{t('K:Transfer')}</StyledTextBold>
               <Select
-                leadingText="Network"
+                leadingText={t('Network')}
                 onChange={(e) => setNetwork(e.target.value as Network)}
                 value={network}
               >
-                <StyledOption value="Mainnet">Mainnet</StyledOption>
-                <StyledOption value="Testnet">Testnet</StyledOption>
+                <StyledOption value="Mainnet">{t('Mainnet')}</StyledOption>
+                <StyledOption value="Testnet">{t('Testnet')}</StyledOption>
               </Select>
             </StyledHeaderText>
           </StyledLogoTextContainer>
           <StyledWalletNotConnected>
-            <p>Connect your wallet</p>
+            <p>{t('Connect your wallet')}</p>
             <StyledIconImage width={'40px'} height={'40px'} />
           </StyledWalletNotConnected>
         </StyledHeaderLogoWalletContent>
@@ -56,7 +56,7 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
         <StyledTitleContainer>
           <StyledBack href={'/'}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
-            <span>Back</span>
+            <span>{t('Back')}</span>
           </StyledBack>
           <StyledTitle>{title}</StyledTitle>
         </StyledTitleContainer>
