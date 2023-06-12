@@ -1,5 +1,7 @@
-import type { MetaData } from '@7-docs/edge';
 import { getCompletionHandler, pinecone } from '@7-docs/edge';
+import type { MetaData } from '@7-docs/shared';
+
+type f = Promise<MetaData[]>;
 
 const namespace = 'kda-docs';
 
