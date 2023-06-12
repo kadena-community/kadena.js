@@ -56,5 +56,10 @@
   "Get Code": "Get Code",
   "Status": "Status",
   "K:Transfer": "K:Transfer",
-  "Kadena Testnet": "Kadena Testnet"
+  "Kadena Testnet": "Kadena Testnet",
+  "Cross Chain Transfer Tracker": "Cross Chain Transfer Tracker",
+  "Advanced options": "Advanced options",
+  "Mainnet": "Mainnet",
+  "Testnet": "Testnet",
+  "Cross Chain Transfers": "Cross Chain Transfers"
 }

@@ -20,19 +20,19 @@ const Home: FC = () => {
 
   const transferMenu = [
     {
-      icon: Account,
-      title: t('Check account balance'),
-      href: '/check-balance',
+      icon: Chain,
+      title: t('Cross Chain Transfer Tracker'),
+      href: '/transfer/cross-chain-transfer-tracker',
     },
     {
       icon: Chain,
-      title: t('Transfer'),
-      href: '/coin-transfer',
+      title: t('Cross Chain Transfer Finisher'),
+      href: '/transfer/cross-chain-transfer-finisher',
     },
     {
       icon: Chain,
       title: t('Module explorer'),
-      href: '/module-explorer',
+      href: '/transfer/module-explorer',
     },
   ];
 
@@ -54,15 +54,7 @@ const Home: FC = () => {
       <StyledSmallLogo width="65px" />
       <StyledHomeContentContainer>
         <StyledHomeContent>
-          <StyledHomeTitle>{t('Kadena Transfer')}</StyledHomeTitle>
-          <StyledHomeButton onClick={downloadKeyPairToBrowser}>
-            <StyledIconBox>
-              <Key width="40px" height="40px" />
-            </StyledIconBox>
-            <StyledLinkText>
-              {t('Generate KeyPair (save to file)')}
-            </StyledLinkText>
-          </StyledHomeButton>
+          <StyledHomeTitle>{t('Cross Chain Transfers')}</StyledHomeTitle>
           {transferMenu.map((item) => (
             <StyledHomeLink key={`item-${item.title}`} href={item.href}>
               <StyledIconBox>

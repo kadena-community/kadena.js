@@ -3,12 +3,17 @@ import { Button, TextField } from '@kadena/react-components';
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
 import dynamic from 'next/dynamic';
-
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 
-import { Select } from '@/components/Global';
+import { Select, SidebarMenu } from '../../../components/Global';
+import {
+  type ModuleResult,
+  describeModule,
+} from '../../../services/modules/describe-module';
+import { convertIntToChainId } from '../../../services/utils/utils';
+
 import {
   StyledAccountForm,
   StyledCodeViewerContainer,
@@ -19,12 +24,8 @@ import {
   StyledSidebar,
   StyledTotalChunk,
   StyledTotalContainer,
-} from '@/pages/module-explorer/styles';
-import {
-  type ModuleResult,
-  describeModule,
-} from '@/services/modules/describe-module';
-import { convertIntToChainId } from '@/services/utils/utils';
+} from './styles';
+
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
@@ -47,6 +48,7 @@ const GetCode: FC = () => {
         convertIntToChainId(moduleChain),
         networkdId,
       );
+      console.log(data.code);
 
       setResults(data);
     } catch (e) {
@@ -69,7 +71,8 @@ const GetCode: FC = () => {
   return (
     <MainLayout title={t('Kadena Module Explorer')}>
       <StyledMainContent>
-        <StyledSidebar />
+        <SidebarMenu />
+
         <StyledForm onSubmit={getCode}>
           <StyledAccountForm>
             <Select
@@ -109,15 +112,15 @@ const GetCode: FC = () => {
             </StyledTotalContainer>
           </StyledResultContainer>
         ) : null}
-
-        {results.code ? (
-          <StyledResultContainer>
-            <StyledCodeViewerContainer>
-              <AceViewer code={results.code}></AceViewer>
-            </StyledCodeViewerContainer>
-          </StyledResultContainer>
-        ) : null}
       </StyledMainContent>
+
+      {results.code ? (
+        <StyledResultContainer>
+          <StyledCodeViewerContainer>
+            <AceViewer code={results.code}></AceViewer>
+          </StyledCodeViewerContainer>
+        </StyledResultContainer>
+      ) : null}
     </MainLayout>
   );
 };
