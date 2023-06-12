@@ -16,7 +16,7 @@ const NewFaucetPage: NextPageWithLayout = (props) => {
     <>
       <Notification
         title="Before you start"
-        body='Generate a key pair by visiting this <a href="#"><strong>webpage</strong></a> or by downloading a <a href="#"><strong>wallet<strong></a>'
+        body='Generate a key pair by visiting this <a href="#"><strong>webpage</strong></a> or by downloading a <a href="#"><strong>wallet</strong></a>'
       />
       <StyledContainer className="grid grid-cols-1 divide-y">
         <StyledSection>

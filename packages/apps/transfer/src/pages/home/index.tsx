@@ -40,12 +40,12 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: '/',
+      href: '/faucet/existing',
     },
     {
       icon: Chain,
       title: t('New account'),
-      href: '/',
+      href: '/faucet/new',
     },
   ];
 
