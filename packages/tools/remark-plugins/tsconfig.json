@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2020"],
+    "module": "node16",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2020"
+  },
+  "include": ["**/*.js"],
+  "exclude": ["node_modules/"]
+}
