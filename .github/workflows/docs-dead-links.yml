@@ -1,6 +1,9 @@
 name: Check Docs for deadlinks in MD files
 
-on: push
+on:
+  push:
+    paths:
+      - packages/apps/kadena-docs/*/**
 
 jobs:
   markdown-link-check:
