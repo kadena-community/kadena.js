@@ -1,9 +1,5 @@
 import { Button, TextField } from '@kadena/react-components';
 
-import MainLayout from '../../../components/Common/Layout/MainLayout';
-import { SidebarMenu } from '../../../components/Global';
-import { useAppContext } from '../../../context/app-context';
-
 import {
   StyledAccountForm,
   StyledCheckbox,
@@ -15,6 +11,9 @@ import {
   StyledToggleContainer,
 } from './styles';
 
+import MainLayout from '@/components/Common/Layout/MainLayout';
+import { SidebarMenu } from '@/components/Global';
+import { useAppContext } from '@/context/app-context';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 

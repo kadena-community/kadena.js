@@ -1,13 +1,9 @@
 import { Button, TextField } from '@kadena/react-components';
 
-import MainLayout from '../../../components/Common/Layout/MainLayout';
-import {
-  StyledOption,
-  StyledSelect,
-} from '../../../components/Global/Select/styles';
-
+import MainLayout from '@/components/Common/Layout/MainLayout';
+import { StyledOption, StyledSelect } from '@/components/Global/Select/styles';
 import dynamic from 'next/dynamic';
-const AceViewer = dynamic(import('../../../components/Global/Ace'), {
+const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 

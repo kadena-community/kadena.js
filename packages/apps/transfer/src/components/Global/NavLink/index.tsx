@@ -22,9 +22,18 @@ export const NavLink = ({
   }
 
   return (
-    <StyledNavItem href={href} {...props}>
+    <StyledNavItem
+      href={href}
+      className={`${props} ${isActive ? 'active' : ''}`}
+      {...props}
+    >
       <StyledNavItemIcon>K:</StyledNavItemIcon>
-      <StyledNavItemText {...props}>{children}</StyledNavItemText>
+      <StyledNavItemText
+        className={`${props} ${isActive ? 'active' : ''}`}
+        {...props}
+      >
+        {children}
+      </StyledNavItemText>
     </StyledNavItem>
   );
 };
