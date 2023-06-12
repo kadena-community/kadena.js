@@ -15,8 +15,6 @@ export const breakpoints = {
 const systemProperties = defineProperties({
   properties: {
     fontFamily: vars.fonts,
-    fontSize: vars.fontSizes,
-    fontWeight: vars.fontWeights,
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
@@ -31,6 +29,7 @@ const systemProperties = defineProperties({
     flexGrow: [0, 1],
     zIndex: [-1, 0, 1],
     border: ['none'],
+    textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
   },
 });
 
@@ -70,7 +69,7 @@ const responsiveProperties = defineProperties({
       'space-around',
       'space-between',
     ],
-    alignItems: ['flex-start', 'center', 'flex-end'],
+    alignItems: ['flex-start', 'center', 'flex-end', 'stretch'],
     paddingTop: vars.sizes,
     paddingBottom: vars.sizes,
     paddingLeft: vars.sizes,
@@ -79,7 +78,7 @@ const responsiveProperties = defineProperties({
     marginBottom: vars.sizes,
     marginLeft: vars.sizes,
     marginRight: vars.sizes,
-    width: { ...vars.sizes, '100%': '100%' },
+    width: { ...vars.sizes, '100%': '100%', 'max-content': 'max-content' },
     height: vars.sizes,
     gap: vars.sizes,
     overflow: ['hidden'],
@@ -87,6 +86,8 @@ const responsiveProperties = defineProperties({
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],
     minWidth: [0],
+    fontSize: vars.fontSizes,
+    fontWeight: vars.fontWeights,
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],

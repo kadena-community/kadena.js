@@ -7,6 +7,7 @@ import { AlertCircleOutline as AlertCircleOutlineSvg } from './svgs/AlertCircleO
 import { Application as ApplicationSvg } from './svgs/Application';
 import { ApplicationBrackets as ApplicationBracketsSvg } from './svgs/ApplicationBrackets';
 import { ApplicationCogOutline as ApplicationCogOutlineSvg } from './svgs/ApplicationCogOutline';
+import { At as AtSvg } from './svgs/At';
 import { Backburger as BackburgerSvg } from './svgs/Backburger';
 import { BadgeAccount as BadgeAccountSvg } from './svgs/BadgeAccount';
 import { Bell as BellSvg } from './svgs/Bell';
@@ -71,6 +72,7 @@ export const AlertCircleOutline = IconWrapper(AlertCircleOutlineSvg);
 export const Application = IconWrapper(ApplicationSvg);
 export const ApplicationBrackets = IconWrapper(ApplicationBracketsSvg);
 export const ApplicationCogOutline = IconWrapper(ApplicationCogOutlineSvg);
+export const At = IconWrapper(AtSvg);
 export const Backburger = IconWrapper(BackburgerSvg);
 export const BadgeAccount = IconWrapper(BadgeAccountSvg);
 export const Bell = IconWrapper(BellSvg);

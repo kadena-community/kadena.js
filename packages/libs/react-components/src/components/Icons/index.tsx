@@ -8,6 +8,7 @@ import { AlertCircleOutline } from './svgs/AlertCircleOutline';
 import { Application } from './svgs/Application';
 import { ApplicationBrackets } from './svgs/ApplicationBrackets';
 import { ApplicationCogOutline } from './svgs/ApplicationCogOutline';
+import { At } from './svgs/At';
 import { Backburger } from './svgs/Backburger';
 import { BadgeAccount } from './svgs/BadgeAccount';
 import { Bell } from './svgs/Bell';
@@ -99,6 +100,7 @@ export const SystemIcons = {
   Application: IconWrapper(Application),
   ApplicationBrackets: IconWrapper(ApplicationBrackets),
   ApplicationCogOutline: IconWrapper(ApplicationCogOutline),
+  At: IconWrapper(At),
   Backburger: IconWrapper(Backburger),
   BadgeAccount: IconWrapper(BadgeAccount),
   Bell: IconWrapper(Bell),

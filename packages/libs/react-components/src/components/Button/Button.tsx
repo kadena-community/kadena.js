@@ -18,6 +18,7 @@ export interface IButtonProps
   children: React.ReactNode;
   title: string;
   disabled?: boolean;
+  target?: string;
 }
 
 export const Button: FC<IButtonProps> = ({
