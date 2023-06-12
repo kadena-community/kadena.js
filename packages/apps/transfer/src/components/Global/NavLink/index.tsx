@@ -25,13 +25,9 @@ export const NavLink = ({
     <StyledNavItem
       href={href}
       className={`${props} ${isActive ? 'active' : ''}`}
-      {...props}
     >
       <StyledNavItemIcon>K:</StyledNavItemIcon>
-      <StyledNavItemText
-        className={`${props} ${isActive ? 'active' : ''}`}
-        {...props}
-      >
+      <StyledNavItemText className={`${props} ${isActive ? 'active' : ''}`}>
         {children}
       </StyledNavItemText>
     </StyledNavItem>
