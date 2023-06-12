@@ -2,16 +2,17 @@ import { StyledNavItem, StyledNavItemIcon, StyledNavItemText } from './styles';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 export const NavLink = ({
   href,
   children,
+  className,
   ...props
 }: {
   href: string;
-  children: string;
-  props?: any;
+  children: ReactNode;
+  className?: string;
 }) => {
   const { pathname } = useRouter();
   const isActive = pathname === href;
@@ -19,10 +20,11 @@ export const NavLink = ({
   return (
     <StyledNavItem
       href={href}
-      className={`${props} ${isActive ? 'active' : ''}`}
+      className={`${className} ${isActive ? 'active' : ''}`}
+      {...props}
     >
       <StyledNavItemIcon>K:</StyledNavItemIcon>
-      <StyledNavItemText className={`${props} ${isActive ? 'active' : ''}`}>
+      <StyledNavItemText className={isActive ? 'active' : ''}>
         {children}
       </StyledNavItemText>
     </StyledNavItem>
