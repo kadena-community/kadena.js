@@ -2,6 +2,7 @@ import { NavLink } from '../NavLink';
 
 import { StyledSidebar } from './styles';
 
+import routes from '@/constants/routes';
 import { Account, Chain } from '@/resources/svg/generated';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -19,29 +20,29 @@ export const SidebarMenu: FC = (props) => {
       {
         icon: Chain,
         title: t('Cross Chain Transfer Tracker'),
-        href: '/transfer/cross-chain-transfer-tracker',
+        href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
       },
       {
         icon: Chain,
         title: t('Cross Chain Transfer Finisher'),
-        href: '/transfer/cross-chain-transfer-finisher',
+        href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
       {
         icon: Chain,
         title: t('Module explorer'),
-        href: '/transfer/module-explorer',
+        href: routes.MODULE_EXPLORER,
       },
     ],
     faucet: [
       {
         icon: Account,
         title: t('Existing account'),
-        href: '/',
+        href: routes.HOME,
       },
       {
         icon: Chain,
         title: t('New account'),
-        href: '/',
+        href: routes.HOME,
       },
     ],
   };
