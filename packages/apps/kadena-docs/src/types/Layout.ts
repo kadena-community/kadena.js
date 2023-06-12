@@ -25,6 +25,10 @@ export interface IPageMeta {
   editLink: string;
   lastModifiedDate?: Date;
   icon?: ProductIconNames;
+  navigation: {
+    previous?: string;
+    next?: string;
+  };
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
