@@ -1,7 +1,7 @@
 import type { MetaData } from '@7-docs/edge';
 import { getCompletionHandler, pinecone } from '@7-docs/edge';
 
-const namespace = 'kadena';
+const namespace = 'kda-docs';
 
 export const prompt = `Context: {CONTEXT}
 
