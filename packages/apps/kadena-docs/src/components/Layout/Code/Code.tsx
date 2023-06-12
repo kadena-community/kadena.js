@@ -14,14 +14,15 @@ import React, { FC } from 'react';
 export const Code: FC<ILayout> = ({
   children,
   isAsideOpen,
-  filenameForEdit,
+  editLink,
+  navigation,
 }) => {
   return (
     <>
       <Content id="maincontent">
         <Article>
           {children}
-          <BottomPageSection filenameForEdit={filenameForEdit} />
+          <BottomPageSection editLink={editLink} navigation={navigation} />
         </Article>
       </Content>
       <CodeBackground isOpen={isAsideOpen} />
