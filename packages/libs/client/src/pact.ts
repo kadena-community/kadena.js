@@ -17,6 +17,7 @@ import {
   ISignatureJson,
   IUnsignedCommand,
   PactValue,
+  Type,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
@@ -146,7 +147,7 @@ export class PactCommand
   //         ICommandBuilder<Record<string, unknown>>)[]
   //     ) => Promise<this>)
   //   | undefined;
-  public type: 'exec' = 'exec';
+  public type: Type;
   public cmd: string | undefined;
   public requestKey: string | undefined;
   public status: TransactionStatus;

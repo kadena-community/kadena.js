@@ -1,30 +1,8 @@
-import {
-  ChainwebNetworkId,
-  createSendRequest,
-  IPollResponse,
-  local,
-  poll,
-  send,
-  SendResponse,
-} from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { ensureSignedCommand } from '@kadena/pactjs';
-import {
-  ChainId,
-  ICap,
-  ICommand,
-  ICommandPayload,
-  ISignatureJson,
-  IUnsignedCommand,
-  PactValue,
-} from '@kadena/types';
+import { ChainId, ICommandPayload, IUnsignedCommand } from '@kadena/types';
 
 import { IContCommand } from './interfaces/IPactCommand';
-import { IPact, NonceType } from '.';
-
-import debug, { Debugger } from 'debug';
-
-const log: Debugger = debug('pactjs:proxy');
+import { PactCommand } from '.';
 
 /**
  * @alpha
@@ -34,55 +12,11 @@ export interface IContCommandBuilder<
   TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps],
 > {
   createCommand(): IUnsignedCommand;
-  addData: (
-    data: IContCommand['data'],
-  ) => IContCommandBuilder<TCaps, TArgs> & IContCommand;
-  setMeta: (
-    publicMeta: Partial<IContCommand['publicMeta']> & {
-      sender: IContCommand['publicMeta']['sender'];
-    },
-    networkId?: IContCommand['networkId'],
-  ) => IContCommandBuilder<TCaps, TArgs> & IContCommand;
-  addCap<TCap extends keyof TCaps>(
-    caps: TCap,
-    signer: string,
-    ...args: TCaps[TCap]
-  ): IContCommandBuilder<TCaps, TArgs> & IContCommand;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  local(apiHost: string, options?: any): Promise<any>;
-  send(apiHost: string): Promise<SendResponse>;
-  pollUntil(
-    apiHost: string,
-    options?: {
-      interval?: number;
-      timeout?: number;
-      onPoll?: (
-        transaction: IContCommand &
-          IContCommandBuilder<Record<string, unknown>>,
-        pollRequest: Promise<IPollResponse>,
-      ) => void;
-    },
-  ): Promise<this>;
-  poll(apiHost: string): Promise<IPollResponse>;
-  addSignatures(
-    ...sig: {
-      pubKey: string;
-      sig: string;
-    }[]
-  ): IContCommandBuilder<TCaps, TArgs> & IContCommand;
-  setNonceCreator(
-    nonceCreator: (t: IContCommand, dateInMs: number) => NonceType,
-  ): IContCommandBuilder<TCaps, TArgs> & IContCommand;
-  status: string;
+  proof: string;
+  step: number;
+  pactId: string;
+  rollback: boolean;
 }
-
-type TransactionStatus =
-  | 'malleable'
-  | 'non-malleable'
-  | 'pending'
-  | 'success'
-  | 'failure'
-  | 'timeout';
 
 /**
  * Used to build Command objects modularly by adding pact code, environment data, capabilities, and sigs
@@ -93,99 +27,27 @@ type TransactionStatus =
  * @alpha
  */
 export class ContCommand
+  extends PactCommand
   implements IContCommand, IContCommandBuilder<Record<string, unknown>>
 {
-  public data: Record<string, unknown>;
-  public publicMeta: {
-    chainId: ChainId;
-    sender: string;
-    gasLimit: number;
-    gasPrice: number;
-    ttl: number;
-  };
-  public networkId: ChainwebNetworkId;
-  public signers: {
-    pubKey: string;
-    caps: {
-      name: string;
-      args: ICap['args'];
-    }[];
-  }[];
-  public sigs: (ISignatureJson | undefined)[];
-  public type: 'cont' = 'cont';
-  public cmd: string | undefined;
-  public nonce: NonceType | undefined;
   public proof: string;
   public step: number;
   public pactId: string;
   public rollback: boolean;
-  public status: TransactionStatus;
-  public requestKey: string | undefined;
 
-  public constructor() {
-    this.data = {};
-    this.publicMeta = {
-      chainId: '1',
-      gasLimit: 2500,
-      gasPrice: 1.0e-8,
-      sender: '',
-      ttl: 8 * 60 * 60, // 8 hours,
-    };
-    this.networkId = 'testnet04';
-    this.signers = [];
-    this.sigs = [];
-    this.status = 'malleable';
-    this.nonce = undefined;
+  public constructor(
+    proof: string,
+    step: number,
+    pactId: string,
+    rollback: boolean,
+  ) {
+    super();
     this.type = 'cont';
-    this.proof = '';
-    this.step = 1;
-    this.pactId = '';
-    this.rollback = false;
+    this.proof = proof;
+    this.step = step;
+    this.pactId = pactId;
+    this.rollback = rollback;
   }
-
-  /**
-   * If a non-malleable (finalized) transaction gets altered after
-   * running createCommand, we need to recalculate the hash and
-   * remove the signatures as these do not match with the transaction anymore.
-   * Each signature in this.sigs will be replaced with undefined so the length
-   * of the array matches with this.signers.
-   */
-  private _unfinalizeTransaction(): void {
-    this.cmd = undefined;
-    this.sigs = this.sigs.map(() => undefined);
-    this.status = 'malleable';
-  }
-
-  /**
-   * A function that is generated based on IContCommand and the creation date.
-   * This is called during execution of `createCommand()` and adds `nonce` to
-   * the command.
-   * @param t - transaction
-   * @param dateInMs - date in milliseconds from epoch
-   * @returns string that will be created during `createCommand()`
-   */
-  public nonceCreator(t: IContCommand, dateInMs: number): NonceType {
-    return 'kjs ' + new Date(dateInMs).toISOString();
-  }
-
-  /**
-   * Sets the function that creates the nonce for the transaction.
-   * This nonceCreater function gets called in `createCommand()`.
-   * @param nonceCreator
-   *   - `t` - transaction
-   *   - `dateInMs` - date in milliseconds from epoch
-   *
-   * @returns the transaction object
-   * @alpha
-   */
-  public setNonceCreator(
-    nonceCreator: (t: IContCommand, dateInMs: number) => NonceType,
-  ): this {
-    this.nonceCreator = nonceCreator;
-
-    return this;
-  }
-
   /**
    * Create a command that's compatible with the blockchain
    * @returns a command that can be send to the blockchain
@@ -230,248 +92,4 @@ export class ContCommand
     this.status = 'non-malleable';
     return command;
   }
-
-  public addData(data: IContCommand['data']): this {
-    this._unfinalizeTransaction();
-
-    this.data = data;
-    return this;
-  }
-
-  /**
-   * Sets the proof for the PactCommand.
-   * @param proof - undocumented
-   */
-  public setProof(proof: IContCommand['proof']): this {
-    this._unfinalizeTransaction();
-
-    this.proof = proof;
-    return this;
-  }
-
-  /**
-   * Sets the step for the ContPactCommand.
-   * @param step - undocumented
-   */
-  public setStep(step: IContCommand['step']): this {
-    this._unfinalizeTransaction();
-
-    this.step = step;
-    return this;
-  }
-
-  /**
-   * Sets the pactId for the ContPactCommand.
-   * @param pactId - undocumented
-   */
-  public setPactId(pactId: IContCommand['pactId']): this {
-    this._unfinalizeTransaction();
-
-    this.pactId = pactId;
-    return this;
-  }
-
-  /**
-   * Sets the rollback for the ContPactCommand.
-   * @param rollback - undocumented
-   */
-  public setRollback(rollback: IContCommand['rollback']): this {
-    this._unfinalizeTransaction();
-
-    this.rollback = rollback;
-    return this;
-  }
-
-  /**
-   * Sets the meta data for the ContPactCommand.
-   * Also used to change the networkId the command is sent to when local/send
-   * are used.
-   * @param publicMeta - undocumented
-   * @param networkId - undocumented
-   */
-  public setMeta(
-    publicMeta: Partial<IContCommand['publicMeta']>,
-    networkId: IContCommand['networkId'] = 'mainnet01',
-  ): this {
-    this._unfinalizeTransaction();
-
-    this.publicMeta = Object.assign(this.publicMeta, publicMeta);
-    this.networkId = networkId;
-    return this;
-  }
-
-  /**
-   * Adds the given capability to the ContPactCommand for the signer.
-   * @param capability - The full reference to the pact capability, e.g. "coin.GAS"
-   * @param signer - The public key of the signer who needs the capability
-   * @param args - The arguments for the capability, e.g. ["sender", "receiver", 1.0]
-   */
-  public addCap<T extends Array<PactValue> = Array<PactValue>>(
-    capability: string,
-    signer: string,
-    ...args: T
-  ): this {
-    this._unfinalizeTransaction();
-
-    const signerIndex: number = this.signers.findIndex(
-      (s) => s.pubKey === signer,
-    );
-
-    if (signerIndex === -1) {
-      // signer not found
-      // push new signer to this.signers
-      this.signers.push({
-        pubKey: signer,
-        caps: [{ name: capability, args }],
-      });
-      // push undefined to make sure this.sigs matches the length (and position) of this.signers
-      this.sigs.push(undefined);
-    } else {
-      // add cap to existing signer
-      this.signers[signerIndex].caps.push({ name: capability, args });
-    }
-    return this;
-  }
-
-  /**
-   * Sends a transaction to the ApiHost /local to test the transaction
-   * (i.e. it is checked whether the signatures are complete)
-   * @param apiHost - the chainweb host where to send the transaction to
-   * @alpha
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public local(apiHost: string, options?: any): Promise<any> {
-    const command = this.createCommand();
-
-    log(`calling local with: ${JSON.stringify(command, null, 2)}`);
-    if (typeof options !== 'undefined') {
-      return local(command, apiHost, options);
-    } else {
-      return local(command, apiHost);
-    }
-  }
-
-  /**
-   * Checks if a transaction succeeded or failed by polling the apiHost at
-   * a given interval. Times out if it takes too long.
-   *
-   * @param apiHost - the chainweb host where to send the transaction to
-   * @param options
-   *   - `interval` - the amount of time in ms between the api calls (optional)
-   *   - `timeout` - the total time in ms after this function will time out (optional)
-   *   - `onPoll` - `(transaction, pollRequest) => void` a function that gets called before each poll request (optional)
-   *
-   * @returns the transaction object
-   * @alpha
-   */
-  public pollUntil(
-    apiHost: string,
-    options?: {
-      interval?: number;
-      timeout?: number;
-      onPoll?: (
-        transaction: IContCommand &
-          IContCommandBuilder<Record<string, unknown>>,
-        pollRequest: Promise<IPollResponse>,
-      ) => void;
-    },
-  ): Promise<this> {
-    if (this.requestKey === undefined) {
-      throw new Error('`requestKey` not found');
-    }
-
-    const {
-      interval = 5000,
-      timeout = 1000 * 60 * 3,
-      onPoll = () => {},
-    } = {
-      ...options,
-    };
-    const endTime = Date.now() + timeout;
-    this.status = 'pending';
-
-    return new Promise((resolve, reject) => {
-      const cancelTimeout = setTimeout(() => {
-        this.status = 'timeout';
-        reject('timeout');
-      }, timeout);
-
-      const poll = (): void => {
-        const pollRequest = this.poll(apiHost);
-        onPoll(this, pollRequest);
-
-        pollRequest
-          .then((result) => {
-            if (result[this.requestKey!]?.result.status === 'success') {
-              // resolve the Promise when we get a "success" response
-              this.status = 'success';
-              clearTimeout(cancelTimeout);
-              resolve(this);
-            } else if (result[this.requestKey!]?.result.status === 'failure') {
-              // reject the Promise when we get a "failure" response
-              this.status = 'failure';
-              clearTimeout(cancelTimeout);
-              reject(this);
-            } else if (Date.now() < endTime) {
-              // no "success" response (yet), try again in `interval` seconds
-              setTimeout(poll, interval);
-            } else {
-              // took longer than the specified `timeout`, reject the Promise
-              this.status = 'timeout';
-              clearTimeout(cancelTimeout);
-              reject(result);
-            }
-          })
-          .catch((err) => console.log('this.poll failed. Error:', err));
-      };
-      poll();
-    });
-  }
-
-  /**
-   * Sends a transaction to the ApiHost /send when the transaction is finalized
-   * (i.e. it is checked whether the signatures are complete)
-   * @param apiHost - the chainweb host where to send the transaction to
-   * @alpha
-   */
-  public async send(apiHost: string): Promise<SendResponse> {
-    const command: ICommand = ensureSignedCommand(this.createCommand());
-    const sendResponse = await send(createSendRequest([command]), apiHost);
-    this.requestKey = sendResponse.requestKeys[0].toString();
-    return sendResponse;
-  }
-
-  public poll(apiHost: string): Promise<IPollResponse> {
-    if (this.requestKey === undefined) {
-      throw new Error(
-        '`requestKey` not found' +
-          '\nThis request might not be sent yet, or it possibly failed.',
-      );
-    }
-
-    return poll({ requestKeys: [this.requestKey] }, apiHost);
-  }
-
-  public addSignatures(...sigs: { pubKey: string; sig: string }[]): this {
-    sigs.forEach(({ pubKey, sig }) => {
-      const foundSignerIndex = this.signers.findIndex(
-        (signer) => signer.pubKey === pubKey,
-      );
-      if (foundSignerIndex === -1) {
-        throw new Error('Cannot add signature, public key not present');
-      }
-      this.sigs[foundSignerIndex] = { sig };
-    });
-    return this;
-  }
-
-  // public setSigner(
-  //   fn: (
-  //     ...transactions: (IContCommand &
-  //       ICommandBuilder<Record<string, unknown>>)[]
-  //   ) => Promise<this>,
-  // ): this {
-  //   this.signer = fn;
-  //   return this;
-  // }
 }
