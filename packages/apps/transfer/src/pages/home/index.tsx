@@ -10,6 +10,7 @@ import {
   StyledSmallLogo,
 } from './styles';
 
+import routes from '@/constants/routes';
 import { Account, Chain, Key } from '@/resources/svg/generated';
 import { downloadKeyPairToBrowser } from '@/services/key-pairs/key-pairs';
 import useTranslation from 'next-translate/useTranslation';
@@ -22,17 +23,17 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Check account balance'),
-      href: '/check-balance',
+      href: routes.CHECK_BALANCE,
     },
     {
       icon: Chain,
       title: t('Transfer'),
-      href: '/coin-transfer',
+      href: routes.COIN_TRANSFER,
     },
     {
       icon: Chain,
       title: t('Module explorer'),
-      href: '/module-explorer',
+      href: routes.MODULE_EXPLORER,
     },
   ];
 
@@ -40,12 +41,12 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: '/',
+      href: routes.HOME,
     },
     {
       icon: Chain,
       title: t('New account'),
-      href: '/',
+      href: routes.HOME,
     },
   ];
 

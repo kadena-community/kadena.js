@@ -2,6 +2,7 @@ import { Button, TextField } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { Option, Select } from '@/components/Global';
+import routes from '@/constants/routes';
 import {
   StyledAccountForm,
   StyledForm,
@@ -94,13 +95,13 @@ const CoinTransfer: FC = () => {
     <MainLayout title={t('Kadena Coin Transfer')}>
       <StyledMainContent>
         <StyledSidebar>
-          <StyledSelectedNavItem href="/coin-transfer">
+          <StyledSelectedNavItem href={routes.COIN_TRANSFER}>
             <StyledNavItemIcon>K:</StyledNavItemIcon>
             <StyledNavItemSelectedText>
               {t('Transfer')}
             </StyledNavItemSelectedText>
           </StyledSelectedNavItem>
-          <StyledNavItem href="/coin-transfer/cross-chain-transfer-finisher">
+          <StyledNavItem href={routes.CROSS_CHAIN_TRANSFER_FINISHER}>
             <StyledNavItemIcon>K:</StyledNavItemIcon>
             <StyledNavItemText>
               {t('Cross Chain Transfer Finisher')}

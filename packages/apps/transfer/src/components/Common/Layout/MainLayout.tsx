@@ -14,6 +14,7 @@ import {
   StyledWalletNotConnected,
 } from './styles';
 
+import routes from '@/constants/routes';
 import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
@@ -44,7 +45,7 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
         </StyledHeaderLogoWalletContent>
 
         <StyledTitleContainer>
-          <StyledBack href={'/'}>
+          <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
             <span>{t('Back')}</span>
           </StyledBack>

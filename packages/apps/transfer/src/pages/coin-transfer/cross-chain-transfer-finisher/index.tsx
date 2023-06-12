@@ -17,6 +17,7 @@ import {
 } from './styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
+import routes from '@/constants/routes';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
@@ -39,11 +40,11 @@ const CoinTransfer: FC = () => {
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
         <StyledSidebar>
-          <StyledNavItem href="/coin-transfer">
+          <StyledNavItem href={routes.COIN_TRANSFER}>
             <StyledNavItemIcon>K:</StyledNavItemIcon>
             <StyledNavItemText>{t('Transfer')}</StyledNavItemText>
           </StyledNavItem>
-          <StyledSelectedNavItem href="/coin-transfer/cross-chain-transfer-finisher">
+          <StyledSelectedNavItem href={routes.CROSS_CHAIN_TRANSFER_FINISHER}>
             <StyledNavItemIcon>K:</StyledNavItemIcon>
             <StyledNavItemSelectedText>
               {t('Cross Chain Transfer Finisher')}
