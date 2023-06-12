@@ -16,3 +16,6 @@ jobs:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
           folder-path: 'packages/apps/kadena-docs/src/pages/docs'
+          file-extension:
+            - md
+            - mdx
