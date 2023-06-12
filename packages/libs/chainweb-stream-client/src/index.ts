@@ -18,7 +18,7 @@ import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
 
 export * from './types';
 
-const CLIENT_PROTOCOL_VERSION: string = '0.0.2';
+const CLIENT_PROTOCOL_VERSION: string = '0.0.3';
 
 const DEFAULT_CONFIRMATION_DEPTH: number = 6;
 const DEFAULT_CONNECT_TIMEOUT: number = 28_000;
@@ -111,15 +111,14 @@ class ChainwebStream extends EventEmitter {
    * Call to initialize connection
    */
   public connect = (): void => {
-    this._debug('connect');
     this._desiredState = ConnectionState.Connected;
-    this._eventSource = new EventSource(this._makeConnectionURL());
+    const connectionURL = this._makeConnectionURL();
+    this._debug('connect', { url: connectionURL });
+    this._eventSource = new EventSource(connectionURL);
     this._eventSource.onopen = this._handleConnect;
     this._eventSource.onerror = this._handleError;
     // reset & set custom connect timeout handler
-    if (this._connectTimer) {
-      clearTimeout(this._connectTimer);
-    }
+    this._clearConnectTimeout();
     this._connectTimer = setTimeout(
       () => this._handleError(new ConnectTimeoutError(this.connectTimeoutMs)),
       this.connectTimeoutMs,
@@ -166,12 +165,12 @@ class ChainwebStream extends EventEmitter {
       );
     }
     _eventSource.addEventListener('initial', this._handleInitial);
-    _eventSource.addEventListener('message', this._handleData);
+    _eventSource.addEventListener('heights', this._handleHeights);
     _eventSource.addEventListener('ping', this._resetHeartbeatTimeout);
+    // note: generic data handler for unlabelled event (not `event: message` unlike above)
+    _eventSource.addEventListener('message', this._handleData);
     this._resetHeartbeatTimeout();
-    if (this._connectTimer) {
-      clearTimeout(this._connectTimer);
-    }
+    this._clearConnectTimeout();
     this.emit(this._totalConnectionAttempts ? 'reconnect' : 'connect');
     this._totalConnectionAttempts += 1;
   };
@@ -189,10 +188,10 @@ class ChainwebStream extends EventEmitter {
     // close event source; crucial - chrome reconnects, firefox does not
     this._eventSource?.close();
 
-    // cancel connection timeout timer, if exists
-    if (this._connectTimer) {
-      clearTimeout(this._connectTimer);
-    }
+    // cancel connection timeout timer & heartbeat timeout timers, if they exists
+    this._clearConnectTimeout();
+
+    this._stopHeartbeatMonitor();
 
     const message = parseError(err);
 
@@ -234,6 +233,16 @@ class ChainwebStream extends EventEmitter {
     this._processData(data);
   };
 
+  private _handleHeights = (msg: MessageEvent<string>): void => {
+    const heights = JSON.parse(msg.data) as number[];
+
+    this._debug('_handleHeights');
+
+    this._updateLastHeight(heights);
+
+    this._resetHeartbeatTimeout();
+  };
+
   private _handleData = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
@@ -245,11 +254,7 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _processData(data: ITransaction[]): void {
-    this._lastHeight = data.reduce(
-      (highest, { height }) => (height > highest ? height : highest),
-      this._lastHeight ?? 0,
-    );
-
+    this._updateLastHeight(data);
     for (const element of data) {
       const {
         meta: { confirmations },
@@ -260,6 +265,23 @@ class ChainwebStream extends EventEmitter {
       } else {
         this.emit('unconfirmed', element);
       }
+    }
+  }
+
+  private _updateLastHeight(data: ITransaction[] | number[]) {
+    if (!data.length) {
+      return;
+    }
+
+    const heights = data.map((element: ITransaction | number) =>
+      typeof element === 'number' ? element : element.height,
+    );
+
+    const newLastHeight = Math.max(this._lastHeight ?? 0, ...heights);
+
+    if (newLastHeight !== this._lastHeight) {
+      this._lastHeight = newLastHeight;
+      this._debug('_updateLastHeight', { lastHeight: this._lastHeight });
     }
   }
 
@@ -343,6 +365,12 @@ class ChainwebStream extends EventEmitter {
     return true;
   }
 
+  private _clearConnectTimeout = (): void => {
+    if (this._connectTimer) {
+      clearTimeout(this._connectTimer);
+    }
+  };
+
   private _stopHeartbeatMonitor = (): void => {
     if (this._heartbeatTimer) {
       clearTimeout(this._heartbeatTimer);
@@ -372,12 +400,17 @@ class ChainwebStream extends EventEmitter {
     if (this.limit !== undefined) {
       urlParamArgs.push(['limit', String(this.limit)]);
     }
-    // TODO This reconnection strategy of -3 from last max height
+    // This reconnection strategy of last_height - conf_depth - 3
     // guarrantees that we will not miss events, but it also means
     // that confirmed transactions will be emitted more than once
+    // until we implement de duplication. 3 is the max chain height span
+    // for current chainweb chain count (20)
     // Discussion here: https://github.com/kadena-community/kadena.js/issues/275
     if (this._lastHeight !== undefined) {
-      urlParamArgs.push(['minHeight', String(this._lastHeight - 3)]);
+      urlParamArgs.push([
+        'minHeight',
+        String(this._lastHeight - this.confirmationDepth - 3),
+      ]);
     }
     if (urlParamArgs.length) {
       path += '?' + new URLSearchParams(urlParamArgs).toString();
