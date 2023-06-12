@@ -169,7 +169,8 @@ export const startQuestions: IQuestion[] = [
     name: 'startDevnet',
     type: 'execute',
     when: ({ task }: IAnswers) => {
-      if (Array.isArray(task)) return task?.includes('start');
+      if (Array.isArray(task))
+        return task?.includes('start') || task?.includes('setup');
       return false;
     },
     action: async () => {
@@ -185,9 +186,9 @@ export const startQuestions: IQuestion[] = [
     name: 'startDevnetL2',
     type: 'execute',
     when: ({ task }: IAnswers) => {
-      if (!Array.isArray(task)) return false;
-      if (!task?.includes('start')) return false;
-      return true;
+      if (Array.isArray(task))
+        return task?.includes('start') || task?.includes('setup');
+      return false;
     },
     action: async () => {
       const exitCode = await spawned(`ls ${process.env.HOME}/.devnet/l2`);

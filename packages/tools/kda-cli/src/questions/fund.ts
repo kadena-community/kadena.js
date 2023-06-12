@@ -15,25 +15,25 @@ import { IAnswers, IQuestion } from './questions.js';
 
 export const fundTemplate = ``;
 
+const fundCondition = ({ task }: IAnswers) => {
+  if (Array.isArray(task))
+    return task?.includes('fund') || task?.includes('setup');
+  return false;
+};
+
 export const fundQuestions: IQuestion[] = [
   {
     message: 'What account would you like to fund?',
     name: 'account',
     type: 'input',
-    when: ({ task }: IAnswers) => {
-      if (Array.isArray(task)) return task?.includes('fund');
-      return false;
-    },
+    when: fundCondition,
   },
   {
     message: 'On wich network would you like to fund the account?',
     name: 'network',
     type: 'input',
     defaultValue: 'fast-development',
-    when: ({ task }: IAnswers) => {
-      if (Array.isArray(task)) return task?.includes('fund');
-      return false;
-    },
+    when: fundCondition,
   },
   {
     message: 'On what chain would you like to fund the account?',
@@ -43,38 +43,26 @@ export const fundQuestions: IQuestion[] = [
       label: i.toString(),
       value: i.toString(),
     })),
-    when: ({ task }: IAnswers) => {
-      if (Array.isArray(task)) return task?.includes('fund');
-      return false;
-    },
+    when: fundCondition,
   },
   {
     message: 'What endpoint would you like to use?',
     name: 'endpoint',
     type: 'input',
     defaultValue: 'http://localhost:8080',
-    when: ({ task }: IAnswers) => {
-      if (Array.isArray(task)) return task?.includes('fund');
-      return false;
-    },
+    when: fundCondition,
   },
   {
     message: 'What public key would you like to use?',
     name: 'publicKey',
     type: 'input',
-    when: ({ task }: IAnswers) => {
-      if (Array.isArray(task)) return task?.includes('fund');
-      return false;
-    },
+    when: fundCondition,
   },
   {
     message: 'Funding devnet accounts...',
     name: 'fundDevnet',
     type: 'execute',
-    when: ({ account = '', chainId = '' }: IAnswers) => {
-      if (account === '' || chainId === '') return false;
-      return true;
-    },
+    when: fundCondition,
     action: async ({
       account,
       chainId,
@@ -90,7 +78,7 @@ export const fundQuestions: IQuestion[] = [
         typeof publicKey !== 'string'
       )
         return { success: false };
-      const command = await buildCommand(
+      await buildCommand(
         setTransferCreateCommand('sender00', account, 'ks', 100),
         setMeta({
           gasLimit: 1000,
@@ -128,7 +116,6 @@ export const fundQuestions: IQuestion[] = [
         send,
         listen,
       )({});
-      console.log('result', command);
       return { success: true };
     },
   },
