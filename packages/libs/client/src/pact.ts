@@ -495,6 +495,7 @@ const pactCreator = (): IPact => {
         const transaction: ContCommand = new ContCommand(
           ...(args as [string, number, string, boolean]),
         );
+        return transaction;
       }
       // when the expression is called, finalize the call
       // e.g.: `Pact.modules.coin.transfer(...someArgs)`
