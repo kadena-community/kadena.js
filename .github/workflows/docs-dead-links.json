@@ -1,0 +1,18 @@
+{
+  "ignorePatterns": [],
+  "replacementPatterns": [
+    {
+      "pattern": "^\\.(.+/)+([^\\.#]+)(#.*)?$",
+      "replacement": "packages/apps/kadena-docs/src/pages/docs/$1$2.mdx"
+    },
+    {
+      "pattern": "^/(.+/)+([^\\.#]+)(#.*)?$",
+      "replacement": "packages/apps/kadena-docs/src/pages/docs/$1$2.mdx"
+    },
+    {
+      "pattern": "^/(assets/.*)",
+      "replacement": "packages/apps/kadena-docs/public/$1"
+    }
+  ],
+  "aliveStatusCodes": [0, 429, 200, 203, 403]
+}

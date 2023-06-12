@@ -1,0 +1,15 @@
+name: Check Docs for deadlinks in MD files
+
+on: push
+
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          config-file: .github/workflows/markdown-link-check.json
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          folder-path: 'packages/apps/kadena-docs/src/pages/docs'
