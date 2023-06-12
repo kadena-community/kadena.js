@@ -97,39 +97,3 @@ export class ContCommand
     return command;
   }
 }
-
-const pactCreator = (): IPact => {
-  const transaction: PactCommand = new PactCommand();
-  const ThePact: IPact = new Proxy(function () {} as unknown as IPact, {
-    get(target: unknown, p: string): IPact {
-      log('get', p);
-      if (typeof p === 'string')
-        if (transaction.code.length !== 0) {
-          transaction.code += '.' + p;
-        } else {
-          transaction.code += p;
-        }
-      return ThePact;
-    },
-    apply(
-      target: unknown,
-      that: unknown,
-      args: Array<string | number | boolean>,
-    ) {
-      // when the expression is called, finalize the call
-      // e.g.: `Pact.modules.coin.transfer(...someArgs)`
-      log('apply', args);
-      transaction.code = createExp(transaction.code, ...args.map(parseType));
-      return transaction;
-    },
-  }) as IPact;
-  return ThePact;
-};
-/**
- * @alpha
- */
-export const Pact: IPact = {
-  get modules() {
-    return pactCreator();
-  },
-};
