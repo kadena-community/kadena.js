@@ -85,6 +85,7 @@ common/autoinstallers/*/.npmrc
 **/.rush/temp/
 **/.rush
 packages/*/*/temp
+rush-logs
 
 # Heft
 .heft

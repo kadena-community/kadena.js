@@ -27,3 +27,25 @@ export const StyledAccountForm = styled('div', {
 export const StyledFormButton = styled('div', {
   marginTop: '16px',
 });
+
+export const StyledToggleContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'row-reverse',
+});
+
+export const StyledFieldCheckbox = styled('div', {
+  width: '30%',
+  display: 'flex',
+  flexDirection: 'row',
+});
+export const StyledCheckbox = styled('input', {
+  width: '20px',
+});
+
+export const StyledCheckboxLabel = styled('label', {
+  fontSize: '1rem',
+  marginLeft: '12px',
+  color: 'white',
+  fontWeight: '500',
+  lineHeight: '17px',
+});

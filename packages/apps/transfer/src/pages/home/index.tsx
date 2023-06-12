@@ -1,5 +1,4 @@
 import {
-  StyledHomeButton,
   StyledHomeContainer,
   StyledHomeContent,
   StyledHomeContentContainer,
@@ -10,8 +9,8 @@ import {
   StyledSmallLogo,
 } from './styles';
 
-import { Account, Chain, Key } from '@/resources/svg/generated';
-import { downloadKeyPairToBrowser } from '@/services/key-pairs/key-pairs';
+import routes from '@/constants/routes';
+import { Account, Chain } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
 
@@ -20,19 +19,19 @@ const Home: FC = () => {
 
   const transferMenu = [
     {
-      icon: Account,
-      title: t('Check account balance'),
-      href: '/check-balance',
+      icon: Chain,
+      title: t('Cross Chain Transfer Tracker'),
+      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
       icon: Chain,
-      title: t('Transfer'),
-      href: '/coin-transfer',
+      title: t('Cross Chain Transfer Finisher'),
+      href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
     },
     {
       icon: Chain,
       title: t('Module explorer'),
-      href: '/module-explorer',
+      href: routes.MODULE_EXPLORER,
     },
   ];
 
@@ -40,12 +39,12 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: '/faucet/existing',
+      href: routes.FAUCET_EXISTING,
     },
     {
       icon: Chain,
       title: t('New account'),
-      href: '/faucet/new',
+      href: routes.FAUCET_NEW,
     },
   ];
 
@@ -54,15 +53,7 @@ const Home: FC = () => {
       <StyledSmallLogo width="65px" />
       <StyledHomeContentContainer>
         <StyledHomeContent>
-          <StyledHomeTitle>{t('Kadena Transfer')}</StyledHomeTitle>
-          <StyledHomeButton onClick={downloadKeyPairToBrowser}>
-            <StyledIconBox>
-              <Key width="40px" height="40px" />
-            </StyledIconBox>
-            <StyledLinkText>
-              {t('Generate KeyPair (save to file)')}
-            </StyledLinkText>
-          </StyledHomeButton>
+          <StyledHomeTitle>{t('Cross Chain Transfers')}</StyledHomeTitle>
           {transferMenu.map((item) => (
             <StyledHomeLink key={`item-${item.title}`} href={item.href}>
               <StyledIconBox>

@@ -8,12 +8,15 @@ import {
   StyledLogoTextContainer,
   StyledMainLayout,
   StyledTextBold,
-  StyledTextNormal,
   StyledTitle,
   StyledTitleContainer,
   StyledWalletNotConnected,
 } from './styles';
 
+import { Select } from '@/components/Global';
+import { StyledOption } from '@/components/Global/Select/styles';
+import routes from '@/constants/routes';
+import { Network, useAppContext } from '@/context/app-context';
 import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
@@ -24,6 +27,7 @@ interface IProps {
 }
 
 export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
+  const { network, setNetwork } = useAppContext();
   const { t } = useTranslation('common');
 
   return (
@@ -34,7 +38,14 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
             <KLogoComponent width="100px" />
             <StyledHeaderText>
               <StyledTextBold>{t('K:Transfer')}</StyledTextBold>
-              <StyledTextNormal>{t('Kadena Testnet')}</StyledTextNormal>
+              <Select
+                leadingText={t('Network')}
+                onChange={(e) => setNetwork(e.target.value as Network)}
+                value={network}
+              >
+                <StyledOption value="Mainnet">{t('Mainnet')}</StyledOption>
+                <StyledOption value="Testnet">{t('Testnet')}</StyledOption>
+              </Select>
             </StyledHeaderText>
           </StyledLogoTextContainer>
           <StyledWalletNotConnected>
@@ -44,7 +55,7 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
         </StyledHeaderLogoWalletContent>
 
         <StyledTitleContainer>
-          <StyledBack href={'/'}>
+          <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
             <span>{t('Back')}</span>
           </StyledBack>

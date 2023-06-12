@@ -1,6 +1,7 @@
 import '@/resources/styles/globals.css';
 
 import { Layout } from '@/components/Common';
+import { AppContextProvider } from '@/context/app-context';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import type { FC, ReactElement, ReactNode } from 'react';
@@ -20,7 +21,13 @@ const App: FC<AppPropsWithLayout> = ({
   pageProps,
 }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
-  const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
+  const getLayout =
+    Component.getLayout ||
+    ((page) => (
+      <AppContextProvider>
+        <Layout>{page}</Layout>
+      </AppContextProvider>
+    ));
 
   return getLayout(<Component {...pageProps} />);
 };
