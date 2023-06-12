@@ -6,6 +6,7 @@ export const gridContainer = style([
   sprinkles({
     display: 'grid',
     gap: 'xl',
+    color: 'foreground',
   }),
   {
     gridTemplateColumns: 'repeat(3, 1fr)',

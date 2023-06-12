@@ -1,15 +1,6 @@
 import { ColorType, sprinkles, vars } from '../../styles';
 
-import {
-  createVar,
-  fallbackVar,
-  globalStyle,
-  style,
-  styleVariants,
-} from '@vanilla-extract/css';
-
-const surfaceColor = createVar(),
-  highContrastColor = createVar();
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
@@ -22,8 +13,8 @@ export const container = style([
     border: 'none',
   }),
   {
-    backgroundColor: fallbackVar(surfaceColor, 'transparent'),
-    color: fallbackVar(highContrastColor, vars.colors.neutral5),
+    backgroundColor: 'transparent',
+    color: vars.colors.neutral5,
     transition: 'opacity .2s ease',
     selectors: {
       '&:hover': {
@@ -31,15 +22,11 @@ export const container = style([
       },
       '&:focus-visible': {
         outlineOffset: '2px',
-        outline: `2px solid ${highContrastColor}`,
+        outline: `2px solid ${vars.colors.neutral5}`,
       },
     },
   },
 ]);
-
-globalStyle(`${container} > span > svg`, {
-  color: fallbackVar(highContrastColor, vars.colors.neutral5),
-});
 
 export const colorVariants = styleVariants(
   {
@@ -55,13 +42,14 @@ export const colorVariants = styleVariants(
     return [
       container,
       {
-        vars: {
-          [surfaceColor]: vars.colors[`${color as ColorType}Surface`],
-          [highContrastColor]:
-            color === 'inverted'
-              ? vars.colors.neutral3
-              : vars.colors[`${color as ColorType}HighContrast`],
-        },
+        backgroundColor:
+          color === 'inverted' || color === 'default'
+            ? 'transparent'
+            : vars.colors[`${color as ColorType}Surface`],
+        color:
+          color === 'inverted'
+            ? vars.colors.neutral3
+            : vars.colors[`${color as ColorType}HighContrast`],
       },
     ];
   },

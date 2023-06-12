@@ -1,17 +1,11 @@
 import { sprinkles } from '../../styles';
 
-import { style, styleVariants } from '@vanilla-extract/css';
-
-export const iconContainer = style([
-  sprinkles({
-    color: 'foreground',
-  }),
-]);
+import { styleVariants } from '@vanilla-extract/css';
 
 export const sizeVariants = styleVariants({
-  sm: [iconContainer, sprinkles({ size: 4 })],
-  md: [iconContainer, sprinkles({ size: 6 })],
-  lg: [iconContainer, sprinkles({ size: 8 })],
-  xl: [iconContainer, sprinkles({ size: 10 })],
-  heroHeader: [iconContainer, sprinkles({ size: 24 })],
+  sm: [sprinkles({ size: 4 })],
+  md: [sprinkles({ size: 6 })],
+  lg: [sprinkles({ size: 8 })],
+  xl: [sprinkles({ size: 10 })],
+  heroHeader: [sprinkles({ size: 24 })],
 });
