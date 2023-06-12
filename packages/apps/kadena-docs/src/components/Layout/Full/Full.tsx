@@ -21,6 +21,7 @@ export const Full: FC<ILayout> = ({
   children,
   aSideMenuTree = [],
   editLink,
+  navigation,
 }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -65,7 +66,7 @@ export const Full: FC<ILayout> = ({
       <Content id="maincontent">
         <Article ref={scrollRef}>
           {children}
-          <BottomPageSection editLink={editLink} />
+          <BottomPageSection editLink={editLink} navigation={navigation} />
         </Article>
       </Content>
       <AsideBackground />
