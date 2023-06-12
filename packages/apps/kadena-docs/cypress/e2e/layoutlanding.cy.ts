@@ -17,7 +17,7 @@ describe('landing page layout', () => {
         .get('[data-cy="sidemenu-submenu"]')
         .find('ul:first')
         .children()
-        .should('have.length', 2);
+        .should('have.length', 4);
     });
 
     it('shows the sidemenu with its own children', () => {
@@ -33,6 +33,11 @@ describe('landing page layout', () => {
         .contains(
           'The safest, most user-friendly language for smart contracts',
         );
+
+      header().find('svg').should('exist');
+
+      cy.get('header').first().find('nav > ul > li:last-child').click();
+      header().find('h1').contains('Pact');
     });
   });
 });

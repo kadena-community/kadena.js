@@ -21,6 +21,9 @@ export interface IHeader {
 const StyledHeader: StyledComponent<typeof Heading, { as?: TagType }> = styled(
   Heading,
   {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
     a: {
       opacity: 0,
       transition: 'opacity .3s ease',

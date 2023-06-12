@@ -30,13 +30,16 @@ const remarkHeadersToProps = () => {
   return async (tree) => {
     const headers = getHeaders(tree);
 
-    let parent = {
-      tag: 'h1',
-      children: [],
-    };
+    let startArray = [
+      {
+        tag: 'h1',
+        depth: 1,
+        children: [],
+      },
+    ];
 
     headers.forEach((item) => {
-      parent = lastHeading(parent, item);
+      const parent = lastHeading(startArray[0], item);
 
       const elm = {
         depth: item.depth,
@@ -50,7 +53,7 @@ const remarkHeadersToProps = () => {
     tree.children.push({
       type: 'props',
       data: {
-        aSideMenuTree: parent.children,
+        aSideMenuTree: startArray[0].children,
       },
     });
 

@@ -69,12 +69,12 @@ export const Template: StyledComponent<
         },
       },
       landing: {
-        gridTemplateColumns: 'auto',
+        gridTemplateColumns: 'auto auto',
         gridTemplateAreas: `
-            "header"
-            "pageheader"
-            "content"
-            "footer"
+            "header header"
+            "pageheader pageheader"
+            "content content"
+            "footer footer"
           `,
 
         '@md': {
@@ -249,17 +249,27 @@ export const NavLink: StyledComponent<
   typeof Link,
   { active?: boolean | 'true' | 'false' | undefined }
 > = styled(Link, {
-  color: 'white',
+  color: '$neutral100',
   fontFamily: '$main',
   textDecoration: 'none',
   padding: '$1 $2',
   borderRadius: '$sm',
 
+  '&:hover': {
+    color: '$neutral100',
+    opacity: '.5',
+  },
+
   variants: {
     active: {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
-        color: 'black',
+        color: '$neutral000',
+
+        '&:hover': {
+          color: '$neutral000',
+          opacity: '.8',
+        },
       },
       false: {},
     },
@@ -294,4 +304,8 @@ export const AnimationBackgroundWrapper: StyledComponent<
 
 export const Spacer: StyledComponent<'div'> = styled('div', {
   flex: 1,
+});
+
+export const StyledLogoWrapper: StyledComponent<'div'> = styled('div', {
+  zIndex: '$navMenu',
 });

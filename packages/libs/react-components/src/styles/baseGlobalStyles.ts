@@ -71,6 +71,13 @@ export const baseGlobalStyles: Record<string, unknown> = {
     Kadena Design System
   */
 
+  a: {
+    color: '$primaryContrast',
+    '&:hover': {
+      color: '$primaryHighContrast',
+    },
+  },
+
   // Spacing
   ':root': {
     '$spacing-2xs': '$sizes$1',

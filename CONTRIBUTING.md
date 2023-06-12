@@ -1,61 +1,123 @@
-<p align="center">
-  <picture>
-    <source srcset="./common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="./common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
-
 # Contributing to Kadena.js
 
-:+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
+## Table Of Contents
 
-The following is a set of guidelines for contributing to Kadena.js, which is hosted here 
-[Kadena.js](https://github.com/kadena-io/kadena.js) on GitHub.
-
-### Table Of Contents
-
-- Code of Conduct
+- Development
+- Tests
+- Making a Pull Request
 - Conventions
-- Issues
-- Pull Requests
+- Publishing Packages
 
-### Questions
-If you have any question please use one of the following methods:
+Do you want to file a bug? Please [open a new issue][1].
 
-* [ask a question on stackoverflow](https://stackoverflow.com/questions/tagged/kadena)
-* [join our discord](http://discord.io/kadena)
+## Development
 
-> **note** please do not use our issue board for asking a question 
+[Install Node.js][2] if you haven't already. Then install Rush:
 
-## Code of Conduct 
-tbd.
+```bash
+npm install --global @microsoft/rush
+```
 
-### Conventions
-tbd.
+As an external contributor, you will need to fork the repo before you can
+contribute. Then you can clone the repository and install dependencies:
 
-## Issues
-This section will help you create issues or filing bugs for Kadena.js. Following these steps will 
-help maintainers and community members solving the issues finding duplicates etc. etc.
+```bash
+git clone git@github.com:kadena-community/kadena.js.git
+cd kadena.js
+rush install
+rush build
+```
 
-1. Before creating an issue  make sure you are running the latest version
-2. Check if the issue doesn't already exist under [issues](https://github.com/kadena-community/kadena.js/issues)
-3. Use a clear and descriptive title for the identification of the problems
-4. Describe in a clear flow how to reproduce the problem. If possible create a gif or use screenshots. 
-5. Include details about the configuration and environment
+Make sure to read some of the Rush documentation, specifically the "Developer
+tutorials" such as:
 
+- [Getting started as a developer][3]
+- [Everyday Rush commands][4]
+- [Other helpful commands][5]
 
-## Pull Request
-When you want to pick up an issues or want to improve the code it is done via a pull request.
+### Switch branches
 
-When filling out the pull request please take note of the following checklists:
-* Link the PR to an issue (if this is applicable).
-* Enable the checkbox to allow maintainer edits so the branch can be updated for a merge. Once you submit your PR, a team member will review your proposal. We may ask questions or request for additional information.
-* As you update your PR and apply changes, mark each conversation as resolved.
+Depending on the changes, you may need to invoke the following commands when
+switching branches to keep everything in check:
 
-When your PR is merged!
+```bash
+rush update
+rush build -t <package name>
+```
 
-🚀🚀 Thank you 🚀🚀.
+## Tests
 
-Now that you are part of the Kadena.js community, see how else you can contribute to the project.
+```bash
+rush test       # Run all tests
+rushx test      # Run only tests inside a package directory
+rushx test -w   # Keep running tests during development
+```
 
+## Making a Pull Request
 
+Before making a pull request, please discuss your ideas first.
+
+Make sure to update the changelog before it gets merged:
+
+```bash
+rush change
+```
+
+## Conventions
+
+### Git/GitHub
+
+- Try to keep pull requests focused and small.
+- Use prefixed branch names such as `feat/feature-title`, `fix/fix-title`,
+  `chore/chore-title`
+- Using Asana? [Attach a pull request to the Asana task][6].
+- Before merging a pull request, make sure the commit messages are good.
+- Prefer a rebase over merge commits, for both [updating branches][7] and
+  [merging pull requests][8].
+
+### Code
+
+This repository uses a combination of TypeScript, ESLint and Prettier to adhere
+to coding standards. We try to automate and auto-fix as much as possible using
+the following commands:
+
+```bash
+rush build   # Compile & build all packages (using TypeScript)
+rush lint    # Lint (and fix) all packages (using ESLint)
+```
+
+Use `rushx` instead of `rush` to do the same for only the current package.
+
+For everything else, please discuss.
+
+## Publishing Packages
+
+To publish a new version of updated packages, please make sure you:
+
+- are part of the `@kadena` npm organization
+- have push rights to this repository's `master` branch
+- are on a clean `master` branch
+
+Follow these steps to publish the updated packages:
+
+- Build and test from root
+- Bump the version
+- Publish updated packages
+
+```bash
+rush build
+rush test
+rush version --bump -b master --ignore-git-hooks
+rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master
+```
+
+[1]: https://github.com/kadena-community/kadena.js/issues/new/choose
+[2]: https://nodejs.org/en/download/package-manager
+[3]: https://rushjs.io/pages/developer/new_developer/
+[4]: https://rushjs.io/pages/developer/everyday_commands/
+[5]: https://rushjs.io/pages/developer/other_commands/
+[6]: https://asana.com/guide/help/api/github#gl-key
+[7]:
+  https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch
+[8]:
+  https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request

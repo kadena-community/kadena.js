@@ -4,51 +4,92 @@ import {
   Article,
   Aside,
   AsideBackground,
-  AsideLink,
   AsideList,
   Content,
+  ListItem,
   StickyAside,
   StickyAsideWrapper,
 } from '../components';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout, ISubHeaderElement } from '@/types/Layout';
+import { ILayout } from '@/types/Layout';
 import { createSlug } from '@/utils';
-import React, { FC, ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
-const renderListItem = (item: ISubHeaderElement): ReactNode => {
-  if (item.title === undefined) return null;
+export const Full: FC<ILayout> = ({
+  children,
+  aSideMenuTree = [],
+  filenameForEdit,
+}) => {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const menuRef = useRef<HTMLUListElement | null>(null);
+  const [activeItem, setActiveItem] = useState<string>('');
 
-  const slug = createSlug(item.title);
-  return (
-    <AsideLink href={`#${slug}`} key={slug} label={item.title}>
-      {item.children.length > 0 && (
-        <AsideList inner={true}>{item.children.map(renderListItem)}</AsideList>
-      )}
-    </AsideLink>
-  );
-};
+  const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
+    const { isIntersecting } = entry;
 
-export const Full: FC<ILayout> = ({ children, aSideMenuTree }) => {
+    if (isIntersecting) {
+      setActiveItem(entry.target.getAttribute('href') ?? '');
+    }
+  };
+
+  useEffect(() => {
+    if (activeItem === null) {
+      const hash = router.asPath.split('#');
+      const hashPath = hash.length === 2 ? '#' + hash[1] : '';
+
+      setActiveItem(hashPath);
+    }
+
+    if (!scrollRef.current) return;
+
+    const observer = new IntersectionObserver(updateEntry, {
+      rootMargin: '20% 0% -65% 0px',
+    });
+
+    const headings = scrollRef.current.querySelectorAll(
+      'h1 > a, h2 > a, h3 > a, h4 > a, h5 > a, h6 > a',
+    );
+
+    Array.from(headings).map((heading) => {
+      observer.observe(heading);
+    });
+
+    return () => observer.disconnect();
+  }, [activeItem, router.asPath]);
+
   return (
     <>
       <Content id="maincontent">
-        <Article>
+        <Article ref={scrollRef}>
           {children}
-
-          <BottomPageSection />
+          <BottomPageSection filenameForEdit={filenameForEdit} />
         </Article>
       </Content>
-
       <AsideBackground />
       <Aside data-cy="aside">
-        {aSideMenuTree && (
+        {aSideMenuTree.length > 0 && (
           <StickyAsideWrapper>
             <StickyAside>
               <Heading as="h6" transform="uppercase">
                 On this page
               </Heading>
-              <AsideList>{aSideMenuTree.map(renderListItem)}</AsideList>
+              <AsideList ref={menuRef}>
+                {aSideMenuTree.map((innerItem) => {
+                  const innerSlug = createSlug(innerItem.title);
+                  return (
+                    <ListItem
+                      key={innerSlug}
+                      scrollArea={scrollRef.current}
+                      item={innerItem}
+                      activeItem={activeItem}
+                      setActiveItem={setActiveItem}
+                    />
+                  );
+                })}
+              </AsideList>
             </StickyAside>
           </StickyAsideWrapper>
         )}

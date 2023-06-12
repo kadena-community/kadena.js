@@ -1,5 +1,11 @@
 import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 
+export const StyledInlineCode: StyledComponent<'code'> = styled('code', {
+  padding: 'calc($1 / 4) $1',
+  backgroundColor: '$neutral2',
+  borderRadius: '$sm',
+});
+
 export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
   backgroundColor: '$neutral2',
   borderLeft: '4px solid $borderColor',
@@ -7,7 +13,11 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
   fontSize: '$sm',
   fontFamily: '$mono',
   lineHeight: '$code',
+  margin: '$5 0',
 
+  '& code': {
+    wordBreak: 'break-all',
+  },
   '& [data-rehype-pretty-code-title]': {
     display: 'flex',
     alignItems: 'center',
@@ -36,6 +46,11 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
     '&[data-language="typescript"]': {
       '&::before': {
         content: 'TS',
+      },
+    },
+    '&[data-language="bash"]': {
+      '&::before': {
+        content: 'B',
       },
     },
   },
