@@ -8,7 +8,6 @@ import React, { FC } from 'react';
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
   <AppContextProvider>
     <Layout>
-      {/* @ts-ignore */}
       <Component {...pageProps} />
     </Layout>
   </AppContextProvider>
