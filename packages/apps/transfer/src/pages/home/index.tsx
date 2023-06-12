@@ -22,17 +22,17 @@ const Home: FC = () => {
     {
       icon: Chain,
       title: t('Cross Chain Transfer Tracker'),
-      href: '/cross-chain-transfer-tracker',
+      href: '/transfer/cross-chain-transfer-tracker',
     },
     {
       icon: Chain,
       title: t('Cross Chain Transfer Finisher'),
-      href: '/cross-chain-transfer-finisher',
+      href: '/transfer/cross-chain-transfer-finisher',
     },
     {
       icon: Chain,
       title: t('Module explorer'),
-      href: '/module-explorer',
+      href: '/transfer/module-explorer',
     },
   ];
 
