@@ -4,6 +4,8 @@ export {
   IIconProps,
   SystemIcon,
   ProductIcon,
+  Stack,
+  IStackProps,
   ICardProps,
   Card,
 } from './components';
