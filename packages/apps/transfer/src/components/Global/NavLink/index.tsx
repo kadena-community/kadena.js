@@ -16,11 +16,6 @@ export const NavLink = ({
   const { pathname } = useRouter();
   const isActive = pathname === href;
 
-  if (isActive) {
-    // @ts-ignore
-    props.className += ' active';
-  }
-
   return (
     <StyledNavItem
       href={href}
