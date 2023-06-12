@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const gradientTextClass = style([
   sprinkles({
-    fontWeight: 'bold',
+    fontWeight: '$bold',
   }),
   {
     backgroundColor: 'inherit',

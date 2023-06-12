@@ -9,7 +9,7 @@ export const breakpoints: Record<string, string> = {
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
-  '2xl': `(min-width: ${1536 / 16}rem)`,
+  xxl: `(min-width: ${1536 / 16}rem)`,
 };
 
 const systemProperties = defineProperties({
@@ -56,7 +56,7 @@ const responsiveProperties = defineProperties({
     md: { '@media': breakpoints.md },
     lg: { '@media': breakpoints.lg },
     xl: { '@media': breakpoints.xl },
-    '2xl': { '@media': breakpoints['2xl'] },
+    xxl: { '@media': breakpoints.xxl },
   },
   defaultCondition: 'xs',
   properties: {
