@@ -7,13 +7,13 @@ import { Wrapper } from './style';
 import React, { FC } from 'react';
 
 interface IProps {
-  filenameForEdit?: string;
+  editLink?: string;
 }
 
-export const BottomPageSection: FC<IProps> = ({ filenameForEdit }) => {
+export const BottomPageSection: FC<IProps> = ({ editLink }) => {
   return (
     <>
-      <EditPage filename={filenameForEdit} />
+      <EditPage editLink={editLink} />
       <Divider />
       <Wrapper>
         <div />
