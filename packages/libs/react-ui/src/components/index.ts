@@ -8,4 +8,5 @@ export {
   Heading,
   IHeadingProps,
   GradientText,
+  IGradientTextProps,
 } from './Typography';

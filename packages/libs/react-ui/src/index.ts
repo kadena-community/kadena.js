@@ -9,6 +9,7 @@ export {
   Heading,
   IHeadingProps,
   GradientText,
+  IGradientTextProps,
   Stack,
   IStackProps,
   ICardProps,

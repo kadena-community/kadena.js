@@ -2,7 +2,7 @@ import { gradientTextClass } from './GradientText.css';
 
 import React, { FC } from 'react';
 
-interface IGradientTextProps {
+export interface IGradientTextProps {
   children: React.ReactNode;
 }
 
