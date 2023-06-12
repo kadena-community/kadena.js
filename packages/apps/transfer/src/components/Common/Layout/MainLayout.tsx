@@ -17,6 +17,7 @@ import { Select } from '@/components/Global';
 import { StyledOption } from '@/components/Global/Select/styles';
 import { Network, useAppContext } from '@/context/app-context';
 import { KLogoComponent } from '@/resources/svg/generated';
+import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
 
 interface IProps {
@@ -26,6 +27,7 @@ interface IProps {
 
 export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
   const { network, setNetwork } = useAppContext();
+  const { t } = useTranslation('common');
 
   return (
     <StyledMainLayout>
@@ -63,4 +65,5 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
     </StyledMainLayout>
   );
 };
+
 export default MainLayout;

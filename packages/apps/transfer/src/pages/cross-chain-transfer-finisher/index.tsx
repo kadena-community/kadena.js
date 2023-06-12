@@ -15,9 +15,11 @@ import {
 
 import { SidebarMenu } from '@/components/Global';
 import { useAppContext } from '@/context/app-context';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const CrossChainTransferFinisher: FC = () => {
+  const { t } = useTranslation('common');
   const { network } = useAppContext();
 
   const chainNetwork: {
@@ -48,7 +50,7 @@ const CrossChainTransferFinisher: FC = () => {
   };
 
   return (
-    <MainLayout title="Kadena Cross Chain Transfer Finisher">
+    <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
         <SidebarMenu />
         <StyledForm onSubmit={handleSubmit}>
@@ -58,21 +60,21 @@ const CrossChainTransferFinisher: FC = () => {
                 <StyledCheckbox
                   type="checkbox"
                   id={'advanced-options'}
-                  placeholder="Enter private key to sign the transaction"
+                  placeholder={t('Enter private key to sign the transaction')}
                   onChange={(e) => setAdvancedOptions(!advancedOptions)}
                   value={advancedOptions.toString()}
                 />
                 <StyledCheckboxLabel htmlFor="advanced-options">
-                  Advanced options
+                  {t('Advanced options')}
                 </StyledCheckboxLabel>
               </StyledFieldCheckbox>
             </StyledToggleContainer>
 
             <TextField
-              label="Request Key"
-              info={requestKey ? '' : 'Not a Cross Chain Request Key'}
+              label={t('Request Key')}
+              info={requestKey ? '' : t('(Not a Cross Chain Request Key')}
               inputProps={{
-                placeholder: 'Enter Request Key',
+                placeholder: t('Enter Request Key'),
                 // @ts-ignore
                 onChange: (e) => setRequestKey(e?.target?.value),
                 value: requestKey,
@@ -84,7 +86,7 @@ const CrossChainTransferFinisher: FC = () => {
                 <TextField
                   label="Chain Server"
                   inputProps={{
-                    placeholder: 'Enter Chain Server',
+                    placeholder: t('Enter Chain Server'),
                     // @ts-ignore
                     onChange: (e) => setChainWebServer(e?.target?.value),
                     value: chainNetwork[network].server,
@@ -92,28 +94,28 @@ const CrossChainTransferFinisher: FC = () => {
                   }}
                 />
                 <TextField
-                  label="Gas Payer Account"
-                  helper="only single pubkey accounts are supported"
+                  label={t('Gas Payer Account')}
+                  helper={t('only single pubkey accounts are supported')}
                   inputProps={{
-                    placeholder: 'Enter Your Account',
+                    placeholder: t('Enter Your Account'),
                     // @ts-ignore
                     onChange: (e) => setKadenaXChainGas(e?.target?.value),
                     value: kadenaXChainGas,
                   }}
                 />
                 <TextField
-                  label="Gas Price"
+                  label={t('Gas Price')}
                   inputProps={{
-                    placeholder: 'Enter Gas Payer',
+                    placeholder: t('Enter Gas Payer'),
                     // @ts-ignore
                     onChange: (e) => setGasPrice(e?.target?.value),
                     value: gasPrice,
                   }}
                 />
                 <TextField
-                  label="Gas Limit"
+                  label={t('Gas Limit')}
                   inputProps={{
-                    placeholder: 'Enter Gas Limit',
+                    placeholder: t('Enter Gas Limit'),
                     // @ts-ignore
                     onChange: (e) => setGasLimit(e?.target?.value),
                     value: gasLimit,
@@ -123,8 +125,8 @@ const CrossChainTransferFinisher: FC = () => {
             ) : null}
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title="Finish Cross Chain Transfer">
-              Finish Cross Chain Transfer
+            <Button title={t('Finish Cross Chain Transfer')}>
+              {t('Finish Cross Chain Transfer')}
             </Button>
           </StyledFormButton>
         </StyledForm>
