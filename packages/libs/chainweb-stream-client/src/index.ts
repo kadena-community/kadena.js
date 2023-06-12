@@ -238,6 +238,8 @@ class ChainwebStream extends EventEmitter {
 
     this._debug('_handleHeights');
 
+    this.emit('heights', heights);
+
     this._updateLastHeight(heights);
 
     this._resetHeartbeatTimeout();
