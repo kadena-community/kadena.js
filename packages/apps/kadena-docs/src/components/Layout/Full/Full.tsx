@@ -20,7 +20,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 export const Full: FC<ILayout> = ({
   children,
   aSideMenuTree = [],
-  filenameForEdit,
+  editLink,
 }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -65,7 +65,7 @@ export const Full: FC<ILayout> = ({
       <Content id="maincontent">
         <Article ref={scrollRef}>
           {children}
-          <BottomPageSection filenameForEdit={filenameForEdit} />
+          <BottomPageSection editLink={editLink} />
         </Article>
       </Content>
       <AsideBackground />

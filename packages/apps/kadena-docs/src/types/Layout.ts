@@ -22,7 +22,7 @@ export interface IPageMeta {
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
-  filename: string;
+  editLink: string;
   lastModifiedDate?: Date;
   icon?: ProductIconNames;
 }
@@ -37,7 +37,7 @@ export interface ILayout {
   children?: ReactNode;
   isAsideOpen?: boolean;
   aSideMenuTree?: ISubHeaderElement[];
-  filenameForEdit?: string;
+  editLink?: string;
 }
 
 export type LevelType = 1 | 2 | 3;

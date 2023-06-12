@@ -49,7 +49,9 @@ const remarkFrontmatterToProps = () => {
         data: {
           frontmatter: {
             ...data,
-            filename: getFileNameInPackage(file),
+            editLink:
+              process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
+              getFileNameInPackage(file),
             lastModifiedDate: getModifiedDate(getFileName(file)),
           },
         },

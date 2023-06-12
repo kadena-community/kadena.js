@@ -18,7 +18,7 @@ export const Main: FC<IPageProps> = ({
     layout: layoutType,
     lastModifiedDate,
     icon: pageIcon,
-    filename: filenameForEdit = '',
+    editLink,
   },
   topDocs,
   aSideMenuTree,
@@ -89,7 +89,7 @@ export const Main: FC<IPageProps> = ({
         <Layout
           isAsideOpen={isAsideOpen}
           aSideMenuTree={aSideMenuTree}
-          filenameForEdit={filenameForEdit}
+          editLink={editLink}
         >
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <>
