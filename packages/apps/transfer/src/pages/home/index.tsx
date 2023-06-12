@@ -1,5 +1,4 @@
 import {
-  StyledHomeButton,
   StyledHomeContainer,
   StyledHomeContent,
   StyledHomeContentContainer,
@@ -10,8 +9,8 @@ import {
   StyledSmallLogo,
 } from './styles';
 
+import routes from '@/constants/routes';
 import { Account, Chain, Key } from '@/resources/svg/generated';
-import { downloadKeyPairToBrowser } from '@/services/key-pairs/key-pairs';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
 
@@ -22,17 +21,17 @@ const Home: FC = () => {
     {
       icon: Chain,
       title: t('Cross Chain Transfer Tracker'),
-      href: '/transfer/cross-chain-transfer-tracker',
+      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
       icon: Chain,
       title: t('Cross Chain Transfer Finisher'),
-      href: '/transfer/cross-chain-transfer-finisher',
+      href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
     },
     {
       icon: Chain,
       title: t('Module explorer'),
-      href: '/transfer/module-explorer',
+      href: routes.MODULE_EXPLORER,
     },
   ];
 
@@ -40,12 +39,12 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: '/',
+      href: routes.HOME,
     },
     {
       icon: Chain,
       title: t('New account'),
-      href: '/',
+      href: routes.HOME,
     },
   ];
 

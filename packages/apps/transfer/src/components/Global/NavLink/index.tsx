@@ -1,8 +1,7 @@
 import { StyledNavItem, StyledNavItemIcon, StyledNavItemText } from './styles';
 
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 export const NavLink = ({
   href,

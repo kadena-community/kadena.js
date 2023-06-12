@@ -15,6 +15,7 @@ import {
 
 import { Select } from '@/components/Global';
 import { StyledOption } from '@/components/Global/Select/styles';
+import routes from '@/constants/routes';
 import { Network, useAppContext } from '@/context/app-context';
 import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
@@ -54,7 +55,7 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
         </StyledHeaderLogoWalletContent>
 
         <StyledTitleContainer>
-          <StyledBack href={'/'}>
+          <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
             <span>{t('Back')}</span>
           </StyledBack>
