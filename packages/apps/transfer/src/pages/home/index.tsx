@@ -54,8 +54,7 @@ const Home: FC = () => {
       <StyledSmallLogo width="65px" />
       <StyledHomeContentContainer>
         <StyledHomeContent>
-          <StyledHomeTitle>{t('Kadena Transfer')}</StyledHomeTitle>
-
+          <StyledHomeTitle>{t('Cross Chain Transfers')}</StyledHomeTitle>
           {transferMenu.map((item) => (
             <StyledHomeLink key={`item-${item.title}`} href={item.href}>
               <StyledIconBox>
