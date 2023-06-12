@@ -428,7 +428,7 @@
       "packageName": "@kadena/transfer",
       "projectFolder": "packages/apps/transfer",
       "reviewCategory": "prototypes",
-      "skipRushCheck": true,
+      "skipRushCheck": false,
       "shouldPublish": false
     },
 
