@@ -11,7 +11,13 @@ interface IGenericCapability {
   args: CapabilityArg[];
   signer: string;
 }
+interface IUnrestrictedCapability {
+  name: 'UNRESTRICTED';
+  args: [];
+  signer: string;
+}
 type Capability =
+  | IUnrestrictedCapability
   | IGenericCapability
   | ICapabilities[keyof ICapabilities]
   | L2.ICapabilities[keyof L2.ICapabilities];
@@ -230,6 +236,11 @@ export const getSigners = (caps: Capability[]): ISigner[] =>
         acc: Record<string, Capability[] | undefined>,
         cap: Capability,
       ): Record<string, Capability[]> => {
+        if (cap.name === 'UNRESTRICTED')
+          return {
+            ...acc,
+            [cap.signer]: [],
+          } as Record<string, Capability[]>;
         return {
           ...acc,
           [cap.signer]: [...(acc[cap.signer] || []), cap],
@@ -426,9 +437,7 @@ export const send: Reducer = async (payload) => {
   });
 
   if (!response.ok) {
-    console.log('hash', hash(pactPayload));
-    console.error(await response.text());
-    throw new Error('Failed to send');
+    throw new Error('Failed to send:' + (await response.text()));
   }
   const data = await response.json();
   return {
@@ -454,7 +463,8 @@ export const listen: Reducer = async (p) => {
       });
       if (!response.ok) throw new Error('Failed to listen');
       const data = await response.json();
-      if (data.result.status !== 'success') throw new Error('Failed to listen');
+      if (data.result.status !== 'success')
+        throw new Error('Failed to listen: ' + JSON.stringify(data));
       return data;
     }),
   );

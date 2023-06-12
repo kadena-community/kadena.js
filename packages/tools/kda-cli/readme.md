@@ -27,6 +27,18 @@ repo and make a symlink.
 $ npm install --global kda-cli
 ```
 
+### Install From repo
+
+To install the executable from this repo:
+
+```bash
+rush install && rushx build
+chmod +x ./lib/cli.js
+# if you are using NVM, you should have this environment variable available
+ln -s $(pwd)/lib/cli.js $NVM_BIN/kda-cli
+# if not, you can replace $NVM_BIN to any path you have added in your $PATH
+```
+
 ## CLI
 
 ```
