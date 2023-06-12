@@ -15,8 +15,6 @@ export const breakpoints = {
 const systemProperties = defineProperties({
   properties: {
     fontFamily: vars.fonts,
-    fontSize: vars.fontSizes,
-    fontWeight: vars.fontWeights,
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
@@ -31,6 +29,7 @@ const systemProperties = defineProperties({
     flexGrow: [0, 1],
     zIndex: [-1, 0, 1],
     border: ['none'],
+    textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
   },
 });
 
@@ -87,6 +86,8 @@ const responsiveProperties = defineProperties({
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],
     minWidth: [0],
+    fontSize: vars.fontSizes,
+    fontWeight: vars.fontWeights,
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
