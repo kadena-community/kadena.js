@@ -2,6 +2,44 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.3.1",
+      "tag": "@kadena/client_v0.3.1",
+      "date": "Tue, 13 Jun 2023 13:17:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Set this.nonce to the created nonce to make it publicly available"
+          },
+          {
+            "comment": "Update to typescript 5"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.6`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.0",
       "tag": "@kadena/client_v0.3.0",
       "date": "Thu, 01 Jun 2023 20:18:44 GMT",
