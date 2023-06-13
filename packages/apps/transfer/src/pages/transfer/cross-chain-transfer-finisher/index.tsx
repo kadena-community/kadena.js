@@ -74,8 +74,8 @@ const CrossChainTransferFinisher: FC = () => {
               info={requestKey ? '' : t('(Not a Cross Chain Request Key')}
               inputProps={{
                 placeholder: t('Enter Request Key'),
-                // @ts-ignore
-                onChange: (e) => setRequestKey(e?.target?.value),
+                onChange: (e) =>
+                  setRequestKey((e.target as HTMLInputElement).value),
                 value: requestKey,
               }}
             />
@@ -86,8 +86,6 @@ const CrossChainTransferFinisher: FC = () => {
                   label="Chain Server"
                   inputProps={{
                     placeholder: t('Enter Chain Server'),
-                    // @ts-ignore
-                    onChange: (e) => setChainWebServer(e?.target?.value),
                     value: chainNetwork[network].server,
                     leadingText: chainNetwork[network].network,
                   }}
@@ -97,8 +95,8 @@ const CrossChainTransferFinisher: FC = () => {
                   helper={t('only single pubkey accounts are supported')}
                   inputProps={{
                     placeholder: t('Enter Your Account'),
-                    // @ts-ignore
-                    onChange: (e) => setKadenaXChainGas(e?.target?.value),
+                    onChange: (e) =>
+                      setKadenaXChainGas((e.target as HTMLInputElement).value),
                     value: kadenaXChainGas,
                   }}
                 />
@@ -106,8 +104,8 @@ const CrossChainTransferFinisher: FC = () => {
                   label={t('Gas Price')}
                   inputProps={{
                     placeholder: t('Enter Gas Payer'),
-                    // @ts-ignore
-                    onChange: (e) => setGasPrice(e?.target?.value),
+                    onChange: (e) =>
+                      setGasPrice((e.target as HTMLInputElement).value),
                     value: gasPrice,
                   }}
                 />
@@ -115,8 +113,8 @@ const CrossChainTransferFinisher: FC = () => {
                   label={t('Gas Limit')}
                   inputProps={{
                     placeholder: t('Enter Gas Limit'),
-                    // @ts-ignore
-                    onChange: (e) => setGasLimit(e?.target?.value),
+                    onChange: (e) =>
+                      setGasLimit((e.target as HTMLInputElement).value),
                     value: gasLimit,
                   }}
                 />

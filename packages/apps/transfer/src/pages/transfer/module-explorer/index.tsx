@@ -86,8 +86,8 @@ const GetCode: FC = () => {
               label={t('Module Name')}
               inputProps={{
                 placeholder: t('Enter desired module name'),
-                // @ts-ignore
-                onChange: (e) => setModuleName(e?.target?.value),
+                onChange: (e) =>
+                  setModuleName((e.target as HTMLInputElement).value),
                 value: moduleName,
               }}
             />

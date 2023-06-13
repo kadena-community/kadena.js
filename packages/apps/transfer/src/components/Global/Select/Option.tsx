@@ -7,8 +7,4 @@ export interface IOptionProps
   //
 }
 
-export const Option: FC<IOptionProps> = (props) => (
-  //@todo: remove bellow line after fixing react and next types version
-  /* @ts-ignore */
-  <StyledOption {...props} />
-);
+export const Option: FC<IOptionProps> = (props) => <StyledOption {...props} />;
