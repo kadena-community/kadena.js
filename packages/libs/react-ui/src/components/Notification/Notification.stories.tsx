@@ -72,7 +72,6 @@ export const Primary: Story = {
     displayCloseButton: true,
     expand: false,
     color: undefined,
-    //simple: false,
   },
   render: ({
     selectIcon,
@@ -107,7 +106,6 @@ export const Header: Story = {
     displayCloseButton: true,
     expand: false,
     color: undefined,
-    //simple: false,
   },
   render: ({
     selectIcon,
@@ -128,14 +126,7 @@ export const Header: Story = {
         title={title}
         displayCloseButton={displayCloseButton}
         footer={<Button title="click-me">Click me!</Button>}
-        headerIcons={
-          <>
-            <SystemIcon.Link size="md" />
-            <SystemIcon.Bell size="md" />
-            <SystemIcon.EmailOutline size="md" />
-            <SystemIcon.QrcodeScan size="md" />
-          </>
-        }
+        header={<SystemIcon.Link size="md" />}
       >
         Notification text to inform users about the event that occurred!
       </Notification>

@@ -3,7 +3,6 @@ import { ColorType, sprinkles, vars } from '../../styles';
 import {
   createVar,
   fallbackVar,
-  globalStyle,
   style,
   styleVariants,
 } from '@vanilla-extract/css';
@@ -17,16 +16,15 @@ export const containerClass = style([
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    //paddingX: 'md',
     width: 'max-content',
     height: 'min-content',
+    position: 'relative',
   }),
   {
     border: `1px solid ${fallbackVar(contrastColor, vars.colors.neutral6)}`,
     color: fallbackVar(contrastColor, vars.colors.neutral6),
     backgroundColor: fallbackVar(surfaceColor, vars.colors.neutral2),
     borderLeftWidth: vars.sizes['1'],
-    position: 'relative',
   },
 ]);
 
@@ -37,7 +35,9 @@ export const footerClass = style([
 ]);
 
 export const expandClass = style([
-  sprinkles({}),
+  sprinkles({
+    width: '100%',
+  }),
   {
     width: '100% !important',
   },
@@ -105,19 +105,17 @@ export const iconContainerClass = style([
     marginTop: 'sm',
     display: 'flex',
     right: 0,
-  }),
-  {
     position: 'relative',
-    // marginLeft:'auto'
-  },
+  }),
 ]);
 
 export const iconContainerFullWidthClass = style([
   sprinkles({
     marginTop: 'sm',
     marginRight: 'md',
+    display: 'flex',
+    marginLeft: 'auto',
   }),
-  { marginLeft: 'auto' },
 ]);
 
 export const headerContainerClass = style([
@@ -129,13 +127,6 @@ export const headerContainerClass = style([
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginRight: 'md',
+    paddingLeft: 'md',
   }),
-  {
-    position: 'absolute',
-    right: '100%',
-  },
 ]);
-
-globalStyle(`${headerContainerClass} > span`, {
-  marginLeft: vars.sizes.md,
-});

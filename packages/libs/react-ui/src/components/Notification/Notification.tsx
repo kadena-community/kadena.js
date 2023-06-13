@@ -25,7 +25,7 @@ export interface INotificationProps {
   color?: keyof typeof colorVariants;
   simple?: boolean;
 
-  headerIcons?: React.ReactNode;
+  header?: React.ReactNode;
   footer?: React.ReactNode;
 }
 
@@ -37,7 +37,7 @@ export const Notification: FC<INotificationProps> = ({
   color = 'default',
   simple,
   expand = false,
-  headerIcons,
+  header,
   footer,
 }) => {
   const isSimple = (simple as boolean) || children === undefined;
@@ -71,8 +71,8 @@ export const Notification: FC<INotificationProps> = ({
         <div
           className={expand ? iconContainerFullWidthClass : iconContainerClass}
         >
-          {headerIcons !== undefined && (
-            <div className={headerContainerClass}>{headerIcons}</div>
+          {header !== undefined && (
+            <div className={headerContainerClass}>{header}</div>
           )}
           {displayCloseButton && <SystemIcon.Close size={'md'} />}
         </div>

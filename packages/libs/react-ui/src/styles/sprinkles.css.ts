@@ -75,10 +75,22 @@ const responsiveProperties = defineProperties({
     paddingBottom: vars.sizes,
     paddingLeft: vars.sizes,
     paddingRight: vars.sizes,
-    marginTop: vars.sizes,
-    marginBottom: vars.sizes,
-    marginLeft: vars.sizes,
-    marginRight: vars.sizes,
+    marginTop: {
+      ...vars.sizes,
+      auto: 'auto',
+    },
+    marginBottom: {
+      ...vars.sizes,
+      auto: 'auto',
+    },
+    marginLeft: {
+      ...vars.sizes,
+      auto: 'auto',
+    },
+    marginRight: {
+      ...vars.sizes,
+      auto: 'auto',
+    },
     width: {
       ...vars.sizes,
       '100%': '100%',
@@ -95,6 +107,7 @@ const responsiveProperties = defineProperties({
     minWidth: [0],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
+    position: ['relative', 'absolute', 'fixed'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
