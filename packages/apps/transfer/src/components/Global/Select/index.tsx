@@ -12,8 +12,7 @@ import {
   StyledSelectWrapper,
   StyledTag,
   StyledText,
-} from './styles';
-
+} from '@/components/Global/Select/styles';
 import React, { ChangeEvent, FC } from 'react';
 
 export interface ISelectProps {

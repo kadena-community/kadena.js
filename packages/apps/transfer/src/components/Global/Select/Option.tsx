@@ -1,5 +1,4 @@
-import { StyledOption } from './styles';
-
+import { StyledOption } from '@/components/Global/Select/styles';
 import React, { FC } from 'react';
 
 export interface IOptionProps

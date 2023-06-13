@@ -1,3 +1,4 @@
+import routes from '@/constants/routes';
 import {
   StyledHomeContainer,
   StyledHomeContent,
@@ -7,9 +8,7 @@ import {
   StyledIconBox,
   StyledLinkText,
   StyledSmallLogo,
-} from './styles';
-
-import routes from '@/constants/routes';
+} from '@/pages/home/styles';
 import { Account, Chain } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
