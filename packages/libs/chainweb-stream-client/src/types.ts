@@ -51,11 +51,31 @@ export type ITransaction = IEventTransaction | IAccountTransaction;
 /**
  * @alpha
  */
+export interface IChainwebStreamConfig {
+  network: string;
+  type: ChainwebStreamType;
+  id: string;
+  maxConf: number;
+  heartbeat: number;
+  v: string;
+}
+
+/**
+ * @alpha
+ */
+export interface IInitialEvent {
+  config: IChainwebStreamConfig;
+  data: ITransaction[];
+}
+
+/**
+ * @alpha
+ */
 export interface IChainwebStreamConstructorArgs {
+  network: string;
   type: ChainwebStreamType;
   id: string;
   host: string;
-  // TODO network ? for sanity check/safety
   limit?: number;
   connectTimeout?: number;
   heartbeatTimeout?: number;
