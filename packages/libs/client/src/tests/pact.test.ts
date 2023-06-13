@@ -543,11 +543,16 @@ describe('TransactionCommand', () => {
   });
 
   it('allows setting a custom nonceCreator', async () => {
+    let receivedMs = 0;
     const transaction = transactionCommand
-      .setNonceCreator((t, dateInMs) => `${t.type} ${dateInMs} custom-nonce`)
+      .setNonceCreator((t, dateInMs) => {
+        receivedMs = dateInMs;
+        return `${t.type} ${dateInMs} custom-nonce`;
+      })
+
       .createCommand();
 
     const parsedCmd = JSON.parse(transaction.cmd);
-    expect(parsedCmd.nonce).toEqual('exec 1679443211000 custom-nonce');
+    expect(parsedCmd.nonce).toEqual(`exec ${receivedMs} custom-nonce`);
   });
 });

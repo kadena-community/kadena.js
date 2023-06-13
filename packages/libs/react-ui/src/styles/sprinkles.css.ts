@@ -1,16 +1,14 @@
-/* eslint @typescript-eslint/naming-convention: 0, @kadena-dev/typedef-var: 0 */
-
 import { darkThemeClass, vars } from './themes.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 
-export const breakpoints = {
+export const breakpoints: Record<string, string> = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
   xl: `(min-width: ${1280 / 16}rem)`,
-  '2xl': `(min-width: ${1536 / 16}rem)`,
-} as const;
+  xxl: `(min-width: ${1536 / 16}rem)`,
+};
 
 const systemProperties = defineProperties({
   properties: {
@@ -57,7 +55,7 @@ const responsiveProperties = defineProperties({
     md: { '@media': breakpoints.md },
     lg: { '@media': breakpoints.lg },
     xl: { '@media': breakpoints.xl },
-    '2xl': { '@media': breakpoints['2xl'] },
+    xxl: { '@media': breakpoints.xxl },
   },
   defaultCondition: 'xs',
   properties: {

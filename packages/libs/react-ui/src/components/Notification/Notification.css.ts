@@ -12,7 +12,7 @@ const contrastColor = createVar(),
 
 export const containerClass = style([
   sprinkles({
-    borderWidth: 'md',
+    borderWidth: '$md',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -21,16 +21,16 @@ export const containerClass = style([
     position: 'relative',
   }),
   {
-    border: `1px solid ${fallbackVar(contrastColor, vars.colors.neutral6)}`,
-    color: fallbackVar(contrastColor, vars.colors.neutral6),
-    backgroundColor: fallbackVar(surfaceColor, vars.colors.neutral2),
-    borderLeftWidth: vars.sizes['1'],
+    border: `1px solid ${fallbackVar(contrastColor, vars.colors.$neutral6)}`,
+    color: fallbackVar(contrastColor, vars.colors.$neutral6),
+    backgroundColor: fallbackVar(surfaceColor, vars.colors.$neutral2),
+    borderLeftWidth: vars.sizes.$1,
   },
 ]);
 
 export const footerClass = style([
   sprinkles({
-    marginY: 'md',
+    marginY: '$md',
   }),
 ]);
 
@@ -45,8 +45,8 @@ export const expandClass = style([
 
 export const simpleClass = style([
   sprinkles({
-    borderRadius: 'md',
-    paddingRight: 'xl',
+    borderRadius: '$md',
+    paddingRight: '$xl',
   }),
   {
     borderLeftWidth: 1,
@@ -55,19 +55,19 @@ export const simpleClass = style([
 
 export const cardTitleClass = style([
   sprinkles({
-    marginY: 'sm',
+    marginY: '$sm',
   }),
 ]);
 
 export const contentClass = style([
   sprinkles({
-    marginBottom: 'sm',
+    marginBottom: '$sm',
   }),
 ]);
 
 export const simpleContentClass = style([
   sprinkles({
-    marginY: 'md',
+    marginY: '$md',
   }),
 ]);
 
@@ -84,8 +84,8 @@ export const colorVariants = styleVariants(colors, (color) => {
     containerClass,
     {
       vars: {
-        [contrastColor]: vars.colors[`${color}Contrast`],
-        [surfaceColor]: vars.colors[`${color}Surface`],
+        [contrastColor]: vars.colors[`$${color}Contrast`],
+        [surfaceColor]: vars.colors[`$${color}Surface`],
       },
     },
   ];
@@ -93,8 +93,8 @@ export const colorVariants = styleVariants(colors, (color) => {
 
 export const iconContainerClass = style([
   sprinkles({
-    marginX: 'md',
-    marginTop: 'sm',
+    marginX: '$md',
+    marginTop: '$sm',
     display: 'flex',
     right: 0,
     position: 'relative',
@@ -103,8 +103,8 @@ export const iconContainerClass = style([
 
 export const iconContainerFullWidthClass = style([
   sprinkles({
-    marginTop: 'sm',
-    marginRight: 'md',
+    marginTop: '$sm',
+    marginRight: '$md',
     display: 'flex',
     marginLeft: 'auto',
   }),
@@ -118,10 +118,10 @@ export const headerContainerClass = style([
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginRight: 'md',
-    paddingLeft: 'md',
+    marginRight: '$md',
+    paddingLeft: '$md',
     position: 'absolute',
-    top: 'sm',
+    top: '$sm',
     right: 0,
   }),
 ]);
