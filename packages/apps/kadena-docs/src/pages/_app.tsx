@@ -3,6 +3,7 @@ import {
   darkTheme as stitchesDarkTheme,
   globalCss,
 } from '@kadena/react-components';
+import { darkThemeClass } from '@kadena/react-ui';
 
 import { Analytics } from '@/components';
 import { Main } from '@/components/Layout/components';
@@ -55,9 +56,19 @@ export const MyApp = ({
             dark: stitchesDarkTheme.className,
           }}
         >
-          <Main {...props}>
-            <Component {...props} />
-          </Main>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={true}
+            defaultTheme="light"
+            value={{
+              light: 'light',
+              dark: darkThemeClass,
+            }}
+          >
+            <Main {...props}>
+              <Component {...props} />
+            </Main>
+          </ThemeProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />
