@@ -132,6 +132,7 @@ importers:
   ../../packages/apps/kadena-docs:
     specifiers:
       '@7-docs/cli': ~0.1.6
+      '@7-docs/edge': ~0.1.6
       '@7-docs/shared': ~0.1.6
       '@babel/plugin-syntax-import-assertions': ~7.20.0
       '@babel/preset-env': ^7.20.2
@@ -199,6 +200,7 @@ importers:
       storybook-dark-mode: ^3.0.0
       typescript: ~4.6.3
     dependencies:
+      '@7-docs/edge': 0.1.6
       '@babel/plugin-syntax-import-assertions': 7.20.0
       '@google-analytics/data': 3.2.2
       '@kadena/react-components': link:../../libs/react-components
