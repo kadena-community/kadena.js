@@ -10,25 +10,18 @@ const createIndex = (rootDir, parent = []) => {
   files.forEach((file) => {
     const currentFile = `${rootDir}/${file}`;
 
-    const arr = [];
-    let child = {
-      children: arr,
-    };
-
-    console.log(currentFile);
-
     // parent = pushToParent(parent, child);
 
-    // if (fs.statSync(currentFile).isDirectory()) {
-    //   child.children = createTree(currentFile, child.children);
-
-    //   return child.children;
-    // }
+    if (fs.statSync(currentFile).isDirectory()) {
+      return createIndex(currentFile, parent);
+    } else {
+      parent.push(currentFile);
+    }
   });
 
   return parent;
 };
 
 const result = createIndex(INITIALPATH, INDEX);
-
-fs.writeFileSync(INDEXFILE, result);
+console.log(result);
+//fs.writeFileSync(INDEXFILE, result);

@@ -126,7 +126,7 @@ const createTree = (rootDir, parent = []) => {
   return parent;
 };
 
-const result = createIndex(INITIALPATH, TREE);
+const result = createTree(INITIALPATH, TREE);
 
 const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
 export const menuData = ${JSON.stringify(result, null, 2)}`;
