@@ -20,6 +20,9 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Fetch master branch
+        run: git fetch origin master:refs/remotes/origin/master
+
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
