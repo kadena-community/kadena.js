@@ -23,8 +23,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
-      - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
 
       - name: Rush install (install-run-rush)
         run: |
@@ -37,3 +35,6 @@ jobs:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
+
+      - name: Rush verify Change Logs (install-run-rush)
+        run: node common/scripts/install-run-rush.js change --verify
