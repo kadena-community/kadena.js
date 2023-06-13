@@ -424,6 +424,12 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/marmalade-website",
+      "projectFolder": "packages/apps/marmalade-website",
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################
