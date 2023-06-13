@@ -100,12 +100,12 @@ export const Centered: Story = {
         alignItems={alignItems}
         justifyContent={justifyContent}
       >
-        <div className={className(item, itemSizeClass[40])}>Item 1</div>
-        <div className={className(item, itemSizeClass[12])}>Item 2</div>
-        <div className={className(item, itemSizeClass[40])}>Item 3</div>
-        <div className={className(item, itemSizeClass[24])}>Item 4</div>
-        <div className={className(item, itemSizeClass[40])}>Item 5</div>
-        <div className={className(item, itemSizeClass[40])}>Item 6</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 1</div>
+        <div className={className(item, itemSizeClass.$12)}>Item 2</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 3</div>
+        <div className={className(item, itemSizeClass.$24)}>Item 4</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 5</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 6</div>
       </Stack>
     </>
   ),
@@ -127,12 +127,12 @@ export const SpaceBetween: Story = {
         alignItems={alignItems}
         justifyContent={justifyContent}
       >
-        <div className={className(item, itemSizeClass[40])}>Item 1</div>
-        <div className={className(item, itemSizeClass[12])}>Item 2</div>
-        <div className={className(item, itemSizeClass[40])}>Item 3</div>
-        <div className={className(item, itemSizeClass[20])}>Item 4</div>
-        <div className={className(item, itemSizeClass[40])}>Item 5</div>
-        <div className={className(item, itemSizeClass[40])}>Item 6</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 1</div>
+        <div className={className(item, itemSizeClass.$12)}>Item 2</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 3</div>
+        <div className={className(item, itemSizeClass.$20)}>Item 4</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 5</div>
+        <div className={className(item, itemSizeClass.$40)}>Item 6</div>
       </Stack>
     </>
   ),
@@ -156,12 +156,12 @@ export const Wrapped: Story = {
         justifyContent={justifyContent}
         flexWrap={flexWrap}
       >
-        <div className={className(item, itemSizeClass[64])}>Item 1</div>
-        <div className={className(item, itemSizeClass[64])}>Item 2</div>
-        <div className={className(item, itemSizeClass[64])}>Item 3</div>
-        <div className={className(item, itemSizeClass[64])}>Item 4</div>
-        <div className={className(item, itemSizeClass[64])}>Item 5</div>
-        <div className={className(item, itemSizeClass[64])}>Item 6</div>
+        <div className={className(item, itemSizeClass.$64)}>Item 1</div>
+        <div className={className(item, itemSizeClass.$64)}>Item 2</div>
+        <div className={className(item, itemSizeClass.$64)}>Item 3</div>
+        <div className={className(item, itemSizeClass.$64)}>Item 4</div>
+        <div className={className(item, itemSizeClass.$64)}>Item 5</div>
+        <div className={className(item, itemSizeClass.$64)}>Item 6</div>
       </Stack>
     </>
   ),
