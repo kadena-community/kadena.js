@@ -1,6 +1,7 @@
 enum DateFormat {
     POSIX_MS
     ISO8601
+}
 
 scalar Date
 scalar Base64Url # ???
@@ -58,7 +59,6 @@ scalar ChainId
 #   CHAIN_19
 # }
 
-
 # Hashes (32 bytes or 256 bits)
 scalar BlockHash
 scalar PayloadHash
@@ -91,7 +91,7 @@ type Block {
   weight: BlockWeight!
   featureFlags: Word64!
   epochStart(format: DateFormat = ISO8601): Date!
-  adjacents: [AdjancentBlock!]!
+  adjacent: [AdjecentBlock!]!
   payloadHash: PayloadHash!
   chainwebVersion: ChainwebNetwork!
   target: BlockWeight!
@@ -104,20 +104,20 @@ type Block {
 # Cuts
 
 type CutItem {
-    chain: ChainId!
-    height: BlockHeight!
-    hash: BlockHash!
+  chain: ChainId!
+  height: BlockHeight!
+  hash: BlockHash!
 }
 
 # On the P2P API a cut may also contains an optional list of block headers and
 # an optiona list of paylaods
 type Cut {
-    hashes: [CutItem!]! # one items for each chain
-    origin: String # Nullable
-    weight: BlockWeight!
-    height: BlockHeight!
-    instance: ChainwebNetwork!
-    id: CutHash!
+  hashes: [CutItem!]! # one items for each chain
+  origin: String # Nullable
+  weight: BlockWeight!
+  height: BlockHeight!
+  instance: ChainwebNetwork!
+  id: CutHash!
 }
 
 # Note that chainweb is agnostic of any types from the pact realm. The current
@@ -156,7 +156,11 @@ type CoinbaseTransaction {
   events: [EventData]
   metaData: undefined
   continuation: undefined
-  txId: number
+  txId: Int
+}
+
+type undefined {
+  some: String
 }
 
 type CoinbaseTransactionResult {
@@ -170,13 +174,9 @@ type Account {
 }
 
 type EventData {
-
+  some: String
 }
 
-type Account {
-  name: String
-  guard: KeySet
-}
 
 type KeySet {
   """
@@ -208,6 +208,7 @@ type TransactionCommandPayload {
 }
 
 type TransactionCommandPayloadMeta {
+  some: String
   # chainId: Int
   # creationTime: MsFromPosixEpoch
   # ttl: Int
@@ -219,6 +220,7 @@ type TransactionCommandPayloadMeta {
 }
 
 type TransactionCommandResult {
+  some: String
 }
 
 type TransactionSigner {
@@ -255,4 +257,3 @@ type ContinuationPayload {
   step: Int
   data: Object
 }
-
