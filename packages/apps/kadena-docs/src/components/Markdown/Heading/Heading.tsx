@@ -1,6 +1,5 @@
 import {
   Heading,
-  IHeadingProps,
   styled,
   StyledComponent,
   SystemIcons,
