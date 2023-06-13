@@ -1,16 +1,19 @@
+import * as commentMarkers from './commentMarkers/index.js';
+import { handleCommentMarkers } from './handleCommentMarkers.js';
+
 import remarkFrontMatter from 'remark-frontmatter';
+import remarkGFM from 'remark-gfm';
+import remarkOrderLinks from 'remark-order-reference-links';
 import remarkParse from 'remark-parse';
 import remarkPrettier from 'remark-prettier';
-import remarkGFM from 'remark-gfm';
 import remarkReferenceLinks from 'remark-reference-links';
-import remarkOrderLinks from 'remark-order-reference-links';
-import { handleCommentMarkers } from './handleCommentMarkers.js';
-import * as commentMarkers from './commentMarkers/index.js';
+import type { Preset } from 'unified';
 
-const remarkPresetKadena = {
+const remarkPresetKadena: Preset = {
   settings: {},
   plugins: [
     remarkFrontMatter,
+    // @ts-ignore
     remarkParse,
     [handleCommentMarkers, commentMarkers],
     remarkPrettier,
