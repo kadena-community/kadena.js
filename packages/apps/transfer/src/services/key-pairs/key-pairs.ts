@@ -6,7 +6,7 @@ export function downloadKeyPairToBrowser(): void {
   const keyPair = genKeyPair();
 
   downloadFileToBrowser(
-    'key-pair.txt',
+    `kadena-keypair-${keyPair.publicKey}.txt`,
     `public: ${keyPair.publicKey}\r\nprivate: ${keyPair.secretKey}`,
   );
 }
