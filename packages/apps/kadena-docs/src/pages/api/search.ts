@@ -1,8 +1,6 @@
 import { getCompletionHandler, pinecone } from '@7-docs/edge';
 import type { MetaData } from '@7-docs/shared/dist/types';
 
-type f = Promise<MetaData[]>;
-
 const namespace = 'kda-docs';
 
 export const prompt = `Context: {CONTEXT}
@@ -24,9 +22,11 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const PINECONE_URL = process.env.PINECONE_URL;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
 
-if (!OPENAI_API_KEY) throw new Error('Env var OPENAI_API_KEY missing');
-if (!PINECONE_URL) throw new Error('Env var PINECONE_URL missing');
-if (!PINECONE_API_KEY) throw new Error('Env var PINECONE_API_KEY missing');
+if (OPENAI_API_KEY === undefined)
+  throw new Error('Env var OPENAI_API_KEY missing');
+if (PINECONE_URL === undefined) throw new Error('Env var PINECONE_URL missing');
+if (PINECONE_API_KEY === undefined)
+  throw new Error('Env var PINECONE_API_KEY missing');
 
 const query: QueryFn = (vector: number[]) =>
   pinecone.query({

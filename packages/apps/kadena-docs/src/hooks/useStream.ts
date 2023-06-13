@@ -1,26 +1,26 @@
-import type { Conversation } from './useConversation';
+import type { IConversation } from './useConversation';
 
 import { getDelta, splitTextIntoSentences } from '@7-docs/edge';
 import type { StreamMetaData } from '@7-docs/shared/dist/types';
 import { useCallback, useEffect, useState } from 'react';
 
-type StartStream = (query: string, conversation: Conversation) => void;
+type StartStream = (query: string, conversation: IConversation) => void;
 
 export const useStream = (): [
   StartStream,
   boolean,
   string,
-  null | StreamMetaData[],
+  undefined | StreamMetaData[],
 ] => {
   const [outputStream, setOutputStream] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
-  const [metadata, setMetadata] = useState<null | StreamMetaData[]>(null);
-
-  const embeddingModels = ['text-embedding-ada-002'];
-  const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
+  const [metadata, setMetadata] = useState<undefined | StreamMetaData[]>();
 
   const startStream = useCallback(
-    function (query: string, conversation: Conversation) {
+    function (query: string, conversation: IConversation) {
+      const embeddingModels = ['text-embedding-ada-002'];
+      const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
+
       const searchParams = new URLSearchParams();
 
       searchParams.set('query', encodeURIComponent(query));
@@ -45,7 +45,7 @@ export const useStream = (): [
 
       setIsStreaming(true);
 
-      const done = () => {
+      const done = (): void => {
         setIsStreaming(false);
         source.close();
       };

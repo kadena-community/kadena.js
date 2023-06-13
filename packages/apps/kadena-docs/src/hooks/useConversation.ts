@@ -1,18 +1,18 @@
-import type { StreamMetaData } from '@7-docs/edge';
+import type { StreamMetaData } from '@7-docs/shared/dist/types';
 import type { Reducer } from 'react';
 import { useReducer } from 'react';
 
-interface Interaction {
+interface IInteraction {
   input: string;
   output: string;
 }
 
-interface InteractionWithMetadata extends Interaction {
-  metadata: StreamMetaData[] | null;
+interface IInteractionWithMetadata extends IInteraction {
+  metadata?: StreamMetaData[];
 }
 
-export interface Conversation extends Interaction {
-  history: InteractionWithMetadata[];
+export interface IConversation extends IInteraction {
+  history: IInteractionWithMetadata[];
 }
 
 type ActionType =
@@ -23,7 +23,7 @@ type ActionType =
   | {
       type: 'commit';
       value: string;
-      metadata: StreamMetaData[] | null;
+      metadata?: StreamMetaData[];
     }
   | {
       type: 'reset';
@@ -31,7 +31,7 @@ type ActionType =
 
 const initialState = { input: '', output: '', history: [] };
 
-const conversationReducer: Reducer<Conversation, ActionType> = (
+const conversationReducer: Reducer<IConversation, ActionType> = (
   state,
   action,
 ) => {
@@ -59,7 +59,7 @@ const conversationReducer: Reducer<Conversation, ActionType> = (
 };
 
 export const useConversation = (): [
-  Conversation,
+  IConversation,
   (action: ActionType) => void,
 ] => {
   const [state, dispatch] = useReducer(conversationReducer, initialState);

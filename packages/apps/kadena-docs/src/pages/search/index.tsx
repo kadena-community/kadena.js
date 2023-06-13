@@ -15,6 +15,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 
@@ -29,22 +30,19 @@ const Search: FC = () => {
   const [isInitiated, setIsInitiated] = useState<boolean>(false);
   const [conversation, dispatch] = useConversation();
   const [startStream, isStreaming, outputStream, metadata] = useStream();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (outputStream.length > 0 && !isStreaming) {
       dispatch({ type: 'commit', value: outputStream, metadata });
     }
-  }, [isStreaming, outputStream]);
+  }, [isStreaming, outputStream, dispatch, metadata]);
 
   useEffect(() => {
     if (conversation.input.length > 0 && !isStreaming) {
       startStream(conversation.input, conversation);
     }
-  }, [conversation.input]);
-
-  useEffect(() => {
-    console.log(conversation);
-  }, [conversation]);
+  }, [conversation, isStreaming, startStream]);
 
   useEffect(() => {
     if (Boolean(q) && query === undefined && !isInitiated) {
@@ -53,29 +51,37 @@ const Search: FC = () => {
     }
   }, [q, setQuery, query, setIsInitiated, isInitiated]);
 
-  const updateQuery = useMemo(() => {
-    const update = async (value: string): Promise<void> => {
+  const updateQuery = useCallback(
+    async (value: string): Promise<void> => {
       setQuery(value);
       await router.push(`${router.route}?q=${value}`);
-    };
+    },
+    [router],
+  );
 
-    return debounce(update, 500);
-  }, [router]);
+  const updateQueryDebounced = useMemo(() => {
+    return debounce(updateQuery, 500);
+  }, [updateQuery]);
 
   const onChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>): void => {
       const { currentTarget } = event;
       const value = currentTarget.value;
 
-      updateQuery(value);
+      updateQueryDebounced(value);
     },
-    [updateQuery],
+    [updateQueryDebounced],
   );
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    evt: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     evt.preventDefault();
-    if (!query) return;
-    dispatch({ type: 'setInput', value: query });
+    if (query === null) return;
+
+    const value = inputRef.current?.value ?? '';
+    await updateQuery(value);
+    dispatch({ type: 'setInput', value });
   };
 
   return (
@@ -83,6 +89,7 @@ const Search: FC = () => {
       <form onSubmit={handleSubmit}>
         <TextField
           inputProps={{
+            ref: inputRef,
             defaultValue: query,
             onChange,
             placeholder: 'Search',
@@ -91,10 +98,6 @@ const Search: FC = () => {
           }}
         />
       </form>
-      <div>{query}</div>
-
-      <h2>input</h2>
-      {conversation.input ? <div>{conversation.input}</div> : null}
 
       <h2>output</h2>
       {conversation?.history.map((interaction, index, conversation) => (
@@ -102,18 +105,16 @@ const Search: FC = () => {
           {interaction.input}
           <div>{interaction.output}</div>
           <div>
-            {interaction.metadata.map((item, index) => {
+            {interaction?.metadata?.map((item, index) => {
               return (
                 <>
                   <a href={item.url}>{item.title}</a>
-                  {index + 1 < interaction.metadata.length ? ' ● ' : null}
                 </>
               );
             })}
           </div>
         </>
       ))}
-
       <div>{outputStream}</div>
     </section>
   );
