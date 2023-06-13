@@ -1,12 +1,8 @@
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { createExp } from '@kadena/pactjs';
-import { ICommandPayload, IUnsignedCommand } from '@kadena/types';
+import { ChainId, ICommandPayload, IUnsignedCommand } from '@kadena/types';
 
 import { IContCommand } from './interfaces/IPactCommand';
-import { parseType } from './utils/parseType';
-import { IPact, PactCommand } from '.';
-
-import { log } from 'debug';
+import { PactCommand } from '.';
 
 /**
  * @alpha
@@ -97,3 +93,59 @@ export class ContCommand
     return command;
   }
 }
+
+export const pollSpvProof = async (
+  requestKey: string,
+  targetChainId: ChainId,
+  apiHost: string,
+  options?: {
+    interval?: number;
+    timeout?: number;
+    onPoll?: (status: string) => void;
+  },
+): Promise<any> => {
+  const {
+    interval = 5000,
+    timeout = 1000 * 60 * 3,
+    onPoll = () => {},
+  } = { ...options };
+
+  const payload = {
+    targetChainId,
+    requestKey,
+  };
+
+  const startTime = Date.now();
+  let response;
+
+  while (true) {
+    try {
+      onPoll('Polling in progress');
+      response = await fetch(apiHost, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.status === 200) {
+        onPoll('Polling successful');
+        break;
+      }
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
+    const elapsedTime = Date.now() - startTime;
+    if (elapsedTime >= timeout) {
+      onPoll('Timeout reached');
+      throw new Error('Timeout reached');
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, interval));
+  }
+
+  return response.text();
+};

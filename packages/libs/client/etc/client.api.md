@@ -357,6 +357,13 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     type: Type;
 }
 
+// @public (undocumented)
+export const pollSpvProof: (requestKey: string, targetChainId: ChainId, apiHost: string, options?: {
+    interval?: number | undefined;
+    timeout?: number | undefined;
+    onPoll?: ((status: string) => void) | undefined;
+} | undefined) => Promise<any>;
+
 // @alpha (undocumented)
 export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;
 
