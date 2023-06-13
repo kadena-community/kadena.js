@@ -1,4 +1,4 @@
-import { SystemIcons, TextField } from '@kadena/react-components';
+import { Stack, SystemIcons, TextField } from '@kadena/react-components';
 
 import { useConversation, useStream } from '@/hooks';
 import {
@@ -6,7 +6,9 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive';
 import debounce from 'lodash.debounce';
+import MiniSearch, { SearchResult } from 'minisearch';
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, {
   ChangeEvent,
@@ -31,6 +33,9 @@ const Search: FC = () => {
   const [conversation, dispatch] = useConversation();
   const [startStream, isStreaming, outputStream, metadata] = useStream();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [staticSearchResults, setStaticSearchResults] = useState<
+    SearchResult[]
+  >([]);
 
   useEffect(() => {
     if (outputStream.length > 0 && !isStreaming) {
@@ -59,6 +64,19 @@ const Search: FC = () => {
     [router],
   );
 
+  const loadSearchResults = async (value: string): Promise<void> => {
+    const results = await import('./../../data/searchIndex.json');
+
+    const index = MiniSearch.loadJSON(JSON.stringify(results.default), {
+      fields: ['title', 'content'],
+      storeFields: ['title', 'content'],
+    });
+
+    const data = index.search(value, { prefix: true, fuzzy: 0.3 });
+
+    setStaticSearchResults(data);
+  };
+
   const updateQueryDebounced = useMemo(() => {
     return debounce(updateQuery, 500);
   }, [updateQuery]);
@@ -82,6 +100,27 @@ const Search: FC = () => {
     const value = inputRef.current?.value ?? '';
     await updateQuery(value);
     dispatch({ type: 'setInput', value });
+
+    await loadSearchResults(value);
+  };
+
+  const createLink = (file: string): string => {
+    let complete = false;
+
+    return file
+      .split('/')
+      .reverse()
+      .reduce((acc: string[], val: string) => {
+        const fileName = val.split('.')[0] as string;
+        if (fileName.includes('index') || complete) return acc;
+        if (fileName === 'docs') {
+          complete = true;
+        }
+        acc.push(fileName);
+        return acc;
+      }, [])
+      .reverse()
+      .join('/');
   };
 
   return (
@@ -99,23 +138,42 @@ const Search: FC = () => {
         />
       </form>
 
-      <h2>output</h2>
-      {conversation?.history.map((interaction, index, conversation) => (
-        <>
-          {interaction.input}
-          <div>{interaction.output}</div>
-          <div>
-            {interaction?.metadata?.map((item, index) => {
+      <Stack>
+        <div>
+          <h2>output</h2>
+          {conversation?.history.map((interaction, index, conversation) => (
+            <>
+              {interaction.input}
+              <div>{interaction.output}</div>
+              <div>
+                {interaction?.metadata?.map((item, index) => {
+                  const url = createLink(item.title);
+                  return (
+                    <>
+                      <Link key={url} href={url}>
+                        {url}
+                      </Link>
+                    </>
+                  );
+                })}
+              </div>
+            </>
+          ))}
+          <div>{outputStream}</div>
+        </div>
+
+        <div>
+          <ul>
+            {staticSearchResults.map((item) => {
               return (
-                <>
-                  <a href={item.url}>{item.title}</a>
-                </>
+                <li key={item.id}>
+                  <Link href={createLink(item.filename)}>{item.title}</Link>
+                </li>
               );
             })}
-          </div>
-        </>
-      ))}
-      <div>{outputStream}</div>
+          </ul>
+        </div>
+      </Stack>
     </section>
   );
 };
