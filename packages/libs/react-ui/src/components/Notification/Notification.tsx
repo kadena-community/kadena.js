@@ -3,6 +3,7 @@ import { SystemIcon } from '../Icons';
 import {
   cardTitleClass,
   colorVariants,
+  containerClass,
   contentClass,
   expandClass,
   footerClass,
@@ -22,7 +23,7 @@ export interface INotificationProps {
   children?: React.ReactNode;
   displayCloseButton?: boolean;
   expand?: boolean;
-  color?: keyof typeof colorVariants;
+  color?: 'default' | keyof typeof colorVariants;
   simple?: boolean;
 
   header?: React.ReactNode;
@@ -45,10 +46,13 @@ export const Notification: FC<INotificationProps> = ({
 
   return (
     <div
-      className={classNames([colorVariants[color!]], {
-        [expandClass]: expand,
-        [simpleClass]: isSimple,
-      })}
+      className={classNames(
+        [color === 'default' ? containerClass : colorVariants[color!]],
+        {
+          [expandClass]: expand,
+          [simpleClass]: isSimple,
+        },
+      )}
     >
       <div className={iconContainerClass}>
         <Icon size={'md'} />

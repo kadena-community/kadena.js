@@ -71,33 +71,25 @@ export const simpleContentClass = style([
   }),
 ]);
 
-export const colorVariants = styleVariants(
-  {
-    default: 'default',
-    primary: 'primary',
-    secondary: 'secondary',
-    positive: 'positive',
-    warning: 'warning',
-    negative: 'negative',
-  },
-  (color) => {
-    return [
-      containerClass,
-      {
-        vars: {
-          [contrastColor]:
-            color === 'default'
-              ? vars.colors.neutral6
-              : vars.colors[`${color as ColorType}Contrast`],
-          [surfaceColor]:
-            color === 'default'
-              ? vars.colors.neutral2
-              : vars.colors[`${color as ColorType}Surface`],
-        },
+const colors: Record<ColorType, ColorType> = {
+  primary: 'primary',
+  secondary: 'secondary',
+  positive: 'positive',
+  warning: 'warning',
+  negative: 'negative',
+};
+
+export const colorVariants = styleVariants(colors, (color) => {
+  return [
+    containerClass,
+    {
+      vars: {
+        [contrastColor]: vars.colors[`${color}Contrast`],
+        [surfaceColor]: vars.colors[`${color}Surface`],
       },
-    ];
-  },
-);
+    },
+  ];
+});
 
 export const iconContainerClass = style([
   sprinkles({
