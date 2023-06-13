@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-plugin",
+      "comment": "Update to typescript 5",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-plugin"
+}
