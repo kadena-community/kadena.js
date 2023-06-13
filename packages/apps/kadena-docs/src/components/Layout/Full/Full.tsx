@@ -17,7 +17,12 @@ import { createSlug } from '@/utils';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
-export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
+export const Full: FC<ILayout> = ({
+  children,
+  aSideMenuTree = [],
+  editLink,
+  navigation,
+}) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
@@ -61,7 +66,7 @@ export const Full: FC<ILayout> = ({ children, aSideMenuTree = [] }) => {
       <Content id="maincontent">
         <Article ref={scrollRef}>
           {children}
-          <BottomPageSection />
+          <BottomPageSection editLink={editLink} navigation={navigation} />
         </Article>
       </Content>
       <AsideBackground />
