@@ -1,6 +1,6 @@
 # Supported Environments
 
-Date: 2023-06-12
+Date: 2023-06-13
 
 Status: proposed
 
@@ -40,8 +40,14 @@ covers most use cases and is fast. It's also the most-used distro for WSL.
 
 ### Browsers
 
-The documentation website, tools and tutorials should work in... TODO "latest 2
-versions...?"
+The documentation website, tools and tutorials should work in the **latest two
+versions** of all major browsers:
+
+- Brave
+- Google Chrome
+- Microsoft Edge
+- Firefox
+- Apple Safari + iOS Safari
 
 ## Consequences
 
