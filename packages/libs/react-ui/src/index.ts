@@ -17,6 +17,12 @@ export {
   IStackProps,
   ICardProps,
   Card,
+  INotificationProps,
+  Notification,
+  INotificationHeaderProps,
+  NotificationHeader,
+  INotificationFooterProps,
+  NotificationFooter,
 } from './components';
 export {
   sprinkles,

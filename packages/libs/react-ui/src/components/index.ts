@@ -11,3 +11,11 @@ export {
   GradientText,
   IGradientTextProps,
 } from './Typography';
+export {
+  Notification,
+  INotificationProps,
+  NotificationHeader,
+  INotificationHeaderProps,
+  NotificationFooter,
+  INotificationFooterProps,
+} from './Notification/Notification';
