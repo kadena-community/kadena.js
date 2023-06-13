@@ -1026,7 +1026,7 @@ importers:
       mdast-zone: ^5.1.1
       remark-frontmatter: ~4.0.1
       remark-gfm: ~3.0.1
-      remark-order-reference-links: ^0.0.2
+      remark-order-reference-links: ^0.0.3
       remark-parse: ^10.0.2
       remark-prettier: ^2.0.0
       remark-reference-links: ^6.0.1
@@ -1039,7 +1039,7 @@ importers:
       mdast-zone: 5.1.1
       remark-frontmatter: 4.0.1
       remark-gfm: 3.0.1
-      remark-order-reference-links: 0.0.2
+      remark-order-reference-links: 0.0.3
       remark-parse: 10.0.2
       remark-prettier: 2.0.0
       remark-reference-links: 6.0.1
@@ -17965,8 +17965,8 @@ packages:
       - supports-color
     dev: false
 
-  /remark-order-reference-links/0.0.2:
-    resolution: {integrity: sha512-/Pe1Vgd7QJal+0mfinAqEfOyyjhA40IWzzokJgDKY5FcFf6e1L18i1ra0G+KG7/hlv594Ex8Twnveg4IX872qA==}
+  /remark-order-reference-links/0.0.3:
+    resolution: {integrity: sha512-+Epmob4NCz6wCLik4XeHW3PpZQMKajVrNyw1f+lZu+FARXOUDdzHbA4Q+wqrtyb1sj0rQ7mKNaLxzyEy6fGpgQ==}
     dependencies:
       unist-util-is: 5.2.1
       unist-util-remove: 3.1.1
