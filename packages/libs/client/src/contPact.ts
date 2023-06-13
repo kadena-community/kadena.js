@@ -147,5 +147,5 @@ export const pollSpvProof = async (
     await new Promise((resolve) => setTimeout(resolve, interval));
   }
 
-  return response.text();
+  return response;
 };
