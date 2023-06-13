@@ -7,7 +7,6 @@ This repository contains the source code and documentation for the Kadena Transf
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
@@ -67,36 +66,6 @@ The project provides a set of functionalities that enable users to interact with
 6. **Existing Account**: With this feature, users can add additional coins to an existing account within the blockchain network. By specifying the recipient's account address and the amount of coins to be added, the system will update the account's balance accordingly. This feature allows users to top-up their existing accounts, increase their holdings, or perform any necessary adjustments to the coin balance of a specific account. It provides flexibility in managing the coin distribution across accounts and supports the seamless flow of digital assets within the blockchain ecosystem.
 
 Together, these features empower users to interact with the blockchain network, manage their identities, monitor account balances, transfer digital assets, and explore the blockchain's data.
-
-## Contributing
-
-Contributions to the Kadena Transfer App are welcome! If you find a bug, have a feature request, or want to contribute code, please follow these steps:
-
-1. [Report the issue or feature request](https://github.com/kadena-community/kadena.js/issues/new/choose)
-
-2. Fork the repository.
-
-3. Create a new branch for your feature or bug fix:
-
-```bash
-git checkout -b feat/your-feature-name
-```
-
-or
-
-```bash
-git checkout -b fix/your-bug-fix
-```
-
-4. Make the necessary changes and commit them.
-
-5. Push your branch to your forked repository.
-
-6. Create a pull request against the `kadena-community/kadena.js` repository, explaining the purpose of your changes.
-
-7. Wait for a review and address any feedback given.
-
-Thank you for contributing to the Kadena Transfer App!
 
 ## License
 
