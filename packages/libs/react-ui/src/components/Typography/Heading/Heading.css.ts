@@ -13,68 +13,68 @@ export const elementVariants = {
   h1: [
     sprinkles({
       fontSize: {
-        xs: '5xl',
-        md: '7xl',
-        lg: '9xl',
-        xl: '10xl',
-        '2xl': '12xl',
+        xs: '$5xl',
+        md: '$7xl',
+        lg: '$9xl',
+        xl: '$10xl',
+        xxl: '$12xl',
       },
     }),
   ],
   h2: [
     sprinkles({
-      fontWeight: 'bold',
+      fontWeight: '$bold',
       fontSize: {
-        xs: '4xl',
-        lg: '6xl',
-        xl: '8xl',
-        '2xl': '9xl',
+        xs: '$4xl',
+        lg: '$6xl',
+        xl: '$8xl',
+        xxl: '$9xl',
       },
     }),
   ],
   h3: [
     sprinkles({
       fontSize: {
-        xs: '2xl',
-        lg: '4xl',
-        xl: '5xl',
-        '2xl': '6xl',
+        xs: '$2xl',
+        lg: '$4xl',
+        xl: '$5xl',
+        xxl: '$6xl',
       },
     }),
   ],
   h4: [
     sprinkles({
       fontSize: {
-        xs: 'xl',
-        lg: '2xl',
-        xl: '3xl',
-        '2xl': '4xl',
+        xs: '$xl',
+        lg: '$2xl',
+        xl: '$3xl',
+        xxl: '$4xl',
       },
     }),
   ],
   h5: [
     sprinkles({
       fontSize: {
-        xs: 'lg',
-        xl: 'xl',
-        '2xl': '4xl',
+        xs: '$lg',
+        xl: '$xl',
+        xxl: '$4xl',
       },
     }),
   ],
   h6: [
     sprinkles({
       fontSize: {
-        xs: 'base',
-        xl: 'md',
-        '2xl': 'lg',
+        xs: '$base',
+        xl: '$md',
+        xxl: '$lg',
       },
     }),
   ],
 };
 
 export const boldVariants = {
-  true: [sprinkles({ fontWeight: 'semiBold' })],
-  false: [sprinkles({ fontWeight: 'normal' })],
+  true: [sprinkles({ fontWeight: '$semiBold' })],
+  false: [sprinkles({ fontWeight: '$normal' })],
 };
 
 export const heading = recipe({
@@ -92,7 +92,7 @@ export const heading = recipe({
         variant: 'h1',
         bold: true,
       },
-      style: [sprinkles({ fontWeight: 'bold' })],
+      style: [sprinkles({ fontWeight: '$bold' })],
     },
     {
       variants: {
@@ -100,14 +100,14 @@ export const heading = recipe({
         variant: 'h1',
         bold: false,
       },
-      style: [sprinkles({ fontWeight: 'light' })],
+      style: [sprinkles({ fontWeight: '$light' })],
     },
     {
       variants: {
         variant: 'h2',
         bold: true,
       },
-      style: [sprinkles({ fontWeight: 'bold' })],
+      style: [sprinkles({ fontWeight: '$bold' })],
     },
     {
       variants: {
@@ -115,7 +115,7 @@ export const heading = recipe({
         variant: 'h2',
         bold: false,
       },
-      style: [sprinkles({ fontWeight: 'light' })],
+      style: [sprinkles({ fontWeight: '$light' })],
     },
   ],
 
