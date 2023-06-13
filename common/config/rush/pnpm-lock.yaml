@@ -184,6 +184,7 @@ importers:
       mdast-util-frontmatter: ~1.0.1
       mdast-util-to-string: ~3.2.0
       micromark-extension-frontmatter: ~1.1.0
+      minisearch: ~6.1.0
       next: 13.4.4
       next-themes: ~0.2.1
       prettier: ^2.8.5
@@ -215,6 +216,7 @@ importers:
       js-yaml: 4.1.0
       lodash.debounce: 4.0.8
       mdast-util-to-string: 3.2.0
+      minisearch: 6.1.0
       next: 13.4.4_react-dom@18.2.0+react@18.2.0
       next-themes: 0.2.1_cf1ee5ea09d62bba3369841c19703b25
       react: 18.2.0
@@ -17531,6 +17533,10 @@ packages:
   /minipass/5.0.0:
     resolution: {integrity: sha512-3FnjYuehv9k6ovOEbyOswadCDPX1piCfhV8ncmYtHOjuPwylVWsghTLo7rabjC3Rx5xD4HDx8Wm1xnMF7S5qFQ==}
     engines: {node: '>=8'}
+
+  /minisearch/6.1.0:
+    resolution: {integrity: sha512-PNxA/X8pWk+TiqPbsoIYH0GQ5Di7m6326/lwU/S4mlo4wGQddIcf/V//1f9TB0V4j59b57b+HZxt8h3iMROGvg==}
+    dev: false
 
   /minizlib/2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
