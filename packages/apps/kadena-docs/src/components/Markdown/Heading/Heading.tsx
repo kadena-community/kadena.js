@@ -1,5 +1,6 @@
 import {
   Heading,
+  IHeadingProps,
   styled,
   StyledComponent,
   SystemIcons,
@@ -11,6 +12,7 @@ import React, { FC } from 'react';
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
   as: TagType;
+  variant?: TagType;
   children: string;
 }
 
@@ -18,23 +20,48 @@ export interface IHeader {
   children: string;
 }
 
-const StyledHeader: StyledComponent<typeof Heading, { as?: TagType }> = styled(
-  Heading,
-  {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
+const StyledHeader: StyledComponent<
+  typeof Heading,
+  { as?: TagType; variant?: TagType }
+> = styled(Heading, {
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  a: {
+    opacity: 0,
+    transition: 'opacity .3s ease',
+  },
+  '&:hover': {
     a: {
-      opacity: 0,
-      transition: 'opacity .3s ease',
+      opacity: 1,
     },
-    '&:hover': {
-      a: {
-        opacity: 1,
+  },
+  defaultVariants: {
+    variant: 'h2',
+  },
+  variants: {
+    variant: {
+      h1: {
+        fontSize: '$3xl',
+      },
+      h2: {
+        fontSize: '$2xl',
+      },
+      h3: {
+        fontSize: '$xl',
+      },
+      h4: {
+        fontSize: '$lg',
+      },
+      h5: {
+        fontSize: '$md',
+      },
+      h6: {
+        fontSize: '$base',
       },
     },
   },
-);
+});
 
 const StyledLinkIcon = styled('a', {
   display: 'inline-block',
@@ -43,10 +70,11 @@ const StyledLinkIcon = styled('a', {
   scrollSnapMarginTop: '$20',
 });
 
-export const TaggedHeading: FC<IProp> = ({ children, as }) => {
+export const TaggedHeading: FC<IProp> = ({ children, as, variant }) => {
   const slug = createSlug(children);
+
   return (
-    <StyledHeader as={as}>
+    <StyledHeader as={as} variant={variant ?? as}>
       {children}
       <StyledLinkIcon id={slug} href={`#${slug}`}>
         <SystemIcons.Link />
