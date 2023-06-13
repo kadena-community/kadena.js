@@ -120,5 +120,8 @@ export const headerContainerClass = style([
     alignItems: 'center',
     marginRight: 'md',
     paddingLeft: 'md',
+    position: 'absolute',
+    top: 'sm',
+    right: 0,
   }),
 ]);
