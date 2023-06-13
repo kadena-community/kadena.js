@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "7-docs": "~0.1.6",
-    "@7-docs/edge": "~0.1.6",
     "@babel/plugin-syntax-import-assertions": "~7.20.0",
     "@google-analytics/data": "~3.2.2",
     "@kadena/react-components": "workspace:*",
