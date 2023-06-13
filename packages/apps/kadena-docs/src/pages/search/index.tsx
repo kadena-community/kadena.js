@@ -1,5 +1,6 @@
 import { Stack, SystemIcons, TextField } from '@kadena/react-components';
 
+import { ResultSection, SearchCode } from '@/components';
 import { useConversation, useStream } from '@/hooks';
 import {
   checkSubTreeForActive,
@@ -20,6 +21,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface IQuery {
   q?: string;
@@ -139,12 +141,14 @@ const Search: FC = () => {
       </form>
 
       <Stack>
-        <div>
+        <ResultSection>
           <h2>output</h2>
           {conversation?.history.map((interaction, index, conversation) => (
             <>
               {interaction.input}
-              <div>{interaction.output}</div>
+              <ReactMarkdown components={{ code: SearchCode }}>
+                {interaction.output}
+              </ReactMarkdown>
               <div>
                 {interaction?.metadata?.map((item, index) => {
                   const url = createLink(item.title);
@@ -160,9 +164,9 @@ const Search: FC = () => {
             </>
           ))}
           <div>{outputStream}</div>
-        </div>
+        </ResultSection>
 
-        <div>
+        <ResultSection>
           <ul>
             {staticSearchResults.map((item) => {
               return (
@@ -172,7 +176,7 @@ const Search: FC = () => {
               );
             })}
           </ul>
-        </div>
+        </ResultSection>
       </Stack>
     </section>
   );

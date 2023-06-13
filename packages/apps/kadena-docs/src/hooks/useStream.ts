@@ -60,14 +60,12 @@ export const useStream = (): [
             if (text) setOutputStream((v) => v + text);
           }
         } catch (error) {
-          console.log(event);
           console.error(error);
           done();
         }
       });
 
       source.addEventListener('metadata', (event) => {
-        console.log('meta', event);
         try {
           const data = JSON.parse(event.data);
           setMetadata(data);

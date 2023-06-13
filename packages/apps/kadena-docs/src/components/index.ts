@@ -6,3 +6,4 @@ export * from './BrowseSection';
 export * from './LinkList';
 export * from './Analytics';
 export * from './LastModifiedDate';
+export * from './Search';
