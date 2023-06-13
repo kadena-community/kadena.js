@@ -4,9 +4,26 @@ export {
   IIconProps,
   SystemIcon,
   ProductIcon,
+  Grid,
+  IGridContainerProps,
+  IGridItemProps,
+  Text,
+  ITextProps,
+  Heading,
+  IHeadingProps,
+  GradientText,
+  IGradientTextProps,
+  Stack,
+  IStackProps,
   ICardProps,
   Card,
   IIconButtonProps,
   IconButton,
 } from './components';
-export { sprinkles, Sprinkles, vars, darkThemeClass } from './styles';
+export {
+  sprinkles,
+  Sprinkles,
+  vars,
+  darkThemeClass,
+  ColorType,
+} from './styles';
