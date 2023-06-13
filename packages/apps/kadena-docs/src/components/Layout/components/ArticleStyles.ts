@@ -10,7 +10,7 @@ export const Content: StyledComponent<'div', { layout?: 'landing' | 'home' }> =
   styled('div', {
     display: 'flex',
     position: 'relative',
-    paddingTop: '$10',
+    padding: '$10 0 $20',
     gridColumn: '1 / span 2',
     gridRow: '3 / span 1',
     overflow: 'hidden',

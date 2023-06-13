@@ -18,6 +18,8 @@ export const Main: FC<IPageProps> = ({
     layout: layoutType,
     lastModifiedDate,
     icon: pageIcon,
+    editLink,
+    navigation,
   },
   topDocs,
   aSideMenuTree,
@@ -85,7 +87,12 @@ export const Main: FC<IPageProps> = ({
         >
           <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
         </Menu>
-        <Layout isAsideOpen={isAsideOpen} aSideMenuTree={aSideMenuTree}>
+        <Layout
+          isAsideOpen={isAsideOpen}
+          aSideMenuTree={aSideMenuTree}
+          editLink={editLink}
+          navigation={navigation}
+        >
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <>
               <Breadcrumbs menuItems={leftMenuTree} />
