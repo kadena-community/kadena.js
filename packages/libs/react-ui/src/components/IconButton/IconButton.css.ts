@@ -15,14 +15,14 @@ export const container = style([
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 'lg',
+    borderRadius: '$lg',
     cursor: 'pointer',
-    size: 11,
+    size: '$11',
     border: 'none',
   }),
   {
     transition: 'opacity .2s ease',
-    color: fallbackVar(contrastColor, vars.colors.neutral5),
+    color: fallbackVar(contrastColor, vars.colors.$neutral5),
     backgroundColor: fallbackVar(surfaceColor, 'transparent'),
     selectors: {
       '&:hover': {
@@ -30,7 +30,7 @@ export const container = style([
       },
       '&:focus-visible': {
         outlineOffset: '2px',
-        outline: `2px solid ${vars.colors.neutral5}`,
+        outline: `2px solid ${vars.colors.$neutral5}`,
       },
     },
   },
@@ -49,8 +49,8 @@ export const colorVariants = styleVariants(colors, (color) => {
     container,
     {
       vars: {
-        [contrastColor]: vars.colors[`${color}Contrast`],
-        [surfaceColor]: vars.colors[`${color}Surface`],
+        [contrastColor]: vars.colors[`$${color}Contrast`],
+        [surfaceColor]: vars.colors[`$${color}Surface`],
       },
     },
   ];
@@ -60,7 +60,7 @@ export const invertedVariant = style([
   container,
   {
     vars: {
-      [contrastColor]: vars.colors.neutral3,
+      [contrastColor]: vars.colors.$neutral3,
       [surfaceColor]: 'transparent',
     },
   },
