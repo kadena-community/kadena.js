@@ -2,6 +2,7 @@ import {
   addCapability,
   buildCommand,
   listen,
+  Reducer,
   send,
   setCommand,
   setData,
@@ -49,46 +50,18 @@ const signAndSend = ({
 
 const deploy = async ({
   chainIds,
-  endpoint,
-  network,
-  pactCode,
-  signer,
-  publicKey,
-  secretKey,
-  useChainWeaver,
-  data,
+  setDeploySettings,
+  setDeployChainSettings,
 }: {
   chainIds: string[];
-  network: string;
-  endpoint: string;
-  pactCode: string;
-  signer: string;
-  publicKey: string;
-  secretKey: string;
-  useChainWeaver: boolean;
-  data: unknown;
+  setDeployChainSettings: (chainId: string) => Reducer;
+  setDeploySettings: Reducer;
 }): Promise<unknown> => {
   try {
     for (const chainId of chainIds) {
       const res = await buildCommand(
-        setCommand(pactCode),
-        setMeta({
-          gasLimit: 100000,
-          gasPrice: 0.0000001,
-          ttl: 60000,
-          chainId: chainId,
-          sender: signer,
-        }),
-        addCapability({
-          name: 'UNRESTRICTED',
-          args: [],
-          signer: publicKey,
-        }),
-        setData(data),
-        setNetworkId(network),
-        setDomain(endpoint),
-        signAndSend({ publicKey, secretKey, useChainWeaver }),
-        listen,
+        setDeployChainSettings(chainId),
+        setDeploySettings,
       )({});
       console.log('res', res);
     }
@@ -98,6 +71,53 @@ const deploy = async ({
     return { success: false };
   }
 };
+const setDeployChainSettings =
+  ({
+    signer,
+    network,
+    endpoint,
+  }: {
+    signer: string;
+    network: string;
+    endpoint: string;
+  }) =>
+  (chainId: string): Reducer =>
+    buildCommand(
+      setMeta({
+        gasLimit: 100000,
+        gasPrice: 0.0000001,
+        ttl: 60000,
+        chainId: chainId,
+        sender: signer,
+      }),
+      setNetworkId(network),
+      setDomain(endpoint),
+    );
+const setDeploySettings = ({
+  pactCode,
+  data,
+  publicKey,
+  secretKey,
+  useChainWeaver,
+}: {
+  pactCode: string;
+  publicKey: string;
+  secretKey: string;
+  useChainWeaver: boolean;
+  data: unknown;
+}) =>
+  buildCommand(
+    setCommand(pactCode),
+    addCapability({
+      name: 'UNRESTRICTED',
+      args: [],
+      signer: publicKey,
+    }),
+    setData(data),
+    signAndSend({ publicKey, secretKey, useChainWeaver }),
+    listen,
+  );
+
 export const deployQuestions: IQuestion[] = [
   {
     message: 'What would you like to deploy? (Provide a `.pact` file)',
@@ -171,34 +191,35 @@ export const deployQuestions: IQuestion[] = [
       const pactCode = readFileSync(pactFile, 'utf8');
       const data = JSON.parse(readFileSync(dataFile, 'utf8'));
 
+      const deployCommand = setDeploySettings({
+        pactCode,
+        data,
+        publicKey:
+          '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+        secretKey:
+          '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
+        useChainWeaver: false,
+      });
       if (isL1({ deployTargets }) && Array.isArray(l1Chains)) {
         await deploy({
           chainIds: l1Chains,
-          endpoint: 'http://localhost:8080',
-          network: 'fast-development',
-          pactCode,
-          publicKey:
-            '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-          secretKey:
-            '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
-          signer,
-          useChainWeaver: false,
-          data,
+          setDeployChainSettings: setDeployChainSettings({
+            endpoint: 'http://localhost:8080',
+            network: 'fast-development',
+            signer,
+          }),
+          setDeploySettings: deployCommand,
         });
       }
       if (isL2({ deployTargets }) && Array.isArray(l2Chains))
         await deploy({
           chainIds: l2Chains,
-          endpoint: 'http://localhost:8081',
-          network: 'fast-development',
-          pactCode,
-          publicKey:
-            '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-          secretKey:
-            '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
-          signer,
-          useChainWeaver: false,
-          data,
+          setDeployChainSettings: setDeployChainSettings({
+            endpoint: 'http://localhost:8081',
+            network: 'fast-development',
+            signer,
+          }),
+          setDeploySettings: deployCommand,
         });
       return { success: true };
     },
