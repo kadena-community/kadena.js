@@ -2,6 +2,41 @@
   "name": "@kadena/chainweb-stream-client",
   "entries": [
     {
+      "version": "0.0.3",
+      "tag": "@kadena/chainweb-stream-client_v0.0.3",
+      "date": "Tue, 13 Jun 2023 13:17:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added wire protocol compatibility checks"
+          },
+          {
+            "comment": "Update to typescript 5"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.6`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@kadena/chainweb-stream-client_v0.0.2",
       "date": "Thu, 01 Jun 2023 20:18:44 GMT",
