@@ -14,6 +14,11 @@ export interface ISubHeaderElement {
   children: ISubHeaderElement[];
 }
 
+export interface INavigation {
+  previous?: IMenuItem;
+  next?: IMenuItem;
+}
+
 export interface IPageMeta {
   title: string; // title of the HEAD info
   subTitle?: string;
@@ -25,6 +30,7 @@ export interface IPageMeta {
   editLink: string;
   lastModifiedDate?: Date;
   icon?: ProductIconNames;
+  navigation: INavigation;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
@@ -38,6 +44,7 @@ export interface ILayout {
   isAsideOpen?: boolean;
   aSideMenuTree?: ISubHeaderElement[];
   editLink?: string;
+  navigation?: INavigation;
 }
 
 export type LevelType = 1 | 2 | 3;

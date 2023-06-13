@@ -5784,7 +5784,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.6.0
-      tslib: 2.5.3
+      tslib: 2.4.1
     dev: true
 
   /@graphql-tools/utils/9.1.1_graphql@16.6.0:
@@ -6816,7 +6816,7 @@ packages:
     peerDependencies:
       cypress: '>=3'
     dependencies:
-      '@percy/sdk-utils': 1.25.0
+      '@percy/sdk-utils': 1.26.0
       cypress: 12.12.0
     dev: true
 
@@ -6834,8 +6834,8 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
-  /@percy/sdk-utils/1.25.0:
-    resolution: {integrity: sha512-jv4/jb3Neh4IgHUOuuB11XbC0Ho7dLH9plRM1JcBwxaoaTeGL9Ftau3OC126320K37yRTO4KZ+sW3jxQk/Ghsw==}
+  /@percy/sdk-utils/1.26.0:
+    resolution: {integrity: sha512-g9qD6tF/dyXEtJ0ieCmou9f54cY5waGPl/HYdPhcj8FJsTYL6wQXatQIxoCa95mK1duTFx3NjpD0IRU4kGt9/Q==}
     engines: {node: '>=14'}
     dev: true
 
