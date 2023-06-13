@@ -1,6 +1,14 @@
 import { ColorType, sprinkles, vars } from '../../styles';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
+
+const contrastColor = createVar(),
+  surfaceColor = createVar();
 
 export const container = style([
   sprinkles({
@@ -13,9 +21,9 @@ export const container = style([
     border: 'none',
   }),
   {
-    backgroundColor: 'transparent',
-    color: vars.colors.neutral5,
     transition: 'opacity .2s ease',
+    color: fallbackVar(contrastColor, vars.colors.neutral5),
+    backgroundColor: fallbackVar(surfaceColor, 'transparent'),
     selectors: {
       '&:hover': {
         opacity: '.6',
@@ -28,29 +36,32 @@ export const container = style([
   },
 ]);
 
-export const colorVariants = styleVariants(
-  {
-    default: 'default',
-    inverted: 'inverted',
-    primary: 'primary',
-    secondary: 'secondary',
-    positive: 'positive',
-    warning: 'warning',
-    negative: 'negative',
-  },
-  (color) => {
-    return [
-      container,
-      {
-        backgroundColor:
-          color === 'inverted' || color === 'default'
-            ? 'transparent'
-            : vars.colors[`${color as ColorType}Surface`],
-        color:
-          color === 'inverted'
-            ? vars.colors.neutral3
-            : vars.colors[`${color as ColorType}HighContrast`],
+const colors: Record<ColorType, ColorType> = {
+  primary: 'primary',
+  secondary: 'secondary',
+  positive: 'positive',
+  warning: 'warning',
+  negative: 'negative',
+};
+
+export const colorVariants = styleVariants(colors, (color) => {
+  return [
+    container,
+    {
+      vars: {
+        [contrastColor]: vars.colors[`${color}Contrast`],
+        [surfaceColor]: vars.colors[`${color}Surface`],
       },
-    ];
+    },
+  ];
+});
+
+export const invertedVariant = style([
+  container,
+  {
+    vars: {
+      [contrastColor]: vars.colors.neutral3,
+      [surfaceColor]: 'transparent',
+    },
   },
-);
+]);

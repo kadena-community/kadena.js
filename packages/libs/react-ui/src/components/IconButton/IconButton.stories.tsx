@@ -25,7 +25,11 @@ const meta: Meta<
       },
     },
     color: {
-      options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
+      options: [
+        'default',
+        'inverted',
+        ...(Object.keys(colorVariants) as (keyof typeof colorVariants)[]),
+      ],
       control: {
         type: 'select',
       },
