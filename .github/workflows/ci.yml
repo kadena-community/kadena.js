@@ -17,8 +17,8 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Fetch master branch
-        run: git fetch origin master:refs/remotes/origin/master
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
 
       - uses: actions/setup-node@v3
         with:
