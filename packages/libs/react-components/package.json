@@ -64,6 +64,6 @@
     "eslint": "^8.15.0",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   }
 }

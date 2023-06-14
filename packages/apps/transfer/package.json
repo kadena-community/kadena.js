@@ -63,7 +63,7 @@
     "next-translate-plugin": "~2.0.5",
     "prettier": "^2.8.5",
     "sort-package-json": "~2.4.1",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   },
   "volta": {
     "node": "18.16.0"

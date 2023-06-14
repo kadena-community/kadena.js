@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-config",
+      "comment": "Fixate TS version to v5.0.4",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-config"
+}
