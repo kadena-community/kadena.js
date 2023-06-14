@@ -19,6 +19,7 @@ export interface IInputProps
   leftPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   disabled?: boolean;
+  value?: string | number;
   status?: 'success' | 'error';
   type?: string;
   ref?: React.ForwardedRef<HTMLInputElement>;
@@ -26,7 +27,15 @@ export interface IInputProps
 
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
-    { leadingText, leftPanel, rightPanel, status, disabled = false, ...rest },
+    {
+      leadingText,
+      leftPanel,
+      rightPanel,
+      status,
+      disabled = false,
+      value = undefined,
+      ...rest
+    },
     ref,
   ) {
     const RightPanel = rightPanel;
@@ -47,6 +56,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           ref={ref}
           variant={variant}
           disabled={disabled}
+          value={value}
           {...rest}
         />
         {RightPanel && (

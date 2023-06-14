@@ -8,6 +8,8 @@ export {
   TextField,
   InputGroup,
   IInputGroupProps,
+  Input,
+  IInputProps,
 } from './components/Input';
 export {
   Notification,
