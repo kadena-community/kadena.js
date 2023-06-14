@@ -1,9 +1,7 @@
 name: Rush CI (changelog, retest)
-on:
-  pull_request:
-    branches: ['master']
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+# All pull requests, and
+# Workflow dispatch allows you to run this workflow manually from the Actions tab
+on: [pull_request, workflow_dispatch]
 jobs:
   build:
     name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
