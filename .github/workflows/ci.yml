@@ -14,9 +14,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
-      - name: Fetch master branch
-        run: git fetch origin master:refs/remotes/origin/master --deepen=4
+      - name: Fetch base branch
+        run: git fetch origin master:refs/remotes/${{ github.base_ref }}/master
 
       - uses: actions/setup-node@v3
         with:
