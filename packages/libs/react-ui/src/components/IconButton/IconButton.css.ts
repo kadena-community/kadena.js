@@ -1,14 +1,6 @@
 import { ColorType, sprinkles, vars } from '../../styles';
 
-import {
-  createVar,
-  fallbackVar,
-  style,
-  styleVariants,
-} from '@vanilla-extract/css';
-
-const contrastColor = createVar(),
-  surfaceColor = createVar();
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
@@ -19,11 +11,11 @@ export const container = style([
     cursor: 'pointer',
     size: '$11',
     border: 'none',
+    color: '$neutral5',
+    bg: 'transparent',
   }),
   {
     transition: 'opacity .2s ease',
-    color: fallbackVar(contrastColor, vars.colors.$neutral5),
-    backgroundColor: fallbackVar(surfaceColor, 'transparent'),
     selectors: {
       '&:hover': {
         opacity: '.6',
@@ -36,7 +28,11 @@ export const container = style([
   },
 ]);
 
-const colors: Record<ColorType, ColorType> = {
+export type ColorOptions = ColorType | 'default' | 'inverted';
+
+const colors: Record<ColorOptions, ColorOptions> = {
+  default: 'default',
+  inverted: 'inverted',
   primary: 'primary',
   secondary: 'secondary',
   positive: 'positive',
@@ -45,23 +41,11 @@ const colors: Record<ColorType, ColorType> = {
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
-  return [
-    container,
-    {
-      vars: {
-        [contrastColor]: vars.colors[`$${color}Contrast`],
-        [surfaceColor]: vars.colors[`$${color}Surface`],
-      },
-    },
-  ];
-});
+  if (color === 'default') return [];
 
-export const invertedVariant = style([
-  container,
-  {
-    vars: {
-      [contrastColor]: vars.colors.$neutral3,
-      [surfaceColor]: 'transparent',
-    },
-  },
-]);
+  if (color === 'inverted') {
+    return [sprinkles({ color: '$neutral3', bg: 'transparent' })];
+  }
+
+  return [sprinkles({ color: `$${color}Contrast`, bg: `$${color}Surface` })];
+});

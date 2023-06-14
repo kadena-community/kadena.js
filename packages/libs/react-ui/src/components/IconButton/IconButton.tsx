@@ -11,7 +11,7 @@ export interface IIconButtonProps
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   title: string;
-  color?: 'default' | 'inverted' | keyof typeof colorVariants;
+  color?: keyof typeof colorVariants;
 }
 
 export const IconButton: FC<IIconButtonProps> = ({
@@ -26,25 +26,20 @@ export const IconButton: FC<IIconButtonProps> = ({
   const Icon = icon;
   const ariaLabel = props['aria-label'] ?? title;
 
-  const className =
-    color === 'default'
-      ? container
-      : color === 'inverted'
-      ? invertedVariant
-      : colorVariants[color];
+  if (as === 'a' && href !== undefined && href !== '') {
+    <a className={colorVariants[color]} href={href} aria-label={ariaLabel}>
+      <Icon size="md" />
+    </a>;
+  }
 
-  return as === 'button' ? (
+  return (
     <button
       {...props}
-      className={className}
+      className={colorVariants[color]}
       onClick={onClick}
       aria-label={ariaLabel}
     >
       <Icon size="md" />
     </button>
-  ) : (
-    <a className={className} href={href} aria-label={ariaLabel}>
-      <Icon size="md" />
-    </a>
   );
 };
