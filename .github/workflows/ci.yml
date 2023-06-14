@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 20
 
       - name: Fetch base branch
-        run: git fetch --deepen=20 origin master:refs/remotes/${{ github.base_ref }}/master
+        run: git fetch --deepen=20 origin ${{ github.base_ref }}
 
       - uses: actions/setup-node@v3
         with:
