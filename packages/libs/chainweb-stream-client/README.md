@@ -111,6 +111,14 @@ Hint: You can rely on the `.meta.id` value to de-duplicate the underlying unconf
 
 Callback type: `(txn: ITransaction) => void`
 
+### heights
+
+Emitted when a `heights` event is received by the server. This carried the current cut as seen from stream-server's corresponding chainweb-node. This event is mostly intended for calculating minheight when reconnecting, but the event itself is expored to users in case they have use cases beyond that.
+
+[Payload](https://github.com/kadena-io/chainweb-stream-server#events) is an array of the height of each chain, with implicit indexes (i.e. chain 0 = index 0, etc).
+
+Callback type: `(chainHeights: number[]) => void`
+
 ### data
 
 Emitted when any transaction payload is received (unconfirmd and confirmed.)
