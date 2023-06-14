@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Layer_1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+  <style type="text/css">
+	.primary{fill:#311602;}
+	.accent{fill:#FF880F;}
+  </style>
+  <g>
+    <path class="primary" d="M60,30.1c0,8.8-3.8,17.1-10.5,22.8L45,47.5V11.6L30,29.5L15,11.6v35.8l-4.5,5.4C-2.1,42-3.6,23.1,7.2,10.5
+			S36.9-3.6,49.5,7.2C56.2,12.9,60,21.3,60,30.1z"/>
+    <path class="accent" d="M49.5,52.7c-11.2,9.7-27.8,9.7-39,0L30,29.5L49.5,52.7z"/>
+  </g>
+</svg>
