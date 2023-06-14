@@ -5,8 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
     "lint": "eslint src",
-    "build": "tsc"
+    "build": "tsc",
+    "test": ""
   },
   "license": "MIT",
   "dependencies": {
@@ -28,6 +31,6 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
     "unified": "^10.1.2",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   }
 }

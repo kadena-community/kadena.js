@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "rushx postinstall && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "postinstall": "npm run generate:sdk",
@@ -40,7 +40,7 @@
     "next": "13.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.16.1",
