@@ -5,9 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
     "lint": "eslint src",
     "build": "tsc",
-    "test": "echo \"No tests yet.\""
+    "test": ""
   },
   "license": "MIT",
   "dependencies": {
