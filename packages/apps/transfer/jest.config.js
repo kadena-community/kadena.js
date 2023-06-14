@@ -9,9 +9,6 @@ const customJestConfig = {
   },
   moduleDirectories: ['node_modules', 'src'],
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: [
-    "@testing-library/jest-dom/extend-expect",
-    "<rootDir>/jest.setup.js"
-  ]
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"]
 };
 module.exports = createJestConfig(customJestConfig);
