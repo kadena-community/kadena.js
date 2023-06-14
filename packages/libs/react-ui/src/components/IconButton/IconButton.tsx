@@ -1,6 +1,6 @@
 import { SystemIcon } from '../';
 
-import { colorVariants, container, invertedVariant } from './IconButton.css';
+import { colorVariants } from './IconButton.css';
 
 import React, { FC } from 'react';
 
@@ -27,9 +27,11 @@ export const IconButton: FC<IIconButtonProps> = ({
   const ariaLabel = props['aria-label'] ?? title;
 
   if (as === 'a' && href !== undefined && href !== '') {
-    <a className={colorVariants[color]} href={href} aria-label={ariaLabel}>
-      <Icon size="md" />
-    </a>;
+    return (
+      <a className={colorVariants[color]} href={href} aria-label={ariaLabel}>
+        <Icon size="md" />
+      </a>
+    );
   }
 
   return (
