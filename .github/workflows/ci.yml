@@ -27,13 +27,17 @@ jobs:
         with:
           node-version: ${{ matrix.NodeVersion }}
 
+      - name: List impacted packages
+        run: |
+          node common/scripts/install-run-rush.js list --impacted-by git:origin/${{ github.base_ref }}
+
       - name: Rush install (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js install --impacted-by git:origin/master
+          node common/scripts/install-run-rush.js install --impacted-by git:origin/${{ github.base_ref }}
 
       - name: Rush retest (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js retest --verbose --impacted-by git:origin/master
+          node common/scripts/install-run-rush.js retest --verbose --impacted-by git:origin/${{ github.base_ref }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
