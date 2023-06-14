@@ -103,7 +103,7 @@ export const pollSpvProof = async (
     timeout?: number;
     onPoll?: (status: string) => void;
   },
-): Promise<any> => {
+): Promise<Response | undefined> => {
   const {
     interval = 5000,
     timeout = 1000 * 60 * 3,
@@ -135,7 +135,7 @@ export const pollSpvProof = async (
       }
     } catch (error) {
       console.error(error);
-      return;
+      return response;
     }
 
     const elapsedTime = Date.now() - startTime;
@@ -149,3 +149,25 @@ export const pollSpvProof = async (
 
   return response;
 };
+
+export async function getContCommand(
+  requestKey: string,
+  targetChainId: ChainId,
+  apiHost: string,
+): Promise<ContCommand> {
+  const proofResponse = await pollSpvProof(requestKey, targetChainId, apiHost, {
+    onPoll(status) {
+      console.log(status);
+    },
+  });
+
+  if (proofResponse === undefined) {
+    throw new Error('Unable to obtain SPV Proof');
+  }
+
+  const proof = await proofResponse.text();
+
+  const contCommand = new ContCommand(proof, 1, requestKey, false);
+
+  return contCommand;
+}
