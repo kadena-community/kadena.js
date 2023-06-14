@@ -24,11 +24,6 @@ const meta: Meta<
         type: 'text',
       },
     },
-    simple: {
-      control: {
-        type: 'boolean',
-      },
-    },
     color: {
       options: [
         'default',
@@ -38,7 +33,7 @@ const meta: Meta<
         type: 'select',
       },
     },
-    expand: {
+    expanded: {
       control: {
         type: 'boolean',
       },
@@ -70,23 +65,23 @@ export const Primary: Story = {
     selectIcon: 'Information',
     title: 'Notification title',
     displayCloseButton: true,
-    expand: false,
+    expanded: false,
     color: undefined,
   },
   render: ({
     selectIcon,
     title,
     displayCloseButton: displayCloseButton,
-    expand,
+    expanded: expand,
     color,
-    simple,
+    simplified: simple,
   }) => {
     const icon = SystemIcon[selectIcon];
     return (
       <Notification.Container
         icon={icon}
-        simple={simple}
-        expand={expand}
+        simplified={simple}
+        expanded={expand}
         color={color}
         title={title}
         displayCloseButton={displayCloseButton}
@@ -100,30 +95,52 @@ export const Primary: Story = {
   },
 };
 
+export const Simplified: Story = {
+  name: 'Notification - Simplified',
+  args: {
+    selectIcon: 'Information',
+    expanded: false,
+    color: undefined,
+  },
+  render: ({ selectIcon, expanded: expand, color }) => {
+    const icon = SystemIcon[selectIcon];
+    return (
+      <Notification.Container
+        icon={icon}
+        simplified={true}
+        expanded={expand}
+        color={color}
+      >
+        Notification text to inform users about the event that occurred!
+      </Notification.Container>
+    );
+  },
+};
+
 export const Header: Story = {
   name: 'Notification - Header',
   args: {
     selectIcon: 'Information',
     title: 'Notification with a header!',
     displayCloseButton: true,
-    expand: false,
+    expanded: false,
     color: undefined,
   },
   render: ({
     selectIcon,
     title,
     displayCloseButton: displayCloseButton,
-    expand,
+    expanded: expand,
     color,
-    simple,
+    simplified: simple,
   }) => {
     const icon = SystemIcon[selectIcon];
 
     return (
       <Notification.Container
         icon={icon}
-        simple={simple}
-        expand={expand}
+        simplified={simple}
+        expanded={expand}
         color={color}
         title={title}
         displayCloseButton={displayCloseButton}

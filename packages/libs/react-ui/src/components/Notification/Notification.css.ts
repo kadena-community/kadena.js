@@ -50,7 +50,7 @@ export const simpleClass = style([
     paddingRight: '$xl',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   }),
   {
     borderLeftWidth: 1,
@@ -121,10 +121,9 @@ export const iconContainerClass = style([
   }),
 ]);
 
-export const iconContainerFullWidthClass = style([
+export const iconContainerExpandedClass = style([
   sprinkles({
-    marginTop: '$sm',
-    marginRight: '$md',
+    margin: '$md',
     display: 'flex',
     marginLeft: 'auto',
   }),
@@ -141,7 +140,7 @@ export const headerContainerClass = style([
     marginRight: '$md',
     paddingLeft: '$md',
     position: 'absolute',
-    top: '$sm',
-    right: 0,
+    top: '$md',
+    right: '$xl',
   }),
 ]);

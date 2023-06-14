@@ -3,13 +3,10 @@ import { SystemIcon } from '../Icons';
 import {
   cardTitleClass,
   colorVariants,
-  containerClass,
   contentClass,
   expandVariants,
-  footerClass,
-  headerContainerClass,
   iconContainerClass,
-  iconContainerFullWidthClass,
+  iconContainerExpandedClass,
   simpleClass,
 } from './Notification.css';
 
@@ -18,12 +15,12 @@ import React, { FC } from 'react';
 
 export interface INotificationProps {
   icon?: typeof SystemIcon[keyof typeof SystemIcon];
-  title: string;
+  title?: string;
   children?: React.ReactNode;
   displayCloseButton?: boolean;
-  expand?: boolean;
+  expanded?: boolean;
   color?: keyof typeof colorVariants;
-  simple?: boolean;
+  simplified?: boolean;
 }
 
 export const NotificationContainer: FC<INotificationProps> = ({
@@ -32,24 +29,24 @@ export const NotificationContainer: FC<INotificationProps> = ({
   children,
   displayCloseButton,
   color = 'default',
-  simple,
-  expand = false,
+  simplified,
+  expanded = false,
 }) => {
   const Icon = icon || SystemIcon.HelpCircle;
 
   const classList = classNames(
     colorVariants[color],
-    expandVariants[expand ? 'true' : 'false'],
+    expandVariants[expanded ? 'true' : 'false'],
   );
 
-  if (simple || !children) {
+  if (simplified || !children) {
     return (
       <div className={classNames(classList, simpleClass)}>
         <div className={iconContainerClass}>
           <Icon size={'md'} />
         </div>
 
-        <p className={contentClass}>{title}</p>
+        <p className={contentClass}>{children}</p>
       </div>
     );
   }
@@ -68,9 +65,8 @@ export const NotificationContainer: FC<INotificationProps> = ({
       </div>
 
       <div
-        className={expand ? iconContainerFullWidthClass : iconContainerClass}
+        className={expanded ? iconContainerExpandedClass : iconContainerClass}
       >
-        <div className={headerContainerClass} />
         {displayCloseButton && <SystemIcon.Close size={'md'} />}
       </div>
     </div>

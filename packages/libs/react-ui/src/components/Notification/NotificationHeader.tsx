@@ -1,5 +1,3 @@
-import { SystemIcon } from '../Icons';
-
 import { headerContainerClass } from './Notification.css';
 
 import React, { FC } from 'react';
@@ -11,10 +9,5 @@ export interface INotificationHeaderProps {
 export const NotificationHeader: FC<INotificationHeaderProps> = ({
   children,
 }) => {
-  return (
-    <div className={headerContainerClass}>
-      {children}
-      <SystemIcon.Close size={'md'} />
-    </div>
-  );
+  return <div className={headerContainerClass}>{children}</div>;
 };
