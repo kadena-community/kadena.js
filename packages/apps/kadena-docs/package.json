@@ -7,7 +7,7 @@
     "7d:query": "npx 7d",
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
-    "build": "heft build",
+    "build": "npm run build:next",
     "build:next": "npm run createtree && next build",
     "createSearchIndex": "node ./src/scripts/createSearchIndex.mjs",
     "createtree": "node ./src/scripts/getdocstree.mjs",
