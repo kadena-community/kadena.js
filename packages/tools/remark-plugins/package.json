@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "echo \"No tests yet.\""
   },
   "license": "MIT",
   "dependencies": {
@@ -28,6 +29,6 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
     "unified": "^10.1.2",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   }
 }
