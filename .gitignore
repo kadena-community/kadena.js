@@ -19,6 +19,7 @@ tsdoc-metadata.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+**/rush-logs
 
 # Runtime data
 *.pid
@@ -94,3 +95,4 @@ packages/*/*/temp
 
 # Intelij idea files
 .idea
+.idea/*
