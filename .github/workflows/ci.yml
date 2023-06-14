@@ -6,49 +6,39 @@ jobs:
   build:
     name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
-
       matrix:
         os: [ubuntu-latest]
         NodeVersion: [16, 18]
-        experimental: [false]
-
-        include:
-          - os: windows-latest
-            NodeVersion: 16
-            experimental: true
-          - os: windows-latest
-            NodeVersion: 18
-            experimental: true
 
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2
-      # - name: Git config user
-      #   run: |
-      #     git config --local user.name "Rushbot"
-      #     git config --local user.email "rushbot@users.noreply.github.com"
+          fetch-depth: 20
+
+      - name: Fetch base branch
+        run: git fetch --deepen=20 origin master:refs/remotes/${{ github.base_ref }}/master
+
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
-      - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
+
+      - name: List impacted packages
+        run: |
+          node common/scripts/install-run-rush.js list --impacted-by git:origin/${{ github.base_ref }}
+
       - name: Rush install (install-run-rush)
-        run: node common/scripts/install-run-rush.js install
+        run: |
+          node common/scripts/install-run-rush.js install --impacted-by git:origin/${{ github.base_ref }}
+
       - name: Rush retest (install-run-rush)
-        run: node common/scripts/install-run-rush.js retest --verbose
+        run: |
+          node common/scripts/install-run-rush.js retest --verbose --impacted-by git:origin/${{ github.base_ref }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
-      # - name: Rush test (rush-lib)
-      #   run: node apps/rush/lib/start-dev.js test --verbose --production --timeline
-      #   env:
-      #     # Prevent time-based browserslist update warning
-      #     # See https://github.com/microsoft/rushstack/issues/2981
-      #     BROWSERSLIST_IGNORE_OLD_DATA: 1
-      # - name: Ensure repo README is up-to-date
-      #   run: node repo-scripts/repo-toolbox/lib/start.js readme --verify
+
+      - name: Rush verify Change Logs (install-run-rush)
+        run: node common/scripts/install-run-rush.js change --verify
