@@ -20,18 +20,28 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Fetch master branch
+        run: git fetch origin master:refs/remotes/origin/master
+
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
-      - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
+
+      - name: List impacted packages
+        run: |
+          node common/scripts/install-run-rush.js list --impacted-by git:origin/${{ github.base_ref }}
 
       - name: Rush install (install-run-rush)
-        run: node common/scripts/install-run-rush.js install
+        run: |
+          node common/scripts/install-run-rush.js install --impacted-by git:origin/${{ github.base_ref }}
 
       - name: Rush retest (install-run-rush)
-        run: node common/scripts/install-run-rush.js retest --verbose
+        run: |
+          node common/scripts/install-run-rush.js retest --verbose --impacted-by git:origin/${{ github.base_ref }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
+
+      - name: Rush verify Change Logs (install-run-rush)
+        run: node common/scripts/install-run-rush.js change --verify
