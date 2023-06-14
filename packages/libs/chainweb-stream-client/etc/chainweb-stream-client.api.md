@@ -109,17 +109,21 @@ export interface IDebugMsgObject {
     // (undocumented)
     consecutiveFailedAttempts?: number;
     // (undocumented)
+    lastHeight?: number;
+    // (undocumented)
     length?: number;
     // (undocumented)
     message?: string;
     // (undocumented)
-    method: 'connect' | 'disconnect' | '_handleConnect' | '_handleError' | '_handleData' | '_handleHeartbeatTimeout' | string;
+    method: 'connect' | 'disconnect' | '_handleConnect' | '_handleError' | '_handleData' | '_handleHeights' | '_handleHeartbeatTimeout' | '_updateLastHeight' | string;
     // (undocumented)
     timeout?: number;
     // (undocumented)
     totalAttempts?: number;
     // (undocumented)
     ts: number;
+    // (undocumented)
+    url?: string;
     // (undocumented)
     willRetry?: boolean;
 }

@@ -109,7 +109,9 @@ export interface IDebugMsgObject {
     | '_handleConnect'
     | '_handleError'
     | '_handleData'
+    | '_handleHeights'
     | '_handleHeartbeatTimeout'
+    | '_updateLastHeight'
     | string;
 
   /*
@@ -121,4 +123,6 @@ export interface IDebugMsgObject {
   willRetry?: boolean;
   timeout?: number;
   length?: number;
+  lastHeight?: number;
+  url?: string;
 }
