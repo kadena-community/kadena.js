@@ -17,7 +17,7 @@
     "@rushstack/heft-jest-plugin": "~0.5.12",
     "eslint": "^8.15.0",
     "jest-environment-node": "~27.4.2",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
