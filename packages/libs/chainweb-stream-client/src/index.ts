@@ -271,7 +271,7 @@ class ChainwebStream extends EventEmitter {
     }
   }
 
-  private _updateLastHeight(data: ITransaction[] | number[]) {
+  private _updateLastHeight(data: ITransaction[] | number[]): void {
     if (!data.length) {
       return;
     }
