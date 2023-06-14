@@ -17,7 +17,6 @@ import {
   ISignatureJson,
   IUnsignedCommand,
   PactValue,
-  Type,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
@@ -110,6 +109,8 @@ type TransactionStatus =
   | 'success'
   | 'failure'
   | 'timeout';
+
+export type Type = 'exec' | 'cont';
 
 /**
  * Used to build Command objects modularly by adding pact code, environment data, capabilities, and sigs

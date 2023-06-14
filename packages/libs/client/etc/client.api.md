@@ -12,7 +12,6 @@ import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 import { SendResponse } from '@kadena/chainweb-node-client';
-import { Type } from '@kadena/types';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
@@ -375,6 +374,9 @@ export type TemplateHoles = string[];
 
 // @alpha (undocumented)
 export type TemplateParts = string[];
+
+// @public (undocumented)
+export type Type = 'exec' | 'cont';
 
 // (No @packageDocumentation comment for this package)
 

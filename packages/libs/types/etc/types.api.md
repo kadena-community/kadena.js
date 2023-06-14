@@ -286,9 +286,6 @@ export type SPVProof = string;
 // @alpha (undocumented)
 export type Step = number;
 
-// @alpha (undocumented)
-export type Type = 'cont' | 'exec';
-
 // (No @packageDocumentation comment for this package)
 
 ```

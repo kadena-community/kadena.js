@@ -1,7 +1,7 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { ChainId, ICap, ISignatureJson, Type } from '@kadena/types';
+import { ChainId, ICap, ISignatureJson } from '@kadena/types';
 
-import { NonceType } from '../pact';
+import { NonceType, Type } from '../pact';
 /**
  * @alpha
  */

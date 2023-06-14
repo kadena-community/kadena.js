@@ -165,11 +165,6 @@ export type ChainId =
   | '19';
 
 /**
- * @alpha
- */
-export type Type = 'cont' | 'exec';
-
-/**
  * The full transaction payload to be signed and sent to Chainweb.
  *
  * @param networkId - Backend-specific identifier of target network.
