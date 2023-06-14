@@ -94,3 +94,6 @@ packages/*/*/temp
 
 # Intelij idea files
 .idea
+
+# next typescript
+next-env.d.ts
