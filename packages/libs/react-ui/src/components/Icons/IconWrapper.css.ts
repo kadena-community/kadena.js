@@ -1,6 +1,6 @@
 import { sprinkles } from '../../styles';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import { styleVariants } from '@vanilla-extract/css';
 
 export const sizeVariants = styleVariants({
   sm: [sprinkles({ size: '$4' })],

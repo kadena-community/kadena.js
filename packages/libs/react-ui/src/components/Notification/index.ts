@@ -17,7 +17,13 @@ export {
   INotificationFooterProps,
 };
 
-export const Notification = {
+interface INotification {
+  Container: React.FC<INotificationProps>;
+  Header: React.FC<INotificationHeaderProps>;
+  Footer: React.FC<INotificationFooterProps>;
+}
+
+export const Notification: INotification = {
   Header: NotificationHeader,
   Container: NotificationContainer,
   Footer: NotificationFooter,

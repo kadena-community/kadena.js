@@ -27,9 +27,9 @@ export const NotificationContainer: FC<INotificationProps> = ({
   icon,
   title,
   children,
-  displayCloseButton,
+  displayCloseButton = false,
   color = 'default',
-  simplified,
+  simplified = false,
   expanded = false,
 }) => {
   const Icon = icon || SystemIcon.HelpCircle;
@@ -39,7 +39,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
     expandVariants[expanded ? 'true' : 'false'],
   );
 
-  if (simplified || !children) {
+  if (simplified || children === undefined) {
     return (
       <div className={classNames(classList, simpleClass)}>
         <div className={iconContainerClass}>
