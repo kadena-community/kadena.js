@@ -39,6 +39,11 @@ export class ContCommand extends PactCommand implements IContCommand, IContComma
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
 
+// Warning: (ae-incompatible-release-tags) The symbol "getContCommand" is marked as @public, but its signature references "ContCommand" which is marked as @alpha
+//
+// @public (undocumented)
+export function getContCommand(requestKey: string, targetChainId: ChainId, apiHost: string): Promise<ContCommand>;
+
 // @alpha (undocumented)
 export interface IChainweaverCap {
     // (undocumented)
@@ -362,7 +367,7 @@ export const pollSpvProof: (requestKey: string, targetChainId: ChainId, apiHost:
     interval?: number | undefined;
     timeout?: number | undefined;
     onPoll?: ((status: string) => void) | undefined;
-} | undefined) => Promise<any>;
+} | undefined) => Promise<Response | undefined>;
 
 // @alpha (undocumented)
 export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;
