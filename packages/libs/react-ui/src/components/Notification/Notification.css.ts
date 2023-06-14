@@ -16,7 +16,6 @@ export const containerClass = style([
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    width: 'max-content',
     height: 'min-content',
     position: 'relative',
   }),
@@ -34,14 +33,20 @@ export const footerClass = style([
   }),
 ]);
 
-export const expandClass = style([
-  sprinkles({
-    width: '100%',
-  }),
+export const expandVariant = styleVariants(
   {
-    width: '100% !important',
+    true: true,
+    false: false,
   },
-]);
+  (expand) => {
+    return [
+      containerClass,
+      sprinkles({
+        width: expand ? '100%' : 'max-content',
+      }),
+    ];
+  },
+);
 
 export const simpleClass = style([
   sprinkles({

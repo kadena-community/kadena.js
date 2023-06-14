@@ -5,7 +5,7 @@ import {
   colorVariants,
   containerClass,
   contentClass,
-  expandClass,
+  expandVariant,
   footerClass,
   headerContainerClass,
   iconContainerClass,
@@ -38,13 +38,12 @@ export const Notification: FC<INotificationProps> = ({
 }) => {
   const isSimple = (simple as boolean) || children === undefined;
   const Icon = icon || SystemIcon.HelpCircle;
-
   return (
     <div
       className={classNames(
         [color === 'default' ? containerClass : colorVariants[color!]],
+        expandVariant[expand ? 'true' : 'false'],
         {
-          [expandClass]: expand,
           [simpleClass]: isSimple,
         },
       )}
