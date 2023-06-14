@@ -21,6 +21,9 @@
       "eslint --fix",
       "prettier --write -u"
     ],
+    "**/*.md": [
+      "prettier --write -u"
+    ],
     "package.json": [
       "sort-package-json"
     ]
