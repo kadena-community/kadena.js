@@ -19,9 +19,8 @@ export interface IContCommandBuilder<
 }
 
 /**
- * Used to build Command objects modularly by adding pact code, environment data, capabilities, and sigs
- * as necessary.
- * Once the command is complete and ready for use, you can either call `createCommand` to get the ICommand object,
+ * Used to build Cont Command objects modularly by adding environment data as necessary.
+ * Once the command is complete and ready for use, you can either call `createCommand` to get the IContCommand object,
  * or you can call `local` or `send` to send the command to /send or /local endpoints of a node with the provided URL.
  *
  * @alpha
@@ -56,7 +55,7 @@ export class ContCommand
   public createCommand(): IUnsignedCommand {
     const dateInMs: number = Date.now();
 
-    // convert to IUnsignedTransactionCommand
+    // convert to ICommandPayload
     const unsignedTransactionCommand: ICommandPayload = {
       networkId: this.networkId,
       payload: {
@@ -171,6 +170,8 @@ export const pollSpvProof = async (
  * @param requestKey - the unique indentifier of the transaction
  * @param targetChainId - the target chainweb of the transaction
  * @param apiHost - the chainweb host where to send the transaction to
+ * @param step - step in defpact to execute
+ * @param rollback - whether to execute a specified rollback on this step
  * @returns the ContCommand instance with the set proof
  * @alpha
  */
@@ -178,6 +179,8 @@ export async function getContCommand(
   requestKey: string,
   targetChainId: ChainId,
   apiHost: string,
+  step: number,
+  rollback: boolean,
 ): Promise<ContCommand> {
   const proofResponse = await pollSpvProof(requestKey, targetChainId, apiHost, {
     onPoll(status) {
@@ -191,7 +194,7 @@ export async function getContCommand(
 
   const proof = await proofResponse.text();
 
-  const contCommand = new ContCommand(proof, 1, requestKey, false);
+  const contCommand = new ContCommand(proof, step, requestKey, rollback);
 
   return contCommand;
 }
