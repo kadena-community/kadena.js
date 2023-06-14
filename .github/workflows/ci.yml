@@ -14,8 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
       - name: Fetch master branch
         run: git fetch origin master:refs/remotes/origin/master
