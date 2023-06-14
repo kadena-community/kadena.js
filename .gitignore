@@ -19,6 +19,7 @@ tsdoc-metadata.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+**/rush-logs
 
 # Runtime data
 *.pid
@@ -85,7 +86,6 @@ common/autoinstallers/*/.npmrc
 **/.rush/temp/
 **/.rush
 packages/*/*/temp
-rush-logs
 
 # Heft
 .heft

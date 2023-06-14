@@ -1,5 +1,4 @@
-import { StyledLayout } from './styles';
-
+import { StyledLayout } from '@/components/Common/Layout/styles';
 import React, { type ReactNode, FC } from 'react';
 
 interface IProps {

@@ -1,7 +1,5 @@
-import { NavLink } from '../NavLink';
-
-import { StyledSidebar } from './styles';
-
+import { NavLink } from '@/components/Global/NavLink';
+import { StyledSidebar } from '@/components/Global/SidebarMenu/styles';
 import routes from '@/constants/routes';
 import { Account, Chain } from '@/resources/svg/generated';
 import { useRouter } from 'next/router';

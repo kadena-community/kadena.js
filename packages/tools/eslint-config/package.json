@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
   "scripts": {
@@ -18,8 +18,8 @@
     "eslint-plugin-simple-import-sort": "~7.0.0"
   },
   "devDependencies": {
-    "@rushstack/eslint-config": "~2.6.2",
+    "@rushstack/eslint-config": "~3.3.0",
     "eslint": "^8.15.0",
-    "typescript": "~4.6.3"
+    "typescript": "5.0.4"
   }
 }

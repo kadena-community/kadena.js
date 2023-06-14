@@ -1,5 +1,4 @@
-import { StyledOption } from './styles';
-
+import { StyledOption } from '@/components/Global/Select/styles';
 import React, { FC } from 'react';
 
 export interface IOptionProps
@@ -7,8 +6,4 @@ export interface IOptionProps
   //
 }
 
-export const Option: FC<IOptionProps> = (props) => (
-  //@todo: remove bellow line after fixing react and next types version
-  /* @ts-ignore */
-  <StyledOption {...props} />
-);
+export const Option: FC<IOptionProps> = (props) => <StyledOption {...props} />;

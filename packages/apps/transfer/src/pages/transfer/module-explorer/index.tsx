@@ -7,13 +7,6 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 
-import { Select, SidebarMenu } from '../../../components/Global';
-import {
-  type ModuleResult,
-  describeModule,
-} from '../../../services/modules/describe-module';
-import { convertIntToChainId } from '../../../services/utils/utils';
-
 import {
   StyledAccountForm,
   StyledCodeViewerContainer,
@@ -25,6 +18,12 @@ import {
   StyledTotalContainer,
 } from './styles';
 
+import { Select, SidebarMenu } from '@/components/Global';
+import {
+  type ModuleResult,
+  describeModule,
+} from '@/services/modules/describe-module';
+import { convertIntToChainId } from '@/services/utils/utils';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
@@ -86,8 +85,8 @@ const GetCode: FC = () => {
               label={t('Module Name')}
               inputProps={{
                 placeholder: t('Enter desired module name'),
-                // @ts-ignore
-                onChange: (e) => setModuleName(e?.target?.value),
+                onChange: (e) =>
+                  setModuleName((e.target as HTMLInputElement).value),
                 value: moduleName,
               }}
             />

@@ -1,5 +1,8 @@
-import { StyledNavItem, StyledNavItemIcon, StyledNavItemText } from './styles';
-
+import {
+  StyledNavItem,
+  StyledNavItemIcon,
+  StyledNavItemText,
+} from '@/components/Global/NavLink/styles';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 

@@ -2,7 +2,7 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { generateApiHost } from '../utils/utils';
+import { generateApiHost } from '@/services/utils/utils';
 
 const gasLimit: number = 60000;
 const gasPrice: number = 0.00000001;

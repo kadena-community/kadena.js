@@ -1,7 +1,6 @@
-import { StyledMainContent } from './styles';
-
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
+import { StyledMainContent } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import React, { FC } from 'react';
 
 const CrossChainTransferTracker: FC = () => {

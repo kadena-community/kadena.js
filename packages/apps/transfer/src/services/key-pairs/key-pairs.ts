@@ -1,12 +1,12 @@
 import { genKeyPair } from '@kadena/cryptography-utils';
 
-import { downloadFileToBrowser } from '../utils/file-download';
+import { downloadFileToBrowser } from '@/services/utils/file-download';
 
 export function downloadKeyPairToBrowser(): void {
   const keyPair = genKeyPair();
 
   downloadFileToBrowser(
-    'key-pair.txt',
+    `kadena-keypair-${keyPair.publicKey}.txt`,
     `public: ${keyPair.publicKey}\r\nprivate: ${keyPair.secretKey}`,
   );
 }

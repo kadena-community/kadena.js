@@ -1,5 +1,4 @@
-import { getCssText } from '../config/stitches.config';
-
+import { getCssText } from '@/config/stitches.config';
 import { Head, Html, Main, NextScript } from 'next/document';
 import React, { FC, ReactNode } from 'react';
 

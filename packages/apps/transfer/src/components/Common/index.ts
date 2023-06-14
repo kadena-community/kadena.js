@@ -1,2 +1,2 @@
-export { default as Layout } from './Layout';
-export * from './NestedLayout';
+export { default as Layout } from '@/components/Common/Layout';
+export * from '@/components/Common/NestedLayout';
