@@ -4,6 +4,7 @@ import {
   StyledInlineCode,
 } from './../Markdown/Code/styles';
 
+import React from 'react';
 import type { Components } from 'react-markdown';
 
 export const SearchCode: Components['code'] = ({ children, inline }) => {

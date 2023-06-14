@@ -1,7 +1,8 @@
 import { Stack, SystemIcons, TextField } from '@kadena/react-components';
 
 import { ResultSection, SearchCode } from '@/components';
-import { useConversation, useStream } from '@/hooks';
+import { useConversation } from '@/hooks';
+import { useStream } from '@/hooks/useStream';
 import {
   checkSubTreeForActive,
   getPathName,

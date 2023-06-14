@@ -1,4 +1,4 @@
-exports.default = {
+{
   "extends": "@kadena-dev/heft-rig/profiles/default/config/jest.config.json",
 
   "reporters": ["jest-standard-reporter"],

@@ -1,14 +1,14 @@
 {
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
     "7d:query": "npx 7d",
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
-    "build": "npm run createtree && next build",
+    "build": "heft build",
+    "build:next": "npm run createtree && next build",
     "createSearchIndex": "node ./src/scripts/createSearchIndex.mjs",
     "createtree": "node ./src/scripts/getdocstree.mjs",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
@@ -20,7 +20,8 @@
     "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "jest",
+    "test": "heft test --config ./jest.config.json",
+    "test:next": "jest",
     "test:watch": "jest --watch"
   },
   "lint-staged": {
