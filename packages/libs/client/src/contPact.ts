@@ -94,6 +94,21 @@ export class ContCommand
   }
 }
 
+/**
+ * Checks if the SPV Proof is successful or failed by polling the apiHost at
+ * a given interval. Times out if it takes too long.
+ *
+ * @param requestKey - the unique indentifier of the transaction
+ * @param targetChainId - the target chainweb of the transaction
+ * @param apiHost - the chainweb host where to send the transaction to
+ * @param options
+ *   - `interval` - the amount of time in ms between the api calls (optional)
+ *   - `timeout` - the total time in ms after this function will time out (optional)
+ *   - `onPoll` - `(status) => void` a function that gets called before each poll request (optional)
+ *
+ * @returns the SPV Proof Response
+ * @alpha
+ */
 export const pollSpvProof = async (
   requestKey: string,
   targetChainId: ChainId,
@@ -150,6 +165,15 @@ export const pollSpvProof = async (
   return response;
 };
 
+/**
+ * Creates a ContCommand instance with all the necessary .
+ * (i.e. it is checked whether the signatures are complete)
+ * @param requestKey - the unique indentifier of the transaction
+ * @param targetChainId - the target chainweb of the transaction
+ * @param apiHost - the chainweb host where to send the transaction to
+ * @returns the ContCommand instance with the set proof
+ * @alpha
+ */
 export async function getContCommand(
   requestKey: string,
   targetChainId: ChainId,
