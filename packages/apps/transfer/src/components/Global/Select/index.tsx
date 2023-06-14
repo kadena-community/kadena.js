@@ -74,7 +74,7 @@ export const Select: FC<ISelectProps> = ({
         </StyledSelectGroupHeader>
       )}
       <StyledSelects>
-        <StyledSelectWrapper {...rest} variant={variant}>
+        <StyledSelectWrapper variant={variant}>
           {Boolean(leadingText) && (
             <StyledLeadingText>{leadingText}</StyledLeadingText>
           )}
