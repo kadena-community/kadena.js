@@ -11,8 +11,6 @@ export const container = style([
     cursor: 'pointer',
     size: '$11',
     border: 'none',
-    color: '$neutral5',
-    bg: 'transparent',
   }),
   {
     transition: 'opacity .2s ease',
@@ -41,11 +39,16 @@ const colors: Record<ColorOptions, ColorOptions> = {
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
-  if (color === 'default') return [];
-
-  if (color === 'inverted') {
-    return [sprinkles({ color: '$neutral3', bg: 'transparent' })];
+  if (color === 'default') {
+    return [container, sprinkles({ color: '$neutral5', bg: 'transparent' })];
   }
 
-  return [sprinkles({ color: `$${color}Contrast`, bg: `$${color}Surface` })];
+  if (color === 'inverted') {
+    return [container, sprinkles({ color: '$neutral2', bg: 'transparent' })];
+  }
+
+  return [
+    container,
+    sprinkles({ color: `$${color}Contrast`, bg: `$${color}Surface` }),
+  ];
 });
