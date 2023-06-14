@@ -1,0 +1,41 @@
+import { sprinkles, vars } from '../../styles';
+
+import { style } from '@vanilla-extract/css';
+
+export const trClass = style([
+  {
+    selectors: {
+      '&:nth-child(even)': {
+        background: vars.colors.$neutral2,
+      },
+    },
+  },
+]);
+
+export const tdClass = style([
+  sprinkles({
+    paddingY: '$3',
+    paddingX: '$4',
+  }),
+]);
+
+export const thClass = style([
+  sprinkles({
+    paddingY: '$3',
+    paddingX: '$4',
+    background: '$neutral4',
+    color: '$neutral2',
+    textAlign: 'left',
+  }),
+]);
+
+export const tableClass = style([
+  sprinkles({
+    width: '100%',
+    borderSpacing: 0,
+    borderRadius: '$sm',
+  }),
+  {
+    border: '1px solid $neutral3',
+  },
+]);
