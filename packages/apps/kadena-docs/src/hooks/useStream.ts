@@ -1,7 +1,7 @@
 import type { IConversation } from './useConversation';
 
 import { getDelta, splitTextIntoSentences } from '@7-docs/edge';
-import type { StreamMetaData } from '@7-docs/shared/dist/types';
+import type { StreamMetaData } from '@7-docs/edge';
 import { useCallback, useEffect, useState } from 'react';
 
 type StartStream = (query: string, conversation: IConversation) => void;

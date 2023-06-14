@@ -1,4 +1,4 @@
-import type { StreamMetaData } from '@7-docs/shared/dist/types';
+import type { StreamMetaData } from '@7-docs/edge';
 import type { Reducer } from 'react';
 import { useReducer } from 'react';
 

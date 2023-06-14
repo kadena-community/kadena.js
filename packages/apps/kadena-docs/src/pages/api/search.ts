@@ -1,5 +1,5 @@
 import { getCompletionHandler, pinecone } from '@7-docs/edge';
-import type { MetaData } from '@7-docs/shared/dist/types';
+import type { MetaData } from '@7-docs/edge';
 
 const namespace = 'kda-docs';
 
