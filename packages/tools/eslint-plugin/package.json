@@ -27,6 +27,6 @@
     "@rushstack/eslint-plugin": "~0.11.0",
     "@rushstack/heft": "~0.50.6",
     "eslint": "^8.15.0",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.4"
   }
 }
