@@ -36,6 +36,7 @@ jobs:
 
       - name: Rush retest (install-run-rush)
         run: |
+          node common/scripts/install-run-rush.js build --to git:origin/${{ github.base_ref }}
           node common/scripts/install-run-rush.js retest --verbose --impacted-by git:origin/${{ github.base_ref }}
         env:
           # Prevent time-based browserslist update warning
