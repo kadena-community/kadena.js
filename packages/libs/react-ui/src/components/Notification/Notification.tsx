@@ -5,7 +5,7 @@ import {
   colorVariants,
   containerClass,
   contentClass,
-  expandVariant,
+  expandVariants,
   footerClass,
   headerContainerClass,
   iconContainerClass,
@@ -23,7 +23,7 @@ export interface INotificationProps {
   children?: React.ReactNode;
   displayCloseButton?: boolean;
   expand?: boolean;
-  color?: 'default' | keyof typeof colorVariants;
+  color?: keyof typeof colorVariants;
   simple?: boolean;
 }
 
@@ -41,8 +41,8 @@ export const Notification: FC<INotificationProps> = ({
   return (
     <div
       className={classNames(
-        [color === 'default' ? containerClass : colorVariants[color!]],
-        expandVariant[expand ? 'true' : 'false'],
+        colorVariants[color],
+        expandVariants[expand ? 'true' : 'false'],
         {
           [simpleClass]: isSimple,
         },

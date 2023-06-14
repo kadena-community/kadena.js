@@ -7,12 +7,10 @@ import {
   styleVariants,
 } from '@vanilla-extract/css';
 
-const contrastColor = createVar(),
-  surfaceColor = createVar();
+const contrastColor = createVar();
 
 export const containerClass = style([
   sprinkles({
-    borderWidth: '$md',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -21,8 +19,6 @@ export const containerClass = style([
   }),
   {
     border: `1px solid ${fallbackVar(contrastColor, vars.colors.$neutral6)}`,
-    color: fallbackVar(contrastColor, vars.colors.$neutral6),
-    backgroundColor: fallbackVar(surfaceColor, vars.colors.$neutral2),
     borderLeftWidth: vars.sizes.$1,
   },
 ]);
@@ -33,7 +29,7 @@ export const footerClass = style([
   }),
 ]);
 
-export const expandVariant = styleVariants(
+export const expandVariants = styleVariants(
   {
     true: true,
     false: false,
@@ -76,7 +72,10 @@ export const simpleContentClass = style([
   }),
 ]);
 
-const colors: Record<ColorType, ColorType> = {
+export type ColorOptions = ColorType | 'default';
+
+const colors: Record<ColorOptions, ColorOptions> = {
+  default: 'default',
   primary: 'primary',
   secondary: 'secondary',
   positive: 'positive',
@@ -85,12 +84,32 @@ const colors: Record<ColorType, ColorType> = {
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
+  if (color === 'default') {
+    return [
+      containerClass,
+      sprinkles({
+        color: '$neutral6',
+        backgroundColor: '$neutral2',
+        borderColor: '$neutral6',
+      }),
+      {
+        vars: {
+          [contrastColor]: vars.colors.$neutral6,
+        },
+      },
+    ];
+  }
+
   return [
     containerClass,
+    sprinkles({
+      backgroundColor: `$${color}Surface`,
+      color: `$${color}Contrast`,
+      borderColor: `$${color}Contrast`,
+    }),
     {
       vars: {
         [contrastColor]: vars.colors[`$${color}Contrast`],
-        [surfaceColor]: vars.colors[`$${color}Surface`],
       },
     },
   ];
