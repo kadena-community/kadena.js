@@ -16,6 +16,7 @@ export {
   INotificationHeaderProps,
   INotificationFooterProps,
 };
+
 export const Notification = {
   Header: NotificationHeader,
   Container: NotificationContainer,

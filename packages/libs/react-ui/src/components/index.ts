@@ -12,10 +12,8 @@ export {
   IGradientTextProps,
 } from './Typography';
 export {
-  NotificationContainer as Notification,
+  Notification,
   INotificationProps,
-  NotificationHeader,
   INotificationHeaderProps,
-  NotificationFooter,
   INotificationFooterProps,
-} from './Notification/NotificationContainer';
+} from './Notification';
