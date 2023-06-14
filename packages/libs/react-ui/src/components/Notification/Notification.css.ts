@@ -48,6 +48,9 @@ export const simpleClass = style([
   sprinkles({
     borderRadius: '$md',
     paddingRight: '$xl',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }),
   {
     borderLeftWidth: 1,
@@ -56,17 +59,11 @@ export const simpleClass = style([
 
 export const cardTitleClass = style([
   sprinkles({
-    marginY: '$sm',
-  }),
-]);
-
-export const contentClass = style([
-  sprinkles({
     marginBottom: '$sm',
   }),
 ]);
 
-export const simpleContentClass = style([
+export const contentClass = style([
   sprinkles({
     marginY: '$md',
   }),
@@ -117,8 +114,7 @@ export const colorVariants = styleVariants(colors, (color) => {
 
 export const iconContainerClass = style([
   sprinkles({
-    marginX: '$md',
-    marginTop: '$sm',
+    margin: '$md',
     display: 'flex',
     right: 0,
     position: 'relative',

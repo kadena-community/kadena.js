@@ -1,11 +1,6 @@
 import { Button, SystemIcon } from './../../';
-import {
-  INotificationProps,
-  Notification,
-  NotificationFooter,
-  NotificationHeader,
-} from './Notification';
 import { colorVariants } from './Notification.css';
+import { INotificationProps, Notification } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -88,7 +83,7 @@ export const Primary: Story = {
   }) => {
     const icon = SystemIcon[selectIcon];
     return (
-      <Notification
+      <Notification.Container
         icon={icon}
         simple={simple}
         expand={expand}
@@ -97,10 +92,10 @@ export const Primary: Story = {
         displayCloseButton={displayCloseButton}
       >
         Notification text to inform users about the event that occurred!
-        <NotificationFooter>
+        <Notification.Footer>
           <Button title="click-me">Click me!</Button>
-        </NotificationFooter>
-      </Notification>
+        </Notification.Footer>
+      </Notification.Container>
     );
   },
 };
@@ -125,7 +120,7 @@ export const Header: Story = {
     const icon = SystemIcon[selectIcon];
 
     return (
-      <Notification
+      <Notification.Container
         icon={icon}
         simple={simple}
         expand={expand}
@@ -133,14 +128,14 @@ export const Header: Story = {
         title={title}
         displayCloseButton={displayCloseButton}
       >
-        <NotificationHeader>
+        <Notification.Header>
           <SystemIcon.Link size="md" />
-        </NotificationHeader>
+        </Notification.Header>
         Notification text to inform users about the event that occurred!
-        <NotificationFooter>
+        <Notification.Footer>
           <Button title="click-me">Click me!</Button>
-        </NotificationFooter>
-      </Notification>
+        </Notification.Footer>
+      </Notification.Container>
     );
   },
 };
