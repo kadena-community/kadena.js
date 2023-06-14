@@ -42,4 +42,4 @@ jobs:
           BROWSERSLIST_IGNORE_OLD_DATA: 1
 
       - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
+        run: node common/scripts/install-run-rush.js change --verify --target-branch origin/${{ github.base_ref }}
