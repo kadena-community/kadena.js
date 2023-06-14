@@ -17,10 +17,12 @@ import {
   ISignatureJson,
   IUnsignedCommand,
   PactValue,
+  Type,
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
 import { parseType } from './utils/parseType';
+import { ContCommand } from './contPact';
 
 import debug, { Debugger } from 'debug';
 
@@ -146,7 +148,7 @@ export class PactCommand
   //         ICommandBuilder<Record<string, unknown>>)[]
   //     ) => Promise<this>)
   //   | undefined;
-  public type: 'exec' = 'exec';
+  public type: Type;
   public cmd: string | undefined;
   public requestKey: string | undefined;
   public status: TransactionStatus;
@@ -168,6 +170,7 @@ export class PactCommand
     this.status = 'malleable';
     this.requestKey = undefined;
     this.nonce = undefined;
+    this.type = 'exec';
   }
 
   /**
@@ -471,15 +474,15 @@ export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand {
 }
 
 const pactCreator = (): IPact => {
-  const transaction: PactCommand = new PactCommand();
+  let code = '';
   const ThePact: IPact = new Proxy(function () {} as unknown as IPact, {
     get(target: unknown, p: string): IPact {
       log('get', p);
       if (typeof p === 'string')
-        if (transaction.code.length !== 0) {
-          transaction.code += '.' + p;
+        if (code.length !== 0) {
+          code += '.' + p;
         } else {
-          transaction.code += p;
+          code += p;
         }
       return ThePact;
     },
@@ -488,10 +491,18 @@ const pactCreator = (): IPact => {
       that: unknown,
       args: Array<string | number | boolean>,
     ) {
+      if (code.endsWith('.cont')) {
+        const transaction: ContCommand = new ContCommand(
+          ...(args as [string, number, string, boolean]),
+        );
+        return transaction;
+      }
       // when the expression is called, finalize the call
       // e.g.: `Pact.modules.coin.transfer(...someArgs)`
+      const transaction: PactCommand = new PactCommand();
+      code = code.replace('.exec', '');
       log('apply', args);
-      transaction.code = createExp(transaction.code, ...args.map(parseType));
+      transaction.code = createExp(code, ...args.map(parseType));
       return transaction;
     },
   }) as IPact;
