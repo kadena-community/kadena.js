@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "echo \"No tests yet.\""
   },
   "license": "MIT",
   "dependencies": {
