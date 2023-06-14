@@ -14,7 +14,7 @@
     "lint-staged": "lint-staged",
     "lint:fix": "eslint --fix .",
     "start": "next start",
-    "test": ""
+    "test": "jest"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -51,6 +51,8 @@
     "@rushstack/heft": "~0.50.6",
     "@rushstack/heft-jest-plugin": "~0.5.12",
     "@svgr/cli": "~8.0.1",
+    "@testing-library/jest-dom": "~5.16.5",
+    "@testing-library/react": "~14.0.0",
     "@types/jest": "^29.5.1",
     "@types/mocha": "^10.0.1",
     "@types/node": "^16.0.0",
@@ -59,6 +61,9 @@
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "env-cmd": "^10.1.0",
+    "eslint-plugin-jest": "~27.2.1",
+    "jest": "~29.5.0",
+    "jest-environment-jsdom": "~29.5.0",
     "lint-staged": "~13.2.0",
     "next-translate-plugin": "~2.0.5",
     "prettier": "^2.8.5",
