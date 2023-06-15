@@ -68,10 +68,9 @@ export const contentClass = style([
   }),
 ]);
 
-export type ColorOptions = ColorType | 'default';
+export type ColorOptions = ColorType;
 
 const colors: Record<ColorOptions, ColorOptions> = {
-  default: 'default',
   primary: 'primary',
   secondary: 'secondary',
   positive: 'positive',
@@ -80,21 +79,6 @@ const colors: Record<ColorOptions, ColorOptions> = {
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
-  if (color === 'default') {
-    return [
-      sprinkles({
-        color: '$neutral6',
-        backgroundColor: '$neutral2',
-        borderColor: '$neutral6',
-      }),
-      {
-        vars: {
-          [contrastColor]: vars.colors.$neutral6,
-        },
-      },
-    ];
-  }
-
   return [
     sprinkles({
       backgroundColor: `$${color}Surface`,
