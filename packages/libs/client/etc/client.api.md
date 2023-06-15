@@ -375,7 +375,7 @@ export type TemplateHoles = string[];
 // @alpha (undocumented)
 export type TemplateParts = string[];
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type Type = 'exec' | 'cont';
 
 // (No @packageDocumentation comment for this package)

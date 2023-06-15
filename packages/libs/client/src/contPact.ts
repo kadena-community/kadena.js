@@ -130,7 +130,7 @@ export const pollSpvProof = async (
   };
 
   const startTime = Date.now();
-  const spvProofReceived = false;
+  let spvProofReceived = false;
   let response;
 
   while (!spvProofReceived) {
@@ -146,7 +146,7 @@ export const pollSpvProof = async (
 
       if (response.status === 200) {
         onPoll('Polling successful');
-
+        spvProofReceived = true;
         break;
       }
     } catch (error) {
