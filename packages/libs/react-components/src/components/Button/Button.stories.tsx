@@ -1,4 +1,5 @@
 import { SystemIcons } from './../../';
+import { StyledButtonVariants } from './styles';
 import { Button, IButtonProps } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -7,6 +8,7 @@ import React from 'react';
 const meta: Meta<
   {
     selectIcon: keyof typeof SystemIcons;
+    selectVariant: StyledButtonVariants;
     text: string;
   } & IButtonProps
 > = {
@@ -15,6 +17,12 @@ const meta: Meta<
     onClick: { action: 'clicked' },
     selectIcon: {
       options: Object.keys(SystemIcons) as (keyof typeof SystemIcons)[],
+      control: {
+        type: 'select',
+      },
+    },
+    selectVariant: {
+      options: ['primaryFilled', 'secondaryFilled', 'positiveFilled'],
       control: {
         type: 'select',
       },
@@ -42,6 +50,7 @@ type Story = StoryObj<
   {
     text: string;
     selectIcon: keyof typeof SystemIcons;
+    selectVariant: StyledButtonVariants;
   } & IButtonProps
 >;
 
@@ -55,6 +64,7 @@ export const Primary: Story = {
   name: 'Button',
   args: {
     selectIcon: undefined,
+    selectVariant: undefined,
     title: 'test title',
     disabled: false,
     text: 'Click me',

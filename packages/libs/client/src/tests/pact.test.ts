@@ -1,17 +1,17 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
-import { convertIUnsignedTransactionToNoSig } from '@kadena/chainweb-node-client';
+jest.mock('@kadena/chainweb-node-client', () => ({
+  ...jest.requireActual('@kadena/chainweb-node-client'),
+  local: jest.fn(),
+  poll: jest.fn(),
+  send: jest.fn(),
+}));
+
+import { local, poll, send } from '@kadena/chainweb-node-client';
 import { PactNumber } from '@kadena/pactjs';
 import { IUnsignedCommand } from '@kadena/types';
 
 import { PactCommand } from '../pact';
 import { Pact } from '../pactCreator';
 
-import fetch from 'cross-fetch';
 const testURL: string = 'http://fake-api-host.local.co';
 
 jest.useFakeTimers().setSystemTime(new Date('2023-03-22'));
@@ -29,29 +29,6 @@ async function advanceTimersAndFlushPromises(
 ): Promise<void> {
   jest.advanceTimersByTime(time);
   await flushPromises();
-}
-
-function mockFetchForPoll(status?: 'success' | 'failure'): void {
-  let response = {};
-
-  if (status === undefined) {
-    response = {};
-  } else {
-    response = {
-      key1: {
-        result: {
-          status,
-        },
-      },
-    };
-  }
-
-  (fetch as jest.Mock).mockResolvedValue({
-    status: 200,
-    ok: true,
-    text: () => JSON.stringify(response),
-    json: () => response,
-  });
 }
 
 describe('Pact proxy', () => {
@@ -150,12 +127,7 @@ describe('Pact proxy', () => {
   });
 
   it('makes a well formatted /local call', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ results: [] }),
-      json: () => ({}),
-    });
+    (local as jest.Mock).mockResolvedValue({});
 
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
@@ -163,27 +135,15 @@ describe('Pact proxy', () => {
       .addCap('coin.GAS', 'senderPubKey')
       .addSignatures({ pubKey: 'senderPubKey', sig: 'sender-sig' });
 
-    await builder.local(testURL);
-
     const body = builder.createCommand();
 
-    expect(fetch).toBeCalledWith(
-      `${testURL}/api/v1/local?preflight=true&signatureVerification=true`,
-      {
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      },
-    );
+    await builder.local(testURL);
+
+    expect(local).toBeCalledWith(body, testURL);
   });
 
   it('makes a well formatted /local call with signatureVerification=false', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ results: [] }),
-      json: () => ({}),
-    });
+    (local as jest.Mock).mockResolvedValue({});
 
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
@@ -194,24 +154,15 @@ describe('Pact proxy', () => {
       signatureVerification: false,
     });
 
-    const body = convertIUnsignedTransactionToNoSig(builder.createCommand());
-
-    expect(fetch).toBeCalledWith(
-      `${testURL}/api/v1/local?preflight=true&signatureVerification=false`,
-      {
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      },
-    );
+    expect(local).toBeCalledWith(expect.anything(), testURL, {
+      preflight: true,
+      signatureVerification: false,
+    });
   });
 
   it('makes a well formatted /send call', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (send as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     const builder = new PactCommand();
@@ -220,47 +171,30 @@ describe('Pact proxy', () => {
 
     const body = { cmds: [builder.createCommand()] };
 
-    expect(fetch).toBeCalledWith(`${testURL}/api/v1/send`, {
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
+    expect(send).toBeCalledWith(body, testURL);
   });
 
   it('makes a well formatted /poll call', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (send as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
 
-    const { requestKeys } = await builder.send(testURL);
     const body = { cmds: [builder.createCommand()] };
 
-    expect(fetch).toBeCalledWith(`${testURL}/api/v1/send`, {
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
+    const { requestKeys } = await builder.send(testURL);
+
+    expect(send).toBeCalledWith(body, `${testURL}`);
 
     await builder.poll(testURL);
-    expect(fetch).toBeCalledWith(`${testURL}/api/v1/poll`, {
-      body: JSON.stringify({ requestKeys }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
+    expect(poll).toBeCalledWith({ requestKeys: requestKeys }, testURL);
   });
 
   it('throws when trying a .poll() when no requestkey is present', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (poll as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     const builder = new PactCommand();
@@ -270,11 +204,8 @@ describe('Pact proxy', () => {
   });
 
   it('throws when trying to call .pollUntil() when no requestkey is present', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (poll as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     const builder = new PactCommand();
@@ -297,20 +228,15 @@ describe('Pact proxy', () => {
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
 
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (send as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     await builder.send(testURL);
 
-    // make fetch return an empty object
-    mockFetchForPoll();
-
     // clear the mocked fetch to make counting the /poll calls easier
-    (fetch as jest.Mock).mockClear();
+    (send as jest.Mock).mockClear();
+    (poll as jest.Mock).mockClear();
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     builder
@@ -324,18 +250,24 @@ describe('Pact proxy', () => {
 
     await advanceTimersAndFlushPromises(1000);
 
-    expect((fetch as jest.Mock).mock.calls).toHaveLength(1);
+    expect((poll as jest.Mock).mock.calls).toHaveLength(1);
 
     await advanceTimersAndFlushPromises(1000);
 
-    expect((fetch as jest.Mock).mock.calls).toHaveLength(2);
+    expect((poll as jest.Mock).mock.calls).toHaveLength(2);
 
     // update the response to a succeeding one
-    mockFetchForPoll('success');
+    (poll as jest.Mock).mockResolvedValue({
+      key1: {
+        result: {
+          status: 'success',
+        },
+      },
+    });
 
     await advanceTimersAndFlushPromises(1000);
 
-    expect((fetch as jest.Mock).mock.calls).toHaveLength(3);
+    expect((poll as jest.Mock).mock.calls).toHaveLength(3);
   });
 
   it('rejects the promise for pollUntil if the transaction failed', async () => {
@@ -344,20 +276,24 @@ describe('Pact proxy', () => {
     const builder = new PactCommand();
     builder.code = '(coin.transfer "from" "to" 1.234)';
 
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (send as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     await builder.send(testURL);
 
     // make fetch return failed
-    mockFetchForPoll('failure');
+    (poll as jest.Mock).mockResolvedValue({
+      key1: {
+        result: {
+          status: 'failure',
+        },
+      },
+    });
 
     // clear the mocked fetch to make counting the /poll calls easier
-    (fetch as jest.Mock).mockClear();
+    (send as jest.Mock).mockClear();
+    (poll as jest.Mock).mockClear();
 
     let expectingError;
 
@@ -372,7 +308,7 @@ describe('Pact proxy', () => {
 
     expect(expectingError.status).toBe('failure');
 
-    expect((fetch as jest.Mock).mock.calls).toHaveLength(1);
+    expect((poll as jest.Mock).mock.calls).toHaveLength(1);
   });
 
   it('calls the onPoll function for each poll', async () => {
@@ -380,11 +316,8 @@ describe('Pact proxy', () => {
 
     const onPoll = jest.fn();
 
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify({ requestKeys: ['key1'] }),
-      json: () => ({ requestKeys: ['key1'] }),
+    (send as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
     });
 
     const builder = new PactCommand();
@@ -392,7 +325,7 @@ describe('Pact proxy', () => {
 
     await builder.send(testURL);
 
-    mockFetchForPoll();
+    (poll as jest.Mock).mockResolvedValue({});
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     builder.pollUntil(testURL, {
@@ -404,7 +337,13 @@ describe('Pact proxy', () => {
     await advanceTimersAndFlushPromises(1000);
     await advanceTimersAndFlushPromises(1000);
 
-    mockFetchForPoll('success');
+    (poll as jest.Mock).mockResolvedValue({
+      key1: {
+        result: {
+          status: 'success',
+        },
+      },
+    });
 
     await advanceTimersAndFlushPromises(1000);
 
