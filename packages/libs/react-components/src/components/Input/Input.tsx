@@ -19,6 +19,7 @@ export interface IInputProps
   leftPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
   disabled?: boolean;
+  value?: string | number;
   status?: 'success' | 'error';
   type?: string;
 }
@@ -29,6 +30,7 @@ export const Input: FC<IInputProps> = ({
   rightPanel,
   status,
   disabled = false,
+  value = undefined,
   ...rest
 }) => {
   const RightPanel = rightPanel;
@@ -45,7 +47,12 @@ export const Input: FC<IInputProps> = ({
           <LeftPanel size="md" />
         </StyledIconWrapper>
       )}
-      <StyledInput variant={variant} disabled={disabled} {...rest} />
+      <StyledInput
+        variant={variant}
+        disabled={disabled}
+        value={value}
+        {...rest}
+      />
       {RightPanel && (
         <StyledIconWrapper>
           <RightPanel size="md" />
