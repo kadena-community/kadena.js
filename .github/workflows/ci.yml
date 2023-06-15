@@ -24,6 +24,22 @@ jobs:
         with:
           node-version: ${{ matrix.NodeVersion }}
 
+      - name: Cache Rush
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/install-run
+            common/temp/build-cache
+            ~/.rush
+          key: cache-rush-${{ runner.os }}-${{ hashFiles('rush.json') }}
+
+      - name: Cache pnpm
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/pnpm-store
+          key: cache-pnpm-${{ runner.os }}
+
       - name: List impacted packages
         run: |
           node common/scripts/install-run-rush.js list --to git:origin/${{ github.base_ref }}
