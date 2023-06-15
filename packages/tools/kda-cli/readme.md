@@ -45,12 +45,18 @@ ln -s $(pwd)/lib/cli.js $NVM_BIN/kda-cli
 $ kda-cli --help
 
   Usage
-    $ kda-cli
+	  $ kda-cli
 
-  Options
-    --task  Your task
+	Options
+		--task  Task
 
-  Examples
+	Examples
+	  $ kda-cli --task=rerun
+	  $ kda-cli --task=start
+	  $ kda-cli --task=stop
+	  $ kda-cli --task=fund
+	  $ kda-cli --task=deploy
+	  $ kda-cli --task=local
     $ kda-cli --task=rerun
 ```
 
@@ -64,3 +70,8 @@ To setup your devnet (L1 and L2) you can configure chainweaver as such:
 Then add the account(s) you've funded:
 ![image](https://github.com/kadena-community/kadena.js/assets/1508400/b15c7d1b-0c4e-474e-bf75-10a569b003ae)
 
+## Devnet
+
+The current version of devnet is hard coded to target `fast-devnet`. This branch
+has some optimizations in place to target the L2 development. In a later version
+this will become configurable.

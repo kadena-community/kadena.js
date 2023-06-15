@@ -21,6 +21,11 @@ const cli: IFlags = meow(
 
 	Examples
 	  $ kda-cli --task=rerun
+	  $ kda-cli --task=start
+	  $ kda-cli --task=stop
+	  $ kda-cli --task=fund
+	  $ kda-cli --task=deploy
+	  $ kda-cli --task=local
 `,
   {
     importMeta: import.meta,
