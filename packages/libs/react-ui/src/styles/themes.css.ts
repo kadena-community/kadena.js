@@ -116,7 +116,7 @@ export const vars = createGlobalTheme(':root', {
     $warningHighContrast: '#3D2500',
 
     $negativeAccent: '#FF3338',
-    $negativeSurface: '#FFDAD8',
+    $negativeSurface: '#FFE7E5',
     $negativeContrast: '#75000B',
     $negativeHighContrast: '#410006',
   },
@@ -156,7 +156,7 @@ export const darkThemeClass = createTheme(vars.colors, {
   $negativeAccent: '#FF3338',
   $negativeSurface: '#410006',
   $negativeContrast: '#FFA8B0',
-  $negativeHighContrast: '#FFDAD8',
+  $negativeHighContrast: '#FFE7E5',
 });
 
 export type ColorType =
