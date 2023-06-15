@@ -1,3 +1,5 @@
+import './styles/global.css';
+
 export {
   IButtonProps,
   Button,
@@ -17,6 +19,8 @@ export {
   IStackProps,
   ICardProps,
   Card,
+  IIconButtonProps,
+  IconButton,
 } from './components';
 export {
   sprinkles,
