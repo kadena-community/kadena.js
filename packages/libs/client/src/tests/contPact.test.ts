@@ -19,6 +19,12 @@ describe('ContCommand', () => {
   describe('createCommand', () => {
     test('should return a valid command', () => {
       const contCommand = new ContCommand('proof', 1, 'pactId', true);
+      contCommand.setMeta({
+        sender: 'sender',
+        chainId: '1',
+        gasLimit: 1,
+        gasPrice: 1,
+      });
 
       const command = contCommand.createCommand();
 
@@ -55,8 +61,16 @@ describe('ContCommand', () => {
         }),
       ).rejects.toThrow('Timeout reached');
     }, 10000);
-  });
 
+    it('should be undefined if fetch throws an error', async () => {
+      // Mock the fetch function
+      global.fetch = jest.fn().mockRejectedValue(new Error('Fetch error'));
+
+      const response = await pollSpvProof(requestKey, targetChainId, apiHost);
+
+      expect(response).toBeUndefined();
+    });
+  });
   describe('getContCommand', () => {
     it('should return a ContCommand instance with the set proof', async () => {
       const mockProof = 'proof';
@@ -67,7 +81,6 @@ describe('ContCommand', () => {
 
       require('../contPact').pollSpvProof = jest
         .fn()
-        //@ts-ignore
         .mockResolvedValue(mockResponse);
 
       const contCommand = await getContCommand(
