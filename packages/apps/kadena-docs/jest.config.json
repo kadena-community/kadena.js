@@ -9,7 +9,7 @@
   "skipNodeResolution": true,
   "globals": {
     "ts-jest": {
-      "tsConfig": "../tsconfig.json"
+      "tsConfig": "./tsconfig.json"
     }
   },
   "collectCoverage": false
