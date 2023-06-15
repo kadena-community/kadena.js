@@ -39,12 +39,11 @@ const colorProperties = defineProperties({
   defaultCondition: 'lightMode',
   properties: {
     color: vars.colors,
-    background: vars.colors,
     backgroundColor: { ...vars.colors, transparent: 'transparent' },
     borderColor: vars.colors,
   },
   shorthands: {
-    bg: ['background', 'backgroundColor'],
+    bg: ['backgroundColor'],
   },
 });
 

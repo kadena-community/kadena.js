@@ -1,3 +1,5 @@
+import './styles/global.css';
+
 export {
   IButtonProps,
   Button,
@@ -21,6 +23,8 @@ export {
   Notification,
   INotificationHeaderProps,
   INotificationActionsProps,
+  IIconButtonProps,
+  IconButton,
 } from './components';
 export {
   sprinkles,
