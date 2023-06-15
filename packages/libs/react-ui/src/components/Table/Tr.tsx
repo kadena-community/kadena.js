@@ -18,13 +18,16 @@ export interface ITrComp extends FC<ITrProps> {
 }
 // eslint-disable-next-line react/prop-types
 export const Tr: ITrComp = ({ children, url }) => {
-  const handleClick = () => {
-    if (url) {
+  const handleClick = (): void => {
+    if (url !== undefined) {
       window.location.href = url;
     }
   };
   return (
-    <tr className={trClass} onClick={url ? handleClick : undefined}>
+    <tr
+      className={trClass}
+      onClick={url !== undefined ? handleClick : undefined}
+    >
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
@@ -35,7 +38,7 @@ export const Tr: ITrComp = ({ children, url }) => {
         return child;
       })}
 
-      {url && (
+      {url !== undefined && (
         <td>
           <div className={urlContainerClass}>
             <SystemIcon.TrailingIcon size={'md'} />

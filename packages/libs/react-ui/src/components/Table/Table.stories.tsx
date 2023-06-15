@@ -79,7 +79,7 @@ export const LinkTable: Story = {
       <Table>
         <Table.Head>
           <Table.Tr>
-            {Array.from(Array(columnCount + 1)).map((_id, tdIdx) => {
+            {Array.from(Array(columnCount + 1)).map((id, tdIdx) => {
               return tdIdx === columnCount ? (
                 <Table.Tr.Th key={`td${tdIdx}`} />
               ) : (
