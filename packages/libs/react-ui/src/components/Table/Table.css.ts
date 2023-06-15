@@ -23,7 +23,7 @@ export const thClass = style([
   sprinkles({
     paddingY: '$3',
     paddingX: '$4',
-    background: '$neutral4',
+    backgroundColor: '$neutral4',
     color: '$neutral2',
     textAlign: 'left',
   }),
