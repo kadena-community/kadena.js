@@ -26,7 +26,7 @@ describe('parseType', () => {
   });
 
   test('should invoke the function and return its result', () => {
-    const arg = () => 'dynamic';
+    const arg = (): string => 'dynamic';
     const result = parseType(arg);
     expect(result).toBe('dynamic');
   });
