@@ -130,9 +130,10 @@ export const pollSpvProof = async (
   };
 
   const startTime = Date.now();
+  const spvProofReceived = false;
   let response;
 
-  while (true) {
+  while (!spvProofReceived) {
     try {
       onPoll('Polling in progress');
       response = await fetch(apiHost, {
@@ -145,6 +146,7 @@ export const pollSpvProof = async (
 
       if (response.status === 200) {
         onPoll('Polling successful');
+
         break;
       }
     } catch (error) {

@@ -110,6 +110,9 @@ type TransactionStatus =
   | 'failure'
   | 'timeout';
 
+/**
+ * @alpha
+ */
 export type Type = 'exec' | 'cont';
 
 /**
