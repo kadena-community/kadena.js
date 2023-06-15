@@ -143,8 +143,9 @@ type Builder<T> = ICommandBuilderV2 & ICapability_Coin_GAS & T
 declare module '@kadena/client' {
 
   export interface IPactModules {
+    ${module.doc ? `/**${EOL}* ${module.doc}${EOL}*/${EOL}` : ''}
     "${getModuleFullName(module)}": {
-${indent(module.functions.map(getFunctionType).join(`,${EOL}${EOL}`))}
+${indent(indent(module.functions.map(getFunctionType).join(`,${EOL}${EOL}`)))}
     }
   }
 }`;
