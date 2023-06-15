@@ -403,6 +403,9 @@ importers:
 
   ../../packages/apps/marmalade-website:
     specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/eslint-plugin': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
@@ -422,6 +425,10 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       typescript: 5.0.4
+    devDependencies:
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
 
   ../../packages/libs/bootstrap-lib:
     specifiers:

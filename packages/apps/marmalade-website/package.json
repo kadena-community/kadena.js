@@ -19,5 +19,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*"
   }
 }
