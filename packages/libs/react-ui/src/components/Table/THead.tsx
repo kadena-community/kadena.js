@@ -1,3 +1,6 @@
+import { thClass } from './Table.css';
+import { Tr } from './Tr';
+
 import React, { FC } from 'react';
 
 export interface ITHead {
@@ -5,5 +8,17 @@ export interface ITHead {
 }
 
 export const THead: FC<ITHead> = ({ children }) => {
-  return <thead>{children}</thead>;
+  return (
+    <thead>
+      {React.Children.map(children, (child) => {
+        if (
+          !React.isValidElement(child) ||
+          (Boolean(child) && child.type !== Tr)
+        )
+          return null;
+
+        return child;
+      })}
+    </thead>
+  );
 };

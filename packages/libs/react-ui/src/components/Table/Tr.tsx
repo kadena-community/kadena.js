@@ -1,6 +1,6 @@
 import { trClass } from './Table.css';
 import { Td } from './Td';
-import { THead } from './THead';
+import { Th } from './Th';
 
 import React, { FC } from 'react';
 
@@ -10,16 +10,17 @@ export interface ITrProps {
 
 export interface ITrComp extends FC<ITrProps> {
   Td: typeof Td;
-  Th: typeof THead;
+  Th: typeof Th;
 }
 // eslint-disable-next-line react/prop-types
 export const Tr: ITrComp = ({ children }) => {
   return (
     <tr className={trClass}>
       {React.Children.map(children, (child) => {
+        console.log('child', child);
         if (
           !React.isValidElement(child) ||
-          (Boolean(child) && child.type !== THead && child.type !== Td)
+          (Boolean(child) && child.type !== Th && child.type !== Td)
         )
           return null;
 
@@ -30,5 +31,5 @@ export const Tr: ITrComp = ({ children }) => {
   );
 };
 
-Tr.Th = THead;
+Tr.Th = Th;
 Tr.Td = Td;

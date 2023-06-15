@@ -1,3 +1,5 @@
+import { Tr } from './Tr';
+
 import React, { FC } from 'react';
 
 export interface ITBody {
@@ -5,5 +7,17 @@ export interface ITBody {
 }
 
 export const TBody: FC<ITBody> = ({ children }) => {
-  return <tbody>{children}</tbody>;
+  return (
+    <tbody>
+      {React.Children.map(children, (child) => {
+        if (
+          !React.isValidElement(child) ||
+          (Boolean(child) && child.type !== Tr)
+        )
+          return null;
+
+        return child;
+      })}
+    </tbody>
+  );
 };

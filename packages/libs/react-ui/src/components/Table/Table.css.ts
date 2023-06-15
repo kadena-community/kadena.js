@@ -1,6 +1,12 @@
 import { sprinkles, vars } from '../../styles';
 
 import { style } from '@vanilla-extract/css';
+export const tdClass = style([
+  sprinkles({
+    paddingY: '$3',
+    paddingX: '$4',
+  }),
+]);
 
 export const trClass = style([
   {
@@ -10,13 +16,6 @@ export const trClass = style([
       },
     },
   },
-]);
-
-export const tdClass = style([
-  sprinkles({
-    paddingY: '$3',
-    paddingX: '$4',
-  }),
 ]);
 
 export const thClass = style([
