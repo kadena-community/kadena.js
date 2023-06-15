@@ -21,10 +21,10 @@ export const container = style([
   {
     transition: 'background-color 0.4s ease',
     ':hover': {
-      background: bgHoverColor,
+      backgroundColor: bgHoverColor,
     },
     ':active': {
-      background: bgActiveColor,
+      backgroundColor: bgActiveColor,
     },
     ':focus-visible': {
       outlineOffset: '2px',
@@ -34,7 +34,7 @@ export const container = style([
     },
     ':disabled': {
       opacity: 0.7,
-      background: vars.colors.$neutral3,
+      backgroundColor: vars.colors.$neutral3,
       color: vars.colors.$neutral1,
       cursor: 'not-allowed',
     },

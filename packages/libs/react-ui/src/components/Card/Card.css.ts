@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
-    background: '$neutral2',
+    backgroundColor: '$neutral2',
     color: '$neutral6',
     display: 'flex',
     flexDirection: 'column',

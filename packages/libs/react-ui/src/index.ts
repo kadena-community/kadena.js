@@ -19,6 +19,8 @@ export {
   IStackProps,
   ICardProps,
   Card,
+  IIconButtonProps,
+  IconButton,
 } from './components';
 export {
   sprinkles,
