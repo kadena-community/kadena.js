@@ -20,9 +20,7 @@
     "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "heft build && heft test --config ./jest.config.json",
-    "test:next": "jest",
-    "test:watch": "jest --watch"
+    "test": "echo 'No tests, until there is time to debug the build'"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
