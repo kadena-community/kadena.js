@@ -15,5 +15,5 @@ export {
   Notification,
   INotificationProps,
   INotificationHeaderProps,
-  INotificationFooterProps,
+  INotificationActionsProps,
 } from './Notification';

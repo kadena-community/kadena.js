@@ -20,7 +20,7 @@ export {
   INotificationProps,
   Notification,
   INotificationHeaderProps,
-  INotificationFooterProps,
+  INotificationActionsProps,
 } from './components';
 export {
   sprinkles,

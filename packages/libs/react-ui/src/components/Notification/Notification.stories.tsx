@@ -1,4 +1,4 @@
-import { Button, SystemIcon } from './../../';
+import { SystemIcon } from './../../';
 import { colorVariants } from './Notification.css';
 import { INotificationProps, Notification } from '.';
 
@@ -25,10 +25,7 @@ const meta: Meta<
       },
     },
     color: {
-      options: [
-        'default',
-        ...(Object.keys(colorVariants) as (keyof typeof colorVariants)[]),
-      ],
+      options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
         type: 'select',
       },
@@ -38,7 +35,7 @@ const meta: Meta<
         type: 'boolean',
       },
     },
-    displayCloseButton: {
+    hasCloseButton: {
       control: {
         type: 'boolean',
       },
@@ -64,94 +61,32 @@ export const Primary: Story = {
   args: {
     selectIcon: 'Information',
     title: 'Notification title',
-    displayCloseButton: true,
+    hasCloseButton: true,
     expanded: false,
     color: undefined,
   },
-  render: ({
-    selectIcon,
-    title,
-    displayCloseButton,
-    expanded,
-    color,
-    simplified,
-  }) => {
+  render: ({ selectIcon, title, hasCloseButton, expanded, color }) => {
     const icon = SystemIcon[selectIcon];
     return (
       <Notification.Container
         icon={icon}
-        simplified={simplified}
         expanded={expanded}
         color={color}
         title={title}
-        displayCloseButton={displayCloseButton}
+        hasCloseButton={hasCloseButton}
+        onClose={() => {
+          alert('Close button clicked');
+        }}
       >
         Notification text to inform users about the event that occurred!
-        <Notification.Footer>
-          <Button title="click-me">Click me!</Button>
-        </Notification.Footer>
-      </Notification.Container>
-    );
-  },
-};
-
-export const Simplified: Story = {
-  name: 'Notification - Simplified',
-  args: {
-    selectIcon: 'Information',
-    expanded: false,
-    color: undefined,
-  },
-  render: ({ selectIcon, expanded, color }) => {
-    const icon = SystemIcon[selectIcon];
-    return (
-      <Notification.Container
-        icon={icon}
-        simplified={true}
-        expanded={expanded}
-        color={color}
-      >
-        Notification text to inform users about the event that occurred!
-      </Notification.Container>
-    );
-  },
-};
-
-export const Header: Story = {
-  name: 'Notification - Header',
-  args: {
-    selectIcon: 'Information',
-    title: 'Notification with a header!',
-    displayCloseButton: true,
-    expanded: false,
-    color: undefined,
-  },
-  render: ({
-    selectIcon,
-    title,
-    displayCloseButton,
-    expanded,
-    color,
-    simplified,
-  }) => {
-    const icon = SystemIcon[selectIcon];
-
-    return (
-      <Notification.Container
-        icon={icon}
-        simplified={simplified}
-        expanded={expanded}
-        color={color}
-        title={title}
-        displayCloseButton={displayCloseButton}
-      >
-        <Notification.Header>
-          <SystemIcon.Link size="md" />
-        </Notification.Header>
-        Notification text to inform users about the event that occurred!
-        <Notification.Footer>
-          <Button title="click-me">Click me!</Button>
-        </Notification.Footer>
+        <Notification.Actions>
+          <Notification.Button icon={SystemIcon.Check} color={'positive'}>
+            Accept
+          </Notification.Button>
+          <Notification.Button icon={SystemIcon.Close} color={'negative'}>
+            Reject
+          </Notification.Button>
+        </Notification.Actions>
       </Notification.Container>
     );
   },

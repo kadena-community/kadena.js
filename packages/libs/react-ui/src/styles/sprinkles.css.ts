@@ -40,7 +40,7 @@ const colorProperties = defineProperties({
   properties: {
     color: vars.colors,
     background: vars.colors,
-    backgroundColor: vars.colors,
+    backgroundColor: { ...vars.colors, transparent: 'transparent' },
     borderColor: vars.colors,
   },
   shorthands: {

@@ -16,6 +16,8 @@ export const containerClass = style([
     alignItems: 'flex-start',
     height: 'min-content',
     position: 'relative',
+    color: '$neutral5',
+    borderRadius: '$sm',
   }),
   {
     border: `1px solid ${fallbackVar(contrastColor, vars.colors.$neutral6)}`,
@@ -23,9 +25,11 @@ export const containerClass = style([
   },
 ]);
 
-export const footerClass = style([
+export const actionsContainerClass = style([
   sprinkles({
     marginY: '$md',
+    display: 'flex',
+    justifyContent: 'flex-start',
   }),
 ]);
 
@@ -43,23 +47,13 @@ export const expandVariants = styleVariants(
   },
 );
 
-export const simpleClass = style([
-  sprinkles({
-    borderRadius: '$md',
-    paddingRight: '$xl',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  }),
-  {
-    borderLeftWidth: 1,
-  },
-]);
-
 export const cardTitleClass = style([
   sprinkles({
     marginBottom: '$sm',
   }),
+  {
+    color: contrastColor,
+  },
 ]);
 
 export const contentClass = style([
@@ -68,9 +62,7 @@ export const contentClass = style([
   }),
 ]);
 
-export type ColorOptions = ColorType;
-
-const colors: Record<ColorOptions, ColorOptions> = {
+const colors: Record<ColorType, ColorType> = {
   primary: 'primary',
   secondary: 'secondary',
   positive: 'positive',
@@ -82,7 +74,6 @@ export const colorVariants = styleVariants(colors, (color) => {
   return [
     sprinkles({
       backgroundColor: `$${color}Surface`,
-      color: `$${color}Contrast`,
       borderColor: `$${color}Contrast`,
     }),
     {
@@ -100,12 +91,19 @@ export const iconContainerClass = style([
     right: 0,
     position: 'relative',
   }),
+  {
+    color: contrastColor,
+    selectors: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
 ]);
 
 export const iconContainerExpandedClass = style([
+  iconContainerClass,
   sprinkles({
-    margin: '$md',
-    display: 'flex',
     marginLeft: 'auto',
   }),
 ]);
