@@ -67,3 +67,41 @@ export const Primary: Story = {
     );
   },
 };
+
+export const LinkTable: Story = {
+  name: 'Table with Link',
+  args: {
+    rowCount: 3,
+    columnCount: 5,
+  },
+  render: ({ rowCount, columnCount }) => {
+    return (
+      <Table>
+        <Table.Head>
+          <Table.Tr>
+            {Array.from(Array(columnCount + 1)).map((_id, tdIdx) => {
+              return tdIdx === columnCount ? (
+                <Table.Tr.Th key={`td${tdIdx}`} />
+              ) : (
+                <Table.Tr.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Th>
+              );
+            })}
+          </Table.Tr>
+        </Table.Head>
+        <Table.Body>
+          {Array.from(Array(rowCount)).map((id, idx) => {
+            return (
+              <Table.Tr key={`tr${idx}`} url={'https://kadena.io/'}>
+                {Array.from(Array(columnCount)).map((id, tdIdx) => {
+                  return (
+                    <Table.Tr.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Td>
+                  );
+                })}
+              </Table.Tr>
+            );
+          })}
+        </Table.Body>
+      </Table>
+    );
+  },
+};

@@ -2,12 +2,14 @@ import { tableClass } from './Table.css';
 import { TBody } from './TBody';
 import { THead } from './THead';
 import { Tr } from './Tr';
+import { CompoundType } from './types';
 
 import React, { FC } from 'react';
 
 export interface ITable {
-  children?: React.ReactNode;
+  children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;
 }
+
 interface ITableComposition extends FC<ITable> {
   Body: typeof TBody;
   Head: typeof THead;

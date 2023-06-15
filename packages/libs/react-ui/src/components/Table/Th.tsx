@@ -1,5 +1,4 @@
 import { thClass } from './Table.css';
-import { Tr } from './Tr';
 
 import React, { FC } from 'react';
 

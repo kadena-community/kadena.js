@@ -5,6 +5,7 @@ export const tdClass = style([
   sprinkles({
     paddingY: '$3',
     paddingX: '$4',
+    color: '$neutral5',
   }),
 ]);
 
@@ -33,8 +34,17 @@ export const tableClass = style([
     width: '100%',
     borderSpacing: 0,
     borderRadius: '$sm',
+    overflow: 'hidden',
   }),
   {
-    border: '1px solid $neutral3',
+    border: `1px solid ${vars.colors.$neutral3}`,
   },
+]);
+
+export const urlContainerClass = style([
+  sprinkles({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
 ]);

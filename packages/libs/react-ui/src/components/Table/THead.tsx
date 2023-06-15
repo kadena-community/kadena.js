@@ -1,10 +1,10 @@
-import { thClass } from './Table.css';
 import { Tr } from './Tr';
+import { CompoundType } from './types';
 
 import React, { FC } from 'react';
 
 export interface ITHead {
-  children?: React.ReactNode;
+  children?: CompoundType<typeof Tr>;
 }
 
 export const THead: FC<ITHead> = ({ children }) => {

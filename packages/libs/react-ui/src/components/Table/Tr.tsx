@@ -1,11 +1,15 @@
-import { trClass } from './Table.css';
+import { SystemIcon } from '../Icons';
+
+import { trClass, urlContainerClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
+import { CompoundType } from './types';
 
 import React, { FC } from 'react';
 
 export interface ITrProps {
-  children?: React.ReactNode;
+  children?: CompoundType<typeof Td> | CompoundType<typeof Th>;
+  url?: string;
 }
 
 export interface ITrComp extends FC<ITrProps> {
@@ -13,11 +17,15 @@ export interface ITrComp extends FC<ITrProps> {
   Th: typeof Th;
 }
 // eslint-disable-next-line react/prop-types
-export const Tr: ITrComp = ({ children }) => {
+export const Tr: ITrComp = ({ children, url }) => {
+  const handleClick = () => {
+    if (url) {
+      window.location.href = url;
+    }
+  };
   return (
-    <tr className={trClass}>
+    <tr className={trClass} onClick={url ? handleClick : undefined}>
       {React.Children.map(children, (child) => {
-        console.log('child', child);
         if (
           !React.isValidElement(child) ||
           (Boolean(child) && child.type !== Th && child.type !== Td)
@@ -26,7 +34,14 @@ export const Tr: ITrComp = ({ children }) => {
 
         return child;
       })}
-      {children}
+
+      {url && (
+        <td>
+          <div className={urlContainerClass}>
+            <SystemIcon.TrailingIcon size={'md'} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 };

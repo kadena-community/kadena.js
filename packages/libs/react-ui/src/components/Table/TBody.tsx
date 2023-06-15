@@ -1,9 +1,10 @@
 import { Tr } from './Tr';
+import { CompoundType } from './types';
 
 import React, { FC } from 'react';
 
 export interface ITBody {
-  children?: React.ReactNode;
+  children?: CompoundType<typeof Tr>;
 }
 
 export const TBody: FC<ITBody> = ({ children }) => {
