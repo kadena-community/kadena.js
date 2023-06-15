@@ -71,17 +71,17 @@ export const Primary: Story = {
   render: ({
     selectIcon,
     title,
-    displayCloseButton: displayCloseButton,
-    expanded: expand,
+    displayCloseButton,
+    expanded,
     color,
-    simplified: simple,
+    simplified,
   }) => {
     const icon = SystemIcon[selectIcon];
     return (
       <Notification.Container
         icon={icon}
-        simplified={simple}
-        expanded={expand}
+        simplified={simplified}
+        expanded={expanded}
         color={color}
         title={title}
         displayCloseButton={displayCloseButton}
@@ -102,13 +102,13 @@ export const Simplified: Story = {
     expanded: false,
     color: undefined,
   },
-  render: ({ selectIcon, expanded: expand, color }) => {
+  render: ({ selectIcon, expanded, color }) => {
     const icon = SystemIcon[selectIcon];
     return (
       <Notification.Container
         icon={icon}
         simplified={true}
-        expanded={expand}
+        expanded={expanded}
         color={color}
       >
         Notification text to inform users about the event that occurred!
@@ -129,18 +129,18 @@ export const Header: Story = {
   render: ({
     selectIcon,
     title,
-    displayCloseButton: displayCloseButton,
-    expanded: expand,
+    displayCloseButton,
+    expanded,
     color,
-    simplified: simple,
+    simplified,
   }) => {
     const icon = SystemIcon[selectIcon];
 
     return (
       <Notification.Container
         icon={icon}
-        simplified={simple}
-        expanded={expand}
+        simplified={simplified}
+        expanded={expanded}
         color={color}
         title={title}
         displayCloseButton={displayCloseButton}
