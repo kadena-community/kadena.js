@@ -26,12 +26,16 @@ describe('ContCommand', () => {
         gasPrice: 1,
       });
 
+      contCommand.addCap('capName', 'pubKey');
+      contCommand.addSignatures({ pubKey: 'pubKey', sig: 'sig' });
+
       const command = contCommand.createCommand();
 
       expect(command).toBeDefined();
       expect(command.hash).toBeDefined();
       expect(command.sigs).toBeDefined();
       expect(command.cmd).toBeDefined();
+      expect(contCommand.signers).toBeDefined();
       expect(contCommand.cmd).toEqual(command.cmd);
       expect(contCommand.status).toEqual('non-malleable');
     });
