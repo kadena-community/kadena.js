@@ -1,12 +1,16 @@
-const nextJest = require('next/jest');
-const createJestConfig = nextJest({
-  dir: './',
-});
-const customJestConfig = {
+exports.default = {
+  extends: '@kadena-dev/heft-rig/profiles/default/config/jest.config.json',
+
   reporters: ['jest-standard-reporter'],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
   moduleDirectories: ['node_modules', 'src'],
+  skipNodeResolution: true,
+  globals: {
+    'ts-jest': {
+      tsConfig: '../tsconfig.json',
+    },
+  },
+  collectCoverage: false,
 };
-module.exports = createJestConfig(customJestConfig);
