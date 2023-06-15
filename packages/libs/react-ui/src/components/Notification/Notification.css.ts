@@ -36,7 +36,6 @@ export const expandVariants = styleVariants(
   },
   (expand) => {
     return [
-      containerClass,
       sprinkles({
         width: expand ? '100%' : 'max-content',
       }),
@@ -83,7 +82,6 @@ const colors: Record<ColorOptions, ColorOptions> = {
 export const colorVariants = styleVariants(colors, (color) => {
   if (color === 'default') {
     return [
-      containerClass,
       sprinkles({
         color: '$neutral6',
         backgroundColor: '$neutral2',
@@ -98,7 +96,6 @@ export const colorVariants = styleVariants(colors, (color) => {
   }
 
   return [
-    containerClass,
     sprinkles({
       backgroundColor: `$${color}Surface`,
       color: `$${color}Contrast`,

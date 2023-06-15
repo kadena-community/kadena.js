@@ -3,6 +3,7 @@ import { SystemIcon } from '../Icons';
 import {
   cardTitleClass,
   colorVariants,
+  containerClass,
   contentClass,
   expandVariants,
   iconContainerClass,
@@ -35,6 +36,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
   const Icon = icon || SystemIcon.HelpCircle;
 
   const classList = classNames(
+    containerClass,
     colorVariants[color],
     expandVariants[expanded ? 'true' : 'false'],
   );
