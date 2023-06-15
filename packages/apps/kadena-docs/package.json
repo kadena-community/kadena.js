@@ -2,9 +2,13 @@
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
   "scripts": {
+    "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
+    "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
+    "7d:query": "npx 7d",
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
-    "build": "npm run createtree && next build",
+    "build": "npm run build:next",
+    "build:next": "npm run createtree && next build",
     "createtree": "node ./src/scripts/getdocstree.mjs",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
@@ -15,8 +19,7 @@
     "lint-staged": "lint-staged",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "echo 'no tests, until we have time to debug!'",
-    "test:watch": "echo 'no tests, until we have time to debug!'"
+    "test": "echo 'No tests, until there is time to debug the build'"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
