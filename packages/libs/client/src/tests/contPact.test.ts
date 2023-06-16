@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 describe('ContCommand', () => {
   describe('createCommand', () => {
-    test('should return a valid command', () => {
+    it('returns a valid command', () => {
       const contCommand = new ContCommand('proof', 1, 'pactId', true);
       contCommand.setMeta({
         sender: 'sender',
@@ -42,7 +42,7 @@ describe('ContCommand', () => {
   });
 
   describe('pollSpvProof', () => {
-    it('should return the SPV Proof Response', async () => {
+    it('returns the SPV Proof Response', async () => {
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
       });
@@ -53,7 +53,7 @@ describe('ContCommand', () => {
       expect(response?.status).toBe(200);
     });
 
-    it('should throw an error if timeout is reached', async () => {
+    it('throws an error if timeout is reached', async () => {
       // Mock the fetch function
       global.fetch = jest.fn().mockResolvedValue({
         status: 404,
@@ -66,7 +66,7 @@ describe('ContCommand', () => {
       ).rejects.toThrow('Timeout reached');
     }, 10000);
 
-    it('should be undefined if fetch throws an error', async () => {
+    it('returns undefined if fetch throws an error', async () => {
       // Mock the fetch function
       global.fetch = jest.fn().mockRejectedValue(new Error('Fetch error'));
 
@@ -76,7 +76,7 @@ describe('ContCommand', () => {
     });
   });
   describe('getContCommand', () => {
-    it('should return a ContCommand instance with the set proof', async () => {
+    it('returns a ContCommand instance with the set proof', async () => {
       const mockProof = 'proof';
       const mockResponse = {
         status: 200,
@@ -102,7 +102,7 @@ describe('ContCommand', () => {
       expect(contCommand.rollback).toBe(rollback);
     });
 
-    it('should throw an error if unable to obtain SPV Proof', async () => {
+    it('throws an error if unable to obtain SPV Proof', async () => {
       require('../contPact').pollSpvProof = jest
         .fn()
         //@ts-ignore
