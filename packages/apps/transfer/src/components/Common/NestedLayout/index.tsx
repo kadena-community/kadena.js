@@ -13,10 +13,10 @@ import {
 } from './styles';
 
 import { KLogoComponent } from '@/resources/svg/generated';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactElement } from 'react';
 
 interface IProps {
-  children?: ReactNode;
+  children?: ReactElement;
 }
 
 export const NestedLayout: FC<IProps> = (props) => {
@@ -51,7 +51,7 @@ export const NestedLayout: FC<IProps> = (props) => {
         </StyledNav>
 
         <StyledBody>
-          <StyledBodyTitle>{children.props.title}</StyledBodyTitle>
+          <StyledBodyTitle>{children?.props.title}</StyledBodyTitle>
           {children}
         </StyledBody>
       </StyledBodyContainer>
