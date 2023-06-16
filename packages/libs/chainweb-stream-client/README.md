@@ -47,27 +47,12 @@ client.connect();
 
 Find more detailed examples under `src/examples`.
 
-## Considerations ⚠️
-
-### Ensure configuration compatibility
-
-Make sure that your client and server `confirmationDepth` and `heartbeatTimeout` values are compatible.
-
-If your client `heartbeatTimeout` is smaller than the server heartbeat interval, the client will keep disconnecting when the connection is silent (no data.)
-
-If your client `confirmationDepth` is larger than the server's, the `confirmed` event will never fire.
-
-### Handle temporary and permanent connection failures
-
-When the connection is interrupted or determined to be stale (no heartbeats received within the heartbeatTimeout interval), a reconnection attempt will be made (up to `maxReconnects` times.)
-
-It is recommended to handle the fired [will-reconnect](#will-reconnect) and [error](#error) events.
-
 ## Constructor Options
 
 | Key                 | Required | Description | Example Values |
 | ----------------    | :------: | ----------- | ------ |
-| type                | Yes      | Transaction type to stream (event/account) | `event` | `account` |
+| network             | Yes      | Chainweb network | `mainnet01|testnet04|...` |
+| type                | Yes      | Transaction type to stream (event/account) | `event|account` |
 | id                  | Yes      | Account ID or module/event name | `k:abcdef01234..` |
 | host                | Yes      | Chainweb-SSE backend URL | `http://localhost:4000` |
 | limit               | No       | Initial data load limit  | 100 |
@@ -75,6 +60,24 @@ It is recommended to handle the fired [will-reconnect](#will-reconnect) and [err
 | heartbeatTimeout    | No       | Stale connection timeout in ms | 30_000 |
 | maxReconnects       | No       | How many reconnections to attempt before giving up | 5 |
 | confirmationDepth   | No       | How many confirmations for a transaction to be considered final | 6 |
+
+## Considerations ⚠️
+
+### Ensure configuration compatibility
+
+Make sure that your client and server `confirmationDepth` values are compatible.
+
+If your client `confirmationDepth` is larger than the server's, the `confirmed` event will never fire. The client will automatically detect this condition, emit an `error` event and disconnect.
+
+If your client's configured network does not match the server's, the client will emit an `error` event and disconnect.
+
+If your client `heartbeatTimeout` is smaller than the server heartbeat interval, the client will automatically adapt its heartbeat timeout to 2500ms larger than the server value.
+
+### Handle temporary and permanent connection failures
+
+When the connection is interrupted or determined to be stale (no heartbeats received within the heartbeatTimeout interval), a reconnection attempt will be made (up to `maxReconnects` times.)
+
+It is recommended to handle the fired [will-reconnect](#will-reconnect) and [error](#error) events.
 
 ## Events
 

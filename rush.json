@@ -424,6 +424,14 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/transfer",
+      "projectFolder": "packages/apps/transfer",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": false,
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################
@@ -582,6 +590,13 @@
       "tags": ["tools"],
       "shouldPublish": true,
       "versionPolicyName": "alpha"
+    },
+
+    {
+      "packageName": "@kadena-dev/remark-plugins",
+      "projectFolder": "packages/tools/remark-plugins",
+      "tags": ["tools"],
+      "shouldPublish": false
     },
 
     {

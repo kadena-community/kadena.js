@@ -1,9 +1,14 @@
+import './styles/global.css';
+
 export {
   IButtonProps,
   Button,
   IIconProps,
   SystemIcon,
   ProductIcon,
+  Grid,
+  IGridContainerProps,
+  IGridItemProps,
   Text,
   ITextProps,
   Heading,
@@ -14,6 +19,8 @@ export {
   IStackProps,
   ICardProps,
   Card,
+  IIconButtonProps,
+  IconButton,
 } from './components';
 export {
   sprinkles,

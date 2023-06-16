@@ -24,7 +24,7 @@ globalStyle('*', {
 */
 globalStyle('html, body', {
   height: '100%',
-  fontFamily: vars.fonts.main,
+  fontFamily: vars.fonts.$main,
 });
 
 /*
@@ -71,39 +71,39 @@ globalStyle('#root, #__next', {
 */
 globalStyle(':root', {
   vars: {
-    '--spacing-2xs': vars.sizes['1'],
-    '--spacing-xs': vars.sizes['2'],
-    '--spacing-sm': vars.sizes['3'],
-    '--spacing-md': vars.sizes['4'],
-    '--spacing-lg': vars.sizes['6'],
-    '--spacing-xl': vars.sizes['7'],
-    '--spacing-2xl': vars.sizes['9'],
-    '--spacing-3xl': vars.sizes['10'],
+    '--spacing-2xs': vars.sizes.$1,
+    '--spacing-xs': vars.sizes.$2,
+    '--spacing-sm': vars.sizes.$3,
+    '--spacing-md': vars.sizes.$4,
+    '--spacing-lg': vars.sizes.$6,
+    '--spacing-xl': vars.sizes.$7,
+    '--spacing-2xl': vars.sizes.$9,
+    '--spacing-3xl': vars.sizes.$10,
   },
   '@media': {
     [breakpoints.md]: {
       vars: {
-        '--spacing-3xl': vars.sizes['12'],
+        '--spacing-3xl': vars.sizes.$12,
       },
     },
     [breakpoints.lg]: {
       vars: {
-        '--spacing-2xl': vars.sizes['10'],
-        '--spacing-3xl': vars.sizes['15'],
+        '--spacing-2xl': vars.sizes.$10,
+        '--spacing-3xl': vars.sizes.$15,
       },
     },
     [breakpoints.xl]: {
       vars: {
-        '--spacing-xl': vars.sizes['8'],
-        '--spacing-2xl': vars.sizes['13'],
-        '--spacing-3xl': vars.sizes['20'],
+        '--spacing-xl': vars.sizes.$8,
+        '--spacing-2xl': vars.sizes.$13,
+        '--spacing-3xl': vars.sizes.$20,
       },
     },
-    [breakpoints['2xl']]: {
+    [breakpoints.xxl]: {
       vars: {
-        '--spacing-xl': vars.sizes['11'],
-        '--spacing-2xl': vars.sizes['17'],
-        '--spacing-3xl': vars.sizes['25'],
+        '--spacing-xl': vars.sizes.$11,
+        '--spacing-2xl': vars.sizes.$17,
+        '--spacing-3xl': vars.sizes.$25,
       },
     },
   },
