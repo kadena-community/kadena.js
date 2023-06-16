@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { checkSubTreeForActive } from '../utils/staticGeneration/checkSubTreeForActive.mjs';
-=======
 import { checkSubTreeForActive } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
->>>>>>> master
 
 const getPath = (filename) => {
   const arr = filename.split('/');
