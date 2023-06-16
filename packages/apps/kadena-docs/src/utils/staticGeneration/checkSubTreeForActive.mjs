@@ -1,4 +1,4 @@
-import { getData } from './getData.js';
+import { getData } from './getData.mjs';
 import path from 'path';
 
 const isIndex = (filename) => {
