@@ -45,6 +45,7 @@ const GetCode: FC = () => {
         moduleName,
         convertIntToChainId(moduleChain),
         networkdId,
+        'not-real',
       );
       console.log(data.code);
 
