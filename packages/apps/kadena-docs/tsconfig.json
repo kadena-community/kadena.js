@@ -1,15 +1,9 @@
 {
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
-    "types": [
-      "heft-jest",
-      "node",
-      "@types/gtag.js"
-    ],
+    "types": ["heft-jest", "node", "@types/gtag.js"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "skipLibCheck": true,
     "allowJs": true,
@@ -20,10 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "exclude": [
-    "node_modules",
-    "./cypress"
-  ],
+  "exclude": ["node_modules", "./cypress"],
   "include": [
     "next-env.d.ts",
     "src/**/*.ts",
