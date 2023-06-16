@@ -21,6 +21,9 @@ export {
   Card,
   IIconButtonProps,
   IconButton,
+  IBreadcrumbsProps,
+  IBreadcrumbItemProps,
+  Breadcrumbs,
 } from './components';
 export {
   sprinkles,
