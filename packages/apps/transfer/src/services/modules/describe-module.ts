@@ -16,8 +16,8 @@ export const describeModule = async (
   chainId: ChainId,
   networkId: string,
   sender: string,
+  gasPrice: number,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
-  gasPrice: number = kadenaConstants.GAS_PRICE,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<ModuleResult> => {
   const pactCommand = new PactCommand();

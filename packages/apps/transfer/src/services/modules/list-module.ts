@@ -9,8 +9,8 @@ import { kadenaConstants } from '@/constants/kadena';
 export const listModules = async (
   networkId: string = kadenaConstants.TESTNET.NETWORKS.TESTNET04,
   chainId: string = '1',
+  gasPrice: number,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
-  gasPrice: number = kadenaConstants.GAS_PRICE,
   ttl: number = kadenaConstants.API_TTL,
 ) => {
   // 1 - Create a new PactCommand

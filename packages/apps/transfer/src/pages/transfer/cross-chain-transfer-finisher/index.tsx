@@ -38,7 +38,7 @@ const CrossChainTransferFinisher: FC = () => {
   const [requestKey, setRequestKey] = useState<string>('');
   const [kadenaXChainGas, setKadenaXChainGas] =
     useState<string>('kadena-xchain-gas');
-  const [gasPrice, setGasPrice] = useState<number>(kadenaConstants.GAS_PRICE);
+  const [gasPrice, setGasPrice] = useState<number>(0.00000001);
   const [gasLimit, setGasLimit] = useState<number>(kadenaConstants.GAS_LIMIT);
   const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
 
