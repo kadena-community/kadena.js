@@ -44,29 +44,22 @@ export const payload: IPayload = {
   }),
 };
 
-interface ISignerR<
-  T extends Array<{
-    capability(name: string, ...args: any): ICapabilityItem;
-  }> = [{ capability(name: string, ...args: any): ICapabilityItem }],
-> {
-  (addCapability: UnionToIntersection<T[number]['capability']>): any;
-}
-
-// interface ISingerG {
-//   (
-//     capability: (name: string, ...args: any[]) => Pick<ICommand, 'signers'>,
-//   ): any;
-// }
+// export type NoPayloadCommand = Partial<Omit<ICommand, 'payload'>>;
+type IPartialCommand = Partial<ICommand>;
 
 interface ICmdBuilder {
-  <T extends Array<any>>(
-    first: { payload: { funs: [...T]; code: string; data: any } },
-    ...rest: Array<ISignerR<T> | Partial<ICommand>>
+  <T extends { payload: IExecPayload }>(
+    payload: T,
+    ...rest: Array<
+      IPartialCommand | ((cmd: IPartialCommand & T) => IPartialCommand)
+    >
   ): { command: Partial<ICommand>; stringify: () => string };
 
-  (
-    first: { payload: IContinuationPayload },
-    ...rest: Array<ISignerR | Partial<ICommand>>
+  <T extends { payload: IContinuationPayload }>(
+    payload: T,
+    ...rest: Array<
+      IPartialCommand | ((cmd: IPartialCommand & T) => IPartialCommand)
+    >
   ): { command: Partial<ICommand>; stringify: () => string };
 }
 
@@ -112,15 +105,23 @@ export const cmdBuilder: ICmdBuilder = (first, ...rest) => {
   };
 };
 
-type CAP = (
-  add: (name: string, ...args: any[]) => Pick<ICommand, 'signers'>,
-) => Pick<ICommand, 'signers'>;
+type CAP = (name: string, ...args: any[]) => ICapabilityItem;
+
+type ExtractType<T> = T extends (cmd: { payload: infer A }) => any
+  ? A extends { funs: infer F }
+    ? F extends Array<infer I>
+      ? UnionToIntersection<I> extends { capability: infer C }
+        ? C
+        : CAP
+      : CAP
+    : CAP
+  : CAP;
 
 export const signer: <T extends any>(
   first:
     | string
     | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  capability: T,
+  capability: (withCapability: ExtractType<T>) => ICapabilityItem[],
 ) => T = (first, capability): any => {
   const {
     pubKey,
@@ -156,6 +157,8 @@ interface IExecPayload {
   // executable pact code
   code?: string;
   data?: Record<string, string | number>;
+  // this is here for type suggestion, but the final json does not have this property
+  funs: any;
 }
 
 interface IContinuationPayload {

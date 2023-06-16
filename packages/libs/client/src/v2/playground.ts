@@ -2,12 +2,11 @@
 /* eslint-disable @rushstack/typedef-var */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import { ICommand } from '@kadena/types';
-
 import {
   cmdBuilder,
   getModule,
   ICapabilityItem,
+  ICommand,
   meta,
   payload,
   signer,
@@ -50,22 +49,25 @@ const coin: ICoin = getModule('coin');
 const test: ITest = getModule('coin');
 
 const nonce = (input: string) => (cmd: Partial<ICommand>) => {
-  return `kjs ${new Date().toISOString()}`;
+  return { nonce: `kjs ${new Date().toISOString()}` };
 };
 
 // use the payload type in the output cont/exec
 export const cmd = cmdBuilder(
   payload.exec([
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
-    coin.transfer('albert', 'javad', { decimal: '0.1' }),
+    test.changeAdmin('albert', 'javad'),
   ]),
   signer('javadPublicKey', (withCapability) => [
-    withCapability('coin.TRANSFER', 'javad', 'albert', 12),
+    withCapability('test.ADMIN'),
+    withCapability('test.ADMIN'),
   ]),
-  signer('albertPublicKey', ({ withCapability }) => [
+  signer('albertPublicKey', (withCapability) => [
+    withCapability('coin.TRANSFER', 'javad', 'albert', 12),
     withCapability('coin.TRANSFER', 'javad', 'albert', 12),
   ]),
   meta({ chainId: '1' }),
+  nonce('kms'),
 );
 
 // it can change the command
