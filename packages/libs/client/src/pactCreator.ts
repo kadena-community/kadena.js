@@ -4,7 +4,8 @@ import { parseType } from './utils/parseType';
 import { ContCommand } from './contPact';
 import { IPact, PactCommand } from './pact';
 
-import { log } from 'debug';
+import debug, { Debugger } from 'debug';
+const log: Debugger = debug('pactjs:proxy');
 
 const pactCreator = (): IPact => {
   let code = '';

@@ -150,7 +150,7 @@ export const pollSpvProof = async (
         break;
       }
     } catch (error) {
-      console.error(error);
+      console.log('this.poll failed. Error:', error);
       return response;
     }
 
