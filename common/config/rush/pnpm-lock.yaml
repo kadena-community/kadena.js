@@ -266,6 +266,8 @@ importers:
 
   ../../packages/apps/transfer:
     specifiers:
+      '@jest/reporters': ~29.5.0
+      '@jest/types': ~29.5.0
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
@@ -325,6 +327,8 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       react-scripts: 5.0.1_react@18.2.0+typescript@5.0.4
     devDependencies:
+      '@jest/reporters': 29.5.0
+      '@jest/types': 29.5.0
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
@@ -12928,7 +12932,7 @@ packages:
       vary: 1.1.2
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
   /concat-stream/1.6.2:
     resolution: {integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==}

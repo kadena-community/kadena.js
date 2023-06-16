@@ -44,6 +44,8 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
+    "@jest/reporters": "~29.5.0",
+    "@jest/types": "~29.5.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
