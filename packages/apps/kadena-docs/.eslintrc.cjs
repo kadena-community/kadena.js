@@ -6,6 +6,5 @@ module.exports = {
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
     '@kadena-dev/typedef-var': 'off',
-    'react/prop-types': 'off',
   },
 };
