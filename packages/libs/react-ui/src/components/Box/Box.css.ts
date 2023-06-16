@@ -1,0 +1,43 @@
+import { sprinkles } from '../../styles';
+
+import { styleVariants } from '@vanilla-extract/css';
+
+export const marginVariants = styleVariants({
+  $0: [sprinkles({ margin: '$0' })],
+  $1: [sprinkles({ margin: '$1' })],
+  $2: [sprinkles({ margin: '$2' })],
+  $3: [sprinkles({ margin: '$3' })],
+  $4: [sprinkles({ margin: '$4' })],
+  $5: [sprinkles({ margin: '$5' })],
+  $6: [sprinkles({ margin: '$6' })],
+  $7: [sprinkles({ margin: '$7' })],
+  $8: [sprinkles({ margin: '$8' })],
+  $9: [sprinkles({ margin: '$9' })],
+  $10: [sprinkles({ margin: '$10' })],
+  $11: [sprinkles({ margin: '$11' })],
+  $12: [sprinkles({ margin: '$12' })],
+  $13: [sprinkles({ margin: '$13' })],
+  $14: [sprinkles({ margin: '$14' })],
+  $15: [sprinkles({ margin: '$15' })],
+  $16: [sprinkles({ margin: '$16' })],
+  $17: [sprinkles({ margin: '$17' })],
+  $18: [sprinkles({ margin: '$18' })],
+  $19: [sprinkles({ margin: '$19' })],
+  $20: [sprinkles({ margin: '$20' })],
+  $24: [sprinkles({ margin: '$24' })],
+  $25: [sprinkles({ margin: '$25' })],
+  $32: [sprinkles({ margin: '$32' })],
+  $40: [sprinkles({ margin: '$40' })],
+  $48: [sprinkles({ margin: '$48' })],
+  $56: [sprinkles({ margin: '$56' })],
+  $64: [sprinkles({ margin: '$64' })],
+
+  $2xs: [sprinkles({ margin: '$2xs' })],
+  $xs: [sprinkles({ margin: '$xs' })],
+  $sm: [sprinkles({ margin: '$sm' })],
+  $md: [sprinkles({ margin: '$md' })],
+  $lg: [sprinkles({ margin: '$lg' })],
+  $xl: [sprinkles({ margin: '$xl' })],
+  $2xl: [sprinkles({ margin: '$2xl' })],
+  $3xl: [sprinkles({ margin: '$3xl' })],
+});

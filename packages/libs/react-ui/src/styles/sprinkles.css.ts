@@ -75,7 +75,12 @@ const responsiveProperties = defineProperties({
     marginBottom: vars.sizes,
     marginLeft: vars.sizes,
     marginRight: vars.sizes,
-    width: { ...vars.sizes, '100%': '100%', 'max-content': 'max-content' },
+    width: {
+      ...vars.sizes,
+      '100%': '100%',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+    },
     height: { ...vars.sizes, '100%': '100%' },
     gap: vars.sizes,
     gridGap: vars.sizes,

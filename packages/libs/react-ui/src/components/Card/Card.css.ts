@@ -21,7 +21,7 @@ export const container = style([
 export const fullWidthClass = style([sprinkles({ width: '100%' })]);
 
 export const stackClass = style([
-  sprinkles({ marginY: 0 }),
+  sprinkles({ marginY: '$0' }),
   {
     selectors: {
       '&:not(:last-child)': {
