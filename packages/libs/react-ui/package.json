@@ -25,6 +25,7 @@
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint-staged": "lint-staged",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
