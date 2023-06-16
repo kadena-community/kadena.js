@@ -18,6 +18,7 @@ export const useStream = (): [
 
   const startStream = useCallback(
     function (query: string, conversation: IConversation) {
+      console.log('called');
       const embeddingModels = ['text-embedding-ada-002'];
       const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
 
