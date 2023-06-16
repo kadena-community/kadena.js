@@ -52,7 +52,7 @@ rush build -t @kadena/transfer
 cp .env.example .env.local
 ```
 
-7Start the app:
+7. Start the app:
 
 ```bash
 rushx dev
