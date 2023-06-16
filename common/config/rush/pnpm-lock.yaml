@@ -972,6 +972,7 @@ importers:
   ../../packages/tools/eslint-config:
     specifiers:
       '@kadena-dev/eslint-plugin': workspace:*
+      '@next/eslint-plugin-next': ^12.0.8
       '@rushstack/eslint-config': ~3.3.0
       '@typescript-eslint/eslint-plugin': ^5.23.0
       eslint: ^8.15.0
@@ -981,6 +982,7 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
+      '@next/eslint-plugin-next': 12.3.4
       '@typescript-eslint/eslint-plugin': 5.46.0_eslint@8.29.0+typescript@5.0.4
       eslint-plugin-import: 2.26.0_eslint@8.29.0
       eslint-plugin-react: 7.31.11_eslint@8.29.0
@@ -6297,7 +6299,6 @@ packages:
     resolution: {integrity: sha512-BFwj8ykJY+zc1/jWANsDprDIu2MgwPOIKxNVnrKvPs+f5TPegrVnem8uScND+1veT4B7F6VeqgaNLFW1Hzl9Og==}
     dependencies:
       glob: 7.1.7
-    dev: true
 
   /@next/eslint-plugin-next/13.0.6:
     resolution: {integrity: sha512-JUANdYNCddhmQBjQQPxEJYL7GMCqYtbfrdmtX7c013srig7waNCG69Aoql7CgAgjdy8jn1ovHVdcF/NB46XN3Q==}
@@ -24133,7 +24134,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.0
       terser: 5.16.1
-      webpack: 5.73.0_webpack-cli@4.10.0
+      webpack: 5.73.0
 
   /terser/5.16.1:
     resolution: {integrity: sha512-xvQfyfA1ayT0qdK47zskQgRZeWLoOQ8JQ6mIgRGVNwZKdQMU+5FkCBjmv4QjcrTzyZquRw2FVtlJSRUmMKQslw==}

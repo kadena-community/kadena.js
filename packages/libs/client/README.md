@@ -146,11 +146,11 @@ pactjs contract-generate --file "./contracts/coin.module.pact"
 ````
 
 The log shows what has happened. Inside the `node_modules` directory, a new
-package has been created: `.kadena/pactjs-generated`. This package is referenced by
-`@kadena/client` to give you type information.
+package has been created: `.kadena/pactjs-generated`. This package is referenced
+by `@kadena/client` to give you type information.
 
-> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],` to `compilerOptions`
-> in `tsconfig.json`. Otherwise this will not work
+> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],`
+> to `compilerOptions` in `tsconfig.json`. Otherwise this will not work
 
 # Building a simple transaction from the contract
 
@@ -379,7 +379,9 @@ const unsignedTransaction = commandBuilder.createTransaction();
 
 # Using the PactCommand class
 
-If you don't wish to generate JS code for your contracts, or use templates, you can use the PactCommand class directly to build a command modularly, and then easily send it.
+If you don't wish to generate JS code for your contracts, or use templates, you
+can use the PactCommand class directly to build a command modularly, and then
+easily send it.
 
 ```ts
 import { PactCommand } from '@kadena/client';
