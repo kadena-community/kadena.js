@@ -1,5 +1,7 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
+import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
+import { getData } from './../utils/staticGeneration/getData.mjs';
 
 const getFrontMatter = (node) => {
   const { type, value } = node;
@@ -38,6 +40,30 @@ const getFileNameInPackage = (file) => {
   return `/${newPath}`;
 };
 
+const flat = (acc, val) => {
+  const { children, ...newVal } = val;
+
+  return [
+    ...acc,
+    newVal,
+    children ? children.reduce(flat, []).flat() : undefined,
+  ];
+};
+/**
+ * create a navigation object with the next and previous link in the navigation json.
+ */
+const createNavigation = (file) => {
+  const path = getPathName(getFileName(file));
+  const flatData = getData().reduce(flat, []).flat();
+
+  const itemIdx = flatData.findIndex((i) => i.root === path);
+
+  return {
+    previous: flatData[itemIdx - 1] ?? undefined,
+    next: flatData[itemIdx + 1] ?? undefined,
+  };
+};
+
 const remarkFrontmatterToProps = () => {
   return async (tree, file) => {
     tree.children = tree.children.map((node) => {
@@ -49,8 +75,11 @@ const remarkFrontmatterToProps = () => {
         data: {
           frontmatter: {
             ...data,
-            filename: getFileNameInPackage(file),
+            editLink:
+              process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
+              getFileNameInPackage(file),
             lastModifiedDate: getModifiedDate(getFileName(file)),
+            navigation: createNavigation(file),
           },
         },
       };

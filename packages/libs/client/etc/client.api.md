@@ -21,8 +21,25 @@ export function buildCommandFromTemplate(parts: string[], holes: string[], args:
 // @internal (undocumented)
 export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
 
+// @alpha
+export class ContCommand extends PactCommand implements IContCommand, IContCommandBuilder<Record<string, unknown>> {
+    constructor(proof: string, step: number, pactId: string, rollback: boolean);
+    createCommand(): IUnsignedCommand;
+    // (undocumented)
+    pactId: string;
+    // (undocumented)
+    proof: string;
+    // (undocumented)
+    rollback: boolean;
+    // (undocumented)
+    step: number;
+}
+
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
+
+// @alpha
+export function getContCommand(requestKey: string, targetChainId: ChainId, apiHost: string, step: number, rollback: boolean): Promise<ContCommand>;
 
 // @alpha (undocumented)
 export interface IChainweaverCap {
@@ -102,6 +119,50 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
 }
 
 // @alpha (undocumented)
+export interface IContCommand {
+    // (undocumented)
+    data: Record<string, unknown>;
+    // (undocumented)
+    networkId: ChainwebNetworkId;
+    // (undocumented)
+    nonce?: NonceType;
+    // (undocumented)
+    pactId: string;
+    // (undocumented)
+    proof: string;
+    // (undocumented)
+    publicMeta: IPublicMeta;
+    // (undocumented)
+    rollback: boolean;
+    // (undocumented)
+    signers: {
+        pubKey: string;
+        caps: {
+            name: string;
+            args: ICap['args'];
+        }[];
+    }[];
+    // (undocumented)
+    step: number;
+    // (undocumented)
+    type: Type;
+}
+
+// @alpha (undocumented)
+export interface IContCommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
+    // (undocumented)
+    createCommand(): IUnsignedCommand;
+    // (undocumented)
+    pactId: string;
+    // (undocumented)
+    proof: string;
+    // (undocumented)
+    rollback: boolean;
+    // (undocumented)
+    step: number;
+}
+
+// @alpha (undocumented)
 export interface IPact {
     // (undocumented)
     modules: IPactModules;
@@ -132,7 +193,7 @@ export interface IPactCommand {
     // (undocumented)
     sigs: (ISignatureJson | undefined)[];
     // (undocumented)
-    type: string;
+    type: Type;
 }
 
 // @alpha (undocumented)
@@ -295,8 +356,15 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
     // (undocumented)
     status: TransactionStatus;
     // (undocumented)
-    type: 'exec';
+    type: Type;
 }
+
+// @alpha
+export const pollSpvProof: (requestKey: string, targetChainId: ChainId, apiHost: string, options?: {
+    interval?: number | undefined;
+    timeout?: number | undefined;
+    onPoll?: ((status: string) => void) | undefined;
+} | undefined) => Promise<Response | undefined>;
 
 // @alpha (undocumented)
 export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;
@@ -306,6 +374,9 @@ export type TemplateHoles = string[];
 
 // @alpha (undocumented)
 export type TemplateParts = string[];
+
+// @alpha (undocumented)
+export type Type = 'exec' | 'cont';
 
 // (No @packageDocumentation comment for this package)
 

@@ -6,7 +6,7 @@ interface IProps {
 }
 
 export const Layout: FC<IProps> = ({ children }: IProps) => (
-  <StyledLayout className="layout">
+  <StyledLayout data-testid={'layout-container'} className="layout">
     <main>{children}</main>
   </StyledLayout>
 );

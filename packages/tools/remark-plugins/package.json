@@ -1,0 +1,36 @@
+{
+  "name": "@kadena-dev/remark-plugins",
+  "version": "1.0.0",
+  "description": "Kadena monorepo Remark plugins",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "_phase:build": "npm run build",
+    "_phase:test": "npm run test",
+    "lint": "eslint src",
+    "build": "tsc",
+    "test": ""
+  },
+  "license": "MIT",
+  "dependencies": {
+    "mdast-comment-marker": "^2.1.2",
+    "mdast-zone": "^5.1.1",
+    "remark-frontmatter": "~4.0.1",
+    "remark-gfm": "~3.0.1",
+    "remark-order-reference-links": "^0.0.3",
+    "remark-parse": "^10.0.2",
+    "remark-prettier": "^2.0.0",
+    "remark-reference-links": "^6.0.1",
+    "strip-json-comments": "^5.0.0",
+    "unist-util-visit": "^4.1.2"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@types/mdast": "^3.0.11",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.15.0",
+    "unified": "^10.1.2",
+    "typescript": "5.0.4"
+  }
+}

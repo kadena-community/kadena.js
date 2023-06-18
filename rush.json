@@ -593,6 +593,13 @@
     },
 
     {
+      "packageName": "@kadena-dev/remark-plugins",
+      "projectFolder": "packages/tools/remark-plugins",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena-dev/rush-fix-versions",
       "projectFolder": "packages/tools/rush-fix-versions",
       "tags": ["tools"],

@@ -33,7 +33,7 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
   return (
     <StyledMainLayout>
       <StyledHeaderContainer>
-        <StyledHeaderLogoWalletContent>
+        <StyledHeaderLogoWalletContent data-testid="content">
           <StyledLogoTextContainer>
             <KLogoComponent width="100px" />
             <StyledHeaderText>
@@ -57,9 +57,9 @@ export const MainLayout: FC<IProps> = ({ children, title }: IProps) => {
         <StyledTitleContainer>
           <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
-            <span>{t('Back')}</span>
+            <span data-testid="back-button">{t('Back')}</span>
           </StyledBack>
-          <StyledTitle>{title}</StyledTitle>
+          <StyledTitle data-testid="title">{title}</StyledTitle>
         </StyledTitleContainer>
       </StyledHeaderContainer>
       {children}

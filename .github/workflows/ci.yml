@@ -1,58 +1,61 @@
 name: Rush CI (changelog, retest)
-on:
-  # push:
-  #   branches: ['master']
-  pull_request:
-    branches: ['master']
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+# All pull requests, and
+# Workflow dispatch allows you to run this workflow manually from the Actions tab
+on: [pull_request, workflow_dispatch]
 jobs:
   build:
     name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
-
       matrix:
         os: [ubuntu-latest]
         NodeVersion: [16, 18]
-        experimental: [false]
-
-        include:
-          - os: windows-latest
-            NodeVersion: 16
-            experimental: true
-          - os: windows-latest
-            NodeVersion: 18
-            experimental: true
 
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      # - name: Git config user
-      #   run: |
-      #     git config --local user.name "Rushbot"
-      #     git config --local user.email "rushbot@users.noreply.github.com"
+
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
-      - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
+
+      - name: Cache Rush
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/install-run
+            common/temp/build-cache
+            ~/.rush
+          key: cache-rush-${{ runner.os }}-${{ hashFiles('rush.json') }}
+
+      - name: Cache pnpm
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/pnpm-store
+          key: cache-pnpm-${{ runner.os }}
+
+      - name: List impacted packages
+        run: |
+          node common/scripts/install-run-rush.js list --to git:origin/${{ github.base_ref }}
+
       - name: Rush install (install-run-rush)
-        run: node common/scripts/install-run-rush.js install
+        run: |
+          node common/scripts/install-run-rush.js install --to git:origin/${{ github.base_ref }}
+
       - name: Rush retest (install-run-rush)
-        run: node common/scripts/install-run-rush.js retest --verbose
+        run: |
+          node common/scripts/install-run-rush.js build --verbose --to git:origin/${{ github.base_ref }}
+          node common/scripts/install-run-rush.js retest --verbose --to git:origin/${{ github.base_ref }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
-      # - name: Rush test (rush-lib)
-      #   run: node apps/rush/lib/start-dev.js test --verbose --production --timeline
-      #   env:
-      #     # Prevent time-based browserslist update warning
-      #     # See https://github.com/microsoft/rushstack/issues/2981
-      #     BROWSERSLIST_IGNORE_OLD_DATA: 1
-      # - name: Ensure repo README is up-to-date
-      #   run: node repo-scripts/repo-toolbox/lib/start.js readme --verify
+
+      - name: Rush verify Change Logs (install-run-rush)
+        run: node common/scripts/install-run-rush.js change --verify --target-branch origin/${{ github.base_ref }}
