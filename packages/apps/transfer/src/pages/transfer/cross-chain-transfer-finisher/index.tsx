@@ -1,4 +1,10 @@
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { Button, TextField } from '@kadena/react-components';
+
+import {
+  getTransferData,
+  ITransferDataResult,
+} from '../../../services/cross-chain-transfer-finish/get-transfer-data';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
@@ -10,7 +16,14 @@ import {
   StyledFieldCheckbox,
   StyledForm,
   StyledFormButton,
+  StyledInfoBox,
+  StyledInfoItem,
+  StyledInfoItemLine,
+  StyledInfoItemTitle,
+  StyledInfoTitle,
   StyledMainContent,
+  StyledShowMore,
+  StyledSideContent,
   StyledToggleContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
 import useTranslation from 'next-translate/useTranslation';
@@ -38,10 +51,38 @@ const CrossChainTransferFinisher: FC = () => {
   const [kadenaXChainGas, setKadenaXChainGas] =
     useState<string>('kadena-xchain-gas');
   const [gasPrice, setGasPrice] = useState<string>('0.00000001');
-  const [gasLimit, setGasLimit] = useState<string>('750');
   const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
+  const [showMore, setShowMore] = useState<boolean>(false);
 
-  const handleSubmit = (e: any) => {
+  const [pollResults, setPollResults] = useState<ITransferDataResult>({});
+
+  const onBlurRequestKey = async (
+    e: React.FocusEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    e.preventDefault();
+
+    console.log(requestKey);
+    if (!requestKey) {
+      return;
+    }
+
+    const pollResult: ITransferDataResult | undefined = await getTransferData({
+      requestKey,
+      server: chainNetwork[network].server,
+      networkId: chainNetwork[network].network as ChainwebNetworkId,
+      t,
+    });
+
+    if (pollResult === undefined) {
+      return;
+    }
+
+    setPollResults(pollResult);
+  };
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     console.log('submitted');
@@ -50,7 +91,56 @@ const CrossChainTransferFinisher: FC = () => {
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
-        <SidebarMenu />
+        <StyledSideContent>
+          <SidebarMenu />
+
+          {pollResults.tx ? (
+            <StyledInfoBox>
+              <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
+              <StyledInfoItem>
+                <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
+                <StyledInfoItemLine>{`Chain: ${pollResults.tx.sender.chain}`}</StyledInfoItemLine>
+                <StyledInfoItemLine>{`Account: ${pollResults.tx.sender.account}`}</StyledInfoItemLine>
+              </StyledInfoItem>
+
+              <StyledInfoItem>
+                <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
+                <StyledInfoItemLine>{`Chain: ${pollResults.tx.receiver.chain}`}</StyledInfoItemLine>
+                <StyledInfoItemLine>{`Account: ${pollResults.tx.receiver.account}`}</StyledInfoItemLine>
+              </StyledInfoItem>
+
+              <StyledInfoItem>
+                <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
+                <StyledInfoItemLine>{`${pollResults.tx.amount} ${t(
+                  'KDA',
+                )}`}</StyledInfoItemLine>
+              </StyledInfoItem>
+
+              {showMore ? (
+                <StyledInfoItem>
+                  <StyledInfoItemTitle>
+                    {t('Receiver guard')}
+                  </StyledInfoItemTitle>
+                  <StyledInfoItemLine>{`${t('Pred')}: ${
+                    pollResults.tx.receiverGuard.pred
+                  }`}</StyledInfoItemLine>
+                  <StyledInfoItemLine>
+                    `${t('Keys')}: $
+                    {pollResults.tx.receiverGuard.keys.map((key, index) => (
+                      <span key={index}>{key}</span>
+                    ))}
+                    `
+                  </StyledInfoItemLine>
+                </StyledInfoItem>
+              ) : null}
+
+              <StyledShowMore onClick={() => setShowMore(!showMore)}>
+                {!showMore ? t('Show more') : t('Show less')}
+              </StyledShowMore>
+            </StyledInfoBox>
+          ) : null}
+        </StyledSideContent>
+
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
             <StyledToggleContainer>
@@ -58,7 +148,6 @@ const CrossChainTransferFinisher: FC = () => {
                 <StyledCheckbox
                   type="checkbox"
                   id={'advanced-options'}
-                  placeholder={t('Enter private key to sign the transaction')}
                   onChange={(e) => setAdvancedOptions(!advancedOptions)}
                   value={advancedOptions.toString()}
                 />
@@ -71,10 +160,13 @@ const CrossChainTransferFinisher: FC = () => {
             <TextField
               label={t('Request Key')}
               info={requestKey ? '' : t('(Not a Cross Chain Request Key')}
+              status={pollResults.error === undefined ? undefined : 'error'}
+              helper={pollResults.error !== undefined ? pollResults.error : ''}
               inputProps={{
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
+                onBlur: onBlurRequestKey,
                 value: requestKey,
               }}
             />
@@ -85,7 +177,7 @@ const CrossChainTransferFinisher: FC = () => {
                   label="Chain Server"
                   inputProps={{
                     placeholder: t('Enter Chain Server'),
-                    value: chainNetwork[network].server,
+                    defaultValue: chainNetwork[network].server,
                     leadingText: chainNetwork[network].network,
                   }}
                 />
@@ -106,15 +198,6 @@ const CrossChainTransferFinisher: FC = () => {
                     onChange: (e) =>
                       setGasPrice((e.target as HTMLInputElement).value),
                     value: gasPrice,
-                  }}
-                />
-                <TextField
-                  label={t('Gas Limit')}
-                  inputProps={{
-                    placeholder: t('Enter Gas Limit'),
-                    onChange: (e) =>
-                      setGasLimit((e.target as HTMLInputElement).value),
-                    value: gasLimit,
                   }}
                 />
               </>

@@ -6,13 +6,6 @@ export const StyledMainContent = styled('main', {
   gap: '$16',
 });
 
-export const StyledSidebar = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  width: '25%',
-  height: '100%',
-});
-
 export const StyledForm = styled('form', {
   width: '75%',
   display: 'flex',

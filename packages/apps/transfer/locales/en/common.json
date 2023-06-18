@@ -61,5 +61,16 @@
   "Advanced options": "Advanced options",
   "Mainnet": "Mainnet",
   "Testnet": "Testnet",
-  "Cross Chain Transfers": "Cross Chain Transfers"
+  "Cross Chain Transfers": "Cross Chain Transfers",
+  "Invalid length of request key": "Invalid length of request key",
+  "No request key found": "No request key found",
+  "Pact Information": "Pact Information",
+  "Sender": "Sender",
+  "Receiver": "Receiver",
+  "KDA": "KDA",
+  "Receiver guard": "Receiver guard",
+  "Pred": "Pred",
+  "Keys": "Keys",
+  "Show more": "Show more",
+  "Show less": "Show less"
 }

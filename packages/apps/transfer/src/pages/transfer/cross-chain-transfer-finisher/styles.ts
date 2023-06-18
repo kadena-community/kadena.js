@@ -14,7 +14,7 @@ export const StyledForm = styled('form', {
 });
 
 export const StyledAccountForm = styled('div', {
-  width: '100%',
+  width: '75%',
   padding: '16px',
   background: 'rgba(71, 79, 82, 0.4)',
   borderRadius: '4px',
@@ -48,4 +48,49 @@ export const StyledCheckboxLabel = styled('label', {
   color: 'white',
   fontWeight: '500',
   lineHeight: '17px',
+});
+
+export const StyledSideContent = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+export const StyledInfoBox = styled('div', {
+  marginTop: '8%',
+  fontSize: '0.75rem',
+  padding: '8px',
+  background: 'rgba(71, 79, 82, 0.5)',
+  borderRadius: '4px',
+  boxSizing: 'borderBox',
+});
+
+export const StyledInfoTitle = styled('h3', {
+  marginBottom: '2%',
+  textAlign: 'center',
+});
+
+export const StyledInfoItem = styled('div', {
+  marginTop: '4%',
+  fontSize: '0.75rem',
+  padding: '8px',
+  background: 'rgba(71, 79, 82, 0.7)',
+  borderRadius: '4px',
+  boxSizing: 'borderBox',
+});
+
+export const StyledInfoItemTitle = styled('div', {
+  textTransform: 'uppercase',
+  textAlign: 'center',
+});
+
+export const StyledInfoItemLine = styled('div', {
+  display: 'inline-block',
+  wordBreak: 'break-word',
+});
+
+export const StyledShowMore = styled('div', {
+  fontSize: '0.65rem',
+  padding: '16px',
+  textAlign: 'right',
+  cursor: 'pointer',
 });

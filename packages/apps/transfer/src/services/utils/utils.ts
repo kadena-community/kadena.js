@@ -7,3 +7,7 @@ export const generateApiHost = (networkId: string, chainId: string): string => {
 export const convertIntToChainId = (value: number): ChainId => {
   return value.toString() as ChainId;
 };
+
+export const validateRequestKey = (key: string): boolean => {
+  return key.length === 43;
+};
