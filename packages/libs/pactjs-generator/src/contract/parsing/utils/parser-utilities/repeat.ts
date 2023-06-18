@@ -23,7 +23,8 @@ interface IRepeat {
         >
       >,
       undefined
-    >
+    >,
+    never
   >;
 }
 
@@ -60,7 +61,7 @@ export const repeat: IRepeat = (...parsers) => {
         if (typeof item.data === 'object') {
           const keys = Object.keys(item.data);
           keys.forEach((key) => {
-            acc[key] = pushUnique(acc[key], item.data);
+            acc[key] = pushUnique(acc[key], item.data[key]);
           });
         } else if (item.data !== undefined) {
           acc['not-categorized'] = pushUnique(

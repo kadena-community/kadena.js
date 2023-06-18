@@ -168,6 +168,8 @@ export const parser = repeat(
   $('namespaces', block(addLocation, id('namespace'), $('name', str))),
   $('usedModules', seq(addLocation, use)),
   $('modules', seq(addLocation, $('module', moduleRule))),
+  // skip other type of blocks
+  block(),
 );
 
 // use this function to get the list of all function calls inside a function

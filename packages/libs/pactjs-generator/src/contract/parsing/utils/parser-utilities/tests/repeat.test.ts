@@ -19,10 +19,6 @@ describe('repeat parser', () => {
   it('should return wrappedData object', () => {
     const pointer = getPointer('this is test');
     const result = repeat(atom)(pointer);
-    if (result === FAILED) {
-      expect(result).not.toBe(FAILED);
-      return;
-    }
     expect(typeof result).toBe('object');
     expect(result.inspect).toBe(true);
   });
@@ -33,10 +29,6 @@ describe('repeat parser', () => {
       seq(id('first'), id('rule')),
       seq(id('second'), id('rule')),
     )(pointer);
-    if (result === FAILED) {
-      expect(result).not.toBe(FAILED);
-      return;
-    }
     expect(typeof result.data).toBe('object');
     expect(Object.keys(result.data)).toHaveLength(0);
   });
@@ -49,13 +41,33 @@ describe('repeat parser', () => {
       $('names', seq(id('name'), id(':'), $(atom))),
       $('titles', seq(id('title'), id(':'), $(atom))),
     )(pointer);
-    if (result === FAILED) {
-      expect(result).not.toBe(FAILED);
-      return;
-    }
     expect(typeof result.data).toBe('object');
     expect(Object.keys(result.data)).toHaveLength(2);
     expect(result.data.names).toEqual(['alice', 'bob']);
     expect(result.data.titles).toEqual(['developer', 'manager']);
+  });
+
+  it('should merge objects as a list if the keys are same', () => {
+    const pointer = getPointer(
+      'name: alice title: developer name:bob title: manager',
+    );
+    const result = repeat(
+      seq(id('name'), id(':'), $('name', atom)),
+      seq(id('title'), id(':'), $('title', atom)),
+    )(pointer);
+
+    expect(typeof result.data).toBe('object');
+    expect(Object.keys(result.data)).toHaveLength(2);
+    expect(result.data.name).toEqual(['alice', 'bob']);
+    expect(result.data.title).toEqual(['developer', 'manager']);
+  });
+
+  it('should return not-categorized key id the inspected item does not have a name', () => {
+    const pointer = getPointer('name: alice name:bob');
+    const result = repeat(seq(id('name'), id(':'), $(atom)))(pointer);
+    expect(typeof result.data).toBe('object');
+    expect(Object.keys(result.data)).toHaveLength(1);
+    // TODO: check if we need to add typing for this path or change it to something else
+    expect((result.data as any)['not-categorized']).toEqual(['alice', 'bob']);
   });
 });

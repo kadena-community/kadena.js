@@ -1,4 +1,4 @@
-import { trim } from '../trim';
+import { trim } from '../utils';
 
 import { FAILED, IParser, rule } from './rule';
 

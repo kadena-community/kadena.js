@@ -2,7 +2,6 @@ import { unwrapData } from './utils/dataWrapper';
 import { getCapabilities } from './utils/getCapabilities';
 import { getBlockPointer, getPointer, IPointer } from './utils/getPointer';
 import { functionCalls, parser } from './utils/pactGrammar';
-import { FAILED } from './utils/parser-utilities';
 import { getModuleFullName, IModuleLike } from './utils/utils';
 
 interface ISchema {
@@ -87,15 +86,18 @@ const getNamespace = (
   moduleLoc: number,
   allNamespaces?: Array<{ location: number; name: string }>,
 ): string => {
-  if (!allNamespaces) return '';
+  if (allNamespaces === undefined) return '';
   const { name } = allNamespaces.reduce(
-    (namespace, { location, name }) => {
-      if (location < moduleLoc && location > namespace.location) {
-        return { location, name };
+    (prev, namespace) => {
+      if (
+        namespace.location < moduleLoc &&
+        namespace.location > prev.location
+      ) {
+        return namespace;
       }
-      return namespace;
+      return prev;
     },
-    { location: 0, name: '' },
+    { location: -2, name: '' },
   );
   return name;
 };
@@ -124,7 +126,7 @@ function getUsedModulesInFunctions(
 
   return functions.flatMap((fun) => {
     const externalFnCalls = fun.externalFnCalls;
-    if (!externalFnCalls) return [];
+    if (externalFnCalls === undefined) return [];
     return externalFnCalls.map(({ namespace, module: name }) => ({
       namespace: namespace ?? '',
       name,
@@ -151,10 +153,6 @@ function fileParser(
 ): [IModule[], IPointer] {
   const pointer = getPointer(contract);
   const result = parser(pointer);
-  if (result === FAILED) {
-    console.error('there is no rule matched with this token', pointer.next());
-    throw new Error('parsing error');
-  }
   const tree = unwrapData(result);
   const { modules, namespaces, usedModules } = tree;
 
@@ -164,7 +162,7 @@ function fileParser(
           ...mod,
           namespace: getNamespace(location, namespaces) || namespace,
           usedModules: [
-            ...(mod.usedModules || []),
+            ...(mod.usedModules ?? []),
             ...getUsedModules(location, usedModules),
             ...getUsedModulesInFunctions(mod.functions),
           ].filter(isNotDuplicatedModule),
@@ -202,8 +200,8 @@ const moduleLoader = (
 
   return {
     async getModule(moduleFullName: string) {
-      const slogs = moduleFullName.split('.');
-      const namespace = slogs.length === 2 ? slogs[0] : '';
+      const slugs = moduleFullName.split('.');
+      const namespace = slugs.length === 2 ? slugs[0] : '';
 
       const mod = storage.get(moduleFullName);
       if (mod !== undefined) return mod;
@@ -266,16 +264,13 @@ const getFunctionCalls = (
   internal?: string[];
   external?: Array<{ namespace?: string; module: string; func: string }>;
 } => {
-  if (bodyPointer !== undefined) {
-    pointer.reset(bodyPointer);
-    const blockPointer = getBlockPointer(pointer);
-    const data = functionCalls(fnList, availableExternals)(blockPointer);
-    if (data !== FAILED) {
-      return unwrapData(data);
-    }
-  }
+  if (bodyPointer === undefined) return {};
 
-  return {};
+  pointer.reset(bodyPointer);
+  const blockPointer = getBlockPointer(pointer);
+  const data = functionCalls(fnList, availableExternals)(blockPointer);
+
+  return unwrapData(data);
 };
 
 // adding function calls to each function in the module
@@ -316,10 +311,6 @@ function addFunctionCalls(
   }
   const internalFunctions = mod.functions.map(({ name }) => name);
   mod.functions = mod.functions.map((fun) => {
-    if (fun.bodyPointer === undefined) {
-      return fun;
-    }
-
     const { internal = [], external = [] } = getFunctionCalls(
       fun.bodyPointer,
       pointer,
@@ -331,6 +322,7 @@ function addFunctionCalls(
       internal,
       external: [...external, ...(fun.externalFnCalls || [])],
     };
+
     delete fun.bodyPointer;
 
     return fun;
@@ -385,7 +377,7 @@ export async function pactParser({
   const parsedModules = loader.getStorage();
 
   if (parsedModules.size === 0) {
-    throw new Error('no module loaded');
+    throw new Error('NO_MODULE_LOADED');
   }
 
   // load all dependencies

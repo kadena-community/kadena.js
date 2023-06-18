@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateDts2 return type definition file for a module 1`] = `
+"
+import type { ICommandBuilderV2, IPactCommand, ICapV2 } from '@kadena/client';
+import type { IPactDecimal, IPactInt } from '@kadena/types';
+
+interface ICapability_Coin_GAS {
+  addCap(
+    cap: \\"coin.GAS\\",
+    signer: string
+  ): this
+}
+
+interface ICapability_test_func {
+  
+  addCap(
+    cap: \\"user.test-module.test-cap\\", 
+    signer: string, 
+    name: string): this,
+}
+
+type Builder<T> = ICommandBuilderV2 & ICapability_Coin_GAS & T
+
+declare module '@kadena/client' {
+
+  export interface IPactModules {
+    
+    \\"user.test-module\\": {
+      \\"test-func\\": (
+        parameterone: string,
+        parametertwo: boolean) => Builder<ICapability_test_func>
+    }
+  }
+}"
+`;
