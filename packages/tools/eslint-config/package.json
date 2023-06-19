@@ -6,7 +6,7 @@
   "scripts": {
     "build": "",
     "format": "prettier mixins profile --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
-    "lint": "eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
+    "lint": "eslint mixins profile --ext .js,.ts --fix",
     "test": ""
   },
   "dependencies": {

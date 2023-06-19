@@ -23,7 +23,7 @@
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "format": "prettier src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
-    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
