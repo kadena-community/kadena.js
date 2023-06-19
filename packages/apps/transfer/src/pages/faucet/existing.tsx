@@ -28,12 +28,15 @@ const ExistingFaucetPage: FC = () => {
   const [accountName, setAccountName] = useState('');
   const [chainID, setChainID] = useState<Chain>('0');
 
-  const onFormSubmit = useCallback(async (e: FormEvent) => {
-    e.preventDefault();
-    console.log('onFormSubmit', { e, accountName });
-    // isExistingAccount();
-    await fundExistingAccount(accountName, chainID, 100);
-  }, []);
+  const onFormSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      console.log('onFormSubmit', { e, accountName });
+      // isExistingAccount();
+      await fundExistingAccount(accountName, chainID, 20);
+    },
+    [accountName, chainID],
+  );
 
   const onAccountNameChange = useCallback<FormEventHandler<HTMLInputElement>>(
     (e) => {

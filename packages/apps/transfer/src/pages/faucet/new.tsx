@@ -53,14 +53,17 @@ const NewFaucetPage: FC = () => {
   const [accountName, setAccountName] = useState('');
   const [chainID, setChainID] = useState<Chain>('0');
 
-  const onFormSubmit = useCallback(async (e: FormEvent) => {
-    e.preventDefault();
-    console.log('onFormSubmit', { e, accountName });
-    // isExistingAccount();
-    await fundNewAccount(accountName, chainID, [
-      '426623443b003a765092ed0896de0ca3aaebf4fdda9e45940e6e9cf36801dada',
-    ]);
-  }, []);
+  const onFormSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      console.log('onFormSubmit', { e, accountName });
+      // isExistingAccount();
+      await fundNewAccount(accountName, chainID, [
+        '426623443b003a765092ed0896de0ca3aaebf4fdda9e45940e6e9cf36801dada',
+      ]);
+    },
+    [accountName, chainID],
+  );
 
   const onAccountNameChange = useCallback<FormEventHandler<HTMLInputElement>>(
     (e) => {
