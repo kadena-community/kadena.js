@@ -2,7 +2,7 @@ import {
   ChainwebNetworkId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import { PactCommand } from '@kadena/client';
+import { ContCommand, getContCommand, PactCommand } from '@kadena/client';
 import { ChainId } from '@kadena/types';
 
 import { validateRequestKey } from '../utils/utils';
@@ -16,9 +16,18 @@ interface ITransactionData {
     pred: string;
     keys: [string];
   };
+  proof: string;
+  step: number;
+  pactId: string;
+  rollback: boolean;
 }
 export interface ITransferDataResult {
   tx?: ITransactionData | undefined;
+  error?: string;
+}
+
+export interface ISpvProofResult {
+  proof?: string;
   error?: string;
 }
 
@@ -61,6 +70,8 @@ export async function getTransferData({
       return { error: t('No request key found') };
     }
 
+    console.log('FOUND', found);
+
     return {
       tx: {
         sender: {
@@ -77,10 +88,65 @@ export async function getTransferData({
           pred: found?.tx?.continuation?.yield?.data['receiver-guard'].pred,
           keys: found?.tx?.continuation?.yield?.data['receiver-guard'].keys,
         },
+        step: found.tx?.continuation?.step,
+        pactId: found.tx?.continuation?.pactId,
+        rollback: found.tx?.continuation?.stepHasRollback,
       },
     };
   } catch (e) {
     console.log(e);
     return { error: e.message };
+  }
+}
+
+export async function getSpvProof({
+  requestKey,
+  server,
+  networkId,
+  chainId,
+  t,
+}: {
+  requestKey: string;
+  server: string;
+  networkId: ChainwebNetworkId;
+  chainId: ChainId;
+  t: Translate;
+}): Promise<ISpvProofResult> {
+  const keyValid = validateRequestKey(requestKey);
+
+  if (!keyValid) {
+    return { error: t('Invalid length of request key') };
+  }
+
+  const pactCommand = new PactCommand();
+
+  pactCommand.requestKey = requestKey;
+
+  try {
+    const host = `https://${server}/chainweb/0.0/${networkId}/chain/${chainId}/pact/spv`;
+    const result = await fetch(host, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ targetChainId: '3', requestKey: requestKey }),
+    });
+
+    if (result.ok) {
+      return { proof: await result.json() };
+    } else {
+      const proofError = await result.text();
+      //Initial Step is not confirmed yet.
+      return {
+        error:
+          'Initial transfer is not confirmed yet. Please wait and try again.',
+      };
+    }
+  } catch (e) {
+    console.log(e);
+    return {
+      error:
+        'Initial transfer is not confirmed yet. Please wait and try again.',
+    };
   }
 }

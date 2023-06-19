@@ -1,10 +1,21 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { Button, TextField } from '@kadena/react-components';
-
+import { ChainwebNetworkId, poll, spv } from '@kadena/chainweb-node-client';
 import {
+  ContCommand,
+  getContCommand,
+  PactCommand,
+  pollSpvProof,
+} from '@kadena/client';
+import { Button, TextField } from '@kadena/react-components';
+import { ChainId } from '@kadena/types';
+
+import { finishXChainTransfer } from '../../../services/cross-chain-transfer-finish/finish-xchain-transfer';
+import {
+  getSpvProof,
   getTransferData,
+  ISpvProofResult,
   ITransferDataResult,
 } from '../../../services/cross-chain-transfer-finish/get-transfer-data';
+import { generateApiHost } from '../../../services/utils/utils';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
@@ -26,6 +37,7 @@ import {
   StyledSideContent,
   StyledToggleContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+import * as net from 'net';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
@@ -56,6 +68,10 @@ const CrossChainTransferFinisher: FC = () => {
 
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
 
+  const [spvProofResults, setSpvProofResults] = useState<ISpvProofResult>({});
+
+  const [finalResulsts, setFinalResults] = useState({});
+
   const onBlurRequestKey = async (
     e: React.FocusEvent<HTMLInputElement>,
   ): Promise<void> => {
@@ -78,6 +94,21 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     setPollResults(pollResult);
+    console.log('POLLL RESULTS', pollResult);
+    if (pollResults.tx === undefined) {
+      return;
+    }
+
+    // MY SPV PROOF
+    const spvProof2 = await getSpvProof({
+      requestKey,
+      chainId: pollResults.tx.sender.chain,
+      networkId: chainNetwork[network].network as ChainwebNetworkId,
+      server: chainNetwork[network].server,
+      t,
+    });
+    console.log('proooooooof', spvProof2.proof);
+    setSpvProofResults(spvProof2);
   };
 
   const handleSubmit = async (
@@ -85,8 +116,48 @@ const CrossChainTransferFinisher: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
 
+    if (!pollResults.tx || !spvProofResults.proof) {
+      return;
+    }
+    const host = `https://${chainNetwork[network].server}/chainweb/0.0/${chainNetwork[network].network}/chain/${pollResults.tx.receiver.chain}/pact/api/v1/local`;
+    const constCommand = await finishXChainTransfer(
+      requestKey,
+      spvProofResults.proof,
+      pollResults.tx.step,
+      pollResults.tx.pactId,
+      pollResults.tx.rollback,
+      chainNetwork[network].server,
+      chainNetwork[network].network as ChainwebNetworkId,
+      pollResults.tx.receiver.chain as ChainId,
+    );
+
+    console.log('finishResult', constCommand);
+
+    // const pollResult = await constCommand.pollUntil(host, {
+    //   onPoll: async (transaction, pollRequest): Promise<void> => {
+    //     console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+    //     setFinalResults({ ...transaction });
+    //     console.log(await pollRequest);
+    //   },
+    // });
+    // setFinalResults({ ...pollResult });
+
     console.log('submitted');
   };
+
+  const showInputError =
+    pollResults.error === undefined || spvProofResults.error === undefined
+      ? undefined
+      : 'error';
+
+  const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
+
+  const showInputHelper =
+    pollResults.error !== undefined
+      ? pollResults.error
+      : spvProofResults.error !== undefined
+      ? spvProofResults.error
+      : '';
 
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
@@ -159,9 +230,9 @@ const CrossChainTransferFinisher: FC = () => {
 
             <TextField
               label={t('Request Key')}
-              info={requestKey ? '' : t('(Not a Cross Chain Request Key')}
-              status={pollResults.error === undefined ? undefined : 'error'}
-              helper={pollResults.error !== undefined ? pollResults.error : ''}
+              info={showInputInfo}
+              status={showInputError}
+              helper={showInputHelper}
               inputProps={{
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
