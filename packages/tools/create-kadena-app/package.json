@@ -13,21 +13,8 @@
   },
   "scripts": {
     "build": "heft build --clean",
-    "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "rimraf test-* && heft test --no-build && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "commander": "^9.3.0",

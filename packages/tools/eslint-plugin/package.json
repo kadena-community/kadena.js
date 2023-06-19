@@ -7,18 +7,6 @@
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "~5.53.0",
     "eslint-module-utils": "^2.7.1",

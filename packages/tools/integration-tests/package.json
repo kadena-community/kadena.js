@@ -29,18 +29,6 @@
     "test:integration:devnet": "heft test --test-path-pattern devnet*",
     "test:integration:pactserver": "concurrently \"npm:start:pact\" \"sleep 5 && heft test --test-path-pattern pact-server* && sleep 5\" --kill-others"
   },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/pactjs": "workspace:*",

@@ -9,23 +9,10 @@
   "scripts": {
     "build": "",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@pothos/core": "~3.24.0",

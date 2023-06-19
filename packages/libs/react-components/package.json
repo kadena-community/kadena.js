@@ -19,18 +19,6 @@
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
   "dependencies": {
     "@radix-ui/react-switch": "^1.0.2",
     "@stitches/react": "1.3.1-1",

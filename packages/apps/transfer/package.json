@@ -8,22 +8,9 @@
     "eject": "react-scripts eject",
     "generate:icons": "npx @svgr/cli --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "next lint",
-    "lint-staged": "lint-staged",
     "lint:fix": "eslint --fix .",
     "start": "next start",
     "test": "jest"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -70,7 +57,6 @@
     "ignore-loader": "~0.1.2",
     "jest": "~29.5.0",
     "jest-environment-jsdom": "~29.5.0",
-    "lint-staged": "~13.2.0",
     "next-translate-plugin": "~2.0.5",
     "prettier": "^2.8.5",
     "sort-package-json": "~2.4.1",

@@ -46,16 +46,6 @@
 
     {
       "commandKind": "global",
-      "name": "lint-staged",
-      "summary": "Used by the pre-commit Git hook. This command invokes lint-staged to fix staged files.",
-      "safeForSimultaneousRushProcesses": false,
-      "autoinstallerName": "rush-command-packages",
-      // This will invoke common/autoinstallers/rush-command-packages/node_modules/.bin/lint-staged
-      "shellCommand": "lint-staged --quiet"
-    },
-
-    {
-      "commandKind": "global",
       "name": "fix-versions",
       "summary": "Runs fix-versions to get consistent versions across projects",
       "safeForSimultaneousRushProcesses": false,

@@ -44,18 +44,6 @@
     "serve-coverage": "python -m SimpleHTTPServer",
     "test": "heft test --no-build"
   },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",

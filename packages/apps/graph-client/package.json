@@ -8,23 +8,10 @@
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "postinstall": "npm run generate:sdk",
     "lint": "next lint",
-    "lint-staged": "lint-staged",
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && rushx start",
     "test": "echo \"No tests yet.\""
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@apollo/client": "~3.7.2",
