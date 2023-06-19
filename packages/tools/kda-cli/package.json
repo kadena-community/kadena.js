@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kda",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -35,7 +35,8 @@
       "!lib/**"
     ],
     "nodeArguments": [
-      "--loader=ts-node/esm"
+      "--loader=ts-node/esm",
+      "--no-warnings"
     ]
   },
   "dependencies": {
