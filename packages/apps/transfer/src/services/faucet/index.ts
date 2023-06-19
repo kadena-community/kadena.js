@@ -8,16 +8,12 @@ import { PactNumber } from '@kadena/pactjs';
 
 import { generateApiHost } from '../utils/utils';
 
-const networkId: ChainwebNetworkId = 'testnet04';
-const keyset = 'ks';
-const SENDER_ACCOUNT = 'coin-faucet';
-const SENDER_X = 'faucet-operation';
+import { env } from '@/utils/env';
 
-// TODO: Needs to be stored in ENV
-const FAUCET_KEY = {
-  PUBLIC: 'dc28d70fceb519b61b4a797876a3dee07de78cebd6eddc171aef92f9a95d706e',
-  SECRET: '49a1e8f8ef0a8ca6bd1d5f3a3e45f10aa1dd987f2cfb94e248a457c178f347b4',
-};
+const networkId: ChainwebNetworkId = 'testnet04';
+const KEYSET_NAME: string = 'ks';
+const SENDER_ACCOUNT: string = 'coin-faucet';
+const SENDER_X: string = 'faucet-operation';
 
 export const fundNewAccount = async (
   account: string,
@@ -30,10 +26,10 @@ export const fundNewAccount = async (
   const transactionBuilder = Pact.modules['user.coin-faucet']
     ['create-and-request-coin'](
       account,
-      () => `(read-keyset '${keyset})`,
+      () => `(read-keyset '${KEYSET_NAME})`,
       new PactNumber(amount).toPactDecimal(),
     )
-    .addCap('coin.GAS', FAUCET_KEY.PUBLIC)
+    .addCap('coin.GAS', env('FAUCET_PUBLIC_KEY'))
     .addCap(
       'coin.TRANSFER',
       keyPair.publicKey,
@@ -42,7 +38,7 @@ export const fundNewAccount = async (
       new PactNumber(amount).toPactDecimal(),
     )
     .addData({
-      [keyset]: {
+      [KEYSET_NAME]: {
         keys,
         pred: 'keys-all',
       },
@@ -52,8 +48,8 @@ export const fundNewAccount = async (
   const command = transactionBuilder.createCommand();
 
   const signature1 = sign(command.cmd, {
-    publicKey: FAUCET_KEY.PUBLIC,
-    secretKey: FAUCET_KEY.SECRET,
+    publicKey: env('FAUCET_PUBLIC_KEY'),
+    secretKey: env('FAUCET_PRIVATE_KEY'),
   });
 
   if (signature1.sig === undefined) {
@@ -68,7 +64,7 @@ export const fundNewAccount = async (
 
   transactionBuilder.addSignatures(
     {
-      pubKey: FAUCET_KEY.PUBLIC,
+      pubKey: env('FAUCET_PUBLIC_KEY'),
       sig: signature1.sig,
     },
     { pubKey: keyPair.publicKey, sig: signature2.sig },
@@ -92,7 +88,7 @@ export const fundExistingAccount = async (
 
   const transactionBuilder = Pact.modules['user.coin-faucet']
     ['request-coin'](account, new PactNumber(amount).toPactDecimal())
-    .addCap('coin.GAS', FAUCET_KEY.PUBLIC)
+    .addCap('coin.GAS', env('FAUCET_PUBLIC_KEY'))
     .addCap(
       'coin.TRANSFER',
       keyPair.publicKey,
@@ -105,8 +101,8 @@ export const fundExistingAccount = async (
   const command = transactionBuilder.createCommand();
 
   const signature1 = sign(command.cmd, {
-    publicKey: FAUCET_KEY.PUBLIC,
-    secretKey: FAUCET_KEY.SECRET,
+    publicKey: env('FAUCET_PUBLIC_KEY'),
+    secretKey: env('FAUCET_PRIVATE_KEY'),
   });
 
   if (signature1.sig === undefined) {
@@ -121,7 +117,7 @@ export const fundExistingAccount = async (
 
   transactionBuilder.addSignatures(
     {
-      pubKey: FAUCET_KEY.PUBLIC,
+      pubKey: env('FAUCET_PUBLIC_KEY'),
       sig: signature1.sig,
     },
     { pubKey: keyPair.publicKey, sig: signature2.sig },
