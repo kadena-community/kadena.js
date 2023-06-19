@@ -13,6 +13,7 @@ const keyset = 'ks';
 const SENDER_ACCOUNT = 'coin-faucet';
 const SENDER_X = 'faucet-operation';
 
+// TODO: Needs to be stored in ENV
 const FAUCET_KEY = {
   PUBLIC: 'dc28d70fceb519b61b4a797876a3dee07de78cebd6eddc171aef92f9a95d706e',
   SECRET: '49a1e8f8ef0a8ca6bd1d5f3a3e45f10aa1dd987f2cfb94e248a457c178f347b4',
@@ -20,9 +21,9 @@ const FAUCET_KEY = {
 
 export const fundNewAccount = async (
   account: string,
-  amount: number,
   chainId: ChainwebChainId,
   keys: string[],
+  amount = 100,
 ) => {
   const keyPair = genKeyPair();
 
@@ -78,12 +79,14 @@ export const fundNewAccount = async (
   );
 
   console.log('fundNewAccount', { response });
+
+  return response;
 };
 
 export const fundExistingAccount = async (
   account: string,
-  amount: number,
   chainId: ChainwebChainId,
+  amount = 100,
 ) => {
   const keyPair = genKeyPair();
 
@@ -129,4 +132,6 @@ export const fundExistingAccount = async (
   );
 
   console.log('fundExistingAccount', { response });
+
+  return response;
 };
