@@ -32,7 +32,7 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
 
   return (
     <StyledMainLayout>
-      <Grid.Container data-testid="content">
+      <Grid.Container>
         <Grid.Item colStart={1} colEnd={5}>
           <Grid.Container spacing="xl">
             <Grid.Item colStart={1} colEnd={5}>
@@ -75,7 +75,9 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
           <SidebarMenu />
         </Grid.Item>
         <Grid.Item colStart={5} colEnd={13}>
-          <StyledMainContent>{children}</StyledMainContent>
+          <StyledMainContent data-testid="content">
+            {children}
+          </StyledMainContent>
         </Grid.Item>
       </Grid.Container>
       {!!footer && <StyledFooter>{footer}</StyledFooter>}
