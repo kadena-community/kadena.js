@@ -5,9 +5,12 @@
   "scripts": {
     "_phase:build": "npm run build",
     "_phase:test": "npm run test",
-    "build": "npm run generate:icons && next build",
+    "build": "npm run generate:icons && npm run generate:contracts && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",
+    "generate:coin:contract": "npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
+    "generate:contracts": "npm run generate:coin:contract && npm run generate:faucet:contract",
+    "generate:faucet:contract": "npx @kadena/pactjs-cli contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:icons": "npx @svgr/cli --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "next lint",
     "lint-staged": "lint-staged",
