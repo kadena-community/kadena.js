@@ -35,12 +35,12 @@ export const SidebarMenu: FC = (props) => {
       {
         icon: Account,
         title: t('Existing account'),
-        href: routes.HOME,
+        href: routes.FAUCET_EXISTING,
       },
       {
         icon: Chain,
         title: t('New account'),
-        href: routes.HOME,
+        href: routes.FAUCET_NEW,
       },
     ],
   };
