@@ -1,19 +1,21 @@
 {
-  "name": "kda-cli",
+  "name": "@kadena/kda",
   "version": "0.0.0",
   "license": "MIT",
   "type": "module",
-  "bin": "dist/cli.js",
+  "bin": {
+    "kda": "lib/index.js"
+  },
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
     "_phase:build": "heft build --clean",
-    "_phase:test": "",
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "kda": "node dist/cli.js",
-    "test": "prettier --check . && ava"
+    "_phase:test": "ava",
+    "build": "heft build",
+    "dev": "heft build -w",
+    "kda": "node lib/index.js",
+    "test": "ava"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -29,6 +31,9 @@
       "ts": "module",
       "tsx": "module"
     },
+    "files": [
+      "!lib/**"
+    ],
     "nodeArguments": [
       "--loader=ts-node/esm"
     ]
