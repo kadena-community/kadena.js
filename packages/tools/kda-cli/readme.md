@@ -1,21 +1,24 @@
 # kda-cli
 
-This cli tool is here to assist you with your development on the kadena blockchain.
+This cli tool is here to assist you with your development on the kadena
+blockchain.
 
 ## Prerequisite
 
-In order to use this cli tool the following packages need to be installed manually.
-In a later version some might be installed via the cli tool.
+In order to use this cli tool the following packages need to be installed
+manually. In a later version some might be installed via the cli tool.
 
 - [node v16+](https://nodejs.org/en)
 - [docker](https://docs.docker.com/get-docker/)
 
 Login to docker with your
 [github account](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
-, use the gh access token as password:
+, use the _gh access token_ as password:
 
 ```
 docker login ghcr.io -u <your gh username>
+# or
+echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --password-stdin
 ```
 
 ## Install
@@ -24,7 +27,7 @@ Note that the package is not yet published, so for now you need to clone this
 repo and make a symlink.
 
 ```bash
-$ npm install --global kda-cli
+$ npm install --global @kadena/kda-cli
 ```
 
 ### Install From repo
@@ -33,31 +36,31 @@ To install the executable from this repo:
 
 ```bash
 rush install && rushx build
-chmod +x ./lib/cli.js
+chmod +x ./lib/index.js
 # if you are using NVM, you should have this environment variable available
-ln -s $(pwd)/lib/cli.js $NVM_BIN/kda-cli
+ln -s $(pwd)/lib/index.js $NVM_BIN/kda
 # if not, you can replace $NVM_BIN to any path you have added in your $PATH
 ```
 
 ## CLI
 
 ```
-$ kda-cli --help
+$ kda --help
 
   Usage
-	  $ kda-cli
+	  $ kda
 
 	Options
 		--task  Task
 
 	Examples
-	  $ kda-cli --task=rerun
-	  $ kda-cli --task=start
-	  $ kda-cli --task=stop
-	  $ kda-cli --task=fund
-	  $ kda-cli --task=deploy
-	  $ kda-cli --task=local
-    $ kda-cli --task=rerun
+	  $ kda --task=rerun
+	  $ kda --task=start
+	  $ kda --task=stop
+	  $ kda --task=fund
+	  $ kda --task=deploy
+	  $ kda --task=local
+    $ kda --task=rerun
 ```
 
 ## Chainweaver

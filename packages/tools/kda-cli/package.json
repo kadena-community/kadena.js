@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/kda",
+  "name": "@kadena/kda-cli",
   "version": "0.0.1",
   "license": "MIT",
   "type": "module",

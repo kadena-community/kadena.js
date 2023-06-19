@@ -600,7 +600,7 @@
     },
 
     {
-      "packageName": "@kadena/kda",
+      "packageName": "@kadena/kda-cli",
       "projectFolder": "packages/tools/kda-cli",
       "tags": ["tools"],
       "shouldPublish": false

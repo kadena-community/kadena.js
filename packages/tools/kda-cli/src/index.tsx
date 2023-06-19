@@ -14,18 +14,18 @@ interface IFlags {
 const cli: IFlags = meow(
   `
 	Usage
-	  $ kda-cli
+	  $ kda
 
 	Options
 		--task  Task
 
 	Examples
-	  $ kda-cli --task=rerun
-	  $ kda-cli --task=start
-	  $ kda-cli --task=stop
-	  $ kda-cli --task=fund
-	  $ kda-cli --task=deploy
-	  $ kda-cli --task=local
+	  $ kda --task=rerun
+	  $ kda --task=start
+	  $ kda --task=stop
+	  $ kda --task=fund
+	  $ kda --task=deploy
+	  $ kda --task=local
 `,
   {
     importMeta: import.meta,
