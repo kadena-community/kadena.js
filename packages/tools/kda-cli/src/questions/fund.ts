@@ -13,9 +13,7 @@ import {
 
 import { IAnswers, IQuestion } from './questions.js';
 
-export const fundTemplate = ``;
-
-const fundCondition = ({ task }: IAnswers) => {
+const fundCondition = ({ task }: IAnswers): boolean => {
   if (Array.isArray(task))
     return task?.includes('fund') || task?.includes('setup');
   return false;

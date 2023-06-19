@@ -43,7 +43,7 @@ const signAndSend = ({
   useChainWeaver: boolean;
   publicKey: string;
   secretKey: string;
-}) => {
+}): Reducer => {
   if (useChainWeaver) return buildCommand(signWithChainweaver, send);
   return buildCommand(signWithKeypair({ publicKey, secretKey }), send);
 };
@@ -80,8 +80,8 @@ const setDeployChainSettings =
     signer: string;
     network: string;
     endpoint: string;
-  }) =>
-  (chainId: string): Reducer =>
+  }): ((chainId: string) => Reducer) =>
+  (chainId: string) =>
     buildCommand(
       setMeta({
         gasLimit: 100000,
@@ -105,7 +105,7 @@ const setDeploySettings = ({
   secretKey: string;
   useChainWeaver: boolean;
   data: unknown;
-}) =>
+}): Reducer =>
   buildCommand(
     setCommand(pactCode),
     addCapability({

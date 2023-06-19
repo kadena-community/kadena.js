@@ -38,16 +38,14 @@ const setupEnvFor = async (layer: 'l1' | 'l2'): Promise<void> => {
   return writeFileSync(envFile, getEnvL1(env), 'utf-8');
 };
 
-const getDockerFile = (env: 'l1' | 'l2') => {
+const getDockerFile = (env: 'l1' | 'l2'): string => {
   if (env === 'l2')
     return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal-l2.yaml`;
   return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal.yaml`;
 };
-const setupMacDockerCompose = (env: 'l1' | 'l2') => {
+const setupMacDockerCompose = (env: 'l1' | 'l2'): void => {
   const dcFile = readFileSync(getDockerFile(env), 'utf-8');
   const { services, ...dcJson } = parse(dcFile);
-
-  console.log('orig', dcJson);
 
   const newServices = Object.entries(services).reduce((s, [key, value]) => {
     if (key === 'api-proxy')
@@ -141,9 +139,9 @@ export const setupQuestions: IQuestion[] = [
       if (Array.isArray(task)) return task?.includes('setup');
       return false;
     },
-    action: async ({ macOS }) => {
+    action: async ({ setupM1 }) => {
       await setupEnvFor('l1');
-      if (macOS) setupMacDockerCompose('l1');
+      if (setupM1 === true) setupMacDockerCompose('l1');
       return { prepare: 'success' };
     },
   },
@@ -155,12 +153,12 @@ export const setupQuestions: IQuestion[] = [
       if (setupL2 === true) return true;
       return false;
     },
-    action: async ({ macOS }) => {
+    action: async ({ setupM1 }) => {
       await setupEnvFor('l2');
-      if (macOS) setupMacDockerCompose('l2');
+      if (setupM1 === true) setupMacDockerCompose('l2');
       return { prepare: 'success' };
     },
-  }
+  },
 ];
 
 export const startQuestions: IQuestion[] = [
@@ -207,11 +205,11 @@ const stopQuestions: IQuestion[] = [
     message: 'Stopping L1 devnet...',
     name: 'stopDevnet',
     type: 'execute',
-    when: ({ task }: IAnswers) => {
+    when: ({ task }: IAnswers): boolean => {
       if (Array.isArray(task)) return task?.includes('stop');
       return false;
     },
-    action: async () => {
+    action: async (): Promise<IAnswers> => {
       await spawned(
         `cd ${process.env.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml down`,
         true,
@@ -223,12 +221,12 @@ const stopQuestions: IQuestion[] = [
     message: 'Stopping L2 devnet...',
     name: 'stopDevnetL2',
     type: 'execute',
-    when: ({ task }: IAnswers) => {
+    when: ({ task }: IAnswers): boolean => {
       if (!Array.isArray(task)) return false;
       if (!task?.includes('stop')) return false;
       return true;
     },
-    action: async () => {
+    action: async (): Promise<IAnswers> => {
       const exitCode = await spawned(`ls ${process.env.HOME}/.devnet/l2`);
       if (exitCode !== 0) return { stop: 'skipped' };
       await spawned(
