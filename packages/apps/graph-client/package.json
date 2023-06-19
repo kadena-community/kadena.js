@@ -5,6 +5,7 @@
   "scripts": {
     "build": "rushx postinstall && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
+    "format": "prettier config src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "postinstall": "npm run generate:sdk",
     "lint": "next lint",
@@ -50,6 +51,7 @@
     "@types/lodash.isequal": "~4.5.6",
     "@types/node": "^16.0.0",
     "concurrently": "^7.2.2",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2"
   }
 }

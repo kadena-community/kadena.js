@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "heft build --clean",
+    "format": "prettier config src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
@@ -39,6 +40,7 @@
     "@types/node": "^16.0.0",
     "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
-    "eslint": "^8.15.0"
+    "eslint": "^8.15.0",
+    "prettier": "~2.8.8"
   }
 }

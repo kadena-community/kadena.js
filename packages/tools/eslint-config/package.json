@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "",
+    "format": "prettier mixins profile --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
     "lint": "eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
     "test": ""
   },
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@rushstack/eslint-config": "~3.3.0",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "typescript": "5.0.4"
   }
 }

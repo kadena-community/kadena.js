@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "heft build --clean",
+    "format": "prettier config src templates --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "rimraf test-* && heft test --no-build && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
@@ -37,6 +38,7 @@
     "@types/rimraf": "~3.0.2",
     "cross-env": "~7.0.3",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "rimraf": "~3.0.2",
     "ts-node": "~10.8.2"
   }

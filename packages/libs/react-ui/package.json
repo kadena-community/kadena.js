@@ -22,6 +22,7 @@
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
+    "format": "prettier src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
     "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
@@ -65,6 +66,7 @@
     "eslint": "^8.15.0",
     "eslint-plugin-storybook": "~0.6.12",
     "mini-css-extract-plugin": "~2.7.6",
+    "prettier": "~2.8.8",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",

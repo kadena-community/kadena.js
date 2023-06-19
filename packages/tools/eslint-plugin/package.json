@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "heft build --clean",
+    "format": "prettier src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
@@ -16,6 +17,7 @@
     "@rushstack/eslint-plugin": "~0.11.0",
     "@rushstack/heft": "~0.50.6",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "typescript": "5.0.4"
   }
 }

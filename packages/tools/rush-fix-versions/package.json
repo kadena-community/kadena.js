@@ -28,6 +28,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^16.0.0",
-    "jsonc-parser": "~3.2.0"
+    "jsonc-parser": "~3.2.0",
+    "prettier": "~2.8.8"
   }
 }
