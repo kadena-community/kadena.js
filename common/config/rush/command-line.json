@@ -259,6 +259,13 @@
       "parameterKind": "flag",
       "description": "Update unit test snapshots for all projects",
       "associatedCommands": ["test"]
+    },
+
+    {
+      "longName": "--check",
+      "parameterKind": "flag",
+      "description": "Exit code 1 when Prettier formatting makes changes (--check)",
+      "associatedCommands": ["format"]
     }
     // {
     //   /**
