@@ -78,3 +78,10 @@ Then add the account(s) you've funded:
 The current version of devnet is hard coded to target `fast-devnet`. This branch
 has some optimizations in place to target the L2 development. In a later version
 this will become configurable.
+
+## NOTE
+
+The `pact.ts` mini lib has been added as both an experiment to test out a
+functional approach for kadena.js, as well as a means to provide for
+`continuation` requests. Please note that once `kadena.js` supports continuation
+requests, this package will be refactored to use our lib instead.
