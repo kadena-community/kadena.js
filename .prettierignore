@@ -1,2 +1,3 @@
 CODEOWNERS
 packages/libs/pactjs-test-project/**/*generated*
+packages/libs/react-components/src/components/Input/InputGroup.mdx
