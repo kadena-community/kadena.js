@@ -1,6 +1,14 @@
 {
   "name": "@kadena/kda-cli",
   "version": "0.0.1",
+  "keywords": [
+    "kadena",
+    "kda",
+    "cli",
+    "development",
+    "dev",
+    "tools"
+  ],
   "license": "MIT",
   "type": "module",
   "bin": {
