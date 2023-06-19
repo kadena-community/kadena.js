@@ -1232,6 +1232,7 @@ importers:
       ava: ^5.2.0
       chalk: ^5.2.0
       cross-spawn: ~7.0.3
+      dotenv: ~16.0.3
       eslint: ^8.15.0
       ink: ^4.1.0
       ink-testing-library: ^3.0.0
@@ -1244,6 +1245,7 @@ importers:
       '@inkjs/ui': 1.0.0_ink@4.2.0
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       cross-spawn: 7.0.3
+      dotenv: 16.0.3
       ink: 4.2.0_47f64565616ce9f4b97e79f45ae38c30
       meow: 11.0.0
       react: 18.2.0

@@ -1,3 +1,4 @@
+import { dotenv } from '../utils/env.js';
 import { spawned } from '../utils/spawn.js';
 
 import { IAnswers, IQuestion } from './questions.js';
@@ -32,7 +33,7 @@ const getEnvL1: StringReducer = composeEnv(8080, 1917);
 const getEnvL2: StringReducer = composeEnv(8081, 1918);
 
 const setupEnvFor = async (layer: 'l1' | 'l2'): Promise<void> => {
-  const envFile = `${process.env.HOME}/.devnet/${layer}/.env`;
+  const envFile = `${dotenv.HOME}/.devnet/${layer}/.env`;
   const env = readFileSync(envFile, 'utf-8');
   if (layer === 'l2') return writeFileSync(envFile, getEnvL2(env), 'utf-8');
   return writeFileSync(envFile, getEnvL1(env), 'utf-8');
@@ -40,8 +41,8 @@ const setupEnvFor = async (layer: 'l1' | 'l2'): Promise<void> => {
 
 const getDockerFile = (env: 'l1' | 'l2'): string => {
   if (env === 'l2')
-    return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal-l2.yaml`;
-  return `${process.env.HOME}/.devnet/${env}/docker-compose.minimal.yaml`;
+    return `${dotenv.HOME}/.devnet/${env}/docker-compose.minimal-l2.yaml`;
+  return `${dotenv.HOME}/.devnet/${env}/docker-compose.minimal.yaml`;
 };
 const setupMacDockerCompose = (env: 'l1' | 'l2'): void => {
   const dcFile = readFileSync(getDockerFile(env), 'utf-8');
@@ -108,9 +109,9 @@ export const setupQuestions: IQuestion[] = [
       return false;
     },
     action: async () => {
-      await spawned(`mkdir -p ${process.env.HOME}/.devnet`);
+      await spawned(`mkdir -p ${dotenv.HOME}/.devnet`);
       await spawned(
-        `git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ${process.env.HOME}/.devnet/l1`,
+        `git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ${dotenv.HOME}/.devnet/l1`,
       );
       return { clone: 'success' };
     },
@@ -124,9 +125,9 @@ export const setupQuestions: IQuestion[] = [
       return false;
     },
     action: async () => {
-      await spawned(`mkdir -p ${process.env.HOME}/.devnet`);
+      await spawned(`mkdir -p ${dotenv.HOME}/.devnet`);
       await spawned(
-        `git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ${process.env.HOME}/.devnet/l2`,
+        `git clone -b edmund/disable-pow-flag https://github.com/kadena-io/devnet.git ${dotenv.HOME}/.devnet/l2`,
       );
       return { clone: 'success' };
     },
@@ -173,7 +174,7 @@ export const startQuestions: IQuestion[] = [
     },
     action: async () => {
       await spawned(
-        `cd ${process.env.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml up --remove-orphans -d`,
+        `cd ${dotenv.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml up --remove-orphans -d`,
         true,
       );
       return { start: 'success' };
@@ -189,10 +190,10 @@ export const startQuestions: IQuestion[] = [
       return false;
     },
     action: async () => {
-      const exitCode = await spawned(`ls ${process.env.HOME}/.devnet/l2`);
+      const exitCode = await spawned(`ls ${dotenv.HOME}/.devnet/l2`);
       if (exitCode !== 0) return { start: 'skipped' };
       await spawned(
-        `cd ${process.env.HOME}/.devnet/l2 && docker compose -f docker-compose.minimal-l2.yaml up --remove-orphans -d`,
+        `cd ${dotenv.HOME}/.devnet/l2 && docker compose -f docker-compose.minimal-l2.yaml up --remove-orphans -d`,
         true,
       );
       return { start: 'success' };
@@ -211,7 +212,7 @@ const stopQuestions: IQuestion[] = [
     },
     action: async (): Promise<IAnswers> => {
       await spawned(
-        `cd ${process.env.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml down`,
+        `cd ${dotenv.HOME}/.devnet/l1 && docker compose -f docker-compose.minimal.yaml down`,
         true,
       );
       return { stop: 'success' };
@@ -227,10 +228,10 @@ const stopQuestions: IQuestion[] = [
       return true;
     },
     action: async (): Promise<IAnswers> => {
-      const exitCode = await spawned(`ls ${process.env.HOME}/.devnet/l2`);
+      const exitCode = await spawned(`ls ${dotenv.HOME}/.devnet/l2`);
       if (exitCode !== 0) return { stop: 'skipped' };
       await spawned(
-        `cd ${process.env.HOME}/.devnet/l2 && docker compose -f docker-compose.minimal-l2.yaml down`,
+        `cd ${dotenv.HOME}/.devnet/l2 && docker compose -f docker-compose.minimal-l2.yaml down`,
         true,
       );
       return { stop: 'success' };

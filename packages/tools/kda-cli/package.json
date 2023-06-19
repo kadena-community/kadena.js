@@ -42,6 +42,7 @@
     "@inkjs/ui": "^1.0.0",
     "@kadena/cryptography-utils": "workspace:*",
     "cross-spawn": "~7.0.3",
+    "dotenv": "~16.0.3",
     "ink": "^4.1.0",
     "meow": "^11.0.0",
     "react": "^18.2.0",
