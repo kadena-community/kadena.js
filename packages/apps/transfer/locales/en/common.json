@@ -61,5 +61,11 @@
   "Advanced options": "Advanced options",
   "Mainnet": "Mainnet",
   "Testnet": "Testnet",
-  "Cross Chain Transfers": "Cross Chain Transfers"
+  "Cross Chain Transfers": "Cross Chain Transfers",
+  "Create and Fund New Account": "Create and Fund New Account",
+  "Add Funds to Existing Account": "Add Funds to Existing Account",
+  "Fund 100 Coins": "Fund 100 Coins",
+  "Create and Fund Account": "Create and Fund Account",
+  "Associate your public key with a unique account name of your choosing": "Associate your public key with a unique account name of your choosing",
+  "Chain ID": "Chain ID"
 }
