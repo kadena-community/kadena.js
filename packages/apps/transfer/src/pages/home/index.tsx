@@ -1,8 +1,9 @@
+import { Grid } from '@kadena/react-components';
+
 import routes from '@/constants/routes';
 import {
   StyledHomeContainer,
   StyledHomeContent,
-  StyledHomeContentContainer,
   StyledHomeLink,
   StyledHomeTitle,
   StyledIconBox,
@@ -50,30 +51,34 @@ const Home: FC = () => {
   return (
     <StyledHomeContainer>
       <StyledSmallLogo width="65px" />
-      <StyledHomeContentContainer>
-        <StyledHomeContent>
-          <StyledHomeTitle>{t('Cross Chain Transfers')}</StyledHomeTitle>
-          {transferMenu.map((item) => (
-            <StyledHomeLink key={`item-${item.title}`} href={item.href}>
-              <StyledIconBox>
-                <item.icon width="40px" height="40px" />
-              </StyledIconBox>
-              <StyledLinkText>{item.title}</StyledLinkText>
-            </StyledHomeLink>
-          ))}
-        </StyledHomeContent>
-        <StyledHomeContent>
-          <StyledHomeTitle>{t('Kadena Testnet Faucet')}</StyledHomeTitle>
-          {faucetMenu.map((item) => (
-            <StyledHomeLink key={`item-${item.title}`} href={item.href}>
-              <StyledIconBox>
-                <item.icon width="40px" height="40px" />
-              </StyledIconBox>
-              <StyledLinkText>{item.title}</StyledLinkText>
-            </StyledHomeLink>
-          ))}
-        </StyledHomeContent>
-      </StyledHomeContentContainer>
+      <Grid.Container spacing="2xl" templateColumns="repeat(2, 1fr)">
+        <Grid.Item>
+          <StyledHomeContent>
+            <StyledHomeTitle>{t('Cross Chain Transfers')}</StyledHomeTitle>
+            {transferMenu.map((item) => (
+              <StyledHomeLink key={`item-${item.title}`} href={item.href}>
+                <StyledIconBox>
+                  <item.icon width="40px" height="40px" />
+                </StyledIconBox>
+                <StyledLinkText>{item.title}</StyledLinkText>
+              </StyledHomeLink>
+            ))}
+          </StyledHomeContent>
+        </Grid.Item>
+        <Grid.Item>
+          <StyledHomeContent>
+            <StyledHomeTitle>{t('Kadena Testnet Faucet')}</StyledHomeTitle>
+            {faucetMenu.map((item) => (
+              <StyledHomeLink key={`item-${item.title}`} href={item.href}>
+                <StyledIconBox>
+                  <item.icon width="40px" height="40px" />
+                </StyledIconBox>
+                <StyledLinkText>{item.title}</StyledLinkText>
+              </StyledHomeLink>
+            ))}
+          </StyledHomeContent>
+        </Grid.Item>
+      </Grid.Container>
     </StyledHomeContainer>
   );
 };

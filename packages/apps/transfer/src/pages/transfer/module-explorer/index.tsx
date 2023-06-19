@@ -12,7 +12,6 @@ import {
   StyledCodeViewerContainer,
   StyledForm,
   StyledFormButton,
-  StyledMainContent,
   StyledResultContainer,
   StyledTotalChunk,
   StyledTotalContainer,
@@ -69,58 +68,58 @@ const GetCode: FC = () => {
   };
 
   return (
-    <MainLayout title={t('Kadena Module Explorer')}>
-      <StyledMainContent>
-        <SidebarMenu />
-
-        <StyledForm onSubmit={getCode}>
-          <StyledAccountForm>
-            <Select
-              label={t('Select the module chain')}
-              leadingText={t('Chain')}
-              onChange={(e) => setModuleChain(parseInt(e.target.value))}
-              value={moduleChain}
-            >
-              {renderChainOptions()}
-            </Select>
-            <TextField
-              label={t('Module Name')}
-              inputProps={{
-                placeholder: t('Enter desired module name'),
-                onChange: (e) =>
-                  setModuleName((e.target as HTMLInputElement).value),
-                value: moduleName,
-              }}
-            />
-          </StyledAccountForm>
-          <StyledFormButton>
-            <Button title={t('Get Code')}>{t('Get Code')}</Button>
-          </StyledFormButton>
-        </StyledForm>
-
-        {results.status ? (
-          <StyledResultContainer>
-            <StyledTotalContainer>
-              <StyledTotalChunk>
-                <p>{t('Request Key')}</p>
-                <p>{results.reqKey}</p>
-              </StyledTotalChunk>
-              <StyledTotalChunk>
-                <p>{t('Status')}</p>
-                <p>{results.status}</p>
-              </StyledTotalChunk>
-            </StyledTotalContainer>
-          </StyledResultContainer>
-        ) : null}
-      </StyledMainContent>
-
-      {results.code ? (
-        <StyledResultContainer>
-          <StyledCodeViewerContainer>
-            <AceViewer code={results.code}></AceViewer>
-          </StyledCodeViewerContainer>
-        </StyledResultContainer>
-      ) : null}
+    <MainLayout
+      title={t('Kadena Module Explorer')}
+      footer={
+        <>
+          {!!results.status && (
+            <StyledResultContainer>
+              <StyledTotalContainer>
+                <StyledTotalChunk>
+                  <p>{t('Request Key')}</p>
+                  <p>{results.reqKey}</p>
+                </StyledTotalChunk>
+                <StyledTotalChunk>
+                  <p>{t('Status')}</p>
+                  <p>{results.status}</p>
+                </StyledTotalChunk>
+              </StyledTotalContainer>
+            </StyledResultContainer>
+          )}
+          {!!results.code && (
+            <StyledResultContainer>
+              <StyledCodeViewerContainer>
+                <AceViewer code={results.code} />
+              </StyledCodeViewerContainer>
+            </StyledResultContainer>
+          )}
+        </>
+      }
+    >
+      <StyledForm onSubmit={getCode}>
+        <StyledAccountForm>
+          <Select
+            label={t('Select the module chain')}
+            leadingText={t('Chain')}
+            onChange={(e) => setModuleChain(parseInt(e.target.value))}
+            value={moduleChain}
+          >
+            {renderChainOptions()}
+          </Select>
+          <TextField
+            label={t('Module Name')}
+            inputProps={{
+              placeholder: t('Enter desired module name'),
+              onChange: (e) =>
+                setModuleName((e.target as HTMLInputElement).value),
+              value: moduleName,
+            }}
+          />
+        </StyledAccountForm>
+        <StyledFormButton>
+          <Button title={t('Get Code')}>{t('Get Code')}</Button>
+        </StyledFormButton>
+      </StyledForm>
     </MainLayout>
   );
 };
