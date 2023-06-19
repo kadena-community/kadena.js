@@ -3,7 +3,7 @@ const createJestConfig = nextJest({
   dir: './',
 });
 const customJestConfig = {
-  reporters: ['jest-standard-reporter'],
+  reporters: ["default", "jest-junit"],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
