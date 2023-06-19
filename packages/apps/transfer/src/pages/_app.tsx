@@ -4,12 +4,12 @@ import { Layout } from '@/components/Common';
 import { AppContextProvider } from '@/context/app-context';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import type { FC, ReactElement, ReactNode } from 'react';
+import type { FC, ReactElement } from 'react';
 import React from 'react';
 
 // @see; https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
+  getLayout?: (page: ReactElement) => ReactElement;
 };
 
 type AppPropsWithLayout = AppProps & {
