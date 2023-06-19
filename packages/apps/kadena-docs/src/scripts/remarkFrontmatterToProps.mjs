@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
-import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.js';
-import { getData } from './../utils/staticGeneration/getData.js';
+import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
+import { getData } from './../utils/staticGeneration/getData.mjs';
 
 const getFrontMatter = (node) => {
   const { type, value } = node;

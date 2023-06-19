@@ -9,7 +9,8 @@ import { local, poll, send } from '@kadena/chainweb-node-client';
 import { PactNumber } from '@kadena/pactjs';
 import { IUnsignedCommand } from '@kadena/types';
 
-import { Pact, PactCommand } from '../pact';
+import { PactCommand } from '../pact';
+import { Pact } from '../pactCreator';
 
 const testURL: string = 'http://fake-api-host.local.co';
 
