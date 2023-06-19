@@ -2,6 +2,7 @@ import { Button, TextField } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
+import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledAccountForm,
@@ -25,20 +26,20 @@ const CrossChainTransferFinisher: FC = () => {
     Testnet: { server: string; network: string };
   } = {
     Mainnet: {
-      server: 'api.chainweb.com',
-      network: 'mainnet01',
+      server: kadenaConstants.MAINNET.API,
+      network: kadenaConstants.MAINNET.NETWORKS.MAINNET01,
     },
     Testnet: {
-      server: 'api.testnet.chainweb.com',
-      network: 'testnet04',
+      server: kadenaConstants.TESTNET.API,
+      network: kadenaConstants.TESTNET.NETWORKS.TESTNET04,
     },
   };
 
   const [requestKey, setRequestKey] = useState<string>('');
   const [kadenaXChainGas, setKadenaXChainGas] =
     useState<string>('kadena-xchain-gas');
-  const [gasPrice, setGasPrice] = useState<string>('0.00000001');
-  const [gasLimit, setGasLimit] = useState<string>('750');
+  const [gasPrice, setGasPrice] = useState<number>(0.00000001);
+  const [gasLimit, setGasLimit] = useState<number>(kadenaConstants.GAS_LIMIT);
   const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
 
   const handleSubmit = (e: any) => {
@@ -104,7 +105,7 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     placeholder: t('Enter Gas Payer'),
                     onChange: (e) =>
-                      setGasPrice((e.target as HTMLInputElement).value),
+                      setGasPrice(Number((e.target as HTMLInputElement).value)),
                     value: gasPrice,
                   }}
                 />
@@ -113,7 +114,7 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     placeholder: t('Enter Gas Limit'),
                     onChange: (e) =>
-                      setGasLimit((e.target as HTMLInputElement).value),
+                      setGasLimit(Number((e.target as HTMLInputElement).value)),
                     value: gasLimit,
                   }}
                 />
