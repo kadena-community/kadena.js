@@ -48,6 +48,8 @@ describe('generateDts', () => {
       '0.0.1-alpha-test',
     );
 
+    console.log(ts);
+
     expect(ts).toMatchSnapshot();
   });
 });
