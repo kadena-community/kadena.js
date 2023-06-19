@@ -28,6 +28,7 @@ importers:
       graphql-scalars: ~1.20.1
       graphql-yoga: ~3.1.1
       json-bigint-patch: ~0.0.8
+      prettier: ~2.8.8
       prisma: ^4.7.1
       ts-node: ~10.8.2
     dependencies:
@@ -54,6 +55,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       embedded-postgres: 15.1.0-beta.6
+      prettier: 2.8.8
       ts-node: 10.8.2_@types+node@16.18.7
 
   ../../packages/apps/graph-client:
@@ -88,6 +90,7 @@ importers:
       graphql-sse: ~1.3.2
       lodash.isequal: ~4.5.0
       next: 13.4.4
+      prettier: ~2.8.8
       react: ^18.2.0
       react-dom: ^18.2.0
       ts-node: ~10.8.2
@@ -127,6 +130,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/lodash.isequal': 4.5.6
       concurrently: 7.6.0
+      prettier: 2.8.8
       ts-node: 10.8.2_2048b6abc262ccfb0026ade8cf4de58e
 
   ../../packages/apps/kadena-docs:
@@ -182,7 +186,7 @@ importers:
       micromark-extension-frontmatter: ~1.1.0
       next: 13.4.4
       next-themes: ~0.2.1
-      prettier: ^2.8.5
+      prettier: ~2.8.8
       react: ^18.2.0
       react-dom: ^18.2.0
       rehype-pretty-code: ~0.9.5
@@ -254,7 +258,7 @@ importers:
       mdast-util-from-markdown: 1.3.0
       mdast-util-frontmatter: 1.0.1
       micromark-extension-frontmatter: 1.1.0
-      prettier: 2.8.7
+      prettier: 2.8.8
       sort-package-json: 2.4.1
       start-server-and-test: 2.0.0
       storybook: 7.0.20
@@ -303,7 +307,7 @@ importers:
       next: 13.4.4
       next-translate: ~2.0.6
       next-translate-plugin: ~2.0.5
-      prettier: ^2.8.5
+      prettier: ~2.8.8
       react: ^18.2.0
       react-ace: ~10.1.0
       react-dom: ^18.2.0
@@ -355,7 +359,7 @@ importers:
       jest: 29.5.0_@types+node@16.18.7
       jest-environment-jsdom: 29.5.0
       next-translate-plugin: 2.0.5_next-translate@2.0.6
-      prettier: 2.8.7
+      prettier: 2.8.8
       sort-package-json: 2.4.1
       typescript: 5.0.4
 
@@ -375,6 +379,7 @@ importers:
       cross-fetch: ~3.1.5
       eslint: ^8.15.0
       node-fetch: ~2.6.2
+      prettier: ~2.8.8
     dependencies:
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/pactjs': link:../pactjs
@@ -391,6 +396,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/libs/chainweb-node-client:
     specifiers:
@@ -408,6 +414,7 @@ importers:
       cross-fetch: ~3.1.5
       eslint: ^8.15.0
       node-fetch: ~2.6.2
+      prettier: ~2.8.8
     dependencies:
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/pactjs': link:../pactjs
@@ -424,6 +431,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/libs/chainweb-stream-client:
     specifiers:
@@ -441,6 +449,7 @@ importers:
       eslint: ^8.15.0
       eventemitter2: ~6.4.9
       eventsource: ~2.0.2
+      prettier: ~2.8.8
     dependencies:
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/pactjs': link:../pactjs
@@ -457,6 +466,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.37.0
+      prettier: 2.8.8
 
   ../../packages/libs/chainwebjs:
     specifiers:
@@ -473,6 +483,7 @@ importers:
       eventsource: ~2.0.2
       node-fetch: ~2.6.2
       p-retry: ^4.5.0
+      prettier: ~2.8.8
     dependencies:
       base64url: 3.0.1
       cross-fetch: 3.1.5
@@ -488,6 +499,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/libs/client:
     specifiers:
@@ -507,6 +519,7 @@ importers:
       debug: ~4.3.4
       encoding: ~0.1.13
       eslint: ^8.15.0
+      prettier: ~2.8.8
       ts-node: ~10.8.2
       yaml: ~2.1.1
     dependencies:
@@ -528,6 +541,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
       ts-node: 10.8.2_@types+node@16.18.7
 
   ../../packages/libs/cryptography-utils:
@@ -543,6 +557,7 @@ importers:
       blakejs: ^1.2.1
       buffer: ^6.0.3
       eslint: ^8.15.0
+      prettier: ~2.8.8
       tweetnacl: ^1.0.3
     dependencies:
       '@kadena/types': link:../types
@@ -558,6 +573,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/libs/kadena.js:
     specifiers:
@@ -576,6 +592,7 @@ importers:
       blakejs: ^1.2.1
       eslint: ^8.15.0
       node-fetch: ~2.6.2
+      prettier: ~2.8.8
       serve: ^13.0.2
       ts-loader: ^9.3.0
       tweetnacl: ^1.0.3
@@ -600,6 +617,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node-fetch': 2.6.2
       eslint: 8.29.0
+      prettier: 2.8.8
       serve: 13.0.4
       ts-loader: 9.4.2_webpack@5.73.0
       webpack-cli: 4.10.0_webpack@5.73.0
@@ -616,6 +634,7 @@ importers:
       '@types/node': ^16.0.0
       bignumber.js: ^9.0.2
       eslint: ^8.15.0
+      prettier: ~2.8.8
     dependencies:
       '@kadena/types': link:../types
       bignumber.js: 9.1.1
@@ -628,6 +647,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/libs/pactjs-generator:
     specifiers:
@@ -651,6 +671,7 @@ importers:
       nearley: ~2.20.1
       node-fetch: ~2.6.2
       npm-run-all: ~4.1.5
+      prettier: ~2.8.8
       ramda: ~0.28.0
       ts-node: ~10.8.2
       yaml: ~2.1.1
@@ -678,6 +699,7 @@ importers:
       eslint: 8.29.0
       node-fetch: 2.6.7
       npm-run-all: 4.1.5
+      prettier: 2.8.8
       ts-node: 10.8.2_@types+node@16.18.7
 
   ../../packages/libs/pactjs-test-project:
@@ -699,6 +721,7 @@ importers:
       eslint: ^8.15.0
       node-fetch: ~2.6.2
       npm-run-all: ~4.1.5
+      prettier: ~2.8.8
       ts-node: ~10.8.2
     dependencies:
       '@kadena/chainweb-node-client': link:../chainweb-node-client
@@ -719,6 +742,7 @@ importers:
       eslint: 8.29.0
       node-fetch: 2.6.7
       npm-run-all: 4.1.5
+      prettier: 2.8.8
       ts-node: 10.8.2_@types+node@16.18.7
 
   ../../packages/libs/react-components:
@@ -750,6 +774,7 @@ importers:
       '@types/react': ^18.0.30
       classnames: ^2.3.1
       eslint: ^8.15.0
+      prettier: ~2.8.8
       react: ^18.2.0
       react-dom: ^18.2.0
       storybook: ^7.0.20
@@ -786,6 +811,7 @@ importers:
       '@types/node': 16.18.7
       '@types/react': 18.0.33
       eslint: 8.29.0
+      prettier: 2.8.8
       storybook: 7.0.20
       storybook-dark-mode: 3.0.0_react-dom@18.2.0+react@18.2.0
       typescript: 5.0.4
@@ -826,6 +852,7 @@ importers:
       eslint: ^8.15.0
       eslint-plugin-storybook: ~0.6.12
       mini-css-extract-plugin: ~2.7.6
+      prettier: ~2.8.8
       prop-types: ^15.8.1
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -870,6 +897,7 @@ importers:
       eslint: 8.37.0
       eslint-plugin-storybook: 0.6.12_eslint@8.37.0+typescript@5.0.4
       mini-css-extract-plugin: 2.7.6
+      prettier: 2.8.8
       prop-types: 15.8.1
       storybook: 7.0.20
       storybook-dark-mode: 3.0.0_react-dom@18.2.0+react@18.2.0
@@ -884,6 +912,7 @@ importers:
       '@rushstack/heft': ~0.50.6
       '@types/heft-jest': ~1.0.3
       eslint: ^8.15.0
+      prettier: ~2.8.8
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
@@ -892,6 +921,7 @@ importers:
       '@rushstack/heft': 0.50.7
       '@types/heft-jest': 1.0.3
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/tools/cookbook:
     specifiers:
@@ -907,6 +937,7 @@ importers:
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       eslint: ^8.15.0
+      prettier: ~2.8.8
       ts-node: ~10.8.2
     dependencies:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
@@ -922,6 +953,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       eslint: 8.29.0
+      prettier: 2.8.8
       ts-node: 10.8.2_@types+node@16.18.7
 
   ../../packages/tools/create-kadena-app:
@@ -942,6 +974,7 @@ importers:
       cross-fetch: ~3.1.5
       cross-spawn: ~7.0.3
       eslint: ^8.15.0
+      prettier: ~2.8.8
       ramda: ~0.28.0
       rimraf: ~3.0.2
       ts-node: ~10.8.2
@@ -966,6 +999,7 @@ importers:
       '@types/rimraf': 3.0.2
       cross-env: 7.0.3
       eslint: 8.29.0
+      prettier: 2.8.8
       rimraf: 3.0.2
       ts-node: 10.8.2_@types+node@16.18.7
 
@@ -979,6 +1013,7 @@ importers:
       eslint-plugin-import: ^2.26.0
       eslint-plugin-react: ~7.31.11
       eslint-plugin-simple-import-sort: ~7.0.0
+      prettier: ~2.8.8
       typescript: 5.0.4
     dependencies:
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
@@ -990,6 +1025,7 @@ importers:
     devDependencies:
       '@rushstack/eslint-config': 3.3.2_eslint@8.29.0+typescript@5.0.4
       eslint: 8.29.0
+      prettier: 2.8.8
       typescript: 5.0.4
 
   ../../packages/tools/eslint-plugin:
@@ -1000,6 +1036,7 @@ importers:
       eslint: ^8.15.0
       eslint-module-utils: ^2.7.1
       is-core-module: ^2.8.0
+      prettier: ~2.8.8
       typescript: 5.0.4
     dependencies:
       '@typescript-eslint/experimental-utils': 5.53.0_eslint@8.29.0+typescript@5.0.4
@@ -1009,6 +1046,7 @@ importers:
       '@rushstack/eslint-plugin': 0.11.0_eslint@8.29.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7
       eslint: 8.29.0
+      prettier: 2.8.8
       typescript: 5.0.4
 
   ../../packages/tools/heft-rig:
@@ -1022,6 +1060,7 @@ importers:
       '@types/heft-jest': ~1.0.3
       eslint: ^8.15.0
       jest-environment-node: ~27.4.2
+      prettier: ~2.8.8
       typescript: 5.0.4
     dependencies:
       '@microsoft/api-extractor': 7.35.4
@@ -1035,6 +1074,7 @@ importers:
       '@rushstack/eslint-config': 3.3.2_eslint@8.29.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7
       '@types/heft-jest': 1.0.3
+      prettier: 2.8.8
 
   ../../packages/tools/integration-tests:
     specifiers:
@@ -1053,6 +1093,7 @@ importers:
       eslint: ^8.15.0
       exponential-backoff: ^3.1.0
       kadena.js: workspace:*
+      prettier: ~2.8.8
       tweetnacl: ^1.0.3
     dependencies:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
@@ -1072,6 +1113,7 @@ importers:
       '@types/node': 16.18.7
       concurrently: 7.6.0
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/tools/pactjs-cli:
     specifiers:
@@ -1092,6 +1134,7 @@ importers:
       debug: ~4.3.4
       eslint: ^8.15.0
       mkdirp: ~1.0.4
+      prettier: ~2.8.8
       ramda: ~0.28.0
       rimraf: ~3.0.2
       yaml: ~2.1.1
@@ -1119,6 +1162,7 @@ importers:
       '@types/ramda': 0.28.20
       '@types/rimraf': 3.0.2
       eslint: 8.29.0
+      prettier: 2.8.8
 
   ../../packages/tools/remark-plugins:
     specifiers:
@@ -1129,6 +1173,7 @@ importers:
       eslint: ^8.15.0
       mdast-comment-marker: ^2.1.2
       mdast-zone: ^5.1.1
+      prettier: ~2.8.8
       remark-frontmatter: ~4.0.1
       remark-gfm: ~3.0.1
       remark-order-reference-links: ^0.0.3
@@ -1146,7 +1191,7 @@ importers:
       remark-gfm: 3.0.1
       remark-order-reference-links: 0.0.3
       remark-parse: 10.0.2
-      remark-prettier: 2.0.0
+      remark-prettier: 2.0.0_prettier@2.8.8
       remark-reference-links: 6.0.1
       strip-json-comments: 5.0.0
       unist-util-visit: 4.1.2
@@ -1156,6 +1201,7 @@ importers:
       '@types/mdast': 3.0.11
       '@types/node': 16.18.7
       eslint: 8.37.0
+      prettier: 2.8.8
       typescript: 5.0.4
       unified: 10.1.2
 
@@ -1171,6 +1217,7 @@ importers:
       execa: ^7.1.1
       inquirer: ^9.2.6
       jsonc-parser: ~3.2.0
+      prettier: ~2.8.8
     dependencies:
       execa: 7.1.1
       inquirer: 9.2.6
@@ -1183,6 +1230,7 @@ importers:
       '@types/inquirer': 9.0.3
       '@types/node': 16.18.7
       jsonc-parser: 3.2.0
+      prettier: 2.8.8
 
 packages:
 
@@ -8292,7 +8340,7 @@ packages:
       jscodeshift: 0.14.0_@babel+preset-env@7.20.2
       leven: 3.1.0
       ora: 5.4.1
-      prettier: 2.8.7
+      prettier: 2.8.8
       prompts: 2.4.2
       puppeteer-core: 2.1.1
       read-pkg-up: 7.0.1
@@ -8349,7 +8397,7 @@ packages:
       globby: 11.1.0
       jscodeshift: 0.14.0_@babel+preset-env@7.21.5
       lodash: 4.17.21
-      prettier: 2.8.7
+      prettier: 2.8.8
       recast: 0.23.1
     transitivePeerDependencies:
       - supports-color
@@ -9312,7 +9360,7 @@ packages:
     dependencies:
       '@svgr/core': 8.0.0
       deepmerge: 4.3.1
-      prettier: 2.8.7
+      prettier: 2.8.8
     dev: true
 
   /@svgr/plugin-svgo/5.5.0:
@@ -21704,8 +21752,8 @@ packages:
     hasBin: true
     dev: true
 
-  /prettier/2.8.7:
-    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
+  /prettier/2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -22555,7 +22603,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /remark-prettier/2.0.0:
+  /remark-prettier/2.0.0_prettier@2.8.8:
     resolution: {integrity: sha512-66v8KoqnBivhcfjtahHmHU7qkQuVPq/JIsqTW8suqI8mVuHCpxjapoY2XIBLjC5J7suYICVtNRBXRwrRX7a1hA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -22564,6 +22612,7 @@ packages:
       '@types/mdast': 3.0.11
       '@types/prettier': 2.7.1
       mdast-util-to-markdown: 1.5.0
+      prettier: 2.8.8
       prettier-linter-helpers: 1.0.0
       vfile-location: 4.1.0
     dev: false
