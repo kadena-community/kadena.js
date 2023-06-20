@@ -51,13 +51,14 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Breadcrumbs',
   args: {
+    selectIcon: 'KadenaOverview',
     itemsCount: 3,
   },
   render: ({ itemsCount, selectIcon }) => {
     const items = ItemArray.slice(0, itemsCount);
     const Icon = ProductIcon[selectIcon];
     return (
-      <Breadcrumbs.Container icon={Icon}>
+      <Breadcrumbs icon={Icon}>
         {items.map((item, idx) => {
           return (
             <Breadcrumbs.Item
@@ -68,7 +69,7 @@ export const Primary: Story = {
             </Breadcrumbs.Item>
           );
         })}
-      </Breadcrumbs.Container>
+      </Breadcrumbs>
     );
   },
 };
