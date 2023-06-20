@@ -303,6 +303,7 @@ importers:
       jest: ~29.5.0
       jest-environment-jsdom: ~29.5.0
       jest-junit: ~16.0.0
+      jest-standard-reporter: ~2.0.0
       lint-staged: ~13.2.0
       next: 13.4.4
       next-translate: ~2.0.6
@@ -359,6 +360,7 @@ importers:
       jest: 29.5.0_@types+node@16.18.7
       jest-environment-jsdom: 29.5.0
       jest-junit: 16.0.0
+      jest-standard-reporter: 2.0.0
       lint-staged: 13.2.0
       next-translate-plugin: 2.0.5_next-translate@2.0.6
       prettier: 2.8.7
