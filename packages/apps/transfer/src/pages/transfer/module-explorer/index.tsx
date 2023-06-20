@@ -7,6 +7,8 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 
+import { useAppContext } from '../../../context/app-context';
+
 import {
   StyledAccountForm,
   StyledCodeViewerContainer,
@@ -33,7 +35,22 @@ const GetCode: FC = () => {
   const [moduleChain, setModuleChain] = useState<number>(1);
   const [results, setResults] = useState<ModuleResult>({});
 
-  const networkdId = 'testnet04';
+  const { network } = useAppContext();
+
+  const chainNetwork: {
+    Mainnet: { server: string; network: string };
+    Testnet: { server: string; network: string };
+  } = {
+    Mainnet: {
+      server: 'api.chainweb.com',
+      network: 'mainnet01',
+    },
+    Testnet: {
+      server: 'api.testnet.chainweb.com',
+      network: 'testnet04',
+    },
+  };
+
   const numberOfChains = 20;
 
   const getCode = async (
@@ -44,7 +61,8 @@ const GetCode: FC = () => {
       const data = await describeModule(
         moduleName,
         convertIntToChainId(moduleChain),
-        networkdId,
+        chainNetwork[network].network,
+        chainNetwork[network].server,
       );
       console.log(data.code);
 

@@ -1,10 +1,4 @@
 import { ChainwebNetworkId, poll, spv } from '@kadena/chainweb-node-client';
-import {
-  ContCommand,
-  getContCommand,
-  PactCommand,
-  pollSpvProof,
-} from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
@@ -37,7 +31,6 @@ import {
   StyledSideContent,
   StyledToggleContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
-import * as net from 'net';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
@@ -94,21 +87,9 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     setPollResults(pollResult);
-    console.log('POLLL RESULTS', pollResult);
     if (pollResults.tx === undefined) {
       return;
     }
-
-    // MY SPV PROOF
-    const spvProof2 = await getSpvProof({
-      requestKey,
-      chainId: pollResults.tx.sender.chain,
-      networkId: chainNetwork[network].network as ChainwebNetworkId,
-      server: chainNetwork[network].server,
-      t,
-    });
-    console.log('proooooooof', spvProof2.proof);
-    setSpvProofResults(spvProof2);
   };
 
   const handleSubmit = async (
@@ -116,33 +97,34 @@ const CrossChainTransferFinisher: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
 
-    if (!pollResults.tx || !spvProofResults.proof) {
+    if (!pollResults.tx) {
       return;
     }
-    const host = `https://${chainNetwork[network].server}/chainweb/0.0/${chainNetwork[network].network}/chain/${pollResults.tx.receiver.chain}/pact/api/v1/local`;
-    const constCommand = await finishXChainTransfer(
+    console.log('receiver chain', pollResults.tx.receiver.chain);
+
+    const host = `https://${chainNetwork[network].server}/chainweb/0.0/${chainNetwork[network].network}/chain/${pollResults.tx.receiver.chain}/pact`;
+    const contCommand = await finishXChainTransfer(
       requestKey,
-      spvProofResults.proof,
       pollResults.tx.step,
       pollResults.tx.pactId,
       pollResults.tx.rollback,
       chainNetwork[network].server,
       chainNetwork[network].network as ChainwebNetworkId,
       pollResults.tx.receiver.chain as ChainId,
+      kadenaXChainGas,
     );
 
-    console.log('finishResult', constCommand);
+    if (contCommand === undefined) {
+      return;
+    }
 
-    // const pollResult = await constCommand.pollUntil(host, {
-    //   onPoll: async (transaction, pollRequest): Promise<void> => {
-    //     console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-    //     setFinalResults({ ...transaction });
-    //     console.log(await pollRequest);
-    //   },
-    // });
-    // setFinalResults({ ...pollResult });
-
-    console.log('submitted');
+    const pollResult = await contCommand.pollUntil(host, {
+      onPoll: async (transaction, pollRequest): Promise<void> => {
+        console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+        setFinalResults({ ...transaction });
+        console.log(await pollRequest);
+      },
+    });
   };
 
   const showInputError =

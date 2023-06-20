@@ -19,6 +19,7 @@ export const describeModule = async (
   moduleName: string,
   chainId: ChainId,
   networkId: string,
+  server: string,
 ): Promise<ModuleResult> => {
   const pactCommand = new PactCommand();
   pactCommand.code = createExp(`describe-module "${moduleName}"`);
@@ -26,7 +27,7 @@ export const describeModule = async (
   pactCommand.setMeta({ gasLimit, gasPrice, ttl, sender, chainId });
 
   const response = await pactCommand.local(
-    generateApiHost(networkId, chainId),
+    generateApiHost(server, networkId, chainId),
     {
       signatureVerification: false,
       preflight: false,
