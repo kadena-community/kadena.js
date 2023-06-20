@@ -33,19 +33,10 @@ export const actionsContainerClass = style([
   }),
 ]);
 
-export const expandVariants = styleVariants(
-  {
-    true: true,
-    false: false,
-  },
-  (expand) => {
-    return [
-      sprinkles({
-        width: expand ? '100%' : 'max-content',
-      }),
-    ];
-  },
-);
+export const expandVariants = styleVariants({
+  true: [sprinkles({ width: '100%' })],
+  false: [sprinkles({ width: 'max-content' })],
+});
 
 export const cardTitleClass = style([
   sprinkles({
