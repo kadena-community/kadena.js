@@ -5,8 +5,6 @@
   "main": "lib/index.js",
   "type": "module",
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "heft build",
     "test": ""
   },
