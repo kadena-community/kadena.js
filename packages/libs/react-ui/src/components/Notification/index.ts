@@ -15,6 +15,8 @@ import {
   NotificationHeader,
 } from './NotificationHeader';
 
+import { FC } from 'react';
+
 export {
   INotificationProps,
   INotificationHeaderProps,
@@ -22,16 +24,14 @@ export {
   INotificationButtonProps,
 };
 
-interface INotification {
-  Container: React.FC<INotificationProps>;
-  Header: React.FC<INotificationHeaderProps>;
-  Actions: React.FC<INotificationActionsProps>;
-  Button: React.FC<INotificationButtonProps>;
+interface INotification extends FC<INotificationProps> {
+  Header: FC<INotificationHeaderProps>;
+  Actions: FC<INotificationActionsProps>;
+  Button: FC<INotificationButtonProps>;
 }
 
-export const Notification: INotification = {
-  Header: NotificationHeader,
-  Container: NotificationContainer,
-  Actions: NotificationActions,
-  Button: NotificationButton,
-};
+export const Notification: INotification =
+  NotificationContainer as INotification;
+Notification.Header = NotificationHeader;
+Notification.Actions = NotificationActions;
+Notification.Button = NotificationButton;
