@@ -3,12 +3,10 @@ import GridItem, { IGridItemProps } from './GridItem';
 
 import { FC } from 'react';
 
-interface IGrid {
-  Container: FC<IGridContainerProps>;
+interface IGrid extends FC<IGridContainerProps> {
   Item: FC<IGridItemProps>;
 }
 export { IGridContainerProps, IGridItemProps };
-export const Grid: IGrid = {
-  Container: GridContainer,
-  Item: GridItem,
-};
+
+export const Grid: IGrid = GridContainer as IGrid;
+Grid.Item = GridItem;
