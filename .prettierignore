@@ -1,3 +1,5 @@
 CODEOWNERS
+packages/**/__generated__/**
+packages/apps/kadena-docs/src/data/menu.mjs
 packages/libs/pactjs-test-project/**/*generated*
 packages/libs/react-components/src/components/Input/InputGroup.mdx
