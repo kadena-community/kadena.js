@@ -23,7 +23,7 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
   const Icon = icon;
 
   return (
-    <div className={itemClass}>
+    <li className={itemClass}>
       {Icon && (
         <div className={iconContainer}>
           <Icon size="sm" />
@@ -37,6 +37,6 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
       ) : (
         <span className={spanClass}>{children}</span>
       )}
-    </div>
+    </li>
   );
 };

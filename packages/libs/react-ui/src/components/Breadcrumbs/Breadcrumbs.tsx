@@ -15,22 +15,24 @@ export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
   icon,
 }) => {
   return (
-    <div className={containerClass}>
-      {React.Children.map(children, (child, idx) => {
-        if (child === undefined || child.type !== BreadcrumbsItem) {
-          throw new Error(
-            `${child?.type} is not a valid child for Breadcrumbs`,
-          );
-        }
+    <nav>
+      <ul className={containerClass}>
+        {React.Children.map(children, (child, idx) => {
+          if (child === undefined || child.type !== BreadcrumbsItem) {
+            throw new Error(
+              `${child?.type} is not a valid child for Breadcrumbs`,
+            );
+          }
 
-        if (idx === 0) {
-          return React.cloneElement<IBreadcrumbItemProps>(child, { icon });
-        }
+          if (idx === 0) {
+            return React.cloneElement<IBreadcrumbItemProps>(child, { icon });
+          }
 
-        // eslint-disable-next-line
-        const { icon: _, ...props } = child.props;
-        return React.cloneElement<IBreadcrumbItemProps>(child, { ...props });
-      })}
-    </div>
+          // eslint-disable-next-line
+          const { icon: _, ...props } = child.props;
+          return React.cloneElement<IBreadcrumbItemProps>(child, { ...props });
+        })}
+      </ul>
+    </nav>
   );
 };
