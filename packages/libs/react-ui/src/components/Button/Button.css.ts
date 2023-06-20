@@ -65,3 +65,10 @@ export const colorVariants = styleVariants(colors, (color) => {
     },
   ];
 });
+
+export const iconContainerClass = style([
+  sprinkles({
+    display: 'flex',
+    marginX: '$1',
+  }),
+]);
