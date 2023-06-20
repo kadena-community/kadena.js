@@ -74,11 +74,9 @@ const responsiveProperties = defineProperties({
     paddingRight: vars.sizes,
     marginTop: {
       ...vars.sizes,
-      auto: 'auto',
     },
     marginBottom: {
       ...vars.sizes,
-      auto: 'auto',
     },
     marginLeft: {
       ...vars.sizes,
