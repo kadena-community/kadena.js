@@ -1,0 +1,1 @@
+export { ConsentModal } from './ConsentModal';
