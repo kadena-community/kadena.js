@@ -5,6 +5,9 @@ export const EVENT_NAMES = {
   'click:open_searchmodal': 'click:open_searchmodal',
 } as const;
 
+export const COOKIE_CONSENTNAME =
+  process.env.NEXT_PUBLIC_TRACKING_COOKIENAME ?? '';
+
 interface IOptionsType {
   label?: string;
   url?: string;
@@ -46,5 +49,5 @@ export const updateConsent = (hasConsent: boolean | null): void => {
 
   if (hasConsent === null) return;
 
-  localStorage.setItem('cookie_consent', hasConsent.toString());
+  localStorage.setItem(COOKIE_CONSENTNAME, hasConsent.toString());
 };
