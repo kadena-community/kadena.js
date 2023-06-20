@@ -3,9 +3,9 @@ import { Card } from '../Card/Card';
 
 import { useModal } from './ModalProvider';
 
-import React from 'react';
+import React, { FC } from 'react';
 
-const ModalContent = () => {
+const ModalContent: FC = () => {
   return (
     <>
       <Card fullWidth={true}>
@@ -26,7 +26,7 @@ const ModalContent = () => {
   );
 };
 
-export const Content = () => {
+export const Content: FC = () => {
   const { renderModal } = useModal();
 
   return (
