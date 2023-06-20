@@ -3,7 +3,7 @@ import {
   ICommandResult,
 } from '@kadena/chainweb-node-client';
 import { ContCommand, getContCommand, PactCommand } from '@kadena/client';
-import { ChainId } from '@kadena/types';
+import { ChainId, IPactExec } from '@kadena/types';
 
 import { validateRequestKey } from '../utils/utils';
 
@@ -16,7 +16,6 @@ interface ITransactionData {
     pred: string;
     keys: [string];
   };
-  proof: string;
   step: number;
   pactId: string;
   rollback: boolean;
@@ -70,27 +69,26 @@ export async function getTransferData({
       return { error: t('No request key found') };
     }
 
-    console.log('FOUND', found);
+    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
+      .tx?.continuation?.continuation.args as Array<any>;
+    const { step, stepHasRollback, pactId } = found.tx
+      ?.continuation as IPactExec;
 
     return {
       tx: {
         sender: {
           chain: found.chainId.toString() as ChainId,
-          account: found.tx?.continuation?.continuation?.args[0],
+          account: senderAccount,
         },
         receiver: {
-          chain: found.tx?.continuation?.yield?.provenance
-            ?.targetChainId as ChainId,
-          account: found.tx?.continuation?.yield?.data.receiver,
+          chain: targetChain as ChainId,
+          account: receiverAccount,
         },
-        amount: parseFloat(found.tx?.continuation?.yield?.data.amount),
-        receiverGuard: {
-          pred: found?.tx?.continuation?.yield?.data['receiver-guard'].pred,
-          keys: found?.tx?.continuation?.yield?.data['receiver-guard'].keys,
-        },
-        step: found.tx?.continuation?.step,
-        pactId: found.tx?.continuation?.pactId,
-        rollback: found.tx?.continuation?.stepHasRollback,
+        amount: amount,
+        receiverGuard: guard,
+        step: step,
+        pactId: pactId,
+        rollback: stepHasRollback,
       },
     };
   } catch (e) {
