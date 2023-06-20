@@ -11,7 +11,7 @@ const meta: Meta<
     text: string;
   } & INotificationProps
 > = {
-  title: 'Layout/Notification',
+  title: 'Components/Notification',
   argTypes: {
     selectIcon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
@@ -47,6 +47,7 @@ export default meta;
 type Story = StoryObj<
   {
     selectIcon: keyof typeof SystemIcon;
+    text: string;
   } & INotificationProps
 >;
 
@@ -64,8 +65,9 @@ export const Primary: Story = {
     hasCloseButton: true,
     expanded: false,
     color: undefined,
+    text: 'Notification text to inform users about the event that occurred!',
   },
-  render: ({ selectIcon, title, hasCloseButton, expanded, color }) => {
+  render: ({ selectIcon, title, hasCloseButton, expanded, color, text }) => {
     const icon = SystemIcon[selectIcon];
     return (
       <Notification
@@ -78,7 +80,7 @@ export const Primary: Story = {
           alert('Close button clicked');
         }}
       >
-        Notification text to inform users about the event that occurred!
+        {text}
         <Notification.Actions>
           <Notification.Button icon={SystemIcon.Check} color={'positive'}>
             Accept
