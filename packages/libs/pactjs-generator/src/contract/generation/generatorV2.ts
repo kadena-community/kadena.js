@@ -11,15 +11,16 @@ const keywordsMap: Record<string, string> = {
   guard: '() => string',
 };
 
-const mapType = (name: string | 'undefined'): string => {
-  if (name === 'undefined') {
+const mapType = (
+  inputType?: string | { kind: string; value: string },
+): string => {
+  if (inputType === undefined) {
     return 'any';
   }
-  if (name in keywordsMap) {
-    return keywordsMap[name];
+  if (typeof inputType === 'string') {
+    return keywordsMap[inputType] ?? inputType;
   }
-  // TODO: add automatic type mapping for other types (like object{fungible-v2....})
-  return name;
+  return inputType.kind;
 };
 
 const getFuncCapInterfaceName = (func: IFunction): string => {
@@ -52,10 +53,7 @@ const getParameters = (
 ): string[] => {
   if (!list) return [];
   return list.map((arg) => {
-    return `${arg.name.replace(/-/g, '')}: ${mapType(
-      // TODO: create a type based on the schema in the contract
-      typeof arg.type === 'string' ? arg.type : 'object',
-    )}`;
+    return `${arg.name.replace(/-/g, '')}: ${mapType(arg.type)}`;
   });
 };
 

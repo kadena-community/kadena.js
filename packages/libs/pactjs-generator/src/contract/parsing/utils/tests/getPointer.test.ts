@@ -1,4 +1,4 @@
-import { getPointer } from '../getPointer';
+import { getBlockPointer, getPointer } from '../getPointer';
 
 const contract = `(namespace free)(module test GOVERNANCE @doc "test module")`;
 
@@ -112,5 +112,25 @@ describe('getPointer functionality', () => {
       for (let i = 0; i < 4; i++) pointer.next();
       expect(pointer.done()).toBe(true);
     });
+  });
+});
+
+describe('getBlockPointer', () => {
+  it('creates a pointer is scoped in a block', () => {
+    const pointer = getPointer('(a (b (c) ) the_token_after_block_b )');
+    // skip first (
+    pointer.next();
+    // skip a
+    pointer.next();
+    // skip the second (
+    pointer.next();
+
+    const blockPointer = getBlockPointer(pointer);
+
+    while (!blockPointer.done()) {
+      blockPointer.next();
+    }
+
+    expect(pointer.next()?.value).toBe('the_token_after_block_b');
   });
 });

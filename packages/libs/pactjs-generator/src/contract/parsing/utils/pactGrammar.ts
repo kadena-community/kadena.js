@@ -36,7 +36,7 @@ export const typeRule = seq(
 );
 
 // (defun|defcap name (a:string,b:object{schema-one},c) @doc "test doc")
-const method = <T extends IParser>(
+export const method = <T extends IParser>(
   type: 'defun' | 'defcap',
   bodyParser: T = skipTheRest as T,
 ) =>

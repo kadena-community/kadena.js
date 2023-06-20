@@ -27,10 +27,7 @@ export const getPointer = (contract: string): IPointer => {
     reset: (val: number) => {
       idx = val;
     },
-    snapshot: (log = false) => {
-      if (log) console.log(idx, ':', tokens[idx]);
-      return idx;
-    },
+    snapshot: () => idx,
     done: () => idx === tokens.length - 1,
   };
 };

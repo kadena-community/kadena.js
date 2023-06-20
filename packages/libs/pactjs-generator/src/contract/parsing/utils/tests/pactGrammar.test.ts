@@ -1,6 +1,6 @@
 import { unwrapData } from '../dataWrapper';
 import { getPointer } from '../getPointer';
-import { defcap, defun, moduleRule, typeRule } from '../pactGrammar';
+import { defcap, defun, method, moduleRule, typeRule } from '../pactGrammar';
 import { FAILED } from '../parser-utilities';
 
 describe('pactGrammar', () => {
@@ -308,6 +308,19 @@ describe('pactGrammar', () => {
       }
       const data = unwrapData(result);
       expect(data.kind).toEqual('interface');
+    });
+  });
+
+  describe('method rule', () => {
+    it('uses skipTheRest of the bodyParser is not presented', () => {
+      const defun = method('defun');
+      const pointer = getPointer('(defun test () (with-capability (test)))');
+      const tree = unwrapData(defun(pointer));
+      if (tree === FAILED) {
+        expect(tree).not.toBe(FAILED);
+        return;
+      }
+      expect('bodyPointer' in tree).toBe(false);
     });
   });
 });

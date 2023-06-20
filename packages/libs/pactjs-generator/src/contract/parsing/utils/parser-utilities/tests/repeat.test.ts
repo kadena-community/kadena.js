@@ -4,7 +4,6 @@ import { atom } from '../atom';
 import { id } from '../id';
 import { $ } from '../inspect';
 import { repeat } from '../repeat';
-import { FAILED } from '../rule';
 import { seq } from '../seq';
 import { str } from '../str';
 
@@ -68,6 +67,7 @@ describe('repeat parser', () => {
     expect(typeof result.data).toBe('object');
     expect(Object.keys(result.data)).toHaveLength(1);
     // TODO: check if we need to add typing for this path or change it to something else
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((result.data as any)['not-categorized']).toEqual(['alice', 'bob']);
   });
 });
