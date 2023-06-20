@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
-    background: '$neutral2',
+    backgroundColor: '$neutral2',
     color: '$neutral6',
     display: 'flex',
     flexDirection: 'column',
@@ -18,7 +18,9 @@ export const container = style([
   }),
 ]);
 
-export const fullWidthClass = style([sprinkles({ width: '100%' })]);
+export const fullWidthClass = style({
+  width: '100%',
+});
 
 export const stackClass = style([
   sprinkles({ marginY: 0 }),

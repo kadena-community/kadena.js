@@ -1,6 +1,6 @@
 import { Button } from '@kadena/react-components';
 
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 interface IProps {
   editLink?: string;
