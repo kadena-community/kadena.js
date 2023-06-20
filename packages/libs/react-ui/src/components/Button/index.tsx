@@ -8,5 +8,5 @@ interface IButton extends FC<IButtonProps> {
   Icon: FC<IButtonIconProps>;
 }
 
-export const Button = ButtonContainer as IButton;
+export const Button: IButton = ButtonContainer as IButton;
 Button.Icon = ButtonIcon;
