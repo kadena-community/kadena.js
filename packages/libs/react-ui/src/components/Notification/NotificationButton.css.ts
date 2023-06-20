@@ -7,8 +7,6 @@ export const containerClass = style([
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    //height: 'min-content',
-    //position: 'relative',
     backgroundColor: 'transparent',
     border: 'none',
     margin: 0,
