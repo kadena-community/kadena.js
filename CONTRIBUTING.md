@@ -84,6 +84,7 @@ the following commands:
 ```bash
 rush build   # Compile & build all packages (using TypeScript)
 rush lint    # Lint (and fix) all packages (using ESLint)
+rush format  # Format all packages (using Prettier)
 ```
 
 Use `rushx` instead of `rush` to do the same for only the current package.
