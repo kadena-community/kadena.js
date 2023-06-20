@@ -1,5 +1,4 @@
 import { colorVariants } from './Button.css';
-import { ButtonIcon } from './ButtonIcon';
 
 import React, { FC } from 'react';
 
@@ -14,12 +13,7 @@ export interface IButtonProps
   color?: keyof typeof colorVariants;
 }
 
-interface IButtonComposition extends FC<IButtonProps> {
-  Icon: typeof ButtonIcon;
-}
-
-// eslint-disable-next-line react/prop-types
-export const Button: IButtonComposition = ({
+export const Button: FC<IButtonProps> = ({
   as = 'button',
   color = 'primary',
   onClick,
@@ -27,7 +21,6 @@ export const Button: IButtonComposition = ({
   children,
   ...props
 }) => {
-  // eslint-disable-next-line react/prop-types
   const ariaLabel = props['aria-label'] ?? props.title;
 
   if (as === 'a' && href !== undefined && href !== '') {
@@ -47,5 +40,3 @@ export const Button: IButtonComposition = ({
     </button>
   );
 };
-
-Button.Icon = ButtonIcon;
