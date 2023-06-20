@@ -48,7 +48,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
 
       <div>
         <p className={contentClass}>
-          <h4 className={cardTitleClass}>{title}</h4>
+          {title !== undefined && <h4 className={cardTitleClass}>{title}</h4>}
           <p>{children}</p>
         </p>
       </div>
