@@ -20,7 +20,7 @@ const meta: Meta<
     selectIcon: keyof typeof ProductIcon;
   } & IBreadcrumbsProps
 > = {
-  title: 'Breadcrumbs',
+  title: 'Components/Breadcrumbs',
   argTypes: {
     selectIcon: {
       options: Object.keys(ProductIcon) as (keyof typeof ProductIcon)[],

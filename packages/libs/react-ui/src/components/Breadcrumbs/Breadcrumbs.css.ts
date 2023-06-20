@@ -66,5 +66,15 @@ export const spanClass = style([
 export const iconContainer = style([
   sprinkles({
     display: 'flex',
+    marginX: '$sm',
+  }),
+]);
+
+export const navClass = style([
+  sprinkles({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 'max-content',
   }),
 ]);
