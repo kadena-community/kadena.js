@@ -3,7 +3,7 @@ import {
   darkTheme as stitchesDarkTheme,
   globalCss,
 } from '@kadena/react-components';
-import { darkThemeClass } from '@kadena/react-ui';
+import { darkThemeClass, ModalProvider } from '@kadena/react-ui';
 
 import { Analytics } from '@/components';
 import { Main } from '@/components/Layout/components';
@@ -65,12 +65,15 @@ export const MyApp = ({
               dark: darkThemeClass,
             }}
           >
-            <Main {...props}>
-              <Component {...props} />
-            </Main>
+            <ModalProvider>
+              <Main {...props}>
+                <Component {...props} />
+              </Main>
+            </ModalProvider>
           </ThemeProvider>
         </ThemeProvider>
       </MDXProvider>
+
       <Analytics />
     </>
   );

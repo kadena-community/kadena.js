@@ -1,5 +1,3 @@
-import { sprinkles, vars } from '../../styles';
-
 import { style } from '@vanilla-extract/css';
 
 export const background = style({
@@ -9,6 +7,7 @@ export const background = style({
   inset: 0,
   padding: 0,
   cursor: 'pointer',
+  zIndex: 9998,
 });
 
 export const wrapper = style({
@@ -18,6 +17,7 @@ export const wrapper = style({
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',
+  zIndex: 9999,
 });
 
 export const modal = style({

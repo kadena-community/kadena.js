@@ -1,4 +1,3 @@
-import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 
 import { IModalProps, Modal } from './Modal';
