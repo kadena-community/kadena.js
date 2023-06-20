@@ -46,7 +46,13 @@ rush install
 rush build -t @kadena/transfer
 ```
 
-6. Start the app:
+6. Setup environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+7. Start the app:
 
 ```bash
 rushx dev
