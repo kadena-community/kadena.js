@@ -1,9 +1,11 @@
+import { ColorType, sprinkles, vars } from '../../styles';
+
 import { style } from '@vanilla-extract/css';
 
 export const background = style({
   position: 'fixed',
-  backgroundColor: 'green',
-  opacity: '.5',
+  backgroundColor: vars.colors.$neutral6,
+  opacity: '.8',
   inset: 0,
   padding: 0,
   cursor: 'pointer',

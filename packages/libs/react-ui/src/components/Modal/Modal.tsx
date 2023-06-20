@@ -1,3 +1,6 @@
+import { Button } from '../Button/Button';
+import { Stack } from '../Stack/Stack';
+
 import { background, modal, wrapper } from './Modal.css';
 import { useModal } from './ModalProvider';
 
@@ -13,7 +16,12 @@ export const Modal: FC<IModalProps> = ({ children }) => {
     <>
       <button className={background} onClick={clearModal} />
       <div className={wrapper}>
-        <section className={modal}>{children}</section>
+        <Stack direction="column">
+          <Button onClick={clearModal} title="Close modal">
+            Close{' '}
+          </Button>
+          <section className={modal}>{children}</section>
+        </Stack>
       </div>
     </>
   );
