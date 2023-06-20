@@ -4,11 +4,6 @@ import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
 import { generateApiHost } from '../../../services/utils/utils';
-import {
-  StyledResultContainer,
-  StyledTotalChunk,
-  StyledTotalContainer,
-} from '../module-explorer/styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
@@ -28,8 +23,11 @@ import {
   StyledInfoItemTitle,
   StyledInfoTitle,
   StyledMainContent,
+  StyledResultContainer,
   StyledShowMore,
   StyledToggleContainer,
+  StyledTotalChunk,
+  StyledTotalContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
 import {
   finishXChainTransfer,

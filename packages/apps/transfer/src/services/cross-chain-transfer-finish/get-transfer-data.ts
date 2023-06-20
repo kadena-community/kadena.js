@@ -2,7 +2,7 @@ import {
   ChainwebNetworkId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import { ContCommand, getContCommand, PactCommand } from '@kadena/client';
+import { PactCommand } from '@kadena/client';
 import { ChainId, IPactExec } from '@kadena/types';
 
 import { validateRequestKey } from '../utils/utils';
