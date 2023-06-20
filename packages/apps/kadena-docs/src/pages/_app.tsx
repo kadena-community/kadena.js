@@ -73,7 +73,6 @@ export const MyApp = ({
           </ThemeProvider>
         </ThemeProvider>
       </MDXProvider>
-
       <Analytics />
     </>
   );

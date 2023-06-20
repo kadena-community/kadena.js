@@ -7,6 +7,7 @@ interface IReturnProps {
   handleOpenSearch: () => void;
 }
 
+// @TODO: this is temporary to test if the component works in Docs
 const Modal: FC = () => (
   <>
     <Card>sdfsdf</Card>
