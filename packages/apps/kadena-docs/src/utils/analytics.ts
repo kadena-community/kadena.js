@@ -30,3 +30,21 @@ export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
   }
   gtag('event', 'page_view', options);
 };
+
+export const updateConsent = (hasConsent: boolean | null): void => {
+  const newValue = hasConsent ? 'granted' : 'denied';
+
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('SET CONSENT', { value: newValue });
+  }
+
+  console.log('update');
+  gtag('consent', 'update', {
+    ad_storage: 'denied',
+    analytics_storage: newValue,
+  });
+
+  if (hasConsent === null) return;
+
+  localStorage.setItem('cookie_consent', hasConsent.toString());
+};

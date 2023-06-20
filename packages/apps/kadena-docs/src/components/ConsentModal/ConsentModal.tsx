@@ -6,35 +6,69 @@ import {
 } from '@kadena/react-components';
 import { Button, Stack, SystemIcon, useModal } from '@kadena/react-ui';
 
-import React, { FC, useEffect } from 'react';
+import { updateConsent } from '@/utils/analytics';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 export const ConsentModal: FC = () => {
-  const { renderModal } = useModal();
+  const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
+  const { renderModal, clearModal } = useModal();
 
   useEffect(() => {
-    console.log(1);
+    const stickyValue = localStorage.getItem('cookie_consent');
+    if (stickyValue === null) return;
+    setCookieConsent(JSON.parse(stickyValue));
+  }, []);
+
+  useEffect(() => {
+    if (cookieConsent === null) return;
+    updateConsent(cookieConsent);
+  }, [cookieConsent]);
+
+  const handleAccept = useCallback(() => {
+    setCookieConsent(true);
+    clearModal();
+  }, []);
+
+  const handleReject = useCallback(() => {
+    setCookieConsent(false);
+    clearModal();
+  }, []);
+
+  useEffect(() => {
+    if (cookieConsent !== null) {
+      clearModal();
+      return;
+    }
     renderModal(
       <Notification
         displayCloseButton={false}
         color="primary"
         title="Cookie consent"
-        icon={SystemIcons.Account}
+        icon={SystemIcons.Cookie}
       >
         <NotificationBody>
           We are using cookies on this website
         </NotificationBody>
         <NotificationFooter>
           <Stack>
-            <Button color="primary" title="Accept analytics cookies">
+            <Button
+              onClick={handleAccept}
+              color="primary"
+              title="Accept analytics cookies"
+            >
               Accept <SystemIcon.Check />
             </Button>
-            <Button color="negative" title="Reject analytics cookies">
+            <Button
+              onClick={handleReject}
+              color="negative"
+              title="Reject analytics cookies"
+            >
               Reject <SystemIcon.Close />
             </Button>
           </Stack>
         </NotificationFooter>
       </Notification>,
     );
-  }, []);
+  }, [cookieConsent]);
   return null;
 };
