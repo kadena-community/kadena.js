@@ -1,4 +1,4 @@
-import { useModal } from '@kadena/react-ui';
+import { Card, useModal } from '@kadena/react-ui';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC, useEffect } from 'react';
@@ -7,7 +7,12 @@ interface IReturnProps {
   handleOpenSearch: () => void;
 }
 
-const Modal: FC = () => <div>sdfsdf</div>;
+const Modal: FC = () => (
+  <>
+    <Card>sdfsdf</Card>
+    <Card>sdfsdf</Card>
+  </>
+);
 
 export const useOpenSearch = (): IReturnProps => {
   const { renderModal } = useModal();
