@@ -1,15 +1,14 @@
 import { ChainwebNetworkId, poll, spv } from '@kadena/chainweb-node-client';
+import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
-import { finishXChainTransfer } from '../../../services/cross-chain-transfer-finish/finish-xchain-transfer';
-import {
-  getSpvProof,
-  getTransferData,
-  ISpvProofResult,
-  ITransferDataResult,
-} from '../../../services/cross-chain-transfer-finish/get-transfer-data';
 import { generateApiHost } from '../../../services/utils/utils';
+import {
+  StyledResultContainer,
+  StyledTotalChunk,
+  StyledTotalContainer,
+} from '../module-explorer/styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
@@ -18,6 +17,7 @@ import {
   StyledAccountForm,
   StyledCheckbox,
   StyledCheckboxLabel,
+  StyledErrorMessage,
   StyledFieldCheckbox,
   StyledForm,
   StyledFormButton,
@@ -28,9 +28,16 @@ import {
   StyledInfoTitle,
   StyledMainContent,
   StyledShowMore,
-  StyledSideContent,
   StyledToggleContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+import {
+  finishXChainTransfer,
+  TransferResult,
+} from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
+import {
+  getTransferData,
+  ITransferDataResult,
+} from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
@@ -61,19 +68,19 @@ const CrossChainTransferFinisher: FC = () => {
 
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
 
-  const [spvProofResults, setSpvProofResults] = useState<ISpvProofResult>({});
-
-  const [finalResulsts, setFinalResults] = useState({});
+  const [finalResults, setFinalResults] = useState<TransferResult>({});
+  const [txError, setTxError] = useState('');
 
   const onBlurRequestKey = async (
     e: React.FocusEvent<HTMLInputElement>,
   ): Promise<void> => {
     e.preventDefault();
 
-    console.log(requestKey);
     if (!requestKey) {
       return;
     }
+
+    setTxError('');
 
     const pollResult: ITransferDataResult | undefined = await getTransferData({
       requestKey,
@@ -100,9 +107,13 @@ const CrossChainTransferFinisher: FC = () => {
     if (!pollResults.tx) {
       return;
     }
-    console.log('receiver chain', pollResults.tx.receiver.chain);
 
-    const host = `https://${chainNetwork[network].server}/chainweb/0.0/${chainNetwork[network].network}/chain/${pollResults.tx.receiver.chain}/pact`;
+    const host = generateApiHost(
+      chainNetwork[network].server,
+      chainNetwork[network].network,
+      pollResults.tx.receiver.chain,
+    );
+
     const contCommand = await finishXChainTransfer(
       requestKey,
       pollResults.tx.step,
@@ -114,85 +125,33 @@ const CrossChainTransferFinisher: FC = () => {
       kadenaXChainGas,
     );
 
-    if (contCommand === undefined) {
-      return;
+    if (!(contCommand instanceof ContCommand) && contCommand.error) {
+      setTxError(contCommand.error);
     }
 
-    const pollResult = await contCommand.pollUntil(host, {
-      onPoll: async (transaction, pollRequest): Promise<void> => {
-        console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-        setFinalResults({ ...transaction });
-        console.log(await pollRequest);
-      },
-    });
+    if (contCommand instanceof ContCommand) {
+      const pollResult = await contCommand.pollUntil(host, {
+        onPoll: async (transaction, pollRequest): Promise<void> => {
+          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+          setFinalResults({ ...transaction });
+          console.log(await pollRequest);
+        },
+      });
+      setFinalResults({ ...pollResult } as TransferResult);
+    }
   };
 
-  const showInputError =
-    pollResults.error === undefined || spvProofResults.error === undefined
-      ? undefined
-      : 'error';
+  const showInputError = pollResults.error === undefined ? undefined : 'error';
 
   const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
 
   const showInputHelper =
-    pollResults.error !== undefined
-      ? pollResults.error
-      : spvProofResults.error !== undefined
-      ? spvProofResults.error
-      : '';
+    pollResults.error !== undefined ? pollResults.error : '';
 
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
-        <StyledSideContent>
-          <SidebarMenu />
-
-          {pollResults.tx ? (
-            <StyledInfoBox>
-              <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
-              <StyledInfoItem>
-                <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
-                <StyledInfoItemLine>{`Chain: ${pollResults.tx.sender.chain}`}</StyledInfoItemLine>
-                <StyledInfoItemLine>{`Account: ${pollResults.tx.sender.account}`}</StyledInfoItemLine>
-              </StyledInfoItem>
-
-              <StyledInfoItem>
-                <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
-                <StyledInfoItemLine>{`Chain: ${pollResults.tx.receiver.chain}`}</StyledInfoItemLine>
-                <StyledInfoItemLine>{`Account: ${pollResults.tx.receiver.account}`}</StyledInfoItemLine>
-              </StyledInfoItem>
-
-              <StyledInfoItem>
-                <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
-                <StyledInfoItemLine>{`${pollResults.tx.amount} ${t(
-                  'KDA',
-                )}`}</StyledInfoItemLine>
-              </StyledInfoItem>
-
-              {showMore ? (
-                <StyledInfoItem>
-                  <StyledInfoItemTitle>
-                    {t('Receiver guard')}
-                  </StyledInfoItemTitle>
-                  <StyledInfoItemLine>{`${t('Pred')}: ${
-                    pollResults.tx.receiverGuard.pred
-                  }`}</StyledInfoItemLine>
-                  <StyledInfoItemLine>
-                    `${t('Keys')}: $
-                    {pollResults.tx.receiverGuard.keys.map((key, index) => (
-                      <span key={index}>{key}</span>
-                    ))}
-                    `
-                  </StyledInfoItemLine>
-                </StyledInfoItem>
-              ) : null}
-
-              <StyledShowMore onClick={() => setShowMore(!showMore)}>
-                {!showMore ? t('Show more') : t('Show less')}
-              </StyledShowMore>
-            </StyledInfoBox>
-          ) : null}
-        </StyledSideContent>
+        <SidebarMenu />
 
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -261,7 +220,72 @@ const CrossChainTransferFinisher: FC = () => {
               {t('Finish Cross Chain Transfer')}
             </Button>
           </StyledFormButton>
+
+          {txError.toString() !== '' ? (
+            <StyledErrorMessage>
+              {t('Error')}: {txError.toString()}
+            </StyledErrorMessage>
+          ) : null}
+
+          {Object.keys(finalResults).length > 0 ? (
+            <StyledResultContainer>
+              <StyledTotalContainer>
+                <StyledTotalChunk>
+                  <p>{t('Request Key')}</p>
+                  <p>{finalResults.requestKey}</p>
+                </StyledTotalChunk>
+                <StyledTotalChunk>
+                  <p>{t('Status')}</p>
+                  <p>{finalResults.status}</p>
+                </StyledTotalChunk>
+              </StyledTotalContainer>
+            </StyledResultContainer>
+          ) : null}
         </StyledForm>
+
+        {pollResults.tx ? (
+          <StyledInfoBox>
+            <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`Chain: ${pollResults.tx.sender.chain}`}</StyledInfoItemLine>
+              <StyledInfoItemLine>{`Account: ${pollResults.tx.sender.account}`}</StyledInfoItemLine>
+            </StyledInfoItem>
+
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`Chain: ${pollResults.tx.receiver.chain}`}</StyledInfoItemLine>
+              <StyledInfoItemLine>{`Account: ${pollResults.tx.receiver.account}`}</StyledInfoItemLine>
+            </StyledInfoItem>
+
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`${pollResults.tx.amount} ${t(
+                'KDA',
+              )}`}</StyledInfoItemLine>
+            </StyledInfoItem>
+
+            {showMore ? (
+              <StyledInfoItem>
+                <StyledInfoItemTitle>{t('Receiver guard')}</StyledInfoItemTitle>
+                <StyledInfoItemLine>{`${t('Pred')}: ${
+                  pollResults.tx.receiverGuard.pred
+                }`}</StyledInfoItemLine>
+                <StyledInfoItemLine>
+                  `${t('Keys')}: $
+                  {pollResults.tx.receiverGuard.keys.map((key, index) => (
+                    <span key={index}>{key}</span>
+                  ))}
+                  `
+                </StyledInfoItemLine>
+              </StyledInfoItem>
+            ) : null}
+
+            <StyledShowMore onClick={() => setShowMore(!showMore)}>
+              {!showMore ? t('Show more') : t('Show less')}
+            </StyledShowMore>
+          </StyledInfoBox>
+        ) : null}
       </StyledMainContent>
     </MainLayout>
   );

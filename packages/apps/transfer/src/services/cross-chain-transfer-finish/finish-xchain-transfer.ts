@@ -1,10 +1,5 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import {
-  ContCommand,
-  getContCommand,
-  PactCommand,
-  pollSpvProof,
-} from '@kadena/client';
+import { ContCommand, getContCommand } from '@kadena/client';
 import { ChainId } from '@kadena/types';
 
 import { generateApiHost } from '../utils/utils';
@@ -23,9 +18,9 @@ export interface ITransferDataResult {
   error?: string;
 }
 
-export interface ISpvProofResult {
-  proof?: string;
-  error?: string;
+export interface TransferResult {
+  requestKey?: string;
+  status?: string;
 }
 
 const gasLimit: number = 850;
@@ -38,24 +33,24 @@ export async function finishXChainTransfer(
   rollback: boolean,
   server: string,
   network: ChainwebNetworkId,
-  chain: ChainId,
+  targetChain: ChainId,
   gasPayer: string,
-): Promise<ContCommand | undefined> {
-  const host = generateApiHost(server, network, chain);
+): Promise<ContCommand | { error: string }> {
+  const host = generateApiHost(server, network, targetChain);
   const hostSPV = `${generateApiHost(server, network, '1')}/spv`;
 
   try {
     const contCommand = await getContCommand(
       requestKey,
-      chain,
+      targetChain,
       hostSPV,
-      1,
+      step + 1,
       rollback,
     );
 
     contCommand.setMeta(
       {
-        chainId: chain,
+        chainId: targetChain,
         sender: gasPayer,
         gasLimit,
         gasPrice,
@@ -63,19 +58,25 @@ export async function finishXChainTransfer(
       network,
     );
 
-    const createResult = contCommand.createCommand();
+    // remove double quotes from stringified proof
+    contCommand.proof = contCommand.proof.slice(1, -1);
 
-    const localResult = await contCommand.local(host);
+    contCommand.createCommand();
+
+    const localResult = await contCommand.local(host, {
+      preflight: false,
+      signatureVerification: false,
+    });
 
     if (localResult.result.status !== 'success') {
-      return undefined;
+      return { error: localResult.result.error.message };
     }
 
-    const result = await contCommand.send(host);
+    await contCommand.send(host);
 
     return contCommand;
   } catch (e) {
     console.log(e.message);
-    return undefined;
+    return { error: e.message };
   }
 }
