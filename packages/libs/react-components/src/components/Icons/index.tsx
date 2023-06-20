@@ -25,6 +25,7 @@ import { ChevronUp } from './svgs/ChevronUp';
 import { Close } from './svgs/Close';
 import { Code } from './svgs/Code';
 import { ContentCopy } from './svgs/ContentCopy';
+import { Cookie } from './svgs/Cookie';
 import { Dialpad } from './svgs/Dialpad';
 import { Earth } from './svgs/Earth';
 import { EmailOutline } from './svgs/EmailOutline';
@@ -116,6 +117,7 @@ export const SystemIcons = {
   ChevronUp: IconWrapper(ChevronUp),
   Close: IconWrapper(Close),
   Code: IconWrapper(Code),
+  Cookie: IconWrapper(Cookie),
   ContentCopy: IconWrapper(ContentCopy),
   Dialpad: IconWrapper(Dialpad),
   Earth: IconWrapper(Earth),
