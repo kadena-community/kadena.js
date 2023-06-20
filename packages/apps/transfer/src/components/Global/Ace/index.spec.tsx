@@ -1,7 +1,12 @@
 import AceViewerComponent from './index';
+import * as ace from 'ace-builds/src-noconflict/ace';
 
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+
+beforeAll(() => {
+  ace.config.set('basePath', './');
+});
 
 describe('AceViewerComponent', () => {
   test('renders correctly without code', () => {
