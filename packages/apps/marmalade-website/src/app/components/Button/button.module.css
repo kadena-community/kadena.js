@@ -1,0 +1,42 @@
+.button {
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--border-radius-lg);
+  font-size: 1rem;
+  line-height: 1.2rem;
+  background-color: var(--color-orange-002);
+  color: var(--color-orange-003);
+}
+
+.primary {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+}
+
+.secondary {
+  padding: 0.5rem;
+  border-radius: var(--border-radius-xs);
+  font-size: 0.8rem;
+  line-height: 1rem;
+}
+
+.green {
+  background-color: var(--color-green-003);
+  color: var(--color-green-004);
+}
+
+.orange {
+  background-color: var(--color-orange-001);
+  color: var(--color-orange-002);
+}
+
+.disabled {
+  cursor: default;
+}

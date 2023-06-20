@@ -1,95 +1,48 @@
+import { Header } from './components/Header'
 import Image from 'next/image'
 import styles from './page.module.css'
+import { Button } from './components/Button'
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          TEST Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div className={styles['hero-section']}>
+        <Header></Header>
+        <div className="container-inner">
+          <h1>NFT Marketplace infrastructure</h1>
+          <p>Marmalade on <strong>Kadena</strong> provides the complete infrastructure to launch and run game-changing NFT marketplaces.</p>
+          <Button href="https://google.com">Default button</Button>
+          <Button href="https://google.com" type="primary" color="green"><strong>Primary green </strong> Button</Button>
+          <Button href="https://google.com" type="secondary" color="orange">Secondary orange</Button>
         </div>
       </div>
+      <main className={styles.main}>
+        <section className={styles['section-dark-green']}>
+          <div className="container-inner">
+            <h2 className="green">Stackable Policies</h2>
+            <p className={styles.description}>With Marmalade's groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
+          </div>
+        </section>
+        <section className={styles['section-green']}>
+          <div className="container-inner">
+            <h2 className="green">Policies per Purpose</h2>
+            <p className={styles.description}>Lorem ipsum d quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+        </section>
+        <section>
+          <div className="container-inner">
+            <h2>Metadata Standards</h2>
+            <p className={styles.description}>Lorem ipsum dolor sit amet, comagna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+        </section>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
+        <div>
           <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
+            Test code 
+            <code className={styles.code}>src/app/page.tsx</code>
           </p>
-        </a>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   )
 }
