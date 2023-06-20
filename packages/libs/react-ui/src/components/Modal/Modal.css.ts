@@ -7,14 +7,21 @@ export const background = style({
   backgroundColor: 'green',
   opacity: '.5',
   inset: 0,
-  width: '100vw',
-  height: '100vh',
+  padding: 0,
+  cursor: 'pointer',
 });
 
 export const wrapper = style({
   position: 'fixed',
-  margin: '12.5vh 12.5vw',
-  background: 'yellow',
-  width: '75vw',
-  height: '75vh',
+  inset: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  pointerEvents: 'none',
+});
+
+export const modal = style({
+  display: 'flex',
+  flexDirection: 'column',
+  pointerEvents: 'initial',
 });
