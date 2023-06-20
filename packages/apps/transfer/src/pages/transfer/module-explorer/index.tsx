@@ -63,6 +63,8 @@ const GetCode: FC = () => {
         convertIntToChainId(moduleChain),
         chainNetwork[network].network,
         chainNetwork[network].server,
+        'not-real',
+        0.00000001,
       );
       console.log(data.code);
 

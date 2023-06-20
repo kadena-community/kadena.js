@@ -2,12 +2,8 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
+import { kadenaConstants } from '@/constants/kadena';
 import { generateApiHost } from '@/services/utils/utils';
-
-const gasLimit: number = 60000;
-const gasPrice: number = 0.00000001;
-const ttl: number = 60000;
-const sender = 'not-real';
 
 export interface ModuleResult {
   reqKey?: string;
@@ -20,6 +16,10 @@ export const describeModule = async (
   chainId: ChainId,
   networkId: string,
   server: string,
+  sender: string,
+  gasPrice: number,
+  gasLimit: number = kadenaConstants.GAS_LIMIT,
+  ttl: number = kadenaConstants.API_TTL,
 ): Promise<ModuleResult> => {
   const pactCommand = new PactCommand();
   pactCommand.code = createExp(`describe-module "${moduleName}"`);
