@@ -10,7 +10,7 @@ on:
 
 env:
   AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'master' && '' || format('--to git:origin/{0}', github.base_ref)  }}
+    ${{ github.ref_name == 'master' && '-q' || format('--to git:origin/{0}', github.base_ref)  }}
 
 jobs:
   build:
@@ -28,6 +28,7 @@ jobs:
           fetch-depth: 2
 
       - name: Fetch base branch
+        if: github.ref_name != 'master'
         run: git fetch origin ${{ github.base_ref }}
 
       - uses: actions/setup-node@v3
