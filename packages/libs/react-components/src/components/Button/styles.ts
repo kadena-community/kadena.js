@@ -1,7 +1,8 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
 import { styled } from '../../styles';
+
+import type * as Stitches from '@stitches/react';
 
 export const styleVariant = {
   primaryFilled: {
@@ -12,10 +13,26 @@ export const styleVariant = {
     $$focusOutlineColor: '$colors$primaryHighContrast',
     $$disabledBackgroundColor: '$colors$neutral3',
   },
+  secondaryFilled: {
+    $$color: '$colors$neutral1',
+    $$inverseColor: '$colors$neutral6',
+    $$bgColor: '$colors$secondaryContrast',
+    $$bgHoverColor: '$colors$secondaryHighContrast',
+    $$focusOutlineColor: '$colors$secondaryHighContrast',
+    $$disabledBackgroundColor: '$colors$neutral3',
+  },
+  positiveFilled: {
+    $$color: '$colors$neutral1',
+    $$inverseColor: '$colors$neutral6',
+    $$bgColor: '$colors$positiveContrast',
+    $$bgHoverColor: '$colors$positiveHighContrast',
+    $$focusOutlineColor: '$colors$positiveHighContrast',
+    $$disabledBackgroundColor: '$colors$neutral3',
+  },
 } as const;
 
 export const StyledButton = styled('button', {
-  display: 'flex',
+  display: 'inline-flex',
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
@@ -29,7 +46,9 @@ export const StyledButton = styled('button', {
   fontWeight: '$semiBold',
   color: '$$color',
   backgroundColor: '$$bgColor',
+  textDecoration: 'none',
   '&:hover': {
+    color: '$$color',
     backgroundColor: '$$bgHoverColor',
   },
   '&:active': {
@@ -54,3 +73,5 @@ export const StyledButton = styled('button', {
     variant: 'primaryFilled',
   },
 });
+
+export type StyledButtonVariants = Stitches.VariantProps<typeof StyledButton>;

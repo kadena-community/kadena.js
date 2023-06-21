@@ -1,36 +1,57 @@
-import { Table } from '@kadena/react-components';
+import { Table as TableChildren } from '@kadena/react-components';
 
 import { Code, TitleWrapper } from './Code';
 import { Figure } from './Figure';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
+import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
+import { Table } from './Table';
 import { UnorderedList } from './UnorderedList';
 import { Youtube } from './Youtube';
 
-import { FC } from 'react';
-
 export type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
+  'kda-notification': React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >;
   'kda-youtube': React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >;
 };
 
-export const markDownComponents: Record<string, FC> = {
-  h1: Heading1 as FC<JSX.IntrinsicElements['h1']>,
-  h2: Heading2 as FC<JSX.IntrinsicElements['h2']>,
-  h3: Heading3 as FC<JSX.IntrinsicElements['h3']>,
-  h4: Heading4 as FC<JSX.IntrinsicElements['h4']>,
-  p: Paragraph as FC<JSX.IntrinsicElements['p']>,
-  code: Code as FC<JSX.IntrinsicElements['code']>,
-  ul: UnorderedList as FC<JSX.IntrinsicElements['ul']>,
-  div: TitleWrapper as FC<JSX.IntrinsicElements['div']>,
-  img: Figure as FC<JSX.IntrinsicElements['img']>,
-  table: Table as FC<JSX.IntrinsicElements['table']>,
-  tbody: Table.Body as FC<JSX.IntrinsicElements['tbody']>,
-  thead: Table.Head as FC<JSX.IntrinsicElements['thead']>,
-  tr: Table.Tr as FC<JSX.IntrinsicElements['tr']>,
-  td: Table.Tr.Td as FC<JSX.IntrinsicElements['td']>,
-  th: Table.Tr.Th as FC<JSX.IntrinsicElements['th']>,
-  'kda-youtube': Youtube as FC<ExtendedIntrinsicElements['kda-youtube']>,
+// eslint-disable-next-line @rushstack/no-new-null
+type FunctionComponent<Props> = (props: Props) => JSX.Element | null;
+export type MDXComponents = {
+  [Key in keyof ExtendedIntrinsicElements]?: FunctionComponent<
+    ExtendedIntrinsicElements[Key]
+  >;
+};
+
+export const markDownComponents: MDXComponents = {
+  h1: Heading1 as FunctionComponent<ExtendedIntrinsicElements['h1']>,
+  h2: Heading2 as FunctionComponent<ExtendedIntrinsicElements['h2']>,
+  h3: Heading3 as FunctionComponent<ExtendedIntrinsicElements['h3']>,
+  h4: Heading4 as FunctionComponent<ExtendedIntrinsicElements['h4']>,
+  p: Paragraph as FunctionComponent<ExtendedIntrinsicElements['p']>,
+  code: Code as FunctionComponent<ExtendedIntrinsicElements['code']>,
+  ul: UnorderedList as FunctionComponent<ExtendedIntrinsicElements['ul']>,
+  div: TitleWrapper as FunctionComponent<ExtendedIntrinsicElements['div']>,
+  img: Figure as FunctionComponent<ExtendedIntrinsicElements['img']>,
+  table: Table as FunctionComponent<ExtendedIntrinsicElements['table']>,
+  tbody: TableChildren.Body as FunctionComponent<
+    ExtendedIntrinsicElements['tbody']
+  >,
+  thead: TableChildren.Head as FunctionComponent<
+    ExtendedIntrinsicElements['thead']
+  >,
+  tr: TableChildren.Tr as FunctionComponent<ExtendedIntrinsicElements['tr']>,
+  td: TableChildren.Tr.Td as FunctionComponent<ExtendedIntrinsicElements['td']>,
+  th: TableChildren.Tr.Th as FunctionComponent<ExtendedIntrinsicElements['th']>,
+  'kda-notification': MDNotification as FunctionComponent<
+    ExtendedIntrinsicElements['kda-notification']
+  >,
+  'kda-youtube': Youtube as FunctionComponent<
+    ExtendedIntrinsicElements['kda-youtube']
+  >,
 };

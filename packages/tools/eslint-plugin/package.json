@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/eslint-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "src/index.js",
   "scripts": {
     "_phase:build": "heft build --clean",
@@ -12,7 +12,10 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write -u"
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
+    ],
+    "{README.md,src/**/*.md}": [
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
     ],
     "package.json": [
       "sort-package-json"
@@ -25,8 +28,8 @@
   },
   "devDependencies": {
     "@rushstack/eslint-plugin": "~0.11.0",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/heft": "~0.50.6",
     "eslint": "^8.15.0",
-    "typescript": "~4.6.3"
+    "typescript": "5.0.4"
   }
 }

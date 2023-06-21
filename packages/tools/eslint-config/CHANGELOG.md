@@ -1,6 +1,20 @@
 # Change Log - @kadena-dev/eslint-config
 
-This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+This log was last generated on Tue, 13 Jun 2023 13:17:28 GMT and should not be manually modified.
+
+## 0.0.6
+Tue, 13 Jun 2023 13:17:28 GMT
+
+### Patches
+
+- Update to typescript 5
+
+## 0.0.5
+Thu, 01 Jun 2023 20:18:44 GMT
+
+### Patches
+
+- Updated React profile to detect react version
 
 ## 0.0.4
 Fri, 03 Mar 2023 11:24:59 GMT

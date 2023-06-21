@@ -123,6 +123,7 @@ export const {
     shadows: {
       // TODO: Update to match design system
       1: `0px 1px 2px 0 $colors$neutral3`,
+      card: `0px 0px 10px $colors$neutral2`,
     },
     space: {
       ...sizes,

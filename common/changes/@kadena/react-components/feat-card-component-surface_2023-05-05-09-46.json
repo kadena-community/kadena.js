@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "missing imports",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

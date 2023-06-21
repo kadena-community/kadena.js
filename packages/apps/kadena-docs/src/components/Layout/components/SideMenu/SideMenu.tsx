@@ -5,6 +5,7 @@ import { StyledTreeList } from '../TreeMenu/styles';
 
 import { MenuCard } from './MenuCard';
 import {
+  ShowOnMobile,
   SideMenuTitle,
   SideMenuTitleBackButton,
   StyledItem,
@@ -44,7 +45,10 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           </SideMenuTitleBackButton>
         </>
       )}
-      <input type="text" />
+
+      <ShowOnMobile>
+        <input type="text" />
+      </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <StyledUl>
           {menuItems.map((item) => (
@@ -67,7 +71,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <StyledTreeList root={true}>
+          <StyledTreeList role="list" root={true}>
             <MainTreeItem item={activeItem} root={true} />
           </StyledTreeList>
         </MenuCard>

@@ -1,6 +1,20 @@
 # Change Log - @kadena/types
 
-This log was last generated on Fri, 03 Mar 2023 11:24:59 GMT and should not be manually modified.
+This log was last generated on Tue, 13 Jun 2023 13:17:28 GMT and should not be manually modified.
+
+## 0.3.1
+Tue, 13 Jun 2023 13:17:28 GMT
+
+### Patches
+
+- Update to typescript 5
+
+## 0.3.0
+Thu, 01 Jun 2023 20:18:44 GMT
+
+### Minor changes
+
+- Changed `ICommand` to not accept undefined sig, added `IUnsignedCommand`
 
 ## 0.1.2
 Fri, 03 Mar 2023 11:24:59 GMT

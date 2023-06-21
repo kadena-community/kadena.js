@@ -5,7 +5,8 @@
   "description": "Test project to verify pactjs-cli and pactjs-generator",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/pactjs-test-project"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/pactjs-test-project"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -15,7 +16,7 @@
     "_phase:test": "npm run test",
     "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:template",
     "build": "npm run prebuild && tsc --noEmit",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
@@ -25,7 +26,10 @@
   "lint-staged": {
     "src/**/*.ts": [
       "eslint --fix",
-      "prettier --write -u"
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
+    ],
+    "{README.md,src/**/*.md}": [
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
     ],
     "package.json": [
       "sort-package-json"
@@ -43,8 +47,8 @@
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "concurrently": "^7.2.2",

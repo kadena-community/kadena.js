@@ -14,7 +14,8 @@
   "homepage": "tbd",
   "repository": {
     "type": "git",
-    "url": "git://github.com/kadena-io/kadena.js.git"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/kadena.js"
   },
   "license": "MIT",
   "author": "Randynamic",
@@ -41,14 +42,17 @@
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "build:prod": "webpack --mode=production",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "serve-coverage": "python -m SimpleHTTPServer",
     "test": "heft test"
   },
   "lint-staged": {
     "src/**/*.ts": [
       "eslint --fix",
-      "prettier --write -u"
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
+    ],
+    "{README.md,src/**/*.md}": [
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
     ],
     "package.json": [
       "sort-package-json"
@@ -69,8 +73,8 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node-fetch": "~2.6.2",
     "eslint": "^8.15.0",

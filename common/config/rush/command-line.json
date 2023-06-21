@@ -69,10 +69,11 @@
       "name": "fix-versions",
       "summary": "Runs fix-versions to get consistent versions across projects",
       "safeForSimultaneousRushProcesses": false,
-      "autoinstallerName": "build-rush-fix-versions",
-      // This will invoke packages/tools/rush-fix-versions/lib/index.js
-      "shellCommand": "./packages/tools/rush-fix-versions/lib/index.js"
+      "autoinstallerName": "rush-fix-versions",
+      // This will invoke ./common/autoinstallers/rush-fix-versions/node_modules/.bin/rush-fix-versions
+      "shellCommand": "rush-fix-versions"
     },
+
     {
       "commandKind": "bulk",
       "name": "precommit",
@@ -304,6 +305,14 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "longName": "--update-snapshots",
+      "shortName": "-u",
+      "parameterKind": "flag",
+      "description": "Update unit test snapshots for all projects",
+      "associatedCommands": ["test", "retest"],
+      "associatedPhases": ["_phase:test"]
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.

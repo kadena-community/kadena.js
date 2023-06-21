@@ -1,11 +1,12 @@
 {
   "name": "@kadena/cryptography-utils",
-  "version": "0.2.5",
+  "version": "0.3.1",
   "description": "",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/cryptography-utils"
   },
   "license": "ISC",
   "contributors": [
@@ -28,14 +29,17 @@
     "_phase:build": "heft build --clean",
     "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "test": "rushx build && heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [
       "eslint --fix",
-      "prettier --write -u"
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
+    ],
+    "{README.md,src/**/*.md}": [
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
     ],
     "package.json": [
       "sort-package-json"
@@ -51,8 +55,8 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0"

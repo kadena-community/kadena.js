@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "added notification component",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

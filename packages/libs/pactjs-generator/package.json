@@ -1,10 +1,11 @@
 {
   "name": "@kadena/pactjs-generator",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/pactjs-generator"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/pactjs-generator"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -20,7 +21,7 @@
     "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"rushx build:grammar\"",
     "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "heft test"
@@ -28,7 +29,10 @@
   "lint-staged": {
     "src/**/*.ts": [
       "eslint --fix",
-      "prettier --write -u"
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
+    ],
+    "{README.md,src/**/*.md}": [
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
     ],
     "package.json": [
       "sort-package-json"
@@ -46,8 +50,8 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/byline": "~4.2.33",
     "@types/heft-jest": "~1.0.3",
     "@types/moo": "~0.5.5",

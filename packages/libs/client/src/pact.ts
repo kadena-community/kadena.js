@@ -8,7 +8,7 @@ import {
   SendResponse,
 } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { createExp, ensureSignedCommand } from '@kadena/pactjs';
+import { ensureSignedCommand } from '@kadena/pactjs';
 import {
   ChainId,
   ICap,
@@ -20,7 +20,6 @@ import {
 } from '@kadena/types';
 
 import { IPactCommand } from './interfaces/IPactCommand';
-import { parseType } from './utils/parseType';
 
 import debug, { Debugger } from 'debug';
 
@@ -69,6 +68,9 @@ export interface ICommandBuilder<
       sig: string;
     }[]
   ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
+  setNonceCreator(
+    nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType,
+  ): ICommandBuilder<TCaps, TArgs> & IPactCommand;
   status: string;
   // setSigner(
   //   fn: (
@@ -109,6 +111,11 @@ type TransactionStatus =
   | 'timeout';
 
 /**
+ * @alpha
+ */
+export type Type = 'exec' | 'cont';
+
+/**
  * Used to build Command objects modularly by adding pact code, environment data, capabilities, and sigs
  * as necessary.
  * Once the command is complete and ready for use, you can either call `createCommand` to get the ICommand object,
@@ -143,10 +150,11 @@ export class PactCommand
   //         ICommandBuilder<Record<string, unknown>>)[]
   //     ) => Promise<this>)
   //   | undefined;
-  public type: 'exec' = 'exec';
+  public type: Type;
   public cmd: string | undefined;
   public requestKey: string | undefined;
   public status: TransactionStatus;
+  public nonce: NonceType | undefined;
 
   public constructor() {
     this.code = '';
@@ -163,6 +171,8 @@ export class PactCommand
     this.sigs = [];
     this.status = 'malleable';
     this.requestKey = undefined;
+    this.nonce = undefined;
+    this.type = 'exec';
   }
 
   /**
@@ -191,12 +201,32 @@ export class PactCommand
   }
 
   /**
+   * Sets the function that creates the nonce for the transaction.
+   * This nonceCreater function gets called in `createCommand()`.
+   * @param nonceCreator
+   *   - `t` - transaction
+   *   - `dateInMs` - date in milliseconds from epoch
+   *
+   * @returns the transaction object
+   * @alpha
+   */
+  public setNonceCreator(
+    nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType,
+  ): this {
+    this.nonceCreator = nonceCreator;
+
+    return this;
+  }
+
+  /**
    * Create a command that's compatible with the blockchain
    * @returns a command that can be send to the blockchain
    * (see https://api.chainweb.com/openapi/pact.html#tag/endpoint-send/paths/~1send/post)
    */
   public createCommand(): IUnsignedCommand {
     const dateInMs: number = Date.now();
+
+    this.nonce = this.nonceCreator(this, dateInMs);
 
     // convert to IUnsignedTransactionCommand
     const unsignedTransactionCommand: ICommandPayload = {
@@ -212,7 +242,7 @@ export class PactCommand
         clist: signer.caps,
       })),
       meta: { ...this.publicMeta, creationTime: Math.floor(dateInMs / 1000) },
-      nonce: this.nonceCreator(this, dateInMs),
+      nonce: this.nonce,
     };
 
     // stringify command
@@ -444,40 +474,3 @@ export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand {
   log(`createPactCommandFromTemplate returns ${pactCommand}`);
   return pactCommand;
 }
-
-const pactCreator = (): IPact => {
-  const transaction: PactCommand = new PactCommand();
-  const ThePact: IPact = new Proxy(function () {} as unknown as IPact, {
-    get(target: unknown, p: string): IPact {
-      log('get', p);
-      if (typeof p === 'string')
-        if (transaction.code.length !== 0) {
-          transaction.code += '.' + p;
-        } else {
-          transaction.code += p;
-        }
-      return ThePact;
-    },
-    apply(
-      target: unknown,
-      that: unknown,
-      args: Array<string | number | boolean>,
-    ) {
-      // when the expression is called, finalize the call
-      // e.g.: `Pact.modules.coin.transfer(...someArgs)`
-      log('apply', args);
-      transaction.code = createExp(transaction.code, ...args.map(parseType));
-      return transaction;
-    },
-  }) as IPact;
-  return ThePact;
-};
-
-/**
- * @alpha
- */
-export const Pact: IPact = {
-  get modules() {
-    return pactCreator();
-  },
-};

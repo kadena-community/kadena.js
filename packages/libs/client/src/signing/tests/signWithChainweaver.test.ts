@@ -6,7 +6,8 @@ jest.mock('cross-fetch', () => {
 });
 
 import { IPactCommand } from '../../interfaces/IPactCommand';
-import { ICommandBuilder, Pact } from '../../pact';
+import { ICommandBuilder } from '../../pact';
+import { Pact } from '../../pactCreator';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,

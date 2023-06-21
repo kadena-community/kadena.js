@@ -1,10 +1,11 @@
 {
   "name": "@kadena/client",
-  "version": "0.2.11",
+  "version": "0.3.1",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client"
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/client"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -14,7 +15,7 @@
     "_phase:test": "npm run test",
     "build": "heft build --clean",
     "dev:postinstall": "rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
-    "lint": "npx eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
@@ -24,7 +25,10 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write -u"
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
+    ],
+    "{README.md,src/**/*.md}": [
+      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
     ],
     "package.json": [
       "sort-package-json"
@@ -37,14 +41,15 @@
     "@kadena/types": "workspace:*",
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
+    "encoding": "~0.1.13",
     "yaml": "~2.1.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",

@@ -1,8 +1,9 @@
 import {
   baseGlobalStyles,
-  darkTheme,
+  darkTheme as stitchesDarkTheme,
   globalCss,
 } from '@kadena/react-components';
+import { darkThemeClass, ModalProvider } from '@kadena/react-ui';
 
 import { Analytics } from '@/components';
 import { Main } from '@/components/Layout/components';
@@ -52,12 +53,24 @@ export const MyApp = ({
           enableSystem={true}
           value={{
             light: 'light',
-            dark: darkTheme.className,
+            dark: stitchesDarkTheme.className,
           }}
         >
-          <Main {...props}>
-            <Component {...props} />
-          </Main>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={true}
+            defaultTheme="light"
+            value={{
+              light: 'light',
+              dark: darkThemeClass,
+            }}
+          >
+            <ModalProvider>
+              <Main {...props}>
+                <Component {...props} />
+              </Main>
+            </ModalProvider>
+          </ThemeProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />

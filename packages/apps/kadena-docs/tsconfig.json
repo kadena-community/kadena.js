@@ -5,16 +5,21 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "target": "ES2020",
-    "allowJs": false,
     "skipLibCheck": true,
+    "allowJs": true,
     "noEmit": true,
     "incremental": true,
     "moduleResolution": "node",
-    "jsx": "preserve",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "./cypress"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "environment.d.ts"] // see the last entry in array
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "environment.d.ts",
+    ".next/types/**/*.ts"
+  ] // see the last entry in array
 }

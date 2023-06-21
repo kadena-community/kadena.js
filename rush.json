@@ -424,6 +424,14 @@
       "shouldPublish": false
     },
 
+    {
+      "packageName": "@kadena/transfer",
+      "projectFolder": "packages/apps/transfer",
+      "reviewCategory": "prototypes",
+      "skipRushCheck": false,
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Features
     // #########################
@@ -481,7 +489,7 @@
       "packageName": "@kadena/chainwebjs",
       "projectFolder": "packages/libs/chainwebjs",
       "tags": ["libs"],
-      "shouldPublish": false,
+      "shouldPublish": false
     },
 
     {
@@ -511,7 +519,14 @@
       "packageName": "@kadena/react-components",
       "projectFolder": "packages/libs/react-components",
       "tags": ["libs"],
-      "shouldPublish": false,
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/react-ui",
+      "projectFolder": "packages/libs/react-ui",
+      "tags": ["libs"],
+      "shouldPublish": false
     },
 
     {
@@ -578,10 +593,18 @@
     },
 
     {
-      "packageName": "@kadena/rush-fix-versions",
-      "projectFolder": "packages/tools/rush-fix-versions",
+      "packageName": "@kadena-dev/remark-plugins",
+      "projectFolder": "packages/tools/remark-plugins",
       "tags": ["tools"],
       "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena-dev/rush-fix-versions",
+      "projectFolder": "packages/tools/rush-fix-versions",
+      "tags": ["tools"],
+      "shouldPublish": true,
+      "versionPolicyName": "alpha"
     }
 
     // {

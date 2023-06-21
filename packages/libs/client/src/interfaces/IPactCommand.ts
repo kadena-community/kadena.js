@@ -1,9 +1,12 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ChainId, ICap, ISignatureJson } from '@kadena/types';
+
+import { NonceType, Type } from '../pact';
 /**
  * @alpha
  */
 export interface IPactCommand {
+  type: Type;
   code: string;
   data: Record<string, unknown>;
   publicMeta: IPublicMeta;
@@ -16,9 +19,9 @@ export interface IPactCommand {
       args: ICap['args'];
     }[];
   }[];
-  type: string;
   sigs: (ISignatureJson | undefined)[];
   requestKey?: string;
+  nonce?: NonceType;
 }
 
 /**
@@ -30,4 +33,26 @@ export interface IPublicMeta {
   gasLimit: number;
   gasPrice: number;
   ttl: number;
+}
+
+/**
+ * @alpha
+ */
+export interface IContCommand {
+  type: Type;
+  data: Record<string, unknown>;
+  publicMeta: IPublicMeta;
+  networkId: ChainwebNetworkId;
+  signers: {
+    pubKey: string;
+    caps: {
+      name: string;
+      args: ICap['args'];
+    }[];
+  }[];
+  proof: string;
+  pactId: string;
+  step: number;
+  rollback: boolean;
+  nonce?: NonceType;
 }
