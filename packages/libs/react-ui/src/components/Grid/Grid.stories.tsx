@@ -28,14 +28,14 @@ type Story = StoryObj<typeof Grid.Container>;
 export const Primary: Story = {
   name: 'Grid',
   args: {
-    spacing: 'xl',
+    spacing: '$xl',
   },
   render: ({ spacing }) => (
     <>
       <Grid.Container spacing={spacing}>
-        {Array.from(new Array(12)).map((i) => (
+        {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i}>
-            <div className={ContentClass}>i</div>
+            <div className={ContentClass}>{i}</div>
           </Grid.Item>
         ))}
 
@@ -68,7 +68,7 @@ export const Primary: Story = {
 export const GridAreas: Story = {
   name: 'GridTemplate areas',
   args: {
-    spacing: 'md',
+    spacing: '$md',
     templateRows: '50px 1fr 30px',
     templateColumns: `150px 1fr`,
     templateAreas: `"header header"

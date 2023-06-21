@@ -1,5 +1,6 @@
-import { gapVariants } from './Grid.css';
+import { gapVariants, gridContainerClass } from './Grid.css';
 
+import classNames from 'classnames';
 import React, { CSSProperties, FC, ReactNode } from 'react';
 
 export interface IGridContainerProps {
@@ -12,7 +13,7 @@ export interface IGridContainerProps {
 
 const GridContainer: FC<IGridContainerProps> = ({
   children,
-  spacing = 'md',
+  spacing = '$md',
   templateAreas,
   templateRows,
   templateColumns,
@@ -24,8 +25,9 @@ const GridContainer: FC<IGridContainerProps> = ({
   };
   // TODO: Investigate alternative ways to using the style attribute
   // https://github.com/kadena-community/kadena.js/pull/360#discussion_r1221843805
+  const classList = classNames(gapVariants[spacing], gridContainerClass);
   return (
-    <div className={gapVariants[spacing]} style={styles}>
+    <div className={classList} style={styles}>
       {children}
     </div>
   );
