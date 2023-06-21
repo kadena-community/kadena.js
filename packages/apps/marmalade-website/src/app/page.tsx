@@ -2,8 +2,52 @@ import { Header } from './components/Header'
 import Image from 'next/image'
 import styles from './page.module.css'
 import { Button } from './components/Button'
+import { VerticalTabs } from './components/VerticalTabs'
 
 export default function Home() {
+  const policiesPerPurposeContent = [
+    {
+      title: 'Migration policy',
+      description: 'Token migration from v1 to v2',
+      content: (
+        <>
+          <h3 className="color-light">Extra policies</h3>
+          <p className={styles.description}>Extra immutable or adjustable policies based on your business-model needs.
+            These extra policies can be used to fit your use-case.</p>
+          <Button href="https://google.com" type="primary" color="green">
+            <strong>Extra policies</strong> docs
+          </Button>
+        </>
+      ),
+    },
+    {
+      title: 'Onchain-manifest policy',
+      description: 'Allows v1 method of on-chain manifest',
+      content: (
+        <>
+          <h3 className="color-light">Content title 2</h3>
+          <p className={styles.description}>Content 2</p>
+          <Button href="https://google.com" type="primary" color="green">
+            Test
+          </Button>
+        </>
+      ),
+    },
+    {
+      title: 'Fixed-issuance policy',
+      description: 'Fractional NFT',
+      content: (
+        <>
+          <h3 className="color-light">Content title 3</h3>
+          <p className={styles.description}>Content 3</p>
+          <Button href="https://google.com" type="primary" color="green">
+            Test
+          </Button>
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
       <div className={styles['hero-section']}>
@@ -19,20 +63,20 @@ export default function Home() {
       <main className={styles.main}>
         <section className={styles['section-dark-green']}>
           <div className="container-inner">
-            <h2 className="green">Stackable Policies</h2>
+            <h2 className="color-green">Stackable Policies</h2>
             <p className={styles.description}>With Marmalade's groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
           </div>
         </section>
         <section className={styles['section-green']}>
           <div className="container-inner">
-            <h2 className="green">Policies per Purpose</h2>
-            <p className={styles.description}>Lorem ipsum d quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <h2 className="color-green">Policies per Purpose</h2>
+            <VerticalTabs tabs={policiesPerPurposeContent} />
           </div>
         </section>
         <section>
           <div className="container-inner">
-            <h2>Metadata Standards</h2>
-            <p className={styles.description}>Lorem ipsum dolor sit amet, comagna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <h2>Compatibility + Use cases</h2>
+            <p className={styles.description}>Lorem ipsum dolor sit amet, comagna aliqua.</p>
           </div>
         </section>
 

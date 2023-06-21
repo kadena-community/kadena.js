@@ -1,0 +1,34 @@
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items:flex-start;
+  gap: 4rem;
+  text-align: left;
+}
+.tabs-panel{
+  flex-basis: 30%;
+  width: 30%;
+}
+.tab-selector {
+  background: var(--color-orange-003);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-green-004);
+  font-size: 1.2rem;
+  padding: 1.2rem 2rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.4;
+  cursor: pointer;
+}
+.tab-title {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+.tab-selector-active {
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 1.5s;
+}
+.tab-content {
+  flex-basis: 70%;
+}
+/* todo: mobile view */

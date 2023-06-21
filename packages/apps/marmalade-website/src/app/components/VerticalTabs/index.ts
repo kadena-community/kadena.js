@@ -1,0 +1,1 @@
+export { VerticalTabs } from './VerticalTabs';

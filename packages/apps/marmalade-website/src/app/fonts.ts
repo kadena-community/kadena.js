@@ -8,6 +8,7 @@ export const fontMain = IBM_Plex_Sans({
   variable: '--font-main',
 })
 
+// todo: change to @kadena/font package
 export const fontCode = localFont({
   src: [
     {

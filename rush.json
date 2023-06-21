@@ -425,12 +425,13 @@
     },
 
     {
-
       "packageName": "@kadena/transfer",
       "projectFolder": "packages/apps/transfer",
       "reviewCategory": "prototypes",
-      "skipRushCheck": false
+      "skipRushCheck": false,
+      "shouldPublish": false
     },
+
     {
       "packageName": "@kadena/marmalade-website",
       "projectFolder": "packages/apps/marmalade-website",

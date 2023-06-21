@@ -16,12 +16,6 @@
   --color-white: #FFFFFF;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* */
-  }
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -50,7 +44,7 @@ h1 {
   font-size: 2.5rem;
   line-height: 3rem;
   color: var(--color-orange-002);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.16rem;
   margin: 1rem 0;
 }
 
@@ -60,8 +54,8 @@ h2 {
   font-size: 1.6rem;
   line-height: 2rem;
   color: var(--color-orange-002);
-  letter-spacing: -0.04em;
-  margin: 1rem 0;
+  letter-spacing: -0.16rem;
+  margin: 1rem 0 3rem;
 }
 
 h3 {
@@ -70,25 +64,34 @@ h3 {
   font-size: 1.3rem;
   line-height: 1.5rem;
   color: var(--color-orange-002);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.16rem;
   margin: 1rem 0;
 }
 
-.green {
+.color-green {
   color: var(--color-green-003);
 }
-.orange {
+.color-orange {
   color: var(--color-orange-001);
 }
-.light {
+.color-light {
   color: var(--color-orange-003);
 }
 
 .container-inner {
   max-width: var(--max-width);
-  margin: 0 auto; /*?*/
+  margin: 0 auto;
   text-align: center;
   padding: 2rem 1rem;
+}
+
+.content-block p {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  margin-bottom: 1rem;
+}
+.content-block .button {
+  margin-top: 2rem;
 }
 
 /* small devices and phones (640px and up) */
@@ -129,10 +132,4 @@ h3 {
 /* desktops (1280px and up) */
 @media (min-width: 80rem) {
 
-}
-
-@media (prefers-color-scheme: dark) { /*?*/
-  html {
-    color-scheme: dark;
-  }
 }

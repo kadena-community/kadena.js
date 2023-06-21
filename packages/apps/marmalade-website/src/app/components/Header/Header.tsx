@@ -16,7 +16,7 @@ export const Header = () => {
       <nav className={styles.nav}>
         <ul className={styles['nav-items']}>
           <li>Ask me anything</li>
-          <li>Docs</li>
+          <li><a href="https://docs.kadena.io/" target="_blank">Docs</a></li>
         </ul>
         {/* <ul>
           {items.map((item) => (

@@ -9,6 +9,7 @@ export interface IButtonProps extends Omit<React.HTMLAttributes<HTMLButtonElemen
   disabled?: boolean;
   color?: string;
   type?: string;
+  className?: string;
 }
 
 export const Button: FC<IButtonProps> = ({
@@ -18,7 +19,8 @@ export const Button: FC<IButtonProps> = ({
   children,
   color,
   type,
-  disabled
+  disabled,
+  className
 }) => {
   // const ariaLabel = props['aria-label'] ?? props.title;
   return (
@@ -26,10 +28,12 @@ export const Button: FC<IButtonProps> = ({
       href={href}
       target="_blank"
       className={`
+        button
         ${styles.button}
         ${type ? styles[`${type}`] : ''}
         ${color? styles[`${color}`] : ''}
         ${disabled ? 'disabled' : ''}
+        ${className ? className : ''}
       `}
     >
       {children}

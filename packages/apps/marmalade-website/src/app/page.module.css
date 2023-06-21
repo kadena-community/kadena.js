@@ -2,11 +2,6 @@
   /* todo: add background-image */
 }
 .main {
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem; */
   text-align: center;
 }
 .section-dark-green {
@@ -20,6 +15,7 @@
 .description {
   font-size: 1.2rem;
   line-height: 1.5rem;
+  margin-bottom: 1rem;
 
   /* laptops (1024px and up) */
   @media (min-width: 64rem) {

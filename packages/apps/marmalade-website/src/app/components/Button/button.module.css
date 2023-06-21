@@ -1,10 +1,7 @@
 .button {
   text-decoration: none;
   cursor: pointer;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
   border: 0;
   padding: 0.8rem 1.2rem;
   border-radius: var(--border-radius-lg);
