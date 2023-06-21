@@ -20,7 +20,7 @@ import {
 } from '@/pages/transfer/account-transactions/styles';
 import {
   getTransactions,
-  Transaction,
+  ITransaction,
 } from '@/services/accounts/get-transactions';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -33,7 +33,7 @@ const CheckTransactions: FC = () => {
 
   const [chain, setChain] = useState<string>('');
   const [account, setAccount] = useState<string>('');
-  const [results, setResults] = useState<Transaction[]>([]);
+  const [results, setResults] = useState<ITransaction[]>([]);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   useEffect(() => {

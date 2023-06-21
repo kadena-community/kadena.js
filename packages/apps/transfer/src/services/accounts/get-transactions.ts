@@ -1,4 +1,4 @@
-export interface Transaction {
+export interface ITransaction {
   fromAccount: string;
   height: number;
   amount: string;
@@ -17,11 +17,11 @@ export async function getTransactions(options: {
   network: string;
   chain: string;
   account: string;
-}): Promise<Transaction[]> {
+}): Promise<ITransaction[]> {
   const { network, chain, account } = options;
 
   try {
-    const result: Transaction[] = await fetch(
+    const result: ITransaction[] = await fetch(
       `https://estats${
         network === 'Testnet' ? '.testnet' : ''
       }.chainweb.com/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
