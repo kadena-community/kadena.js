@@ -1,4 +1,4 @@
-import { ITable, Table } from '.';
+import { ITableProps, Table } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -7,7 +7,7 @@ const meta: Meta<
   {
     rowCount: number;
     columnCount: number;
-  } & ITable
+  } & ITableProps
 > = {
   title: 'Table',
   argTypes: {
@@ -25,7 +25,7 @@ type Story = StoryObj<
   {
     rowCount: number;
     columnCount: number;
-  } & ITable
+  } & ITableProps
 >;
 
 /*
@@ -46,7 +46,7 @@ export const Primary: Story = {
         <Table.Head>
           <Table.Tr>
             {Array.from(Array(columnCount)).map((id, tdIdx) => {
-              return <Table.Tr.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Th>;
+              return <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>;
             })}
           </Table.Tr>
         </Table.Head>
@@ -55,9 +55,7 @@ export const Primary: Story = {
             return (
               <Table.Tr key={`tr${idx}`}>
                 {Array.from(Array(columnCount)).map((id, tdIdx) => {
-                  return (
-                    <Table.Tr.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Td>
-                  );
+                  return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
                 })}
               </Table.Tr>
             );
@@ -81,9 +79,9 @@ export const LinkTable: Story = {
           <Table.Tr>
             {Array.from(Array(columnCount + 1)).map((id, tdIdx) => {
               return tdIdx === columnCount ? (
-                <Table.Tr.Th key={`td${tdIdx}`} />
+                <Table.Th key={`td${tdIdx}`} />
               ) : (
-                <Table.Tr.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Th>
+                <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>
               );
             })}
           </Table.Tr>
@@ -93,9 +91,7 @@ export const LinkTable: Story = {
             return (
               <Table.Tr key={`tr${idx}`} url={'https://kadena.io/'}>
                 {Array.from(Array(columnCount)).map((id, tdIdx) => {
-                  return (
-                    <Table.Tr.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Tr.Td>
-                  );
+                  return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
                 })}
               </Table.Tr>
             );

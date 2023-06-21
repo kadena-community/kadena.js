@@ -12,12 +12,7 @@ export interface ITrProps {
   url?: string;
 }
 
-export interface ITrComp extends FC<ITrProps> {
-  Td: typeof Td;
-  Th: typeof Th;
-}
-// eslint-disable-next-line react/prop-types
-export const Tr: ITrComp = ({ children, url }) => {
+export const Tr: FC<ITrProps> = ({ children, url }) => {
   const handleClick = (): void => {
     if (url !== undefined) {
       window.location.href = url;
@@ -48,6 +43,3 @@ export const Tr: ITrComp = ({ children, url }) => {
     </tr>
   );
 };
-
-Tr.Th = Th;
-Tr.Td = Td;

@@ -3,11 +3,11 @@ import { CompoundType } from './types';
 
 import React, { FC } from 'react';
 
-export interface ITHead {
+export interface ITHeadProps {
   children?: CompoundType<typeof Tr>;
 }
 
-export const THead: FC<ITHead> = ({ children }) => {
+export const THead: FC<ITHeadProps> = ({ children }) => {
   return (
     <thead>
       {React.Children.map(children, (child) => {

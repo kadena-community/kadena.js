@@ -1,23 +1,15 @@
 import { tableClass } from './Table.css';
 import { TBody } from './TBody';
 import { THead } from './THead';
-import { Tr } from './Tr';
 import { CompoundType } from './types';
 
 import React, { FC } from 'react';
 
-export interface ITable {
+export interface ITableProps {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;
 }
 
-interface ITableComposition extends FC<ITable> {
-  Body: typeof TBody;
-  Head: typeof THead;
-  Tr: typeof Tr;
-}
-
-// eslint-disable-next-line react/prop-types
-export const Table: ITableComposition = ({ children }) => {
+export const Table: FC<ITableProps> = ({ children }) => {
   return (
     <table className={tableClass}>
       {React.Children.map(children, (child) => {
@@ -32,7 +24,3 @@ export const Table: ITableComposition = ({ children }) => {
     </table>
   );
 };
-
-Table.Body = TBody;
-Table.Head = THead;
-Table.Tr = Tr;
