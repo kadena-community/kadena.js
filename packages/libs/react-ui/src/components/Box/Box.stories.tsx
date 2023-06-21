@@ -29,7 +29,7 @@ type Story = StoryObj<IBoxProps>;
 export const Primary: Story = {
   name: 'Box',
   args: {
-    margin: '$0',
+    margin: 0,
   },
   render: ({ margin }) => (
     <div className={containerClass}>

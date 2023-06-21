@@ -1,9 +1,9 @@
-import { sprinkles } from '../../styles';
+import { sprinkles, vars } from '../../styles';
 
-import { styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const marginVariants = styleVariants({
-  $0: [sprinkles({ margin: '$0' })],
+  $0: [sprinkles({ margin: 0 })],
   $1: [sprinkles({ margin: '$1' })],
   $2: [sprinkles({ margin: '$2' })],
   $3: [sprinkles({ margin: '$3' })],
