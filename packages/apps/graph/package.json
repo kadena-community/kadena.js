@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "format": "prettier config src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",

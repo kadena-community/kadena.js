@@ -13,7 +13,7 @@
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
     "dev": "next dev",
-    "format": "prettier config cypress src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier config cypress src --write -u",
     "lint": "eslint ./src --ext .js,.ts,.jsx,.tsx --fix",
     "start": "next start",
     "storybook": "storybook dev -p 6006",

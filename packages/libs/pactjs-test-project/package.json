@@ -14,7 +14,7 @@
   "scripts": {
     "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:template",
     "build": "npm run prebuild && tsc --noEmit",
-    "format": "prettier config src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",

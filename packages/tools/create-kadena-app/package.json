@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "heft build --clean",
-    "format": "prettier config src templates --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier config src templates --write -u",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "rimraf test-* && heft test --no-build && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },

@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "format": "prettier mixins profile --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier mixins profile --write -u",
     "lint": "eslint mixins profile --ext .js,.ts --fix",
     "test": ""
   },

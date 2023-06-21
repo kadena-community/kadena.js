@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "heft build --clean",
-    "format": "prettier src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier src --write -u",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },

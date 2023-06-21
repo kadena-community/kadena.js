@@ -6,7 +6,7 @@
     "build": "npm run generate:icons && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",
-    "format": "prettier locales src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier locales src --write -u",
     "generate:icons": "npx @svgr/cli --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "next lint",
     "lint:fix": "eslint --fix .",

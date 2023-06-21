@@ -27,7 +27,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
-    "format": "prettier config src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"

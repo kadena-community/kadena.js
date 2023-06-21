@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "heft build --clean",
-    "format": "prettier config src --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore",
+    "format": "prettier config src --write -u",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
