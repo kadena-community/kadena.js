@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '../../styles';
+import { sprinkles } from '../../styles';
 import { breakpoints } from '../../styles/sprinkles.css';
 
 import { style } from '@vanilla-extract/css';
