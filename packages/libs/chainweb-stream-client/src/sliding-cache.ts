@@ -1,9 +1,28 @@
 import { ITransaction } from './types';
 
-// cacheField: .height
-// cacheSpan: $CHAIN_SPAN
-// idField: .meta.id
-// equalityCheck: (a, b) => a.meta.id === b.meta.id && a.meta.confirmations === b.meta.confirmations
+/*
+ *  A De-duplicating cache that keeps the most recent N (.cacheSpan) elements by some attribute value (.cacheGetter callback return value)
+ *    - for cw-stream-client:
+ *      cacheSpan is the window over which we may receive duplicates when reconnecting, e.g. CONFIRMATION_DEPTH + 3
+ *      cacheGetter returns txn => txn.height
+ *  - It must support updating elements
+ *    - for cw-stream-client: same txn can be received multiple times with different confirmation depths
+ *  - An element's identity is returned by identityCheck
+ *    - for cw-stream-client: txn => txn.meta.id
+ *  - Since elements can be updated, equality between elements with the same identity is returned by equalityCheck callback
+ *    - for cw-stream-client: txn => txn.meta.id && txn.meta.confirmations
+ *
+ *  - call .addCache([txn1, txn2, txn3])
+ *    returns bool[] like [shouldUpdate1, shouldUpdate2, shouldUpdate3]
+ *      each bool array idx corresponds to the input array element of the same idx
+ *      true iff a consumer event should be triggered, i.e. it is all of:
+ *        - within the span we are tracking, e.g. height is within [max_height - 12, max_height]
+ *        - has not seen before in its exact identity+equality configuration
+ *
+ *  Note: identity vs equality is used internally to distinguish between "push new element to cache" (no identity match found)
+ *  vs "find this item in cache and update it to the latest value (identity match found, did not equal latest version exactly)
+ *
+ */
 
 type SlidingCacheConfig<Shape extends ITransaction> = Pick<
   SlidingCache<Shape>,
@@ -15,7 +34,7 @@ type SlidingCacheConstructor<Shape extends ITransaction> = Partial<
 >;
 
 const defaults: SlidingCacheConfig<ITransaction> = {
-  cacheGetter: ({ meta: { confirmations } }) => confirmations,
+  cacheGetter: ({ height }) => height,
   cacheSpan: 3,
   identityCheck: (a, b) => a.meta?.id === b.meta?.id,
   equalityCheck: (a, b) =>
@@ -66,7 +85,7 @@ export default class SlidingCache<Shape extends ITransaction>
           newMaxCacheValue = cacheValue;
           recalcMinTracked();
         }
-        const [exists, existsIdentical, cacheIdx] = this._existsCache(elem);
+        const [exists, existsIdentical, cacheIdx] = this.existsCache(elem);
         if (exists && !existsIdentical) {
           this.cache[cacheIdx] = elem;
         }
@@ -87,7 +106,7 @@ export default class SlidingCache<Shape extends ITransaction>
     return retVals;
   }
 
-  private _existsCache(needle: Shape): [boolean, boolean, number] {
+  public existsCache(needle: Shape): [boolean, boolean, number] {
     // [exists, identical, index]
     for (let idx = 0; idx < this.cache.length; idx++) {
       const elem = this.cache[idx];
