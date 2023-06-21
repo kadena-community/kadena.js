@@ -28,6 +28,7 @@ jobs:
           fetch-depth: 2
 
       - name: Fetch base branch
+        if: github.ref_name != 'master'
         run: git fetch origin ${{ github.base_ref }}
 
       - uses: actions/setup-node@v3
@@ -56,6 +57,8 @@ jobs:
 
       - name: Rush install (install-run-rush)
         run: |
+          echo ${{ github.ref_name }}
+          echo ${{ github.base_ref }}
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
 
       - name: Rush retest (install-run-rush)
