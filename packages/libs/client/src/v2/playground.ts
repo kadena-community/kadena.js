@@ -1,7 +1,3 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-/* eslint-disable @rushstack/typedef-var */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import {
   cmdBuilder,
   getModule,
@@ -52,7 +48,15 @@ const nonce = (input: string) => (cmd: Partial<ICommand>) => {
   return { nonce: `kjs ${new Date().toISOString()}` };
 };
 
+const set = <T extends keyof ICommand>(
+  item: T,
+  value: ICommand[T],
+): { [key in T]: ICommand[T] } => {
+  return { [item]: value } as { [key in T]: ICommand[T] };
+};
+
 // use the payload type in the output cont/exec
+// eslint-disable-next-line @rushstack/typedef-var
 export const cmd = cmdBuilder(
   payload.exec([
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
@@ -68,10 +72,5 @@ export const cmd = cmdBuilder(
   ]),
   meta({ chainId: '1' }),
   nonce('kms'),
+  set('networkId', 'mainnet04'),
 );
-
-// it can change the command
-declare const sign: (command: ICommand) => Promise<string[]>;
-
-// van not change
-declare const quicksign: (command: string) => Promise<string[]>;
