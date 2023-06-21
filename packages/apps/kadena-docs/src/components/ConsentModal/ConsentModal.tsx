@@ -11,9 +11,11 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 
 export const ConsentModal: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
   const { renderModal, clearModal } = useModal();
 
   useEffect(() => {
+    setMounted(true);
     const stickyValue = localStorage.getItem('cookie_consent');
     if (stickyValue === null) return;
     setCookieConsent(JSON.parse(stickyValue));
@@ -35,10 +37,12 @@ export const ConsentModal: FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     if (cookieConsent !== null) {
       clearModal();
       return;
     }
+
     renderModal(
       <Notification
         displayCloseButton={false}
@@ -69,6 +73,6 @@ export const ConsentModal: FC = () => {
         </NotificationFooter>
       </Notification>,
     );
-  }, [cookieConsent]);
+  }, [cookieConsent, mounted]);
   return null;
 };

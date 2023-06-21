@@ -24,6 +24,7 @@ export const analyticsEvent = (
   if (process.env.NODE_ENV === 'development') {
     console.warn('GTAG EVENT', { name, options });
   }
+  if (window.gtag === undefined) return;
   gtag('event', name, options);
 };
 
@@ -31,15 +32,18 @@ export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
   if (process.env.NODE_ENV === 'development') {
     console.warn('GTAG EVENT', { options });
   }
+  if (window.gtag === undefined) return;
   gtag('event', 'page_view', options);
 };
 
-export const updateConsent = (hasConsent: boolean | undefined): void => {
+export const updateConsent = (hasConsent: boolean): void => {
   const newValue = hasConsent ? 'granted' : 'denied';
 
   if (process.env.NODE_ENV === 'development') {
     console.warn('SET CONSENT', { value: newValue });
   }
+
+  if (window.gtag === undefined) return;
 
   gtag('consent', 'update', {
     ad_storage: 'denied',
