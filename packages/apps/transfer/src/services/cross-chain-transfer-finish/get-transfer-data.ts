@@ -2,14 +2,14 @@ import {
   ChainwebNetworkId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import { ContCommand, getContCommand, PactCommand } from '@kadena/client';
-import { ChainId } from '@kadena/types';
+import { PactCommand } from '@kadena/client';
+import { ChainId, IPactEvent, PactValue } from '@kadena/types';
 
 import { validateRequestKey } from '../utils/utils';
 
 import { Translate } from 'next-translate';
 interface ITransactionData {
-  sender: { chain: ChainId; account: string };
+  sender: { chain: ChainId; account?: string };
   receiver: { chain: ChainId; account: string };
   amount: number;
   receiverGuard: {
@@ -17,9 +17,17 @@ interface ITransactionData {
     keys: [string];
   };
   proof: string;
-  step: number;
-  pactId: string;
-  rollback: boolean;
+  events?: IEventData[];
+  step?: number;
+  pactId?: string;
+  rollback?: boolean;
+  result: ICommandResult['result'];
+}
+
+interface IEventData {
+  name: string;
+  params: PactValue[];
+  moduleName: string;
 }
 export interface ITransferDataResult {
   tx?: ITransactionData | undefined;
@@ -62,6 +70,7 @@ export async function getTransferData({
     let found: { chainId: number; tx: ICommandResult } | undefined;
     chainInfos.map(async (pactInfo, chainId) => {
       if (pactInfo[requestKey] !== undefined) {
+        console.log('FOUND2', pactInfo[requestKey]);
         found = { chainId: chainId, tx: pactInfo[requestKey] };
       }
     });
@@ -76,7 +85,8 @@ export async function getTransferData({
       tx: {
         sender: {
           chain: found.chainId.toString() as ChainId,
-          account: found.tx?.continuation?.continuation?.args[0],
+          account:
+            found.tx?.continuation?.continuation?.args[0 as keyof PactValue],
         },
         receiver: {
           chain: found.tx?.continuation?.yield?.provenance
@@ -88,6 +98,14 @@ export async function getTransferData({
           pred: found?.tx?.continuation?.yield?.data['receiver-guard'].pred,
           keys: found?.tx?.continuation?.yield?.data['receiver-guard'].keys,
         },
+        events: found.tx?.events?.map((event: IPactEvent) => {
+          return {
+            name: event.name,
+            params: event.params,
+            moduleName: event.module.name,
+          };
+        }),
+        result: found.tx.result,
         step: found.tx?.continuation?.step,
         pactId: found.tx?.continuation?.pactId,
         rollback: found.tx?.continuation?.stepHasRollback,
