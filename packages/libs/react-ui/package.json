@@ -24,6 +24,7 @@
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "format": "prettier src --write -u",
     "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
@@ -43,6 +44,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@rushstack/heft-jest-plugin": "~0.5.12",

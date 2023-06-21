@@ -15,6 +15,7 @@
     "build": "heft build --clean",
     "format": "prettier config src --write -u",
     "lint-staged": "lint-staged",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "test": "heft test --no-build"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",

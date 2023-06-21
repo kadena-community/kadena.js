@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "test": ""
   },
   "dependencies": {
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",

@@ -10,6 +10,7 @@
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "next lint",
     "lint:fix": "eslint --fix .",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "start": "next start",
     "test": "jest --silent"
   },
@@ -38,6 +39,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@kadena/types": "workspace:*",
     "@next/eslint-plugin-next": "^12.0.8",
     "@rushstack/eslint-config": "~3.3.0",

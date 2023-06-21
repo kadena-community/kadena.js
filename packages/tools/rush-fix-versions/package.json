@@ -14,6 +14,7 @@
   },
   "scripts": {
     "build": "heft build",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "test": ""
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/inquirer": "^9.0.3",
