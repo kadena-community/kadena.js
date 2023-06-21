@@ -1,0 +1,15 @@
+{
+  "extends": "@kadena-dev/heft-rig/profiles/default/config/jest.config.json",
+  "moduleNameMapper": {
+    "@/(.*)": "<rootDir>/lib/$1"
+  },
+  "moduleDirectories": ["node_modules", "lib"],
+  "testEnvironment": "jsdom",
+  "globals": {
+    "ts-jest": {
+      "tsConfig": "../tsconfig.json"
+    }
+  },
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+  "collectCoverage": false
+}
