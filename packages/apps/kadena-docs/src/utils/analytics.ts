@@ -18,9 +18,17 @@ export const analyticsEvent = (
   name: keyof typeof EVENT_NAMES,
   options: IOptionsType = {},
 ): void => {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('GTAG EVENT', { name, options });
+    return;
+  }
   gtag('event', name, options);
 };
 
 export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('GTAG EVENT', { options });
+    return;
+  }
   gtag('event', 'page_view', options);
 };

@@ -16,7 +16,7 @@ const systemProperties = defineProperties({
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
-    borderStyles: ['solid'],
+    borderStyles: ['solid', 'none'],
     cursor: ['pointer', 'not-allowed'],
     flexWrap: ['wrap', 'nowrap'],
     top: [0],
@@ -57,6 +57,7 @@ const responsiveProperties = defineProperties({
   },
   defaultCondition: 'xs',
   properties: {
+    position: ['fixed', 'static', 'absolute', 'relative', 'sticky'],
     display: ['none', 'flex', 'block', 'inline', 'inline-block', 'grid'],
     flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
     justifyContent: [
@@ -73,10 +74,17 @@ const responsiveProperties = defineProperties({
     paddingRight: vars.sizes,
     marginTop: vars.sizes,
     marginBottom: vars.sizes,
-    marginLeft: vars.sizes,
-    marginRight: vars.sizes,
-    width: { ...vars.sizes, '100%': '100%', 'max-content': 'max-content' },
-    height: { ...vars.sizes, '100%': '100%' },
+    marginLeft: { ...vars.sizes, auto: 'auto' },
+    marginRight: { ...vars.sizes, auto: 'auto' },
+    width: {
+      ...vars.sizes,
+      '100%': '100%',
+      'max-content': 'max-content',
+    },
+    height: {
+      ...vars.sizes,
+      '100%': '100%',
+    },
     gap: vars.sizes,
     gridGap: vars.sizes,
     overflow: ['hidden'],
