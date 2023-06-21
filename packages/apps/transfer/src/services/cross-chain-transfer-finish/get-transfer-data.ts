@@ -3,7 +3,7 @@ import {
   ICommandResult,
 } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
-import { ChainId, IPactExec, PactValue } from '@kadena/types';
+import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { validateRequestKey } from '../utils/utils';
 
@@ -17,6 +17,7 @@ interface ITransactionData {
     keys: [string];
   };
   events?: IEventData[];
+  result?: ICommandResult['result'];
   step?: number;
   pactId?: string;
   rollback?: boolean;
@@ -81,6 +82,7 @@ export async function getTransferData({
       .tx?.continuation?.continuation.args as Array<any>;
     const { step, stepHasRollback, pactId } = found.tx
       ?.continuation as IPactExec;
+    const { events, result } = found.tx;
 
     return {
       tx: {
@@ -97,6 +99,14 @@ export async function getTransferData({
         step: step,
         pactId: pactId,
         rollback: stepHasRollback,
+        result: result,
+        events: events?.map((event: IPactEvent) => {
+          return {
+            name: event.name,
+            params: event.params,
+            moduleName: event.module.name,
+          };
+        }),
       },
     };
   } catch (e) {

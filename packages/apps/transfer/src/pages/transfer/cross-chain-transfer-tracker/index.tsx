@@ -13,6 +13,7 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import { getXChainTransferInfo } from '@/services/cross-chain-transfer-tracker/get-transfer-status';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
@@ -49,6 +50,7 @@ const CrossChainTransferTracker: FC = () => {
       );
       console.log(pollResult);
       setData(pollResult);
+      await getXChainTransferInfo();
     } catch (error) {}
   };
 
