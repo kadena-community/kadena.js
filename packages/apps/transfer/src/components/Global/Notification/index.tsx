@@ -1,5 +1,7 @@
 'use client';
 
+import { IconButton, SystemIcons } from '@kadena/react-components';
+
 import { StyledBody, StyledContainer } from './styles';
 
 import { Exclamation } from '@/resources/svg/generated';
@@ -24,10 +26,17 @@ const Notification: FC<INotificationProps> = ({ title, body }) => {
     <StyledContainer>
       <Exclamation />
       <StyledBody>
-        <div>{title}</div>
+        <div>
+          <strong>{title}</strong>
+        </div>
         <div dangerouslySetInnerHTML={{ __html: body }} />
       </StyledBody>
-      <button onClick={onCloseClick}>&#10005;</button>
+      <IconButton
+        as="button"
+        title="Close notification"
+        icon={SystemIcons.Close}
+        onClick={onCloseClick}
+      />
     </StyledContainer>
   );
 };

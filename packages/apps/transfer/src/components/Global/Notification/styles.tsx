@@ -9,6 +9,7 @@ export const StyledContainer = styled('div', {
   flexDirection: 'row',
   gap: '0.625rem', //10px
   marginBottom: '1.5rem', // 24px
+  width: '100%',
 });
 
 export const StyledBody = styled('div', {
