@@ -39,10 +39,11 @@ const Search: FC = () => {
       <Stack>
         <ResultSection>
           <h2>output</h2>
+
           {conversation?.history.map((interaction, idx) => (
             <div key={`${interaction.input}-${idx}`}>
               <ReactMarkdown components={{ code: SearchCode }}>
-                {interaction.output}
+                {interaction?.output}
               </ReactMarkdown>
               <div>
                 {interaction?.metadata?.map((item, idx) => {
@@ -58,6 +59,7 @@ const Search: FC = () => {
               </div>
             </div>
           ))}
+
           <div>{outputStream}</div>
         </ResultSection>
 
