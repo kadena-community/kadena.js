@@ -16,6 +16,7 @@ import {
 
 import EventEmitter from 'eventemitter2';
 import EventSource from 'eventsource';
+import SlidingCache from './sliding-cache';
 
 export * from './types';
 

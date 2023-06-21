@@ -1,37 +1,46 @@
+import { ITransaction } from './types';
+
 // cacheField: .height
 // cacheSpan: $CHAIN_SPAN
 // idField: .meta.id
 // equalityCheck: (a, b) => a.meta.id === b.meta.id && a.meta.confirmations === b.meta.confirmations
 
-const defaults = {
+type SlidingCacheConfig<Shape extends ITransaction> = Pick<SlidingCache<Shape>, 'cacheGetter' | 'cacheSpan' | 'identityCheck' | 'equalityCheck'>;
+
+type SlidingCacheConstructor<Shape extends ITransaction> = Partial<SlidingCacheConfig<Shape>>;
+
+const defaults: SlidingCacheConfig<ITransaction> = {
   cacheGetter: ({ meta: { confirmations }}) => confirmations,
   cacheSpan: 3,
   identityCheck: (a, b) => a.meta?.id === b.meta?.id,
   equalityCheck: (a, b) => a.meta?.id === b.meta?.id && a.meta?.confirmations === b.meta?.confirmations,
 };
 
-class LimitedCache {
+export default class SlidingCache<Shape extends ITransaction> implements SlidingCacheConfig<Shape> {
   minCacheValue = Infinity;
   maxCacheValue = -Infinity;
+  cache: Shape[] = [];
 
-  constructor(params) {
-    const effectiveParams = {
-      ...defaults,
-      ...params,
-    };
-    for(const [key, value] of Object.entries(effectiveParams)) {
-      this[key] = value;
-    }
+  cacheGetter: (elem: Shape) => number;
+  cacheSpan: number;
+  identityCheck: (a: Shape, b: Shape) => boolean;
+  equalityCheck: (a: Shape, b: Shape) => boolean;
+
+  constructor(params: SlidingCacheConstructor<Shape> = {}) {
     this.cache = [];
+    this.cacheGetter = params.cacheGetter ?? defaults.cacheGetter;
+    this.cacheSpan = params.cacheSpan ?? defaults.cacheSpan;
+    this.identityCheck = params.identityCheck ?? defaults.identityCheck;
+    this.equalityCheck = params.equalityCheck ?? defaults.equalityCheck;
   }
 
-  addCache(...elems) {
+  addCache(...elems: Shape[]) {
     let needUpdate = false;
     let newMaxCacheValue = this.maxCacheValue;
 
-    let minTracked;
-    const calcMinTracked = () => minTracked = newMaxCacheValue - this.cacheSpan;
-    calcMinTracked();
+    let minTracked = newMaxCacheValue - this.cacheSpan;
+    const recalcMinTracked = () => minTracked = newMaxCacheValue - this.cacheSpan;
+    recalcMinTracked();
 
     const retVals = [];
     for(const elem of elems) {
@@ -45,7 +54,7 @@ class LimitedCache {
         if (cacheValue > newMaxCacheValue) {
           needUpdate = true;
           newMaxCacheValue = cacheValue;
-          calcMinTracked();
+          recalcMinTracked();
         }
         const [exists, existsIdentical, cacheIdx] = this.existsCache(elem);
         if (exists && !existsIdentical) {
@@ -59,8 +68,8 @@ class LimitedCache {
         }
         retVals.push(existsIdentical ? false : true);
       } else {
-        console.warn(`Ignoring cacheValue=${cacheValue}, minimum tracked is ${minTracked}`);
-        retVal.push(false);
+        // console.warn(`Ignoring cacheValue=${cacheValue}, minimum tracked is ${minTracked}`);
+        retVals.push(false);
       }
     }
     if (needUpdate) {
@@ -69,7 +78,7 @@ class LimitedCache {
     return retVals;
   }
 
-  existsCache(needle) { // [exists, identical, index]
+  existsCache(needle: Shape): [boolean, boolean, number] { // [exists, identical, index]
     let idx = 0;
     for(let idx = 0; idx < this.cache.length; idx++ ) {
       const elem = this.cache[idx];
@@ -84,8 +93,7 @@ class LimitedCache {
     return [false, false, -1];
   }
 
-  updateCacheMinMax(newMax) {
-    debugger;
+  updateCacheMinMax(newMax: number) {
     this.maxCacheValue = newMax;
     const { minCacheValue, maxCacheValue, cacheSpan } = this;
     if (maxCacheValue - minCacheValue > cacheSpan) {
@@ -104,18 +112,18 @@ class LimitedCache {
   }
 }
 
-const l = new LimitedCache();
+const l = new SlidingCache();
 
 const inputs = [
-  { meta: { id: 'a1', confirmations: 1 }, height: 1 },
-  { meta: { id: 'a2', confirmations: 1 }, height: 1 },
-  { meta: { id: 'a3', confirmations: 1 }, height: 2 },
-  { meta: { id: 'a4', confirmations: 1 }, height: 3 },
-  { meta: { id: 'a1', confirmations: 2 }, height: 3 },
-  { meta: { id: 'a7', confirmations: 1 }, height: 4 },
-  { meta: { id: 'a2', confirmations: 1 }, height: 1 },
-  { meta: { id: 'a1', confirmations: 3 }, height: 6 },
-  { meta: { id: 'a5', confirmations: 3 }, height: 1 },
+  { meta: { id: 'a1', confirmations: 1 }, height: 1, ...makeTransactionMock() },
+  { meta: { id: 'a2', confirmations: 1 }, height: 1, ...makeTransactionMock() },
+  { meta: { id: 'a3', confirmations: 1 }, height: 2, ...makeTransactionMock() },
+  { meta: { id: 'a4', confirmations: 1 }, height: 3, ...makeTransactionMock() },
+  { meta: { id: 'a1', confirmations: 2 }, height: 3, ...makeTransactionMock() },
+  { meta: { id: 'a7', confirmations: 1 }, height: 4, ...makeTransactionMock() },
+  { meta: { id: 'a2', confirmations: 1 }, height: 1, ...makeTransactionMock() },
+  { meta: { id: 'a1', confirmations: 3 }, height: 6, ...makeTransactionMock() },
+  { meta: { id: 'a5', confirmations: 3 }, height: 1, ...makeTransactionMock() },
 ];
 
 const outputs = l.addCache(...inputs);
@@ -124,4 +132,15 @@ for(let i=0; i<outputs.length; i++) {
   console.log(i, outputs[i], inputs[i]);
 }
 
-debugger;
+function makeTransactionMock() {
+  return {
+    blockTime: 'Test Time',
+    blockHash: 'Block Hash',
+    requestKey: 'Request Key',
+    idx: 25,
+    chain: 25,
+    params: [],
+    name: 'Event Name',
+    moduleHash: 'Module Hash'
+  }
+}
