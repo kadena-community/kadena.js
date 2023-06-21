@@ -719,18 +719,6 @@ export const menuData = [
         "isActive": false
       },
       {
-        "children": [],
-        "root": "/docs/contribute/code-of-conduct",
-        "title": "Code of Conduct",
-        "description": "Kadena Code of Conduct (Draft 2022)",
-        "menu": "Code of Conduct",
-        "label": "Code of Conduct",
-        "order": 3,
-        "layout": "full",
-        "isMenuOpen": false,
-        "isActive": false
-      },
-      {
         "children": [
           {
             "children": [],
@@ -955,6 +943,16 @@ export const menuData = [
     "description": "Home page",
     "layout": "landing",
     "icon": "PactLanguage",
+    "isMenuOpen": false,
+    "isActive": false
+  },
+  {
+    "children": [],
+    "root": "/docs/code-of-conduct",
+    "title": "Code of Conduct",
+    "description": "Kadena Code of Conduct",
+    "label": "Code of Conduct",
+    "layout": "normal",
     "isMenuOpen": false,
     "isActive": false
   }
