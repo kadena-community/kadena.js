@@ -89,7 +89,7 @@ export const LinkTable: Story = {
         <Table.Body>
           {Array.from(Array(rowCount)).map((id, idx) => {
             return (
-              <Table.Tr key={`tr${idx}`} url={'https://kadena.io/'}>
+              <Table.Tr key={`tr${idx}`} url={`#${idx}`}>
                 {Array.from(Array(columnCount)).map((id, tdIdx) => {
                   return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
                 })}

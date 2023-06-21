@@ -13,16 +13,8 @@ export interface ITrProps {
 }
 
 export const Tr: FC<ITrProps> = ({ children, url }) => {
-  const handleClick = (): void => {
-    if (url !== undefined) {
-      window.location.href = url;
-    }
-  };
   return (
-    <tr
-      className={trClass}
-      onClick={url !== undefined ? handleClick : undefined}
-    >
+    <tr className={trClass}>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
@@ -35,9 +27,9 @@ export const Tr: FC<ITrProps> = ({ children, url }) => {
 
       {url !== undefined && (
         <td>
-          <div className={urlContainerClass}>
+          <a href={url} className={urlContainerClass}>
             <SystemIcon.TrailingIcon size={'md'} />
-          </div>
+          </a>
         </td>
       )}
     </tr>
