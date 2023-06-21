@@ -259,11 +259,10 @@ const CrossChainTransferFinisher: FC = () => {
                   pollResults.tx.receiverGuard.pred
                 }`}</StyledInfoItemLine>
                 <StyledInfoItemLine>
-                  `${t('Keys')}: $
+                  {t('Keys')}:
                   {pollResults.tx.receiverGuard.keys.map((key, index) => (
-                    <span key={index}>{key}</span>
+                    <StyledInfoItemLine key={index}>{key}</StyledInfoItemLine>
                   ))}
-                  `
                 </StyledInfoItemLine>
               </StyledInfoItem>
             ) : null}

@@ -1,10 +1,11 @@
+import * as process from 'process';
+
 export interface EnvInterface {
   KADENA_API_TTIL?: number;
   KADENA_MAINNET_API?: string;
   KADENA_TESTNET_API?: string;
   GAS_LIMIT?: number;
 }
-
 export const dotenv: EnvInterface = {
   KADENA_API_TTIL: Number(process.env.KADENA_API_TTIL),
   KADENA_MAINNET_API: process.env.KADENA_MAINNET_API,
@@ -15,4 +16,12 @@ export const dotenv: EnvInterface = {
 export const env = (
   key: keyof EnvInterface,
   defaultValue: any = undefined,
-): any => dotenv[key] ?? defaultValue;
+): any => {
+  if (typeof dotenv[key] === 'number') {
+    const value = process.env[key];
+
+    return value === undefined ? defaultValue : Number(value);
+  } else {
+    return dotenv[key] ?? defaultValue;
+  }
+};
