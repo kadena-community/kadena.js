@@ -13,7 +13,7 @@ export interface IGridContainerProps {
 
 const GridContainer: FC<IGridContainerProps> = ({
   children,
-  spacing = '$md',
+  spacing = 'md',
   templateAreas,
   templateRows,
   templateColumns,
