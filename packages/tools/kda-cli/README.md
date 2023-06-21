@@ -44,23 +44,22 @@ ln -s $(pwd)/lib/index.js $NVM_BIN/kda
 
 ## CLI
 
-```
+```bash
 $ kda --help
 
   Usage
-	  $ kda
+    $ kda
 
-	Options
-		--task  Task
+  Options
+    --task  Task
 
-	Examples
-	  $ kda --task=rerun
-	  $ kda --task=start
-	  $ kda --task=stop
-	  $ kda --task=fund
-	  $ kda --task=deploy
-	  $ kda --task=local
+  Examples
     $ kda --task=rerun
+    $ kda --task=start
+    $ kda --task=stop
+    $ kda --task=fund
+    $ kda --task=deploy
+    $ kda --task=local
 ```
 
 ## Chainweaver

@@ -13,19 +13,19 @@ interface IFlags {
 
 const cli: IFlags = meow(
   `
-	Usage
-	  $ kda
+  Usage
+    $ kda
 
-	Options
-		--task  Task
+  Options
+    --task  Task
 
-	Examples
-	  $ kda --task=rerun
-	  $ kda --task=start
-	  $ kda --task=stop
-	  $ kda --task=fund
-	  $ kda --task=deploy
-	  $ kda --task=local
+  Examples
+    $ kda --task=rerun
+    $ kda --task=start
+    $ kda --task=stop
+    $ kda --task=fund
+    $ kda --task=deploy
+    $ kda --task=local
 `,
   {
     importMeta: import.meta,
