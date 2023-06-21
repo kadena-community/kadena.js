@@ -1,7 +1,5 @@
 import { SystemIcon } from '../Icons';
 
-import { iconContainerClass } from './Button.css';
-
 import React, { FC } from 'react';
 
 export interface IButtonIconProps {
@@ -10,9 +8,5 @@ export interface IButtonIconProps {
 
 export const ButtonIcon: FC<IButtonIconProps> = ({ icon }) => {
   const Icon = icon;
-  return (
-    <div className={iconContainerClass}>
-      <Icon size="md" />
-    </div>
-  );
+  return <Icon size="md" />;
 };
