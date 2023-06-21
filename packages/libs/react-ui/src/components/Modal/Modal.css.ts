@@ -1,11 +1,12 @@
-import { sprinkles } from '../../styles';
+import { sprinkles, vars } from '../../styles';
+import { breakpoints } from '../../styles/sprinkles.css';
 
 import { style } from '@vanilla-extract/css';
 
 export const background = style([
   sprinkles({
     position: 'fixed',
-    backgroundColor: '$neutral6',
+    backgroundColor: '$neutral4',
     padding: 0,
     cursor: 'pointer',
   }),
@@ -23,19 +24,24 @@ export const wrapper = style([
     justifyContent: 'center',
     alignItems: 'stretch',
     pointerEvents: 'none',
-    width: {
-      xs: '100%',
-      md: '$screen75',
-    },
+    width: '100%',
     marginX: {
       xs: 0,
       sm: '$4',
-      md: '$auto',
+      md: 'auto',
     },
   }),
   {
     maxWidth: '700px',
     inset: 0,
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        width: '75vw',
+      },
+      [`screen and ${breakpoints.lg}`]: {
+        width: '50vw',
+      },
+    },
   },
 ]);
 
@@ -49,5 +55,18 @@ export const modal = style([
     maxHeight: '50vh',
     overflowY: 'scroll',
     pointerEvents: 'initial',
+  },
+]);
+
+export const closeButton = style([
+  sprinkles({
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    fontWeight: '$normal',
+    borderStyles: 'none',
+  }),
+  {
+    border: '0',
   },
 ]);
