@@ -1,4 +1,9 @@
-import { Button, SystemIcons, TextField } from '@kadena/react-components';
+import {
+  Button,
+  Heading,
+  SystemIcons,
+  TextField,
+} from '@kadena/react-components';
 
 import {
   StyledAccountForm,
@@ -90,6 +95,7 @@ const NewFaucetPage: FC = () => {
             body='Generate a key pair by visiting this <a href="#"><strong>webpage</strong></a> or by downloading a <a href="#"><strong>wallet</strong></a>'
           />
           <StyledAccountForm>
+            <Heading as="h3">Account</Heading>
             <TextField
               label={t(
                 'Associate your public key with a unique account name of your choosing',

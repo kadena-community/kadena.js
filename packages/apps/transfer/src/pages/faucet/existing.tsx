@@ -1,4 +1,9 @@
-import { Button, TextField } from '@kadena/react-components';
+import {
+  Button,
+  Heading,
+  SystemIcons,
+  TextField,
+} from '@kadena/react-components';
 
 import {
   StyledAccountForm,
@@ -59,6 +64,7 @@ const ExistingFaucetPage: FC = () => {
         <SidebarMenu />
         <StyledForm onSubmit={onFormSubmit}>
           <StyledAccountForm>
+            <Heading as="h3">Account</Heading>
             <TextField
               label={t(
                 'Associate your public key with a unique account name of your choosing',
