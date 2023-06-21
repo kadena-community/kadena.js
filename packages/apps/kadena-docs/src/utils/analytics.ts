@@ -25,6 +25,7 @@ export const analyticsEvent = (
     console.warn('GTAG EVENT', { name, options });
   }
   if (window.gtag === undefined) return;
+
   gtag('event', name, options);
 };
 
@@ -33,6 +34,7 @@ export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
     console.warn('GTAG EVENT', { options });
   }
   if (window.gtag === undefined) return;
+
   gtag('event', 'page_view', options);
 };
 
@@ -49,8 +51,6 @@ export const updateConsent = (hasConsent: boolean): void => {
     ad_storage: 'denied',
     analytics_storage: newValue,
   });
-
-  if (hasConsent === undefined) return;
 
   localStorage.setItem(COOKIE_CONSENTNAME, hasConsent.toString());
 };

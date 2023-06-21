@@ -2,7 +2,7 @@ import { Button } from '../Button/Button';
 import { SystemIcon } from '../Icons';
 import { Stack } from '../Stack/Stack';
 
-import { background, modal, wrapper } from './Modal.css';
+import { background, closeButton, modal, wrapper } from './Modal.css';
 import { useModal } from './ModalProvider';
 
 import React, { FC } from 'react';
@@ -22,9 +22,14 @@ export const Modal: FC<IModalProps> = ({ children }) => {
       />
       <div className={wrapper} data-cy="modal">
         <Stack direction="column" alignItems="flex-end" spacing="2xs">
-          <Button onClick={clearModal} title="Close modal">
-            <SystemIcon.Close /> Close
-          </Button>
+          <button
+            className={closeButton}
+            onClick={clearModal}
+            title="Close modal"
+          >
+            Close
+            <SystemIcon.Close />
+          </button>
           <section className={modal}>{children}</section>
         </Stack>
       </div>
