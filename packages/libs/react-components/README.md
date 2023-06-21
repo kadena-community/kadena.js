@@ -19,43 +19,47 @@ app.
 
 Then in your package.json add:
 
-    {
-      "dependencies": {
-        "@kadena/react-components": "link:../kadena.js/packages/libs/react-components"
-      }
-    }
+```json
+{
+  "dependencies": {
+    "@kadena/react-components": "link:../kadena.js/packages/libs/react-components"
+  }
+}
+```
 
 Then in your app init `stitches` with:
 
-    import {
-      getCssText,
-      globalCss,
-      baseGlobalStyles,
-    } from "@kadena/react-components";
+```tsx
+import {
+  getCssText,
+  globalCss,
+  baseGlobalStyles,
+} from "@kadena/react-components";
 
-    const globalStyles = globalCss(baseGlobalStyles as Record<string, any>);
+const globalStyles = globalCss(baseGlobalStyles as Record<string, any>);
 
-    globalStyles();
+globalStyles();
 
-    ...
+...
 
-    export default function Root({
-      children,
-    }: {
-      children: React.ReactNode;
-    }) {
-      return (
-        <html >
-          <head>
-            <style
-              id="stitches"
-              dangerouslySetInnerHTML={{ __html: getCssText() }}
-            />
-          </head>
-          <body>{children}</body>
-        </html>
-      );
-    }
+export default function Root({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html >
+      <head>
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
 
 ### Running storybook
 

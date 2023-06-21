@@ -32,13 +32,13 @@ need to setup integration with VE. You can find integration instructions in the
 
 Add @kadena/react-ui as a dependency in your `package.json`:
 
-    {
-      ...
-      "dependencies": {
-        "@kadena/react-ui": "workspace:*",
-        ...
-      }
-    }
+```json
+{
+  "dependencies": {
+    "@kadena/react-ui": "workspace:*"
+  }
+}
+```
 
 Then run the following commands to install the package and update the monorepo's
 state:
@@ -54,17 +54,17 @@ If you don’t have a next.config.js file in the root of your project, create on
 Add the plugin to your next.config.js file and add @kadena/react-ui to
 transpilePackages:
 
-    const {
-      createVanillaExtractPlugin
-    } = require('@vanilla-extract/next-plugin');
-    const withVanillaExtract = createVanillaExtractPlugin();
+```ts
+const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
+const withVanillaExtract = createVanillaExtractPlugin();
 
-    /** @type {import('next').NextConfig} */
-    const nextConfig = {
-      transpilePackages: ['@kadena/react-ui'],
-    };
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@kadena/react-ui'],
+};
 
-    module.exports = withVanillaExtract(nextConfig);
+module.exports = withVanillaExtract(nextConfig);
+```
 
 If required, this plugin can be composed with other plugins. See [VE Next.js
 integration docs][4].
@@ -82,26 +82,28 @@ colors suitable for light mode, but to add dark theme integration you can export
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
-    import { darkThemeClass } from '@kadena/react-ui';
-    import { ThemeProvider } from 'next-themes';
+```tsx
+import { darkThemeClass } from '@kadena/react-ui';
+import { ThemeProvider } from 'next-themes';
 
-    export const MyApp = ({ Component, pageProps }) {
-      return (
-        <ThemeProvider
-          attribute="class"
-          enableSystem={true}
-          defaultTheme="light"
-          value={{
-            light: 'light',
-            dark: darkThemeClass,
-          }}
-        >
-          <Component {...pageProps} />
-        </ThemeProvider>
-      );
-    };
+export const MyApp = ({ Component, pageProps }) {
+  return (
+    <ThemeProvider
+      attribute="class"
+      enableSystem={true}
+      defaultTheme="light"
+      value={{
+        light: 'light',
+        dark: darkThemeClass,
+      }}
+    >
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
+};
 
-    export default MyApp;
+export default MyApp;
+```
 
 > Note: We understand that just inverting colors is not enough to achieve good
 > UX in dark mode. We are using this color inversion in conjunction with custom
@@ -129,13 +131,13 @@ app.
 
 Add @kadena/react-ui as a dependency in your package.json:
 
-    {
-      ...
-      "dependencies": {
-        "@kadena/react-ui": "link:../kadena.js/packages/libs/react-ui"
-        ...
-      }
-    }
+```json
+{
+  "dependencies": {
+    "@kadena/react-ui": "link:../kadena.js/packages/libs/react-ui"
+  }
+}
+```
 
 Then, like other installations, you will need to follow the applicable
 integration instructions for VE.

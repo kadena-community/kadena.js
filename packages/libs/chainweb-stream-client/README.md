@@ -28,17 +28,19 @@ Alpha version / unstable.
 
 ## Usage
 
-    import ChainwebStreamClient from '@kadena/chainweb-stream-client';
+```js
+import ChainwebStreamClient from '@kadena/chainweb-stream-client';
 
-    const client = new ChainwebStreamClient({
-      type: 'event',
-      id: 'coin',
-      host: 'http://localhost:4000/',
-    });
+const client = new ChainwebStreamClient({
+  type: 'event',
+  id: 'coin',
+  host: 'http://localhost:4000/',
+});
 
-    client.on('confirmed', (txn) => console.log('confirmed', txn));
+client.on('confirmed', (txn) => console.log('confirmed', txn));
 
-    client.connect();
+client.connect();
+```
 
 Find more detailed examples under `src/examples`.
 
