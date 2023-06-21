@@ -15,6 +15,7 @@ import {
   IChainwebStreamConfig,
 } from './types';
 import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
+import SlidingCache from './sliding-cache';
 
 export * from './types';
 
