@@ -32,7 +32,7 @@ export const colors = {
   warningHighContrast: '#3D2500',
 
   negativeAccent: '#FF3338',
-  negativeSurface: '#FFDAD8',
+  negativeSurface: '#FFE7E5',
   negativeContrast: '#75000B',
   negativeHighContrast: '#410006',
 } as const;
@@ -70,5 +70,5 @@ export const colorsDark = {
   negativeAccent: '#FF3338',
   negativeSurface: '#410006',
   negativeContrast: '#75000B',
-  negativeHighContrast: '#FFDAD8',
+  negativeHighContrast: '#FFE7E5',
 };
