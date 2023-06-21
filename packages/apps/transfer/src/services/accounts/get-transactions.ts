@@ -14,14 +14,17 @@ export interface Transaction {
 }
 
 export async function getTransactions(options: {
+  network: string;
   chain: string;
   account: string;
 }): Promise<Transaction[]> {
-  const { chain, account } = options;
+  const { network, chain, account } = options;
 
   try {
     const result: Transaction[] = await fetch(
-      `https://estats.testnet.chainweb.com/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
+      `https://estats${
+        network === 'Testnet' ? '.testnet' : ''
+      }.chainweb.com/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
     ).then((res) => res.json());
 
     return result;
