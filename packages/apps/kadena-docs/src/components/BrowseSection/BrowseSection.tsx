@@ -20,6 +20,7 @@ type BrowseSectionType = FC<IProps> & {
   LinkList: FC<ILinkList>;
 };
 
+// eslint-disable-next-line react/prop-types
 const BrowseSection: BrowseSectionType = ({ children, title }) => {
   return (
     <StyledSection>
