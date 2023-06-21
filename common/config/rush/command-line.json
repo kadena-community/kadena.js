@@ -72,6 +72,14 @@
 
     {
       "commandKind": "bulk",
+      "name": "markdown",
+      "summary": "Formats markdown with remark plugins in all projects",
+      "enableParallelism": true,
+      "ignoreMissingScript": true
+    },
+
+    {
+      "commandKind": "bulk",
       "name": "lint",
       "summary": "Runs eslint --fix in all projects",
       "safeForSimultaneousRushProcesses": false,
