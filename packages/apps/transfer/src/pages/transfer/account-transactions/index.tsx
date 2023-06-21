@@ -137,6 +137,7 @@ const CheckTransactions: FC = () => {
                   <StyledTableRow>
                     <StyledTableHeader>{t('Date')}</StyledTableHeader>
                     <StyledTableHeader>{t('Account')}</StyledTableHeader>
+                    <StyledTableHeader>{t('Request Key')}</StyledTableHeader>
                     <StyledTableHeader>{t('Cross Chain')}</StyledTableHeader>
                     <StyledTableHeader>{t('Amount')}</StyledTableHeader>
                   </StyledTableRow>
@@ -159,6 +160,7 @@ const CheckTransactions: FC = () => {
                           {new Date(result.blockTime).toLocaleString()}
                         </StyledTableData>
                         <StyledTableData>{accountText}</StyledTableData>
+                        <StyledTableData>{result.requestKey}</StyledTableData>
                         <StyledTableData>{result.crossChainId}</StyledTableData>
                         <StyledTableData>
                           {delimiter}
