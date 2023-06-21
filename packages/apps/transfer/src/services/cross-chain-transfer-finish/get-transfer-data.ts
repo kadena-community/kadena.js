@@ -3,7 +3,7 @@ import {
   ICommandResult,
 } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
-import { ChainId, IPactEvent, PactValue } from '@kadena/types';
+import { ChainId, IPactExec, PactValue } from '@kadena/types';
 
 import { validateRequestKey } from '../utils/utils';
 
@@ -16,12 +16,10 @@ interface ITransactionData {
     pred: string;
     keys: [string];
   };
-  proof: string;
   events?: IEventData[];
   step?: number;
   pactId?: string;
   rollback?: boolean;
-  result: ICommandResult['result'];
 }
 
 interface IEventData {
@@ -79,92 +77,30 @@ export async function getTransferData({
       return { error: t('No request key found') };
     }
 
-    console.log('FOUND', found);
+    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
+      .tx?.continuation?.continuation.args as Array<any>;
+    const { step, stepHasRollback, pactId } = found.tx
+      ?.continuation as IPactExec;
 
     return {
       tx: {
         sender: {
           chain: found.chainId.toString() as ChainId,
-          account:
-            found.tx?.continuation?.continuation?.args[0 as keyof PactValue],
+          account: senderAccount,
         },
         receiver: {
-          chain: found.tx?.continuation?.yield?.provenance
-            ?.targetChainId as ChainId,
-          account: found.tx?.continuation?.yield?.data.receiver,
+          chain: targetChain as ChainId,
+          account: receiverAccount,
         },
-        amount: parseFloat(found.tx?.continuation?.yield?.data.amount),
-        receiverGuard: {
-          pred: found?.tx?.continuation?.yield?.data['receiver-guard'].pred,
-          keys: found?.tx?.continuation?.yield?.data['receiver-guard'].keys,
-        },
-        events: found.tx?.events?.map((event: IPactEvent) => {
-          return {
-            name: event.name,
-            params: event.params,
-            moduleName: event.module.name,
-          };
-        }),
-        result: found.tx.result,
-        step: found.tx?.continuation?.step,
-        pactId: found.tx?.continuation?.pactId,
-        rollback: found.tx?.continuation?.stepHasRollback,
+        amount: amount,
+        receiverGuard: guard,
+        step: step,
+        pactId: pactId,
+        rollback: stepHasRollback,
       },
     };
   } catch (e) {
     console.log(e);
     return { error: e.message };
-  }
-}
-
-export async function getSpvProof({
-  requestKey,
-  server,
-  networkId,
-  chainId,
-  t,
-}: {
-  requestKey: string;
-  server: string;
-  networkId: ChainwebNetworkId;
-  chainId: ChainId;
-  t: Translate;
-}): Promise<ISpvProofResult> {
-  const keyValid = validateRequestKey(requestKey);
-
-  if (!keyValid) {
-    return { error: t('Invalid length of request key') };
-  }
-
-  const pactCommand = new PactCommand();
-
-  pactCommand.requestKey = requestKey;
-
-  try {
-    const host = `https://${server}/chainweb/0.0/${networkId}/chain/${chainId}/pact/spv`;
-    const result = await fetch(host, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ targetChainId: '3', requestKey: requestKey }),
-    });
-
-    if (result.ok) {
-      return { proof: await result.json() };
-    } else {
-      const proofError = await result.text();
-      //Initial Step is not confirmed yet.
-      return {
-        error:
-          'Initial transfer is not confirmed yet. Please wait and try again.',
-      };
-    }
-  } catch (e) {
-    console.log(e);
-    return {
-      error:
-        'Initial transfer is not confirmed yet. Please wait and try again.',
-    };
   }
 }

@@ -56,7 +56,6 @@ export const StyledSideContent = styled('div', {
 });
 
 export const StyledInfoBox = styled('div', {
-  marginTop: '8%',
   fontSize: '0.75rem',
   padding: '8px',
   background: 'rgba(71, 79, 82, 0.5)',
@@ -93,4 +92,28 @@ export const StyledShowMore = styled('div', {
   padding: '16px',
   textAlign: 'right',
   cursor: 'pointer',
+});
+
+export const StyledResultContainer = styled('div', {
+  fontSize: '1rem',
+});
+export const StyledTotalContainer = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  margin: '4% auto',
+  padding: '8px',
+  borderRadius: '4px',
+  background: 'rgba(5, 5, 5, 0.5)',
+});
+export const StyledTotalChunk = styled('div', {
+  width: '45%',
+});
+
+export const StyledErrorMessage = styled('div', {
+  marginTop: '8%',
+  fontSize: '0.85rem',
+  padding: '16px',
+  textAlign: 'right',
+  cursor: 'pointer',
+  color: 'salmon',
 });
