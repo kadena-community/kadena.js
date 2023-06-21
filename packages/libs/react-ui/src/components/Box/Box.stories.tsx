@@ -1,15 +1,58 @@
+import { vars } from '../../styles';
+
 import { Box, IBoxProps } from './Box';
-import { marginVariants } from './Box.css';
 import { containerClass, contentClass } from './stories.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
+const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
+  undefined,
+  ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
+];
+
 const meta: Meta<IBoxProps> = {
-  title: 'Layout/Box',
+  title: 'Layout/Vanilla Extract Box',
   argTypes: {
     margin: {
-      options: Object.keys(marginVariants) as (keyof typeof marginVariants)[],
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginX: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginY: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginTop: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginBottom: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+
+    marginLeft: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginRight: {
+      options: selectOptions,
       control: {
         type: 'select',
       },
@@ -27,13 +70,35 @@ type Story = StoryObj<IBoxProps>;
  */
 
 export const Primary: Story = {
-  name: 'Box',
+  name: 'Box - Margin',
   args: {
-    margin: 0,
+    margin: undefined,
+    marginX: undefined,
+    marginY: undefined,
+    marginTop: undefined,
+    marginBottom: undefined,
+    marginLeft: undefined,
+    marginRight: undefined,
   },
-  render: ({ margin }) => (
+  render: ({
+    margin,
+    marginX,
+    marginY,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+  }) => (
     <div className={containerClass}>
-      <Box margin={margin}>
+      <Box
+        margin={margin}
+        marginX={marginX}
+        marginY={marginY}
+        marginTop={marginTop}
+        marginBottom={marginBottom}
+        marginLeft={marginLeft}
+        marginRight={marginRight}
+      >
         <div className={contentClass}>Box</div>
       </Box>
     </div>
