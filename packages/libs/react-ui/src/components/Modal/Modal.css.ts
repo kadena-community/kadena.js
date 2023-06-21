@@ -63,10 +63,8 @@ export const closeButton = style([
     display: 'flex',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    fontWeight: '$normal',
-    borderStyles: 'none',
+    fontSize: '$lg',
+    fontWeight: '$light',
+    border: 'none',
   }),
-  {
-    border: '0',
-  },
 ]);
