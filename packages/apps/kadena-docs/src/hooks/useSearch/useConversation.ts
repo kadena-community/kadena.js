@@ -2,17 +2,17 @@ import type { StreamMetaData } from '@7-docs/edge';
 import type { Reducer } from 'react';
 import { useReducer } from 'react';
 
-interface IInteraction {
+interface Interaction {
   input: string;
   output: string;
 }
 
-interface IInteractionWithMetadata extends IInteraction {
-  metadata?: StreamMetaData[];
+interface InteractionWithMetadata extends Interaction {
+  metadata: StreamMetaData[] | null;
 }
 
-export interface IConversation extends IInteraction {
-  history: IInteractionWithMetadata[];
+export interface IConversation extends Interaction {
+  history: InteractionWithMetadata[];
 }
 
 type ActionType =
@@ -23,7 +23,7 @@ type ActionType =
   | {
       type: 'commit';
       value: string;
-      metadata?: StreamMetaData[];
+      metadata: StreamMetaData[] | null;
     }
   | {
       type: 'reset';

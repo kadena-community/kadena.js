@@ -1,4 +1,4 @@
-import { useConversation } from './useConversation';
+import { IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
 import { loadSearchResults } from './utils';
 
@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import {
   ChangeEvent,
   FormEvent,
+  MutableRefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -19,15 +20,23 @@ interface IQuery {
   q?: string;
 }
 
-interface IProps {}
+interface IProps {
+  searchInputRef: MutableRefObject<HTMLInputElement | null>;
+  handleSubmit: (evt: FormEvent<HTMLFormElement>) => Promise<void>;
+  outputStream: string;
+  query: string | undefined;
+  staticSearchResults: SearchResult[];
+  conversation: IConversation;
+}
 
-export const useSearch: IProps = () => {
+export const useSearch = (): IProps => {
   const [conversation, dispatch] = useConversation();
   const [startStream, isStreaming, outputStream, metadata] = useStream();
   const router = useRouter();
   const { q } = router.query as IQuery;
-  const [query, setQuery] = useState<string | undefined>();
+  const [query, setQuery] = useState<string | undefined>(q);
   const [isInitiated, setIsInitiated] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [staticSearchResults, setStaticSearchResults] = useState<
     SearchResult[]
   >([]);
@@ -42,6 +51,12 @@ export const useSearch: IProps = () => {
     [router],
   );
 
+  const startSearch = async (value: string) => {
+    if (query === null) return;
+    dispatch({ type: 'setInput', value });
+    await loadSearchResults(value, setStaticSearchResults);
+  };
+
   const updateQueryDebounced = useMemo(() => {
     return debounce(updateQuery, 500);
   }, [updateQuery]);
@@ -52,6 +67,13 @@ export const useSearch: IProps = () => {
 
     updateQueryDebounced(value);
   };
+
+  // useEffect(() => {
+  //   console.log('start', { q });
+  //   if (q) {
+  //     startSearch(q);
+  //   }
+  // }, [q]);
 
   useEffect(() => {
     if (!searchInputRef.current) return;
@@ -93,9 +115,8 @@ export const useSearch: IProps = () => {
 
     const value = searchInputRef.current?.value ?? '';
     await updateQuery(value);
-    dispatch({ type: 'setInput', value });
 
-    await loadSearchResults(value, setStaticSearchResults);
+    await startSearch(value);
   };
 
   return {

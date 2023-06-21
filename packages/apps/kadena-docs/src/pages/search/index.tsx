@@ -39,24 +39,24 @@ const Search: FC = () => {
       <Stack>
         <ResultSection>
           <h2>output</h2>
-          {conversation?.history.map((interaction) => (
-            <>
+          {conversation?.history.map((interaction, idx) => (
+            <div key={`${interaction.input}-${idx}`}>
               <ReactMarkdown components={{ code: SearchCode }}>
                 {interaction.output}
               </ReactMarkdown>
               <div>
-                {interaction?.metadata?.map((item) => {
+                {interaction?.metadata?.map((item, idx) => {
                   const url = createLinkFromMD(item.title);
                   return (
                     <>
-                      <Link key={url} href={url}>
+                      <Link key={`${url}-${idx}`} href={url}>
                         {url}
                       </Link>
                     </>
                   );
                 })}
               </div>
-            </>
+            </div>
           ))}
           <div>{outputStream}</div>
         </ResultSection>

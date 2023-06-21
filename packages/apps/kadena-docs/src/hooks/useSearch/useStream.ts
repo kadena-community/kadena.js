@@ -4,24 +4,23 @@ import type { StreamMetaData } from '@7-docs/edge';
 import { getDelta, splitTextIntoSentences } from '@7-docs/edge';
 import { useCallback, useEffect, useState } from 'react';
 
+export const embeddingModels = ['text-embedding-ada-002'];
+export const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
+
 type StartStream = (query: string, conversation: IConversation) => void;
 
 export const useStream = (): [
   StartStream,
   boolean,
   string,
-  undefined | StreamMetaData[],
+  null | StreamMetaData[],
 ] => {
   const [outputStream, setOutputStream] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
-  const [metadata, setMetadata] = useState<undefined | StreamMetaData[]>();
+  const [metadata, setMetadata] = useState<null | StreamMetaData[]>(null);
 
   const startStream = useCallback(
     function (query: string, conversation: IConversation) {
-      console.log('called');
-      const embeddingModels = ['text-embedding-ada-002'];
-      const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
-
       const searchParams = new URLSearchParams();
 
       searchParams.set('query', encodeURIComponent(query));
@@ -46,7 +45,7 @@ export const useStream = (): [
 
       setIsStreaming(true);
 
-      const done = (): void => {
+      const done = () => {
         setIsStreaming(false);
         source.close();
       };
@@ -61,6 +60,7 @@ export const useStream = (): [
             if (text) setOutputStream((v) => v + text);
           }
         } catch (error) {
+          console.log(event);
           console.error(error);
           done();
         }
