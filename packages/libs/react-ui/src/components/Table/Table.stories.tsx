@@ -9,7 +9,7 @@ const meta: Meta<
     columnCount: number;
   } & ITableProps
 > = {
-  title: 'Table',
+  title: 'Components/Table',
   argTypes: {
     rowCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
