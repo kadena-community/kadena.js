@@ -21,6 +21,7 @@
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
     "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "heft test --no-build"
   },
@@ -36,6 +37,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/byline": "~4.2.33",

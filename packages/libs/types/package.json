@@ -29,12 +29,14 @@
     "build": "heft build --clean",
     "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
+    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "test": "heft test --no-build"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
