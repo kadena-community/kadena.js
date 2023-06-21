@@ -24,6 +24,10 @@ export {
   IBreadcrumbsProps,
   IBreadcrumbItemProps,
   Breadcrumbs,
+  Modal,
+  IModalProps,
+  ModalProvider,
+  useModal,
 } from './components';
 export {
   sprinkles,
