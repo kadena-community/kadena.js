@@ -3,11 +3,10 @@ import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
-import { generateApiHost } from '../../../services/utils/utils';
-
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
+import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledAccountForm,
@@ -37,26 +36,13 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import { generateApiHost } from '@/services/utils/utils';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
   const { network } = useAppContext();
-
-  const chainNetwork: {
-    Mainnet: { server: string; network: string };
-    Testnet: { server: string; network: string };
-  } = {
-    Mainnet: {
-      server: kadenaConstants.MAINNET.API,
-      network: kadenaConstants.MAINNET.NETWORKS.MAINNET01,
-    },
-    Testnet: {
-      server: kadenaConstants.TESTNET.API,
-      network: kadenaConstants.TESTNET.NETWORKS.TESTNET04,
-    },
-  };
 
   const [requestKey, setRequestKey] = useState<string>('');
   const [kadenaXChainGas, setKadenaXChainGas] =

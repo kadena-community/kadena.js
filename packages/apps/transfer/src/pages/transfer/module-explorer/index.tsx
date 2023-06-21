@@ -7,8 +7,6 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 
-import { useAppContext } from '../../../context/app-context';
-
 import {
   StyledAccountForm,
   StyledCodeViewerContainer,
@@ -21,6 +19,8 @@ import {
 } from './styles';
 
 import { Select, SidebarMenu } from '@/components/Global';
+import { chainNetwork } from '@/constants/network';
+import { useAppContext } from '@/context/app-context';
 import {
   type ModuleResult,
   describeModule,
@@ -36,21 +36,6 @@ const GetCode: FC = () => {
   const [results, setResults] = useState<ModuleResult>({});
 
   const { network } = useAppContext();
-
-  const chainNetwork: {
-    Mainnet: { server: string; network: string };
-    Testnet: { server: string; network: string };
-  } = {
-    Mainnet: {
-      server: 'api.chainweb.com',
-      network: 'mainnet01',
-    },
-    Testnet: {
-      server: 'api.testnet.chainweb.com',
-      network: 'testnet04',
-    },
-  };
-
   const numberOfChains = 20;
 
   const getCode = async (
@@ -66,7 +51,6 @@ const GetCode: FC = () => {
         'not-real',
         0.00000001,
       );
-      console.log(data.code);
 
       setResults(data);
     } catch (e) {
