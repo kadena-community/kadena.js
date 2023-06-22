@@ -13,7 +13,7 @@
   "scripts": {
     "build": "heft build --clean",
     "dev:postinstall": "rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write -u",

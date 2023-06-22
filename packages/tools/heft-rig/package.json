@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:md && npm run format:pkg",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "test": ""

@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:pkg && npm run format:src",
     "format:pkg": "sort-package-json",
     "format:src": "prettier mixins profile --write -u",
     "lint": "eslint mixins profile --ext .js,.ts --fix",

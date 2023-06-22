@@ -22,7 +22,7 @@
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write -u",
