@@ -29,6 +29,11 @@ const Home: FC = () => {
       href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
     },
     {
+      icon: Account,
+      title: t('Account Transactions'),
+      href: routes.ACCOUNT_TRANSACTIONS,
+    },
+    {
       icon: Chain,
       title: t('Module explorer'),
       href: routes.MODULE_EXPLORER,
