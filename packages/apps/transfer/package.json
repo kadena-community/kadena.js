@@ -6,11 +6,13 @@
     "build": "npm run generate:icons && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",
-    "format": "prettier locales src --write -u",
+    "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier locales src --write -u",
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "next lint",
     "lint:fix": "eslint --fix .",
-    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "start": "next start",
     "test": "jest --silent"
   },
@@ -68,6 +70,7 @@
     "jest-environment-jsdom": "~29.5.0",
     "next-translate-plugin": "~2.0.5",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "typescript": "5.0.4"
   },
   "volta": {

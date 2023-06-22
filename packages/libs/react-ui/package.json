@@ -22,9 +22,11 @@
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
-    "format": "prettier src --write -u",
+    "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier src --write -u",
     "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
-    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
@@ -70,6 +72,7 @@
     "mini-css-extract-plugin": "~2.7.6",
     "prettier": "~2.8.8",
     "prop-types": "^15.8.1",
+    "sort-package-json": "~2.4.1",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
     "typescript": "5.0.4"
