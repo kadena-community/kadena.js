@@ -22,6 +22,9 @@ jobs:
       - name: Rush install (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js install -t @kadena/kadena-docs
+      - name: Rush Build
+        run: |
+          node common/scripts/install-run-rush.js build -t @kadena/kadena-docs
       - name: Create page tree JSON
         run: |
           node ./../../../common/scripts/install-run-rushx.js createtree
