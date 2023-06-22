@@ -1,7 +1,10 @@
+import { getItem, setItem } from '@/utils/persist';
 import React, {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
+  useLayoutEffect,
   useState,
 } from 'react';
 
@@ -29,6 +32,15 @@ const useAppContext = (): INetworkState => {
 
 const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
   const [network, setNetwork] = useState<Network>('Mainnet');
+
+  useLayoutEffect(() => {
+    const initialNetwork = getItem('network');
+    if (initialNetwork) setNetwork(getItem('network'));
+  }, []);
+
+  useEffect(() => {
+    setItem('network', network);
+  }, [network]);
 
   return (
     <AppContext.Provider value={{ network, setNetwork }}>
