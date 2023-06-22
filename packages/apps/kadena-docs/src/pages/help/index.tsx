@@ -8,7 +8,7 @@ import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
 const Help: FC = () => {
-  return <Heading as="h2">This will be the help page!</Heading>;
+  return <Heading as="h2">This will be the help page</Heading>;
 };
 
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
