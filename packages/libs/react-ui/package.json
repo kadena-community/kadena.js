@@ -19,8 +19,6 @@
     "types"
   ],
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",

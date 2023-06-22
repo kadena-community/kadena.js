@@ -12,11 +12,9 @@
     "pactjs": "lib/index.js"
   },
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "",
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
-    "test": "heft test"
+    "test": "heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
