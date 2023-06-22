@@ -1,4 +1,4 @@
-name: Build chores for Docs
+name: Docs Cypress tests
 
 on:
   push:
