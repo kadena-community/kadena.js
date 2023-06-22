@@ -12,8 +12,6 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:template",
     "build": "npm run prebuild && tsc --noEmit",
     "lint": "eslint ./src --ext .js,.ts --fix",

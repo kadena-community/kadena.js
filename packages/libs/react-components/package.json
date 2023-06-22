@@ -12,8 +12,6 @@
     "types"
   ],
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",

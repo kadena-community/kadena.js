@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "test": "",
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test"
+    "test": ""
   },
   "peerDependencies": {
     "@rushstack/heft": "^0.46.1"

@@ -193,6 +193,7 @@ export async function getContCommand(
   if (proofResponse === undefined) {
     throw new Error('Unable to obtain SPV Proof');
   }
+
   const stringifiedProof = await proofResponse.text();
   const proof = stringifiedProof.replace(/"/g, '');
 

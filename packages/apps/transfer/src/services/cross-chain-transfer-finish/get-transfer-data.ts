@@ -5,7 +5,11 @@ import {
 import { PactCommand } from '@kadena/client';
 import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
-import { validateRequestKey } from '../utils/utils';
+import {
+  convertIntToChainId,
+  generateApiHost,
+  validateRequestKey,
+} from '../utils/utils';
 
 import { Translate } from 'next-translate';
 interface ITransactionData {
@@ -49,9 +53,9 @@ export async function getTransferData({
   networkId: ChainwebNetworkId;
   t: Translate;
 }): Promise<ITransferDataResult> {
-  const keyValid = validateRequestKey(requestKey);
+  const validatedRequestKey = validateRequestKey(requestKey);
 
-  if (!keyValid) {
+  if (validatedRequestKey === undefined) {
     return { error: t('Invalid length of request key') };
   }
 
@@ -61,16 +65,20 @@ export async function getTransferData({
 
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
-      const host = `https://${server}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+      const host = generateApiHost(
+        server,
+        networkId,
+        convertIntToChainId(chainId),
+      );
       return pactCommand.poll(host);
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
     let found: { chainId: number; tx: ICommandResult } | undefined;
     chainInfos.map(async (pactInfo, chainId) => {
-      if (pactInfo[requestKey] !== undefined) {
-        console.log('FOUND2', pactInfo[requestKey]);
-        found = { chainId: chainId, tx: pactInfo[requestKey] };
+      if (pactInfo[validatedRequestKey] !== undefined) {
+        console.log('pactInfo', pactInfo[validatedRequestKey]);
+        found = { chainId: chainId, tx: pactInfo[validatedRequestKey] };
       }
     });
 
