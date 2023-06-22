@@ -48,23 +48,19 @@ const CrossChainTransferFinisher: FC = () => {
   const [kadenaXChainGas, setKadenaXChainGas] =
     useState<string>('kadena-xchain-gas');
   const [gasPrice, setGasPrice] = useState<number>(0.00000001);
-  const [gasLimit, setGasLimit] = useState<number>(kadenaConstants.GAS_LIMIT);
   const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
-
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
-
   const [finalResults, setFinalResults] = useState<TransferResult>({});
   const [txError, setTxError] = useState('');
 
   useEffect(() => {
-    console.log('NETWORK CHANGED');
     setRequestKey('');
     setPollResults({});
   }, [network]);
 
-  const onBlurRequestKey = async (
-    e: React.FocusEvent<HTMLInputElement>,
+  const checkRequestKey = async (
+    e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
     e.preventDefault();
 
@@ -171,7 +167,7 @@ const CrossChainTransferFinisher: FC = () => {
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
-                onBlur: onBlurRequestKey,
+                onKeyUp: checkRequestKey,
                 value: requestKey,
               }}
             />
