@@ -25,5 +25,4 @@ jobs:
       - name: Create page tree JSON
         run: |
           node ./../../../common/scripts/install-run-rushx.js createtree
-        with:
-          working-directory: packages/apps/kadena-docs
+        working-directory: packages/apps/kadena-docs
