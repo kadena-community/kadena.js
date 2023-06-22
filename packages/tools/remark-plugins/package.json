@@ -11,8 +11,11 @@
   },
   "scripts": {
     "build": "tsc",
+    "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use ./lib/index.js",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier src --write -u",
     "lint": "eslint src",
-    "markdown": "remark README.md -o --use ./lib/index.js",
     "test": ""
   },
   "dependencies": {
@@ -35,6 +38,7 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "typescript": "5.0.4",
     "unified": "^10.1.2"
   }

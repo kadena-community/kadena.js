@@ -5,11 +5,13 @@
   "scripts": {
     "build": "rushx postinstall && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
-    "format": "prettier config src --write -u",
+    "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write -u",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "postinstall": "npm run generate:sdk",
     "lint": "next lint",
-    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && rushx start",
@@ -54,6 +56,7 @@
     "@types/node": "^16.0.0",
     "concurrently": "^7.2.2",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "ts-node": "~10.8.2"
   }
 }

@@ -9,9 +9,11 @@
   "scripts": {
     "build": "",
     "dev:postinstall": "mkdir -p ./contracts; rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
-    "format": "prettier config src --write -u",
+    "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "markdown": "remark README.md -o --use @kadena-dev/markdown",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "test": ""
@@ -33,6 +35,7 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "ts-node": "~10.8.2"
   }
 }
