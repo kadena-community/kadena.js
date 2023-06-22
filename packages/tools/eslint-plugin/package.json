@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "heft build --clean",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:pkg && npm run format:src",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write -u",
     "lint-staged": "lint-staged",

@@ -19,7 +19,7 @@
     "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"rushx build:grammar\"",
     "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write -u",

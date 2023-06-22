@@ -22,7 +22,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
-    "format": "pnpm run /^format:.*/",
+    "format": "npm run format:pkg && npm run format:src",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write -u",
     "lint": "eslint src --ext .js,.ts --fix",
