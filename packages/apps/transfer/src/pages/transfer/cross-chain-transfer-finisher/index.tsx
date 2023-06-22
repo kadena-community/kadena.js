@@ -1,4 +1,4 @@
-import { ChainwebNetworkId, poll, spv } from '@kadena/chainweb-node-client';
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
@@ -38,7 +38,7 @@ import {
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { generateApiHost } from '@/services/utils/utils';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
@@ -56,6 +56,12 @@ const CrossChainTransferFinisher: FC = () => {
 
   const [finalResults, setFinalResults] = useState<TransferResult>({});
   const [txError, setTxError] = useState('');
+
+  useEffect(() => {
+    console.log('NETWORK CHANGED');
+    setRequestKey('');
+    setPollResults({});
+  }, [network]);
 
   const onBlurRequestKey = async (
     e: React.FocusEvent<HTMLInputElement>,

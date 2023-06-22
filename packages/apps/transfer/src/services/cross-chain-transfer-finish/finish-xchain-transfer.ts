@@ -58,9 +58,6 @@ export async function finishXChainTransfer(
       network,
     );
 
-    // remove double quotes from stringified proof
-    contCommand.proof = contCommand.proof.slice(1, -1);
-
     contCommand.createCommand();
 
     const localResult = await contCommand.local(host, {
