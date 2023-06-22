@@ -1,6 +1,13 @@
 # Change Log - @kadena-dev/eslint-plugin
 
-This log was last generated on Tue, 13 Jun 2023 13:17:28 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Jun 2023 09:46:33 GMT and should not be manually modified.
+
+## 0.0.4
+Thu, 22 Jun 2023 09:46:33 GMT
+
+### Patches
+
+- Fixate TS version to v5.0.4
 
 ## 0.0.3
 Tue, 13 Jun 2023 13:17:28 GMT

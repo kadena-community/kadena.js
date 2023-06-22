@@ -1,13 +1,11 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
   "scripts": {
     "build": "",
-    "_phase:build": "npm run build",
     "lint": "eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
-    "_phase:test": "npm run test",
     "test": ""
   },
   "dependencies": {
