@@ -45,6 +45,7 @@ export const ConsentModal: FC = () => {
 
     renderModal(
       <Notification
+        expand
         displayCloseButton={false}
         color="primary"
         title="Cookie consent"
