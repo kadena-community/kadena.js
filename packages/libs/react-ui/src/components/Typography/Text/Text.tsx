@@ -45,8 +45,6 @@ export const Text: FC<ITextProps> = ({
       return <p className={classList}>{children}</p>;
     case 'code':
       return <code className={classList}>{children}</code>;
-    case 'label':
-      return <label className={classList}>{children}</label>;
     case 'span':
     default:
       return <span className={classList}>{children}</span>;
