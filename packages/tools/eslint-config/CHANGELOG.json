@@ -2,6 +2,32 @@
   "name": "@kadena-dev/eslint-config",
   "entries": [
     {
+      "version": "0.0.7",
+      "tag": "@kadena-dev/eslint-config_v0.0.7",
+      "date": "Thu, 22 Jun 2023 09:46:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove next/core-web-vitals otherwise it doesn't work"
+          },
+          {
+            "comment": "turnoff typedef-var lint rule for next projects"
+          },
+          {
+            "comment": "Fixate TS version to v5.0.4"
+          },
+          {
+            "comment": "remove the unnecessary proptypes rule from eslint config"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.6",
       "tag": "@kadena-dev/eslint-config_v0.0.6",
       "date": "Tue, 13 Jun 2023 13:17:28 GMT",

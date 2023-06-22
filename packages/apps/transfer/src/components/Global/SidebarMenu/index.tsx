@@ -12,7 +12,7 @@ export const SidebarMenu: FC = (props) => {
   const firstPath = pathname.split('/')[1];
 
   const menuItems: {
-    [key: string]: Array<{ icon: any; title: string; href: string }>;
+    [key: string]: Array<{ icon: unknown; title: string; href: string }>;
   } = {
     transfer: [
       {
@@ -24,6 +24,11 @@ export const SidebarMenu: FC = (props) => {
         icon: Chain,
         title: t('Cross Chain Transfer Finisher'),
         href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
+      },
+      {
+        icon: Account,
+        title: t('Account Transactions'),
+        href: routes.ACCOUNT_TRANSACTIONS,
       },
       {
         icon: Chain,

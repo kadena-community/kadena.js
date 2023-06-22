@@ -1,26 +1,26 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
   "scripts": {
     "build": "",
-    "_phase:build": "npm run build",
-    "lint": "eslint ./mixins --ext .js,.ts --fix && npx eslint ./profile --ext .js,.ts --fix",
-    "_phase:test": "npm run test",
+    "format": "prettier mixins profile --write -u",
+    "lint": "eslint mixins profile --ext .js,.ts --fix",
     "test": ""
   },
   "dependencies": {
     "@kadena-dev/eslint-plugin": "workspace:*",
+    "@next/eslint-plugin-next": "^12.0.8",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "~7.31.11",
-    "eslint-plugin-simple-import-sort": "~7.0.0",
-    "@next/eslint-plugin-next": "^12.0.8"
+    "eslint-plugin-simple-import-sort": "~7.0.0"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "~3.3.0",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "typescript": "5.0.4"
   }
 }

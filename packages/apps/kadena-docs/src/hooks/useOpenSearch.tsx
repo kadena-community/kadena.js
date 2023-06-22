@@ -1,15 +1,26 @@
+import { Card, useModal } from '@kadena/react-ui';
+
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 
 interface IReturnProps {
   handleOpenSearch: () => void;
 }
 
+// @TODO: this is temporary to test if the component works in Docs
+const Modal: FC = () => (
+  <>
+    <Card>sdfsdf</Card>
+    <Card>sdfsdf</Card>
+  </>
+);
+
 export const useOpenSearch = (): IReturnProps => {
+  const { renderModal } = useModal();
   const handleOpenSearch = (): void => {
     // TODO: new story will use, probably a context to open a modal for the search
-    alert('open search modal');
     analyticsEvent(EVENT_NAMES['click:open_searchmodal']);
+    renderModal(<Modal />);
   };
 
   useEffect(() => {

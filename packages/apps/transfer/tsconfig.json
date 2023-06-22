@@ -2,6 +2,7 @@
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
     "types": [
+      "heft-jest",
       "jest",
       "node",
       "@testing-library/jest-dom",
@@ -19,7 +20,8 @@
     "declarationMap": false,
     "jsx": "preserve",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@stitches/react": ["./node_modules/@stitches/react"]
     },
     "allowJs": true
   },
