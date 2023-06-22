@@ -36,7 +36,9 @@
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
     "encoding": "~0.1.13",
-    "yaml": "~2.1.1"
+    "yaml": "~2.1.1",
+    "@walletconnect/types": "~2.8.1",
+    "@walletconnect/sign-client": "~2.8.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

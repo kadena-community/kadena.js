@@ -5,13 +5,13 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { IPactCommand } from '../../interfaces/IPactCommand';
-import { ICommandBuilder } from '../../pact';
-import { Pact } from '../../pactCreator';
+import { IPactCommand } from '../../../interfaces/IPactCommand';
+import { ICommandBuilder } from '../../../pact';
+import { Pact } from '../../../pactCreator';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
-} from '../../signing-api/v1/quicksign';
+} from '../../../signing-api/v1/quicksign';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 import fetch from 'cross-fetch';

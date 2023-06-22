@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Adds signWithWalletConnect and quicksignWithWalletConnect",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
