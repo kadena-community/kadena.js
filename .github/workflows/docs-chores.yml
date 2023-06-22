@@ -1,22 +1,25 @@
-name: Build chore for Docs
+name: Build chores for Docs
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  push:
+    paths:
+      - packages/apps/kadena-docs/*/**
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        NodeVersion: [16]
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.NodeVersion }}
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Cypress run
+      - uses: actions/checkout@master
+      - name: Install dependencies
         uses: cypress-io/github-action@v5
         with:
-          start: npm dev
+          # just perform install
+          runTests: false
+      - run: yarn lint
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          # we have already installed all dependencies above
+          install: false
+          # Cypress tests and config file are in "e2e" folder
+          working-directory: e2e
