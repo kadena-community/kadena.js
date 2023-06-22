@@ -981,14 +981,4 @@ export const menuData = [
     isMenuOpen: false,
     isActive: false,
   },
-  {
-    children: [],
-    root: '/docs/code-of-conduct',
-    title: 'Code of Conduct',
-    description: 'Kadena Code of Conduct',
-    label: 'Code of Conduct',
-    layout: 'normal',
-    isMenuOpen: false,
-    isActive: false,
-  },
 ];
