@@ -1,7 +1,17 @@
-name: Rush CI (changelog, retest)
+name: Rush CI (changelog, build, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+env:
+  AFFECTED_OR_ALL: |
+    ${{ github.ref_name == 'master' && ' ' || format('--to git:origin/{0}', github.base_ref)  }}
+
 jobs:
   build:
     name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
@@ -18,6 +28,7 @@ jobs:
           fetch-depth: 2
 
       - name: Fetch base branch
+        if: github.ref_name != 'master'
         run: git fetch origin ${{ github.base_ref }}
 
       - uses: actions/setup-node@v3
@@ -40,22 +51,28 @@ jobs:
           key: cache-pnpm-${{ runner.os }}
 
       - name: List impacted packages
+        if: github.ref_name != 'master'
         run: |
-          node common/scripts/install-run-rush.js list --to git:origin/${{ github.base_ref }}
+          node common/scripts/install-run-rush.js list ${{ env.AFFECTED_OR_ALL }}
 
       - name: Rush install (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js install --to git:origin/${{ github.base_ref }}
+          node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
 
-      - name: Rush retest (install-run-rush)
+      - name: Rush build + test (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js build --verbose --to git:origin/${{ github.base_ref }}
-          node common/scripts/install-run-rush.js retest --verbose --to git:origin/${{ github.base_ref }}
+          node common/scripts/install-run-rush.js build --verbose ${{ env.AFFECTED_OR_ALL }}
+          node common/scripts/install-run-rush.js test --verbose ${{ env.AFFECTED_OR_ALL }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
 
+      - name: Rush format (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js format --check --verbose --to git:origin/${{ github.base_ref }}
+
       - name: Rush verify Change Logs (install-run-rush)
+        if: github.ref_name != 'master'
         run: |
           node common/scripts/install-run-rush.js change --verify --target-branch origin/${{ github.base_ref }}
