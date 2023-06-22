@@ -14,7 +14,7 @@
   "scripts": {
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
-    "test": "heft test --no-build"
+    "test": "heft test --no-build --config ./jest.config.json"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
