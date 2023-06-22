@@ -16,11 +16,7 @@
         { "name": "coin.GAS", "args": [] },
         {
           "name": "coin.TRANSFER",
-          "args": [
-            "{{from-acct}}",
-            "{{to-acct}}",
-            "{{amount}}"
-          ]
+          "args": ["{{from-acct}}", "{{to-acct}}", "{{amount}}"]
         }
       ]
     }

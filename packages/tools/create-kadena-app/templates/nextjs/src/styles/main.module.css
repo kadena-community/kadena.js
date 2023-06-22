@@ -43,7 +43,8 @@
   align-items: flex-start;
 }
 
-.cardSection input, .cardSection textarea {
+.cardSection input,
+.cardSection textarea {
   width: 300px;
 }
 

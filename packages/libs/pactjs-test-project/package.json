@@ -12,28 +12,14 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:template",
     "build": "npm run prebuild && tsc --noEmit",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:template": "pactjs template-generate --clean --file src/example-templates/tx-templates --out src/example-templates/generated-tx-templates",
     "test": ""
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -55,6 +41,7 @@
     "eslint": "^8.15.0",
     "node-fetch": "~2.6.2",
     "npm-run-all": "~4.1.5",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2"
   }
 }

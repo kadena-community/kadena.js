@@ -7,26 +7,13 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "",
     "dev:postinstall": "mkdir -p ./contracts; rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "test": ""
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -43,6 +30,7 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2"
   }
 }

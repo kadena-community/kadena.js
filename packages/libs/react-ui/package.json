@@ -19,27 +19,13 @@
     "types"
   ],
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
-    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
-    "lint-staged": "lint-staged",
+    "format": "prettier src --write -u",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@vanilla-extract/css": "~1.11.1",
@@ -80,6 +66,7 @@
     "eslint": "^8.15.0",
     "eslint-plugin-storybook": "~0.6.12",
     "mini-css-extract-plugin": "~2.7.6",
+    "prettier": "~2.8.8",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
