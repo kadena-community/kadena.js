@@ -1,17 +1,22 @@
 name: Build chores for Docs
 on:
+  pull_request:
+  workflow_dispatch:
   push:
-    paths:
-      - packages/apps/kadena-docs/*/**
+    branches:
+      - master
+
+# on:
+#  push:
+#    paths:
+#      - packages/apps/kadena-docs/*/**
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latestgit
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
