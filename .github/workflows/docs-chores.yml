@@ -24,6 +24,6 @@ jobs:
           node common/scripts/install-run-rush.js install -t @kadena/kadena-docs
       - name: Create page tree JSON
         run: |
-          node common/scripts/install-run-rushx.js createtree
+          node ./../../../common/scripts/install-run-rushx.js createtree
         with:
           working-directory: packages/apps/kadena-docs
