@@ -1,7 +1,7 @@
 import AceViewerComponent from './index';
+import * as ace from 'ace-builds/src-noconflict/ace';
 
 import { render, screen } from '@testing-library/react';
-import * as ace from 'ace-builds/src-noconflict/ace';
 import React from 'react';
 
 beforeAll(() => {

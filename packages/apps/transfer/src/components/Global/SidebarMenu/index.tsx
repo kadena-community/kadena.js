@@ -12,7 +12,7 @@ export const SidebarMenu: FC = (props) => {
   const firstPath = pathname.split('/')[1];
 
   const menuItems: {
-    [key: string]: Array<{ icon: unknown; title: string; href: string }>;
+    [key: string]: Array<{ icon: any; title: string; href: string }>;
   } = {
     transfer: [
       {

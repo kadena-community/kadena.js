@@ -5,7 +5,7 @@ import { ChainId } from '@kadena/types';
 import { kadenaConstants } from '@/constants/kadena';
 import { generateApiHost } from '@/services/utils/utils';
 
-export interface IModuleResult {
+export interface ModuleResult {
   reqKey?: string;
   status?: string;
   code?: string;
@@ -19,7 +19,7 @@ export const describeModule = async (
   gasPrice: number,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<IModuleResult> => {
+): Promise<ModuleResult> => {
   const pactCommand = new PactCommand();
   pactCommand.code = createExp(`describe-module "${moduleName}"`);
 

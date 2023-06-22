@@ -80,7 +80,7 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
           </StyledMainContent>
         </Grid.Item>
       </Grid.Container>
-      {Boolean(footer) && <StyledFooter>{footer}</StyledFooter>}
+      {!!footer && <StyledFooter>{footer}</StyledFooter>}
     </StyledMainLayout>
   );
 };

@@ -8,11 +8,11 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-export interface IAceEditorProps {
+export interface AceEditorProps {
   code?: string;
 }
 
-const AceViewerComponent: FC<IAceEditorProps> = ({ code }) => (
+const AceViewerComponent: FC<AceEditorProps> = ({ code }) => (
   <AceEditor
     mode="clojure"
     theme="one_dark"

@@ -15,7 +15,7 @@ export const NavLink = ({
   href: string;
   children: ReactNode;
   className?: string;
-}): JSX.Element => {
+}) => {
   const { pathname } = useRouter();
   const isActive = pathname === href;
 

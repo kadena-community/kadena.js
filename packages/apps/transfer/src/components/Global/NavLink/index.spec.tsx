@@ -9,9 +9,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 describe('NavLink', () => {
-  const mockUseRouter = useRouter as jest.Mock;
   test('renders correctly when active', () => {
-    mockUseRouter.mockImplementation(() => ({
+    useRouter.mockImplementation(() => ({
       pathname: '/active',
     }));
 
@@ -35,7 +34,7 @@ describe('NavLink', () => {
   });
 
   test('renders correctly when not active', () => {
-    mockUseRouter.mockImplementation(() => ({
+    useRouter.mockImplementation(() => ({
       pathname: '/not-active',
     }));
 

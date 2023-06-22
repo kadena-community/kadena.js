@@ -2,12 +2,12 @@ import { SystemIcons } from '@kadena/react-components';
 
 import { Select } from './index';
 
-import { render } from '@testing-library/react';
+import { getByTestId, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 describe('Select', () => {
-  test('renders correctly with all props', async () => {
+  test('renders correctly with all props', () => {
     const handleChange = jest.fn();
 
     const { getByTestId } = render(
@@ -38,7 +38,7 @@ describe('Select', () => {
     expect(select).toHaveValue('option1');
 
     // Select an option and trigger change event
-    await userEvent.selectOptions(select, 'option2');
+    userEvent.selectOptions(select, 'option2');
     expect(handleChange).toHaveBeenCalledTimes(1);
   });
 

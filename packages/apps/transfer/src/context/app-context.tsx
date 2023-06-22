@@ -7,27 +7,27 @@ import React, {
 
 export type Network = 'Mainnet' | 'Testnet';
 
-interface INetworkState {
+interface NetworkState {
   network: Network;
   setNetwork(network: Network): void;
 }
 
-const AppContext = createContext<INetworkState>({
+const AppContext = createContext<NetworkState>({
   network: 'Mainnet',
   setNetwork: () => {},
 });
 
-const useAppContext = (): INetworkState => {
+const useAppContext = (): NetworkState => {
   const context = useContext(AppContext);
 
-  if (context === undefined) {
+  if (!context) {
     throw new Error('Please use AppContextProvider in parent component');
   }
 
   return context;
 };
 
-const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
+const AppContextProvider = (props: PropsWithChildren) => {
   const [network, setNetwork] = useState<Network>('Mainnet');
 
   return (

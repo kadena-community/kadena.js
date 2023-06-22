@@ -50,7 +50,7 @@ export const Select: FC<ISelectProps> = ({
   const RightPanel = rightPanel;
   const LeftPanel = leftPanel;
 
-  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     if (onChange) {
       onChange(event);
     }

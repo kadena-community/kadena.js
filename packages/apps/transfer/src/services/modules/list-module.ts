@@ -12,7 +12,7 @@ export const listModules = async (
   gasPrice: number,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<unknown> => {
+) => {
   // 1 - Create a new PactCommand
   const pactCommand = new PactCommand();
 
@@ -27,6 +27,6 @@ export const listModules = async (
 
   // 4 - Call the Pact local endpoint to retrieve the result
   return await pactCommand.local(
-    kadenaConstants.TESTNET.apiHost({ networkId, chainId }),
+    kadenaConstants.TESTNET.API_HOST({ networkId, chainId }),
   );
 };
