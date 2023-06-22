@@ -3,9 +3,14 @@ import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ICommand } from '../pact';
 
 import { ILocalOptions, local, LocalResponse } from './utils/local';
-import { IPollUntilOptions, poll, PollFunction, pollUntil } from './utils/poll';
-import { ICommandRequest } from './utils/request';
-import { send } from './utils/send';
+import {
+  ICommandRequest,
+  INetworkOptions,
+  IPollOptions,
+} from './utils/request';
+import { getSpv, pollSpv } from './utils/spv';
+import { getStatus, PollFunction, pollStatus } from './utils/status';
+import { submit } from './utils/submit';
 
 const mergeAll = <T extends object>(results: Array<T>): T =>
   results.reduce((acc, data) => ({ ...acc, ...data }), {} as T);
@@ -19,11 +24,29 @@ interface IClient {
     body: ICommandRequest,
     options: T,
   ) => Promise<LocalResponse<T>>;
-  send: (
+  submit: (
     body: ICommandRequest[],
-  ) => Promise<[requestIds: string[], poll: () => Promise<IPollResponse>]>;
-  poll: () => Promise<IPollResponse>;
-  pollUntil: (options?: IPollUntilOptions) => Promise<IPollResponse>;
+  ) => Promise<
+    [requestKeys: string[], pollStatus: () => Promise<IPollResponse>]
+  >;
+  pollStatus: (
+    requestKeys?: string[],
+    options?: IPollOptions & INetworkOptions,
+  ) => Promise<IPollResponse>;
+  getStatus: (
+    requestKeys?: string[],
+    options?: INetworkOptions,
+  ) => Promise<IPollResponse>;
+  pollSpv: (
+    requestKey: string,
+    targetChainId: string,
+    options?: IPollOptions & INetworkOptions,
+  ) => Promise<string>;
+  getSpv: (
+    requestKey: string,
+    targetChainId: string,
+    options?: INetworkOptions,
+  ) => Promise<string>;
 }
 
 interface IGetClient {
@@ -38,32 +61,39 @@ interface IGetClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const getRequestStorage = () => {
-  const storage = new Map<
-    string,
-    Array<{ requestKey: string; chainId: string }>
-  >();
+const getRequestStorage = (initial?: Map<string, string>) => {
+  const storage = new Map<string, string>(initial);
 
   return {
-    add: (hostUrl: string, requestKeys: string[], chainId: string) => {
+    add: (hostUrl: string, requestKeys: string[]) => {
       const list = storage.get(hostUrl) ?? [];
-      storage.set(hostUrl, [
-        ...list,
-        ...requestKeys.map((requestKey) => ({ requestKey, chainId })),
-      ]);
+      requestKeys.forEach((requestKey) => {
+        storage.set(requestKey, hostUrl);
+      });
     },
-    remove: (hostUrl: string, requestKeys: string[]) => {
-      const list = storage.get(hostUrl);
-      if (list === undefined) return;
-      const filteredList = list.filter(
-        ({ requestKey }) => !requestKeys.includes(requestKey),
-      );
-      storage.set(hostUrl, filteredList);
+    remove: (requestKeys: string[]) => {
+      requestKeys.forEach((requestKey) => {
+        storage.delete(requestKey);
+      });
     },
-    getEntries: () => [...storage.entries()],
-    get: (key: string) => storage.get(key),
-
-    poll,
+    groupByHost: () => {
+      const byHost = new Map<string, string[]>();
+      storage.forEach((url, requestKey) => {
+        const prev = byHost.get(url) ?? [];
+        byHost.set(url, [...prev, requestKey]);
+      });
+      return [...byHost.entries()];
+    },
+    getByHost: (hostUrl: string) => {
+      const list: string[] = [];
+      storage.forEach((url, requestKey) => {
+        if (url === hostUrl) {
+          list.push(requestKey);
+        }
+      });
+      return list;
+    },
+    get: (requestKey: string) => storage.get(requestKey),
   };
 };
 
@@ -73,27 +103,37 @@ export const getClient: IGetClient = (
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
 
-  function doPoll(pollCallback: PollFunction): () => Promise<IPollResponse> {
-    return async (options?: IPollUntilOptions) => {
+  function checkPendingRequests(statusCallback: PollFunction) {
+    return async (
+      requestKeys?: string[],
+      options?: IPollOptions & INetworkOptions,
+    ) => {
+      let requestStorage = storage;
+      if (requestKeys !== undefined) {
+        const map = new Map<string, string>(
+          requestKeys.map((requestKey) => [
+            requestKey,
+            storage.get(requestKey) ??
+              getHost(options?.networkId, options?.chainId),
+          ]),
+        );
+        requestStorage = getRequestStorage(map);
+      }
       const results = await Promise.all(
-        storage.getEntries().map(async ([hostUrl, requestIds]) => {
-          const result = await pollCallback(
-            hostUrl,
-            requestIds.map(({ requestKey }) => requestKey),
-            options,
-          );
-          return [hostUrl, result] as const;
-        }),
+        requestStorage
+          .groupByHost()
+          .map(async ([hostUrl, requestKeys]) =>
+            statusCallback(hostUrl, requestKeys, options),
+          ),
       );
 
-      Object.values(results).forEach(([hostUrl, result]) =>
-        storage.remove(
-          hostUrl,
-          Object.values(result).map(({ reqKey }) => reqKey),
-        ),
-      );
+      // merge all of the result in one object
+      const mergedResults = mergeAll(results);
 
-      return mergeAll(results.map(([, result]) => result));
+      // remove from the pending requests storage
+      storage.remove(Object.values(mergedResults).map(({ reqKey }) => reqKey));
+
+      return mergedResults;
     };
   }
 
@@ -103,20 +143,36 @@ export const getClient: IGetClient = (
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
       return local(hostUrl, body, options);
     },
-    send: async (body) => {
+    submit: async (body) => {
       const [first] = body;
       if (first === undefined) {
         throw new Error('EMPTY_COMMAND_LIST');
       }
       const cmd: ICommand = JSON.parse(first.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
-      const requestIds = await send(hostUrl, body);
-      storage.add(hostUrl, requestIds, cmd.meta.chainId);
+      const requestIds = await submit(hostUrl, body);
+      storage.add(hostUrl, requestIds);
 
-      return [requestIds, () => pollUntil(hostUrl, requestIds)];
+      return [requestIds, () => pollStatus(hostUrl, requestIds)];
     },
-    poll: doPoll(poll),
-    pollUntil: doPoll(pollUntil),
+    pollStatus: checkPendingRequests(pollStatus),
+    getStatus: checkPendingRequests(getStatus),
+
+    pollSpv: (requestKey, targetChainId, options) => {
+      return pollSpv(
+        getHost(options?.networkId, options?.chainId),
+        requestKey,
+        targetChainId,
+        options,
+      );
+    },
+    getSpv: (requestKey, targetChainId, options) => {
+      return getSpv(
+        getHost(options?.networkId, options?.chainId),
+        requestKey,
+        targetChainId,
+      );
+    },
   };
 
   return client;
