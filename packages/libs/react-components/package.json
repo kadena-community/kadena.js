@@ -15,21 +15,10 @@
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@radix-ui/react-switch": "^1.0.2",
@@ -63,6 +52,7 @@
     "@types/node": "^16.0.0",
     "@types/react": "^18.0.30",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
     "typescript": "5.0.4"
