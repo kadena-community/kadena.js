@@ -39,9 +39,7 @@
     "/local": {
       "post": {
         "description": "Blocking/sync call to submit a command for non-transactional execution. In a\nblockchain environment this would be a node-local “dirty read”, which can\neither serve as a node-local repl execution, or fully gassed transaction\nsimulation and transaction validation. Any database writes or changes to the\nenvironment are rolled back.\n",
-        "tags": [
-          "endpoint-local"
-        ],
+        "tags": ["endpoint-local"],
         "summary": "local",
         "requestBody": {
           "content": {
@@ -101,18 +99,14 @@
     "/send": {
       "post": {
         "description": "Asynchronous submission of one or more public (unencrypted) commands\nto the blockchain for execution.\n",
-        "tags": [
-          "endpoint-send"
-        ],
+        "tags": ["endpoint-send"],
         "summary": "send",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "cmds"
-                ],
+                "required": ["cmds"],
                 "properties": {
                   "cmds": {
                     "type": "array",
@@ -133,9 +127,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "requestKeys"
-                  ],
+                  "required": ["requestKeys"],
                   "properties": {
                     "requestKeys": {
                       "description": "Request keys for use with `poll` or `listen` to retrieve results.",
@@ -169,17 +161,13 @@
       "post": {
         "description": "Allows polling for one or more command results by request key.\n",
         "summary": "poll",
-        "tags": [
-          "endpoint-poll"
-        ],
+        "tags": ["endpoint-poll"],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "requestKeys"
-                ],
+                "required": ["requestKeys"],
                 "properties": {
                   "requestKeys": {
                     "type": "array",
@@ -214,17 +202,13 @@
       "post": {
         "description": "Blocking request for single command result.\n",
         "summary": "listen",
-        "tags": [
-          "endpoint-listen"
-        ],
+        "tags": ["endpoint-listen"],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "listen"
-                ],
+                "required": ["listen"],
                 "properties": {
                   "listen": {
                     "$ref": "#/components/schemas/request-key"
@@ -251,9 +235,7 @@
     "/private": {
       "post": {
         "description": "Asynchronous submission of a single addressed command which\nwill be transmitted with end-to-end encryption only between addressed entity nodes.\nPrivate payload metadata required.\n",
-        "tags": [
-          "endpoint-private"
-        ],
+        "tags": ["endpoint-private"],
         "summary": "private",
         "requestBody": {
           "content": {
@@ -319,9 +301,7 @@
       "post": {
         "description": "Blocking request to fetch spv proof of a cross chain transaction. Request must be sent to the chain where the transaction is initiated.\n",
         "summary": "spv",
-        "tags": [
-          "endpoint-spv"
-        ],
+        "tags": ["endpoint-spv"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -362,16 +342,10 @@
     "schemas": {
       "command": {
         "title": "Pact Command",
-        "tags": [
-          "model-command"
-        ],
+        "tags": ["model-command"],
         "description": "Represents a single blockchain Pact transaction.",
         "type": "object",
-        "required": [
-          "cmd",
-          "hash",
-          "sigs"
-        ],
+        "required": ["cmd", "hash", "sigs"],
         "example": {
           "hash": "H6XjdPHzMai2HLa3_yVkXfkFYMgA0bGfsB0kOsHAMuI",
           "sigs": [
@@ -411,17 +385,9 @@
       },
       "payload": {
         "description": "Pact Command Payloads are encoded as strings in Pact commands, and contain all\nnon-malleable data for a transaction.\n",
-        "tags": [
-          "model-payload"
-        ],
+        "tags": ["model-payload"],
         "type": "object",
-        "required": [
-          "payload",
-          "meta",
-          "signers",
-          "networkId",
-          "nonce"
-        ],
+        "required": ["payload", "meta", "signers", "networkId", "nonce"],
         "example": {
           "payload": {
             "exec": {
@@ -435,11 +401,7 @@
               "clist": [
                 {
                   "name": "coin.TRANSFER",
-                  "args": [
-                    "Alice",
-                    "Bob",
-                    10
-                  ]
+                  "args": ["Alice", "Bob", 10]
                 }
               ]
             }
@@ -545,10 +507,7 @@
                 "properties": {
                   "address": {
                     "description": "Private message envelope address. Required only for private messages, otherwise null.",
-                    "required": [
-                      "from",
-                      "to"
-                    ],
+                    "required": ["from", "to"],
                     "properties": {
                       "from": {
                         "type": "string",
@@ -574,9 +533,7 @@
             "type": "array",
             "items": {
               "title": "Signer",
-              "required": [
-                "pubKey"
-              ],
+              "required": ["pubKey"],
               "properties": {
                 "pubKey": {
                   "type": "string",
@@ -589,10 +546,7 @@
                 "scheme": {
                   "type": "string",
                   "description": "Signer scheme. Default is ED25519.",
-                  "enum": [
-                    "ED25519",
-                    "ETH"
-                  ]
+                  "enum": ["ED25519", "ETH"]
                 },
                 "clist": {
                   "description": "List of capabilities associated with/installed by this signer.",
@@ -615,10 +569,7 @@
           "networkId": {
             "description": "Backend-specific identifier of target network.",
             "type": "string",
-            "enum": [
-              "mainnet01",
-              "testnet04"
-            ]
+            "enum": ["mainnet01", "testnet04"]
           },
           "nonce": {
             "description": "Arbitrary user-supplied value.",
@@ -629,10 +580,7 @@
       "spv-object": {
         "description": "Object consisting of data required to fetch proof of a cross chain transaction\n",
         "type": "object",
-        "required": [
-          "requestKey",
-          "targetChainId"
-        ],
+        "required": ["requestKey", "targetChainId"],
         "properties": {
           "requestKey": {
             "type": "string",
@@ -648,9 +596,7 @@
       },
       "command-result": {
         "title": "Command Result",
-        "tags": [
-          "model-command-result"
-        ],
+        "tags": ["model-command-result"],
         "example": {
           "gas": 123,
           "result": {
@@ -665,11 +611,7 @@
           "events": [
             {
               "name": "TRANSFER",
-              "params": [
-                "Alice",
-                "Bob",
-                10
-              ],
+              "params": ["Alice", "Bob", 10],
               "module": "coin",
               "moduleHash": "ut_J_ZNkoyaPUEJhiwVeWnkSQn9JT9sQCWKdjjVVrWo"
             }
@@ -677,13 +619,7 @@
         },
         "description": "The result of attempting to execute a single well-formed Pact command.",
         "type": "object",
-        "required": [
-          "reqKey",
-          "result",
-          "logs",
-          "metaData",
-          "gas"
-        ],
+        "required": ["reqKey", "result", "logs", "metaData", "gas"],
         "properties": {
           "reqKey": {
             "$ref": "#/components/schemas/request-key"
@@ -696,9 +632,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "success"
-                    ]
+                    "enum": ["success"]
                   },
                   "data": {
                     "$ref": "#/components/schemas/pact-value"
@@ -711,9 +645,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "failure"
-                    ]
+                    "enum": ["failure"]
                   },
                   "error": {
                     "$ref": "#/components/schemas/pact-error"
@@ -860,9 +792,7 @@
       },
       "pact-value": {
         "description": "Pact value compound type.",
-        "tags": [
-          "model-pact-value"
-        ],
+        "tags": ["model-pact-value"],
         "anyOf": [
           {
             "title": "String",
@@ -882,9 +812,7 @@
                 "title": "Object",
                 "description": "When JSON number precision is not enough, you can use an object with the number's decimal representation as a string\n",
                 "type": "object",
-                "required": [
-                  "decimal"
-                ],
+                "required": ["decimal"],
                 "properties": {
                   "decimal": {
                     "type": "string",
@@ -899,9 +827,7 @@
             "title": "Integer",
             "description": "There are two alternative JSON representations for Integer.",
             "type": "object",
-            "required": [
-              "int"
-            ],
+            "required": ["int"],
             "properties": {
               "int": {
                 "oneOf": [
@@ -937,9 +863,7 @@
           {
             "title": "Time",
             "type": "object",
-            "required": [
-              "time"
-            ],
+            "required": ["time"],
             "properties": {
               "time": {
                 "type": "string",
@@ -975,10 +899,7 @@
               {
                 "title": "Keyset",
                 "description": "A keyset forms a rule made from a set of key/address values and a predicate function.\nWhen enforced, transaction signer list is evaluated against keyset.\n",
-                "required": [
-                  "keys",
-                  "pred"
-                ],
+                "required": ["keys", "pred"],
                 "properties": {
                   "keys": {
                     "type": "array",
@@ -996,9 +917,7 @@
               {
                 "title": "Keyset Reference",
                 "description": "Refers to a keyset in the Pact environment/database installed with `define-keyset`.",
-                "required": [
-                  "keysetref"
-                ],
+                "required": ["keysetref"],
                 "properties": {
                   "keysetref": {
                     "type": "string",
@@ -1009,10 +928,7 @@
               {
                 "title": "User Guard",
                 "description": "Closure of call to \"guard function\" which is a boolean user function with arguments.\n",
-                "required": [
-                  "fun",
-                  "args"
-                ],
+                "required": ["fun", "args"],
                 "properties": {
                   "fun": {
                     "description": "Fully-qualified guard function name.",
@@ -1031,16 +947,10 @@
                 "title": "Module Guard",
                 "type": "object",
                 "description": "Autonomous guard that only allows module code access, or requires module admin.\n",
-                "required": [
-                  "moduleName",
-                  "name"
-                ],
+                "required": ["moduleName", "name"],
                 "properties": {
                   "moduleName": {
-                    "required": [
-                      "name",
-                      "namespace"
-                    ],
+                    "required": ["name", "namespace"],
                     "properties": {
                       "name": {
                         "type": "string",
@@ -1062,10 +972,7 @@
                 "title": "Pact Guard",
                 "type": "object",
                 "description": "Autonomous guard that only allows a particular pact execution, referenced by ID, to pass.\nTwo executions of the same defpact code result in distinct pact IDs. A pact guard\ncreated inside of this execution will only pass when running that particular pact.\n",
-                "required": [
-                  "pactId",
-                  "name"
-                ],
+                "required": ["pactId", "name"],
                 "properties": {
                   "pactId": {
                     "description": "Defpact execution ID.",
@@ -1092,9 +999,7 @@
           "module": {
             "type": "object",
             "description": "Qualified module name of event defcap.",
-            "required": [
-              "name"
-            ],
+            "required": ["name"],
             "properties": {
               "name": {
                 "type": "string",
@@ -1121,9 +1026,7 @@
       "pact-error": {
         "description": "Verbose object describing failed execution.\n",
         "type": "object",
-        "required": [
-          "message"
-        ],
+        "required": ["message"],
         "properties": {
           "message": {
             "type": "string",
@@ -1189,11 +1092,7 @@
         "events": [
           {
             "name": "TRANSFER",
-            "params": [
-              "Alice",
-              "Bob",
-              10
-            ],
+            "params": ["Alice", "Bob", 10],
             "module": "coin",
             "moduleHash": "ut_J_ZNkoyaPUEJhiwVeWnkSQn9JT9sQCWKdjjVVrWo"
           }
@@ -1212,11 +1111,7 @@
             "clist": [
               {
                 "name": "coin.TRANSFER",
-                "args": [
-                  "Alice",
-                  "Bob",
-                  10
-                ]
+                "args": ["Alice", "Bob", 10]
               }
             ]
           }
@@ -1245,16 +1140,12 @@
     {
       "name": "private-api",
       "x-displayName": "Private Pact API",
-      "tags": [
-        "endpoint-private"
-      ]
+      "tags": ["endpoint-private"]
     },
     {
       "name": "spv-api",
       "x-displayName": "SPV API",
-      "tags": [
-        "endpoint-spv"
-      ]
+      "tags": ["endpoint-spv"]
     },
     {
       "name": "models",

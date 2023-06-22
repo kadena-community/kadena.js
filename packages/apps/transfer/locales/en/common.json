@@ -74,5 +74,11 @@
   "Show more": "Show more",
   "Show less": "Show less",
   "Initial transfer is not confirmed yet. Please wait and try again.":  "Initial transfer is not confirmed yet. Please wait and try again.",
-  "Error": "Error"
+  "Error": "Error",
+  "Account Transactions": "Account Transactions",
+  "Account": "Account",
+  "Check Transactions": "Check Transactions",
+  "Date": "Date",
+  "Cross Chain": "Cross Chain",
+  "No Results": "No Results"
 }

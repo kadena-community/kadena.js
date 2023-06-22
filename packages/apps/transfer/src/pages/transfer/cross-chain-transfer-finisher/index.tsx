@@ -4,7 +4,6 @@ import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { SidebarMenu } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -38,7 +37,7 @@ import {
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { generateApiHost } from '@/services/utils/utils';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, FormEventHandler, useEffect, useState } from 'react';
 
 const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
