@@ -15,6 +15,7 @@ import {
   IChainwebStreamConfig,
 } from './types';
 import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
+import { notUndefined } from './util';
 import SlidingCache from './sliding-cache';
 
 export * from './types';
@@ -85,6 +86,8 @@ class ChainwebStream extends EventEmitter {
   // reconnect timer
   private _reconnectTimer?: ReturnType<typeof setTimeout>;
 
+  private _slidingCache: SlidingCache<ITransaction>;
+
   public constructor({
     network,
     host,
@@ -106,6 +109,7 @@ class ChainwebStream extends EventEmitter {
     this.heartbeatTimeoutMs = heartbeatTimeout ?? DEFAULT_HEARTBEAT_TIMEOUT;
     this.maxReconnects = maxReconnects ?? DEFAULT_MAX_RECONNECTS;
     this.confirmationDepth = confirmationDepth ?? DEFAULT_CONFIRMATION_DEPTH;
+    this._slidingCache = new SlidingCache();
   }
 
   /**
@@ -258,7 +262,15 @@ class ChainwebStream extends EventEmitter {
 
   private _processData(data: ITransaction[]): void {
     this._updateLastHeight(data);
-    for (const element of data) {
+
+    // no emiting duplicate events to users:
+    // filter out any elements that have been emitted before
+    const unseen: ITransaction[] = this._slidingCache
+      .addCache(...data)
+      .map((shouldEmit, idx) => (shouldEmit ? data[idx] : undefined))
+      .filter(notUndefined);
+
+    for (const element of unseen) {
       const {
         meta: { confirmations },
       } = element;
