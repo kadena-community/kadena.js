@@ -30,3 +30,4 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: packages/apps/kadena-docs
+          run_install: false
