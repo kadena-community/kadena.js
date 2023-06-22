@@ -1217,6 +1217,7 @@ importers:
     dependencies:
       execa: 7.1.1
       inquirer: 9.2.6
+      jsonc-parser: 3.2.0
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
@@ -1225,7 +1226,6 @@ importers:
       '@rushstack/heft': 0.50.7_@types+node@16.18.7
       '@types/inquirer': 9.0.3
       '@types/node': 16.18.7
-      jsonc-parser: 3.2.0
       prettier: 2.8.8
 
 packages:
