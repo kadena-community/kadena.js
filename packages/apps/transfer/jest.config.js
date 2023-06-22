@@ -15,6 +15,6 @@ const customJestConfig = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverage: false,
-  reporters: ['default', 'jest-junit'],
+  reporters: ['jest-standard-reporter'],
 };
 module.exports = createJestConfig(customJestConfig);

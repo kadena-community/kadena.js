@@ -305,7 +305,7 @@ importers:
       ignore-loader: ~0.1.2
       jest: ~29.5.0
       jest-environment-jsdom: ~29.5.0
-      jest-junit: ~16.0.0
+      jest-standard-reporter: ~2.0.0
       lint-staged: ~13.2.0
       next: 13.4.4
       next-translate: ~2.0.6
@@ -364,7 +364,7 @@ importers:
       ignore-loader: 0.1.2
       jest: 29.5.0_@types+node@16.18.7
       jest-environment-jsdom: 29.5.0
-      jest-junit: 16.0.0
+      jest-standard-reporter: 2.0.0
       lint-staged: 13.2.0
       next-translate-plugin: 2.0.5_next-translate@2.0.6
       prettier: 2.8.7
@@ -17550,16 +17550,6 @@ packages:
       - supports-color
     dev: false
 
-  /jest-junit/16.0.0:
-    resolution: {integrity: sha512-A94mmw6NfJab4Fg/BlvVOUXzXgF0XIH6EmTgJ5NDPp4xoKq0Kr7sErb+4Xs9nZvu58pJojz5RFGpqnZYJTrRfQ==}
-    engines: {node: '>=10.12.0'}
-    dependencies:
-      mkdirp: 1.0.4
-      strip-ansi: 6.0.1
-      uuid: 8.3.2
-      xml: 1.0.1
-    dev: true
-
   /jest-leak-detector/27.5.1:
     resolution: {integrity: sha512-POXfWAMvfU6WMUXftV4HolnJfnPOGEu10fscNCA76KBpRRhcMN2c8d3iT2pxQS3HLbA+5X4sOUPzYO2NUyIlHQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -23840,7 +23830,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.0
       terser: 5.16.1
-      webpack: 5.73.0
+      webpack: 5.73.0_webpack-cli@4.10.0
 
   /terser/5.16.1:
     resolution: {integrity: sha512-xvQfyfA1ayT0qdK47zskQgRZeWLoOQ8JQ6mIgRGVNwZKdQMU+5FkCBjmv4QjcrTzyZquRw2FVtlJSRUmMKQslw==}
@@ -25446,10 +25436,6 @@ packages:
   /xml-name-validator/4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
     engines: {node: '>=12'}
-    dev: true
-
-  /xml/1.0.1:
-    resolution: {integrity: sha512-huCv9IH9Tcf95zuYCsQraZtWnJvBtLVE0QHMOs8bWyZAFZNDcYjsPq1nEx8jKA9y+Beo9v+7OBPRisQTjinQMw==}
     dev: true
 
   /xmlchars/2.2.0:
