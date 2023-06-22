@@ -1,15 +1,10 @@
 name: Build chores for Docs
+
 on:
-  pull_request:
   workflow_dispatch:
   push:
-    branches:
-      - master
-
-# on:
-#  push:
-#    paths:
-#      - packages/apps/kadena-docs/*/**
+    paths:
+      - packages/apps/kadena-docs/*/**
 
 jobs:
   cypress-run:
