@@ -7,7 +7,7 @@ import React, { FC, FunctionComponentElement } from 'react';
 
 export interface IBreadcrumbs {
   children?: FunctionComponentElement<IBreadcrumbItem>[];
-  icon?: typeof ProductIcons[keyof typeof ProductIcons];
+  icon?: (typeof ProductIcons)[keyof typeof ProductIcons];
 }
 
 export const Breadcrumbs: FC<IBreadcrumbs> = ({ children, icon }) => {
