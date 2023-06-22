@@ -17,9 +17,9 @@ import {
   StyledTotalContainer,
 } from './styles';
 
-import { Select, SidebarMenu } from '@/components/Global';
+import { Select } from '@/components/Global';
 import {
-  type ModuleResult,
+  type IModuleResult,
   describeModule,
 } from '@/services/modules/describe-module';
 import { convertIntToChainId } from '@/services/utils/utils';
@@ -30,7 +30,7 @@ const GetCode: FC = () => {
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleChain, setModuleChain] = useState<number>(1);
-  const [results, setResults] = useState<ModuleResult>({});
+  const [results, setResults] = useState<IModuleResult>({});
 
   const networkdId = 'testnet04';
   const numberOfChains = 20;
@@ -72,7 +72,7 @@ const GetCode: FC = () => {
       title={t('Kadena Module Explorer')}
       footer={
         <>
-          {!!results.status && (
+          {Boolean(results.status) && (
             <StyledResultContainer>
               <StyledTotalContainer>
                 <StyledTotalChunk>
@@ -86,7 +86,7 @@ const GetCode: FC = () => {
               </StyledTotalContainer>
             </StyledResultContainer>
           )}
-          {!!results.code && (
+          {Boolean(results.code) && (
             <StyledResultContainer>
               <StyledCodeViewerContainer>
                 <AceViewer code={results.code} />
