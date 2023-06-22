@@ -26,10 +26,7 @@
        * (Required) Glob patterns to be deleted. The paths are resolved relative to the project folder.
        * Documentation for supported glob syntaxes: https://www.npmjs.com/package/fast-glob
        */
-      "globsToDelete": [
-        "lib/templates",
-        "lib/pact"
-      ]
+      "globsToDelete": ["lib/templates", "lib/pact"]
     },
     {
       /**

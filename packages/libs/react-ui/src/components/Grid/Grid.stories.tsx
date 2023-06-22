@@ -5,9 +5,9 @@ import { Grid } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<typeof Grid.Container> = {
+const meta: Meta<typeof Grid> = {
   title: 'Layout/Grid',
-  component: Grid.Container,
+  component: Grid,
   argTypes: {
     spacing: {
       options: Object.keys(gapVariants) as (keyof typeof gapVariants)[],
@@ -17,7 +17,7 @@ const meta: Meta<typeof Grid.Container> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Grid.Container>;
+type Story = StoryObj<typeof Grid>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -32,7 +32,7 @@ export const Primary: Story = {
   },
   render: ({ spacing }) => (
     <>
-      <Grid.Container spacing={spacing}>
+      <Grid spacing={spacing}>
         {Array.from(new Array(12)).map((i) => (
           <Grid.Item key={i}>
             <div className={ContentClass}>i</div>
@@ -60,7 +60,7 @@ export const Primary: Story = {
         <Grid.Item>
           <div className={ContentClass}>7</div>
         </Grid.Item>
-      </Grid.Container>
+      </Grid>
     </>
   ),
 };
@@ -76,7 +76,7 @@ export const GridAreas: Story = {
                   "nav footer"`,
   },
   render: ({ spacing, templateColumns, templateRows, templateAreas }) => (
-    <Grid.Container
+    <Grid
       spacing={spacing}
       templateAreas={templateAreas}
       templateRows={templateRows}
@@ -94,6 +94,6 @@ export const GridAreas: Story = {
       <Grid.Item area="footer">
         <div className={ContentClass}>3</div>
       </Grid.Item>
-    </Grid.Container>
+    </Grid>
   ),
 };

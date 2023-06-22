@@ -5,26 +5,14 @@
   "scripts": {
     "build": "rushx postinstall && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
+    "format": "prettier config src --write -u",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "postinstall": "npm run generate:sdk",
     "lint": "next lint",
-    "lint-staged": "lint-staged",
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && rushx start",
     "test": "echo \"No tests yet.\""
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@apollo/client": "~3.7.2",
@@ -36,11 +24,11 @@
     "@types/react": "^18.0.30",
     "@types/react-dom": "18.0.11",
     "eslint": "^8.15.0",
-    "eslint-config-next": "13.0.6",
+    "eslint-config-next": "13.4.5",
     "graphql": "~16.6.0",
     "graphql-sse": "~1.3.2",
     "lodash.isequal": "~4.5.0",
-    "next": "13.4.4",
+    "next": "13.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "5.0.4"
@@ -63,6 +51,7 @@
     "@types/lodash.isequal": "~4.5.6",
     "@types/node": "^16.0.0",
     "concurrently": "^7.2.2",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2"
   }
 }

@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@kadena/types",
-      "comment": "",
+      "comment": "Replace lint-staged with explicit format script",
       "type": "none"
     }
   ],
