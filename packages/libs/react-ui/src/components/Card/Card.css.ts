@@ -18,7 +18,9 @@ export const container = style([
   }),
 ]);
 
-export const fullWidthClass = style([sprinkles({ width: '100%' })]);
+export const fullWidthClass = style({
+  width: '100%',
+});
 
 export const stackClass = style([
   sprinkles({ marginY: 0 }),

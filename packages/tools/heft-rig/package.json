@@ -1,13 +1,11 @@
 {
   "name": "@kadena-dev/heft-rig",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",
   "scripts": {
     "build": "",
-    "test": "",
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test"
+    "test": ""
   },
   "peerDependencies": {
     "@rushstack/heft": "^0.46.1"

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-generator",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
   "repository": {
     "type": "git",
@@ -11,8 +11,6 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "npm run test",
     "prebuild": "npm run build:lexer && npm run build:grammar",
     "build": "heft build --clean",
     "build:lexer": "tsc src/lexer.ts",
@@ -24,7 +22,7 @@
     "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test"
+    "test": "heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [

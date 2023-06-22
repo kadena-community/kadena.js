@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -11,8 +11,6 @@
   "main": "lib/index.js",
   "types": "dist/client.d.ts",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "npm run test",
     "build": "heft build --clean",
     "dev:postinstall": "rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
     "lint": "eslint ./src --ext .js,.ts --fix",
