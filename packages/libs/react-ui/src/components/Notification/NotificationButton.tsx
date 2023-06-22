@@ -5,7 +5,7 @@ import { colorVariants, iconContainerClass } from './NotificationButton.css';
 import React, { FC } from 'react';
 
 export interface INotificationButtonProps {
-  icon: typeof SystemIcon[keyof typeof SystemIcon];
+  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   color: keyof typeof colorVariants;
   children: React.ReactNode;
 }
