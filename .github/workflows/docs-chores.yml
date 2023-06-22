@@ -26,3 +26,7 @@ jobs:
         run: |
           node ./../../../common/scripts/install-run-rushx.js createtree
         working-directory: packages/apps/kadena-docs
+      - name: Cypress tests
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: packages/apps/kadena-docs
