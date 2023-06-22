@@ -1,5 +1,4 @@
 name: Build chores for Docs
-
 on:
   push:
     paths:
