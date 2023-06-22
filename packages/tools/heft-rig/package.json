@@ -5,9 +5,11 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "format": "npm run format:md && npm run format:pkg",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier profiles --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
+    "format:src": "prettier profiles --write",
     "test": ""
   },
   "dependencies": {
