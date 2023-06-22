@@ -42,9 +42,9 @@ export const NotificationContainer: FC<INotificationProps> = ({
 
   return (
     <div className={classList}>
-      <div className={iconContainerClass}>
+      <span className={iconContainerClass}>
         <Icon size={'md'} />
-      </div>
+      </span>
 
       <div>
         <p className={contentClass}>
@@ -53,12 +53,12 @@ export const NotificationContainer: FC<INotificationProps> = ({
         </p>
       </div>
 
-      <div
+      <span
         onClick={onClose}
         className={expanded ? iconContainerExpandedClass : iconContainerClass}
       >
         {hasCloseButton && <SystemIcon.Close size={'md'} />}
-      </div>
+      </span>
     </div>
   );
 };

@@ -18,9 +18,9 @@ export const NotificationButton: FC<INotificationButtonProps> = ({
   return (
     <button className={colorVariants[color]}>
       {children}
-      <div className={iconContainerClass}>
+      <span className={iconContainerClass}>
         <Icon size="md" />
-      </div>
+      </span>
     </button>
   );
 };
