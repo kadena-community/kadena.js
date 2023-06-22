@@ -12,7 +12,7 @@ const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
 ];
 
 const meta: Meta<IBoxProps> = {
-  title: 'Layout/Vanilla Extract Box',
+  title: 'Layout/Box',
   argTypes: {
     margin: {
       options: selectOptions,

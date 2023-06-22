@@ -2,7 +2,7 @@ import { Sprinkles, sprinkles } from '../../styles';
 
 import React, { createElement, ElementType } from 'react';
 
-export interface IBoxProps extends Sprinkles {
+export interface IBoxProps extends Pick<Sprinkles, 'margin' | 'marginX' | 'marginY' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight'> {
   component?: ElementType;
   children?: React.ReactNode;
 }
@@ -16,10 +16,6 @@ export const Box = ({
   marginBottom = undefined,
   marginLeft = undefined,
   marginRight = undefined,
-  top = undefined,
-  bottom = undefined,
-  left = undefined,
-  right = undefined,
   children,
 }: IBoxProps) => {
   return createElement(
@@ -33,10 +29,6 @@ export const Box = ({
         marginBottom,
         marginLeft,
         marginRight,
-        top,
-        bottom,
-        left,
-        right,
       }),
     },
     children,
