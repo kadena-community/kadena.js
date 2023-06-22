@@ -1,6 +1,13 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { Button, TextField } from '@kadena/react-components';
 
+import {
+  StyledInfoItem,
+  StyledInfoItemLine,
+  StyledInfoItemTitle,
+  StyledInfoTitle,
+} from '../cross-chain-transfer-finisher/styles';
+
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { SidebarMenu } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
@@ -9,8 +16,8 @@ import {
   StyledAccountForm,
   StyledForm,
   StyledFormButton,
+  StyledInfoBox,
   StyledMainContent,
-  StyledSideContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
   getTransferData,
@@ -19,6 +26,7 @@ import {
 import {
   getTransferStatus,
   getXChainTransferInfo,
+  StatusData,
 } from '@/services/cross-chain-transfer-tracker/get-transfer-status';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -43,7 +51,7 @@ const CrossChainTransferTracker: FC = () => {
 
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] = useState<string>('');
-  const [data, setData] = useState<ITransferDataResult>({});
+  const [data, setData] = useState<StatusData>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -80,7 +88,9 @@ const CrossChainTransferTracker: FC = () => {
         t,
       });
 
-      console.log(status);
+      console.log('STATUS', status);
+
+      setData(status);
 
       // await getXChainTransferInfo();
     } catch (error) {}
@@ -89,9 +99,7 @@ const CrossChainTransferTracker: FC = () => {
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
-        <StyledSideContent>
-          <SidebarMenu />
-        </StyledSideContent>
+        <SidebarMenu />
 
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -109,6 +117,44 @@ const CrossChainTransferTracker: FC = () => {
             <Button title={t('Track Transfer')}>{t('Track Transfer')}</Button>
           </StyledFormButton>
         </StyledForm>
+
+        {data.status ? (
+          <StyledInfoBox>
+            <StyledInfoTitle>{t('Transfer Information')}</StyledInfoTitle>
+
+            {data.receiverAccount ? (
+              <>
+                <StyledInfoItem>
+                  <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
+                  <StyledInfoItemLine>{`Chain: ${data.senderChain}`}</StyledInfoItemLine>
+                  <StyledInfoItemLine>{`Account: ${data.senderAccount}`}</StyledInfoItemLine>
+                </StyledInfoItem>
+                <StyledInfoItem>
+                  <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
+                  <StyledInfoItemLine>{`Chain: ${data.receiverChain}`}</StyledInfoItemLine>
+                  <StyledInfoItemLine>{`Account: ${data.receiverAccount}`}</StyledInfoItemLine>
+                </StyledInfoItem>
+
+                <StyledInfoItem>
+                  <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
+                  <StyledInfoItemLine>{` ${data.amount} ${t(
+                    'KDA',
+                  )}`}</StyledInfoItemLine>
+                </StyledInfoItem>
+              </>
+            ) : null}
+
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Status')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`${data.status} `}</StyledInfoItemLine>
+            </StyledInfoItem>
+
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
+            </StyledInfoItem>
+          </StyledInfoBox>
+        ) : null}
       </StyledMainContent>
     </MainLayout>
   );

@@ -7,10 +7,15 @@ import { generateApiHost } from '../utils/utils';
 
 import { Translate } from 'next-translate';
 
-interface StatusData {
-  status: string;
-  description: string;
+export interface StatusData {
+  status?: string;
+  description?: string;
   error?: string;
+  senderAccount?: string;
+  senderChain?: string;
+  receiverAccount?: string;
+  receiverChain?: string;
+  amount?: number;
 }
 
 export async function getTransferStatus({
@@ -23,8 +28,7 @@ export async function getTransferStatus({
   server: string;
   networkId: ChainwebNetworkId;
   t: Translate;
-  // }): Promise<StatusData | undefined> {
-}): Promise<any> {
+}): Promise<StatusData> {
   try {
     const transferData = await getTransferData({
       requestKey,
@@ -41,7 +45,7 @@ export async function getTransferStatus({
       };
     }
 
-    const { result, receiver, sender } = transferData.tx;
+    const { result, receiver, sender, amount } = transferData.tx;
 
     // If transfer has no result
     if (!result) {
@@ -57,17 +61,30 @@ export async function getTransferStatus({
         status: 'error',
         description: result.error.message,
         error: result.error.type,
+        senderAccount: sender.account,
+        senderChain: sender.chain,
+        receiverAccount: receiver.account,
+        receiverChain: receiver.chain,
+        amount,
       };
     }
 
     if (sender.chain !== receiver.chain) {
-      return await getXChainTransferInfo({
+      const xChainTransferData = await getXChainTransferInfo({
         requestKey,
         senderAccount: sender.account || '',
         receiverChain: receiver.chain,
         server,
         networkId,
+        t,
       });
+
+      return {
+        ...xChainTransferData,
+        amount,
+        senderChain: sender.chain,
+        receiverAccount: receiver.account,
+      };
     }
 
     // return {
@@ -78,8 +95,18 @@ export async function getTransferStatus({
     return {
       status: 'success',
       description: 'Transfer completed successfully',
+      senderAccount: sender.account,
+      senderChain: sender.chain,
+      receiverAccount: receiver.account,
+      receiverChain: receiver.chain,
+      amount,
     };
-  } catch (error) {}
+  } catch (error) {
+    return {
+      status: 'error',
+      description: t('Transfer not found'),
+    };
+  }
 }
 
 export async function getXChainTransferInfo({
@@ -88,13 +115,15 @@ export async function getXChainTransferInfo({
   receiverChain,
   server,
   networkId,
+  t,
 }: {
   requestKey: string;
   senderAccount: string;
   receiverChain: ChainId;
   server: string;
   networkId: ChainwebNetworkId;
-}) {
+  t: Translate;
+}): Promise<StatusData> {
   try {
     // const contCommand = await getContCommand(
     //   'AnAHRezOySWrxfqSpGjiwB6lNmOnEe6U0bWsBmyS__0',
@@ -116,7 +145,7 @@ export async function getXChainTransferInfo({
     const apiHost = generateApiHost(server, networkId, receiverChain);
 
     const proof = await pollSpvProof(requestKey, receiverChain, proofApiHost, {
-      timeout: 100,
+      timeout: 1000,
       onPoll: (response) => {
         console.log('On Poll Response', response);
       },
@@ -154,6 +183,8 @@ export async function getXChainTransferInfo({
       return {
         status: 'success',
         description: 'Transfer completed successfully',
+        senderAccount: senderAccount,
+        receiverChain: receiverChain,
       };
     }
 
@@ -161,14 +192,20 @@ export async function getXChainTransferInfo({
       return {
         status: 'pending',
         description: 'Transfer pending - waiting for continuation command',
+        senderAccount: senderAccount,
+        receiverChain: receiverChain,
       };
     }
 
-    console.log(contCommand1);
-
-    console.log(response);
-    return response;
+    return {
+      status: 'error',
+      description: t('Transfer not found'),
+    };
   } catch (error) {
     console.log(error);
+    return {
+      status: 'error',
+      description: t('Transfer not found'),
+    };
   }
 }
