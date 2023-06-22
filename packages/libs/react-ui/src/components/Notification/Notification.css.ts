@@ -34,8 +34,8 @@ export const actionsContainerClass = style([
 ]);
 
 export const expandVariants = styleVariants({
-  true: [sprinkles({ width: '100%' })],
-  false: [sprinkles({ width: 'max-content' })],
+  true: [sprinkles({ width: '100%', maxWidth: '100%' })],
+  false: [sprinkles({ width: 'max-content', maxWidth: 'maxContent' })],
 });
 
 export const cardTitleClass = style([
