@@ -1,4 +1,3 @@
-import { Button } from '../Button/Button';
 import { SystemIcon } from '../Icons';
 import { Stack } from '../Stack/Stack';
 
