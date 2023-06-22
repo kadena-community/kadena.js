@@ -10,14 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
         with:
-          node-version: 16
-      - name: Run e2e tests
-        uses: cypress-io/github-action@v5
+          version: 7
+          run_install: false
+      - uses: actions/setup-node@v3
         with:
-          lock-file: pnpm-lock.yaml
-          working-directory: common/config/rush/
-          # we have already installed all dependencies above
-
-          # Cypress tests and config file are in "e2e" folder
+          node-version: '16'
+          cache: 'pnpm'
+      - name: Rush install (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
