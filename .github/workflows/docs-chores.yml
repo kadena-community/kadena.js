@@ -1,12 +1,11 @@
 name: Build chores for Docs
+
 on:
-  push:
-    paths:
-      - packages/apps/kadena-docs/*/**
+  workflow_dispatch:
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latestgit
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
