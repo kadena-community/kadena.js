@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/rush-fix-versions",
+      "comment": "adds jsonc-parser dependency",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/rush-fix-versions"
+}
