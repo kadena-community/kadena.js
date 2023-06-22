@@ -634,7 +634,7 @@ export const menuData = [
           {
             "children": [],
             "root": "/docs/pact/intermediate/built-in-functions",
-            "title": "Built in Functions",
+            "title": "Built in Function",
             "description": "In this guide, we will go through and explain specific built-in functions that are listed in the pact reference page",
             "menu": "Built in Functions",
             "label": "Built in Functions",
