@@ -41,6 +41,17 @@ export function getUrl(
   return url.toString();
 }
 
+export const kadenaHostGenerator = (networkId: string, chainId: string) => {
+  switch (networkId) {
+    case 'mainnet01':
+      return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+    case 'testnet04':
+      return `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+    default:
+      throw new Error(`UNKNOWN_NETWORK_ID: ${networkId}`);
+  }
+};
+
 export interface ICommandRequest {
   cmd: string;
   hash: string;

@@ -22,7 +22,7 @@ export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
 export const local = async <T extends ILocalOptions>(
   host: string,
   body: ICommandRequest,
-  options: T,
+  options?: T,
 ): Promise<LocalResponse<T>> => {
   const request = jsonRequest({ cmds: body });
   const url = getUrl(host, `api/v1/send`, options);

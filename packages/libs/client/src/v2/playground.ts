@@ -1,3 +1,4 @@
+import { getClient } from './client/client';
 import {
   cmdBuilder,
   getModule,
@@ -74,3 +75,56 @@ export const cmd = cmdBuilder(
   nonce('kms'),
   set('networkId', 'mainnet04'),
 );
+
+const commandWithSignatures = { cmd: cmd.stringify(), hash: 'str', sigs: [''] };
+
+const getHostUrl = (networkId: string, chainId: string) => {
+  switch (networkId) {
+    case 'devnet':
+      return `http://localhost/${chainId}/pact`;
+    case 'l2network':
+      return `http://the-l2-server/${chainId}/pact`;
+    case 'mainnet01':
+      return `https://api.chainweb.com/chainweb/0.0/mainnet01/chain/${chainId}/pact`;
+    case 'testnet04':
+      return `https://api.chainweb.com/chainweb/0.0/testnet04/chain/${chainId}/pact`;
+    default:
+      throw new Error(`UNKNOWN_NETWORK_ID: ${networkId}`);
+  }
+};
+
+const { local, submit, pollStatus, pollSpv } = getClient(getHostUrl);
+
+async function localExample() {
+  const result = await local(commandWithSignatures);
+  return result;
+}
+
+async function submitExample() {
+  const [requestKeys, poll] = await submit([commandWithSignatures]);
+  console.log(requestKeys);
+  const results = await poll({
+    onTry: (number) => {
+      console.log('try number', number);
+    },
+  });
+  return results;
+}
+
+async function pollExample() {
+  const someRequestKeys = ['key1', 'key2'];
+  const status = await pollStatus(someRequestKeys, {
+    networkId: 'testnet04',
+    chainId: '01',
+  });
+  return status;
+}
+
+async function spvExample() {
+  const someRequestKeys = 'key1';
+  const status = await pollSpv(someRequestKeys, '01', {
+    networkId: 'testnet04',
+    chainId: '01',
+  });
+  return status;
+}

@@ -7,6 +7,7 @@ import {
   ICommandRequest,
   INetworkOptions,
   IPollOptions,
+  kadenaHostGenerator,
 } from './utils/request';
 import { getSpv, pollSpv } from './utils/spv';
 import { getStatus, PollFunction, pollStatus } from './utils/status';
@@ -15,33 +16,55 @@ import { submit } from './utils/submit';
 const mergeAll = <T extends object>(results: Array<T>): T =>
   results.reduce((acc, data) => ({ ...acc, ...data }), {} as T);
 
-interface IHostAPIGenerator {
-  (networkId?: string, chainId?: string): string;
-}
-
 interface IClient {
+  /**
+   * calls '/local' endpoint
+   */
   local: <T extends ILocalOptions>(
-    body: ICommandRequest,
-    options: T,
+    command: ICommandRequest,
+    options?: T,
   ) => Promise<LocalResponse<T>>;
+  /**
+   * calls '/send' endpoint
+   */
   submit: (
-    body: ICommandRequest[],
+    commandsList: ICommandRequest[],
   ) => Promise<
-    [requestKeys: string[], pollStatus: () => Promise<IPollResponse>]
+    [
+      requestKeys: string[],
+      pollStatus: (options?: IPollOptions) => Promise<IPollResponse>,
+    ]
   >;
+  /**
+   * calls '/poll' endpoint several times to get the status of all requests. if the requests submitted outside of the current client context then you need to path networkId
+   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   */
   pollStatus: (
     requestKeys?: string[],
     options?: IPollOptions & INetworkOptions,
   ) => Promise<IPollResponse>;
+  /**
+   * calls '/poll' endpoint only once. if the requests submitted outside of the current client context then you need to path networkId
+   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   */
   getStatus: (
     requestKeys?: string[],
     options?: INetworkOptions,
   ) => Promise<IPollResponse>;
+  /**
+   * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
+   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   */
   pollSpv: (
     requestKey: string,
     targetChainId: string,
     options?: IPollOptions & INetworkOptions,
   ) => Promise<string>;
+
+  /**
+   * calls '/spv' endpoint only once. if the request submitted outside of the current client context then you need to path networkId
+   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   */
   getSpv: (
     requestKey: string,
     targetChainId: string,
@@ -55,9 +78,12 @@ interface IGetClient {
    */
   (hostUrl: string): IClient;
   /**
-   * path a function that let you decide about with host url you should be picked for each transaction
+   * path a function that let you decide about with host url you should be picked for each request based on networkId and chianId
+   * the default value returns kadena testnet or mainnet url based on networkId
    */
-  (hostAddressGenerator: IHostAPIGenerator): IClient;
+  (
+    hostAddressGenerator?: (networkId: string, chainId: string) => string,
+  ): IClient;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -97,9 +123,7 @@ const getRequestStorage = (initial?: Map<string, string>) => {
   };
 };
 
-export const getClient: IGetClient = (
-  host: string | IHostAPIGenerator,
-): IClient => {
+export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
 
@@ -114,7 +138,7 @@ export const getClient: IGetClient = (
           requestKeys.map((requestKey) => [
             requestKey,
             storage.get(requestKey) ??
-              getHost(options?.networkId, options?.chainId),
+              getHost(options!.networkId, options!.chainId),
           ]),
         );
         requestStorage = getRequestStorage(map);
@@ -153,14 +177,22 @@ export const getClient: IGetClient = (
       const requestIds = await submit(hostUrl, body);
       storage.add(hostUrl, requestIds);
 
-      return [requestIds, () => pollStatus(hostUrl, requestIds)];
+      return [
+        requestIds,
+        (options?: IPollOptions) =>
+          checkPendingRequests(pollStatus)(requestIds, {
+            ...options,
+            networkId: cmd.networkId,
+            chainId: cmd.meta.chainId,
+          }),
+      ];
     },
     pollStatus: checkPendingRequests(pollStatus),
     getStatus: checkPendingRequests(getStatus),
 
     pollSpv: (requestKey, targetChainId, options) => {
       return pollSpv(
-        getHost(options?.networkId, options?.chainId),
+        getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,
         options,
@@ -168,7 +200,7 @@ export const getClient: IGetClient = (
     },
     getSpv: (requestKey, targetChainId, options) => {
       return getSpv(
-        getHost(options?.networkId, options?.chainId),
+        getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,
       );
