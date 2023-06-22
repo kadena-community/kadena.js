@@ -27,7 +27,7 @@ export const Box = ({
   marginLeft = undefined,
   marginRight = undefined,
   children,
-}: IBoxProps) => {
+}: IBoxProps): React.ReactElement => {
   return createElement(
     component,
     {
