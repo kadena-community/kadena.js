@@ -1,25 +1,12 @@
 {
   "name": "@kadena-dev/eslint-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "src/index.js",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "",
     "build": "heft build --clean",
+    "format": "prettier src --write -u",
     "lint-staged": "lint-staged",
-    "test": "heft test"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
+    "test": "heft test --no-build"
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "~5.53.0",
@@ -30,6 +17,7 @@
     "@rushstack/eslint-plugin": "~0.11.0",
     "@rushstack/heft": "~0.50.6",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "typescript": "5.0.4"
   }
 }

@@ -194,7 +194,8 @@ export async function getContCommand(
     throw new Error('Unable to obtain SPV Proof');
   }
 
-  const proof = await proofResponse.text();
+  const stringifiedProof = await proofResponse.text();
+  const proof = stringifiedProof.replace(/"/g, '');
 
   const contCommand = new ContCommand(proof, step, requestKey, rollback);
 

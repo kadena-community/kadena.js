@@ -6,12 +6,13 @@ import 'ace-builds/src-noconflict/mode-clojure';
 import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
+import 'ace-builds/src-noconflict/ext-language_tools';
 
-export interface AceEditorProps {
+export interface IAceEditorProps {
   code?: string;
 }
 
-const AceViewerComponent: FC<AceEditorProps> = ({ code }) => (
+const AceViewerComponent: FC<IAceEditorProps> = ({ code }) => (
   <AceEditor
     mode="clojure"
     theme="one_dark"

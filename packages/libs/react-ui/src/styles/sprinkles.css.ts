@@ -16,7 +16,7 @@ const systemProperties = defineProperties({
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
-    borderStyles: ['solid'],
+    borderStyles: ['solid', 'none'],
     cursor: ['pointer', 'not-allowed'],
     flexWrap: ['wrap', 'nowrap'],
     top: vars.sizes,
@@ -58,6 +58,7 @@ const responsiveProperties = defineProperties({
   },
   defaultCondition: 'xs',
   properties: {
+    position: ['fixed', 'static', 'absolute', 'relative', 'sticky'],
     display: ['none', 'flex', 'block', 'inline', 'inline-block', 'grid'],
     flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
     justifyContent: [
@@ -72,20 +73,10 @@ const responsiveProperties = defineProperties({
     paddingBottom: vars.sizes,
     paddingLeft: vars.sizes,
     paddingRight: vars.sizes,
-    marginTop: {
-      ...vars.sizes,
-    },
-    marginBottom: {
-      ...vars.sizes,
-    },
-    marginLeft: {
-      ...vars.sizes,
-      auto: 'auto',
-    },
-    marginRight: {
-      ...vars.sizes,
-      auto: 'auto',
-    },
+    marginTop: vars.sizes,
+    marginBottom: vars.sizes,
+    marginLeft: { ...vars.sizes, auto: 'auto' },
+    marginRight: { ...vars.sizes, auto: 'auto' },
     width: {
       ...vars.sizes,
       '100%': '100%',
@@ -106,7 +97,6 @@ const responsiveProperties = defineProperties({
     minWidth: [0],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
-    position: ['relative', 'absolute', 'fixed'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],

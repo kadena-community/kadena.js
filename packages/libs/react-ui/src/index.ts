@@ -25,6 +25,10 @@ export {
   INotificationActionsProps,
   IIconButtonProps,
   IconButton,
+  Modal,
+  IModalProps,
+  ModalProvider,
+  useModal,
 } from './components';
 export {
   sprinkles,
