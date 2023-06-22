@@ -23,9 +23,10 @@
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
-    "format:src": "prettier src --write -u",
+    "format:src": "prettier src --write",
     "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"

@@ -23,8 +23,9 @@
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
     "format:pkg": "sort-package-json",
-    "format:src": "prettier config src --write -u",
+    "format:src": "prettier config src --write",
     "lint": "eslint src --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",

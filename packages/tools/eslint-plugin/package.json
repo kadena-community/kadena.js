@@ -5,8 +5,9 @@
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier src --check",
     "format:pkg": "sort-package-json",
-    "format:src": "prettier src --write -u",
+    "format:src": "prettier src --write",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
