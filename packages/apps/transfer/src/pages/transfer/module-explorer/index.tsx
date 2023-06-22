@@ -20,7 +20,7 @@ import {
 
 import { Select, SidebarMenu } from '@/components/Global';
 import {
-  type ModuleResult,
+  type IModuleResult,
   describeModule,
 } from '@/services/modules/describe-module';
 import { convertIntToChainId } from '@/services/utils/utils';
@@ -31,7 +31,7 @@ const GetCode: FC = () => {
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleChain, setModuleChain] = useState<number>(1);
-  const [results, setResults] = useState<ModuleResult>({});
+  const [results, setResults] = useState<IModuleResult>({});
 
   const networkdId = 'testnet04';
   const numberOfChains = 20;

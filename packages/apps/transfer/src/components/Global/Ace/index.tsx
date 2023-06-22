@@ -7,11 +7,11 @@ import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 
-export interface AceEditorProps {
+export interface IAceEditorProps {
   code?: string;
 }
 
-const AceViewerComponent: FC<AceEditorProps> = ({ code }) => (
+const AceViewerComponent: FC<IAceEditorProps> = ({ code }) => (
   <AceEditor
     mode="clojure"
     theme="one_dark"

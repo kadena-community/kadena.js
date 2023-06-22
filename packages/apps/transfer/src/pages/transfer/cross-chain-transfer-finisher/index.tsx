@@ -15,7 +15,7 @@ import {
   StyledToggleContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import React, { FC, FormEventHandler, useState } from 'react';
 
 const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
@@ -42,7 +42,7 @@ const CrossChainTransferFinisher: FC = () => {
   const [gasLimit, setGasLimit] = useState<number>(kadenaConstants.GAS_LIMIT);
   const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
 
     console.log('submitted');

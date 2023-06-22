@@ -23,10 +23,10 @@ export const getItems = () => {
 
   if (!cookies) return {};
   return Object.keys(cookies).reduce((results, key) => {
-    const match = key.match(getName('(.*)'));
+    const match: null | string[] = key.match(getName('(.*)'));
     if (match) results[match[1]] = cookies[key];
     return results;
-  }, {});
+  }, {} as { [key: string]: string });
 };
 
 export const purge = () => {
