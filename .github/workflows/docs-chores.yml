@@ -1,4 +1,4 @@
-name: Build chores for Docs
+name: Build chore for Docs
 
 on:
   # Allows you to run this workflow manually from the Actions tab
