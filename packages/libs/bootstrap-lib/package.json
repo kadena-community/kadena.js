@@ -26,11 +26,9 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "test": "rushx build && heft test --no-build"
+    "test": "heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [

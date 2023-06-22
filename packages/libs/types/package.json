@@ -26,8 +26,6 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "npm run test",
     "build": "heft build --clean",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "test": "heft test --no-build"

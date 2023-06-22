@@ -44,13 +44,11 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
-    "test": "rushx build && heft test --no-build"
+    "test": "heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [
