@@ -36,3 +36,6 @@ jobs:
           start: npm run dev
           browser: chrome
           install: false
+        env:
+          # pass GitHub token to detect new build vs re-run build
+          NEXT_PUBLIC_APP_DEV: test
