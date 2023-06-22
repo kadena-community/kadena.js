@@ -38,13 +38,11 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
     "build:prod": "webpack --mode=production",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "serve-coverage": "python -m SimpleHTTPServer",
-    "test": "heft test"
+    "test": "heft test --no-build"
   },
   "lint-staged": {
     "src/**/*.ts": [

@@ -5,8 +5,6 @@
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
     "7d:query": "npx 7d",
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "npm run build:next",
     "build:next": "npm run createtree && next build",
     "createtree": "node ./src/scripts/getdocstree.mjs",
