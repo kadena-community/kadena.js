@@ -24,13 +24,13 @@ import { ITransaction } from './types';
  *
  */
 
-type SlidingCacheConfig<Shape extends ITransaction> = Pick<
-  SlidingCache<Shape>,
+type SlidingCacheConfig<TShape extends ITransaction> = Pick<
+  SlidingCache<TShape>,
   'cacheGetter' | 'cacheSpan' | 'identityCheck' | 'equalityCheck'
 >;
 
-type SlidingCacheConstructor<Shape extends ITransaction> = Partial<
-  SlidingCacheConfig<Shape>
+type SlidingCacheConstructor<TShape extends ITransaction> = Partial<
+  SlidingCacheConfig<TShape>
 >;
 
 const defaults: SlidingCacheConfig<ITransaction> = {
@@ -42,19 +42,19 @@ const defaults: SlidingCacheConfig<ITransaction> = {
     a.meta?.confirmations === b.meta?.confirmations,
 };
 
-export default class SlidingCache<Shape extends ITransaction>
-  implements SlidingCacheConfig<Shape>
+export default class SlidingCache<TShape extends ITransaction>
+  implements SlidingCacheConfig<TShape>
 {
   public minCacheValue: number = Infinity;
   public maxCacheValue: number = -Infinity;
-  public cache: Shape[] = [];
+  public cache: TShape[] = [];
 
-  public cacheGetter: (elem: Shape) => number;
+  public cacheGetter: (elem: TShape) => number;
   public cacheSpan: number;
-  public identityCheck: (a: Shape, b: Shape) => boolean;
-  public equalityCheck: (a: Shape, b: Shape) => boolean;
+  public identityCheck: (a: TShape, b: TShape) => boolean;
+  public equalityCheck: (a: TShape, b: TShape) => boolean;
 
-  public constructor(params: SlidingCacheConstructor<Shape> = {}) {
+  public constructor(params: SlidingCacheConstructor<TShape> = {}) {
     this.cache = [];
     this.cacheGetter = params.cacheGetter ?? defaults.cacheGetter;
     this.cacheSpan = params.cacheSpan ?? defaults.cacheSpan;
@@ -62,7 +62,7 @@ export default class SlidingCache<Shape extends ITransaction>
     this.equalityCheck = params.equalityCheck ?? defaults.equalityCheck;
   }
 
-  public addCache(...elems: Shape[]): boolean[] {
+  public addCache(...elems: TShape[]): boolean[] {
     let needUpdate = false;
     let newMaxCacheValue = this.maxCacheValue;
 
@@ -106,7 +106,7 @@ export default class SlidingCache<Shape extends ITransaction>
     return retVals;
   }
 
-  public existsCache(needle: Shape): [boolean, boolean, number] {
+  public existsCache(needle: TShape): [boolean, boolean, number] {
     // [exists, identical, index]
     for (let idx = 0; idx < this.cache.length; idx++) {
       const elem = this.cache[idx];
