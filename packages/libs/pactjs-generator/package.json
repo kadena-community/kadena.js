@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-generator",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
   "repository": {
     "type": "git",
@@ -11,8 +11,6 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "npm run test",
     "prebuild": "npm run build:lexer && npm run build:grammar",
     "build": "heft build --clean",
     "build:lexer": "tsc src/lexer.ts",
@@ -21,22 +19,10 @@
     "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"rushx build:grammar\"",
     "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test"
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
+    "test": "heft test --no-build"
   },
   "dependencies": {
     "byline": "~5.0.0",
@@ -63,6 +49,7 @@
     "eslint": "^8.15.0",
     "node-fetch": "~2.6.2",
     "npm-run-all": "~4.1.5",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2"
   }
 }

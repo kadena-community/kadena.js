@@ -8,48 +8,40 @@ export const StyledHomeContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '100px 0 0',
+  pt: '$25',
   color: 'white',
 });
 
 export const StyledSmallLogo = styled(KLogoComponent, {
-  marginBottom: '20px',
-});
-
-export const StyledHomeContentContainer = styled('div', {
-  display: 'flex',
-  flexDirection: 'row',
-  width: '100%',
-  justifyContent: 'space-evenly',
+  marginBottom: '$5',
 });
 
 export const StyledHomeContent = styled('div', {
-  maxWidth: '600px',
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
   background: 'rgba(71, 79, 82, 0.5)',
-  borderRadius: '4px',
-  padding: '24px',
+  borderRadius: '$sm',
+  padding: '$6',
 });
 
 export const StyledHomeTitle = styled('h2', {
   fontWeight: 'bolder',
-  fontSize: '2.5rem',
-  margin: '0 0 1.5rem 0',
+  fontSize: '$5xl',
+  mb: '$md',
 });
 
 export const StyledHomeLink = styled(Link, {
   display: 'flex',
   alignItems: 'center',
-  padding: '16px',
-  margin: '12px 0',
+  padding: '$4',
+  my: '$3',
   background: 'rgba(5, 5, 5, 0.5)',
-  borderRadius: '4px',
+  borderRadius: '$sm',
   flex: 'none',
   alignSelf: 'stretch',
   flexGrow: '0',
-  fontSize: '1.2rem',
+  fontSize: '$lg',
   cursor: 'pointer',
   color: 'inherit',
   '&:last-child': {
@@ -57,25 +49,10 @@ export const StyledHomeLink = styled(Link, {
   },
 });
 
-export const StyledHomeButton = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  padding: '16px',
-  margin: '12px 0',
-  background: 'rgba(5, 5, 5, 0.5)',
-  borderRadius: '4px',
-  flex: 'none',
-  alignSelf: 'stretch',
-  flexGrow: '0',
-  fontSize: '1.2rem',
-  cursor: 'pointer',
-  color: 'inherit',
-});
-
 export const StyledIconBox = styled('span', {
   display: 'inline-block',
 });
 
 export const StyledLinkText = styled('div', {
-  margin: '10px',
+  margin: '$xs',
 });

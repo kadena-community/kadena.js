@@ -6,10 +6,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": [
-      ".kadena/pactjs-generated",
-      "vitest/globals"
-    ]
+    "types": [".kadena/pactjs-generated", "vitest/globals"]
   },
 
   "references": [
