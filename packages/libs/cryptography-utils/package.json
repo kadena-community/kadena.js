@@ -27,21 +27,10 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/types": "workspace:*",
@@ -57,6 +46,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0"
+    "eslint": "^8.15.0",
+    "prettier": "~2.8.8"
   }
 }
