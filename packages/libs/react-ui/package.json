@@ -19,8 +19,6 @@
     "types"
   ],
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
@@ -75,6 +73,7 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "@types/react": "^18.0.30",
+    "@types/react-dom": "18.0.11",
     "@vanilla-extract/webpack-plugin": "~2.2.0",
     "eslint": "^8.15.0",
     "eslint-plugin-storybook": "~0.6.12",

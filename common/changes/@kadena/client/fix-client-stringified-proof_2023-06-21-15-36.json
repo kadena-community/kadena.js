@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "small fix regarding stringified proof in cont command",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

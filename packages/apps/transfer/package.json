@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "npm run generate:icons && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",

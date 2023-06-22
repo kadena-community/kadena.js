@@ -829,6 +829,7 @@ importers:
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
+      '@types/react-dom': 18.0.11
       '@vanilla-extract/css': ~1.11.1
       '@vanilla-extract/recipes': ~0.4.0
       '@vanilla-extract/sprinkles': ~1.6.0
@@ -876,6 +877,7 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.7
       '@types/react': 18.0.33
+      '@types/react-dom': 18.0.11
       '@vanilla-extract/webpack-plugin': 2.2.0_@types+node@16.18.7
       eslint: 8.37.0
       eslint-plugin-storybook: 0.6.12_eslint@8.37.0+typescript@5.0.4
@@ -1184,6 +1186,7 @@ importers:
     dependencies:
       execa: 7.1.1
       inquirer: 9.2.6
+      jsonc-parser: 3.2.0
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
@@ -1192,7 +1195,6 @@ importers:
       '@rushstack/heft': 0.50.7_@types+node@16.18.7
       '@types/inquirer': 9.0.3
       '@types/node': 16.18.7
-      jsonc-parser: 3.2.0
 
 packages:
 
@@ -23838,7 +23840,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.0
       terser: 5.16.1
-      webpack: 5.73.0_webpack-cli@4.10.0
+      webpack: 5.73.0
 
   /terser/5.16.1:
     resolution: {integrity: sha512-xvQfyfA1ayT0qdK47zskQgRZeWLoOQ8JQ6mIgRGVNwZKdQMU+5FkCBjmv4QjcrTzyZquRw2FVtlJSRUmMKQslw==}

@@ -12,12 +12,10 @@
     "create-kadena-app": "lib/index.js"
   },
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "npm run test",
     "build": "heft build --clean",
     "lint-staged": "lint-staged",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "rimraf test-* && heft test && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
+    "test": "rimraf test-* && heft test --no-build && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
