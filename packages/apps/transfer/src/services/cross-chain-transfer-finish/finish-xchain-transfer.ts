@@ -2,6 +2,7 @@ import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ContCommand, getContCommand } from '@kadena/client';
 import { ChainId } from '@kadena/types';
 
+import { kadenaConstants } from '../../constants/kadena';
 import { generateApiHost } from '../utils/utils';
 
 interface ITransactionData {
@@ -23,7 +24,7 @@ export interface TransferResult {
   status?: string;
 }
 
-const gasLimit: number = 850;
+const gasLimit: number = kadenaConstants.GAS_LIMIT;
 const gasPrice: number = 0.00000001;
 
 export async function finishXChainTransfer(
@@ -57,9 +58,6 @@ export async function finishXChainTransfer(
       },
       network,
     );
-
-    // remove double quotes from stringified proof
-    contCommand.proof = contCommand.proof.slice(1, -1);
 
     contCommand.createCommand();
 
