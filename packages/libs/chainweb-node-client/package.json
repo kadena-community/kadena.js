@@ -28,9 +28,10 @@
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config openapi src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
-    "format:src": "prettier config openapi src --write -u",
+    "format:src": "prettier config openapi src --write",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
     "postinstall": "npm run generate:openapi-types",
     "lint": "eslint ./src --ext .js,.ts --fix",

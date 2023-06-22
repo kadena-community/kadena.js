@@ -58,24 +58,21 @@
       "commandKind": "bulk",
       "name": "format",
       "summary": "Runs prettier in all projects",
-      "safeForSimultaneousRushProcesses": false,
-      // default: false. this can be run simultaneousely
-      "enableParallelism": true,
-      "ignoreDependencyOrder": false,
-      // default: false. this command is just for convenience
-      "ignoreMissingScript": true,
-      "allowWarningsInSuccessfulBuild": false,
-      "incremental": false,
-      "watchForChanges": false,
-      "disableBuildCache": false
+      "enableParallelism": true
+    },
+
+    {
+      "commandKind": "bulk",
+      "name": "format:ci",
+      "summary": "Runs prettier in all projects (CI mode)",
+      "enableParallelism": true
     },
 
     {
       "commandKind": "bulk",
       "name": "markdown",
       "summary": "Formats markdown with remark plugins in all projects",
-      "enableParallelism": true,
-      "ignoreMissingScript": true
+      "enableParallelism": true
     },
 
     {
@@ -267,13 +264,6 @@
       "parameterKind": "flag",
       "description": "Update unit test snapshots for all projects",
       "associatedCommands": ["test"]
-    },
-
-    {
-      "longName": "--check",
-      "parameterKind": "flag",
-      "description": "Exit code 1 when Prettier formatting makes changes (--check)",
-      "associatedCommands": ["format"]
     }
     // {
     //   /**
