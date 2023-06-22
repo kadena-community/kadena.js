@@ -1,14 +1,11 @@
 {
   "name": "@kadena-dev/heft-rig",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",
   "scripts": {
     "build": "",
     "test": ""
-  },
-  "peerDependencies": {
-    "@rushstack/heft": "^0.46.1"
   },
   "dependencies": {
     "@microsoft/api-extractor": "~7.35.0",
@@ -23,6 +20,10 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
-    "eslint": "^8.15.0"
+    "eslint": "^8.15.0",
+    "prettier": "~2.8.8"
+  },
+  "peerDependencies": {
+    "@rushstack/heft": "^0.46.1"
   }
 }

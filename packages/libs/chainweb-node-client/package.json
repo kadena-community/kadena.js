@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "",
   "keywords": [],
   "repository": {
@@ -27,22 +27,11 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
+    "format": "prettier config openapi src --write -u",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
     "postinstall": "npm run generate:openapi-types",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "test": "heft test --no-build"
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
@@ -60,6 +49,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0"
+    "eslint": "^8.15.0",
+    "prettier": "~2.8.8"
   }
 }

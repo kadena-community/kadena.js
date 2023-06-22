@@ -61,5 +61,11 @@
   "Advanced options": "Advanced options",
   "Mainnet": "Mainnet",
   "Testnet": "Testnet",
-  "Cross Chain Transfers": "Cross Chain Transfers"
+  "Cross Chain Transfers": "Cross Chain Transfers",
+  "Account Transactions": "Account Transactions",
+  "Account": "Account",
+  "Check Transactions": "Check Transactions",
+  "Date": "Date",
+  "Cross Chain": "Cross Chain",
+  "No Results": "No Results"
 }

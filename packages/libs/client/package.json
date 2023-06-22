@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -13,24 +13,12 @@
   "scripts": {
     "build": "heft build --clean",
     "dev:postinstall": "rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
+    "format": "prettier config src --write -u",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "heft test"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -52,6 +40,7 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2"
   }
 }

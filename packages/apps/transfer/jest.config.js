@@ -3,12 +3,18 @@ const createJestConfig = nextJest({
   dir: './',
 });
 const customJestConfig = {
-  reporters: ['jest-standard-reporter'],
   moduleNameMapper: {
-    '@/(.*)': '<rootDir>/src/$1',
+    "@/(.*)": "<rootDir>/src/$1"
   },
-  moduleDirectories: ['node_modules', 'src'],
+  moduleDirectories: ["node_modules", "src"],
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"]
+  globals: {
+    "ts-jest": {
+      tsConfig: "<rootDir>/tsconfig.json"
+    }
+  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  collectCoverage: false,
+  reporters: ['jest-standard-reporter'],
 };
 module.exports = createJestConfig(customJestConfig);
