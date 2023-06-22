@@ -30,6 +30,5 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: packages/apps/kadena-docs
-          wait-on: http://localhost:3000
           browser: chrome
           install: false
