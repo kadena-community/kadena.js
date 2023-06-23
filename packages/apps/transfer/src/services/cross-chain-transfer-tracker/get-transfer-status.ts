@@ -48,7 +48,7 @@ export async function getTransferStatus({
     if (transferData.error || !transferData.tx) {
       onPoll({
         id: 0,
-        status: 'error',
+        status: t('Error'),
         description: transferData.error || t('Transfer not found'),
       });
       return;
@@ -60,7 +60,7 @@ export async function getTransferStatus({
     if (!result) {
       onPoll({
         id: 0,
-        status: 'error',
+        status: t('Error'),
         description: t('Transfer with no result'),
       });
       return;
@@ -70,7 +70,7 @@ export async function getTransferStatus({
     if (result.status === 'failure') {
       onPoll({
         id: 0,
-        status: 'error',
+        status: t('Error'),
         //@ts-ignore
         description: result.error.message,
         //@ts-ignore
@@ -92,15 +92,16 @@ export async function getTransferStatus({
         server,
         receiverAccount: receiver.account,
         receiverChain: receiver.chain,
-        senderAccount: sender.account || 'not found',
+        senderAccount: sender.account || t('Not found'),
         senderChain: sender.chain,
         amount,
         options,
+        t,
       });
 
       const xChainTransferData = await getXChainTransferInfo({
         requestKey,
-        senderAccount: sender.account || '',
+        senderAccount: sender?.account || '',
         receiverChain: receiver.chain,
         server,
         networkId,
@@ -118,8 +119,8 @@ export async function getTransferStatus({
 
     onPoll({
       id: 3,
-      status: 'success',
-      description: 'Transfer completed successfully',
+      status: t('Success'),
+      description: t('Transfer completed successfully'),
       senderAccount: sender.account,
       senderChain: sender.chain,
       receiverAccount: receiver.account,
@@ -130,7 +131,7 @@ export async function getTransferStatus({
   } catch (error) {
     onPoll({
       id: 0,
-      status: 'error',
+      status: t('Error'),
       description: t('Transfer not found'),
     });
     return;
@@ -187,8 +188,8 @@ export async function getXChainTransferInfo({
     ) {
       return {
         id: 3,
-        status: 'success',
-        description: 'Transfer completed successfully',
+        status: t('Success'),
+        description: t('Transfer completed successfully'),
         senderAccount: senderAccount,
         receiverChain: receiverChain,
       };
@@ -197,8 +198,8 @@ export async function getXChainTransferInfo({
     if (response?.result?.status === 'success') {
       return {
         id: 2,
-        status: 'pending',
-        description: 'Transfer pending - waiting for continuation command',
+        status: t('Pending'),
+        description: t('Transfer pending - waiting for continuation command'),
         senderAccount: senderAccount,
         receiverChain: receiverChain,
       };
@@ -206,14 +207,14 @@ export async function getXChainTransferInfo({
 
     return {
       id: 0,
-      status: 'error',
+      status: t('Error'),
       description: t('Transfer not found'),
     };
   } catch (error) {
     console.log(error);
     return {
       id: 0,
-      status: 'error',
+      status: t('Error'),
       description: t('Transfer not found'),
     };
   }
@@ -229,6 +230,7 @@ export async function checkForProof({
   receiverChain,
   amount,
   options,
+  t,
 }: {
   requestKey: string;
   server: string;
@@ -241,6 +243,7 @@ export async function checkForProof({
   options?: {
     onPoll?: (status: StatusData) => void;
   };
+  t: Translate;
 }) {
   const { onPoll = () => {} } = { ...options };
 
@@ -254,8 +257,8 @@ export async function checkForProof({
         if (count > 1) {
           onPoll({
             id: 1,
-            status: 'pending',
-            description: 'Transfer pending - waiting for proof',
+            status: t('Pending'),
+            description: t('Transfer pending - waiting for proof'),
             senderAccount,
             senderChain,
             receiverAccount,
@@ -271,8 +274,8 @@ export async function checkForProof({
   } catch (error) {
     onPoll({
       id: 0,
-      status: 'error',
-      description: 'Could not obtain proof information',
+      status: t('Error'),
+      description: t('Could not obtain proof information'),
     });
   }
 }
