@@ -1,6 +1,7 @@
 import { darkThemeClass } from '../src/styles';
 import type { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
+import '../src/styles/global.css';
 
 const preview: Preview = {
   parameters: {
