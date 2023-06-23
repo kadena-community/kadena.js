@@ -1,13 +1,7 @@
 import { styled } from '@kadena/react-components';
 
-export const StyledMainContent = styled('main', {
-  display: 'flex',
-  justifyContent: 'flex-start',
-  gap: '$16',
-});
-
 export const StyledForm = styled('form', {
-  width: '75%',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-end',
@@ -15,17 +9,17 @@ export const StyledForm = styled('form', {
 
 export const StyledAccountForm = styled('div', {
   width: '100%',
-  padding: '16px',
+  padding: '$4',
   background: 'rgba(71, 79, 82, 0.4)',
-  borderRadius: '4px',
+  borderRadius: '$sm',
   boxSizing: 'borderBox',
   '> *': {
-    mb: '$8 ',
+    mb: '$8',
   },
 });
 
 export const StyledFormButton = styled('div', {
-  marginTop: '16px',
+  mt: '$4',
 });
 
 export const StyledToggleContainer = styled('div', {
@@ -34,18 +28,17 @@ export const StyledToggleContainer = styled('div', {
 });
 
 export const StyledFieldCheckbox = styled('div', {
-  width: '30%',
   display: 'flex',
   flexDirection: 'row',
 });
 export const StyledCheckbox = styled('input', {
-  width: '20px',
+  width: '$4',
 });
 
 export const StyledCheckboxLabel = styled('label', {
-  fontSize: '1rem',
-  marginLeft: '12px',
+  fontSize: '$base',
+  ml: '$3',
   color: 'white',
-  fontWeight: '500',
-  lineHeight: '17px',
+  fontWeight: '$medium',
+  lineHeight: '$base',
 });

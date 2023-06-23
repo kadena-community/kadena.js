@@ -1,4 +1,4 @@
-name: Rush CI (changelog, retest)
+name: Rush CI (changelog, build, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
@@ -59,14 +59,18 @@ jobs:
         run: |
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
 
-      - name: Rush retest (install-run-rush)
+      - name: Rush build + test (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js build --verbose ${{ env.AFFECTED_OR_ALL }}
-          node common/scripts/install-run-rush.js retest --verbose ${{ env.AFFECTED_OR_ALL }}
+          node common/scripts/install-run-rush.js test --verbose ${{ env.AFFECTED_OR_ALL }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
           BROWSERSLIST_IGNORE_OLD_DATA: 1
+
+      - name: Rush format (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js format:ci --verbose --to git:origin/${{ github.base_ref }}
 
       - name: Rush verify Change Logs (install-run-rush)
         if: github.ref_name != 'master'

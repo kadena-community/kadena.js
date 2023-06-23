@@ -21,7 +21,7 @@ cd ~/your-app-root
 
 Then in your package.json add:
 
-```
+```json
 {
   "dependencies": {
     "@kadena/react-components": "link:../kadena.js/packages/libs/react-components"
@@ -31,7 +31,7 @@ Then in your package.json add:
 
 Then in your app init `stitches` with:
 
-```
+```tsx
 import {
   getCssText,
   globalCss,
@@ -81,9 +81,7 @@ components to maintain this goal.
 ### Styling
 
 We are currently using Stitches as our CSS solution although we are looking into
-other zero-runtime options like
-[vanilla-extract](https://vanilla-extract.style/) and
-[Tailwind CSS](https://tailwindcss.com/).
+other zero-runtime options like [vanilla-extract][1] and [Tailwind CSS][2].
 
 _Theming_
 
@@ -139,3 +137,6 @@ our primitive and composed components.
 Since we are still in early development stages, things are still in flux and
 flexible to change. This is just a guideline that the team has discussed
 together as a starting point, but any suggestions for change are welcome!
+
+[1]: https://vanilla-extract.style/
+[2]: https://tailwindcss.com/

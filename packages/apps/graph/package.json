@@ -7,27 +7,16 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "_phase:build": "npm run build",
-    "_phase:test": "npm run test",
     "build": "",
+    "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@pothos/core": "~3.24.0",
@@ -54,6 +43,8 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "ts-node": "~10.8.2"
   }
 }
