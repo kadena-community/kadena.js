@@ -1,0 +1,14 @@
+name: Import Pact Docs
+
+on:
+  workflow_dispatch:
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker://pandoc/core:2.9
+        with:
+          working-directory: packages/apps/kadena-docs
+          args: >- # allows you to break string into multiple lines
+            --standalone --output=./import/pact/pact-functions.mdx
+            ./import/pact/pact-functions.rst
