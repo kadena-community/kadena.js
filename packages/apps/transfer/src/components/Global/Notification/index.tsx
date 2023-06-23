@@ -4,7 +4,6 @@ import { IconButton, SystemIcons } from '@kadena/react-components';
 
 import { StyledBody, StyledContainer } from './styles';
 
-import { Exclamation } from '@/resources/svg/generated';
 import React, { type FC, useCallback, useState } from 'react';
 
 interface INotificationProps {
@@ -28,7 +27,7 @@ const Notification: FC<INotificationProps> = ({ title, body, onClose }) => {
 
   return (
     <StyledContainer>
-      <Exclamation />
+      <SystemIcons.AlertCircleOutline />
       <StyledBody>
         <div>
           <strong>{title}</strong>
