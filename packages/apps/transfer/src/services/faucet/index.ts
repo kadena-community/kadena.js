@@ -104,7 +104,7 @@ export const fundExistingAccount = async (
       account,
       new PactNumber(amount).toPactDecimal(),
     )
-    .setMeta({ sender: SENDER_X }, networkId);
+    .setMeta({ sender: SENDER_X, chainId }, networkId);
 
   const command = transactionBuilder.createCommand();
 
