@@ -1,9 +1,11 @@
+import { IconButton } from '../IconButton/IconButton';
 import { SystemIcon } from '../Icons';
 
 import {
   cardTitleClass,
   colorVariants,
   containerClass,
+  containerClassRightPadded,
   contentClass,
   expandVariants,
   iconContainerClass,
@@ -35,7 +37,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
   const Icon = icon || SystemIcon.HelpCircle;
 
   const classList = classNames(
-    containerClass,
+    hasCloseButton ? containerClass : containerClassRightPadded,
     colorVariants[color],
     expandVariants[expanded ? 'true' : 'false'],
   );
@@ -53,11 +55,17 @@ export const NotificationContainer: FC<INotificationProps> = ({
         </p>
       </div>
 
+    
       <span
-        onClick={onClose}
-        className={expanded ? iconContainerExpandedClass : iconContainerClass}
+        className={expanded ? iconContainerExpandedClass : undefined}
       >
-        {hasCloseButton && <SystemIcon.Close size={'md'} />}
+        {hasCloseButton && 
+        <IconButton
+        title={'Close'}
+        onClick={onClose}
+        icon={SystemIcon.Close}
+        ></IconButton>
+        }
       </span>
     </div>
   );

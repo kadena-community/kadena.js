@@ -25,6 +25,13 @@ export const containerClass = style([
   },
 ]);
 
+export const containerClassRightPadded = style([
+  containerClass,
+  sprinkles({
+    paddingRight: '$xl',
+  })
+])
+
 export const actionsContainerClass = style([
   sprinkles({
     marginY: '$md',
@@ -79,7 +86,6 @@ export const iconContainerClass = style([
   sprinkles({
     margin: '$md',
     display: 'flex',
-    right: 0,
     position: 'relative',
   }),
   {
@@ -93,7 +99,6 @@ export const iconContainerClass = style([
 ]);
 
 export const iconContainerExpandedClass = style([
-  iconContainerClass,
   sprinkles({
     marginLeft: 'auto',
   }),
