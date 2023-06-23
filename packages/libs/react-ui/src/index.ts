@@ -25,6 +25,8 @@ export {
   IModalProps,
   ModalProvider,
   useModal,
+  IBoxProps,
+  Box,
 } from './components';
 export {
   sprinkles,

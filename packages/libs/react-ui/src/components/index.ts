@@ -13,3 +13,4 @@ export {
   GradientText,
   IGradientTextProps,
 } from './Typography';
+export { Box, IBoxProps } from './Box/Box';
