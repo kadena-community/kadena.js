@@ -88,30 +88,34 @@ suite. The contract is also deployed on testnet chain 0 as
 The two main functions of the contract are `read-message` and `write-message`
 which are shown below:
 
-    (defun read-message (account:string)
-      "Read a message for a specific account"
+```
+(defun read-message (account:string)
+  "Read a message for a specific account"
 
-      (with-default-read messages account
-        { "message": "You haven't written any message yet" }
-        { "message" := message }
-        message
-      )
-    )
+  (with-default-read messages account
+    { "message": "You haven't written any message yet" }
+    { "message" := message }
+    message
+  )
+)
+```
 
 Reading a message is unrestricted, so everyone can access the smart contract and
 read the message a user has written, given the acount is provided.
 
-    (defun write-message (account:string message:string)
-      "Write a message"
+```
+(defun write-message (account:string message:string)
+  "Write a message"
 
-      (enforce (<= (length message) 150) "Message can be a maximum of 150 characters long")
+  (enforce (<= (length message) 150) "Message can be a maximum of 150 characters long")
 
-      ;; Try to acquire the `ACCOUNT-OWNER` capability which checks
-      ;; that the transaction owner is also the owner of the KDA account provided as parameter to our `write-messages` function.
-      (with-capability (ACCOUNT-OWNER account)
-        (write messages account { "message" : message })
-      )
-    )
+  ;; Try to acquire the `ACCOUNT-OWNER` capability which checks
+  ;; that the transaction owner is also the owner of the KDA account provided as parameter to our `write-messages` function.
+  (with-capability (ACCOUNT-OWNER account)
+    (write messages account { "message" : message })
+  )
+)
+```
 
 Writing a message is guarded by a capability `ACCOUNT-OWNER`, so only the
 account owner kan write a message.

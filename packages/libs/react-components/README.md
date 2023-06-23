@@ -10,12 +10,14 @@ The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-    git clone git@github.com:kadena-community/kadena.js.git
-    cd kadena.js
-    cd libs/react-components
-    rush install
-    rushx build
-    cd ~/your-app-root
+```
+git clone git@github.com:kadena-community/kadena.js.git
+cd kadena.js
+cd libs/react-components
+rush install
+rushx build
+cd ~/your-app-root
+```
 
 Then in your package.json add:
 
@@ -65,7 +67,9 @@ export default function Root({
 
 You can start storybook after installing:
 
-    rushx storybook
+```
+rushx storybook
+```
 
 ## Component Library Guidelines
 
@@ -110,10 +114,12 @@ development of our other products, the color sets are also still in flux. In
 general you can expect each set of colors to have the following 4 options.
 Example:
 
-      primaryAccent: '#2997FF', // Vibrant
-      primarySurface: '#C2E1FF', // Low contrast
-      primaryContrast: '#00498F', // Contrast
-      primaryHighContrast: '#002F5C', // High Contrast
+```
+  primaryAccent: '#2997FF', // Vibrant
+  primarySurface: '#C2E1FF', // Low contrast
+  primaryContrast: '#00498F', // Contrast
+  primaryHighContrast: '#002F5C', // High Contrast
+```
 
 If at any point you feel that you need more than these variations of a specific
 color, reach out to Isa to discuss if it would be possible to simplify the
