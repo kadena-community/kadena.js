@@ -1,7 +1,9 @@
-import Image from 'next/image'
 import styles from './footer.module.css'
 
-export const Footer = () => {
+import Image from 'next/image'
+import React, { FC } from 'react';
+
+export const Footer: FC = () => {
   return (
     <footer className={styles.footer}>
       <Image

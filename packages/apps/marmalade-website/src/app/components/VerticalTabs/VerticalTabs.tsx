@@ -1,7 +1,8 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
 import styles from './vertical-tabs.module.css';
+
+import React, { ReactNode, useState } from 'react';
 
 interface IVerticalTab {
   title: string;
@@ -13,16 +14,16 @@ interface IProps {
   tabs: Array<IVerticalTab>;
 }
 
-export function VerticalTabs ({ tabs }: IProps) {
+export function VerticalTabs({ tabs }: IProps) : JSX.Element {
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
 
-  const onTabChange = (index: number) => {
+  const onTabChange = (index: number): void => {
     setSelectedTab(index);
   };
 
   return (
-    <div className={styles['tabs']}>
+    <div className={styles.tabs}>
       <div className={styles['tabs-panel']}>
         {tabs.map((tab, index) => (
           <div 

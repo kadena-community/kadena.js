@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
 import styles from './button.module.css';
 
-export interface IButtonProps extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
-  // as?: 'button' | 'a';
-  // onClick?: React.MouseEventHandler<HTMLButtonElement>;
+import React, { FC } from 'react';
+
+export interface IButtonProps {
   href?: string;
   children: React.ReactNode;
   disabled?: boolean;
@@ -13,8 +12,6 @@ export interface IButtonProps extends Omit<React.HTMLAttributes<HTMLButtonElemen
 }
 
 export const Button: FC<IButtonProps> = ({
-  // as = 'button',
-  // onClick,
   href,
   children,
   color,
@@ -22,18 +19,18 @@ export const Button: FC<IButtonProps> = ({
   disabled,
   className
 }) => {
-  // const ariaLabel = props['aria-label'] ?? props.title;
   return (
     <a
       href={href}
       target="_blank"
+      rel="noreferrer"
       className={`
         button
         ${styles.button}
-        ${type ? styles[`${type}`] : ''}
-        ${color? styles[`${color}`] : ''}
-        ${disabled ? 'disabled' : ''}
-        ${className ? className : ''}
+        ${type ?? styles[`${type}`]}
+        ${color?? styles[`${color}`]}
+        ${disabled ?? 'disabled'}
+        ${className ?? className}
       `}
     >
       {children}

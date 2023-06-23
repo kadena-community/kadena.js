@@ -1,10 +1,11 @@
-import { Header } from './components/Header'
-import Image from 'next/image'
-import styles from './page.module.css'
 import { Button } from './components/Button'
+import { Header } from './components/Header'
 import { VerticalTabs } from './components/VerticalTabs'
+import styles from './page.module.css'
 
-export default function Home() {
+import React from 'react';
+
+export default function Home() : JSX.Element {
   const policiesPerPurposeContent = [
     {
       title: 'Migration policy',
@@ -64,7 +65,7 @@ export default function Home() {
         <section className={styles['section-dark-green']}>
           <div className="container-inner">
             <h2 className="color-green">Stackable Policies</h2>
-            <p className={styles.description}>With Marmalade's groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
+            <p className={styles.description}>With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
           </div>
         </section>
         <section className={styles['section-green']}>

@@ -1,8 +1,11 @@
-import Image from 'next/image'
-import styles from './header.module.css'
 import { Button } from '../Button';
 
-export const Header = () => {
+import styles from './header.module.css'
+
+import Image from 'next/image'
+import React, { FC } from 'react';
+
+export const Header : FC = () => {
   return (
     <header className={`${styles.header} container-inner`}>
       <Image
@@ -16,7 +19,7 @@ export const Header = () => {
       <nav className={styles.nav}>
         <ul className={styles['nav-items']}>
           <li>Ask me anything</li>
-          <li><a href="https://docs.kadena.io/" target="_blank">Docs</a></li>
+          <li><a href="https://alpha-docs.kadena.io/" target="_blank" rel="noreferrer">Docs</a></li>
         </ul>
         {/* <ul>
           {items.map((item) => (
