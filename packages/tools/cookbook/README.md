@@ -7,9 +7,9 @@ This project demonstrates common use cases for `@kadena/client` and
 
 <picture>
 
-<source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+<source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
 
-<img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+<img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
 
 </picture>
 
@@ -56,9 +56,9 @@ ts-node src/accounts/transfer-create.ts senderAccount receiverAccount 1
   directory to print the response for a non-transactional command execution.
 
 [1]:
-  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#kadenajs---client
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client#kadenajs---client
 [2]: ./src/accounts/create-account.ts
 [3]: ./src/accounts/transfer-create.ts
 [4]: ./src/accounts/get-balance.ts
 [5]:
-  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client#load-contracts-from-the-blockchain
