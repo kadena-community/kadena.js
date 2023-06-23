@@ -5,8 +5,10 @@ import {
   inputClass,
   inputContainerClass,
   leadingTextClass,
+  outlinedClass,
 } from './Input.css';
 
+import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
 export interface IInputProps
@@ -21,18 +23,21 @@ export interface IInputProps
   type?: string;
   ref?: React.ForwardedRef<HTMLInputElement>;
   id: string;
+  outlined?: boolean;
 }
 
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
-    { leadingText, leftIcon, rightIcon, disabled = false, ...rest },
+    { outlined, leadingText, leftIcon, rightIcon, disabled = false, ...rest },
     ref,
   ) {
     const RightIcon = rightIcon;
     const LeftIcon = leftIcon;
 
     return (
-      <div className={containerClass}>
+      <div
+        className={classNames(containerClass, { [outlinedClass]: outlined })}
+      >
         {Boolean(leadingText) && (
           <span className={leadingTextClass}>{leadingText}</span>
         )}

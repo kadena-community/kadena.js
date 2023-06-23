@@ -1,6 +1,8 @@
+import { Button } from '../Button/Button';
 import { SystemIcon } from '../Icons';
+import { Stack } from '../Stack/Stack';
 
-import { IInputProps } from './Input/Input';
+import { IInputProps, Input } from './Input/Input';
 import { statusVariant } from './InputWrapper/InputWrapper.css';
 import { ITextFieldProps, TextField } from './TextField';
 
@@ -124,4 +126,25 @@ export const Group: Story = {
       />
     );
   },
+};
+
+export const InlineWithButton: Story = {
+  name: 'Inline with button',
+  args: {
+    leftIcon: undefined,
+  },
+  render: ({ leftIcon, onChange }) => (
+    <Stack spacing="xs" alignItems="stretch">
+      <Input
+        id="inlineInputStory"
+        leftIcon={SystemIcon[leftIcon]}
+        onChange={onChange}
+        placeholder="This is a placeholder"
+        outlined
+      />
+      <Button title="Submit" onClick={() => {}}>
+        Submit
+      </Button>
+    </Stack>
+  ),
 };

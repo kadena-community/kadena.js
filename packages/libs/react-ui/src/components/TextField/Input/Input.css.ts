@@ -5,10 +5,12 @@ import { fallbackVar, style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    height: '$10',
     alignItems: 'stretch',
     display: 'flex',
     overflow: 'hidden',
+    paddingY: '$2',
+    bg: '$background',
+    color: '$foreground',
   }),
   {
     borderBottom: `1px solid ${fallbackVar(
@@ -30,8 +32,6 @@ export const containerClass = style([
 
 export const inputContainerClass = style([
   sprinkles({
-    bg: '$background',
-    color: '$foreground',
     alignItems: 'center',
     lineHeight: '$lg',
     display: 'flex',
@@ -63,4 +63,13 @@ export const leadingTextClass = style([
     alignItems: 'center',
     paddingX: '$4',
   }),
+]);
+
+export const outlinedClass = style([
+  sprinkles({
+    borderRadius: '$sm',
+  }),
+  {
+    border: `1px solid ${vars.colors.$neutral3}`,
+  },
 ]);
