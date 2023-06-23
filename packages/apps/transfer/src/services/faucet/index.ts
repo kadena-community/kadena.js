@@ -1,8 +1,9 @@
 import {
   ChainwebChainId,
   ChainwebNetworkId,
+  IPollResponse,
 } from '@kadena/chainweb-node-client';
-import { Pact } from '@kadena/client';
+import { ICommandBuilder, IPactCommand, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -87,9 +88,14 @@ export const fundNewAccount = async (
   return response;
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const fundExistingAccount = async (
   account: string,
   chainId: ChainwebChainId,
+  onPoll?: (
+    transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+    pollRequest: Promise<IPollResponse>,
+  ) => void,
   amount = 100,
 ) => {
   const keyPair = genKeyPair();
@@ -131,11 +137,11 @@ export const fundExistingAccount = async (
     { pubKey: keyPair.publicKey, sig: signature2.sig },
   );
 
-  const response = await transactionBuilder.send(
-    generateApiHost(networkId, chainId),
-  );
+  const apiHost = generateApiHost(networkId, chainId);
 
-  console.log('fundExistingAccount', { response });
+  await transactionBuilder.send(apiHost);
 
-  return response;
+  return await transactionBuilder.pollUntil(apiHost, {
+    onPoll,
+  });
 };
