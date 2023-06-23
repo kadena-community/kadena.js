@@ -10,5 +10,5 @@ jobs:
         with:
           working-directory: packages/apps/kadena-docs
           args: >- # allows you to break string into multiple lines
-            --standalone --output=./import/pact/pact-functions.md
-            ./import/pact/pact-functions.rst
+            --standalone --output=import/pact/pact-functions.md
+            import/pact/pact-functions.rst
