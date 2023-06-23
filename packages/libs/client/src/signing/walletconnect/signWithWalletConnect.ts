@@ -25,8 +25,6 @@ export function createWalletConnectSign(
         signer.caps.map(({ name, args }) => {
           const nameArr = name.split('.');
 
-          console.log(nameArr);
-
           return {
             role: nameArr[nameArr.length - 1],
             description: `Description for ${name}`,
