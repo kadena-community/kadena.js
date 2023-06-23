@@ -111,7 +111,6 @@ const ExistingFaucetPage: FC = () => {
       setErrors([]);
       setRequestStatus('pending');
 
-      // isExistingAccount();
       try {
         console.log('lets try to fund it');
         await fundExistingAccount(
