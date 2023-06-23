@@ -40,7 +40,8 @@
     "rehype-pretty-code": "~0.9.5",
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
-    "shiki": "~0.14.2"
+    "shiki": "~0.14.2",
+    "@vanilla-extract/css": "~1.11.1"
   },
   "devDependencies": {
     "@7-docs/cli": "~0.1.7",

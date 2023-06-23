@@ -171,6 +171,7 @@ importers:
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
+      '@vanilla-extract/css': ~1.11.1
       '@vanilla-extract/next-plugin': ^2.1.2
       acorn: ~8.8.2
       cypress: ~12.12.0
@@ -208,6 +209,7 @@ importers:
       '@mdx-js/loader': 2.3.0
       '@mdx-js/react': 2.3.0_react@18.2.0
       '@next/mdx': 13.3.4_64a67b8d3589d83515f0801746210334
+      '@vanilla-extract/css': 1.11.1
       acorn: 8.8.2
       date-fns: 2.30.0
       js-yaml: 4.1.0
