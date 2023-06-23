@@ -66,7 +66,7 @@ export const spanClass = style([
 export const iconContainer = style([
   sprinkles({
     display: 'flex',
-    marginX: '$sm',
+    marginX: '$2',
   }),
 ]);
 
