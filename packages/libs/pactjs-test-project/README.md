@@ -3,13 +3,13 @@
 This project demonstrates the use of the `@kadena/pact-cli` together with
 `@kadena/client` for _smart contracts_ and _transaction templates_.
 
-- [pactjs-test-project](#pactjs-test-project)
-  - [](#)
+- [pactjs-test-project][1]
+  - [][2]
 
 ## Smart Contracts
 
 We can generate the `.kadena/pactjs-generated` to be used by `@kadena/client`
-with the `@kadena/pactjs-cli`. 
+with the `@kadena/pactjs-cli`.
 
 Generate the TypeScript definitions for `@kadena/client`s `modules`.
 
@@ -18,5 +18,8 @@ Generate the TypeScript definitions for `@kadena/client`s `modules`.
 pnpm install @kadena/pactjs-cli
 
 // retrieve a contract
-curl 
+curl
 ```
+
+[1]: #pactjs-test-project
+[2]: #

@@ -101,7 +101,6 @@ const CheckTransactions: FC = () => {
   return (
     <MainLayout title={t('Account Transactions')}>
       <StyledMainContent>
-        <SidebarMenu />
         <StyledContent>
           <StyledForm onSubmit={checkTransactionsEvent}>
             <StyledSmallField>
