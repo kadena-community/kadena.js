@@ -1,5 +1,5 @@
-import { sprinkles } from '../../../styles';
-import { helperIconColor } from '../InputWrapper/InputWrapper.css';
+import { sprinkles } from '../../../../styles';
+import { helperIconColor } from '../InputWrapper.css';
 
 import { style } from '@vanilla-extract/css';
 

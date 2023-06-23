@@ -9,13 +9,22 @@ export const containerClass = style([
     alignItems: 'stretch',
     display: 'flex',
     overflow: 'hidden',
-    borderRadius: '$sm',
   }),
   {
     borderBottom: `1px solid ${fallbackVar(
       statusColor,
       vars.colors.$neutral3,
     )}`,
+    selectors: {
+      '&:first-child': {
+        borderTopRightRadius: vars.radii.$sm,
+        borderTopLeftRadius: vars.radii.$sm,
+      },
+      '&:last-child': {
+        borderBottomRightRadius: vars.radii.$sm,
+        borderBottomLeftRadius: vars.radii.$sm,
+      },
+    },
   },
 ]);
 
