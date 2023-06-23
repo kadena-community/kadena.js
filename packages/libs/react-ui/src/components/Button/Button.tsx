@@ -13,7 +13,6 @@ export interface IButtonProps
   color?: keyof typeof colorVariants;
 }
 
-// TODO: Add icon support
 export const Button: FC<IButtonProps> = ({
   as = 'button',
   color = 'primary',
