@@ -25,6 +25,8 @@ export function createWalletConnectSign(
         signer.caps.map(({ name, args }) => {
           const nameArr = name.split('.');
 
+          console.log(nameArr);
+
           return {
             role: nameArr[nameArr.length - 1],
             description: `Description for ${name}`,
@@ -50,15 +52,11 @@ export function createWalletConnectSign(
       params: signingRequest,
     };
 
-    const response = await client
-      .request<ISigningResponse>({
-        topic: session.topic,
-        chainId: walletConnectChainId,
-        request: transactionRequest,
-      })
-      .catch((e) => console.log('Error signing transaction:', e));
-
-    console.log('Response from client.request:', response);
+    const response = await client.request<ISigningResponse>({
+      topic: session.topic,
+      chainId: walletConnectChainId,
+      request: transactionRequest,
+    });
 
     if (response?.body === undefined) {
       throw new Error('Error signing transaction');

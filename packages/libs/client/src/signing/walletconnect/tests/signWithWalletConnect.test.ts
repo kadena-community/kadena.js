@@ -29,7 +29,7 @@ describe('signWithWalletConnect', () => {
         {
           caps: [
             {
-              name: 'test-cap-name',
+              name: 'cap.test-cap-name',
               args: ['test-cap-arg'],
             },
           ],
@@ -71,9 +71,9 @@ describe('signWithWalletConnect', () => {
           caps: [
             {
               role: 'test-cap-name',
-              description: 'Description for test-cap-name',
+              description: 'Description for cap.test-cap-name',
               cap: {
-                name: 'test-cap-name',
+                name: 'cap.test-cap-name',
                 args: ['test-cap-arg'],
               },
             },

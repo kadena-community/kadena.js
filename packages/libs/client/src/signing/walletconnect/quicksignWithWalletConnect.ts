@@ -42,15 +42,11 @@ export function createWalletConnectQuicksign(
       params: quickSignRequest,
     };
 
-    const response = await client
-      .request<IQuicksignResponse>({
-        topic: session.topic,
-        chainId: walletConnectChainId,
-        request: transactionRequest,
-      })
-      .catch((e) => console.log('Error signing transaction:', e));
-
-    console.log(response);
+    const response = await client.request<IQuicksignResponse>({
+      topic: session.topic,
+      chainId: walletConnectChainId,
+      request: transactionRequest,
+    });
 
     if (response === undefined) {
       throw new Error('Error signing transaction');
