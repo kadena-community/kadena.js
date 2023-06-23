@@ -1,0 +1,19 @@
+---
+title: How do you use it?
+menu: How do you use it?
+label: How do you use it?
+order: 3
+layout: full
+---
+
+    ## How do you use it?
+
+After supplying any desired invariant and property annotations in your module,
+property checking is run by invoking `verify`:
+
+```lisp
+(verify 'module-name)
+```
+
+This will typecheck the code and, if that succeeds, check all invariants and
+properties.

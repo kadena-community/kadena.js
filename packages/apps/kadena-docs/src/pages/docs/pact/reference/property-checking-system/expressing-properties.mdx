@@ -1,0 +1,109 @@
+---
+title: Expressing properties
+menu: Expressing properties
+label: Expressing properties
+order: 4
+layout: full
+---
+
+    ## Expressing properties
+
+### Arguments, return values, and standard arithmetic and comparison operators
+
+In properties, we can refer to function arguments directly by their names, and
+return values can be referred to by the name `result`:
+
+```lisp
+(defun negate:integer (x:integer)
+  @doc   "negate a number"
+  @model [(property (= result (* -1 x)))]
+
+  (* x -1))
+```
+
+Here you can also see that the standard arithmetic operators on integers and
+decimals work as they do in normal Pact code.
+
+We can also define properties in terms of the standard comparison operators:
+
+```lisp
+(defun abs:integer (x:integer)
+  @doc   "absolute value"
+  @model [(property (>= result 0))]
+
+  (if (< x 0)
+    (negate x)
+    x))
+```
+
+### Boolean operators
+
+In addition to the standard boolean operators `and`, `or`, and `not`, Pact's
+property checking language supports logical implication in the form of `when`,
+where `(when x y)` is equivalent to `(or (not x) y)`. Here we define three
+properties at once:
+
+```lisp
+(defun negate:integer (x:integer)
+  @doc   "negate a number"
+  @model
+    [(property (when (< x 0) (> result 0)))
+     (property (when (> x 0) (< result 0)))
+     (property (and
+       (when (< x 0) (> result 0))
+       (when (> x 0) (< result 0))))]
+
+  (* x -1))
+```
+
+### Transaction abort and success
+
+By default, every property is predicated on the successful completion of the
+transaction which would contain an invocation of the function being tested. This
+means that properties like the following:
+
+```lisp
+(defun ensured-positive:integer (val:integer)
+  @doc   "halts when passed a non-positive number"
+  @model [(property (!= result 0))]
+
+  (enforce (> val 0) "val is not positive")
+  val)
+```
+
+will pass due to the use of `enforce`.
+
+At run-time on the blockchain, if an `enforce` call fails, the containing
+transaction is aborted. Because `properties` are only concerned with
+transactions that succeed, the necessary conditions to pass each `enforce` call
+are assumed.
+
+However, in some cases it's useful to assert when the function must succeed or
+abort. To write this kind of assertion, instead of `property`, you can use
+`succeeds-when` or `fails-when`, for example:
+
+```lisp
+(defun ensured-positive:bool (val:integer)
+  @model [
+    ; this succeeds exactly when val > 0, and fails exactly when val <= 0
+    (succeeds-when (> val 0))
+    (fails-when    (<= val 0))
+
+    ; however, it's valid to assert something weaker
+    (succeeds-when (> val 1000))
+    (fails-when    (< val -1000))
+    ]
+  (enforce (> val 0)))
+```
+
+With this model, we're guaranteed that no transaction will ever run on the
+blockchain with a non-positive `val`.
+
+We've now seen all three valid forms of model assertions -- `property`,
+`succeeds-when`, and `fails-when`.
+
+### More comprehensive properties API documentation
+
+For the full listing of functionality available in properties, see the API
+documentation at
+[Property and Invariant Functions](http://pact-language.readthedocs.io/en/latest/pact-properties-api.html).

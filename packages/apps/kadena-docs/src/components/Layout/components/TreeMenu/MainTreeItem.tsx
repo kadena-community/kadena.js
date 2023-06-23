@@ -57,7 +57,11 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
     <>
       {root && (
         <>
-          <Item item={item} level={level} />
+          <Item
+            item={item}
+            level={level}
+            hasChildren={Boolean(item.children.length)}
+          />
           {item.children.map((v) => (
             <MainTreeItem key={v.root} level={nextLevel()} item={v} />
           ))}

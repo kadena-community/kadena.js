@@ -1,0 +1,186 @@
+---
+title: Expressing schema invariants
+menu: Expressing schema invariants
+label: Expressing schema invariants
+order: 5
+layout: full
+---
+
+    ## Expressing schema invariants
+
+Schema invariants are described by a more restricted subset of the functionality
+available in property definitions -- effectively the functions which are not
+concerned with authorization, DB access, transaction success/failure, and
+function arguments and return values. See the API documentation at
+[Property and Invariant Functions](http://pact-language.readthedocs.io/en/latest/pact-properties-api.html)
+for the full listing of functions available in invariant definitions.
+
+&lt;!--- **_ This second is disabled until we add `valid`&#x2F;`satisfiable`
+alternatives to `property`, which currently assumes tx success _**
+
+### Valid, satisfiable, and explicit transaction abort/success
+
+TODO: more. talk about valid, satisfiable, and the lack of the default success
+condition of property.
+
+Pact's property language supports the notions of `success` and `abort` to
+describe whether programs will successfully run to completion within a
+transaction on the blockchain:
+
+```
+(defun failure-guaranteed:bool ()
+  ("always fails" (valid abort))
+  (enforce false "cannot pass"))
+```
+
+TODO: more
+
+-->
+
+### Keyset Authorization
+
+In Pact, keys can be referred to by predefined names (defined by
+`define-keyset`) or passed around as values. The property checking system
+supports both styles of working with keysets.
+
+For named keysets, the property `authorized-by` holds only if every possible
+code path enforces the keyset:
+
+```lisp
+(defun admins-only (action:string)
+  @doc   "Only admins or super-admins can call this function successfully.
+  @model
+    [(property (or (authorized-by 'admins) (authorized-by 'super-admins)))
+     (property (when (== "create" action) (authorized-by 'super-admins)))]
+
+  (if (= action "create")
+    (create)
+    (if (= action "update")
+      (update)
+      (incorrect-action action))))
+```
+
+For the common pattern of row-level keyset enforcement, wherein a table might
+contain a row for each user, and each user's row contains a keyset that is
+authorized when the row is modified, we can ensure this pattern has been
+implemented correctly by using the `row-enforced` property.
+
+For the following property to pass, the code must extract the keyset stored in
+the `ks` column in the `accounts` table for the row keyed by the variable
+`name`, and enforce it using `enforce-keyset`:
+
+```lisp
+(row-enforced accounts 'ks name)
+```
+
+For some examples of `row-enforced` in action, see "A simple balance transfer
+example" and the section on "universal and existential quantification" below.
+
+### Database access
+
+To describe database table access, the property language has the following
+properties:
+
+- `(table-written accounts)` - that any cell of the table `accounts` is written
+- `(table-read accounts)` - that any cell of the table `accounts` is read
+- `(row-written accounts k)` - that the row keyed by the variable `k` is written
+- `(row-read accounts k)` - that the row keyed by the variable `k` is read
+
+For more details, see an example in "universal and existential quantification"
+below.
+
+### Mass conservation and column deltas
+
+In some situations, it's desirable that the total sum of the values in a column
+remains the same before and after a transaction. Or to put it another way, that
+the sum of all updates to a column zeroes-out by the end of a transaction. To
+capture this pattern, we can express a "mass conservation" property using
+`column-delta`:
+
+```lisp
+(= (column-delta accounts 'balance) 0.0)
+```
+
+This property asserts that the "column delta" is zero, where `column-delta`
+returns a numeric value of the sum of all changes to the column during the
+transaction.
+
+For an example using this property, see "A simple balance transfer example"
+below.
+
+We can also use `column-delta` to ensure that a column only ever increases
+during a transaction:
+
+```lisp
+(>= 0 (column-delta accounts 'balance))
+```
+
+or that it increases by a set amount during a transaction:
+
+```lisp
+(= 1 (column-delta accounts 'balance))
+```
+
+`column-delta` is defined in terms of the increase of the column from before to
+after the transaction (i.e. `after - before`) -- not an absolute value of
+change. So here `1` means an increase of `1` to the column's total sum.
+
+### Universal and existential quantification
+
+In examples like `(row-enforced accounts 'ks key)` or
+`(row-written accounts key)` above, we've so far only referred to function
+arguments by the use of the variable named `key`. But what if we wanted to talk
+about all possible rows that will be written, if a function doesn't simply
+update a single row?
+
+In such a situation we could use universal quantification to talk about _any_
+such row:
+
+```lisp
+(property
+  (forall (key:string)
+   (when (row-written accounts key)
+     (row-enforced accounts 'ks key))))
+```
+
+This property says that for any possible row written by the function, the keyset
+in column `ks` must be enforced for that row.
+
+Likewise instead of quantifying over all possible keys, if we wanted to state
+that there merely exists a row that is read during the transaction, we could use
+existential quantification like so:
+
+```lisp
+(property
+  (exists (key:string)
+    (row-read accounts key)))
+```
+
+For both universal and existential quantification, note that a type annotation
+is required.
+
+### Defining and reusing properties
+
+With `defproperty`, properties can be defined at the module level:
+
+```lisp
+(module accounts 'admin-keyset
+  @model
+    [(defproperty conserves-mass
+       (= (column-delta accounts 'balance) 0.0))
+     (defproperty auth-required
+       (authorized-by 'accounts-admin-keyset))]
+
+  ; ...
+  )
+```
+
+and then used at the function level by referring to the property&#39;s name:
+
+```lisp
+(defun read-account (id)
+  @model [(property auth-required)]
+
+  ; ...
+  )
+```

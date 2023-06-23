@@ -2,6 +2,7 @@
   "name": "@kadena/kadena-docs",
   "version": "0.1.0",
   "scripts": {
+    "import:pact": "ts-node ./src/scripts/pact/createPages.ts  && prettier ./src/pages/docs/pact/reference/**/*.mdx --write",
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
     "7d:query": "npx 7d",
@@ -84,6 +85,9 @@
     "storybook": "^7.0.20",
     "storybook-addon-next-router": "~4.0.2",
     "storybook-dark-mode": "^3.0.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "ts-node": "~10.8.2",
+    "markdown-it": "~13.0.1",
+    "@types/markdown-it": "~12.2.3"
   }
 }
