@@ -1,6 +1,11 @@
 # Change Log - @kadena/chainweb-node-client
 
-This log was last generated on Tue, 13 Jun 2023 13:17:28 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Jun 2023 09:46:33 GMT and should not be manually modified.
+
+## 0.3.2
+Thu, 22 Jun 2023 09:46:33 GMT
+
+_Version update only_
 
 ## 0.3.1
 Tue, 13 Jun 2023 13:17:28 GMT

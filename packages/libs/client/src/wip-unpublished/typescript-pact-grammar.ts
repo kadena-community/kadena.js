@@ -8,12 +8,14 @@ type PactModule<TModule> =
 
 type PactDefun<TDefun> =
   TDefun extends `${string}(defun ${infer TName} (${infer TArgs})${string})${infer TRest}`
-    ? {
-        name: TName extends `${infer TName}:${infer TType}`
-          ? { name: TName; type: TType }
-          : { name: TName };
-        args: TPactArgs<TArgs>;
-      } | PactDefun<TRest>
+    ?
+        | {
+            name: TName extends `${infer TName}:${infer TType}`
+              ? { name: TName; type: TType }
+              : { name: TName };
+            args: TPactArgs<TArgs>;
+          }
+        | PactDefun<TRest>
     : never;
 
 type TPactArgs<Args> = Args extends `${infer TLeft} ${infer TRight}`

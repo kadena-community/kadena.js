@@ -37,7 +37,7 @@ jobs:
       # Disabled this step; it's better to run this step locally and submit it
       # as a PR. This makes a release explicit instead of automatic
       # - name: Rush version bump (install-run-rush)
-      #   run: node common/scripts/install-run-rush.js version --bump --target-branch master --ignore-git-hooks
+      #   run: node common/scripts/install-run-rush.js version --bump --target-branch master
 
       - name: Rush publish (install-run-rush)
         run: |
