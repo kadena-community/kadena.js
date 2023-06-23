@@ -18,11 +18,13 @@ their configuration options.
 
 Run the following commands to install dependencies and build the library:
 
-    git clone git@github.com:kadena-community/kadena.js.git
-    cd kadena.js
-    cd packages/libs/react-ui
-    rush install
-    rushx build
+```
+git clone git@github.com:kadena-community/kadena.js.git
+cd kadena.js
+cd packages/libs/react-ui
+rush install
+rushx build
+```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
 need to setup integration with VE. You can find integration instructions in the
@@ -43,12 +45,16 @@ Add @kadena/react-ui as a dependency in your `package.json`:
 Then run the following commands to install the package and update the monorepo's
 state:
 
-    rush update
+```
+rush update
+```
 
 VE requires bundler configuration to handle CSS. To set this up in Next.js you
 will need to install the following plugin:
 
-    rush add -p @vanilla-extract/next-plugin --dev
+```
+rush add -p @vanilla-extract/next-plugin --dev
+```
 
 If you don’t have a next.config.js file in the root of your project, create one.
 Add the plugin to your next.config.js file and add @kadena/react-ui to
@@ -114,7 +120,9 @@ export default MyApp;
 After installing dependencies, you can start Storybook with the following
 command:
 
-    rushx storybook
+```
+rushx storybook
+```
 
 ### Installation outside of the Kadena.js monorepo
 
@@ -122,12 +130,14 @@ The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-    git clone git@github.com:kadena-community/kadena.js.git
-    cd kadena.js
-    cd packages/libs/react-ui
-    rush install
-    rushx build
-    cd ~/your-app-root
+```
+git clone git@github.com:kadena-community/kadena.js.git
+cd kadena.js
+cd packages/libs/react-ui
+rush install
+rushx build
+cd ~/your-app-root
+```
 
 Add @kadena/react-ui as a dependency in your package.json:
 
@@ -194,10 +204,12 @@ development of our other products, the color sets are also still in flux. In
 general you can expect each set of colors to have the following 4 options.
 Example:
 
-      primaryAccent: '#2997FF', // Vibrant
-      primarySurface: '#C2E1FF', // Low contrast
-      primaryContrast: '#00498F', // Contrast
-      primaryHighContrast: '#002F5C', // High Contrast
+```
+  primaryAccent: '#2997FF', // Vibrant
+  primarySurface: '#C2E1FF', // Low contrast
+  primaryContrast: '#00498F', // Contrast
+  primaryHighContrast: '#002F5C', // High Contrast
+```
 
 If at any point you feel that you need more than these variations of a specific
 color, reach out to Isa to discuss if it would be possible to simplify the
