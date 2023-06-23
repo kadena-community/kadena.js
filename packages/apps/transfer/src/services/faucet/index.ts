@@ -14,6 +14,14 @@ const networkId: ChainwebNetworkId = 'testnet04';
 const KEYSET_NAME: string = 'ks';
 const SENDER_ACCOUNT: string = 'coin-faucet';
 const SENDER_X: string = 'faucet-operation';
+const FAUCET_PUBLIC_KEY = env(
+  'FAUCET_PUBLIC_KEY',
+  '<PROVIDE_FAUCET_PUBLICKEY_HERE>',
+);
+const FAUCET_PRIVATE_KEY = env(
+  'FAUCET_PRIVATE_KEY',
+  '<PROVIDE_FAUCET_PRIVATEKEY_HERE>',
+);
 
 export const fundNewAccount = async (
   account: string,
@@ -29,7 +37,7 @@ export const fundNewAccount = async (
       () => `(read-keyset '${KEYSET_NAME})`,
       new PactNumber(amount).toPactDecimal(),
     )
-    .addCap('coin.GAS', env('FAUCET_PUBLIC_KEY'))
+    .addCap('coin.GAS', FAUCET_PUBLIC_KEY)
     .addCap(
       'coin.TRANSFER',
       keyPair.publicKey,
@@ -48,8 +56,8 @@ export const fundNewAccount = async (
   const command = transactionBuilder.createCommand();
 
   const signature1 = sign(command.cmd, {
-    publicKey: env('FAUCET_PUBLIC_KEY'),
-    secretKey: env('FAUCET_PRIVATE_KEY'),
+    publicKey: FAUCET_PUBLIC_KEY,
+    secretKey: FAUCET_PRIVATE_KEY,
   });
 
   if (signature1.sig === undefined) {
@@ -64,7 +72,7 @@ export const fundNewAccount = async (
 
   transactionBuilder.addSignatures(
     {
-      pubKey: env('FAUCET_PUBLIC_KEY'),
+      pubKey: FAUCET_PUBLIC_KEY,
       sig: signature1.sig,
     },
     { pubKey: keyPair.publicKey, sig: signature2.sig },
@@ -88,7 +96,7 @@ export const fundExistingAccount = async (
 
   const transactionBuilder = Pact.modules['user.coin-faucet']
     ['request-coin'](account, new PactNumber(amount).toPactDecimal())
-    .addCap('coin.GAS', env('FAUCET_PUBLIC_KEY'))
+    .addCap('coin.GAS', FAUCET_PUBLIC_KEY)
     .addCap(
       'coin.TRANSFER',
       keyPair.publicKey,
@@ -101,8 +109,8 @@ export const fundExistingAccount = async (
   const command = transactionBuilder.createCommand();
 
   const signature1 = sign(command.cmd, {
-    publicKey: env('FAUCET_PUBLIC_KEY'),
-    secretKey: env('FAUCET_PRIVATE_KEY'),
+    publicKey: FAUCET_PUBLIC_KEY,
+    secretKey: FAUCET_PRIVATE_KEY,
   });
 
   if (signature1.sig === undefined) {
@@ -117,7 +125,7 @@ export const fundExistingAccount = async (
 
   transactionBuilder.addSignatures(
     {
-      pubKey: env('FAUCET_PUBLIC_KEY'),
+      pubKey: FAUCET_PUBLIC_KEY,
       sig: signature1.sig,
     },
     { pubKey: keyPair.publicKey, sig: signature2.sig },
