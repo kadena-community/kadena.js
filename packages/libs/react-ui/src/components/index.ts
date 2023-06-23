@@ -13,4 +13,9 @@ export {
   GradientText,
   IGradientTextProps,
 } from './Typography';
+export {
+  Breadcrumbs,
+  IBreadcrumbsProps,
+  IBreadcrumbItemProps,
+} from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
