@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Complete the formatting trilogy",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
