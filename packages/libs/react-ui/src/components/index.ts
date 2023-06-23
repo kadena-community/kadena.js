@@ -18,3 +18,4 @@ export {
   IBreadcrumbsProps,
   IBreadcrumbItemProps,
 } from './Breadcrumbs';
+export { Box, IBoxProps } from './Box/Box';
