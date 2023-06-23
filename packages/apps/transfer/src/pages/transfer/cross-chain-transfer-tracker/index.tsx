@@ -20,12 +20,7 @@ import {
   StyledMainContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
-  getTransferData,
-  ITransferDataResult,
-} from '@/services/cross-chain-transfer-finish/get-transfer-data';
-import {
   getTransferStatus,
-  getXChainTransferInfo,
   StatusData,
 } from '@/services/cross-chain-transfer-tracker/get-transfer-status';
 import { useRouter } from 'next/router';
@@ -70,29 +65,17 @@ const CrossChainTransferTracker: FC = () => {
     await router.push(router);
 
     try {
-      // const pollResult: ITransferDataResult | undefined = await getTransferData(
-      //   {
-      //     requestKey,
-      //     server: chainNetwork[network].server,
-      //     networkId: chainNetwork[network].network as ChainwebNetworkId,
-      //     t,
-      //   },
-      // );
-      // console.log(pollResult);
-      // setData(pollResult);
-
-      const status = await getTransferStatus({
+      await getTransferStatus({
         requestKey,
         server: chainNetwork[network].server,
         networkId: chainNetwork[network].network as ChainwebNetworkId,
         t,
+        options: {
+          onPoll: (status) => {
+            setData(status);
+          },
+        },
       });
-
-      console.log('STATUS', status);
-
-      setData(status);
-
-      // await getXChainTransferInfo();
     } catch (error) {}
   };
 

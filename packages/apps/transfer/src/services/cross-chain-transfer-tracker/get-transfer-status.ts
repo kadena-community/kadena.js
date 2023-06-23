@@ -8,6 +8,7 @@ import { generateApiHost } from '../utils/utils';
 import { Translate } from 'next-translate';
 
 export interface StatusData {
+  id?: number;
   status?: string;
   description?: string;
   error?: string;
@@ -23,12 +24,18 @@ export async function getTransferStatus({
   server,
   networkId,
   t,
+  options,
 }: {
   requestKey: string;
   server: string;
   networkId: ChainwebNetworkId;
   t: Translate;
-}): Promise<StatusData> {
+  options?: {
+    onPoll?: (status: StatusData) => void;
+  };
+}): Promise<void> {
+  const { onPoll = () => {} } = { ...options };
+
   try {
     const transferData = await getTransferData({
       requestKey,
@@ -39,37 +46,58 @@ export async function getTransferStatus({
 
     // If not found or error
     if (transferData.error || !transferData.tx) {
-      return {
+      onPoll({
+        id: 0,
         status: 'error',
         description: transferData.error || t('Transfer not found'),
-      };
+      });
+      return;
     }
 
     const { result, receiver, sender, amount } = transferData.tx;
 
     // If transfer has no result
     if (!result) {
-      return {
+      onPoll({
+        id: 0,
         status: 'error',
         description: t('Transfer with no result'),
-      };
+      });
+      return;
     }
 
     // If transfer failed
     if (result.status === 'failure') {
-      return {
+      onPoll({
+        id: 0,
         status: 'error',
+        //@ts-ignore
         description: result.error.message,
+        //@ts-ignore
         error: result.error.type,
         senderAccount: sender.account,
         senderChain: sender.chain,
         receiverAccount: receiver.account,
         receiverChain: receiver.chain,
         amount,
-      };
+      });
+      return;
     }
 
+    //If crosschain transfer
     if (sender.chain !== receiver.chain) {
+      const proof = await checkForProof({
+        requestKey,
+        networkId,
+        server,
+        receiverAccount: receiver.account,
+        receiverChain: receiver.chain,
+        senderAccount: sender.account || 'not found',
+        senderChain: sender.chain,
+        amount,
+        options,
+      });
+
       const xChainTransferData = await getXChainTransferInfo({
         requestKey,
         senderAccount: sender.account || '',
@@ -79,20 +107,17 @@ export async function getTransferStatus({
         t,
       });
 
-      return {
+      onPoll({
         ...xChainTransferData,
         amount,
         senderChain: sender.chain,
         receiverAccount: receiver.account,
-      };
+      });
+      return;
     }
 
-    // return {
-    //   status: transferData.tx.result.status,
-    //   description: 'Transfer completed successfully',
-    // };
-
-    return {
+    onPoll({
+      id: 3,
       status: 'success',
       description: 'Transfer completed successfully',
       senderAccount: sender.account,
@@ -100,12 +125,15 @@ export async function getTransferStatus({
       receiverAccount: receiver.account,
       receiverChain: receiver.chain,
       amount,
-    };
+    });
+    return;
   } catch (error) {
-    return {
+    onPoll({
+      id: 0,
       status: 'error',
       description: t('Transfer not found'),
-    };
+    });
+    return;
   }
 }
 
@@ -125,31 +153,8 @@ export async function getXChainTransferInfo({
   t: Translate;
 }): Promise<StatusData> {
   try {
-    // const contCommand = await getContCommand(
-    //   'AnAHRezOySWrxfqSpGjiwB6lNmOnEe6U0bWsBmyS__0',
-    //   '4',
-    //   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/spv',
-    //   1,
-    //   false,
-    // );
-
-    // contCommand.local(
-    //   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/4/pact',
-    //   {
-    //     preflight: false,
-    //     signatureVerification: false,
-    //   },
-    // );
-
     const proofApiHost = `${generateApiHost(server, networkId, '1')}/spv`;
     const apiHost = generateApiHost(server, networkId, receiverChain);
-
-    const proof = await pollSpvProof(requestKey, receiverChain, proofApiHost, {
-      timeout: 1000,
-      onPoll: (response) => {
-        console.log('On Poll Response', response);
-      },
-    });
 
     const contCommand1 = await getContCommand(
       requestKey,
@@ -159,17 +164,17 @@ export async function getXChainTransferInfo({
       false,
     );
 
-    contCommand1.setMeta(
-      {
-        chainId: receiverChain,
-        sender: senderAccount,
-        gasLimit: 850,
-        gasPrice: 0.00000001,
-      },
-      networkId,
-    );
-
-    contCommand1.createCommand();
+    contCommand1
+      .setMeta(
+        {
+          chainId: receiverChain,
+          sender: senderAccount,
+          gasLimit: 850,
+          gasPrice: 0.00000001,
+        },
+        networkId,
+      )
+      .createCommand();
 
     const response = await contCommand1.local(apiHost, {
       preflight: false,
@@ -181,6 +186,7 @@ export async function getXChainTransferInfo({
       response?.result?.error?.message.includes('pact completed')
     ) {
       return {
+        id: 3,
         status: 'success',
         description: 'Transfer completed successfully',
         senderAccount: senderAccount,
@@ -190,6 +196,7 @@ export async function getXChainTransferInfo({
 
     if (response?.result?.status === 'success') {
       return {
+        id: 2,
         status: 'pending',
         description: 'Transfer pending - waiting for continuation command',
         senderAccount: senderAccount,
@@ -198,14 +205,74 @@ export async function getXChainTransferInfo({
     }
 
     return {
+      id: 0,
       status: 'error',
       description: t('Transfer not found'),
     };
   } catch (error) {
     console.log(error);
     return {
+      id: 0,
       status: 'error',
       description: t('Transfer not found'),
     };
+  }
+}
+
+export async function checkForProof({
+  requestKey,
+  server,
+  networkId,
+  senderAccount,
+  senderChain,
+  receiverAccount,
+  receiverChain,
+  amount,
+  options,
+}: {
+  requestKey: string;
+  server: string;
+  networkId: ChainwebNetworkId;
+  senderAccount: string;
+  senderChain: ChainId;
+  receiverAccount: string;
+  receiverChain: ChainId;
+  amount: number;
+  options?: {
+    onPoll?: (status: StatusData) => void;
+  };
+}) {
+  const { onPoll = () => {} } = { ...options };
+
+  try {
+    const apiHost = `${generateApiHost(server, networkId, '1')}/spv`;
+    let count = 0;
+
+    const proof = await pollSpvProof(requestKey, receiverChain, apiHost, {
+      onPoll: (response: string) => {
+        // Avoid status update on first two polls (to avoid flickering)
+        if (count > 1) {
+          onPoll({
+            id: 1,
+            status: 'pending',
+            description: 'Transfer pending - waiting for proof',
+            senderAccount,
+            senderChain,
+            receiverAccount,
+            receiverChain,
+            amount,
+          });
+        }
+        count++;
+      },
+    });
+
+    return proof;
+  } catch (error) {
+    onPoll({
+      id: 0,
+      status: 'error',
+      description: 'Could not obtain proof information',
+    });
   }
 }
