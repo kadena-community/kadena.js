@@ -1,4 +1,5 @@
 import * as commentMarkers from './commentMarkers/index.js';
+import { fencedCodeBlocks } from './fencedCodeBlocks/index.js';
 import { handleCommentMarkers } from './handleCommentMarkers.js';
 
 import remarkFrontMatter from 'remark-frontmatter';
@@ -18,6 +19,7 @@ const remarkPresetKadena: Preset = {
     [handleCommentMarkers, commentMarkers],
     remarkPrettier,
     remarkGFM,
+    fencedCodeBlocks,
     remarkReferenceLinks,
     remarkOrderLinks,
   ],
