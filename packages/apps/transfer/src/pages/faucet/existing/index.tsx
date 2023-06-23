@@ -182,9 +182,7 @@ const ExistingFaucetPage: FC = () => {
         <StyledAccountForm>
           <Heading as="h3">Account</Heading>
           <TextField
-            label={t(
-              'Associate your public key with a unique account name of your choosing',
-            )}
+            label={t('The account name you would like to fund coins to')}
             status="error"
             inputProps={{
               onChange: onAccountNameChange,
