@@ -10,5 +10,5 @@ jobs:
         with:
           args: >- # allows you to break string into multiple lines
             --standalone
-            --output=packages/apps/kadena-docs/import/pact/pact-functions.md
-            packages/apps/kadena-docs/import/pact/pact-functions.rst
+            --output=./packages/apps/kadena-docs/import/pact/pact-functions.md
+            ./packages/apps/kadena-docs/import/pact/pact-functions.rst
