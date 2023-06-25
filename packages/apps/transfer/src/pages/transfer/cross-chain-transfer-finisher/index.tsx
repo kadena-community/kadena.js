@@ -4,11 +4,10 @@ import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-
-import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
+  StyledFinisherContent,
   StyledAccountForm,
   StyledCheckbox,
   StyledCheckboxLabel,
@@ -21,7 +20,6 @@ import {
   StyledInfoItemLine,
   StyledInfoItemTitle,
   StyledInfoTitle,
-  StyledMainContent,
   StyledResultContainer,
   StyledShowMore,
   StyledToggleContainer,
@@ -138,9 +136,7 @@ const CrossChainTransferFinisher: FC = () => {
 
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
-      <StyledMainContent>
-        <SidebarMenu />
-
+      <StyledFinisherContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
             <StyledToggleContainer>
@@ -274,7 +270,7 @@ const CrossChainTransferFinisher: FC = () => {
             </StyledShowMore>
           </StyledInfoBox>
         ) : null}
-      </StyledMainContent>
+      </StyledFinisherContent>
     </MainLayout>
   );
 };

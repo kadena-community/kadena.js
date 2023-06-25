@@ -1,5 +1,11 @@
 import { styled } from '@kadena/react-components';
 
+export const StyledFinisherContent = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  gap: '$16',
+});
 export const StyledForm = styled('form', {
   width: '100%',
   display: 'flex',
@@ -44,24 +50,25 @@ export const StyledCheckboxLabel = styled('label', {
 });
 
 export const StyledInfoBox = styled('div', {
-  fontSize: '0.75rem',
-  padding: '8px',
+  fontSize: '$base',
+  padding: '$sm',
   background: 'rgba(71, 79, 82, 0.5)',
-  borderRadius: '4px',
+  borderRadius: '$xs',
   boxSizing: 'borderBox',
 });
 
 export const StyledInfoTitle = styled('h3', {
+  fontSize: '$base',
   marginBottom: '2%',
   textAlign: 'center',
 });
 
 export const StyledInfoItem = styled('div', {
   marginTop: '4%',
-  fontSize: '0.75rem',
-  padding: '8px',
+  fontSize: '$xs',
+  padding: '$sm',
   background: 'rgba(71, 79, 82, 0.7)',
-  borderRadius: '4px',
+  borderRadius: '$xs',
   boxSizing: 'borderBox',
 });
 
@@ -76,31 +83,32 @@ export const StyledInfoItemLine = styled('div', {
 });
 
 export const StyledShowMore = styled('div', {
-  fontSize: '0.65rem',
-  padding: '16px',
+  fontSize: '$xs',
+  padding: '$sm',
   textAlign: 'right',
   cursor: 'pointer',
 });
 
 export const StyledResultContainer = styled('div', {
-  fontSize: '1rem',
+  fontSize: '$base',
 });
 export const StyledTotalContainer = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
-  margin: '4% auto',
-  padding: '8px',
-  borderRadius: '4px',
+  mx: '$sm',
+  my: 'auto',
+  padding: '$sm',
+  borderRadius: '$xs',
   background: 'rgba(5, 5, 5, 0.5)',
 });
 export const StyledTotalChunk = styled('div', {
-  width: '45%',
+  width: '$4',
 });
 
 export const StyledErrorMessage = styled('div', {
-  marginTop: '8%',
-  fontSize: '0.85rem',
-  padding: '16px',
+  mt: '$xl',
+  fontSize: '$sm',
+  padding: '$xl',
   textAlign: 'right',
   cursor: 'pointer',
   color: 'salmon',
