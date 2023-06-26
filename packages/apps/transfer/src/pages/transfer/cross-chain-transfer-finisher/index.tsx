@@ -164,8 +164,9 @@ const CrossChainTransferFinisher: FC = () => {
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
   const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
-  const formattedGasPrice = gasPrice.toFixed(20).replace(/(?<=\.\d*[1-9])0+$|\.0*$/,"");
-
+  const formattedGasPrice = gasPrice
+    .toFixed(20)
+    .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
 
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
@@ -213,7 +214,11 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TextField
                   label={t('Gas Payer Account')}
-                  helper={isGasStation ? '' : t('only gas station account is supported')}
+                  helper={
+                    isGasStation
+                      ? ''
+                      : t('only gas station account is supported')
+                  }
                   inputProps={{
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>
@@ -234,7 +239,10 @@ const CrossChainTransferFinisher: FC = () => {
             ) : null}
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title={t('Finish Cross Chain Transfer')} disabled={!isGasStation}>
+            <Button
+              title={t('Finish Cross Chain Transfer')}
+              disabled={!isGasStation}
+            >
               {t('Finish Cross Chain Transfer')}
             </Button>
           </StyledFormButton>
