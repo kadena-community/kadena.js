@@ -54,7 +54,7 @@ export const ConsentModal: FC = () => {
         icon={SystemIcons.Cookie}
       >
         <NotificationBody>
-          We are using cookies on this website
+          We are using cookies on this website!
         </NotificationBody>
         <NotificationFooter>
           <Stack>
