@@ -143,7 +143,7 @@ cd ~/your-app-root
 
 Add @kadena/react-ui as a dependency in your package.json:
 
-```json
+```jsonc
 {
   ...
   "dependencies": {
