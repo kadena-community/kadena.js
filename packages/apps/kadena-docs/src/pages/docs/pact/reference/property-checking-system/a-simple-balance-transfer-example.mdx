@@ -1,12 +1,11 @@
----
-title: A simple balance transfer example
-menu: A simple balance transfer example
-label: A simple balance transfer example
-order: 6
-layout: full
----
-
-    ## A simple balance transfer example
+      ---
+      title: A simple balance transfer example
+      menu: A simple balance transfer example
+      label: A simple balance transfer example
+      order: 6
+      layout: full
+      ---
+          ## A simple balance transfer example
 
 Let's work through an example where we write a function to transfer some amount
 of a balance across two accounts for the given table:
@@ -18,7 +17,7 @@ of a balance across two accounts for the given table:
   balance:integer
   ks:keyset)
 
-(deftable accounts:/}account\})
+(deftable accounts:{account})
 ```
 
 The following code to transfer a balance between two accounts may look correct
@@ -31,12 +30,12 @@ table.
   @doc   "Transfer money between accounts"
   @model [(property (row-enforced accounts 'ks from))]
 
-  (with-read accounts from /} 'balance := from-bal, 'ks := from-ks \}
-    (with-read accounts to /} 'balance := to-bal \}
+  (with-read accounts from { 'balance := from-bal, 'ks := from-ks }
+    (with-read accounts to { 'balance := to-bal }
       (enforce-keyset from-ks)
-      (enforce (&gt;= from-bal amount) "Insufficient Funds")
-      (update accounts from /} "balance": (- from-bal amount) \})
-      (update accounts to   /} "balance": (+ to-bal amount) \}))))
+      (enforce (>= from-bal amount) "Insufficient Funds")
+      (update accounts from { "balance": (- from-bal amount) })
+      (update accounts to   { "balance": (+ to-bal amount) }))))
 ```
 
 Let's start by adding an invariant that balances can never drop below zero:
@@ -44,7 +43,7 @@ Let's start by adding an invariant that balances can never drop below zero:
 ```lisp
 (defschema account
   @doc   "user accounts with balances"
-  @model [(invariant (&gt;= balance 0))]
+  @model [(invariant (>= balance 0))]
 
   balance:integer
   ks:keyset)
@@ -62,13 +61,13 @@ and try again:
   @doc   "Transfer money between accounts"
   @model [(property (row-enforced accounts 'ks from))]
 
-  (with-read accounts from /} 'balance := from-bal, 'ks := from-ks \}
-    (with-read accounts to /} 'balance := to-bal \}
+  (with-read accounts from { 'balance := from-bal, 'ks := from-ks }
+    (with-read accounts to { 'balance := to-bal }
       (enforce-keyset from-ks)
-      (enforce (&gt;= from-bal amount) "Insufficient Funds")
-      (enforce (&gt; amount 0)         "Non-positive amount")
-      (update accounts from /} "balance": (- from-bal amount) \})
-      (update accounts to   /} "balance": (+ to-bal amount) \}))))
+      (enforce (>= from-bal amount) "Insufficient Funds")
+      (enforce (> amount 0)         "Non-positive amount")
+      (update accounts from { "balance": (- from-bal amount) })
+      (update accounts to   { "balance": (+ to-bal amount) }))))
 ```
 
 The property checker validates the code at this point, but let's add another
@@ -90,13 +89,13 @@ And then we can use it within `@model` at the function level:
     [(property (row-enforced accounts 'ks from))
      (property conserves-mass)]
 
-  (with-read accounts from /} 'balance := from-bal, 'ks := from-ks \}
-    (with-read accounts to /} 'balance := to-bal \}
+  (with-read accounts from { 'balance := from-bal, 'ks := from-ks }
+    (with-read accounts to { 'balance := to-bal }
       (enforce-keyset from-ks)
-      (enforce (&gt;= from-bal amount) "Insufficient Funds")
-      (enforce (&gt; amount 0)         "Non-positive amount")
-      (update accounts from /} "balance": (- from-bal amount) \})
-      (update accounts to   /} "balance": (+ to-bal amount) \}))))
+      (enforce (>= from-bal amount) "Insufficient Funds")
+      (enforce (> amount 0)         "Non-positive amount")
+      (update accounts from { "balance": (- from-bal amount) })
+      (update accounts to   { "balance": (+ to-bal amount) }))))
 ```
 
 When we run `verify` this time, the property checker finds a bug again -- it's
@@ -109,8 +108,8 @@ to the same value, and `from-bal` and `to-bal` are also set to what we'll call
 `previous-balance`:
 
 ```lisp
-(update accounts "alice" /} "balance": (- previous-balance amount) \})
-(update accounts "alice" /} "balance": (+ previous-balance amount) \})
+(update accounts "alice" { "balance": (- previous-balance amount) })
+(update accounts "alice" { "balance": (+ previous-balance amount) })
 ```
 
 In this scenario, we can see that the second `update` call will completely
@@ -127,14 +126,14 @@ this unintended behavior:
     [(property (row-enforced accounts 'ks from))
      (property conserves-mass)]
 
-  (with-read accounts from /} 'balance := from-bal, 'ks := from-ks \}
-    (with-read accounts to /} 'balance := to-bal \}
+  (with-read accounts from { 'balance := from-bal, 'ks := from-ks }
+    (with-read accounts to { 'balance := to-bal }
       (enforce-keyset from-ks)
-      (enforce (&gt;= from-bal amount) "Insufficient Funds")
-      (enforce (&gt; amount 0)         "Non-positive amount")
+      (enforce (>= from-bal amount) "Insufficient Funds")
+      (enforce (> amount 0)         "Non-positive amount")
       (enforce (!= from to)         "Sender is the recipient")
-      (update accounts from /} "balance": (- from-bal amount) \})
-      (update accounts to   /} "balance": (+ to-bal amount) \}))))
+      (update accounts from { "balance": (- from-bal amount) })
+      (update accounts to   { "balance": (+ to-bal amount) }))))
 ```
 
 And now we see that finally the property checker verifies that all of the

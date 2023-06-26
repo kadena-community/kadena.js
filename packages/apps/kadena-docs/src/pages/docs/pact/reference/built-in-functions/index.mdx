@@ -1,12 +1,11 @@
----
-title: General
-menu: Built-in Functions
-label: General
-order: 0
-layout: full
----
-
-    ## General
+      ---
+      title: General
+      menu: Built-in Functions
+      label: General
+      order: 0
+      layout: full
+      ---
+          ## General
 
 ### CHARSET_ASCII
 
@@ -24,15 +23,15 @@ Constant: &nbsp;&nbsp;`CHARSET_LATIN1:integer = 1`
 
 _idx_&nbsp;`integer` _list_&nbsp;`[&lt;l&gt;]` _&rarr;_&nbsp;`&lt;a&gt;`
 
-_idx_&nbsp;`string` _object_&nbsp;`object:&lt;/}o\}&gt;`
+_idx_&nbsp;`string` _object_&nbsp;`object:&lt;&#123;o&#125;&gt;`
 _&rarr;_&nbsp;`&lt;a&gt;`
 
 Index LIST at IDX, or get value with key IDX from OBJECT.
 
 ```lisp
-pact&gt; (at 1 [1 2 3])
+pact> (at 1 [1 2 3])
 2
-pact&gt; (at "bar" /} "foo": 1, "bar": 2 \})
+pact> (at "bar" { "foo": 1, "bar": 2 })
 2
 ```
 
@@ -43,7 +42,7 @@ _string_&nbsp;`string` _&rarr;_&nbsp;`string`
 Decode STRING from unpadded base64
 
 ```lisp
-pact&gt; (base64-decode "aGVsbG8gd29ybGQh")
+pact> (base64-decode "aGVsbG8gd29ybGQh")
 "hello world!"
 ```
 
@@ -54,34 +53,34 @@ _string_&nbsp;`string` _&rarr;_&nbsp;`string`
 Encode STRING as unpadded base64
 
 ```lisp
-pact&gt; (base64-encode "hello world!")
+pact> (base64-encode "hello world!")
 "aGVsbG8gd29ybGQh"
 ```
 
 ### bind
 
-_src_&nbsp;`object:&lt;/}row\}&gt;` _binding_&nbsp;`binding:&lt;/}row\}&gt;`
-_&rarr;_&nbsp;`&lt;a&gt;`
+_src_&nbsp;`object:&lt;&#123;row&#125;&gt;`
+_binding_&nbsp;`binding:&lt;&#123;row&#125;&gt;` _&rarr;_&nbsp;`&lt;a&gt;`
 
 Special form evaluates SRC to an object which is bound to with BINDINGS over
 subsequent body statements.
 
 ```lisp
-pact&gt; (bind /} "a": 1, "b": 2 \} /} "a" := a-value \} a-value)
+pact> (bind { "a": 1, "b": 2 } { "a" := a-value } a-value)
 1
 ```
 
 ### chain-data
 
-_&rarr;_&nbsp;`object:/}public-chain-data\}`
+_&rarr;_&nbsp;`object:&#123;public-chain-data&#125;`
 
 Get transaction public metadata. Returns an object with 'chain-id',
 'block-height', 'block-time', 'prev-block-hash', 'sender', 'gas-limit',
 'gas-price', and 'gas-fee' fields.
 
 ```lisp
-pact&gt; (chain-data)
-/}"block-height": 0,"block-time": "1970-01-01T00:00:00Z","chain-id": "","gas-limit": 0,"gas-price": 0.0,"prev-block-hash": "","sender": ""\}
+pact> (chain-data)
+{"block-height": 0,"block-time": "1970-01-01T00:00:00Z","chain-id": "","gas-limit": 0,"gas-price": 0.0,"prev-block-hash": "","sender": ""}
 ```
 
 ### compose
@@ -92,7 +91,7 @@ _value_&nbsp;`&lt;a&gt;` _&rarr;_&nbsp;`&lt;c&gt;`
 Compose X and Y, such that X operates on VALUE, and Y on the results of X.
 
 ```lisp
-pact&gt; (filter (compose (length) (&lt; 2)) ["my" "dog" "has" "fleas"])
+pact> (filter (compose (length) (< 2)) ["my" "dog" "has" "fleas"])
 ["dog" "has" "fleas"]
 ```
 
@@ -104,9 +103,9 @@ Takes STR-LIST and concats each of the strings in the list, returning the
 resulting string
 
 ```lisp
-pact&gt; (concat ["k" "d" "a"])
+pact> (concat ["k" "d" "a"])
 "kda"
-pact&gt; (concat (map (+ " ") (str-to-list "abcde")))
+pact> (concat (map (+ " ") (str-to-list "abcde")))
 " a b c d e"
 ```
 
@@ -123,7 +122,7 @@ _ignore3_&nbsp;`&lt;d&gt;` _&rarr;_&nbsp;`&lt;a&gt;`
 Lazily ignore arguments IGNORE\* and return VALUE.
 
 ```lisp
-pact&gt; (filter (constantly true) [1 2 3])
+pact> (filter (constantly true) [1 2 3])
 [1 2 3]
 ```
 
@@ -131,18 +130,19 @@ pact&gt; (filter (constantly true) [1 2 3])
 
 _value_&nbsp;`&lt;a&gt;` _list_&nbsp;`[&lt;a&gt;]` _&rarr;_&nbsp;`bool`
 
-_key_&nbsp;`&lt;a&gt;` _object_&nbsp;`object:&lt;/}o\}&gt;` _&rarr;_&nbsp;`bool`
+_key_&nbsp;`&lt;a&gt;` _object_&nbsp;`object:&lt;&#123;o&#125;&gt;`
+_&rarr;_&nbsp;`bool`
 
 _value_&nbsp;`string` _string_&nbsp;`string` _&rarr;_&nbsp;`bool`
 
 Test that LIST or STRING contains VALUE, or that OBJECT has KEY entry.
 
 ```lisp
-pact&gt; (contains 2 [1 2 3])
+pact> (contains 2 [1 2 3])
 true
-pact&gt; (contains 'name /} 'name: "Ted", 'age: 72 \})
+pact> (contains 'name { 'name: "Ted", 'age: 72 })
 true
-pact&gt; (contains "foo" "foobar")
+pact> (contains "foo" "foobar")
 true
 ```
 
@@ -173,7 +173,7 @@ Top level only: this function will fail if used in module code.
 
 ### describe-namespace
 
-_ns_&nbsp;`string` _&rarr;_&nbsp;`object:/}described-namespace\}`
+_ns_&nbsp;`string` _&rarr;_&nbsp;`object:&#123;described-namespace&#125;`
 
 Describe the namespace NS, returning a row object containing the user and admin
 guards of the namespace, as well as its name.
@@ -192,7 +192,7 @@ Returns from a homogeneous list of VALUES a list with duplicates removed. The
 original order of the values is preserved.
 
 ```lisp
-pact&gt; (distinct [3 3 1 1 2 2])
+pact> (distinct [3 3 1 1 2 2])
 [3 1 2]
 ```
 
@@ -201,20 +201,20 @@ pact&gt; (distinct [3 3 1 1 2 2])
 _count_&nbsp;`integer` _list_&nbsp;`&lt;a[[&lt;l&gt;],string]&gt;`
 _&rarr;_&nbsp;`&lt;a[[&lt;l&gt;],string]&gt;`
 
-_keys_&nbsp;`[string]` _object_&nbsp;`object:&lt;/}o\}&gt;`
-_&rarr;_&nbsp;`object:&lt;/}o\}&gt;`
+_keys_&nbsp;`[string]` _object_&nbsp;`object:&lt;&#123;o&#125;&gt;`
+_&rarr;_&nbsp;`object:&lt;&#123;o&#125;&gt;`
 
 Drop COUNT values from LIST (or string), or entries having keys in KEYS from
 OBJECT. If COUNT is negative, drop from end. If COUNT exceeds the interval
 (-2^63,2^63), it is truncated to that range.
 
 ```lisp
-pact&gt; (drop 2 "vwxyz")
+pact> (drop 2 "vwxyz")
 "xyz"
-pact&gt; (drop (- 2) [1 2 3 4 5])
+pact> (drop (- 2) [1 2 3 4 5])
 [1 2 3]
-pact&gt; (drop ['name] /} 'name: "Vlad", 'active: false\})
-/}"active": false\}
+pact> (drop ['name] { 'name: "Vlad", 'active: false})
+{"active": false}
 ```
 
 ### enforce
@@ -225,8 +225,8 @@ Fail transaction with MSG if pure expression TEST is false. Otherwise, returns
 true.
 
 ```lisp
-pact&gt; (enforce (!= (+ 2 2) 4) "Chaos reigns")
-&lt;interactive&gt;:0:0:Error: Chaos reigns
+pact> (enforce (!= (+ 2 2) 4) "Chaos reigns")
+<interactive>:0:0:Error: Chaos reigns
 ```
 
 ### enforce-one
@@ -237,7 +237,7 @@ Run TESTS in order (in pure context, plus keyset enforces). If all fail, fail
 transaction. Short-circuits on first success.
 
 ```lisp
-pact&gt; (enforce-one "Should succeed on second test" [(enforce false "Skip me") (enforce (= (+ 2 2) 4) "Chaos reigns")])
+pact> (enforce-one "Should succeed on second test" [(enforce false "Skip me") (enforce (= (+ 2 2) 4) "Chaos reigns")])
 true
 ```
 
@@ -252,7 +252,7 @@ or equal MAX-VERSION. Version values are matched numerically from the left, such
 that '2', '2.2', and '2.2.3' would all allow '2.2.3'.
 
 ```lisp
-pact&gt; (enforce-pact-version "2.3")
+pact> (enforce-pact-version "2.3")
 true
 ```
 
@@ -277,11 +277,11 @@ INC &lt; TO (when FROM &lt; TO) or FROM + INC &gt; TO (when FROM &gt; TO), then
 this function fails.
 
 ```lisp
-pact&gt; (enumerate 0 10 2)
+pact> (enumerate 0 10 2)
 [0 2 4 6 8 10]
-pact&gt; (enumerate 0 10)
+pact> (enumerate 0 10)
 [0 1 2 3 4 5 6 7 8 9 10]
-pact&gt; (enumerate 10 0)
+pact> (enumerate 10 0)
 [10 9 8 7 6 5 4 3 2 1 0]
 ```
 
@@ -294,7 +294,7 @@ Filter LIST by applying APP to each element. For each true result, the original
 value is kept.
 
 ```lisp
-pact&gt; (filter (compose (length) (&lt; 2)) ["my" "dog" "has" "fleas"])
+pact> (filter (compose (length) (< 2)) ["my" "dog" "has" "fleas"])
 ["dog" "has" "fleas"]
 ```
 
@@ -307,7 +307,7 @@ Iteratively reduce LIST by applying APP to last result and element, starting
 with INIT.
 
 ```lisp
-pact&gt; (fold (+) 0 [100 10 5])
+pact> (fold (+) 0 [100 10 5])
 115
 ```
 
@@ -315,10 +315,10 @@ pact&gt; (fold (+) 0 [100 10 5])
 
 _template_&nbsp;`string` _vars_&nbsp;`[*]` _&rarr;_&nbsp;`string`
 
-Interpolate VARS into TEMPLATE using /}\}.
+Interpolate VARS into TEMPLATE using &#123;&#125;.
 
 ```lisp
-pact&gt; (format "My /}\} has /}\}" ["dog" "fleas"])
+pact> (format "My {} has {}" ["dog" "fleas"])
 "My dog has fleas"
 ```
 
@@ -331,9 +331,9 @@ Strings are converted directly while other values are converted using their JSON
 representation. Non-value-level arguments are not allowed.
 
 ```lisp
-pact&gt; (hash "hello")
+pact> (hash "hello")
 "Mk3PAn3UowqTLEQfNlol6GsXPe-kuOWJSCU0cbgbcs8"
-pact&gt; (hash /} 'foo: 1 \})
+pact> (hash { 'foo: 1 })
 "h9BZgylRf_M4HxcBXr15IcSXXXSz74ZC2IAViGle_z4"
 ```
 
@@ -344,7 +344,7 @@ _value_&nbsp;`&lt;a&gt;` _&rarr;_&nbsp;`&lt;a&gt;`
 Return provided value.
 
 ```lisp
-pact&gt; (map (identity) [1 2 3])
+pact> (map (identity) [1 2 3])
 [1 2 3]
 ```
 
@@ -356,7 +356,7 @@ _&rarr;_&nbsp;`&lt;a&gt;`
 Test COND. If true, evaluate THEN. Otherwise, evaluate ELSE.
 
 ```lisp
-pact&gt; (if (= (+ 2 2) 4) "Sanity prevails" "Chaos reigns")
+pact> (if (= (+ 2 2) 4) "Sanity prevails" "Chaos reigns")
 "Sanity prevails"
 ```
 
@@ -368,9 +368,9 @@ Represent integer VAL as a string in BASE. BASE can be 2-16, or 64 for unpadded
 base64URL. Only positive values are allowed for base64URL conversion.
 
 ```lisp
-pact&gt; (int-to-str 16 65535)
+pact> (int-to-str 16 65535)
 "ffff"
-pact&gt; (int-to-str 64 43981)
+pact> (int-to-str 64 43981)
 "q80"
 ```
 
@@ -384,27 +384,27 @@ Character sets currently supported are: 'CHARSET_LATIN1' (ISO-8859-1), and
 be added in the future.
 
 ```lisp
-pact&gt; (is-charset CHARSET_ASCII "hello world")
+pact> (is-charset CHARSET_ASCII "hello world")
 true
-pact&gt; (is-charset CHARSET_ASCII "I am nÖt ascii")
+pact> (is-charset CHARSET_ASCII "I am nÖt ascii")
 false
-pact&gt; (is-charset CHARSET_LATIN1 "I am nÖt ascii, but I am latin1!")
+pact> (is-charset CHARSET_LATIN1 "I am nÖt ascii, but I am latin1!")
 true
 ```
 
 ### length
 
-_x_&nbsp;`&lt;a[[&lt;l&gt;],string,object:&lt;/}o\}&gt;]&gt;`
+_x_&nbsp;`&lt;a[[&lt;l&gt;],string,object:&lt;&#123;o&#125;&gt;]&gt;`
 _&rarr;_&nbsp;`integer`
 
 Compute length of X, which can be a list, a string, or an object.
 
 ```lisp
-pact&gt; (length [1 2 3])
+pact> (length [1 2 3])
 3
-pact&gt; (length "abcdefgh")
+pact> (length "abcdefgh")
 8
-pact&gt; (length /} "a": 1, "b": 2 \})
+pact> (length { "a": 1, "b": 2 })
 2
 ```
 
@@ -415,7 +415,7 @@ _elems_&nbsp;`*` _&rarr;_&nbsp;`[*]`
 Create list from ELEMS. Deprecated in Pact 2.1.1 with literal list support.
 
 ```lisp
-pact&gt; (list 1 2 3)
+pact> (list 1 2 3)
 [1 2 3]
 ```
 
@@ -434,7 +434,7 @@ _length_&nbsp;`integer` _value_&nbsp;`&lt;a&gt;` _&rarr;_&nbsp;`[&lt;a&gt;]`
 Create list by repeating VALUE LENGTH times.
 
 ```lisp
-pact&gt; (make-list 5 true)
+pact> (make-list 5 true)
 [true true true true true]
 ```
 
@@ -446,7 +446,7 @@ _&rarr;_&nbsp;`[&lt;a&gt;]`
 Apply APP to each element in LIST, returning a new list of results.
 
 ```lisp
-pact&gt; (map (+ 1) [1 2 3])
+pact> (map (+ 1) [1 2 3])
 [2 3 4]
 ```
 
@@ -479,7 +479,7 @@ _&rarr;_&nbsp;`string`
 Obtain current pact build version.
 
 ```lisp
-pact&gt; (pact-version)
+pact> (pact-version)
 "4.7.1"
 ```
 
@@ -542,19 +542,19 @@ Parse KEY string or number value from top level of message data body as string.
 
 ### remove
 
-_key_&nbsp;`string` _object_&nbsp;`object:&lt;/}o\}&gt;`
-_&rarr;_&nbsp;`object:&lt;/}o\}&gt;`
+_key_&nbsp;`string` _object_&nbsp;`object:&lt;&#123;o&#125;&gt;`
+_&rarr;_&nbsp;`object:&lt;&#123;o&#125;&gt;`
 
 Remove entry for KEY from OBJECT.
 
 ```lisp
-pact&gt; (remove "bar" /} "foo": 1, "bar": 2 \})
-/}"foo": 1\}
+pact> (remove "bar" { "foo": 1, "bar": 2 })
+{"foo": 1}
 ```
 
 ### resume
 
-_binding_&nbsp;`binding:&lt;/}r\}&gt;` _&rarr;_&nbsp;`&lt;a&gt;`
+_binding_&nbsp;`binding:&lt;&#123;r&#125;&gt;` _&rarr;_&nbsp;`&lt;a&gt;`
 
 Special form binds to a yielded object value from the prior step execution in a
 pact. If yield step was executed on a foreign chain, enforce endorsement via
@@ -567,7 +567,7 @@ _list_&nbsp;`[&lt;a&gt;]` _&rarr;_&nbsp;`[&lt;a&gt;]`
 Reverse LIST.
 
 ```lisp
-pact&gt; (reverse [1 2 3])
+pact> (reverse [1 2 3])
 [3 2 1]
 ```
 
@@ -575,17 +575,17 @@ pact&gt; (reverse [1 2 3])
 
 _values_&nbsp;`[&lt;a&gt;]` _&rarr;_&nbsp;`[&lt;a&gt;]`
 
-_fields_&nbsp;`[string]` _values_&nbsp;`[object:&lt;/}o\}&gt;]`
-_&rarr;_&nbsp;`[object:&lt;/}o\}&gt;]`
+_fields_&nbsp;`[string]` _values_&nbsp;`[object:&lt;&#123;o&#125;&gt;]`
+_&rarr;_&nbsp;`[object:&lt;&#123;o&#125;&gt;]`
 
 Sort a homogeneous list of primitive VALUES, or objects using supplied FIELDS
 list.
 
 ```lisp
-pact&gt; (sort [3 1 2])
+pact> (sort [3 1 2])
 [1 2 3]
-pact&gt; (sort ['age] [/}'name: "Lin",'age: 30\} /}'name: "Val",'age: 25\}])
-[/}"name": "Val","age": 25\} /}"name": "Lin","age": 30\}]
+pact> (sort ['age] [{'name: "Lin",'age: 30} {'name: "Val",'age: 25}])
+[{"name": "Val","age": 25} {"name": "Lin","age": 30}]
 ```
 
 ### str-to-int
@@ -600,11 +600,11 @@ to perform unpadded base64url conversion. Each digit must be in the correct
 range for the base.
 
 ```lisp
-pact&gt; (str-to-int 16 "abcdef123456")
+pact> (str-to-int 16 "abcdef123456")
 188900967593046
-pact&gt; (str-to-int "123456")
+pact> (str-to-int "123456")
 123456
-pact&gt; (str-to-int 64 "q80")
+pact> (str-to-int 64 "q80")
 43981
 ```
 
@@ -615,9 +615,9 @@ _str_&nbsp;`string` _&rarr;_&nbsp;`[string]`
 Takes STR and returns a list of single character strings
 
 ```lisp
-pact&gt; (str-to-list "hello")
+pact> (str-to-list "hello")
 ["h" "e" "l" "l" "o"]
-pact&gt; (concat (map (+ " ") (str-to-list "abcde")))
+pact> (concat (map (+ " ") (str-to-list "abcde")))
 " a b c d e"
 ```
 
@@ -626,20 +626,20 @@ pact&gt; (concat (map (+ " ") (str-to-list "abcde")))
 _count_&nbsp;`integer` _list_&nbsp;`&lt;a[[&lt;l&gt;],string]&gt;`
 _&rarr;_&nbsp;`&lt;a[[&lt;l&gt;],string]&gt;`
 
-_keys_&nbsp;`[string]` _object_&nbsp;`object:&lt;/}o\}&gt;`
-_&rarr;_&nbsp;`object:&lt;/}o\}&gt;`
+_keys_&nbsp;`[string]` _object_&nbsp;`object:&lt;&#123;o&#125;&gt;`
+_&rarr;_&nbsp;`object:&lt;&#123;o&#125;&gt;`
 
 Take COUNT values from LIST (or string), or entries having keys in KEYS from
 OBJECT. If COUNT is negative, take from end. If COUNT exceeds the interval
 (-2^63,2^63), it is truncated to that range.
 
 ```lisp
-pact&gt; (take 2 "abcd")
+pact> (take 2 "abcd")
 "ab"
-pact&gt; (take (- 3) [1 2 3 4 5])
+pact> (take (- 3) [1 2 3 4 5])
 [3 4 5]
-pact&gt; (take ['name] /} 'name: "Vlad", 'active: false\})
-/}"name": "Vlad"\}
+pact> (take ['name] { 'name: "Vlad", 'active: false})
+{"name": "Vlad"}
 ```
 
 ### try
@@ -652,9 +652,9 @@ non-deterministic state in contrast to impure expressions such as reading and
 writing to a table.
 
 ```lisp
-pact&gt; (try 3 (enforce (= 1 2) "this will definitely fail"))
+pact> (try 3 (enforce (= 1 2) "this will definitely fail"))
 3
-(expect "impure expression fails and returns default" "default" (try "default" (with-read accounts id /}'ccy := ccy\}) ccy))
+(expect "impure expression fails and returns default" "default" (try "default" (with-read accounts id {'ccy := ccy}) ccy))
 ```
 
 ### tx-hash
@@ -664,7 +664,7 @@ _&rarr;_&nbsp;`string`
 Obtain hash of current transaction as a string.
 
 ```lisp
-pact&gt; (tx-hash)
+pact> (tx-hash)
 "DldRwCblQ7Loqy6wYJnaodHl30d3j3eH-qtFzfEv46g"
 ```
 
@@ -675,36 +675,37 @@ _x_&nbsp;`&lt;a&gt;` _&rarr;_&nbsp;`string`
 Returns type of X as string.
 
 ```lisp
-pact&gt; (typeof "hello")
+pact> (typeof "hello")
 "string"
 ```
 
 ### where
 
 _field_&nbsp;`string` _app_&nbsp;`x:&lt;a&gt; -&gt; bool`
-_value_&nbsp;`object:&lt;/}row\}&gt;` _&rarr;_&nbsp;`bool`
+_value_&nbsp;`object:&lt;&#123;row&#125;&gt;` _&rarr;_&nbsp;`bool`
 
 Utility for use in 'filter' and 'select' applying APP to FIELD in VALUE.
 
 ```lisp
-pact&gt; (filter (where 'age (&gt; 20)) [/}'name: "Mary",'age: 30\} /}'name: "Juan",'age: 15\}])
-[/}"name": "Juan","age": 15\}]
+pact> (filter (where 'age (> 20)) [{'name: "Mary",'age: 30} {'name: "Juan",'age: 15}])
+[{"name": "Juan","age": 15}]
 ```
 
 ### yield
 
-_object_&nbsp;`object:&lt;/}y\}&gt;` _&rarr;_&nbsp;`object:&lt;/}y\}&gt;`
+_object_&nbsp;`object:&lt;&#123;y&#125;&gt;`
+_&rarr;_&nbsp;`object:&lt;&#123;y&#125;&gt;`
 
-_object_&nbsp;`object:&lt;/}y\}&gt;` _target-chain_&nbsp;`string`
-_&rarr;_&nbsp;`object:&lt;/}y\}&gt;`
+_object_&nbsp;`object:&lt;&#123;y&#125;&gt;` _target-chain_&nbsp;`string`
+_&rarr;_&nbsp;`object:&lt;&#123;y&#125;&gt;`
 
 Yield OBJECT for use with 'resume' in following pact step. With optional
 argument TARGET-CHAIN, target subsequent step to execute on targeted chain using
 automated SPV endorsement-based dispatch.
 
 ```lisp
-(yield /} "amount": 100.0 \})
-(yield /} "amount": 100.0 \} "some-chain-id")
+(yield { "amount": 100.0 })
+(yield { "amount": 100.0 } "some-chain-id")
 ```
 
 ### zip
@@ -716,12 +717,12 @@ Combine two lists with some function f, into a new list, the length of which is
 the length of the shortest list.
 
 ```lisp
-pact&gt; (zip (+) [1 2 3 4] [4 5 6 7])
+pact> (zip (+) [1 2 3 4] [4 5 6 7])
 [5 7 9 11]
-pact&gt; (zip (-) [1 2 3 4] [4 5 6])
+pact> (zip (-) [1 2 3 4] [4 5 6])
 [-3 -3 -3]
-pact&gt; (zip (+) [1 2 3] [4 5 6 7])
+pact> (zip (+) [1 2 3] [4 5 6 7])
 [5 7 9]
-pact&gt; (zip (lambda (x y) /} 'x: x, 'y: y \}) [1 2 3 4] [4 5 6 7])
-[/}"x": 1,"y": 4\} /}"x": 2,"y": 5\} /}"x": 3,"y": 6\} /}"x": 4,"y": 7\}]
+pact> (zip (lambda (x y) { 'x: x, 'y: y }) [1 2 3 4] [4 5 6 7])
+[{"x": 1,"y": 4} {"x": 2,"y": 5} {"x": 3,"y": 6} {"x": 4,"y": 7}]
 ```

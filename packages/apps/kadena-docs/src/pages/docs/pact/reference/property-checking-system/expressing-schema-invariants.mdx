@@ -1,12 +1,11 @@
----
-title: Expressing schema invariants
-menu: Expressing schema invariants
-label: Expressing schema invariants
-order: 5
-layout: full
----
-
-    ## Expressing schema invariants
+      ---
+      title: Expressing schema invariants
+      menu: Expressing schema invariants
+      label: Expressing schema invariants
+      order: 5
+      layout: full
+      ---
+          ## Expressing schema invariants
 
 Schema invariants are described by a more restricted subset of the functionality
 available in property definitions -- effectively the functions which are not
@@ -112,7 +111,7 @@ We can also use `column-delta` to ensure that a column only ever increases
 during a transaction:
 
 ```lisp
-(&gt;= 0 (column-delta accounts 'balance))
+(>= 0 (column-delta accounts 'balance))
 ```
 
 or that it increases by a set amount during a transaction:

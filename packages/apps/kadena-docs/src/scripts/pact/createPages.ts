@@ -23,24 +23,29 @@ const cleanContent = (content: string): string => {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
-        '{': '/}',
-        '}': '\\}',
+        '{': '&#123;',
+        '}': '&#125;',
         '/': '&#x2F;',
       };
-      return entityMap[char];
+      return entityMap[char] ?? char;
     });
 
   return cleanedContent.replace(codeBlockRegex, (match: string): string => {
-    return match.replace(/['&amp;'''&lt;'']/g, (char: string): string => {
-      const entityMap: { [key: string]: string } = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '{': '/}',
-        '}': '\\}',
-        '/': '&#x2F;',
-      };
-      return entityMap[char];
+    return match.replace(
+      /&(amp|lt|gt|#\d+|#x[0-9a-fA-F]+);/g,
+      (char: string): string => {
+        console.log(char);
+        const entityMap: { [key: string]: string } = {
+          '&amp;': '&',
+          '&lt;': '<',
+          '&gt;': '>',
+          '&#123;': '{',
+          '&#125;': '}',
+          '&#x2F;': '/',
+        };
+        return entityMap[char] ?? char;
+      },
+    );
   });
 };
 
@@ -50,14 +55,14 @@ const createFrontmatter = (
   idx: number,
 ): string => {
   return `
----
-title: ${title}
-menu: ${idx === 0 ? parentTitle : title}
-label: ${title}
-order: ${idx}
-layout: full
----
-    `;
+      ---
+      title: ${title}
+      menu: ${idx === 0 ? parentTitle : title}
+      label: ${title}
+      order: ${idx}
+      layout: full
+      ---
+          `;
 };
 
 const createPages = (filename: string): void => {

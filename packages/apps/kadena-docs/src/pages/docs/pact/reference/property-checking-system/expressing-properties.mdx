@@ -1,12 +1,11 @@
----
-title: Expressing properties
-menu: Expressing properties
-label: Expressing properties
-order: 4
-layout: full
----
-
-    ## Expressing properties
+      ---
+      title: Expressing properties
+      menu: Expressing properties
+      label: Expressing properties
+      order: 4
+      layout: full
+      ---
+          ## Expressing properties
 
 ### Arguments, return values, and standard arithmetic and comparison operators
 
@@ -29,9 +28,9 @@ We can also define properties in terms of the standard comparison operators:
 ```lisp
 (defun abs:integer (x:integer)
   @doc   "absolute value"
-  @model [(property (&gt;= result 0))]
+  @model [(property (>= result 0))]
 
-  (if (&lt; x 0)
+  (if (< x 0)
     (negate x)
     x))
 ```
@@ -47,11 +46,11 @@ properties at once:
 (defun negate:integer (x:integer)
   @doc   "negate a number"
   @model
-    [(property (when (&lt; x 0) (&gt; result 0)))
-     (property (when (&gt; x 0) (&lt; result 0)))
+    [(property (when (< x 0) (> result 0)))
+     (property (when (> x 0) (< result 0)))
      (property (and
-       (when (&lt; x 0) (&gt; result 0))
-       (when (&gt; x 0) (&lt; result 0))))]
+       (when (< x 0) (> result 0))
+       (when (> x 0) (< result 0))))]
 
   (* x -1))
 ```
@@ -67,7 +66,7 @@ means that properties like the following:
   @doc   "halts when passed a non-positive number"
   @model [(property (!= result 0))]
 
-  (enforce (&gt; val 0) "val is not positive")
+  (enforce (> val 0) "val is not positive")
   val)
 ```
 
@@ -85,15 +84,15 @@ abort. To write this kind of assertion, instead of `property`, you can use
 ```lisp
 (defun ensured-positive:bool (val:integer)
   @model [
-    ; this succeeds exactly when val &gt; 0, and fails exactly when val &lt;= 0
-    (succeeds-when (&gt; val 0))
-    (fails-when    (&lt;= val 0))
+    ; this succeeds exactly when val > 0, and fails exactly when val <= 0
+    (succeeds-when (> val 0))
+    (fails-when    (<= val 0))
 
     ; however, it's valid to assert something weaker
-    (succeeds-when (&gt; val 1000))
-    (fails-when    (&lt; val -1000))
+    (succeeds-when (> val 1000))
+    (fails-when    (< val -1000))
     ]
-  (enforce (&gt; val 0)))
+  (enforce (> val 0)))
 ```
 
 With this model, we're guaranteed that no transaction will ever run on the

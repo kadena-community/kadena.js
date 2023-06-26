@@ -1,12 +1,11 @@
----
-title: Capabilities
-menu: Capabilities
-label: Capabilities
-order: 5
-layout: full
----
-
-    ## Capabilities
+      ---
+      title: Capabilities
+      menu: Capabilities
+      label: Capabilities
+      order: 5
+      layout: full
+      ---
+          ## Capabilities
 
 ### compose-capability
 
@@ -102,5 +101,5 @@ defcap. Acquire of a managed capability results in emission of the equivalent
 event.
 
 ```lisp
-(with-capability (UPDATE-USERS id) (update users id /} salary: new-salary \}))
+(with-capability (UPDATE-USERS id) (update users id { salary: new-salary }))
 ```

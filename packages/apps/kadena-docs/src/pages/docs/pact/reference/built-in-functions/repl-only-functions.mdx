@@ -1,12 +1,11 @@
----
-title: REPL-only functions
-menu: REPL-only functions
-label: REPL-only functions
-order: 10
-layout: full
----
-
-    ## REPL-only functions
+      ---
+      title: REPL-only functions
+      menu: REPL-only functions
+      label: REPL-only functions
+      order: 10
+      layout: full
+      ---
+          ## REPL-only functions
 
 The following functions are loaded automatically into the interactive REPL, or
 within script files with a `.repl` extension. They are not available for
@@ -21,7 +20,7 @@ _name_&nbsp;`string` _&rarr;_&nbsp;`string`
 Begin transaction with optional NAME.
 
 ```lisp
-pact&gt; (begin-tx "load module")
+pact> (begin-tx "load module")
 "Begin Tx 0: load module"
 ```
 
@@ -42,7 +41,7 @@ _&rarr;_&nbsp;`string`
 Commit transaction.
 
 ```lisp
-pact&gt; (begin-tx) (commit-tx)
+pact> (begin-tx) (commit-tx)
 "Commit Tx 0"
 ```
 
@@ -56,7 +55,7 @@ _step_&nbsp;`integer` _rollback_&nbsp;`bool` _pact-id_&nbsp;`string`
 _&rarr;_&nbsp;`string`
 
 _step_&nbsp;`integer` _rollback_&nbsp;`bool` _pact-id_&nbsp;`string`
-_yielded_&nbsp;`object:&lt;/}y\}&gt;` _&rarr;_&nbsp;`string`
+_yielded_&nbsp;`object:&lt;&#123;y&#125;&gt;` _&rarr;_&nbsp;`string`
 
 Continue previously-initiated pact identified STEP, optionally specifying
 ROLLBACK (default is false), PACT-ID of the pact to be continued (defaults to
@@ -68,37 +67,37 @@ exec, if any).
 (continue-pact 1)
 (continue-pact 1 true)
 (continue-pact 1 false "[pact-id-hash]"))
-(continue-pact 2 1 false "[pact-id-hash]" /} "rate": 0.9 \})
+(continue-pact 2 1 false "[pact-id-hash]" { "rate": 0.9 })
 ```
 
 ### env-chain-data
 
-_new-data_&nbsp;`object:~/}public-chain-data\}` _&rarr;_&nbsp;`string`
+_new-data_&nbsp;`object:~&#123;public-chain-data&#125;` _&rarr;_&nbsp;`string`
 
 Update existing entries of 'chain-data' with NEW-DATA, replacing those items
 only.
 
 ```lisp
-pact&gt; (env-chain-data /} "chain-id": "TestNet00&#x2F;2", "block-height": 20 \})
+pact> (env-chain-data { "chain-id": "TestNet00/2", "block-height": 20 })
 "Updated public metadata"
 ```
 
 ### env-data
 
-_json_&nbsp;`&lt;a[integer,string,time,decimal,bool,[&lt;l&gt;],object:&lt;/}o\}&gt;,keyset]&gt;`
+_json_&nbsp;`&lt;a[integer,string,time,decimal,bool,[&lt;l&gt;],object:&lt;&#123;o&#125;&gt;,keyset]&gt;`
 _&rarr;_&nbsp;`string`
 
 Set transaction JSON data, either as encoded string, or as pact types coerced to
 JSON.
 
 ```lisp
-pact&gt; (env-data /} "keyset": /} "keys": ["my-key" "admin-key"], "pred": "keys-any" \} \})
+pact> (env-data { "keyset": { "keys": ["my-key" "admin-key"], "pred": "keys-any" } })
 "Setting transaction data"
 ```
 
 ### env-dynref
 
-_iface_&nbsp;`module` _impl_&nbsp;`module/}\}` _&rarr;_&nbsp;`string`
+_iface_&nbsp;`module` _impl_&nbsp;`module&#123;&#125;` _&rarr;_&nbsp;`string`
 
 _&rarr;_&nbsp;`string`
 
@@ -117,7 +116,7 @@ Control whether REPL native functions are allowed in module code. When enabled,
 fixture functions like 'env-sigs' are allowed in module code.
 
 ```lisp
-pact&gt; (env-enable-repl-natives true)
+pact> (env-enable-repl-natives true)
 "Repl natives enabled"
 ```
 
@@ -156,7 +155,7 @@ Queries, or with arguments, sets execution config flags. Valid flags:
 ["AllowReadInLocal","DisableHistoryInTransactionalMode","DisableInlineMemCheck","DisableModuleInstall","DisableNewTrans","DisablePact40","DisablePact420","DisablePact43","DisablePact431","DisablePact44","DisablePact45","DisablePact46","DisablePact47","DisablePactEvents","DisableRuntimeReturnTypeChecking","EnforceKeyFormats","OldReadOnlyBehavior","PreserveModuleIfacesBug","PreserveModuleNameBug","PreserveNsModuleInstallBug","PreserveShowDefs"]
 
 ```lisp
-pact&gt; (env-exec-config ['DisableHistoryInTransactionalMode]) (env-exec-config)
+pact> (env-exec-config ['DisableHistoryInTransactionalMode]) (env-exec-config)
 ["DisableHistoryInTransactionalMode"]
 ```
 
@@ -171,7 +170,7 @@ additional gas that is not captured by the interpreter gas model, such as an
 overall transaction-size cost.
 
 ```lisp
-pact&gt; (env-gasmodel "table") (env-gaslimit 10) (env-gas 0) (map (+ 1) [1 2 3]) (env-gas)
+pact> (env-gasmodel "table") (env-gaslimit 10) (env-gas 0) (map (+ 1) [1 2 3]) (env-gas)
 7
 ```
 
@@ -189,7 +188,7 @@ Enable and obtain gas logging. Bracket around the code whose gas logs you want
 to inspect.
 
 ```lisp
-pact&gt; (env-gasmodel "table") (env-gaslimit 10) (env-gaslog) (map (+ 1) [1 2 3]) (env-gaslog)
+pact> (env-gasmodel "table") (env-gaslimit 10) (env-gaslog) (map (+ 1) [1 2 3]) (env-gaslog)
 ["TOTAL: 7" "map:GUnreduced:currTotalGas=4: 4" "+:GUnreduced:currTotalGas=5: 1" ":GIntegerOpCost:(1, ):(1, ):currTotalGas=5: 0" "+:GUnreduced:currTotalGas=6: 1" ":GIntegerOpCost:(1, ):(2, ):currTotalGas=6: 0" "+:GUnreduced:currTotalGas=7: 1" ":GIntegerOpCost:(1, ):(3, ):currTotalGas=7: 0"]
 ```
 
@@ -205,11 +204,11 @@ Update or query current gas model. With just MODEL, "table" is supported; with
 MODEL and RATE, 'fixed' is supported. With no args, output current model.
 
 ```lisp
-pact&gt; (env-gasmodel)
+pact> (env-gasmodel)
 "Current gas model is 'fixed 0': constant rate gas model with fixed rate 0"
-pact&gt; (env-gasmodel 'table)
+pact> (env-gasmodel 'table)
 "Set gas model to table-based cost model"
-pact&gt; (env-gasmodel 'fixed 1)
+pact> (env-gasmodel 'fixed 1)
 "Set gas model to constant rate gas model with fixed rate 1"
 ```
 
@@ -233,7 +232,7 @@ Set current transaction hash. HASH must be an unpadded base64-url encoded
 BLAKE2b 256-bit hash.
 
 ```lisp
-pact&gt; (env-hash (hash "hello"))
+pact> (env-hash (hash "hello"))
 "Set tx hash to Mk3PAn3UowqTLEQfNlol6GsXPe-kuOWJSCU0cbgbcs8"
 ```
 
@@ -245,7 +244,7 @@ DEPRECATED in favor of 'set-sigs'. Set transaction signer KEYS. See 'env-sigs'
 for setting keys with associated capabilities.
 
 ```lisp
-pact&gt; (env-keys ["my-key" "admin-key"])
+pact> (env-keys ["my-key" "admin-key"])
 "Setting transaction keys"
 ```
 
@@ -270,7 +269,7 @@ Set transaction signature keys and capabilities. SIGS is a list of objects with
 capabilities.
 
 ```lisp
-(env-sigs [/}'key: "my-key", 'caps: [(accounts.USER_GUARD "my-account")]\}, /}'key: "admin-key", 'caps: []\}
+(env-sigs [{'key: "my-key", 'caps: [(accounts.USER_GUARD "my-account")]}, {'key: "admin-key", 'caps: []}
 ```
 
 ### env-simulate-onchain
@@ -292,7 +291,7 @@ _&rarr;_&nbsp;`string`
 Evaluate ACTUAL and verify that it equals EXPECTED.
 
 ```lisp
-pact&gt; (expect "Sanity prevails." 4 (+ 2 2))
+pact> (expect "Sanity prevails." 4 (+ 2 2))
 "Expect: success: Sanity prevails."
 ```
 
@@ -306,9 +305,9 @@ _&rarr;_&nbsp;`string`
 Evaluate EXP and succeed only if it throws an error.
 
 ```lisp
-pact&gt; (expect-failure "Enforce fails on false" (enforce false "Expected error"))
+pact> (expect-failure "Enforce fails on false" (enforce false "Expected error"))
 "Expect failure: success: Enforce fails on false"
-pact&gt; (expect-failure "Enforce fails with message" "Expected error" (enforce false "Expected error"))
+pact> (expect-failure "Enforce fails with message" "Expected error" (enforce false "Expected error"))
 "Expect failure: success: Enforce fails with message"
 ```
 
@@ -320,10 +319,10 @@ _exp_&nbsp;`&lt;a&gt;` _&rarr;_&nbsp;`string`
 Evaluate EXP and succeed if value passes predicate PRED.
 
 ```lisp
-pact&gt; (expect-that "addition" (&lt; 2) (+ 1 2))
+pact> (expect-that "addition" (< 2) (+ 1 2))
 "Expect-that: success: addition"
-pact&gt; (expect-that "addition" (&gt; 2) (+ 1 2))
-"FAILURE: addition: did not satisfy (&gt; 2) : 3:integer"
+pact> (expect-that "addition" (> 2) (+ 1 2))
+"FAILURE: addition: did not satisfy (> 2) : 3:integer"
 ```
 
 ### format-address
@@ -354,7 +353,7 @@ _&rarr;_&nbsp;`string`
 Mock a successful call to 'spv-verify' with TYPE and PAYLOAD to return OUTPUT.
 
 ```lisp
-(mock-spv "TXOUT" /} 'proof: "a54f54de54c54d89e7f" \} /} 'amount: 10.0, 'account: "Dave", 'chainId: "1" \})
+(mock-spv "TXOUT" { 'proof: "a54f54de54c54d89e7f" } { 'amount: 10.0, 'account: "Dave", 'chainId: "1" })
 ```
 
 ### pact-state
@@ -386,7 +385,7 @@ _&rarr;_&nbsp;`string`
 Rollback transaction.
 
 ```lisp
-pact&gt; (begin-tx "Third Act") (rollback-tx)
+pact> (begin-tx "Third Act") (rollback-tx)
 "Rollback Tx 0: Third Act"
 ```
 
@@ -437,6 +436,6 @@ environment changes must execute at top-level for the change to take effect.
 This allows scoped application of non-toplevel environment changes.
 
 ```lisp
-pact&gt; (let ((a 1)) (env-data /} 'b: 1 \}) (with-applied-env (+ a (read-integer 'b))))
+pact> (let ((a 1)) (env-data { 'b: 1 }) (with-applied-env (+ a (read-integer 'b))))
 2
 ```

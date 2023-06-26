@@ -1,12 +1,11 @@
----
-title: What do properties and schema invariants look like?
-menu: What do properties and schema invariants look like?
-label: What do properties and schema invariants look like?
-order: 1
-layout: full
----
-
-    ## What do properties and schema invariants look like?
+      ---
+      title: What do properties and schema invariants look like?
+      menu: What do properties and schema invariants look like?
+      label: What do properties and schema invariants look like?
+      order: 1
+      layout: full
+      ---
+          ## What do properties and schema invariants look like?
 
 Here's an example of Pact's properties in action -- we declare a property
 alongside the docstring of the function to which it corresponds. Note that the
@@ -39,7 +38,7 @@ will always maintain the invariant that token balances are greater than zero:
 ```lisp
 (defschema tokens
   @doc   "token schema"
-  @model [(invariant (&gt; balance 0))]
+  @model [(invariant (> balance 0))]
 
   username:string
   balance:integer)

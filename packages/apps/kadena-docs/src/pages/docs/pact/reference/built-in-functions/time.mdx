@@ -1,12 +1,11 @@
----
-title: Time
-menu: Time
-label: Time
-order: 2
-layout: full
----
-
-    ## Time
+      ---
+      title: Time
+      menu: Time
+      label: Time
+      order: 2
+      layout: full
+      ---
+          ## Time
 
 ### add-time
 
@@ -17,7 +16,7 @@ _time_&nbsp;`time` _seconds_&nbsp;`integer` _&rarr;_&nbsp;`time`
 Add SECONDS to TIME; SECONDS can be integer or decimal.
 
 ```lisp
-pact&gt; (add-time (time "2016-07-22T12:00:00Z") 15)
+pact> (add-time (time "2016-07-22T12:00:00Z") 15)
 "2016-07-22T12:00:15Z"
 ```
 
@@ -30,7 +29,7 @@ _n_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 N days, for use with 'add-time'
 
 ```lisp
-pact&gt; (add-time (time "2016-07-22T12:00:00Z") (days 1))
+pact> (add-time (time "2016-07-22T12:00:00Z") (days 1))
 "2016-07-23T12:00:00Z"
 ```
 
@@ -41,7 +40,7 @@ _time1_&nbsp;`time` _time2_&nbsp;`time` _&rarr;_&nbsp;`decimal`
 Compute difference between TIME1 and TIME2 in seconds.
 
 ```lisp
-pact&gt; (diff-time (parse-time "%T" "16:00:00") (parse-time "%T" "09:30:00"))
+pact> (diff-time (parse-time "%T" "16:00:00") (parse-time "%T" "09:30:00"))
 23400.0
 ```
 
@@ -53,7 +52,7 @@ Format TIME using FORMAT. See
 ["Time Formats" docs](pact-reference.html#time-formats) for supported formats.
 
 ```lisp
-pact&gt; (format-time "%F" (time "2016-07-22T12:00:00Z"))
+pact> (format-time "%F" (time "2016-07-22T12:00:00Z"))
 "2016-07-22"
 ```
 
@@ -66,7 +65,7 @@ _n_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 N hours, for use with 'add-time'
 
 ```lisp
-pact&gt; (add-time (time "2016-07-22T12:00:00Z") (hours 1))
+pact> (add-time (time "2016-07-22T12:00:00Z") (hours 1))
 "2016-07-22T13:00:00Z"
 ```
 
@@ -79,7 +78,7 @@ _n_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 N minutes, for use with 'add-time'.
 
 ```lisp
-pact&gt; (add-time (time "2016-07-22T12:00:00Z") (minutes 1))
+pact> (add-time (time "2016-07-22T12:00:00Z") (minutes 1))
 "2016-07-22T12:01:00Z"
 ```
 
@@ -91,7 +90,7 @@ Construct time from UTCVAL using FORMAT. See
 ["Time Formats" docs](pact-reference.html#time-formats) for supported formats.
 
 ```lisp
-pact&gt; (parse-time "%F" "2016-09-12")
+pact> (parse-time "%F" "2016-09-12")
 "2016-09-12T00:00:00Z"
 ```
 
@@ -102,6 +101,6 @@ _utcval_&nbsp;`string` _&rarr;_&nbsp;`time`
 Construct time from UTCVAL using ISO8601 format (%Y-%m-%dT%H:%M:%SZ).
 
 ```lisp
-pact&gt; (time "2016-07-22T11:26:35Z")
+pact> (time "2016-07-22T11:26:35Z")
 "2016-07-22T11:26:35Z"
 ```
