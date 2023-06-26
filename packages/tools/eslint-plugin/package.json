@@ -4,7 +4,10 @@
   "main": "src/index.js",
   "scripts": {
     "build": "heft build --clean",
-    "format": "prettier src --write -u",
+    "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier src --check",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier src --write",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
@@ -18,6 +21,7 @@
     "@rushstack/heft": "~0.50.6",
     "eslint": "^8.15.0",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "typescript": "5.0.4"
   }
 }

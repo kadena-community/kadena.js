@@ -5,7 +5,10 @@
   "license": "MIT",
   "scripts": {
     "build": "",
-    "format": "prettier mixins profile --write -u",
+    "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier mixins profile --check",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier mixins profile --write",
     "lint": "eslint mixins profile --ext .js,.ts --fix",
     "test": ""
   },
@@ -21,6 +24,7 @@
     "@rushstack/eslint-config": "~3.3.0",
     "eslint": "^8.15.0",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "typescript": "5.0.4"
   }
 }

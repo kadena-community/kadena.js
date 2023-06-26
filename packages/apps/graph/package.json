@@ -8,7 +8,10 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "format": "prettier config src --write -u",
+    "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
@@ -41,6 +44,7 @@
     "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "ts-node": "~10.8.2"
   }
 }
