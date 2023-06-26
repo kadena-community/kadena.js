@@ -14,6 +14,7 @@ const systemProperties = defineProperties({
   properties: {
     fontFamily: vars.fonts,
     borderSpacing: vars.sizes,
+    lineHeight: vars.lineHeights,
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
@@ -28,6 +29,7 @@ const systemProperties = defineProperties({
     flexGrow: [0, 1],
     zIndex: [-1, 0, 1],
     border: ['none'],
+    outline: ['none'],
     textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
   },
 });
@@ -39,7 +41,8 @@ const colorProperties = defineProperties({
   },
   defaultCondition: 'lightMode',
   properties: {
-    color: vars.colors,
+    color: { ...vars.colors, inherit: 'inherit' },
+    background: { ...vars.colors, none: 'none' },
     backgroundColor: { ...vars.colors, transparent: 'transparent' },
   },
   shorthands: {
