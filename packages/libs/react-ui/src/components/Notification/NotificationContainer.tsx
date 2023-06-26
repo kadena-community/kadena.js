@@ -1,4 +1,3 @@
-import { IconButton } from '../IconButton/IconButton';
 import { SystemIcon } from '../Icons';
 
 import {
@@ -11,6 +10,7 @@ import {
   iconContainerClass,
   iconContainerExpandedClass,
 } from './Notification.css';
+import { NotificationButton } from './NotificationButton';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';
@@ -55,14 +55,15 @@ export const NotificationContainer: FC<INotificationProps> = ({
         </p>
       </div>
 
-      <span className={expanded ? iconContainerExpandedClass : undefined}>
+      <span
+        className={expanded ? iconContainerExpandedClass : iconContainerClass}
+      >
         {hasCloseButton && (
-          <IconButton
-            title={'Close'}
+          <NotificationButton
             onClick={onClose}
             icon={SystemIcon.Close}
             color={color}
-          ></IconButton>
+          ></NotificationButton>
         )}
       </span>
     </div>

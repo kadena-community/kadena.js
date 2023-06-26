@@ -99,6 +99,7 @@ export const iconContainerClass = style([
 ]);
 
 export const iconContainerExpandedClass = style([
+  iconContainerClass,
   sprinkles({
     marginLeft: 'auto',
   }),

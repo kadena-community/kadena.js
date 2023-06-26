@@ -45,3 +45,9 @@ export const iconContainerClass = style([
     marginX: '$sm',
   }),
 ]);
+
+export const iconStandaloneClass = style([
+  sprinkles({
+    display: 'flex',
+  }),
+]);
