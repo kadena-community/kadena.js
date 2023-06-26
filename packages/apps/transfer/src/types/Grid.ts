@@ -16,11 +16,3 @@ export interface IGridColMediaStyles {
   order?: string,
   display?: string,
 }
-export enum GridColSizes {
-  // XS = "xs", // since react component library doesn't support xs, it has been added to grid component instead
-  SM = "sm",
-  MD = "md",
-  LG = "lg",
-  XL = "xl",
-  XXL = "2xl",
-}
