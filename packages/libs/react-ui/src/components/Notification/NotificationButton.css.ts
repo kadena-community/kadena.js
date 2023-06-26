@@ -37,17 +37,17 @@ export const colorVariants = styleVariants(colors, (color) => {
   ];
 });
 
-export const iconContainerClass = style([
+export const iconStandaloneContainerClass = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginX: '$sm',
   }),
 ]);
 
-export const iconStandaloneClass = style([
+export const iconContainerClass = style([
+  iconStandaloneContainerClass,
   sprinkles({
-    display: 'flex',
+    marginX: '$sm',
   }),
 ]);

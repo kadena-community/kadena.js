@@ -3,7 +3,7 @@ import { SystemIcon } from '../Icons';
 import {
   colorVariants,
   iconContainerClass,
-  iconStandaloneClass,
+  iconStandaloneContainerClass,
 } from './NotificationButton.css';
 
 import React, { FC } from 'react';
@@ -26,7 +26,9 @@ export const NotificationButton: FC<INotificationButtonProps> = ({
       {children}
       <span
         className={
-          children === undefined ? iconStandaloneClass : iconContainerClass
+          children === undefined
+            ? iconStandaloneContainerClass
+            : iconContainerClass
         }
       >
         <Icon size="md" />
