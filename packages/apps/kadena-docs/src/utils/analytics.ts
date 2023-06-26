@@ -5,8 +5,7 @@ export const EVENT_NAMES = {
   'click:open_searchmodal': 'click:open_searchmodal',
 } as const;
 
-export const COOKIE_CONSENTNAME =
-  process.env.NEXT_PUBLIC_TRACKING_COOKIENAME ?? '';
+export const COOKIE_CONSENTNAME = 'cookie_consent';
 
 interface IOptionsType {
   label?: string;
@@ -40,6 +39,7 @@ export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
 
 export const updateConsent = (hasConsent: boolean): void => {
   const newValue = hasConsent ? 'granted' : 'denied';
+  localStorage.setItem(COOKIE_CONSENTNAME, hasConsent.toString());
 
   if (process.env.NODE_ENV === 'development') {
     console.warn('SET CONSENT', { value: newValue });
@@ -51,6 +51,4 @@ export const updateConsent = (hasConsent: boolean): void => {
     ad_storage: 'denied',
     analytics_storage: newValue,
   });
-
-  localStorage.setItem(COOKIE_CONSENTNAME, hasConsent.toString());
 };
