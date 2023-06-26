@@ -1,6 +1,6 @@
 import { Stack, SystemIcons, TextField } from '@kadena/react-components';
 
-import { ResultSection, SearchCode } from '@/components';
+import { ResultSection } from '@/components';
 import { useSearch } from '@/hooks';
 import { createLinkFromMD } from '@/utils';
 import {
@@ -42,9 +42,7 @@ const Search: FC = () => {
 
           {conversation?.history.map((interaction, idx) => (
             <div key={`${interaction.input}-${idx}`}>
-              <ReactMarkdown components={{ code: SearchCode }}>
-                {interaction?.output}
-              </ReactMarkdown>
+              <ReactMarkdown>{interaction?.output}</ReactMarkdown>
               <div>
                 {interaction?.metadata?.map((item, idx) => {
                   const url = createLinkFromMD(item.title);

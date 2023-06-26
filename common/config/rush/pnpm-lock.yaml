@@ -177,8 +177,8 @@ importers:
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
-      '@vanilla-extract/css': ~1.11.1
-      '@vanilla-extract/next-plugin': ^2.1.2
+      '@vanilla-extract/css': 1.11.1
+      '@vanilla-extract/next-plugin': 2.1.2
       acorn: ~8.8.2
       cypress: ~12.12.0
       date-fns: ~2.30.0
@@ -917,14 +917,14 @@ importers:
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
-      '@vanilla-extract/css': ~1.11.1
-      '@vanilla-extract/recipes': ~0.4.0
-      '@vanilla-extract/sprinkles': ~1.6.0
-      '@vanilla-extract/webpack-plugin': ~2.2.0
+      '@vanilla-extract/css': 1.11.1
+      '@vanilla-extract/recipes': 0.4.0
+      '@vanilla-extract/sprinkles': 1.6.0
+      '@vanilla-extract/webpack-plugin': 2.2.0
       classnames: ^2.3.1
       eslint: ^8.15.0
       eslint-plugin-storybook: ~0.6.12
-      mini-css-extract-plugin: ~2.7.6
+      mini-css-extract-plugin: 2.7.6
       prettier: ~2.8.8
       prop-types: ^15.8.1
       react: ^18.2.0
@@ -2765,7 +2765,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/helper-plugin-utils': 7.20.2
+      '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
   /@babel/plugin-syntax-typescript/7.20.0_@babel+core@7.21.3:
@@ -2775,7 +2775,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.3
-      '@babel/helper-plugin-utils': 7.20.2
+      '@babel/helper-plugin-utils': 7.22.5
 
   /@babel/plugin-transform-arrow-functions/7.18.6:
     resolution: {integrity: sha512-9S9X9RUefzrsHZmKMbDXxweEH+YlE8JJEuat9FdvW9Qh1cw7W64jELCtWNkPBPX5En45uy28KGvA/AySqUh8CQ==}
@@ -11058,7 +11058,7 @@ packages:
       cssesc: 3.0.0
       csstype: 3.1.1
       deep-object-diff: 1.1.9
-      deepmerge: 4.2.2
+      deepmerge: 4.3.1
       media-query-parser: 2.0.2
       outdent: 0.8.0
 
