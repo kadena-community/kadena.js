@@ -63,6 +63,7 @@ export const useStream = (): [
             if (text) setOutputStream((v) => v + text);
           }
         } catch (error) {
+          //@TODO: add error message in UI
           console.error(error);
           done();
         }
@@ -73,11 +74,13 @@ export const useStream = (): [
           const data = JSON.parse(event.data);
           setMetadata(data);
         } catch (error) {
+          //@TODO: add error message in UI
           console.error(error);
         }
       });
 
       source.addEventListener('error', (error) => {
+        //@TODO: add error message in UI
         console.log(error);
         done();
       });

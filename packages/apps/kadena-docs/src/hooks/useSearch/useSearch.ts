@@ -9,6 +9,7 @@ import {
   MutableRefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -41,9 +42,10 @@ export const useSearch = (): IProps => {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const updateQuery = useCallback(
-    async (value: string): Promise<void> => {
+    (value: string): void => {
       setQuery(value);
-      await router.push(`${router.route}?q=${value}`);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`${router.route}?q=${value}`);
     },
     [router],
   );
@@ -85,8 +87,6 @@ export const useSearch = (): IProps => {
   useEffect(() => {
     if (conversation.input.length > 0) {
       startStream(conversation.input, conversation);
-
-      //setQuery('');
     }
   }, [conversation.input, conversation, startStream]);
 

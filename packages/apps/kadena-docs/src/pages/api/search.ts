@@ -13,8 +13,7 @@ export const system = `You are an enthusiastic expert on the subject of kadena a
 Answer the question faithfully using the provided context.
 Use Markdown.
 Always try to include a code example in language-specific fenced code blocks, preferably typescript or pact, especially if it's provided in the context.
-If the answer is not provided in the context, say "Sorry, I don\'t have that information.".
-Return the used documents in metadata`;
+If the answer is not provided in the context, say "Sorry, I don\'t have that information.".`;
 
 type QueryFn = (vector: number[]) => Promise<MetaData[]>;
 

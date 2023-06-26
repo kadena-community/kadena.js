@@ -25,9 +25,7 @@ const getFrontMatter = (doc) => {
 
 const convertFile = (file) => {
   const doc = fs.readFileSync(`${file}`, 'utf-8');
-  let data;
-
-  data = getFrontMatter(doc);
+  const data = getFrontMatter(doc);
 
   return {
     id: file,

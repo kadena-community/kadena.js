@@ -6,7 +6,7 @@
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
     "7d:query": "npx 7d",
     "build": "npm run build:next",
-    "build:next": "npm run createtree && next build",
+    "build:next": "npm run createSearchIndex &&  npm run createtree && next build",
     "createSearchIndex": "node ./src/scripts/createSearchIndex.mjs && prettier ./src/data/searchIndex.json --write",
     "createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/data/menu.mjs --write",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
