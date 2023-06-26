@@ -2,31 +2,32 @@ import type { AsPlainObject, SearchResult } from 'minisearch';
 import MiniSearch from 'minisearch';
 import { Dispatch, SetStateAction } from 'react';
 
-const createGetResults = (): (() => Promise<AsPlainObject>) => {
-  let results: AsPlainObject;
+const createGetIndex = (): (() => Promise<MiniSearch>) => {
+  let index: MiniSearch;
 
-  return async (): Promise<AsPlainObject> => {
-    if (results === undefined) {
+  return async (): Promise<MiniSearch> => {
+    if (index === undefined) {
       const data = await import('./../../data/searchIndex.json');
+      const results: AsPlainObject = data.default;
+
       // eslint-disable-next-line require-atomic-updates
-      results = data.default as unknown as AsPlainObject;
+      index = MiniSearch.loadJSON(JSON.stringify(results), {
+        fields: ['title', 'content'],
+        storeFields: ['title', 'content'],
+      });
     }
-    return results;
+
+    return index;
   };
 };
 
-const getResults = createGetResults();
+const getIndex = createGetIndex();
 
 export const loadSearchResults = async (
   value: string,
   setStaticSearchResults: Dispatch<SetStateAction<SearchResult[]>>,
 ): Promise<void> => {
-  const results = await getResults();
-  const index = MiniSearch.loadJSON(JSON.stringify(results), {
-    fields: ['title', 'content'],
-    storeFields: ['title', 'content'],
-  });
-
+  const index = await getIndex();
   const data = index.search(value, { prefix: true, fuzzy: 0.3 });
 
   setStaticSearchResults(data);
