@@ -4,6 +4,7 @@ import {
   Notification,
   NotificationBody,
   NotificationFooter,
+  styled,
   SystemIcons,
 } from '@kadena/react-components';
 
@@ -44,6 +45,12 @@ const statusToBody: Record<RequestStatus, string> = {
   'not started': 'Nothing to see here.',
 };
 
+const Container = styled('div', {
+  marginBottom: '1.5rem', // 24px
+  width: '100%',
+  maxWidth: '100%',
+});
+
 const FormStatusNotification: FC<FormNotificationProps> = ({
   body,
   status,
@@ -68,23 +75,25 @@ const FormStatusNotification: FC<FormNotificationProps> = ({
   }
 
   return (
-    <Notification
-      color={statusToColorMapping[status]}
-      title={title ?? statusToTitle[status]}
-      icon={SystemIcons.Information}
-      expand
-    >
-      <NotificationBody>{body ?? statusToBody[status]}</NotificationBody>
-      <NotificationFooter>
-        <Button
-          title="Close notification"
-          icon={SystemIcons.Close}
-          onClick={onCloseClick}
-        >
-          Close
-        </Button>
-      </NotificationFooter>
-    </Notification>
+    <Container>
+      <Notification
+        color={statusToColorMapping[status]}
+        title={title ?? statusToTitle[status]}
+        icon={SystemIcons.Information}
+        expand
+      >
+        <NotificationBody>{body ?? statusToBody[status]}</NotificationBody>
+        <NotificationFooter>
+          <Button
+            title="Close notification"
+            icon={SystemIcons.Close}
+            onClick={onCloseClick}
+          >
+            Close
+          </Button>
+        </NotificationFooter>
+      </Notification>
+    </Container>
   );
 };
 
