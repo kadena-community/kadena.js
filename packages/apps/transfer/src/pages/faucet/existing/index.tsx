@@ -8,7 +8,7 @@ import {
 } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { Notification, Select } from '@/components/Global';
+import { Select } from '@/components/Global';
 import { StyledOption } from '@/components/Global/Select/styles';
 import {
   StyledAccountForm,
@@ -21,10 +21,10 @@ import React, {
   FC,
   FormEvent,
   FormEventHandler,
-  ReactNode,
   useCallback,
   useState,
 } from 'react';
+import FormStatusNotification from './notification';
 
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 21;
@@ -56,44 +56,7 @@ export const CHAINS = [
 export type ChainTuple = typeof CHAINS;
 export type Chain = ChainTuple[number];
 
-type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
-
-const getRequestStatusNotification = ({
-  status,
-  message,
-}: {
-  status: RequestStatus;
-  message?: string;
-}): ReactNode => {
-  switch (status) {
-    case 'pending':
-      return (
-        <Notification
-          title="Transaction is being processed..."
-          body="Transaction is being processed..."
-        />
-      );
-
-    case 'succeeded':
-      return (
-        <Notification
-          title="Transaction has successfully completed"
-          body="Transaction has successfully completed"
-        />
-      );
-
-    case 'failed':
-      return (
-        <Notification
-          title="Something went wrong"
-          body={message ?? 'Oh noes'}
-        />
-      );
-
-    default:
-      return null;
-  }
-};
+export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
 
 const ExistingFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -174,7 +137,10 @@ const ExistingFaucetPage: FC = () => {
   return (
     <MainLayout title={t('Add Funds to Existing Account')}>
       <StyledForm onSubmit={onFormSubmit}>
-        {getRequestStatusNotification(requestStatus)}
+        <FormStatusNotification
+          status={requestStatus.status}
+          body={requestStatus.message}
+        />
         <StyledAccountForm>
           <Heading as="h3">Account</Heading>
           <TextField
