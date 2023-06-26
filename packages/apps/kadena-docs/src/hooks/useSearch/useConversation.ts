@@ -52,7 +52,6 @@ const conversationReducer: Reducer<IConversation, ActionType> = (
         ],
       };
     case 'reset':
-      console.log('reset');
       return initialState;
     default:
       return state;

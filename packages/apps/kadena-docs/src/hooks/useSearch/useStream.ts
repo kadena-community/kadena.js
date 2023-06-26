@@ -63,7 +63,6 @@ export const useStream = (): [
             if (text) setOutputStream((v) => v + text);
           }
         } catch (error) {
-          console.log(event);
           console.error(error);
           done();
         }
@@ -74,7 +73,6 @@ export const useStream = (): [
           const data = JSON.parse(event.data);
           setMetadata(data);
         } catch (error) {
-          console.log(event);
           console.error(error);
         }
       });
