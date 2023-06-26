@@ -10,6 +10,7 @@ import { PactNumber } from '@kadena/pactjs';
 import { generateApiHost } from '../utils/utils';
 
 import { env } from '@/utils/env';
+import { kadenaConstants } from '@/constants/kadena';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
 const SENDER_ACCOUNT: string = 'coin-faucet';
@@ -71,7 +72,11 @@ export const fundExistingAccount = async (
     { pubKey: keyPair.publicKey, sig: signature2.sig },
   );
 
-  const apiHost = generateApiHost(NETWORK_ID, chainId);
+  const apiHost = generateApiHost(
+    kadenaConstants.TESTNET.API,
+    NETWORK_ID,
+    chainId,
+  );
 
   await transactionBuilder.send(apiHost);
 
