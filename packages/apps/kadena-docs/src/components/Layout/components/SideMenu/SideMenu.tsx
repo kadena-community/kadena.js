@@ -39,6 +39,8 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     if (e.key === 'Enter') {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/search?q=${value}`);
+      closeMenu();
+      e.currentTarget.value = '';
     }
   };
 
