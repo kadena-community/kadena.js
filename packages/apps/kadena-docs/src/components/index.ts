@@ -7,3 +7,4 @@ export * from './LinkList';
 export * from './Analytics';
 export * from './ConsentModal';
 export * from './LastModifiedDate';
+export * from './Search';
