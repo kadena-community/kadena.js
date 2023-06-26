@@ -17,8 +17,8 @@ export interface IInputProps
     'as' | 'disabled' | 'children' | 'className' | 'id'
   > {
   leadingText?: string;
-  leftIcon?: typeof SystemIcon[keyof typeof SystemIcon];
-  rightIcon?: typeof SystemIcon[keyof typeof SystemIcon];
+  leftIcon?: (typeof SystemIcon)[keyof typeof SystemIcon];
+  rightIcon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   disabled?: boolean;
   type?: string;
   ref?: React.ForwardedRef<HTMLInputElement>;
