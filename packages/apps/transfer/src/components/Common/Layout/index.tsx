@@ -1,11 +1,11 @@
-import {Header} from "./partials";
+import { Header } from "./partials";
 
 import { StyledLayout } from '@/components/Common/Layout/styles';
-import {WalletConnectButton} from "@/components/Global";
-import {Logo} from "@/resources/svg/generated";
+import { WalletConnectButton } from "@/components/Global";
+import routes from "@/constants/routes";
+import { Logo } from "@/resources/svg/generated";
 import useTranslation from "next-translate/useTranslation";
 import React, { type ReactNode, FC } from 'react';
-import routes from "../../../constants/routes";
 
 interface IProps {
   children?: ReactNode;

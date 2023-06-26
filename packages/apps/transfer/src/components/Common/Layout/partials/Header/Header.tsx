@@ -1,4 +1,4 @@
-import {SystemIcons} from "@kadena/react-components";
+import { SystemIcons } from "@kadena/react-components";
 
 import {
   StyledBackgroundGlow,
@@ -9,9 +9,9 @@ import {
   StyledLeftPanelWrapper,
   StyledLogoWrapper,
   StyledMenuItem,
-  StyledTitle,
   StyledMobileMenu,
   StyledNav,
+  StyledTitle,
 } from './styles'
 
 import {GridCol} from "@/components/Global";
