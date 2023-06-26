@@ -48,15 +48,16 @@ globalStyle('img, picture, video, canvas, svg', {
 /*
     7. Remove built-in form typography styles
 */
-globalStyle('button, input, select, textarea', {
-  font: 'inherit',
+globalStyle('button, input, select, textarea, label', {
+  fontFamily: vars.fonts.$main,
 });
 
 /*
     8. Avoid text overflows
 */
-globalStyle('p, h1, h2, h3, h4, h5, h6', {
+globalStyle('p, h1, h2, h3, h4, h5, h6, span', {
   overflowWrap: 'break-word',
+  fontFamily: vars.fonts.$main,
 });
 
 /*
