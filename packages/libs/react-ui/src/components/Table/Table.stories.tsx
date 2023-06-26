@@ -42,7 +42,7 @@ export const Primary: Story = {
   },
   render: ({ rowCount, columnCount }) => {
     return (
-      <Table>
+      <Table.Root>
         <Table.Head>
           <Table.Tr>
             {Array.from(Array(columnCount)).map((id, tdIdx) => {
@@ -61,7 +61,7 @@ export const Primary: Story = {
             );
           })}
         </Table.Body>
-      </Table>
+      </Table.Root>
     );
   },
 };
@@ -74,7 +74,7 @@ export const LinkTable: Story = {
   },
   render: ({ rowCount, columnCount }) => {
     return (
-      <Table>
+      <Table.Root>
         <Table.Head>
           <Table.Tr>
             {Array.from(Array(columnCount + 1)).map((id, tdIdx) => {
@@ -97,7 +97,7 @@ export const LinkTable: Story = {
             );
           })}
         </Table.Body>
-      </Table>
+      </Table.Root>
     );
   },
 };

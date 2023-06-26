@@ -9,7 +9,8 @@ import { FC } from 'react';
 
 export { ITableProps, ITBodyProps, ITHeadProps, ITrProps, IThProps, ITdProps };
 
-interface ITable extends FC<ITableProps> {
+interface ITable {
+  Root: FC<ITableProps>;
   Body: FC<ITBodyProps>;
   Head: FC<ITHeadProps>;
   Tr: FC<ITrProps>;
@@ -17,9 +18,11 @@ interface ITable extends FC<ITableProps> {
   Td: FC<ITdProps>;
 }
 
-export const Table: ITable = TableContainer as ITable;
-Table.Body = TBody;
-Table.Head = THead;
-Table.Tr = Tr;
-Table.Th = Th;
-Table.Td = Td;
+export const Table: ITable = {
+  Root: TableContainer,
+  Body: TBody,
+  Head: THead,
+  Tr: Tr,
+  Th: Th,
+  Td: Td
+}
