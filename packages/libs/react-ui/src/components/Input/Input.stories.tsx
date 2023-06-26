@@ -67,7 +67,14 @@ export const Dynamic: Story = {
     leadingText: 'Leading',
     outlined: false,
   },
-  render: ({ leftIcon, rightIcon, outlined, leadingText, onChange }) => (
+  render: ({
+    leftIcon,
+    rightIcon,
+    outlined,
+    leadingText,
+    onChange,
+    disabled,
+  }) => (
     <Input
       id="inlineInputStory"
       leftIcon={SystemIcon[leftIcon]}
@@ -76,6 +83,7 @@ export const Dynamic: Story = {
       placeholder="This is a placeholder"
       leadingText={leadingText}
       outlined={outlined}
+      disabled={disabled}
     />
   ),
 };
