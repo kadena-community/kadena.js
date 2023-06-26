@@ -21,6 +21,9 @@ export {
   Card,
   IIconButtonProps,
   IconButton,
+  IBreadcrumbsProps,
+  IBreadcrumbItemProps,
+  Breadcrumbs,
   Modal,
   IModalProps,
   ModalProvider,
@@ -35,3 +38,5 @@ export {
   darkThemeClass,
   ColorType,
 } from './styles';
+
+export { style } from '@vanilla-extract/css';

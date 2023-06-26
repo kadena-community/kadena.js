@@ -53,6 +53,12 @@ export const Analytics: FC = () => {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+
+            gtag('consent', 'default', {
+              'analytics_storage': 'denied'
+            });
+
+            gtag('config', '${process.env.NEXT_PUBLIC_TRACKING_ID}');
           `,
         }}
       />

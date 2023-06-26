@@ -3,10 +3,10 @@
 @kadena/react-ui is a library used to provide a styling environment and basic
 React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
-utility classes (defined as sprinkles) and CSS variables (defined in the theme)
-that align with Kadena's Design System and exposes them so that they can be used
-with any project or framework. A basic [Storybook][2] integration has been
-implemented so that users can preview components visually and interact with
+utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
+theme) that align with Kadena's Design System and exposes them so that they can
+be used with any project or framework. A basic [Storybook][3] integration has
+been implemented so that users can preview components visually and interact with
 their configuration options.
 
 > Warning: This library is in its early development stage so elements in the
@@ -18,7 +18,7 @@ their configuration options.
 
 Run the following commands to install dependencies and build the library:
 
-```
+```bash
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 cd packages/libs/react-ui
@@ -28,7 +28,7 @@ rushx build
 
 Since this library uses VE and is not pre-bundled, the consuming project will
 need to setup integration with VE. You can find integration instructions in the
-[VE docs][3].
+[VE docs][4].
 
 ### Integration with Next.js projects within Kadena.js
 
@@ -36,8 +36,10 @@ Add @kadena/react-ui as a dependency in your `package.json`:
 
 ```json
 {
+  ...
   "dependencies": {
-    "@kadena/react-ui": "workspace:*"
+    "@kadena/react-ui": "workspace:*",
+    ...
   }
 }
 ```
@@ -45,14 +47,14 @@ Add @kadena/react-ui as a dependency in your `package.json`:
 Then run the following commands to install the package and update the monorepo's
 state:
 
-```
+```bash
 rush update
 ```
 
 VE requires bundler configuration to handle CSS. To set this up in Next.js you
 will need to install the following plugin:
 
-```
+```bash
 rush add -p @vanilla-extract/next-plugin --dev
 ```
 
@@ -60,7 +62,7 @@ If you don’t have a next.config.js file in the root of your project, create on
 Add the plugin to your next.config.js file and add @kadena/react-ui to
 transpilePackages:
 
-```ts
+```js
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
 
@@ -73,14 +75,14 @@ module.exports = withVanillaExtract(nextConfig);
 ```
 
 If required, this plugin can be composed with other plugins. See [VE Next.js
-integration docs][4].
+integration docs][5].
 
 After the plugin is setup, you should be able to use styling utilities exported
 from @kadena/react-ui and components within your application.
 
 ### Dark Theme
 
-We are utilizing the [theming][5] feature from VE to create CSS color variables
+We are utilizing the [theming][6] feature from VE to create CSS color variables
 that invert depending on the selected theme. By default the theme will have
 colors suitable for light mode, but to add dark theme integration you can export
 `darkThemeClass` from @kadena/react-ui and use it with your theme provider.
@@ -88,7 +90,7 @@ colors suitable for light mode, but to add dark theme integration you can export
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
-```tsx
+```js
 import { darkThemeClass } from '@kadena/react-ui';
 import { ThemeProvider } from 'next-themes';
 
@@ -120,7 +122,7 @@ export default MyApp;
 After installing dependencies, you can start Storybook with the following
 command:
 
-```
+```bash
 rushx storybook
 ```
 
@@ -130,7 +132,7 @@ The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-```
+```bash
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 cd packages/libs/react-ui
@@ -141,10 +143,12 @@ cd ~/your-app-root
 
 Add @kadena/react-ui as a dependency in your package.json:
 
-```json
+```jsonc
 {
+  ...
   "dependencies": {
     "@kadena/react-ui": "link:../kadena.js/packages/libs/react-ui"
+    ...
   }
 }
 ```
@@ -161,7 +165,7 @@ components to maintain this goal.
 
 ### Styling
 
-We are currently using [vanilla-extract/css][6] as it is a zero-runtime
+We are currently using [vanilla-extract/css][7] as it is a zero-runtime
 CSS-in-JS library that is framework agnostic.
 
 _Theming_
@@ -204,7 +208,7 @@ development of our other products, the color sets are also still in flux. In
 general you can expect each set of colors to have the following 4 options.
 Example:
 
-```
+```js
   primaryAccent: '#2997FF', // Vibrant
   primarySurface: '#C2E1FF', // Low contrast
   primaryContrast: '#00498F', // Contrast
@@ -229,8 +233,9 @@ flexible to change. This is just a guideline that the team has discussed
 together as a starting point, but any suggestions for change are welcome!
 
 [1]: https://vanilla-extract.style
-[2]: https://storybook.js.org/
-[3]: https://vanilla-extract.style/documentation/integrations/next/
-[4]: https://vanilla-extract.style/documentation/integrations/next/#setup
-[5]: https://vanilla-extract.style/documentation/global-api/create-global-theme/
-[6]: https://vanilla-extract.style/
+[2]: https://vanilla-extract.style/documentation/packages/sprinkles/
+[3]: https://storybook.js.org/
+[4]: https://vanilla-extract.style/documentation/integrations/next/
+[5]: https://vanilla-extract.style/documentation/integrations/next/#setup
+[6]: https://vanilla-extract.style/documentation/global-api/create-global-theme/
+[7]: https://vanilla-extract.style/
