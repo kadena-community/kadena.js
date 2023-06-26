@@ -10,6 +10,9 @@ Library for building type definitions based on smart contracts
 </p>
 <hr>
 
-API Reference can be found here [pactjs-generator.api.md](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/pactjs-generator/etc/pactjs-generator.api.md)
+API Reference can be found here [pactjs-generator.api.md][1]
+
 <hr>
 
+[1]:
+  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/pactjs-generator/etc/pactjs-generator.api.md

@@ -13,7 +13,11 @@
   },
   "scripts": {
     "build": "heft build --clean",
-    "format": "prettier config src --write -u",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
     "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
@@ -32,6 +36,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
@@ -41,6 +46,7 @@
     "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
     "eslint": "^8.15.0",
-    "prettier": "~2.8.8"
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1"
   }
 }

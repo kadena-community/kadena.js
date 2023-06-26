@@ -6,7 +6,11 @@
     "build": "npm run generate:icons && npm run generate:contracts && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",
-    "format": "prettier locales src --write -u",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier locales src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier locales src --write",
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
     "generate:coin:contract": "npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "npm run generate:coin:contract && npm run generate:faucet:contract",
@@ -41,6 +45,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@kadena/types": "workspace:*",
     "@next/eslint-plugin-next": "^12.0.8",
     "@rushstack/eslint-config": "~3.3.0",
@@ -69,6 +74,7 @@
     "jest-environment-jsdom": "~29.5.0",
     "next-translate-plugin": "~2.0.5",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "typescript": "5.0.4"
   },
   "volta": {

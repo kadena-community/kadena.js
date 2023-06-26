@@ -6,4 +6,3 @@
 </p>
 
 # kadena.js - types
-
