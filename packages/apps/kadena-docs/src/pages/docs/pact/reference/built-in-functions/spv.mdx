@@ -1,0 +1,23 @@
+---
+title: SPV
+menu: SPV
+label: SPV
+order: 6
+layout: full
+---
+
+    ## SPV
+
+### verify-spv
+
+_type_&nbsp;`string` _payload_&nbsp;`object:&lt;in&gt;`
+_&rarr;_&nbsp;`object:&lt;out&gt;`
+
+Performs a platform-specific spv proof of type TYPE on PAYLOAD. The format of
+the PAYLOAD object depends on TYPE, as does the format of the return object.
+Platforms such as Chainweb will document the specific payload types and return
+values.
+
+```lisp
+(verify-spv "TXOUT" (read-msg "proof"))
+```

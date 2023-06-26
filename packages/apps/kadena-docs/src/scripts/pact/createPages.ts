@@ -16,27 +16,32 @@ const cleanContent = (content: string): string => {
   const cleanHeaderRegEx: RegExp = /(#+\s*.*?)\s*{[^}]+}/g;
   const codeBlockRegex: RegExp = /```[\s\S]*?```|^\s{4}.*$/gm;
 
-  const markdownParagraphRegex: RegExp = /\n{2}(.+?)\n{2}/g;
-
-  return content
+  const cleanedContent = content
     .replace(cleanHeaderRegEx, '$1')
-    .replace(markdownParagraphRegex, (match: string): string => {
-      if (match.match(codeBlockRegex)) return match;
-
-      console.log(match);
-      return match.replace(/[&<>{}\/]/g, (char: string): string => {
-        // Replace special characters with HTML entities
-        const entityMap: { [key: string]: string } = {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '{': '\\{',
-          '}': '//}',
-          '/': '&#x2F;',
-        };
-        return entityMap[char];
-      });
+    .replace(/[<>{}\/]/g, (char: string): string => {
+      const entityMap: { [key: string]: string } = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '{': '/}',
+        '}': '\\}',
+        '/': '&#x2F;',
+      };
+      return entityMap[char];
     });
+
+  return cleanedContent.replace(codeBlockRegex, (match: string): string => {
+    return match.replace(/['&amp;'''&lt;'']/g, (char: string): string => {
+      const entityMap: { [key: string]: string } = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '{': '/}',
+        '}': '\\}',
+        '/': '&#x2F;',
+      };
+      return entityMap[char];
+  });
 };
 
 const createFrontmatter = (
@@ -94,4 +99,4 @@ const createPages = (filename: string): void => {
 };
 
 createPages('./import/pact/pact-functions.md');
-//createPages('./import/pact/pact-properties.md');
+createPages('./import/pact/pact-properties.md');

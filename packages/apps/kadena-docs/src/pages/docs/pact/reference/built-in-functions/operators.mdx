@@ -1,0 +1,469 @@
+---
+title: Operators
+menu: Operators
+label: Operators
+order: 3
+layout: full
+---
+
+    ## Operators
+
+### !=
+
+_x_&nbsp;`&lt;a[integer,string,time,decimal,bool,[&lt;l&gt;],object:&lt;/}o\}&gt;,keyset,guard,module/}\}]&gt;`
+_y_&nbsp;`&lt;a[integer,string,time,decimal,bool,[&lt;l&gt;],object:&lt;/}o\}&gt;,keyset,guard,module/}\}]&gt;`
+_&rarr;_&nbsp;`bool`
+
+True if X does not equal Y.
+
+```lisp
+pact&gt; (!= "hello" "goodbye")
+true
+```
+
+### &
+
+_x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+Compute bitwise X and Y.
+
+```lisp
+pact&gt; (& 2 3)
+2
+pact&gt; (& 5 -7)
+1
+```
+
+### \*
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;a[integer,decimal]&gt;`
+_&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;b[integer,decimal]&gt;`
+_&rarr;_&nbsp;`decimal`
+
+Multiply X by Y.
+
+```lisp
+pact&gt; (* 0.5 10.0)
+5.0
+pact&gt; (* 3 5)
+15
+```
+
+### \+
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;a[integer,decimal]&gt;`
+_&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;b[integer,decimal]&gt;`
+_&rarr;_&nbsp;`decimal`
+
+_x_&nbsp;`&lt;a[string,[&lt;l&gt;],object:&lt;/}o\}&gt;]&gt;`
+_y_&nbsp;`&lt;a[string,[&lt;l&gt;],object:&lt;/}o\}&gt;]&gt;`
+_&rarr;_&nbsp;`&lt;a[string,[&lt;l&gt;],object:&lt;/}o\}&gt;]&gt;`
+
+Add numbers, concatenate strings&#x2F;lists, or merge objects.
+
+```lisp
+pact&gt; (+ 1 2)
+3
+pact&gt; (+ 5.0 0.5)
+5.5
+pact&gt; (+ "every" "body")
+"everybody"
+pact&gt; (+ [1 2] [3 4])
+[1 2 3 4]
+pact&gt; (+ /} "foo": 100 \} /} "foo": 1, "bar": 2 \})
+/}"bar": 2,"foo": 100\}
+```
+
+### \-
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;a[integer,decimal]&gt;`
+_&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;b[integer,decimal]&gt;`
+_&rarr;_&nbsp;`decimal`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+Negate X, or subtract Y from X.
+
+```lisp
+pact&gt; (- 1.0)
+-1.0
+pact&gt; (- 3 2)
+1
+```
+
+### &#x2F;
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;a[integer,decimal]&gt;`
+_&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;b[integer,decimal]&gt;`
+_&rarr;_&nbsp;`decimal`
+
+Divide X by Y.
+
+```lisp
+pact&gt; (&#x2F; 10.0 2.0)
+5.0
+pact&gt; (&#x2F; 8 3)
+2
+```
+
+### &lt;
+
+_x_&nbsp;`&lt;a[integer,decimal,string,time]&gt;`
+_y_&nbsp;`&lt;a[integer,decimal,string,time]&gt;` _&rarr;_&nbsp;`bool`
+
+True if X &lt; Y.
+
+```lisp
+pact&gt; (&lt; 1 3)
+true
+pact&gt; (&lt; 5.24 2.52)
+false
+pact&gt; (&lt; "abc" "def")
+true
+```
+
+### &lt;=
+
+_x_&nbsp;`&lt;a[integer,decimal,string,time]&gt;`
+_y_&nbsp;`&lt;a[integer,decimal,string,time]&gt;` _&rarr;_&nbsp;`bool`
+
+True if X &lt;= Y.
+
+```lisp
+pact&gt; (&lt;= 1 3)
+true
+pact&gt; (&lt;= 5.24 2.52)
+false
+pact&gt; (&lt;= "abc" "def")
+true
+```
+
+### =
+
+_x_&nbsp;`&lt;a[integer,string,time,decimal,bool,[&lt;l&gt;],object:&lt;/}o\}&gt;,keyset,guard,module/}\}]&gt;`
+_y_&nbsp;`&lt;a[integer,string,time,decimal,bool,[&lt;l&gt;],object:&lt;/}o\}&gt;,keyset,guard,module/}\}]&gt;`
+_&rarr;_&nbsp;`bool`
+
+Compare alike terms for equality, returning TRUE if X is equal to Y. Equality
+comparisons will fail immediately on type mismatch, or if types are not value
+types.
+
+```lisp
+pact&gt; (= [1 2 3] [1 2 3])
+true
+pact&gt; (= 'foo "foo")
+true
+pact&gt; (= /} 'a: 2 \} /} 'a: 2\})
+true
+```
+
+### &gt;
+
+_x_&nbsp;`&lt;a[integer,decimal,string,time]&gt;`
+_y_&nbsp;`&lt;a[integer,decimal,string,time]&gt;` _&rarr;_&nbsp;`bool`
+
+True if X &gt; Y.
+
+```lisp
+pact&gt; (&gt; 1 3)
+false
+pact&gt; (&gt; 5.24 2.52)
+true
+pact&gt; (&gt; "abc" "def")
+false
+```
+
+### &gt;=
+
+_x_&nbsp;`&lt;a[integer,decimal,string,time]&gt;`
+_y_&nbsp;`&lt;a[integer,decimal,string,time]&gt;` _&rarr;_&nbsp;`bool`
+
+True if X &gt;= Y.
+
+```lisp
+pact&gt; (&gt;= 1 3)
+false
+pact&gt; (&gt;= 5.24 2.52)
+true
+pact&gt; (&gt;= "abc" "def")
+false
+```
+
+### ^
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;a[integer,decimal]&gt;`
+_&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;b[integer,decimal]&gt;`
+_&rarr;_&nbsp;`decimal`
+
+Raise X to Y power.
+
+```lisp
+pact&gt; (^ 2 3)
+8
+```
+
+### abs
+
+_x_&nbsp;`decimal` _&rarr;_&nbsp;`decimal`
+
+_x_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+Absolute value of X.
+
+```lisp
+pact&gt; (abs (- 10 23))
+13
+```
+
+### and
+
+_x_&nbsp;`bool` _y_&nbsp;`bool` _&rarr;_&nbsp;`bool`
+
+Boolean logic with short-circuit.
+
+```lisp
+pact&gt; (and true false)
+false
+```
+
+### and?
+
+_a_&nbsp;`x:&lt;r&gt; -&gt; bool` _b_&nbsp;`x:&lt;r&gt; -&gt; bool`
+_value_&nbsp;`&lt;r&gt;` _&rarr;_&nbsp;`bool`
+
+Apply logical 'and' to the results of applying VALUE to A and B, with
+short-circuit.
+
+```lisp
+pact&gt; (and? (&gt; 20) (&gt; 10) 15)
+false
+```
+
+### ceiling
+
+_x_&nbsp;`decimal` _prec_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
+
+_x_&nbsp;`decimal` _&rarr;_&nbsp;`integer`
+
+Rounds up value of decimal X as integer, or to PREC precision as decimal.
+
+```lisp
+pact&gt; (ceiling 3.5)
+4
+pact&gt; (ceiling 100.15234 2)
+100.16
+```
+
+### dec
+
+_x_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
+
+Cast an integer to a decimal value of integer X as decimal.
+
+```lisp
+pact&gt; (dec 3)
+3.0
+```
+
+### exp
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+Exp of X.
+
+```lisp
+pact&gt; (round (exp 3) 6)
+20.085537
+```
+
+### floor
+
+_x_&nbsp;`decimal` _prec_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
+
+_x_&nbsp;`decimal` _&rarr;_&nbsp;`integer`
+
+Rounds down value of decimal X as integer, or to PREC precision as decimal.
+
+```lisp
+pact&gt; (floor 3.5)
+3
+pact&gt; (floor 100.15234 2)
+100.15
+```
+
+### ln
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+Natural log of X.
+
+```lisp
+pact&gt; (round (ln 60) 6)
+4.094345
+```
+
+### log
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;a[integer,decimal]&gt;`
+_&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _y_&nbsp;`&lt;b[integer,decimal]&gt;`
+_&rarr;_&nbsp;`decimal`
+
+Log of Y base X.
+
+```lisp
+pact&gt; (log 2 256)
+8
+```
+
+### mod
+
+_x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+X modulo Y.
+
+```lisp
+pact&gt; (mod 13 8)
+5
+```
+
+### not
+
+_x_&nbsp;`bool` _&rarr;_&nbsp;`bool`
+
+Boolean not.
+
+```lisp
+pact&gt; (not (&gt; 1 2))
+true
+```
+
+### not?
+
+_app_&nbsp;`x:&lt;r&gt; -&gt; bool` _value_&nbsp;`&lt;r&gt;`
+_&rarr;_&nbsp;`bool`
+
+Apply logical 'not' to the results of applying VALUE to APP.
+
+```lisp
+pact&gt; (not? (&gt; 20) 15)
+false
+```
+
+### or
+
+_x_&nbsp;`bool` _y_&nbsp;`bool` _&rarr;_&nbsp;`bool`
+
+Boolean logic with short-circuit.
+
+```lisp
+pact&gt; (or true false)
+true
+```
+
+### or?
+
+_a_&nbsp;`x:&lt;r&gt; -&gt; bool` _b_&nbsp;`x:&lt;r&gt; -&gt; bool`
+_value_&nbsp;`&lt;r&gt;` _&rarr;_&nbsp;`bool`
+
+Apply logical 'or' to the results of applying VALUE to A and B, with
+short-circuit.
+
+```lisp
+pact&gt; (or? (&gt; 20) (&gt; 10) 15)
+true
+```
+
+### round
+
+_x_&nbsp;`decimal` _prec_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
+
+_x_&nbsp;`decimal` _&rarr;_&nbsp;`integer`
+
+Performs Banker's rounding value of decimal X as integer, or to PREC precision
+as decimal.
+
+```lisp
+pact&gt; (round 3.5)
+4
+pact&gt; (round 100.15234 2)
+100.15
+```
+
+### shift
+
+_x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+Shift X Y bits left if Y is positive, or right by -Y bits otherwise. Right
+shifts perform sign extension on signed number types; i.e. they fill the top
+bits with 1 if the x is negative and with 0 otherwise.
+
+```lisp
+pact&gt; (shift 255 8)
+65280
+pact&gt; (shift 255 -1)
+127
+pact&gt; (shift -255 8)
+-65280
+pact&gt; (shift -255 -1)
+-128
+```
+
+### sqrt
+
+_x_&nbsp;`&lt;a[integer,decimal]&gt;` _&rarr;_&nbsp;`&lt;a[integer,decimal]&gt;`
+
+Square root of X.
+
+```lisp
+pact&gt; (sqrt 25)
+5.0
+```
+
+### xor
+
+_x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+Compute bitwise X xor Y.
+
+```lisp
+pact&gt; (xor 127 64)
+63
+pact&gt; (xor 5 -7)
+-4
+```
+
+### |
+
+_x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+Compute bitwise X or Y.
+
+```lisp
+pact&gt; (| 2 3)
+3
+pact&gt; (| 5 -7)
+-3
+```
+
+### ~
+
+_x_&nbsp;`integer` _&rarr;_&nbsp;`integer`
+
+Reverse all bits in X.
+
+```lisp
+pact&gt; (~ 15)
+-16
+```

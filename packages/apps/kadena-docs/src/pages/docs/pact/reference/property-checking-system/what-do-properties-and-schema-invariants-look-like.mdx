@@ -39,7 +39,7 @@ will always maintain the invariant that token balances are greater than zero:
 ```lisp
 (defschema tokens
   @doc   "token schema"
-  @model [(invariant (> balance 0))]
+  @model [(invariant (&gt; balance 0))]
 
   username:string
   balance:integer)
