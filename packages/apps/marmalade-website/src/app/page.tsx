@@ -1,10 +1,13 @@
+'use client'; // todo:remove
 import { Button } from './components/Button'
 import { Card } from './components/Card';
 import { Header } from './components/Header'
+import { ToggleSwitch } from './components/ToggleSwitch';
 import { VerticalTabs } from './components/VerticalTabs'
 import styles from './page.module.css'
+import ChemicalIcon from './resources/icons/chemical-weapon.svg'
 
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Home() : JSX.Element {
 
@@ -51,6 +54,14 @@ export default function Home() : JSX.Element {
     },
   ];
 
+  // todo: move to a separate component
+  let [collection, setCollection] = useState(true);
+
+  const onCollectionChange = (checked: boolean) => {
+    setCollection(checked);
+    console.log(checked);
+  }
+
   return (
     <>
       <div className={styles['hero-section']}>
@@ -71,8 +82,12 @@ export default function Home() : JSX.Element {
               <Card title="Collection" buttonColor="orange" buttonText="Policy added" />
               <Card title="Royalty" buttonColor="green" buttonText="Adding Policy ..." />
               <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
+              <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
+              <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
             </div>
             <p className={styles.description}>With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
+            <ToggleSwitch name="collection" isChecked={ collection } onSwitchChange={ onCollectionChange } />
+            <ToggleSwitch name="collection" isChecked={ collection } onSwitchChange={ onCollectionChange } disabled />
           </div>
         </section>
         <section className={styles['section-green']}>

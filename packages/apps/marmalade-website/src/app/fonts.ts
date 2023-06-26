@@ -12,12 +12,12 @@ export const fontMain = IBM_Plex_Sans({
 export const fontCode = localFont({
   src: [
     {
-      path: './fonts/Kode-Regular.woff2',
+      path: './resources/fonts/Kode-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: './fonts/Kode-Bold.woff2',
+      path: './resources/fonts/Kode-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
