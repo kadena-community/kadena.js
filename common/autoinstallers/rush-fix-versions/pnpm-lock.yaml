@@ -1,19 +1,20 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@kadena-dev/rush-fix-versions': ^0.0.2
+  '@kadena-dev/rush-fix-versions': ^0.0.3
 
 dependencies:
-  '@kadena-dev/rush-fix-versions': 0.0.2
+  '@kadena-dev/rush-fix-versions': 0.0.3
 
 packages:
 
-  /@kadena-dev/rush-fix-versions/0.0.2:
-    resolution: {integrity: sha512-A7FPiWoPSxGS0dzTnrTf64mUuCy1HTIettYKOe27/l8uaaEjgf3v84KSuztIskvBNBFc89X6WGbIwzmdWOH9Fg==}
+  /@kadena-dev/rush-fix-versions/0.0.3:
+    resolution: {integrity: sha512-82IMbngdnzGJC+YkIpzremRIxiasEPch/2hPulyjEIkjEZlDnednBcfSyInGi6fp2l2NN1H9TLWtFy3EUef9nw==}
     hasBin: true
     dependencies:
       execa: 7.1.1
       inquirer: 9.2.7
+      jsonc-parser: 3.2.0
     dev: false
 
   /ansi-escapes/4.3.2:
@@ -238,6 +239,10 @@ packages:
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: false
+
+  /jsonc-parser/3.2.0:
+    resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
     dev: false
 
   /lodash/4.17.21:

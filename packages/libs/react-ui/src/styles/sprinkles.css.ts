@@ -80,6 +80,7 @@ const responsiveProperties = defineProperties({
     width: {
       ...vars.sizes,
       '100%': '100%',
+      'min-content': 'min-content',
       'max-content': 'max-content',
       'min-content': 'min-content',
     },

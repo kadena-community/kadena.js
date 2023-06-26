@@ -25,10 +25,15 @@ export {
   INotificationActionsProps,
   IIconButtonProps,
   IconButton,
+  IBreadcrumbsProps,
+  IBreadcrumbItemProps,
+  Breadcrumbs,
   Modal,
   IModalProps,
   ModalProvider,
   useModal,
+  IBoxProps,
+  Box,
 } from './components';
 export {
   sprinkles,
@@ -37,3 +42,5 @@ export {
   darkThemeClass,
   ColorType,
 } from './styles';
+
+export { style } from '@vanilla-extract/css';

@@ -33,9 +33,9 @@ export const Primary: Story = {
   render: ({ spacing }) => (
     <>
       <Grid spacing={spacing}>
-        {Array.from(new Array(12)).map((i) => (
+        {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i}>
-            <div className={ContentClass}>i</div>
+            <div className={ContentClass}>{i}</div>
           </Grid.Item>
         ))}
 

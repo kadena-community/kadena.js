@@ -19,3 +19,9 @@ export {
   INotificationHeaderProps,
   INotificationActionsProps,
 } from './Notification';
+export {
+  Breadcrumbs,
+  IBreadcrumbsProps,
+  IBreadcrumbItemProps,
+} from './Breadcrumbs';
+export { Box, IBoxProps } from './Box/Box';
