@@ -126,26 +126,35 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     if (contCommand instanceof ContCommand) {
-      try{
+      try {
         const pollResult = await contCommand.pollUntil(host, {
           onPoll: async (transaction, pollRequest): Promise<void> => {
-            console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-            setFinalResults({ requestKey: transaction.requestKey, status: transaction.status });
+            console.log(
+              `Polling ${requestKey}.\nStatus: ${transaction.status}`,
+            );
+            setFinalResults({
+              requestKey: transaction.requestKey,
+              status: transaction.status,
+            });
             console.log(await pollRequest);
             const data: IPollResponse = await pollRequest;
 
             // Show correct error message
-            if (Object.keys(data).length > 0 && (Object.values(data)[0].result.status === 'failure')) {
-              const errorResult: IPactResultError = Object.values(data)[0].result as IPactResultError;
+            if (
+              Object.keys(data).length > 0 &&
+              Object.values(data)[0].result.status === 'failure'
+            ) {
+              const errorResult: IPactResultError = Object.values(data)[0]
+                .result as IPactResultError;
               if (errorResult !== undefined) {
-                setTxError(errorResult.error.message)
+                setTxError(errorResult.error.message);
               }
             }
           },
         });
-        setFinalResults({...pollResult});
-      } catch(tx) {
-        setFinalResults({...tx});
+        setFinalResults({ ...pollResult });
+      } catch (tx) {
+        setFinalResults({ ...tx });
       }
     }
   };

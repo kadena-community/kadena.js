@@ -11,15 +11,15 @@ export const dotenv: IEnvInterface = {
   KADENA_MAINNET_API: process.env.KADENA_MAINNET_API,
   KADENA_TESTNET_API: process.env.KADENA_TESTNET_API,
   GAS_LIMIT: Number(process.env.GAS_LIMIT),
-  GAS_PRICE: Number(process.env.GAS_PRICE)
+  GAS_PRICE: Number(process.env.GAS_PRICE),
 };
 
 export const env = <T extends keyof IEnvInterface, TDefault>(
   key: T,
   defaultValue: TDefault,
 ): TDefault | NonNullable<IEnvInterface[T]> => {
-  if (dotenv[key] === undefined || isNaN(Number(dotenv[key]))){
-    return  defaultValue;
+  if (dotenv[key] === undefined || isNaN(Number(dotenv[key]))) {
+    return defaultValue;
   }
 
   return dotenv[key] ?? defaultValue;
