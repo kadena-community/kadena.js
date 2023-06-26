@@ -5,16 +5,17 @@ import { createExp } from '@kadena/pactjs';
 
 import { parseType } from '../utils/parseType';
 
+const prop = <T extends any>(name: string, value?: T) =>
+  value === undefined ? {} : { [name]: value };
+
 export const getModule = (name: string) => {
   let code = name;
   const pr: any = new Proxy<any>(function () {} as unknown, {
     get(_, path: string) {
       code += '.' + path;
-      console.log(code);
       return pr;
     },
     apply(_, thisArg, args) {
-      console.log('call', code);
       const exp = createExp(code, ...args.map(parseType));
       code = name;
       return exp;
@@ -40,7 +41,10 @@ interface IPayload {
 
 export const payload: IPayload = {
   exec: (codes, data) => ({
-    payload: { code: codes.join(''), data } as any,
+    payload: {
+      code: codes.join(''),
+      ...prop('data', data),
+    } as any,
   }),
   cont: (options) => ({
     payload: options as any,
@@ -96,7 +100,11 @@ export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
     }
     return acc;
   }, {} as Partial<ICommand>);
-  command.nonce = command.nonce ?? `kms-${Date.now()}`;
+  const dateInMs = Date.now();
+  command.nonce = command.nonce ?? `kjs-${dateInMs}`;
+  if (command.meta && command.meta.creationTime === undefined) {
+    command.meta.creationTime = Math.floor(dateInMs / 1000);
+  }
   return {
     command,
     stringify: () => JSON.stringify(command),
@@ -155,10 +163,10 @@ export const signer: ISinger = ((
   return () => ({
     signers: [
       {
-        pubKey,
-        scheme,
-        address,
-        clist,
+        ...prop('pubKey', pubKey),
+        ...prop('scheme', scheme),
+        ...prop('address', address),
+        ...prop('clist', clist),
       },
     ],
   });
@@ -167,9 +175,11 @@ export const signer: ISinger = ((
 export const meta = (options: Partial<ICommand['meta']>) => ({
   meta: {
     // add all default value here
-    chainId: 1,
-    ttl: 1,
-    creationTime: Date.now(),
+    chainId: '1',
+    gasLimit: 2500,
+    gasPrice: 1.0e-8,
+    sender: '',
+    ttl: 8 * 60 * 60, // 8 hours,
     ...options,
   } as ICommand['meta'],
 });

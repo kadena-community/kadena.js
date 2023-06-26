@@ -9,8 +9,49 @@ describe('payload.exec', () => {
     expect(command.payload.code).toBe('(coin.transfer "alice" "bob" 12.1)');
   });
 });
+describe('payload.exec', () => {
+  it('adds multiple command', () => {
+    const command = payload.exec([
+      coin.transfer('alice', 'bob', { decimal: '0.1' }),
+      coin.transfer('bob', 'alice', { decimal: '0.1' }),
+    ]);
+    expect(command.payload.code).toBe(
+      '(coin.transfer "alice" "bob" 0.1)(coin.transfer "bob" "alice" 0.1)',
+    );
+  });
+});
 
 describe('commandBuilder', () => {
+  it('returns command object with signers and capabilities', () => {
+    const { command } = commandBuilder(
+      payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
+      signer('bob_public_key', (withCapability) => [
+        withCapability('coin.GAS'),
+        withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
+      ]),
+      set('nonce', 'test-nonce'),
+    );
+    expect(command).toStrictEqual({
+      payload: {
+        code: '(coin.transfer "alice" "bob" 12.1)',
+      },
+      signers: [
+        {
+          clist: [
+            { args: [], name: 'coin.GAS' },
+            {
+              args: ['alice', 'bob', { decimal: '12.1' }],
+              name: 'coin.TRANSFER',
+            },
+          ],
+          pubKey: 'bob_public_key',
+          scheme: 'ED25519',
+        },
+      ],
+      nonce: 'test-nonce',
+    });
+  });
+
   it('returns a command based on ICommand interface', () => {
     const { command } = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
@@ -33,11 +74,9 @@ describe('commandBuilder', () => {
     expect(command).toStrictEqual({
       payload: {
         code: '(coin.transfer "alice" "bob" 12.1)',
-        data: undefined,
       },
       signers: [
         {
-          address: undefined,
           clist: [
             { args: [], name: 'coin.GAS' },
             {
