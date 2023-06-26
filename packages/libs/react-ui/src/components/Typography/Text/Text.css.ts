@@ -11,7 +11,6 @@ export const elementVariant = styleVariants({
   p: [sprinkles({ fontWeight: '$normal' })],
   span: [sprinkles({ fontWeight: '$normal' })],
   code: [sprinkles({ fontWeight: '$normal' })],
-  label: [sprinkles({ fontWeight: '$medium' })],
 });
 
 export const sizeVariant = styleVariants({

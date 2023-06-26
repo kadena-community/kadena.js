@@ -1,6 +1,12 @@
 import { sprinkles } from '../../styles';
 
-import { styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
+
+export const iconContainer = style([
+  sprinkles({
+    display: 'block',
+  }),
+]);
 
 export const sizeVariants = styleVariants({
   sm: [sprinkles({ size: '$4' })],
