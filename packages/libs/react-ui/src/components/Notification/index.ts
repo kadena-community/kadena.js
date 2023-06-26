@@ -35,5 +35,5 @@ export const Notification: INotification = {
   Root: NotificationContainer,
   Header: NotificationHeader,
   Actions: NotificationActions,
-  Button: NotificationButton
+  Button: NotificationButton,
 }
