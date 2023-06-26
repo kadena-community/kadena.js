@@ -7,8 +7,6 @@ jest.mock('next/router', () => ({
 import MainLayout from './MainLayout';
 
 import { render } from '@testing-library/react';
-// @ts-ignore
-import React from 'react';
 
 describe('MainLayout', () => {
   test('renders correctly', () => {
