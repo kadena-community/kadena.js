@@ -64,6 +64,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
         title={'Close'}
         onClick={onClose}
         icon={SystemIcon.Close}
+        color={color}
         ></IconButton>
         }
       </span>
