@@ -9,7 +9,7 @@
 
 > Pactjs is a collection of utility functions pactjs related
 
-API Reference can be found here [pactjs.api.md](https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs/etc/pactjs.api.md)
+API Reference can be found here [pactjs.api.md][1]
 
 <hr>
 
@@ -17,3 +17,6 @@ crypto:
 
 - `createExp`
 - `PactNumber`
+
+[1]:
+  https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs/etc/pactjs.api.md

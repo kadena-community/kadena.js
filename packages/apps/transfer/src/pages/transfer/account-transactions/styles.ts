@@ -7,7 +7,7 @@ export const StyledMainContent = styled('main', {
 });
 
 export const StyledContent = styled('div', {
-  width: '75%',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '$8',
@@ -35,7 +35,7 @@ export const StyledMediumField = styled('div', {
 });
 
 export const StyledFormButton = styled('div', {
-  minWidth: '180px',
+  minWidth: '190px',
 });
 
 export const StyledResultContainer = styled('div', {

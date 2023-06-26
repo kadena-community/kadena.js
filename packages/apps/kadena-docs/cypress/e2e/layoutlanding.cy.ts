@@ -1,8 +1,11 @@
+import { closeConsentModal } from '../utils';
+
 describe('landing page layout', () => {
   const menu = () => cy.get('[data-cy="menu"]');
   const header = () => cy.get('[data-cy="titleheader"]');
   beforeEach(() => {
     cy.visit('/docs/__tests/chainweb');
+    closeConsentModal();
   });
 
   describe('desktop', () => {

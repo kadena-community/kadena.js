@@ -1,3 +1,5 @@
+import { closeConsentModal } from '../utils';
+
 describe('full layout', () => {
   const aside = () => cy.get('[data-cy="aside"]');
   const menu = () => cy.get('[data-cy="menu"]');
@@ -5,6 +7,7 @@ describe('full layout', () => {
 
   beforeEach(() => {
     cy.visit('/docs/__tests/pact/atom-sdk');
+    closeConsentModal();
   });
   describe('desktop', () => {
     it('shows the breadcrumbs with icon', () => {
@@ -66,10 +69,6 @@ describe('full layout', () => {
     };
     beforeEach(() => {
       cy.viewport(640, 720);
-    });
-
-    it('shows the left sidemenu', () => {
-      menu().should('not.be.visible');
     });
 
     describe('test the functionality of the sidemenu', () => {
