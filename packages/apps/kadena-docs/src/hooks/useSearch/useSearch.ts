@@ -9,7 +9,6 @@ import {
   MutableRefObject,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -71,7 +70,7 @@ export const useSearch = (): IProps => {
   // };
 
   useEffect(() => {
-    if (q !== undefined) {
+    if (q !== undefined && q !== '') {
       setQuery(q);
       //eslint-disable-next-line @typescript-eslint/no-floating-promises
       startSearch(q);

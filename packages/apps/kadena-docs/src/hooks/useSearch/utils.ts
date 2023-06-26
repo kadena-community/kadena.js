@@ -1,18 +1,17 @@
-import type { SearchResult } from 'minisearch';
+import type { AsPlainObject, SearchResult } from 'minisearch';
 import MiniSearch from 'minisearch';
 import { Dispatch, SetStateAction } from 'react';
 
-const createGetResults = () => {
-  let results: {
-    default: {};
-  };
+const createGetResults = (): (() => Promise<AsPlainObject>) => {
+  let results: AsPlainObject;
 
-  return async (): Promise<{}> => {
-    if (!results) {
+  return async (): Promise<AsPlainObject> => {
+    if (results === undefined) {
+      const data = await import('./../../data/searchIndex.json');
       // eslint-disable-next-line require-atomic-updates
-      results = await import('./../../data/searchIndex.json');
+      results = data.default as unknown as AsPlainObject;
     }
-    return results.default;
+    return results;
   };
 };
 
