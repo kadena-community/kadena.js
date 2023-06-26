@@ -1,23 +1,36 @@
-import { sprinkles, vars } from '../../../styles';
-import { statusColor } from '../InputWrapper/InputWrapper.css';
+import { sprinkles, vars } from '../../styles';
 
-import { fallbackVar, style } from '@vanilla-extract/css';
+import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+
+export const inputStatusColor = createVar();
 
 export const containerClass = style([
   sprinkles({
     alignItems: 'stretch',
     display: 'flex',
     overflow: 'hidden',
-    paddingY: '$2',
     bg: '$background',
     color: '$foreground',
     borderRadius: '$sm',
   }),
   {
     borderBottom: `1px solid ${fallbackVar(
-      statusColor,
+      inputStatusColor,
       vars.colors.$neutral3,
     )}`,
+    selectors: {
+      '.inputGroup &': {
+        borderRadius: 0,
+      },
+      '.inputGroup &:first-child': {
+        borderTopRightRadius: vars.radii.$sm,
+        borderTopLeftRadius: vars.radii.$sm,
+      },
+      '.inputGroup &:last-child': {
+        borderBottomRightRadius: vars.radii.$sm,
+        borderBottomLeftRadius: vars.radii.$sm,
+      },
+    },
   },
 ]);
 
@@ -27,6 +40,7 @@ export const inputContainerClass = style([
     lineHeight: '$lg',
     display: 'flex',
     paddingX: '$4',
+    paddingY: '$2',
     gap: '$2',
     flexGrow: 1,
   }),

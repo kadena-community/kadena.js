@@ -1,4 +1,4 @@
-import { SystemIcon } from '../../../Icons';
+import { SystemIcon } from '../../Icons';
 
 import { helperClass, helperIconClass } from './InputHelper.css';
 

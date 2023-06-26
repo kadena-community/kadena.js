@@ -1,8 +1,8 @@
 import { SystemIcon } from '../Icons';
-import { IInputProps } from '../Input/Input';
-import { statusVariant } from '../InputWrapper/InputWrapper.css';
+import { IInputProps, Input } from '../Input/Input';
 
-import { ITextFieldProps, TextField } from './TextField';
+import { IInputWrapperProps, InputWrapper } from './InputWrapper';
+import { statusVariant } from './InputWrapper.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -13,9 +13,9 @@ const meta: Meta<
     leadingText: string;
     leftIcon: keyof typeof SystemIcon;
     rightIcon: keyof typeof SystemIcon;
-  } & ITextFieldProps
+  } & IInputWrapperProps
 > = {
-  title: 'Components/TextField',
+  title: 'Components/InputWrapper',
   argTypes: {
     label: {
       control: {
@@ -37,11 +37,6 @@ const meta: Meta<
         type: 'text',
       },
     },
-    leadingText: {
-      control: {
-        type: 'text',
-      },
-    },
     status: {
       options: [
         undefined,
@@ -56,18 +51,6 @@ const meta: Meta<
         type: 'boolean',
       },
     },
-    leftIcon: {
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
-    rightIcon: {
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -76,9 +59,7 @@ type Story = StoryObj<
   {
     helperText: string;
     leadingText: string;
-    leftIcon: keyof typeof SystemIcon;
-    rightIcon: keyof typeof SystemIcon;
-  } & ITextFieldProps &
+  } & IInputWrapperProps &
     Omit<IInputProps, 'leftIcon' | 'rightIcon'>
 >;
 
@@ -89,7 +70,7 @@ type Story = StoryObj<
  */
 
 export const Group: Story = {
-  name: 'Text Field',
+  name: 'Input Group',
   args: {
     tag: 'tag',
     helperText: 'This is helper text',
@@ -97,39 +78,31 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    leftIcon: 'Account',
-    rightIcon: undefined,
-    leadingText: 'Leading',
   },
-  render: ({
-    leadingText,
-    leftIcon,
-    rightIcon,
-    onChange,
-    disabled,
-    status,
-    tag,
-    helperText,
-    info,
-    label,
-  }) => {
+  render: ({ disabled, status, tag, helperText, info, label }) => {
     return (
-      <TextField
+      <InputWrapper
         tag={tag}
         info={info}
         label={label}
         status={status}
         disabled={disabled}
         helperText={helperText}
-        inputProps={{
-          id: 'inputStory',
-          leadingText,
-          leftIcon: SystemIcon[leftIcon],
-          rightIcon: SystemIcon[rightIcon],
-          onChange,
-          placeholder: 'This is a placeholder',
-        }}
-      />
+        htmlFor="inputStory"
+      >
+        <Input
+          id="inputStory"
+          placeholder="Input 1"
+          disabled={disabled}
+          leadingText="Leading"
+        />
+        <Input
+          id="inputStory2"
+          placeholder="Input 2"
+          disabled={disabled}
+          leadingText="Leading"
+        />
+      </InputWrapper>
     );
   },
 };

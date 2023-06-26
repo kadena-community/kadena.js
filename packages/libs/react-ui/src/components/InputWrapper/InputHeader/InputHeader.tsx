@@ -1,7 +1,8 @@
-import { SystemIcon } from '../../../Icons';
-import { Label } from '../../../Typography';
+import { SystemIcon } from '../../Icons';
+import { Tag } from '../../Tag/Tag';
+import { Label } from '../../Typography';
 
-import { headerClass, infoClass, tagClass } from './InputHeader.css';
+import { headerClass, infoClass } from './InputHeader.css';
 
 import React, { FC } from 'react';
 
@@ -21,7 +22,7 @@ export const InputHeader: FC<IInputHeaderProps> = ({
   return (
     <div className={headerClass}>
       {Boolean(label) && <Label htmlFor={htmlFor}>{label}</Label>}
-      {Boolean(tag) && <span className={tagClass}>{tag}</span>}
+      {Boolean(tag) && <Tag>{tag}</Tag>}
       {Boolean(info) && (
         <span className={infoClass}>
           {info}

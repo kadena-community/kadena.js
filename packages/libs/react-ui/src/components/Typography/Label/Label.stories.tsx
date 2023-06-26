@@ -1,5 +1,5 @@
+import { Input } from '../../Input/Input';
 import { Stack } from '../../Stack/Stack';
-import { Input } from '../../TextField';
 
 import { Label } from './Label';
 
@@ -27,7 +27,7 @@ export const Primary: Story = {
   render: ({ children }) => (
     <Stack alignItems="center">
       <Label htmlFor="id">{children}</Label>
-      <Input.Field id="id" placeholder="Input" outlined />
+      <Input id="id" placeholder="Input" outlined />
     </Stack>
   ),
 };

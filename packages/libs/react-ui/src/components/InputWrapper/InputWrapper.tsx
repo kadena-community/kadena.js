@@ -1,14 +1,19 @@
+import { IInputProps } from '../Input/Input';
+
 import { IInputHeaderProps, InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';
 import { Status, statusVariant } from './InputWrapper.css';
 
-import React, { FC } from 'react';
+import React, { FC, FunctionComponentElement } from 'react';
 
-export interface IInputWrapperProps extends IInputHeaderProps {
-  children: React.ReactNode;
+export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
+  children:
+    | FunctionComponentElement<IInputProps>
+    | FunctionComponentElement<IInputProps>[];
   status?: Status;
   disabled?: boolean;
   helperText?: string;
+  label?: string;
 }
 
 export const InputWrapper: FC<IInputWrapperProps> = ({
@@ -25,8 +30,10 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
 
   return (
     <div className={statusVal ? statusVariant[statusVal] : undefined}>
-      <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
-      {children}
+      {label !== undefined && (
+        <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
+      )}
+      <div className="inputGroup">{children}</div>
       {Boolean(helperText) && <InputHelper>{helperText}</InputHelper>}
     </div>
   );

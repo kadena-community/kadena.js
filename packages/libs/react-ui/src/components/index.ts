@@ -15,16 +15,12 @@ export {
   Label,
   ILabelProps,
 } from './Typography';
+export { TextField, ITextFieldProps } from './TextField/TextField';
+export { IInputWrapperProps, InputWrapper } from './InputWrapper/InputWrapper';
+export { IInputProps, Input } from './Input/Input';
 export {
   Breadcrumbs,
   IBreadcrumbsProps,
   IBreadcrumbItemProps,
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
-export {
-  TextField,
-  ITextFieldProps,
-  Input,
-  IInputProps,
-  IInputWrapperProps,
-} from './TextField';
