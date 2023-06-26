@@ -305,6 +305,7 @@ importers:
       '@testing-library/jest-dom': ~5.16.5
       '@testing-library/react': ~14.0.0
       '@testing-library/user-event': ~14.4.3
+      '@types/debug': ~4.1.7
       '@types/heft-jest': ~1.0.3
       '@types/jest': ^29.5.1
       '@types/js-cookie': ~3.0.3
@@ -316,6 +317,7 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.23.0
       '@typescript-eslint/parser': ^5.23.0
       ace-builds: ~1.22.1
+      debug: ~4.3.4
       env-cmd: ^10.1.0
       eslint: ^8.15.0
       eslint-config-next: 13.4.5
@@ -352,7 +354,7 @@ importers:
       react: 18.2.0
       react-ace: 10.1.0_react-dom@18.2.0+react@18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-scripts: 5.0.1_react@18.2.0+typescript@5.0.4
+      react-scripts: 5.0.1_774e68646b4e4594d2106b3ba6959211
     devDependencies:
       '@jest/reporters': 29.5.0
       '@jest/types': 29.5.0
@@ -369,6 +371,7 @@ importers:
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 14.0.0_react-dom@18.2.0+react@18.2.0
       '@testing-library/user-event': 14.4.3
+      '@types/debug': 4.1.7
       '@types/heft-jest': 1.0.3
       '@types/jest': 29.5.2
       '@types/js-cookie': 3.0.3
@@ -379,6 +382,7 @@ importers:
       '@types/testing-library__jest-dom': 5.14.6
       '@typescript-eslint/eslint-plugin': 5.46.0_fcdd70431f10ab37430cd9f5088e5ec0
       '@typescript-eslint/parser': 5.46.0_eslint@8.37.0+typescript@5.0.4
+      debug: 4.3.4
       env-cmd: 10.1.0
       eslint: 8.37.0
       eslint-config-next: 13.4.5_eslint@8.37.0+typescript@5.0.4
@@ -7030,7 +7034,7 @@ packages:
       schema-utils: 3.1.1
       source-map: 0.7.4
       webpack: 5.73.0
-      webpack-dev-server: 4.15.1_webpack@5.73.0
+      webpack-dev-server: 4.15.1_debug@4.3.4+webpack@5.73.0
     dev: false
 
   /@pothos/core/3.24.0_graphql@16.6.0:
@@ -11811,7 +11815,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -15601,7 +15605,7 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
-  /follow-redirects/1.15.2:
+  /follow-redirects/1.15.2_debug@4.3.4:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -15609,6 +15613,8 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dependencies:
+      debug: 4.3.4
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -16601,7 +16607,7 @@ packages:
       - supports-color
     dev: true
 
-  /http-proxy-middleware/2.0.6_@types+express@4.17.17:
+  /http-proxy-middleware/2.0.6_10dc27112e9b64f54905208e65a6816c:
     resolution: {integrity: sha512-ya/UeJ6HVBYxrgYotAZo1KvPWlgB48kUJLDePFeneHsVujFaW5WNj2NgWCAE//B1Dl02BIfYlpNgBy8Kf8Rjmw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -16612,7 +16618,7 @@ packages:
     dependencies:
       '@types/express': 4.17.17
       '@types/http-proxy': 1.17.11
-      http-proxy: 1.18.1
+      http-proxy: 1.18.1_debug@4.3.4
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
       micromatch: 4.0.5
@@ -16620,12 +16626,12 @@ packages:
       - debug
     dev: false
 
-  /http-proxy/1.18.1:
+  /http-proxy/1.18.1_debug@4.3.4:
     resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -22271,7 +22277,7 @@ packages:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}
     engines: {node: '>=0.10.0'}
 
-  /react-scripts/5.0.1_react@18.2.0+typescript@5.0.4:
+  /react-scripts/5.0.1_774e68646b4e4594d2106b3ba6959211:
     resolution: {integrity: sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ==}
     engines: {node: '>=14.0.0'}
     hasBin: true
@@ -22328,7 +22334,7 @@ packages:
       terser-webpack-plugin: 5.3.6_webpack@5.73.0
       typescript: 5.0.4
       webpack: 5.73.0
-      webpack-dev-server: 4.15.1_webpack@5.73.0
+      webpack-dev-server: 4.15.1_debug@4.3.4+webpack@5.73.0
       webpack-manifest-plugin: 4.1.1_webpack@5.73.0
       workbox-webpack-plugin: 6.6.0_webpack@5.73.0
     optionalDependencies:
@@ -25272,7 +25278,7 @@ packages:
       schema-utils: 4.0.0
       webpack: 5.73.0
 
-  /webpack-dev-server/4.15.1_webpack@5.73.0:
+  /webpack-dev-server/4.15.1_debug@4.3.4+webpack@5.73.0:
     resolution: {integrity: sha512-5hbAst3h3C3L8w6W4P96L5vaV0PxSmJhxZvWKYIdgxOQm8pNZ5dEOmmSLBVpP85ReeyRt6AS1QJNyo/oFFPeVA==}
     engines: {node: '>= 12.13.0'}
     hasBin: true
@@ -25302,7 +25308,7 @@ packages:
       express: 4.18.2
       graceful-fs: 4.2.10
       html-entities: 2.3.3
-      http-proxy-middleware: 2.0.6_@types+express@4.17.17
+      http-proxy-middleware: 2.0.6_10dc27112e9b64f54905208e65a6816c
       ipaddr.js: 2.1.0
       launch-editor: 2.6.0
       open: 8.4.0
