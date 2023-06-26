@@ -1,3 +1,5 @@
+import { IPollResponse } from '@kadena/chainweb-node-client';
+import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
 import {
   Button,
   Heading,
@@ -24,8 +26,10 @@ import React, {
   useState,
 } from 'react';
 
+// TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 21;
 
+// eslint-disable-next-line @kadena-dev/typedef-var
 export const CHAINS = [
   '0',
   '1',
@@ -54,22 +58,13 @@ export type Chain = ChainTuple[number];
 
 type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
 
-const getIconComponent = (status: RequestStatus): ReactNode => {
-  switch (status) {
-    case 'not started':
-    case 'succeeded':
-    case 'failed':
-      return <SystemIcons.TrailingIcon />;
-    case 'pending':
-      return (
-        <SystemIcons.Loading
-          style={{ animation: '2000ms infinite linear spin' }}
-        />
-      );
-  }
-};
-
-const getRequestStatusNotification = (status: RequestStatus): ReactNode => {
+const getRequestStatusNotification = ({
+  status,
+  message,
+}: {
+  status: RequestStatus;
+  message?: string;
+}): ReactNode => {
   switch (status) {
     case 'pending':
       return (
@@ -87,6 +82,14 @@ const getRequestStatusNotification = (status: RequestStatus): ReactNode => {
         />
       );
 
+    case 'failed':
+      return (
+        <Notification
+          title="Something went wrong"
+          body={message ?? 'Oh noes'}
+        />
+      );
+
     default:
       return null;
   }
@@ -97,50 +100,58 @@ const ExistingFaucetPage: FC = () => {
 
   const [accountName, setAccountName] = useState('');
   const [chainID, setChainID] = useState<Chain>('0');
-  const [errors, setErrors] = useState<string[]>([]);
 
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatus>('not started');
+  const [requestStatus, setRequestStatus] = useState<{
+    status: RequestStatus;
+    message?: string;
+  }>({ status: 'not started' });
+
+  const onPoll = async (
+    transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+    pollRequest: Promise<IPollResponse>,
+  ): Promise<void> => {
+    const request = await pollRequest;
+    const result = request[transaction.requestKey!]?.result;
+    const status = result?.status;
+    if (status === 'failure') {
+      const apiErrorMessage = (result.error as { message: string }).message;
+
+      setRequestStatus({ status: 'failed', message: apiErrorMessage });
+    }
+  };
 
   const onFormSubmit = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
-      console.log('onFormSubmit', { e, accountName });
 
       // Reset form request state
-      setErrors([]);
-      setRequestStatus('pending');
+      setRequestStatus({ status: 'pending' });
 
       try {
-        console.log('lets try to fund it');
         await fundExistingAccount(
           accountName,
           chainID,
-          async (transaction, pollRequest): Promise<void> => {
-            console.log(
-              `Polling ${transaction.requestKey}.\nStatus: ${transaction.status}`,
-            );
-            console.log('Await request', await pollRequest);
-            const request = await pollRequest;
-            const result = request[transaction.requestKey!]?.result;
-            const status = result?.status;
-            if (status === 'failure') {
-              const apiErrorMessage = (result.error as { message: string })
-                .message;
-              setErrors((errors) => [
-                ...errors,
-                `The request failed because of the following error;<br><br>"<code>${apiErrorMessage}</code>"`,
-              ]);
-            }
-          },
+          onPoll,
           AMOUNT_OF_COINS_FUNDED,
         );
-        console.log('hooray');
-        setRequestStatus('succeeded');
+        setRequestStatus({ status: 'succeeded' });
       } catch (err) {
-        console.error('Caught it in catch block', err);
-        setErrors((errors) => [...errors, err]);
-        setRequestStatus('failed');
+        let message;
+        if (err instanceof Error) {
+          message = err.message;
+        } else {
+          message = String(err);
+        }
+
+        /*
+         * When the poll callback rejects, it will return `this` (an instance of PactCommand)
+         * we handle the `setRequestStatus` in that callback handler, since we get the actual error
+         * message there. So in this case we can skip `setRequestStatus`, since we already did that,
+         * in other "uncaught" cases we do want to do that.
+         */
+        if (!(err instanceof PactCommand)) {
+          setRequestStatus({ status: 'failed', message });
+        }
       }
     },
     [accountName, chainID],
@@ -155,7 +166,6 @@ const ExistingFaucetPage: FC = () => {
 
   const onChainSelectChange = useCallback<FormEventHandler<HTMLSelectElement>>(
     (e) => {
-      console.log('onChainSelectChange', { value: e.currentTarget.value });
       setChainID(e.currentTarget.value as Chain);
     },
     [],
@@ -164,20 +174,6 @@ const ExistingFaucetPage: FC = () => {
   return (
     <MainLayout title={t('Add Funds to Existing Account')}>
       <StyledForm onSubmit={onFormSubmit}>
-        {errors.length
-          ? errors.map((error, i) => {
-              return (
-                <Notification
-                  key={`error-${i}`}
-                  title="Something went wrong"
-                  body={error}
-                  onClose={() => {
-                    setErrors(errors.filter((item) => item === error));
-                  }}
-                />
-              );
-            })
-          : null}
         {getRequestStatusNotification(requestStatus)}
         <StyledAccountForm>
           <Heading as="h3">Account</Heading>
@@ -204,10 +200,16 @@ const ExistingFaucetPage: FC = () => {
         <StyledFormButton>
           <Button
             title={t('Fund 100 Coins')}
-            disabled={requestStatus === 'pending'}
+            disabled={requestStatus.status === 'pending'}
           >
             {t('Fund 100 Coins')}
-            {getIconComponent(requestStatus)}
+            {requestStatus.status === 'pending' ? (
+              <SystemIcons.Loading
+                style={{ animation: '2000ms infinite linear spin' }}
+              />
+            ) : (
+              <SystemIcons.TrailingIcon />
+            )}
           </Button>
         </StyledFormButton>
       </StyledForm>
