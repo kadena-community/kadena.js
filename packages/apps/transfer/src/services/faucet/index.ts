@@ -11,9 +11,9 @@ import { generateApiHost } from '../utils/utils';
 
 import { env } from '@/utils/env';
 
-const networkId: ChainwebNetworkId = 'testnet04';
+const NETWORK_ID: ChainwebNetworkId = 'testnet04';
 const SENDER_ACCOUNT: string = 'coin-faucet';
-const SENDER_X: string = 'faucet-operation';
+const SENDER_OPERATION_ACCOUNT: string = 'faucet-operation';
 const FAUCET_PUBLIC_KEY = env(
   'FAUCET_PUBLIC_KEY',
   '<PROVIDE_FAUCET_PUBLICKEY_HERE>',
@@ -23,7 +23,6 @@ const FAUCET_PRIVATE_KEY = env(
   '<PROVIDE_FAUCET_PRIVATEKEY_HERE>',
 );
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const fundExistingAccount = async (
   account: string,
   chainId: ChainwebChainId,
@@ -45,7 +44,7 @@ export const fundExistingAccount = async (
       account,
       new PactNumber(amount).toPactDecimal(),
     )
-    .setMeta({ sender: SENDER_X, chainId }, networkId);
+    .setMeta({ sender: SENDER_OPERATION_ACCOUNT, chainId }, NETWORK_ID);
 
   const command = transactionBuilder.createCommand();
 
@@ -72,7 +71,7 @@ export const fundExistingAccount = async (
     { pubKey: keyPair.publicKey, sig: signature2.sig },
   );
 
-  const apiHost = generateApiHost(networkId, chainId);
+  const apiHost = generateApiHost(NETWORK_ID, chainId);
 
   await transactionBuilder.send(apiHost);
 

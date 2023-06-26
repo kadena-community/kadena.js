@@ -88,7 +88,6 @@ const ExistingFaucetPage: FC = () => {
     async (e: FormEvent) => {
       e.preventDefault();
 
-      // Reset form request state
       setRequestStatus({ status: 'pending' });
 
       try {
@@ -98,6 +97,7 @@ const ExistingFaucetPage: FC = () => {
           onPoll,
           AMOUNT_OF_COINS_FUNDED,
         );
+
         setRequestStatus({ status: 'succeeded' });
       } catch (err) {
         let message;
@@ -108,10 +108,10 @@ const ExistingFaucetPage: FC = () => {
         }
 
         /*
-         * When the poll callback rejects, it will return `this` (an instance of PactCommand)
-         * we handle the `setRequestStatus` in that callback handler, since we get the actual error
-         * message there. So in this case we can skip `setRequestStatus`, since we already did that,
-         * in other "uncaught" cases we do want to do that.
+         * When the poll callback rejects, it will return `this` (an instance of PactCommand).
+         * We handle the `setRequestStatus` in the poll callback, since we get the actual error
+         * message there. So in this case we can skip `setRequestStatus`, since we already did that.
+         * In other "uncaught" cases we do want to do call `setRequestStatus` here.
          */
         if (!(err instanceof PactCommand)) {
           setRequestStatus({ status: 'failed', message });
@@ -159,17 +159,19 @@ const ExistingFaucetPage: FC = () => {
             status="error"
             leftPanel={SystemIcons.Link}
           >
-            {CHAINS.map((x) => {
-              return <StyledOption key={`chain-${x}`}>{x}</StyledOption>;
+            {CHAINS.map((chainId) => {
+              return (
+                <StyledOption key={`chain-${chainId}`}>{chainId}</StyledOption>
+              );
             })}
           </Select>
         </StyledAccountForm>
         <StyledFormButton>
           <Button
-            title={t('Fund 100 Coins')}
+            title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             disabled={requestStatus.status === 'pending'}
           >
-            {t('Fund 100 Coins')}
+            {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             {requestStatus.status === 'pending' ? (
               <SystemIcons.Loading
                 style={{ animation: '2000ms infinite linear spin' }}
