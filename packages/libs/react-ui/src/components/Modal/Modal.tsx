@@ -14,8 +14,12 @@ export const Modal: FC<IModalProps> = ({ children }) => {
   const { clearModal } = useModal();
   return (
     <>
-      <button className={background} onClick={clearModal} />
-      <div className={wrapper}>
+      <button
+        data-cy="modal-background"
+        className={background}
+        onClick={clearModal}
+      />
+      <div className={wrapper} data-cy="modal">
         <Stack direction="column" alignItems="flex-end" spacing="2xs">
           <button
             className={closeButton}

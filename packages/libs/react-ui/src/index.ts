@@ -38,3 +38,5 @@ export {
   darkThemeClass,
   ColorType,
 } from './styles';
+
+export { style } from '@vanilla-extract/css';

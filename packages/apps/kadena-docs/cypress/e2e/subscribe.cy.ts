@@ -1,4 +1,5 @@
 import { IResponse } from '../../src/pages/api/subscribe';
+import { closeConsentModal } from '../utils';
 
 describe('Subscribe to mailList', () => {
   const subscribe = () => cy.get('[data-cy="subscribe"]');
@@ -14,6 +15,7 @@ describe('Subscribe to mailList', () => {
 
   beforeEach(() => {
     cy.visit('/docs/__tests/pact/atom-sdk');
+    closeConsentModal();
   });
 
   it('submit a correct email, happy path', () => {

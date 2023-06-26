@@ -5,6 +5,9 @@ export const EVENT_NAMES = {
   'click:open_searchmodal': 'click:open_searchmodal',
 } as const;
 
+export const COOKIE_CONSENTNAME =
+  process.env.NEXT_PUBLIC_TRACKING_COOKIENAME ?? '';
+
 interface IOptionsType {
   label?: string;
   url?: string;
@@ -20,15 +23,34 @@ export const analyticsEvent = (
 ): void => {
   if (process.env.NODE_ENV === 'development') {
     console.warn('GTAG EVENT', { name, options });
-    return;
   }
+  if (window.gtag === undefined) return;
+
   gtag('event', name, options);
 };
 
 export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
   if (process.env.NODE_ENV === 'development') {
     console.warn('GTAG EVENT', { options });
-    return;
   }
+  if (window.gtag === undefined) return;
+
   gtag('event', 'page_view', options);
+};
+
+export const updateConsent = (hasConsent: boolean): void => {
+  const newValue = hasConsent ? 'granted' : 'denied';
+
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('SET CONSENT', { value: newValue });
+  }
+
+  if (window.gtag === undefined) return;
+
+  gtag('consent', 'update', {
+    ad_storage: 'denied',
+    analytics_storage: newValue,
+  });
+
+  localStorage.setItem(COOKIE_CONSENTNAME, hasConsent.toString());
 };
