@@ -1,4 +1,4 @@
-import { sprinkles } from '../../styles';
+import { sprinkles } from '../../../styles';
 
 import { style } from '@vanilla-extract/css';
 

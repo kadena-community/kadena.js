@@ -11,22 +11,13 @@ export const containerClass = style([
     paddingY: '$2',
     bg: '$background',
     color: '$foreground',
+    borderRadius: '$sm',
   }),
   {
     borderBottom: `1px solid ${fallbackVar(
       statusColor,
       vars.colors.$neutral3,
     )}`,
-    selectors: {
-      '&:first-child': {
-        borderTopRightRadius: vars.radii.$sm,
-        borderTopLeftRadius: vars.radii.$sm,
-      },
-      '&:last-child': {
-        borderBottomRightRadius: vars.radii.$sm,
-        borderBottomLeftRadius: vars.radii.$sm,
-      },
-    },
   },
 ]);
 

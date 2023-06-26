@@ -1,5 +1,5 @@
 import { SystemIcon } from '../../../Icons';
-import { Label } from '../../../Label/Label';
+import { Label } from '../../../Typography';
 
 import { headerClass, infoClass, tagClass } from './InputHeader.css';
 

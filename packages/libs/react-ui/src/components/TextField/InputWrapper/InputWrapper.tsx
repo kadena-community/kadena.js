@@ -26,7 +26,7 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
   return (
     <div className={statusVal ? statusVariant[statusVal] : undefined}>
       <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
-      <div>{children}</div>
+      {children}
       {Boolean(helperText) && <InputHelper>{helperText}</InputHelper>}
     </div>
   );

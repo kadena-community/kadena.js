@@ -12,6 +12,8 @@ export {
   IHeadingProps,
   GradientText,
   IGradientTextProps,
+  Label,
+  ILabelProps,
 } from './Typography';
 export {
   Breadcrumbs,
@@ -19,3 +21,10 @@ export {
   IBreadcrumbItemProps,
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
+export {
+  TextField,
+  ITextFieldProps,
+  Input,
+  IInputProps,
+  IInputWrapperProps,
+} from './TextField';

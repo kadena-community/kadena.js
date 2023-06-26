@@ -1,0 +1,33 @@
+import { Stack } from '../../Stack/Stack';
+import { Input } from '../../TextField';
+
+import { Label } from './Label';
+
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+
+const meta: Meta<typeof Label> = {
+  title: 'Typography/Label',
+  component: Label,
+  argTypes: {
+    children: {
+      control: { type: 'text' },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof Label>;
+
+export const Primary: Story = {
+  name: 'Label',
+  args: {
+    children: 'Label',
+  },
+  render: ({ children }) => (
+    <Stack alignItems="center">
+      <Label htmlFor="id">{children}</Label>
+      <Input.Field id="id" placeholder="Input" outlined />
+    </Stack>
+  ),
+};
