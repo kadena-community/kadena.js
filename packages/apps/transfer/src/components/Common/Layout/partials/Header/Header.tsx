@@ -1,18 +1,24 @@
+import {SystemIcons} from "@kadena/react-components";
+
 import {
-  StyledGridRow,
+  StyledBackgroundGlow,
+  StyledBurgerMenuButton,
   StyledContainer,
+  StyledGridRow,
   StyledHeader,
   StyledLeftPanelWrapper,
   StyledLogoWrapper,
   StyledMenuItem,
   StyledTitle,
-  StyledBackgroundGlow,
+  StyledMobileMenu,
+  StyledNav,
 } from './styles'
 
 import {GridCol} from "@/components/Global";
 import Routes from "@/constants/routes";
 import {IMenuItem} from "@/types/Layout";
-import React, {FC, ReactNode} from 'react'
+import useTranslation from "next-translate/useTranslation";
+import React, {FC, ReactNode, useState} from 'react'
 
 export interface IHeaderProps {
   logo?: ReactNode,
@@ -27,7 +33,21 @@ const Header: FC<IHeaderProps> = ({
   rightPanel,
   menu
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const {t} = useTranslation("common")
   const hasMenu: boolean = Boolean(menu?.length);
+
+  const renderMenu = (type: "desktop" | "mobile" = "desktop"): ReactNode => (
+    <StyledNav type={type}>
+      {menu?.map(item => (
+        <StyledMenuItem href={item.href} key={item.title}>
+          {item.title}
+        </StyledMenuItem>
+      ))}
+    </StyledNav>
+  )
+
   return (
     <StyledHeader>
       <StyledContainer type="fixed">
@@ -41,9 +61,7 @@ const Header: FC<IHeaderProps> = ({
           </GridCol>
           {hasMenu && (
             <GridCol xs={{hidden: true}} lg={{size: 7, hidden: false}}>
-              <nav>
-                {menu?.map(item => <StyledMenuItem href={item.href} key={item.title}>{item.title}</StyledMenuItem>)}
-              </nav>
+              {renderMenu()}
             </GridCol>
           )}
           {Boolean(rightPanel) && (
@@ -52,10 +70,19 @@ const Header: FC<IHeaderProps> = ({
             </GridCol>
           )}
           <GridCol xs={{size: 1, hidden: false}} lg={{hidden: true}}>
-            burger
+            <StyledBurgerMenuButton
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              title={t("Menu")}
+              icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
+              color="inverted"
+            />
           </GridCol>
         </StyledGridRow>
       </StyledContainer>
+      <StyledMobileMenu status={isMenuOpen ? "open": "close"}>
+        {renderMenu("mobile")}
+        {rightPanel}
+      </StyledMobileMenu>
     </StyledHeader>
   )
 }

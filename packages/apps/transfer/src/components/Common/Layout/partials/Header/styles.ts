@@ -1,8 +1,12 @@
-import {darkTheme, styled} from '@kadena/react-components';
+import {darkTheme, styled, StyledComponent} from '@kadena/react-components';
+import {IconButton} from "@kadena/react-ui";
 
-import {GridRow, Container} from "@/components/Global";
-import Link from "next/link";
+import {Container,GridRow} from "@/components/Global";
 import {NavBackground} from "@/resources/svg/generated";
+import Link from "next/link";
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+const menuHeight = '$16';
 
 export const StyledHeader = styled('header', {
   backgroundColor: "$neutral5",
@@ -18,7 +22,7 @@ export const StyledContainer = styled(Container, {
   position: "relative",
   px: "$4",
   py: "$2",
-  height: '$16',
+  height: menuHeight,
 });
 
 export const StyledGridRow = styled(GridRow, {
@@ -49,15 +53,18 @@ export const StyledMenuItem = styled(Link, {
   fontWeight: "$medium",
   color: "$neutral3",
   transition: "color 0.2s",
+  padding: "$2 0",
+
   "&:not(:last-child)": {
     mr: "$6",
   },
+  "&:hover": {
+    color: "$white",
+  },
+
   [`.${darkTheme} &`]: {
       color: "$neutral4"
   },
-  "&:hover": {
-    color: "$white",
-  }
 });
 
 export const StyledBackgroundGlow = styled(NavBackground, {
@@ -65,4 +72,57 @@ export const StyledBackgroundGlow = styled(NavBackground, {
   top: "0",
   left: "-$4",
   zIndex: 0,
+});
+
+
+export const StyledBurgerMenuButton: StyledComponent<typeof IconButton> = styled(IconButton);
+
+export const StyledMobileMenu = styled('div', {
+  backgroundColor: "$neutral5",
+  display: "flex",
+  flexDirection: "column",
+  padding: "0 $4 $4",
+  position: "absolute",
+  right: "0",
+  width: "100%",
+  overflow: "hidden",
+  transition: "transform 0.2s linear",
+  transformOrigin: "top center",
+
+  "@md": {
+    width: "50%",
+  },
+  "@lg": {
+    display: "none",
+  },
+
+  [`.${darkTheme} &`]: {
+    background: '$neutral2',
+  },
+
+  variants: {
+    status: {
+      open: {
+        transform: "rotateX(0)",
+      },
+      close: {
+        transform: "rotateX(90deg)",
+      }
+    }
+  }
+});
+
+export const StyledNav = styled('nav', {
+  variants: {
+    type: {
+      mobile: {
+        display: 'flex',
+        flexDirection: "column",
+        mb: "$2",
+      },
+      desktop: {
+        display: 'block',
+      }
+    }
+  },
 });
