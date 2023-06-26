@@ -2,14 +2,12 @@
 
 @kadena/react-ui is a library used to provide a styling environment and basic
 React components for reuse in Kadena applications. It uses
-[vanilla-extract/css][1] (will be referred to as VE)
-to establish a system of utility classes (defined as
-[sprinkles][2])
-and CSS variables (defined in the theme) that align with Kadena's Design System
-and exposes them so that they can be used with any project or framework. A basic
-[Storybook][3] integration has been implemented so that
-users can preview components visually and interact with their configuration
-options.
+[vanilla-extract/css][1] (will be referred to as VE) to establish a system of
+utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
+theme) that align with Kadena's Design System and exposes them so that they can
+be used with any project or framework. A basic [Storybook][3] integration has
+been implemented so that users can preview components visually and interact with
+their configuration options.
 
 > Warning: This library is in its early development stage so elements in the
 > styling environment may change as well as the API for components.
@@ -76,20 +74,18 @@ const nextConfig = {
 module.exports = withVanillaExtract(nextConfig);
 ```
 
-If required, this plugin can be composed with other plugins. See
-[VE Next.js integration docs][5].
+If required, this plugin can be composed with other plugins. See [VE Next.js
+integration docs][5].
 
 After the plugin is setup, you should be able to use styling utilities exported
 from @kadena/react-ui and components within your application.
 
 ### Dark Theme
 
-We are utilizing the
-[theming][6]
-feature from VE to create CSS color variables that invert depending on the
-selected theme. By default the theme will have colors suitable for light mode,
-but to add dark theme integration you can export `darkThemeClass` from
-@kadena/react-ui and use it with your theme provider.
+We are utilizing the [theming][6] feature from VE to create CSS color variables
+that invert depending on the selected theme. By default the theme will have
+colors suitable for light mode, but to add dark theme integration you can export
+`darkThemeClass` from @kadena/react-ui and use it with your theme provider.
 
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
@@ -169,8 +165,8 @@ components to maintain this goal.
 
 ### Styling
 
-We are currently using [vanilla-extract/css][7] as
-it is a zero-runtime CSS-in-JS library that is framework agnostic.
+We are currently using [vanilla-extract/css][7] as it is a zero-runtime
+CSS-in-JS library that is framework agnostic.
 
 _Theming_
 
