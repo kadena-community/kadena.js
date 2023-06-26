@@ -41,7 +41,7 @@ export const cmd = commandBuilder(
   signer('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
-    withCapability('coin.TRANSFER', 'javad', 'albert', 0.1),
+    withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
   ]),
   signer('albertPublicKey', (withCapability) => [
     //
@@ -57,7 +57,7 @@ export const cmd2 = commandBuilder(
   signer('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
-    withCapability('coin.TRANSFER', 'javad', 'albert', 0.1),
+    withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
   ]),
   signer('albertPublicKey', (withCapability) => [
     //

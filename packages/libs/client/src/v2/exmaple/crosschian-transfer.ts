@@ -1,5 +1,3 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
-
 import { getClient } from '../client/client';
 import {
   commandBuilder,
@@ -65,6 +63,7 @@ export async function doCrossChianTransfer(
 
   const transaction = await sign(command);
   const [[sendRequestKey], pollSendResult] = await submit(transaction);
+
   const { [sendRequestKey]: debitResult } = await pollSendResult();
   if (debitResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception

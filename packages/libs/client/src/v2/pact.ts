@@ -5,19 +5,19 @@ import { createExp } from '@kadena/pactjs';
 
 import { parseType } from '../utils/parseType';
 
-import { coin } from './exmaple/coin-contract';
-
 export const getModule = (name: string) => {
   let code = name;
   const pr: any = new Proxy<any>(function () {} as unknown, {
-    get(target, path: string) {
+    get(_, path: string) {
       code += '.' + path;
       console.log(code);
       return pr;
     },
-    apply(target, name, args) {
+    apply(_, thisArg, args) {
       console.log('call', code);
-      return createExp(code, ...args.map(parseType));
+      const exp = createExp(code, ...args.map(parseType));
+      code = name;
+      return exp;
     },
   });
   return pr;
@@ -49,6 +49,7 @@ export const payload: IPayload = {
 
 export type IPartialCommand = Partial<Omit<ICommand, 'payload'>>;
 
+// TODO : improve the return value to merge all of the inputs as an object
 interface ICommandBuilder {
   <F extends Pick<ICommand, 'payload'>>(
     payload: F,
@@ -62,8 +63,11 @@ interface ICommandBuilder {
 }
 
 export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
-  const args: Array<Partial<ICommand>> = [first, ...rest] as any;
-  const command = args.reduce((acc, part) => {
+  const args: Array<
+    Partial<ICommand> | ((cmd: Partial<ICommand>) => Partial<ICommand>)
+  > = [first, ...rest] as any;
+  const command = args.reduce<Partial<ICommand>>((acc, item) => {
+    const part = typeof item === 'function' ? item(acc) : item;
     if (part.payload !== undefined) {
       if (acc.payload !== undefined) {
         throw Error('Only one payload is acceptable');
@@ -91,7 +95,8 @@ export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
       });
     }
     return acc;
-  });
+  }, {} as Partial<ICommand>);
+  command.nonce = command.nonce ?? `kms-${Date.now()}`;
   return {
     command,
     stringify: () => JSON.stringify(command),
@@ -110,12 +115,31 @@ type ExtractType<T> = T extends (cmd: { payload: infer A }) => any
     : CAP
   : CAP;
 
-export const signer: <T extends any>(
+interface ISinger {
+  (
+    first:
+      | string
+      | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
+  ): () => Pick<ICommand, 'signers'>;
+  <T extends any>(
+    first:
+      | string
+      | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
+    capability: (withCapability: ExtractType<T>) => ICapabilityItem[],
+  ): T;
+}
+
+export const signer: ISinger = ((
   first:
     | string
     | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  capability: (withCapability: ExtractType<T>) => ICapabilityItem[],
-) => T = (first, capability): any => {
+  capability: (
+    withCapability: (
+      name: string,
+      ...args: any[]
+    ) => { name: string; args: any[] },
+  ) => ICapabilityItem[],
+): any => {
   const {
     pubKey,
     scheme = 'ED25519',
@@ -129,12 +153,16 @@ export const signer: <T extends any>(
     })) as any);
   }
   return () => ({
-    pubKey,
-    scheme,
-    address,
-    clist,
+    signers: [
+      {
+        pubKey,
+        scheme,
+        address,
+        clist,
+      },
+    ],
   });
-};
+}) as any;
 
 export const meta = (options: Partial<ICommand['meta']>) => ({
   meta: {

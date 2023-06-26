@@ -6,7 +6,7 @@ interface ITransferCapability {
     name: 'coin.TRANSFER',
     from: string,
     to: string,
-    amount: number,
+    amount: { decimal: string },
   ): ICapabilityItem;
 }
 
@@ -19,10 +19,6 @@ interface ITransfer_Crosschain_Capability {
     amount: { decimal: string },
   ): ICapabilityItem;
   (name: 'coin.CREDIT', receiver: string): ICapabilityItem;
-}
-
-interface IAdminCapability {
-  (name: 'test.ADMIN'): ICapabilityItem;
 }
 
 export interface ICoin {

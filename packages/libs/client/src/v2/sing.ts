@@ -2,7 +2,6 @@
 
 import { ICommand } from './pact';
 
-// TODO: if the reason for returning the command is only nonce, maybe it's better to only return nonce
 export const sign = (command: ICommand) =>
   Promise.resolve({
     cmd: JSON.stringify(command),

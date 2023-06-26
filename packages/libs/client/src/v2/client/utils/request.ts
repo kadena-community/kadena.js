@@ -7,7 +7,9 @@ export const jsonRequest = (body: object) => ({
   body: JSON.stringify(body),
 });
 
-export async function parseResponse<T>(response: Response): Promise<T> {
+export async function parseResponse<T extends object | string>(
+  response: Response,
+): Promise<T> {
   if (response.ok) {
     return response.json();
   } else {
@@ -15,7 +17,7 @@ export async function parseResponse<T>(response: Response): Promise<T> {
       const textResponse: string = await response.text();
       return Promise.reject(new Error(textResponse));
     } catch (error) {
-      return response as T;
+      return Promise.reject(error);
     }
   }
 }
