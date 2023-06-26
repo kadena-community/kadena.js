@@ -24,6 +24,10 @@ export const vars = createGlobalTheme(':root', {
     $11xl: '5rem', // 80px
     $12xl: '5.25rem', // 84px
   },
+  lineHeights: {
+    $base: '1.4',
+    $lg: '1.9',
+  },
   fontWeights: {
     $light: '300',
     $normal: '400',

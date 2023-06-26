@@ -15,6 +15,7 @@ export const describeModule = async (
   moduleName: string,
   chainId: ChainId,
   networkId: string,
+  server: string,
   sender: string,
   gasPrice: number,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
@@ -26,7 +27,7 @@ export const describeModule = async (
   pactCommand.setMeta({ gasLimit, gasPrice, ttl, sender, chainId });
 
   const response = await pactCommand.local(
-    generateApiHost(networkId, chainId),
+    generateApiHost(server, networkId, chainId),
     {
       signatureVerification: false,
       preflight: false,
