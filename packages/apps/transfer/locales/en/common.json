@@ -67,5 +67,11 @@
   "Check Transactions": "Check Transactions",
   "Date": "Date",
   "Cross Chain": "Cross Chain",
-  "No Results": "No Results"
+  "No Results": "No Results",
+  "Explorer": "Explorer",
+  "Transactions": "Transactions",
+  "Finisher": "Finisher",
+  "Tracker": "Tracker",
+  "Home": "Home",
+  "Developer Tools": "Developer Tools"
 }

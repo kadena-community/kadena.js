@@ -55,7 +55,6 @@ const Home: FC = () => {
 
   return (
     <StyledHomeContainer>
-      <StyledSmallLogo width="65px" />
       <Grid.Container spacing="2xl" templateColumns="repeat(2, 1fr)">
         <Grid.Item>
           <StyledHomeContent>
