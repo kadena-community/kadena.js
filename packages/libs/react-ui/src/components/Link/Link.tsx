@@ -1,6 +1,8 @@
-import React from 'react';
 import { SystemIcon } from '../Icons';
+
 import { iconContainerClass, linkContainerClass } from './Link.css';
+
+import React from 'react';
 
 export interface ILinkProps {
   href: string;

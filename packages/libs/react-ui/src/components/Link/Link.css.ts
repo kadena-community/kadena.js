@@ -1,6 +1,6 @@
-import { ColorType, sprinkles, vars } from '../../styles';
+import { sprinkles, vars } from '../../styles';
 
-import { createVar, style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const linkContainerClass = style([
   sprinkles({
