@@ -1,4 +1,4 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import { ChainwebNetworkId, IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
@@ -7,12 +7,12 @@ import MainLayout from '@/components/Common/Layout/MainLayout';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
-  StyledFinisherContent,
   StyledAccountForm,
   StyledCheckbox,
   StyledCheckboxLabel,
   StyledErrorMessage,
   StyledFieldCheckbox,
+  StyledFinisherContent,
   StyledForm,
   StyledFormButton,
   StyledInfoBox,
@@ -28,7 +28,7 @@ import {
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
 import {
   finishXChainTransfer,
-  TransferResult,
+  ITransferResult,
 } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import {
   getTransferData,
@@ -37,6 +37,13 @@ import {
 import { generateApiHost } from '@/services/utils/utils';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+
+interface IPactResultError {
+  status: 'failure';
+  error: {
+    message: string;
+  };
+}
 
 const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
@@ -49,12 +56,14 @@ const CrossChainTransferFinisher: FC = () => {
   const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
-  const [finalResults, setFinalResults] = useState<TransferResult>({});
+  const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
 
   useEffect(() => {
     setRequestKey('');
     setPollResults({});
+    setFinalResults({});
+    setTxError('');
   }, [network]);
 
   const checkRequestKey = async (
@@ -66,6 +75,7 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
+    setFinalResults({});
     setTxError('');
 
     const pollResult: ITransferDataResult | undefined = await getTransferData({
@@ -116,14 +126,27 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     if (contCommand instanceof ContCommand) {
-      const pollResult = await contCommand.pollUntil(host, {
-        onPoll: async (transaction, pollRequest): Promise<void> => {
-          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-          setFinalResults({ ...transaction });
-          console.log(await pollRequest);
-        },
-      });
-      setFinalResults({ ...pollResult } as TransferResult);
+      try{
+        const pollResult = await contCommand.pollUntil(host, {
+          onPoll: async (transaction, pollRequest): Promise<void> => {
+            console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+            setFinalResults({ requestKey: transaction.requestKey, status: transaction.status });
+            console.log(await pollRequest);
+            const data: IPollResponse = await pollRequest;
+
+            // Show correct error message
+            if (Object.keys(data).length > 0 && (Object.values(data)[0].result.status === 'failure')) {
+              const errorResult: IPactResultError = Object.values(data)[0].result as IPactResultError;
+              if (errorResult !== undefined) {
+                setTxError(errorResult.error.message)
+              }
+            }
+          },
+        });
+        setFinalResults({...pollResult});
+      } catch(tx) {
+        setFinalResults({...tx});
+      }
     }
   };
 
@@ -145,7 +168,7 @@ const CrossChainTransferFinisher: FC = () => {
                   type="checkbox"
                   id={'advanced-options'}
                   placeholder={t('Enter private key to sign the transaction')}
-                  onChange={(e) => setAdvancedOptions(!advancedOptions)}
+                  onChange={() => setAdvancedOptions(!advancedOptions)}
                   value={advancedOptions.toString()}
                 />
                 <StyledCheckboxLabel htmlFor="advanced-options">
@@ -180,7 +203,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TextField
                   label={t('Gas Payer Account')}
-                  helper={t('only single pubkey accounts are supported')}
+                  helper={t('only single pubKey accounts are supported')}
                   inputProps={{
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>

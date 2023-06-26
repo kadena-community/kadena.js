@@ -100,13 +100,13 @@ export const StyledTotalContainer = styled('div', {
   padding: '$sm',
   borderRadius: '$xs',
   background: 'rgba(5, 5, 5, 0.5)',
+  gap: '$4'
 });
 export const StyledTotalChunk = styled('div', {
-  width: '$4',
+  width: 'auto',
 });
 
 export const StyledErrorMessage = styled('div', {
-  mt: '$xl',
   fontSize: '$sm',
   padding: '$xl',
   textAlign: 'right',

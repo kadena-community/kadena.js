@@ -5,27 +5,13 @@ import { ChainId } from '@kadena/types';
 import { kadenaConstants } from '../../constants/kadena';
 import { generateApiHost } from '../utils/utils';
 
-interface ITransactionData {
-  sender: { chain: ChainId; account: string };
-  receiver: { chain: ChainId; account: string };
-  amount: number;
-  receiverGuard: {
-    pred: string;
-    keys: [string];
-  };
-}
-export interface ITransferDataResult {
-  tx?: ITransactionData | undefined;
-  error?: string;
-}
-
-export interface TransferResult {
+export interface ITransferResult {
   requestKey?: string;
   status?: string;
 }
 
 const gasLimit: number = kadenaConstants.GAS_LIMIT;
-const gasPrice: number = 0.00000001;
+const gasPrice: number = kadenaConstants.GAS_PRICE;
 
 export async function finishXChainTransfer(
   requestKey: string,
@@ -34,16 +20,16 @@ export async function finishXChainTransfer(
   rollback: boolean,
   server: string,
   network: ChainwebNetworkId,
-  targetChain: ChainId,
-  gasPayer: string,
+  chainId: ChainId,
+  sender: string,
 ): Promise<ContCommand | { error: string }> {
-  const host = generateApiHost(server, network, targetChain);
+  const host = generateApiHost(server, network, chainId);
   const hostSPV = `${generateApiHost(server, network, '1')}/spv`;
 
   try {
     const contCommand = await getContCommand(
       requestKey,
-      targetChain,
+      chainId,
       hostSPV,
       step + 1,
       rollback,
@@ -51,8 +37,8 @@ export async function finishXChainTransfer(
 
     contCommand.setMeta(
       {
-        chainId: targetChain,
-        sender: gasPayer,
+        chainId,
+        sender,
         gasLimit,
         gasPrice,
       },

@@ -29,11 +29,6 @@ export interface ITransferDataResult {
   error?: string;
 }
 
-export interface ISpvProofResult {
-  proof?: string;
-  error?: string;
-}
-
 export async function getTransferData({
   requestKey,
   server,

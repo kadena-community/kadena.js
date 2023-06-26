@@ -17,7 +17,7 @@ import {
   StyledTotalContainer,
 } from './styles';
 
-import { Select, SidebarMenu } from '@/components/Global';
+import { Select } from '@/components/Global';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
