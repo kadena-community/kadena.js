@@ -40,8 +40,9 @@ const statusToTitle: Record<RequestStatus, string> = {
 
 const statusToBody: Record<RequestStatus, string> = {
   failed: 'Something went wrong.',
-  pending: 'Still being processed...',
-  succeeded: '100 coins have been funded to the given account.',
+  pending:
+    'Please have some patience while the transaction is being processed.',
+  succeeded: 'The coins have been funded to the given account.',
   'not started': 'Nothing to see here.',
 };
 
