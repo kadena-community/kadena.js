@@ -18,8 +18,8 @@ export const container = style([
     position: 'relative',
   }),
   {
-    border:  `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`
-  }
+    border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+  },
 ]);
 
 export const fullWidthClass = style({
@@ -33,21 +33,21 @@ export const stackClass = style([
     selectors: {
       '&:first-child': {
         borderRadius: `${vars.radii.$sm} ${vars.radii.$sm} 0 0`,
-        borderBottom: 'none'
+        borderBottom: 'none',
       },
       '&:last-child': {
         borderRadius: `0 0 ${vars.radii.$sm} ${vars.radii.$sm}`,
-        borderTop: 'none'
+        borderTop: 'none',
       },
       '&:not(:last-child):before': {
-        content : "",
+        content: '',
         position: 'absolute',
-        left    : vars.sizes.$lg,
-        bottom  : 0,
-        height  : '1px',
-        width   : `calc(100% - ${vars.sizes.$lg} - ${vars.sizes.$lg})`,
-        borderBottom:`${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-      }
+        left: vars.sizes.$lg,
+        bottom: 0,
+        height: '1px',
+        width: `calc(100% - ${vars.sizes.$lg} - ${vars.sizes.$lg})`,
+        borderBottom: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+      },
     },
   },
 ]);
