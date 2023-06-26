@@ -6,10 +6,9 @@ import {
 } from '@kadena/react-components';
 import { Stack, SystemIcon, useModal } from '@kadena/react-ui';
 
-import { consentButton } from './Consent.css';
-
 import { updateConsent } from '@/utils/analytics';
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ConsentButton } from './ConsentButton';
 
 export const ConsentModal: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
@@ -58,22 +57,20 @@ export const ConsentModal: FC = () => {
         </NotificationBody>
         <NotificationFooter>
           <Stack>
-            <button
-              className={consentButton}
+            <ConsentButton
               onClick={handleAccept}
               color="primary"
               title="Accept analytics cookies"
             >
               Accept <SystemIcon.Check />
-            </button>
-            <button
-              className={consentButton}
+            </ConsentButton>
+            <ConsentButton
               onClick={handleReject}
               color="negative"
               title="Reject analytics cookies"
             >
               Reject <SystemIcon.Close />
-            </button>
+            </ConsentButton>
           </Stack>
         </NotificationFooter>
       </Notification>,

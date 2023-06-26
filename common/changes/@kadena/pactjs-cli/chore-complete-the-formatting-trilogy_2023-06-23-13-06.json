@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "comment": "Complete the formatting trilogy",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-cli"
+}
