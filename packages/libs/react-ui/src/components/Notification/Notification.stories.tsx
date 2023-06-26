@@ -70,7 +70,7 @@ export const Primary: Story = {
   render: ({ selectIcon, title, hasCloseButton, expanded, color, text }) => {
     const icon = SystemIcon[selectIcon];
     return (
-      <Notification
+      <Notification.Root
         icon={icon}
         expanded={expanded}
         color={color}
@@ -89,7 +89,7 @@ export const Primary: Story = {
             Reject
           </Notification.Button>
         </Notification.Actions>
-      </Notification>
+      </Notification.Root>
     );
   },
 };

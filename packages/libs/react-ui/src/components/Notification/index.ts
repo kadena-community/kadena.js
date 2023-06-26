@@ -24,14 +24,16 @@ export {
   INotificationButtonProps,
 };
 
-interface INotification extends FC<INotificationProps> {
+interface INotification {
+  Root: FC<INotificationProps>;
   Header: FC<INotificationHeaderProps>;
   Actions: FC<INotificationActionsProps>;
   Button: FC<INotificationButtonProps>;
 }
 
-export const Notification: INotification =
-  NotificationContainer as INotification;
-Notification.Header = NotificationHeader;
-Notification.Actions = NotificationActions;
-Notification.Button = NotificationButton;
+export const Notification: INotification = {
+  Root: NotificationContainer,
+  Header: NotificationHeader,
+  Actions: NotificationActions,
+  Button: NotificationButton
+}
