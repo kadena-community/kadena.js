@@ -1,21 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
-
 import {
   Button,
   Heading,
-  SystemIcons,
-  TextField,
-  Notification,
   INotificationProps,
+  Notification,
   NotificationBody,
   NotificationFooter,
+  SystemIcons,
 } from '@kadena/react-components';
+
 import { RequestStatus } from '.';
 
-export interface IFormNotificationProps extends INotificationProps {
+import React, {
+  FC,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+
+type FormNotificationProps = Pick<INotificationProps, 'title'> & {
   status: RequestStatus;
   body?: string;
-}
+};
 
 const statusToColorMapping: Record<RequestStatus, INotificationProps['color']> =
   {
@@ -33,27 +39,30 @@ const statusToTitle: Record<RequestStatus, string> = {
 };
 
 const statusToBody: Record<RequestStatus, string> = {
-  failed: 'Something went wrong',
-  pending: 'Still being processed',
-  succeeded: 'Great success',
-  'not started': 'Nothing to see here',
+  failed: 'Something went wrong.',
+  pending: 'Still being processed...',
+  succeeded: '100 coins have been funded to the given account.',
+  'not started': 'Nothing to see here.',
 };
 
-const FormStatusNotification = ({
+const FormStatusNotification: FC<FormNotificationProps> = ({
   body,
   status,
   title,
-}: IFormNotificationProps) => {
+}) => {
   const [show, setShow] = useState<boolean>(status !== 'not started');
 
   useEffect(() => {
     setShow(status !== 'not started');
   }, [status]);
 
-  const onCloseClick = useCallback((event) => {
-    event?.preventDefault();
-    setShow(false);
-  }, []);
+  const onCloseClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.preventDefault();
+      setShow(false);
+    },
+    [],
+  );
 
   if (!show) {
     return null;
@@ -63,6 +72,7 @@ const FormStatusNotification = ({
     <Notification
       color={statusToColorMapping[status]}
       title={title ?? statusToTitle[status]}
+      icon={SystemIcons.Information}
       expand
     >
       <NotificationBody>{body ?? statusToBody[status]}</NotificationBody>

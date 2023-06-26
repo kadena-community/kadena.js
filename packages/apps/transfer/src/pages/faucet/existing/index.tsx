@@ -7,6 +7,8 @@ import {
   TextField,
 } from '@kadena/react-components';
 
+import FormStatusNotification from './notification';
+
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { Select } from '@/components/Global';
 import { StyledOption } from '@/components/Global/Select/styles';
@@ -24,10 +26,9 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import FormStatusNotification from './notification';
 
 // TODO: This needs to be changed to 100, when the contract is redeployed
-const AMOUNT_OF_COINS_FUNDED: number = 21;
+const AMOUNT_OF_COINS_FUNDED: number = 20;
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const CHAINS = [
