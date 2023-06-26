@@ -25,4 +25,4 @@ export const Table: ITable = {
   Tr: Tr,
   Th: Th,
   Td: Td,
-}
+};
