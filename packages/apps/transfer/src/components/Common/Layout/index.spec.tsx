@@ -1,8 +1,6 @@
 import Layout from './index';
 
 import { render } from '@testing-library/react';
-// @ts-ignore
-import React from 'react';
 
 describe('Layout', () => {
   test('renders correctly', () => {

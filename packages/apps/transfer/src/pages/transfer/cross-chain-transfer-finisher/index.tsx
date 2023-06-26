@@ -35,6 +35,7 @@ import {
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { generateApiHost } from '@/services/utils/utils';
+import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
 
@@ -46,6 +47,7 @@ interface IPactResultError {
 }
 
 const CrossChainTransferFinisher: FC = () => {
+  const debug = Debug('XChain-Transfer-Finisher');
   const { t } = useTranslation('common');
   const { network } = useAppContext();
 
@@ -129,14 +131,12 @@ const CrossChainTransferFinisher: FC = () => {
       try {
         const pollResult = await contCommand.pollUntil(host, {
           onPoll: async (transaction, pollRequest): Promise<void> => {
-            console.log(
-              `Polling ${requestKey}.\nStatus: ${transaction.status}`,
-            );
+            debug(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
             setFinalResults({
               requestKey: transaction.requestKey,
               status: transaction.status,
             });
-            console.log(await pollRequest);
+            debug(await pollRequest);
             const data: IPollResponse = await pollRequest;
 
             // Show correct error message
@@ -160,11 +160,12 @@ const CrossChainTransferFinisher: FC = () => {
   };
 
   const showInputError = pollResults.error === undefined ? undefined : 'error';
-
   const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
-
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
+  const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
+  const formattedGasPrice = gasPrice.toFixed(20).replace(/(?<=\.\d*[1-9])0+$|\.0*$/,"");
+
 
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
@@ -212,7 +213,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TextField
                   label={t('Gas Payer Account')}
-                  helper={t('only single pubKey accounts are supported')}
+                  helper={isGasStation ? '' : t('only gas station account is supported')}
                   inputProps={{
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>
@@ -226,14 +227,14 @@ const CrossChainTransferFinisher: FC = () => {
                     placeholder: t('Enter Gas Payer'),
                     onChange: (e) =>
                       setGasPrice(Number((e.target as HTMLInputElement).value)),
-                    value: gasPrice,
+                    value: formattedGasPrice,
                   }}
                 />
               </>
             ) : null}
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title={t('Finish Cross Chain Transfer')}>
+            <Button title={t('Finish Cross Chain Transfer')} disabled={!isGasStation}>
               {t('Finish Cross Chain Transfer')}
             </Button>
           </StyledFormButton>

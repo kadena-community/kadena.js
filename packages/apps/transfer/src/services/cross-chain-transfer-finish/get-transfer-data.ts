@@ -1,6 +1,6 @@
 import {
   ChainwebNetworkId,
-  ICommandResult,
+  ICommandResult, IPollResponse,
 } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { ChainId, IPactExec } from '@kadena/types';
@@ -61,12 +61,12 @@ export async function getTransferData({
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    let found: { chainId: number; tx: ICommandResult } | undefined;
-    chainInfos.map(async (pactInfo, chainId) => {
-      if (pactInfo[validatedRequestKey] !== undefined) {
-        found = { chainId: chainId, tx: pactInfo[validatedRequestKey] };
+    const found : { chainId: number; tx: ICommandResult } | undefined = chainInfos.reduce((acc: { chainId: number; tx: ICommandResult } | undefined, curr: IPollResponse, chain: number, array: IPollResponse[]) => {
+      array.splice(chain - 1);
+      if (curr[requestKey] !== undefined) {
+        return { chainId: chain, tx: curr[validatedRequestKey] };
       }
-    });
+    }, undefined);
 
     if (found === undefined) {
       return { error: t('No request key found') };

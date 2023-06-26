@@ -5,11 +5,14 @@ import { ChainId } from '@kadena/types';
 import { kadenaConstants } from '../../constants/kadena';
 import { generateApiHost } from '../utils/utils';
 
+import Debug from 'debug';
+
 export interface ITransferResult {
   requestKey?: string;
   status?: string;
 }
 
+const debug = Debug('transfer-finisher');
 const gasLimit: number = kadenaConstants.GAS_LIMIT;
 const gasPrice: number = kadenaConstants.GAS_PRICE;
 
@@ -53,6 +56,7 @@ export async function finishXChainTransfer(
     });
 
     if (localResult.result.status !== 'success') {
+      debug(localResult.result.error.message);
       return { error: localResult.result.error.message };
     }
 
@@ -60,7 +64,7 @@ export async function finishXChainTransfer(
 
     return contCommand;
   } catch (e) {
-    console.log(e.message);
+    debug(e.message);
     return { error: e.message };
   }
 }
