@@ -1,6 +1,3 @@
-import { IResponse } from '../../src/pages/api/subscribe';
-import { closeConsentModal } from '../utils';
-
 const COOKIECONSENTNAME = 'cookie_consent';
 describe('Consent box', () => {
   beforeEach(() => {
