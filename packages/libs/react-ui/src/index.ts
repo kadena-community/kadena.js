@@ -30,6 +30,8 @@ export {
   useModal,
   IBoxProps,
   Box,
+  ILinkProps,
+  Link,
 } from './components';
 export {
   sprinkles,
