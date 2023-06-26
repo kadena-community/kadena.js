@@ -27,10 +27,10 @@ export const Button: FC<IButtonProps> = ({
       className={`
         button
         ${styles.button}
-        ${type ?? styles[`${type}`]}
-        ${color?? styles[`${color}`]}
-        ${disabled ?? 'disabled'}
-        ${className ?? className}
+        ${type ? styles[`${type}`] : ''}
+        ${color? styles[`${color}`] : ''}
+        ${disabled ?? ''}
+        ${className ?? ''}
       `}
     >
       {children}

@@ -94,6 +94,17 @@ h3 {
   margin-top: 2rem;
 }
 
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  /* tablets (768px and up) */
+  @media (min-width: 48rem) { 
+    flex-direction: row;
+  }
+}
+
 /* small devices and phones (640px and up) */
 @media (min-width: 40rem) {
   h1 {

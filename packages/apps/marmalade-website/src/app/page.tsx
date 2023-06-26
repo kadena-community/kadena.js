@@ -1,4 +1,5 @@
 import { Button } from './components/Button'
+import { Card } from './components/Card';
 import { Header } from './components/Header'
 import { VerticalTabs } from './components/VerticalTabs'
 import styles from './page.module.css'
@@ -6,7 +7,8 @@ import styles from './page.module.css'
 import React from 'react';
 
 export default function Home() : JSX.Element {
-  const policiesPerPurposeContent = [
+
+  const contentPoliciesPerPurpose = [
     {
       title: 'Migration policy',
       description: 'Token migration from v1 to v2',
@@ -65,13 +67,18 @@ export default function Home() : JSX.Element {
         <section className={styles['section-dark-green']}>
           <div className="container-inner">
             <h2 className="color-green">Stackable Policies</h2>
+            <div className="grid">
+              <Card title="Collection" buttonColor="orange" buttonText="Policy added" />
+              <Card title="Royalty" buttonColor="green" buttonText="Adding Policy ..." />
+              <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
+            </div>
             <p className={styles.description}>With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
           </div>
         </section>
         <section className={styles['section-green']}>
           <div className="container-inner">
             <h2 className="color-green">Policies per Purpose</h2>
-            <VerticalTabs tabs={policiesPerPurposeContent} />
+            <VerticalTabs tabs={contentPoliciesPerPurpose} />
           </div>
         </section>
         <section>

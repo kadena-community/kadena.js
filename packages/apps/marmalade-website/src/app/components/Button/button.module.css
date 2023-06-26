@@ -29,6 +29,11 @@
   color: var(--color-green-004);
 }
 
+.dark-green {
+  background-color: var(--color-green-002);
+  color: var(--color-orange-003);
+}
+
 .orange {
   background-color: var(--color-orange-001);
   color: var(--color-orange-002);

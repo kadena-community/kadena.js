@@ -1,0 +1,49 @@
+.card {
+  background: var(--color-orange-003);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-green-004);
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 2rem;
+  width: 15rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.card-title {
+  color: var(--color-green-002);
+  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-weight: bold;
+}
+.card-button {
+  text-align: right;
+}
+
+.box-placeholder {
+  font-size: 0;
+  line-height: 0;
+  margin: 1.5rem 0;
+}
+.placeholder-text {
+  display: block;
+  background-color: var(--color-orange-002);
+  height: 0.9rem;
+  margin: 0.25rem 0;
+  min-width: 15%;
+  animation: fading 1.5s infinite;
+  opacity: 0.4;
+}
+@keyframes fading {
+  0% {
+    opacity: .1;
+  }
+  
+  50% {
+    opacity: .3;
+  }
+  
+  100% {
+    opacity: .1;
+  }
+}
