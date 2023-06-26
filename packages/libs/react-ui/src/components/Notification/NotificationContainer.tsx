@@ -55,18 +55,15 @@ export const NotificationContainer: FC<INotificationProps> = ({
         </p>
       </div>
 
-    
-      <span
-        className={expanded ? iconContainerExpandedClass : undefined}
-      >
-        {hasCloseButton && 
-        <IconButton
-        title={'Close'}
-        onClick={onClose}
-        icon={SystemIcon.Close}
-        color={color}
-        ></IconButton>
-        }
+      <span className={expanded ? iconContainerExpandedClass : undefined}>
+        {hasCloseButton && (
+          <IconButton
+            title={'Close'}
+            onClick={onClose}
+            icon={SystemIcon.Close}
+            color={color}
+          ></IconButton>
+        )}
       </span>
     </div>
   );

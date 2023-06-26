@@ -36,4 +36,4 @@ export const Notification: INotification = {
   Header: NotificationHeader,
   Actions: NotificationActions,
   Button: NotificationButton,
-}
+};

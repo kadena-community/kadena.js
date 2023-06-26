@@ -29,8 +29,8 @@ export const containerClassRightPadded = style([
   containerClass,
   sprinkles({
     paddingRight: '$xl',
-  })
-])
+  }),
+]);
 
 export const actionsContainerClass = style([
   sprinkles({
