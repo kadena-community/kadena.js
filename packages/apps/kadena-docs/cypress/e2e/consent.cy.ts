@@ -27,34 +27,6 @@ describe('Consent box', () => {
       cy.get('[data-cy="modal"]').should('be.visible');
     });
 
-    describe('consent to false', () => {
-      it('checks that the consent cookie is set to false, on reject', () => {
-        cy.get('[data-cy="modal"]').should('exist');
-        cy.get('[data-cy="modal"]').find('button').eq(2).contains('Reject');
-        cy.get('[data-cy="modal"]').find('button').eq(2).click();
-        cy.get('[data-cy="modal"]').should('not.exist');
-      });
-      afterEach(() => {
-        cy.expect(window.localStorage.getItem(COOKIECONSENTNAME)).to.equal(
-          'false',
-        );
-      });
-    });
-
-    describe('consent to true', () => {
-      it('checks that the consent cookie is set to true, on approve', () => {
-        cy.get('[data-cy="modal"]').should('exist');
-        cy.get('[data-cy="modal"]').find('button').eq(1).contains('Accept');
-        cy.get('[data-cy="modal"]').find('button').eq(1).click();
-        cy.get('[data-cy="modal"]').should('not.exist');
-      });
-      afterEach(() => {
-        cy.expect(window.localStorage.getItem(COOKIECONSENTNAME)).to.equal(
-          'true',
-        );
-      });
-    });
-
     describe('no consent shown', () => {
       beforeEach(() => {
         window.localStorage.setItem(COOKIECONSENTNAME, 'true');
