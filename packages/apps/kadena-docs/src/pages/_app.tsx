@@ -3,8 +3,9 @@ import {
   darkTheme as stitchesDarkTheme,
   globalCss,
 } from '@kadena/react-components';
+import { darkThemeClass, ModalProvider } from '@kadena/react-ui';
 
-import { Analytics } from '@/components';
+import { Analytics, ConsentModal } from '@/components';
 import { Main } from '@/components/Layout/components';
 import { markDownComponents } from '@/components/Markdown';
 import { IPageMeta, IPageProps } from '@/types/Layout';
@@ -55,9 +56,22 @@ export const MyApp = ({
             dark: stitchesDarkTheme.className,
           }}
         >
-          <Main {...props}>
-            <Component {...props} />
-          </Main>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={true}
+            defaultTheme="light"
+            value={{
+              light: 'light',
+              dark: darkThemeClass,
+            }}
+          >
+            <ModalProvider>
+              <Main {...props}>
+                <Component {...props} />
+              </Main>
+              <ConsentModal />
+            </ModalProvider>
+          </ThemeProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />

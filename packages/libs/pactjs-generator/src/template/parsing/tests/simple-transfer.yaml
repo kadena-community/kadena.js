@@ -2,18 +2,21 @@ code: |-
   (coin.transfer "{{from-acct}}" "{{to-acct}}" {{amount}})
 data:
 publicMeta:
-  chainId: "{{chain}}"
-  sender: {{from-acct}}
+  chainId: '{{chain}}'
+  sender: '{{from-acct}}'
   gasLimit: 2500
   gasPrice: 0.00000001
   ttl: 7200
-networkId: {{network}}
+networkId: '{{network}}'
 signers:
-  - public: {{from-key}}
+  - public: '{{from-key}}'
     caps:
-      - name: "coin.TRANSFER"
-        args: [{{from-acct}}, {{to-acct}}, {{amount}}]
-      - name: "coin.GAS"
+      - name: 'coin.TRANSFER'
+        args:
+          - '{{from-acct}}'
+          - '{{to-acct}}'
+          - '{{amount}}'
+      - name: 'coin.GAS'
         args: []
 type: exec
 docs:

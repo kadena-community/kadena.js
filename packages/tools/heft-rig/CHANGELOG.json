@@ -2,6 +2,26 @@
   "name": "@kadena-dev/heft-rig",
   "entries": [
     {
+      "version": "0.0.7",
+      "tag": "@kadena-dev/heft-rig_v0.0.7",
+      "date": "Thu, 22 Jun 2023 09:46:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixate TS version to v5.0.4"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.4`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.6",
       "tag": "@kadena-dev/heft-rig_v0.0.6",
       "date": "Tue, 13 Jun 2023 13:17:28 GMT",

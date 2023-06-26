@@ -9,7 +9,8 @@
 
 > Cryptography-Utils is a collection of utility functions cryptography related
 
-API Reference can be found here [chainweb-node-client.api.md](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils/etc/cryptography-utils.api.md)
+API Reference can be found here [chainweb-node-client.api.md][1]
+
 <hr>
 
 crypto:
@@ -23,3 +24,6 @@ crypto:
 - `send`
 - `spv`
 - `stringifyAndMakePOSTRequest`
+
+[1]:
+  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils/etc/cryptography-utils.api.md

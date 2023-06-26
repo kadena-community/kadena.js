@@ -2,13 +2,12 @@
 
 @kadena/react-ui is a library used to provide a styling environment and basic
 React components for reuse in Kadena applications. It uses
-[vanilla-extract/css](https://vanilla-extract.style) (will be referred to as VE)
-to establish a system of utility classes (defined as sprinkles) and CSS
-variables (defined in the theme) that align with Kadena's Design System and
-exposes them so that they can be used with any project or framework. A basic
-[Storybook](https://storybook.js.org/) integration has been implemented so that
-users can preview components visually and interact with their configuration
-options.
+[vanilla-extract/css][1] (will be referred to as VE) to establish a system of
+utility classes (defined as sprinkles) and CSS variables (defined in the theme)
+that align with Kadena's Design System and exposes them so that they can be used
+with any project or framework. A basic [Storybook][2] integration has been
+implemented so that users can preview components visually and interact with
+their configuration options.
 
 > Warning: This library is in its early development stage so elements in the
 > styling environment may change as well as the API for components.
@@ -29,18 +28,16 @@ rushx build
 
 Since this library uses VE and is not pre-bundled, the consuming project will
 need to setup integration with VE. You can find integration instructions in the
-[VE docs](https://vanilla-extract.style/documentation/integrations/next/).
+[VE docs][3].
 
 ### Integration with Next.js projects within Kadena.js
 
 Add @kadena/react-ui as a dependency in your `package.json`:
 
-```
+```json
 {
-  ...
   "dependencies": {
-    "@kadena/react-ui": "workspace:*",
-    ...
+    "@kadena/react-ui": "workspace:*"
   }
 }
 ```
@@ -63,10 +60,8 @@ If you don’t have a next.config.js file in the root of your project, create on
 Add the plugin to your next.config.js file and add @kadena/react-ui to
 transpilePackages:
 
-```
-const {
-  createVanillaExtractPlugin
-} = require('@vanilla-extract/next-plugin');
+```ts
+const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
@@ -77,25 +72,23 @@ const nextConfig = {
 module.exports = withVanillaExtract(nextConfig);
 ```
 
-If required, this plugin can be composed with other plugins. See
-[VE Next.js integration docs](https://vanilla-extract.style/documentation/integrations/next/#setup).
+If required, this plugin can be composed with other plugins. See [VE Next.js
+integration docs][4].
 
 After the plugin is setup, you should be able to use styling utilities exported
 from @kadena/react-ui and components within your application.
 
 ### Dark Theme
 
-We are utilizing the
-[theming](https://vanilla-extract.style/documentation/global-api/create-global-theme/)
-feature from VE to create CSS color variables that invert depending on the
-selected theme. By default the theme will have colors suitable for light mode,
-but to add dark theme integration you can export `darkThemeClass` from
-@kadena/react-ui and use it with your theme provider.
+We are utilizing the [theming][5] feature from VE to create CSS color variables
+that invert depending on the selected theme. By default the theme will have
+colors suitable for light mode, but to add dark theme integration you can export
+`darkThemeClass` from @kadena/react-ui and use it with your theme provider.
 
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
-```
+```tsx
 import { darkThemeClass } from '@kadena/react-ui';
 import { ThemeProvider } from 'next-themes';
 
@@ -148,12 +141,10 @@ cd ~/your-app-root
 
 Add @kadena/react-ui as a dependency in your package.json:
 
-```
+```json
 {
-  ...
   "dependencies": {
     "@kadena/react-ui": "link:../kadena.js/packages/libs/react-ui"
-    ...
   }
 }
 ```
@@ -170,8 +161,8 @@ components to maintain this goal.
 
 ### Styling
 
-We are currently using [vanilla-extract/css](https://vanilla-extract.style/) as
-it is a zero-runtime CSS-in-JS library that is framework agnostic.
+We are currently using [vanilla-extract/css][6] as it is a zero-runtime
+CSS-in-JS library that is framework agnostic.
 
 _Theming_
 
@@ -236,3 +227,10 @@ our primitive and composed components.
 Since we are still in early development stages, things are still in flux and
 flexible to change. This is just a guideline that the team has discussed
 together as a starting point, but any suggestions for change are welcome!
+
+[1]: https://vanilla-extract.style
+[2]: https://storybook.js.org/
+[3]: https://vanilla-extract.style/documentation/integrations/next/
+[4]: https://vanilla-extract.style/documentation/integrations/next/#setup
+[5]: https://vanilla-extract.style/documentation/global-api/create-global-theme/
+[6]: https://vanilla-extract.style/
