@@ -1,38 +1,42 @@
-import { IPollResponse } from '@kadena/chainweb-node-client';
+import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
+import { hash as blakeHash } from '@kadena/cryptography-utils';
 
 import { ICommand } from '../pact';
 
 import { ILocalOptions, local, LocalResponse } from './utils/local';
 import {
   ICommandRequest,
+  ICommandRequestWithoutHash,
   INetworkOptions,
   IPollOptions,
+  IPollRequestPromise,
   kadenaHostGenerator,
+  mergeAll,
+  mergeAllPollRequestPromises,
 } from './utils/request';
-import { getSpv, pollSpv } from './utils/spv';
-import { getStatus, PollFunction, pollStatus } from './utils/status';
+import { createSpv, pollCreateSpv } from './utils/spv';
+import { getStatus, IPollStatus, pollStatus } from './utils/status';
 import { submit } from './utils/submit';
-
-const mergeAll = <T extends object>(results: Array<T>): T =>
-  results.reduce((acc, data) => ({ ...acc, ...data }), {} as T);
 
 interface IClient {
   /**
    * calls '/local' endpoint
    */
   local: <T extends ILocalOptions>(
-    command: ICommandRequest,
+    command: ICommandRequestWithoutHash,
     options?: T,
   ) => Promise<LocalResponse<T>>;
   /**
    * calls '/send' endpoint
    */
   submit: (
-    commandsList: ICommandRequest[],
+    commandsList: ICommandRequestWithoutHash[] | ICommandRequestWithoutHash,
   ) => Promise<
     [
       requestKeys: string[],
-      pollStatus: (options?: IPollOptions) => Promise<IPollResponse>,
+      pollStatus: (
+        options?: IPollOptions,
+      ) => IPollRequestPromise<ICommandResult>,
     ]
   >;
   /**
@@ -40,22 +44,23 @@ interface IClient {
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   pollStatus: (
-    requestKeys?: string[],
+    requestKeys?: string[] | string,
     options?: IPollOptions & INetworkOptions,
-  ) => Promise<IPollResponse>;
+  ) => IPollRequestPromise<ICommandResult>;
+
   /**
    * calls '/poll' endpoint only once. if the requests submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   getStatus: (
-    requestKeys?: string[],
+    requestKeys?: string[] | string,
     options?: INetworkOptions,
   ) => Promise<IPollResponse>;
   /**
    * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
-  pollSpv: (
+  pollCreateSpv: (
     requestKey: string,
     targetChainId: string,
     options?: IPollOptions & INetworkOptions,
@@ -65,7 +70,7 @@ interface IClient {
    * calls '/spv' endpoint only once. if the request submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
-  getSpv: (
+  createSpv: (
     requestKey: string,
     targetChainId: string,
     options?: INetworkOptions,
@@ -127,79 +132,108 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
 
-  function checkPendingRequests(statusCallback: PollFunction) {
-    return async (
-      requestKeys?: string[],
-      options?: IPollOptions & INetworkOptions,
-    ) => {
-      let requestStorage = storage;
-      if (requestKeys !== undefined) {
-        const map = new Map<string, string>(
-          requestKeys.map((requestKey) => [
-            requestKey,
-            storage.get(requestKey) ??
-              getHost(options!.networkId, options!.chainId),
-          ]),
-        );
-        requestStorage = getRequestStorage(map);
-      }
-      const results = await Promise.all(
-        requestStorage
-          .groupByHost()
-          .map(async ([hostUrl, requestKeys]) =>
-            statusCallback(hostUrl, requestKeys, options),
-          ),
+  function groupByHost(
+    requestKeys?: string[],
+    options?: IPollOptions & INetworkOptions,
+  ) {
+    let requestStorage = storage;
+    if (requestKeys !== undefined) {
+      const map = new Map<string, string>(
+        requestKeys.map((requestKey) => [
+          requestKey,
+          storage.get(requestKey) ??
+            getHost(options!.networkId, options!.chainId),
+        ]),
       );
+      requestStorage = getRequestStorage(map);
+    }
+    return requestStorage.groupByHost();
+  }
+  function pollStatusFunction(
+    requestKeys?: string[] | string,
+    options?: IPollOptions & INetworkOptions,
+  ) {
+    const results = groupByHost(
+      typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
+      options,
+    ).map(([hostUrl, requestKeys]) =>
+      pollStatus(hostUrl, requestKeys, options),
+    );
 
-      // merge all of the result in one object
-      const mergedResults = mergeAll(results);
+    // merge all of the result in one object
+    const mergedResults = mergeAllPollRequestPromises(results);
 
-      // remove from the pending requests storage
-      storage.remove(Object.values(mergedResults).map(({ reqKey }) => reqKey));
+    // remove from the pending requests storage
+    Object.entries(mergedResults).forEach(([key, promise]) => {
+      promise.then(() => {
+        storage.remove([key]);
+      });
+    });
 
-      return mergedResults;
-    };
+    return mergedResults;
   }
 
   const client: IClient = {
     local: (body, options) => {
       const cmd: ICommand = JSON.parse(body.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
-      return local(hostUrl, body, options);
+      return local(hostUrl, { ...body, hash: blakeHash(body.cmd) }, options);
     },
     submit: async (body) => {
-      const [first] = body;
+      const commands = Array.isArray(body) ? body : [body];
+      const [first] = commands;
       if (first === undefined) {
         throw new Error('EMPTY_COMMAND_LIST');
       }
       const cmd: ICommand = JSON.parse(first.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
-      const requestIds = await submit(hostUrl, body);
+      const commandsWithHash = commands.map((req) => ({
+        ...req,
+        hash: blakeHash(req.cmd),
+      }));
+      const requestIds = await submit(hostUrl, commandsWithHash);
       storage.add(hostUrl, requestIds);
 
       return [
         requestIds,
         (options?: IPollOptions) =>
-          checkPendingRequests(pollStatus)(requestIds, {
+          pollStatusFunction(requestIds, {
             ...options,
             networkId: cmd.networkId,
             chainId: cmd.meta.chainId,
           }),
       ];
     },
-    pollStatus: checkPendingRequests(pollStatus),
-    getStatus: checkPendingRequests(getStatus),
+    pollStatus: pollStatusFunction,
+    getStatus: async (requestKeys, options) => {
+      const keys =
+        typeof requestKeys === 'string' ? [requestKeys] : requestKeys;
 
-    pollSpv: (requestKey, targetChainId, options) => {
-      return pollSpv(
+      const results = await Promise.all(
+        groupByHost(keys, options).map(([hostUrl, requestKeys]) =>
+          getStatus(hostUrl, requestKeys).catch(() => ({} as IPollResponse)),
+        ),
+      );
+
+      // merge all of the result in one object
+      const mergedResults = mergeAll(results);
+      const receivedKeys = Object.keys(mergedResults);
+      // remove from the pending requests storage
+      storage.remove(receivedKeys);
+
+      return mergedResults;
+    },
+
+    pollCreateSpv: (requestKey, targetChainId, options) => {
+      return pollCreateSpv(
         getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,
         options,
       );
     },
-    getSpv: (requestKey, targetChainId, options) => {
-      return getSpv(
+    createSpv: (requestKey, targetChainId, options) => {
+      return createSpv(
         getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,

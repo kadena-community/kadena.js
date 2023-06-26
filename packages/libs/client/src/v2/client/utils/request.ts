@@ -58,13 +58,80 @@ export interface ICommandRequest {
   sigs: string[];
 }
 
+export type ICommandRequestWithoutHash = Omit<ICommandRequest, 'hash'>;
+
 export interface INetworkOptions {
   networkId: string;
   chainId: string;
 }
 
 export interface IPollOptions {
-  onTry?: (counter: number) => void;
+  onPoll?: (id: string) => void;
   timeout?: number;
   interval?: number;
 }
+
+export interface IExtPromise<T> {
+  promise: Promise<T>;
+  resolve: (result: T) => void;
+  reject: (err: any) => void;
+  fulfilled: boolean;
+  data: T | undefined;
+}
+
+export const getPromise = <T>(): IExtPromise<T> => {
+  let resolve: (value: T) => void = () => {};
+  let reject: (value: any) => void = () => {};
+  let fulfilled = false;
+  let result: T | undefined;
+
+  const promise = new Promise<T>((_resolve, _reject) => {
+    resolve = (data: T) => {
+      result = data;
+      fulfilled = true;
+      _resolve(data);
+    };
+    reject = (err) => {
+      fulfilled = true;
+      _reject(err);
+    };
+  });
+
+  return {
+    promise,
+    resolve,
+    reject,
+    get fulfilled() {
+      return fulfilled;
+    },
+    get data() {
+      return result;
+    },
+  };
+};
+
+export const mergeAll = <T extends object>(results: Array<T>): T =>
+  results.reduce((acc, data) => ({ ...acc, ...data }), {} as T);
+
+export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
+  requests: Record<string, Promise<T>>;
+};
+
+export const mergeAllPollRequestPromises = <T extends object>(
+  results: Array<IPollRequestPromise<T>>,
+): IPollRequestPromise<T> => {
+  return Object.assign(Promise.all(results).then(mergeAll), {
+    requests: results.reduce(
+      (acc, data) => ({ ...acc, ...data.requests }),
+      {} as Record<string, Promise<T>>,
+    ),
+  });
+};
+
+export const mapRecord = <T extends any, Mapper extends (item: T) => any>(
+  object: Record<string, T>,
+  mapper: Mapper,
+): Record<string, ReturnType<Mapper>> =>
+  Object.fromEntries(
+    Object.entries(object).map(([key, data]) => [key, mapper(data)]),
+  );

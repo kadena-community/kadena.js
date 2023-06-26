@@ -11,18 +11,15 @@ const rejectAfter = async (timeout: number): Promise<void> => {
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const retry = <T extends object | string>(task: () => Promise<T>) =>
+export const retry = <T extends object | string | void>(
+  task: () => Promise<T>,
+) =>
   async function runTask(options?: IPollOptions, count = 0): Promise<T> {
     const startTime = Date.now();
 
-    const {
-      onTry = () => {},
-      timeout = 1000 * 60 * 3,
-      interval = 5000,
-    } = options ?? {};
+    const { timeout = 1000 * 60 * 3, interval = 5000 } = options ?? {};
 
     try {
-      onTry(count);
       const result = await Promise.race([task(), rejectAfter(timeout)]);
       return result as T;
     } catch (error) {
@@ -31,9 +28,6 @@ export const retry = <T extends object | string>(task: () => Promise<T>) =>
       }
       await sleep(interval);
       const durationTime = Date.now() - startTime;
-      return runTask(
-        { timeout: timeout - durationTime, interval, onTry },
-        count + 1,
-      );
+      return runTask({ timeout: timeout - durationTime, interval }, count + 1);
     }
   };

@@ -5,6 +5,8 @@ import { createExp } from '@kadena/pactjs';
 
 import { parseType } from '../utils/parseType';
 
+import { coin } from './exmaple/coin-contract';
+
 export const getModule = (name: string) => {
   let code = name;
   const pr: any = new Proxy<any>(function () {} as unknown, {
@@ -29,9 +31,10 @@ interface IPayload {
   >(
     codes: T,
     data?: any,
-  ) => { payload: { funs: [...T]; code: string; data: any } };
+    // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
+  ) => { payload: IExecPayload & { funs: [...T]; _brand: 'exec' } };
   cont: (options: IContinuationPayload) => {
-    payload: IContinuationPayload;
+    payload: IContinuationPayload & { _brand: 'cont' };
   };
 }
 
@@ -40,65 +43,55 @@ export const payload: IPayload = {
     payload: { code: codes.join(''), data } as any,
   }),
   cont: (options) => ({
-    payload: options,
+    payload: options as any,
   }),
 };
 
-// export type NoPayloadCommand = Partial<Omit<ICommand, 'payload'>>;
-type IPartialCommand = Partial<ICommand>;
+export type IPartialCommand = Partial<Omit<ICommand, 'payload'>>;
 
-interface ICmdBuilder {
-  <T extends { payload: IExecPayload }>(
-    payload: T,
-    ...rest: Array<
-      IPartialCommand | ((cmd: IPartialCommand & T) => IPartialCommand)
-    >
-  ): { command: Partial<ICommand>; stringify: () => string };
-
-  <T extends { payload: IContinuationPayload }>(
-    payload: T,
-    ...rest: Array<
-      IPartialCommand | ((cmd: IPartialCommand & T) => IPartialCommand)
-    >
+interface ICommandBuilder {
+  <F extends Pick<ICommand, 'payload'>>(
+    payload: F,
+    ...second: [
+      ...Array<
+        | Partial<ICommand>
+        | ((payload: F & Partial<ICommand>) => Partial<ICommand>)
+      >,
+    ]
   ): { command: Partial<ICommand>; stringify: () => string };
 }
 
-export const cmdBuilder: ICmdBuilder = (first, ...rest) => {
+export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
   const args: Array<Partial<ICommand>> = [first, ...rest] as any;
-  const command = args.reduce(
-    (acc, part) => {
-      if (part.payload !== undefined) {
-        if (acc.payload !== undefined) {
-          throw Error('Only one payload is acceptable');
+  const command = args.reduce((acc, part) => {
+    if (part.payload !== undefined) {
+      if (acc.payload !== undefined) {
+        throw Error('Only one payload is acceptable');
+      }
+      acc.payload = part.payload;
+    }
+    if (part.meta !== undefined) {
+      acc.meta = { ...acc.meta, ...part.meta };
+    }
+    if (part.nonce !== undefined) {
+      acc.nonce = part.nonce;
+    }
+    if (part.networkId !== undefined) {
+      acc.networkId = part.networkId;
+    }
+    if (part.signers !== undefined) {
+      part.signers.forEach((signer) => {
+        acc.signers ??= [];
+        const prev = acc.signers.find(({ pubKey }) => signer.pubKey === pubKey);
+        if (prev !== undefined) {
+          prev.clist = [...(prev.clist ?? []), ...(signer.clist ?? [])];
+        } else {
+          acc.signers.push(signer);
         }
-        acc.payload = part.payload;
-      }
-      if (part.meta !== undefined) {
-        acc.meta = { ...acc.meta, ...part.meta };
-      }
-      if (part.nonce !== undefined) {
-        acc.nonce = part.nonce;
-      }
-      if (part.networkId !== undefined) {
-        acc.networkId = part.networkId;
-      }
-      if (part.signers !== undefined) {
-        part.signers.forEach((signer) => {
-          acc.signers ??= [];
-          const prev = acc.signers.find(
-            ({ pubKey }) => signer.pubKey === pubKey,
-          );
-          if (prev !== undefined) {
-            prev.clist = [...(prev.clist ?? []), ...(signer.clist ?? [])];
-          } else {
-            acc.signers.push(signer);
-          }
-        });
-      }
-      return acc;
-    },
-    { networkId: 'mainnet' } as Partial<ICommand>,
-  );
+      });
+    }
+    return acc;
+  });
   return {
     command,
     stringify: () => JSON.stringify(command),
@@ -130,10 +123,10 @@ export const signer: <T extends any>(
   } = typeof first === 'object' ? first : { pubKey: first };
   let clist: undefined | Array<{ name: string; args: any[] }>;
   if (typeof capability === 'function') {
-    clist = capability((name: string, ...args: any[]) => ({
+    clist = capability(((name: string, ...args: any[]) => ({
       name,
       args,
-    }));
+    })) as any);
   }
   return () => ({
     pubKey,
@@ -153,15 +146,20 @@ export const meta = (options: Partial<ICommand['meta']>) => ({
   } as ICommand['meta'],
 });
 
+export const set = <T extends keyof ICommand>(
+  item: T,
+  value: ICommand[T],
+): { [key in T]: ICommand[T] } => {
+  return { [item]: value } as { [key in T]: ICommand[T] };
+};
+
 interface IExecPayload {
   // executable pact code
-  code?: string;
+  code: string;
   data?: Record<string, string | number>;
-  // this is here for type suggestion, but the final json does not have this property
-  funs: any;
 }
 
-interface IContinuationPayload {
+export interface IContinuationPayload {
   pactId?: string;
   step?: string;
   rollback?: boolean;

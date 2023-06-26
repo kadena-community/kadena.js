@@ -1,36 +1,19 @@
-import { getClient } from './client/client';
+import { getClient } from '../client/client';
 import {
-  cmdBuilder,
+  commandBuilder,
   getModule,
   ICapabilityItem,
   ICommand,
   meta,
   payload,
+  set,
   signer,
-} from './pact';
+} from '../pact';
 
-interface ITransferCapability {
-  (name: 'coin.GAS'): ICapabilityItem;
-  (
-    name: 'coin.TRANSFER',
-    from: string,
-    to: string,
-    amount: number,
-  ): ICapabilityItem;
-}
+import { coin } from './coin-contract';
 
 interface IAdminCapability {
   (name: 'test.ADMIN'): ICapabilityItem;
-}
-
-interface ICoin {
-  transfer: (
-    from: string,
-    to: string,
-    amount: { decimal: string },
-  ) => string & {
-    capability: ITransferCapability;
-  };
 }
 
 interface ITest {
@@ -42,34 +25,43 @@ interface ITest {
   };
 }
 
-const coin: ICoin = getModule('coin');
 const test: ITest = getModule('coin');
 
 const nonce = (input: string) => (cmd: Partial<ICommand>) => {
   return { nonce: `kjs ${new Date().toISOString()}` };
 };
 
-const set = <T extends keyof ICommand>(
-  item: T,
-  value: ICommand[T],
-): { [key in T]: ICommand[T] } => {
-  return { [item]: value } as { [key in T]: ICommand[T] };
-};
-
 // use the payload type in the output cont/exec
 // eslint-disable-next-line @rushstack/typedef-var
-export const cmd = cmdBuilder(
+export const cmd = commandBuilder(
   payload.exec([
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
     test.changeAdmin('albert', 'javad'),
   ]),
   signer('javadPublicKey', (withCapability) => [
-    withCapability('test.ADMIN'),
-    withCapability('test.ADMIN'),
+    //
+    withCapability('coin.GAS'),
+    withCapability('coin.TRANSFER', 'javad', 'albert', 0.1),
   ]),
   signer('albertPublicKey', (withCapability) => [
-    withCapability('coin.TRANSFER', 'javad', 'albert', 12),
-    withCapability('coin.TRANSFER', 'javad', 'albert', 12),
+    //
+    withCapability('test.ADMIN'),
+  ]),
+  meta({ chainId: '1' }),
+  nonce('kms'),
+  set('networkId', 'mainnet04'),
+);
+
+export const cmd2 = commandBuilder(
+  payload.cont({}),
+  signer('javadPublicKey', (withCapability) => [
+    //
+    withCapability('coin.GAS'),
+    withCapability('coin.TRANSFER', 'javad', 'albert', 0.1),
+  ]),
+  signer('albertPublicKey', (withCapability) => [
+    //
+    withCapability('test.ADMIN'),
   ]),
   meta({ chainId: '1' }),
   nonce('kms'),
@@ -93,7 +85,12 @@ const getHostUrl = (networkId: string, chainId: string) => {
   }
 };
 
-const { local, submit, pollStatus, pollSpv } = getClient(getHostUrl);
+const {
+  local,
+  submit,
+  pollStatus,
+  pollCreateSpv: pollSpv,
+} = getClient(getHostUrl);
 
 async function localExample() {
   const result = await local(commandWithSignatures);
@@ -103,21 +100,39 @@ async function localExample() {
 async function submitExample() {
   const [requestKeys, poll] = await submit([commandWithSignatures]);
   console.log(requestKeys);
-  const results = await poll({
-    onTry: (number) => {
-      console.log('try number', number);
+  const result = await poll({
+    onPoll: (requestKey) => {
+      console.log('polling status of', requestKey);
     },
   });
-  return results;
+
+  return result;
 }
 
-async function pollExample() {
+async function pollRequestsAndWaitForEachPromiseExample() {
   const someRequestKeys = ['key1', 'key2'];
-  const status = await pollStatus(someRequestKeys, {
+  const results = pollStatus(someRequestKeys, {
     networkId: 'testnet04',
     chainId: '01',
+    onPoll: (requestKey) => {
+      console.log('polling status of', requestKey);
+    },
   });
-  return status;
+
+  Object.entries(results.requests).map(([requestKey, promise]) =>
+    promise
+      .then((data) => {
+        console.log('the request ', requestKey, 'result:', data);
+      })
+      .catch((error) => {
+        console.log(
+          'error while getting the status of ',
+          requestKey,
+          'error:',
+          error,
+        );
+      }),
+  );
 }
 
 async function spvExample() {
@@ -128,3 +143,5 @@ async function spvExample() {
   });
   return status;
 }
+
+// TODO: write the xchain transfer wit getClient

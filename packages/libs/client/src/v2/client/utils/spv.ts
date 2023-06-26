@@ -3,7 +3,7 @@ import { parseResponse } from '@kadena/chainweb-node-client';
 import { getUrl, IPollOptions, jsonRequest } from './request';
 import { retry } from './retry';
 
-export async function getSpv(
+export async function createSpv(
   host: string,
   requestKey: string,
   targetChainId: string,
@@ -20,14 +20,14 @@ export async function getSpv(
   }
 }
 
-export const pollSpv = (
+export const pollCreateSpv = (
   host: string,
   requestKey: string,
   targetChainId: string,
   pollingOptions?: IPollOptions,
 ): Promise<string> => {
   const task = async (): Promise<string> =>
-    getSpv(host, requestKey, targetChainId);
+    createSpv(host, requestKey, targetChainId);
 
   const retrySpv = retry(task);
 
