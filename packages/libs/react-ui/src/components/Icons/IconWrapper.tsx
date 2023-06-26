@@ -1,5 +1,6 @@
-import { sizeVariants } from './IconWrapper.css';
+import { iconContainer, sizeVariants } from './IconWrapper.css';
 
+import classNames from 'classnames';
 import React, { SVGProps } from 'react';
 
 export interface IIconProps {
@@ -16,7 +17,7 @@ export const IconWrapper = (
     size = 'md',
     ...props
   }) => (
-    <span className={sizeVariants[size]}>
+    <span className={classNames(iconContainer, sizeVariants[size])}>
       <Component {...props} height="100%" width="100%" />
     </span>
   );
