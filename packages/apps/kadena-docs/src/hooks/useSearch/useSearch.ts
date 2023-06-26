@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import {
   ChangeEvent,
   FormEvent,
+  FormEventHandler,
   MutableRefObject,
   useCallback,
   useEffect,
@@ -28,7 +29,7 @@ interface IProps {
   query: string | undefined;
   staticSearchResults: SearchResult[];
   conversation: IConversation;
-  handleInputChange: (event: Event) => void;
+  handleInputChange: FormEventHandler<HTMLInputElement>;
 }
 
 export const useSearch = (): IProps => {
@@ -66,7 +67,7 @@ export const useSearch = (): IProps => {
     return debounce(updateQuery, 500);
   }, [updateQuery]);
 
-  const handleInputChange = (event: Event): void => {
+  const handleInputChange = (event: FormEvent<HTMLInputElement>): void => {
     const { currentTarget } = event as unknown as ChangeEvent<HTMLInputElement>;
     const value = currentTarget.value;
 
