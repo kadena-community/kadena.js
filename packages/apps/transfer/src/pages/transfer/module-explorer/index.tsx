@@ -18,21 +18,25 @@ import {
 } from './styles';
 
 import { Select } from '@/components/Global';
+import { chainNetwork } from '@/constants/network';
+import { useAppContext } from '@/context/app-context';
 import {
   type IModuleResult,
   describeModule,
 } from '@/services/modules/describe-module';
 import { convertIntToChainId } from '@/services/utils/utils';
+import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const GetCode: FC = () => {
+  const debug = Debug('Module-explorer');
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleChain, setModuleChain] = useState<number>(1);
   const [results, setResults] = useState<IModuleResult>({});
 
-  const networkdId = 'testnet04';
+  const { network } = useAppContext();
   const numberOfChains = 20;
 
   const getCode = async (
@@ -43,15 +47,15 @@ const GetCode: FC = () => {
       const data = await describeModule(
         moduleName,
         convertIntToChainId(moduleChain),
-        networkdId,
+        chainNetwork[network].network,
+        chainNetwork[network].server,
         'not-real',
         0.00000001,
       );
-      console.log(data.code);
 
       setResults(data);
     } catch (e) {
-      console.log(e);
+      debug(e);
     }
   };
 

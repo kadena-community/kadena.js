@@ -5,6 +5,7 @@ export interface IEnvInterface {
   GAS_LIMIT?: number;
   FAUCET_PUBLIC_KEY?: string;
   FAUCET_PRIVATE_KEY?: string;
+  GAS_PRICE?: number;
 }
 
 export const dotenv: IEnvInterface = {
@@ -14,9 +15,16 @@ export const dotenv: IEnvInterface = {
   GAS_LIMIT: Number(process.env.GAS_LIMIT),
   FAUCET_PUBLIC_KEY: process.env.FAUCET_PUBLIC_KEY,
   FAUCET_PRIVATE_KEY: process.env.FAUCET_PRIVATE_KEY,
+  GAS_PRICE: Number(process.env.GAS_PRICE),
 };
 
 export const env = <T extends keyof IEnvInterface, TDefault>(
   key: T,
   defaultValue: TDefault,
-): TDefault | NonNullable<IEnvInterface[T]> => dotenv[key] ?? defaultValue;
+): TDefault | NonNullable<IEnvInterface[T]> => {
+  if (dotenv[key] === undefined || isNaN(Number(dotenv[key]))) {
+    return defaultValue;
+  }
+
+  return dotenv[key] ?? defaultValue;
+};
