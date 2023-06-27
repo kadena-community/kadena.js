@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/heft-rig",
+      "comment": "Housekeeping npm-published files",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena-dev/heft-rig"
+}

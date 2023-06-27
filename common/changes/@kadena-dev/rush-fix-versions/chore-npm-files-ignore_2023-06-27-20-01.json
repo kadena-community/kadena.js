@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/rush-fix-versions",
+      "comment": "Housekeeping npm-published files",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena-dev/rush-fix-versions"
+}
