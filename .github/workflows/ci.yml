@@ -50,11 +50,6 @@ jobs:
             common/temp/pnpm-store
           key: cache-pnpm-${{ runner.os }}
 
-      - name: List impacted packages
-        if: github.ref_name != 'main'
-        run: |
-          node common/scripts/install-run-rush.js list ${{ env.AFFECTED_OR_ALL }}
-
       - name: Rush install (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
