@@ -1,0 +1,21 @@
+.icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  &.lg {
+    width: 6.2rem;
+    height: 6.2rem;
+  }
+
+  &.green {
+    background-color: var(--color-green-003);
+  }
+
+  &.orange {
+    background-color: var(--color-orange-001);
+  }
+}

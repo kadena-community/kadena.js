@@ -1,13 +1,15 @@
 'use client'; // todo:remove
 import { Button } from './components/Button'
-import { Card } from './components/Card';
+import { Card } from './components/Card'
 import { Header } from './components/Header'
-import { ToggleSwitch } from './components/ToggleSwitch';
+import { Icon } from './components/Icon';
+import { ToggleSwitch } from './components/ToggleSwitch'
 import { VerticalTabs } from './components/VerticalTabs'
 import styles from './page.module.css'
-import ChemicalIcon from './resources/icons/chemical-weapon.svg'
+
 
 import React, { useState } from 'react';
+// import Image from 'next/image'
 
 export default function Home() : JSX.Element {
 
@@ -86,6 +88,8 @@ export default function Home() : JSX.Element {
               <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
             </div>
             <p className={styles.description}>With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
+            <Icon name="chemical-weapon" color="orange" size="lg" />
+            <Icon name="chemical-weapon" color="green" />
             <ToggleSwitch name="collection" isChecked={ collection } onSwitchChange={ onCollectionChange } />
             <ToggleSwitch name="collection" isChecked={ collection } onSwitchChange={ onCollectionChange } disabled />
           </div>

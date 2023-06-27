@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './vertical-tabs.module.css';
+import styles from './vertical-tabs.module.scss';
 
 import React, { ReactNode, useState } from 'react';
 

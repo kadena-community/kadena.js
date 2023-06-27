@@ -1,6 +1,6 @@
 import { Button } from '../Button';
 
-import styles from './header.module.css'
+import styles from './header.module.scss'
 
 import Image from 'next/image'
 import React, { FC } from 'react';
@@ -10,7 +10,7 @@ export const Header : FC = () => {
     <header className={`${styles.header} container-inner`}>
       <Image
         className={styles.logo}
-        src="/marmalade.svg"
+        src="/marmalade-logo.svg"
         alt="Marmalade"
         width={285}
         height={55}

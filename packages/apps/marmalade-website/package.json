@@ -23,6 +23,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
-    "@kadena-dev/heft-rig": "workspace:*"
+    "@kadena-dev/heft-rig": "workspace:*",
+    "sass": "~1.63.6"
   }
 }

@@ -1,5 +1,5 @@
 'use client';
-import styles from './toggle-switch.module.css';
+import styles from './toggle-switch.module.scss';
 
 import React, { FC } from 'react';
 
