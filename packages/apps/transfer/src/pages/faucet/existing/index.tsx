@@ -59,7 +59,7 @@ export type Chain = ChainTuple[number];
 
 export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
 
-const ExistingFaucetPage: FC = () => {
+const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
   const [accountName, setAccountName] = useState('');
@@ -186,4 +186,4 @@ const ExistingFaucetPage: FC = () => {
   );
 };
 
-export default ExistingFaucetPage;
+export default ExistingAccountFaucetPage;
