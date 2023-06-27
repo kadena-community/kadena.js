@@ -8,7 +8,6 @@ import {
   StyledHomeTitle,
   StyledIconBox,
   StyledLinkText,
-  StyledSmallLogo,
 } from '@/pages/home/styles';
 import { Account, Chain } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';

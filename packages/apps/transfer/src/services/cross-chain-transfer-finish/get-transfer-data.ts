@@ -83,7 +83,8 @@ export async function getTransferData({
     }
 
     const [senderAccount, receiverAccount, guard, targetChain, amount] = found
-      .tx?.continuation?.continuation.args as Array<any>;
+      .tx?.continuation?.continuation.args;
+
     const { step, stepHasRollback, pactId } = found.tx
       ?.continuation as IPactExec;
 

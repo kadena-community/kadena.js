@@ -2,7 +2,6 @@ import {StyledGridCol} from './styles'
 
 import {IGridColMediaStyles, IGridColMediaType} from "@/types/Grid";
 import {getColumnStyles} from "@/utils/styles";
-import {CSS} from "@stitches/react/types/css-util";
 import React, {FC, ReactNode} from 'react'
 
 export interface IGridRowProps {
