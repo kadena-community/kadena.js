@@ -1,6 +1,8 @@
-import { Stack, SystemIcons, TextField } from '@kadena/react-components';
+import { SystemIcon, Tabs, TextField } from '@kadena/react-ui';
 
-import { ResultSection } from '@/components';
+import { SearchForm } from '@/components';
+import { Article, Content } from '@/components/Layout/components';
+import { SearchHeader } from '@/components/Layout/Landing/components';
 import { useSearch } from '@/hooks';
 import { createLinkFromMD } from '@/utils';
 import {
@@ -23,59 +25,73 @@ const Search: FC = () => {
   } = useSearch();
 
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          inputProps={{
-            ref: searchInputRef,
-            defaultValue: query,
-            placeholder: 'Search',
-            leftPanel: () => <SystemIcons.Magnify />,
-            'aria-label': 'Search',
-          }}
-        />
-      </form>
+    <>
+      <SearchHeader>
+        <SearchForm onSubmit={handleSubmit}>
+          <TextField
+            inputProps={{
+              id: 'searchInput',
+              outlined: true,
+              ref: searchInputRef,
+              defaultValue: query,
+              placeholder: 'Search',
+              rightIcon: SystemIcon.Magnify,
+              'aria-label': 'Search',
+            }}
+          />
+        </SearchForm>
+      </SearchHeader>
+      <Content id="maincontent" layout="home">
+        <Article>
+          <section>
+            <Tabs.Root defaultSelected="docs">
+              <Tabs.Tab value="docs">Docs Space </Tabs.Tab>
+              <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
-      <Stack>
-        <ResultSection>
-          <h2>output</h2>
+              <Tabs.Content value="docs">
+                {staticSearchResults.length > 0 &&
+                  `(${staticSearchResults.length})`}
+                <ul>
+                  {staticSearchResults.map((item) => {
+                    return (
+                      <li key={item.id}>
+                        <Link href={createLinkFromMD(item.filename)}>
+                          {item.title}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Tabs.Content>
 
-          {conversation?.history.map((interaction, idx) => (
-            <div key={`${interaction.input}-${idx}`}>
-              <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-              <div>
-                {interaction?.metadata?.map((item, idx) => {
-                  const url = createLinkFromMD(item.title);
-                  return (
-                    <>
-                      <Link key={`${url}-${idx}`} href={url}>
-                        {url}
-                      </Link>
-                    </>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+              <Tabs.Content value="qa">
+                <h2>output</h2>
 
-          <div>{outputStream}</div>
-        </ResultSection>
+                {conversation?.history.map((interaction, idx) => (
+                  <div key={`${interaction.input}-${idx}`}>
+                    <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                    <div>
+                      {interaction?.metadata?.map((item, idx) => {
+                        const url = createLinkFromMD(item.title);
+                        return (
+                          <>
+                            <Link key={`${url}-${idx}`} href={url}>
+                              {url}
+                            </Link>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
 
-        <ResultSection>
-          <ul>
-            {staticSearchResults.map((item) => {
-              return (
-                <li key={item.id}>
-                  <Link href={createLinkFromMD(item.filename)}>
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </ResultSection>
-      </Stack>
-    </section>
+                <div>{outputStream}</div>
+              </Tabs.Content>
+            </Tabs.Root>
+          </section>
+        </Article>
+      </Content>
+    </>
   );
 };
 
@@ -89,7 +105,7 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
         label: 'Search',
         order: 0,
         description: 'We will find stuff for u',
-        layout: 'landing',
+        layout: 'home',
         icon: 'KadenaOverview',
       },
     },

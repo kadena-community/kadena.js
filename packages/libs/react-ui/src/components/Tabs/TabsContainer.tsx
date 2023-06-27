@@ -20,10 +20,15 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
   useEffect(() => {
     if (!containerRef.current || !selectedUnderlineRef.current) return;
     //find the selectedTab
-    const selected = containerRef.current.querySelector(
+    let selected = containerRef.current.querySelector(
       '[data-selected="true"]',
     ) as HTMLButtonElement;
-    if (selected === undefined) return;
+
+    if (selected === undefined || selected === null) {
+      selected = containerRef.current.querySelectorAll(
+        'button',
+      )[0] as HTMLButtonElement;
+    }
 
     // set position of the bottom line
     selectedUnderlineRef.current.style.setProperty(
@@ -49,6 +54,7 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
           if (child.type === Tab) {
             const props = {
               ...child.props,
+              key: child.props.value,
               selected: selectedTab === child.props.value,
               handleClick,
             };
