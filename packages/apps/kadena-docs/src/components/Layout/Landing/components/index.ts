@@ -1,1 +1,1 @@
-export { HomeHeader } from './HomeHeader';
+export { HomeHeader, SearchHeader } from './Headers';

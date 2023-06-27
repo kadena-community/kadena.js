@@ -1,4 +1,4 @@
-import { Heading } from '@kadena/react-components';
+import { Heading, SystemIcons, TextField } from '@kadena/react-components';
 
 import { MainTreeItem } from '../TreeMenu';
 import { StyledTreeList } from '../TreeMenu/styles';
@@ -16,7 +16,8 @@ import {
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
-import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, KeyboardEvent } from 'react';
 
 interface IProps {
   closeMenu: () => void;
@@ -28,8 +29,20 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     closeMenu,
     menuItems,
   );
+  const router = useRouter();
 
   const activeItem = menuItems.find((item) => item.isMenuOpen);
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    if (e.key === 'Enter') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`/search?q=${value}`);
+      closeMenu();
+      e.currentTarget.value = '';
+    }
+  };
 
   return (
     <StyledSideMenu>
@@ -47,7 +60,14 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       )}
 
       <ShowOnMobile>
-        <input type="text" />
+        <TextField
+          inputProps={{
+            onKeyUp: handleKeyPress,
+            placeholder: 'Search',
+            leftPanel: () => <SystemIcons.Magnify />,
+            'aria-label': 'Search',
+          }}
+        ></TextField>
       </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <StyledUl>

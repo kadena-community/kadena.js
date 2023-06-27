@@ -1,7 +1,7 @@
 # Project created with Create Kadena App CLI tool
 
 This is a project with Kadena Blockchain integration bootstrapped with
-[`create-kadena-app`](https://github.com/kadena-community/kadena.js/tree/master/packages/tools/create-kadena-app).
+[`create-kadena-app`](https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app).
 
 ## Learn More
 
