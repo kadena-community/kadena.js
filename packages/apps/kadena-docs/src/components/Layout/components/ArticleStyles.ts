@@ -2,7 +2,7 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 export const Article: StyledComponent<'article'> = styled('article', {
   width: '100%',
-  padding: '0 $4',
+  padding: '0 $2',
   backgroundColor: 'transparent',
 });
 

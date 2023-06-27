@@ -7,9 +7,9 @@ Makes use of .kadena/pactjs-generated
 
 <picture>
 
-<source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+<source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
 
-<img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+<img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
 
 </picture>
 
@@ -151,7 +151,7 @@ by `@kadena/client` to give you type information.
 # Building a simple transaction from the contract
 
 > Take a look at
-> [https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs-test-project/src/example-contract/simple-transfer.ts][20]
+> [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/simple-transfer.ts][20]
 > for the full example
 
 Now that everything is bootstrapped, we can start building transactions.
@@ -422,7 +422,7 @@ Probably the simplest call you can make is `describe-module`, but as this is not
 on the `coin` contract, we have to trick Typescript a little:
 
 > See:
-> [https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs-test-project/src/example-contract/get-balance.ts][23]
+> [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/get-balance.ts][23]
 
 ```ts
 const res = await Pact.modules.coin['get-balance']('albert').local(
@@ -433,7 +433,7 @@ console.log(JSON.stringify(res, null, 2));
 
 > **A more elaborate example** that includes signing, sending, **and polling**
 > can be found here:
-> [https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs-test-project/src/example-contract/transfer.ts][24]
+> [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/transfer.ts][24]
 
 # Further development
 
@@ -450,7 +450,7 @@ We try to be available via Discord and Github issues:
 - Discord in the [#kadena-js channel][25]
 
 [1]:
-  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client/etc/client.api.md
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client/etc/client.api.md
 [2]: #contract-based-interaction-using-kadenaclient
 [3]: #template-based-interaction-using-kadenaclient
 [4]: #using-the-pactcommand-class
@@ -470,11 +470,11 @@ We try to be available via Discord and Github issues:
 [18]: #further-development
 [19]: #contact-the-team
 [20]:
-  https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs-test-project/src/example-contract/simple-transfer.ts
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/simple-transfer.ts
 [21]: https://kadena-io.github.io/signing-api/
 [22]: https://api.chainweb.com/openapi/pact.html
 [23]:
-  https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs-test-project/src/example-contract/get-balance.ts
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/get-balance.ts
 [24]:
-  https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs-test-project/src/example-contract/transfer.ts
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/transfer.ts
 [25]: https://github.com/kadena-community/kadena.js/issues

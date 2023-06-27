@@ -29,7 +29,11 @@ export const Modal: FC<IModalProps> = ({ children }) => {
             Close
             <SystemIcon.Close />
           </button>
-          <section className={modal}>{children}</section>
+          <section className={modal}>
+            <Stack direction="column" spacing="lg">
+              {children}
+            </Stack>
+          </section>
         </Stack>
       </div>
     </>
