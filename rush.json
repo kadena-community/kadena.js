@@ -600,6 +600,13 @@
     },
 
     {
+      "packageName": "@kadena/kda-cli",
+      "projectFolder": "packages/tools/kda-cli",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
       "packageName": "@kadena-dev/rush-fix-versions",
       "projectFolder": "packages/tools/rush-fix-versions",
       "tags": ["tools"],
