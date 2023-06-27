@@ -391,7 +391,7 @@ export const local =
     const response = await fetch(
       `${getBaseUrl(
         payload,
-      )}/api/v1/local?preflight=${preflight}&signatureValidationt=${signatureValidation}`,
+      )}/api/v1/local?preflight=${preflight}&signatureValidation=${signatureValidation}`,
       {
         method: 'POST',
         headers: {

@@ -5,6 +5,7 @@ export { Modal, IModalProps, ModalProvider, useModal } from './Modal';
 export { Card, ICardProps } from './Card/Card';
 export { SystemIcon, ProductIcon, IIconProps } from './Icons';
 export { IconButton, IIconButtonProps } from './IconButton/IconButton';
+export { Tabs, ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
 export {
   Text,
   ITextProps,
@@ -18,6 +19,12 @@ export {
 export { TextField, ITextFieldProps } from './TextField/TextField';
 export { IInputWrapperProps, InputWrapper } from './InputWrapper/InputWrapper';
 export { IInputProps, Input } from './Input/Input';
+export {
+  Notification,
+  INotificationProps,
+  INotificationHeaderProps,
+  INotificationActionsProps,
+} from './Notification';
 export {
   Breadcrumbs,
   IBreadcrumbsProps,

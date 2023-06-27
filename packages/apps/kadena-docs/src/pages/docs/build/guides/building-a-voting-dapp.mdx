@@ -21,7 +21,7 @@ JavaScript libraries you can use to interact with nodes running Pact.
 ### Voting on the Blockchain
 
 :::info The complete code of this tutorial can also be found in the
-[github repo](https://github.com/kadena-community/kadena.js/tree/master/packages/tutorials/election-dapp).
+[github repo](https://github.com/kadena-community/kadena.js/tree/main/packages/tutorials/election-dapp).
 :::
 
 Elections are a necessary part of democracies and democratic organizations. The
@@ -439,7 +439,7 @@ the `create-table` calls if it's not since we cannot recreate tables when
 upgrading a module. :::
 
 You can find the complete source code of the `election.pact` contract
-[here](https://github.com/kadena-community/kadena.js/tree/master/packages/tutorials/election-dapp/pact).
+[here](https://github.com/kadena-community/kadena.js/tree/main/packages/tutorials/election-dapp/pact).
 
 It's time to summarize what we've learned so far:
 
@@ -699,10 +699,9 @@ interface. The `gas-payer-v1` interface is deployed to all chains on `testnet`
 and `mainnet` so you can directly use it in your contract. We can specify that a
 module implements an interface using the `(implements INTERFACE)` construct. :::
 
-:::info  
-Pact interfaces are similar to Java's interfaces, Scala's traits, Haskell's
-typeclasses or Solidity's interfaces. If you're not familiar with this concept
-you can
+:::info Pact interfaces are similar to Java's interfaces, Scala's traits,
+Haskell's typeclasses or Solidity's interfaces. If you're not familiar with this
+concept you can
 [read more about it](https://pact-language.readthedocs.io/en/latest/pact-reference.html#interfaces)
 in Pact reference. :::
 
@@ -1046,7 +1045,7 @@ async function deployContract(pactCode) {
 account with real KDA. :::
 
 The above snippets can also be found in the
-[tutorial repo](https://github.com/kadena-community/kadena.js/tree/master/packages/tutorials/election-dapp).
+[tutorial repo](https://github.com/kadena-community/kadena.js/tree/main/packages/tutorials/election-dapp).
 :::
 
 ### Frontend
@@ -1126,7 +1125,7 @@ application:
   a smart contract event was emitted
 
 The complete code of this tutorial can also be found in front-end folder in the
-[tutorial repo](https://github.com/kadena-community/kadena.js/tree/master/packages/tutorials/election-dapp/front-end).
+[tutorial repo](https://github.com/kadena-community/kadena.js/tree/main/packages/tutorials/election-dapp/front-end).
 For demonstration purposes the election smart contracts have been deployed to
 **_testnet chain 0_**
 
@@ -1179,7 +1178,7 @@ Here's a screenshot from our demo app where we display the candidates and the
 number of votes received by each candidate:
 
 //TODO: replace image
-https://github.com/kadena-community/kadena.js/blob/master/packages/tutorials/election-dapp/front-end/screens/main.png?raw=true
+https://github.com/kadena-community/kadena.js/blob/main/packages/tutorials/election-dapp/front-end/screens/main.png?raw=true
 
 #### Sign & Send Transaction
 
@@ -1276,7 +1275,7 @@ the **Vote Now** button will automatically open the Chainweaver signing wizard.
 Below is the first step of the Chainweaver request signing wizard:
 
 //TODO: replace image
-https://github.com/kadena-community/kadena.js/blob/master/packages/tutorials/election-dapp/front-end/screens/quicksign.png?raw=true
+https://github.com/kadena-community/kadena.js/blob/main/packages/tutorials/election-dapp/front-end/screens/quicksign.png?raw=true
 
 Once the transaction is signed, our dApp modal will automatically submit it to
 the network.

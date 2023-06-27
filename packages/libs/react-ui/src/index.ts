@@ -19,6 +19,10 @@ export {
   IStackProps,
   ICardProps,
   Card,
+  INotificationProps,
+  Notification,
+  INotificationHeaderProps,
+  INotificationActionsProps,
   IIconButtonProps,
   IconButton,
   IBreadcrumbsProps,
@@ -30,6 +34,12 @@ export {
   useModal,
   IBoxProps,
   Box,
+  Tabs,
+  ITabsContainerProps,
+  ITabProps,
+  ITabContentProps,
+  TextField,
+  ITextFieldProps,
 } from './components';
 export {
   sprinkles,
