@@ -27,10 +27,6 @@ export async function finishXChainTransfer(
   sender: string,
 ): Promise<ContCommand | { error: string }> {
   const host = generateApiHost(server, network, chainId);
-<<<<<<< HEAD
-=======
-  const hostSPV = generateApiHost(server, network, '1');
->>>>>>> e07d3116 (chore(transfer): change host)
 
   try {
     const contCommand = await getContCommand(
