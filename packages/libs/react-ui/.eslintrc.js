@@ -7,5 +7,9 @@ module.exports = {
   ],
   parserOptions: {
     tsconfigRootDir: __dirname,
+    ecmaVersion: 'latest',
+  },
+  env: {
+    es6: true,
   },
 };
