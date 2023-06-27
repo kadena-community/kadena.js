@@ -7,12 +7,16 @@ export const StyledMainContent = styled('main', {
 });
 export const StyledFormButton = styled('div', {
   marginTop: '16px',
+  // display: 'flex',
+  // padding: '8px 16px',
+  alignItems: 'center',
+  gap: '$8',
 });
 export const StyledForm = styled('form', {
   width: '75%',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
+  alignItems: 'flex-end',
 });
 export const StyledSideContent = styled('div', {
   display: 'flex',
@@ -27,6 +31,14 @@ export const StyledAccountForm = styled('div', {
   '> *': {
     mb: '$8 ',
   },
+});
+
+export const StyledFormHeader = styled('div', {
+  display: 'flex',
+  padding: '24px 40px 0px 40px',
+  alignItems: 'flex-start',
+  gap: '8px',
+  alignSelf: 'stretch',
 });
 
 export const StyledInfoBox = styled('div', {

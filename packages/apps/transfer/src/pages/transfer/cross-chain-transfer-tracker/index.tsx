@@ -1,5 +1,5 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { Button, TextField } from '@kadena/react-components';
+import { Button, SystemIcons, TextField } from '@kadena/react-components';
 
 import {
   StyledInfoItem,
@@ -9,15 +9,15 @@ import {
 } from '../cross-chain-transfer-finisher/styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { SidebarMenu } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledAccountForm,
-  StyledForm,
-  StyledFormButton,
   StyledInfoBox,
   StyledMainContent,
+  StyledForm,
+  StyledFormButton,
+  StyledFormHeader,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
   getTransferStatus,
@@ -91,7 +91,7 @@ const CrossChainTransferTracker: FC = () => {
   };
 
   return (
-    <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
+    <MainLayout title={t('Track & trace transactions')}>
       <StyledMainContent>
         <StyledForm onSubmit={handleSubmit}>
           <FormStatusNotification
@@ -99,6 +99,7 @@ const CrossChainTransferTracker: FC = () => {
             body={requestStatus.message}
           />
           <StyledAccountForm>
+            {/* <StyledFormHeader>Search Request</StyledFormHeader> */}
             <TextField
               label={t('Request Key')}
               inputProps={{
@@ -106,11 +107,15 @@ const CrossChainTransferTracker: FC = () => {
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 value: requestKey,
+                leftPanel: SystemIcons.KeyIconFilled,
               }}
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title={t('Track Transfer')}>{t('Track Transfer')}</Button>
+            <Button title={t('Search')}>
+              {t('Search')}
+              <SystemIcons.Magnify />
+            </Button>
           </StyledFormButton>
         </StyledForm>
 
