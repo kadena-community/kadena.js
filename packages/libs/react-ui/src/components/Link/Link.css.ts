@@ -5,6 +5,8 @@ import { style } from '@vanilla-extract/css';
 export const linkContainerClass = style([
   sprinkles({
     display: 'flex',
+    gap: '$2',
+
   }),
   {
     selectors: {
@@ -15,7 +17,7 @@ export const linkContainerClass = style([
         color: vars.colors.$negativeContrast,
       },
       '&:visited': {
-        color: '#C870FF',
+        color: vars.colors.$tertiaryContrast,
       },
     },
   },
@@ -24,7 +26,6 @@ export const linkContainerClass = style([
 export const iconContainerClass = style([
   sprinkles({
     display: 'flex',
-    marginX: '$2',
   }),
   {
     textDecoration: 'none',

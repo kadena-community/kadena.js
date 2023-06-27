@@ -18,6 +18,11 @@ const meta: Meta<ILinkProps> = {
         type: 'select',
       },
     },
+    hasIcon: {
+      control: {
+        type: 'boolean',
+      },
+    }
   },
 };
 
@@ -30,14 +35,15 @@ export const Primary: Story = {
   args: {
     href: 'https://kadena.io',
     iconPosition: 'right',
+    hasIcon: true
   },
-  render: ({ href, iconPosition }) => {
+  render: ({ href, iconPosition, hasIcon }) => {
     return (
       <>
-        <Link href={`${href}?${Date.now()}`} iconPosition={iconPosition}>
+        <Link href={`${href}?${Date.now()}`} iconPosition={iconPosition} hasIcon={hasIcon}>
           Non-visited
         </Link>
-        <Link href={href} iconPosition={iconPosition}>
+        <Link href={href} iconPosition={iconPosition} hasIcon={hasIcon}>
           Kadena.io
         </Link>
       </>
