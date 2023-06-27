@@ -7,9 +7,8 @@ import { ICommandBuilder, IPactCommand, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
-import { generateApiHost } from '../utils/utils';
-
 import { kadenaConstants } from '@/constants/kadena';
+import { generateApiHost } from '@/services/utils/utils';
 import { env } from '@/utils/env';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
