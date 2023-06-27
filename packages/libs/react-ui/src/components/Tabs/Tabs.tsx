@@ -26,9 +26,9 @@ export const Tabs: ITabsComposition = ({ children, defaultSelected = '' }) => {
     const selected = containerRef.current.querySelector(
       '[data-selected="true"]',
     ) as HTMLButtonElement;
-
     if (selected === undefined) return;
 
+    // set position of the line
     lineRef.current.style.setProperty(
       'transform',
       `translateX(${selected.offsetLeft}px)`,
