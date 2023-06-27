@@ -10,20 +10,6 @@ import {
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
 
-interface ITransactionData {
-  sender: { chain: ChainId; account: string };
-  receiver: { chain: ChainId; account: string };
-  amount: number;
-  receiverGuard: {
-    pred: string;
-    keys: [string];
-  };
-}
-export interface ITransferDataResult {
-  tx?: ITransactionData | undefined;
-  error?: string;
-}
-
 export interface ITransferResult {
   requestKey?: string;
   status?: string;
