@@ -26,6 +26,7 @@ import {
   StyledInfoItem1,
   StyledInfoItemTitle1,
   StyledInfoItemLine1,
+  StyledSmallFromAccount,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
   getTransferStatus,
@@ -35,6 +36,9 @@ import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
 import FormStatusNotification from './notification';
+
+import { FromIconActive } from '@/resources/svg/generated';
+import { InfoCard } from '@/components/Global/InfoCard';
 
 export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
 
@@ -131,10 +135,9 @@ const CrossChainTransferTracker: FC = () => {
               <SystemIcons.Magnify />
             </Button>
           </StyledFormButton>
+
           <StyledInfoItem1>
-            <div>
-              <SystemIcons.Account></SystemIcons.Account>
-            </div>
+            <div>{/* <StyledSmallFromAccount /> */}</div>
             <div>
               <StyledInfoItemTitle1>{t('Sender')}</StyledInfoItemTitle1>
               <StyledInfoItemLine1>{data.senderAccount}</StyledInfoItemLine1>
@@ -142,6 +145,13 @@ const CrossChainTransferTracker: FC = () => {
               <StyledInfoItemLine1>{data.senderChain}</StyledInfoItemLine1>
             </div>
           </StyledInfoItem1>
+
+          <InfoCard
+            firstTitle={t('Sender')}
+            account={data.senderAccount || ''}
+            secondTitle={t('Chain')}
+            secondContent={data.senderChain || ''}
+          />
         </StyledForm>
 
         {data.status ? (

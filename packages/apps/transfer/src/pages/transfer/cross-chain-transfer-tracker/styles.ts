@@ -1,3 +1,4 @@
+import { FromIconActive } from '@/resources/svg/generated';
 import { styled } from '@kadena/react-components';
 
 export const StyledMainContent = styled('main', {
@@ -83,4 +84,8 @@ export const StyledInfoItemLine1 = styled('div', {
   wordBreak: 'break-word',
   font: '$mono',
   fontWeight: '$semiBold',
+});
+
+export const StyledSmallLogo = styled(FromIconActive, {
+  marginBottom: '$5',
 });
