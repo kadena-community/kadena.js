@@ -9,7 +9,7 @@ const meta: Meta<
   }
 > = {
   title: 'Layout/Tabs',
-  component: Tabs,
+  component: Tabs.Root,
   argTypes: {
     itemsCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
@@ -40,7 +40,7 @@ export const Primary: Story = {
 
     return (
       <>
-        <Tabs defaultSelected={defaultSelected}>
+        <Tabs.Root defaultSelected={defaultSelected}>
           {items.map((item) => {
             return (
               <Tabs.Tab key={item} value={item}>
@@ -56,7 +56,7 @@ export const Primary: Story = {
               </Tabs.Content>
             );
           })}
-        </Tabs>
+        </Tabs.Root>
       </>
     );
   },
