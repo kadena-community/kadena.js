@@ -1,3 +1,6 @@
+import { selectedClass, tabClass } from './Tabs.css';
+
+import classNames from 'classnames';
 import React, { FC, ReactNode } from 'react';
 
 export interface ITabProps {
@@ -15,7 +18,11 @@ export const Tab: FC<ITabProps> = ({
 }) => {
   if (handleClick === undefined || value === undefined) return null;
   return (
-    <button data-selected={selected} onClick={() => handleClick(value)}>
+    <button
+      className={classNames(tabClass, { [selectedClass]: selected })}
+      data-selected={selected}
+      onClick={() => handleClick(value)}
+    >
       {children}
     </button>
   );

@@ -1,30 +1,50 @@
-import { sprinkles } from '../../styles';
+import { sprinkles, vars } from '../../styles';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
-export const gridContainerClass = style([
+export const tabsContainer = style([
+  sprinkles({
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  }),
   {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(12, 1fr)',
+    borderBottom: `${vars.sizes.$1} solid ${vars.colors.$neutral2}`,
+    marginBottom: vars.sizes.$4,
   },
 ]);
 
-export const gridItemClass = style([
+export const tabClass = style([
+  sprinkles({
+    border: 'none',
+    cursor: 'pointer',
+    paddingY: '$2',
+    fontSize: '$md',
+  }),
   {
-    gridColumnStart: 'auto',
+    backgroundColor: 'transparent',
   },
 ]);
 
-export const gapVariants = styleVariants({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  '2xs': [sprinkles({ gridGap: '$2xs' })],
-  xs: [sprinkles({ gridGap: '$xs' })],
-  sm: [sprinkles({ gridGap: '$sm' })],
-  md: [sprinkles({ gridGap: '$md' })],
-  lg: [sprinkles({ gridGap: '$lg' })],
-  xl: [sprinkles({ gridGap: '$xl' })],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  '2xl': [sprinkles({ gridGap: '$2xl' })],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  '3xl': [sprinkles({ gridGap: '$3xl' })],
-});
+export const selectedClass = style([
+  sprinkles({
+    color: '$primaryContrast',
+    fontWeight: '$bold',
+  }),
+]);
+
+export const selectorLine = style([
+  sprinkles({
+    position: 'absolute',
+    display: 'block',
+    backgroundColor: '$primaryAccent',
+  }),
+  {
+    bottom: '-4px',
+    transition: 'all .4s ease',
+    transform: `translateX(0)`,
+    width: '0',
+    height: vars.sizes.$1,
+  },
+]);
