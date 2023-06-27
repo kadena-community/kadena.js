@@ -17,7 +17,7 @@ export const Content: StyledComponent<'div', { layout?: 'landing' | 'home' }> =
     width: '100%',
     height: '100%',
     '@md': {
-      gridColumn: '1 / span 3',
+      gridColumn: '3 / span 1',
       gridRow: '3 / span 1',
     },
     defaultVariants: {
@@ -26,7 +26,6 @@ export const Content: StyledComponent<'div', { layout?: 'landing' | 'home' }> =
     variants: {
       layout: {
         home: {
-          paddingTop: '0',
           '@md': {
             gridColumn: '2 / span 3',
           },
