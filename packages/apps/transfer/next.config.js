@@ -5,13 +5,13 @@ module.exports = nextTranslate({
   reactStrictMode: true,
   pageExtensions: process.env.NODE_ENV === "production" ? ['(?<!(spec|test).)tsx'] : ['tsx'],
   env: {
-    KADENA_API_TTIL: JSON.stringify(process.env.KADENA_API_TTIL),
-    KADENA_MAINNET_API: JSON.stringify(process.env.KADENA_MAINNET_API),
-    KADENA_MAINNET_NETWORKS: JSON.stringify(process.env.KADENA_MAINNET_NETWORKS),
-    KADENA_TESTNET_API: JSON.stringify(process.env.KADENA_TESTNET_API),
-    KADENA_TESTNET_NETWORKS: JSON.stringify(process.env.KADENA_TESTNET_NETWORKS),
-    GAS_PRICE: JSON.stringify(process.env.GAS_PRICE),
-    GAS_LIMIT: JSON.stringify(process.env.GAS_LIMIT),
+    KADENA_API_TTIL: process.env.KADENA_API_TTIL,
+    KADENA_MAINNET_API: process.env.KADENA_MAINNET_API,
+    KADENA_MAINNET_NETWORKS: process.env.KADENA_MAINNET_NETWORKS,
+    KADENA_TESTNET_API: process.env.KADENA_TESTNET_API,
+    KADENA_TESTNET_NETWORKS: process.env.KADENA_TESTNET_NETWORKS,
+    GAS_PRICE: process.env.GAS_PRICE,
+    GAS_LIMIT: process.env.GAS_LIMIT,
   },
   webpack: (config, { isServer }) => {
     config.module.rules.push(
