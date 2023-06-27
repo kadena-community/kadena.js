@@ -177,8 +177,8 @@ importers:
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
-      '@vanilla-extract/css': ~1.11.1
-      '@vanilla-extract/next-plugin': ^2.1.2
+      '@vanilla-extract/css': 1.11.1
+      '@vanilla-extract/next-plugin': 2.1.2
       acorn: ~8.8.2
       cypress: ~12.12.0
       date-fns: ~2.30.0
@@ -921,14 +921,14 @@ importers:
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
-      '@vanilla-extract/css': ~1.11.1
-      '@vanilla-extract/recipes': ~0.4.0
-      '@vanilla-extract/sprinkles': ~1.6.0
-      '@vanilla-extract/webpack-plugin': ~2.2.0
+      '@vanilla-extract/css': 1.11.1
+      '@vanilla-extract/recipes': 0.4.0
+      '@vanilla-extract/sprinkles': 1.6.0
+      '@vanilla-extract/webpack-plugin': 2.2.0
       classnames: ^2.3.1
       eslint: ^8.15.0
       eslint-plugin-storybook: ~0.6.12
-      mini-css-extract-plugin: ~2.7.6
+      mini-css-extract-plugin: 2.7.6
       prettier: ~2.8.8
       prop-types: ^15.8.1
       react: ^18.2.0
