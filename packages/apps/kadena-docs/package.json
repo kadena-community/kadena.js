@@ -6,9 +6,9 @@
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
     "7d:query": "npx 7d",
     "build": "npm run build:next",
-    "build:next": "npm run build:scripts && next build",
     "build:createSearchIndex": "node ./src/scripts/createSearchIndex.mjs && prettier ./src/data/searchIndex.json --write",
     "build:createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/data/menu.mjs --write",
+    "build:next": "npm run build:scripts && next build",
     "build:scripts": "npm run build:createSearchIndex &&  npm run build:createtree",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
@@ -34,6 +34,7 @@
     "@mdx-js/loader": "~2.3.0",
     "@mdx-js/react": "~2.3.0",
     "@next/mdx": "~13.3.4",
+    "@vanilla-extract/css": "1.11.1",
     "acorn": "~8.8.2",
     "date-fns": "~2.30.0",
     "js-yaml": "~4.1.0",
@@ -48,8 +49,7 @@
     "rehype-pretty-code": "~0.9.5",
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
-    "shiki": "~0.14.2",
-    "@vanilla-extract/css": "1.11.1"
+    "shiki": "~0.14.2"
   },
   "devDependencies": {
     "@7-docs/cli": "0.1.7",
