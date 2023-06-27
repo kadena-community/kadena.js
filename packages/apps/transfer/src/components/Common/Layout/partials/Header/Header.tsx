@@ -1,4 +1,4 @@
-import { SystemIcons } from "@kadena/react-components";
+import { SystemIcons } from '@kadena/react-components';
 
 import {
   StyledBackgroundGlow,
@@ -14,11 +14,11 @@ import {
   StyledTitle,
 } from './styles'
 
-import {GridCol} from "@/components/Global";
+import { GridCol } from "@/components/Global";
 import Routes from "@/constants/routes";
-import {IMenuItem} from "@/types/Layout";
+import { IMenuItem } from "@/types/Layout";
 import useTranslation from "next-translate/useTranslation";
-import React, {FC, ReactNode, useState} from 'react'
+import React, { FC, ReactNode, useState } from 'react'
 
 export interface IHeaderProps {
   logo?: ReactNode,
@@ -74,7 +74,6 @@ const Header: FC<IHeaderProps> = ({
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               title={t("Menu")}
               icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
-              color="inverted"
             />
           </GridCol>
         </StyledGridRow>
