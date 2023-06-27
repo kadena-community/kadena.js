@@ -16,7 +16,7 @@ body:
       options:
         - label:
             I have read the [Code of
-            Conduct](https://github.com/kadena-community/kadena.js/blob/master/CODE_OF_CONDUCT.md)
+            Conduct](https://github.com/kadena-community/kadena.js/blob/main/CODE_OF_CONDUCT.md)
           required: true
         - label: The bug was not reported before
           required: true
