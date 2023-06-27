@@ -42,11 +42,6 @@ export const SidebarMenu: FC = (props) => {
         title: t('Existing account'),
         href: routes.FAUCET_EXISTING,
       },
-      // {
-      //   icon: Chain,
-      //   title: t('New account'),
-      //   href: routes.FAUCET_NEW,
-      // },
     ],
   };
   const menu = menuItems[firstPath];

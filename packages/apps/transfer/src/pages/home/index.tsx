@@ -46,11 +46,6 @@ const Home: FC = () => {
       title: t('Existing account'),
       href: routes.FAUCET_EXISTING,
     },
-    // {
-    //   icon: Chain,
-    //   title: t('New account'),
-    //   href: routes.FAUCET_NEW,
-    // },
   ];
 
   return (
