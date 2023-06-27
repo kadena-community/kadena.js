@@ -1223,6 +1223,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
+      '@kadena-dev/markdown': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
@@ -1237,6 +1238,7 @@ importers:
       ink: ^4.1.0
       ink-testing-library: ^3.0.0
       meow: ^11.0.0
+      prettier: ~2.8.8
       react: ^18.2.0
       ts-node: ~10.8.2
       typescript: 5.0.4
@@ -1254,6 +1256,7 @@ importers:
       '@kadena-dev/eslint-config': link:../eslint-config
       '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/heft-rig': link:../heft-rig
+      '@kadena-dev/markdown': link:../remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.43.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.37
       '@types/cross-spawn': 6.0.2
@@ -1263,6 +1266,7 @@ importers:
       chalk: 5.2.0
       eslint: 8.43.0
       ink-testing-library: 3.0.0_@types+react@18.2.14
+      prettier: 2.8.8
       ts-node: 10.8.2_6df8cd5ff69b031c3290dbcf604dd307
       typescript: 5.0.4
 

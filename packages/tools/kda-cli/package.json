@@ -21,7 +21,11 @@
     "build": "heft build",
     "dev": "heft build -w",
     "kda": "node lib/index.js",
-    "test": "ava"
+    "test": "ava",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write"
   },
   "ava": {
     "extensions": {
@@ -50,6 +54,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/cross-spawn": "~6.0.2",
@@ -59,6 +64,7 @@
     "chalk": "^5.2.0",
     "eslint": "^8.15.0",
     "ink-testing-library": "^3.0.0",
+    "prettier": "~2.8.8",
     "ts-node": "~10.8.2",
     "typescript": "5.0.4"
   },
