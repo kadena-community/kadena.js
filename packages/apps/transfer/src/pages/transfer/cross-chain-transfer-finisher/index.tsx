@@ -34,10 +34,10 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
-import { generateApiHost } from '@/services/utils/utils';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { getKadenaConstantByNetwork } from '@/constants/kadena';
 
 interface IPactResultError {
   status: 'failure';
@@ -106,11 +106,7 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
-    const host = generateApiHost(
-      chainNetwork[network].server,
-      chainNetwork[network].network,
-      pollResults.tx.receiver.chain,
-    );
+    const host = getKadenaConstantByNetwork(network).apiHost({ networkId: chainNetwork[network].network, chainId: pollResults.tx.receiver.chain });
 
     const contCommand = await finishXChainTransfer(
       requestKey,
