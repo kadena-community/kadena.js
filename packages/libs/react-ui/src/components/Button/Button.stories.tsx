@@ -13,7 +13,7 @@ const meta: Meta<
   } & IButtonProps
 > = {
   title: 'Components/Button',
-  component: Button,
+  component: Button.Root,
   argTypes: {
     onClick: { action: 'clicked' },
     selectIcon: {
@@ -66,14 +66,14 @@ export const Dynamic: Story = {
   render: ({ onClick, title, disabled, text, color }) => {
     return (
       <>
-        <Button
+        <Button.Root
           title={title}
           onClick={onClick}
           disabled={disabled}
           color={color}
         >
           {text}
-        </Button>
+        </Button.Root>
       </>
     );
   },
@@ -137,7 +137,7 @@ export const ButtonIcon: Story = {
     const Icon = SystemIcon[selectIcon];
     return (
       <>
-        <Button
+        <Button.Root
           title={title}
           onClick={onClick}
           disabled={disabled}
@@ -145,9 +145,9 @@ export const ButtonIcon: Story = {
         >
           <Button.Icon icon={Icon} />
           {text}
-        </Button>
+        </Button.Root>
 
-        <Button
+        <Button.Root
           title={title}
           onClick={onClick}
           disabled={disabled}
@@ -156,7 +156,7 @@ export const ButtonIcon: Story = {
         >
           {text}
           <Button.Icon icon={Icon} />
-        </Button>
+        </Button.Root>
       </>
     );
   },
