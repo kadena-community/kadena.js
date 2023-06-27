@@ -11,6 +11,10 @@
   "bin": {
     "create-kadena-app": "lib/index.js"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

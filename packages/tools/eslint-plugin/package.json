@@ -2,6 +2,9 @@
   "name": "@kadena-dev/eslint-plugin",
   "version": "0.0.4",
   "main": "src/index.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:pkg && npm run format:src",
