@@ -11,7 +11,6 @@ import {
   iconContainerClass,
   iconContainerExpandedClass,
 } from './Notification.css';
-import { NotificationButton } from './NotificationButton';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';

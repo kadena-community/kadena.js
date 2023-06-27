@@ -1,10 +1,6 @@
 import { SystemIcon } from '../Icons';
 
-import {
-  colorVariants,
-  iconContainerClass,
-  iconStandaloneContainerClass,
-} from './NotificationButton.css';
+import { colorVariants, iconContainerClass } from './NotificationButton.css';
 
 import React, { FC } from 'react';
 
