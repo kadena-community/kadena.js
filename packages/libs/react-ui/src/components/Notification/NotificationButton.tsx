@@ -12,7 +12,7 @@ export interface INotificationButtonProps {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   color: keyof typeof colorVariants;
   onClick?: () => void;
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 export const NotificationButton: FC<INotificationButtonProps> = ({
   icon,
@@ -24,13 +24,7 @@ export const NotificationButton: FC<INotificationButtonProps> = ({
   return (
     <button onClick={onClick} className={colorVariants[color]}>
       {children}
-      <span
-        className={
-          children === undefined
-            ? iconStandaloneContainerClass
-            : iconContainerClass
-        }
-      >
+      <span className={iconContainerClass}>
         <Icon size="md" />
       </span>
     </button>

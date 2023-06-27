@@ -120,3 +120,20 @@ export const headerContainerClass = style([
     right: '$xl',
   }),
 ]);
+
+export const closeButtonClass = style([
+  sprinkles({
+    margin: 0,
+    padding: 0,
+    border: 'none',
+    backgroundColor: 'transparent',
+  }),
+  {
+    color: contrastColor,
+    selectors: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
+]);

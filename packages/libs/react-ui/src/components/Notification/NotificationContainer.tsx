@@ -2,6 +2,7 @@ import { SystemIcon } from '../Icons';
 
 import {
   cardTitleClass,
+  closeButtonClass,
   colorVariants,
   containerClass,
   containerClassRightPadded,
@@ -55,17 +56,15 @@ export const NotificationContainer: FC<INotificationProps> = ({
         </p>
       </div>
 
-      <span
-        className={expanded ? iconContainerExpandedClass : iconContainerClass}
-      >
-        {hasCloseButton && (
-          <NotificationButton
-            onClick={onClose}
-            icon={SystemIcon.Close}
-            color={color}
-          ></NotificationButton>
-        )}
-      </span>
+      {hasCloseButton && (
+        <span
+          className={expanded ? iconContainerExpandedClass : iconContainerClass}
+        >
+          <button className={closeButtonClass} onClick={onClose}>
+            <SystemIcon.Close color={color} size={'md'} />
+          </button>
+        </span>
+      )}
     </div>
   );
 };
