@@ -15,8 +15,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-
-type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
+import { RequestStatus } from './index';
 
 type FormNotificationProps = Pick<INotificationProps, 'title'> & {
   status: RequestStatus;
@@ -33,16 +32,15 @@ const statusToColorMapping: Record<RequestStatus, INotificationProps['color']> =
 
 const statusToTitle: Record<RequestStatus, string> = {
   failed: 'Something went wrong',
-  pending: 'Transaction is being processed...',
-  succeeded: 'Transaction successfully completed',
+  pending: 'Request key is being tracked...',
+  succeeded: 'Request key successfully tracked',
   'not started': 'Nothing to see here',
 };
 
 const statusToBody: Record<RequestStatus, string> = {
   failed: 'Something went wrong.',
-  pending:
-    'Please have some patience while the transaction is being processed.',
-  succeeded: 'The coins have been funded to the given account.',
+  pending: 'Please have some patience while the transaction is being tracked.',
+  succeeded: 'The request key was tracked.',
   'not started': 'Nothing to see here.',
 };
 

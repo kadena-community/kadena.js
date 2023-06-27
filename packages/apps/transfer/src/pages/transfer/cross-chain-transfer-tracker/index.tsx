@@ -26,6 +26,9 @@ import {
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import FormStatusNotification from './notification';
+
+export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -47,6 +50,10 @@ const CrossChainTransferTracker: FC = () => {
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] = useState<string>('');
   const [data, setData] = useState<StatusData>({});
+  const [requestStatus, setRequestStatus] = useState<{
+    status: RequestStatus;
+    message?: string;
+  }>({ status: 'not started' });
   const router = useRouter();
 
   useEffect(() => {
@@ -72,19 +79,25 @@ const CrossChainTransferTracker: FC = () => {
         t,
         options: {
           onPoll: (status) => {
+            setRequestStatus({ status: 'pending' });
             setData(status);
           },
         },
       });
-    } catch (error) {}
+      setRequestStatus({ status: 'succeeded' });
+    } catch (error) {
+      setRequestStatus({ status: 'failed', message: error.message });
+    }
   };
 
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledMainContent>
-        <SidebarMenu />
-
         <StyledForm onSubmit={handleSubmit}>
+          <FormStatusNotification
+            status={requestStatus.status}
+            body={requestStatus.message}
+          />
           <StyledAccountForm>
             <TextField
               label={t('Request Key')}
