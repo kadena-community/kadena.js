@@ -1,0 +1,75 @@
+{
+  "name": "@kadena/kda-cli",
+  "version": "0.0.1",
+  "keywords": [
+    "kadena",
+    "kda",
+    "cli",
+    "development",
+    "dev",
+    "tools"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "kda": "lib/index.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "heft build",
+    "dev": "heft build -w",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
+    "kda": "node lib/index.js",
+    "test": "ava"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module",
+      "tsx": "module"
+    },
+    "files": [
+      "!lib/**"
+    ],
+    "nodeArguments": [
+      "--loader=ts-node/esm",
+      "--no-warnings"
+    ]
+  },
+  "dependencies": {
+    "@inkjs/ui": "^1.0.0",
+    "@kadena/cryptography-utils": "workspace:*",
+    "cross-spawn": "~7.0.3",
+    "dotenv": "~16.0.3",
+    "ink": "^4.1.0",
+    "meow": "^11.0.0",
+    "react": "^18.2.0",
+    "yaml": "~2.1.1"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
+    "@types/cross-spawn": "~6.0.2",
+    "@types/node": "^16.0.0",
+    "@types/react": "^18.0.30",
+    "ava": "^5.2.0",
+    "chalk": "^5.2.0",
+    "eslint": "^8.15.0",
+    "ink-testing-library": "^3.0.0",
+    "prettier": "~2.8.8",
+    "ts-node": "~10.8.2",
+    "typescript": "5.0.4"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
