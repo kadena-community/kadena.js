@@ -9,10 +9,12 @@ import {
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
+import { HomeHeader } from '@/components/Layout/Landing/components';
 
-const Home: FC = () => {
+const Home: FC = ({ topDocs }) => {
   return (
     <>
+      <HomeHeader topDocs={topDocs} />
       <Heading as="h4">My Shortcuts</Heading>
       <Stack direction="column" spacing="2xl">
         <BrowseSection>

@@ -11,7 +11,7 @@ export const Wrapper: StyledComponent<'div'> = styled('div', {
 
 export const Template: StyledComponent<
   'div',
-  { layout?: 'landing' | 'normal' | 'code' | undefined }
+  { layout?: 'landing' | 'normal' | 'code' | 'home' | undefined }
 > = styled('div', {
   $$asideMenuWidthMDDefault: '200px',
   $$asideMenuWidthLGDefault: '300px',
@@ -44,6 +44,17 @@ export const Template: StyledComponent<
   },
   variants: {
     layout: {
+      home: {
+        '@md': {
+          gridTemplateColumns:
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDDefault)) $$asideMenuWidthMDDefault 1%',
+        },
+        '@2xl': {
+          gridTemplateColumns:
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGDefault)) $$asideMenuWidthLGDefault auto',
+        },
+      },
+
       normal: {
         '@md': {
           gridTemplateColumns:
