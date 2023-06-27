@@ -29,7 +29,6 @@ export const fullWidthClass = style({
 export const stackClass = style([
   sprinkles({ marginY: 0 }),
   {
-    margin: 0,
     selectors: {
       '&:first-child': {
         borderRadius: `${vars.radii.$sm} ${vars.radii.$sm} 0 0`,
