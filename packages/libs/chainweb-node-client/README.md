@@ -5,8 +5,8 @@ chainweb-node API endpoints.
 
 <p align="center">
   <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
   </picture>
 </p>
 <hr>
@@ -154,6 +154,6 @@ stringifyAndMakePOSTRequest(body);
 <hr>
 
 [1]:
-  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md
 [2]: https://api.chainweb.com/openapi/pact.html
 [3]: https://api.chainweb.com/openapi/#tag/rosetta

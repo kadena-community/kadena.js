@@ -9,7 +9,7 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
