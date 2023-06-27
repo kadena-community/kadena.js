@@ -1,10 +1,10 @@
-import { ITabsProps, Tabs } from '.';
+import { ITabsContainerProps, Tabs } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<
-  ITabsProps & {
+  ITabsContainerProps & {
     itemsCount: number;
   }
 > = {
@@ -27,7 +27,7 @@ const ItemArray: string[] = [
 ];
 
 export default meta;
-type Story = StoryObj<ITabsProps & { itemsCount: number }>;
+type Story = StoryObj<ITabsContainerProps & { itemsCount: number }>;
 
 export const Primary: Story = {
   name: 'Tabs',
@@ -49,15 +49,13 @@ export const Primary: Story = {
             );
           })}
 
-          <Tabs.Panels>
-            {items.map((item) => {
-              return (
-                <Tabs.Panels.Panel key={item} value={item}>
-                  content {item}
-                </Tabs.Panels.Panel>
-              );
-            })}
-          </Tabs.Panels>
+          {items.map((item) => {
+            return (
+              <Tabs.Panel key={item} value={item}>
+                content {item}
+              </Tabs.Panel>
+            );
+          })}
         </Tabs>
       </>
     );

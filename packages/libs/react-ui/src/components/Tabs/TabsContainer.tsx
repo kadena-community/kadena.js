@@ -1,8 +1,8 @@
 import { Tab } from './Tab';
 import { selectorLine, tabsContainer } from './Tabs.css';
-import { TabsPanels } from './TabsPanels';
 
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { TabsPanel } from './TabsPanel';
 
 export interface ITabsContainerProps {
   children?: ReactNode;
@@ -63,9 +63,9 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
       {React.Children.map(children, (child, idx) => {
         if (!React.isValidElement(child)) return null;
 
-        if (child.type === TabsPanels) {
+        if (child.type === TabsPanel) {
           const props = {
-            selectedTab,
+            selected: selectedTab === child.props.value,
           };
           return React.cloneElement(child, props);
         }
