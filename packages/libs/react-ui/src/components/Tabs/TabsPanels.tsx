@@ -20,7 +20,7 @@ export const TabsPanels: ITabsPanelsComposition = ({
   if (selectedTab === undefined) return null;
 
   return (
-    <div>
+    <>
       {React.Children.map(children, (child, idx) => {
         if (!React.isValidElement(child)) return null;
 
@@ -34,7 +34,7 @@ export const TabsPanels: ITabsPanelsComposition = ({
 
         return null;
       })}
-    </div>
+    </>
   );
 };
 

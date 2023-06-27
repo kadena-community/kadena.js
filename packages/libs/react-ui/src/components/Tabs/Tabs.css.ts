@@ -41,7 +41,7 @@ export const selectorLine = style([
     backgroundColor: '$primaryAccent',
   }),
   {
-    bottom: '-4px',
+    bottom: '-4px', // for some reason a negative cant be done with vars
     transition: 'all .4s ease',
     transform: `translateX(0)`,
     width: '0',
