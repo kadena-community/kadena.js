@@ -1,5 +1,10 @@
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { Button, SystemIcons, TextField } from '@kadena/react-components';
+import {
+  Button,
+  Heading,
+  SystemIcons,
+  TextField,
+} from '@kadena/react-components';
 
 import {
   StyledInfoItem,
@@ -17,7 +22,10 @@ import {
   StyledMainContent,
   StyledForm,
   StyledFormButton,
-  StyledFormHeader,
+  StyledInfoTitle1,
+  StyledInfoItem1,
+  StyledInfoItemTitle1,
+  StyledInfoItemLine1,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
   getTransferStatus,
@@ -70,7 +78,8 @@ const CrossChainTransferTracker: FC = () => {
 
     router.query.reqKey = requestKey;
     await router.push(router);
-
+    // setRequestStatus({ status: 'pending' });
+    let statusId;
     try {
       await getTransferStatus({
         requestKey,
@@ -79,12 +88,17 @@ const CrossChainTransferTracker: FC = () => {
         t,
         options: {
           onPoll: (status) => {
-            setRequestStatus({ status: 'pending' });
+            statusId = status.id;
             setData(status);
           },
         },
       });
-      setRequestStatus({ status: 'succeeded' });
+
+      // if (statusId == 2) {
+      //   setRequestStatus({ status: 'succeeded' });
+      // } else {
+      //   setRequestStatus({ status: 'failed' });
+      // }
     } catch (error) {
       setRequestStatus({ status: 'failed', message: error.message });
     }
@@ -99,7 +113,7 @@ const CrossChainTransferTracker: FC = () => {
             body={requestStatus.message}
           />
           <StyledAccountForm>
-            {/* <StyledFormHeader>Search Request</StyledFormHeader> */}
+            <Heading as="h5">Search Request</Heading>
             <TextField
               label={t('Request Key')}
               inputProps={{
@@ -117,6 +131,17 @@ const CrossChainTransferTracker: FC = () => {
               <SystemIcons.Magnify />
             </Button>
           </StyledFormButton>
+          <StyledInfoItem1>
+            <div>
+              <SystemIcons.Account></SystemIcons.Account>
+            </div>
+            <div>
+              <StyledInfoItemTitle1>{t('Sender')}</StyledInfoItemTitle1>
+              <StyledInfoItemLine1>{data.senderAccount}</StyledInfoItemLine1>
+              <StyledInfoItemTitle1>{t('Chain')}</StyledInfoItemTitle1>
+              <StyledInfoItemLine1>{data.senderChain}</StyledInfoItemLine1>
+            </div>
+          </StyledInfoItem1>
         </StyledForm>
 
         {data.status ? (
@@ -130,6 +155,7 @@ const CrossChainTransferTracker: FC = () => {
                   <StyledInfoItemLine>{`Chain: ${data.senderChain}`}</StyledInfoItemLine>
                   <StyledInfoItemLine>{`Account: ${data.senderAccount}`}</StyledInfoItemLine>
                 </StyledInfoItem>
+
                 <StyledInfoItem>
                   <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
                   <StyledInfoItemLine>{`Chain: ${data.receiverChain}`}</StyledInfoItemLine>

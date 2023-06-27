@@ -23,7 +23,6 @@ export const StyledSideContent = styled('div', {
   flexDirection: 'column',
 });
 export const StyledAccountForm = styled('div', {
-  width: '75%',
   padding: '16px',
   background: 'rgba(71, 79, 82, 0.4)',
   borderRadius: '4px',
@@ -31,6 +30,7 @@ export const StyledAccountForm = styled('div', {
   '> *': {
     mb: '$8 ',
   },
+  alignSelf: 'stretch',
 });
 
 export const StyledFormHeader = styled('div', {
@@ -47,29 +47,40 @@ export const StyledInfoBox = styled('div', {
   background: 'rgba(71, 79, 82, 0.4)',
   borderRadius: '4px',
   boxSizing: 'borderBox',
+  alignSelf: 'stretch',
   width: '40%',
 });
-export const StyledInfoTitle = styled('h3', {
+
+export const StyledInfoTitle1 = styled('h3', {
   marginBottom: '2%',
   textAlign: 'center',
 });
 
-export const StyledInfoItem = styled('div', {
+export const StyledInfoItem1 = styled('div', {
+  display: 'grid',
+  gridTemplateColumns: 'auto 1fr',
+  gap: '$4',
   marginTop: '4%',
   fontSize: '0.75rem',
-  padding: '8px',
   background: 'rgba(71, 79, 82, 0.7)',
   borderRadius: '4px',
   boxSizing: 'borderBox',
   flexDirection: 'column',
+  alignItems: 'flex-start',
+  padding: '$3',
 });
 
-export const StyledInfoItemTitle = styled('div', {
-  textTransform: 'uppercase',
-  textAlign: 'center',
+export const StyledInfoItemTitle1 = styled('div', {
+  alignSelf: 'strecth',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  fontSize: '$sm',
 });
 
-export const StyledInfoItemLine = styled('div', {
+export const StyledInfoItemLine1 = styled('div', {
   display: 'inline-block',
   wordBreak: 'break-word',
+  font: '$mono',
+  fontWeight: '$semiBold',
 });
