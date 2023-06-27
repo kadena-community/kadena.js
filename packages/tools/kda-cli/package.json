@@ -20,12 +20,13 @@
   "scripts": {
     "build": "heft build",
     "dev": "heft build -w",
-    "kda": "node lib/index.js",
-    "test": "ava",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
-    "format:src": "prettier config src --write"
+    "format:src": "prettier config src --write",
+    "kda": "node lib/index.js",
+    "test": "ava"
   },
   "ava": {
     "extensions": {
