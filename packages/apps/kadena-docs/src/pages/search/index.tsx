@@ -1,6 +1,4 @@
-import { Stack, SystemIcons, TextField } from '@kadena/react-components';
-
-import { ResultSection } from '@/components';
+import { SearchForm } from '@/components';
 import { useSearch } from '@/hooks';
 import { createLinkFromMD } from '@/utils';
 import {
@@ -12,6 +10,8 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { SearchHeader } from '@/components/Layout/Landing/components';
+import { Article, Content } from '@/components/Layout/components';
+import { SystemIcon, Tabs, TextField } from '@kadena/react-ui';
 
 const Search: FC = () => {
   const {
@@ -25,60 +25,71 @@ const Search: FC = () => {
 
   return (
     <>
-      <SearchHeader />
-      <section>
-        <form onSubmit={handleSubmit}>
+      <SearchHeader>
+        <SearchForm onSubmit={handleSubmit}>
           <TextField
             inputProps={{
+              id: 'searchInput',
+              outlined: true,
               ref: searchInputRef,
               defaultValue: query,
               placeholder: 'Search',
-              leftPanel: () => <SystemIcons.Magnify />,
+              rightIcon: SystemIcon.Magnify,
               'aria-label': 'Search',
             }}
           />
-        </form>
+        </SearchForm>
+      </SearchHeader>
+      <Content id="maincontent" layout="home">
+        <Article>
+          <section>
+            <Tabs.Root defaultSelected="docs">
+              <Tabs.Tab value="docs">Docs Space </Tabs.Tab>
+              <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
-        <Stack>
-          <ResultSection>
-            <h2>output</h2>
-
-            {conversation?.history.map((interaction, idx) => (
-              <div key={`${interaction.input}-${idx}`}>
-                <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                <div>
-                  {interaction?.metadata?.map((item, idx) => {
-                    const url = createLinkFromMD(item.title);
+              <Tabs.Content value="docs">
+                {staticSearchResults.length > 0 &&
+                  `(${staticSearchResults.length})`}
+                <ul>
+                  {staticSearchResults.map((item) => {
                     return (
-                      <>
-                        <Link key={`${url}-${idx}`} href={url}>
-                          {url}
+                      <li key={item.id}>
+                        <Link href={createLinkFromMD(item.filename)}>
+                          {item.title}
                         </Link>
-                      </>
+                      </li>
                     );
                   })}
-                </div>
-              </div>
-            ))}
+                </ul>
+              </Tabs.Content>
 
-            <div>{outputStream}</div>
-          </ResultSection>
+              <Tabs.Content value="qa">
+                <h2>output</h2>
 
-          <ResultSection>
-            <ul>
-              {staticSearchResults.map((item) => {
-                return (
-                  <li key={item.id}>
-                    <Link href={createLinkFromMD(item.filename)}>
-                      {item.title}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </ResultSection>
-        </Stack>
-      </section>
+                {conversation?.history.map((interaction, idx) => (
+                  <div key={`${interaction.input}-${idx}`}>
+                    <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                    <div>
+                      {interaction?.metadata?.map((item, idx) => {
+                        const url = createLinkFromMD(item.title);
+                        return (
+                          <>
+                            <Link key={`${url}-${idx}`} href={url}>
+                              {url}
+                            </Link>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                <div>{outputStream}</div>
+              </Tabs.Content>
+            </Tabs.Root>
+          </section>
+        </Article>
+      </Content>
     </>
   );
 };
