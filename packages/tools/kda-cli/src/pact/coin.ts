@@ -1,6 +1,6 @@
 import { Reducer } from './pact.js';
 
-export type KAccount = `k:${string}` | string;
+export type KAccount = string;
 export type Decimal = `${number}.${number}`;
 interface IGasCapability {
   name: 'coin.GAS';

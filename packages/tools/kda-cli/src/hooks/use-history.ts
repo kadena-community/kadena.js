@@ -14,7 +14,7 @@ export type HistoryValue =
   | string[]
   | Record<string, unknown>;
 
-const isSuggestiable = (value: unknown): value is string[] => {
+const isSuggestable = (value: unknown): value is string[] => {
   return Array.isArray(value);
 };
 
@@ -30,7 +30,7 @@ export const useHistory = (
       const h = readOrCreateHistory();
       const v = Array.isArray(newValues) ? newValues : [newValues];
       const readSuggestions = h[name];
-      const suggestions: string[] = isSuggestiable(readSuggestions)
+      const suggestions: string[] = isSuggestable(readSuggestions)
         ? readSuggestions
         : [];
       fs.writeFileSync(

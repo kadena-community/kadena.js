@@ -18,7 +18,7 @@ import { IAnswers, IQuestion } from './questions.js';
 import { readFileSync } from 'fs';
 
 const isDeployTask = ({ task }: IAnswers): boolean => {
-  if (Array.isArray(task)) return task?.includes('deploy');
+  if (Array.isArray(task)) return task.includes('deploy');
   return false;
 };
 

@@ -18,21 +18,10 @@
     "lib"
   ],
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "ava",
     "build": "heft build",
     "dev": "heft build -w",
     "kda": "node lib/index.js",
     "test": "ava"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "ava": {
     "extensions": {

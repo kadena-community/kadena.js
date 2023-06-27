@@ -16,7 +16,8 @@ export const Execute = ({
   const [error, setError] = useState<string>();
   useEffect(() => {
     if (action === undefined) {
-      return setError('No action provided');
+      setError('No action provided');
+      return;
     }
     action(answers)
       .then((result: IAnswers) => {
