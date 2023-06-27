@@ -5,23 +5,25 @@ export const prefix: string = '_persist';
 export const getName = (key: string): string => `${prefix}:${key}`;
 
 export const setItem = (key: string, value: unknown): void => {
-  Cookies.set(getName(key), encodeURIComponent(JSON.stringify(value)))
+  Cookies.set(getName(key), encodeURIComponent(JSON.stringify(value)));
 };
 
 export const getItem = (key: string): unknown | undefined => {
   try {
     const cookie = Cookies.get(getName(key));
-    return (cookie !== undefined) ? JSON.parse(decodeURIComponent(cookie)) : undefined;
+    return cookie !== undefined
+      ? JSON.parse(decodeURIComponent(cookie))
+      : undefined;
   } catch (e) {
     return undefined;
   }
 };
 
 export const deleteItem = (key: string): void => {
-  Cookies.remove(getName(key))
+  Cookies.remove(getName(key));
 };
 
-export const getItems = (): {[key: string]: unknown} => {
+export const getItems = (): { [key: string]: unknown } => {
   const cookies = Cookies.get();
 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions

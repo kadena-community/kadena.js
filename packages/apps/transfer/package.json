@@ -64,6 +64,7 @@
     "@types/testing-library__jest-dom": "~5.14.6",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
+    "@vanilla-extract/css": "1.11.1",
     "debug": "~4.3.4",
     "env-cmd": "^10.1.0",
     "eslint": "^8.15.0",
@@ -75,8 +76,7 @@
     "next-translate-plugin": "~2.0.5",
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
-    "typescript": "5.0.4",
-    "@vanilla-extract/css": "1.11.1"
+    "typescript": "5.0.4"
   },
   "volta": {
     "node": "16.15.0"

@@ -12,41 +12,36 @@ import {
   StyledMobileMenu,
   StyledNav,
   StyledTitle,
-} from './styles'
+} from './styles';
 
-import { GridCol } from "@/components/Global";
-import Routes from "@/constants/routes";
-import { IMenuItem } from "@/types/Layout";
-import useTranslation from "next-translate/useTranslation";
-import React, { FC, ReactNode, useState } from 'react'
+import { GridCol } from '@/components/Global';
+import Routes from '@/constants/routes';
+import { IMenuItem } from '@/types/Layout';
+import useTranslation from 'next-translate/useTranslation';
+import React, { FC, ReactNode, useState } from 'react';
 
 export interface IHeaderProps {
-  logo?: ReactNode,
-  appTitle?: string,
-  menu?: IMenuItem[],
-  rightPanel?: ReactNode
+  logo?: ReactNode;
+  appTitle?: string;
+  menu?: IMenuItem[];
+  rightPanel?: ReactNode;
 }
 
-const Header: FC<IHeaderProps> = ({
-  logo,
-  appTitle,
-  rightPanel,
-  menu
-}) => {
+const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const {t} = useTranslation("common")
+  const { t } = useTranslation('common');
   const hasMenu: boolean = Boolean(menu?.length);
 
-  const renderMenu = (type: "desktop" | "mobile" = "desktop"): ReactNode => (
+  const renderMenu = (type: 'desktop' | 'mobile' = 'desktop'): ReactNode => (
     <StyledNav type={type}>
-      {menu?.map(item => (
+      {menu?.map((item) => (
         <StyledMenuItem href={item.href} key={item.title}>
           {item.title}
         </StyledMenuItem>
       ))}
     </StyledNav>
-  )
+  );
 
   return (
     <StyledHeader>
@@ -56,34 +51,39 @@ const Header: FC<IHeaderProps> = ({
           <GridCol xs={11} lg={2}>
             <StyledLeftPanelWrapper>
               {Boolean(logo) && <StyledLogoWrapper>{logo}</StyledLogoWrapper>}
-              {Boolean(appTitle) && <StyledTitle href={Routes.HOME}>{appTitle}</StyledTitle>}
+              {Boolean(appTitle) && (
+                <StyledTitle href={Routes.HOME}>{appTitle}</StyledTitle>
+              )}
             </StyledLeftPanelWrapper>
           </GridCol>
           {hasMenu && (
-            <GridCol xs={{hidden: true}} lg={{size: 7, hidden: false}}>
+            <GridCol xs={{ hidden: true }} lg={{ size: 7, hidden: false }}>
               {renderMenu()}
             </GridCol>
           )}
           {Boolean(rightPanel) && (
-            <GridCol xs={{hidden: true}} lg={{size: 3, hidden: false, push: hasMenu ? 0 : 7}}>
+            <GridCol
+              xs={{ hidden: true }}
+              lg={{ size: 3, hidden: false, push: hasMenu ? 0 : 7 }}
+            >
               {rightPanel}
             </GridCol>
           )}
-          <GridCol xs={{size: 1, hidden: false}} lg={{hidden: true}}>
+          <GridCol xs={{ size: 1, hidden: false }} lg={{ hidden: true }}>
             <StyledBurgerMenuButton
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              title={t("Menu")}
+              title={t('Menu')}
               icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
             />
           </GridCol>
         </StyledGridRow>
       </StyledContainer>
-      <StyledMobileMenu status={isMenuOpen ? "open": "close"}>
-        {renderMenu("mobile")}
+      <StyledMobileMenu status={isMenuOpen ? 'open' : 'close'}>
+        {renderMenu('mobile')}
         {rightPanel}
       </StyledMobileMenu>
     </StyledHeader>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

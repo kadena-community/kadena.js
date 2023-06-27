@@ -1,17 +1,17 @@
 import { styled } from '@kadena/react-components';
 
 export const StyledContainer = styled('div', {
-  maxWidth: "100%",
-  margin: "0 auto",
+  maxWidth: '100%',
+  margin: '0 auto',
 
   variants: {
     type: {
       fixed: {
-        width: "$pageWidth"
+        width: '$pageWidth',
       },
       fluid: {
-        width: "100%"
-      }
-    }
-  }
+        width: '100%',
+      },
+    },
+  },
 });

@@ -1,10 +1,10 @@
-import { Header } from "./partials";
+import { Header } from './partials';
 
 import { StyledLayout } from '@/components/Common/Layout/styles';
-import { WalletConnectButton } from "@/components/Global";
-import routes from "@/constants/routes";
-import { Logo } from "@/resources/svg/generated";
-import useTranslation from "next-translate/useTranslation";
+import { WalletConnectButton } from '@/components/Global';
+import routes from '@/constants/routes';
+import { Logo } from '@/resources/svg/generated';
+import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
 
 interface IProps {
@@ -46,7 +46,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
       />
       <main>{children}</main>
     </StyledLayout>
-  )
+  );
 };
 
 export default Layout;

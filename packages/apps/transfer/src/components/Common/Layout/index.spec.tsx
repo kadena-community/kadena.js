@@ -1,6 +1,6 @@
 import Layout from './index';
 jest.mock('@kadena/react-ui', () => ({
-  Button: (props) => <button {...props} />
+  Button: (props) => <button {...props} />,
 }));
 
 import { render } from '@testing-library/react';
