@@ -10,7 +10,7 @@ interface ITransferCapability {
   ): ICapabilityItem;
 }
 
-interface ITransfer_Crosschain_Capability {
+interface ITransferCrosschainCapability {
   (name: 'coin.GAS'): ICapabilityItem;
   (
     name: 'coin.TRANSFER_XCHAIN',
@@ -36,7 +36,7 @@ export interface ICoin {
     targetChain: string,
     amount: { decimal: string },
   ) => string & {
-    capability: ITransfer_Crosschain_Capability;
+    capability: ITransferCrosschainCapability;
   };
 }
 

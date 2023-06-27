@@ -67,7 +67,7 @@ export async function doCrossChianTransfer(
   const { [sendRequestKey]: debitResult } = await pollSendResult();
   if (debitResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception
-    return [false, debitResult, null];
+    return [false, debitResult, null] as const;
   }
   const proof = await pollCreateSpv(sendRequestKey, to.chainId);
   const continuation = creditInTheTargetChain(
@@ -86,7 +86,7 @@ export async function doCrossChianTransfer(
   const { [contRequestKey]: creditResult } = await pollContResult();
   if (creditResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception
-    return [false, debitResult, creditResult];
+    return [false, debitResult, creditResult] as const;
   }
-  return [true, debitResult, creditResult];
+  return [true, debitResult, creditResult] as const;
 }

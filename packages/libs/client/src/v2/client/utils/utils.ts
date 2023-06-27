@@ -137,3 +137,19 @@ export const mapRecord = <T extends any, Mapper extends (item: T) => any>(
   Object.fromEntries(
     Object.entries(object).map(([key, data]) => [key, mapper(data)]),
   );
+
+export const withCounter = <
+  A extends any[],
+  F extends (counter: number, ...args: [...A]) => any,
+>(
+  cb: F,
+): ((...args: A) => ReturnType<F>) => {
+  let counter = 0;
+  return (...args: A): ReturnType<F> => {
+    counter += 1;
+    return cb(counter, ...args);
+  };
+};
+
+export const sleep = (duration: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, duration));

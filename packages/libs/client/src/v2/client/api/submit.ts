@@ -1,4 +1,11 @@
-import { getUrl, ICommandRequest, jsonRequest, parseResponse } from './request';
+import {
+  getUrl,
+  ICommandRequest,
+  jsonRequest,
+  parseResponse,
+} from '../utils/utils';
+
+import fetch from 'cross-fetch';
 
 export const submit = async (
   host: string,
@@ -9,7 +16,9 @@ export const submit = async (
 
   try {
     const response = await fetch(url, request);
-    return await parseResponse(response);
+    return await parseResponse<{ requestKeys: string[] }>(response).then(
+      ({ requestKeys }) => requestKeys,
+    );
   } catch (error) {
     console.error(`An error occurred while calling send API:`, error);
     throw error;

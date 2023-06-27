@@ -4,7 +4,9 @@ import {
   parseResponse,
 } from '@kadena/chainweb-node-client';
 
-import { getUrl, ICommandRequest, jsonRequest } from './request';
+import { getUrl, ICommandRequest, jsonRequest } from '../utils/utils';
+
+import fetch from 'cross-fetch';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 
@@ -24,14 +26,14 @@ export const local = async <T extends ILocalOptions>(
   body: ICommandRequest,
   options?: T,
 ): Promise<LocalResponse<T>> => {
-  const request = jsonRequest({ cmds: body });
-  const url = getUrl(host, `api/v1/send`, options);
+  const request = jsonRequest(body);
+  const url = getUrl(host, `api/v1/local`, options);
 
   try {
     const response = await fetch(url, request);
     return await parseResponse(response);
   } catch (error) {
-    console.error(`An error occurred while calling send API:`, error);
+    console.error(`An error occurred while calling local API:`, error);
     throw error;
   }
 };

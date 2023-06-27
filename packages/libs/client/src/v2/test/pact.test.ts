@@ -1,6 +1,8 @@
 import { coin } from '../exmaple/coin-contract';
 import { commandBuilder, meta, payload, set, signer } from '../pact';
 
+jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
+
 describe('payload.exec', () => {
   it('returns a payload object of a exec command', () => {
     const command = payload.exec([
@@ -8,8 +10,7 @@ describe('payload.exec', () => {
     ]);
     expect(command.payload.code).toBe('(coin.transfer "alice" "bob" 12.1)');
   });
-});
-describe('payload.exec', () => {
+
   it('adds multiple command', () => {
     const command = payload.exec([
       coin.transfer('alice', 'bob', { decimal: '0.1' }),
@@ -18,6 +19,21 @@ describe('payload.exec', () => {
     expect(command.payload.code).toBe(
       '(coin.transfer "alice" "bob" 0.1)(coin.transfer "bob" "alice" 0.1)',
     );
+  });
+});
+
+describe('payload.cont', () => {
+  it('returns a payload object of a cont command', () => {
+    const command = payload.cont({
+      pactId: '1',
+      proof: 'test-proof',
+      step: '1',
+    });
+    expect(command.payload).toEqual({
+      pactId: '1',
+      proof: 'test-proof',
+      step: '1',
+    });
   });
 });
 
@@ -99,5 +115,13 @@ describe('commandBuilder', () => {
       networkId: 'test-network-id',
       nonce: 'test-nonce',
     });
+  });
+
+  it('adds kjs nonce  if not presented in the input', () => {
+    const { command } = commandBuilder(
+      payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+    );
+
+    expect(command.nonce).toBe('kjs-1690416000000');
   });
 });

@@ -1,7 +1,9 @@
 import { parseResponse } from '@kadena/chainweb-node-client';
 
-import { getUrl, IPollOptions, jsonRequest } from './request';
-import { retry } from './retry';
+import { retry } from '../utils/retry';
+import { getUrl, IPollOptions, jsonRequest } from '../utils/utils';
+
+import fetch from 'cross-fetch';
 
 export async function createSpv(
   host: string,

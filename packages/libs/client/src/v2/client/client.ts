@@ -3,9 +3,11 @@ import { hash as blakeHash } from '@kadena/cryptography-utils';
 
 import { ICommand } from '../pact';
 
-import { ILocalOptions, local, LocalResponse } from './utils/local';
+import { ILocalOptions, local, LocalResponse } from './api/local';
+import { createSpv, pollCreateSpv } from './api/spv';
+import { getStatus, pollStatus } from './api/status';
+import { submit } from './api/submit';
 import {
-  ICommandRequest,
   ICommandRequestWithoutHash,
   INetworkOptions,
   IPollOptions,
@@ -13,10 +15,7 @@ import {
   kadenaHostGenerator,
   mergeAll,
   mergeAllPollRequestPromises,
-} from './utils/request';
-import { createSpv, pollCreateSpv } from './utils/spv';
-import { getStatus, IPollStatus, pollStatus } from './utils/status';
-import { submit } from './utils/submit';
+} from './utils/utils';
 
 interface IClient {
   /**

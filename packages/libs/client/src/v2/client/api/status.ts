@@ -4,6 +4,7 @@ import {
   parseResponse,
 } from '@kadena/chainweb-node-client';
 
+import { retry } from '../utils/retry';
 import {
   getPromise,
   getUrl,
@@ -13,8 +14,9 @@ import {
   jsonRequest,
   mapRecord,
   mergeAll,
-} from './request';
-import { retry } from './retry';
+} from '../utils/utils';
+
+import fetch from 'cross-fetch';
 
 export const getStatus = async (
   host: string,
@@ -48,7 +50,7 @@ export const pollStatus: IPollStatus = (
   requestIds: string[],
   options?: IPollOptions,
 ): IPollRequestPromise<ICommandResult> => {
-  const { onPoll = () => {} } = options || {};
+  const { onPoll = () => {}, timeout, interval } = options || {};
   let requestKeys = [...requestIds];
   const prs: Record<string, IExtPromise<ICommandResult>> = requestKeys.reduce(
     (acc, requestKey) => ({
@@ -64,13 +66,13 @@ export const pollStatus: IPollStatus = (
       prs[item.reqKey].resolve(item);
       requestKeys = requestKeys.filter((key) => key !== item.reqKey);
     });
-    if (Object.keys(pollResponse).length < requestKeys.length) {
-      throw new Error('NOT_COMPLETED');
+    if (requestKeys.length > 0) {
+      return Promise.reject(new Error('NOT_COMPLETED'));
     }
   };
   const retryStatus = retry(task);
 
-  retryStatus(options).catch((err) => {
+  retryStatus({ interval, timeout }).catch((err) => {
     Object.values(prs).forEach((pr) => {
       if (!pr.fulfilled) {
         pr.reject(err);
