@@ -3,7 +3,7 @@ import { Heading, Stack, Text } from '@kadena/react-components';
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { getTopDocs,ITopDoc } from '@/data/getTopDocs';
+import { getTopDocs, ITopDoc } from '@/data/getTopDocs';
 import {
   checkSubTreeForActive,
   getPathName,
