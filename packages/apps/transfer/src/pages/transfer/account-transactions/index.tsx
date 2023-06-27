@@ -1,7 +1,7 @@
 import { Button, TextField } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { Option, Select, SidebarMenu } from '@/components/Global';
+import { Option, Select } from '@/components/Global';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledContent,
