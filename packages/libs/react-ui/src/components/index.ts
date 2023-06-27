@@ -6,6 +6,13 @@ export { Card, ICardProps } from './Card/Card';
 export { SystemIcon, ProductIcon, IIconProps } from './Icons';
 export { IconButton, IIconButtonProps } from './IconButton/IconButton';
 export {
+  Tabs,
+  ITabsProps,
+  ITabProps,
+  ITabsPanelsProps,
+  ITabsPanelProps,
+} from './Tabs';
+export {
   Text,
   ITextProps,
   Heading,
