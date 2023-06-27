@@ -9,6 +9,10 @@
     "directory": "packages/libs/cryptography-utils"
   },
   "license": "ISC",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "contributors": [
     {
       "name": "Albert"

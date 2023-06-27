@@ -28,6 +28,10 @@
     "start": "ts-node --transpile-only src/index.ts",
     "test": "heft test --no-build"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "dependencies": {
     "byline": "~5.0.0",
     "memfs": "~3.5.1",
