@@ -18,9 +18,5 @@ export const env = <T extends keyof IEnvInterface, TDefault>(
   key: T,
   defaultValue: TDefault,
 ): TDefault | NonNullable<IEnvInterface[T]> => {
-  if (dotenv[key] === undefined || isNaN(Number(dotenv[key]))) {
-    return defaultValue;
-  }
-
   return dotenv[key] ?? defaultValue;
 };
