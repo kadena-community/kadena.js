@@ -4,24 +4,21 @@ import { TabsPanels } from './TabsPanels';
 
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
-export interface ITabsProps {
+export interface ITabsContainerProps {
   children?: ReactNode;
   defaultSelected?: string;
 }
 
-interface ITabsComposition extends FC<ITabsProps> {
-  Tab: typeof Tab;
-  Panels: typeof TabsPanels;
-}
-
-// eslint-disable-next-line react/prop-types
-export const Tabs: ITabsComposition = ({ children, defaultSelected = '' }) => {
+export const TabsContainer: FC<ITabsContainerProps> = ({
+  children,
+  defaultSelected = '',
+}) => {
   const [selectedTab, setSelectedTab] = useState<string>(defaultSelected);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const lineRef = useRef<HTMLSpanElement | null>(null);
+  const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current || !lineRef.current) return;
+    if (!containerRef.current || !selectedUnderlineRef.current) return;
     //find the selectedTab
     const selected = containerRef.current.querySelector(
       '[data-selected="true"]',
@@ -29,12 +26,15 @@ export const Tabs: ITabsComposition = ({ children, defaultSelected = '' }) => {
     if (selected === undefined) return;
 
     // set position of the bottom line
-    lineRef.current.style.setProperty(
+    selectedUnderlineRef.current.style.setProperty(
       'transform',
       `translateX(${selected.offsetLeft}px)`,
     );
-    lineRef.current.style.setProperty('width', `${selected.offsetWidth}px`);
-  }, [containerRef, selectedTab]);
+    selectedUnderlineRef.current.style.setProperty(
+      'width',
+      `${selected.offsetWidth}px`,
+    );
+  }, [containerRef, selectedTab, selectedUnderlineRef]);
 
   const handleClick = (value: string): void => {
     setSelectedTab(value);
@@ -57,7 +57,7 @@ export const Tabs: ITabsComposition = ({ children, defaultSelected = '' }) => {
           return null;
         })}
 
-        <span ref={lineRef} className={selectorLine}></span>
+        <span ref={selectedUnderlineRef} className={selectorLine}></span>
       </div>
 
       {React.Children.map(children, (child, idx) => {
@@ -75,6 +75,3 @@ export const Tabs: ITabsComposition = ({ children, defaultSelected = '' }) => {
     </section>
   );
 };
-
-Tabs.Tab = Tab;
-Tabs.Panels = TabsPanels;

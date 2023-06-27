@@ -8,10 +8,10 @@ export const tabsContainer = style([
     display: 'flex',
     alignItems: 'center',
     width: '100%',
+    marginBottom: '$4',
   }),
   {
     borderBottom: `${vars.sizes.$1} solid ${vars.colors.$neutral2}`,
-    marginBottom: vars.sizes.$4,
   },
 ]);
 
@@ -21,10 +21,8 @@ export const tabClass = style([
     cursor: 'pointer',
     paddingY: '$2',
     fontSize: '$md',
-  }),
-  {
     backgroundColor: 'transparent',
-  },
+  }),
 ]);
 
 export const selectedClass = style([
@@ -39,12 +37,12 @@ export const selectorLine = style([
     position: 'absolute',
     display: 'block',
     backgroundColor: '$primaryAccent',
+    width: 0,
+    height: '$1',
   }),
   {
     bottom: '-4px', // for some reason a negative cant be done with vars
     transition: 'all .4s ease',
     transform: `translateX(0)`,
-    width: '0',
-    height: vars.sizes.$1,
   },
 ]);
