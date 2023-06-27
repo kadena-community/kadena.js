@@ -11,7 +11,8 @@ import { kadenaConstants } from '@/constants/kadena';
 import { generateApiHost } from '@/services/utils/utils';
 import { env } from '@/utils/env';
 
-const NETWORK_ID: ChainwebNetworkId = 'testnet04';
+const NETWORK_ID: ChainwebNetworkId =
+  kadenaConstants.TESTNET.NETWORKS.TESTNET04;
 const SENDER_ACCOUNT: string = 'coin-faucet';
 const SENDER_OPERATION_ACCOUNT: string = 'faucet-operation';
 const FAUCET_PUBLIC_KEY = env(
