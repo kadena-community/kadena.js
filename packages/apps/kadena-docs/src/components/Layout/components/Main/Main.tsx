@@ -20,7 +20,6 @@ export const Main: FC<IPageProps> = ({
     editLink,
     navigation,
   },
-  topDocs,
   aSideMenuTree,
   leftMenuTree,
 }) => {
