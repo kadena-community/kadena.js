@@ -9,8 +9,8 @@ import { PactNumber } from '@kadena/pactjs';
 
 import { generateApiHost } from '../utils/utils';
 
-import { env } from '@/utils/env';
 import { kadenaConstants } from '@/constants/kadena';
+import { env } from '@/utils/env';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
 const SENDER_ACCOUNT: string = 'coin-faucet';
