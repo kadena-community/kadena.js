@@ -58,7 +58,7 @@ export const Primary: Story = {
     const items = ItemArray.slice(0, itemsCount);
     const Icon = ProductIcon[selectIcon];
     return (
-      <Breadcrumbs icon={Icon}>
+      <Breadcrumbs.Root icon={Icon}>
         {items.map((item, idx) => {
           return (
             <Breadcrumbs.Item
@@ -69,7 +69,7 @@ export const Primary: Story = {
             </Breadcrumbs.Item>
           );
         })}
-      </Breadcrumbs>
+      </Breadcrumbs.Root>
     );
   },
 };

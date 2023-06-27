@@ -96,8 +96,8 @@ For everything else, please discuss.
 To publish a new version of updated packages, please make sure you:
 
 - are part of the `@kadena` npm organization
-- have push rights to this repository's `master` branch
-- are on a clean `master` branch
+- have push rights to this repository's `main` branch
+- are on a clean `main` branch
 
 Follow these steps to publish the updated packages:
 
@@ -108,8 +108,8 @@ Follow these steps to publish the updated packages:
 ```bash
 rush build
 rush test
-rush version --bump -b master
-rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master
+rush version --bump -b main
+rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch main
 ```
 
 [1]: https://github.com/kadena-community/kadena.js/issues/new/choose

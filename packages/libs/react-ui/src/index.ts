@@ -32,6 +32,12 @@ export {
   Box,
   ILinkProps,
   Link,
+  Tabs,
+  ITabsContainerProps,
+  ITabProps,
+  ITabContentProps,
+  TextField,
+  ITextFieldProps,
 } from './components';
 export {
   sprinkles,
