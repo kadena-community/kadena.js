@@ -65,7 +65,8 @@ jobs:
 
       - name: Rush format (install-run-rush)
         if: github.ref_name != 'main'
-        run: node common/scripts/install-run-rush.js format:ci --verbose
+        run: |
+          node common/scripts/install-run-rush.js format:ci --verbose ${{ env.AFFECTED_OR_ALL }}
 
       - name: Rush verify Change Logs (install-run-rush)
         if: github.ref_name != 'main'
