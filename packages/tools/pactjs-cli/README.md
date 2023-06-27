@@ -27,13 +27,13 @@ Generate client based on a contract
 **Generate from file**
 
 ```bash
-pactjs-cli generate --file ./myContract.pact
+pactjs contract-generate --file ./myContract.pact
 ```
 
 **Generate from chain**
 
 ```bash
-pactjs-cli generate --contract free.coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact --chain 0 --network testnet04
+pactjs contract-generate --contract free.coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet
 ```
 
 ## retrieve-contract
@@ -50,7 +50,7 @@ Retrieve a contract from an API using a /local call
 Retrieve a contract from chain
 
 ```bash
-pactjs-cli retrieve-contract --out ./myContract.pact
+pactjs retrieve-contract --out ./myContract.pact --module coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact
 ```
 
 ## template-generate
@@ -66,7 +66,7 @@ Generate statically typed generators for templates
 Generate a client from a template
 
 ```bash
-pactjs-cli template-generate --file ./contractDir --out ./myContract.pact
+pactjs template-generate --file ./contractDir --out ./myContract.pact
 ```
 
 [1]: https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact
