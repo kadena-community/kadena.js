@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "Rename master branch to main",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
