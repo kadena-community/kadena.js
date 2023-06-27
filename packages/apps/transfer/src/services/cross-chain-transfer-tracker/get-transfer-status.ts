@@ -6,6 +6,7 @@ import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-dat
 import { generateApiHost } from '../utils/utils';
 
 import { Translate } from 'next-translate';
+import { kadenaConstants } from '@/constants/kadena';
 
 export interface StatusData {
   id?: number;
@@ -156,8 +157,10 @@ export async function getXChainTransferInfo({
   try {
     const proofApiHost = `${generateApiHost(server, networkId, '1')}/spv`;
     const apiHost = generateApiHost(server, networkId, receiverChain);
+    const gasLimit: number = kadenaConstants.GAS_LIMIT;
+    const gasPrice: number = kadenaConstants.GAS_PRICE;
 
-    const contCommand1 = await getContCommand(
+    const contCommand = await getContCommand(
       requestKey,
       receiverChain,
       proofApiHost,
@@ -165,19 +168,19 @@ export async function getXChainTransferInfo({
       false,
     );
 
-    contCommand1
+    contCommand
       .setMeta(
         {
           chainId: receiverChain,
           sender: senderAccount,
-          gasLimit: 850,
-          gasPrice: 0.00000001,
+          gasLimit,
+          gasPrice,
         },
         networkId,
       )
       .createCommand();
 
-    const response = await contCommand1.local(apiHost, {
+    const response = await contCommand.local(apiHost, {
       preflight: false,
       signatureVerification: false,
     });
