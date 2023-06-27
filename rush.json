@@ -593,8 +593,15 @@
     },
 
     {
-      "packageName": "@kadena-dev/remark-plugins",
+      "packageName": "@kadena-dev/markdown",
       "projectFolder": "packages/tools/remark-plugins",
+      "tags": ["tools"],
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/kda-cli",
+      "projectFolder": "packages/tools/kda-cli",
       "tags": ["tools"],
       "shouldPublish": false
     },

@@ -6,13 +6,8 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-      imports: [
-        MatProgressSpinnerModule,
-        FormsModule
-      ],
+      declarations: [AppComponent],
+      imports: [MatProgressSpinnerModule, FormsModule],
     }).compileComponents();
   }));
 
@@ -27,23 +22,29 @@ describe('AppComponent', () => {
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelector('h1').textContent).toContain('Welcome to Kadena!');
+      expect(compiled.querySelector('h1').textContent).toContain(
+        'Welcome to Kadena!',
+      );
     }));
 
     it('should render blockchain interaction section', () => {
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelectorAll('h3')[0].textContent).toContain('Interact with the blockchain');
-    })
+      expect(compiled.querySelectorAll('h3')[0].textContent).toContain(
+        'Interact with the blockchain',
+      );
+    });
 
     it('should render resources section', () => {
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelectorAll('h3')[1].textContent).toContain('Resources');
-    })
-  })
+      expect(compiled.querySelectorAll('h3')[1].textContent).toContain(
+        'Resources',
+      );
+    });
+  });
 
   describe('Blockchain interaction', () => {
     it('should contain disabled read and write buttons', () => {
@@ -54,10 +55,10 @@ describe('AppComponent', () => {
       // Verify that the buttons are disabled
       expect(compiled.querySelectorAll('button')[0].disabled).toBeTruthy();
       expect(compiled.querySelectorAll('button')[1].disabled).toBeTruthy();
-    })
+    });
 
     it('should enable read button after entering account', () => {
-      const account = 'k:account'
+      const account = 'k:account';
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
@@ -74,11 +75,11 @@ describe('AppComponent', () => {
         // Verify that the read button is enabled
         expect(readButton.disabled).toBeFalsy();
       });
-    })
+    });
 
     it('should enable write button after entering account and message', () => {
-      const account = 'k:account'
-      const message = 'My message'
+      const account = 'k:account';
+      const message = 'My message';
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
@@ -99,6 +100,6 @@ describe('AppComponent', () => {
         // Verify that the write button is enabled
         expect(writeButton.disabled).toBeFalsy();
       });
-    })
-  })
+    });
+  });
 });

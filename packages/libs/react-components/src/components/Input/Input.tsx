@@ -16,8 +16,8 @@ export interface IInputProps
   > {
   as?: 'input';
   leadingText?: string;
-  leftPanel?: typeof SystemIcons[keyof typeof SystemIcons];
-  rightPanel?: typeof SystemIcons[keyof typeof SystemIcons];
+  leftPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  rightPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
   disabled?: boolean;
   value?: string | number;
   status?: 'success' | 'error';
@@ -56,7 +56,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           ref={ref}
           variant={variant}
           disabled={disabled}
-          value={value}
           {...rest}
         />
         {RightPanel && (

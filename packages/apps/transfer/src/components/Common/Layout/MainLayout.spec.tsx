@@ -1,7 +1,12 @@
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(() => ({
+    pathname: '/transfer',
+  })),
+}));
+
 import MainLayout from './MainLayout';
 
 import { render } from '@testing-library/react';
-import React from 'react';
 
 describe('MainLayout', () => {
   test('renders correctly', () => {

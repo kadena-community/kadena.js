@@ -1,6 +1,7 @@
 import {
   ChainwebNetworkId,
   ICommandResult,
+  IPollResponse,
 } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
@@ -13,7 +14,7 @@ import {
 
 import { Translate } from 'next-translate';
 interface ITransactionData {
-  sender: { chain: ChainId; account?: string };
+  sender: { chain: ChainId; account: string };
   receiver: { chain: ChainId; account: string };
   amount: number;
   receiverGuard: {
@@ -74,13 +75,21 @@ export async function getTransferData({
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    let found: { chainId: number; tx: ICommandResult } | undefined;
-    chainInfos.map(async (pactInfo, chainId) => {
-      if (pactInfo[validatedRequestKey] !== undefined) {
-        console.log('pactInfo', pactInfo[validatedRequestKey]);
-        found = { chainId: chainId, tx: pactInfo[validatedRequestKey] };
-      }
-    });
+    const found: { chainId: number; tx: ICommandResult } | undefined =
+      chainInfos.reduce(
+        (
+          acc: { chainId: number; tx: ICommandResult } | undefined,
+          curr: IPollResponse,
+          chain: number,
+          array: IPollResponse[],
+        ) => {
+          array.splice(chain - 1);
+          if (curr[requestKey] !== undefined) {
+            return { chainId: chain, tx: curr[validatedRequestKey] };
+          }
+        },
+        undefined,
+      );
 
     if (found === undefined) {
       return { error: t('No request key found') };

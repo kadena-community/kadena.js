@@ -9,22 +9,15 @@
   "scripts": {
     "build": "",
     "dev:postinstall": "mkdir -p ./contracts; rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "test": ""
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -34,6 +27,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
@@ -41,6 +35,8 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "ts-node": "~10.8.2"
   }
 }

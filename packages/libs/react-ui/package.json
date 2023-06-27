@@ -22,27 +22,19 @@
     "build": "tsc & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
-    "lint": "npx eslint ./src --ext .js,.ts,.tsx --fix",
-    "lint-staged": "lint-staged",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier src --write",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "rushx build:test && heft test"
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "{README.md,src/**/*.md}": [
-      "prettier --write -u --config ../../../.prettierrc --ignore-path ../../../.prettierignore"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
   "dependencies": {
-    "@vanilla-extract/css": "~1.11.1",
-    "@vanilla-extract/recipes": "~0.4.0",
-    "@vanilla-extract/sprinkles": "~1.6.0",
+    "@vanilla-extract/css": "1.11.1",
+    "@vanilla-extract/recipes": "0.4.0",
+    "@vanilla-extract/sprinkles": "1.6.0",
     "classnames": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -55,6 +47,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@rushstack/heft-jest-plugin": "~0.5.12",
@@ -74,11 +67,13 @@
     "@types/node": "^16.0.0",
     "@types/react": "^18.0.30",
     "@types/react-dom": "18.0.11",
-    "@vanilla-extract/webpack-plugin": "~2.2.0",
+    "@vanilla-extract/webpack-plugin": "2.2.0",
     "eslint": "^8.15.0",
     "eslint-plugin-storybook": "~0.6.12",
-    "mini-css-extract-plugin": "~2.7.6",
+    "mini-css-extract-plugin": "2.7.6",
+    "prettier": "~2.8.8",
     "prop-types": "^15.8.1",
+    "sort-package-json": "~2.4.1",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
     "typescript": "5.0.4"

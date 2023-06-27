@@ -2,20 +2,25 @@
   "name": "@kadena-dev/rush-fix-versions",
   "version": "0.0.3",
   "description": "Tool to assist with making consistent versions across rush monorepo",
-  "main": "lib/index.js",
-  "type": "module",
-  "scripts": {
-    "build": "heft build",
-    "test": ""
-  },
-  "bin": {
-    "rush-fix-versions": "./lib/index.js"
-  },
   "keywords": [
     "rush"
   ],
-  "author": "Albert Groothedde",
   "license": "ISC",
+  "author": "Albert Groothedde",
+  "type": "module",
+  "main": "lib/index.js",
+  "bin": {
+    "rush-fix-versions": "./lib/index.js"
+  },
+  "scripts": {
+    "build": "heft build",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
+    "test": ""
+  },
   "dependencies": {
     "execa": "^7.1.1",
     "inquirer": "^9.2.6",
@@ -25,9 +30,12 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/inquirer": "^9.0.3",
-    "@types/node": "^16.0.0"
+    "@types/node": "^16.0.0",
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1"
   }
 }

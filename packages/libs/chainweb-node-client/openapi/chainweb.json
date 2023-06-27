@@ -34,10 +34,7 @@
       "variables": {
         "schema": {
           "default": "http",
-          "enum": [
-            "http",
-            "https"
-          ]
+          "enum": ["http", "https"]
         },
         "domain": {
           "default": "api.chainweb.com"
@@ -47,12 +44,7 @@
         },
         "chainwebVersion": {
           "default": "mainnet01",
-          "enum": [
-            "test-singleton",
-            "development",
-            "mainnet01",
-            "testnet04"
-          ]
+          "enum": ["test-singleton", "development", "mainnet01", "testnet04"]
         },
         "apiVersion": {
           "default": "0.0"
@@ -91,14 +83,7 @@
       "variables": {
         "location": {
           "default": "us-e1",
-          "enum": [
-            "us1",
-            "us2",
-            "eu1",
-            "eu2",
-            "ap1",
-            "ap2"
-          ]
+          "enum": ["us1", "us2", "eu1", "eu2", "ap1", "ap2"]
         },
         "apiVersion": {
           "default": "0.0"
@@ -249,19 +234,11 @@
     {
       "name": "chainweb_service",
       "x-displayName": "Chainweb Service API",
-      "tags": [
-        "service_api",
-        "misc",
-        "mining",
-        "pact",
-        "rosetta"
-      ]
+      "tags": ["service_api", "misc", "mining", "pact", "rosetta"]
     },
     {
       "name": "Common HTTP Headers",
-      "tags": [
-        "commonResponseHeaders"
-      ]
+      "tags": ["commonResponseHeaders"]
     },
     {
       "name": "Data Models",
@@ -279,10 +256,7 @@
     },
     {
       "name": "Binary Encodings",
-      "tags": [
-        "binaryHeader",
-        "binaryWorkHeader"
-      ]
+      "tags": ["binaryHeader", "binaryWorkHeader"]
     }
   ],
   "components": {
@@ -304,12 +278,7 @@
       "chainwebVersion": {
         "title": "Chainweb Version",
         "description": "The version of the Chainweb network",
-        "enum": [
-          "test-singleton",
-          "development",
-          "mainnet01",
-          "testnet04"
-        ]
+        "enum": ["test-singleton", "development", "mainnet01", "testnet04"]
       },
       "chainId": {
         "title": "Chain ID",
@@ -621,10 +590,7 @@
       "peer": {
         "title": "Peer",
         "description": "Peer info object",
-        "required": [
-          "id",
-          "address"
-        ],
+        "required": ["id", "address"],
         "example": {
           "address": {
             "hostname": "85.238.99.91",
@@ -640,10 +606,7 @@
             "pattern": "[a-zA-Z0-9_-]{43}"
           },
           "address": {
-            "required": [
-              "hostname",
-              "port"
-            ],
+            "required": ["hostname", "port"],
             "properties": {
               "hostname": {
                 "description": "A domain name or IP address. This must be a domain name only if\nthe respective node is using a valid CA signed SSL certificate.\n",
@@ -673,11 +636,7 @@
       "cut": {
         "title": "Cut",
         "description": "Cut datastruction of the chainweb API",
-        "required": [
-          "height",
-          "weight",
-          "hashes"
-        ],
+        "required": ["height", "weight", "hashes"],
         "example": {
           "value": {
             "origin": null,
@@ -814,10 +773,7 @@
       "hashWithBlockHeight": {
         "title": "Hash with block height",
         "description": "A block hash and the height of that block",
-        "required": [
-          "hash",
-          "height"
-        ],
+        "required": ["hash", "height"],
         "example": {
           "height": 1539924,
           "hash": "uP-pHW4QKrV9fN1mlDGwKuaiIDlJW7xYSj1nW53EHM4"
@@ -875,251 +831,41 @@
               [
                 0,
                 [
-                  [
-                    0,
-                    [
-                      5,
-                      2,
-                      3
-                    ]
-                  ],
-                  [
-                    1,
-                    [
-                      4,
-                      6,
-                      3
-                    ]
-                  ],
-                  [
-                    2,
-                    [
-                      4,
-                      7,
-                      0
-                    ]
-                  ],
-                  [
-                    3,
-                    [
-                      8,
-                      0,
-                      1
-                    ]
-                  ],
-                  [
-                    4,
-                    [
-                      9,
-                      1,
-                      2
-                    ]
-                  ],
-                  [
-                    5,
-                    [
-                      9,
-                      6,
-                      0
-                    ]
-                  ],
-                  [
-                    6,
-                    [
-                      5,
-                      7,
-                      1
-                    ]
-                  ],
-                  [
-                    7,
-                    [
-                      8,
-                      6,
-                      2
-                    ]
-                  ],
-                  [
-                    8,
-                    [
-                      9,
-                      7,
-                      3
-                    ]
-                  ],
-                  [
-                    9,
-                    [
-                      8,
-                      4,
-                      5
-                    ]
-                  ]
+                  [0, [5, 2, 3]],
+                  [1, [4, 6, 3]],
+                  [2, [4, 7, 0]],
+                  [3, [8, 0, 1]],
+                  [4, [9, 1, 2]],
+                  [5, [9, 6, 0]],
+                  [6, [5, 7, 1]],
+                  [7, [8, 6, 2]],
+                  [8, [9, 7, 3]],
+                  [9, [8, 4, 5]]
                 ]
               ],
               [
                 852054,
                 [
-                  [
-                    0,
-                    [
-                      15,
-                      10,
-                      5
-                    ]
-                  ],
-                  [
-                    1,
-                    [
-                      11,
-                      6,
-                      16
-                    ]
-                  ],
-                  [
-                    2,
-                    [
-                      12,
-                      7,
-                      17
-                    ]
-                  ],
-                  [
-                    3,
-                    [
-                      13,
-                      8,
-                      18
-                    ]
-                  ],
-                  [
-                    4,
-                    [
-                      14,
-                      9,
-                      19
-                    ]
-                  ],
-                  [
-                    5,
-                    [
-                      8,
-                      7,
-                      0
-                    ]
-                  ],
-                  [
-                    6,
-                    [
-                      8,
-                      9,
-                      1
-                    ]
-                  ],
-                  [
-                    7,
-                    [
-                      9,
-                      5,
-                      2
-                    ]
-                  ],
-                  [
-                    8,
-                    [
-                      5,
-                      6,
-                      3
-                    ]
-                  ],
-                  [
-                    9,
-                    [
-                      4,
-                      6,
-                      7
-                    ]
-                  ],
-                  [
-                    10,
-                    [
-                      11,
-                      0,
-                      19
-                    ]
-                  ],
-                  [
-                    11,
-                    [
-                      12,
-                      10,
-                      1
-                    ]
-                  ],
-                  [
-                    12,
-                    [
-                      13,
-                      11,
-                      2
-                    ]
-                  ],
-                  [
-                    13,
-                    [
-                      12,
-                      14,
-                      3
-                    ]
-                  ],
-                  [
-                    14,
-                    [
-                      13,
-                      15,
-                      4
-                    ]
-                  ],
-                  [
-                    15,
-                    [
-                      14,
-                      0,
-                      16
-                    ]
-                  ],
-                  [
-                    16,
-                    [
-                      15,
-                      1,
-                      17
-                    ]
-                  ],
-                  [
-                    17,
-                    [
-                      16,
-                      2,
-                      18
-                    ]
-                  ],
-                  [
-                    18,
-                    [
-                      17,
-                      3,
-                      19
-                    ]
-                  ],
-                  [
-                    19,
-                    [
-                      10,
-                      4,
-                      18
-                    ]
-                  ]
+                  [0, [15, 10, 5]],
+                  [1, [11, 6, 16]],
+                  [2, [12, 7, 17]],
+                  [3, [13, 8, 18]],
+                  [4, [14, 9, 19]],
+                  [5, [8, 7, 0]],
+                  [6, [8, 9, 1]],
+                  [7, [9, 5, 2]],
+                  [8, [5, 6, 3]],
+                  [9, [4, 6, 7]],
+                  [10, [11, 0, 19]],
+                  [11, [12, 10, 1]],
+                  [12, [13, 11, 2]],
+                  [13, [12, 14, 3]],
+                  [14, [13, 15, 4]],
+                  [15, [14, 0, 16]],
+                  [16, [15, 1, 17]],
+                  [17, [16, 2, 18]],
+                  [18, [17, 3, 19]],
+                  [19, [10, 4, 18]]
                 ]
               ]
             ]
@@ -1142,18 +888,11 @@
               "type": "string"
             },
             "minItems": 0,
-            "example": [
-              "0"
-            ]
+            "example": ["0"]
           },
           "nodeVersion": {
             "type": "string",
-            "enum": [
-              "test-singleton",
-              "development",
-              "mainnet01",
-              "testnet04"
-            ],
+            "enum": ["test-singleton", "development", "mainnet01", "testnet04"],
             "example": "mainnet01"
           },
           "nodeGraphHistory": {
@@ -1210,11 +949,7 @@
       "page": {
         "title": "Page",
         "description": "Page of a collection of items",
-        "required": [
-          "next",
-          "limit",
-          "items"
-        ],
+        "required": ["next", "limit", "items"],
         "example": {
           "value": {
             "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
@@ -1263,9 +998,7 @@
           "properties": {
             "event": {
               "type": "string",
-              "enum": [
-                "New Cut"
-              ]
+              "enum": ["New Cut"]
             }
           }
         },
@@ -1282,10 +1015,7 @@
           },
           "predicate": {
             "title": "Key Predicate",
-            "enum": [
-              "keys-all",
-              "keys-any"
-            ],
+            "enum": ["keys-all", "keys-any"],
             "example": "keys-all",
             "description": "key predicate. For a single key this is usually `keys-all`."
           },
@@ -1494,9 +1224,7 @@
           "$ref": "#/components/schemas/blockHash"
         },
         "example": {
-          "value": [
-            "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k"
-          ]
+          "value": ["k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k"]
         }
       }
     },
@@ -1516,9 +1244,7 @@
                 "value": []
               },
               "singleton request body": {
-                "value": [
-                  "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s"
-                ]
+                "value": ["qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s"]
               }
             }
           }
@@ -1581,14 +1307,10 @@
     "callbacks": {},
     "examples": {
       "blockHashes": {
-        "value": [
-          "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k"
-        ]
+        "value": ["k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k"]
       },
       "requestKeys": {
-        "value": [
-          "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s"
-        ]
+        "value": ["qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s"]
       },
       "signedTxText": {
         "value": {
@@ -1793,251 +1515,41 @@
             [
               0,
               [
-                [
-                  0,
-                  [
-                    5,
-                    2,
-                    3
-                  ]
-                ],
-                [
-                  1,
-                  [
-                    4,
-                    6,
-                    3
-                  ]
-                ],
-                [
-                  2,
-                  [
-                    4,
-                    7,
-                    0
-                  ]
-                ],
-                [
-                  3,
-                  [
-                    8,
-                    0,
-                    1
-                  ]
-                ],
-                [
-                  4,
-                  [
-                    9,
-                    1,
-                    2
-                  ]
-                ],
-                [
-                  5,
-                  [
-                    9,
-                    6,
-                    0
-                  ]
-                ],
-                [
-                  6,
-                  [
-                    5,
-                    7,
-                    1
-                  ]
-                ],
-                [
-                  7,
-                  [
-                    8,
-                    6,
-                    2
-                  ]
-                ],
-                [
-                  8,
-                  [
-                    9,
-                    7,
-                    3
-                  ]
-                ],
-                [
-                  9,
-                  [
-                    8,
-                    4,
-                    5
-                  ]
-                ]
+                [0, [5, 2, 3]],
+                [1, [4, 6, 3]],
+                [2, [4, 7, 0]],
+                [3, [8, 0, 1]],
+                [4, [9, 1, 2]],
+                [5, [9, 6, 0]],
+                [6, [5, 7, 1]],
+                [7, [8, 6, 2]],
+                [8, [9, 7, 3]],
+                [9, [8, 4, 5]]
               ]
             ],
             [
               852054,
               [
-                [
-                  0,
-                  [
-                    15,
-                    10,
-                    5
-                  ]
-                ],
-                [
-                  1,
-                  [
-                    11,
-                    6,
-                    16
-                  ]
-                ],
-                [
-                  2,
-                  [
-                    12,
-                    7,
-                    17
-                  ]
-                ],
-                [
-                  3,
-                  [
-                    13,
-                    8,
-                    18
-                  ]
-                ],
-                [
-                  4,
-                  [
-                    14,
-                    9,
-                    19
-                  ]
-                ],
-                [
-                  5,
-                  [
-                    8,
-                    7,
-                    0
-                  ]
-                ],
-                [
-                  6,
-                  [
-                    8,
-                    9,
-                    1
-                  ]
-                ],
-                [
-                  7,
-                  [
-                    9,
-                    5,
-                    2
-                  ]
-                ],
-                [
-                  8,
-                  [
-                    5,
-                    6,
-                    3
-                  ]
-                ],
-                [
-                  9,
-                  [
-                    4,
-                    6,
-                    7
-                  ]
-                ],
-                [
-                  10,
-                  [
-                    11,
-                    0,
-                    19
-                  ]
-                ],
-                [
-                  11,
-                  [
-                    12,
-                    10,
-                    1
-                  ]
-                ],
-                [
-                  12,
-                  [
-                    13,
-                    11,
-                    2
-                  ]
-                ],
-                [
-                  13,
-                  [
-                    12,
-                    14,
-                    3
-                  ]
-                ],
-                [
-                  14,
-                  [
-                    13,
-                    15,
-                    4
-                  ]
-                ],
-                [
-                  15,
-                  [
-                    14,
-                    0,
-                    16
-                  ]
-                ],
-                [
-                  16,
-                  [
-                    15,
-                    1,
-                    17
-                  ]
-                ],
-                [
-                  17,
-                  [
-                    16,
-                    2,
-                    18
-                  ]
-                ],
-                [
-                  18,
-                  [
-                    17,
-                    3,
-                    19
-                  ]
-                ],
-                [
-                  19,
-                  [
-                    10,
-                    4,
-                    18
-                  ]
-                ]
+                [0, [15, 10, 5]],
+                [1, [11, 6, 16]],
+                [2, [12, 7, 17]],
+                [3, [13, 8, 18]],
+                [4, [14, 9, 19]],
+                [5, [8, 7, 0]],
+                [6, [8, 9, 1]],
+                [7, [9, 5, 2]],
+                [8, [5, 6, 3]],
+                [9, [4, 6, 7]],
+                [10, [11, 0, 19]],
+                [11, [12, 10, 1]],
+                [12, [13, 11, 2]],
+                [13, [12, 14, 3]],
+                [14, [13, 15, 4]],
+                [15, [14, 0, 16]],
+                [16, [15, 1, 17]],
+                [17, [16, 2, 18]],
+                [18, [17, 3, 19]],
+                [19, [10, 4, 18]]
               ]
             ]
           ]
@@ -2297,9 +1809,7 @@
       "summary": "Cut Endpoints",
       "description": "A cut represents a distributed state of a chainweb. It references one\nblock header for each chain, such that those blocks are pairwise\nconcurrent.\n\nTwo blocks from two different chains are said to be concurrent if either\none of them is an adjacent parent (is a direct dependency) of the other or\nif the blocks do not depend at all on each other.\n",
       "get": {
-        "tags": [
-          "cut"
-        ],
+        "tags": ["cut"],
         "summary": "Query the current cut",
         "parameters": [
           {
@@ -2431,9 +1941,7 @@
       "put": {
         "summary": "Publish a cut",
         "description": "Publish a cut to a Chainweb node.\n\nThe cut must contain an origin property that is not `null`. The receiving node\nwill first try to obtain all missing dependencies from the node that is\nindicated in by the origin property before searching for the dependencies in the\nP2P network.\n",
-        "tags": [
-          "cut"
-        ],
+        "tags": ["cut"],
         "requestBody": {
           "description": "A cut with an origin property that is not `null`.",
           "content": {
@@ -2444,9 +1952,7 @@
                     "$ref": "#/components/schemas/cut"
                   },
                   {
-                    "required": [
-                      "origin"
-                    ]
+                    "required": ["origin"]
                   }
                 ]
               },
@@ -2580,9 +2086,7 @@
     "/cut/peer": {
       "get": {
         "summary": "Get Cut-Network Peer Info",
-        "tags": [
-          "peer"
-        ],
+        "tags": ["peer"],
         "parameters": [
           {
             "$ref": "#/components/parameters/limit"
@@ -2660,9 +2164,7 @@
       },
       "put": {
         "summary": "Put Cut-Network Peer Info",
-        "tags": [
-          "peer"
-        ],
+        "tags": ["peer"],
         "requestBody": {
           "description": "The peer that is added to the peer database of the cut P2P network of\nthe remote host.\n",
           "content": {
@@ -2725,9 +2227,7 @@
     "/chain/{chain}/hash": {
       "get": {
         "summary": "Get Block Hashes",
-        "tags": [
-          "blockhash"
-        ],
+        "tags": ["blockhash"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -2815,9 +2315,7 @@
       "post": {
         "summary": "Get Block Hash Branches",
         "description": "A page of block hashes from branches of the block chain in\n**descending** order.\n\nOnly blocks are returned that are ancestors of the some block in the\nset of upper bounds and are not ancestors of any block in the set of\nlower bounds.\n",
-        "tags": [
-          "blockhash"
-        ],
+        "tags": ["blockhash"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -2860,21 +2358,15 @@
               "examples": {
                 "singletonLimited": {
                   "value": {
-                    "lower": [
-                      "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
-                    ],
-                    "upper": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ]
+                    "lower": ["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"],
+                    "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
                   },
                   "summary": "Ancestors of block that are not acestors of another block"
                 },
                 "singleton": {
                   "value": {
                     "lower": [],
-                    "upper": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ]
+                    "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
                   },
                   "summary": "Ancestors of one block"
                 },
@@ -2887,12 +2379,8 @@
                 },
                 "empty2": {
                   "value": {
-                    "lower": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ],
-                    "upper": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ]
+                    "lower": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"],
+                    "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
                   },
                   "summary": "Another example that returns an empty page"
                 }
@@ -2981,9 +2469,7 @@
       "get": {
         "summary": "Get Block Headers",
         "description": "A page of a collection of block headers in **ascending** order\nthat satisfies query parameters. Any block header from the chain\ndatabase is returned. **This includes headers of orphaned blocks.**\n",
-        "tags": [
-          "header"
-        ],
+        "tags": ["header"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3148,9 +2634,7 @@
       "get": {
         "summary": "Get Block Header by Hash",
         "description": "Query a block header by its hash",
-        "tags": [
-          "header"
-        ],
+        "tags": ["header"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3250,9 +2734,7 @@
       "post": {
         "summary": "Get Block Header Branches",
         "description": "A page of block headers from branches of the block chain in\n**descending** order.\n\nOnly blocks are returned that are ancestors of the some block in the\nset of upper bounds and are not ancestors of any block in the set of\nlower bounds.\n",
-        "tags": [
-          "header"
-        ],
+        "tags": ["header"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3295,21 +2777,15 @@
               "examples": {
                 "singletonLimited": {
                   "value": {
-                    "lower": [
-                      "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
-                    ],
-                    "upper": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ]
+                    "lower": ["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"],
+                    "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
                   },
                   "summary": "Ancestors of block that are not ancestors of another block"
                 },
                 "singleton": {
                   "value": {
                     "lower": [],
-                    "upper": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ]
+                    "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
                   },
                   "summary": "Ancestors of one block"
                 },
@@ -3322,12 +2798,8 @@
                 },
                 "empty2": {
                   "value": {
-                    "lower": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ],
-                    "upper": [
-                      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-                    ]
+                    "lower": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"],
+                    "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
                   },
                   "summary": "Another example that returns an empty page"
                 }
@@ -3494,9 +2966,7 @@
     "/chain/{chain}/payload/{payloadHash}": {
       "get": {
         "summary": "Get Block Payload",
-        "tags": [
-          "payload"
-        ],
+        "tags": ["payload"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3590,9 +3060,7 @@
     "/chain/{chain}/payload/batch": {
       "post": {
         "summary": "Get Batch of Block Payload",
-        "tags": [
-          "payload"
-        ],
+        "tags": ["payload"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3661,9 +3129,7 @@
     "/chain/{chain}/payload/{payloadHash}/outputs": {
       "get": {
         "summary": "Get Block Payload With Outputs",
-        "tags": [
-          "payload"
-        ],
+        "tags": ["payload"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3766,9 +3232,7 @@
     "/chain/{chain}/payload/outputs/batch": {
       "post": {
         "summary": "Get Batch of Block Payload With Outputs",
-        "tags": [
-          "payload"
-        ],
+        "tags": ["payload"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3827,9 +3291,7 @@
     "/chain/{chain}/mempool/getPending": {
       "post": {
         "summary": "Get Pending Transactions from the Mempool",
-        "tags": [
-          "mempool"
-        ],
+        "tags": ["mempool"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3888,23 +3350,15 @@
                 "examples": {
                   "singleton": {
                     "value": {
-                      "hashes": [
-                        "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s"
-                      ],
-                      "highwaterMark": [
-                        7530864100535969000,
-                        399
-                      ]
+                      "hashes": ["qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s"],
+                      "highwaterMark": [7530864100535969000, 399]
                     },
                     "summary": "Result with one transaction"
                   },
                   "empty": {
                     "value": {
                       "hashes": [],
-                      "highwaterMark": [
-                        -4683248684880063000,
-                        436
-                      ]
+                      "highwaterMark": [-4683248684880063000, 436]
                     },
                     "summary": "Empty result"
                   }
@@ -3918,9 +3372,7 @@
     "/chain/{chain}/mempool/member": {
       "post": {
         "summary": "Check for Pending Transactions in the Mempool",
-        "tags": [
-          "mempool"
-        ],
+        "tags": ["mempool"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -3953,15 +3405,11 @@
                 },
                 "examples": {
                   "hit": {
-                    "value": [
-                      true
-                    ],
+                    "value": [true],
                     "summary": "result for existing transaction"
                   },
                   "miss": {
-                    "value": [
-                      false
-                    ],
+                    "value": [false],
                     "summary": "result for missing transaction"
                   },
                   "empty": {
@@ -3978,9 +3426,7 @@
     "/chain/{chain}/mempool/lookup": {
       "post": {
         "summary": "Lookup Pending Transactions in the Mempool",
-        "tags": [
-          "mempool"
-        ],
+        "tags": ["mempool"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -4012,10 +3458,7 @@
                     "properties": {
                       "tag": {
                         "type": "string",
-                        "enum": [
-                          "Missing",
-                          "Pending"
-                        ]
+                        "enum": ["Missing", "Pending"]
                       },
                       "contents": {
                         "$ref": "#/components/schemas/signedTxText"
@@ -4055,9 +3498,7 @@
     "/chain/{chain}/mempool/insert": {
       "put": {
         "summary": "Insert Transactions into the Mempool",
-        "tags": [
-          "mempool"
-        ],
+        "tags": ["mempool"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -4109,9 +3550,7 @@
     "/chain/{chain}/mempool/peer": {
       "get": {
         "summary": "Get Chain Mempool-Network Peer Info",
-        "tags": [
-          "peer"
-        ],
+        "tags": ["peer"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -4193,9 +3632,7 @@
       },
       "put": {
         "summary": "Put Chain Mempool-Network Peer Info",
-        "tags": [
-          "peer"
-        ],
+        "tags": ["peer"],
         "parameters": [
           {
             "$ref": "#/components/parameters/chain"
@@ -4268,10 +3705,7 @@
           "variables": {
             "schema": {
               "default": "http",
-              "enum": [
-                "http",
-                "https"
-              ]
+              "enum": ["http", "https"]
             },
             "domain": {
               "default": "example.com"
@@ -4295,9 +3729,7 @@
         }
       ],
       "get": {
-        "tags": [
-          "mining"
-        ],
+        "tags": ["mining"],
         "summary": "Get Mining Work",
         "description": "A new BlockHeader to mine on",
         "requestBody": {
@@ -4371,10 +3803,7 @@
           "variables": {
             "schema": {
               "default": "http",
-              "enum": [
-                "http",
-                "https"
-              ]
+              "enum": ["http", "https"]
             },
             "domain": {
               "default": "example.com"
@@ -4398,9 +3827,7 @@
         }
       ],
       "post": {
-        "tags": [
-          "mining"
-        ],
+        "tags": ["mining"],
         "summary": "Solved Mining Work",
         "description": "Submit a solution for a new block",
         "requestBody": {
@@ -4442,10 +3869,7 @@
           "variables": {
             "schema": {
               "default": "http",
-              "enum": [
-                "http",
-                "https"
-              ]
+              "enum": ["http", "https"]
             },
             "domain": {
               "default": "example.com"
@@ -4469,9 +3893,7 @@
         }
       ],
       "get": {
-        "tags": [
-          "mining"
-        ],
+        "tags": ["mining"],
         "summary": "Notification of Updated Work",
         "description": "An server-sent event sources that notifies miners when new mining\nwork becomes available.\n\nThe stream is terminated by the server in regular intervals and\nit is up to the client to request a new stream.\n",
         "requestBody": {
@@ -4514,10 +3936,7 @@
     },
     "/config": {
       "get": {
-        "tags": [
-          "config",
-          "misc"
-        ],
+        "tags": ["config", "misc"],
         "summary": "Configuration of Chainweb Node",
         "description": "Returns the configuration of chainweb-node as a JSON structure.\nSensitive information is removed from the result. The JSON schema depends\non the chainweb node version and is not part of the stable chainweb-node\nAPI.\n",
         "responses": {
@@ -4638,9 +4057,7 @@
       "post": {
         "summary": "Start a backup job",
         "description": "Backup jobs are identified by the Unix timestamp when they're begun.\n\nIf a backup job is already in progress, this endpoint will return its\nidentifier instead of starting a new one.\n\nThe RocksDB portion of the database is always backed up; if backupPact\nis set, the Sqlite (Pact) portion is backed up as well, taking much\nlonger.\n\nThere is no automatic backup retention policy - users need to delete old\nbackups.\n\nThis API is enabled by configuring the node thus:\n```yaml\nbackup:\n  api:\n    enabled: true\n  directory: {some file path to put backups in}\n```\nThe backup directory ideally will be located in the same partition as the\nRocksDB portion of the node database.\n\nRocksDB backups to the same partition as holds the active RocksDB\ndatabase will have almost zero space overhead immediately, but over time\nas the active database diverges from the backup the space overhead will\nincrease.  If the backup is to another partition, it will take longer\nand take as much disk space as the active RocksDB database.\n\nPact database backups always require about as much space as the active\nPact database does.\n",
-        "tags": [
-          "misc"
-        ],
+        "tags": ["misc"],
         "parameters": [
           {
             "$ref": "#/components/parameters/backupPact"
@@ -4674,9 +4091,7 @@
     "/check-backup/{backupId}": {
       "get": {
         "summary": "Check the status of a backup job",
-        "tags": [
-          "misc"
-        ],
+        "tags": ["misc"],
         "parameters": [
           {
             "$ref": "#/components/parameters/backupId"
@@ -4737,10 +4152,7 @@
           "variables": {
             "schema": {
               "default": "http",
-              "enum": [
-                "http",
-                "https"
-              ]
+              "enum": ["http", "https"]
             },
             "domain": {
               "default": "api.chainweb.com"
@@ -4752,9 +4164,7 @@
         }
       ],
       "get": {
-        "tags": [
-          "misc"
-        ],
+        "tags": ["misc"],
         "summary": "Health Check",
         "description": "Checks whether the chainweb-node is up and running and responding to API\nrequests. In order to check the state of consensus the\n[/cut/get](#tag/cut/paths/~1cut/get) endpoint should be used instead.\n",
         "responses": {
@@ -4799,10 +4209,7 @@
           "variables": {
             "schema": {
               "default": "http",
-              "enum": [
-                "http",
-                "https"
-              ]
+              "enum": ["http", "https"]
             },
             "domain": {
               "default": "api.chainweb.com"
@@ -4814,9 +4221,7 @@
         }
       ],
       "get": {
-        "tags": [
-          "misc"
-        ],
+        "tags": ["misc"],
         "summary": "General Node Info",
         "description": "Provides general information about the node and the chainweb version",
         "responses": {
@@ -4869,251 +4274,41 @@
                       [
                         0,
                         [
-                          [
-                            0,
-                            [
-                              5,
-                              2,
-                              3
-                            ]
-                          ],
-                          [
-                            1,
-                            [
-                              4,
-                              6,
-                              3
-                            ]
-                          ],
-                          [
-                            2,
-                            [
-                              4,
-                              7,
-                              0
-                            ]
-                          ],
-                          [
-                            3,
-                            [
-                              8,
-                              0,
-                              1
-                            ]
-                          ],
-                          [
-                            4,
-                            [
-                              9,
-                              1,
-                              2
-                            ]
-                          ],
-                          [
-                            5,
-                            [
-                              9,
-                              6,
-                              0
-                            ]
-                          ],
-                          [
-                            6,
-                            [
-                              5,
-                              7,
-                              1
-                            ]
-                          ],
-                          [
-                            7,
-                            [
-                              8,
-                              6,
-                              2
-                            ]
-                          ],
-                          [
-                            8,
-                            [
-                              9,
-                              7,
-                              3
-                            ]
-                          ],
-                          [
-                            9,
-                            [
-                              8,
-                              4,
-                              5
-                            ]
-                          ]
+                          [0, [5, 2, 3]],
+                          [1, [4, 6, 3]],
+                          [2, [4, 7, 0]],
+                          [3, [8, 0, 1]],
+                          [4, [9, 1, 2]],
+                          [5, [9, 6, 0]],
+                          [6, [5, 7, 1]],
+                          [7, [8, 6, 2]],
+                          [8, [9, 7, 3]],
+                          [9, [8, 4, 5]]
                         ]
                       ],
                       [
                         852054,
                         [
-                          [
-                            0,
-                            [
-                              15,
-                              10,
-                              5
-                            ]
-                          ],
-                          [
-                            1,
-                            [
-                              11,
-                              6,
-                              16
-                            ]
-                          ],
-                          [
-                            2,
-                            [
-                              12,
-                              7,
-                              17
-                            ]
-                          ],
-                          [
-                            3,
-                            [
-                              13,
-                              8,
-                              18
-                            ]
-                          ],
-                          [
-                            4,
-                            [
-                              14,
-                              9,
-                              19
-                            ]
-                          ],
-                          [
-                            5,
-                            [
-                              8,
-                              7,
-                              0
-                            ]
-                          ],
-                          [
-                            6,
-                            [
-                              8,
-                              9,
-                              1
-                            ]
-                          ],
-                          [
-                            7,
-                            [
-                              9,
-                              5,
-                              2
-                            ]
-                          ],
-                          [
-                            8,
-                            [
-                              5,
-                              6,
-                              3
-                            ]
-                          ],
-                          [
-                            9,
-                            [
-                              4,
-                              6,
-                              7
-                            ]
-                          ],
-                          [
-                            10,
-                            [
-                              11,
-                              0,
-                              19
-                            ]
-                          ],
-                          [
-                            11,
-                            [
-                              12,
-                              10,
-                              1
-                            ]
-                          ],
-                          [
-                            12,
-                            [
-                              13,
-                              11,
-                              2
-                            ]
-                          ],
-                          [
-                            13,
-                            [
-                              12,
-                              14,
-                              3
-                            ]
-                          ],
-                          [
-                            14,
-                            [
-                              13,
-                              15,
-                              4
-                            ]
-                          ],
-                          [
-                            15,
-                            [
-                              14,
-                              0,
-                              16
-                            ]
-                          ],
-                          [
-                            16,
-                            [
-                              15,
-                              1,
-                              17
-                            ]
-                          ],
-                          [
-                            17,
-                            [
-                              16,
-                              2,
-                              18
-                            ]
-                          ],
-                          [
-                            18,
-                            [
-                              17,
-                              3,
-                              19
-                            ]
-                          ],
-                          [
-                            19,
-                            [
-                              10,
-                              4,
-                              18
-                            ]
-                          ]
+                          [0, [15, 10, 5]],
+                          [1, [11, 6, 16]],
+                          [2, [12, 7, 17]],
+                          [3, [13, 8, 18]],
+                          [4, [14, 9, 19]],
+                          [5, [8, 7, 0]],
+                          [6, [8, 9, 1]],
+                          [7, [9, 5, 2]],
+                          [8, [5, 6, 3]],
+                          [9, [4, 6, 7]],
+                          [10, [11, 0, 19]],
+                          [11, [12, 10, 1]],
+                          [12, [13, 11, 2]],
+                          [13, [12, 14, 3]],
+                          [14, [13, 15, 4]],
+                          [15, [14, 0, 16]],
+                          [16, [15, 1, 17]],
+                          [17, [16, 2, 18]],
+                          [18, [17, 3, 19]],
+                          [19, [10, 4, 18]]
                         ]
                       ]
                     ]
@@ -5127,9 +4322,7 @@
     },
     "/header/updates": {
       "get": {
-        "tags": [
-          "misc"
-        ],
+        "tags": ["misc"],
         "summary": "Blocks Event Stream",
         "description": "An source of server events that emits a `BlockHeader` event for each new\nblock header that is added to the chain database of the remote node.\n\nThe stream contains blocks that may later become orphaned. It is\ntherefor recommended to buffer events on the client side for the most\nrecent block heights until the desired confirmation depth is reached.\n\nThe server may terminate this stream from time to time and it is up to\nthe client to reinitiate the stream.\n",
         "responses": {
@@ -5156,9 +4349,7 @@
                     "properties": {
                       "event": {
                         "type": "string",
-                        "enum": [
-                          "BlockHeader"
-                        ]
+                        "enum": ["BlockHeader"]
                       },
                       "data": {
                         "properties": {

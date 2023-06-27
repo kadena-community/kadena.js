@@ -4,6 +4,6 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "@kadena-dev/rush-fix-versions": "^0.0.2"
+    "@kadena-dev/rush-fix-versions": "^0.0.3"
   }
 }

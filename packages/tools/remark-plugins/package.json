@@ -1,18 +1,28 @@
 {
-  "name": "@kadena-dev/remark-plugins",
+  "name": "@kadena-dev/markdown",
   "version": "1.0.0",
+  "private": true,
   "description": "Kadena monorepo Remark plugins",
-  "main": "index.js",
+  "license": "MIT",
   "type": "module",
+  "main": "lib/index.js",
+  "bin": {
+    "remark": "./node_modules/remark-cli/cli.js"
+  },
   "scripts": {
-    "lint": "eslint src",
     "build": "tsc",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier src --check",
+    "format:md": "remark README.md -o --use ./lib/index.js",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier src --write",
+    "lint": "eslint src",
     "test": ""
   },
-  "license": "MIT",
   "dependencies": {
     "mdast-comment-marker": "^2.1.2",
     "mdast-zone": "^5.1.1",
+    "remark-cli": "~11.0.0",
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
     "remark-order-reference-links": "^0.0.3",
@@ -28,7 +38,9 @@
     "@types/mdast": "^3.0.11",
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
-    "unified": "^10.1.2",
-    "typescript": "5.0.4"
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
+    "typescript": "5.0.4",
+    "unified": "^10.1.2"
   }
 }

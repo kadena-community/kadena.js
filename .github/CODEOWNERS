@@ -3,7 +3,10 @@
 /*.*                                            @alber70g
 /*.md                                           @webpro
 /common                                         @alber70g
+/common/config/rush/pnpm-lock.yaml
+/common/config/rush/repo-state.json
 /packages/apps/graph                            @alber70g
+/packages/apps/kadena-docs                      @sstraatemans
 
 /packages/libs/chainweb-stream-client           @Takadenoshi
 
@@ -13,7 +16,6 @@
 /packages/libs/pactjs-generator                 @alber70g
 /packages/libs/types                            @alber70g
 /packages/tools/pactjs-cli                      @alber70g
-
 /packages/tools/create-kadena-app               @jermaine150
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
