@@ -223,16 +223,16 @@ const CrossChainTransferFinisher: FC = () => {
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>
                       setKadenaXChainGas((e.target as HTMLInputElement).value),
-                    value: kadenaXChainGas,
+                    defaultValue: kadenaXChainGas,
                   }}
                 />
                 <TextField
                   label={t('Gas Price')}
                   inputProps={{
-                    placeholder: t('Enter Gas Payer'),
+                    placeholder: t('Enter Gas Price'),
                     onChange: (e) =>
                       setGasPrice(Number((e.target as HTMLInputElement).value)),
-                    value: formattedGasPrice,
+                    defaultValue: formattedGasPrice,
                   }}
                 />
               </>
