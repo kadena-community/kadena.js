@@ -1,7 +1,9 @@
 import { Heading, Stack, Text } from '@kadena/react-components';
 
 import { BrowseSection } from '@/components';
-import { ITopDoc, getTopDocs } from '@/data/getTopDocs';
+import { Article, Content } from '@/components/Layout/components';
+import { HomeHeader } from '@/components/Layout/Landing/components';
+import { getTopDocs,ITopDoc } from '@/data/getTopDocs';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -9,8 +11,6 @@ import {
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
-import { HomeHeader } from '@/components/Layout/Landing/components';
-import { Article, Content } from '@/components/Layout/components';
 
 interface IProps {
   topDocs: ITopDoc[];

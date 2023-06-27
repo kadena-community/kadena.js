@@ -1,4 +1,8 @@
+import { SystemIcon, Tabs, TextField } from '@kadena/react-ui';
+
 import { SearchForm } from '@/components';
+import { Article, Content } from '@/components/Layout/components';
+import { SearchHeader } from '@/components/Layout/Landing/components';
 import { useSearch } from '@/hooks';
 import { createLinkFromMD } from '@/utils';
 import {
@@ -9,9 +13,6 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { SearchHeader } from '@/components/Layout/Landing/components';
-import { Article, Content } from '@/components/Layout/components';
-import { SystemIcon, Tabs, TextField } from '@kadena/react-ui';
 
 const Search: FC = () => {
   const {

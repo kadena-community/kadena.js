@@ -1,6 +1,7 @@
 import { GradientText, Heading, Stack } from '@kadena/react-components';
 
 import { StyledHeader, SubHeader, Wrapper } from './styles';
+
 import React, { FC, ReactNode } from 'react';
 
 interface IProps {
