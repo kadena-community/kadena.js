@@ -1,12 +1,12 @@
 import React, { FC, ReactNode } from 'react';
 
-export interface ITabsPanelProps {
+export interface ITabContentProps {
   children: ReactNode;
   selected?: boolean;
   value: string;
 }
 
-export const TabsPanel: FC<ITabsPanelProps> = ({
+export const TabContent: FC<ITabContentProps> = ({
   children,
   selected = false,
 }) => {

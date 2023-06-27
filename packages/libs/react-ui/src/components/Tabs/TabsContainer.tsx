@@ -1,6 +1,6 @@
 import { Tab } from './Tab';
+import { TabContent } from './TabContent';
 import { selectorLine, tabsContainer } from './Tabs.css';
-import { TabsPanel } from './TabsPanel';
 
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
@@ -63,7 +63,7 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
       {React.Children.map(children, (child, idx) => {
         if (!React.isValidElement(child)) return null;
 
-        if (child.type === TabsPanel) {
+        if (child.type === TabContent) {
           const props = {
             selected: selectedTab === child.props.value,
           };

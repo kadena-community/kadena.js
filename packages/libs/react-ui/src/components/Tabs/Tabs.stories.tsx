@@ -51,9 +51,9 @@ export const Primary: Story = {
 
           {items.map((item) => {
             return (
-              <Tabs.Panel key={item} value={item}>
+              <Tabs.Content key={item} value={item}>
                 content {item}
-              </Tabs.Panel>
+              </Tabs.Content>
             );
           })}
         </Tabs>
