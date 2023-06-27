@@ -2,8 +2,8 @@
 
 <p align="center">
   <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
   </picture>
 </p>
 
@@ -19,4 +19,4 @@ crypto:
 - `PactNumber`
 
 [1]:
-  https://github.com/kadena-community/kadena.js/blob/master/packages/libs/pactjs/etc/pactjs.api.md
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs/etc/pactjs.api.md
