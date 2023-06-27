@@ -47,7 +47,7 @@ function creditInTheTargetChain(
   );
 }
 
-const { submit, pollCreateSpv } = getClient();
+const { submit, pollSpv: pollCreateSpv } = getClient();
 
 // TODO: find a way to send some signal about the step to the consumer of this function
 // it could be a generator function of a event emitter.
@@ -59,6 +59,37 @@ export async function doCrossChianTransfer(
   to: IAccount,
   amount: string,
 ) {
+  await Promise.resolve(
+    debitInTheFirstChain(from, to, amount).command as ICommand,
+  )
+    .then(sign)
+    .then(submit)
+    .then(([[requestKey], poll]) => Promise.all([requestKey, poll()]))
+    .then(([requestKey, result]) => result[requestKey])
+    .then((status) =>
+      status.result.status === 'failure'
+        ? Promise.reject('DEBIT REJECTED')
+        : status,
+    )
+    .then((status) =>
+      Promise.all([status, pollCreateSpv(status.reqKey, to.chainId)]),
+    )
+    .then(
+      ([status, proof]) =>
+        creditInTheTargetChain(
+          {
+            pactId: status.continuation?.pactId,
+            proof,
+            rollback: false,
+            step: '1',
+          },
+          to.chainId,
+        ).command as ICommand,
+    )
+    .then(sign)
+    .then(submit)
+    .then(([, poll]) => poll());
+
   const command = debitInTheFirstChain(from, to, amount).command as ICommand;
 
   const transaction = await sign(command);

@@ -7,21 +7,6 @@ export const jsonRequest = (body: object) => ({
   body: JSON.stringify(body),
 });
 
-export async function parseResponse<T extends object | string>(
-  response: Response,
-): Promise<T> {
-  if (response.ok) {
-    return response.json();
-  } else {
-    try {
-      const textResponse: string = await response.text();
-      return Promise.reject(new Error(textResponse));
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-}
-
 export function getUrl(
   host: string,
   endpoint: string,

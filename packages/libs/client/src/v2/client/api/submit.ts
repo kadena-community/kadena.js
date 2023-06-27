@@ -1,9 +1,6 @@
-import {
-  getUrl,
-  ICommandRequest,
-  jsonRequest,
-  parseResponse,
-} from '../utils/utils';
+import { parseResponse } from '@kadena/chainweb-node-client';
+
+import { getUrl, ICommandRequest, jsonRequest } from '../utils/utils';
 
 import fetch from 'cross-fetch';
 

@@ -4,7 +4,7 @@ import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { ICommand } from '../pact';
 
 import { ILocalOptions, local, LocalResponse } from './api/local';
-import { createSpv, pollCreateSpv } from './api/spv';
+import { getSpv, pollSpv } from './api/spv';
 import { getStatus, pollStatus } from './api/status';
 import { submit } from './api/submit';
 import {
@@ -59,7 +59,7 @@ interface IClient {
    * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
-  pollCreateSpv: (
+  pollSpv: (
     requestKey: string,
     targetChainId: string,
     options?: IPollOptions & INetworkOptions,
@@ -69,7 +69,7 @@ interface IClient {
    * calls '/spv' endpoint only once. if the request submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
-  createSpv: (
+  getSpv: (
     requestKey: string,
     targetChainId: string,
     options?: INetworkOptions,
@@ -223,16 +223,16 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return mergedResults;
     },
 
-    pollCreateSpv: (requestKey, targetChainId, options) => {
-      return pollCreateSpv(
+    pollSpv: (requestKey, targetChainId, options) => {
+      return pollSpv(
         getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,
         options,
       );
     },
-    createSpv: (requestKey, targetChainId, options) => {
-      return createSpv(
+    getSpv: (requestKey, targetChainId, options) => {
+      return getSpv(
         getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,

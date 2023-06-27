@@ -85,12 +85,7 @@ const getHostUrl = (networkId: string, chainId: string) => {
   }
 };
 
-const {
-  local,
-  submit,
-  pollStatus,
-  pollCreateSpv: pollSpv,
-} = getClient(getHostUrl);
+const { local, submit, pollStatus, pollSpv: pollSpv } = getClient(getHostUrl);
 
 async function localExample() {
   const result = await local(commandWithSignatures);
