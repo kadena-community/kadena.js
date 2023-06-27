@@ -27,7 +27,7 @@ export async function finishXChainTransfer(
   sender: string,
 ): Promise<ContCommand | { error: string }> {
   const host = generateApiHost(server, network, chainId);
-  const hostSPV = `${generateApiHost(server, network, '1')}/spv`;
+  const hostSPV = `${generateApiHost(server, network, '1')}`;
 
   try {
     const contCommand = await getContCommand(
