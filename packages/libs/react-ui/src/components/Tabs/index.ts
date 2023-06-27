@@ -1,10 +1,8 @@
-import { FC } from 'react';
-import { Tab } from './Tab';
-import { TabsPanel } from './TabsPanel';
+import { ITabProps, Tab } from './Tab';
+import { ITabsContainerProps, TabsContainer } from './TabsContainer';
+import { ITabsPanelProps, TabsPanel } from './TabsPanel';
 
-import { TabsContainer, ITabsContainerProps } from './TabsContainer';
-import { ITabProps } from './Tab';
-import { ITabsPanelProps } from './TabsPanel';
+import { FC } from 'react';
 
 interface ITabs extends FC<ITabsContainerProps> {
   Tab: FC<ITabProps>;

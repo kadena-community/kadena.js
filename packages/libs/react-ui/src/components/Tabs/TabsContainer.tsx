@@ -1,8 +1,8 @@
 import { Tab } from './Tab';
 import { selectorLine, tabsContainer } from './Tabs.css';
+import { TabsPanel } from './TabsPanel';
 
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
-import { TabsPanel } from './TabsPanel';
 
 export interface ITabsContainerProps {
   children?: ReactNode;
