@@ -83,7 +83,8 @@ export async function getTransferData({
     }
 
     const [senderAccount, receiverAccount, guard, targetChain, amount] =
-      found.tx?.continuation?.continuation.args;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      found.tx?.continuation?.continuation.args as Array<any>;
 
     const { step, stepHasRollback, pactId } = found.tx
       ?.continuation as IPactExec;

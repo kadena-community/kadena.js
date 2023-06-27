@@ -34,8 +34,8 @@ const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
   const [network, setNetwork] = useState<Network>('Mainnet');
 
   useLayoutEffect(() => {
-    const initialNetwork: string = getItem('network');
-    if (initialNetwork) setNetwork(getItem('network'));
+    const initialNetwork = getItem('network') as Network;
+    if (initialNetwork) setNetwork(getItem('network') as Network);
   }, []);
 
   useEffect(() => {
