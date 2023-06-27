@@ -2,13 +2,17 @@ import { IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
 import { loadSearchResults } from './utils';
 
+import debounce from 'lodash.debounce';
 import { SearchResult } from 'minisearch';
 import { useRouter } from 'next/router';
 import {
+  ChangeEvent,
   FormEvent,
+  FormEventHandler,
   MutableRefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -25,6 +29,7 @@ interface IProps {
   query: string | undefined;
   staticSearchResults: SearchResult[];
   conversation: IConversation;
+  handleInputChange: FormEventHandler<HTMLInputElement>;
 }
 
 export const useSearch = (): IProps => {
@@ -58,16 +63,16 @@ export const useSearch = (): IProps => {
     [dispatch, setStaticSearchResults],
   );
 
-  // const updateQueryDebounced = useMemo(() => {
-  //   return debounce(updateQuery, 500);
-  // }, [updateQuery]);
+  const updateQueryDebounced = useMemo(() => {
+    return debounce(updateQuery, 500);
+  }, [updateQuery]);
 
-  // const handleInputChange = (event: Event): void => {
-  //   const { currentTarget } = event as unknown as ChangeEvent<HTMLInputElement>;
-  //   const value = currentTarget.value;
+  const handleInputChange = (event: FormEvent<HTMLInputElement>): void => {
+    const { currentTarget } = event as unknown as ChangeEvent<HTMLInputElement>;
+    const value = currentTarget.value;
 
-  //   updateQueryDebounced(value);
-  // };
+    updateQueryDebounced(value);
+  };
 
   useEffect(() => {
     if (q !== undefined && q !== '') {
@@ -108,5 +113,6 @@ export const useSearch = (): IProps => {
     query,
     staticSearchResults,
     conversation,
+    handleInputChange,
   };
 };

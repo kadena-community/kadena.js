@@ -27,7 +27,7 @@ jobs:
           node common/scripts/install-run-rush.js build -t @kadena/kadena-docs
       - name: Create page tree JSON
         run: |
-          node ./../../../common/scripts/install-run-rushx.js createtree
+          node ./../../../common/scripts/install-run-rushx.js build:scripts
         working-directory: packages/apps/kadena-docs
       - name: Cypress tests
         uses: cypress-io/github-action@v5
