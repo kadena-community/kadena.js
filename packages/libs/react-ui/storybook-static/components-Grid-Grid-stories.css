@@ -1,0 +1,9 @@
+._1v9aqxb0 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+._1v9aqxb1 {
+  grid-column-start: auto;
+}
+
+/*# sourceMappingURL=components-Grid-Grid-stories.css.map*/

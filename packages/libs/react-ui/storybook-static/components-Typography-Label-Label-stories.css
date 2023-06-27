@@ -1,0 +1,22 @@
+._3vj8w12 {
+  border-bottom: 1px solid var(--_3vj8w10, var(--_17aqzz020));
+}
+.inputGroup ._3vj8w12 {
+  border-radius: 0;
+}
+.inputGroup ._3vj8w12:first-child {
+  border-top-right-radius: var(--_17aqzz0q);
+  border-top-left-radius: var(--_17aqzz0q);
+}
+.inputGroup ._3vj8w12:last-child {
+  border-bottom-right-radius: var(--_17aqzz0q);
+  border-bottom-left-radius: var(--_17aqzz0q);
+}
+._3vj8w16::placeholder {
+  color: var(--_17aqzz020);
+}
+._3vj8w1a {
+  border: 1px solid var(--_17aqzz020);
+}
+
+/*# sourceMappingURL=components-Typography-Label-Label-stories.css.map*/

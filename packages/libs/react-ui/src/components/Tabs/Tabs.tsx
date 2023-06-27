@@ -28,7 +28,7 @@ export const Tabs: ITabsComposition = ({ children, defaultSelected = '' }) => {
     ) as HTMLButtonElement;
     if (selected === undefined) return;
 
-    // set position of the line
+    // set position of the bottom line
     lineRef.current.style.setProperty(
       'transform',
       `translateX(${selected.offsetLeft}px)`,
