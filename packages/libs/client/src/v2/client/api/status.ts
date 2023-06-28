@@ -82,8 +82,8 @@ export const pollStatus: IPollStatus = (
 
   const returnPromise: IPollRequestPromise<ICommandResult> = Object.assign(
     Promise.all(
-      Object.entries(prs).map(([requestKey, promise]) =>
-        promise.promise.then((data) => ({ [requestKey]: data })),
+      Object.entries(prs).map(([requestKey, pr]) =>
+        pr.promise.then((data) => ({ [requestKey]: data })),
       ),
     ).then(mergeAll),
     { requests: mapRecord(prs, ({ promise }) => promise) },

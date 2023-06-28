@@ -12,7 +12,8 @@ export function getUrl(
   endpoint: string,
   params?: object,
 ): string {
-  const urlStr = `${host}${
+  const cleanHost = host.endsWith('/') ? host.slice(0, host.length - 1) : host;
+  const urlStr = `${cleanHost}${
     endpoint.startsWith('/') ? endpoint : `/${endpoint}`
   }`;
   const url = new URL(urlStr);
@@ -104,7 +105,7 @@ export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
   requests: Record<string, Promise<T>>;
 };
 
-export const mergeAllPollRequestPromises = <T extends object>(
+export const mergeAllPollRequestPromises = <T extends object | string>(
   results: Array<IPollRequestPromise<T>>,
 ): IPollRequestPromise<T> => {
   return Object.assign(Promise.all(results).then(mergeAll), {

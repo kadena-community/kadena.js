@@ -7,6 +7,7 @@ import { ILocalOptions, local, LocalResponse } from './api/local';
 import { getSpv, pollSpv } from './api/spv';
 import { getStatus, pollStatus } from './api/status';
 import { submit } from './api/submit';
+import { getRequestStorage } from './utils/request-storege';
 import {
   ICommandRequestWithoutHash,
   INetworkOptions,
@@ -16,6 +17,9 @@ import {
   mergeAll,
   mergeAllPollRequestPromises,
 } from './utils/utils';
+
+type IOptions = IPollOptions &
+  (INetworkOptions | { networkId?: undefined; chainId?: undefined });
 
 interface IClient {
   /**
@@ -44,7 +48,7 @@ interface IClient {
    */
   pollStatus: (
     requestKeys?: string[] | string,
-    options?: IPollOptions & INetworkOptions,
+    options?: IOptions,
   ) => IPollRequestPromise<ICommandResult>;
 
   /**
@@ -62,7 +66,7 @@ interface IClient {
   pollSpv: (
     requestKey: string,
     targetChainId: string,
-    options?: IPollOptions & INetworkOptions,
+    options?: IOptions,
   ) => Promise<string>;
 
   /**
@@ -90,58 +94,18 @@ interface IGetClient {
   ): IClient;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const getRequestStorage = (initial?: Map<string, string>) => {
-  const storage = new Map<string, string>(initial);
-
-  return {
-    add: (hostUrl: string, requestKeys: string[]) => {
-      const list = storage.get(hostUrl) ?? [];
-      requestKeys.forEach((requestKey) => {
-        storage.set(requestKey, hostUrl);
-      });
-    },
-    remove: (requestKeys: string[]) => {
-      requestKeys.forEach((requestKey) => {
-        storage.delete(requestKey);
-      });
-    },
-    groupByHost: () => {
-      const byHost = new Map<string, string[]>();
-      storage.forEach((url, requestKey) => {
-        const prev = byHost.get(url) ?? [];
-        byHost.set(url, [...prev, requestKey]);
-      });
-      return [...byHost.entries()];
-    },
-    getByHost: (hostUrl: string) => {
-      const list: string[] = [];
-      storage.forEach((url, requestKey) => {
-        if (url === hostUrl) {
-          list.push(requestKey);
-        }
-      });
-      return list;
-    },
-    get: (requestKey: string) => storage.get(requestKey),
-  };
-};
-
 export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
 
-  function groupByHost(
-    requestKeys?: string[],
-    options?: IPollOptions & INetworkOptions,
-  ) {
+  function groupByHost(requestKeys?: string[], options?: IOptions) {
     let requestStorage = storage;
     if (requestKeys !== undefined) {
       const map = new Map<string, string>(
         requestKeys.map((requestKey) => [
           requestKey,
           storage.get(requestKey) ??
-            getHost(options!.networkId, options!.chainId),
+            getHost(options!.networkId!, options!.chainId!),
         ]),
       );
       requestStorage = getRequestStorage(map);
@@ -150,7 +114,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   }
   function pollStatusFunction(
     requestKeys?: string[] | string,
-    options?: IPollOptions & INetworkOptions,
+    options?: IOptions,
   ) {
     const results = groupByHost(
       typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
@@ -163,7 +127,8 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     const mergedResults = mergeAllPollRequestPromises(results);
 
     // remove from the pending requests storage
-    Object.entries(mergedResults).forEach(([key, promise]) => {
+    Object.entries(mergedResults.requests).forEach(([key, promise]) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       promise.then(() => {
         storage.remove([key]);
       });
@@ -225,7 +190,8 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
     pollSpv: (requestKey, targetChainId, options) => {
       return pollSpv(
-        getHost(options!.networkId, options!.chainId),
+        storage.get(requestKey) ??
+          getHost(options!.networkId!, options!.chainId!),
         requestKey,
         targetChainId,
         options,
@@ -233,7 +199,8 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     },
     getSpv: (requestKey, targetChainId, options) => {
       return getSpv(
-        getHost(options!.networkId, options!.chainId),
+        storage.get(requestKey) ??
+          getHost(options!.networkId, options!.chainId),
         requestKey,
         targetChainId,
       );
