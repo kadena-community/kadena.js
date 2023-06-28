@@ -13,6 +13,7 @@ import {
 } from '../utils/utils';
 
 import { Translate } from 'next-translate';
+
 interface ITransactionData {
   sender: { chain: ChainId; account: string };
   receiver: { chain: ChainId; account: string };

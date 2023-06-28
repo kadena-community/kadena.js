@@ -77,7 +77,9 @@
     "next-translate-plugin": "~2.0.5",
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "eslint-config-prettier": "~8.8.0",
+    "eslint-plugin-prettier": "~4.2.1"
   },
   "volta": {
     "node": "16.15.0"
