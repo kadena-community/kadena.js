@@ -75,7 +75,6 @@
     "@vanilla-extract/jest-transform": "1.1.1",
     "@vanilla-extract/webpack-plugin": "2.2.0",
     "eslint": "^8.15.0",
-    "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-storybook": "~0.6.12",
     "eslint-import-resolver-typescript": "3.5.5",
     "mini-css-extract-plugin": "2.7.6",

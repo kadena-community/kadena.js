@@ -16,7 +16,7 @@ export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
 }) => {
   const Icon = icon;
   return (
-    <nav className={navClass} data-testid="kda-breadcrumps">
+    <nav className={navClass} data-testid="kda-breadcrumbs">
       {Icon && (
         <span className={iconContainer}>
           <Icon size="sm" />
