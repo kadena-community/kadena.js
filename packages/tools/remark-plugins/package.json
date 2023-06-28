@@ -43,6 +43,6 @@
     "sort-package-json": "~2.4.1",
     "typescript": "5.0.4",
     "unified": "^10.1.2",
-    "vfile": "~6.0.0"
+    "vfile": "5.3.7"
   }
 }
