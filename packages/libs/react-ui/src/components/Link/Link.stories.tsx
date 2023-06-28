@@ -1,6 +1,7 @@
+import { ILinkProps, Link } from '.';
+
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { ILinkProps, Link } from '.';
 
 const meta: Meta<ILinkProps> = {
   title: 'Components/Link',

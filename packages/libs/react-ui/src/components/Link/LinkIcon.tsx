@@ -1,11 +1,10 @@
-import { FC } from 'react';
-import { iconContainerClass } from './Link.css';
-import React from 'react';
 import { SystemIcon } from '../Icons';
 
-export interface ILinkIconProps {}
+import { iconContainerClass } from './Link.css';
 
-export const LinkIcon: FC<ILinkIconProps> = ({}) => {
+import React, { FC } from 'react';
+
+export const LinkIcon: FC = () => {
   return (
     <span className={iconContainerClass}>
       <SystemIcon.Link size="md" />

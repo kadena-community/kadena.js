@@ -1,13 +1,13 @@
+import { ILinkProps, Link as LinkRoot } from './Link';
+import { LinkIcon } from './LinkIcon';
+
 import { FC } from 'react';
-import { Link as LinkRoot, ILinkProps } from './Link';
 
-import { LinkIcon, ILinkIconProps } from './LinkIcon';
-
-export { ILinkProps, ILinkIconProps };
+export { ILinkProps };
 
 interface ILink {
   Root: FC<ILinkProps>;
-  Icon: FC<ILinkIconProps>;
+  Icon: typeof LinkIcon;
 }
 
 export const Link: ILink = {
