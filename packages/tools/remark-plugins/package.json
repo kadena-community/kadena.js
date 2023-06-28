@@ -41,6 +41,7 @@
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
     "typescript": "5.0.4",
-    "unified": "^10.1.2"
+    "unified": "^10.1.2",
+    "vfile": "~6.0.0"
   }
 }
