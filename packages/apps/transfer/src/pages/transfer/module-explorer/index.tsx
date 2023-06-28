@@ -47,8 +47,7 @@ const GetCode: FC = () => {
       const data = await describeModule(
         moduleName,
         convertIntToChainId(moduleChain),
-        chainNetwork[network].network,
-        chainNetwork[network].server,
+        network,
         'not-real',
         0.00000001,
       );

@@ -1,4 +1,4 @@
-import { getKadenaConstantByNetwork, Network } from "@/constants/kadena";
+import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
 
 export interface ITransaction {
   fromAccount: string;
@@ -24,7 +24,9 @@ export async function getTransactions(options: {
 
   try {
     const result: ITransaction[] = await fetch(
-      `https://${getKadenaConstantByNetwork(network).estatsHost()}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
+      `https://${getKadenaConstantByNetwork(
+        network,
+      ).estatsHost()}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
     ).then((res) => res.json());
 
     return result;
