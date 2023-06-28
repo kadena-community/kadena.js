@@ -1336,6 +1336,7 @@ importers:
       '@types/mdast': ^3.0.11
       '@types/node': ^16.0.0
       eslint: ^8.15.0
+      mdast-builder: ~1.1.1
       mdast-comment-marker: ^2.1.2
       mdast-zone: ^5.1.1
       prettier: ~2.8.8
@@ -1351,7 +1352,9 @@ importers:
       typescript: 5.0.4
       unified: ^10.1.2
       unist-util-visit: ^4.1.2
+      vfile: ~6.0.0
     dependencies:
+      mdast-builder: 1.1.1
       mdast-comment-marker: 2.1.2
       mdast-zone: 5.1.1
       remark-cli: 11.0.0
@@ -1373,6 +1376,7 @@ importers:
       sort-package-json: 2.4.1
       typescript: 5.0.4
       unified: 10.1.2
+      vfile: 6.0.0
 
   ../../packages/tools/rush-fix-versions:
     specifiers:
@@ -19596,6 +19600,12 @@ packages:
       blueimp-md5: 2.19.0
     dev: true
 
+  /mdast-builder/1.1.1:
+    resolution: {integrity: sha512-a3KBk/LmYD6wKsWi8WJrGU/rXR4yuF4Men0JO0z6dSZCm5FrXXWTRDjqK0vGSqa+1M6p9edeuypZAZAzSehTUw==}
+    dependencies:
+      '@types/unist': 2.0.6
+    dev: false
+
   /mdast-comment-marker/2.1.2:
     resolution: {integrity: sha512-HED3ezseRVkBzZ0uK4q6RJMdufr/2p3VfVZstE3H1N9K8bwtspztWo6Xd7rEatuGNoCXaBna8oEqMwUn0Ve1bw==}
     dependencies:
@@ -25661,6 +25671,13 @@ packages:
       '@types/unist': 2.0.6
       unist-util-stringify-position: 3.0.3
 
+  /vfile-message/4.0.1:
+    resolution: {integrity: sha512-Z1WqUoIK6T6LLoyO64ncUapmjlA84JqKRQFjcG0kZnnyysfq2rMyg5NvKhkQ16GH9FRCRT+Rk4G0aMxgKYS16g==}
+    dependencies:
+      '@types/unist': 2.0.6
+      unist-util-stringify-position: 3.0.3
+    dev: true
+
   /vfile-reporter/7.0.5:
     resolution: {integrity: sha512-NdWWXkv6gcd7AZMvDomlQbK3MqFWL1RlGzMn++/O2TI+68+nqxCPTvLugdOtfSzXmjh+xUyhp07HhlrbJjT+mw==}
     dependencies:
@@ -25695,6 +25712,14 @@ packages:
       is-buffer: 2.0.5
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
+
+  /vfile/6.0.0:
+    resolution: {integrity: sha512-wx7bOMmEl8bY5WPaXTGsK8YxPLoFiUiDg+m+lBACA1QGcagj3sUyxkX0F+W/Nmn4MHH7G4sXBekpYWRxQE2eHg==}
+    dependencies:
+      '@types/unist': 2.0.6
+      unist-util-stringify-position: 3.0.3
+      vfile-message: 4.0.1
+    dev: true
 
   /vite-node/0.28.5_@types+node@16.18.7:
     resolution: {integrity: sha512-LmXb9saMGlrMZbXTvOveJKwMTBTNUH66c8rJnQ0ZPNX+myPEol64+szRzXtV5ORb0Hb/91yq+/D3oERoyAt6LA==}
