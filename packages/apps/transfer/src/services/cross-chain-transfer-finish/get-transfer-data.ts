@@ -82,8 +82,10 @@ export async function getTransferData({
       return { error: t('No request key found') };
     }
 
-    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
-      .tx?.continuation?.continuation.args as Array<any>;
+    const [senderAccount, receiverAccount, guard, targetChain, amount] =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      found.tx?.continuation?.continuation.args as Array<any>;
+
     const { step, stepHasRollback, pactId } = found.tx
       ?.continuation as IPactExec;
 

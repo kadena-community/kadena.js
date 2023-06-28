@@ -1,1 +1,1 @@
-export { ResultSection } from './ResultSection';
+export * from './styles';
