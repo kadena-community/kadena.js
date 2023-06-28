@@ -20,10 +20,10 @@ const systemProperties = defineProperties({
     borderStyles: ['solid', 'none'],
     cursor: ['pointer', 'not-allowed'],
     flexWrap: ['wrap', 'nowrap'],
-    top: [0],
-    bottom: [0],
-    left: [0],
-    right: [0],
+    top: vars.sizes,
+    bottom: vars.sizes,
+    left: vars.sizes,
+    right: vars.sizes,
     flexShrink: [0],
     flexGrow: [0, 1],
     zIndex: [-1, 0, 1],
@@ -43,6 +43,7 @@ const colorProperties = defineProperties({
     color: { ...vars.colors, inherit: 'inherit' },
     background: { ...vars.colors, none: 'none' },
     backgroundColor: { ...vars.colors, transparent: 'transparent' },
+    borderColor: vars.colors,
   },
   shorthands: {
     bg: ['backgroundColor'],
@@ -85,10 +86,11 @@ const responsiveProperties = defineProperties({
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
-    height: {
-      ...vars.sizes,
+    maxWidth: {
       '100%': '100%',
+      maxContent: '42.5rem', // 680px
     },
+    height: { ...vars.sizes, '100%': '100%', 'min-content': 'min-content' },
     gap: vars.sizes,
     gridGap: vars.sizes,
     overflow: ['hidden'],
