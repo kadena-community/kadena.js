@@ -162,7 +162,7 @@ const Home: React.FC = (): JSX.Element => {
           <a href="https://docs.kadena.io/">
             Find in-depth information about Kadena. &rarr;
           </a>
-          <a href="https://github.com/kadena-community/kadena.js/tree/master/packages/tools/create-kadena-app/pact">
+          <a href="https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app/pact">
             The smart contract powering this page. &rarr;
           </a>
         </div>

@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextTranslate = require('next-translate-plugin');
+const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 
-module.exports = nextTranslate({
+const withVanillaExtract = createVanillaExtractPlugin();
+
+const config = {
   reactStrictMode: true,
   pageExtensions: process.env.NODE_ENV === "production" ? ['(?<!(spec|test).)tsx'] : ['tsx'],
+  transpilePackages: ['@kadena/react-ui'],
   env: {
     KADENA_API_TTIL: JSON.stringify(process.env.KADENA_API_TTIL),
     KADENA_MAINNET_API: JSON.stringify(process.env.KADENA_MAINNET_API),
@@ -25,4 +29,6 @@ module.exports = nextTranslate({
     }
     return config;
   },
-});
+}
+
+module.exports = withVanillaExtract(nextTranslate(config));
