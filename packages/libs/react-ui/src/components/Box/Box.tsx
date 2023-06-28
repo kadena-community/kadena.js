@@ -40,6 +40,7 @@ export const Box = ({
         marginLeft,
         marginRight,
       }),
+      'data-testid': 'kda-box',
     },
     children,
   );
