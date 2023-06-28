@@ -20,5 +20,5 @@ export const env = <T extends keyof IEnvInterface, TDefault>(
 ): TDefault | NonNullable<IEnvInterface[T]> => {
   const falsyKey = dotenv[key] === '' || dotenv[key] === undefined || dotenv[key] === null;
 
-  return falsyKey ? defaultValue : dotenv[key];
+  return falsyKey ? defaultValue as TDefault : dotenv[key] as NonNullable<IEnvInterface[T]>;
 };
