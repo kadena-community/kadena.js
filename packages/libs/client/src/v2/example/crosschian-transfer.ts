@@ -1,3 +1,6 @@
+/* istanbul ignore file */
+// this module is just a code snippet for the cross chain transfer
+
 import { getClient } from '../client/client';
 import {
   commandBuilder,
@@ -9,8 +12,7 @@ import {
   signer,
 } from '../pact';
 import { sign } from '../sing';
-
-import { coin } from './coin-contract';
+import { coin } from '../test/coin-contract';
 
 interface IAccount {
   account: string;
@@ -89,6 +91,8 @@ export async function doCrossChianTransfer(
     .then(sign)
     .then(submit)
     .then(([, poll]) => poll());
+
+  // or we can use async/await
 
   const command = debitInTheFirstChain(from, to, amount).command as ICommand;
 

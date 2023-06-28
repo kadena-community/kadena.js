@@ -64,6 +64,23 @@ describe('getStatus', () => {
       method: 'POST',
     });
   });
+
+  it('throws an error if the response.ok is false', async () => {
+    (fetch as jest.Mock).mockResolvedValue({
+      status: 500,
+      ok: false,
+      text: () => 'Internal Server Error',
+      json: () => {
+        throw new Error('Internal Server Error');
+      },
+    });
+
+    const hostUrl = "http://test-blockchian-host.com'";
+
+    await expect(getStatus(hostUrl, ['test-key'])).rejects.toThrowError(
+      new Error('Internal Server Error'),
+    );
+  });
 });
 
 describe('pollStatus', () => {

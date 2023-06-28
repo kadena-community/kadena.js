@@ -1,4 +1,5 @@
-// it can change the command, usually only the nonce, for security reason or adding some data to track later
+/* istanbul ignore file */
+// this module is juts a mock for the sign function
 
 import { ICommand } from './pact';
 

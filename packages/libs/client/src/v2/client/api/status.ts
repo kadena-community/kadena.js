@@ -50,7 +50,7 @@ export const pollStatus: IPollStatus = (
   requestIds: string[],
   options?: IPollOptions,
 ): IPollRequestPromise<ICommandResult> => {
-  const { onPoll = () => {}, timeout, interval } = options || {};
+  const { onPoll = () => {}, timeout, interval } = options ?? {};
   let requestKeys = [...requestIds];
   const prs: Record<string, IExtPromise<ICommandResult>> = requestKeys.reduce(
     (acc, requestKey) => ({

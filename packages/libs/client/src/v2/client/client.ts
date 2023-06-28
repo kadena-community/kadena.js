@@ -105,7 +105,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         requestKeys.map((requestKey) => [
           requestKey,
           storage.get(requestKey) ??
-            getHost(options!.networkId!, options!.chainId!),
+            getHost(options?.networkId!, options?.chainId!),
         ]),
       );
       requestStorage = getRequestStorage(map);
@@ -191,7 +191,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     pollSpv: (requestKey, targetChainId, options) => {
       return pollSpv(
         storage.get(requestKey) ??
-          getHost(options!.networkId!, options!.chainId!),
+          getHost(options?.networkId!, options?.chainId!),
         requestKey,
         targetChainId,
         options,
@@ -200,7 +200,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     getSpv: (requestKey, targetChainId, options) => {
       return getSpv(
         storage.get(requestKey) ??
-          getHost(options!.networkId, options!.chainId),
+          getHost(options?.networkId!, options?.chainId!),
         requestKey,
         targetChainId,
       );

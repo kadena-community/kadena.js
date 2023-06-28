@@ -6,7 +6,7 @@ jest.mock('cross-fetch', () => {
 });
 
 import { getClient } from '../client';
-import { sleep, withCounter } from '../utils/utils';
+import { withCounter } from '../utils/utils';
 
 import fetch from 'cross-fetch';
 
@@ -147,6 +147,13 @@ describe('client', () => {
         `${hostApiGenerator(networkId, chainId)}/api/v1/send`,
       );
     });
+
+    it('throes an error if the command list is empty', async () => {
+      const { submit } = getClient(() => 'http://test-host.com');
+      await expect(submit([])).rejects.toThrowError(
+        new Error('EMPTY_COMMAND_LIST'),
+      );
+    });
   });
 
   describe('pollStatus', () => {
@@ -201,31 +208,84 @@ describe('client', () => {
     });
   });
 
-  describe('withCounter', () => {
-    it('pass counter as the first are to the input function that counts the call numbers', () => {
-      const fn = jest.fn();
-      const wrappedFunction = withCounter(fn);
-      wrappedFunction('arg1', 'arg2');
-      wrappedFunction('arg1', 'arg2');
+  describe('getStatus', () => {
+    it('calls /poll endpoint once to get the status of the request', async () => {
+      const response = {};
 
-      expect(fn).toBeCalledTimes(2);
-      expect(fn.mock.calls[0]).toEqual([1, 'arg1', 'arg2']);
-      expect(fn.mock.calls[1]).toEqual([2, 'arg1', 'arg2']);
+      (fetch as jest.Mock).mockResolvedValue({
+        status: 200,
+        ok: true,
+        text: () => JSON.stringify(response),
+        json: () => response,
+      });
+
+      const { getStatus } = getClient('http://test-host.com');
+
+      const result = await getStatus('test-key');
+
+      expect(result).toEqual(response);
+
+      // one for the /send and three times /poll
+      expect(fetch).toBeCalledTimes(1);
     });
   });
 
-  describe('sleep', () => {
-    it('returns a promise that resolves after the sleep time', (done) => {
-      jest.useFakeTimers();
-      const start = Date.now();
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      sleep(10).then(() => {
-        const end = Date.now();
-        expect(end - start).toBe(10);
-        done();
-        jest.useRealTimers();
+  describe('getSpv', () => {
+    it('calls /spv endpoint once to get spv proof', async () => {
+      const response = 'proof';
+
+      (fetch as jest.Mock).mockResolvedValue({
+        status: 200,
+        ok: true,
+        text: () => response,
+        json: () => JSON.parse(response),
       });
-      jest.runAllTimers();
+
+      const { getSpv } = getClient('http://test-host.com');
+
+      const result = await getSpv('test-key', '2');
+
+      expect(result).toEqual(response);
+
+      // one for the /send and three times /poll
+      expect(fetch).toBeCalledTimes(1);
+    });
+  });
+
+  describe('pollSpv', () => {
+    it('calls /spv endpoint once to get spv proof', async () => {
+      const response = 'proof';
+
+      (fetch as jest.Mock).mockImplementation(
+        withCounter((counter) =>
+          Promise.resolve(
+            counter < 4
+              ? {
+                  status: 400,
+                  ok: false,
+                  text: () => 'not found',
+                  json: () => {
+                    throw new Error('not found');
+                  },
+                }
+              : {
+                  status: 200,
+                  ok: true,
+                  text: () => response,
+                  json: () => response,
+                },
+          ),
+        ),
+      );
+
+      const { pollSpv } = getClient('http://test-host.com');
+
+      const result = await pollSpv('test-key', '2', { interval: 10 });
+
+      expect(result).toEqual(response);
+
+      // one for the /send and three times /poll
+      expect(fetch).toBeCalledTimes(4);
     });
   });
 });

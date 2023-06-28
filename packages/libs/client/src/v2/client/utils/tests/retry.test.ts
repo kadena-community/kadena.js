@@ -2,6 +2,16 @@ import { retry } from '../retry';
 import { withCounter } from '../utils';
 
 describe('retry', () => {
+  it('should calls the first try without waiting for interval', async () => {
+    const task = jest.fn().mockResolvedValue(true);
+    const runTask = retry(task);
+
+    const result = await runTask();
+
+    expect(result).toBe(true);
+    expect(task).toBeCalledTimes(1);
+  });
+
   it('should retry a task till it returns the result', async () => {
     const task = jest.fn(
       withCounter((idx) => {

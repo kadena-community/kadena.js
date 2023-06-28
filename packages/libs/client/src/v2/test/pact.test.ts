@@ -1,5 +1,6 @@
-import { coin } from '../exmaple/coin-contract';
 import { commandBuilder, meta, payload, set, signer } from '../pact';
+
+import { coin } from './coin-contract';
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 

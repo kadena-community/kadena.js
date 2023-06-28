@@ -102,4 +102,27 @@ describe('local', () => {
       },
     );
   });
+
+  it('throws an error if the response.ok is false', async () => {
+    (fetch as jest.Mock).mockResolvedValue({
+      status: 500,
+      ok: false,
+      text: () => 'Internal Server Error',
+      json: () => {
+        throw new Error('Internal Server Error');
+      },
+    });
+
+    const hostUrl = "http://test-blockchian-host.com'";
+
+    const body = {
+      cmd: 'test',
+      hash: 'test',
+      sigs: ['test'],
+    };
+
+    await expect(local(hostUrl, body)).rejects.toThrowError(
+      new Error('Internal Server Error'),
+    );
+  });
 });

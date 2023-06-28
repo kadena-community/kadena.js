@@ -1,3 +1,6 @@
+/* istanbul ignore file */
+// this module is just some example code to play with the client
+
 import { getClient } from '../client/client';
 import {
   commandBuilder,
@@ -9,8 +12,7 @@ import {
   set,
   signer,
 } from '../pact';
-
-import { coin } from './coin-contract';
+import { coin } from '../test/coin-contract';
 
 interface IAdminCapability {
   (name: 'test.ADMIN'): ICapabilityItem;

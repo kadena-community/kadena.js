@@ -7,6 +7,8 @@ import {
   mapRecord,
   mergeAll,
   mergeAllPollRequestPromises,
+  sleep,
+  withCounter,
 } from '../utils';
 
 describe('client utils', () => {
@@ -207,6 +209,34 @@ describe('client utils', () => {
         key1: 'one',
         key2: 'two',
       });
+    });
+  });
+
+  describe('withCounter', () => {
+    it('pass counter as the first are to the input function that counts the call numbers', () => {
+      const fn = jest.fn();
+      const wrappedFunction = withCounter(fn);
+      wrappedFunction('arg1', 'arg2');
+      wrappedFunction('arg1', 'arg2');
+
+      expect(fn).toBeCalledTimes(2);
+      expect(fn.mock.calls[0]).toEqual([1, 'arg1', 'arg2']);
+      expect(fn.mock.calls[1]).toEqual([2, 'arg1', 'arg2']);
+    });
+  });
+
+  describe('sleep', () => {
+    it('returns a promise that resolves after the sleep time', (done) => {
+      jest.useFakeTimers();
+      const start = Date.now();
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      sleep(10).then(() => {
+        const end = Date.now();
+        expect(end - start).toBe(10);
+        done();
+        jest.useRealTimers();
+      });
+      jest.runAllTimers();
     });
   });
 });

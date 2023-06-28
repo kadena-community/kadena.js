@@ -1,6 +1,9 @@
+/* istanbul ignore file */
+// this module is just a poc for the client
+
 import { ICommand } from '@kadena/types';
 
-import { coin } from './coin-contract';
+import { coin } from '../test/coin-contract';
 
 declare const getPact: any;
 
