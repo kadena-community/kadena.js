@@ -2,8 +2,12 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { kadenaConstants } from '@/constants/kadena';
-import { generateApiHost } from '@/services/utils/utils';
+import {
+  getKadenaConstantByNetwork,
+  kadenaConstants,
+  Network,
+} from '@/constants/kadena';
+import { chainNetwork } from '@/constants/network';
 
 export interface IModuleResult {
   reqKey?: string;
@@ -14,10 +18,9 @@ export interface IModuleResult {
 export const describeModule = async (
   moduleName: string,
   chainId: ChainId,
-  networkId: string,
-  server: string,
-  sender: string,
-  gasPrice: number,
+  network: Network,
+  sender: string = kadenaConstants.DEFAULT_SENDER,
+  gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModuleResult> => {
@@ -27,7 +30,10 @@ export const describeModule = async (
   pactCommand.setMeta({ gasLimit, gasPrice, ttl, sender, chainId });
 
   const response = await pactCommand.local(
-    generateApiHost(server, networkId, chainId),
+    getKadenaConstantByNetwork(network).apiHost({
+      networkId: chainNetwork[network].network,
+      chainId,
+    }),
     {
       signatureVerification: false,
       preflight: false,

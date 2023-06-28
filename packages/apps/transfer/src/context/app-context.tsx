@@ -1,3 +1,4 @@
+import { Network } from '@/constants/kadena';
 import { getItem, setItem } from '@/utils/persist';
 import React, {
   createContext,
@@ -8,15 +9,13 @@ import React, {
   useState,
 } from 'react';
 
-export type Network = 'Mainnet' | 'Testnet';
-
 interface INetworkState {
   network: Network;
   setNetwork(network: Network): void;
 }
 
 const AppContext = createContext<INetworkState>({
-  network: 'Mainnet',
+  network: 'MAINNET',
   setNetwork: () => {},
 });
 
@@ -31,7 +30,7 @@ const useAppContext = (): INetworkState => {
 };
 
 const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
-  const [network, setNetwork] = useState<Network>('Mainnet');
+  const [network, setNetwork] = useState<Network>('MAINNET');
 
   useLayoutEffect(() => {
     const initialNetwork = getItem('network') as Network;
