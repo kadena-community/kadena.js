@@ -19,8 +19,8 @@ export const describeModule = async (
   moduleName: string,
   chainId: ChainId,
   network: Network,
-  sender: string,
-  gasPrice: number,
+  sender: string = kadenaConstants.DEFAULT_SENDER,
+  gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModuleResult> => {
