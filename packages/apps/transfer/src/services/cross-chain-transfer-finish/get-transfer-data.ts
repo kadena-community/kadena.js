@@ -6,12 +6,12 @@ import {
 import { PactCommand } from '@kadena/client';
 import { ChainId, IPactExec } from '@kadena/types';
 
+import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
+import { chainNetwork } from '@/constants/network';
 import {
   convertIntToChainId,
-  generateApiHost,
   validateRequestKey,
-} from '../utils/utils';
-
+} from '@/services/utils/utils';
 import { Translate } from 'next-translate';
 interface ITransactionData {
   sender: { chain: ChainId; account: string };
@@ -32,13 +32,11 @@ export interface ITransferDataResult {
 
 export async function getTransferData({
   requestKey,
-  server,
-  networkId,
+  network,
   t,
 }: {
   requestKey: string;
-  server: string;
-  networkId: ChainwebNetworkId;
+  network: Network;
   t: Translate;
 }): Promise<ITransferDataResult> {
   const validatedRequestKey = validateRequestKey(requestKey);
@@ -53,11 +51,10 @@ export async function getTransferData({
 
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
-      const host = generateApiHost(
-        server,
-        networkId,
-        convertIntToChainId(chainId),
-      );
+      const host = getKadenaConstantByNetwork(network).apiHost({
+        networkId: chainNetwork[network].network,
+        chainId: convertIntToChainId(chainId),
+      });
       return pactCommand.poll(host);
     });
     const chainInfos = await Promise.all(chainInfoPromises);
@@ -82,8 +79,10 @@ export async function getTransferData({
       return { error: t('No request key found') };
     }
 
-    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
-      .tx?.continuation?.continuation.args as Array<any>;
+    const [senderAccount, receiverAccount, guard, targetChain, amount] =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      found.tx?.continuation?.continuation.args as Array<any>;
+
     const { step, stepHasRollback, pactId } = found.tx
       ?.continuation as IPactExec;
 

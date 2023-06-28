@@ -1,3 +1,5 @@
+import { Text } from '../Typography';
+
 import { ITabsContainerProps, Tabs } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -52,7 +54,7 @@ export const Primary: Story = {
           {items.map((item) => {
             return (
               <Tabs.Content key={item} value={item}>
-                content {item}
+                <Text>content {item}</Text>
               </Tabs.Content>
             );
           })}
