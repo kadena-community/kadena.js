@@ -6,7 +6,6 @@ export const linkContainerClass = style([
   sprinkles({
     display: 'flex',
     gap: '$2',
-
   }),
   {
     selectors: {
@@ -26,8 +25,7 @@ export const linkContainerClass = style([
 export const iconContainerClass = style([
   sprinkles({
     display: 'flex',
-  }),
-  {
     textDecoration: 'none',
-  },
+  }),
+  {},
 ]);

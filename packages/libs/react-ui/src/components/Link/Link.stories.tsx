@@ -1,28 +1,22 @@
-import { ILinkProps, Link } from './Link';
-
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { ILinkProps, Link } from '.';
 
 const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
-  component: Link,
+  component: Link.Root,
   argTypes: {
     href: {
       control: {
         type: 'text',
       },
     },
-    iconPosition: {
-      options: ['left', 'right'],
+    target: {
       control: {
         type: 'select',
+        options: ['_blank', '_self', '_parent', '_top'],
       },
     },
-    hasIcon: {
-      control: {
-        type: 'boolean',
-      },
-    }
   },
 };
 
@@ -34,18 +28,22 @@ export const Primary: Story = {
   name: 'Link',
   args: {
     href: 'https://kadena.io',
-    iconPosition: 'right',
-    hasIcon: true
+    target: '_blank',
   },
-  render: ({ href, iconPosition, hasIcon }) => {
+  render: ({ href, target }) => {
     return (
       <>
-        <Link href={`${href}?${Date.now()}`} iconPosition={iconPosition} hasIcon={hasIcon}>
+        <Link.Root href={href} target={target}>
+          Link without icon
+        </Link.Root>
+        <Link.Root href={`${href}?${Date.now()}`} target={target}>
+          <Link.Icon />
           Non-visited
-        </Link>
-        <Link href={href} iconPosition={iconPosition} hasIcon={hasIcon}>
+        </Link.Root>
+        <Link.Root href={href} target={target}>
           Kadena.io
-        </Link>
+          <Link.Icon />
+        </Link.Root>
       </>
     );
   },

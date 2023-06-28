@@ -1,37 +1,17 @@
-import { SystemIcon } from '../Icons';
+import { linkContainerClass } from './Link.css';
 
-import { iconContainerClass, linkContainerClass } from './Link.css';
-
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 
 export interface ILinkProps {
   href: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
-  children: React.ReactNode;
-  iconPosition?: 'left' | 'right';
-  hasIcon?: boolean;
+  children: ReactNode;
 }
 
-export const Link: React.FC<ILinkProps> = ({
-  href,
-  target = '_blank',
-  children,
-  iconPosition = 'right',
-  hasIcon = true,
-}) => {
+export const Link: FC<ILinkProps> = ({ href, target = '_blank', children }) => {
   return (
     <a href={href} target={target} className={linkContainerClass}>
-      {hasIcon && iconPosition === 'left' && (
-        <span className={iconContainerClass}>
-          <SystemIcon.Link size="md" />
-        </span>
-      )}
       {children}
-      {hasIcon && iconPosition === 'right' && (
-        <span className={iconContainerClass}>
-          <SystemIcon.Link size="md" />
-        </span>
-      )}
     </a>
   );
 };
