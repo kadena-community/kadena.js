@@ -5,8 +5,8 @@ kadena.js targetting the Kadena Blockchain.
 
 <p align="center">
   <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
   </picture>
 </p>
 
@@ -133,5 +133,5 @@ info on Pact development visit the **Build** section on [docs.kadena.io][7].
 [4]: https://vuejs.org/
 [5]: https://angular.io/
 [6]:
-  https://github.com/kadena-community/kadena.js/tree/master/packages/tools/create-kadena-app/pact
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app/pact
 [7]: https://docs.kadena.io/

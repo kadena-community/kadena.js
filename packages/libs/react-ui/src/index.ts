@@ -30,6 +30,12 @@ export {
   useModal,
   IBoxProps,
   Box,
+  Tabs,
+  ITabsContainerProps,
+  ITabProps,
+  ITabContentProps,
+  TextField,
+  ITextFieldProps,
 } from './components';
 export {
   sprinkles,
