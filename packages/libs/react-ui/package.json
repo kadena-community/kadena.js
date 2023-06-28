@@ -76,6 +76,8 @@
     "@vanilla-extract/webpack-plugin": "2.2.0",
     "eslint": "^8.15.0",
     "eslint-plugin-storybook": "~0.6.12",
+    "eslint-config-prettier": "~8.8.0",
+    "eslint-plugin-prettier": "~4.2.1",
     "mini-css-extract-plugin": "2.7.6",
     "jest": "~29.5.0",
     "jest-environment-jsdom": "~29.5.0",
