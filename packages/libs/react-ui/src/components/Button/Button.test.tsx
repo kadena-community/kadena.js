@@ -5,7 +5,7 @@ import React from 'react';
 describe('Button', () => {
   test('renders correctly', () => {
     const { getByTestId } = render(
-      <Button title="button">Hello, Button!</Button>,
+      <Button.Root title="Button">"Hello, Button!"</Button.Root>,
     );
 
     const buttonContainer = getByTestId('kda-button');
