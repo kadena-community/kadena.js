@@ -2,7 +2,6 @@ import styles from './icon.module.scss'
 import Image from 'next/image'
 
 import React, { FC } from 'react'
-import ChemicalIcon from '../../resources/icons/chemical-weapon.svg'
 
 export interface IIconProps {
   name: string;

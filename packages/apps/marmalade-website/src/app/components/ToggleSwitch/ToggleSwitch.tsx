@@ -1,7 +1,7 @@
 'use client';
 import styles from './toggle-switch.module.scss';
 
-import React, { FC } from 'react';
+import React from 'react';
 
 export interface ISwitchProps {
   name: string;
@@ -22,7 +22,7 @@ export const ToggleSwitch: React.FC<ISwitchProps> = (props: ISwitchProps) => {
   return (
     <label 
       htmlFor={props.name}
-      className={`${styles.switch} ${props.isChecked ? styles['checked'] : ''}`}
+      className={`${styles.switch} ${props.isChecked ? styles.checked : ''}`}
       tabIndex={ props.disabled ? -1 : 0 }
       onKeyDown={ e => onKeyDown(e) }
     >

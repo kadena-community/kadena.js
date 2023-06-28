@@ -1,6 +1,6 @@
 import './globals.css'
 
-import { Footer } from './components/Footer'
+import { Footer } from './partials/Footer'
 import { fontCode,fontMain } from './fonts'
 
 import React from 'react';

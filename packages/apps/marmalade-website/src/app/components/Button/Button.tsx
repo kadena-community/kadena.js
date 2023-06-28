@@ -1,6 +1,6 @@
-import styles from './button.module.css';
+import styles from './button.module.css'
 
-import React, { FC } from 'react';
+import React, { FC } from 'react'
 
 export interface IButtonProps {
   href?: string;

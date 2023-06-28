@@ -1,0 +1,23 @@
+.policy-selector {
+  background: var(--color-orange-003);
+  border-radius: var(--border-radius-lg);
+  color: var(--color-green-004);
+  font-size: 1.2rem;
+  padding: 2rem;
+}
+.selector-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.desc-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.description {
+  font-size: 0.9rem;
+}

@@ -1,0 +1,14 @@
+.code-block {
+  border-radius: var(--border-radius-xs);
+  background: var(--color-green-002);
+  padding: 1rem;
+  border-left: 1rem solid rgb(84, 223, 29, 0.2);
+  font-family: var(--font-code);
+  color: var(--color-orange-003);
+  text-align: left;
+
+  &.orange {
+    background-color: var(--color-orange-002);
+    border-color: var(--color-orange-004);
+  }
+}

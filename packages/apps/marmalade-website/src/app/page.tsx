@@ -1,15 +1,12 @@
-'use client'; // todo:remove
+import { Header } from './partials/Header'
+import { PolicyCustomizer } from './partials/PolicyCustomizer'
 import { Button } from './components/Button'
 import { Card } from './components/Card'
-import { Header } from './components/Header'
-import { Icon } from './components/Icon';
-import { ToggleSwitch } from './components/ToggleSwitch'
 import { VerticalTabs } from './components/VerticalTabs'
 import styles from './page.module.css'
 
-
-import React, { useState } from 'react';
-// import Image from 'next/image'
+import React from 'react';
+import { Code } from './components/Code'
 
 export default function Home() : JSX.Element {
 
@@ -22,7 +19,7 @@ export default function Home() : JSX.Element {
           <h3 className="color-light">Extra policies</h3>
           <p className={styles.description}>Extra immutable or adjustable policies based on your business-model needs.
             These extra policies can be used to fit your use-case.</p>
-          <Button href="https://google.com" type="primary" color="green">
+          <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
             <strong>Extra policies</strong> docs
           </Button>
         </>
@@ -35,7 +32,7 @@ export default function Home() : JSX.Element {
         <>
           <h3 className="color-light">Content title 2</h3>
           <p className={styles.description}>Content 2</p>
-          <Button href="https://google.com" type="primary" color="green">
+          <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
             Test
           </Button>
         </>
@@ -48,21 +45,13 @@ export default function Home() : JSX.Element {
         <>
           <h3 className="color-light">Content title 3</h3>
           <p className={styles.description}>Content 3</p>
-          <Button href="https://google.com" type="primary" color="green">
+          <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
             Test
           </Button>
         </>
       ),
     },
   ];
-
-  // todo: move to a separate component
-  let [collection, setCollection] = useState(true);
-
-  const onCollectionChange = (checked: boolean) => {
-    setCollection(checked);
-    console.log(checked);
-  }
 
   return (
     <>
@@ -71,9 +60,6 @@ export default function Home() : JSX.Element {
         <div className="container-inner">
           <h1>NFT Marketplace infrastructure</h1>
           <p>Marmalade on <strong>Kadena</strong> provides the complete infrastructure to launch and run game-changing NFT marketplaces.</p>
-          <Button href="https://google.com">Default button</Button>
-          <Button href="https://google.com" type="primary" color="green"><strong>Primary green </strong> Button</Button>
-          <Button href="https://google.com" type="secondary" color="orange">Secondary orange</Button>
         </div>
       </div>
       <main className={styles.main}>
@@ -88,10 +74,7 @@ export default function Home() : JSX.Element {
               <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
             </div>
             <p className={styles.description}>With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
-            <Icon name="chemical-weapon" color="orange" size="lg" />
-            <Icon name="chemical-weapon" color="green" />
-            <ToggleSwitch name="collection" isChecked={ collection } onSwitchChange={ onCollectionChange } />
-            <ToggleSwitch name="collection" isChecked={ collection } onSwitchChange={ onCollectionChange } disabled />
+            <PolicyCustomizer />
           </div>
         </section>
         <section className={styles['section-green']}>
@@ -104,15 +87,17 @@ export default function Home() : JSX.Element {
           <div className="container-inner">
             <h2>Compatibility + Use cases</h2>
             <p className={styles.description}>Lorem ipsum dolor sit amet, comagna aliqua.</p>
+            <Code color="orange">
+              {`{`}<br/>
+              &nbsp;&nbsp; {`"description": "Genenis Blockchain Print NYT",`}<br/>
+              &nbsp;&nbsp; {`"external_url": "https://www.marmalade.io/id/123",`}<br/>
+              &nbsp;&nbsp; {`"image": "https://cdn.marmalade.io/assets/id/123.png",`}<br/>
+              &nbsp;&nbsp; {`"attributes": [...]`}<br/>
+              {`}`}
+            </Code>
           </div>
         </section>
-
-        <div>
-          <p>
-            Test code 
-            <code className={styles.code}>src/app/page.tsx</code>
-          </p>
-        </div>
+        {/* <Icon name="chemical-weapon" color="orange" size="lg" /> */}
       </main>
     </>
   )
