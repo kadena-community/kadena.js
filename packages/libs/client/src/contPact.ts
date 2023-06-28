@@ -136,7 +136,7 @@ export const pollSpvProof = async (
   while (!spvProofReceived) {
     try {
       onPoll('Polling in progress');
-      response = await fetch(apiHost, {
+      response = await fetch(`${apiHost}/spv`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
