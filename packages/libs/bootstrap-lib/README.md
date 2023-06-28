@@ -2,8 +2,8 @@
 
 <p align="center">
   <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
   </picture>
 </p>
 
@@ -26,4 +26,4 @@ crypto:
 - `stringifyAndMakePOSTRequest`
 
 [1]:
-  https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils/etc/cryptography-utils.api.md
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/cryptography-utils/etc/cryptography-utils.api.md

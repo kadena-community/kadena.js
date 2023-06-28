@@ -38,7 +38,7 @@ export function packageTable(): Table {
   const rows: TableRow[] = projects.map((project) => {
     const packageLink: Link = {
       type: 'link',
-      url: `${repoUrl}/tree/master/${project.projectFolder}`,
+      url: `${repoUrl}/tree/main/${project.projectFolder}`,
       children: [{ type: 'text', value: project.packageName }],
     };
 

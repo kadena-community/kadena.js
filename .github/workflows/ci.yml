@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 env:
   AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'master' && ' ' || format('--to git:origin/{0}', github.base_ref)  }}
+    ${{ github.ref_name == 'main' && ' ' || format('--to git:origin/{0}', github.base_ref)  }}
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 2
 
       - name: Fetch base branch
-        if: github.ref_name != 'master'
+        if: github.ref_name != 'main'
         run: git fetch origin ${{ github.base_ref }}
 
       - uses: actions/setup-node@v3
@@ -50,11 +50,6 @@ jobs:
             common/temp/pnpm-store
           key: cache-pnpm-${{ runner.os }}
 
-      - name: List impacted packages
-        if: github.ref_name != 'master'
-        run: |
-          node common/scripts/install-run-rush.js list ${{ env.AFFECTED_OR_ALL }}
-
       - name: Rush install (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
@@ -69,10 +64,11 @@ jobs:
           BROWSERSLIST_IGNORE_OLD_DATA: 1
 
       - name: Rush format (install-run-rush)
+        if: github.ref_name != 'main'
         run: |
-          node common/scripts/install-run-rush.js format:ci --verbose --to git:origin/${{ github.base_ref }}
+          node common/scripts/install-run-rush.js format:ci --verbose ${{ env.AFFECTED_OR_ALL }}
 
       - name: Rush verify Change Logs (install-run-rush)
-        if: github.ref_name != 'master'
+        if: github.ref_name != 'main'
         run: |
           node common/scripts/install-run-rush.js change --verify --target-branch origin/${{ github.base_ref }}

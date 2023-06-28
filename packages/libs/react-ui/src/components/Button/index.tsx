@@ -4,9 +4,12 @@ import { ButtonIcon, IButtonIconProps } from './ButtonIcon';
 import { FC } from 'react';
 
 export { IButtonProps };
-interface IButton extends FC<IButtonProps> {
+interface IButton {
+  Root: FC<IButtonProps>;
   Icon: FC<IButtonIconProps>;
 }
 
-export const Button: IButton = ButtonContainer as IButton;
-Button.Icon = ButtonIcon;
+export const Button: IButton = {
+  Root: ButtonContainer,
+  Icon: ButtonIcon,
+};
