@@ -1,6 +1,7 @@
+import { IconButton } from '../IconButton/IconButton';
 import { SystemIcon } from '../Icons';
 
-import { trClass, urlContainerClass } from './Table.css';
+import { trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
 import { CompoundType } from './types';
@@ -27,9 +28,12 @@ export const Tr: FC<ITrProps> = ({ children, url }) => {
 
       {url !== undefined && (
         <td>
-          <a href={url} className={urlContainerClass}>
-            <SystemIcon.TrailingIcon size={'md'} />
-          </a>
+          <IconButton
+            as={'a'}
+            href={url}
+            title={url}
+            icon={SystemIcon.TrailingIcon}
+          />
         </td>
       )}
     </tr>
