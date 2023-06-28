@@ -18,7 +18,6 @@ import {
 } from './styles';
 
 import { Select } from '@/components/Global';
-import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
   type IModuleResult,
@@ -48,8 +47,6 @@ const GetCode: FC = () => {
         moduleName,
         convertIntToChainId(moduleChain),
         network,
-        'not-real',
-        0.00000001,
       );
 
       setResults(data);
