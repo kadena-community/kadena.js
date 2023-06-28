@@ -1,5 +1,4 @@
-import { Tag } from './Tag';
-
+import { Tag } from '@components/Tag';
 import { render } from '@testing-library/react';
 import React from 'react';
 

@@ -2,7 +2,8 @@
   "verbose": true,
   "reporters": ["jest-standard-reporter"],
   "moduleNameMapper": {
-    "@/(.*)": "<rootDir>/src/$1"
+    "@/(.*)": "<rootDir>/src/$1",
+    "@components/(.*)": "<rootDir>/src/components/$1"
   },
   "modulePathIgnorePatterns": ["<rootDir>/dist/"],
   "moduleDirectories": ["node_modules", "src"],

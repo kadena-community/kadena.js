@@ -1,5 +1,4 @@
-import { Box } from './Box';
-
+import { Box } from '@components/Box';
 import { render } from '@testing-library/react';
 import React from 'react';
 

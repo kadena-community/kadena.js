@@ -1,5 +1,4 @@
-import { BreadcrumbsContainer } from './Breadcrumbs';
-
+import { BreadcrumbsContainer } from '@components/Breadcrumbs/Breadcrumbs';
 import { render } from '@testing-library/react';
 import React from 'react';
 
