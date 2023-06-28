@@ -1,7 +1,15 @@
-# kda-cli
+<!-- genericHeader start -->
 
-This cli tool is here to assist you with your development on the kadena
-blockchain.
+# @kadena/kda-cli
+
+CLI tool to assist development on the kadena blockchain
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 ## Prerequisite
 

@@ -1,7 +1,7 @@
 {
   "name": "@kadena/cryptography-utils",
   "version": "0.3.2",
-  "description": "",
+  "description": "Collection of Kadena cryptography utility functions",
   "keywords": [],
   "repository": {
     "type": "git",

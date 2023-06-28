@@ -1,15 +1,15 @@
-# kadena.js - Chainweb Node Client
+<!-- genericHeader start -->
 
-Chainweb Node Client is a typed JavaScript wrapper with fetch to call
-chainweb-node API endpoints.
+# @kadena/chainweb-node-client
 
-<p align="center">
-  <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
-<hr>
+Typed JavaScript wrapper with fetch to call chainweb-node API endpoints
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 API Reference can be found here [chainweb-node-client.api.md][1]
 
