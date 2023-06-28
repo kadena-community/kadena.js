@@ -37,7 +37,7 @@ const CheckTransactions: FC = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   useEffect(() => {
-    if (router.query.chain && router.query.account) {
+    if (Boolean(router.query.chain) && Boolean(router.query.account)) {
       setChain((router.query.chain as string) || '1');
       setAccount((router.query.account as string) || '');
 
@@ -46,7 +46,7 @@ const CheckTransactions: FC = () => {
         router.query.account as string,
       ).catch((e) => console.log(e));
     }
-  }, [router.query.chain, router.query.account]);
+  }, [router.query.chain, router.query.account, setTransactions]);
 
   const numberOfChains = 20;
 
@@ -71,7 +71,11 @@ const CheckTransactions: FC = () => {
     }
   }
 
-  async function setTransactions(chain: string, account: string) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  async function setTransactions(
+    chain: string,
+    account: string,
+  ): Promise<void> {
     if (!chain || !account) return;
 
     const result = await getTransactions({
