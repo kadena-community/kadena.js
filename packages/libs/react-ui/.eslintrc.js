@@ -1,11 +1,23 @@
 // This is a workaround for https://github.com/eslint/eslint/issues/3458
 require('@rushstack/eslint-config/patch/modern-module-resolution');
+
+const fs = require('fs');
+const prettierOptions = JSON.parse(fs.readFileSync('./.prettierrc', 'utf8'));
+
 module.exports = {
-  plugins: ['jest, storybook', 'prettier'],
+  plugins: ['jest', 'jsx-a11y', 'storybook', 'prettier'],
   extends: [
     '@kadena-dev/eslint-config/profile/react',
     'plugin:storybook/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
   rules: {
     'prettier/prettier': ['error', prettierOptions],
     'comma-dangle': [2, 'always-multiline'],
