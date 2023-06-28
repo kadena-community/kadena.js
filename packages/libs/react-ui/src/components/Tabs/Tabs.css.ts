@@ -22,6 +22,7 @@ export const tabClass = style([
     paddingY: '$2',
     fontSize: '$md',
     backgroundColor: 'transparent',
+    color: '$foreground',
   }),
 ]);
 
