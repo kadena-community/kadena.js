@@ -1352,7 +1352,7 @@ importers:
       typescript: 5.0.4
       unified: ^10.1.2
       unist-util-visit: ^4.1.2
-      vfile: ~6.0.0
+      vfile: 5.3.7
     dependencies:
       mdast-builder: 1.1.1
       mdast-comment-marker: 2.1.2
@@ -1376,7 +1376,7 @@ importers:
       sort-package-json: 2.4.1
       typescript: 5.0.4
       unified: 10.1.2
-      vfile: 6.0.0
+      vfile: 5.3.7
 
   ../../packages/tools/rush-fix-versions:
     specifiers:
@@ -25671,13 +25671,6 @@ packages:
       '@types/unist': 2.0.6
       unist-util-stringify-position: 3.0.3
 
-  /vfile-message/4.0.1:
-    resolution: {integrity: sha512-Z1WqUoIK6T6LLoyO64ncUapmjlA84JqKRQFjcG0kZnnyysfq2rMyg5NvKhkQ16GH9FRCRT+Rk4G0aMxgKYS16g==}
-    dependencies:
-      '@types/unist': 2.0.6
-      unist-util-stringify-position: 3.0.3
-    dev: true
-
   /vfile-reporter/7.0.5:
     resolution: {integrity: sha512-NdWWXkv6gcd7AZMvDomlQbK3MqFWL1RlGzMn++/O2TI+68+nqxCPTvLugdOtfSzXmjh+xUyhp07HhlrbJjT+mw==}
     dependencies:
@@ -25712,14 +25705,6 @@ packages:
       is-buffer: 2.0.5
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
-
-  /vfile/6.0.0:
-    resolution: {integrity: sha512-wx7bOMmEl8bY5WPaXTGsK8YxPLoFiUiDg+m+lBACA1QGcagj3sUyxkX0F+W/Nmn4MHH7G4sXBekpYWRxQE2eHg==}
-    dependencies:
-      '@types/unist': 2.0.6
-      unist-util-stringify-position: 3.0.3
-      vfile-message: 4.0.1
-    dev: true
 
   /vite-node/0.28.5_@types+node@16.18.7:
     resolution: {integrity: sha512-LmXb9saMGlrMZbXTvOveJKwMTBTNUH66c8rJnQ0ZPNX+myPEol64+szRzXtV5ORb0Hb/91yq+/D3oERoyAt6LA==}
