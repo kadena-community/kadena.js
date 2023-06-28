@@ -1,11 +1,16 @@
-<p align="center">
-  <picture>
-    <source srcset="../../../common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="../../../common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
+<!-- genericHeader start -->
 
-# kadena.js - Kadena Javascript API
+# kadena.js
+
+A practical util library for JavaScript programmers who are building on the
+Kadena blockchain
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 > Kadena.js is a collection of libraries that will allow you to interact with
 > the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will

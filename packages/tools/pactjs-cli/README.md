@@ -1,14 +1,16 @@
-# kadena.js - pactjs-cli
+<!-- genericHeader start -->
 
-<p align="center">
-  <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
+# @kadena/pactjs-cli
 
-> pactjs-cli is a cli tool to create TypeScript types (d.ts files) from Pact
-> Smart Contracts
+CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate
+TypeScript definitions and Pact client
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 ## generate
 
