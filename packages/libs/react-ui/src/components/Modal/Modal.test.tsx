@@ -1,6 +1,6 @@
-import { Modal } from './Modal';
 import { Content } from './StoryComponents';
 
+import { Modal } from '@components/Modal';
 import { render } from '@testing-library/react';
 import React from 'react';
 

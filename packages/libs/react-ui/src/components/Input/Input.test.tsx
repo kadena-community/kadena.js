@@ -1,5 +1,4 @@
-import { Input } from './Input';
-
+import { Input } from '@components/Input';
 import { render } from '@testing-library/react';
 import React from 'react';
 

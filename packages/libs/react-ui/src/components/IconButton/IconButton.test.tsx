@@ -1,7 +1,6 @@
 import { SystemIcon } from '../';
 
-import { IconButton } from './IconButton';
-
+import { IconButton } from '@components/IconButton';
 import { render } from '@testing-library/react';
 import React from 'react';
 
