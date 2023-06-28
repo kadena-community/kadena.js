@@ -22,6 +22,6 @@ export const kadenaConstants = {
       `${testNetApi}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   },
   GAS_LIMIT: Number(env('GAS_LIMIT', 850)),
-  GAS_PRICE: Number(env('GAS_LIMIT', 0.00000001)),
+  GAS_PRICE: Number(env('GAS_PRICE', 0.00000001)),
   API_TTL: Number(env('KADENA_API_TTIL', 600000)),
 } as const;
