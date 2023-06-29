@@ -31,6 +31,7 @@ export const SearchResults: FC<IProps> = ({
 }) => {
   const { clearModal } = useModal();
   const [selectedTabName, setSelectedTabName] = useState<string>('docs');
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
     const buttonName = (e.target as HTMLElement).getAttribute('data-value');
@@ -40,10 +41,13 @@ export const SearchResults: FC<IProps> = ({
 
   useEffect(() => {
     const value = localStorage.getItem(TABNAME);
+    setIsMounted(true);
     if (value === null) return;
-    setSelectedTabName(value);
-  }, [setSelectedTabName]);
 
+    setSelectedTabName(value);
+  }, [setSelectedTabName, setIsMounted]);
+
+  if (!isMounted) return null;
   return (
     <section onClick={rememberTab}>
       <Tabs.Root defaultSelected={selectedTabName}>
