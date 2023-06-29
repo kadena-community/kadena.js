@@ -4,12 +4,10 @@ import {
   StyledBack,
   StyledChevronLeft,
   StyledFooter,
-  StyledIconImage,
   StyledMainContent,
   StyledMainLayout,
   StyledTextBold,
   StyledTitle,
-  StyledWalletNotConnected,
 } from './styles';
 
 import { Select, SidebarMenu } from '@/components/Global';
@@ -51,12 +49,6 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
               </Select>
             </Grid.Item>
           </Grid.Container>
-        </Grid.Item>
-        <Grid.Item colStart={10} colEnd={13}>
-          <StyledWalletNotConnected>
-            <p>{t('Connect your wallet')}</p>
-            <StyledIconImage width={'40px'} height={'40px'} />
-          </StyledWalletNotConnected>
         </Grid.Item>
       </Grid.Container>
 

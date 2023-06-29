@@ -1,10 +1,10 @@
 import { Network } from '@/constants/kadena';
+import { useDidUpdateEffect } from '@/hooks';
 import { getItem, setItem } from '@/utils/persist';
 import React, {
   createContext,
   PropsWithChildren,
   useContext,
-  useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
@@ -34,10 +34,12 @@ const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
 
   useLayoutEffect(() => {
     const initialNetwork = getItem('network') as Network;
-    if (initialNetwork) setNetwork(getItem('network') as Network);
+    if (initialNetwork) {
+      setNetwork(initialNetwork);
+    }
   }, []);
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     setItem('network', network);
   }, [network]);
 
