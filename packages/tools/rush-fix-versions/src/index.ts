@@ -33,7 +33,7 @@ async function main(): Promise<void> {
   // read rush.json in root of git repo
   const gitRootPath = (await $`git rev-parse --show-toplevel`).stdout;
   const rushJson: IRushJson = parse(
-    readFileSync(gitRootPath + '/rush.json', 'utf-8'),
+    readFileSync(`${gitRootPath}/rush.json`, 'utf-8'),
   );
 
   if (rushCheckJson.mismatchedVersions.length === 0) {
@@ -113,7 +113,7 @@ ${mismatchedVersion.versions
 
     // write the package.json files
     const packageJsonContents = JSON.stringify(contents, null, 2);
-    writeFileSync(path, packageJsonContents + '\n');
+    writeFileSync(path, `${packageJsonContents}\n`);
   });
 }
 

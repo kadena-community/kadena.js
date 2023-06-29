@@ -32,6 +32,7 @@
     "eslint-plugin-prettier": "~4.2.1",
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "eslint-plugin-import": "^2.26.0"
   }
 }
