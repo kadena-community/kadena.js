@@ -3,6 +3,13 @@ import { breakpoints } from '../../styles/sprinkles.css';
 
 import { style } from '@vanilla-extract/css';
 
+export const openModal = style([
+  {
+    height: '100vh',
+    overflowY: 'hidden',
+  },
+]);
+
 export const background = style([
   sprinkles({
     position: 'fixed',
@@ -47,24 +54,41 @@ export const wrapper = style([
 
 export const modal = style([
   sprinkles({
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
   }),
   {
-    maxHeight: '50vh',
-    overflowY: 'scroll',
+    maxHeight: '75vh',
     pointerEvents: 'initial',
   },
 ]);
 
 export const closeButton = style([
   sprinkles({
+    position: 'absolute',
+    top: '$8',
+    right: '$md',
     display: 'flex',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    fontSize: '$lg',
+    fontSize: '$base',
     fontWeight: '$light',
     border: 'none',
+    padding: 0,
+    cursor: 'pointer',
   }),
+  {
+    alignSelf: 'end',
+  },
+]);
+
+export const titleWrapper = style([
+  sprinkles({
+    height: '$12',
+  }),
+  {
+    width: 'calc(100% - 100px)',
+  },
 ]);
