@@ -1,4 +1,5 @@
-import { Button, SystemIcon, Tabs, useModal } from '@kadena/react-ui';
+import { Button, SystemIcons } from '@kadena/react-components';
+import { Stack, Tabs, useModal } from '@kadena/react-ui';
 
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
@@ -8,7 +9,7 @@ import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
 import { SearchResult } from 'minisearch';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
@@ -19,6 +20,8 @@ interface IProps {
   query?: string;
 }
 
+const TABNAME = 'searchTabSelected';
+
 export const SearchResults: FC<IProps> = ({
   staticSearchResults,
   conversation,
@@ -27,10 +30,23 @@ export const SearchResults: FC<IProps> = ({
   query,
 }) => {
   const { clearModal } = useModal();
+  const [selectedTabName, setSelectedTabName] = useState<string>('docs');
+
+  const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
+    const buttonName = (e.target as HTMLElement).getAttribute('data-value');
+    if (buttonName === null) return;
+    localStorage.setItem(TABNAME, buttonName);
+  };
+
+  useEffect(() => {
+    const value = localStorage.getItem(TABNAME);
+    if (value === null) return;
+    setSelectedTabName(value);
+  }, [setSelectedTabName]);
 
   return (
-    <section>
-      <Tabs.Root defaultSelected="docs">
+    <section onClick={rememberTab}>
+      <Tabs.Root defaultSelected={selectedTabName}>
         <Tabs.Tab value="docs">Docs Space </Tabs.Tab>
         <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
@@ -42,12 +58,17 @@ export const SearchResults: FC<IProps> = ({
               results={staticSearchResults}
             />
             {limitResults !== undefined && query !== undefined ? (
-              <Link href={`/search?q=${query}`} passHref legacyBehavior>
-                <Button.Root title="Go to search results" onClick={clearModal}>
-                  Go to search results
-                  <Button.Icon icon={SystemIcon.TrailingIcon} />
-                </Button.Root>
-              </Link>
+              <Stack justifyContent="flex-end">
+                <Link href={`/search?q=${query}`} passHref legacyBehavior>
+                  <Button
+                    icon={SystemIcons.TrailingIcon}
+                    title="Go to search results"
+                    onClick={clearModal}
+                  >
+                    Go to search results
+                  </Button>
+                </Link>
+              </Stack>
             ) : null}
           </ScrollBox>
         </Tabs.Content>
