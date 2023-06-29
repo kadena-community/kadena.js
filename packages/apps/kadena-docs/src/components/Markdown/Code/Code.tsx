@@ -10,5 +10,11 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
   if (typeof children === 'string') {
     return <StyledInlineCode>{children}</StyledInlineCode>;
   }
-  return <StyledCode {...props}>{children}</StyledCode>;
+
+  return (
+    <>
+      <div data-rehype-pretty-code-title="" {...props}></div>
+      <StyledCode {...props}>{children}</StyledCode>;
+    </>
+  );
 };

@@ -48,6 +48,11 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
         content: 'TS',
       },
     },
+    '&[data-language="yaml"]': {
+      '&::before': {
+        content: 'Y',
+      },
+    },
     '&[data-language="bash"]': {
       '&::before': {
         content: 'B',
