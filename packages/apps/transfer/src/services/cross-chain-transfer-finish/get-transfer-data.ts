@@ -1,5 +1,4 @@
 import {
-  ChainwebNetworkId,
   ICommandResult,
   IPollResponse,
 } from '@kadena/chainweb-node-client';
