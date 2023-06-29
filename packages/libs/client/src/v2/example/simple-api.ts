@@ -3,7 +3,9 @@
 
 import { ICommand } from '@kadena/types';
 
-import { coin } from '../test/coin-contract';
+import { Pact } from '../pact';
+
+const { coin } = Pact.modules;
 
 declare const getPact: any;
 

@@ -2,9 +2,18 @@
 // this module is just a code snippet for the safe transfer
 
 import { getClient } from '../client/client';
-import { commandBuilder, ICommand, meta, payload, set, signer } from '../pact';
+import {
+  commandBuilder,
+  ICommand,
+  meta,
+  payload,
+  set,
+  signer,
+} from '../commandBuilder';
+import { Pact } from '../pact';
 import { sign } from '../sign';
-import { coin } from '../test/coin-contract';
+
+const { coin } = Pact.modules;
 
 async function doSafeTransfer(from: string, to: string, amount: string) {
   const { submit } = getClient();

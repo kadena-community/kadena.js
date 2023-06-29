@@ -10,9 +10,11 @@ import {
   payload,
   set,
   signer,
-} from '../pact';
+} from '../commandBuilder';
+import { Pact } from '../pact';
 import { sign } from '../sign';
-import { coin } from '../test/coin-contract';
+
+const { coin } = Pact.modules;
 
 interface IAccount {
   account: string;

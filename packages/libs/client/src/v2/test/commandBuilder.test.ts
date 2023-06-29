@@ -1,6 +1,9 @@
-import { commandBuilder, meta, payload, set, signer } from '../pact';
+import './coin-contract';
 
-import { coin } from './coin-contract';
+import { commandBuilder, meta, payload, set, signer } from '../commandBuilder';
+import { Pact } from '../pact';
+
+const { coin } = Pact.modules;
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
@@ -123,7 +126,7 @@ describe('commandBuilder', () => {
       payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
     );
 
-    expect(command.nonce).toBe('kjs-1690416000000');
+    expect(command.nonce).toBe('kjs:nonce:1690416000000');
   });
 
   it('merges payload if they are exec', () => {

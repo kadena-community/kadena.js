@@ -1,4 +1,4 @@
-import { getModule, ICapabilityItem } from '../pact';
+import type { ICapabilityItem } from '../commandBuilder';
 
 interface ITransferCapability {
   (name: 'coin.GAS'): ICapabilityItem;
@@ -21,23 +21,25 @@ interface ITransferCrosschainCapability {
   (name: 'coin.CREDIT', receiver: string): ICapabilityItem;
 }
 
-export interface ICoin {
-  transfer: (
-    from: string,
-    to: string,
-    amount: { decimal: string },
-  ) => string & {
-    capability: ITransferCapability;
-  };
-  'transfer-crosschain': (
-    sender: string,
-    receiver: string,
-    receiverGuard: string,
-    targetChain: string,
-    amount: { decimal: string },
-  ) => string & {
-    capability: ITransferCrosschainCapability;
-  };
+declare module '../pact' {
+  export interface IPactModules {
+    coin: {
+      transfer: (
+        from: string,
+        to: string,
+        amount: { decimal: string },
+      ) => string & {
+        capability: ITransferCapability;
+      };
+      'transfer-crosschain': (
+        sender: string,
+        receiver: string,
+        receiverGuard: string,
+        targetChain: string,
+        amount: { decimal: string },
+      ) => string & {
+        capability: ITransferCrosschainCapability;
+      };
+    };
+  }
 }
-
-export const coin: ICoin = getModule('coin');

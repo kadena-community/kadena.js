@@ -4,15 +4,16 @@
 import { getClient } from '../client/client';
 import {
   commandBuilder,
-  getModule,
   ICapabilityItem,
   ICommand,
   meta,
   payload,
   set,
   signer,
-} from '../pact';
-import { coin } from '../test/coin-contract';
+} from '../commandBuilder';
+import { getModule, Pact } from '../pact';
+
+const { coin } = Pact.modules;
 
 interface IAdminCapability {
   (name: 'test.ADMIN'): ICapabilityItem;

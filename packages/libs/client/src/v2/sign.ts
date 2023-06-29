@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 // this module is juts a mock for the sign function
 
-import { ICommand } from './pact';
+import { ICommand } from './commandBuilder';
 
 export const sign = (command: ICommand) =>
   Promise.resolve({
