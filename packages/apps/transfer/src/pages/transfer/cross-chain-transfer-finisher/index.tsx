@@ -194,7 +194,7 @@ const CrossChainTransferFinisher: FC = () => {
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
-                value: requestKey,
+                defaultValue: requestKey,
               }}
             />
 

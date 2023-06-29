@@ -25,7 +25,7 @@ export const kadenaConstants: KadenaConstants = {
       MAINNET01: 'mainnet01',
     },
     apiHost: ({ networkId, chainId }) =>
-      `${kadenaConstants.MAINNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `https://${kadenaConstants.MAINNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () => env('KADENA_MAINNET_ESTATS', 'estats.chainweb.com'),
   },
   TESTNET: {
@@ -34,7 +34,7 @@ export const kadenaConstants: KadenaConstants = {
       TESTNET04: 'testnet04',
     },
     apiHost: ({ networkId, chainId }) =>
-      `${kadenaConstants.TESTNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `https://${kadenaConstants.TESTNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () =>
       env('KADENA_TESTNET_ESTATS', 'estats.testnet.chainweb.com'),
   },
@@ -47,3 +47,4 @@ export const kadenaConstants: KadenaConstants = {
 export function getKadenaConstantByNetwork(network: Network) {
   return kadenaConstants[network];
 }
+

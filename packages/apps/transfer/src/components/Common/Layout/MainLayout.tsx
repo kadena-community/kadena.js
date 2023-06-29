@@ -46,8 +46,8 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
                 onChange={(e) => setNetwork(e.target.value as Network)}
                 value={network}
               >
-                <StyledOption value="Mainnet">{t('Mainnet')}</StyledOption>
-                <StyledOption value="Testnet">{t('Testnet')}</StyledOption>
+                <StyledOption value="MAINNET">{t('Mainnet')}</StyledOption>
+                <StyledOption value="TESTNET">{t('Testnet')}</StyledOption>
               </Select>
             </Grid.Item>
           </Grid.Container>
