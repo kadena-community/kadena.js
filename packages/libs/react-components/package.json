@@ -61,6 +61,7 @@
     "sort-package-json": "~2.4.1",
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "eslint-import-resolver-alias": "~1.1.2"
   }
 }
