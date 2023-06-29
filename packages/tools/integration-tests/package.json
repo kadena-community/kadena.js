@@ -1,10 +1,10 @@
 {
   "name": "@kadena/integration-tests",
   "version": "0.0.1",
+  "private": true,
   "description": "",
   "keywords": [],
   "license": "ISC",
-  "private": true,
   "contributors": [
     {
       "name": "Albert"

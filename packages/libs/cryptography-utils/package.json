@@ -9,10 +9,6 @@
     "directory": "packages/libs/cryptography-utils"
   },
   "license": "ISC",
-  "files": [
-    "dist",
-    "lib"
-  ],
   "contributors": [
     {
       "name": "Albert"
@@ -29,6 +25,10 @@
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

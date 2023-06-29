@@ -1,13 +1,15 @@
 export interface IEnvInterface {
-  KADENA_API_TTIL: number;
-  KADENA_MAINNET_API: string;
-  KADENA_TESTNET_API: string;
-  KADENA_MAINNET_ESTATS: string;
-  KADENA_TESTNET_ESTATS: string;
-  GAS_LIMIT: number;
-  GAS_PRICE: number;
-  DEFAULT_SENDER: string;
+  KADENA_API_TTIL?: number;
+  KADENA_MAINNET_API?: string;
+  KADENA_TESTNET_API?: string;
+  KADENA_MAINNET_ESTATS?: string;
+  KADENA_TESTNET_ESTATS?: string;
+  GAS_LIMIT?: number;
+  GAS_PRICE?: number;
+  DEFAULT_SENDER?: string;
 }
+
+type IRequiredEnv = Required<IEnvInterface>;
 
 export const dotenv: IEnvInterface = {
   KADENA_API_TTIL: Number(process.env.KADENA_API_TTIL),
@@ -20,10 +22,10 @@ export const dotenv: IEnvInterface = {
   DEFAULT_SENDER: process.env.DEFAULT_SENDER,
 };
 
-export const env = <T extends keyof IEnvInterface, TDefault>(
+export const env = <T extends keyof IRequiredEnv, TDefault>(
   key: T,
   defaultValue: TDefault,
-): TDefault | NonNullable<IEnvInterface[T]> => {
+): TDefault | NonNullable<IRequiredEnv[T]> => {
   const falsyKey =
     (typeof dotenv[key] === 'number' && isNaN(Number(dotenv[key]))) ||
     dotenv[key] === null ||
@@ -32,5 +34,5 @@ export const env = <T extends keyof IEnvInterface, TDefault>(
 
   return falsyKey
     ? (defaultValue as TDefault)
-    : (dotenv[key] as NonNullable<IEnvInterface[T]>);
+    : (dotenv[key] as NonNullable<IRequiredEnv[T]>);
 };
