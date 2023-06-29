@@ -20,6 +20,7 @@
     "test": ""
   },
   "dependencies": {
+    "mdast-builder": "~1.1.1",
     "mdast-comment-marker": "^2.1.2",
     "mdast-zone": "^5.1.1",
     "remark-cli": "~11.0.0",
@@ -41,6 +42,7 @@
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
     "typescript": "5.0.4",
-    "unified": "^10.1.2"
+    "unified": "^10.1.2",
+    "vfile": "5.3.7"
   }
 }

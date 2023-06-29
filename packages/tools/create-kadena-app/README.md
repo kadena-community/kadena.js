@@ -1,14 +1,15 @@
-# kadena.js - Create Kadena App
+<!-- genericHeader start -->
 
-Create Kadena App is an easy way to get started with building apps using
-kadena.js targetting the Kadena Blockchain.
+# @kadena/create-kadena-app
 
-<p align="center">
-  <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
+CLI tool to create a starter project with @kadena/client integration
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 <hr>
 
