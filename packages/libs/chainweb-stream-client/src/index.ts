@@ -12,6 +12,7 @@ import {
   ITransaction,
   IDebugMsgObject,
   IInitialEvent,
+  IHeightsEvent,
   IChainwebStreamConfig,
 } from './types';
 import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
@@ -234,13 +235,13 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _handleHeights = (msg: MessageEvent<string>): void => {
-    const heights = JSON.parse(msg.data) as number[];
+    const { data } = JSON.parse(msg.data) as IHeightsEvent;
 
     this._debug('_handleHeights');
 
-    this.emit('heights', heights);
+    this.emit('heights', data);
 
-    this._updateLastHeight(heights);
+    this._updateLastHeight([data]);
 
     this._resetHeartbeatTimeout();
   };

@@ -139,6 +139,12 @@ export interface IEventTransaction extends ITransactionBase {
 }
 
 // @alpha (undocumented)
+export interface IHeightsEvent {
+    // (undocumented)
+    data: number;
+}
+
+// @alpha (undocumented)
 export interface IInitialEvent {
     // (undocumented)
     config: IChainwebStreamConfig;

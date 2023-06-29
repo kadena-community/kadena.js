@@ -113,11 +113,9 @@ Callback type: `(txn: ITransaction) => void`
 
 ### heights
 
-Emitted when a `heights` event is received by the server. This carried the current cut as seen from stream-server's corresponding chainweb-node. This event is mostly intended for calculating minheight when reconnecting, but the event itself is expored to users in case they have use cases beyond that.
+Emitted when a `heights` event is received by the server. This carries the maximum height as seen from stream-server's corresponding chainweb-data. This event is mostly intended for calculating minheight when reconnecting, but the event itself is exposed to users in case they have use cases beyond that, such as detecting a stalled cw-data.
 
-[Payload](https://github.com/kadena-io/chainweb-stream-server#events) is an array of the height of each chain, with implicit indexes (i.e. chain 0 = index 0, etc).
-
-Callback type: `(chainHeights: number[]) => void`
+Callback type: `(maxChainwebDataHeight: number) => void`
 
 ### data
 
