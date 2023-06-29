@@ -20,8 +20,15 @@ export { TextField, ITextFieldProps } from './TextField/TextField';
 export { IInputWrapperProps, InputWrapper } from './InputWrapper/InputWrapper';
 export { IInputProps, Input } from './Input/Input';
 export {
+  Notification,
+  INotificationProps,
+  INotificationHeaderProps,
+  INotificationActionsProps,
+} from './Notification';
+export {
   Breadcrumbs,
   IBreadcrumbsProps,
   IBreadcrumbItemProps,
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
+export { Link, ILinkProps } from './Link/Link';

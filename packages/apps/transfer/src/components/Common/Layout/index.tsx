@@ -3,7 +3,7 @@ import { Header } from './partials';
 import { StyledLayout } from '@/components/Common/Layout/styles';
 import { WalletConnectButton } from '@/components/Global';
 import routes from '@/constants/routes';
-import { Logo } from '@/resources/svg/generated';
+import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
 
@@ -39,7 +39,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   return (
     <StyledLayout data-testid={'layout-container'} className="layout">
       <Header
-        logo={<Logo width={32} height={32} />}
+        logo={<KLogoComponent width={32} height={32} />}
         appTitle={t('Developer Tools')}
         menu={menu}
         rightPanel={<WalletConnectButton />}

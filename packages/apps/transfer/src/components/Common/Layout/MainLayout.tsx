@@ -14,8 +14,9 @@ import {
 
 import { Select, SidebarMenu } from '@/components/Global';
 import { StyledOption } from '@/components/Global/Select/styles';
+import { Network } from '@/constants/kadena';
 import routes from '@/constants/routes';
-import { Network, useAppContext } from '@/context/app-context';
+import { useAppContext } from '@/context/app-context';
 import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
@@ -45,8 +46,8 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
                 onChange={(e) => setNetwork(e.target.value as Network)}
                 value={network}
               >
-                <StyledOption value="Mainnet">{t('Mainnet')}</StyledOption>
-                <StyledOption value="Testnet">{t('Testnet')}</StyledOption>
+                <StyledOption value="MAINNET">{t('Mainnet')}</StyledOption>
+                <StyledOption value="TESTNET">{t('Testnet')}</StyledOption>
               </Select>
             </Grid.Item>
           </Grid.Container>
