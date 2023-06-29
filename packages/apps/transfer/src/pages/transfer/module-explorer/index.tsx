@@ -19,7 +19,6 @@ import {
 } from './styles';
 
 import { Select } from '@/components/Global';
-import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
   type IModuleResult,
@@ -48,10 +47,7 @@ const GetCode: FC = () => {
       const data = await describeModule(
         moduleName,
         convertIntToChainId(moduleChain),
-        chainNetwork[network].network,
-        chainNetwork[network].server,
-        'not-real',
-        0.00000001,
+        network,
       );
 
       setResults(data);
