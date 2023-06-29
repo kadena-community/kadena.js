@@ -43,6 +43,11 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
         content: 'P',
       },
     },
+    '&[data-language="lisp"]': {
+      '&::before': {
+        content: 'P',
+      },
+    },
     '&[data-language="typescript"]': {
       '&::before': {
         content: 'TS',
