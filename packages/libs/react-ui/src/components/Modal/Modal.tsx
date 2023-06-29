@@ -27,7 +27,7 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
         className={background}
         onClick={clearModal}
       />
-      <div className={wrapper} data-cy="modal">
+      <div className={wrapper} data-cy="modal" data-testid="kda-modal">
         <section className={modal}>
           <Card fullWidth>
             <div className={titleWrapper}>
