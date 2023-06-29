@@ -43,12 +43,7 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: routes.HOME,
-    },
-    {
-      icon: Chain,
-      title: t('New account'),
-      href: routes.HOME,
+      href: routes.FAUCET_EXISTING,
     },
   ];
 

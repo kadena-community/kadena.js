@@ -5,14 +5,11 @@
       "heft-jest",
       "jest",
       "node",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      ".kadena/pactjs-generated"
     ],
     "target": "ES2020",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,

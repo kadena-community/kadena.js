@@ -62,7 +62,11 @@ const fileStr = JSON.stringify(result, null, 2);
 
 const miniSearch = new MiniSearch({
   fields: ['title', 'description', 'content'],
-  storeFields: ['title', 'filename'],
+  storeFields: ['title', 'filename', 'description'],
+  boost: {
+    title: 2,
+  },
+  fuzzy: 0.2,
 });
 
 await miniSearch.addAllAsync(result);
