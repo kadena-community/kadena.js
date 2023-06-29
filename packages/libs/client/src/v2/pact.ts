@@ -31,9 +31,8 @@ export const getModule = (name: string) => {
 };
 
 const pactCreator = (): IPact => {
-  return new Proxy<any>(function () {} as unknown, {
+  return new Proxy<any>({} as unknown, {
     get(_, path: string) {
-      console.error('get', path);
       return getModule(path);
     },
   });
