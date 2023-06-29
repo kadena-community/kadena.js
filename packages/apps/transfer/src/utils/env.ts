@@ -1,3 +1,5 @@
+import { findDOMNode } from 'react-dom';
+
 export interface IEnvInterface {
   KADENA_API_TTIL?: number;
   KADENA_MAINNET_API?: string;
@@ -25,7 +27,7 @@ export const env = <T extends keyof IEnvInterface, TDefault>(
   defaultValue: TDefault,
 ): TDefault | NonNullable<IEnvInterface[T]> => {
   const falsyKey =
-    isNaN(Number(dotenv[key])) ||
+    (typeof dotenv[key] === 'number' && isNaN(Number(dotenv[key]))) ||
     dotenv[key] === null ||
     dotenv[key] === undefined ||
     dotenv[key] === '';
