@@ -71,7 +71,6 @@ const CheckTransactions: FC = () => {
     }
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   async function setTransactions(
     chain: string,
     account: string,

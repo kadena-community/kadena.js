@@ -1,12 +1,12 @@
 export interface IEnvInterface {
-  KADENA_API_TTIL?: number;
-  KADENA_MAINNET_API?: string;
-  KADENA_TESTNET_API?: string;
-  KADENA_MAINNET_ESTATS?: string;
-  KADENA_TESTNET_ESTATS?: string;
-  GAS_LIMIT?: number;
-  GAS_PRICE?: number;
-  DEFAULT_SENDER?: string;
+  KADENA_API_TTIL: number;
+  KADENA_MAINNET_API: string;
+  KADENA_TESTNET_API: string;
+  KADENA_MAINNET_ESTATS: string;
+  KADENA_TESTNET_ESTATS: string;
+  GAS_LIMIT: number;
+  GAS_PRICE: number;
+  DEFAULT_SENDER: string;
 }
 
 export const dotenv: IEnvInterface = {

@@ -1,4 +1,4 @@
-import { ChainwebNetworkId, IPollResponse } from '@kadena/chainweb-node-client';
+import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';

@@ -23,14 +23,20 @@
     "declarationMap": false,
     "jsx": "preserve",
     "paths": {
-      "@/*": ["./src/*"],
-      "@stitches/react": ["./node_modules/@stitches/react"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@stitches/react": [
+        "./node_modules/@stitches/react"
+      ]
     },
     "allowJs": true
   },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
+    "node_modules"
   ]
 }

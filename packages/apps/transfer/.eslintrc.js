@@ -4,5 +4,5 @@ module.exports = {
   plugins: ['jest'],
   extends: ['@kadena-dev/eslint-config/profile/next'],
   parserOptions: { tsconfigRootDir: __dirname },
-  ignorePatterns: ['**/*.spec.ts', '**/*.spec.tsx', '**/generated/**'],
+  ignorePatterns: ['**/generated/**'],
 };
