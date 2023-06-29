@@ -3,7 +3,7 @@
 
 import { getClient } from '../client/client';
 import { commandBuilder, ICommand, meta, payload, set, signer } from '../pact';
-import { sign } from '../sing';
+import { sign } from '../sign';
 import { coin } from '../test/coin-contract';
 
 async function doSafeTransfer(from: string, to: string, amount: string) {

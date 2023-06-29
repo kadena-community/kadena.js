@@ -14,3 +14,12 @@ export const quicksign = (command: string) => {
   const cmd: ICommand = JSON.parse(command);
   return Promise.resolve(cmd.signers?.map(({ pubKey }) => pubKey) || []);
 };
+
+type ExtendTypeForm<T> = (arg: T) => string;
+
+const myFn = <T extends any>(cb: ExtendTypeForm<T>): T =>
+  ((arg: any) => arg) as any;
+
+const builder = (arg: { name: string; args: any[] }) => {};
+
+builder(myFn((arg: { name: string; args: any[] }) => arg.name));

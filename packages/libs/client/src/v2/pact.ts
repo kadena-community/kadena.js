@@ -123,7 +123,7 @@ type ExtractType<T> = T extends (cmd: { payload: infer A }) => any
     : CAP
   : CAP;
 
-interface ISinger {
+interface ISigner {
   (
     first:
       | string
@@ -137,7 +137,7 @@ interface ISinger {
   ): T;
 }
 
-export const signer: ISinger = ((
+export const signer: ISigner = ((
   first:
     | string
     | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },

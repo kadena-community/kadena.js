@@ -135,7 +135,7 @@ describe('commandBuilder', () => {
     ).toThrowError('Only one payload object is allowed');
   });
 
-  it('accepts a singer without a capability', () => {
+  it('accepts a signer without a capability', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),

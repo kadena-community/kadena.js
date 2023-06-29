@@ -124,17 +124,19 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     );
 
     // merge all of the result in one object
-    const mergedResults = mergeAllPollRequestPromises(results);
+    const mergedPollRequestPromises = mergeAllPollRequestPromises(results);
 
     // remove from the pending requests storage
-    Object.entries(mergedResults.requests).forEach(([key, promise]) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      promise.then(() => {
-        storage.remove([key]);
-      });
-    });
+    Object.entries(mergedPollRequestPromises.requests).forEach(
+      ([key, promise]) => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        promise.then(() => {
+          storage.remove([key]);
+        });
+      },
+    );
 
-    return mergedResults;
+    return mergedPollRequestPromises;
   }
 
   const client: IClient = {
