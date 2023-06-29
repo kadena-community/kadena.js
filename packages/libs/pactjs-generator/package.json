@@ -33,27 +33,22 @@
     "test": "heft test --no-build"
   },
   "dependencies": {
-    "byline": "~5.0.0",
     "memfs": "~3.5.1",
     "moo": "~0.5.1",
     "nearley": "~2.20.1",
-    "ramda": "~0.28.0",
     "yaml": "~2.1.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
-    "@types/byline": "~4.2.33",
     "@types/heft-jest": "~1.0.3",
     "@types/moo": "~0.5.5",
     "@types/nearley": "~2.11.2",
     "@types/node": "^16.0.0",
     "@types/node-fetch": "~2.6.2",
-    "@types/ramda": "~0.28.15",
     "concurrently": "^7.2.2",
     "eslint": "^8.15.0",
     "node-fetch": "~2.6.2",

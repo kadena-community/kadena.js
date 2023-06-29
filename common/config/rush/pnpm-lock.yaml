@@ -9,13 +9,11 @@ importers:
     specifiers:
       '@7-docs/cli': 0.1.7
       '@7-docs/edge': 0.1.7
-      '@babel/plugin-syntax-import-assertions': ~7.20.0
       '@babel/preset-env': ^7.20.2
       '@babel/preset-react': ^7.18.6
       '@babel/preset-typescript': ^7.21.0
       '@google-analytics/data': ~3.2.2
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@kadena/react-components': workspace:*
@@ -81,7 +79,6 @@ importers:
       typescript: 5.0.4
     dependencies:
       '@7-docs/edge': 0.1.7
-      '@babel/plugin-syntax-import-assertions': 7.20.0
       '@google-analytics/data': 3.2.2
       '@kadena/react-components': link:../../libs/react-components
       '@kadena/react-ui': link:../../libs/react-ui
@@ -114,7 +111,6 @@ importers:
       '@babel/preset-react': 7.22.5
       '@babel/preset-typescript': 7.22.5
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@kadena/types': link:../../libs/types
@@ -157,7 +153,6 @@ importers:
   ../../packages/apps/graph:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@pothos/core': ~3.24.0
@@ -180,7 +175,6 @@ importers:
       prettier: ~2.8.8
       prisma: ^4.7.1
       sort-package-json: ~2.4.1
-      ts-node: ~10.8.2
     dependencies:
       '@pothos/core': 3.24.1_graphql@16.6.0
       '@pothos/plugin-prisma': 3.39.0_35c94ca9266326f27acb70dd7a773b89
@@ -196,7 +190,6 @@ importers:
       prisma: 4.16.2
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -207,21 +200,15 @@ importers:
       embedded-postgres: 15.1.0-beta.6
       prettier: 2.8.8
       sort-package-json: 2.4.1
-      ts-node: 10.8.2_@types+node@16.18.38
 
   ../../packages/apps/graph-client:
     specifiers:
       '@apollo/client': ~3.7.2
       '@graphql-codegen/cli': 2.16.1
-      '@graphql-codegen/client-preset': 1.2.3
-      '@graphql-codegen/introspection': 2.2.3
-      '@graphql-codegen/typescript': ~2.8.5
-      '@graphql-codegen/typescript-graphql-request': ~4.5.8
       '@graphql-codegen/typescript-operations': ~2.5.10
       '@graphql-codegen/typescript-react-apollo': ~3.3.7
       '@graphql-yoga/apollo-link': ~1.0.1
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/pactjs-cli': workspace:*
@@ -237,9 +224,7 @@ importers:
       '@types/react-dom': 18.0.11
       concurrently: ^7.2.2
       eslint: ^8.15.0
-      eslint-config-next: 13.4.5
       graphql: ~16.6.0
-      graphql-sse: ~1.3.2
       lodash.isequal: ~4.5.0
       next: 13.4.5
       prettier: ~2.8.8
@@ -258,9 +243,7 @@ importers:
       '@types/react': 18.2.14
       '@types/react-dom': 18.0.11
       eslint: 8.44.0
-      eslint-config-next: 13.4.5_eslint@8.44.0+typescript@5.0.4
       graphql: 16.6.0
-      graphql-sse: 1.3.2_graphql@16.6.0
       lodash.isequal: 4.5.0
       next: 13.4.5_react-dom@18.2.0+react@18.2.0
       react: 18.2.0
@@ -268,14 +251,9 @@ importers:
       typescript: 5.0.4
     devDependencies:
       '@graphql-codegen/cli': 2.16.1_e06bc550ccc732e610f659d82d3295dc
-      '@graphql-codegen/client-preset': 1.2.3_graphql@16.6.0
-      '@graphql-codegen/introspection': 2.2.3_graphql@16.6.0
-      '@graphql-codegen/typescript': 2.8.8_graphql@16.6.0
-      '@graphql-codegen/typescript-graphql-request': 4.5.9_graphql@16.6.0
       '@graphql-codegen/typescript-operations': 2.5.13_graphql@16.6.0
       '@graphql-codegen/typescript-react-apollo': 3.3.7_graphql@16.6.0
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
@@ -293,22 +271,18 @@ importers:
       '@jest/reporters': ~29.5.0
       '@jest/types': ~29.5.0
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
-      '@kadena/pactjs-cli': workspace:*
       '@kadena/react-components': workspace:*
       '@kadena/react-ui': workspace:*
       '@kadena/types': workspace:*
-      '@next/eslint-plugin-next': ^12.0.8
       '@radix-ui/colors': ~0.1.8
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
-      '@rushstack/heft-jest-plugin': ~0.5.12
       '@stitches/react': 1.3.1-1
       '@svgr/cli': ~8.0.1
       '@testing-library/jest-dom': ~5.16.5
@@ -318,7 +292,6 @@ importers:
       '@types/heft-jest': ~1.0.3
       '@types/jest': ^29.5.1
       '@types/js-cookie': ~3.0.3
-      '@types/mocha': ^10.0.1
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
       '@types/react-dom': 18.0.11
@@ -329,7 +302,6 @@ importers:
       '@vanilla-extract/next-plugin': 2.1.2
       ace-builds: ~1.22.1
       debug: ~4.3.4
-      env-cmd: ^10.1.0
       eslint: ^8.15.0
       eslint-config-next: 13.4.5
       eslint-plugin-jest: ~27.2.1
@@ -353,7 +325,6 @@ importers:
       '@kadena/client': link:../../libs/client
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       '@kadena/pactjs': link:../../libs/pactjs
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@kadena/react-components': link:../../libs/react-components
       '@kadena/react-ui': link:../../libs/react-ui
       '@radix-ui/colors': 0.1.9
@@ -372,14 +343,11 @@ importers:
       '@jest/reporters': 29.5.0
       '@jest/types': 29.5.0
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@kadena/types': link:../../libs/types
-      '@next/eslint-plugin-next': 12.3.4
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
-      '@rushstack/heft-jest-plugin': 0.5.13_c7b81aa6722f9697dbfd4c2498a07e80
       '@svgr/cli': 8.0.1
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 14.0.0_react-dom@18.2.0+react@18.2.0
@@ -388,7 +356,6 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/jest': 29.5.2
       '@types/js-cookie': 3.0.3
-      '@types/mocha': 10.0.1
       '@types/node': 16.18.38
       '@types/react': 18.2.14
       '@types/react-dom': 18.0.11
@@ -397,7 +364,6 @@ importers:
       '@typescript-eslint/parser': 5.60.1_eslint@8.44.0+typescript@5.0.4
       '@vanilla-extract/css': 1.11.1
       debug: 4.3.4
-      env-cmd: 10.1.0
       eslint: 8.44.0
       eslint-config-next: 13.4.5_eslint@8.44.0+typescript@5.0.4
       eslint-plugin-jest: 27.2.2_81583258e12dee35792d23b0bea74689
@@ -411,8 +377,6 @@ importers:
 
   ../../packages/libs/bootstrap-lib:
     specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/cryptography-utils': workspace:*
@@ -436,8 +400,6 @@ importers:
       cross-fetch: 3.1.8
       node-fetch: 2.6.12
     devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -450,8 +412,6 @@ importers:
 
   ../../packages/libs/chainweb-node-client:
     specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/cryptography-utils': workspace:*
@@ -475,8 +435,6 @@ importers:
       cross-fetch: 3.1.8
       node-fetch: 2.6.12
     devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -489,8 +447,6 @@ importers:
 
   ../../packages/libs/chainweb-stream-client:
     specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/cryptography-utils': workspace:*
@@ -513,8 +469,6 @@ importers:
       eventemitter2: 6.4.9
       eventsource: 2.0.2
     devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -566,7 +520,6 @@ importers:
   ../../packages/libs/client:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/chainweb-node-client': workspace:*
@@ -601,7 +554,6 @@ importers:
       yaml: 2.1.3
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -616,8 +568,6 @@ importers:
 
   ../../packages/libs/cryptography-utils:
     specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/types': workspace:*
@@ -637,8 +587,6 @@ importers:
       buffer: 6.0.3
       tweetnacl: 1.0.3
     devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -652,7 +600,6 @@ importers:
   ../../packages/libs/kadena.js:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/chainweb-node-client': workspace:*
@@ -663,8 +610,6 @@ importers:
       '@rushstack/heft': ~0.50.6
       '@types/heft-jest': ~1.0.3
       '@types/node-fetch': ~2.6.2
-      bignumber.js: ^9.0.2
-      blakejs: ^1.2.1
       eslint: ^8.15.0
       node-fetch: ~2.6.2
       prettier: ~2.8.8
@@ -679,14 +624,11 @@ importers:
       '@kadena/cryptography-utils': link:../cryptography-utils
       '@kadena/pactjs': link:../pactjs
       '@kadena/types': link:../types
-      bignumber.js: 9.1.1
-      blakejs: 1.2.1
       node-fetch: 2.6.12
       tweetnacl: 1.0.3
       webpack: 5.73.0_webpack-cli@4.10.0
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -702,8 +644,6 @@ importers:
 
   ../../packages/libs/pactjs:
     specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/types': workspace:*
@@ -719,8 +659,6 @@ importers:
       '@kadena/types': link:../types
       bignumber.js: 9.1.1
     devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -734,19 +672,15 @@ importers:
   ../../packages/libs/pactjs-generator:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
-      '@types/byline': ~4.2.33
       '@types/heft-jest': ~1.0.3
       '@types/moo': ~0.5.5
       '@types/nearley': ~2.11.2
       '@types/node': ^16.0.0
       '@types/node-fetch': ~2.6.2
-      '@types/ramda': ~0.28.15
-      byline: ~5.0.0
       concurrently: ^7.2.2
       eslint: ^8.15.0
       memfs: ~3.5.1
@@ -755,31 +689,25 @@ importers:
       node-fetch: ~2.6.2
       npm-run-all: ~4.1.5
       prettier: ~2.8.8
-      ramda: ~0.28.0
       sort-package-json: ~2.4.1
       ts-node: ~10.8.2
       yaml: ~2.1.1
     dependencies:
-      byline: 5.0.0
       memfs: 3.5.3
       moo: 0.5.2
       nearley: 2.20.1
-      ramda: 0.28.0
       yaml: 2.1.3
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
-      '@types/byline': 4.2.33
       '@types/heft-jest': 1.0.3
       '@types/moo': 0.5.5
       '@types/nearley': 2.11.2
       '@types/node': 16.18.38
       '@types/node-fetch': 2.6.4
-      '@types/ramda': 0.28.25
       concurrently: 7.6.0
       eslint: 8.44.0
       node-fetch: 2.6.12
@@ -791,7 +719,6 @@ importers:
   ../../packages/libs/pactjs-test-project:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/chainweb-node-client': workspace:*
@@ -811,6 +738,7 @@ importers:
       prettier: ~2.8.8
       sort-package-json: ~2.4.1
       ts-node: ~10.8.2
+      typescript: 5.0.4
     dependencies:
       '@kadena/chainweb-node-client': link:../chainweb-node-client
       '@kadena/client': link:../client
@@ -819,11 +747,10 @@ importers:
       debug: 4.3.4
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@kadena/pactjs-cli': link:../../tools/pactjs-cli
-      '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
+      '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
       '@types/heft-jest': 1.0.3
       '@types/node': 16.18.38
@@ -833,7 +760,8 @@ importers:
       npm-run-all: 4.1.5
       prettier: 2.8.8
       sort-package-json: 2.4.1
-      ts-node: 10.8.2_@types+node@16.18.38
+      ts-node: 10.8.2_37397d4516e2230bd4bd41a4d81dedb8
+      typescript: 5.0.4
 
   ../../packages/libs/react-components:
     specifiers:
@@ -842,7 +770,6 @@ importers:
       '@babel/preset-react': ^7.18.6
       '@babel/preset-typescript': ^7.21.0
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@radix-ui/react-switch': ^1.0.2
@@ -863,7 +790,6 @@ importers:
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       '@types/react': ^18.0.30
-      classnames: ^2.3.1
       eslint: ^8.15.0
       prettier: ~2.8.8
       react: ^18.2.0
@@ -875,7 +801,6 @@ importers:
     dependencies:
       '@radix-ui/react-switch': 1.0.3_867028bf30ab2a1fd87a48d0163e1a16
       '@stitches/react': 1.3.1-1_react@18.2.0
-      classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
@@ -884,7 +809,6 @@ importers:
       '@babel/preset-react': 7.22.5_@babel+core@7.22.5
       '@babel/preset-typescript': 7.22.5_@babel+core@7.22.5
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
@@ -917,7 +841,6 @@ importers:
       '@babel/preset-react': ^7.18.6
       '@babel/preset-typescript': ^7.21.0
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@rushstack/eslint-config': ~3.3.0
@@ -982,7 +905,6 @@ importers:
       '@babel/preset-react': 7.22.5_@babel+core@7.22.5
       '@babel/preset-typescript': 7.22.5_@babel+core@7.22.5
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
@@ -1030,7 +952,6 @@ importers:
   ../../packages/libs/types:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@rushstack/eslint-config': ~3.3.0
@@ -1041,7 +962,6 @@ importers:
       sort-package-json: ~2.4.1
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin': link:../../tools/eslint-plugin
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -1054,7 +974,6 @@ importers:
   ../../packages/tools/cookbook:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/chainweb-node-client': workspace:*
@@ -1074,7 +993,6 @@ importers:
       '@kadena/client': link:../../libs/client
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena-dev/markdown': link:../remark-plugins
       '@kadena/pactjs-cli': link:../pactjs-cli
@@ -1100,7 +1018,6 @@ importers:
       '@types/heft-jest': ~1.0.3
       '@types/mkdirp': ~1.0.2
       '@types/node': ^16.0.0
-      '@types/ramda': ~0.28.15
       '@types/rimraf': ~3.0.2
       commander: ^9.3.0
       cross-env: ~7.0.3
@@ -1108,7 +1025,6 @@ importers:
       cross-spawn: ~7.0.3
       eslint: ^8.15.0
       prettier: ~2.8.8
-      ramda: ~0.28.0
       rimraf: ~3.0.2
       sort-package-json: ~2.4.1
       ts-node: ~10.8.2
@@ -1117,7 +1033,6 @@ importers:
       commander: 9.5.0
       cross-fetch: 3.1.8
       cross-spawn: 7.0.3
-      ramda: 0.28.0
       yaml: 2.1.3
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
@@ -1130,7 +1045,6 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/mkdirp': 1.0.2
       '@types/node': 16.18.38
-      '@types/ramda': 0.28.25
       '@types/rimraf': 3.0.2
       cross-env: 7.0.3
       eslint: 8.44.0
@@ -1179,14 +1093,12 @@ importers:
       '@typescript-eslint/experimental-utils': ~5.53.0
       eslint: ^8.15.0
       eslint-module-utils: ^2.7.1
-      is-core-module: ^2.8.0
       prettier: ~2.8.8
       sort-package-json: ~2.4.1
       typescript: 5.0.4
     dependencies:
       '@typescript-eslint/experimental-utils': 5.53.0_eslint@8.44.0+typescript@5.0.4
       eslint-module-utils: 2.8.0_eslint@8.44.0
-      is-core-module: 2.12.1
     devDependencies:
       '@rushstack/eslint-plugin': 0.11.0_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7
@@ -1198,7 +1110,6 @@ importers:
   ../../packages/tools/heft-rig:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@microsoft/api-extractor': ~7.35.0
       '@rushstack/eslint-config': ~3.3.0
@@ -1218,7 +1129,6 @@ importers:
       typescript: 5.0.4
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/markdown': link:../remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7
@@ -1229,7 +1139,6 @@ importers:
   ../../packages/tools/integration-tests:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/pactjs': workspace:*
@@ -1238,25 +1147,20 @@ importers:
       '@rushstack/heft': ~0.50.6
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
-      blakejs: ^1.2.1
       concurrently: ^7.2.2
       eslint: ^8.15.0
       exponential-backoff: ^3.1.0
       kadena.js: workspace:*
       prettier: ~2.8.8
       sort-package-json: ~2.4.1
-      tweetnacl: ^1.0.3
     dependencies:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
       '@kadena/pactjs': link:../../libs/pactjs
       '@kadena/types': link:../../libs/types
-      blakejs: 1.2.1
       exponential-backoff: 3.1.1
       kadena.js: link:../../libs/kadena.js
-      tweetnacl: 1.0.3
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/heft-rig': link:../heft-rig
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
@@ -1271,7 +1175,6 @@ importers:
     specifiers:
       '@inkjs/ui': ^1.0.0
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/cryptography-utils': workspace:*
@@ -1305,7 +1208,6 @@ importers:
       yaml: 2.1.3
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena-dev/markdown': link:../remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
@@ -1325,7 +1227,6 @@ importers:
   ../../packages/tools/pactjs-cli:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/pactjs-generator': workspace:*
@@ -1335,7 +1236,6 @@ importers:
       '@types/heft-jest': ~1.0.3
       '@types/mkdirp': ~1.0.2
       '@types/node': ^16.0.0
-      '@types/ramda': ~0.28.15
       '@types/rimraf': ~3.0.2
       commander: ^9.3.0
       cross-fetch: ~3.1.5
@@ -1343,7 +1243,6 @@ importers:
       eslint: ^8.15.0
       mkdirp: ~1.0.4
       prettier: ~2.8.8
-      ramda: ~0.28.0
       rimraf: ~3.0.2
       sort-package-json: ~2.4.1
       yaml: ~2.1.1
@@ -1354,13 +1253,11 @@ importers:
       cross-fetch: 3.1.8
       debug: 4.3.4
       mkdirp: 1.0.4
-      ramda: 0.28.0
       rimraf: 3.0.2
       yaml: 2.1.3
       zod: 3.18.0
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena-dev/markdown': link:../remark-plugins
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
@@ -1369,7 +1266,6 @@ importers:
       '@types/heft-jest': 1.0.3
       '@types/mkdirp': 1.0.2
       '@types/node': 16.18.38
-      '@types/ramda': 0.28.25
       '@types/rimraf': 3.0.2
       eslint: 8.44.0
       prettier: 2.8.8
@@ -1427,7 +1323,6 @@ importers:
   ../../packages/tools/rush-fix-versions:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@rushstack/eslint-config': ~3.3.0
@@ -1445,7 +1340,6 @@ importers:
       jsonc-parser: 3.2.0
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
-      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena-dev/markdown': link:../remark-plugins
       '@rushstack/eslint-config': 3.3.2
@@ -2604,6 +2498,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/helper-plugin-utils': 7.22.5
+    dev: true
 
   /@babel/plugin-syntax-import-assertions/7.20.0_@babel+core@7.21.8:
     resolution: {integrity: sha512-IUh1vakzNoWalR8ch/areW7qFopR2AEw03JlG7BbrDqmQ4X3q9uuipQwSGrUn7oGiemKjtSLDhNtQHzMHr1JdQ==}
@@ -5728,16 +5623,6 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-codegen/add/3.2.3_graphql@16.6.0:
-    resolution: {integrity: sha512-sQOnWpMko4JLeykwyjFTxnhqjd/3NOG2OyMuvK76Wnnwh8DRrNf2VEs2kmSvLl7MndMlOj7Kh5U154dVcvhmKQ==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      graphql: 16.6.0
-      tslib: 2.4.1
-    dev: true
-
   /@graphql-codegen/cli/2.16.1_e06bc550ccc732e610f659d82d3295dc:
     resolution: {integrity: sha512-11z3iSlsNCXcNNkoRKG3wCmT9XpLf7/GZG9bWGXkCoveWVRwnRmo37YakHdNV3hbcJ4iiGbR3Z+MX9gUTEPDVA==}
     hasBin: true
@@ -5793,29 +5678,6 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@graphql-codegen/client-preset/1.2.3_graphql@16.6.0:
-    resolution: {integrity: sha512-ZuIk/JDjEJq+B1irdQH+IP2i6ULcJlXQAsqBjjzlxkQlbZFTzunKWmIr8NCF7gzqIfgykjgoMcvKRgrW6X32tw==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/template': 7.22.5
-      '@graphql-codegen/add': 3.2.3_graphql@16.6.0
-      '@graphql-codegen/gql-tag-operations': 1.5.11_graphql@16.6.0
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      '@graphql-codegen/typed-document-node': 2.3.13_graphql@16.6.0
-      '@graphql-codegen/typescript': 2.8.8_graphql@16.6.0
-      '@graphql-codegen/typescript-operations': 2.5.13_graphql@16.6.0
-      '@graphql-codegen/visitor-plugin-common': 2.13.8_graphql@16.6.0
-      '@graphql-tools/utils': 8.13.1_graphql@16.6.0
-      '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
-      graphql: 16.6.0
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
   /@graphql-codegen/core/2.6.8_graphql@16.6.0:
     resolution: {integrity: sha512-JKllNIipPrheRgl+/Hm/xuWMw9++xNQ12XJR/OHHgFopOg4zmN3TdlRSyYcv/K90hCFkkIwhlHFUQTfKrm8rxQ==}
     peerDependencies:
@@ -5826,37 +5688,6 @@ packages:
       '@graphql-tools/utils': 9.2.1_graphql@16.6.0
       graphql: 16.6.0
       tslib: 2.4.1
-    dev: true
-
-  /@graphql-codegen/gql-tag-operations/1.5.11_graphql@16.6.0:
-    resolution: {integrity: sha512-LZq0ZYfomQkoXBhRwqIjp3yoUj9n656EXBWN5CxqGbVozbUQ32l07J82PxXTHf80EMOv9zcMsh5BD2pWvEEGTQ==}
-    deprecated: 'This module has been deprecated. Please use client-preset instead. See: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client'
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      '@graphql-codegen/visitor-plugin-common': 2.13.5_graphql@16.6.0
-      '@graphql-tools/utils': 8.13.1_graphql@16.6.0
-      auto-bind: 4.0.0
-      graphql: 16.6.0
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
-  /@graphql-codegen/introspection/2.2.3_graphql@16.6.0:
-    resolution: {integrity: sha512-iS0xhy64lapGCsBIBKFpAcymGW+A0LiLSGP9dPl6opZwU1bm/rsahkKvJnc+oCI/xfdQ3Q33zgUKOSCkqmM4Bw==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      '@graphql-codegen/visitor-plugin-common': 2.13.8_graphql@16.6.0
-      graphql: 16.6.0
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: true
 
   /@graphql-codegen/plugin-helpers/2.7.2_graphql@16.6.0:
@@ -5896,39 +5727,6 @@ packages:
       '@graphql-tools/utils': 9.2.1_graphql@16.6.0
       graphql: 16.6.0
       tslib: 2.4.1
-    dev: true
-
-  /@graphql-codegen/typed-document-node/2.3.13_graphql@16.6.0:
-    resolution: {integrity: sha512-vt1hvBAbYTYUCXblks9KYwR5Ho16hWQljid5xgx77jeVufj5PjnWrOjJfEFKFx17VOM4CKHP8ryoeT4NyjYNWw==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      '@graphql-codegen/visitor-plugin-common': 2.13.8_graphql@16.6.0
-      auto-bind: 4.0.0
-      change-case-all: 1.0.15
-      graphql: 16.6.0
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
-  /@graphql-codegen/typescript-graphql-request/4.5.9_graphql@16.6.0:
-    resolution: {integrity: sha512-Vtv5qymUXcR4UFdHOlJHzK5TN+CZUwMwFDGb3n4Gjcr4yln1BWbUb7DXgD0GHzpXwDIj5G2XmJnFtr0jihBfrg==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-      graphql-request: ^3.4.0 || ^4.0.0 || ~5.0.0 || ~5.1.0
-      graphql-tag: ^2.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      '@graphql-codegen/visitor-plugin-common': 2.13.1_graphql@16.6.0
-      auto-bind: 4.0.0
-      graphql: 16.6.0
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: true
 
   /@graphql-codegen/typescript-operations/2.5.13_graphql@16.6.0:
@@ -5991,27 +5789,6 @@ packages:
       '@graphql-tools/utils': 8.13.1_graphql@16.6.0
       auto-bind: 4.0.0
       change-case-all: 1.0.14
-      dependency-graph: 0.11.0
-      graphql: 16.6.0
-      graphql-tag: 2.12.6_graphql@16.6.0
-      parse-filepath: 1.0.2
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
-  /@graphql-codegen/visitor-plugin-common/2.13.5_graphql@16.6.0:
-    resolution: {integrity: sha512-OV/mGnSvB/WkEqFu/3bPkAPDNRGRB3xONww5+06CObl383yGrasqM04shYYK4cpcCn9PVWFe8u0SLSEeGmMVrg==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 3.1.2_graphql@16.6.0
-      '@graphql-tools/optimize': 1.4.0_graphql@16.6.0
-      '@graphql-tools/relay-operation-optimizer': 6.5.18_graphql@16.6.0
-      '@graphql-tools/utils': 8.13.1_graphql@16.6.0
-      auto-bind: 4.0.0
-      change-case-all: 1.0.15
       dependency-graph: 0.11.0
       graphql: 16.6.0
       graphql-tag: 2.12.6_graphql@16.6.0
@@ -6489,6 +6266,7 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       graphql: 16.6.0
+    dev: false
 
   /@graphql-typed-document-node/core/3.2.0_graphql@16.6.0:
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
@@ -7256,11 +7034,13 @@ packages:
     resolution: {integrity: sha512-BFwj8ykJY+zc1/jWANsDprDIu2MgwPOIKxNVnrKvPs+f5TPegrVnem8uScND+1veT4B7F6VeqgaNLFW1Hzl9Og==}
     dependencies:
       glob: 7.1.7
+    dev: false
 
   /@next/eslint-plugin-next/13.4.5:
     resolution: {integrity: sha512-/xD/kyJhXmBZq+0xGKOdjL22c9/4i3mBAXaU9aOGEHTXqqFeOz8scJbScWF13aMqigeoFCsDqngIB2MIatcn4g==}
     dependencies:
       glob: 7.1.7
+    dev: true
 
   /@next/mdx/13.3.4_64a67b8d3589d83515f0801746210334:
     resolution: {integrity: sha512-17wcHH/fDp+z+Ts8EjWvArI2+IIb7VRSPS+fGoEjVjtH1jQXwiLQSa6a1eJiuD4Grb4350Lw8zwi355xiyi+rw==}
@@ -7742,6 +7522,7 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       tslib: 2.6.0
+    dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin/0.5.10_0518714fbd97967111ebc0bdad16eea3:
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
@@ -10408,12 +10189,6 @@ packages:
       '@types/node': 16.18.38
     dev: false
 
-  /@types/byline/4.2.33:
-    resolution: {integrity: sha512-LJYez7wrWcJQQDknqZtrZuExMGP0IXmPl1rOOGDqLbu+H7UNNRfKNuSxCBcQMLH1EfjeWidLedC/hCc5dDfBog==}
-    dependencies:
-      '@types/node': 16.18.38
-    dev: true
-
   /@types/concat-stream/2.0.0:
     resolution: {integrity: sha512-t3YCerNM7NTVjLuICZo5gYAXYoDvpuuTceCcFQWcDQz26kxUR5uIWolxbIR5jRNIXpMqhOpW/b8imCR1LEmuJw==}
     dependencies:
@@ -10671,10 +10446,6 @@ packages:
       '@types/node': 16.18.38
     dev: true
 
-  /@types/mocha/10.0.1:
-    resolution: {integrity: sha512-/fvYntiO1GeICvqbQ3doGDIP97vWmvFt83GKguJ6prmQM2iXZfFcq6YE8KteFyRtX2/h5Hf91BYvPodJKFYv5Q==}
-    dev: true
-
   /@types/moo/0.5.5:
     resolution: {integrity: sha512-eXQpwnkI4Ntw5uJg6i2PINdRFWLr55dqjuYQaLHNjvqTzF14QdNWbCbml9sza0byyXNA0hZlHtcdN+VNDcgVHA==}
     dev: true
@@ -10733,12 +10504,6 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
-
-  /@types/ramda/0.28.25:
-    resolution: {integrity: sha512-HrQNqQAGcITpn9HAJFamDxm7iZeeXiP/95pN5OMbNniDjzCCeOHbBKNGmUy8NRi0fhYS+/cXeo91MFC+06gbow==}
-    dependencies:
-      ts-toolbelt: 6.15.5
-    dev: true
 
   /@types/range-parser/1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
@@ -13110,6 +12875,7 @@ packages:
   /big-integer/1.6.51:
     resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==}
     engines: {node: '>=0.6'}
+    dev: true
 
   /big.js/5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
@@ -13200,6 +12966,7 @@ packages:
     engines: {node: '>= 5.10.0'}
     dependencies:
       big-integer: 1.6.51
+    dev: true
 
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -13300,17 +13067,13 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       run-applescript: 5.0.0
+    dev: true
 
   /busboy/1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
     engines: {node: '>=10.16.0'}
     dependencies:
       streamsearch: 1.1.0
-
-  /byline/5.0.0:
-    resolution: {integrity: sha512-s6webAy+R4SR8XVuJWt2V2rGvhnrhxN+9S15GNuTK3wKPOXFF6RNc+8ug2XhH+2s4f+uudG4kUVYmYOQWL2g0Q==}
-    engines: {node: '>=0.10.0'}
-    dev: false
 
   /bytes/3.0.0:
     resolution: {integrity: sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw==}
@@ -13883,6 +13646,7 @@ packages:
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
+    dev: false
 
   /commander/6.2.1:
     resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
@@ -14745,6 +14509,7 @@ packages:
     dependencies:
       bplist-parser: 0.2.0
       untildify: 4.0.0
+    dev: true
 
   /default-browser/4.0.0:
     resolution: {integrity: sha512-wX5pXO1+BrhMkSbROFsyxUm0i/cJEScyNhA4PPxc41ICuv05ZZB/MX28s8aZx6xjmatvebIapF6hLEKEcpneUA==}
@@ -14754,6 +14519,7 @@ packages:
       default-browser-id: 3.0.0
       execa: 7.1.1
       titleize: 3.0.0
+    dev: true
 
   /default-gateway/6.0.3:
     resolution: {integrity: sha512-fwSOJsbbNzZ/CUFpqFBqYfYNLj1NbMPm8MMCIzHjC83iSJRBEGmDUxU+WP661BaBQImeC2yHwXtz+P/O9o+XEg==}
@@ -14774,6 +14540,7 @@ packages:
   /define-lazy-prop/3.0.0:
     resolution: {integrity: sha512-N+MeXYoqr3pOgn8xfyRPREN7gHakLYjhsHhWGT3fWAiL4IkAt0iDw14QiiEm2bE30c5XX5q0FtAA3CK5f9/BUg==}
     engines: {node: '>=12'}
+    dev: true
 
   /define-properties/1.2.0:
     resolution: {integrity: sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==}
@@ -15226,15 +14993,6 @@ packages:
     engines: {node: '>=0.12'}
     dev: true
 
-  /env-cmd/10.1.0:
-    resolution: {integrity: sha512-mMdWTT9XKN7yNth/6N6g2GuKuJTsKMDHlQFUDacb/heQRRWOTIZ42t1rMHnQu4jYxU1ajdTeJM+9eEETlqToMA==}
-    engines: {node: '>=8.0.0'}
-    hasBin: true
-    dependencies:
-      commander: 4.1.1
-      cross-spawn: 7.0.3
-    dev: true
-
   /envinfo/7.10.0:
     resolution: {integrity: sha512-ZtUjZO6l5mwTHvc1L9+1q5p/R3wTopcfqMW8r5t8SJSKqeVI/LtajORwRFEKpEFuekjD0VBjwu1HMxL4UalIRw==}
     engines: {node: '>=4'}
@@ -15508,6 +15266,7 @@ packages:
       typescript: 5.0.4
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /eslint-config-prettier/8.8.0_eslint@8.44.0:
     resolution: {integrity: sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==}
@@ -15573,6 +15332,7 @@ packages:
       synckit: 0.8.5
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /eslint-import-resolver-typescript/3.5.5_eslint@8.44.0:
     resolution: {integrity: sha512-TdJqPHs2lW5J9Zpe17DZNQuDnox4xo2o+0tE7Pggain9Rbc19ik8kFtXdxZ250FVx2kF4vlt2RSf4qlUpG7bhw==}
@@ -16923,6 +16683,7 @@ packages:
     resolution: {integrity: sha512-E5XrT4CbbXcXWy+1jChlZmrmCwd5KGx502kDCXJJ7y898TtWW9FwoG5HfOLVRKmlmDGkWN2HM9Ho+/Y8F0sJDg==}
     dependencies:
       resolve-pkg-maps: 1.0.0
+    dev: true
 
   /getos/3.2.1:
     resolution: {integrity: sha512-U56CfOK17OKgTVqozZjUKNdkfEv6jk5WISBJ8SHoagjE6L69zOwl3Z+O8myjY9MEW3i2HPWQBt/LTbCgcC973Q==}
@@ -17112,6 +16873,7 @@ packages:
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 4.0.0
+    dev: true
 
   /google-auth-library/8.9.0:
     resolution: {integrity: sha512-f7aQCJODJFmYWN6PeNKzgvy9LI2tYmXnzpNDHEjG5sDNPgGb2FXQyTBnXeSH+PAtpKESFD+LmHw3Ox3mN7e1Fg==}
@@ -17228,15 +16990,6 @@ packages:
     dependencies:
       graphql: 16.6.0
       tslib: 2.5.3
-    dev: false
-
-  /graphql-sse/1.3.2_graphql@16.6.0:
-    resolution: {integrity: sha512-Pai+YPHU09FOLBfKqQNRbkNP6UHn6LJEKPvQegCqgHi2hrXlzKsoRW1Yx7u/8s7YWWYaWQ5q4ZA9MeQuyrJ1Jw==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      graphql: '>=0.11 <=16'
-    dependencies:
-      graphql: 16.6.0
     dev: false
 
   /graphql-tag/2.12.6_graphql@16.6.0:
@@ -18064,6 +17817,7 @@ packages:
     resolution: {integrity: sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
+    dev: true
 
   /is-empty/1.2.0:
     resolution: {integrity: sha512-F2FnH/otLNJv0J6wc73A5Xo7oHLNnqplYqZhUu01tD54DIPvxIRSTSLkrUB/M0nHO4vo1O9PDfN4KoTxCzLh/w==}
@@ -18117,6 +17871,7 @@ packages:
     hasBin: true
     dependencies:
       is-docker: 3.0.0
+    dev: true
 
   /is-installed-globally/0.4.0:
     resolution: {integrity: sha512-iwGqO3J21aaSkC7jWnHP/difazwS7SFeIqxv6wEtLU8Y5KlzFTjyqcSIT0d8s4+dDhKytsk9PJZ2BkS5eZwQRQ==}
@@ -21726,6 +21481,7 @@ packages:
       define-lazy-prop: 3.0.0
       is-inside-container: 1.0.0
       is-wsl: 2.2.0
+    dev: true
 
   /openapi-sampler/1.3.1:
     resolution: {integrity: sha512-Ert9mvc2tLPmmInwSyGZS+v4Ogu9/YoZuq9oP3EdUklg2cad6+IGndP9yqJJwbgdXwZibiq5fpv6vYujchdJFg==}
@@ -23488,10 +23244,6 @@ packages:
     resolution: {integrity: sha512-cz93DjNeLY0idrCNOH6PviZGRN9GJhsdm9hpn1YCS879fj4W+x5IFJhhkRZcwVgMmFF7R82UA/7Oh+R8lLZg6A==}
     dev: false
 
-  /ramda/0.28.0:
-    resolution: {integrity: sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==}
-    dev: false
-
   /ramda/0.29.0:
     resolution: {integrity: sha512-BBea6L67bYLtdbOqfp8f58fPMqEwx0doL+pAi8TZyp2YWz8R9G8z9x75CZI8W+ftqhFHCpEX2cRnUUXK130iKA==}
     dev: true
@@ -24326,6 +24078,7 @@ packages:
 
   /resolve-pkg-maps/1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+    dev: true
 
   /resolve-url-loader/4.0.0:
     resolution: {integrity: sha512-05VEMczVREcbtT7Bz+C+96eUO5HDNvdthIiMB34t7FcF8ehcu4wC0sSgPUubs3XW2Q3CNLJk/BJrCU9wVRymiA==}
@@ -24477,6 +24230,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       execa: 5.1.1
+    dev: true
 
   /run-async/2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
@@ -25720,6 +25474,7 @@ packages:
     dependencies:
       '@pkgr/utils': 2.4.1
       tslib: 2.6.0
+    dev: true
 
   /tabbable/6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
@@ -25947,6 +25702,7 @@ packages:
   /titleize/3.0.0:
     resolution: {integrity: sha512-KxVu8EYHDPBdUYdKZdKtU2aj2XfEx9AfjXxE/Aj0vT06w2icA09Vus1rh6eSu1y01akYg6BjIK/hxyLJINoMLQ==}
     engines: {node: '>=12'}
+    dev: true
 
   /tmp/0.0.33:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
@@ -26176,10 +25932,6 @@ packages:
       make-error: 1.3.6
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: true
-
-  /ts-toolbelt/6.15.5:
-    resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
     dev: true
 
   /tsconfig-paths/3.14.2:
@@ -26613,6 +26365,7 @@ packages:
   /untildify/4.0.0:
     resolution: {integrity: sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==}
     engines: {node: '>=8'}
+    dev: true
 
   /upath/1.2.0:
     resolution: {integrity: sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==}

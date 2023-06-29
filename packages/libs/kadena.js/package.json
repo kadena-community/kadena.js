@@ -58,15 +58,12 @@
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/types": "workspace:*",
-    "bignumber.js": "^9.0.2",
-    "blakejs": "^1.2.1",
     "node-fetch": "~2.6.2",
     "tweetnacl": "^1.0.3",
     "webpack": "~5.73.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
