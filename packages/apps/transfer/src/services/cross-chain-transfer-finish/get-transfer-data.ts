@@ -1,8 +1,4 @@
-import {
-  ChainwebNetworkId,
-  ICommandResult,
-  IPollResponse,
-} from '@kadena/chainweb-node-client';
+import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
 

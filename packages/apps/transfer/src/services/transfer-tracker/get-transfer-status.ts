@@ -11,7 +11,6 @@ import {
   kadenaConstants,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
-import { convertIntToChainId } from '../utils/utils';
 
 export interface StatusData {
   id?: number;
