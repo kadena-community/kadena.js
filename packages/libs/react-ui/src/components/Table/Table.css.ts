@@ -38,11 +38,11 @@ export const thClass = style([
 export const tableClass = style([
   sprinkles({
     width: '100%',
-    borderSpacing: 0,
     borderRadius: '$sm',
     overflow: 'hidden',
   }),
   {
     border: `1px solid ${vars.colors.$neutral3}`,
+    borderSpacing: 0,
   },
 ]);

@@ -13,7 +13,6 @@ export const breakpoints: Record<string, string> = {
 const systemProperties = defineProperties({
   properties: {
     fontFamily: vars.fonts,
-    borderSpacing: vars.sizes,
     lineHeight: vars.lineHeights,
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
