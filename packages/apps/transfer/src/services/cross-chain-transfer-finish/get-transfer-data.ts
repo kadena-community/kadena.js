@@ -4,7 +4,7 @@ import {
   IPollResponse,
 } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
-import { ChainId, IPactExec } from '@kadena/types';
+import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
@@ -24,10 +24,23 @@ interface ITransactionData {
   step: number;
   pactId: string;
   rollback: boolean;
+  events?: IEventData[];
+  result?: ICommandResult['result'];
 }
 export interface ITransferDataResult {
   tx?: ITransactionData | undefined;
   error?: string;
+}
+
+export interface ISpvProofResult {
+  proof?: string;
+  error?: string;
+}
+
+interface IEventData {
+  name: string;
+  params: PactValue[];
+  moduleName: string;
 }
 
 export async function getTransferData({
@@ -85,6 +98,7 @@ export async function getTransferData({
 
     const { step, stepHasRollback, pactId } = found.tx
       ?.continuation as IPactExec;
+    const { events, result } = found.tx;
 
     return {
       tx: {
@@ -101,6 +115,14 @@ export async function getTransferData({
         step: step,
         pactId: pactId,
         rollback: stepHasRollback,
+        result: result,
+        events: events?.map((event: IPactEvent) => {
+          return {
+            name: event.name,
+            params: event.params,
+            moduleName: event.module.name,
+          };
+        }),
       },
     };
   } catch (e) {
