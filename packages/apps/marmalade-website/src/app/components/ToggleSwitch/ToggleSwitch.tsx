@@ -13,7 +13,7 @@ export interface ISwitchProps {
 export const ToggleSwitch: React.FC<ISwitchProps> = (props: ISwitchProps) => {
 
   // for the accessability enable switch toggle by keyboard
-  function onKeyDown(e: React.KeyboardEvent<HTMLLabelElement>) {
+  function onKeyDown(e: React.KeyboardEvent<HTMLLabelElement>): void {
     if (e.code !== 'Space') return;
     e.preventDefault();
     props.onSwitchChange(!props.isChecked)

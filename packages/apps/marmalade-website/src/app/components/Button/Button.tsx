@@ -16,8 +16,7 @@ export const Button: FC<IButtonProps> = ({
   children,
   color,
   type,
-  disabled,
-  className
+  disabled
 }) => {
   return (
     <a
@@ -30,7 +29,6 @@ export const Button: FC<IButtonProps> = ({
         ${type ? styles[`${type}`] : ''}
         ${color? styles[`${color}`] : ''}
         ${disabled ?? ''}
-        ${className ?? ''}
       `}
     >
       {children}
