@@ -14,7 +14,6 @@ import {
 } from '../cross-chain-transfer-finisher/styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledAccountForm,
@@ -22,17 +21,11 @@ import {
   StyledMainContent,
   StyledForm,
   StyledFormButton,
-  StyledInfoTitle1,
-  StyledInfoItem1,
-  StyledInfoItemTitle1,
-  StyledInfoItemLine1,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import FormStatusNotification from './notification';
-import { chainNetwork } from '@/constants/network';
 import {
   StatusData,
   getTransferStatus,
@@ -46,10 +39,7 @@ const CrossChainTransferTracker: FC = () => {
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] = useState<string>('');
   const [data, setData] = useState<StatusData>({});
-  const [requestStatus, setRequestStatus] = useState<{
-    status: RequestStatus;
-    message?: string;
-  }>({ status: 'not started' });
+
   const router = useRouter();
 
   useEffect(() => {
@@ -66,7 +56,6 @@ const CrossChainTransferTracker: FC = () => {
 
     router.query.reqKey = requestKey;
     await router.push(router);
-    // setRequestStatus({ status: 'pending' });
     let statusId;
     try {
       await getTransferStatus({
@@ -80,14 +69,8 @@ const CrossChainTransferTracker: FC = () => {
           },
         },
       });
-
-      // if (statusId == 2) {
-      //   setRequestStatus({ status: 'succeeded' });
-      // } else {
-      //   setRequestStatus({ status: 'failed' });
-      // }
     } catch (error) {
-      setRequestStatus({ status: 'failed', message: error.message });
+      console.error(error);
     }
   };
 
@@ -95,10 +78,6 @@ const CrossChainTransferTracker: FC = () => {
     <MainLayout title={t('Track & trace transactions')}>
       <StyledMainContent>
         <StyledForm onSubmit={handleSubmit}>
-          <FormStatusNotification
-            status={requestStatus.status}
-            body={requestStatus.message}
-          />
           <StyledAccountForm>
             <Heading as="h5">Search Request</Heading>
             <TextField
@@ -118,17 +97,6 @@ const CrossChainTransferTracker: FC = () => {
               <SystemIcons.Magnify />
             </Button>
           </StyledFormButton>
-          <StyledInfoItem1>
-            <div>
-              <SystemIcons.Account></SystemIcons.Account>
-            </div>
-            <div>
-              <StyledInfoItemTitle1>{t('Sender')}</StyledInfoItemTitle1>
-              <StyledInfoItemLine1>{data.senderAccount}</StyledInfoItemLine1>
-              <StyledInfoItemTitle1>{t('Chain')}</StyledInfoItemTitle1>
-              <StyledInfoItemLine1>{data.senderChain}</StyledInfoItemLine1>
-            </div>
-          </StyledInfoItem1>
         </StyledForm>
 
         {data.status ? (

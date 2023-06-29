@@ -156,14 +156,15 @@ export async function getXChainTransferInfo({
   t: Translate;
 }): Promise<StatusData> {
   try {
-    const proofApiHost = `${getKadenaConstantByNetwork(network).apiHost({
+    const proofApiHost = getKadenaConstantByNetwork(network).apiHost({
       networkId: chainNetwork[network].network,
       chainId: senderChain,
-    })}/spv`;
+    });
     const apiHost = getKadenaConstantByNetwork(network).apiHost({
       networkId: chainNetwork[network].network,
       chainId: receiverChain,
     });
+    console.log(kadenaConstants);
     const gasLimit: number = kadenaConstants.GAS_LIMIT;
     const gasPrice: number = kadenaConstants.GAS_PRICE;
 
@@ -256,10 +257,10 @@ export async function checkForProof({
   const { onPoll = () => {} } = { ...options };
 
   try {
-    const apiHost = `${getKadenaConstantByNetwork(network).apiHost({
+    const apiHost = getKadenaConstantByNetwork(network).apiHost({
       networkId: chainNetwork[network].network,
       chainId: senderChain,
-    })}/spv`;
+    });
     let count = 0;
 
     const proof = await pollSpvProof(requestKey, receiverChain, apiHost, {
