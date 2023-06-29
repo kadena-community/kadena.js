@@ -56,6 +56,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           ref={ref}
           variant={variant}
           disabled={disabled}
+          value={value}
           {...rest}
         />
         {RightPanel && (
