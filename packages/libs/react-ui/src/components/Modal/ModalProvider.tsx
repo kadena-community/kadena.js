@@ -1,4 +1,5 @@
 import { Modal } from './Modal';
+import { openModal } from './Modal.css';
 
 import React, {
   createContext,
@@ -47,12 +48,21 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
     setTitle(undefined);
   };
 
+  const isOpen: boolean = mounted && Boolean(ref.current) && Boolean(content);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add(openModal);
+    } else {
+      document.body.classList.remove(openModal);
+    }
+  }, [isOpen]);
+
   return (
     <ModalContext.Provider value={{ renderModal, clearModal }}>
       {children}
-      {mounted &&
+      {isOpen &&
         ref.current &&
-        Boolean(content) &&
         createPortal(
           <>
             <Modal title={title}>{content}</Modal>

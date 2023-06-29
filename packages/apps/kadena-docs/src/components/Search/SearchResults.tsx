@@ -1,4 +1,7 @@
-import { Tabs } from '@kadena/react-ui';
+import { Box, Tabs } from '@kadena/react-ui';
+
+import { ResultCount } from './ResultCount';
+import { StaticResults } from './StaticResults';
 
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
@@ -25,42 +28,36 @@ export const SearchResults: FC<IProps> = ({
         <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
         <Tabs.Content value="docs">
-          {staticSearchResults.length > 0 && `(${staticSearchResults.length})`}
-          <ul>
-            {staticSearchResults.map((item) => {
-              return (
-                <li key={item.id}>
-                  <Link href={createLinkFromMD(item.filename)}>
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <Box marginX="$2">
+            <ResultCount count={staticSearchResults.length} />
+            <StaticResults results={staticSearchResults} />
+          </Box>
         </Tabs.Content>
 
         <Tabs.Content value="qa">
-          <h2>output</h2>
+          <Box marginX="$2">
+            <ResultCount count={staticSearchResults.length} />
 
-          {conversation?.history.map((interaction, idx) => (
-            <div key={`${interaction.input}-${idx}`}>
-              <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-              <div>
-                {interaction?.metadata?.map((item, idx) => {
-                  const url = createLinkFromMD(item.title);
-                  return (
-                    <>
-                      <Link key={`${url}-${idx}`} href={url}>
-                        {url}
-                      </Link>
-                    </>
-                  );
-                })}
+            {conversation?.history.map((interaction, idx) => (
+              <div key={`${interaction.input}-${idx}`}>
+                <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                <div>
+                  {interaction?.metadata?.map((item, idx) => {
+                    const url = createLinkFromMD(item.title);
+                    return (
+                      <>
+                        <Link key={`${url}-${idx}`} href={url}>
+                          {url}
+                        </Link>
+                      </>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <div>{outputStream}</div>
+            <div>{outputStream}</div>
+          </Box>
         </Tabs.Content>
       </Tabs.Root>
     </section>

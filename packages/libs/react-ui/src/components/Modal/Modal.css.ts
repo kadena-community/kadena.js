@@ -3,6 +3,13 @@ import { breakpoints } from '../../styles/sprinkles.css';
 
 import { style } from '@vanilla-extract/css';
 
+export const openModal = style([
+  {
+    height: '100vh',
+    overflowY: 'hidden',
+  },
+]);
+
 export const background = style([
   sprinkles({
     position: 'fixed',
