@@ -1,10 +1,3 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
-import { createExp } from '@kadena/pactjs';
-
-import { parseType } from '../utils/parseType';
-
 const prop = <T extends any>(name: string, value?: T) =>
   value === undefined ? {} : { [name]: value };
 
