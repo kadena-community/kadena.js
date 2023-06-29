@@ -11,10 +11,13 @@ describe('env', () => {
   });
 
   it('should return value from process env when env is not empty', async () => {
-    process.env.KADENA_TESTNET_API = 'testnet-api';
+    process.env = {
+      KADENA_TESTNET_API: 'testnet-api',
+    };
 
     // load module
-    const result = require('./env').env('KADENA_TESTNET_API', 'default-api');
+    const env = require('./env').env;
+    const result = env('KADENA_TESTNET_API', 'default-api');
 
     expect(result).toEqual('testnet-api');
   });
@@ -28,7 +31,16 @@ describe('env', () => {
     expect(result).toEqual('default-api');
   });
 
-  it('should return value from process env when env is empty', async () => {
+  it('should return default number value when env is not set', async () => {
+    delete process.env.GAS_PRICE;
+
+    // load module
+    const result = require('./env').env('GAS_PRICE', 0.0001);
+
+    expect(result).toEqual(0.0001);
+  });
+
+  it('should return default value from process env when env is empty', async () => {
     process.env.KADENA_TESTNET_API = '';
 
     // load module
