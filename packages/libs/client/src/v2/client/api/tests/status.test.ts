@@ -203,4 +203,36 @@ describe('pollStatus', () => {
     //forth try that returns key-2 status
     expect(onPoll.mock.calls[5][0]).toBe('key-2');
   });
+
+  it("uses default options if they aren't provided", async () => {
+    const responses = [
+      { 'key-1': { reqKey: 'key-1' }, 'key-2': { reqKey: 'key-2' } },
+    ];
+
+    (fetch as jest.Mock).mockImplementation(
+      withCounter((counter) => {
+        return Promise.resolve({
+          status: 200,
+          ok: true,
+          text: () => {
+            JSON.stringify(responses[counter - 1] ?? {});
+          },
+          json: () => responses[counter - 1] ?? {},
+        });
+      }),
+    );
+
+    const hostUrl = "http://test-blockchian-host.com'";
+
+    const requestKeys = ['key-1', 'key-2'];
+
+    const result = await pollStatus(hostUrl, requestKeys);
+
+    expect(result).toEqual({
+      'key-1': { reqKey: 'key-1' },
+      'key-2': { reqKey: 'key-2' },
+    });
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
 });

@@ -6,7 +6,7 @@ jest.mock('cross-fetch', () => {
 });
 
 import { getClient } from '../client';
-import { withCounter } from '../utils/utils';
+import { kadenaHostGenerator, withCounter } from '../utils/utils';
 
 import fetch from 'cross-fetch';
 
@@ -37,6 +37,33 @@ describe('client', () => {
 
     expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
       `${hostUrl}/api/v1/local`,
+    );
+  });
+
+  it('uses kadenaHostGenerator if called without argument', async () => {
+    const { local } = getClient();
+
+    const response = { reqKey: 'test-key' };
+
+    (fetch as jest.Mock).mockResolvedValue({
+      status: 200,
+      ok: true,
+      text: () => JSON.stringify(response),
+      json: () => response,
+    });
+
+    const networkId = 'mainnet01';
+    const chainId = '1';
+
+    const body = {
+      cmd: JSON.stringify({ networkId, meta: { chainId } }),
+      sigs: ['test-sig'],
+    };
+
+    await local(body);
+
+    expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
+      `${kadenaHostGenerator(networkId, chainId)}/api/v1/local`,
     );
   });
 

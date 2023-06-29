@@ -74,7 +74,7 @@ export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
     const part = typeof item === 'function' ? item(acc) : item;
     if (part.payload !== undefined) {
       if (acc.payload !== undefined) {
-        throw Error('Only one payload is acceptable');
+        throw Error('Only one payload object is allowed');
       }
       acc.payload = part.payload;
     }

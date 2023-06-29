@@ -125,4 +125,120 @@ describe('commandBuilder', () => {
 
     expect(command.nonce).toBe('kjs-1690416000000');
   });
+
+  it('throws an error if multiple payload objects are passed to the builder', () => {
+    expect(() =>
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+      ),
+    ).toThrowError('Only one payload object is allowed');
+  });
+
+  it('accepts a singer without a capability', () => {
+    expect(
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        signer('bob_public_key'),
+      ).command.signers,
+    ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
+  });
+
+  it('merges capability arrays of one signer if presented twice', () => {
+    expect(
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        signer('bob_public_key', (withCapability) => [
+          withCapability('coin.GAS'),
+        ]),
+        signer('bob_public_key', (withCapability) => [
+          withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
+        ]),
+      ).command.signers,
+    ).toEqual([
+      {
+        pubKey: 'bob_public_key',
+        scheme: 'ED25519',
+        clist: [
+          { args: [], name: 'coin.GAS' },
+          { args: ['bob', 'alice', { decimal: '1' }], name: 'coin.TRANSFER' },
+        ],
+      },
+    ]);
+
+    expect(
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        signer('bob_public_key'),
+        signer('bob_public_key', (withCapability) => [
+          withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
+        ]),
+      ).command.signers,
+    ).toEqual([
+      {
+        pubKey: 'bob_public_key',
+        scheme: 'ED25519',
+        clist: [
+          { args: ['bob', 'alice', { decimal: '1' }], name: 'coin.TRANSFER' },
+        ],
+      },
+    ]);
+  });
+  it("adds creationTime if it's not presented in the meta property", () => {
+    expect(
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        meta({ chainId: '1' }),
+      ).command.meta?.creationTime,
+    ).toBe(1690416000);
+  });
+
+  it('returns stringified command by calling stringify', () => {
+    expect(
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+      ).stringify(),
+    ).toBe(
+      '{"payload":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)"},"nonce":"kjs-1690416000000"}',
+    );
+  });
+});
+
+describe('signer', () => {
+  it('returns a signer object', () => {
+    expect(signer('bob_public_key')()).toEqual({
+      signers: [
+        {
+          pubKey: 'bob_public_key',
+          scheme: 'ED25519',
+        },
+      ],
+    });
+  });
+
+  it('adds capability if presented', () => {
+    expect(
+      signer<any>('bob_public_key', (withCapability) => [
+        withCapability('coin.GAS'),
+      ])(),
+    ).toEqual({
+      signers: [
+        {
+          pubKey: 'bob_public_key',
+          scheme: 'ED25519',
+          clist: [{ args: [], name: 'coin.GAS' }],
+        },
+      ],
+    });
+  });
+  it('accept signer object as a first argument', () => {
+    expect(signer({ pubKey: 'test', scheme: 'ED25519' })()).toEqual({
+      signers: [
+        {
+          pubKey: 'test',
+          scheme: 'ED25519',
+        },
+      ],
+    });
+  });
 });
