@@ -47,4 +47,3 @@ export const kadenaConstants: KadenaConstants = {
 export function getKadenaConstantByNetwork(network: Network) {
   return kadenaConstants[network];
 }
-
