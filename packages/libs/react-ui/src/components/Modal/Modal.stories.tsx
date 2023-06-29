@@ -5,23 +5,31 @@ import { Content } from './StoryComponents';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<IModalProps> = {
+const meta: Meta<{ title?: string } & IModalProps> = {
   title: 'Layout/Modal',
-  argTypes: {},
+  argTypes: {
+    title: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
 };
 
 export default meta;
-type Story = StoryObj<IModalProps>;
+type Story = StoryObj<{ title?: string } & IModalProps>;
 
 export const Primary: Story = {
   name: 'Modal',
-  args: {},
-  render: () => {
+  args: {
+    title: 'Default Title',
+  },
+  render: ({ title }) => {
     return (
       <>
         <div id="modalportal" />
         <ModalProvider>
-          <Content />
+          <Content title={title} />
         </ModalProvider>
       </>
     );

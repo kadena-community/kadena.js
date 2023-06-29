@@ -12,6 +12,10 @@
   "bin": {
     "rush-fix-versions": "./lib/index.js"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
