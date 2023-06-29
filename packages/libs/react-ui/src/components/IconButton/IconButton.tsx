@@ -40,6 +40,7 @@ export const IconButton: FC<IIconButtonProps> = ({
       className={colorVariants[color]}
       onClick={onClick}
       aria-label={ariaLabel}
+      data-testid="kda-icon-button"
     >
       <Icon size="md" />
     </button>

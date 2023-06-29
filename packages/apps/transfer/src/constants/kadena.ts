@@ -2,17 +2,15 @@ import { env } from '@/utils/env';
 
 export type Network = 'MAINNET' | 'TESTNET';
 
-interface IKadenaNetwork {
-  API: string;
-  NETWORKS: {
-    [key: string]: string;
-  };
-  apiHost: (params: { networkId: string; chainId: string }) => string;
-  estatsHost: () => string;
-}
-
 type KadenaConstants = {
-  [K in Network]: IKadenaNetwork;
+  [K in Network]: {
+    API: string;
+    NETWORKS: {
+      [key: string]: string;
+    };
+    apiHost: (params: { networkId: string; chainId: string }) => string;
+    estatsHost: () => string;
+  };
 } & {
   GAS_LIMIT: number;
   GAS_PRICE: number;
@@ -48,6 +46,6 @@ export const kadenaConstants: KadenaConstants = {
 
 export const getKadenaConstantByNetwork = (
   network: Network,
-): IKadenaNetwork => {
+): KadenaConstants[Network] => {
   return kadenaConstants[network];
 };

@@ -2,6 +2,7 @@ import { Button, TextField } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { Option, Select } from '@/components/Global';
+import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledContent,
@@ -29,7 +30,7 @@ import React, { FC, useEffect, useState } from 'react';
 const CheckTransactions: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { network } = useAppContext();
+  const { network, setNetwork } = useAppContext();
 
   const [chain, setChain] = useState<string>('');
   const [account, setAccount] = useState<string>('');
@@ -37,16 +38,21 @@ const CheckTransactions: FC = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   useEffect(() => {
-    if (Boolean(router.query.chain) && Boolean(router.query.account)) {
+    if (router.isReady) {
       setChain((router.query.chain as string) || '1');
       setAccount((router.query.account as string) || '');
 
-      setTransactions(
+      if (router.query.network) {
+        setNetwork(router.query.network as Network);
+      }
+
+      getAndSetTransactions(
+        router.query.network as Network,
         router.query.chain as string,
         router.query.account as string,
       ).catch((e) => console.log(e));
     }
-  }, [router.query.chain, router.query.account, setTransactions]);
+  }, [router.isReady, getAndSetTransactions]);
 
   const numberOfChains = 20;
 
@@ -59,19 +65,21 @@ const CheckTransactions: FC = () => {
       if (!chain || !account) return;
 
       router.query = {
+        network,
         chain,
         account,
       };
 
       await router.push(router);
 
-      await setTransactions(chain, account);
+      await getAndSetTransactions(network, chain, account);
     } catch (e) {
       console.log(e);
     }
   }
 
-  async function setTransactions(
+  async function getAndSetTransactions(
+    network: Network,
     chain: string,
     account: string,
   ): Promise<void> {
@@ -146,8 +154,6 @@ const CheckTransactions: FC = () => {
                 </StyledTableHead>
                 <StyledTableBody>
                   {results.map((result, index) => {
-                    console.log(result);
-
                     const accountText =
                       result.fromAccount === account
                         ? result.toAccount

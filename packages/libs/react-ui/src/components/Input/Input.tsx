@@ -37,6 +37,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     return (
       <div
         className={classNames(containerClass, { [outlinedClass]: outlined })}
+        data-testid="kda-input"
       >
         {Boolean(leadingText) && (
           <span className={leadingTextClass}>{leadingText}</span>
