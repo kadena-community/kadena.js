@@ -1,11 +1,12 @@
 /* eslint no-eval: 0 */
 'use client';
-import { ToggleSwitch } from '@/app/components/ToggleSwitch';
 import styles from './customizer.module.scss';
 
-import React, { FC, useState } from 'react';
-import { Icon } from '@/app/components/Icon';
+import { Card } from '@/app/components/Card';
 import { Code } from '@/app/components/Code';
+import { Icon } from '@/app/components/Icon';
+import { ToggleSwitch } from '@/app/components/ToggleSwitch';
+import React, { FC, useState } from 'react';
 
 export const PolicyCustomizer: FC = () => {
 
@@ -31,24 +32,6 @@ export const PolicyCustomizer: FC = () => {
     setGuard(checked);
   }
 
-  const defaultState = (quote && nfp && guard)
-  let constName = (defaultState) ? 'DEFAULT' : 'EMPTY'; 
-  if (!defaultState && quote) {
-    constName += '_QUOTE'
-  }
-  if (!defaultState && nfp) {
-    constName += '_NFP'
-  }
-  if (!defaultState && guard) {
-    constName += '_GUARD'
-  }
-  if (royalty) {
-    constName += '_ROYALTY'
-  }
-  if (collection) {
-    constName += '_COLLECTION'
-  }
-
   const contentPolicies = [
     {
       name: 'quote',
@@ -60,7 +43,7 @@ export const PolicyCustomizer: FC = () => {
     {
       name: 'nfp',
       icon: 'shield-sun',
-      title: 'Non-fungible-policy',
+      title: 'Non-fungible Policy',
       description: 'Makes tokens non-fungible',
       onChange: onNfpChange
     },
@@ -87,38 +70,55 @@ export const PolicyCustomizer: FC = () => {
     }
   ]
   return (
-    <div className="grid">
-      <div>
-        <h3 className="color-green">Customize</h3>
-        <p>in the way you need it</p>
-        <Code>
-            {`(defconst ${constName}:object{concrete-policy}`}<br/>
-            &nbsp;&nbsp; {`{ 'quote-policy: ${quote}`}<br/>
-            &nbsp;&nbsp; {`,'non-fungible-policy: ${nfp}`}<br/>
-            &nbsp;&nbsp; {`,'royalty-policy: ${royalty}`}<br/>
-            &nbsp;&nbsp; {`,'collection-policy: ${collection}`}<br/>
-            &nbsp;&nbsp; {`,'guard-policy: ${guard}`}<br/>
-            {`})`}
-        </Code>
-      </div>
-      <div className={styles['policy-selector']}>
-        <h4>My Awesome token</h4>
-        <p>Default general purpose policies</p>
+    <>
+      <div className={`grid ${styles['policy-list']}`}>
         { contentPolicies.map((policy, index) => (
-          <div key={index} className={styles['selector-row']}>
-            <div className={styles['desc-row']}> 
-              <Icon name={policy.icon} color="green" />
-              <div>
-                <p>{policy.title}</p>
-                <span className={styles.description}>{policy.description}</span>
-              </div>
-            </div>
-            <div>
-              <ToggleSwitch name={policy.name} isChecked={ eval(policy.name) } onSwitchChange={policy.onChange} />
-            </div>
-          </div>
+          <Card
+            key={`card-${index}`}
+            title={policy.title}
+            buttonColor="orange"
+            buttonText="Add Policy"
+          />
         )) }
       </div>
-    </div>
+      <p className={styles['info-text']}>
+        With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!
+      </p>
+      <div className="container-small grid">
+        <div>
+          <h3>Customize</h3>
+          <p>in the way you need it</p>
+          <div className={styles.code}>
+            <Code>
+              {`(defconst POLICY_SELECTION}:object{concrete-policy}`}<br/>
+              &nbsp;&nbsp; {`{ 'quote-policy: ${quote}`}<br/>
+              &nbsp;&nbsp; {`,'non-fungible-policy: ${nfp}`}<br/>
+              &nbsp;&nbsp; {`,'royalty-policy: ${royalty}`}<br/>
+              &nbsp;&nbsp; {`,'collection-policy: ${collection}`}<br/>
+              &nbsp;&nbsp; {`,'guard-policy: ${guard}`}<br/>
+              {`})`}
+            </Code>
+          </div>
+        </div>
+        <div className={styles['policy-selector']}>
+          <h4>My Awesome token</h4>
+          <p>Default general purpose policies</p>
+          { contentPolicies.map((policy, index) => (
+            <div key={index} className={styles['selector-row']}>
+              <div className={styles['desc-row']}> 
+                <Icon name={policy.icon} color="green" />
+                <div>
+                  <p>{policy.title}</p>
+                  <span className={styles.description}>{policy.description}</span>
+                </div>
+              </div>
+              <div>
+                <ToggleSwitch name={policy.name} isChecked={ eval(policy.name) } onSwitchChange={policy.onChange} />
+              </div>
+            </div>
+          )) }
+        </div>
+      </div>
+    </>
   );
 };

@@ -9,7 +9,7 @@ interface ICodeProps {
 
 export const Code: FC<ICodeProps> = ({ children, color }) =>  {
   return (
-    <div className={`${styles['code-block']} ${styles[color]}`}>
+    <div className={`${styles['code-block']} ${color? styles[`${color}`] : ''}`}>
       {children}
     </div>
   );

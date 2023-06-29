@@ -1,6 +1,6 @@
 import styles from './icon.module.scss'
-import Image from 'next/image'
 
+import Image from 'next/image'
 import React, { FC } from 'react'
 
 export interface IIconProps {

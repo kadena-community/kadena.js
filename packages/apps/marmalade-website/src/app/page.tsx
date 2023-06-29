@@ -1,26 +1,26 @@
-import { Header } from './partials/Header'
-import { PolicyCustomizer } from './partials/PolicyCustomizer'
 import { Button } from './components/Button'
 import { Card } from './components/Card'
+import { Code } from './components/Code'
+import { Icon } from './components/Icon'
 import { VerticalTabs } from './components/VerticalTabs'
-import styles from './page.module.css'
+import { Header } from './partials/Header'
+import { PolicyCustomizer } from './partials/PolicyCustomizer'
+import styles from './page.module.scss'
 
 import React from 'react';
-import { Code } from './components/Code'
 
 export default function Home() : JSX.Element {
 
   const contentPoliciesPerPurpose = [
     {
-      title: 'Migration policy',
-      description: 'Token migration from v1 to v2',
+      title: 'Fixed-issuance policy',
+      description: 'Fractional NFT',
       content: (
         <>
-          <h3 className="color-light">Extra policies</h3>
-          <p className={styles.description}>Extra immutable or adjustable policies based on your business-model needs.
-            These extra policies can be used to fit your use-case.</p>
+          <h3>Content title 3</h3>
+          <p className={styles.description}>Content 3</p>
           <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
-            <strong>Extra policies</strong> docs
+            Test
           </Button>
         </>
       ),
@@ -30,7 +30,7 @@ export default function Home() : JSX.Element {
       description: 'Allows v1 method of on-chain manifest',
       content: (
         <>
-          <h3 className="color-light">Content title 2</h3>
+          <h3>Content title 2</h3>
           <p className={styles.description}>Content 2</p>
           <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
             Test
@@ -39,14 +39,15 @@ export default function Home() : JSX.Element {
       ),
     },
     {
-      title: 'Fixed-issuance policy',
-      description: 'Fractional NFT',
+      title: 'Migration policy',
+      description: 'Token migration from v1 to v2',
       content: (
         <>
-          <h3 className="color-light">Content title 3</h3>
-          <p className={styles.description}>Content 3</p>
+          <h3>Extra policies</h3>
+          <p className={styles.description}>Extra immutable or adjustable policies based on your business-model needs.
+            These extra policies can be used to fit your use-case.</p>
           <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
-            Test
+            <strong>Extra policies</strong> docs
           </Button>
         </>
       ),
@@ -59,45 +60,86 @@ export default function Home() : JSX.Element {
         <Header></Header>
         <div className="container-inner">
           <h1>NFT Marketplace infrastructure</h1>
-          <p>Marmalade on <strong>Kadena</strong> provides the complete infrastructure to launch and run game-changing NFT marketplaces.</p>
+          <p className={styles['hero-desc']}>Marmalade on <strong>Kadena</strong> provides the complete infrastructure to launch and run game-changing NFT marketplaces.</p>
         </div>
       </div>
       <main className={styles.main}>
         <section className={styles['section-dark-green']}>
           <div className="container-inner">
-            <h2 className="color-green">Stackable Policies</h2>
-            <div className="grid">
-              <Card title="Collection" buttonColor="orange" buttonText="Policy added" />
-              <Card title="Royalty" buttonColor="green" buttonText="Adding Policy ..." />
-              <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
-              <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
-              <Card title="Guard" buttonColor="dark-green" buttonText="Add Policy" />
-            </div>
-            <p className={styles.description}>With Marmalade&apos;s groundbreaking, unique feature, you now can stack unlimited policies per token!</p>
+            <h2>Plugable Features</h2>
             <PolicyCustomizer />
           </div>
         </section>
         <section className={styles['section-green']}>
           <div className="container-inner">
-            <h2 className="color-green">Policies per Purpose</h2>
-            <VerticalTabs tabs={contentPoliciesPerPurpose} />
+            <h2>Policies for every Use-Case</h2>
+            <div className="container-small">
+              <VerticalTabs tabs={contentPoliciesPerPurpose} />
+              <div className="grid">
+                <div className="content-block">
+                  <h3>Lorem ipsum</h3>
+                  <p>Extra immutable or adjustable policies based on your business-model needs.
+                    These extra policies can be used to fit your use-case.</p>
+                  <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
+                    <strong>Extra policies</strong> docs
+                  </Button>
+                </div>
+                <Card title="My Policy" buttonColor="orange" buttonText="Deploy policy" />
+              </div>
+            </div>
           </div>
         </section>
         <section>
           <div className="container-inner">
             <h2>Compatibility + Use cases</h2>
             <p className={styles.description}>Lorem ipsum dolor sit amet, comagna aliqua.</p>
-            <Code color="orange">
-              {`{`}<br/>
-              &nbsp;&nbsp; {`"description": "Genenis Blockchain Print NYT",`}<br/>
-              &nbsp;&nbsp; {`"external_url": "https://www.marmalade.io/id/123",`}<br/>
-              &nbsp;&nbsp; {`"image": "https://cdn.marmalade.io/assets/id/123.png",`}<br/>
-              &nbsp;&nbsp; {`"attributes": [...]`}<br/>
-              {`}`}
-            </Code>
+            <div className="grid">
+              <div>
+                <Code color="orange">
+                  {`{`}<br/>
+                  &nbsp;&nbsp; {`"description": "Genenis Blockchain Print NYT",`}<br/>
+                  &nbsp;&nbsp; {`"external_url": "https://www.marmalade.io/id/123",`}<br/>
+                  &nbsp;&nbsp; {`"image": "https://cdn.marmalade.io/assets/id/123.png",`}<br/>
+                  &nbsp;&nbsp; {`"attributes": [...]`}<br/>
+                  {`}`}
+                </Code>
+              </div>
+              <div className="content-block">
+                <h3>Lorem ipsum</h3>
+                <p>Extra immutable or adjustable policies based on your business-model needs.
+                  These extra policies can be used to fit your use-case.</p>
+                <Button href="https://alpha-docs.kadena.io/" type="primary" color="orange">
+                  <strong>Custom policies creation</strong> docs
+                </Button>
+              </div>  
+            </div>
           </div>
         </section>
-        {/* <Icon name="chemical-weapon" color="orange" size="lg" /> */}
+        <section className={styles['section-dark-orange']}>
+          <div className="container-inner">
+            <h2>Developer Tools</h2>
+            <p className={styles.description}>Lorem ipsum</p>
+            <div className="grid">
+              <div>
+                <Icon name="lock" color="orange" size="lg" />
+                <p>Lorem ipsum dolor sit</p>
+              </div>
+              <div>
+                <Icon name="chemical-weapon" color="orange" size="lg" />
+                <p>Lorem ipsum dolor sit</p>
+              </div>
+              <div>
+                <Icon name="translate-variant" color="orange" size="lg" />
+                <p>Lorem ipsum dolor sit</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className={styles['section-orange']}>
+          <div className="container-inner">
+            Lorem ipsum
+          </div>
+        </section>
       </main>
     </>
   )

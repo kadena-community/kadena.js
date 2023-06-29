@@ -1,9 +1,8 @@
+@import 'breakpoints';
 :root {
   --max-width: 1280px;
-
-  --border-radius-xs: 0.25rem;
-  --border-radius-sm: 1rem;
-  --border-radius-lg: 2.5rem;
+  --max-width-md: 1024px; 
+  --max-width-sm: 700px;
 
   --color-orange-001: #FF880F;
   --color-orange-002: #311602;
@@ -14,6 +13,10 @@
   --color-green-003: #55DF1E;
   --color-green-004: #0B1A00;
   --color-white: #FFFFFF;
+
+  --border-radius-xs: 0.25rem;
+  --border-radius-sm: 1rem;
+  --border-radius-lg: 2.5rem;
 }
 
 * {
@@ -44,7 +47,7 @@ h1 {
   font-size: 2.5rem;
   line-height: 3rem;
   color: var(--color-orange-002);
-  letter-spacing: -0.16rem;
+  letter-spacing: -0.1rem;
   margin: 1rem 0;
 }
 
@@ -54,7 +57,7 @@ h2 {
   font-size: 1.6rem;
   line-height: 2rem;
   color: var(--color-orange-002);
-  letter-spacing: -0.16rem;
+  letter-spacing: -0.1rem;
   margin: 1rem 0 3rem;
 }
 
@@ -64,12 +67,62 @@ h3 {
   font-size: 1.3rem;
   line-height: 1.5rem;
   color: var(--color-orange-002);
-  letter-spacing: -0.16rem;
+  letter-spacing: -0.1rem;
   margin: 1rem 0;
 }
 
 h4 {
-  font-size: 2rem;
+  font-size: 1.5rem;
+}
+@include breakpoint('sm') {
+  h1 {
+    font-size: 4rem;
+    line-height: 4.5rem;
+  }
+  h2 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+  h3 {
+    font-size: 1.8rem;
+    line-height: 2rem;
+  }
+}
+
+@include breakpoint('md') {
+  h1 {
+    font-size: 5rem;
+    line-height: 5.5rem;
+  }
+  h2 {
+    font-size: 3rem;
+    line-height: 3.5rem;
+  }
+  h3 {
+    font-size: 2.8rem;
+    line-height: 3rem;
+  }
+}
+
+@include breakpoint('lg') {
+  h1 {
+    font-size: 6rem;
+    line-height: 6.8rem;
+    letter-spacing: -0.16rem;
+  }
+  h2 {
+    font-size: 4rem;
+    line-height: 4.5rem;
+    letter-spacing: -0.16rem;
+  }
+  h3 {
+    font-size: 3.2rem;
+    line-height: 3.5rem;
+    letter-spacing: -0.16rem;
+  }
+  h4 {
+    font-size: 2rem;
+  }
 }
 
 .color-green {
@@ -87,15 +140,26 @@ h4 {
   margin: 0 auto;
   text-align: center;
   padding: 2rem 1rem;
+
+  @include breakpoint('md') {
+    padding: 4rem 1rem;
+  }
+}
+.container-small {
+  max-width: var(--max-width-md);
+  margin: 0 auto;
 }
 
-.content-block p {
-  font-size: 1.2rem;
-  line-height: 1.5rem;
-  margin-bottom: 1rem;
-}
-.content-block .button {
-  margin-top: 2rem;
+.content-block {
+  p {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .button {
+    margin-top: 2rem;
+  }
 }
 
 .grid {
@@ -105,52 +169,9 @@ h4 {
   gap: 1rem;
   text-align: left;
 
-  /* tablets (768px and up) */
-  @media (min-width: 48rem) { 
+  @include breakpoint('md') {
     flex-direction: row;
+    gap: 4rem;
   }
 }
 
-/* small devices and phones (640px and up) */
-@media (min-width: 40rem) {
-  h1 {
-    font-size: 4rem;
-    line-height: 4.5rem;
-  }
-  h2 {
-    font-size: 2rem;
-    line-height: 2.5rem;
-  }
-  h3 {
-    font-size: 1.8rem;
-    line-height: 2rem;
-  }
-}
-
-/* tablets (768px and up) */
-@media (min-width: 48rem) {
-  .container-inner {
-    padding: 3rem 1rem;
-  }
-}
-
-/* laptops (1024px and up) */
-@media (min-width: 64rem) {
-  h1 {
-    font-size: 6rem;
-    line-height: 6.8rem;
-  }
-  h2 {
-    font-size: 4rem;
-    line-height: 4.5rem;
-  }
-  h3 {
-    font-size: 3.2rem;
-    line-height: 3.5rem;
-  }
-}
-
-/* desktops (1280px and up) */
-@media (min-width: 80rem) {
-
-}

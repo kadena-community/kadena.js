@@ -1,0 +1,24 @@
+$breakpoints: (
+  'sm': (min-width: 40rem), /* 640px and up */
+  'md': (min-width: 48rem), /* 768px and up */
+  'lg': (min-width: 64rem), /* 1024px and up */
+  'xl': (min-width: 80rem) /* 1280px and up */
+);
+
+@mixin breakpoint($breakpoint) {
+  $raw-query: map-get($breakpoints, $breakpoint);
+
+  @if $raw-query {
+    $query: if(
+      type-of($raw-query) == 'string',
+      unquote($raw-query),
+      inspect($raw-query)
+    );
+
+    @media #{$query} {
+      @content;
+    }
+  } @else {
+    @error 'No value found for `#{$breakpoint}`';
+  }
+}

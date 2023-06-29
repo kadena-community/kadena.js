@@ -1,9 +1,33 @@
+@import '../../styles/breakpoints';
+
+.policy-list {
+  gap: 1rem;
+}
 .policy-selector {
   background: var(--color-orange-003);
   border-radius: var(--border-radius-lg);
   color: var(--color-green-004);
   font-size: 1.2rem;
   padding: 2rem;
+}
+.info-text {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  margin: 1rem 0;
+
+  @include breakpoint('md') {
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+    margin: 2rem 0 3rem;
+    max-width: var(--max-width-sm);
+    display: inline-block;
+  }
+}
+.code {
+  margin: 1rem 0;
+  @include breakpoint('md') {
+    margin: 3rem 0;
+  }
 }
 .selector-row {
   display: flex;

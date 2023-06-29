@@ -1,0 +1,65 @@
+@import './styles/breakpoints';
+
+.hero-section {
+  /* todo: add background-image */
+}
+.hero-desc {
+  display: inline-block;
+  font-size: 1.2rem;
+  margin: 1rem 0 2rem;
+  @include breakpoint('md') {
+    font-size: 1.4rem;
+    margin-bottom: 4rem;
+    max-width: var(--max-width-sm);
+  }
+}
+.main {
+  text-align: center;
+}
+.section {
+  &-green {
+    background-color: var(--color-green-002);
+    color: var(--color-orange-003);
+    h2 {
+      color: var(--color-green-001);
+    }
+    h3 {
+      color: var(--color-orange-003);
+    }
+  }
+
+  &-dark-green {
+    background-color: var(--color-green-004);
+    color: var(--color-orange-003);
+    h2, h3 {
+      color: var(--color-green-001);
+    }
+  }
+
+  &-orange {
+    background: var(--color-orange-001);
+    color: var(--color-orange-002);
+    h2, h3 {
+      color: var(--color-orange-001);
+    } 
+  }
+
+  &-dark-orange {
+    background: var(--color-orange-002);
+    color: var(--color-orange-003);
+    h2, h3 {
+      color: var(--color-orange-003);
+    }
+  }
+}
+.description {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  margin: 1rem 0;
+
+  @include breakpoint('md') {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    margin: 2rem 0;
+  }
+}
