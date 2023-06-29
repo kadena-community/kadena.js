@@ -5,11 +5,14 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import stripJsonComments from 'strip-json-comments';
+import { VFile } from 'vfile';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const rushConfigPath = join(__dirname, '../../../../../rush.json');
+const contents = readFileSync(rushConfigPath, 'utf-8');
+const rushConfig: RushConfig = JSON.parse(stripJsonComments(contents));
 
 const repoUrl = 'https://github.com/kadena-community/kadena.js';
 const badgeBase = 'https://img.shields.io/npm/v';
@@ -28,9 +31,7 @@ const headerRow: TableRow = {
   ],
 };
 
-export function packageTable(): Table {
-  const contents = readFileSync(rushConfigPath, 'utf-8');
-  const rushConfig: RushConfig = JSON.parse(stripJsonComments(contents));
+export function packageTable(vFile: VFile): Table {
   const projects = rushConfig.projects
     .filter((project) => project.shouldPublish)
     .sort((a, b) => b.packageName.localeCompare(a.packageName));
