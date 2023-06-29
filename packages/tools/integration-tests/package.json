@@ -4,6 +4,7 @@
   "description": "",
   "keywords": [],
   "license": "ISC",
+  "private": true,
   "contributors": [
     {
       "name": "Albert"

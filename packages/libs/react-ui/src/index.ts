@@ -34,6 +34,8 @@ export {
   useModal,
   IBoxProps,
   Box,
+  ILinkProps,
+  Link,
   Tabs,
   ITabsContainerProps,
   ITabProps,

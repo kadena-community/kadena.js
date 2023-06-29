@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/types",
+      "comment": "Housekeeping npm-published files",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/types"
+}

@@ -31,3 +31,4 @@ export {
   IBreadcrumbItemProps,
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
+export { Link, ILinkProps } from './Link/Link';

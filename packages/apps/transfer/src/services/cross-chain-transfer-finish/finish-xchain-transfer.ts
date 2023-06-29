@@ -31,16 +31,12 @@ export async function finishXChainTransfer(
     networkId: chainNetwork[network].network,
     chainId,
   });
-  const hostSPV = `${getKadenaConstantByNetwork(network).apiHost({
-    networkId: chainNetwork[network].network,
-    chainId: '1',
-  })}/spv`;
 
   try {
     const contCommand = await getContCommand(
       requestKey,
       chainId,
-      hostSPV,
+      host,
       step + 1,
       rollback,
     );

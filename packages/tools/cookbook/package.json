@@ -1,5 +1,6 @@
 {
   "name": "@kadena/cookbook",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "keywords": [],

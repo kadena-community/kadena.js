@@ -21,6 +21,10 @@
   },
   "license": "MIT",
   "author": "Lars Kuhtz <lars@kadena.io>",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "contributors": [
     {
       "name": "Danillo"
