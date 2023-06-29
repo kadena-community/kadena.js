@@ -3,13 +3,12 @@ describe('env', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    process.env = {...originalEnv};
+    process.env = { ...originalEnv };
   });
 
   afterEach(() => {
     process.env = originalEnv;
   });
-
 
   it('should return value from process env when env is not empty', async () => {
     process.env.KADENA_TESTNET_API = 'testnet-api';
@@ -37,7 +36,4 @@ describe('env', () => {
 
     expect(result).toEqual('default-api');
   });
-
-
 });
-
