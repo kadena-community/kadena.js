@@ -73,6 +73,25 @@ interface ICommandBuilder {
   ): Partial<ICommand>;
 }
 
+const mergePayload = (
+  payload: ICommand['payload'] | undefined,
+  newPayload: ICommand['payload'],
+) => {
+  if (payload === undefined) return newPayload;
+  if ('code' in payload && 'code' in newPayload) {
+    const data =
+      payload.data !== undefined || newPayload.data !== undefined
+        ? { ...payload.data, ...newPayload.data }
+        : undefined;
+
+    return {
+      code: payload.code + newPayload.code,
+      ...prop('data', data),
+    };
+  }
+  throw new Error('PAYLOAD_NOT_MERGEABLE');
+};
+
 export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
   const args: Array<
     Partial<ICommand> | ((cmd: Partial<ICommand>) => Partial<ICommand>)
@@ -80,10 +99,7 @@ export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
   const command = args.reduce<Partial<ICommand>>((acc, item) => {
     const part = typeof item === 'function' ? item(acc) : item;
     if (part.payload !== undefined) {
-      if (acc.payload !== undefined) {
-        throw Error('Only one payload object is allowed');
-      }
-      acc.payload = part.payload;
+      acc.payload = mergePayload(acc.payload, part.payload);
     }
     if (part.meta !== undefined) {
       acc.meta = { ...acc.meta, ...part.meta };

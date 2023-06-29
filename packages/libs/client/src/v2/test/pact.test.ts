@@ -126,13 +126,43 @@ describe('commandBuilder', () => {
     expect(command.nonce).toBe('kjs-1690416000000');
   });
 
-  it('throws an error if multiple payload objects are passed to the builder', () => {
-    expect(() =>
+  it('merges payload if they are exec', () => {
+    expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-      ),
-    ).toThrowError('Only one payload object is allowed');
+        payload.exec([coin.transfer('alice', 'bob', { decimal: '1' })]),
+      ).payload,
+    ).toEqual({
+      code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
+    });
+  });
+
+  it('merges payloads data if they are exec', () => {
+    expect(
+      commandBuilder(
+        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })], {
+          one: 'test',
+        }),
+        payload.exec([coin.transfer('alice', 'bob', { decimal: '1' })], {
+          two: 'test',
+        }),
+      ).payload,
+    ).toEqual({
+      code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
+      data: { one: 'test', two: 'test' },
+    });
+  });
+
+  it('throws exception if payloads are not mergable', () => {
+    expect(
+      () =>
+        commandBuilder(
+          payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })], {
+            one: 'test',
+          }),
+          payload.cont({ pactId: '1' }),
+        ).payload,
+    ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
   });
 
   it('accepts a signer without a capability', () => {
