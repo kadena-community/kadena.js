@@ -70,7 +70,11 @@ export const cmd2 = commandBuilder(
   set('networkId', 'mainnet04'),
 );
 
-const commandWithSignatures = { cmd: cmd.stringify(), hash: 'str', sigs: [''] };
+const commandWithSignatures = {
+  cmd: JSON.stringify(cmd),
+  hash: 'str',
+  sigs: [''],
+};
 
 const getHostUrl = (networkId: string, chainId: string) => {
   switch (networkId) {
@@ -141,4 +145,19 @@ async function spvExample() {
   return status;
 }
 
-// TODO: write the xchain transfer wit getClient
+function composeCommands() {
+  const mainnetConfig = commandBuilder(
+    meta({ chainId: '1' }),
+    set('networkId', 'mainnet04'),
+  );
+
+  const transfer = commandBuilder(
+    payload.exec([coin.transfer('javad', 'albert', { decimal: '0.1' })]),
+    signer('javadPublicKey', (withCapability) => [
+      withCapability('coin.GAS'),
+      withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
+    ]),
+  );
+
+  return commandBuilder(mainnetConfig, transfer);
+}

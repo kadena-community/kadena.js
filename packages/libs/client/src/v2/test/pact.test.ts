@@ -40,7 +40,7 @@ describe('payload.cont', () => {
 
 describe('commandBuilder', () => {
   it('returns command object with signers and capabilities', () => {
-    const { command } = commandBuilder(
+    const command = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
       signer('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
@@ -70,7 +70,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns a command based on ICommand interface', () => {
-    const { command } = commandBuilder(
+    const command = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
       signer('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
@@ -119,7 +119,7 @@ describe('commandBuilder', () => {
   });
 
   it('adds kjs nonce  if not presented in the input', () => {
-    const { command } = commandBuilder(
+    const command = commandBuilder(
       payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
     );
 
@@ -140,7 +140,7 @@ describe('commandBuilder', () => {
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
         signer('bob_public_key'),
-      ).command.signers,
+      ).signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
   });
 
@@ -154,7 +154,7 @@ describe('commandBuilder', () => {
         signer('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
-      ).command.signers,
+      ).signers,
     ).toEqual([
       {
         pubKey: 'bob_public_key',
@@ -173,7 +173,7 @@ describe('commandBuilder', () => {
         signer('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
-      ).command.signers,
+      ).signers,
     ).toEqual([
       {
         pubKey: 'bob_public_key',
@@ -189,18 +189,8 @@ describe('commandBuilder', () => {
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
         meta({ chainId: '1' }),
-      ).command.meta?.creationTime,
+      ).meta?.creationTime,
     ).toBe(1690416000);
-  });
-
-  it('returns stringified command by calling stringify', () => {
-    expect(
-      commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-      ).stringify(),
-    ).toBe(
-      '{"payload":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)"},"nonce":"kjs-1690416000000"}',
-    );
   });
 });
 

@@ -53,6 +53,8 @@ export const payload: IPayload = {
 
 export type IPartialCommand = Partial<Omit<ICommand, 'payload'>>;
 
+type NoPayload<T> = T extends { payload: any } ? never : T;
+
 // TODO : improve the return value to merge all of the inputs as an object
 interface ICommandBuilder {
   <F extends Pick<ICommand, 'payload'>>(
@@ -63,7 +65,12 @@ interface ICommandBuilder {
         | ((payload: F & Partial<ICommand>) => Partial<ICommand>)
       >,
     ]
-  ): { command: Partial<ICommand>; stringify: () => string };
+  ): Partial<ICommand>;
+
+  (
+    first: NoPayload<Partial<ICommand>>,
+    ...rest: Array<Partial<ICommand>>
+  ): Partial<ICommand>;
 }
 
 export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
@@ -105,10 +112,7 @@ export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
   if (command.meta && command.meta.creationTime === undefined) {
     command.meta.creationTime = Math.floor(dateInMs / 1000);
   }
-  return {
-    command,
-    stringify: () => JSON.stringify(command),
-  };
+  return command;
 };
 
 type CAP = (name: string, ...args: any[]) => ICapabilityItem;

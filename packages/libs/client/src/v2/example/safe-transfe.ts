@@ -26,7 +26,7 @@ async function doSafeTransfer(from: string, to: string, amount: string) {
     ]),
     set('networkId', 'mainnet01'),
     meta({ chainId: '1' }),
-  ).command as ICommand;
+  ) as ICommand;
 
   const signedCommand = await sign(command);
   const [, poll] = await submit(signedCommand);

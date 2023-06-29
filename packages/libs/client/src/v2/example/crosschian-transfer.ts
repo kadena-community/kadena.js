@@ -61,9 +61,7 @@ export async function doCrossChianTransfer(
   to: IAccount,
   amount: string,
 ) {
-  await Promise.resolve(
-    debitInTheFirstChain(from, to, amount).command as ICommand,
-  )
+  await Promise.resolve(debitInTheFirstChain(from, to, amount) as ICommand)
     .then(sign)
     .then(submit)
     .then(([[requestKey], poll]) => Promise.all([requestKey, poll()]))
@@ -86,7 +84,7 @@ export async function doCrossChianTransfer(
             step: '1',
           },
           to.chainId,
-        ).command as ICommand,
+        ) as ICommand,
     )
     .then(sign)
     .then(submit)
@@ -94,7 +92,7 @@ export async function doCrossChianTransfer(
 
   // or we can use async/await
 
-  const command = debitInTheFirstChain(from, to, amount).command as ICommand;
+  const command = debitInTheFirstChain(from, to, amount) as ICommand;
 
   const transaction = await sign(command);
   const [[sendRequestKey], pollSendResult] = await submit(transaction);
@@ -113,7 +111,7 @@ export async function doCrossChianTransfer(
       step: '1',
     },
     to.chainId,
-  ).command as ICommand;
+  ) as ICommand;
 
   const continuationTr = await sign(continuation);
   const [[contRequestKey], pollContResult] = await submit(continuationTr);
