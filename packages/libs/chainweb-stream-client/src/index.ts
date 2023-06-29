@@ -241,13 +241,15 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _handleHeights = (msg: MessageEvent<string>): void => {
-    const { data } = JSON.parse(msg.data) as IHeightsEvent;
+    const { data: maxChainwebDataHeight } = JSON.parse(
+      msg.data,
+    ) as IHeightsEvent;
 
     this._debug('_handleHeights');
 
-    this.emit('heights', data);
+    this.emit('heights', maxChainwebDataHeight);
 
-    this._updateLastHeight([data]);
+    this._updateLastHeight([maxChainwebDataHeight]);
 
     this._resetHeartbeatTimeout();
   };
