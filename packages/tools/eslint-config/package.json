@@ -3,6 +3,10 @@
   "version": "0.0.7",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
+  "files": [
+    "mixins",
+    "profile"
+  ],
   "scripts": {
     "build": "",
     "format": "npm run format:pkg && npm run format:src",

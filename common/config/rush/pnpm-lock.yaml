@@ -1336,6 +1336,7 @@ importers:
       '@types/mdast': ^3.0.11
       '@types/node': ^16.0.0
       eslint: ^8.15.0
+      mdast-builder: ~1.1.1
       mdast-comment-marker: ^2.1.2
       mdast-zone: ^5.1.1
       prettier: ~2.8.8
@@ -1351,7 +1352,9 @@ importers:
       typescript: 5.0.4
       unified: ^10.1.2
       unist-util-visit: ^4.1.2
+      vfile: 5.3.7
     dependencies:
+      mdast-builder: 1.1.1
       mdast-comment-marker: 2.1.2
       mdast-zone: 5.1.1
       remark-cli: 11.0.0
@@ -1373,6 +1376,7 @@ importers:
       sort-package-json: 2.4.1
       typescript: 5.0.4
       unified: 10.1.2
+      vfile: 5.3.7
 
   ../../packages/tools/rush-fix-versions:
     specifiers:
@@ -19595,6 +19599,12 @@ packages:
     dependencies:
       blueimp-md5: 2.19.0
     dev: true
+
+  /mdast-builder/1.1.1:
+    resolution: {integrity: sha512-a3KBk/LmYD6wKsWi8WJrGU/rXR4yuF4Men0JO0z6dSZCm5FrXXWTRDjqK0vGSqa+1M6p9edeuypZAZAzSehTUw==}
+    dependencies:
+      '@types/unist': 2.0.6
+    dev: false
 
   /mdast-comment-marker/2.1.2:
     resolution: {integrity: sha512-HED3ezseRVkBzZ0uK4q6RJMdufr/2p3VfVZstE3H1N9K8bwtspztWo6Xd7rEatuGNoCXaBna8oEqMwUn0Ve1bw==}
