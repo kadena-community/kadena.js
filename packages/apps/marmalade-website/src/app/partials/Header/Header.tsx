@@ -21,11 +21,6 @@ export const Header : FC = () => {
           <li>Ask me anything</li>
           <li><a href="https://alpha-docs.kadena.io/" target="_blank" rel="noreferrer">Docs</a></li>
         </ul>
-        {/* <ul>
-          {items.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul> */}
         <Button href="https://github.com/kadena-io/marmalade/tree/v2">Github</Button>
       </nav>
     </header>

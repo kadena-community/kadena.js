@@ -20,19 +20,20 @@
   text-align: right;
 }
 
-.box-placeholder {
+.card-placeholder {
   font-size: 0;
   line-height: 0;
   margin: 1.5rem 0;
-}
-.placeholder-text {
-  display: block;
-  background-color: var(--color-orange-002);
-  height: 0.9rem;
-  margin: 0.25rem 0;
-  min-width: 15%;
-  animation: fading 1.5s infinite;
-  opacity: 0.4;
+
+  span {
+    display: block;
+    background-color: var(--color-orange-002);
+    height: 0.9rem;
+    margin: 0.25rem 0;
+    min-width: 15%;
+    animation: fading 1.5s infinite;
+    opacity: 0.4;
+  }
 }
 @keyframes fading {
   0% {

@@ -1,11 +1,12 @@
+@import '../../styles/breakpoints';
+
 .header {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 
-  /* small devices and phones (640px and up) */
-  @media (min-width: 40rem) {
+  @include breakpoint('sm') {
     flex-direction: row;
   }
 }

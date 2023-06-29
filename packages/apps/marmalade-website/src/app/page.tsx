@@ -18,9 +18,9 @@ export default function Home() : JSX.Element {
       content: (
         <>
           <h3>Content title 3</h3>
-          <p className={styles.description}>Content 3</p>
+          <p>Content 3</p>
           <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
-            Test
+            Lorem ipsum
           </Button>
         </>
       ),
@@ -31,9 +31,9 @@ export default function Home() : JSX.Element {
       content: (
         <>
           <h3>Content title 2</h3>
-          <p className={styles.description}>Content 2</p>
+          <p>Content 2</p>
           <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
-            Test
+            Lorem ipsum
           </Button>
         </>
       ),
@@ -44,7 +44,7 @@ export default function Home() : JSX.Element {
       content: (
         <>
           <h3>Extra policies</h3>
-          <p className={styles.description}>Extra immutable or adjustable policies based on your business-model needs.
+          <p>Extra immutable or adjustable policies based on your business-model needs.
             These extra policies can be used to fit your use-case.</p>
           <Button href="https://alpha-docs.kadena.io/" type="primary" color="green">
             <strong>Extra policies</strong> docs
@@ -60,7 +60,10 @@ export default function Home() : JSX.Element {
         <Header></Header>
         <div className="container-inner">
           <h1>NFT Marketplace infrastructure</h1>
-          <p className={styles['hero-desc']}>Marmalade on <strong>Kadena</strong> provides the complete infrastructure to launch and run game-changing NFT marketplaces.</p>
+          <p className={styles['hero-desc']}>
+            Marmalade on <strong>Kadena</strong> provides the complete infrastructure to launch and 
+            run game-changing NFT marketplaces.
+          </p>
         </div>
       </div>
       <main className={styles.main}>
@@ -97,10 +100,10 @@ export default function Home() : JSX.Element {
               <div>
                 <Code color="orange">
                   {`{`}<br/>
-                  &nbsp;&nbsp; {`"description": "Genenis Blockchain Print NYT",`}<br/>
-                  &nbsp;&nbsp; {`"external_url": "https://www.marmalade.io/id/123",`}<br/>
-                  &nbsp;&nbsp; {`"image": "https://cdn.marmalade.io/assets/id/123.png",`}<br/>
-                  &nbsp;&nbsp; {`"attributes": [...]`}<br/>
+                  {`"description": "Genenis Blockchain Print NYT",`}<br/>
+                  {`"external_url": "https://www.marmalade.io/id/123",`}<br/>
+                  {`"image": "https://cdn.marmalade.io/assets/id/123.png",`}<br/>
+                  {`"attributes": [...]`}<br/>
                   {`}`}
                 </Code>
               </div>
