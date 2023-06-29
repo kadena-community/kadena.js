@@ -7,12 +7,10 @@ import { ICommandBuilder, IPactCommand, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
-import { kadenaConstants } from '@/constants/kadena';
-import { generateApiHost } from '@/services/utils/utils';
+import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { env } from '@/utils/env';
 
-const NETWORK_ID: ChainwebNetworkId =
-  kadenaConstants.TESTNET.NETWORKS.TESTNET04;
+const NETWORK_ID: ChainwebNetworkId = 'testnet04';
 const SENDER_ACCOUNT: string = 'coin-faucet';
 const SENDER_OPERATION_ACCOUNT: string = 'faucet-operation';
 const FAUCET_PUBLIC_KEY = env(
@@ -72,11 +70,10 @@ export const fundExistingAccount = async (
     { pubKey: keyPair.publicKey, sig: signature2.sig },
   );
 
-  const apiHost = generateApiHost(
-    kadenaConstants.TESTNET.API,
-    NETWORK_ID,
+  const apiHost = getKadenaConstantByNetwork('TESTNET').apiHost({
+    networkId: NETWORK_ID,
     chainId,
-  );
+  });
 
   await transactionBuilder.send(apiHost);
 
