@@ -1,5 +1,3 @@
-import { findDOMNode } from 'react-dom';
-
 export interface IEnvInterface {
   KADENA_API_TTIL?: number;
   KADENA_MAINNET_API?: string;
