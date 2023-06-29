@@ -1,6 +1,5 @@
 import { Card } from '../Card/Card';
 import { SystemIcon } from '../Icons';
-import { Stack } from '../Stack/Stack';
 import { Heading } from '../Typography';
 
 import {
