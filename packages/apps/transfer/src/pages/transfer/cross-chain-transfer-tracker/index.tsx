@@ -1,4 +1,3 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import {
   Button,
   Heading,
@@ -31,8 +30,6 @@ import {
   getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
 
-export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
-
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
 
@@ -48,6 +45,11 @@ const CrossChainTransferTracker: FC = () => {
       setRequestKey(reqKey as string);
     }
   }, [router.query]);
+
+  useEffect(() => {
+    setRequestKey('');
+    setData({});
+  }, [network]);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,

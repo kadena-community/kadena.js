@@ -50,37 +50,3 @@ export const StyledInfoBox = styled('div', {
   alignSelf: 'stretch',
   width: '40%',
 });
-
-export const StyledInfoTitle1 = styled('h3', {
-  marginBottom: '2%',
-  textAlign: 'center',
-});
-
-export const StyledInfoItem1 = styled('div', {
-  display: 'grid',
-  gridTemplateColumns: 'auto 1fr',
-  gap: '$4',
-  marginTop: '4%',
-  fontSize: '0.75rem',
-  background: 'rgba(71, 79, 82, 0.7)',
-  borderRadius: '4px',
-  boxSizing: 'borderBox',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  padding: '$3',
-});
-
-export const StyledInfoItemTitle1 = styled('div', {
-  alignSelf: 'strecth',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  fontSize: '$sm',
-});
-
-export const StyledInfoItemLine1 = styled('div', {
-  display: 'inline-block',
-  wordBreak: 'break-word',
-  font: '$mono',
-  fontWeight: '$semiBold',
-});
