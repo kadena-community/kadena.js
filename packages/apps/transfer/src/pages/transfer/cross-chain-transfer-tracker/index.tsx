@@ -16,26 +16,25 @@ import MainLayout from '@/components/Common/Layout/MainLayout';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledAccountForm,
-  StyledInfoBox,
-  StyledMainContent,
   StyledForm,
   StyledFormButton,
+  StyledInfoBox,
+  StyledMainContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
-
+import {
+  getTransferStatus,
+  IStatusData,
+} from '@/services/transfer-tracker/get-transfer-status';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import {
-  StatusData,
-  getTransferStatus,
-} from '@/services/transfer-tracker/get-transfer-status';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
 
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] = useState<string>('');
-  const [data, setData] = useState<StatusData>({});
+  const [data, setData] = useState<IStatusData>({});
 
   const router = useRouter();
 
@@ -58,21 +57,20 @@ const CrossChainTransferTracker: FC = () => {
 
     router.query.reqKey = requestKey;
     await router.push(router);
-    let statusId;
+
     try {
       await getTransferStatus({
         requestKey,
         network: network,
         t,
         options: {
-          onPoll: (status: any) => {
-            statusId = status.id;
+          onPoll: (status: IStatusData) => {
             setData(status);
           },
         },
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 

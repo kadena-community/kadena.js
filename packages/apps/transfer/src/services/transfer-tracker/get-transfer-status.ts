@@ -4,15 +4,15 @@ import { ChainId } from '@kadena/types';
 
 import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
-import { Translate } from 'next-translate';
 import {
-  Network,
   getKadenaConstantByNetwork,
   kadenaConstants,
+  Network,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import { Translate } from 'next-translate';
 
-export interface StatusData {
+export interface IStatusData {
   id?: number;
   status?: string;
   description?: string;
@@ -34,7 +34,7 @@ export async function getTransferStatus({
   network: Network;
   t: Translate;
   options?: {
-    onPoll?: (status: StatusData) => void;
+    onPoll?: (status: IStatusData) => void;
   };
 }): Promise<void> {
   const { onPoll = () => {} } = { ...options };
@@ -47,11 +47,11 @@ export async function getTransferStatus({
     });
 
     // If not found or error
-    if (transferData.error || !transferData.tx) {
+    if (transferData?.error || !transferData?.tx) {
       onPoll({
         id: 0,
         status: t('Error'),
-        description: transferData.error || t('Transfer not found'),
+        description: transferData?.error || t('Transfer not found'),
       });
       return;
     }
@@ -88,7 +88,7 @@ export async function getTransferStatus({
 
     //If crosschain transfer
     if (sender.chain !== receiver.chain) {
-      const proof = await checkForProof({
+      await checkForProof({
         requestKey,
         network,
         receiverAccount: receiver.account,
@@ -153,7 +153,7 @@ export async function getXChainTransferInfo({
   receiverChain: ChainId;
   network: Network;
   t: Translate;
-}): Promise<StatusData> {
+}): Promise<IStatusData> {
   try {
     const proofApiHost = getKadenaConstantByNetwork(network).apiHost({
       networkId: chainNetwork[network].network,
@@ -163,7 +163,6 @@ export async function getXChainTransferInfo({
       networkId: chainNetwork[network].network,
       chainId: receiverChain,
     });
-    console.log(kadenaConstants);
     const gasLimit: number = kadenaConstants.GAS_LIMIT;
     const gasPrice: number = kadenaConstants.GAS_PRICE;
 
@@ -193,8 +192,8 @@ export async function getXChainTransferInfo({
     });
 
     if (
-      response?.result?.error?.type === 'EvalError' &&
-      response?.result?.error?.message.includes('pact completed')
+      String(response?.result?.error?.type) === 'EvalError' &&
+      String(response?.result?.error?.message).includes('pact completed')
     ) {
       return {
         id: 3,
@@ -249,10 +248,10 @@ export async function checkForProof({
   receiverChain: ChainId;
   amount: number;
   options?: {
-    onPoll?: (status: StatusData) => void;
+    onPoll?: (status: IStatusData) => void;
   };
   t: Translate;
-}) {
+}): Promise<Response | undefined> {
   const { onPoll = () => {} } = { ...options };
 
   try {
