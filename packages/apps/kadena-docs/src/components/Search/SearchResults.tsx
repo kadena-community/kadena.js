@@ -1,7 +1,8 @@
-import { Box, Tabs } from '@kadena/react-ui';
+import { Button, SystemIcon, Tabs, useModal } from '@kadena/react-ui';
 
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
+import { ScrollBox } from './styles';
 
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
@@ -14,13 +15,19 @@ interface IProps {
   staticSearchResults: SearchResult[];
   outputStream: string;
   conversation: IConversation;
+  limitResults?: number;
+  query?: string;
 }
 
 export const SearchResults: FC<IProps> = ({
   staticSearchResults,
   conversation,
   outputStream,
+  limitResults,
+  query,
 }) => {
+  const { clearModal } = useModal();
+
   return (
     <section>
       <Tabs.Root defaultSelected="docs">
@@ -28,14 +35,25 @@ export const SearchResults: FC<IProps> = ({
         <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
         <Tabs.Content value="docs">
-          <Box marginX="$2">
+          <ScrollBox>
             <ResultCount count={staticSearchResults.length} />
-            <StaticResults results={staticSearchResults} />
-          </Box>
+            <StaticResults
+              limitResults={limitResults}
+              results={staticSearchResults}
+            />
+            {limitResults !== undefined && query !== undefined ? (
+              <Link href={`/search?q=${query}`} passHref legacyBehavior>
+                <Button.Root title="Go to search results" onClick={clearModal}>
+                  Go to search results
+                  <Button.Icon icon={SystemIcon.TrailingIcon} />
+                </Button.Root>
+              </Link>
+            ) : null}
+          </ScrollBox>
         </Tabs.Content>
 
         <Tabs.Content value="qa">
-          <Box marginX="$2">
+          <ScrollBox>
             <ResultCount count={staticSearchResults.length} />
 
             {conversation?.history.map((interaction, idx) => (
@@ -57,7 +75,7 @@ export const SearchResults: FC<IProps> = ({
             ))}
 
             <div>{outputStream}</div>
-          </Box>
+          </ScrollBox>
         </Tabs.Content>
       </Tabs.Root>
     </section>

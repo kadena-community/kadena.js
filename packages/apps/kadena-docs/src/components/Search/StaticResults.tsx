@@ -1,6 +1,6 @@
-import { Box } from '@kadena/react-ui';
+import { Box, Heading, Text } from '@kadena/react-ui';
 
-import { StaticResultsList } from './styles';
+import { StaticResultsList, StyledItem } from './styles';
 
 import { createLinkFromMD } from '@/utils';
 import { SearchResult } from 'minisearch';
@@ -9,18 +9,57 @@ import React, { FC } from 'react';
 
 interface IProps {
   results: SearchResult[];
+  limitResults?: number;
 }
 
-export const StaticResults: FC<IProps> = ({ results }) => {
+interface IResultProps {
+  item: SearchResult;
+}
+interface IBreadCrumbProps {
+  url: string;
+}
+
+const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
+  const urlArray = url.split('/');
+
+  return (
+    <>
+      {urlArray.map((str, idx) => {
+        return (
+          <Text size="sm" bold={idx === 0} key={str + idx}>
+            {str} {idx < urlArray.length - 1 ? ' / ' : ''}
+          </Text>
+        );
+      })}
+    </>
+  );
+};
+
+const Item: FC<IResultProps> = ({ item }) => {
+  const url = createLinkFromMD(item.filename);
+  return (
+    <StyledItem key={item.id}>
+      <Link href={url}>
+        <Heading color="primaryContrast" as="h5">
+          {item.title}
+        </Heading>
+      </Link>
+      <ItemBreadCrumb url={url} />
+
+      <Text as="p">{item.description}</Text>
+    </StyledItem>
+  );
+};
+
+export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
+  const limitedResults =
+    limitResults !== undefined ? results.slice(0, limitResults) : results;
+
   return (
     <Box marginY="$10">
       <StaticResultsList>
-        {results.map((item) => {
-          return (
-            <li key={item.id}>
-              <Link href={createLinkFromMD(item.filename)}>{item.title}</Link>
-            </li>
-          );
+        {limitedResults.map((item) => {
+          return <Item item={item} key={item.id} />;
         })}
       </StaticResultsList>
     </Box>

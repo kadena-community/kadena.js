@@ -40,6 +40,8 @@ export const SearchModal: FC = () => {
           staticSearchResults={staticSearchResults}
           conversation={conversation}
           outputStream={outputStream}
+          limitResults={10}
+          query={query}
         />
       </Wrapper>
     </>
