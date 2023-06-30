@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { AccountText } from '../AccountText';
+
 import {
   StyledContentContainer,
   StyledInfoContainer,
@@ -7,7 +8,8 @@ import {
   StyledInfoItemTitle,
   StyledWarningContainer,
 } from './styles';
-import { AccountText } from '../AccountText';
+
+import { FC } from 'react';
 
 export interface IDetailCardProps {
   firstTitle: string;
@@ -25,7 +27,7 @@ export const DetailCard: FC<IDetailCardProps> = ({
   secondContent,
   icon,
   isAccount = true,
-}) => {
+}): JSX.Element => {
   return (
     <StyledInfoItem>
       {icon}

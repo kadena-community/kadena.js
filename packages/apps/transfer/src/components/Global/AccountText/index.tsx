@@ -1,4 +1,3 @@
-import { FC, useState } from 'react';
 import {
   StyledAccountContainer,
   StyledAccountNo,
@@ -7,6 +6,8 @@ import {
   StyledEyeOffIcon,
   StyledTitle,
 } from './styles';
+
+import { FC, useState } from 'react';
 
 export interface IAccountTextProps {
   title: string;
@@ -18,7 +19,7 @@ export const AccountText: FC<IAccountTextProps> = ({
   title,
   account,
   defaultVisibility = false,
-}) => {
+}): JSX.Element => {
   const [visible, setVisible] = useState(defaultVisibility);
 
   const hiddenAccountValue = account.slice(0, 6) + '****' + account.slice(-4);
