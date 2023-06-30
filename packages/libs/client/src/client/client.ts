@@ -1,7 +1,7 @@
 import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 
-import { ICommand } from '../commandBuilder';
+import { ICommand } from '../interfaces/ICommand';
 
 import { ILocalOptions, local, LocalResponse } from './api/local';
 import { getSpv, pollSpv } from './api/spv';

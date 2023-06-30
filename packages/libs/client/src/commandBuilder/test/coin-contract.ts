@@ -1,4 +1,4 @@
-import type { ICapabilityItem } from '../commandBuilder';
+import type { ICapabilityItem } from '../../index';
 
 interface ITransferCapability {
   (name: 'coin.GAS'): ICapabilityItem;
@@ -21,7 +21,7 @@ interface ITransferCrosschainCapability {
   (name: 'coin.CREDIT', receiver: string): ICapabilityItem;
 }
 
-declare module '../pact' {
+declare module '../../pact' {
   export interface IPactModules {
     coin: {
       transfer: (

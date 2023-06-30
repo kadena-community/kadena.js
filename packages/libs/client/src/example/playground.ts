@@ -6,11 +6,11 @@ import {
   commandBuilder,
   ICapabilityItem,
   ICommand,
-  meta,
   payload,
-  set,
-  signer,
-} from '../commandBuilder';
+  setMeta,
+  setProp,
+  setSigner,
+} from '../index';
 import { getModule, Pact } from '../pact';
 
 const { coin } = Pact.modules;
@@ -41,34 +41,34 @@ export const cmd = commandBuilder(
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
     test.changeAdmin('albert', 'javad'),
   ]),
-  signer('javadPublicKey', (withCapability) => [
+  setSigner('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
     withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
   ]),
-  signer('albertPublicKey', (withCapability) => [
+  setSigner('albertPublicKey', (withCapability) => [
     //
     withCapability('test.ADMIN'),
   ]),
-  meta({ chainId: '1' }),
+  setMeta({ chainId: '1' }),
   nonce('kms'),
-  set('networkId', 'mainnet04'),
+  setProp('networkId', 'mainnet04'),
 );
 
 export const cmd2 = commandBuilder(
   payload.cont({}),
-  signer('javadPublicKey', (withCapability) => [
+  setSigner('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
     withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
   ]),
-  signer('albertPublicKey', (withCapability) => [
+  setSigner('albertPublicKey', (withCapability) => [
     //
     withCapability('test.ADMIN'),
   ]),
-  meta({ chainId: '1' }),
+  setMeta({ chainId: '1' }),
   nonce('kms'),
-  set('networkId', 'mainnet04'),
+  setProp('networkId', 'mainnet04'),
 );
 
 const commandWithSignatures = {
@@ -148,13 +148,13 @@ async function spvExample() {
 
 function composeCommands() {
   const mainnetConfig = commandBuilder(
-    meta({ chainId: '1' }),
-    set('networkId', 'mainnet04'),
+    setMeta({ chainId: '1' }),
+    setProp('networkId', 'mainnet04'),
   );
 
   const transfer = commandBuilder(
     payload.exec([coin.transfer('javad', 'albert', { decimal: '0.1' })]),
-    signer('javadPublicKey', (withCapability) => [
+    setSigner('javadPublicKey', (withCapability) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
     ]),

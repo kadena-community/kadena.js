@@ -6,13 +6,13 @@ import {
   commandBuilder,
   ICommand,
   IContinuationPayload,
-  meta,
   payload,
-  set,
-  signer,
-} from '../commandBuilder';
+  setMeta,
+  setProp,
+  setSigner,
+} from '../index';
 import { Pact } from '../pact';
-import { sign } from '../sign';
+import { quicksign } from '../sign';
 
 const { coin } = Pact.modules;
 
@@ -29,13 +29,13 @@ function debitInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
         decimal: amount.toString(),
       }),
     ]),
-    signer('javad', (withCapability) => [
+    setSigner('javad', (withCapability) => [
       withCapability('coin.TRANSFER_XCHAIN', from.account, to.account, {
         decimal: '1',
       }),
     ]),
-    meta({ chainId: from.chainId }),
-    set('networkId', 'testnet04'),
+    setMeta({ chainId: from.chainId }),
+    setProp('networkId', 'testnet04'),
   );
 }
 
@@ -45,9 +45,9 @@ function creditInTheTargetChain(
 ) {
   return commandBuilder(
     payload.cont(continuation),
-    signer('test', (withCapability) => [withCapability('test')]),
-    meta({ chainId: targetChainId }),
-    set('networkId', 'testnet04'),
+    setSigner('test', (withCapability) => [withCapability('test')]),
+    setMeta({ chainId: targetChainId }),
+    setProp('networkId', 'testnet04'),
   );
 }
 
@@ -64,7 +64,7 @@ export async function doCrossChianTransfer(
   amount: string,
 ) {
   await Promise.resolve(debitInTheFirstChain(from, to, amount) as ICommand)
-    .then(sign)
+    .then(quicksign)
     .then(submit)
     .then(([[requestKey], poll]) => Promise.all([requestKey, poll()]))
     .then(([requestKey, result]) => result[requestKey])
@@ -88,7 +88,7 @@ export async function doCrossChianTransfer(
           to.chainId,
         ) as ICommand,
     )
-    .then(sign)
+    .then(quicksign)
     .then(submit)
     .then(([, poll]) => poll());
 
@@ -96,7 +96,7 @@ export async function doCrossChianTransfer(
 
   const command = debitInTheFirstChain(from, to, amount) as ICommand;
 
-  const transaction = await sign(command);
+  const transaction = await quicksign(command);
   const [[sendRequestKey], pollSendResult] = await submit(transaction);
 
   const { [sendRequestKey]: debitResult } = await pollSendResult();
@@ -115,7 +115,7 @@ export async function doCrossChianTransfer(
     to.chainId,
   ) as ICommand;
 
-  const continuationTr = await sign(continuation);
+  const continuationTr = await quicksign(continuation);
   const [[contRequestKey], pollContResult] = await submit(continuationTr);
 
   const { [contRequestKey]: creditResult } = await pollContResult();

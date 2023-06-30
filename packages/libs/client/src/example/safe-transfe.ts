@@ -5,13 +5,13 @@ import { getClient } from '../client/client';
 import {
   commandBuilder,
   ICommand,
-  meta,
   payload,
-  set,
-  signer,
-} from '../commandBuilder';
+  setMeta,
+  setProp,
+  setSigner,
+} from '../index';
 import { Pact } from '../pact';
-import { sign } from '../sign';
+import { quicksign } from '../sign';
 
 const { coin } = Pact.modules;
 
@@ -26,18 +26,18 @@ async function doSafeTransfer(from: string, to: string, amount: string) {
       // the actual transfer
       coin.transfer(from, to, { decimal: amount }),
     ]),
-    signer(from, (withCapability) => [
+    setSigner(from, (withCapability) => [
       withCapability('coin.TRANSFER', from, to, { decimal: amount }),
       withCapability('coin.TRANSFER', from, to, { decimal: '0.01' }),
     ]),
-    signer(to, (withCapability) => [
+    setSigner(to, (withCapability) => [
       withCapability('coin.TRANSFER', to, from, { decimal: '0.01' }),
     ]),
-    set('networkId', 'mainnet01'),
-    meta({ chainId: '1' }),
+    setProp('networkId', 'mainnet01'),
+    setMeta({ chainId: '1' }),
   ) as ICommand;
 
-  const signedCommand = await sign(command);
+  const signedCommand = await quicksign(command);
   const [, poll] = await submit(signedCommand);
   const status = await poll();
   return status;

@@ -1,8 +1,7 @@
 /* istanbul ignore file */
 // this module is just a poc for the client
 
-import { ICommand } from '@kadena/types';
-
+import { ICommand } from '../interfaces/ICommand';
 import { Pact } from '../pact';
 
 const { coin } = Pact.modules;

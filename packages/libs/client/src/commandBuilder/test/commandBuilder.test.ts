@@ -1,7 +1,13 @@
 import './coin-contract';
 
-import { commandBuilder, meta, payload, set, signer } from '../commandBuilder';
-import { Pact } from '../pact';
+import {
+  commandBuilder,
+  payload,
+  setMeta,
+  setProp,
+  setSigner,
+} from '../../index';
+import { Pact } from '../../pact';
 
 const { coin } = Pact.modules;
 
@@ -45,11 +51,11 @@ describe('commandBuilder', () => {
   it('returns command object with signers and capabilities', () => {
     const command = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
-      signer('bob_public_key', (withCapability) => [
+      setSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
       ]),
-      set('nonce', 'test-nonce'),
+      setProp('nonce', 'test-nonce'),
     );
     expect(command).toStrictEqual({
       payload: {
@@ -75,11 +81,11 @@ describe('commandBuilder', () => {
   it('returns a command based on ICommand interface', () => {
     const command = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
-      signer('bob_public_key', (withCapability) => [
+      setSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
       ]),
-      meta({
+      setMeta({
         chainId: '1',
         sender: 'gas-station',
         gasPrice: 381,
@@ -87,8 +93,8 @@ describe('commandBuilder', () => {
         creationTime: 123,
         ttl: 1000,
       }),
-      set('networkId', 'test-network-id'),
-      set('nonce', 'test-nonce'),
+      setProp('networkId', 'test-network-id'),
+      setProp('nonce', 'test-nonce'),
     );
 
     expect(command).toStrictEqual({
@@ -172,7 +178,7 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        signer('bob_public_key'),
+        setSigner('bob_public_key'),
       ).signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
   });
@@ -181,10 +187,10 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        signer('bob_public_key', (withCapability) => [
+        setSigner('bob_public_key', (withCapability) => [
           withCapability('coin.GAS'),
         ]),
-        signer('bob_public_key', (withCapability) => [
+        setSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
       ).signers,
@@ -202,8 +208,8 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        signer('bob_public_key'),
-        signer('bob_public_key', (withCapability) => [
+        setSigner('bob_public_key'),
+        setSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
       ).signers,
@@ -221,7 +227,7 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        meta({ chainId: '1' }),
+        setMeta({ chainId: '1' }),
       ).meta?.creationTime,
     ).toBe(1690416000);
   });
@@ -229,7 +235,7 @@ describe('commandBuilder', () => {
 
 describe('signer', () => {
   it('returns a signer object', () => {
-    expect(signer('bob_public_key')()).toEqual({
+    expect(setSigner('bob_public_key')()).toEqual({
       signers: [
         {
           pubKey: 'bob_public_key',
@@ -241,7 +247,7 @@ describe('signer', () => {
 
   it('adds capability if presented', () => {
     expect(
-      signer<any>('bob_public_key', (withCapability) => [
+      setSigner<any>('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
       ])(),
     ).toEqual({
@@ -255,7 +261,7 @@ describe('signer', () => {
     });
   });
   it('accept signer object as a first argument', () => {
-    expect(signer({ pubKey: 'test', scheme: 'ED25519' })()).toEqual({
+    expect(setSigner({ pubKey: 'test', scheme: 'ED25519' })()).toEqual({
       signers: [
         {
           pubKey: 'test',
