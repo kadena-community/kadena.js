@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import {
+  StyledContentContainer,
   StyledInfoContainer,
   StyledInfoItem,
   StyledInfoItemLine,
   StyledInfoItemTitle,
+  StyledWarningContainer,
 } from './styles';
 import { AccountText } from '../AccountText';
 
@@ -36,10 +38,16 @@ export const DetailCard: FC<IDetailCardProps> = ({
             <StyledInfoItemLine>{firstContent}</StyledInfoItemLine>
           </div>
         )}
-        <div>
-          <StyledInfoItemTitle>{secondTitle}</StyledInfoItemTitle>
-          <StyledInfoItemLine>{secondContent}</StyledInfoItemLine>
-        </div>
+        <StyledContentContainer>
+          <div>
+            <StyledInfoItemTitle>{secondTitle}</StyledInfoItemTitle>
+            <StyledInfoItemLine>{secondContent}</StyledInfoItemLine>
+          </div>
+          <StyledWarningContainer>
+            This is a cross-chain transaction because the receiver chain 2 is
+            set.
+          </StyledWarningContainer>
+        </StyledContentContainer>
       </StyledInfoContainer>
     </StyledInfoItem>
   );
