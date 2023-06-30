@@ -11,7 +11,7 @@ export interface IEnvInterface {
   DEFAULT_SENDER?: string;
 }
 
-type IRequiredEnv = Required<IEnvInterface>;
+type RequiredEnv = Required<IEnvInterface>;
 
 export const dotenv: IEnvInterface = {
   KADENA_API_TTIL: Number(process.env.KADENA_API_TTIL),
@@ -26,10 +26,10 @@ export const dotenv: IEnvInterface = {
   DEFAULT_SENDER: process.env.DEFAULT_SENDER,
 };
 
-export const env = <T extends keyof IRequiredEnv, TDefault>(
+export const env = <T extends keyof RequiredEnv, TDefault>(
   key: T,
   defaultValue: TDefault,
-): TDefault | NonNullable<IRequiredEnv[T]> => {
+): TDefault | NonNullable<RequiredEnv[T]> => {
   const falsyKey =
     (typeof dotenv[key] === 'number' && isNaN(Number(dotenv[key]))) ||
     dotenv[key] === null ||
@@ -38,5 +38,5 @@ export const env = <T extends keyof IRequiredEnv, TDefault>(
 
   return falsyKey
     ? (defaultValue as TDefault)
-    : (dotenv[key] as NonNullable<IRequiredEnv[T]>);
+    : (dotenv[key] as NonNullable<RequiredEnv[T]>);
 };

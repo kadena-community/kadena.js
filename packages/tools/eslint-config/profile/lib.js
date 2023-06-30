@@ -1,9 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * according to rush.json#projectFolderMin/MaxDepth packages specific to this
+ * monorepo are always placed in 3rd nested directory
+ * e.g. packages/{apps,libs,tools}/package-name/*
+ */
 const prettierOptions = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '../../../../.prettierrc'), 'utf8'),
 );
+/**
+ * an alternative to above code is
+ */
+// const prettierrcPath = `${require('child_process')
+//   .execSync('git rev-parse --show-toplevel')
+//   .toString()
+//   .replace(/\n/, '')}/.prettierrc`;
 
 module.exports = {
   root: true,

@@ -26,8 +26,10 @@ module.exports = {
       version: 'detect',
     },
   },
-  // turned off boolean expressions for jsx and tsx files, so we can have non-boolean statements in react components
-  // this rule should be enabled for js and ts files even in a ReactJS or NextJS setup
+
+  // disable strict-boolean-expressions for jsx and tsx files
+  // this allows for truthy/falsy statements in react components
+  // this rule must be enabled for js and ts files even in a ReactJS or NextJS setup
   overrides: [
     {
       files: ['*.jsx', '*.tsx'],
