@@ -28,22 +28,29 @@ import {
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { DetailCard } from '@/components/Global/DetailsCard';
+import { FromIconActive } from '@/resources/svg/generated';
 
 const CrossChainTransferTracker: FC = () => {
+  const router = useRouter();
+
   const { network } = useAppContext();
 
   const { t } = useTranslation('common');
-  const [requestKey, setRequestKey] = useState<string>('');
+  const [requestKey, setRequestKey] = useState<string>(
+    (router.query.reqKey as string) || '',
+  );
   const [data, setData] = useState<IStatusData>({});
 
-  const router = useRouter();
-
   useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
     const { reqKey } = router.query;
     if (reqKey) {
       setRequestKey(reqKey as string);
     }
-  }, [router.query]);
+  }, [router.isReady]);
 
   useEffect(() => {
     setRequestKey('');
@@ -105,6 +112,14 @@ const CrossChainTransferTracker: FC = () => {
 
             {data.receiverAccount ? (
               <>
+                <DetailCard
+                  firstTitle={t('Sender')}
+                  firstContent={data.senderAccount || ''}
+                  secondTitle={t('Chain')}
+                  secondContent={data.senderChain || ''}
+                  icon={<FromIconActive />}
+                />
+
                 <StyledInfoItem>
                   <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
                   <StyledInfoItemLine>{`Chain: ${data.senderChain}`}</StyledInfoItemLine>
@@ -123,6 +138,13 @@ const CrossChainTransferTracker: FC = () => {
                     'KDA',
                   )}`}</StyledInfoItemLine>
                 </StyledInfoItem>
+                <DetailCard
+                  firstTitle={t('Sender')}
+                  firstContent={data.senderAccount || ''}
+                  secondTitle={t('Chain')}
+                  secondContent={data.senderChain || ''}
+                  icon={<FromIconActive />}
+                />
               </>
             ) : null}
 
