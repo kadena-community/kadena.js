@@ -7,7 +7,7 @@ import {
   StyledTitle,
 } from './styles';
 
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 export interface IAccountTextProps {
   title: string;

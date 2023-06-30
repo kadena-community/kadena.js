@@ -44,9 +44,20 @@ export const StyledWarningContainer = styled('div', {
   alignItems: 'flex-start',
   fontWeight: '$normal',
   fontSize: '$xs',
-  color: '$red',
+  variants: {
+    typedMessage: {
+      mild: {
+        color: '$warningContrast',
+      },
+      severe: {
+        color: '$negativeContrast',
+      },
+    },
+  },
 });
 
 export const StyledContentContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
   gap: '$2',
 });

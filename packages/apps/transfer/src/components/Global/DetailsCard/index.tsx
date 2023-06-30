@@ -9,14 +9,15 @@ import {
   StyledWarningContainer,
 } from './styles';
 
-import { FC } from 'react';
-
+import React, { FC } from 'react';
 export interface IDetailCardProps {
   firstTitle: string;
   firstContent: string;
   isAccount?: boolean;
   secondTitle: string;
   secondContent: string;
+  helperText?: string;
+  helperTextType?: 'mild' | 'severe';
   icon: JSX.Element;
 }
 
@@ -26,6 +27,8 @@ export const DetailCard: FC<IDetailCardProps> = ({
   secondTitle,
   secondContent,
   icon,
+  helperText,
+  helperTextType = 'mild',
   isAccount = true,
 }): JSX.Element => {
   return (
@@ -45,10 +48,11 @@ export const DetailCard: FC<IDetailCardProps> = ({
             <StyledInfoItemTitle>{secondTitle}</StyledInfoItemTitle>
             <StyledInfoItemLine>{secondContent}</StyledInfoItemLine>
           </div>
-          <StyledWarningContainer>
-            This is a cross-chain transaction because the receiver chain 2 is
-            set.
-          </StyledWarningContainer>
+          {helperText && (
+            <StyledWarningContainer typedMessage={helperTextType}>
+              {helperText}
+            </StyledWarningContainer>
+          )}
         </StyledContentContainer>
       </StyledInfoContainer>
     </StyledInfoItem>
