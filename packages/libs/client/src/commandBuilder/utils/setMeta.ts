@@ -9,7 +9,7 @@ export const setMeta = (
     gasPrice: 1.0e-8,
     sender: '',
     ttl: 8 * 60 * 60, // 8 hours,
-    creationTime: Date.now(),
+    creationTime: Math.floor(Date.now() / 1000),
     ...options,
   },
 });
