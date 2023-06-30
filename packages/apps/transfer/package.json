@@ -11,10 +11,10 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier locales src --write",
-    "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
     "generate:coin:contract": "npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "npm run generate:coin:contract && npm run generate:faucet:contract",
     "generate:faucet:contract": "npx @kadena/pactjs-cli contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
+    "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "next lint",
     "lint:fix": "eslint --fix .",
     "start": "next start",
@@ -78,9 +78,9 @@
     "jest": "~29.5.0",
     "jest-environment-jsdom": "~29.5.0",
     "next-translate-plugin": "~2.0.5",
+    "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
-    "typescript": "5.0.4",
-    "prettier": "~2.8.8"
+    "typescript": "5.0.4"
   },
   "volta": {
     "node": "16.15.0"
