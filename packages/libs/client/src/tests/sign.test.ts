@@ -49,7 +49,7 @@ describe('quicksign', () => {
   it('adds the signer if the passed as second argd', async () => {
     const strCommand = JSON.stringify(sampleCommand);
     const result = await quicksign(strCommand, {
-      alice_public_key: 'alice_signature',
+      alicePublicKey: 'alice_signature',
     });
     expect(result).toStrictEqual({
       cmd: strCommand,

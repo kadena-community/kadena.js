@@ -14,14 +14,16 @@ export interface IPact {
   modules: IPactModules;
 }
 
-export const getModule = (name: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getModule = (name: string): any => {
   let code = name;
-  const pr: any = new Proxy<any>(function () {} as unknown, {
-    get(_, path: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pr: any = new Proxy<any>(function () {} as any, {
+    get(target, path: string) {
       code += '.' + path;
       return pr;
     },
-    apply(_, thisArg, args) {
+    apply(target, thisArg, args) {
       const exp = createExp(code, ...args.map(parseType));
       code = name;
       return exp;
@@ -31,11 +33,15 @@ export const getModule = (name: string) => {
 };
 
 const pactCreator = (): IPact => {
-  return new Proxy<any>({} as unknown, {
-    get(_, path: string) {
-      return getModule(path);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new Proxy<any>(
+    {},
+    {
+      get(target, path: string) {
+        return getModule(path);
+      },
     },
-  });
+  );
 };
 
 /**
@@ -46,4 +52,5 @@ export const Pact: IPact = {
     return pactCreator();
   },
   // "any" just for now, we can remove it after updated the deceleration generator
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;

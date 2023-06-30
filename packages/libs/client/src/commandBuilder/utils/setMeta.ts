@@ -1,5 +1,8 @@
 import { ICommand } from '../../interfaces/ICommand';
 
+/**
+ * @alpha
+ */
 export const setMeta = (
   options: { chainId: ICommand['meta']['chainId'] } & Partial<ICommand['meta']>,
 ): Pick<ICommand, 'meta'> => ({

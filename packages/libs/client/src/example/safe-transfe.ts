@@ -1,6 +1,8 @@
 /* istanbul ignore file */
 // this module is just a code snippet for the safe transfer
 
+import { ICommandResult } from '@kadena/chainweb-node-client';
+
 import { getClient } from '../client/client';
 import {
   commandBuilder,
@@ -15,7 +17,11 @@ import { quicksign } from '../sign';
 
 const { coin } = Pact.modules;
 
-async function doSafeTransfer(from: string, to: string, amount: string) {
+export async function doSafeTransfer(
+  from: string,
+  to: string,
+  amount: string,
+): Promise<Record<string, ICommandResult>> {
   const { submit } = getClient();
 
   const command = commandBuilder(

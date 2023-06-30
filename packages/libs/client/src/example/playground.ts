@@ -1,7 +1,10 @@
 /* istanbul ignore file */
 // this module is just some example code to play with the client
 
+import { ICommandResult } from '@kadena/chainweb-node-client';
+
 import { getClient } from '../client/client';
+import { ICommandRequest } from '../client/utils/utils';
 import {
   commandBuilder,
   ICapabilityItem,
@@ -30,8 +33,12 @@ interface ITest {
 
 const test: ITest = getModule('coin');
 
-const nonce = (input: string) => (cmd: Partial<ICommand>) => {
-  return { nonce: `kjs ${new Date().toISOString()}` };
+const nonce = (
+  tag: string,
+): {
+  nonce: string;
+} => {
+  return { nonce: `${tag}:${Date.now()}` };
 };
 
 // use the payload type in the output cont/exec
@@ -51,11 +58,11 @@ export const cmd = commandBuilder(
     withCapability('test.ADMIN'),
   ]),
   setMeta({ chainId: '1' }),
-  nonce('kms'),
+  nonce('k:nonce'),
   setProp('networkId', 'mainnet04'),
 );
 
-export const cmd2 = commandBuilder(
+export const cmd2: Partial<ICommand> = commandBuilder(
   payload.cont({}),
   setSigner('javadPublicKey', (withCapability) => [
     //
@@ -71,13 +78,13 @@ export const cmd2 = commandBuilder(
   setProp('networkId', 'mainnet04'),
 );
 
-const commandWithSignatures = {
+const commandWithSignatures: ICommandRequest = {
   cmd: JSON.stringify(cmd),
   hash: 'str',
   sigs: [''],
 };
 
-const getHostUrl = (networkId: string, chainId: string) => {
+const getHostUrl = (networkId: string, chainId: string): string => {
   switch (networkId) {
     case 'devnet':
       return `http://localhost/${chainId}/pact`;
@@ -94,12 +101,12 @@ const getHostUrl = (networkId: string, chainId: string) => {
 
 const { local, submit, pollStatus, pollSpv: pollSpv } = getClient(getHostUrl);
 
-async function localExample() {
+export async function localExample(): Promise<ICommandResult> {
   const result = await local(commandWithSignatures);
   return result;
 }
 
-async function submitExample() {
+export async function submitExample(): Promise<Record<string, ICommandResult>> {
   const [requestKeys, poll] = await submit([commandWithSignatures]);
   console.log(requestKeys);
   const result = await poll({
@@ -111,7 +118,7 @@ async function submitExample() {
   return result;
 }
 
-async function pollRequestsAndWaitForEachPromiseExample() {
+export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> {
   const someRequestKeys = ['key1', 'key2'];
   const results = pollStatus(someRequestKeys, {
     networkId: 'testnet04',
@@ -137,7 +144,7 @@ async function pollRequestsAndWaitForEachPromiseExample() {
   );
 }
 
-async function spvExample() {
+export async function spvExample(): Promise<string> {
   const someRequestKeys = 'key1';
   const status = await pollSpv(someRequestKeys, '01', {
     networkId: 'testnet04',
@@ -146,7 +153,7 @@ async function spvExample() {
   return status;
 }
 
-function composeCommands() {
+export function composeCommands(): Partial<ICommand> {
   const mainnetConfig = commandBuilder(
     setMeta({ chainId: '1' }),
     setProp('networkId', 'mainnet04'),

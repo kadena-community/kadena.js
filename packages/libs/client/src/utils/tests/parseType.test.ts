@@ -38,6 +38,7 @@ describe('parseType', () => {
   });
 
   it('returns arg, if its an object', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(parseType({ test: 'test' } as any)).toEqual({ test: 'test' });
   });
 

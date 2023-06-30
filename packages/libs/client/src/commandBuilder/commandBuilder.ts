@@ -23,7 +23,7 @@ const mergePayload = (
   throw new Error('PAYLOAD_NOT_MERGEABLE');
 };
 
-type NoPayload<T> = T extends { payload: any } ? never : T;
+type NoPayload<T> = T extends { payload: unknown } ? never : T;
 
 type PoF<T> = T | ((a: T) => T);
 
@@ -45,10 +45,16 @@ interface ICommandBuilder {
   ): Partial<ICommand>;
 }
 
-export const commandBuilder: ICommandBuilder = (first: any, ...rest: any) => {
+/**
+ * @alpha
+ */
+export const commandBuilder: ICommandBuilder = (
+  first: PoF<Partial<ICommand>>,
+  ...rest: PoF<Partial<ICommand>>[]
+) => {
   const args: Array<
     Partial<ICommand> | ((cmd: Partial<ICommand>) => Partial<ICommand>)
-  > = [first, ...rest] as any;
+  > = [first, ...rest];
   const command = args.reduce<Partial<ICommand>>((acc, item) => {
     const part = typeof item === 'function' ? item(acc) : item;
     if (part.payload !== undefined) {

@@ -29,7 +29,10 @@ export function getUrl(
   return url.toString();
 }
 
-export const kadenaHostGenerator = (networkId: string, chainId: string) => {
+export const kadenaHostGenerator = (
+  networkId: string,
+  chainId: string,
+): string => {
   switch (networkId) {
     case 'mainnet01':
       return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
@@ -62,33 +65,33 @@ export interface IPollOptions {
 export interface IExtPromise<T> {
   promise: Promise<T>;
   resolve: (result: T) => void;
-  reject: (err: any) => void;
+  reject: (err: unknown) => void;
   fulfilled: boolean;
   data: T | undefined;
 }
 
 export const getPromise = <T>(): IExtPromise<T> => {
-  let resolve: (value: T) => void = () => {};
-  let reject: (value: any) => void = () => {};
+  let resolveFn: (value: T) => void = () => {};
+  let rejectFn: (value: unknown) => void = () => {};
   let fulfilled = false;
   let result: T | undefined;
 
-  const promise = new Promise<T>((_resolve, _reject) => {
-    resolve = (data: T) => {
+  const promise = new Promise<T>((resolve, reject) => {
+    resolveFn = (data: T) => {
       result = data;
       fulfilled = true;
-      _resolve(data);
+      resolve(data);
     };
-    reject = (err) => {
+    rejectFn = (err) => {
       fulfilled = true;
-      _reject(err);
+      reject(err);
     };
   });
 
   return {
     promise,
-    resolve,
-    reject,
+    resolve: resolveFn,
+    reject: rejectFn,
     get fulfilled() {
       return fulfilled;
     },
@@ -116,6 +119,7 @@ export const mergeAllPollRequestPromises = <T extends object | string>(
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapRecord = <T extends any, Mapper extends (item: T) => any>(
   object: Record<string, T>,
   mapper: Mapper,
@@ -125,7 +129,8 @@ export const mapRecord = <T extends any, Mapper extends (item: T) => any>(
   );
 
 export const withCounter = <
-  A extends any[],
+  A extends unknown[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   F extends (counter: number, ...args: [...A]) => any,
 >(
   cb: F,

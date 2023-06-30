@@ -98,7 +98,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
 
-  function groupByHost(requestKeys?: string[], options?: IOptions) {
+  function groupByHost(
+    requestKeys?: string[],
+    options?: IOptions,
+  ): [string, string[]][] {
     let requestStorage = storage;
     if (requestKeys !== undefined) {
       const map = new Map<string, string>(
@@ -115,7 +118,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   function pollStatusFunction(
     requestKeys?: string[] | string,
     options?: IOptions,
-  ) {
+  ): IPollRequestPromise<ICommandResult> {
     const results = groupByHost(
       typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
       options,

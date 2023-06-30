@@ -1,6 +1,8 @@
 /* istanbul ignore file */
 // this module is just a code snippet for the cross chain transfer
 
+import { ICommandResult } from '@kadena/chainweb-node-client';
+
 import { getClient } from '../client/client';
 import {
   commandBuilder,
@@ -22,7 +24,11 @@ interface IAccount {
   guard: string;
 }
 
-function debitInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
+function debitInTheFirstChain(
+  from: IAccount,
+  to: IAccount,
+  amount: string,
+): Partial<ICommand> {
   return commandBuilder(
     payload.exec([
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
@@ -42,7 +48,7 @@ function debitInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
 function creditInTheTargetChain(
   continuation: IContinuationPayload,
   targetChainId: string,
-) {
+): Partial<ICommand> {
   return commandBuilder(
     payload.cont(continuation),
     setSigner('test', (withCapability) => [withCapability('test')]),
@@ -62,7 +68,7 @@ export async function doCrossChianTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
-) {
+): Promise<[boolean, ICommandResult, ICommandResult | undefined]> {
   await Promise.resolve(debitInTheFirstChain(from, to, amount) as ICommand)
     .then(quicksign)
     .then(submit)
@@ -102,7 +108,7 @@ export async function doCrossChianTransfer(
   const { [sendRequestKey]: debitResult } = await pollSendResult();
   if (debitResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception
-    return [false, debitResult, null] as const;
+    return [false, debitResult, undefined];
   }
   const proof = await pollCreateSpv(sendRequestKey, to.chainId);
   const continuation = creditInTheTargetChain(
@@ -121,7 +127,7 @@ export async function doCrossChianTransfer(
   const { [contRequestKey]: creditResult } = await pollContResult();
   if (creditResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception
-    return [false, debitResult, creditResult] as const;
+    return [false, debitResult, creditResult];
   }
-  return [true, debitResult, creditResult] as const;
+  return [true, debitResult, creditResult];
 }

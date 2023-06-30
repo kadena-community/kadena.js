@@ -6,6 +6,7 @@ interface ISetSigner {
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
   ): () => Pick<ICommand, 'signers'>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <T extends any>(
     first:
       | string
@@ -14,6 +15,9 @@ interface ISetSigner {
   ): T;
 }
 
+/**
+ * @alpha
+ */
 export const setSigner: ISetSigner = ((
   first:
     | string
@@ -21,21 +25,21 @@ export const setSigner: ISetSigner = ((
   capability: (
     withCapability: (
       name: string,
-      ...args: any[]
-    ) => { name: string; args: any[] },
+      ...args: unknown[]
+    ) => { name: string; args: unknown[] },
   ) => ICapabilityItem[],
-): any => {
+): unknown => {
   const {
     pubKey,
     scheme = 'ED25519',
     address = undefined,
   } = typeof first === 'object' ? first : { pubKey: first };
-  let clist: undefined | Array<{ name: string; args: any[] }>;
+  let clist: undefined | Array<{ name: string; args: unknown[] }>;
   if (typeof capability === 'function') {
-    clist = capability(((name: string, ...args: any[]) => ({
+    clist = capability((name: string, ...args: unknown[]) => ({
       name,
       args,
-    })) as any);
+    }));
   }
 
   return () => ({
@@ -43,11 +47,12 @@ export const setSigner: ISetSigner = ((
       {
         ...(pubKey ? { pubKey } : {}),
         ...(scheme ? { scheme } : {}),
-        ...(address ? { address } : {}),
+        ...(address !== undefined ? { address } : {}),
         ...(clist ? { clist } : {}),
       },
     ],
   });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
 type UnionToIntersection<U> = (
@@ -56,9 +61,9 @@ type UnionToIntersection<U> = (
   ? I
   : never;
 
-type CAP = (name: string, ...args: any[]) => ICapabilityItem;
+type CAP = (name: string, ...args: unknown[]) => ICapabilityItem;
 
-type ExtractType<T> = T extends (cmd: { payload: infer A }) => any
+type ExtractType<T> = T extends (cmd: { payload: infer A }) => unknown
   ? A extends { funs: infer F }
     ? F extends Array<infer I>
       ? UnionToIntersection<I> extends { capability: infer C }

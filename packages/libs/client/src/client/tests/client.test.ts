@@ -78,7 +78,7 @@ describe('client', () => {
         json: () => response,
       });
 
-      const hostApiGenerator = (networkId: string, chainId: string) =>
+      const hostApiGenerator = (networkId: string, chainId: string): string =>
         `http://${networkId}/${chainId}`;
 
       const { local } = getClient(hostApiGenerator);
@@ -110,7 +110,7 @@ describe('client', () => {
         json: () => response,
       });
 
-      const hostApiGenerator = (networkId: string, chainId: string) =>
+      const hostApiGenerator = (networkId: string, chainId: string): string =>
         `http://${networkId}/${chainId}`;
 
       const { submit } = getClient(hostApiGenerator);
@@ -149,7 +149,7 @@ describe('client', () => {
         }),
       );
 
-      const hostApiGenerator = (networkId: string, chainId: string) =>
+      const hostApiGenerator = (networkId: string, chainId: string): string =>
         `http://${networkId}/${chainId}`;
 
       const { submit } = getClient(hostApiGenerator);
@@ -207,7 +207,7 @@ describe('client', () => {
         }),
       );
 
-      const hostApiGenerator = (networkId: string, chainId: string) =>
+      const hostApiGenerator = (networkId: string, chainId: string): string =>
         `http://${networkId}/${chainId}`;
 
       const { submit, pollStatus } = getClient(hostApiGenerator);

@@ -32,17 +32,24 @@ describe('isCommand', () => {
   });
 
   it("returns false if properties of the command object don't match ICommand interface", () => {
-    const deleteProperty = (obj: any, prop: string): any => {
+    const deleteProperty = <T extends object>(
+      obj: T,
+      prop: string,
+    ): Partial<T> => {
       const parts = prop.split('.');
       if (parts.length > 1) {
         const [first, ...rest] = parts;
         return {
           ...obj,
-          [first]: deleteProperty(obj[first], rest.join('.')),
+          [first]: deleteProperty(
+            (obj as Record<string, object>)[first],
+            rest.join('.'),
+          ),
         };
       }
-      const { [prop]: deleted, ...rest } = obj;
-      return rest;
+      const newObj = { ...obj } as Record<string, object>;
+      delete newObj[prop];
+      return newObj as unknown as Partial<T>;
     };
     const command: ICommand = {
       payload: {

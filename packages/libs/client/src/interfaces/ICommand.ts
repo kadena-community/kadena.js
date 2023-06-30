@@ -1,9 +1,16 @@
+import { ICap } from '@kadena/types';
+
+/**
+ * @alpha
+ */
 export interface IExecPayload {
   // executable pact code
   code: string;
   data?: Record<string, string | number>;
 }
-
+/**
+ * @alpha
+ */
 export interface IContinuationPayload {
   pactId?: string;
   step?: string;
@@ -11,14 +18,15 @@ export interface IContinuationPayload {
   data?: Record<string, string | number>;
   proof?: string;
 }
-
-export interface ICapabilityItem {
-  name: string;
-  // we need to add all options
-  args: Array<any>;
-}
+/**
+ * @alpha
+ */
+export type ICapabilityItem = ICap;
 
 // TODO: update filed types based on @Kadena/types
+/**
+ * @alpha
+ */
 export interface ICommand {
   payload: IExecPayload | IContinuationPayload;
   meta: {

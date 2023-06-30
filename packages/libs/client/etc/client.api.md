@@ -4,18 +4,15 @@
 
 ```ts
 
+import { ICap } from '@kadena/types';
+
 // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export const commandBuilder: ICommandBuilder;
 
-// @public (undocumented)
-export interface ICapabilityItem {
-    // (undocumented)
-    args: Array<any>;
-    // (undocumented)
-    name: string;
-}
+// @alpha (undocumented)
+export type ICapabilityItem = ICap;
 
 // @alpha (undocumented)
 export interface IChainweaverCap {
@@ -59,7 +56,7 @@ export interface IChainweaverSignBody {
     ttl: number;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface ICommand {
     // (undocumented)
     meta: {
@@ -85,7 +82,7 @@ export interface ICommand {
     }>;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IContinuationPayload {
     // (undocumented)
     data?: Record<string, string | number>;
@@ -99,7 +96,7 @@ export interface IContinuationPayload {
     step?: string;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface IExecPayload {
     // (undocumented)
     code: string;
@@ -188,20 +185,20 @@ export const Pact: IPact;
 
 // Warning: (ae-forgotten-export) The symbol "IPayload" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export const payload: IPayload;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const setMeta: (options: {
     chainId: ICommand['meta']['chainId'];
 } & Partial<ICommand['meta']>) => Pick<ICommand, 'meta'>;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const setProp: <T extends keyof ICommand>(item: T, value: ICommand[T]) => { [key in T]: ICommand[T]; };
 
 // Warning: (ae-forgotten-export) The symbol "ISetSigner" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export const setSigner: ISetSigner;
 
 // (No @packageDocumentation comment for this package)
