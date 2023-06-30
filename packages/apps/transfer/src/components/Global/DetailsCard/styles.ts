@@ -1,10 +1,5 @@
 import { styled } from '@kadena/react-components';
 
-export const StyledInfoTitle = styled('h3', {
-  marginBottom: '2%',
-  textAlign: 'center',
-});
-
 export const StyledInfoItem = styled('div', {
   display: 'grid',
   padding: '$3',
@@ -25,13 +20,14 @@ export const StyledInfoItemTitle = styled('div', {
   flexDirection: 'column',
   justifyContent: 'center',
   fontSize: '$sm',
+  fontWeight: '$medium',
 });
 
 export const StyledInfoItemLine = styled('div', {
   display: 'inline-block',
   wordBreak: 'break-word',
   font: '$mono',
-  fontWeight: '$semiBold',
+  fontWeight: '$normal',
 });
 
 export const StyledInfoContainer = styled('div', {
@@ -40,4 +36,17 @@ export const StyledInfoContainer = styled('div', {
   alignItems: 'flex-start',
   gap: '$4',
   flex: '1 0 0',
+});
+
+export const StyledWarningContainer = styled('div', {
+  display: 'inline-block',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  fontWeight: '$normal',
+  fontSize: '$xs',
+  color: '$red',
+});
+
+export const StyledContentContainer = styled('div', {
+  gap: '$2',
 });

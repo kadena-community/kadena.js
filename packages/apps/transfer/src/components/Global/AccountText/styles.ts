@@ -10,6 +10,7 @@ export const StyledTitle = styled('div', {
   flexDirection: 'column',
   justifyContent: 'center',
   fontSize: '$sm',
+  fontWeight: '$medium',
 });
 
 export const StyledAccountNo = styled('div', {
