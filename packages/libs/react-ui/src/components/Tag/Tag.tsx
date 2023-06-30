@@ -8,5 +8,9 @@ export interface ITagProps {
 
 // TODO: Update to accept a color prop
 export const Tag: FC<ITagProps> = ({ children }) => {
-  return <span className={tagClass}>{children}</span>;
+  return (
+    <span data-testid="kda-tag" className={tagClass}>
+      {children}
+    </span>
+  );
 };

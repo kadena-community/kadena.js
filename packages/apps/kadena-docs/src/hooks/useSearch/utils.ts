@@ -12,8 +12,8 @@ const createGetIndex = (): (() => Promise<MiniSearch>) => {
 
       // eslint-disable-next-line require-atomic-updates
       index = MiniSearch.loadJSON(JSON.stringify(results), {
-        fields: ['title', 'content'],
-        storeFields: ['title', 'content'],
+        fields: ['title', 'content', 'description'],
+        storeFields: ['title', 'filename', 'description'],
       });
     }
 
@@ -28,7 +28,11 @@ export const loadSearchResults = async (
   setStaticSearchResults: Dispatch<SetStateAction<SearchResult[]>>,
 ): Promise<void> => {
   const index = await getIndex();
-  const data = index.search(value, { prefix: true, fuzzy: 0.3 });
+  const data = index.search(value, {
+    prefix: true,
+    fuzzy: 0.3,
+    boost: { title: 2 },
+  });
 
   setStaticSearchResults(data);
 };

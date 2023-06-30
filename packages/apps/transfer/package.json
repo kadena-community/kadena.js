@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "npm run generate:icons && next build",
+    "build": "npm run generate:icons && npm run generate:contracts && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
@@ -12,6 +12,9 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier locales src --write",
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
+    "generate:coin:contract": "npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
+    "generate:contracts": "npm run generate:coin:contract && npm run generate:faucet:contract",
+    "generate:faucet:contract": "npx @kadena/pactjs-cli contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "lint": "next lint",
     "lint:fix": "eslint --fix .",
     "start": "next start",

@@ -13,7 +13,9 @@ import {
 } from '../cross-chain-transfer-finisher/styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
+import { DetailCard } from '@/components/Global/DetailsCard';
 import { useAppContext } from '@/context/app-context';
+import { useDidUpdateEffect } from '@/hooks';
 import {
   StyledAccountForm,
   StyledForm,
@@ -22,19 +24,17 @@ import {
   StyledMainContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
+  FromIconActive,
+  ReceiverIconActive,
+  ReceiverIconInactive,
+} from '@/resources/svg/generated';
+import {
   getTransferStatus,
   IStatusData,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import { DetailCard } from '@/components/Global/DetailsCard';
-import {
-  FromIconActive,
-  ReceiverIconActive,
-  ReceiverIconInactive,
-} from '@/resources/svg/generated';
-import { useDidUpdateEffect } from '@/hooks';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();

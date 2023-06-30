@@ -7,6 +7,7 @@ interface IProps {
 }
 
 export const ResultCount: FC<IProps> = ({ count }) => {
+  if (count === 0) return null;
   return (
     <Text size="md">
       {count} Documentation items related to your search term found in this

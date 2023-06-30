@@ -44,6 +44,7 @@ const Search: FC = () => {
             staticSearchResults={staticSearchResults}
             conversation={conversation}
             outputStream={outputStream}
+            query={query}
           />
         </Article>
       </Content>
