@@ -30,8 +30,11 @@ export const quicksign = (
     // TODO: implement the quicksign request
     return Promise.resolve({
       cmd: commandStr,
-      sigs: commandJSon.signers.map(({ pubKey }) => pubKey) ?? [],
+      sigs: [
+        ...commandJSon.signers.map(({ pubKey }) => pubKey),
+        ...Object.values(otherSignatures),
+      ],
     });
   }
-  throw new Error('INVALID_COMMAND');
+  return Promise.reject(new Error('INVALID_COMMAND'));
 };

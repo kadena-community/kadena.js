@@ -1,4 +1,4 @@
-import { parseType } from './parseType';
+import { parseType } from '../parseType';
 
 describe('parseType', () => {
   it('parses a decimal number', () => {

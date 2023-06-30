@@ -3,7 +3,7 @@ import { ICommand } from '../interfaces/ICommand';
 export const isCommand = (command: Partial<ICommand>): command is ICommand => {
   if (command.payload === undefined) return false;
 
-  if (!('code' in command.payload) || !('pactId' in command.payload))
+  if (!('code' in command.payload) && !('pactId' in command.payload))
     return false;
   if (command.networkId === undefined) return false;
   if (command.nonce === undefined) return false;
