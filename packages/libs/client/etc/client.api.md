@@ -85,7 +85,7 @@ export interface ICommand {
 // @alpha (undocumented)
 export interface IContinuationPayload {
     // (undocumented)
-    data?: Record<string, string | number>;
+    data?: Record<string, unknown>;
     // (undocumented)
     pactId?: string;
     // (undocumented)
@@ -101,7 +101,7 @@ export interface IExecPayload {
     // (undocumented)
     code: string;
     // (undocumented)
-    data?: Record<string, string | number>;
+    data?: Record<string, unknown>;
 }
 
 // @alpha (undocumented)

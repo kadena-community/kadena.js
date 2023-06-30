@@ -11,8 +11,7 @@ interface IPayload {
     }>,
   >(
     codes: T,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data?: any,
+    data?: Record<string, unknown>,
     // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
   ) => { payload: IExecPayload & { funs: [...T]; _brand: 'exec' } };
   cont: (options: IContinuationPayload) => {
