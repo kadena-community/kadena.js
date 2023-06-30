@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-export default (fn: Function, inputs: any[]) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export default (fn: Function, inputs: unknown[]): boolean => {
   const didMountRef = useRef(false);
 
   useEffect(() => {
