@@ -6,9 +6,7 @@ export const StyledMainContent = styled('main', {
   gap: '$16',
 });
 export const StyledFormButton = styled('div', {
-  marginTop: '16px',
-  // display: 'flex',
-  // padding: '8px 16px',
+  mt: '$4',
   alignItems: 'center',
   gap: '$8',
 });
@@ -23,7 +21,7 @@ export const StyledSideContent = styled('div', {
   flexDirection: 'column',
 });
 export const StyledAccountForm = styled('div', {
-  padding: '16px',
+  padding: '$4',
   background: 'rgba(71, 79, 82, 0.4)',
   borderRadius: '4px',
   boxSizing: 'borderBox',
@@ -35,17 +33,17 @@ export const StyledAccountForm = styled('div', {
 
 export const StyledFormHeader = styled('div', {
   display: 'flex',
-  padding: '24px 40px 0px 40px',
+  padding: '$6 $10 0 $10',
   alignItems: 'flex-start',
   gap: '8px',
   alignSelf: 'stretch',
 });
 
 export const StyledInfoBox = styled('div', {
-  fontSize: '1rem',
-  padding: '8px',
+  fontSize: '$base',
+  padding: '$2',
   background: 'rgba(71, 79, 82, 0.4)',
-  borderRadius: '4px',
+  borderRadius: '$sm',
   boxSizing: 'borderBox',
   alignSelf: 'stretch',
   width: '40%',

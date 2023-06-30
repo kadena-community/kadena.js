@@ -31,19 +31,22 @@ import React, { FC, useEffect, useState } from 'react';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
-
-  const { t } = useTranslation('common');
-  const [requestKey, setRequestKey] = useState<string>('');
-  const [data, setData] = useState<IStatusData>({});
-
   const router = useRouter();
 
+  const { t } = useTranslation('common');
+  const [requestKey, setRequestKey] =
+    useState<string>(router.query.reqKey as string) || '';
+  const [data, setData] = useState<IStatusData>({});
+
   useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
     const { reqKey } = router.query;
     if (reqKey) {
       setRequestKey(reqKey as string);
     }
-  }, [router.query]);
+  }, [router.isReady]);
 
   useEffect(() => {
     setRequestKey('');
