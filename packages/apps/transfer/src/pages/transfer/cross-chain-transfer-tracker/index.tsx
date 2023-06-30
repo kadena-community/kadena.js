@@ -42,7 +42,7 @@ const CrossChainTransferTracker: FC = () => {
 
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] =
-    useState<string>(router.query.reqKey as string) || '';
+    useState<string>(router.query?.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
 
   useDidUpdateEffect(() => {
