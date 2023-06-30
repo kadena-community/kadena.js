@@ -29,20 +29,23 @@ import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
 import { DetailCard } from '@/components/Global/DetailsCard';
-import { FromIconActive } from '@/resources/svg/generated';
+import {
+  FromIconActive,
+  ReceiverIconActive,
+  ReceiverIconInactive,
+} from '@/resources/svg/generated';
+import { useDidUpdateEffect } from '@/hooks';
 
 const CrossChainTransferTracker: FC = () => {
+  const { network } = useAppContext();
   const router = useRouter();
 
-  const { network } = useAppContext();
-
   const { t } = useTranslation('common');
-  const [requestKey, setRequestKey] = useState<string>(
-    (router.query.reqKey as string) || '',
-  );
+  const [requestKey, setRequestKey] =
+    useState<string>(router.query.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     if (!router.isReady) {
       return;
     }
@@ -53,7 +56,6 @@ const CrossChainTransferTracker: FC = () => {
   }, [router.isReady]);
 
   useEffect(() => {
-    setRequestKey('');
     setData({});
   }, [network]);
 
@@ -72,6 +74,7 @@ const CrossChainTransferTracker: FC = () => {
         t,
         options: {
           onPoll: (status: IStatusData) => {
+            console.log(status);
             setData(status);
           },
         },
@@ -121,42 +124,37 @@ const CrossChainTransferTracker: FC = () => {
                 />
 
                 <StyledInfoItem>
-                  <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
-                  <StyledInfoItemLine>{`Chain: ${data.senderChain}`}</StyledInfoItemLine>
-                  <StyledInfoItemLine>{`Account: ${data.senderAccount}`}</StyledInfoItemLine>
-                </StyledInfoItem>
-
-                <StyledInfoItem>
-                  <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
-                  <StyledInfoItemLine>{`Chain: ${data.receiverChain}`}</StyledInfoItemLine>
-                  <StyledInfoItemLine>{`Account: ${data.receiverAccount}`}</StyledInfoItemLine>
-                </StyledInfoItem>
-
-                <StyledInfoItem>
                   <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
                   <StyledInfoItemLine>{` ${data.amount} ${t(
                     'KDA',
                   )}`}</StyledInfoItemLine>
                 </StyledInfoItem>
+
+                <StyledInfoItem>
+                  <StyledInfoItemTitle>{t('Status')}</StyledInfoItemTitle>
+                  <StyledInfoItemLine>{`${data.status} `}</StyledInfoItemLine>
+                </StyledInfoItem>
+
+                <StyledInfoItem>
+                  <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
+                  <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
+                </StyledInfoItem>
+
                 <DetailCard
-                  firstTitle={t('Sender')}
-                  firstContent={data.senderAccount || ''}
+                  firstTitle={t('Receiver')}
+                  firstContent={data.receiverAccount || ''}
                   secondTitle={t('Chain')}
-                  secondContent={data.senderChain || ''}
-                  icon={<FromIconActive />}
+                  secondContent={data.receiverChain || ''}
+                  icon={
+                    data?.id === 3 ? (
+                      <ReceiverIconActive />
+                    ) : (
+                      <ReceiverIconInactive />
+                    )
+                  }
                 />
               </>
             ) : null}
-
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Status')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`${data.status} `}</StyledInfoItemLine>
-            </StyledInfoItem>
-
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
-            </StyledInfoItem>
           </StyledInfoBox>
         ) : null}
       </StyledMainContent>
