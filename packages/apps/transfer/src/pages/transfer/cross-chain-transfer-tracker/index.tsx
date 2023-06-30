@@ -28,6 +28,7 @@ import {
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { useDidUpdateEffect } from '@/hooks';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -38,7 +39,7 @@ const CrossChainTransferTracker: FC = () => {
     useState<string>(router.query.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     if (!router.isReady) {
       return;
     }
@@ -49,7 +50,6 @@ const CrossChainTransferTracker: FC = () => {
   }, [router.isReady]);
 
   useEffect(() => {
-    setRequestKey('');
     setData({});
   }, [network]);
 
