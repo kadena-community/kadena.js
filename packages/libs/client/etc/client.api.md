@@ -192,16 +192,9 @@ export const Pact: IPact;
 export const payload: IPayload;
 
 // @public (undocumented)
-export const setMeta: (options: Partial<ICommand['meta']>) => {
-    meta: {
-        chainId: string;
-        sender: string;
-        gasLimit: number;
-        gasPrice: number;
-        ttl: number;
-        creationTime: number;
-    };
-};
+export const setMeta: (options: {
+    chainId: ICommand['meta']['chainId'];
+} & Partial<ICommand['meta']>) => Pick<ICommand, 'meta'>;
 
 // @public (undocumented)
 export const setProp: <T extends keyof ICommand>(item: T, value: ICommand[T]) => { [key in T]: ICommand[T]; };

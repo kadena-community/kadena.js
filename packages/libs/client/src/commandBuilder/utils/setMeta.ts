@@ -1,13 +1,15 @@
 import { ICommand } from '../../interfaces/ICommand';
 
-export const setMeta = (options: Partial<ICommand['meta']>) => ({
+export const setMeta = (
+  options: { chainId: ICommand['meta']['chainId'] } & Partial<ICommand['meta']>,
+): Pick<ICommand, 'meta'> => ({
   meta: {
     // add all default value here
-    chainId: '1',
     gasLimit: 2500,
     gasPrice: 1.0e-8,
     sender: '',
     ttl: 8 * 60 * 60, // 8 hours,
+    creationTime: Date.now(),
     ...options,
-  } as ICommand['meta'],
+  },
 });

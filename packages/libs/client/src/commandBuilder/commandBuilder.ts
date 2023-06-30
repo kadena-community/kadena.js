@@ -1,9 +1,13 @@
-import { ICommand } from '../interfaces/ICommand';
+import {
+  ICommand,
+  IContinuationPayload,
+  IExecPayload,
+} from '../interfaces/ICommand';
 
 const mergePayload = (
   payload: ICommand['payload'] | undefined,
   newPayload: ICommand['payload'],
-) => {
+): IExecPayload | IContinuationPayload => {
   if (payload === undefined) return newPayload;
   if ('code' in payload && 'code' in newPayload) {
     const data =

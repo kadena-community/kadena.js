@@ -67,10 +67,7 @@ function genFunCapsInterface(func: IFunction): string {
   const interfaceName = getFuncCapInterfaceName(func);
 
   const cap = func.allExtractedCaps.map((cap) => {
-    let parameters = [
-      `cap: "${cap.fullModuleName}.${cap.name}"`,
-      `signer: string`,
-    ];
+    let parameters = [`name: "${cap.fullModuleName}.${cap.name}"`];
     if (cap.capability.parameters) {
       const args = getParameters(cap.capability.parameters);
       parameters = [...parameters, ...args];
@@ -79,9 +76,9 @@ function genFunCapsInterface(func: IFunction): string {
       cap.capability.doc !== undefined
         ? `/**${EOL}* ${cap.capability.doc}${EOL}*/`
         : '';
-    const addCap = `addCap(${EOL}${parameters
+    const addCap = `(${EOL}${parameters
       .map(indent)
-      .join(`, ${EOL}`)}): this`;
+      .join(`, ${EOL}`)}): ICapabilityItem`;
     return { comment, addCap };
   });
 
@@ -90,17 +87,20 @@ function genFunCapsInterface(func: IFunction): string {
 }
 
 const getFunctionType = (func: IFunction): string => {
-  const capInterfaceName = getFuncCapInterfaceName(func) || 'ICapV2';
+  const capInterfaceName = getFuncCapInterfaceName(func) || '';
   const comment =
     func.doc !== undefined ? `/**${EOL}* ${func.doc}${EOL}*/${EOL}` : '';
 
   const parameters = getParameters(func.parameters);
   const lnBreak = parameters.length > 1;
   const nl = lnBreak ? EOL : '';
+  const caps = capInterfaceName
+    ? `${capInterfaceName} & ICapability_Coin_GAS`
+    : 'ICapability_Coin_GAS';
   return indent(
     `${comment}"${func.name}": (${nl}${parameters
       .map((d) => (lnBreak ? indent(d) : d))
-      .join(`,${nl}`)}) => Builder<${capInterfaceName}>`,
+      .join(`,${nl}`)}) => string & { capability : ${caps}} `,
   );
 };
 
@@ -124,19 +124,14 @@ export function generateDts2(
     module.functions?.map(genFunCapsInterface).filter(Boolean).join(EOL) || '';
 
   const dts = `
-import type { ICommandBuilderV2, IPactCommand, ICapV2 } from '@kadena/client';
+import type { ICapabilityItem } from '@kadena/client';
 import type { IPactDecimal, IPactInt } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
-  addCap(
-    cap: "coin.GAS",
-    signer: string
-  ): this
+  (name: 'coin.GAS'): ICapabilityItem;
 }
 
 ${capsInterfaces}
-
-type Builder<T> = ICommandBuilderV2 & ICapability_Coin_GAS & T
 
 declare module '@kadena/client' {
 
