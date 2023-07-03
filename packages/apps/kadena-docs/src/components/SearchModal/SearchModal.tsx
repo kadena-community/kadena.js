@@ -1,6 +1,7 @@
 import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 
 import { SearchResults } from '../Search/SearchResults';
+import { SearchForm } from '../Search/styles';
 
 import { Wrapper } from './styles';
 
@@ -11,7 +12,7 @@ export const SearchModal: FC = () => {
   const {
     searchInputRef,
     query,
-    handleInputChange,
+    handleSubmit,
     staticSearchResults,
     conversation,
     outputStream,
@@ -22,18 +23,19 @@ export const SearchModal: FC = () => {
       <Wrapper>
         <Text>Search the classic way, or just ask a question</Text>
         <Box marginY="$4">
-          <TextField
-            inputProps={{
-              id: 'seachinput',
-              outlined: true,
-              onChange: handleInputChange,
-              ref: searchInputRef,
-              defaultValue: query,
-              placeholder: 'Search',
-              rightIcon: SystemIcon.Magnify,
-              'aria-label': 'Search',
-            }}
-          />
+          <SearchForm onSubmit={handleSubmit}>
+            <TextField
+              inputProps={{
+                id: 'seachinput',
+                outlined: true,
+                ref: searchInputRef,
+                defaultValue: query,
+                placeholder: 'Search',
+                rightIcon: SystemIcon.Magnify,
+                'aria-label': 'Search',
+              }}
+            />
+          </SearchForm>
         </Box>
 
         <SearchResults

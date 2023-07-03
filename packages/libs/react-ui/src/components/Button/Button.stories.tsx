@@ -57,7 +57,6 @@ type Story = StoryObj<
 export const Dynamic: Story = {
   name: 'Button',
   args: {
-    // selectIcon: undefined,
     title: 'test title',
     disabled: false,
     text: 'Click me',
