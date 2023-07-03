@@ -10,6 +10,21 @@ const ModalContent: FC = () => {
     <>
       <h4>Getting Started is Simple</h4>
       <Text>
+        When tabbing through links in a modal, the focus should stay in the
+        modal and not go to the links on the page itself.
+        <ul>
+          <li>
+            <a href="#">link 1</a>
+          </li>
+          <li>
+            <a href="#">link 2</a>
+          </li>
+          <li>
+            <a href="#">link 3</a>
+          </li>
+        </ul>
+      </Text>
+      <Text>
         Dessert gummies pie biscuit chocolate bar cheesecake. Toffee chocolate
         bar ice cream cake jujubes pudding fruitcake marzipan. Donut sweet oat
         cake dragée candy cupcake biscuit. Carrot cake sesame snaps marzipan

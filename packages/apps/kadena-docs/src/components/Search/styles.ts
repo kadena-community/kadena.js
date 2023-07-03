@@ -15,16 +15,26 @@ export const ScrollBox: StyledComponent<'div'> = styled('div', {
   margin: '$2 0',
 });
 
-export const StyledItem: StyledComponent<'li'> = styled('li', {
+export const StyledItem: StyledComponent<'a'> = styled('a', {
+  display: 'block',
   marginBottom: '$4',
-  '& a': {
-    textDecoration: 'none',
+  textDecoration: 'none',
+  padding: '$sm',
 
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
   '& > span': {
     color: '$neutral4',
   },
+
+  '&:hover, &:focus': {
+    color: '$neutral100',
+    backgroundColor: '$primaryContrast',
+    borderRadius: '$sm',
+    '&: h5': {
+      textDecoration: 'underline',
+    },
+    '& > span, & > p': {
+      color: '$neutral100',
+    },
+  },
 });
+export const StyledListItem: StyledComponent<'li'> = styled('li', {});
