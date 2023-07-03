@@ -28,7 +28,11 @@ const GridItem: FC<IGridItemProps> = ({
     columnSpan && columnSpan.xl && itemColumnVariants.xl[columnSpan.xl],
     columnSpan && columnSpan.xxl && itemColumnVariants.xxl[columnSpan.xxl],
   );
-  return <div className={className}>{children}</div>;
+  return (
+    <div className={className} data-testid="kda-grid-item">
+      {children}
+    </div>
+  );
 };
 
 export default GridItem;

@@ -1,5 +1,5 @@
-import GridContainer, { IGridContainerProps } from './GridContainer';
 import GridItem, { IGridItemProps } from './GridItem';
+import GridContainer, { IGridContainerProps } from './GridRoot';
 
 import { FC } from 'react';
 

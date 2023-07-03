@@ -28,7 +28,11 @@ const GridContainer: FC<IGridContainerProps> = ({
     columns && columns.xl && containerColumnVariants.xl[columns.xl],
     columns && columns.xxl && containerColumnVariants.xxl[columns.xxl],
   );
-  return <div className={classList}>{children}</div>;
+  return (
+    <div className={classList} data-testid="kda-grid-root">
+      {children}
+    </div>
+  );
 };
 
 export default GridContainer;
