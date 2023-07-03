@@ -23,33 +23,35 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
   const { clearModal } = useModal();
   return (
     <>
-      <button
-        data-cy="modal-background"
-        className={background}
-        onClick={clearModal}
-      />
-      <div className={wrapper} data-cy="modal" data-testid="kda-modal">
-        <FocusTrap>
-          <section className={modal}>
-            <Card fullWidth>
-              <div className={titleWrapper}>
-                <Heading as="h2">{title}</Heading>
-              </div>
+      <FocusTrap>
+        <div>
+          <button
+            data-cy="modal-background"
+            className={background}
+            onClick={clearModal}
+          />
+          <div className={wrapper} data-cy="modal" data-testid="kda-modal">
+            <section className={modal}>
+              <Card fullWidth>
+                <div className={titleWrapper}>
+                  <Heading as="h2">{title}</Heading>
+                </div>
 
-              <button
-                className={closeButton}
-                onClick={clearModal}
-                title="Close modal"
-              >
-                Close
-                <SystemIcon.Close />
-              </button>
+                <button
+                  className={closeButton}
+                  onClick={clearModal}
+                  title="Close modal"
+                >
+                  Close
+                  <SystemIcon.Close />
+                </button>
 
-              {children}
-            </Card>
-          </section>
-        </FocusTrap>
-      </div>
+                {children}
+              </Card>
+            </section>
+          </div>
+        </div>
+      </FocusTrap>
     </>
   );
 };
