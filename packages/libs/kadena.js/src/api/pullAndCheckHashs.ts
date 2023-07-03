@@ -5,7 +5,7 @@ export function pullAndCheckHashs(sigs: Array<SignatureWithHash>): string {
   sigs.forEach((sig) => {
     if (sig.hash !== hash) {
       throw new Error(
-        'Sigs for different hashes found: ' + JSON.stringify(sigs),
+        `Sigs for different hashes found: ${JSON.stringify(sigs)}`,
       );
     }
   });

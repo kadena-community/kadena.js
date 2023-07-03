@@ -30,7 +30,7 @@ export const fundExistingAccount = async (
     pollRequest: Promise<IPollResponse>,
   ) => void,
   amount = 100,
-) => {
+): Promise<unknown> => {
   const keyPair = genKeyPair();
 
   const transactionBuilder = Pact.modules['user.coin-faucet']

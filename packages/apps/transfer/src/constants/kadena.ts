@@ -44,8 +44,8 @@ export const kadenaConstants: KadenaConstants = {
   DEFAULT_SENDER: env('DEFAULT_SENDER', 'not-real'),
 };
 
-export function getKadenaConstantByNetwork(
+export const getKadenaConstantByNetwork = (
   network: Network,
-): KadenaConstants[Network] {
+): KadenaConstants[Network] => {
   return kadenaConstants[network];
-}
+};
