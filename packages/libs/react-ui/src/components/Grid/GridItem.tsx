@@ -1,43 +1,29 @@
-import { gridItemClass } from './Grid.css';
+import { colSpanVariants, gridItemClass, rowSpanVariants } from './Grid.css';
 
+import classNames from 'classnames';
 import React, { CSSProperties, FC, ReactNode } from 'react';
 
 export type ColSpanType = number | 'auto';
 
 export interface IGridItemProps {
   children?: ReactNode;
-  colStart?: ColSpanType;
-  colEnd?: ColSpanType;
-  rowStart?: ColSpanType;
-  rowEnd?: ColSpanType;
-  area?: CSSProperties['gridArea'];
+
+  columnSpan?: keyof typeof colSpanVariants;
+  rowSpan?: keyof typeof rowSpanVariants;
 }
 
 const GridItem: FC<IGridItemProps> = ({
   children,
-  colStart,
-  colEnd,
-  rowStart,
-  rowEnd,
-  area,
-}) => {
-  const styles =
-    area === undefined
-      ? {
-          gridColumnStart: colStart,
-          gridColumnEnd: colEnd,
-          gridRowStart: rowStart,
-          gridRowEnd: rowEnd,
-        }
-      : {
-          gridArea: area,
-        };
 
-  return (
-    <div className={gridItemClass} style={styles}>
-      {children}
-    </div>
+  columnSpan = 1,
+  rowSpan = 1,
+}) => {
+  const className = classNames(
+    gridItemClass,
+    colSpanVariants[columnSpan],
+    rowSpanVariants[rowSpan],
   );
+  return <div className={className}>{children}</div>;
 };
 
 export default GridItem;

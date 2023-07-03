@@ -29,29 +29,27 @@ export const Primary: Story = {
   name: 'Grid',
   args: {
     spacing: 'xl',
+    columns: 12,
   },
-  render: ({ spacing }) => (
+  render: ({ spacing, columns }) => (
     <>
-      <Grid.Root spacing={spacing}>
+      <Grid.Root spacing={spacing} columns={columns}>
         {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i}>
             <div className={ContentClass}>{i}</div>
           </Grid.Item>
         ))}
 
-        <Grid.Item colStart={4} colEnd={7}>
-          <div className={ContentClass}>1</div>
-        </Grid.Item>
-        <Grid.Item>
+        <Grid.Item columnSpan={6}>
           <div className={ContentClass}>2</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item columnSpan={3}>
           <div className={ContentClass}>3</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item columnSpan={3}>
           <div className={ContentClass}>4</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item columnSpan={12} rowSpan={3}>
           <div className={ContentClass}>5</div>
         </Grid.Item>
         <Grid.Item>
@@ -62,38 +60,5 @@ export const Primary: Story = {
         </Grid.Item>
       </Grid.Root>
     </>
-  ),
-};
-
-export const GridAreas: Story = {
-  name: 'GridTemplate areas',
-  args: {
-    spacing: 'md',
-    templateRows: '50px 1fr 30px',
-    templateColumns: `150px 1fr`,
-    templateAreas: `"header header"
-                  "nav main"
-                  "nav footer"`,
-  },
-  render: ({ spacing, templateColumns, templateRows, templateAreas }) => (
-    <Grid.Root
-      spacing={spacing}
-      templateAreas={templateAreas}
-      templateRows={templateRows}
-      templateColumns={templateColumns}
-    >
-      <Grid.Item area="header">
-        <div className={ContentClass}>0</div>
-      </Grid.Item>
-      <Grid.Item area="nav">
-        <div className={ContentClass}>1</div>
-      </Grid.Item>
-      <Grid.Item area="main">
-        <div className={ContentClass}>2</div>
-      </Grid.Item>
-      <Grid.Item area="footer">
-        <div className={ContentClass}>3</div>
-      </Grid.Item>
-    </Grid.Root>
   ),
 };
