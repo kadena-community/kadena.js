@@ -38,6 +38,8 @@ import {
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { DetailCard } from '@/components/Global/DetailsCard';
+import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 
 interface IPactResultError {
   status: 'failure';
@@ -268,17 +270,31 @@ const CrossChainTransferFinisher: FC = () => {
         {pollResults.tx ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
-            <StyledInfoItem>
+            {/* <StyledInfoItem>
               <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
               <StyledInfoItemLine>{`Chain: ${pollResults.tx.sender.chain}`}</StyledInfoItemLine>
               <StyledInfoItemLine>{`Account: ${pollResults.tx.sender.account}`}</StyledInfoItemLine>
-            </StyledInfoItem>
+            </StyledInfoItem> */}
+            <DetailCard
+              firstTitle={t('Sender')}
+              firstContent={pollResults.tx.sender.account}
+              secondTitle={t('Chain')}
+              secondContent={pollResults.tx.sender.chain}
+              icon={<FromIconActive />}
+            />
 
-            <StyledInfoItem>
+            {/* <StyledInfoItem>
               <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
               <StyledInfoItemLine>{`Chain: ${pollResults.tx.receiver.chain}`}</StyledInfoItemLine>
               <StyledInfoItemLine>{`Account: ${pollResults.tx.receiver.account}`}</StyledInfoItemLine>
-            </StyledInfoItem>
+            </StyledInfoItem> */}
+            <DetailCard
+              firstTitle={t('Receiver')}
+              firstContent={pollResults.tx.receiver.account}
+              secondTitle={t('Chain')}
+              secondContent={pollResults.tx.receiver.chain}
+              icon={<ReceiverIconActive />}
+            />
 
             <StyledInfoItem>
               <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>

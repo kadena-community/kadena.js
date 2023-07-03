@@ -35,6 +35,7 @@ import {
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { validateRequestKey } from '@/services/utils/utils';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -44,6 +45,8 @@ const CrossChainTransferTracker: FC = () => {
   const [requestKey, setRequestKey] =
     useState<string>(router.query?.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
+  const [validRequestKey, setValidRequestKey] = useState<'error' | undefined>();
+  const [txError, setTxError] = useState<string>('');
 
   useDidUpdateEffect(() => {
     if (!router.isReady) {
@@ -58,6 +61,27 @@ const CrossChainTransferTracker: FC = () => {
   useEffect(() => {
     setData({});
   }, [network]);
+
+  const checkRequestKey = async (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    e.preventDefault();
+
+    //Clear error message when user starts typing
+    setTxError('');
+
+    if (!requestKey) {
+      setValidRequestKey(undefined);
+      return;
+    }
+
+    if (validateRequestKey(requestKey) === undefined) {
+      setValidRequestKey('error');
+      return;
+    }
+    setValidRequestKey(undefined);
+    return;
+  };
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -74,8 +98,11 @@ const CrossChainTransferTracker: FC = () => {
         t,
         options: {
           onPoll: (status: IStatusData) => {
-            console.log(status);
             setData(status);
+            if (status.status === 'Error' && status.description) {
+              //Set error message
+              setTxError(status.description);
+            }
           },
         },
       });
@@ -92,10 +119,14 @@ const CrossChainTransferTracker: FC = () => {
             <Heading as="h5">Search Request</Heading>
             <TextField
               label={t('Request Key')}
+              status={validRequestKey}
+              //Only set helper text if there is no receiver account otherwise message will be displayed on side bar
+              helper={!data.receiverAccount ? txError : undefined}
               inputProps={{
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
+                onKeyUp: checkRequestKey,
                 value: requestKey,
                 leftPanel: SystemIcons.KeyIconFilled,
               }}
@@ -109,52 +140,43 @@ const CrossChainTransferTracker: FC = () => {
           </StyledFormButton>
         </StyledForm>
 
-        {data.status ? (
+        {data.receiverAccount ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Transfer Information')}</StyledInfoTitle>
-
-            {data.receiverAccount ? (
-              <>
-                <DetailCard
-                  firstTitle={t('Sender')}
-                  firstContent={data.senderAccount || ''}
-                  secondTitle={t('Chain')}
-                  secondContent={data.senderChain || ''}
-                  icon={<FromIconActive />}
-                />
-
-                <StyledInfoItem>
-                  <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
-                  <StyledInfoItemLine>{` ${data.amount} ${t(
-                    'KDA',
-                  )}`}</StyledInfoItemLine>
-                </StyledInfoItem>
-
-                <StyledInfoItem>
-                  <StyledInfoItemTitle>{t('Status')}</StyledInfoItemTitle>
-                  <StyledInfoItemLine>{`${data.status} `}</StyledInfoItemLine>
-                </StyledInfoItem>
-
-                <StyledInfoItem>
-                  <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
-                  <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
-                </StyledInfoItem>
-
-                <DetailCard
-                  firstTitle={t('Receiver')}
-                  firstContent={data.receiverAccount || ''}
-                  secondTitle={t('Chain')}
-                  secondContent={data.receiverChain || ''}
-                  icon={
-                    data?.id === 3 ? (
-                      <ReceiverIconActive />
-                    ) : (
-                      <ReceiverIconInactive />
-                    )
-                  }
-                />
-              </>
-            ) : null}
+            <DetailCard
+              firstTitle={t('Sender')}
+              firstContent={data.senderAccount || ''}
+              secondTitle={t('Chain')}
+              secondContent={data.senderChain || ''}
+              icon={<FromIconActive />}
+            />
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{` ${data.amount} ${t(
+                'KDA',
+              )}`}</StyledInfoItemLine>
+            </StyledInfoItem>
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Status')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`${data.status} `}</StyledInfoItemLine>
+            </StyledInfoItem>
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
+            </StyledInfoItem>
+            <DetailCard
+              firstTitle={t('Receiver')}
+              firstContent={data.receiverAccount || ''}
+              secondTitle={t('Chain')}
+              secondContent={data.receiverChain || ''}
+              icon={
+                data?.id === 3 ? (
+                  <ReceiverIconActive />
+                ) : (
+                  <ReceiverIconInactive />
+                )
+              }
+            />
           </StyledInfoBox>
         ) : null}
       </StyledMainContent>
