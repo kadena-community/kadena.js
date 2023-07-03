@@ -3,6 +3,9 @@
   "version": "0.0.7",
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",
+  "files": [
+    "profiles"
+  ],
   "scripts": {
     "build": "",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

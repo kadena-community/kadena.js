@@ -1,11 +1,15 @@
-# kadena.js - Cryptography-Utils
+<!-- genericHeader start -->
 
-<p align="center">
-  <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
+# @kadena/cryptography-utils
+
+Collection of Kadena cryptography utility functions
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 > Cryptography-Utils is a collection of cryptography utility functions. This
 > library is used by kadena.js to hash your transactions. If you have private

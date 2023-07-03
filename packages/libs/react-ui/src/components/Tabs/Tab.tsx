@@ -21,6 +21,7 @@ export const Tab: FC<ITabProps> = ({
     <button
       className={classNames(tabClass, { [selectedClass]: selected })}
       data-selected={selected}
+      data-value={value}
       onClick={() => handleClick(value)}
     >
       {children}

@@ -1,11 +1,16 @@
-<p align="center">
-  <picture>
-    <source srcset="../../../common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="../../../common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
+<!-- genericHeader start -->
 
-# kadena.js - Kadena Javascript API
+# kadena.js
+
+A practical util library for JavaScript programmers who are building on the
+Kadena blockchain
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 > Kadena.js is a collection of libraries that will allow you to interact with
 > the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will
@@ -252,18 +257,14 @@ SigData:
 (A) When querying a chainweb node, the server expects the endpoint to have a
 specific format. For example:
 
-```
-http://localhost:8080/chainweb/0.0/development/chain/1/pact
-```
+    http://localhost:8080/chainweb/0.0/development/chain/1/pact
 
 In the above, `0.0` represents the node API Version and could change later on.
 Also, `development` represents the version of Chainweb that the node is running.
 Other possible values are `testnet04` and `mainnet01`. Both of these pieces of
 information is returned by querying the `/info` endpoint. For example:
 
-```
-http://localhost:8080/info
-```
+    http://localhost:8080/info
 
 (B) The Chainweb node version (i.e. `development`) is a required field in a
 transaction's payload. An error is thrown if the network specified in the

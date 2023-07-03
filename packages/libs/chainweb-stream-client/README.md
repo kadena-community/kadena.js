@@ -1,4 +1,15 @@
-# Chainweb Stream Client
+<!-- genericHeader start -->
+
+# @kadena/chainweb-stream-client
+
+Chainweb SSE client for browsers and node.js
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 [Chainweb-SSE][1] client for browsers and node.js
 
@@ -20,15 +31,11 @@ Alpha version / unstable.
 
 ### With npm
 
-```
-npm install @kadena/chainweb-stream-client
-```
+    npm install @kadena/chainweb-stream-client
 
 ### With yarn
 
-```
-yarn add @kadena/chainweb-stream-client
-```
+    yarn add @kadena/chainweb-stream-client
 
 ## Usage
 

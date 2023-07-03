@@ -6,12 +6,15 @@
 
 import { ChainId } from '@kadena/types';
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
+import { ICommand } from '@kadena/types';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 import { SendResponse } from '@kadena/chainweb-node-client';
+import { SessionTypes } from '@walletconnect/types';
 
 // @alpha (undocumented)
 export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
@@ -37,6 +40,17 @@ export class ContCommand extends PactCommand implements IContCommand, IContComma
 
 // @alpha (undocumented)
 export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
+
+// Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
+
+// Warning: (ae-forgotten-export) The symbol "ISignSingleFunction" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
 // @alpha
 export function getContCommand(requestKey: string, targetChainId: ChainId, apiHost: string, step: number, rollback: boolean): Promise<ContCommand>;

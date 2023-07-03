@@ -3,6 +3,10 @@
   "version": "0.0.7",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
+  "files": [
+    "mixins",
+    "profile"
+  ],
   "scripts": {
     "build": "",
     "format": "npm run format:pkg && npm run format:src",
@@ -16,7 +20,10 @@
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@next/eslint-plugin-next": "^12.0.8",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-config-prettier": "~8.8.0",
+    "eslint-plugin-import": "~2.27.5",
+    "eslint-plugin-jsx-a11y": "~6.7.1",
+    "eslint-plugin-prettier": "~4.2.1",
     "eslint-plugin-react": "~7.31.11",
     "eslint-plugin-simple-import-sort": "~7.0.0"
   },

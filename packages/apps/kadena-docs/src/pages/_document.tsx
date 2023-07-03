@@ -3,8 +3,7 @@ import { getCssText } from '@kadena/react-components';
 import { Head, Html, Main, NextScript } from 'next/document';
 import React, { ComponentType, FC, ReactNode } from 'react';
 
-export default function Document(): JSX.Element {
-  // Fixes "Component' cannot be used as a JSX component."
+const Document = (): JSX.Element => {
   const TypedHead = Head as unknown as FC<{ children?: ReactNode }>;
   const TypedNextScript = NextScript as ComponentType;
   return (
@@ -22,4 +21,6 @@ export default function Document(): JSX.Element {
       </body>
     </Html>
   );
-}
+};
+
+export default Document;

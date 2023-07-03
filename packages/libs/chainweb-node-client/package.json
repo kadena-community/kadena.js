@@ -1,7 +1,7 @@
 {
   "name": "@kadena/chainweb-node-client",
   "version": "0.3.2",
-  "description": "",
+  "description": "Typed JavaScript wrapper with fetch to call chainweb-node API endpoints",
   "keywords": [],
   "repository": {
     "type": "git",
@@ -25,6 +25,10 @@
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

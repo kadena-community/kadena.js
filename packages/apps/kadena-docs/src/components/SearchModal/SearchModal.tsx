@@ -1,46 +1,51 @@
-import { Card, SystemIcons, TextField } from '@kadena/react-components';
+import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
+
+import { SearchResults } from '../Search/SearchResults';
+import { SearchForm } from '../Search/styles';
+
+import { Wrapper } from './styles';
 
 import { useSearch } from '@/hooks';
-import { createLinkFromMD } from '@/utils';
-import Link from 'next/link';
 import React, { FC } from 'react';
 
 export const SearchModal: FC = () => {
-  const { searchInputRef, query, handleInputChange, staticSearchResults } =
-    useSearch();
+  const {
+    searchInputRef,
+    query,
+    handleSubmit,
+    staticSearchResults,
+    conversation,
+    outputStream,
+  } = useSearch();
 
   return (
     <>
-      <Card.Container fullWidth>
-        <Card.Body>
-          {query}
-          <TextField
-            inputProps={{
-              onChange: handleInputChange,
-              ref: searchInputRef,
-              defaultValue: query,
-              placeholder: 'Search',
-              leftPanel: () => <SystemIcons.Magnify />,
-              'aria-label': 'Search',
-            }}
-          />
-        </Card.Body>
-      </Card.Container>
-      <Card.Container fullWidth>
-        <Card.Body>
-          <ul>
-            {staticSearchResults.map((item) => {
-              return (
-                <li key={item.id}>
-                  <Link href={createLinkFromMD(item.filename)}>
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </Card.Body>
-      </Card.Container>
+      <Wrapper>
+        <Text>Search the classic way, or just ask a question</Text>
+        <Box marginY="$4">
+          <SearchForm onSubmit={handleSubmit}>
+            <TextField
+              inputProps={{
+                id: 'seachinput',
+                outlined: true,
+                ref: searchInputRef,
+                defaultValue: query,
+                placeholder: 'Search',
+                rightIcon: SystemIcon.Magnify,
+                'aria-label': 'Search',
+              }}
+            />
+          </SearchForm>
+        </Box>
+
+        <SearchResults
+          staticSearchResults={staticSearchResults}
+          conversation={conversation}
+          outputStream={outputStream}
+          limitResults={10}
+          query={query}
+        />
+      </Wrapper>
     </>
   );
 };

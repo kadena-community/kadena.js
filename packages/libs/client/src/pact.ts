@@ -197,7 +197,7 @@ export class PactCommand
    * @returns string that will be created during `createCommand()`
    */
   public nonceCreator(t: IPactCommand, dateInMs: number): NonceType {
-    return 'kjs ' + new Date(dateInMs).toISOString();
+    return `kjs ${new Date(dateInMs).toISOString()}`;
   }
 
   /**

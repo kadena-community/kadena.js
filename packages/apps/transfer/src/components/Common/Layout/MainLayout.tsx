@@ -4,12 +4,10 @@ import {
   StyledBack,
   StyledChevronLeft,
   StyledFooter,
-  StyledIconImage,
   StyledMainContent,
   StyledMainLayout,
   StyledTextBold,
   StyledTitle,
-  StyledWalletNotConnected,
 } from './styles';
 
 import { Select, SidebarMenu } from '@/components/Global';
@@ -46,17 +44,11 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
                 onChange={(e) => setNetwork(e.target.value as Network)}
                 value={network}
               >
-                <StyledOption value="Mainnet">{t('Mainnet')}</StyledOption>
-                <StyledOption value="Testnet">{t('Testnet')}</StyledOption>
+                <StyledOption value="MAINNET">{t('Mainnet')}</StyledOption>
+                <StyledOption value="TESTNET">{t('Testnet')}</StyledOption>
               </Select>
             </Grid.Item>
           </Grid.Container>
-        </Grid.Item>
-        <Grid.Item colStart={10} colEnd={13}>
-          <StyledWalletNotConnected>
-            <p>{t('Connect your wallet')}</p>
-            <StyledIconImage width={'40px'} height={'40px'} />
-          </StyledWalletNotConnected>
         </Grid.Item>
       </Grid.Container>
 

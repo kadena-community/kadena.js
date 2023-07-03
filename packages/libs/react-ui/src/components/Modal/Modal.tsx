@@ -1,41 +1,61 @@
+import { Card } from '../Card/Card';
 import { SystemIcon } from '../Icons';
-import { Stack } from '../Stack/Stack';
+import { Heading } from '../Typography';
 
-import { background, closeButton, modal, wrapper } from './Modal.css';
+import {
+  background,
+  closeButton,
+  modal,
+  titleWrapper,
+  wrapper,
+} from './Modal.css';
 import { useModal } from './ModalProvider';
 
+import FocusTrap from 'focus-trap-react';
 import React, { FC } from 'react';
 
 export interface IModalProps {
   children: React.ReactNode;
+  title?: string;
 }
 
-export const Modal: FC<IModalProps> = ({ children }) => {
+export const Modal: FC<IModalProps> = ({ children, title }) => {
   const { clearModal } = useModal();
   return (
     <>
-      <button
-        data-cy="modal-background"
-        className={background}
-        onClick={clearModal}
-      />
-      <div className={wrapper} data-cy="modal">
-        <Stack direction="column" alignItems="flex-end" spacing="2xs">
+      <FocusTrap
+        focusTrapOptions={{
+          fallbackFocus: '[data-cy="modal-background"]',
+        }}
+      >
+        <div>
           <button
-            className={closeButton}
+            data-cy="modal-background"
+            className={background}
             onClick={clearModal}
-            title="Close modal"
-          >
-            Close
-            <SystemIcon.Close />
-          </button>
-          <section className={modal}>
-            <Stack direction="column" spacing="lg">
-              {children}
-            </Stack>
-          </section>
-        </Stack>
-      </div>
+          />
+          <div className={wrapper} data-cy="modal" data-testid="kda-modal">
+            <section className={modal}>
+              <Card fullWidth>
+                <div className={titleWrapper}>
+                  <Heading as="h2">{title}</Heading>
+                </div>
+
+                <button
+                  className={closeButton}
+                  onClick={clearModal}
+                  title="Close modal"
+                >
+                  Close
+                  <SystemIcon.Close />
+                </button>
+
+                {children}
+              </Card>
+            </section>
+          </div>
+        </div>
+      </FocusTrap>
     </>
   );
 };

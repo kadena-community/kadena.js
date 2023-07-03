@@ -10,6 +10,10 @@
   "license": "MIT",
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "prebuild": "npm run build:lexer && npm run build:grammar",
     "build": "heft build --clean",
