@@ -5,6 +5,7 @@ import { Icon } from './components/Icon'
 import { VerticalTabs } from './components/VerticalTabs'
 import { Header } from './partials/Header'
 import { PolicyCustomizer } from './partials/PolicyCustomizer'
+import { Builders } from './partials/Builders'
 import styles from './page.module.scss'
 
 import React from 'react';
@@ -140,7 +141,7 @@ export default function Home() : JSX.Element {
         </section>
         <section className={styles['section-orange']}>
           <div className="container-inner">
-            Lorem ipsum
+            <Builders />
           </div>
         </section>
       </main>
