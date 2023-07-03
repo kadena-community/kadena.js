@@ -130,7 +130,7 @@ describe('client', () => {
       );
     });
 
-    it('returns requestKey and poll function that can be called for polling the status of the request', async () => {
+    it('returns requestKeys', async () => {
       const response = [
         // /send response
         { requestKeys: ['test-key'] },
@@ -162,17 +162,9 @@ describe('client', () => {
         sigs: ['test-sig'],
       };
 
-      const [requestKeys, poll] = await submit(body);
+      const requestKeys = await submit(body);
 
       expect(requestKeys).toEqual(['test-key']);
-
-      const result = await poll();
-
-      expect(result).toEqual(response[1]);
-
-      expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-        `${hostApiGenerator(networkId, chainId)}/api/v1/send`,
-      );
     });
 
     it('throes an error if the command list is empty', async () => {
@@ -220,7 +212,7 @@ describe('client', () => {
         sigs: ['test-sig'],
       };
 
-      const [requestKeys] = await submit(body);
+      const requestKeys = await submit(body);
 
       expect(requestKeys).toEqual(['test-key']);
 

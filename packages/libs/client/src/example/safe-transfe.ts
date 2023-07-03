@@ -22,7 +22,7 @@ export async function doSafeTransfer(
   to: string,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  const { submit } = getClient();
+  const { submit, pollStatus } = getClient();
 
   const command = commandBuilder(
     payload.exec([
@@ -44,7 +44,8 @@ export async function doSafeTransfer(
   ) as ICommand;
 
   const signedCommand = await quicksign(command);
-  const [, poll] = await submit(signedCommand);
-  const status = await poll();
+  const receivedKeys = await submit(signedCommand);
+  const status = await pollStatus(receivedKeys);
+
   return status;
 }

@@ -57,7 +57,7 @@ function creditInTheTargetChain(
   );
 }
 
-const { submit, pollSpv: pollCreateSpv } = getClient();
+const { submit, pollSpv, pollStatus } = getClient();
 
 // TODO: find a way to send some signal about the step to the consumer of this function
 // it could be a generator function of a event emitter.
@@ -72,16 +72,14 @@ export async function doCrossChianTransfer(
   await Promise.resolve(debitInTheFirstChain(from, to, amount) as ICommand)
     .then(quicksign)
     .then(submit)
-    .then(([[requestKey], poll]) => Promise.all([requestKey, poll()]))
-    .then(([requestKey, result]) => result[requestKey])
+    .then(pollStatus)
+    .then((result) => Object.values(result)[0])
     .then((status) =>
       status.result.status === 'failure'
         ? Promise.reject('DEBIT REJECTED')
         : status,
     )
-    .then((status) =>
-      Promise.all([status, pollCreateSpv(status.reqKey, to.chainId)]),
-    )
+    .then((status) => Promise.all([status, pollSpv(status.reqKey, to.chainId)]))
     .then(
       ([status, proof]) =>
         creditInTheTargetChain(
@@ -96,21 +94,21 @@ export async function doCrossChianTransfer(
     )
     .then(quicksign)
     .then(submit)
-    .then(([, poll]) => poll());
+    .then(pollStatus);
 
   // or we can use async/await
 
   const command = debitInTheFirstChain(from, to, amount) as ICommand;
 
   const transaction = await quicksign(command);
-  const [[sendRequestKey], pollSendResult] = await submit(transaction);
+  const [sendRequestKey] = await submit(transaction);
 
-  const { [sendRequestKey]: debitResult } = await pollSendResult();
+  const { [sendRequestKey]: debitResult } = await pollStatus(sendRequestKey);
   if (debitResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception
     return [false, debitResult, undefined];
   }
-  const proof = await pollCreateSpv(sendRequestKey, to.chainId);
+  const proof = await pollSpv(sendRequestKey, to.chainId);
   const continuation = creditInTheTargetChain(
     {
       pactId: debitResult.continuation?.pactId,
@@ -122,9 +120,9 @@ export async function doCrossChianTransfer(
   ) as ICommand;
 
   const continuationTr = await quicksign(continuation);
-  const [[contRequestKey], pollContResult] = await submit(continuationTr);
+  const [contRequestKey] = await submit(continuationTr);
 
-  const { [contRequestKey]: creditResult } = await pollContResult();
+  const { [contRequestKey]: creditResult } = await pollStatus(contRequestKey);
   if (creditResult.result.status === 'failure') {
     // TODO: return a signal to show failure or throw an exception
     return [false, debitResult, creditResult];

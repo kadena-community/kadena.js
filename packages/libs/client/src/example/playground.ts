@@ -107,9 +107,9 @@ export async function localExample(): Promise<ICommandResult> {
 }
 
 export async function submitExample(): Promise<Record<string, ICommandResult>> {
-  const [requestKeys, poll] = await submit([commandWithSignatures]);
+  const [requestKeys] = await submit([commandWithSignatures]);
   console.log(requestKeys);
-  const result = await poll({
+  const result = await pollStatus(requestKeys, {
     onPoll: (requestKey) => {
       console.log('polling status of', requestKey);
     },

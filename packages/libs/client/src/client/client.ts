@@ -34,14 +34,7 @@ interface IClient {
    */
   submit: (
     commandsList: ICommandRequestWithoutHash[] | ICommandRequestWithoutHash,
-  ) => Promise<
-    [
-      requestKeys: string[],
-      pollStatus: (
-        options?: IPollOptions,
-      ) => IPollRequestPromise<ICommandResult>,
-    ]
-  >;
+  ) => Promise<string[]>;
   /**
    * calls '/poll' endpoint several times to get the status of all requests. if the requests submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
@@ -115,40 +108,14 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     }
     return requestStorage.groupByHost();
   }
-  function pollStatusFunction(
-    requestKeys?: string[] | string,
-    options?: IOptions,
-  ): IPollRequestPromise<ICommandResult> {
-    const results = groupByHost(
-      typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
-      options,
-    ).map(([hostUrl, requestKeys]) =>
-      pollStatus(hostUrl, requestKeys, options),
-    );
-
-    // merge all of the result in one object
-    const mergedPollRequestPromises = mergeAllPollRequestPromises(results);
-
-    // remove from the pending requests storage
-    Object.entries(mergedPollRequestPromises.requests).forEach(
-      ([key, promise]) => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        promise.then(() => {
-          storage.remove([key]);
-        });
-      },
-    );
-
-    return mergedPollRequestPromises;
-  }
 
   const client: IClient = {
-    local: (body, options) => {
+    local(body, options) {
       const cmd: ICommand = JSON.parse(body.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
       return local(hostUrl, { ...body, hash: blakeHash(body.cmd) }, options);
     },
-    submit: async (body) => {
+    async submit(body) {
       const commands = Array.isArray(body) ? body : [body];
       const [first] = commands;
       if (first === undefined) {
@@ -163,18 +130,35 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       const requestIds = await submit(hostUrl, commandsWithHash);
       storage.add(hostUrl, requestIds);
 
-      return [
-        requestIds,
-        (options?: IPollOptions) =>
-          pollStatusFunction(requestIds, {
-            ...options,
-            networkId: cmd.networkId,
-            chainId: cmd.meta.chainId,
-          }),
-      ];
+      return requestIds;
     },
-    pollStatus: pollStatusFunction,
-    getStatus: async (requestKeys, options) => {
+    pollStatus(
+      requestKeys?: string[] | string,
+      options?: IOptions,
+    ): IPollRequestPromise<ICommandResult> {
+      const results = groupByHost(
+        typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
+        options,
+      ).map(([hostUrl, requestKeys]) =>
+        pollStatus(hostUrl, requestKeys, options),
+      );
+
+      // merge all of the result in one object
+      const mergedPollRequestPromises = mergeAllPollRequestPromises(results);
+
+      // remove from the pending requests storage
+      Object.entries(mergedPollRequestPromises.requests).forEach(
+        ([key, promise]) => {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          promise.then(() => {
+            storage.remove([key]);
+          });
+        },
+      );
+
+      return mergedPollRequestPromises;
+    },
+    async getStatus(requestKeys, options) {
       const keys =
         typeof requestKeys === 'string' ? [requestKeys] : requestKeys;
 
@@ -193,7 +177,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return mergedResults;
     },
 
-    pollSpv: (requestKey, targetChainId, options) => {
+    pollSpv(requestKey, targetChainId, options) {
       return pollSpv(
         storage.get(requestKey) ??
           getHost(options?.networkId!, options?.chainId!),
@@ -202,7 +186,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         options,
       );
     },
-    getSpv: (requestKey, targetChainId, options) => {
+    getSpv(requestKey, targetChainId, options) {
       return getSpv(
         storage.get(requestKey) ??
           getHost(options?.networkId!, options?.chainId!),
