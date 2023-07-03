@@ -9,7 +9,9 @@ import { SessionTypes } from '@walletconnect/types';
 interface ISigningResponse {
   body: ICommand;
 }
-
+/**
+ * @alpha
+ */
 export function createWalletConnectSign(
   client: Client,
   session: SessionTypes.Struct,

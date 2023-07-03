@@ -6,6 +6,9 @@ import { TWalletConnectChainId } from './walletConnectTypes';
 import Client from '@walletconnect/sign-client';
 import { SessionTypes } from '@walletconnect/types';
 
+/**
+ * @alpha
+ */
 export function createWalletConnectQuicksign(
   client: Client,
   session: SessionTypes.Struct,
