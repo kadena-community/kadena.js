@@ -23,7 +23,11 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
   const { clearModal } = useModal();
   return (
     <>
-      <FocusTrap>
+      <FocusTrap
+        focusTrapOptions={{
+          fallbackFocus: '[data-cy="modal-background"]',
+        }}
+      >
         <div>
           <button
             data-cy="modal-background"
