@@ -10,7 +10,7 @@ const ModalContent: FC = () => {
     <>
       <h4>Getting Started is Simple</h4>
       <Text>
-        When tabbing through links in a modal, the focus shoudl stay in the
+        When tabbing through links in a modal, the focus should stay in the
         modal and not go to the links on the page itself.
         <ul>
           <li>
