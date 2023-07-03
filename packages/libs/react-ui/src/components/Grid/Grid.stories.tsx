@@ -13,6 +13,16 @@ const meta: Meta<typeof Grid.Root> = {
       options: Object.keys(gapVariants) as (keyof typeof gapVariants)[],
       control: { type: 'select' },
     },
+    columns: {
+      control: { type: 'object' },
+      options: {
+        sm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        md: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        lg: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        xl: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        xxl: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      },
+    },
   },
 };
 
@@ -29,7 +39,13 @@ export const Primary: Story = {
   name: 'Grid',
   args: {
     spacing: 'xl',
-    columns: 12,
+    columns: {
+      sm: 6,
+      md: 12,
+      lg: 12,
+      xl: 12,
+      xxl: 12,
+    },
   },
   render: ({ spacing, columns }) => (
     <>
@@ -40,22 +56,47 @@ export const Primary: Story = {
           </Grid.Item>
         ))}
 
-        <Grid.Item columnSpan={6}>
+        <Grid.Item
+          columnSpan={{
+            sm: 6,
+            md: 4,
+            lg: 3,
+          }}
+        >
           <div className={ContentClass}>2</div>
         </Grid.Item>
-        <Grid.Item columnSpan={3}>
+        <Grid.Item
+          columnSpan={{
+            sm: 6,
+            md: 4,
+            lg: 3,
+          }}
+        >
           <div className={ContentClass}>3</div>
         </Grid.Item>
-        <Grid.Item columnSpan={3}>
+        <Grid.Item
+          columnSpan={{
+            sm: 6,
+            md: 4,
+            lg: 3,
+          }}
+        >
           <div className={ContentClass}>4</div>
         </Grid.Item>
-        <Grid.Item columnSpan={12} rowSpan={3}>
+        <Grid.Item
+          columnSpan={{
+            sm: 6,
+            md: 4,
+            lg: 3,
+          }}
+          rowSpan={3}
+        >
           <div className={ContentClass}>5</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item columnSpan={{ md: 1 }}>
           <div className={ContentClass}>6</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item columnSpan={{ md: 1 }}>
           <div className={ContentClass}>7</div>
         </Grid.Item>
       </Grid.Root>
