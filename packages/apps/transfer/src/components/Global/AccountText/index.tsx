@@ -22,7 +22,7 @@ export const AccountText: FC<IAccountTextProps> = ({
 }): JSX.Element => {
   const [visible, setVisible] = useState(defaultVisibility);
 
-  const hiddenAccountValue = account.slice(0, 6) + '****' + account.slice(-4);
+  const hiddenAccountValue = `${account.slice(0, 6)}****${account.slice(-4)}`;
 
   const toogleVisibility = (): void => {
     setVisible(!visible);

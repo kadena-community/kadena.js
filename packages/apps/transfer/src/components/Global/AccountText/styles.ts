@@ -1,4 +1,4 @@
-import { styled,SystemIcons } from '@kadena/react-components';
+import { styled, SystemIcons } from '@kadena/react-components';
 
 export const StyledAccountText = styled('div', {
   width: '100%',

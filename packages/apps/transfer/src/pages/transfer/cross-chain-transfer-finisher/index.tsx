@@ -4,6 +4,7 @@ import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
+import { DetailCard } from '@/components/Global/DetailsCard';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -27,6 +28,7 @@ import {
   StyledTotalChunk,
   StyledTotalContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 import {
   finishXChainTransfer,
   ITransferResult,
@@ -38,8 +40,6 @@ import {
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import { DetailCard } from '@/components/Global/DetailsCard';
-import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 
 interface IPactResultError {
   status: 'failure';

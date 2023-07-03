@@ -10,6 +10,7 @@ import {
 } from './styles';
 
 import React, { FC } from 'react';
+
 export interface IDetailCardProps {
   firstTitle: string;
   firstContent: string;
