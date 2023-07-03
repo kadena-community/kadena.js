@@ -37,7 +37,8 @@
     "@vanilla-extract/sprinkles": "1.6.0",
     "classnames": "^2.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "focus-trap-react": "~10.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",

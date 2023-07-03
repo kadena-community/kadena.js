@@ -1,6 +1,6 @@
 import { Box, Heading, Text } from '@kadena/react-ui';
 
-import { StaticResultsList, StyledItem } from './styles';
+import { StaticResultsList, StyledItem, StyledListItem } from './styles';
 
 import { createLinkFromMD } from '@/utils';
 import { SearchResult } from 'minisearch';
@@ -38,16 +38,18 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 const Item: FC<IResultProps> = ({ item }) => {
   const url = createLinkFromMD(item.filename);
   return (
-    <StyledItem key={item.id}>
-      <Link href={url}>
-        <Heading color="primaryContrast" as="h5">
-          {item.title}
-        </Heading>
-      </Link>
-      <ItemBreadCrumb url={url} />
+    <StyledListItem>
+      <Link href={url} passHref legacyBehavior>
+        <StyledItem key={item.id}>
+          <Heading color="primaryContrast" as="h5">
+            {item.title}
+          </Heading>
+          <ItemBreadCrumb url={url} />
 
-      <Text as="p">{item.description}</Text>
-    </StyledItem>
+          <Text as="p">{item.description}</Text>
+        </StyledItem>
+      </Link>
+    </StyledListItem>
   );
 };
 

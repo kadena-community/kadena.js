@@ -87,6 +87,7 @@ export const closeButton = style([
 export const titleWrapper = style([
   sprinkles({
     height: '$12',
+    marginBottom: '$4',
   }),
   {
     width: 'calc(100% - 100px)',

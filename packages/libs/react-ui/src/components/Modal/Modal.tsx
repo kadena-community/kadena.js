@@ -11,6 +11,7 @@ import {
 } from './Modal.css';
 import { useModal } from './ModalProvider';
 
+import FocusTrap from 'focus-trap-react';
 import React, { FC } from 'react';
 
 export interface IModalProps {
@@ -28,24 +29,26 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
         onClick={clearModal}
       />
       <div className={wrapper} data-cy="modal" data-testid="kda-modal">
-        <section className={modal}>
-          <Card fullWidth>
-            <div className={titleWrapper}>
-              <Heading as="h2">{title}</Heading>
-            </div>
+        <FocusTrap>
+          <section className={modal}>
+            <Card fullWidth>
+              <div className={titleWrapper}>
+                <Heading as="h2">{title}</Heading>
+              </div>
 
-            <button
-              className={closeButton}
-              onClick={clearModal}
-              title="Close modal"
-            >
-              Close
-              <SystemIcon.Close />
-            </button>
+              <button
+                className={closeButton}
+                onClick={clearModal}
+                title="Close modal"
+              >
+                Close
+                <SystemIcon.Close />
+              </button>
 
-            {children}
-          </Card>
-        </section>
+              {children}
+            </Card>
+          </section>
+        </FocusTrap>
       </div>
     </>
   );
