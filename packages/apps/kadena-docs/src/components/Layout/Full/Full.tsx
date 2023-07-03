@@ -38,8 +38,8 @@ export const Full: FC<ILayout> = ({
 
   useEffect(() => {
     if (activeItem === null) {
-      const hash = router.asPath.split('#');
-      const hashPath = hash.length === 2 ? `#${hash[1]}` : '';
+      const [, hash] = router.asPath.split('#');
+      const hashPath = hash ? `#${hash}` : '';
 
       setActiveItem(hashPath);
     }
