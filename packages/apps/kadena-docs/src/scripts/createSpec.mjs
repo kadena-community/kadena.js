@@ -2,13 +2,11 @@ import * as fs from 'fs';
 import yaml from 'js-yaml';
 
 const returnJSON = (filename) => {
-  const doc = fs.readFileSync(`${filename}`, 'utf-8');
-  return yaml.load(doc);
+  const doc = fs.readFileSync(`${filename}.yaml`, 'utf-8');
+  const json = yaml.load(doc);
+
+  fs.writeFileSync(`${filename}.json`, JSON.stringify(json));
 };
 
-const json = returnJSON('./src/specs/chainweb/chainweb.openapi.yaml');
-fs.writeFileSync(
-  './src/specs/chainweb/chainweb.openapi.json',
-  JSON.stringify(json),
-);
-console.log(json);
+returnJSON('./src/specs/chainweb/chainweb.openapi');
+returnJSON('./src/specs/pact/pact.openapi');
