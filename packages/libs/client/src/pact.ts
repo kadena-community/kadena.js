@@ -401,7 +401,7 @@ export class PactCommand
               // reject the Promise when we get a "failure" response
               this.status = 'failure';
               clearTimeout(cancelTimeout);
-              reject(this);
+              reject(result);
             } else if (Date.now() < endTime) {
               // no "success" response (yet), try again in `interval` seconds
               setTimeout(poll, interval);

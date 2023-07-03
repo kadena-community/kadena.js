@@ -306,7 +306,8 @@ describe('Pact proxy', () => {
 
     await advanceTimersAndFlushPromises(5000);
 
-    expect(expectingError.status).toBe('failure');
+    expect(builder.status).toBe('failure');
+    expect(expectingError['key1'].result.status).toBe('failure');
 
     expect((poll as jest.Mock).mock.calls).toHaveLength(1);
   });
