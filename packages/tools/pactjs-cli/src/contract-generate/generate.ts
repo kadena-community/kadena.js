@@ -174,7 +174,7 @@ export const generate =
             description: 'TypeScript definitions for @kadena/client',
             types: 'index.d.ts',
             keywords: ['pact', 'contract', 'pactjs'],
-            author: '@kadena/pactjs-cli@' + version,
+            author: `@kadena/pactjs-cli@${version}`,
           },
           null,
           2,

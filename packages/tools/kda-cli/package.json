@@ -1,6 +1,7 @@
 {
   "name": "@kadena/kda-cli",
   "version": "0.0.1",
+  "description": "CLI tool to assist development on the kadena blockchain",
   "keywords": [
     "kadena",
     "kda",
@@ -66,6 +67,7 @@
     "eslint": "^8.15.0",
     "ink-testing-library": "^3.0.0",
     "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
     "ts-node": "~10.8.2",
     "typescript": "5.0.4"
   },

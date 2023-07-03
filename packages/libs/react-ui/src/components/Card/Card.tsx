@@ -19,5 +19,9 @@ export const Card: FC<ICardProps> = ({ children, fullWidth, stack }) => {
     [stackClass]: stack,
   });
 
-  return <div className={classList}>{children}</div>;
+  return (
+    <div className={classList} data-testid="kda-card">
+      {children}
+    </div>
+  );
 };

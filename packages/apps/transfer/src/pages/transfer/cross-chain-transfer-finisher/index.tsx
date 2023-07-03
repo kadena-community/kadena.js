@@ -1,4 +1,4 @@
-import { ChainwebNetworkId, IPollResponse } from '@kadena/chainweb-node-client';
+import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
@@ -194,7 +194,7 @@ const CrossChainTransferFinisher: FC = () => {
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
-                value: requestKey,
+                defaultValue: requestKey,
               }}
             />
 
@@ -219,16 +219,16 @@ const CrossChainTransferFinisher: FC = () => {
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>
                       setKadenaXChainGas((e.target as HTMLInputElement).value),
-                    value: kadenaXChainGas,
+                    defaultValue: kadenaXChainGas,
                   }}
                 />
                 <TextField
                   label={t('Gas Price')}
                   inputProps={{
-                    placeholder: t('Enter Gas Payer'),
+                    placeholder: t('Enter Gas Price'),
                     onChange: (e) =>
                       setGasPrice(Number((e.target as HTMLInputElement).value)),
-                    value: formattedGasPrice,
+                    defaultValue: formattedGasPrice,
                   }}
                 />
               </>

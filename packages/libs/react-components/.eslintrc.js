@@ -4,4 +4,12 @@ require('@rushstack/eslint-config/patch/modern-module-resolution');
 module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/react'],
   parserOptions: { tsconfigRootDir: __dirname },
+  rules: {
+    'import/no-unresolved': [
+      'warn',
+      {
+        ignore: ['^@stitches/react'],
+      },
+    ],
+  }
 };

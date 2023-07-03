@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "scripts": {
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
-    "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md'  --files 'src/pages/docs/**/*.mdx' --namespace kda-docs",
+    "7d:clear": "npx 7d pinecone-clear-namespace --namespace kda-docs",
+    "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md' --files 'src/pages/docs/**/*.mdx'  --files 'src/specs/**/*.json' --namespace kda-docs",
     "7d:query": "npx 7d",
     "build": "npm run build:next",
     "build:createSearchIndex": "node ./src/scripts/createSearchIndex.mjs && prettier ./src/data/searchIndex.json --write",
+    "build:createSpecJson": "node ./src/scripts/createSpec.mjs && prettier ./src/specs/**/*.json --write",
     "build:createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/data/menu.mjs --write",
     "build:next": "npm run build:scripts && next build",
-    "build:scripts": "npm run build:createSearchIndex &&  npm run build:createtree",
+    "build:scripts": "npm run build:createSearchIndex && npm run build:createtree && npm run build:createSpecJson",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
     "cypress:open": "percy exec -- cypress open",
@@ -49,7 +51,10 @@
     "rehype-pretty-code": "~0.9.5",
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
-    "shiki": "~0.14.2"
+    "shiki": "~0.14.2",
+    "mobx": "~6.9.0",
+    "styled-components": "~5.3.10",
+    "redoc": "~2.0.0"
   },
   "devDependencies": {
     "@7-docs/cli": "0.1.7",
@@ -94,6 +99,7 @@
     "storybook": "^7.0.20",
     "storybook-addon-next-router": "~4.0.2",
     "storybook-dark-mode": "^3.0.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "openapi-types": "~12.1.3"
   }
 }

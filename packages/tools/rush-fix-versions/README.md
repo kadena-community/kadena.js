@@ -1,4 +1,15 @@
-# @kadena-dev/rush-fix-version
+<!-- genericHeader start -->
+
+# @kadena-dev/rush-fix-versions
+
+Tool to assist with making consistent versions across rush monorepo
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 Package allows to align versions to align with `ensureConsistentVersions=true`
 option in rush.json

@@ -35,6 +35,7 @@ export const Button: FC<IButtonProps> = ({
       className={colorVariants[color]}
       onClick={onClick}
       aria-label={ariaLabel}
+      data-testid="kda-button"
     >
       {children}
     </button>
