@@ -420,7 +420,7 @@ export const local =
 export const send: Reducer = async (payload) => {
   const unpackedPayload = await payload;
   const pactPayload = JSON.stringify(getPayload(unpackedPayload));
-  const response = await fetch(getBaseUrl(unpackedPayload) + '/api/v1/send', {
+  const response = await fetch(`${getBaseUrl(unpackedPayload)}/api/v1/send`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -437,7 +437,7 @@ export const send: Reducer = async (payload) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to send:' + (await response.text()));
+    throw new Error(`Failed to send:${await response.text()}`);
   }
   const data = await response.json();
   return {
@@ -452,7 +452,7 @@ export const listen: Reducer = async (p) => {
     throw new Error('No transactions pending for this paylaod');
   const [res] = await Promise.all(
     payload.txKeys.map(async (key) => {
-      const response = await fetch(getBaseUrl(payload) + '/api/v1/listen', {
+      const response = await fetch(`${getBaseUrl(payload)}/api/v1/listen`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
@@ -464,7 +464,7 @@ export const listen: Reducer = async (p) => {
       if (!response.ok) throw new Error('Failed to listen');
       const data = await response.json();
       if (data.result.status !== 'success')
-        throw new Error('Failed to listen: ' + JSON.stringify(data));
+        throw new Error(`Failed to listen: ${JSON.stringify(data)}`);
       return data;
     }),
   );
@@ -484,7 +484,7 @@ export const getSPVProof: Reducer = async (p) => {
     throw new Error('No transactions pending for this paylaod');
   const [proof] = await Promise.all(
     payload.txKeys.map(async (key) => {
-      const response = await fetch(getBaseUrl(payload) + '/spv', {
+      const response = await fetch(`${getBaseUrl(payload)}/spv`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',

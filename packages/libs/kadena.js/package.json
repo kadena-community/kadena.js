@@ -19,10 +19,6 @@
   },
   "license": "MIT",
   "author": "Randynamic",
-  "files": [
-    "dist",
-    "lib"
-  ],
   "contributors": [
     {
       "name": "Albert"
@@ -41,6 +37,10 @@
     }
   ],
   "main": "lib/index.js",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "build:prod": "webpack --mode=production",

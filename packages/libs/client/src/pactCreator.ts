@@ -5,6 +5,7 @@ import { ContCommand } from './contPact';
 import { IPact, PactCommand } from './pact';
 
 import debug, { Debugger } from 'debug';
+
 const log: Debugger = debug('pactjs:proxy');
 
 const pactCreator = (): IPact => {
@@ -14,7 +15,7 @@ const pactCreator = (): IPact => {
       log('get', p);
       if (typeof p === 'string')
         if (code.length !== 0) {
-          code += '.' + p;
+          code += `.${p}`;
         } else {
           code += p;
         }

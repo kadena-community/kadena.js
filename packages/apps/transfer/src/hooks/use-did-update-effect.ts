@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default (fn: Function, inputs: any[]) => {
+export default (fn: () => void, inputs: unknown[]): boolean => {
   const didMountRef = useRef(false);
 
   useEffect(() => {
