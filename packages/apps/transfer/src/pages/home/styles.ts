@@ -1,6 +1,5 @@
 import { styled } from '@kadena/react-components';
 
-import { KLogoComponent } from '@/resources/svg/generated';
 import Link from 'next/link';
 
 export const StyledHomeContainer = styled('div', {
@@ -10,10 +9,6 @@ export const StyledHomeContainer = styled('div', {
   alignItems: 'center',
   pt: '$25',
   color: 'white',
-});
-
-export const StyledSmallLogo = styled(KLogoComponent, {
-  marginBottom: '$5',
 });
 
 export const StyledHomeContent = styled('div', {

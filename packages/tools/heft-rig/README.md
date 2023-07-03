@@ -1,4 +1,15 @@
-## @kadena-dev/heft-rig
+<!-- genericHeader start -->
+
+# @kadena-dev/heft-rig
+
+Our own rig package, based on @rushstack/heft-node-rig
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 A rig package for Node.js projects that build using [Heft][1] build system. To
 learn more about rig packages, consult the [@rushstack/rig-package][2]

@@ -1,18 +1,15 @@
-import { SystemIcon, Tabs, TextField } from '@kadena/react-ui';
+import { SystemIcon, TextField } from '@kadena/react-ui';
 
-import { SearchForm } from '@/components';
+import { SearchForm, SearchResults } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
 import { useSearch } from '@/hooks';
-import { createLinkFromMD } from '@/utils';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
 import React, { FC } from 'react';
-import ReactMarkdown from 'react-markdown';
 
 const Search: FC = () => {
   const {
@@ -43,52 +40,12 @@ const Search: FC = () => {
       </SearchHeader>
       <Content id="maincontent" layout="home">
         <Article>
-          <section>
-            <Tabs.Root defaultSelected="docs">
-              <Tabs.Tab value="docs">Docs Space </Tabs.Tab>
-              <Tabs.Tab value="qa">QA Space</Tabs.Tab>
-
-              <Tabs.Content value="docs">
-                {staticSearchResults.length > 0 &&
-                  `(${staticSearchResults.length})`}
-                <ul>
-                  {staticSearchResults.map((item) => {
-                    return (
-                      <li key={item.id}>
-                        <Link href={createLinkFromMD(item.filename)}>
-                          {item.title}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </Tabs.Content>
-
-              <Tabs.Content value="qa">
-                <h2>output</h2>
-
-                {conversation?.history.map((interaction, idx) => (
-                  <div key={`${interaction.input}-${idx}`}>
-                    <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                    <div>
-                      {interaction?.metadata?.map((item, idx) => {
-                        const url = createLinkFromMD(item.title);
-                        return (
-                          <>
-                            <Link key={`${url}-${idx}`} href={url}>
-                              {url}
-                            </Link>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-
-                <div>{outputStream}</div>
-              </Tabs.Content>
-            </Tabs.Root>
-          </section>
+          <SearchResults
+            staticSearchResults={staticSearchResults}
+            conversation={conversation}
+            outputStream={outputStream}
+            query={query}
+          />
         </Article>
       </Content>
     </>

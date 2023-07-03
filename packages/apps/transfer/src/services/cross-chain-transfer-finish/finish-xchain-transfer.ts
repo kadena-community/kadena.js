@@ -2,9 +2,12 @@ import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { ContCommand, getContCommand } from '@kadena/client';
 import { ChainId } from '@kadena/types';
 
-import { kadenaConstants } from '../../constants/kadena';
-import { generateApiHost } from '../utils/utils';
-
+import {
+  getKadenaConstantByNetwork,
+  kadenaConstants,
+  Network,
+} from '@/constants/kadena';
+import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
 
 export interface ITransferResult {
@@ -19,21 +22,21 @@ const gasPrice: number = kadenaConstants.GAS_PRICE;
 export async function finishXChainTransfer(
   requestKey: string,
   step: number,
-  pactID: string,
   rollback: boolean,
-  server: string,
-  network: ChainwebNetworkId,
+  network: Network,
   chainId: ChainId,
   sender: string,
 ): Promise<ContCommand | { error: string }> {
-  const host = generateApiHost(server, network, chainId);
-  const hostSPV = `${generateApiHost(server, network, '1')}/spv`;
+  const host = getKadenaConstantByNetwork(network).apiHost({
+    networkId: chainNetwork[network].network,
+    chainId,
+  });
 
   try {
     const contCommand = await getContCommand(
       requestKey,
       chainId,
-      hostSPV,
+      host,
       step + 1,
       rollback,
     );
@@ -45,7 +48,7 @@ export async function finishXChainTransfer(
         gasLimit,
         gasPrice,
       },
-      network,
+      chainNetwork[network].network as ChainwebNetworkId,
     );
 
     contCommand.createCommand();

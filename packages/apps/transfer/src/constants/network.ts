@@ -1,14 +1,13 @@
-import { kadenaConstants } from './kadena';
+import { kadenaConstants, Network } from './kadena';
 
 export const chainNetwork: {
-  Mainnet: { server: string; network: string };
-  Testnet: { server: string; network: string };
+  [K in Network]: { server: string; network: string };
 } = {
-  Mainnet: {
+  MAINNET: {
     server: kadenaConstants.MAINNET.API,
     network: kadenaConstants.MAINNET.NETWORKS.MAINNET01,
   },
-  Testnet: {
+  TESTNET: {
     server: kadenaConstants.TESTNET.API,
     network: kadenaConstants.TESTNET.NETWORKS.TESTNET04,
   },

@@ -43,21 +43,6 @@ export const StyledTextBold = styled('div', {
   fontSize: '$3xl',
 });
 
-export const StyledWalletNotConnected = styled('div', {
-  height: '$10',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  py: '$1',
-  gap: '$1',
-
-  background: 'rgba(25, 77, 0, 0.8)',
-  borderRadius: '$xs',
-
-  fontSize: '$base',
-});
-
 export const StyledTitle = styled('h2', {
   fontSize: '$3xl',
   fontWeight: 'normal',

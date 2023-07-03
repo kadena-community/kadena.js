@@ -109,6 +109,11 @@ export const vars = createGlobalTheme(':root', {
     $secondaryContrast: '#710444',
     $secondaryHighContrast: '#580335',
 
+    $tertiaryAccent: '#9d00ff',
+    $tertiarySurface: '#e7c2ff',
+    $tertiaryContrast: '#6400a3',
+    $tertiaryHighContrast: '#320052',
+
     $positiveAccent: '#5EEA15',
     $positiveSurface: '#E5FFD8',
     $positiveContrast: '#194D00',
@@ -146,6 +151,11 @@ export const darkThemeClass = createTheme(vars.colors, {
   $secondarySurface: '#580335',
   $secondaryContrast: '#FB93D0',
   $secondaryHighContrast: '#FDC4E5',
+
+  $tertiaryAccent: '#9d00ff',
+  $tertiarySurface: '#450070',
+  $tertiaryContrast: '#c870ff',
+  $tertiaryHighContrast: '#e7c2ff',
 
   $positiveAccent: '#5EEA15',
   $positiveSurface: '#113300',

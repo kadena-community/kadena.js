@@ -8,7 +8,6 @@ import {
   StyledHomeTitle,
   StyledIconBox,
   StyledLinkText,
-  StyledSmallLogo,
 } from '@/pages/home/styles';
 import { Account, Chain } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
@@ -44,18 +43,12 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: routes.HOME,
-    },
-    {
-      icon: Chain,
-      title: t('New account'),
-      href: routes.HOME,
+      href: routes.FAUCET_EXISTING,
     },
   ];
 
   return (
     <StyledHomeContainer>
-      <StyledSmallLogo width="65px" />
       <Grid.Container spacing="2xl" templateColumns="repeat(2, 1fr)">
         <Grid.Item>
           <StyledHomeContent>

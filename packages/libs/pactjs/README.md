@@ -1,13 +1,15 @@
-# kadena.js - Pactjs
+<!-- genericHeader start -->
 
-<p align="center">
-  <picture>
-    <source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-    <img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-  </picture>
-</p>
+# @kadena/pactjs
 
-> Pactjs is a collection of utility functions pactjs related
+Collection of utility functions pactjs related
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+</picture>
+
+<!-- genericHeader end -->
 
 API Reference can be found here [pactjs.api.md][1]
 

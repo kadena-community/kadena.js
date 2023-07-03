@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Introduce generic package doc headers",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}

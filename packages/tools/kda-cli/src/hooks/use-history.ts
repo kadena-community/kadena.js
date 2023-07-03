@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { useCallback, useState } from 'react';
+
 const readOrCreateHistory = (): Record<string, HistoryValue> => {
   try {
     return JSON.parse(fs.readFileSync('.kda-history.json', 'utf-8'));
