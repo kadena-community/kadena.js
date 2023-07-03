@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "comment": "apply new lint rules",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-cli"
+}

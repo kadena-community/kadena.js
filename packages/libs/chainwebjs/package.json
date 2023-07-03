@@ -21,10 +21,6 @@
   },
   "license": "MIT",
   "author": "Lars Kuhtz <lars@kadena.io>",
-  "files": [
-    "dist",
-    "lib"
-  ],
   "contributors": [
     {
       "name": "Danillo"
@@ -47,6 +43,10 @@
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

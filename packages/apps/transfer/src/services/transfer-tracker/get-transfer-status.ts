@@ -47,11 +47,11 @@ export async function getTransferStatus({
     });
 
     // If not found or error
-    if (transferData?.error || !transferData?.tx) {
+    if (Boolean(transferData?.error) || !transferData?.tx) {
       onPoll({
         id: 0,
         status: t('Error'),
-        description: transferData?.error || t('Transfer not found'),
+        description: transferData.error ?? t('Transfer not found'),
       });
       return;
     }
@@ -261,8 +261,8 @@ export async function checkForProof({
     });
     let count = 0;
 
-    const proof = await pollSpvProof(requestKey, receiverChain, apiHost, {
-      onPoll: (response: string) => {
+    return await pollSpvProof(requestKey, receiverChain, apiHost, {
+      onPoll: () => {
         // Avoid status update on first two polls (to avoid flickering)
         if (count > 1) {
           onPoll({
@@ -279,8 +279,6 @@ export async function checkForProof({
         count++;
       },
     });
-
-    return proof;
   } catch (error) {
     onPoll({
       id: 0,
