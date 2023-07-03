@@ -8,3 +8,8 @@ label: Chainweb
 order: 5
 layout: home
 ---
+
+import { RedocStandalone } from 'redoc';
+import spec from '../../../specs/chainweb/chainweb.openapi.json';
+
+<RedocStandalone spec={spec} />
