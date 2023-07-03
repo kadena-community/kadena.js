@@ -49,7 +49,10 @@
     "rehype-pretty-code": "~0.9.5",
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
-    "shiki": "~0.14.2"
+    "shiki": "~0.14.2",
+    "mobx": "~6.9.0",
+    "styled-components": "~5.3.10",
+    "redoc": "~2.0.0"
   },
   "devDependencies": {
     "@7-docs/cli": "0.1.7",
