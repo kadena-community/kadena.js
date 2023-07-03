@@ -24,7 +24,7 @@ export const AccountText: FC<IAccountTextProps> = ({
 
   const hiddenAccountValue = `${account.slice(0, 6)}****${account.slice(-4)}`;
 
-  const toogleVisibility = (): void => {
+  const toggleVisibility = (): void => {
     setVisible(!visible);
   };
 
@@ -36,9 +36,9 @@ export const AccountText: FC<IAccountTextProps> = ({
           {visible ? account : hiddenAccountValue}
         </StyledAccountNo>
         {visible ? (
-          <StyledEyeOffIcon onClick={toogleVisibility} />
+          <StyledEyeOffIcon onClick={toggleVisibility} />
         ) : (
-          <StyledEyeIcon onClick={toogleVisibility} />
+          <StyledEyeIcon onClick={toggleVisibility} />
         )}
       </StyledAccountContainer>
     </StyledAccountText>

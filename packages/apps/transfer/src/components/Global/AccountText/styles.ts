@@ -25,7 +25,7 @@ export const StyledAccountContainer = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'flex-start',
-  alignSelf: 'stretch',
+  alignSelf: 'strecth',
   gap: '$2',
 });
 
