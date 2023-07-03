@@ -270,11 +270,7 @@ const CrossChainTransferFinisher: FC = () => {
         {pollResults.tx ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
-            {/* <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`Chain: ${pollResults.tx.sender.chain}`}</StyledInfoItemLine>
-              <StyledInfoItemLine>{`Account: ${pollResults.tx.sender.account}`}</StyledInfoItemLine>
-            </StyledInfoItem> */}
+
             <DetailCard
               firstTitle={t('Sender')}
               firstContent={pollResults.tx.sender.account}
@@ -283,11 +279,6 @@ const CrossChainTransferFinisher: FC = () => {
               icon={<FromIconActive />}
             />
 
-            {/* <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`Chain: ${pollResults.tx.receiver.chain}`}</StyledInfoItemLine>
-              <StyledInfoItemLine>{`Account: ${pollResults.tx.receiver.account}`}</StyledInfoItemLine>
-            </StyledInfoItem> */}
             <DetailCard
               firstTitle={t('Receiver')}
               firstContent={pollResults.tx.receiver.account}
