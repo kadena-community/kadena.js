@@ -1,10 +1,10 @@
-import { IPactCommand } from '../interfaces/IPactCommand';
-import { ICommandBuilder } from '../pact';
+import { IPactCommand } from '../../interfaces/IPactCommand';
+import { ICommandBuilder } from '../../pact';
 import {
   IQuickSignRequestBody,
   IQuicksignResponse,
   IQuicksignSigner,
-} from '../signing-api/v1/quicksign';
+} from '../../signing-api/v1/quicksign';
 
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';

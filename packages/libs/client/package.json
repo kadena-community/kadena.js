@@ -33,6 +33,8 @@
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@walletconnect/sign-client": "~2.8.1",
+    "@walletconnect/types": "~2.8.1",
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
     "encoding": "~0.1.13",
