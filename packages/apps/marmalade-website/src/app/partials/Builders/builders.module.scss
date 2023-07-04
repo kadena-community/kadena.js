@@ -1,7 +1,13 @@
+@import '../../styles/breakpoints';
+
 .builders {
   display: flex;
-  gap: 4rem;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
   flex-flow: row wrap;
+
+  @include breakpoint('md') {
+    gap: 4rem;
+  }
 }

@@ -13,7 +13,42 @@ export const Footer: FC = () => {
           width={80}
           height={80}
         />
-        <p>Footer</p>
+        <p className={styles.desc}>Marmalade is created with love for the NFT community by <a href="https://kadena.io/" target="_blank">Kadena.io</a> &copy; 2023</p>
+        <div className={styles.links}>
+          <div>
+            <div className={styles.group}>
+              <h4>Resources</h4>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+            </div>
+          </div>
+          <div>
+            <div className={styles.group}>
+              <h4>Resources</h4>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+            </div>
+            <div className={styles.group}>
+              <h4>Resources</h4>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+            </div>
+          </div>
+          <div>
+            <div className={styles.group}>
+              <h4>Resources</h4>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+            </div>
+          </div>
+          <div>
+            <div className={styles.group}>
+              <h4>Resources</h4>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+              <a href="https://kadena.io/">Lorem ipsum</a>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -1,3 +1,41 @@
 .footer {
   text-align: center;
+  color: var(--color-orange-004);
+  font-size: 1.2rem;
+
+  .desc {
+    margin: 3rem 0;
+    a {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+  }
+
+  .links {
+    text-align: left;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 2rem;
+    justify-content: space-between;
+
+    .group {
+      margin-bottom: 2rem;
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      color: var(--color-orange-004);
+      font-family: var(--font-code);
+      margin-bottom: 0.5rem;
+    }
+    a {
+      color: var(--color-orange-002);
+      display: block;
+      margin-bottom: 0.5rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
