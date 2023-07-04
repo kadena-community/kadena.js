@@ -1,4 +1,3 @@
-import { HomeHeader } from '../../Landing/components';
 import { SideMenu } from '../SideMenu';
 import { Footer, Header, Menu, MenuBack, Template, TitleHeader } from '../';
 
@@ -18,9 +17,9 @@ export const Main: FC<IPageProps> = ({
     layout: layoutType,
     lastModifiedDate,
     icon: pageIcon,
-    filename: filenameForEdit = '',
+    editLink,
+    navigation,
   },
-  topDocs,
   aSideMenuTree,
   leftMenuTree,
 }) => {
@@ -68,9 +67,7 @@ export const Main: FC<IPageProps> = ({
         {isOneOfLayoutType(layoutType, 'landing') && title && (
           <TitleHeader title={title} subTitle={subTitle} icon={pageIcon} />
         )}
-        {isOneOfLayoutType(layoutType, 'home') && (
-          <HomeHeader topDocs={topDocs} />
-        )}
+
         <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
         <Menu
           data-cy="menu"
@@ -89,7 +86,8 @@ export const Main: FC<IPageProps> = ({
         <Layout
           isAsideOpen={isAsideOpen}
           aSideMenuTree={aSideMenuTree}
-          filenameForEdit={filenameForEdit}
+          editLink={editLink}
+          navigation={navigation}
         >
           {isOneOfLayoutType(layoutType, 'full', 'code') && (
             <>

@@ -5,4 +5,7 @@ export * from './Breadcrumbs';
 export * from './BrowseSection';
 export * from './LinkList';
 export * from './Analytics';
+export * from './ConsentModal';
 export * from './LastModifiedDate';
+export * from './Search';
+export * from './SearchModal';

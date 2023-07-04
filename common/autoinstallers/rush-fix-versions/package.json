@@ -2,10 +2,8 @@
   "name": "rush-fix-versions",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "postinstall": "cd ../../../packages/tools/rush-fix-versions && npm run build"
-  },
+  "scripts": {},
   "dependencies": {
-    "@kadena-dev/rush-fix-versions": "file:../../../packages/tools/rush-fix-versions"
+    "@kadena-dev/rush-fix-versions": "^0.0.3"
   }
 }

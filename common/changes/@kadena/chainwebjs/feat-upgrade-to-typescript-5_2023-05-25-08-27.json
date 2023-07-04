@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainwebjs",
+      "comment": "Update to typescript 5",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainwebjs"
+}

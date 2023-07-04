@@ -1,0 +1,54 @@
+{
+  "name": "@kadena-dev/rush-fix-versions",
+  "entries": [
+    {
+      "version": "0.0.3",
+      "tag": "@kadena-dev/rush-fix-versions_v0.0.3",
+      "date": "Thu, 22 Jun 2023 09:46:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adds jsonc-parser dependency"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.7`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.2",
+      "tag": "@kadena-dev/rush-fix-versions_v0.0.2",
+      "date": "Tue, 13 Jun 2023 13:17:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add ability to run fix versions with rush"
+          },
+          {
+            "comment": "change package to @kadena-dev"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.6`"
+          }
+        ]
+      }
+    }
+  ]
+}

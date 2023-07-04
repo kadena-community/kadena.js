@@ -2,6 +2,58 @@
   "name": "@kadena/pactjs-cli",
   "entries": [
     {
+      "version": "0.1.2",
+      "tag": "@kadena/pactjs-cli_v0.1.2",
+      "date": "Thu, 22 Jun 2023 09:46:33 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "disable codecoverage report"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/pactjs-generator\" to `0.1.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.7`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.1.1",
+      "tag": "@kadena/pactjs-cli_v0.1.1",
+      "date": "Tue, 13 Jun 2023 13:17:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update to typescript 5"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/pactjs-generator\" to `0.1.9`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.6`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.0",
       "tag": "@kadena/pactjs-cli_v0.1.0",
       "date": "Thu, 01 Jun 2023 20:18:44 GMT",

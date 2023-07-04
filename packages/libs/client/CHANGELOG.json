@@ -2,6 +2,89 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "0.4.0",
+      "tag": "@kadena/client_v0.4.0",
+      "date": "Thu, 22 Jun 2023 09:46:33 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Creation of ContCommand class to enable cont type commands"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "small fix regarding stringified proof in cont command"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Added encoding library to support the cross-fetch library"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.3.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.8`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.7`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.3.1",
+      "tag": "@kadena/client_v0.3.1",
+      "date": "Tue, 13 Jun 2023 13:17:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Set this.nonce to the created nonce to make it publicly available"
+          },
+          {
+            "comment": "Update to typescript 5"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-plugin\" to `0.0.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.6`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.0",
       "tag": "@kadena/client_v0.3.0",
       "date": "Thu, 01 Jun 2023 20:18:44 GMT",

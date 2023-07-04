@@ -2,6 +2,30 @@
   "name": "@kadena-dev/eslint-plugin",
   "entries": [
     {
+      "version": "0.0.4",
+      "tag": "@kadena-dev/eslint-plugin_v0.0.4",
+      "date": "Thu, 22 Jun 2023 09:46:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixate TS version to v5.0.4"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.3",
+      "tag": "@kadena-dev/eslint-plugin_v0.0.3",
+      "date": "Tue, 13 Jun 2023 13:17:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update to typescript 5"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "@kadena-dev/eslint-plugin_v0.0.2",
       "date": "Mon, 27 Feb 2023 14:25:39 GMT",

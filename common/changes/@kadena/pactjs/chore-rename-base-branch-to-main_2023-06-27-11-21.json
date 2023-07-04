@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs",
+      "comment": "Rename master branch to main",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs"
+}
