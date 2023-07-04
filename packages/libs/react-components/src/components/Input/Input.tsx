@@ -27,15 +27,7 @@ export interface IInputProps
 
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
-    {
-      leadingText,
-      leftPanel,
-      rightPanel,
-      status,
-      disabled = false,
-      value = undefined,
-      ...rest
-    },
+    { leadingText, leftPanel, rightPanel, status, disabled = false, ...rest },
     ref,
   ) {
     const RightPanel = rightPanel;

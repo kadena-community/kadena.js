@@ -41,7 +41,7 @@ export const useStream = (): [
       searchParams.set('embedding_model', embeddingModels[0]);
       searchParams.set('completion_model', completionModels[0]);
 
-      const url = '/api/search?' + searchParams.toString();
+      const url = `/api/search?${searchParams.toString()}`;
 
       const source = new EventSource(url);
 

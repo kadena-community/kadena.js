@@ -19,6 +19,10 @@ export {
   IStackProps,
   ICardProps,
   Card,
+  INotificationProps,
+  Notification,
+  INotificationHeaderProps,
+  INotificationActionsProps,
   IIconButtonProps,
   IconButton,
   IBreadcrumbsProps,
@@ -30,6 +34,8 @@ export {
   useModal,
   IBoxProps,
   Box,
+  ILinkProps,
+  Link,
   Tabs,
   ITabsContainerProps,
   ITabProps,
@@ -37,12 +43,3 @@ export {
   TextField,
   ITextFieldProps,
 } from './components';
-export {
-  sprinkles,
-  Sprinkles,
-  vars,
-  darkThemeClass,
-  ColorType,
-} from './styles';
-
-export { style } from '@vanilla-extract/css';

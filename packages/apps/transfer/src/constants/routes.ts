@@ -4,4 +4,5 @@ export default {
   CROSS_CHAIN_TRANSFER_FINISHER: '/transfer/cross-chain-transfer-finisher',
   ACCOUNT_TRANSACTIONS: '/transfer/account-transactions',
   MODULE_EXPLORER: '/transfer/module-explorer',
+  FAUCET_EXISTING: '/faucet/existing',
 } as const;

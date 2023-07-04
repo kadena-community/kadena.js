@@ -1,6 +1,11 @@
 # Change Log - @kadena/pactjs-cli
 
-This log was last generated on Thu, 22 Jun 2023 09:46:33 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Jul 2023 08:27:48 GMT and should not be manually modified.
+
+## 0.1.3
+Tue, 04 Jul 2023 08:27:48 GMT
+
+_Version update only_
 
 ## 0.1.2
 Thu, 22 Jun 2023 09:46:33 GMT

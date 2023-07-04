@@ -1,9 +1,10 @@
-import { ChainwebNetworkId, IPollResponse } from '@kadena/chainweb-node-client';
+import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
 import { ChainId } from '@kadena/types';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
+import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
 import {
@@ -34,7 +35,6 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
-import { generateApiHost } from '@/services/utils/utils';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
@@ -82,8 +82,7 @@ const CrossChainTransferFinisher: FC = () => {
 
     const pollResult: ITransferDataResult | undefined = await getTransferData({
       requestKey,
-      server: chainNetwork[network].server,
-      networkId: chainNetwork[network].network as ChainwebNetworkId,
+      network,
       t,
     });
 
@@ -106,19 +105,16 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
-    const host = generateApiHost(
-      chainNetwork[network].server,
-      chainNetwork[network].network,
-      pollResults.tx.receiver.chain,
-    );
+    const host = getKadenaConstantByNetwork(network).apiHost({
+      networkId: chainNetwork[network].network,
+      chainId: pollResults.tx.receiver.chain,
+    });
 
     const contCommand = await finishXChainTransfer(
       requestKey,
       pollResults.tx.step,
-      pollResults.tx.pactId,
       pollResults.tx.rollback,
-      chainNetwork[network].server,
-      chainNetwork[network].network as ChainwebNetworkId,
+      network,
       pollResults.tx.receiver.chain as ChainId,
       kadenaXChainGas,
     );
@@ -198,7 +194,7 @@ const CrossChainTransferFinisher: FC = () => {
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
-                value: requestKey,
+                defaultValue: requestKey,
               }}
             />
 
@@ -223,16 +219,16 @@ const CrossChainTransferFinisher: FC = () => {
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>
                       setKadenaXChainGas((e.target as HTMLInputElement).value),
-                    value: kadenaXChainGas,
+                    defaultValue: kadenaXChainGas,
                   }}
                 />
                 <TextField
                   label={t('Gas Price')}
                   inputProps={{
-                    placeholder: t('Enter Gas Payer'),
+                    placeholder: t('Enter Gas Price'),
                     onChange: (e) =>
                       setGasPrice(Number((e.target as HTMLInputElement).value)),
-                    value: formattedGasPrice,
+                    defaultValue: formattedGasPrice,
                   }}
                 />
               </>

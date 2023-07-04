@@ -13,7 +13,7 @@ export const useOpenSearch = (): IReturnProps => {
   const handleOpenSearch = (): void => {
     // TODO: new story will use, probably a context to open a modal for the search
     analyticsEvent(EVENT_NAMES['click:open_searchmodal']);
-    renderModal(<SearchModal />);
+    renderModal(<SearchModal />, 'Search spaces');
   };
 
   useEffect(() => {

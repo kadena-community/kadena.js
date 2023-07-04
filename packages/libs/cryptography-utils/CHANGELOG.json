@@ -2,6 +2,47 @@
   "name": "@kadena/cryptography-utils",
   "entries": [
     {
+      "version": "0.3.3",
+      "tag": "@kadena/cryptography-utils_v0.3.3",
+      "date": "Tue, 04 Jul 2023 08:27:48 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Add repo-wide markdown formatting"
+          },
+          {
+            "comment": "Complete the formatting trilogy"
+          },
+          {
+            "comment": "Introduce generic package doc headers"
+          },
+          {
+            "comment": "Housekeeping npm-published files"
+          },
+          {
+            "comment": "Replace lint-staged with explicit format script"
+          },
+          {
+            "comment": "Rename master branch to main"
+          },
+          {
+            "comment": "apply new lint rules"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.8`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.8`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.2",
       "tag": "@kadena/cryptography-utils_v0.3.2",
       "date": "Thu, 22 Jun 2023 09:46:33 GMT",

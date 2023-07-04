@@ -1,5 +1,6 @@
 import * as coin from './coin.js';
 import { Reducer } from './pact.js';
+
 type Decimal = `${number}.${number}`;
 interface IGasCapability {
   name: 'n_560eefcee4a090a24f12d7cf68cd48f11d8d2bd9.gas-station.GAS_PAYER';

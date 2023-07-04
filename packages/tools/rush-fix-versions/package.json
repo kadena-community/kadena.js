@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/rush-fix-versions",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Tool to assist with making consistent versions across rush monorepo",
   "keywords": [
     "rush"
@@ -12,6 +12,10 @@
   "bin": {
     "rush-fix-versions": "./lib/index.js"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

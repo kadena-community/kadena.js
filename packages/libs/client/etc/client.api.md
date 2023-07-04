@@ -4,7 +4,17 @@
 
 ```ts
 
+import { ChainId } from '@kadena/types';
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
+import { ICommand } from '@kadena/types';
+import { IPollResponse } from '@kadena/chainweb-node-client';
+import { ISignatureJson } from '@kadena/types';
+import { IUnsignedCommand } from '@kadena/types';
+import { PactValue } from '@kadena/types';
+import { SendResponse } from '@kadena/chainweb-node-client';
+import { SessionTypes } from '@walletconnect/types';
 
 // Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
 //

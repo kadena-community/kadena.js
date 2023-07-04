@@ -1,3 +1,8 @@
+/**
+ * @alpha
+ */
+export * from './pact';
+export * from './signing';
 export * from './signing-api/v1/quicksign';
 export * from './signing-api/v1/sign';
 

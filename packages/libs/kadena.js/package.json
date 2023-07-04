@@ -37,6 +37,10 @@
     }
   ],
   "main": "lib/index.js",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "build:prod": "webpack --mode=production",

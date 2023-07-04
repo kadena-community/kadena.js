@@ -1,7 +1,7 @@
 {
   "name": "@kadena/cryptography-utils",
-  "version": "0.3.2",
-  "description": "",
+  "version": "0.3.3",
+  "description": "Collection of Kadena cryptography utility functions",
   "keywords": [],
   "repository": {
     "type": "git",
@@ -25,6 +25,10 @@
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",

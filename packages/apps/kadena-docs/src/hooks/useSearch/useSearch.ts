@@ -70,7 +70,6 @@ export const useSearch = (): IProps => {
   const handleInputChange = (event: FormEvent<HTMLInputElement>): void => {
     const { currentTarget } = event as unknown as ChangeEvent<HTMLInputElement>;
     const value = currentTarget.value;
-
     updateQueryDebounced(value);
   };
 
@@ -98,12 +97,12 @@ export const useSearch = (): IProps => {
     evt: FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     evt.preventDefault();
+
+    dispatch({ type: 'reset' });
     if (query === null) return;
 
     const value = searchInputRef.current?.value ?? '';
     await updateQuery(value);
-
-    await startSearch(value);
   };
 
   return {

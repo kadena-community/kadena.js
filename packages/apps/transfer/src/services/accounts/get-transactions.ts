@@ -1,3 +1,5 @@
+import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
+
 export interface ITransaction {
   fromAccount: string;
   height: number;
@@ -14,7 +16,7 @@ export interface ITransaction {
 }
 
 export async function getTransactions(options: {
-  network: string;
+  network: Network;
   chain: string;
   account: string;
 }): Promise<ITransaction[]> {
@@ -22,9 +24,9 @@ export async function getTransactions(options: {
 
   try {
     const result: ITransaction[] = await fetch(
-      `https://estats${
-        network === 'Testnet' ? '.testnet' : ''
-      }.chainweb.com/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
+      `https://${getKadenaConstantByNetwork(
+        network,
+      ).estatsHost()}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
     ).then((res) => res.json());
 
     return result;
