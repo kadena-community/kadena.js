@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
@@ -44,7 +43,6 @@
     "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
     "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1",
-    "ts-node": "~10.8.2"
+    "sort-package-json": "~2.4.1"
   }
 }

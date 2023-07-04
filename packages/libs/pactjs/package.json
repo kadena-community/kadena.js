@@ -44,8 +44,6 @@
     "bignumber.js": "^9.0.2"
   },
   "devDependencies": {
-    "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",

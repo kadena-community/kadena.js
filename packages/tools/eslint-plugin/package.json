@@ -16,8 +16,7 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "~5.53.0",
-    "eslint-module-utils": "^2.7.1",
-    "is-core-module": "^2.8.0"
+    "eslint-module-utils": "^2.7.1"
   },
   "devDependencies": {
     "@rushstack/eslint-plugin": "~0.11.0",
