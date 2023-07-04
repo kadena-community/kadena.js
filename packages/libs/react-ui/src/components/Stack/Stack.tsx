@@ -1,39 +1,63 @@
-import {
-  alignItemsClass,
-  container,
-  directionClass,
-  flexWrapClass,
-  justifyContentClass,
-  spacingClass,
-} from './Stack.css';
+import { Sprinkles, sprinkles } from '../../styles';
 
-import className from 'classnames';
-import React, { FC } from 'react';
+import React, { createElement, ElementType } from 'react';
 
-export interface IStackProps {
-  spacing?: keyof typeof spacingClass;
-  direction?: keyof typeof directionClass;
-  flexWrap?: keyof typeof flexWrapClass;
-  alignItems?: keyof typeof alignItemsClass;
-  justifyContent?: keyof typeof justifyContentClass;
-  children: React.ReactNode;
+export interface IStackProps
+  extends Pick<
+    Sprinkles,
+    | 'margin'
+    | 'marginX'
+    | 'marginY'
+    | 'marginTop'
+    | 'marginBottom'
+    | 'marginLeft'
+    | 'marginRight'
+    | 'justifyContent'
+    | 'alignItems'
+  > {
+  direction?: Sprinkles['flexDirection'];
+  wrap?: Sprinkles['flexWrap'];
+  spacing?: Sprinkles['gap'];
+  component?: ElementType;
+  children?: React.ReactNode;
 }
 
-export const Stack: FC<IStackProps> = ({
-  spacing = 'md',
-  direction = 'row',
-  flexWrap = 'nowrap',
-  alignItems = 'flex-start',
-  justifyContent = 'flex-start',
+export const Stack = ({
+  component = 'div',
+  margin = undefined,
+  marginX = undefined,
+  marginY = undefined,
+  marginTop = undefined,
+  marginBottom = undefined,
+  marginLeft = undefined,
+  marginRight = undefined,
+  spacing = undefined,
+  justifyContent = undefined,
+  alignItems = undefined,
+  wrap = undefined,
+  direction = undefined,
   children,
-}) => {
-  const classList = className(
-    container,
-    spacingClass[spacing],
-    alignItemsClass[alignItems],
-    justifyContentClass[justifyContent],
-    flexWrapClass[flexWrap],
-    directionClass[direction],
+}: IStackProps): React.ReactElement => {
+  return createElement(
+    component,
+    {
+      className: sprinkles({
+        display: 'flex',
+        margin,
+        marginX,
+        marginY,
+        marginTop,
+        marginBottom,
+        marginLeft,
+        marginRight,
+        gap: spacing,
+        justifyContent,
+        alignItems,
+        flexWrap: wrap,
+        flexDirection: direction,
+      }),
+      'data-testid': 'kda-stack',
+    },
+    children,
   );
-  return <div className={classList}>{children}</div>;
 };
