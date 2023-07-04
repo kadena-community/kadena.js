@@ -5,6 +5,7 @@ import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.mjs';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.mjs';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.mjs';
 import remarkAdmonitions from './src/scripts/remarkAdmonitions.mjs';
+import remarkCheckForCodeTitle from './src/scripts/remarkCheckForCodeTitle.mjs';
 import remarkYoutube from './src/scripts/remarkYoutube.mjs';
 import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.mjs';
 import remarkGfm from 'remark-gfm';
@@ -75,6 +76,7 @@ const withMDX = mdx({
       remarkPropsToStaticRender,
       remarkAdmonitions,
       remarkYoutube,
+      remarkCheckForCodeTitle,
       remarkFigureOutOfParagraph,
     ],
     rehypePlugins: [[rehypePrettyCode, options]],
