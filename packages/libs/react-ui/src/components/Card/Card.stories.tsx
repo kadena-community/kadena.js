@@ -1,6 +1,5 @@
-import { Button } from '../Button/Button';
-
-import { Card, ICardProps } from './Card';
+import { Button } from '@components/Button';
+import { Card, ICardProps } from '@components/Card';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -47,7 +46,7 @@ export const Primary: Story = {
             minutes
           </div>
 
-          <Button title={'Button'}>Hello World Tutorial</Button>
+          <Button.Root title={'Button'}>Hello World Tutorial</Button.Root>
         </Card>
         <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
           <h4>Getting Started is Simple</h4>
@@ -56,7 +55,7 @@ export const Primary: Story = {
             minutes
           </div>
 
-          <Button title={'Button'}>Hello World Tutorial</Button>
+          <Button.Root title={'Button'}>Hello World Tutorial</Button.Root>
         </Card>
       </>
     );

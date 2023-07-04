@@ -1,5 +1,5 @@
-import { IconButton } from '../IconButton/IconButton';
-import { SystemIcon } from '../Icons';
+import { SystemIcon } from '@components/Icon';
+import { IconButton } from '@components/IconButton';
 
 import { trClass } from './Table.css';
 import { Td } from './Td';

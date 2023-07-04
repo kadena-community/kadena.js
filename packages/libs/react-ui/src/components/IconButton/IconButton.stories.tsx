@@ -1,5 +1,5 @@
-import { SystemIcon } from './../../';
-import { IconButton, IIconButtonProps } from './IconButton';
+import { SystemIcon } from '@components/Icon';
+import { IconButton, IIconButtonProps } from '@components/IconButton';
 import { colorVariants } from './IconButton.css';
 
 import type { Meta, StoryObj } from '@storybook/react';

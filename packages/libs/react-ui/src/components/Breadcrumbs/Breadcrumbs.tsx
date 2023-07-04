@@ -1,4 +1,4 @@
-import { ProductIcon } from '../Icons';
+import { ProductIcon } from '@components/Icon';
 
 import { containerClass, iconContainer, navClass } from './Breadcrumbs.css';
 import { IBreadcrumbItemProps } from './BreadcrumbsItem';
