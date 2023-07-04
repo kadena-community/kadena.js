@@ -1,7 +1,7 @@
-import { SystemIcon } from '../Icons';
-import { IInputProps, Input } from '../Input/Input';
+import { SystemIcon } from '@components/Icon';
+import { IInputProps, Input } from '@components/Input';
+import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
 
-import { IInputWrapperProps, InputWrapper } from './InputWrapper';
 import { statusVariant } from './InputWrapper.css';
 
 import type { Meta, StoryObj } from '@storybook/react';

@@ -1,4 +1,4 @@
-import { IInputProps } from '../Input/Input';
+import { IInputProps } from '@components/Input';
 
 import { IInputHeaderProps, InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';

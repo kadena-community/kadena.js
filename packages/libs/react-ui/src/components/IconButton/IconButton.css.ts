@@ -1,4 +1,5 @@
-import { ColorType, sprinkles, vars } from '../../styles';
+import { sprinkles } from '@theme/sprinkles.css';
+import { ColorType, vars } from '@theme/vars.css';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 

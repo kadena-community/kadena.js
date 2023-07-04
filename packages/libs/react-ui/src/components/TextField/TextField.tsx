@@ -1,5 +1,5 @@
-import { IInputProps, Input } from '../Input/Input';
-import { IInputWrapperProps, InputWrapper } from '../InputWrapper/InputWrapper';
+import { IInputProps, Input } from '@components/Input';
+import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
 
 import React, { FC } from 'react';
 

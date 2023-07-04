@@ -1,12 +1,12 @@
 /* eslint @typescript-eslint/naming-convention: 0, @kadena-dev/typedef-var: 0 */
 
-import { sprinkles } from '../../../styles';
 import {
   colorVariants,
   fontVariants,
   transformVariants,
 } from '../typography.css';
 
+import { sprinkles } from '@theme/sprinkles.css';
 import { recipe, RecipeVariants } from '@vanilla-extract/recipes';
 
 export const elementVariants = {

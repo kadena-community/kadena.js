@@ -1,6 +1,6 @@
 import { sizeVariants } from '../IconWrapper.css';
 import { gridContainer, gridItem } from '../stories.css';
-import { IIconProps, ProductIcon } from '../';
+import { IIconProps, SystemIcon } from '@components/Icon';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -11,7 +11,7 @@ import React from 'react';
  * to learn how to use render functions.
  */
 const meta: Meta<{ icon: string } & IIconProps> = {
-  title: 'Icons/ProductIcons',
+  title: 'Icons/SystemIcons',
   argTypes: {
     icon: {
       control: {
@@ -31,7 +31,7 @@ export default meta;
 type Story = StoryObj<{ icon: string } & IIconProps>;
 
 export const Primary: Story = {
-  name: 'Product',
+  name: 'System',
   args: {
     icon: '',
     size: 'md',
@@ -41,7 +41,7 @@ export const Primary: Story = {
     const searchRegexp = new RegExp(icon, 'i');
     return (
       <div className={gridContainer}>
-        {Object.entries(ProductIcon)
+        {Object.entries(SystemIcon)
           .filter(([k]) => searchRegexp.test(k))
           // eslint-disable-next-line @typescript-eslint/naming-convention
           .map(([k, Icon]) => (

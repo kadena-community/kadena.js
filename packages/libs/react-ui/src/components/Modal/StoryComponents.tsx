@@ -1,6 +1,5 @@
-import { Button } from '../Button/Button';
-import { Text } from '../Typography';
-
+import { Button } from '@components/Button';
+import { Text } from '@components/Typography/Text/Text';
 import { useModal } from './ModalProvider';
 
 import React, { FC } from 'react';
@@ -65,12 +64,12 @@ export const Content: FC<IProps> = ({ title }) => {
 
   return (
     <>
-      <Button
+      <Button.Root
         onClick={() => renderModal(<ModalContent />, title)}
         title="openModal"
       >
         Open modal
-      </Button>
+      </Button.Root>
 
       <Text>
         Dessert gummies pie biscuit chocolate bar cheesecake. Toffee chocolate
