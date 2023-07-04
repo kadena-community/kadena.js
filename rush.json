@@ -419,7 +419,7 @@
 
     {
       "packageName": "@kadena/docs",
-      "projectFolder": "packages/apps/kadena-docs",
+      "projectFolder": "packages/apps/docs",
       "reviewCategory": "prototypes",
       "shouldPublish": false
     },
