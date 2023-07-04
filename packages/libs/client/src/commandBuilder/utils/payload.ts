@@ -10,10 +10,9 @@ interface IPayload {
       capability(name: string, ...args: unknown[]): ICapabilityItem;
     }>,
   >(
-    codes: T,
-    data?: Record<string, unknown>,
-    // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
-  ) => { payload: IExecPayload & { funs: [...T]; _brand: 'exec' } };
+    ...codes: [...T]
+  ) => // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
+  { payload: IExecPayload & { funs: [...T]; _brand: 'exec' } };
   cont: (options: IContinuationPayload) => {
     payload: IContinuationPayload & { _brand: 'cont' };
   };
@@ -23,11 +22,8 @@ interface IPayload {
  * @alpha
  */
 export const payload: IPayload = {
-  exec: (codes, data) => {
+  exec: (...codes) => {
     const pld: IExecPayload = { code: codes.join('') };
-    if (data !== undefined) {
-      pld.data = data;
-    }
     return {
       payload: pld,
       // _brand is a trick to make the type inferring work but it's not a real field in the payload

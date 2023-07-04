@@ -6,7 +6,7 @@ import { ICap } from '@kadena/types';
 export interface IExecPayload {
   // executable pact code
   code: string;
-  data?: Record<string, unknown>;
+  data?: object;
 }
 /**
  * @alpha
@@ -15,7 +15,7 @@ export interface IContinuationPayload {
   pactId?: string;
   step?: string;
   rollback?: boolean;
-  data?: Record<string, unknown>;
+  data?: object;
   proof?: string;
 }
 /**

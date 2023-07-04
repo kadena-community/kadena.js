@@ -31,11 +31,11 @@ function debitInTheFirstChain(
   amount: string,
 ): ICommand {
   return commandBuilder(
-    payload.exec([
+    payload.exec(
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
         decimal: amount.toString(),
       }),
-    ]),
+    ),
     addSigner(from.publicKey, (withCapability) => [
       withCapability('coin.TRANSFER_XCHAIN', from.account, to.account, {
         decimal: '1',

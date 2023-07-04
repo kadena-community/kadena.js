@@ -8,6 +8,8 @@ import {
   setProp,
 } from '../../index';
 import { Pact } from '../../pact';
+import { mergePayload } from '../commandBuilder';
+import { addData } from '../utils/addDate';
 
 const { coin } = Pact.modules;
 
@@ -15,17 +17,17 @@ jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
 describe('payload.exec', () => {
   it('returns a payload object of a exec command', () => {
-    const command = payload.exec([
+    const command = payload.exec(
       coin.transfer('alice', 'bob', { decimal: '12.1' }),
-    ]);
+    );
     expect(command.payload.code).toBe('(coin.transfer "alice" "bob" 12.1)');
   });
 
   it('adds multiple command', () => {
-    const command = payload.exec([
+    const command = payload.exec(
       coin.transfer('alice', 'bob', { decimal: '0.1' }),
       coin.transfer('bob', 'alice', { decimal: '0.1' }),
-    ]);
+    );
     expect(command.payload.code).toBe(
       '(coin.transfer "alice" "bob" 0.1)(coin.transfer "bob" "alice" 0.1)',
     );
@@ -50,7 +52,7 @@ describe('payload.cont', () => {
 describe('commandBuilder', () => {
   it('returns command object with signers and capabilities', () => {
     const command = commandBuilder(
-      payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
+      payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
@@ -80,7 +82,7 @@ describe('commandBuilder', () => {
 
   it('returns a command based on ICommand interface', () => {
     const command = commandBuilder(
-      payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
+      payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
@@ -129,7 +131,7 @@ describe('commandBuilder', () => {
 
   it('adds kjs nonce  if not presented in the input', () => {
     const command = commandBuilder(
-      payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+      payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
     );
 
     expect(command.nonce).toBe('kjs:nonce:1690416000000');
@@ -138,8 +140,8 @@ describe('commandBuilder', () => {
   it('merges payload if they are exec', () => {
     expect(
       commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        payload.exec([coin.transfer('alice', 'bob', { decimal: '1' })]),
+        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+        payload.exec(coin.transfer('alice', 'bob', { decimal: '1' })),
       ).payload,
     ).toEqual({
       code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
@@ -149,12 +151,12 @@ describe('commandBuilder', () => {
   it('merges payloads data if they are exec', () => {
     expect(
       commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })], {
-          one: 'test',
-        }),
-        payload.exec([coin.transfer('alice', 'bob', { decimal: '1' })], {
-          two: 'test',
-        }),
+        payload.exec(
+          coin.transfer('bob', 'alice', { decimal: '1' }),
+          coin.transfer('alice', 'bob', { decimal: '1' }),
+        ),
+        addData('one', 'test'),
+        addData('two', 'test'),
       ).payload,
     ).toEqual({
       code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
@@ -166,9 +168,7 @@ describe('commandBuilder', () => {
     expect(
       () =>
         commandBuilder(
-          payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })], {
-            one: 'test',
-          }),
+          payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
           payload.cont({ pactId: '1' }),
         ).payload,
     ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
@@ -177,7 +177,7 @@ describe('commandBuilder', () => {
   it('accepts a signer without a capability', () => {
     expect(
       commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
       ).signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
@@ -186,7 +186,7 @@ describe('commandBuilder', () => {
   it('merges capability arrays of one signer if presented twice', () => {
     expect(
       commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.GAS'),
         ]),
@@ -207,7 +207,7 @@ describe('commandBuilder', () => {
 
     expect(
       commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
@@ -226,10 +226,14 @@ describe('commandBuilder', () => {
   it("adds creationTime if it's not presented in the meta property", () => {
     expect(
       commandBuilder(
-        payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
+        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         setMeta({ chainId: '1' }),
       ).meta?.creationTime,
     ).toBe(1690416000);
+  });
+
+  it('merges data', () => {
+    const command = commandBuilder(payload.exec());
   });
 });
 
@@ -270,5 +274,60 @@ describe('signer', () => {
         },
       ],
     });
+  });
+});
+
+describe('mergePayload', () => {
+  it('merge code part of two payload', () => {
+    expect(mergePayload({ code: '(one)' }, { code: '(two)' })).toEqual({
+      code: '(one)(two)',
+    });
+  });
+
+  it('merge data part of two payload', () => {
+    expect(
+      mergePayload(
+        { code: '(one)', data: { one: 'test' } },
+        { code: '(two)', data: { two: 'test' } },
+      ),
+    ).toEqual({
+      code: '(one)(two)',
+      data: {
+        one: 'test',
+        two: 'test',
+      },
+    });
+  });
+
+  it('returns the non-undefined if one of the inputs is undefined', () => {
+    expect(
+      mergePayload({ code: '(one)', data: { one: 'test' } }, undefined),
+    ).toEqual({ code: '(one)', data: { one: 'test' } });
+
+    expect(
+      mergePayload(undefined, { code: '(one)', data: { one: 'test' } }),
+    ).toEqual({ code: '(one)', data: { one: 'test' } });
+  });
+
+  it('returns merged data', () => {
+    expect(
+      mergePayload(
+        { data: { one: 'test' } },
+        { pactId: '1', data: { two: 'test' } },
+      ),
+    ).toEqual({
+      pactId: '1',
+      data: { one: 'test', two: 'test' },
+    });
+
+    expect(
+      mergePayload(undefined, { code: '(one)', data: { one: 'test' } }),
+    ).toEqual({ code: '(one)', data: { one: 'test' } });
+  });
+
+  it('throws error if object are not the same brand', () => {
+    expect(() => mergePayload({ code: 'test' }, { pactId: '1' })).toThrowError(
+      new Error('PAYLOAD_NOT_MERGEABLE'),
+    );
   });
 });

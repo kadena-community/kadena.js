@@ -4,22 +4,42 @@ import {
   IExecPayload,
 } from '../interfaces/ICommand';
 
-const mergePayload = (
+export const mergePayload = (
   payload: ICommand['payload'] | undefined,
-  newPayload: ICommand['payload'],
-): IExecPayload | IContinuationPayload => {
-  if (payload === undefined) return newPayload;
-  if ('code' in payload && 'code' in newPayload) {
-    const data =
-      payload.data !== undefined || newPayload.data !== undefined
-        ? { ...payload.data, ...newPayload.data }
-        : undefined;
+  newPayload: ICommand['payload'] | undefined,
+): IExecPayload | IContinuationPayload | undefined => {
+  if (payload === undefined || newPayload === undefined)
+    return newPayload ?? payload;
 
+  const mergedData: { data?: object } = {};
+
+  // merge data
+  if ('data' in payload || 'data' in newPayload) {
+    mergedData.data = { ...payload.data, ...newPayload.data };
+  }
+  // merge code
+  if ('code' in payload && 'code' in newPayload) {
     return {
       code: payload.code + newPayload.code,
-      ...(data !== undefined ? { data } : {}),
+      ...mergedData,
     };
   }
+  // newPayload is just data
+  if (Object.keys(newPayload).length === 1 && 'data' in newPayload) {
+    return {
+      ...payload,
+      ...mergedData,
+    };
+  }
+
+  // payload is just data
+  if (Object.keys(payload).length === 1 && 'data' in payload) {
+    return {
+      ...newPayload,
+      ...mergedData,
+    };
+  }
+
   throw new Error('PAYLOAD_NOT_MERGEABLE');
 };
 

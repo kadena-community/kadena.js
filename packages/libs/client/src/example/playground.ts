@@ -44,10 +44,10 @@ const nonce = (
 // use the payload type in the output cont/exec
 // eslint-disable-next-line @rushstack/typedef-var
 export const cmd = commandBuilder(
-  payload.exec([
+  payload.exec(
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
     test.changeAdmin('albert', 'javad'),
-  ]),
+  ),
   addSigner('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
@@ -160,7 +160,7 @@ export function composeCommands(): Partial<ICommand> {
   );
 
   const transfer = commandBuilder(
-    payload.exec([coin.transfer('javad', 'albert', { decimal: '0.1' })]),
+    payload.exec(coin.transfer('javad', 'albert', { decimal: '0.1' })),
     addSigner('javadPublicKey', (withCapability) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
