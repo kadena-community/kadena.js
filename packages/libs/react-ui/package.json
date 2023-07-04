@@ -9,6 +9,11 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
+    },
+    "./theme": {
+      "import": "./dist/esm/styles/index.js",
+      "require": "./dist/cjs/styles/index.js",
+      "types": "./types/styles/index.d.ts"
     }
   },
   "main": "dist/cjs/index.js",
@@ -16,10 +21,11 @@
   "types": "types/index.d.ts",
   "files": [
     "dist",
-    "types"
+    "types",
+    "theme"
   ],
   "scripts": {
-    "build": "tsc & tsc -p ./tsconfig.cjs.json",
+    "build": "rm -rf theme && tsc && tsc -p ./tsconfig.cjs.json && cp -r types/styles theme",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
@@ -81,6 +87,7 @@
     "eslint-plugin-storybook": "~0.6.12",
     "jest": "~29.5.0",
     "jest-environment-jsdom": "~29.5.0",
+    "jest-standard-reporter": "~2.0.0",
     "mini-css-extract-plugin": "2.7.6",
     "prettier": "~2.8.8",
     "prop-types": "^15.8.1",

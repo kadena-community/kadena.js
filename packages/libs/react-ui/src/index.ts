@@ -43,12 +43,3 @@ export {
   TextField,
   ITextFieldProps,
 } from './components';
-export {
-  sprinkles,
-  Sprinkles,
-  vars,
-  darkThemeClass,
-  ColorType,
-} from './styles';
-
-export { style } from '@vanilla-extract/css';
