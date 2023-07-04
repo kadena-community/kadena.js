@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 
+const DOCSROOT = './src/pages/docs/';
+
 const createFrontMatter = (title, menuTitle, order) => {
   return `---
 title: ${title}  
@@ -38,6 +40,35 @@ const createTreeRoot = (page) => ({
   children: page,
 });
 
+const createDir = (dir) => {
+  const dirArr = dir.replace(DOCSROOT, '').split('/');
+  dirArr.reduce((acc, val) => {
+    const newDir = `${acc}${val}/`;
+    console.log(newDir);
+    if (!fs.existsSync(newDir)) {
+      fs.mkdirSync(newDir);
+    }
+    return newDir;
+  }, DOCSROOT);
+};
+
+const checkIsValidMD = (md) => {
+  const openTags = [];
+
+  const check = (children) => {
+    children.forEach((branch) => {
+      if (branch.type === 'html') {
+        console.log(branch);
+      }
+      if (branch.children && branch.children.length > 0) {
+        return check(branch.children);
+      }
+    });
+  };
+
+  return check(md.children);
+};
+
 const devideIntoPages = (md) => {
   return md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
@@ -52,21 +83,26 @@ const devideIntoPages = (md) => {
   }, []);
 };
 
-const importDocs = (packageName, destination, parentTitle, RootOrder) => {
-  const doc = fs.readFileSync(`./../../${packageName}/README.md`, 'utf-8');
+const importDocs = (filename, destination, parentTitle, RootOrder) => {
+  const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
   const md = remark.parse(doc);
 
-  devideIntoPages(md).forEach(async (page, idx) => {
+  //@TODO: check if there are HTML paragraphs not closed correctly
+  //if not closed, throw an error in the build
+  const isValidMD = checkIsValidMD(md);
+
+  devideIntoPages(md).forEach((page, idx) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
-    console.log(slug);
     const menuTitle = idx === 0 ? parentTitle : title;
     const order = idx === 0 ? RootOrder : idx;
 
     const doc = toMarkdown(createTreeRoot(page));
 
+    createDir(`${DOCSROOT}${destination}`);
+
     fs.writeFileSync(
-      `./src/pages/docs/${destination}/${slug}.mdx`,
+      `${DOCSROOT}${destination}/${slug}.mdx`,
       createFrontMatter(title, menuTitle, order) + doc,
       {
         flag: 'w',
@@ -75,4 +111,5 @@ const importDocs = (packageName, destination, parentTitle, RootOrder) => {
   });
 };
 
-importDocs('libs/kadena.js', 'kadena/kadenajs', 'KadenaJS', 6);
+importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
+importDocs('libs/client/README.md', 'pact/client', 'Pact Client', 5);
