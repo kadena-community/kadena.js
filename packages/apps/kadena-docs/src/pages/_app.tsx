@@ -3,7 +3,8 @@ import {
   darkTheme as stitchesDarkTheme,
   globalCss,
 } from '@kadena/react-components';
-import { darkThemeClass, ModalProvider } from '@kadena/react-ui';
+import { ModalProvider } from '@kadena/react-ui';
+import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics, ConsentModal } from '@/components';
 import { Main } from '@/components/Layout/components';
