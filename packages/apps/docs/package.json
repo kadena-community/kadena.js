@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/kadena-docs",
+  "name": "@kadena/docs",
   "version": "0.1.0",
   "scripts": {
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
