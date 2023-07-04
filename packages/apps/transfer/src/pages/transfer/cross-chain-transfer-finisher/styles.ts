@@ -55,6 +55,8 @@ export const StyledInfoBox = styled('div', {
   background: 'rgba(71, 79, 82, 0.5)',
   borderRadius: '$xs',
   boxSizing: 'borderBox',
+  alignSelf: 'stretch',
+  width: '40%',
 });
 
 export const StyledInfoTitle = styled('h3', {
