@@ -5,7 +5,7 @@ export const StyledAccountText = styled('div', {
 });
 
 export const StyledTitle = styled('div', {
-  alignSelf: 'strecth',
+  alignSelf: 'stretch',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -25,7 +25,7 @@ export const StyledAccountContainer = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'flex-start',
-  alignSelf: 'strecth',
+  alignSelf: 'stretch',
   gap: '$2',
 });
 
