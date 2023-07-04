@@ -27,7 +27,7 @@ export type ICapabilityItem = ICap;
 /**
  * @alpha
  */
-export interface ICommand {
+export interface IPactCommand {
   payload: IExecPayload | IContinuationPayload;
   meta: {
     chainId: string;

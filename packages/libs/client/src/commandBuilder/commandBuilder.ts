@@ -1,12 +1,12 @@
 import {
-  ICommand,
+  IPactCommand,
   IContinuationPayload,
   IExecPayload,
-} from '../interfaces/ICommand';
+} from '../interfaces/IPactCommand';
 
 export const mergePayload = (
-  payload: ICommand['payload'] | undefined,
-  newPayload: ICommand['payload'] | undefined,
+  payload: IPactCommand['payload'] | undefined,
+  newPayload: IPactCommand['payload'] | undefined,
 ): IExecPayload | IContinuationPayload | undefined => {
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
@@ -49,33 +49,33 @@ type PoF<T> = T | ((a: T) => T);
 
 // TODO : improve the return value to merge all of the inputs as an object
 interface ICommandBuilder {
-  <F extends Pick<ICommand, 'payload'>>(
+  <F extends Pick<IPactCommand, 'payload'>>(
     payload: F,
     ...rest: [
       ...Array<
-        | Partial<ICommand>
-        | ((payload: F & Partial<ICommand>) => Partial<ICommand>)
+        | Partial<IPactCommand>
+        | ((payload: F & Partial<IPactCommand>) => Partial<IPactCommand>)
       >,
     ]
-  ): Partial<ICommand>;
+  ): Partial<IPactCommand>;
 
   (
-    first: PoF<NoPayload<Partial<ICommand>>>,
-    ...rest: Array<PoF<Partial<ICommand>>>
-  ): Partial<ICommand>;
+    first: PoF<NoPayload<Partial<IPactCommand>>>,
+    ...rest: Array<PoF<Partial<IPactCommand>>>
+  ): Partial<IPactCommand>;
 }
 
 /**
  * @alpha
  */
 export const commandBuilder: ICommandBuilder = (
-  first: PoF<Partial<ICommand>>,
-  ...rest: PoF<Partial<ICommand>>[]
+  first: PoF<Partial<IPactCommand>>,
+  ...rest: PoF<Partial<IPactCommand>>[]
 ) => {
   const args: Array<
-    Partial<ICommand> | ((cmd: Partial<ICommand>) => Partial<ICommand>)
+    Partial<IPactCommand> | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>)
   > = [first, ...rest];
-  const command = args.reduce<Partial<ICommand>>((acc, item) => {
+  const command = args.reduce<Partial<IPactCommand>>((acc, item) => {
     const part = typeof item === 'function' ? item(acc) : item;
     if (part.payload !== undefined) {
       acc.payload = mergePayload(acc.payload, part.payload);
@@ -101,7 +101,7 @@ export const commandBuilder: ICommandBuilder = (
       });
     }
     return acc;
-  }, {} as Partial<ICommand>);
+  }, {} as Partial<IPactCommand>);
   const dateInMs = Date.now();
   command.nonce = command.nonce ?? `kjs:nonce:${dateInMs}`;
   if (command.meta && command.meta.creationTime === undefined) {

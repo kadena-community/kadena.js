@@ -2,7 +2,7 @@ import {
   ICapabilityItem,
   IContinuationPayload,
   IExecPayload,
-} from '../../interfaces/ICommand';
+} from '../../interfaces/IPactCommand';
 
 interface IPayload {
   exec: <

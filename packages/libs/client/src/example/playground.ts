@@ -9,7 +9,7 @@ import {
   addSigner,
   commandBuilder,
   ICapabilityItem,
-  ICommand,
+  IPactCommand,
   payload,
   setMeta,
   setProp,
@@ -62,7 +62,7 @@ export const cmd = commandBuilder(
   setProp('networkId', 'mainnet04'),
 );
 
-export const cmd2: Partial<ICommand> = commandBuilder(
+export const cmd2: Partial<IPactCommand> = commandBuilder(
   payload.cont({}),
   addSigner('javadPublicKey', (withCapability) => [
     //
@@ -153,7 +153,7 @@ export async function spvExample(): Promise<string> {
   return status;
 }
 
-export function composeCommands(): Partial<ICommand> {
+export function composeCommands(): Partial<IPactCommand> {
   const mainnetConfig = commandBuilder(
     setMeta({ chainId: '1' }),
     setProp('networkId', 'mainnet04'),

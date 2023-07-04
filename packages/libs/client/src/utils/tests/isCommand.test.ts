@@ -1,4 +1,4 @@
-import { ICommand } from '../../interfaces/ICommand';
+import { IPactCommand } from '../../interfaces/IPactCommand';
 import { isCommand } from '../isCommand';
 
 describe('isCommand', () => {
@@ -27,7 +27,7 @@ describe('isCommand', () => {
           sender: 'gas-station',
           ttl: 1000,
         },
-      } as ICommand),
+      } as IPactCommand),
     ).toBe(true);
   });
 
@@ -51,7 +51,7 @@ describe('isCommand', () => {
       delete newObj[prop];
       return newObj as unknown as Partial<T>;
     };
-    const command: ICommand = {
+    const command: IPactCommand = {
       payload: {
         code: '(coin.transfer "alice" "bob" 12.1)',
       },

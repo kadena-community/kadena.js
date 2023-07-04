@@ -7,7 +7,7 @@ import { getClient } from '../client/client';
 import {
   addSigner,
   commandBuilder,
-  ICommand,
+  IPactCommand,
   payload,
   setMeta,
   setProp,
@@ -55,7 +55,7 @@ export async function doSafeTransfer(
     {
       nonce: 'tadasd',
     },
-  ) as ICommand;
+  ) as IPactCommand;
 
   const signedCommand = await quicksign(command);
 

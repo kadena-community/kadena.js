@@ -1,7 +1,7 @@
 import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 
-import { ICommand } from '../interfaces/ICommand';
+import { IPactCommand } from '../interfaces/IPactCommand';
 
 import { ILocalOptions, local, LocalResponse } from './api/local';
 import { getSpv, pollSpv } from './api/spv';
@@ -111,7 +111,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
   const client: IClient = {
     local(body, options) {
-      const cmd: ICommand = JSON.parse(body.cmd);
+      const cmd: IPactCommand = JSON.parse(body.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
       return local(hostUrl, { ...body, hash: blakeHash(body.cmd) }, options);
     },
@@ -121,7 +121,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       if (first === undefined) {
         throw new Error('EMPTY_COMMAND_LIST');
       }
-      const cmd: ICommand = JSON.parse(first.cmd);
+      const cmd: IPactCommand = JSON.parse(first.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
       const commandsWithHash = commands.map((req) => ({
         ...req,

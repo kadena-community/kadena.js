@@ -7,7 +7,7 @@ import { getClient } from '../client/client';
 import {
   addSigner,
   commandBuilder,
-  ICommand,
+  IPactCommand,
   IContinuationPayload,
   payload,
   setMeta,
@@ -29,7 +29,7 @@ function debitInTheFirstChain(
   from: IAccount,
   to: IAccount,
   amount: string,
-): ICommand {
+): IPactCommand {
   return commandBuilder(
     payload.exec(
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
@@ -43,19 +43,19 @@ function debitInTheFirstChain(
     ]),
     setMeta({ chainId: from.chainId }),
     setProp('networkId', 'testnet04'),
-  ) as ICommand;
+  ) as IPactCommand;
 }
 
 function creditInTheTargetChain(
   continuation: IContinuationPayload,
   targetChainId: string,
-): ICommand {
+): IPactCommand {
   return commandBuilder(
     payload.cont(continuation),
     addSigner('test', (withCapability) => [withCapability('test')]),
     setMeta({ chainId: targetChainId }),
     setProp('networkId', 'testnet04'),
-  ) as ICommand;
+  ) as IPactCommand;
 }
 
 const { submit, pollSpv, pollStatus } = getClient();

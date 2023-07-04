@@ -1,7 +1,7 @@
-import { ICommand } from '../interfaces/ICommand';
+import { IPactCommand } from '../interfaces/IPactCommand';
 import { quicksign } from '../sign';
 
-const sampleCommand: ICommand = {
+const sampleCommand: IPactCommand = {
   payload: {
     code: '(coin.transfer "alice" "bob" 12.1)',
   },
@@ -33,7 +33,7 @@ describe('quicksign', () => {
     });
   });
   it("throws an error if the command doesn't match ICommand interface", async () => {
-    await expect(() => quicksign({} as ICommand)).rejects.toThrowError(
+    await expect(() => quicksign({} as IPactCommand)).rejects.toThrowError(
       new Error('INVALID_COMMAND'),
     );
   });

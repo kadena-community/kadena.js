@@ -1,11 +1,11 @@
-import { ICapabilityItem, ICommand } from '../../interfaces/ICommand';
+import { ICapabilityItem, IPactCommand } from '../../interfaces/IPactCommand';
 
 interface IAddSigner {
   (
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  ): () => Pick<ICommand, 'signers'>;
+  ): () => Pick<IPactCommand, 'signers'>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <T extends any>(
     first:

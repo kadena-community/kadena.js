@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 // this module is just a poc for the client
 
-import { ICommand } from '../interfaces/ICommand';
+import { IPactCommand } from '../interfaces/IPactCommand';
 import { Pact } from '../pact';
 
 const { coin } = Pact.modules;
@@ -11,7 +11,7 @@ declare const getPact: any;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const pact: any = getPact({
-  sign: (command: ICommand) => {
+  sign: (command: IPactCommand) => {
     // do the signing
   },
   host: 'http://url-of-the-pact-endpoint',

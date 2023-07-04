@@ -1,11 +1,11 @@
-import { ICommand } from '../../interfaces/ICommand';
+import { IPactCommand } from '../../interfaces/IPactCommand';
 
 /**
  * @alpha
  */
-export const setProp = <T extends keyof ICommand>(
+export const setProp = <T extends keyof IPactCommand>(
   item: T,
-  value: ICommand[T],
-): { [key in T]: ICommand[T] } => {
-  return { [item]: value } as { [key in T]: ICommand[T] };
+  value: IPactCommand[T],
+): { [key in T]: IPactCommand[T] } => {
+  return { [item]: value } as { [key in T]: IPactCommand[T] };
 };

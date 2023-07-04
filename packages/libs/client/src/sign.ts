@@ -1,4 +1,4 @@
-import { ICommand } from './interfaces/ICommand';
+import { IPactCommand } from './interfaces/IPactCommand';
 import { isCommand } from './utils/isCommand';
 
 /**
@@ -8,10 +8,10 @@ import { isCommand } from './utils/isCommand';
  * @returns
  */
 export const quicksign = (
-  command: string | ICommand,
+  command: string | IPactCommand,
   otherSignatures: Record<string, string> = {},
 ): Promise<{ cmd: string; sigs: string[] }> => {
-  const commandJSon: Partial<ICommand> =
+  const commandJSon: Partial<IPactCommand> =
     typeof command === 'string' ? JSON.parse(command) : command;
   const commandStr =
     typeof command === 'string' ? command : JSON.stringify(command);

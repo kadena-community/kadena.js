@@ -17,8 +17,8 @@ export { addSigner } from './commandBuilder/utils/addSigner';
 export { payload } from './commandBuilder/utils/payload';
 
 export type {
-  ICommand,
+  IPactCommand,
   ICapabilityItem,
   IContinuationPayload,
   IExecPayload,
-} from './interfaces/ICommand';
+} from './interfaces/IPactCommand';
