@@ -59,6 +59,9 @@ globalStyle('p, h1, h2, h3, h4, h5, h6, span', {
   overflowWrap: 'break-word',
   fontFamily: vars.fonts.$main,
 });
+globalStyle('code', {
+  fontFamily: vars.fonts.$mono,
+});
 
 /*
     9. Create a root stacking context

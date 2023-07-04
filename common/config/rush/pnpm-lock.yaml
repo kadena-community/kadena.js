@@ -845,6 +845,7 @@ importers:
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
+      '@kadena/fonts': ~0.0.1
       '@radix-ui/react-switch': ^1.0.2
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
@@ -873,6 +874,7 @@ importers:
       storybook-dark-mode: ^3.0.0
       typescript: 5.0.4
     dependencies:
+      '@kadena/fonts': 0.0.1
       '@radix-ui/react-switch': 1.0.3_867028bf30ab2a1fd87a48d0163e1a16
       '@stitches/react': 1.3.1-1_react@18.2.0
       classnames: 2.3.2
@@ -920,6 +922,7 @@ importers:
       '@kadena-dev/eslint-plugin': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
+      '@kadena/fonts': ~0.0.1
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
       '@rushstack/heft-jest-plugin': ~0.5.12
@@ -968,6 +971,7 @@ importers:
       tsconfig-paths: 4.2.0
       typescript: 5.0.4
     dependencies:
+      '@kadena/fonts': 0.0.1
       '@vanilla-extract/css': 1.11.1
       '@vanilla-extract/recipes': 0.4.0_@vanilla-extract+css@1.11.1
       '@vanilla-extract/sprinkles': 1.6.0_@vanilla-extract+css@1.11.1
@@ -7121,6 +7125,12 @@ packages:
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
+
+  /@kadena/fonts/0.0.1:
+    resolution: {integrity: sha512-epUOJbW96Yd827XQD2/6Ibow9qcevgPhVKsUhfzG9L26U4PLMMWZ0KXxIoFQ6DKpQa9xE4GK8DkPzn30pJb+3Q==}
+    dependencies:
+      lodash.kebabcase: 4.1.1
+    dev: false
 
   /@leichtgewicht/ip-codec/2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
@@ -20067,6 +20077,10 @@ packages:
 
   /lodash.isequal/4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+
+  /lodash.kebabcase/4.1.1:
+    resolution: {integrity: sha512-N8XRTIMMqqDgSy4VLKPnJ/+hpGZN+PHQiJnSenYqPaVV/NCqEogTnAdZLQiGKhxX+JCs8waWq2t1XHWKOmlY8g==}
+    dev: false
 
   /lodash.memoize/4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}

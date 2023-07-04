@@ -80,7 +80,7 @@ export const {
     },
     fonts: {
       main: "'Haas Grotesk Display', -apple-system, sans-serif",
-      mono: "'Kadena Code', Menlo, monospace",
+      mono: '"Kode Mono", monospace',
     },
     fontSizes: {
       xs: '0.75rem', // 12px

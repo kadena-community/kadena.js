@@ -1,9 +1,10 @@
 import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
+import KodeMono from './loadKodeMono';
 
 export const vars = createGlobalTheme(':root', {
   fonts: {
     $main: "'Haas Grotesk Display', -apple-system, sans-serif",
-    $mono: "'Kadena Code', Menlo, monospace",
+    $mono: KodeMono.style.fontFamily,
   },
   fontSizes: {
     $xs: '0.75rem', // 12px
