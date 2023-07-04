@@ -1,6 +1,6 @@
 import { ICapabilityItem, ICommand } from '../../interfaces/ICommand';
 
-interface ISetSigner {
+interface IAddSigner {
   (
     first:
       | string
@@ -18,7 +18,7 @@ interface ISetSigner {
 /**
  * @alpha
  */
-export const setSigner: ISetSigner = ((
+export const addSigner: IAddSigner = ((
   first:
     | string
     | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },

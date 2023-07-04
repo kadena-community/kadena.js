@@ -1,11 +1,11 @@
 import './coin-contract';
 
 import {
+  addSigner,
   commandBuilder,
   payload,
   setMeta,
   setProp,
-  setSigner,
 } from '../../index';
 import { Pact } from '../../pact';
 
@@ -51,7 +51,7 @@ describe('commandBuilder', () => {
   it('returns command object with signers and capabilities', () => {
     const command = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
-      setSigner('bob_public_key', (withCapability) => [
+      addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
       ]),
@@ -81,7 +81,7 @@ describe('commandBuilder', () => {
   it('returns a command based on ICommand interface', () => {
     const command = commandBuilder(
       payload.exec([coin.transfer('alice', 'bob', { decimal: '12.1' })]),
-      setSigner('bob_public_key', (withCapability) => [
+      addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
       ]),
@@ -178,7 +178,7 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        setSigner('bob_public_key'),
+        addSigner('bob_public_key'),
       ).signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
   });
@@ -187,10 +187,10 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        setSigner('bob_public_key', (withCapability) => [
+        addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.GAS'),
         ]),
-        setSigner('bob_public_key', (withCapability) => [
+        addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
       ).signers,
@@ -208,8 +208,8 @@ describe('commandBuilder', () => {
     expect(
       commandBuilder(
         payload.exec([coin.transfer('bob', 'alice', { decimal: '1' })]),
-        setSigner('bob_public_key'),
-        setSigner('bob_public_key', (withCapability) => [
+        addSigner('bob_public_key'),
+        addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
       ).signers,
@@ -235,7 +235,7 @@ describe('commandBuilder', () => {
 
 describe('signer', () => {
   it('returns a signer object', () => {
-    expect(setSigner('bob_public_key')()).toEqual({
+    expect(addSigner('bob_public_key')()).toEqual({
       signers: [
         {
           pubKey: 'bob_public_key',
@@ -248,7 +248,7 @@ describe('signer', () => {
   it('adds capability if presented', () => {
     expect(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setSigner<any>('bob_public_key', (withCapability) => [
+      addSigner<any>('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
       ])(),
     ).toEqual({
@@ -262,7 +262,7 @@ describe('signer', () => {
     });
   });
   it('accept signer object as a first argument', () => {
-    expect(setSigner({ pubKey: 'test', scheme: 'ED25519' })()).toEqual({
+    expect(addSigner({ pubKey: 'test', scheme: 'ED25519' })()).toEqual({
       signers: [
         {
           pubKey: 'test',

@@ -5,13 +5,13 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 
 import { getClient } from '../client/client';
 import {
+  addSigner,
   commandBuilder,
   ICommand,
   IContinuationPayload,
   payload,
   setMeta,
   setProp,
-  setSigner,
 } from '../index';
 import { Pact } from '../pact';
 import { quicksign } from '../sign';
@@ -20,6 +20,7 @@ const { coin } = Pact.modules;
 
 interface IAccount {
   account: string;
+  publicKey: string;
   chainId: string;
   guard: string;
 }
@@ -28,33 +29,33 @@ function debitInTheFirstChain(
   from: IAccount,
   to: IAccount,
   amount: string,
-): Partial<ICommand> {
+): ICommand {
   return commandBuilder(
     payload.exec([
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
         decimal: amount.toString(),
       }),
     ]),
-    setSigner('javad', (withCapability) => [
+    addSigner(from.publicKey, (withCapability) => [
       withCapability('coin.TRANSFER_XCHAIN', from.account, to.account, {
         decimal: '1',
       }),
     ]),
     setMeta({ chainId: from.chainId }),
     setProp('networkId', 'testnet04'),
-  );
+  ) as ICommand;
 }
 
 function creditInTheTargetChain(
   continuation: IContinuationPayload,
   targetChainId: string,
-): Partial<ICommand> {
+): ICommand {
   return commandBuilder(
     payload.cont(continuation),
-    setSigner('test', (withCapability) => [withCapability('test')]),
+    addSigner('test', (withCapability) => [withCapability('test')]),
     setMeta({ chainId: targetChainId }),
     setProp('networkId', 'testnet04'),
-  );
+  ) as ICommand;
 }
 
 const { submit, pollSpv, pollStatus } = getClient();
@@ -69,7 +70,7 @@ export async function doCrossChianTransfer(
   to: IAccount,
   amount: string,
 ): Promise<[boolean, ICommandResult, ICommandResult | undefined]> {
-  await Promise.resolve(debitInTheFirstChain(from, to, amount) as ICommand)
+  await Promise.resolve(debitInTheFirstChain(from, to, amount))
     .then(quicksign)
     .then(submit)
     .then(pollStatus)
@@ -80,17 +81,16 @@ export async function doCrossChianTransfer(
         : status,
     )
     .then((status) => Promise.all([status, pollSpv(status.reqKey, to.chainId)]))
-    .then(
-      ([status, proof]) =>
-        creditInTheTargetChain(
-          {
-            pactId: status.continuation?.pactId,
-            proof,
-            rollback: false,
-            step: '1',
-          },
-          to.chainId,
-        ) as ICommand,
+    .then(([status, proof]) =>
+      creditInTheTargetChain(
+        {
+          pactId: status.continuation?.pactId,
+          proof,
+          rollback: false,
+          step: '1',
+        },
+        to.chainId,
+      ),
     )
     .then(quicksign)
     .then(submit)
@@ -98,7 +98,7 @@ export async function doCrossChianTransfer(
 
   // or we can use async/await
 
-  const command = debitInTheFirstChain(from, to, amount) as ICommand;
+  const command = debitInTheFirstChain(from, to, amount);
 
   const transaction = await quicksign(command);
   const [sendRequestKey] = await submit(transaction);
@@ -117,7 +117,7 @@ export async function doCrossChianTransfer(
       step: '1',
     },
     to.chainId,
-  ) as ICommand;
+  );
 
   const continuationTr = await quicksign(continuation);
   const [contRequestKey] = await submit(continuationTr);

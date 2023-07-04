@@ -5,45 +5,60 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 
 import { getClient } from '../client/client';
 import {
+  addSigner,
   commandBuilder,
   ICommand,
   payload,
   setMeta,
   setProp,
-  setSigner,
 } from '../index';
 import { Pact } from '../pact';
 import { quicksign } from '../sign';
 
 const { coin } = Pact.modules;
 
+const getHostUrl = (networkId: string, chainId: string): string =>
+  'http://localhost:8080/chainweb/0.0/' +
+  networkId +
+  '/chain/' +
+  chainId +
+  '/pact';
+
+const { submit, pollStatus } = getClient(getHostUrl);
+
 export async function doSafeTransfer(
-  from: string,
-  to: string,
+  from: { account: string; publicKey: string },
+  to: { account: string; publicKey: string },
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  const { submit, pollStatus } = getClient();
-
   const command = commandBuilder(
     payload.exec([
+      coin.transfer('asd', 'asdasd', { decimal: '1' }),
       // the first two transfers are to make sure the receiver has also signed the command
-      coin.transfer(from, to, { decimal: '0.01' }),
-      coin.transfer(to, from, { decimal: '0.01' }),
+      coin.transfer(from.account, to.account, { decimal: '1' }),
+      coin.transfer(to.account, from.account, { decimal: '1' }),
       // the actual transfer
-      coin.transfer(from, to, { decimal: amount }),
+      coin.transfer(from.account, to.account, { decimal: amount }),
     ]),
-    setSigner(from, (withCapability) => [
-      withCapability('coin.TRANSFER', from, to, { decimal: amount }),
-      withCapability('coin.TRANSFER', from, to, { decimal: '0.01' }),
+    addSigner(from.publicKey, (withCapability) => [
+      withCapability('coin.TRANSFER', from.account, to.account, {
+        decimal: (Number(amount) + 1).toString(),
+      }),
     ]),
-    setSigner(to, (withCapability) => [
-      withCapability('coin.TRANSFER', to, from, { decimal: '0.01' }),
+    addSigner(to.publicKey, (withCapability) => [
+      withCapability('coin.TRANSFER', to.account, from.account, {
+        decimal: '1',
+      }),
     ]),
     setProp('networkId', 'mainnet01'),
     setMeta({ chainId: '1' }),
+    {
+      nonce: 'tadasd',
+    },
   ) as ICommand;
 
   const signedCommand = await quicksign(command);
+
   const receivedKeys = await submit(signedCommand);
   const status = await pollStatus(receivedKeys);
 

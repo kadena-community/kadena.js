@@ -6,6 +6,11 @@
 
 import { ICap } from '@kadena/types';
 
+// Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const addSigner: IAddSigner;
+
 // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
@@ -195,11 +200,6 @@ export const setMeta: (options: {
 
 // @alpha (undocumented)
 export const setProp: <T extends keyof ICommand>(item: T, value: ICommand[T]) => { [key in T]: ICommand[T]; };
-
-// Warning: (ae-forgotten-export) The symbol "ISetSigner" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const setSigner: ISetSigner;
 
 // (No @packageDocumentation comment for this package)
 

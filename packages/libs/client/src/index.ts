@@ -8,7 +8,7 @@ export { Pact } from './pact';
 export { commandBuilder } from './commandBuilder/commandBuilder';
 export { setProp } from './commandBuilder/utils/setProp';
 export { setMeta } from './commandBuilder/utils/setMeta';
-export { setSigner } from './commandBuilder/utils/setSigner';
+export { addSigner } from './commandBuilder/utils/addSigner';
 export { payload } from './commandBuilder/utils/payload';
 
 export type {

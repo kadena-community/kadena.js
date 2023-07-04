@@ -6,13 +6,13 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { getClient } from '../client/client';
 import { ICommandRequest } from '../client/utils/utils';
 import {
+  addSigner,
   commandBuilder,
   ICapabilityItem,
   ICommand,
   payload,
   setMeta,
   setProp,
-  setSigner,
 } from '../index';
 import { getModule, Pact } from '../pact';
 
@@ -48,12 +48,12 @@ export const cmd = commandBuilder(
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
     test.changeAdmin('albert', 'javad'),
   ]),
-  setSigner('javadPublicKey', (withCapability) => [
+  addSigner('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
     withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
   ]),
-  setSigner('albertPublicKey', (withCapability) => [
+  addSigner('albertPublicKey', (withCapability) => [
     //
     withCapability('test.ADMIN'),
   ]),
@@ -64,12 +64,12 @@ export const cmd = commandBuilder(
 
 export const cmd2: Partial<ICommand> = commandBuilder(
   payload.cont({}),
-  setSigner('javadPublicKey', (withCapability) => [
+  addSigner('javadPublicKey', (withCapability) => [
     //
     withCapability('coin.GAS'),
     withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
   ]),
-  setSigner('albertPublicKey', (withCapability) => [
+  addSigner('albertPublicKey', (withCapability) => [
     //
     withCapability('test.ADMIN'),
   ]),
@@ -161,7 +161,7 @@ export function composeCommands(): Partial<ICommand> {
 
   const transfer = commandBuilder(
     payload.exec([coin.transfer('javad', 'albert', { decimal: '0.1' })]),
-    setSigner('javadPublicKey', (withCapability) => [
+    addSigner('javadPublicKey', (withCapability) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
     ]),
