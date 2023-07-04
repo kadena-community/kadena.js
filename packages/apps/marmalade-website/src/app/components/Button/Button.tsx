@@ -8,6 +8,7 @@ export interface IButtonProps {
   type?: string;
   disabled?: boolean;
   children: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const Button: FC<IButtonProps> = ({
@@ -15,22 +16,46 @@ export const Button: FC<IButtonProps> = ({
   color,
   type,
   disabled,
-  children
+  children,
+  onClick,
+  ...props
 }) => {
+
+  const colorVariant = color? styles[`${color}`] : '';
+  const typeVariant = type ? styles[`${type}`] : '';
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className={`
+          button
+          ${styles.button}
+          ${typeVariant}
+          ${colorVariant}
+          ${disabled ?? ''}
+        `}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
+    <button
+      {...props}
+      onClick={onClick}
       className={`
         button
         ${styles.button}
-        ${type ? styles[`${type}`] : ''}
-        ${color? styles[`${color}`] : ''}
+        ${typeVariant}
+        ${colorVariant}
         ${disabled ?? ''}
       `}
     >
       {children}
-    </a>
+    </button>
   );
 };

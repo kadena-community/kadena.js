@@ -9,42 +9,48 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-}
-.card-title {
-  color: var(--color-green-002);
-  text-transform: uppercase;
-  font-family: var(--font-code);
-  font-weight: bold;
-}
-.card-button {
-  text-align: right;
-}
+  cursor: pointer;
+  opacity: 1;
 
-.card-placeholder {
-  font-size: 0;
-  line-height: 0;
-  margin: 1.5rem 0;
+  .card-title {
+    color: var(--color-green-002);
+    text-transform: uppercase;
+    font-family: var(--font-code);
+    font-weight: bold;
+  }
 
-  span {
-    display: block;
-    background-color: var(--color-orange-002);
-    height: 0.9rem;
-    margin: 0.25rem 0;
-    min-width: 15%;
-    animation: fading 1.5s infinite;
-    opacity: 0.4;
+  .card-button {
+    text-align: right;
   }
-}
-@keyframes fading {
-  0% {
-    opacity: .1;
-  }
+
+  .card-placeholder {
+    font-size: 0;
+    line-height: 0;
+    margin: 1.5rem 0;
   
-  50% {
-    opacity: .3;
+    span {
+      display: block;
+      background-color: var(--color-green-004);
+      height: 0.9rem;
+      margin: 0.25rem 0;
+      min-width: 15%;
+      transition: 2s;
+    }
   }
-  
-  100% {
-    opacity: .1;
+
+  button {
+    transition: 2s;
+  }
+
+  &.disabled {
+    opacity: 0.8;
+
+    .card-placeholder span {
+      opacity: 0.4;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }

@@ -69,6 +69,11 @@ export const PolicyCustomizer: FC = () => {
       onChange: onGuardChange
     }
   ]
+
+  const handleCardClick = (policy) => {
+    policy.onChange(!eval(policy.name));
+  };
+ 
   return (
     <>
       <div className={`grid ${styles['policy-list']}`}>
@@ -76,8 +81,10 @@ export const PolicyCustomizer: FC = () => {
           <Card
             key={`card-${index}`}
             title={policy.title}
-            buttonColor="orange"
-            buttonText="Add Policy"
+            buttonColor={eval(policy.name) ? 'orange' : 'green'}
+            buttonText={eval(policy.name) ? 'Policy added' : 'Add Policy'}
+            isChecked={ eval(policy.name) }
+            onClick={() => handleCardClick(policy)}
           />
         )) }
       </div>
@@ -113,7 +120,11 @@ export const PolicyCustomizer: FC = () => {
                 </div>
               </div>
               <div>
-                <ToggleSwitch name={policy.name} isChecked={ eval(policy.name) } onSwitchChange={policy.onChange} />
+                <ToggleSwitch
+                  name={policy.name}
+                  isChecked={ eval(policy.name) }
+                  onSwitchChange={policy.onChange}
+                />
               </div>
             </div>
           )) }
