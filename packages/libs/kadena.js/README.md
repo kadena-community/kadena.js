@@ -257,14 +257,18 @@ SigData:
 (A) When querying a chainweb node, the server expects the endpoint to have a
 specific format. For example:
 
-    http://localhost:8080/chainweb/0.0/development/chain/1/pact
+```
+http://localhost:8080/chainweb/0.0/development/chain/1/pact
+```
 
 In the above, `0.0` represents the node API Version and could change later on.
 Also, `development` represents the version of Chainweb that the node is running.
 Other possible values are `testnet04` and `mainnet01`. Both of these pieces of
 information is returned by querying the `/info` endpoint. For example:
 
-    http://localhost:8080/info
+```
+http://localhost:8080/info
+```
 
 (B) The Chainweb node version (i.e. `development`) is a required field in a
 transaction's payload. An error is thrown if the network specified in the
