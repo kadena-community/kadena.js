@@ -24,7 +24,7 @@ globalStyle('*', {
 */
 globalStyle('html, body', {
   height: '100%',
-  fontFamily: vars.fonts.main,
+  fontFamily: vars.fonts.$main,
 });
 
 /*
@@ -48,15 +48,16 @@ globalStyle('img, picture, video, canvas, svg', {
 /*
     7. Remove built-in form typography styles
 */
-globalStyle('button, input, select, textarea', {
-  font: 'inherit',
+globalStyle('button, input, select, textarea, label', {
+  fontFamily: vars.fonts.$main,
 });
 
 /*
     8. Avoid text overflows
 */
-globalStyle('p, h1, h2, h3, h4, h5, h6', {
+globalStyle('p, h1, h2, h3, h4, h5, h6, span', {
   overflowWrap: 'break-word',
+  fontFamily: vars.fonts.$main,
 });
 
 /*
@@ -71,39 +72,39 @@ globalStyle('#root, #__next', {
 */
 globalStyle(':root', {
   vars: {
-    '--spacing-2xs': vars.sizes['1'],
-    '--spacing-xs': vars.sizes['2'],
-    '--spacing-sm': vars.sizes['3'],
-    '--spacing-md': vars.sizes['4'],
-    '--spacing-lg': vars.sizes['6'],
-    '--spacing-xl': vars.sizes['7'],
-    '--spacing-2xl': vars.sizes['9'],
-    '--spacing-3xl': vars.sizes['10'],
+    '--spacing-2xs': vars.sizes.$1,
+    '--spacing-xs': vars.sizes.$2,
+    '--spacing-sm': vars.sizes.$3,
+    '--spacing-md': vars.sizes.$4,
+    '--spacing-lg': vars.sizes.$6,
+    '--spacing-xl': vars.sizes.$7,
+    '--spacing-2xl': vars.sizes.$9,
+    '--spacing-3xl': vars.sizes.$10,
   },
   '@media': {
     [breakpoints.md]: {
       vars: {
-        '--spacing-3xl': vars.sizes['12'],
+        '--spacing-3xl': vars.sizes.$12,
       },
     },
     [breakpoints.lg]: {
       vars: {
-        '--spacing-2xl': vars.sizes['10'],
-        '--spacing-3xl': vars.sizes['15'],
+        '--spacing-2xl': vars.sizes.$10,
+        '--spacing-3xl': vars.sizes.$15,
       },
     },
     [breakpoints.xl]: {
       vars: {
-        '--spacing-xl': vars.sizes['8'],
-        '--spacing-2xl': vars.sizes['13'],
-        '--spacing-3xl': vars.sizes['20'],
+        '--spacing-xl': vars.sizes.$8,
+        '--spacing-2xl': vars.sizes.$13,
+        '--spacing-3xl': vars.sizes.$20,
       },
     },
-    [breakpoints['2xl']]: {
+    [breakpoints.xxl]: {
       vars: {
-        '--spacing-xl': vars.sizes['11'],
-        '--spacing-2xl': vars.sizes['17'],
-        '--spacing-3xl': vars.sizes['25'],
+        '--spacing-xl': vars.sizes.$11,
+        '--spacing-2xl': vars.sizes.$17,
+        '--spacing-3xl': vars.sizes.$25,
       },
     },
   },

@@ -10,32 +10,32 @@ export const container = style([
   sprinkles({
     display: 'flex',
     placeItems: 'center',
-    gap: 1,
-    borderRadius: 'sm',
+    gap: '$2',
+    borderRadius: '$sm',
     cursor: 'pointer',
-    paddingX: 4,
-    paddingY: 3,
+    paddingX: '$4',
+    paddingY: '$3',
     border: 'none',
-    fontSize: 'base',
+    fontSize: '$base',
   }),
   {
     transition: 'background-color 0.4s ease',
     ':hover': {
-      background: bgHoverColor,
+      backgroundColor: bgHoverColor,
     },
     ':active': {
-      background: bgActiveColor,
+      backgroundColor: bgActiveColor,
     },
     ':focus-visible': {
       outlineOffset: '2px',
-      outlineWidth: vars.borderWidths.md,
+      outlineWidth: vars.borderWidths.$md,
       outlineStyle: 'solid',
       outlineColor: focusOutlineColor,
     },
     ':disabled': {
       opacity: 0.7,
-      background: vars.colors.neutral3,
-      color: vars.colors.neutral1,
+      backgroundColor: vars.colors.$neutral3,
+      color: vars.colors.$neutral1,
       cursor: 'not-allowed',
     },
   },
@@ -53,14 +53,14 @@ export const colorVariants = styleVariants(colors, (color) => {
   return [
     container,
     sprinkles({
-      color: `${color}Surface`,
-      bg: `${color}Contrast`,
+      color: `$${color}Surface`,
+      bg: `$${color}Contrast`,
     }),
     {
       vars: {
-        [bgHoverColor]: vars.colors[`${color}HighContrast`],
-        [bgActiveColor]: vars.colors[`${color}Accent`],
-        [focusOutlineColor]: vars.colors[`${color}Accent`],
+        [bgHoverColor]: vars.colors[`$${color}HighContrast`],
+        [bgActiveColor]: vars.colors[`$${color}Accent`],
+        [focusOutlineColor]: vars.colors[`$${color}Accent`],
       },
     },
   ];

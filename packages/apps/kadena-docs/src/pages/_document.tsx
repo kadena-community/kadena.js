@@ -17,6 +17,7 @@ export default function Document(): JSX.Element {
       </TypedHead>
       <body>
         <Main />
+        <div id="modalportal" />
         <TypedNextScript />
       </body>
     </Html>

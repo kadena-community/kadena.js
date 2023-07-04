@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "",
   "keywords": [],
   "repository": {
@@ -26,20 +26,14 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "_phase:build": "heft build --clean",
-    "_phase:test": "heft test --no-build",
     "build": "heft build --clean",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "test": "rushx build && heft test --no-build"
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write -u"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
+    "test": "heft test --no-build"
   },
   "dependencies": {
     "@kadena/types": "workspace:*",
@@ -49,10 +43,13 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@rushstack/eslint-config": "~2.6.2",
-    "@rushstack/heft": "~0.46.1",
+    "@kadena-dev/markdown": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0"
+    "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1"
   }
 }

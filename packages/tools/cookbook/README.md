@@ -7,34 +7,34 @@ This project demonstrates common use cases for `@kadena/client` and
 
 <picture>
 
-<source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
+<source srcset="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
 
-<img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
+<img src="https://github.com/kadena-community/kadena.js/raw/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
 
 </picture>
 
 </p>
 
 In depth documentation for setting up and using @kadena/client can be found at
-[@kadena/client](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#kadenajs---client)
+[@kadena/client][1]
 
 <hr>
 
 ## Overview
 
-| Name                                                         | Description                    |
-| ------------------------------------------------------------ | ------------------------------ |
-| **Accounts**                                                 |                                |
-| [Create Account](./src/accounts/create-account.ts)           | Create a KDA account.          |
-| [Create And Fund Account](./src/accounts/transfer-create.ts) | Create and fund a KDA account. |
-| [Get Balance](./src/accounts/get-balance.ts)                 | Check KDA account balance.     |
+| Name                         | Description                    |
+| ---------------------------- | ------------------------------ |
+| **Accounts**                 |                                |
+| [Create Account][2]          | Create a KDA account.          |
+| [Create And Fund Account][3] | Create and fund a KDA account. |
+| [Get Balance][4]             | Check KDA account balance.     |
 
 ## Setup
 
-1. [Install dependencies](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain)
-2. [Load contracts from blockchain](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain)
-3. [Generate Interfaces](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client#load-contracts-from-the-blockchain)
-4. Execute commands
+1.  [Install dependencies][5]
+2.  [Load contracts from blockchain][5]
+3.  [Generate Interfaces][5]
+4.  Execute commands
 
 Example: Running the transfer-create script:
 
@@ -54,3 +54,11 @@ ts-node src/accounts/transfer-create.ts senderAccount receiverAccount 1
 - If you would like to test a transaction without sending it to the blockchain
   to be mined, you can use the `printLocal` function provided in the utils
   directory to print the response for a non-transactional command execution.
+
+[1]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client#kadenajs---client
+[2]: ./src/accounts/create-account.ts
+[3]: ./src/accounts/transfer-create.ts
+[4]: ./src/accounts/get-balance.ts
+[5]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client#load-contracts-from-the-blockchain

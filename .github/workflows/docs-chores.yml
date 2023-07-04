@@ -1,0 +1,46 @@
+name: Docs Cypress tests
+
+on:
+  push:
+    paths:
+      - packages/apps/kadena-docs/*/**
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Rush install (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js install -t @kadena/kadena-docs
+
+      - name: Rush Build
+        run: |
+          node common/scripts/install-run-rush.js build -t @kadena/kadena-docs
+
+      - name: Create page tree JSON
+        run: |
+          node ./../../../common/scripts/install-run-rushx.js build:scripts
+        working-directory: packages/apps/kadena-docs
+
+      - name: Cypress tests
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: packages/apps/kadena-docs
+          start: npm run dev
+          browser: chrome
+          install: false
+          wait-on: 'http://localhost:3000'
+        env:
+          # pass GitHub token to detect new build vs re-run build
+          NEXT_PUBLIC_APP_DEV: test

@@ -1,7 +1,5 @@
 name: Rush release (version --bump, publish)
 on:
-  push:
-    branches: ['master']
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
@@ -27,8 +25,10 @@ jobs:
         run: node common/scripts/install-run-rush.js change --verify
       - name: Rush install (install-run-rush)
         run: node common/scripts/install-run-rush.js install
-      - name: Rush retest (install-run-rush)
-        run: node common/scripts/install-run-rush.js retest --verbose
+      - name: Rush test (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js build --verbose
+          node common/scripts/install-run-rush.js test --verbose
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
@@ -37,10 +37,11 @@ jobs:
       # Disabled this step; it's better to run this step locally and submit it
       # as a PR. This makes a release explicit instead of automatic
       # - name: Rush version bump (install-run-rush)
-      #   run: node common/scripts/install-run-rush.js version --bump --target-branch master --ignore-git-hooks
+      #   run: node common/scripts/install-run-rush.js version --bump --target-branch main
 
       - name: Rush publish (install-run-rush)
-        run: node common/scripts/install-run-rush.js publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch master
+        run: |
+          node common/scripts/install-run-rush.js publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch main
       # - name: Rush test (rush-lib)
       #   run: node apps/rush/lib/start-dev.js test --verbose --production --timeline
       #   env:

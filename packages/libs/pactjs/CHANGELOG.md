@@ -1,6 +1,18 @@
 # Change Log - @kadena/pactjs
 
-This log was last generated on Thu, 01 Jun 2023 20:18:44 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Jun 2023 09:46:33 GMT and should not be manually modified.
+
+## 0.2.8
+Thu, 22 Jun 2023 09:46:33 GMT
+
+_Version update only_
+
+## 0.2.7
+Tue, 13 Jun 2023 13:17:28 GMT
+
+### Patches
+
+- Update to typescript 5
 
 ## 0.2.6
 Thu, 01 Jun 2023 20:18:44 GMT
