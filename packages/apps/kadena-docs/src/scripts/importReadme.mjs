@@ -2,11 +2,11 @@ import * as fs from 'fs';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 
-const createFrontMatter = (title, order) => {
+const createFrontMatter = (title, menuTitle, order) => {
   return `---
 title: ${title}  
 description: Kadena makes blockchain work for everyone.  
-menu: ${title}  
+menu: ${menuTitle}  
 label: ${title}  
 order: ${order}  
 layout: full  
@@ -33,13 +33,13 @@ const getTitle = (pageAST) => {
   return node.children[0].value;
 };
 
-const importDocs = (packageName, destination, title, order) => {
-  const doc = fs.readFileSync(`./../../${packageName}/README.md`, 'utf-8');
+const createTreeRoot = (page) => ({
+  type: 'root',
+  children: page,
+});
 
-  const md = remark.parse(doc);
-
-  // const hasStarted = false;
-  const pages = md.children.reduce((acc, val) => {
+const devideIntoPages = (md) => {
+  return md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
       acc.push([val]);
     } else {
@@ -50,26 +50,24 @@ const importDocs = (packageName, destination, title, order) => {
 
     return acc;
   }, []);
+};
 
-  //console.log(md.children);
-  // md.children = pages;
+const importDocs = (packageName, destination, parentTitle, RootOrder) => {
+  const doc = fs.readFileSync(`./../../${packageName}/README.md`, 'utf-8');
+  const md = remark.parse(doc);
 
-  pages.forEach(async (page, idx) => {
+  devideIntoPages(md).forEach(async (page, idx) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
     console.log(slug);
-    const frontmatter = createFrontMatter(title, order);
+    const menuTitle = idx === 0 ? parentTitle : title;
+    const order = idx === 0 ? RootOrder : idx;
 
-    const tree = {
-      type: 'root',
-      children: page,
-    };
-
-    const doc = toMarkdown(tree);
+    const doc = toMarkdown(createTreeRoot(page));
 
     fs.writeFileSync(
       `./src/pages/docs/${destination}/${slug}.mdx`,
-      frontmatter + doc,
+      createFrontMatter(title, menuTitle, order) + doc,
       {
         flag: 'w',
       },
@@ -77,4 +75,4 @@ const importDocs = (packageName, destination, title, order) => {
   });
 };
 
-importDocs('libs/kadena.js', 'kadena/kadenajs', 'KadenaJS', 5);
+importDocs('libs/kadena.js', 'kadena/kadenajs', 'KadenaJS', 6);
