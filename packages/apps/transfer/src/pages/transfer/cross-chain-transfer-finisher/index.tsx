@@ -49,7 +49,7 @@ interface IPactResultError {
 }
 
 const CrossChainTransferFinisher: FC = () => {
-  const debug = Debug('XChain-Transfer-Finisher');
+  const debug = Debug('kadena-transfer:pages:cross-chain-transfer-finisher');
   const { t } = useTranslation('common');
   const { network } = useAppContext();
 
@@ -74,6 +74,7 @@ const CrossChainTransferFinisher: FC = () => {
     e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
     e.preventDefault();
+    debug(checkRequestKey.name);
 
     if (!requestKey) {
       return;
@@ -102,6 +103,8 @@ const CrossChainTransferFinisher: FC = () => {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
+
+    debug(handleSubmit.name);
 
     if (!pollResults.tx) {
       return;
@@ -152,6 +155,7 @@ const CrossChainTransferFinisher: FC = () => {
         });
         setFinalResults({ ...pollResult });
       } catch (tx) {
+        debug(tx);
         setFinalResults({ ...tx });
       }
     }

@@ -9,13 +9,14 @@ import {
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
+import { getXChainTransferInfo } from '../transfer-tracker/get-transfer-status';
 
 export interface ITransferResult {
   requestKey?: string;
   status?: string;
 }
 
-const debug = Debug('transfer-finisher');
+const debug = Debug('kadena-transfer:services:finish-xchain-transfer');
 const gasLimit: number = kadenaConstants.GAS_LIMIT;
 const gasPrice: number = kadenaConstants.GAS_PRICE;
 
@@ -27,6 +28,7 @@ export async function finishXChainTransfer(
   chainId: ChainId,
   sender: string,
 ): Promise<ContCommand | { error: string }> {
+  debug(finishXChainTransfer.name);
   const host = getKadenaConstantByNetwork(network).apiHost({
     networkId: chainNetwork[network].network,
     chainId,

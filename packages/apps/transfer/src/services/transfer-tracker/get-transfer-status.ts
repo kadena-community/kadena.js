@@ -11,6 +11,7 @@ import {
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { Translate } from 'next-translate';
+import Debug from 'debug';
 
 export interface IStatusData {
   id?: number;
@@ -23,6 +24,8 @@ export interface IStatusData {
   receiverChain?: string;
   amount?: number;
 }
+
+const debug = Debug('kadena-transfer:services:get-transfer-status');
 
 export async function getTransferStatus({
   requestKey,
@@ -37,6 +40,7 @@ export async function getTransferStatus({
     onPoll?: (status: IStatusData) => void;
   };
 }): Promise<void> {
+  debug('getTransferStatus', requestKey, network);
   const { onPoll = () => {} } = { ...options };
 
   try {
@@ -130,6 +134,7 @@ export async function getTransferStatus({
     });
     return;
   } catch (error) {
+    debug(error);
     onPoll({
       id: 0,
       status: t('Error'),
@@ -154,6 +159,7 @@ export async function getXChainTransferInfo({
   network: Network;
   t: Translate;
 }): Promise<IStatusData> {
+  debug(getXChainTransferInfo.name);
   try {
     const proofApiHost = getKadenaConstantByNetwork(network).apiHost({
       networkId: chainNetwork[network].network,
@@ -220,7 +226,7 @@ export async function getXChainTransferInfo({
       description: t('Transfer not found'),
     };
   } catch (error) {
-    console.log(error);
+    debug(error);
     return {
       id: 0,
       status: t('Error'),
@@ -252,6 +258,8 @@ export async function checkForProof({
   };
   t: Translate;
 }): Promise<Response | undefined> {
+  debug(checkForProof.name);
+
   const { onPoll = () => {} } = { ...options };
 
   try {
@@ -280,6 +288,7 @@ export async function checkForProof({
       },
     });
   } catch (error) {
+    debug(error);
     onPoll({
       id: 0,
       status: t('Error'),

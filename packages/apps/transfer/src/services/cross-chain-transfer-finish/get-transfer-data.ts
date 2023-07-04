@@ -9,7 +9,7 @@ import {
   validateRequestKey,
 } from '@/services/utils/utils';
 import { Translate } from 'next-translate';
-
+import Debug from 'debug';
 interface ITransactionData {
   sender: { chain: ChainId; account: string };
   receiver: { chain: ChainId; account: string };
@@ -40,6 +40,8 @@ interface IEventData {
   moduleName: string;
 }
 
+const debug = Debug('kadena-transfer:services:get-transfer-data');
+
 export async function getTransferData({
   requestKey,
   network,
@@ -49,6 +51,7 @@ export async function getTransferData({
   network: Network;
   t: Translate;
 }): Promise<ITransferDataResult> {
+  debug(getTransferData.name);
   const validatedRequestKey = validateRequestKey(requestKey);
 
   if (validatedRequestKey === undefined) {
@@ -123,7 +126,7 @@ export async function getTransferData({
       },
     };
   } catch (e) {
-    console.log(e);
+    debug(e);
     return { error: e.message };
   }
 }

@@ -10,6 +10,8 @@ import { PactNumber } from '@kadena/pactjs';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { env } from '@/utils/env';
 
+import Debug from 'debug';
+
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
 const SENDER_ACCOUNT: string = 'coin-faucet';
 const SENDER_OPERATION_ACCOUNT: string = 'faucet-operation';
@@ -22,6 +24,8 @@ const FAUCET_PRIVATE_KEY = env(
   '<PROVIDE_FAUCET_PRIVATEKEY_HERE>',
 );
 
+const debug = Debug('kadena-transfer:services:faucet-index');
+
 export const fundExistingAccount = async (
   account: string,
   chainId: ChainwebChainId,
@@ -31,6 +35,7 @@ export const fundExistingAccount = async (
   ) => void,
   amount = 100,
 ): Promise<unknown> => {
+  debug(fundExistingAccount.name);
   const keyPair = genKeyPair();
 
   const transactionBuilder = Pact.modules['user.coin-faucet']

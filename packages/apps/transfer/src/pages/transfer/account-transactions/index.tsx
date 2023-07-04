@@ -26,8 +26,11 @@ import {
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import Debug from 'debug';
 
 const CheckTransactions: FC = () => {
+  const debug = Debug('kadena-transfer:pages:transfer:account-transactions');
+
   const { t } = useTranslation('common');
   const router = useRouter();
   const { network, setNetwork } = useAppContext();
@@ -50,7 +53,10 @@ const CheckTransactions: FC = () => {
         router.query.network as Network,
         router.query.chain as string,
         router.query.account as string,
-      ).catch((e) => console.log(e));
+      ).catch((e) => {
+        debug(e);
+        console.log(e);
+      });
     }
   }, [router.isReady, getAndSetTransactions]);
 
@@ -59,6 +65,7 @@ const CheckTransactions: FC = () => {
   async function checkTransactionsEvent(
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> {
+    debug(checkTransactionsEvent.name);
     try {
       event.preventDefault();
 
@@ -74,7 +81,7 @@ const CheckTransactions: FC = () => {
 
       await getAndSetTransactions(network, chain, account);
     } catch (e) {
-      console.log(e);
+      debug(e);
     }
   }
 
@@ -83,6 +90,7 @@ const CheckTransactions: FC = () => {
     chain: string,
     account: string,
   ): Promise<void> {
+    debug(getAndSetTransactions.name);
     if (!chain || !account) return;
 
     const result = await getTransactions({
@@ -97,6 +105,7 @@ const CheckTransactions: FC = () => {
   }
 
   function renderChainOptions(): JSX.Element[] {
+    debug(renderChainOptions.name);
     const options = [];
     for (let i = 0; i < numberOfChains; i++) {
       options.push(

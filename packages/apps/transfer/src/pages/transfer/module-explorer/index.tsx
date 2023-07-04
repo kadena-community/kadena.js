@@ -30,7 +30,7 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 const GetCode: FC = () => {
-  const debug = Debug('Module-explorer');
+  const debug = Debug('kadena-transfer:pages:transfer:account-transactions');
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleChain, setModuleChain] = useState<number>(1);

@@ -9,11 +9,15 @@ import {
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 
+import Debug from 'debug';
+
 export interface IModuleResult {
   reqKey?: string;
   status?: string;
   code?: string;
 }
+
+const debug = Debug('kadena-transfer:services:describe-module');
 
 export const describeModule = async (
   moduleName: string,
@@ -24,6 +28,8 @@ export const describeModule = async (
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModuleResult> => {
+  debug(describeModule.name);
+
   const pactCommand = new PactCommand();
   pactCommand.code = createExp(`describe-module "${moduleName}"`);
 
