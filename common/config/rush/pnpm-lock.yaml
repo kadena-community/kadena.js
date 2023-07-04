@@ -277,6 +277,7 @@ importers:
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
+      '@kadena/pactjs-cli': workspace:*
       '@kadena/react-components': workspace:*
       '@kadena/react-ui': workspace:*
       '@kadena/types': workspace:*
@@ -345,6 +346,7 @@ importers:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
+      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@kadena/types': link:../../libs/types
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
