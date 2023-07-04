@@ -1,4 +1,4 @@
-import { Text } from './Text';
+import { Text } from '@components/Typography/Text/Text';
 import {
   colorVariant,
   elementVariant,

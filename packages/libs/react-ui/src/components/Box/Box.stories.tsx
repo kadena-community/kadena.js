@@ -1,6 +1,6 @@
-import { vars } from '../../styles';
+import { vars } from '@theme/vars.css';
 
-import { Box, IBoxProps } from './Box';
+import { Box, IBoxProps } from '@components/Box';
 import { containerClass, contentClass } from './stories.css';
 
 import type { Meta, StoryObj } from '@storybook/react';

@@ -1,4 +1,4 @@
-import { SystemIcon } from '../';
+import { SystemIcon } from '@components/Icon';
 
 import { colorVariants } from './IconButton.css';
 

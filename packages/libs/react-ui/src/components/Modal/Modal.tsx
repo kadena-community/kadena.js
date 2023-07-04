@@ -1,6 +1,6 @@
-import { Card } from '../Card/Card';
-import { SystemIcon } from '../Icons';
-import { Heading } from '../Typography';
+import { Heading } from '@components/Typography/Heading/Heading';
+import { Card } from '@components/Card';
+import { SystemIcon } from '@components/Icon';
 
 import {
   background,

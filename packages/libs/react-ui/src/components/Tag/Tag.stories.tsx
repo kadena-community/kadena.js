@@ -1,4 +1,4 @@
-import { ITagProps, Tag } from './Tag';
+import { ITagProps, Tag } from '@components/Tag';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

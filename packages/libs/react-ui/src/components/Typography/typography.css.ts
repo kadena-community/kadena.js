@@ -1,4 +1,4 @@
-import { sprinkles } from '../../styles';
+import { sprinkles } from '@theme/sprinkles.css';
 
 import { ComplexStyleRule } from '@vanilla-extract/css';
 

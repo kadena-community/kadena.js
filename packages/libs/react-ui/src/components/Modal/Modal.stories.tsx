@@ -1,5 +1,4 @@
-import { IModalProps } from './Modal';
-import { ModalProvider } from './ModalProvider';
+import { IModalProps, ModalProvider } from '@components/Modal';
 import { Content } from './StoryComponents';
 
 import type { Meta, StoryObj } from '@storybook/react';

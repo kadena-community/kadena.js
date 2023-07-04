@@ -1,8 +1,7 @@
-import { Button } from '../Button/Button';
-import { SystemIcon } from '../Icons';
-import { Stack } from '../Stack/Stack';
-
-import { IInputProps, Input } from './Input';
+import { Button } from '@components/Button';
+import { IInputProps, Input } from '@components/Input';
+import { Stack } from '@components/Stack';
+import { SystemIcon } from '@components/Icon';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -102,9 +101,9 @@ export const InlineWithButton: Story = {
         placeholder="This is a placeholder"
         outlined
       />
-      <Button title="Submit" onClick={() => {}}>
+      <Button.Root title="Submit" onClick={() => {}}>
         Submit
-      </Button>
+      </Button.Root>
     </Stack>
   ),
 };

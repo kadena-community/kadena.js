@@ -1,4 +1,4 @@
-import { SystemIcon } from '../Icons';
+import { SystemIcon } from '@components/Icon';
 
 import { colorVariants, iconContainerClass } from './NotificationButton.css';
 

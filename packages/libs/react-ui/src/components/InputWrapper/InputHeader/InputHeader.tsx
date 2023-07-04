@@ -1,6 +1,6 @@
-import { SystemIcon } from '../../Icons';
-import { Tag } from '../../Tag/Tag';
-import { Label } from '../../Typography';
+import { SystemIcon } from '@components/Icon';
+import { Tag } from '@components/Tag';
+import { Label } from '@components/Typography/Label/Label';
 
 import { headerClass, infoClass } from './InputHeader.css';
 
