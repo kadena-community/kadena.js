@@ -9,7 +9,6 @@ import { PactNumber } from '@kadena/pactjs';
 
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { env } from '@/utils/env';
-
 import Debug from 'debug';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';

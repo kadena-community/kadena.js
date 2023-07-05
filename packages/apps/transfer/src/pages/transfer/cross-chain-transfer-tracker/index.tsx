@@ -33,16 +33,16 @@ import {
   IStatusData,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
+import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import Debug from 'debug';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
   const router = useRouter();
 
-  const debug = Debug('kadena-transfer:pages:cross-chain-transfer-trackers');
+  const debug = Debug('kadena-transfer:pages:cross-chain-transfer-tracker');
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] =
     useState<string>(router.query?.reqKey as string) || '';

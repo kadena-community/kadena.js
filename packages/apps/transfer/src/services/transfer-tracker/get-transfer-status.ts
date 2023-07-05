@@ -10,8 +10,8 @@ import {
   Network,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
-import { Translate } from 'next-translate';
 import Debug from 'debug';
+import { Translate } from 'next-translate';
 
 export interface IStatusData {
   id?: number;

@@ -9,7 +9,6 @@ import {
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
-import { getXChainTransferInfo } from '../transfer-tracker/get-transfer-status';
 
 export interface ITransferResult {
   requestKey?: string;

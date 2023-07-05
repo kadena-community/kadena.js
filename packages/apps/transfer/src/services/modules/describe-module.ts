@@ -8,7 +8,6 @@ import {
   Network,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
-
 import Debug from 'debug';
 
 export interface IModuleResult {

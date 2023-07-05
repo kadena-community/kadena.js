@@ -8,8 +8,9 @@ import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
-import { Translate } from 'next-translate';
 import Debug from 'debug';
+import { Translate } from 'next-translate';
+
 interface ITransactionData {
   sender: { chain: ChainId; account: string };
   receiver: { chain: ChainId; account: string };

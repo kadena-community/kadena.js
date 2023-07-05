@@ -23,10 +23,10 @@ import {
   getTransactions,
   ITransaction,
 } from '@/services/accounts/get-transactions';
+import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import Debug from 'debug';
 
 const CheckTransactions: FC = () => {
   const debug = Debug('kadena-transfer:pages:transfer:account-transactions');
