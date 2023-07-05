@@ -56,15 +56,7 @@ const createTreeRoot = (page) => ({
 });
 
 const createDir = (dir) => {
-  const dirArr = dir.replace(DOCSROOT, '').split('/');
-  dirArr.reduce((acc, val) => {
-    const newDir = `${acc}${val}/`;
-    console.log(newDir);
-    if (!fs.existsSync(newDir)) {
-      fs.mkdirSync(newDir);
-    }
-    return newDir;
-  }, DOCSROOT);
+  fs.mkdirSync(dir, { recursive: true });
 };
 
 const divideIntoPages = (md) => {
@@ -112,4 +104,4 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   });
 };
 
-importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
+importDocs('libs/kadena.js/README.md', 'kadena/test/kadenajs', 'KadenaJS', 6);
