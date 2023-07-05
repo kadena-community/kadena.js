@@ -8,7 +8,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 describe('Layout', () => {
-  test('renders correctly', () => {
+  it('renders correctly', () => {
     const { getByTestId, getByRole } = render(<Layout>Hello, World!</Layout>);
 
     // Assert that the layout container element is rendered
