@@ -16,8 +16,6 @@ Kadena blockchain
 > the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will
 > provide helper function
 
----
-
 ## Running Tests
 
 ### Unit testing
@@ -58,8 +56,6 @@ $ npm test:integration:devnet
 ```
 
 > **TODO** make Pact server port configurable
-
----
 
 ## TODO
 

@@ -67,7 +67,7 @@ const createDir = (dir) => {
   }, DOCSROOT);
 };
 
-const devideIntoPages = (md) => {
+const divideIntoPages = (md) => {
   return md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
       acc.push([val]);
