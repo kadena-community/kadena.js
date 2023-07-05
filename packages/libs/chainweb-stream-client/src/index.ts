@@ -3,7 +3,7 @@ import {
   HeartbeatTimeoutError,
   parseError,
 } from './errors';
-import { isClientAhead,isMajorCompatible, isMinorCompatible } from './semver';
+import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
 import {
   ChainwebStreamType,
   ConnectionState,
