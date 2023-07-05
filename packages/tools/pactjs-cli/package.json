@@ -22,7 +22,6 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
   "dependencies": {
