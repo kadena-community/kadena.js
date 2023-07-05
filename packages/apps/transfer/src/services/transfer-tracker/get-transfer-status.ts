@@ -40,7 +40,7 @@ export async function getTransferStatus({
     onPoll?: (status: IStatusData) => void;
   };
 }): Promise<void> {
-  debug('getTransferStatus', requestKey, network);
+  debug(getTransferStatus.name);
   const { onPoll = () => {} } = { ...options };
 
   try {
