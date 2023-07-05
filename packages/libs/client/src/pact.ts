@@ -20,7 +20,7 @@ export const getModule = (name: string): any => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pr: any = new Proxy<any>(function () {} as any, {
     get(target, path: string) {
-      code += '.' + path;
+      code = `${code}.${path}`;
       return pr;
     },
     apply(target, thisArg, args) {

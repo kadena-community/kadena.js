@@ -9,7 +9,6 @@ import {
   addSigner,
   commandBuilder,
   IContinuationPayload,
-  IPactCommand,
   payload,
   setMeta,
   setProp,
@@ -71,7 +70,9 @@ export async function doCrossChianTransfer(
   to: IAccount,
   amount: string,
 ): Promise<[boolean, ICommandResult, ICommandResult | undefined]> {
-  await Promise.resolve(debitInTheFirstChain(from, to, amount).getTransaction())
+  await Promise.resolve(
+    debitInTheFirstChain(from, to, amount).createTransaction(),
+  )
     .then(quicksign)
     .then(submit)
     .then(pollStatus)
@@ -91,7 +92,7 @@ export async function doCrossChianTransfer(
           step: '1',
         },
         to.chainId,
-      ).getTransaction(),
+      ).createTransaction(),
     )
     .then(quicksign)
     .then(submit)
@@ -99,7 +100,7 @@ export async function doCrossChianTransfer(
 
   // or we can use async/await
 
-  const unsignedTr = debitInTheFirstChain(from, to, amount).getTransaction();
+  const unsignedTr = debitInTheFirstChain(from, to, amount).createTransaction();
 
   const transaction = await quicksign(unsignedTr);
   const [sendRequestKey] = await submit(transaction);
@@ -118,7 +119,7 @@ export async function doCrossChianTransfer(
       step: '1',
     },
     to.chainId,
-  ).getTransaction();
+  ).createTransaction();
 
   const unsignedContinuationTr = await quicksign(continuation);
   const [contRequestKey] = await submit(unsignedContinuationTr);

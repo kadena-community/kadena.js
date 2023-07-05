@@ -4,25 +4,14 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 
 import { getClient } from '../client/client';
-import {
-  addSigner,
-  commandBuilder,
-  IPactCommand,
-  payload,
-  setMeta,
-  setProp,
-} from '../index';
+import { addSigner, commandBuilder, payload, setMeta, setProp } from '../index';
 import { Pact } from '../pact';
 import { quicksign } from '../sign';
 
 const { coin } = Pact.modules;
 
 const getHostUrl = (networkId: string, chainId: string): string =>
-  'http://localhost:8080/chainweb/0.0/' +
-  networkId +
-  '/chain/' +
-  chainId +
-  '/pact';
+  `http://localhost:8080/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 
 const { submit, pollStatus } = getClient(getHostUrl);
 
@@ -57,7 +46,7 @@ export async function doSafeTransfer(
     },
   );
 
-  const signedCommand = await quicksign(command.getTransaction());
+  const signedCommand = await quicksign(command.createTransaction());
 
   const receivedKeys = await submit(signedCommand);
   const status = await pollStatus(receivedKeys);

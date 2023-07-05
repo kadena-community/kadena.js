@@ -45,6 +45,29 @@ partial PactCommands, providing the necessary flexibility for various scenarios.
 The return value of commandBuilder is a merged object of partial PactCommands,
 allowing you to compose commandBuilder to generate the desired command.
 
+command builder returns these properties
+
+```TypeScript
+export interface ICommandBuilderReturnType {
+  /**
+   * command generator function, useful when you what to compose multiple command builders or use it with FP utilities (e.g. pipe)
+   */
+  (initial: Partial<IPactCommand>): Partial<IPactCommand>;
+  /**
+   * Returns the merged IPactCommand Object
+   */
+  getPactCommand(): Partial<IPactCommand>;
+  /**
+   * Returns transaction including { cmd, hash, sigs }, in this step sig would be an array of undefined values that you need to add signatures later
+   */
+  getTransaction(): IUnsignedCommand;
+  /**
+   * validate the command to see if it has all required parts
+   */
+  validate(): boolean;
+}
+```
+
 ### examples
 
 Merging all partial objects to one object
@@ -54,16 +77,36 @@ const command = commandBuilder(
   { payload: { code: '(coin.transfer "alice" "bob" 1)' } },
   { payload: { data: { key: 'value' } } },
   (cmd) => ({ nonce: createNonce(cmd) }),
-)
+).getCommand()
 
 // command
- const cmd = {
-    payload: {
+const cmd = {
+  payload: {
     code: '(coin.transfer "alice" "bob" 1)',
     data: { key: 'value' },
   },
   nonce: 'result-of-createNonce',
 };
+```
+
+Compose multiple commandBuilder
+
+```TypeScript
+const mainnetConfig = commandBuilder(
+  setMeta({ chainId: '1' }),
+  setProp('networkId', 'mainnet04'),
+);
+
+const transfer = commandBuilder(
+  payload.exec(coin.transfer('javad', 'albert', { decimal: '0.1' })),
+  addSigner('javadPublicKey', (withCapability) => [
+    withCapability('coin.GAS'),
+    withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
+  ]),
+);
+
+const finalCommand = commandBuilder(mainnetConfig, transfer).getPactCommand();
+
 ```
 
 The library also exports some helpers to facilitate easier creation of each
@@ -84,7 +127,7 @@ const command = commandBuilder(
   payload.exec(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   )
-)
+).getPactCommand()
 
 //
 const command = {
@@ -105,7 +148,7 @@ const command = commandBuilder(
     proof: 'test-proof',
     step: '1',
   })
-)
+).getPactCommand()
 
 //
 const command = {
@@ -135,7 +178,7 @@ const command = commandBuilder(
   addSigner("bob_public_key",(withCapability)=>[
     withCapability("coin.TRANSFER", "bob", "alice", { decimal: "1.1" })
   ])
-)
+).getPactCommand()
 
 //
 const command = {
@@ -165,7 +208,7 @@ const command = commandBuilder(
   payload.exec(
     coin.transfer(readKeyset("sender_key"), "bob", { decimal: "1.1" })
   ),
-)
+).getPactCommand()
 
 //
 const command = {
@@ -191,7 +234,7 @@ const command = commandBuilder (
     coin.transfer("bob", "alice", { decimal: "1.1" })
   ),
   addData("name", { value: "test" }),
-)
+).getPactCommand()
 
 //
 const command = {
@@ -223,7 +266,7 @@ const command = commandBuilder(
     coin.transfer(readKeyset("senderKey"), "bob", { decimal: "1.1" })
   ),
   addKeyset("senderKey","keys-one", "the_public_key")
-)
+).getPactCommand()
 
 //
 const command = {
@@ -250,7 +293,7 @@ const command = commandBuilder(
     coin.transfer("alice", "bob", { decimal: "1.1" })
   ),
   setMeta({ chainId : "1" }),
-)
+).getPactCommand()
 
 //
 const command = {
@@ -280,7 +323,7 @@ const command = commandBuilder(
   ),
   setProp("networkId", "mainnet01"),
   setProp("nonce", `k:none:${Date.now()}`),
-)
+).getPactCommand()
 
 //
 const command = {
@@ -322,3 +365,25 @@ the helpers
 const hostUrlGenerator = (networkId,chainId) => `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`
 const { local , submit, getStatus, pollStatus, getSpv, pollSpv } = getClient(hostUrlGenerator)
 ```
+
+### local
+
+This function calls `/local` endpoint of the blockchain, actually its a dirty
+read and does not submit any changes to blockchain (so you don't pay gas)
+
+| parameter | type | description |
+| --------- | ---- | ----------- |
+
+| transaction
+
+```TypeScript
+const unSignedTr = commandBuilder(...).createTransaction()
+// if you need to sign the tr
+const signedTr = await quicksign(unSignedTr)
+// return the request key that you can use later fro fetching the request status
+const requestKey = await local(signedTr)
+```
+
+### submit
+
+this function

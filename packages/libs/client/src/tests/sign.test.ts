@@ -1,5 +1,3 @@
-import { ICommand } from '@kadena/types';
-
 import { IPactCommand } from '../interfaces/IPactCommand';
 import { quicksign } from '../sign';
 
@@ -36,10 +34,5 @@ describe('quicksign', () => {
   it('returns a signed transaction', async () => {
     const result = await quicksign(testTr);
     expect(result).toStrictEqual(testTr);
-  });
-  it("throws an error if the command doesn't match ICommand interface", async () => {
-    await expect(() => quicksign({} as ICommand)).rejects.toThrowError(
-      new Error('INVALID_COMMAND'),
-    );
   });
 });

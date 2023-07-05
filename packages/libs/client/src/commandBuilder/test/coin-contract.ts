@@ -31,6 +31,7 @@ declare module '../../pact' {
       ) => string & {
         capability: ITransferCapability;
       };
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'transfer-crosschain': (
         sender: string,
         receiver: string,

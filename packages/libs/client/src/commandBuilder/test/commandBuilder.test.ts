@@ -9,7 +9,7 @@ import {
 } from '../../index';
 import { Pact } from '../../pact';
 import { mergePayload } from '../commandBuilder';
-import { addData } from '../utils/addDate';
+import { addData } from '../utils/addData';
 
 const { coin } = Pact.modules;
 
@@ -59,7 +59,7 @@ describe('commandBuilder', () => {
       ]),
       setProp('nonce', 'test-nonce'),
     );
-    expect(command).toStrictEqual({
+    expect(command.getPactCommand()).toStrictEqual({
       payload: {
         code: '(coin.transfer "alice" "bob" 12.1)',
       },
@@ -99,7 +99,7 @@ describe('commandBuilder', () => {
       setProp('nonce', 'test-nonce'),
     );
 
-    expect(command).toStrictEqual({
+    expect(command.getPactCommand()).toStrictEqual({
       payload: {
         code: '(coin.transfer "alice" "bob" 12.1)',
       },
@@ -230,10 +230,6 @@ describe('commandBuilder', () => {
         setMeta({ chainId: '1' }),
       ).getPactCommand().meta?.creationTime,
     ).toBe(1690416000);
-  });
-
-  it('merges data', () => {
-    const command = commandBuilder(payload.exec());
   });
 });
 

@@ -4,7 +4,9 @@ import { IPactCommand } from '../../interfaces/IPactCommand';
  * @alpha
  */
 export const setMeta = (
-  options: { chainId: IPactCommand['meta']['chainId'] } & Partial<IPactCommand['meta']>,
+  options: { chainId: IPactCommand['meta']['chainId'] } & Partial<
+    IPactCommand['meta']
+  >,
 ): Pick<IPactCommand, 'meta'> => ({
   meta: {
     // add all default value here

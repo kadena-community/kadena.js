@@ -5,7 +5,8 @@ import {
   IExecPayload,
   IPactCommand,
 } from '../interfaces/IPactCommand';
-import { isCommand } from '../utils/isCommand';
+import { createTransaction } from '../utils/createTransaction';
+import { isPactCommand } from '../utils/isPactCommand';
 
 export const mergePayload = (
   payload: IPactCommand['payload'] | undefined,
@@ -47,9 +48,21 @@ export const mergePayload = (
 };
 
 export interface ICommandBuilderReturnType {
+  /**
+   * command generator function, useful when you what to compose multiple command builders or use it with FP utilities (e.g. pipe)
+   */
   (initial: Partial<IPactCommand>): Partial<IPactCommand>;
+  /**
+   * Returns the merged IPactCommand Object
+   */
   getPactCommand(): Partial<IPactCommand>;
-  getTransaction(): IUnsignedCommand;
+  /**
+   * Returns transaction including \{ cmd, hash, sigs \}, in this step sig would be an array of undefined values that you need to add signatures later
+   */
+  createTransaction(): IUnsignedCommand;
+  /**
+   * validate the command to see if it has all required parts
+   */
   validate(): boolean;
 }
 
@@ -82,7 +95,9 @@ export const commandBuilder: ICommandBuilder = (
   first: PoF<Partial<IPactCommand>>,
   ...rest: PoF<Partial<IPactCommand>>[]
 ) => {
-  const generateCommand = (initial: Partial<IPactCommand> = {}) => {
+  const generateCommand = (
+    initial: Partial<IPactCommand> = {},
+  ): Partial<IPactCommand> => {
     const args: Array<
       | Partial<IPactCommand>
       | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>)
@@ -123,18 +138,17 @@ export const commandBuilder: ICommandBuilder = (
     }
     return command;
   };
-  const getPactCommand = () => generateCommand();
-  const getTransaction = () => {
-    const pactCommand = getPactCommand();
-    return {
-      cmd: JSON.stringify(pactCommand),
-      hash: 'hash',
-      sigs: pactCommand.signers?.map(() => undefined) ?? [],
-    } as IUnsignedCommand;
-  };
+  const getPactCommand = (): Partial<IPactCommand> => generateCommand();
+
   return Object.assign(generateCommand, {
     getPactCommand,
-    getTransaction,
-    validate: () => isCommand(getPactCommand()),
+    createTransaction: () => {
+      const pactCommand = getPactCommand();
+      if (isPactCommand(pactCommand)) {
+        return createTransaction(pactCommand);
+      }
+      throw new Error('NOT_A_PACT_COMMAND');
+    },
+    validate: () => isPactCommand(getPactCommand()),
   });
 };

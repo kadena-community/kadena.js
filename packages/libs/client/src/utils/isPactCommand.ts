@@ -1,6 +1,8 @@
 import { IPactCommand } from '../interfaces/IPactCommand';
 
-export const isCommand = (command: Partial<IPactCommand>): command is IPactCommand => {
+export const isPactCommand = (
+  command: Partial<IPactCommand>,
+): command is IPactCommand => {
   if (command.payload === undefined) return false;
 
   if (!('code' in command.payload) && !('pactId' in command.payload))

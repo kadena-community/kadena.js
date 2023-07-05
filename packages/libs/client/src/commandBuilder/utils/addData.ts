@@ -2,7 +2,10 @@ type ReadKeyset = <T extends string>(name: T) => `(read-keyset "${T}")`;
 
 export const readKeyset: ReadKeyset = (name) => `(read-keyset "${name}")`;
 
-export const addData = <T extends string, D extends any>(
+export const addData = <
+  T extends string,
+  D extends object | string | number | boolean,
+>(
   name: T,
   data: D,
 ): {
@@ -15,6 +18,7 @@ export const addData = <T extends string, D extends any>(
   payload: {
     data: {
       [name as string]: data,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   },
 });

@@ -26,13 +26,13 @@ interface IClient {
    * calls '/local' endpoint
    */
   local: <T extends ILocalOptions>(
-    command: ICommand,
+    transaction: ICommand,
     options?: T,
   ) => Promise<LocalResponse<T>>;
   /**
    * calls '/send' endpoint
    */
-  submit: (commandsList: ICommand[] | ICommand) => Promise<string[]>;
+  submit: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
   /**
    * calls '/poll' endpoint several times to get the status of all requests. if the requests submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance

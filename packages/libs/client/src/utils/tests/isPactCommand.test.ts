@@ -1,14 +1,14 @@
 import { IPactCommand } from '../../interfaces/IPactCommand';
-import { isCommand } from '../isCommand';
+import { isPactCommand } from '../isPactCommand';
 
 describe('isCommand', () => {
   it('returns false if the object is not a command', () => {
-    expect(isCommand({})).toBe(false);
+    expect(isPactCommand({})).toBe(false);
   });
 
   it('returns true if the object is a command', () => {
     expect(
-      isCommand({
+      isPactCommand({
         payload: {
           code: '(coin.transfer "alice" "bob" 12.1)',
         },
@@ -72,15 +72,17 @@ describe('isCommand', () => {
       },
     };
 
-    expect(isCommand(deleteProperty(command, 'payload'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'payload.code'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'networkId'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'nonce'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'meta'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'meta.chainId'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'meta.creationTime'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'meta.gasLimit'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'meta.gasPrice'))).toBe(false);
-    expect(isCommand(deleteProperty(command, 'meta.ttl'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'payload'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'payload.code'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'networkId'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'nonce'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'meta'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'meta.chainId'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'meta.creationTime'))).toBe(
+      false,
+    );
+    expect(isPactCommand(deleteProperty(command, 'meta.gasLimit'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'meta.gasPrice'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'meta.ttl'))).toBe(false);
   });
 });
