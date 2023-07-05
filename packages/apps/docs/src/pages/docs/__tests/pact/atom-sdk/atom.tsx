@@ -1,7 +1,7 @@
 import {
   checkSubTreeForActive,
   getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive';
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
