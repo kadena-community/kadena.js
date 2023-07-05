@@ -4,7 +4,7 @@ import { ILayout } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive';
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
 import { OpenAPIV3 } from 'openapi-types';
 import React, { FC } from 'react';

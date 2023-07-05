@@ -7,7 +7,7 @@ import { getTopDocs, ITopDoc } from '@/data/getTopDocs';
 import {
   checkSubTreeForActive,
   getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive';
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
