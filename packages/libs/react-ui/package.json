@@ -13,7 +13,7 @@
     "./theme": {
       "import": "./dist/esm/styles/index.js",
       "require": "./dist/cjs/styles/index.js",
-      "types": "./types/styles/index.d.ts"
+      "types": "./theme/index.d.ts"
     }
   },
   "main": "dist/cjs/index.js",

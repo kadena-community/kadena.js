@@ -73,4 +73,5 @@ export const StyledTableData = styled('td', {
   '&:last-child': {
     textAlign: 'right',
   },
+  wordBreak: 'break-word',
 });
