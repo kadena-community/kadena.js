@@ -4,15 +4,15 @@ import { sign } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type {
   ICommand,
-  SignatureWithHash,
   IUnsignedCommand,
+  SignatureWithHash,
 } from '@kadena/types';
+
 import type {
   ICommandResult,
   ILocalCommandResult,
   LocalResultWithoutPreflight,
 } from '../interfaces/PactAPI';
-
 import { local } from '../local';
 
 import { mockFetch } from './mockdata/mockFetch';

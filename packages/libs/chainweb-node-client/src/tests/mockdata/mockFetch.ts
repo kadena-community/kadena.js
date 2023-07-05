@@ -1,12 +1,13 @@
 import type {
+  ILocalCommandResult,
   IPollResponse,
+  IPreflightResult,
   ISendRequestBody,
   ListenResponse,
-  ILocalCommandResult,
   SendResponse,
   SPVResponse,
-  IPreflightResult,
 } from '../../interfaces/PactAPI';
+
 import { testSPVProof, testURL } from './Pact';
 
 /**

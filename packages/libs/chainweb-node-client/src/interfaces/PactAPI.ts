@@ -1,12 +1,12 @@
 import type {
   ChainId,
-  IMetaData,
+  IBase64Url,
   ICommand,
+  IMetaData,
+  IPactEvent,
+  IPactExec,
   IUnsignedCommand,
   PactValue,
-  IBase64Url,
-  IPactExec,
-  IPactEvent,
   SPVProof,
 } from '@kadena/types';
 

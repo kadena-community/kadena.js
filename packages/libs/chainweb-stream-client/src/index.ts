@@ -1,20 +1,21 @@
-import EventSource from 'eventsource';
-import EventEmitter from 'eventemitter2';
 import {
-  parseError,
   ConnectTimeoutError,
   HeartbeatTimeoutError,
+  parseError,
 } from './errors';
+import { isClientAhead,isMajorCompatible, isMinorCompatible } from './semver';
 import {
-  ConnectionState,
-  IChainwebStreamConstructorArgs,
   ChainwebStreamType,
-  ITransaction,
+  ConnectionState,
+  IChainwebStreamConfig,
+  IChainwebStreamConstructorArgs,
   IDebugMsgObject,
   IInitialEvent,
-  IChainwebStreamConfig,
+  ITransaction,
 } from './types';
-import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
+
+import EventEmitter from 'eventemitter2';
+import EventSource from 'eventsource';
 
 export * from './types';
 
