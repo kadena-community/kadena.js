@@ -1,4 +1,4 @@
-export { Button, IButtonProps } from './Button/Button';
+export { Button, IButtonProps } from './Button';
 export { Grid, IGridContainerProps, IGridItemProps } from './Grid';
 export { Stack, IStackProps } from './Stack/Stack';
 export { Modal, IModalProps, ModalProvider, useModal } from './Modal';
