@@ -1,38 +1,4 @@
-# kadena@client
-
-Core library for building Pact expressions to send to the blockchain in js.
-Makes use of .kadena/pactjs-generated
-
-<p align="center">
-
-<picture>
-
-<source srcset="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
-
-<img src="https://github.com/kadena-community/kadena.js/raw/master/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
-
-</picture>
-
-</p>
-
-<hr>
-
-API Reference can be found here
-[client.api.md](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/client/etc/client.api.md)
-
-<hr>
-
-## Introduction
-
-kadena@client s a library that helps web developers interact with the Kadena
-blockchain. It includes three main modules that can be used separately or
-together.
-
-- commandBuilder
-- sign
-- getClient
-
-## commandBuilder
+# commandBuilder
 
 ---
 
@@ -45,7 +11,8 @@ partial PactCommands, providing the necessary flexibility for various scenarios.
 The return value of commandBuilder is a merged object of partial PactCommands,
 allowing you to compose commandBuilder to generate the desired command.
 
-command builder returns these properties
+<details>
+<summary>commandBuilder return type</summary>
 
 ```TypeScript
 export interface ICommandBuilderReturnType {
@@ -68,7 +35,10 @@ export interface ICommandBuilderReturnType {
 }
 ```
 
-### examples
+</details>
+
+<details>
+<summary>examples</summary>
 
 Merging all partial objects to one object
 
@@ -109,15 +79,19 @@ const finalCommand = commandBuilder(mainnetConfig, transfer).getPactCommand();
 
 ```
 
+</details>
+
 The library also exports some helpers to facilitate easier creation of each
 section of the command.
 
-### `payload.exec`
+## `payload.exec`
 
 creating exec payload
 
-```TypeScript
+<details>
+<summary>examples</summary>
 
+```TypeScript
 import Pact from "@kadena/client"
 
 // importing coin module that you can generate types of that by using "pactjs-cli"
@@ -137,9 +111,14 @@ const command = {
 }
 ```
 
-### `payload.cont`
+</details>
+
+## `payload.cont`
 
 creating continuation command
+
+<details>
+<summary>examples</summary>
 
 ```TypeScript
 const command = commandBuilder(
@@ -160,7 +139,9 @@ const command = {
 }
 ```
 
-### `addSigner`
+</details>
+
+## `addSigner`
 
 add a signer and capabilities they sign for, to the command it also uses the the
 typing from the payload part and recommends the relevant capabilities
@@ -169,6 +150,9 @@ typing from the payload part and recommends the relevant capabilities
 | ------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | signer             | string \| { pubKey: string; scheme?: 'ED25519' \| 'ETH', address?:string } | public key of the signer or object including publicKey, schema, and address                |
 | capabilityCallBack | (withCapability)=> ICapabilityItem[]                                       | it gives withCapability function to users in order to add capabilities to the signer part. |
+
+<details>
+<summary>examples</summary>
 
 ```TypeScript
 const command = commandBuilder(
@@ -199,9 +183,14 @@ const command = {
 
 ```
 
-### `readKeyset`
+</details>
+
+## `readKeyset`
 
 return `(read-keyset "name")` string, useful when generating code.
+
+<details>
+<summary>examples</summary>
 
 ```TypeScript
 const command = commandBuilder(
@@ -219,7 +208,9 @@ const command = {
 
 ```
 
-### `addData`
+</details>
+
+## `addData`
 
 adds data to the payload part
 
@@ -227,6 +218,9 @@ adds data to the payload part
 | --------- | ------------------------------------- | ----------------------------------- |
 | name      | string                                | name of the data that you can refer |
 | data      | object \| string \| number \| boolean | The data you want to add            |
+
+<details>
+<summary>examples</summary>
 
 ```TypeScript
 const command = commandBuilder (
@@ -250,7 +244,9 @@ const command = {
 
 ```
 
-### `addKeyset`
+</details>
+
+## `addKeyset`
 
 add keyset to the data part
 
@@ -259,6 +255,9 @@ add keyset to the data part
 | name          | string                                           | name of the keyset                           |
 | pred          | "keys-all" \| "keys-one" \| "keys-two" \| string | type of pred                                 |
 | ...publicKeys | string[]                                         | list of the public keys to add to the keyset |
+
+<details>
+<summary>examples</summary>
 
 ```TypeScript
 const command = commandBuilder(
@@ -283,9 +282,14 @@ const command = {
 
 ```
 
-### `setMeta`
+</details>
+
+## `setMeta`
 
 returns meta section of the command
+
+<details>
+<summary>examples</summary>
 
 ```TypeScript
 const command = commandBuilder(
@@ -311,9 +315,15 @@ const command = {
 }
 ```
 
-### `setProp`
+</details>
+
+## `setProp`
 
 A general helper to add a section.
+
+<details>
+
+<summary>examples</summary>
 
 ```TypeScript
 
@@ -336,54 +346,4 @@ const command = {
 
 ```
 
-## getClient
-
----
-
-Returns the client helpers in order to send commands to the blockchain and poll
-status of requests
-
-| parameter              | type                                                 | description                                                                                                                                                                       |
-| ---------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| host\|hostApiGenerator | string \| (networkId:string, chainId:string)=>string | the url of the blockchian host or the url generator that accepts `networkId` and `chianId` the default value is kadenaHostGenerator that generates url for mainnet01 or testnet04 |
-
-Using hostUrl or hostUrlGenerator
-
-```TypeScript
-// we only want to send request to the chain 1 one the mainnet
-const hostUrl = "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact"
-const client = getClient(hostUrl)
-// we need more flexibitly to call diferent chain or even network, then function
-// extract networkId and chainId from the cmd part of a transaction and use the function to generate the url
-const hostUrlGenerator = (networkId,chainId) => `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`
-const client = getClient(hostUrlGenerator)
-```
-
-the helpers
-
-```TypeScript
-const hostUrlGenerator = (networkId,chainId) => `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`
-const { local , submit, getStatus, pollStatus, getSpv, pollSpv } = getClient(hostUrlGenerator)
-```
-
-### local
-
-This function calls `/local` endpoint of the blockchain, actually its a dirty
-read and does not submit any changes to blockchain (so you don't pay gas)
-
-| parameter | type | description |
-| --------- | ---- | ----------- |
-
-| transaction
-
-```TypeScript
-const unSignedTr = commandBuilder(...).createTransaction()
-// if you need to sign the tr
-const signedTr = await quicksign(unSignedTr)
-// return the request key that you can use later fro fetching the request status
-const requestKey = await local(signedTr)
-```
-
-### submit
-
-this function
+</details>

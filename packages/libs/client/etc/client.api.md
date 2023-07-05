@@ -7,6 +7,18 @@
 import { ICap } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 
+// @alpha (undocumented)
+export const addData: <T extends string, D extends string | number | boolean | object>(name: T, data: D) => {
+    payload: {
+        data: { [key in T]: D; };
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "IAddKeyset" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const addKeyset: IAddKeyset;
+
 // Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
@@ -193,6 +205,11 @@ export const Pact: IPact;
 //
 // @alpha (undocumented)
 export const payload: IPayload;
+
+// Warning: (ae-forgotten-export) The symbol "ReadKeyset" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
 export const setMeta: (options: {

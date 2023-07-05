@@ -4,15 +4,22 @@ import {
   IExecPayload,
 } from '../../interfaces/IPactCommand';
 
-interface IPayload {
-  exec: <
-    T extends Array<{
-      capability(name: string, ...args: unknown[]): ICapabilityItem;
-    }>,
+interface IExec {
+  <
+    T extends Array<
+      | (string & {
+          capability(name: string, ...args: unknown[]): ICapabilityItem;
+        })
+      | string
+    >,
   >(
     ...codes: [...T]
-  ) => // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
+  ): // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
   { payload: IExecPayload & { funs: [...T]; _brand: 'exec' } };
+}
+
+interface IPayload {
+  exec: IExec;
   cont: (options: IContinuationPayload) => {
     payload: IContinuationPayload & { _brand: 'cont' };
   };
@@ -22,7 +29,7 @@ interface IPayload {
  * @alpha
  */
 export const payload: IPayload = {
-  exec: (...codes) => {
+  exec: (...codes: string[]) => {
     const pld: IExecPayload = { code: codes.join('') };
     return {
       payload: pld,

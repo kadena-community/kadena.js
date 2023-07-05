@@ -1,7 +1,15 @@
 type ReadKeyset = <T extends string>(name: T) => `(read-keyset "${T}")`;
 
+/**
+ *
+ * @alpha
+ */
 export const readKeyset: ReadKeyset = (name) => `(read-keyset "${name}")`;
 
+/**
+ *
+ * @alpha
+ */
 export const addData = <
   T extends string,
   D extends object | string | number | boolean,
@@ -55,6 +63,10 @@ interface IAddKeyset {
   };
 }
 
+/**
+ *
+ * @alpha
+ */
 export const addKeyset: IAddKeyset = (
   name: string,
   pred: 'keys-all' | 'keys-one' | 'keys-two' | string,
