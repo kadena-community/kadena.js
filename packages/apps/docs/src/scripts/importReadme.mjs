@@ -1,19 +1,34 @@
 import * as fs from 'fs';
+import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 
 const DOCSROOT = './src/pages/docs/';
 
-const createFrontMatter = (title, menuTitle, order) => {
+const createFrontMatter = (title, menuTitle, order, editLink) => {
   return `---
 title: ${title}  
 description: Kadena makes blockchain work for everyone.  
 menu: ${menuTitle}  
 label: ${title}  
-order: ${order}  
+order: ${order}
+editLink: ${editLink}
 layout: full  
 ---  
 `;
+};
+
+const createEditOverwrite = (filename) =>
+  `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
+
+const createGeneratedWarning = () => {
+  return `
+  
+  {/* 
+hier comes a comment 
+*/}
+  
+  `;
 };
 
 export const createSlug = (str) => {
@@ -52,23 +67,6 @@ const createDir = (dir) => {
   }, DOCSROOT);
 };
 
-const checkIsValidMD = (md) => {
-  const openTags = [];
-
-  const check = (children) => {
-    children.forEach((branch) => {
-      if (branch.type === 'html') {
-        console.log(branch);
-      }
-      if (branch.children && branch.children.length > 0) {
-        return check(branch.children);
-      }
-    });
-  };
-
-  return check(md.children);
-};
-
 const devideIntoPages = (md) => {
   return md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
@@ -87,10 +85,6 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
   const md = remark.parse(doc);
 
-  //@TODO: check if there are HTML paragraphs not closed correctly
-  //if not closed, throw an error in the build
-  const isValidMD = checkIsValidMD(md);
-
   devideIntoPages(md).forEach((page, idx) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
@@ -103,7 +97,14 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
 
     fs.writeFileSync(
       `${DOCSROOT}${destination}/${slug}.mdx`,
-      createFrontMatter(title, menuTitle, order) + doc,
+      createFrontMatter(
+        title,
+        menuTitle,
+        order,
+        createEditOverwrite(filename),
+      ) +
+        createGeneratedWarning() +
+        doc,
       {
         flag: 'w',
       },
