@@ -45,12 +45,18 @@ const CheckTransactions: FC = () => {
       if (router.query.network) {
         setNetwork(router.query.network as Network);
       }
+    }
+  }, [router.isReady]);
 
+  useEffect(() => {
+    if (router.isReady) {
       getAndSetTransactions(
         router.query.network as Network,
         router.query.chain as string,
         router.query.account as string,
-      ).catch((e) => console.log(e));
+      ).catch((e) => {
+        console.log(e);
+      });
     }
   }, [router.isReady, getAndSetTransactions]);
 
