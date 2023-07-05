@@ -1,6 +1,6 @@
 import { Tab } from './Tab';
 import { TabContent } from './TabContent';
-import { selectorLine, tabsContainer } from './Tabs.css';
+import { selectorLine, tabsContainer, tabsContainerWrapper } from './Tabs.css';
 
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
@@ -47,23 +47,25 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
 
   return (
     <section>
-      <div ref={containerRef} className={tabsContainer}>
-        {React.Children.map(children, (child, idx) => {
-          if (!React.isValidElement(child)) return null;
+      <div className={tabsContainerWrapper}>
+        <div ref={containerRef} className={tabsContainer}>
+          {React.Children.map(children, (child, idx) => {
+            if (!React.isValidElement(child)) return null;
 
-          if (child.type === Tab) {
-            const props = {
-              ...child.props,
-              key: child.props.value,
-              selected: selectedTab === child.props.value,
-              handleClick,
-            };
-            return React.cloneElement(child, props);
-          }
-          return null;
-        })}
+            if (child.type === Tab) {
+              const props = {
+                ...child.props,
+                key: child.props.value,
+                selected: selectedTab === child.props.value,
+                handleClick,
+              };
+              return React.cloneElement(child, props);
+            }
+            return null;
+          })}
 
-        <span ref={selectedUnderlineRef} className={selectorLine}></span>
+          <span ref={selectedUnderlineRef} className={selectorLine}></span>
+        </div>
       </div>
 
       {React.Children.map(children, (child, idx) => {
