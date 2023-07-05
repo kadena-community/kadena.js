@@ -1,5 +1,4 @@
-import { SystemIcon } from '@kadena/react-ui';
-import { Button } from '@kadena/react-ui';
+import { Button, SystemIcon } from '@kadena/react-ui';
 
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';

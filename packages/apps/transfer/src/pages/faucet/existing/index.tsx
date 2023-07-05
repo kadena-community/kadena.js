@@ -1,11 +1,6 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
-import {
-  Button,
-  Heading,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
 
 import FormStatusNotification from './notification';
 
