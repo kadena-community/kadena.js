@@ -401,7 +401,7 @@ export class PactCommand
               // reject the Promise when we get a "failure" response
               this.status = 'failure';
               clearTimeout(cancelTimeout);
-              reject(result);
+              reject(result[this.requestKey!]);
             } else if (Date.now() < endTime) {
               // no "success" response (yet), try again in `interval` seconds
               setTimeout(poll, interval);
@@ -409,7 +409,7 @@ export class PactCommand
               // took longer than the specified `timeout`, reject the Promise
               this.status = 'timeout';
               clearTimeout(cancelTimeout);
-              reject(result);
+              reject(result[this.requestKey!]);
             }
           })
           .catch((err) => console.log('this.poll failed. Error:', err));
