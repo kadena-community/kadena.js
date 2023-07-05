@@ -2,7 +2,11 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { getKadenaConstantByNetwork, kadenaConstants, Network } from '@/constants/kadena';
+import {
+  getKadenaConstantByNetwork,
+  kadenaConstants,
+  Network,
+} from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 
 export interface IModulesResult {
@@ -32,7 +36,7 @@ export const listModules = async (
     {
       preflight: false,
       signatureVerification: false,
-    }
+    },
   );
 
   const { result } = response;

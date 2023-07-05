@@ -18,6 +18,7 @@ import {
 } from './styles';
 
 import { Select } from '@/components/Global';
+import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   type IModuleResult,
@@ -29,8 +30,7 @@ import {
 } from '@/services/modules/list-module';
 import { convertIntToChainId } from '@/services/utils/utils';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { kadenaConstants } from '@/constants/kadena';
+import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 
 const ModuleExplorer: FC = () => {
   const { t } = useTranslation('common');
@@ -44,7 +44,7 @@ const ModuleExplorer: FC = () => {
   const numberOfChains = 20;
 
   useEffect(() => {
-    const fetchModules = async () => {
+    const fetchModules = async (): Promise<void> => {
       const modules = await listModules(
         convertIntToChainId(moduleChain),
         network,
@@ -53,19 +53,25 @@ const ModuleExplorer: FC = () => {
         1000,
       );
       setModules(modules);
-    }
+    };
 
     fetchModules().catch(console.error);
   }, [moduleChain, network]);
 
-  const filteredModules = useMemo(() => (modules?.data || []).filter((module: string) => module.includes(moduleSearch)), [modules, moduleSearch]);
+  const filteredModules = useMemo(
+    () =>
+      (modules?.data || []).filter((module: string) =>
+        module.includes(moduleSearch),
+      ),
+    [modules, moduleSearch],
+  );
 
   useEffect(() => {
-    if (! moduleName) {
+    if (!moduleName) {
       return;
     }
 
-    const fetchModule = async () => {
+    const fetchModule = async (): Promise<void> => {
       const data = await describeModule(
         moduleName,
         convertIntToChainId(moduleChain),
@@ -76,7 +82,7 @@ const ModuleExplorer: FC = () => {
       );
 
       setResults(data);
-    }
+    };
 
     fetchModule().catch(console.error);
   }, [moduleChain, moduleName, network]);
@@ -122,19 +128,22 @@ const ModuleExplorer: FC = () => {
             label={t('Module Name')}
             inputProps={{
               placeholder: t('Enter desired module name'),
-              onChange: (e) => setModuleSearch((e.target as HTMLInputElement).value),
+              onChange: (e) =>
+                setModuleSearch((e.target as HTMLInputElement).value),
               value: moduleSearch,
             }}
           />
         </StyledAccountForm>
       </StyledForm>
       <StyledList>
-        { !filteredModules?.length && t('No modules found.')}
+        {!filteredModules?.length && t('No modules found.')}
         {filteredModules?.map((module) => (
           <StyledListItem
             key={module}
             data-module-name={module}
-            onClick={(e) => setModuleName(e.target.dataset.moduleName)}
+            onClick={(e: SyntheticEvent<HTMLDivElement>) =>
+              setModuleName(e.currentTarget.dataset.moduleName || '')
+            }
           >
             {module}
           </StyledListItem>
