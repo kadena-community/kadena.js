@@ -4,7 +4,7 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 
 import { getClient } from '../client/client';
-import { ICommandBuilderReturnType } from '../commandBuilder/commandBuilder';
+import { IPactCommandBuilder } from '../commandBuilder/commandBuilder';
 import {
   addSigner,
   commandBuilder,
@@ -29,7 +29,7 @@ function debitInTheFirstChain(
   from: IAccount,
   to: IAccount,
   amount: string,
-): ICommandBuilderReturnType {
+): IPactCommandBuilder {
   return commandBuilder(
     payload.exec(
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
@@ -49,7 +49,7 @@ function debitInTheFirstChain(
 function creditInTheTargetChain(
   continuation: IContinuationPayload,
   targetChainId: string,
-): ICommandBuilderReturnType {
+): IPactCommandBuilder {
   return commandBuilder(
     payload.cont(continuation),
     addSigner('test', (withCapability) => [withCapability('test')]),

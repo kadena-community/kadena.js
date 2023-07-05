@@ -47,15 +47,21 @@ export const mergePayload = (
   throw new Error('PAYLOAD_NOT_MERGEABLE');
 };
 
-export interface ICommandBuilderReturnType {
+/**
+ * this make the variable callable
+ */
+export interface ILazyPactCommandBuilder extends IPactCommandBuilder {
   /**
    * command generator function, useful when you what to compose multiple command builders or use it with FP utilities (e.g. pipe)
    */
   (initial: Partial<IPactCommand>): Partial<IPactCommand>;
+}
+
+export interface IPactCommandBuilder {
   /**
    * Returns the merged IPactCommand Object
    */
-  getPactCommand(): Partial<IPactCommand>;
+  createPactCommand(initial?: Partial<IPactCommand>): Partial<IPactCommand>;
   /**
    * Returns transaction including \{ cmd, hash, sigs \}, in this step sig would be an array of undefined values that you need to add signatures later
    */
@@ -65,6 +71,8 @@ export interface ICommandBuilderReturnType {
    */
   validate(): boolean;
 }
+
+type ICB = ILazyPactCommandBuilder | IPactCommandBuilder;
 
 type NoPayload<T> = T extends { payload: unknown } ? never : T;
 
@@ -78,32 +86,35 @@ interface ICommandBuilder {
       ...Array<
         | Partial<IPactCommand>
         | ((payload: F & Partial<IPactCommand>) => Partial<IPactCommand>)
+        | IPactCommandBuilder
       >,
     ]
-  ): ICommandBuilderReturnType;
+  ): ICB;
 
   (
-    first: PoF<NoPayload<Partial<IPactCommand>>>,
-    ...rest: Array<PoF<Partial<IPactCommand>>>
-  ): ICommandBuilderReturnType;
+    first: PoF<NoPayload<Partial<IPactCommand>>> | IPactCommandBuilder,
+    ...rest: Array<PoF<Partial<IPactCommand>> | IPactCommandBuilder>
+  ): ICB;
 }
 
 /**
  * @alpha
  */
 export const commandBuilder: ICommandBuilder = (
-  first: PoF<Partial<IPactCommand>>,
-  ...rest: PoF<Partial<IPactCommand>>[]
+  first: PoF<Partial<IPactCommand>> | IPactCommandBuilder,
+  ...rest: Array<PoF<Partial<IPactCommand>> | IPactCommandBuilder>
 ) => {
-  const generateCommand = (
+  const createPactCommand = (
     initial: Partial<IPactCommand> = {},
   ): Partial<IPactCommand> => {
     const args: Array<
       | Partial<IPactCommand>
       | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>)
+      | IPactCommandBuilder
     > = [first, ...rest];
-    const command = args.reduce<Partial<IPactCommand>>((acc, item) => {
-      const part = typeof item === 'function' ? item(acc) : item;
+    const command = args.reduce<Partial<IPactCommand>>((acc, item: unknown) => {
+      const part: Partial<IPactCommand> =
+        typeof item === 'function' ? item(acc) : item;
       if (part.payload !== undefined) {
         acc.payload = mergePayload(acc.payload, part.payload);
       }
@@ -138,14 +149,14 @@ export const commandBuilder: ICommandBuilder = (
     }
     return command;
   };
-  const getPactCommand = (): Partial<IPactCommand> => generateCommand();
 
-  return Object.assign(generateCommand, {
-    getPactCommand,
+  // make the output callable, mostly for functional programming
+  return Object.assign(createPactCommand, {
+    createPactCommand,
     createTransaction: () => {
-      const pactCommand = getPactCommand();
+      const pactCommand = createPactCommand();
       return createTransaction(pactCommand);
     },
-    validate: () => isPactCommand(getPactCommand()),
+    validate: () => isPactCommand(createPactCommand()),
   });
 };

@@ -59,7 +59,7 @@ describe('commandBuilder', () => {
       ]),
       setProp('nonce', 'test-nonce'),
     );
-    expect(command.getPactCommand()).toStrictEqual({
+    expect(command.createPactCommand()).toStrictEqual({
       payload: {
         code: '(coin.transfer "alice" "bob" 12.1)',
       },
@@ -99,7 +99,7 @@ describe('commandBuilder', () => {
       setProp('nonce', 'test-nonce'),
     );
 
-    expect(command.getPactCommand()).toStrictEqual({
+    expect(command.createPactCommand()).toStrictEqual({
       payload: {
         code: '(coin.transfer "alice" "bob" 12.1)',
       },
@@ -132,7 +132,7 @@ describe('commandBuilder', () => {
   it('adds kjs nonce  if not presented in the input', () => {
     const command = commandBuilder(
       payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
-    ).getPactCommand();
+    ).createPactCommand();
 
     expect(command.nonce).toBe('kjs:nonce:1690416000000');
   });
@@ -142,7 +142,7 @@ describe('commandBuilder', () => {
       commandBuilder(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         payload.exec(coin.transfer('alice', 'bob', { decimal: '1' })),
-      ).getPactCommand().payload,
+      ).createPactCommand().payload,
     ).toEqual({
       code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
     });
@@ -157,7 +157,7 @@ describe('commandBuilder', () => {
         ),
         addData('one', 'test'),
         addData('two', 'test'),
-      ).getPactCommand().payload,
+      ).createPactCommand().payload,
     ).toEqual({
       code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
       data: { one: 'test', two: 'test' },
@@ -170,7 +170,7 @@ describe('commandBuilder', () => {
         commandBuilder(
           payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
           payload.cont({ pactId: '1' }),
-        ).getPactCommand().payload,
+        ).createPactCommand().payload,
     ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
   });
 
@@ -179,7 +179,7 @@ describe('commandBuilder', () => {
       commandBuilder(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
-      ).getPactCommand().signers,
+      ).createPactCommand().signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
   });
 
@@ -193,7 +193,7 @@ describe('commandBuilder', () => {
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
-      ).getPactCommand().signers,
+      ).createPactCommand().signers,
     ).toEqual([
       {
         pubKey: 'bob_public_key',
@@ -212,7 +212,7 @@ describe('commandBuilder', () => {
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
-      ).getPactCommand().signers,
+      ).createPactCommand().signers,
     ).toEqual([
       {
         pubKey: 'bob_public_key',
@@ -228,7 +228,7 @@ describe('commandBuilder', () => {
       commandBuilder(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         setMeta({ chainId: '1' }),
-      ).getPactCommand().meta?.creationTime,
+      ).createPactCommand().meta?.creationTime,
     ).toBe(1690416000);
   });
 
