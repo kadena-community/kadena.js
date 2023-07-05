@@ -231,6 +231,22 @@ describe('commandBuilder', () => {
       ).getPactCommand().meta?.creationTime,
     ).toBe(1690416000);
   });
+
+  it('returns transaction object by calling createTransaction', () => {
+    expect(
+      commandBuilder(
+        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+        addSigner('bob_public_key'),
+        addSigner('bob_public_key', (withCapability) => [
+          withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
+        ]),
+      ).createTransaction(),
+    ).toEqual({
+      cmd: '{"payload":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)"},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',
+      hash: '7i3D4FRFWC0HN9idADroLC9cLontDaeWiYSjSKwPjXQ',
+      sigs: [undefined],
+    });
+  });
 });
 
 describe('signer', () => {

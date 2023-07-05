@@ -15,7 +15,7 @@ export const mergePayload = (
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
 
-  const mergedData: { data?: object } = {};
+  const mergedData: { data?: Record<string, unknown> } = {};
 
   // merge data
   if ('data' in payload || 'data' in newPayload) {
@@ -144,10 +144,7 @@ export const commandBuilder: ICommandBuilder = (
     getPactCommand,
     createTransaction: () => {
       const pactCommand = getPactCommand();
-      if (isPactCommand(pactCommand)) {
-        return createTransaction(pactCommand);
-      }
-      throw new Error('NOT_A_PACT_COMMAND');
+      return createTransaction(pactCommand);
     },
     validate: () => isPactCommand(getPactCommand()),
   });

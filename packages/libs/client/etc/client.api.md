@@ -77,7 +77,7 @@ export interface IChainweaverSignBody {
 // @alpha (undocumented)
 export interface IContinuationPayload {
     // (undocumented)
-    data?: object;
+    data?: Record<string, unknown>;
     // (undocumented)
     pactId?: string;
     // (undocumented)
@@ -93,7 +93,7 @@ export interface IExecPayload {
     // (undocumented)
     code: string;
     // (undocumented)
-    data?: object;
+    data?: Record<string, unknown>;
 }
 
 // @alpha (undocumented)
