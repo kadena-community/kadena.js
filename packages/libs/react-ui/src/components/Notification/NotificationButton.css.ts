@@ -23,6 +23,8 @@ export const containerClass = style([
 const colors: Record<ColorType, ColorType> = {
   primary: 'primary',
   secondary: 'secondary',
+  tertiary: 'tertiary',
+  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',
