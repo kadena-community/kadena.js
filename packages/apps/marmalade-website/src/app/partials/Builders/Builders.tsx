@@ -1,8 +1,6 @@
 import styles from './builders.module.scss'
 
 import Image from 'next/image'
-import path from 'path';
-import { promises as fs } from 'fs'
 import React, { FC } from 'react';
 
 export const Builders: FC = () => {
@@ -36,13 +34,17 @@ export const Builders: FC = () => {
     <div className={styles.builders}>
       {
         contentBuilders.map((builder, index) => (
-          <a href={builder.link} target="_blank" rel="noreferrer">
+          <a
+            href={builder.link}
+            target="_blank"
+            rel="noreferrer"
+            key={index}
+          >
             <Image
               width={builder.width}
               height={builder.height}
               alt={builder.name}
               src={buildersLogoFolder + builder.logo}
-              key={index}
             />
           </a>
         ))

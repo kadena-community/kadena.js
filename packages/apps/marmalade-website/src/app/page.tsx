@@ -3,9 +3,9 @@ import { Card } from './components/Card'
 import { Code } from './components/Code'
 import { Icon } from './components/Icon'
 import { VerticalTabs } from './components/VerticalTabs'
+import { Builders } from './partials/Builders'
 import { Header } from './partials/Header'
 import { PolicyCustomizer } from './partials/PolicyCustomizer'
-import { Builders } from './partials/Builders'
 import styles from './page.module.scss'
 
 import React from 'react';

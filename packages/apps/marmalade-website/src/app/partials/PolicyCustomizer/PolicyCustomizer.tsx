@@ -8,6 +8,14 @@ import { Icon } from '@/app/components/Icon';
 import { ToggleSwitch } from '@/app/components/ToggleSwitch';
 import React, { FC, useState } from 'react';
 
+export interface IPolicy {
+  name: string;
+  icon: string;
+  title: string;
+  description: string;
+  onChange: (checked: boolean) => void;
+}
+
 export const PolicyCustomizer: FC = () => {
 
   const [quote, setQuote] = useState<boolean>(true);
@@ -70,7 +78,7 @@ export const PolicyCustomizer: FC = () => {
     }
   ]
 
-  const handleCardClick = (policy) => {
+  const handleCardClick = (policy: IPolicy): void => {
     policy.onChange(!eval(policy.name));
   };
  
