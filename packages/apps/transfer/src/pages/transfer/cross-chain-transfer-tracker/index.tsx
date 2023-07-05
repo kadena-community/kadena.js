@@ -1,9 +1,9 @@
 import {
   Button,
   Heading,
-  SystemIcons,
+  SystemIcon,
   TextField,
-} from '@kadena/react-components';
+} from '@kadena/react-ui';
 
 import {
   StyledInfoItem,
@@ -37,6 +37,7 @@ import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { Status } from '@kadena/react-ui/types/components/InputWrapper/InputWrapper.css';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -49,7 +50,7 @@ const CrossChainTransferTracker: FC = () => {
   const [requestKey, setRequestKey] =
     useState<string>(router.query?.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
-  const [validRequestKey, setValidRequestKey] = useState<'error' | undefined>();
+  const [validRequestKey, setValidRequestKey] = useState<Status | undefined>();
   const [txError, setTxError] = useState<string>('');
 
   useDidUpdateEffect(() => {
@@ -81,7 +82,7 @@ const CrossChainTransferTracker: FC = () => {
     }
 
     if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey('error');
+      setValidRequestKey('negative');
       return;
     }
     setValidRequestKey(undefined);
@@ -126,23 +127,24 @@ const CrossChainTransferTracker: FC = () => {
             <TextField
               label={t('Request Key')}
               status={validRequestKey}
-              //Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-              helper={!data.receiverAccount ? txError : undefined}
+              // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
+              helperText={!data.receiverAccount ? txError : undefined}
               inputProps={{
+                id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
                 value: requestKey,
-                leftPanel: SystemIcons.KeyIconFilled,
+                leftIcon: SystemIcon.KeyIconFilled,
               }}
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title={t('Search')}>
+            <Button.Root title={t('Search')}>
               {t('Search')}
-              <SystemIcons.Magnify />
-            </Button>
+              <SystemIcon.Magnify />
+            </Button.Root>
           </StyledFormButton>
         </StyledForm>
 

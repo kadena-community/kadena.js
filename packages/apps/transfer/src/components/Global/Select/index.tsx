@@ -1,4 +1,4 @@
-import { SystemIcons } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
 import {
   StyledHelper,
@@ -26,8 +26,8 @@ export interface ISelectProps {
   value: string | number;
   as?: 'select';
   leadingText?: string;
-  leftPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
-  rightPanel?: (typeof SystemIcons)[keyof typeof SystemIcons];
+  leftPanel?: (typeof SystemIcon)[keyof typeof SystemIcon];
+  rightPanel?: (typeof SystemIcon)[keyof typeof SystemIcon];
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -68,7 +68,7 @@ export const Select: FC<ISelectProps> = ({
           {Boolean(info) && (
             <StyledInfo>
               <span>{info}</span>
-              <SystemIcons.AlertCircleOutline />
+              <SystemIcon.AlertCircleOutline />
             </StyledInfo>
           )}
         </StyledSelectGroupHeader>
@@ -99,7 +99,7 @@ export const Select: FC<ISelectProps> = ({
       </StyledSelects>
       {Boolean(helper) && (
         <StyledHelper variant={variant}>
-          <SystemIcons.AlertBox />
+          <SystemIcon.AlertBox />
           <span>{helper}</span>
         </StyledHelper>
       )}

@@ -1,4 +1,4 @@
-import { Button, TextField } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { Option, Select } from '@/components/Global';
@@ -138,6 +138,7 @@ const CheckTransactions: FC = () => {
             <StyledMediumField>
               <TextField
                 inputProps={{
+                  id: 'account-input',
                   placeholder: t('Account'),
                   onChange: (e) =>
                     setAccount((e.target as HTMLInputElement).value),
@@ -146,9 +147,9 @@ const CheckTransactions: FC = () => {
               />
             </StyledMediumField>
             <StyledFormButton>
-              <Button title={t('Check Transactions')}>
+              <Button.Root title={t('Check Transactions')}>
                 {t('Check Transactions')}
-              </Button>
+              </Button.Root>
             </StyledFormButton>
           </StyledForm>
 

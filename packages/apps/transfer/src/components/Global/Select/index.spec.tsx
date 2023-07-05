@@ -1,4 +1,4 @@
-import { SystemIcons } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
 import { Select } from './index';
 
@@ -20,8 +20,8 @@ describe('Select', () => {
         disabled={false}
         value="option1"
         leadingText="Leading Text"
-        leftPanel={SystemIcons.AlertCircleOutline}
-        rightPanel={SystemIcons.AlertCircleOutline}
+        leftPanel={SystemIcon.AlertCircleOutline}
+        rightPanel={SystemIcon.AlertCircleOutline}
         onChange={handleChange}
         data-testid="select"
       >
