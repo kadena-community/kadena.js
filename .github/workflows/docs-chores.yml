@@ -36,7 +36,7 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v5
         with:
-          working-directory: packages/apps/kadena-docs
+          working-directory: packages/apps/docs
           start: npm run dev
           browser: chrome
           install: false

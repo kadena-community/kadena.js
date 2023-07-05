@@ -13,7 +13,6 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
 
   return (
     <>
-      <div data-rehype-pretty-code-title="" {...props}></div>
       <StyledCode {...props}>{children}</StyledCode>;
     </>
   );

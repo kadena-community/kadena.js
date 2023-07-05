@@ -22,7 +22,7 @@ export interface INavigation {
 export interface IPageMeta {
   title: string; // title of the HEAD info
   subTitle?: string;
-  menu?: string; // name in the main menu
+  menu: string; // name in the main menu
   order?: number;
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
