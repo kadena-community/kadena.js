@@ -1,9 +1,5 @@
-import {
-  Button,
-  Heading,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
+import { Status } from '@kadena/react-ui/types/components/InputWrapper/InputWrapper.css';
 
 import {
   StyledInfoItem,
@@ -37,7 +33,6 @@ import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
-import { Status } from '@kadena/react-ui/types/components/InputWrapper/InputWrapper.css';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();

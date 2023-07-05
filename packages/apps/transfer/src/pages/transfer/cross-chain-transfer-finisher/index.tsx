@@ -165,7 +165,8 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const showInputError = pollResults.error === undefined ? undefined : 'negative';
+  const showInputError =
+    pollResults.error === undefined ? undefined : 'negative';
   const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';

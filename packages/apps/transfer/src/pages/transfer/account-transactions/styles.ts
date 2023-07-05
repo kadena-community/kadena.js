@@ -1,11 +1,5 @@
 import { styled } from '@kadena/react-components';
 
-export const StyledMainContent = styled('main', {
-  display: 'flex',
-  justifyContent: 'flex-start',
-  gap: '$16',
-});
-
 export const StyledContent = styled('div', {
   width: '100%',
   display: 'flex',
@@ -15,14 +9,6 @@ export const StyledContent = styled('div', {
   background: 'rgba(71, 79, 82, 0.4)',
   borderRadius: '4px',
   boxSizing: 'borderBox',
-});
-
-export const StyledForm = styled('form', {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  justifyContent: 'space-between',
-  gap: '$8',
 });
 
 export const StyledSmallField = styled('div', {

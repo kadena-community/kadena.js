@@ -6,9 +6,7 @@ import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledContent,
-  StyledForm,
   StyledFormButton,
-  StyledMainContent,
   StyledMediumField,
   StyledResultContainer,
   StyledSmallField,
@@ -19,6 +17,10 @@ import {
   StyledTableHeader,
   StyledTableRow,
 } from '@/pages/transfer/account-transactions/styles';
+import {
+  formStyle,
+  mainContentStyle,
+} from '@/pages/transfer/account-transactions/styles.css';
 import {
   getTransactions,
   ITransaction,
@@ -123,9 +125,9 @@ const CheckTransactions: FC = () => {
 
   return (
     <MainLayout title={t('Account Transactions')}>
-      <StyledMainContent>
+      <main className={mainContentStyle}>
         <StyledContent>
-          <StyledForm onSubmit={checkTransactionsEvent}>
+          <form className={formStyle} onSubmit={checkTransactionsEvent}>
             <StyledSmallField>
               <Select
                 leadingText={t('Chain')}
@@ -151,7 +153,7 @@ const CheckTransactions: FC = () => {
                 {t('Check Transactions')}
               </Button.Root>
             </StyledFormButton>
-          </StyledForm>
+          </form>
 
           <StyledResultContainer>
             {results.length ? (
@@ -197,7 +199,7 @@ const CheckTransactions: FC = () => {
             ) : null}
           </StyledResultContainer>
         </StyledContent>
-      </StyledMainContent>
+      </main>
     </MainLayout>
   );
 };
