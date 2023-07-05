@@ -1,4 +1,5 @@
 import {
+  explicitItemColumnVariant,
   gridItemClass,
   itemColumnVariants,
   ResponsiveInputType,
@@ -22,11 +23,29 @@ const GridItem: FC<IGridItemProps> = ({
   const className = classNames(
     gridItemClass,
     rowSpanVariants[rowSpan],
-    columnSpan && columnSpan.sm && itemColumnVariants.sm[columnSpan.sm],
-    columnSpan && columnSpan.md && itemColumnVariants.md[columnSpan.md],
-    columnSpan && columnSpan.lg && itemColumnVariants.lg[columnSpan.lg],
-    columnSpan && columnSpan.xl && itemColumnVariants.xl[columnSpan.xl],
-    columnSpan && columnSpan.xxl && itemColumnVariants.xxl[columnSpan.xxl],
+    columnSpan &&
+      typeof columnSpan === 'number' &&
+      explicitItemColumnVariant[columnSpan],
+    columnSpan &&
+      typeof columnSpan !== 'number' &&
+      columnSpan.sm &&
+      itemColumnVariants.sm[columnSpan.sm],
+    columnSpan &&
+      typeof columnSpan !== 'number' &&
+      columnSpan.md &&
+      itemColumnVariants.md[columnSpan.md],
+    columnSpan &&
+      typeof columnSpan !== 'number' &&
+      columnSpan.lg &&
+      itemColumnVariants.lg[columnSpan.lg],
+    columnSpan &&
+      typeof columnSpan !== 'number' &&
+      columnSpan.xl &&
+      itemColumnVariants.xl[columnSpan.xl],
+    columnSpan &&
+      typeof columnSpan !== 'number' &&
+      columnSpan.xxl &&
+      itemColumnVariants.xxl[columnSpan.xxl],
   );
   return (
     <div className={className} data-testid="kda-grid-item">

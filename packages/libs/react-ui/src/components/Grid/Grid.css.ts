@@ -97,6 +97,14 @@ const containerColumnVariantsArray = Object.keys(breakpoints).map((key) => {
   });
 });
 
+export const explicitColumnVariant = styleVariants(columnCount, (count) => {
+  return [
+    {
+      gridTemplateColumns: `repeat(${count}, 1fr)`,
+    },
+  ];
+});
+
 export type ResponsiveVariant = Record<string, Record<number, string>>;
 
 export const containerColumnVariants: ResponsiveVariant = {
@@ -121,6 +129,14 @@ const itemColumnVariantsArray = Object.keys(breakpoints).map((key) => {
   });
 });
 
+export const explicitItemColumnVariant = styleVariants(columnCount, (count) => {
+  return [
+    {
+      gridColumn: `span ${count}`,
+    },
+  ];
+});
+
 export const itemColumnVariants: ResponsiveVariant = {
   sm: itemColumnVariantsArray[0],
   md: itemColumnVariantsArray[1],
@@ -129,7 +145,6 @@ export const itemColumnVariants: ResponsiveVariant = {
   xxl: itemColumnVariantsArray[4],
 };
 
-export type ResponsiveInputType = Record<
-  keyof typeof breakpoints,
-  keyof typeof columnCount
->;
+export type ResponsiveInputType =
+  | number
+  | Record<keyof typeof breakpoints, keyof typeof columnCount>;

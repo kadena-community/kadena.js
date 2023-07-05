@@ -1,4 +1,4 @@
-import { vars, Sprinkles } from '../../styles';
+import { Sprinkles, vars } from '../../styles';
 
 import { Stack } from './Stack';
 import { itemClass, itemSizeClass } from './stories.css';

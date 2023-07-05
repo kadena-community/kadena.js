@@ -1,5 +1,6 @@
 import {
   containerColumnVariants,
+  explicitColumnVariant,
   gapVariants,
   gridContainerClass,
   ResponsiveInputType,
@@ -8,13 +9,13 @@ import {
 import classNames from 'classnames';
 import React, { FC, ReactNode } from 'react';
 
-export interface IGridContainerProps {
+export interface IGridRootProps {
   children?: ReactNode;
   columns?: ResponsiveInputType;
   spacing?: keyof typeof gapVariants;
 }
 
-const GridContainer: FC<IGridContainerProps> = ({
+const GridRoot: FC<IGridRootProps> = ({
   children,
   columns,
   spacing = 'md',
@@ -22,11 +23,28 @@ const GridContainer: FC<IGridContainerProps> = ({
   const classList = classNames(
     gapVariants[spacing],
     gridContainerClass,
-    columns && columns.sm && containerColumnVariants.sm[columns.sm],
-    columns && columns.md && containerColumnVariants.md[columns.md],
-    columns && columns.lg && containerColumnVariants.lg[columns.lg],
-    columns && columns.xl && containerColumnVariants.xl[columns.xl],
-    columns && columns.xxl && containerColumnVariants.xxl[columns.xxl],
+    columns && typeof columns === 'number' && explicitColumnVariant[columns],
+
+    columns &&
+      typeof columns !== 'number' &&
+      columns.sm &&
+      containerColumnVariants.sm[columns.sm],
+    columns &&
+      typeof columns !== 'number' &&
+      columns.md &&
+      containerColumnVariants.md[columns.md],
+    columns &&
+      typeof columns !== 'number' &&
+      columns.lg &&
+      containerColumnVariants.lg[columns.lg],
+    columns &&
+      typeof columns !== 'number' &&
+      columns.xl &&
+      containerColumnVariants.xl[columns.xl],
+    columns &&
+      typeof columns !== 'number' &&
+      columns.xxl &&
+      containerColumnVariants.xxl[columns.xxl],
   );
   return (
     <div className={classList} data-testid="kda-grid-root">
@@ -35,4 +53,4 @@ const GridContainer: FC<IGridContainerProps> = ({
   );
 };
 
-export default GridContainer;
+export default GridRoot;
