@@ -85,7 +85,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
   const md = remark.parse(doc);
 
-  devideIntoPages(md).forEach((page, idx) => {
+  divideIntoPages(md).forEach((page, idx) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
     const menuTitle = idx === 0 ? parentTitle : title;
