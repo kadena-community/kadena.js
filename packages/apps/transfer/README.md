@@ -18,10 +18,10 @@ To install and run the Kadena Transfer App locally, follow these steps:
 
 1.  Clone the repository: [https://github.com/kadena-community/kadena.js][5]
 
-2.  Navigate to the `kadena-transfer/packages/apps/transfer` directory:
+2.  Navigate to the `packages/apps/transfer` directory:
 
 ```bash
-cd kadena.js/kadena-transfer/packages/apps/transfer
+cd kadena.js/packages/apps/transfer
 ```
 
 3.  Install rush globally:
