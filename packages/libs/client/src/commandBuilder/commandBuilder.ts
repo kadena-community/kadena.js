@@ -54,7 +54,7 @@ export interface ILazyPactCommandBuilder extends IPactCommandBuilder {
   /**
    * command generator function, useful when you what to compose multiple command builders or use it with FP utilities (e.g. pipe)
    */
-  (initial: Partial<IPactCommand>): Partial<IPactCommand>;
+  (initial?: Partial<IPactCommand>): Partial<IPactCommand>;
 }
 
 export interface IPactCommandBuilder {
@@ -72,8 +72,6 @@ export interface IPactCommandBuilder {
   validate(): boolean;
 }
 
-type ICB = ILazyPactCommandBuilder | IPactCommandBuilder;
-
 type NoPayload<T> = T extends { payload: unknown } ? never : T;
 
 type PoF<T> = T | ((a: T) => T);
@@ -89,12 +87,12 @@ interface ICommandBuilder {
         | IPactCommandBuilder
       >,
     ]
-  ): ICB;
+  ): ILazyPactCommandBuilder | IPactCommandBuilder;
 
   (
     first: PoF<NoPayload<Partial<IPactCommand>>> | IPactCommandBuilder,
     ...rest: Array<PoF<Partial<IPactCommand>> | IPactCommandBuilder>
-  ): ICB;
+  ): ILazyPactCommandBuilder | IPactCommandBuilder;
 }
 
 /**
