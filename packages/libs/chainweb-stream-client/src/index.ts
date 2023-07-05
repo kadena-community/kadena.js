@@ -380,7 +380,7 @@ class ChainwebStream extends EventEmitter {
       urlParamArgs.push(['minHeight', String(this._lastHeight - 3)]);
     }
     if (urlParamArgs.length) {
-      path += '?' + new URLSearchParams(urlParamArgs).toString();
+      path += `?${new URLSearchParams(urlParamArgs).toString()}`;
     }
     return `${host}${path}`;
   }

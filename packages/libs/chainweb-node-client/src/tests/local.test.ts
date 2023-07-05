@@ -38,7 +38,9 @@ test('local should return preflight result of tx queried ', async () => {
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
     sigs: [
-      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+      typeof cmdWithOneSignature1.sig === 'string'
+        ? { sig: cmdWithOneSignature1.sig }
+        : undefined,
     ],
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
@@ -78,7 +80,9 @@ test('local with `{preflight: false}` option returns non-preflight result', asyn
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
     sigs: [
-      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+      typeof cmdWithOneSignature1.sig === 'string'
+        ? { sig: cmdWithOneSignature1.sig }
+        : undefined,
     ],
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);

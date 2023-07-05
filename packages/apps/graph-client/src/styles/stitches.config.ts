@@ -2,6 +2,7 @@
 
 import type { CSS as StitchesCSS, PropertyValue } from '@stitches/react';
 import { createStitches } from '@stitches/react';
+
 export type { VariantProps } from '@stitches/react';
 
 import {

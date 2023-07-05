@@ -4,7 +4,7 @@ import { Text } from '../../text';
 
 import React from 'react';
 
-export function ChainwebHeader(): JSX.Element {
+export const ChainwebHeader = (): JSX.Element => {
   return (
     <Box
       css={{
@@ -46,4 +46,4 @@ export function ChainwebHeader(): JSX.Element {
       ))}
     </Box>
   );
-}
+};

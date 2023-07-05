@@ -4,22 +4,19 @@ const getPath = (filename) => {
   const arr = filename.split('/');
   let complete = false;
 
-  return (
-    '/' +
-    arr
-      .reverse()
-      .reduce((acc, val) => {
-        const fileName = val.split('.')[0];
-        if (fileName.includes('index') || complete) return acc;
-        if (fileName === 'docs') {
-          complete = true;
-        }
-        acc.push(fileName);
-        return acc;
-      }, [])
-      .reverse()
-      .join('/')
-  );
+  return `/${arr
+    .reverse()
+    .reduce((acc, val) => {
+      const fileName = val.split('.')[0];
+      if (fileName.includes('index') || complete) return acc;
+      if (fileName === 'docs') {
+        complete = true;
+      }
+      acc.push(fileName);
+      return acc;
+    }, [])
+    .reverse()
+    .join('/')}`;
 };
 
 const remarkSideMenuToProps = () => {
