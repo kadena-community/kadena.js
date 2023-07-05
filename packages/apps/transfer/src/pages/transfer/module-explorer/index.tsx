@@ -1,4 +1,4 @@
-import { Button, TextField } from '@kadena/react-components';
+import { TextField } from '@kadena/react-components';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { StyledOption } from '@/components/Global/Select/styles';
@@ -12,10 +12,9 @@ import {
   StyledAccountForm,
   StyledCodeViewerContainer,
   StyledForm,
-  StyledFormButton,
+  StyledList,
+  StyledListItem,
   StyledResultContainer,
-  StyledTotalChunk,
-  StyledTotalContainer,
 } from './styles';
 
 import { Select } from '@/components/Global';
@@ -24,37 +23,63 @@ import {
   type IModuleResult,
   describeModule,
 } from '@/services/modules/describe-module';
+import {
+  type IModulesResult,
+  listModules,
+} from '@/services/modules/list-module';
 import { convertIntToChainId } from '@/services/utils/utils';
-import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { kadenaConstants } from '@/constants/kadena';
 
-const GetCode: FC = () => {
-  const debug = Debug('Module-explorer');
+const ModuleExplorer: FC = () => {
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
+  const [moduleSearch, setModuleSearch] = useState<string>('');
   const [moduleChain, setModuleChain] = useState<number>(1);
+  const [modules, setModules] = useState<IModulesResult>({});
   const [results, setResults] = useState<IModuleResult>({});
 
   const { network } = useAppContext();
   const numberOfChains = 20;
 
-  const getCode = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    try {
-      event.preventDefault();
+  useEffect(() => {
+    const fetchModules = async () => {
+      const modules = await listModules(
+        convertIntToChainId(moduleChain),
+        network,
+        kadenaConstants.DEFAULT_SENDER,
+        kadenaConstants.GAS_PRICE,
+        1000,
+      );
+      setModules(modules);
+    }
+
+    fetchModules().catch(console.error);
+  }, [moduleChain, network]);
+
+  const filteredModules = useMemo(() => (modules?.data || []).filter((module: string) => module.includes(moduleSearch)), [modules, moduleSearch]);
+
+  useEffect(() => {
+    if (! moduleName) {
+      return;
+    }
+
+    const fetchModule = async () => {
       const data = await describeModule(
         moduleName,
         convertIntToChainId(moduleChain),
         network,
+        kadenaConstants.DEFAULT_SENDER,
+        kadenaConstants.GAS_PRICE,
+        1000,
       );
 
       setResults(data);
-    } catch (e) {
-      debug(e);
     }
-  };
+
+    fetchModule().catch(console.error);
+  }, [moduleChain, moduleName, network]);
 
   const renderChainOptions = (): JSX.Element[] => {
     const options = [];
@@ -73,20 +98,6 @@ const GetCode: FC = () => {
       title={t('Kadena Module Explorer')}
       footer={
         <>
-          {Boolean(results.status) && (
-            <StyledResultContainer>
-              <StyledTotalContainer>
-                <StyledTotalChunk>
-                  <p>{t('Request Key')}</p>
-                  <p>{results.reqKey}</p>
-                </StyledTotalChunk>
-                <StyledTotalChunk>
-                  <p>{t('Status')}</p>
-                  <p>{results.status}</p>
-                </StyledTotalChunk>
-              </StyledTotalContainer>
-            </StyledResultContainer>
-          )}
           {Boolean(results.code) && (
             <StyledResultContainer>
               <StyledCodeViewerContainer>
@@ -97,7 +108,7 @@ const GetCode: FC = () => {
         </>
       }
     >
-      <StyledForm onSubmit={getCode}>
+      <StyledForm>
         <StyledAccountForm>
           <Select
             label={t('Select the module chain')}
@@ -111,18 +122,26 @@ const GetCode: FC = () => {
             label={t('Module Name')}
             inputProps={{
               placeholder: t('Enter desired module name'),
-              onChange: (e) =>
-                setModuleName((e.target as HTMLInputElement).value),
-              value: moduleName,
+              onChange: (e) => setModuleSearch((e.target as HTMLInputElement).value),
+              value: moduleSearch,
             }}
           />
         </StyledAccountForm>
-        <StyledFormButton>
-          <Button title={t('Get Code')}>{t('Get Code')}</Button>
-        </StyledFormButton>
       </StyledForm>
+      <StyledList>
+        { !filteredModules?.length && t('No modules found.')}
+        {filteredModules?.map((module) => (
+          <StyledListItem
+            key={module}
+            data-module-name={module}
+            onClick={(e) => setModuleName(e.target.dataset.moduleName)}
+          >
+            {module}
+          </StyledListItem>
+        ))}
+      </StyledList>
     </MainLayout>
   );
 };
 
-export default GetCode;
+export default ModuleExplorer;
