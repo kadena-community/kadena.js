@@ -104,4 +104,4 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   });
 };
 
-importDocs('libs/kadena.js/README.md', 'kadena/test/kadenajs', 'KadenaJS', 6);
+importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
