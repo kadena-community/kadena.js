@@ -141,28 +141,35 @@ export type NetworkId = string | undefined;
 /**
  * @alpha
  */
-export type ChainId =
-  | ''
-  | '0'
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | '7'
-  | '8'
-  | '9'
-  | '10'
-  | '11'
-  | '12'
-  | '13'
-  | '14'
-  | '15'
-  | '16'
-  | '17'
-  | '18'
-  | '19';
+// eslint-disable-next-line @rushstack/typedef-var
+export const CHAINS = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+] as const;
+
+/**
+ * @see https://stackoverflow.com/a/45257357/1463352
+ * @alpha
+ */
+export type ChainId = (typeof CHAINS)[number];
 
 /**
  * The full transaction payload to be signed and sent to Chainweb.
