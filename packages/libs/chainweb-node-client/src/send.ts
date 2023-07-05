@@ -1,6 +1,7 @@
+import { ISendRequestBody,SendResponse } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-import { SendResponse, ISendRequestBody } from './interfaces/PactAPI';
+
 import fetch from 'cross-fetch';
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
