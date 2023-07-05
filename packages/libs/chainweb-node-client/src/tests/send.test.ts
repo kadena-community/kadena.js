@@ -29,7 +29,9 @@ test('/send should return request keys of txs submitted', async () => {
     cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
     sigs: [
-      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+      typeof cmdWithOneSignature1.sig === 'string'
+        ? { sig: cmdWithOneSignature1.sig }
+        : undefined,
     ],
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);

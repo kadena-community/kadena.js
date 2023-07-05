@@ -6,7 +6,7 @@ interface ITimeTickerProps {
   date: Date;
 }
 
-export function TimeTicker({ date }: ITimeTickerProps): JSX.Element {
+export const TimeTicker = ({ date }: ITimeTickerProps): JSX.Element => {
   const [timeDiff, setTimeDiff] = useState<number>(0);
 
   useEffect(() => {
@@ -36,4 +36,4 @@ export function TimeTicker({ date }: ITimeTickerProps): JSX.Element {
       {timeDiff < 100 ? timeDiff : '>99'} s
     </Text>
   );
-}
+};
