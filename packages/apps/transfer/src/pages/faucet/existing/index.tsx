@@ -3,9 +3,9 @@ import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
 import {
   Button,
   Heading,
-  SystemIcons,
+  SystemIcon,
   TextField,
-} from '@kadena/react-components';
+} from '@kadena/react-ui';
 
 import FormStatusNotification from './notification';
 
@@ -146,10 +146,11 @@ const ExistingAccountFaucetPage: FC = () => {
           <Heading as="h3">Account</Heading>
           <TextField
             label={t('The account name you would like to fund coins to')}
-            status="error"
+            status="negative"
             inputProps={{
+              id: 'account-name-input',
               onChange: onAccountNameChange,
-              leftPanel: SystemIcons.KIcon,
+              leftIcon: SystemIcon.KIcon,
             }}
           />
           <Select
@@ -157,7 +158,7 @@ const ExistingAccountFaucetPage: FC = () => {
             onChange={onChainSelectChange}
             value={chainID}
             status="error"
-            leftPanel={SystemIcons.Link}
+            leftPanel={SystemIcon.Link}
           >
             {CHAINS.map((chainId) => {
               return (
@@ -167,19 +168,19 @@ const ExistingAccountFaucetPage: FC = () => {
           </Select>
         </StyledAccountForm>
         <StyledFormButton>
-          <Button
+          <Button.Root
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             disabled={requestStatus.status === 'pending'}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             {requestStatus.status === 'pending' ? (
-              <SystemIcons.Loading
+              <SystemIcon.Loading
                 style={{ animation: '2000ms infinite linear spin' }}
               />
             ) : (
-              <SystemIcons.TrailingIcon />
+              <SystemIcon.TrailingIcon />
             )}
-          </Button>
+          </Button.Root>
         </StyledFormButton>
       </StyledForm>
     </MainLayout>

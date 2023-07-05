@@ -1,4 +1,4 @@
-import { Button, TextField } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { StyledOption } from '@/components/Global/Select/styles';
@@ -110,6 +110,7 @@ const GetCode: FC = () => {
           <TextField
             label={t('Module Name')}
             inputProps={{
+              id: 'module-name-input',
               placeholder: t('Enter desired module name'),
               onChange: (e) =>
                 setModuleName((e.target as HTMLInputElement).value),
@@ -118,7 +119,7 @@ const GetCode: FC = () => {
           />
         </StyledAccountForm>
         <StyledFormButton>
-          <Button title={t('Get Code')}>{t('Get Code')}</Button>
+          <Button.Root title={t('Get Code')}>{t('Get Code')}</Button.Root>
         </StyledFormButton>
       </StyledForm>
     </MainLayout>
