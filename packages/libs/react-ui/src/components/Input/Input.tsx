@@ -9,11 +9,11 @@ import {
 } from './Input.css';
 
 import classNames from 'classnames';
-import React, { FC, forwardRef } from 'react';
+import React, { FC, forwardRef, InputHTMLAttributes } from 'react';
 
 export interface IInputProps
   extends Omit<
-    React.HTMLAttributes<HTMLInputElement>,
+    InputHTMLAttributes<HTMLInputElement>,
     'as' | 'disabled' | 'children' | 'className' | 'id'
   > {
   leadingText?: string;

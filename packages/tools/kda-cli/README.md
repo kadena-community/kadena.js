@@ -22,9 +22,11 @@ manually. In a later version some might be installed via the cli tool.
 Login to docker with your [github account][3] , use the _gh access token_ as
 password:
 
-    docker login ghcr.io -u <your gh username>
-    # or
-    echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --password-stdin
+```
+docker login ghcr.io -u <your gh username>
+# or
+echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --password-stdin
+```
 
 ## Install
 

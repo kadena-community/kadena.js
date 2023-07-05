@@ -13,6 +13,8 @@ export {
   ITextProps,
   Heading,
   IHeadingProps,
+  Label,
+  ILabelProps,
   GradientText,
   IGradientTextProps,
   Stack,
@@ -42,13 +44,10 @@ export {
   ITabContentProps,
   TextField,
   ITextFieldProps,
+  Input,
+  IInputProps,
+  InputWrapper,
+  IInputWrapperProps,
+  Tag,
+  ITagProps,
 } from './components';
-export {
-  sprinkles,
-  Sprinkles,
-  vars,
-  darkThemeClass,
-  ColorType,
-} from './styles';
-
-export { style } from '@vanilla-extract/css';

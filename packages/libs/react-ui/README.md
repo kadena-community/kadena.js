@@ -80,6 +80,39 @@ integration docs][5].
 After the plugin is setup, you should be able to use styling utilities exported
 from @kadena/react-ui and components within your application.
 
+### Usage
+
+As mentioned earlier, @kadena/react-ui provides components and styling utilities
+that align with the Kadena design system.
+
+Example for importing and using components:
+
+```js
+import { Text } from '@kadena/react-ui';
+
+export const Component = () => {
+  return <Text>Hello World!</Text>;
+};
+```
+
+We are using [vanilla-extract/css][1] to define our design system and style our
+components. To utilize the same theme variables and utility classes in
+conjunction with [vanilla-extract/css][1] in your own project, you can import
+them via `@kadena/react-ui/theme`:
+
+```ts
+import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { style } from '@vanilla-extract/css';
+
+export const exampleClass = style([
+  sprinkles({
+    bg: '$negativeSurface',
+    color: '$negativeAccent',
+    margin: '$3',
+  }),
+]);
+```
+
 ### Dark Theme
 
 We are utilizing the [theming][6] feature from VE to create CSS color variables
@@ -91,10 +124,10 @@ You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
 ```js
-import { darkThemeClass } from '@kadena/react-ui';
+import { darkThemeClass } from '@kadena/react-ui/theme';
 import { ThemeProvider } from 'next-themes';
 
-export const MyApp = ({ Component, pageProps }) {
+export const MyApp = ({ Component, pageProps }) => {
   return (
     <ThemeProvider
       attribute="class"
