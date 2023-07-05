@@ -1,5 +1,5 @@
 import { ensureSignedCommand } from '@kadena/pactjs';
-import type { ICommand, ISignatureJson,IUnsignedCommand } from '@kadena/types';
+import type { ICommand, ISignatureJson, IUnsignedCommand } from '@kadena/types';
 
 import type {
   ICommandResult,
@@ -8,7 +8,7 @@ import type {
   LocalRequestBody,
   LocalResultWithoutPreflight,
 } from './interfaces/PactAPI';
-import { parsePreflight,parseResponse } from './parseResponse';
+import { parsePreflight, parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
 import fetch from 'cross-fetch';

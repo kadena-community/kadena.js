@@ -2,7 +2,7 @@ jest.mock('cross-fetch');
 
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
-import type { ICommand,IUnsignedCommand, SignCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand, SignCommand } from '@kadena/types';
 
 import { createSendRequest } from '../createSendRequest';
 import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';

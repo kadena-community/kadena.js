@@ -1,4 +1,4 @@
-import { ISendRequestBody,SendResponse } from './interfaces/PactAPI';
+import { ISendRequestBody, SendResponse } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 
