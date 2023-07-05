@@ -113,4 +113,3 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
 };
 
 importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
-importDocs('libs/client/README.md', 'pact/client', 'Pact Client', 5);

@@ -16,19 +16,21 @@ Kadena blockchain
 > the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will
 > provide helper function
 
+---
+
 ## Running Tests
 
 ### Unit testing
 
 To run the unit tests:
 
-```bash
+```shell
 $ npm test
 ```
 
 To run single unit tests:
 
-```bash
+```shell
 $ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 ```
 
@@ -39,7 +41,7 @@ $ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 To run integration tests against a pact server the following command can be
 used:
 
-```bash
+```shell
 $ npm test:integration:pactserver
 ```
 
@@ -51,11 +53,13 @@ instructions at the [Devnet Github repository][2].
 
 The following command can be used:
 
-```bash
+```shell
 $ npm test:integration:devnet
 ```
 
-> <b>TODO</b> make Pact server port configurable
+> **TODO** make Pact server port configurable
+
+---
 
 ## TODO
 
@@ -253,7 +257,7 @@ SigData:
 (A) When querying a chainweb node, the server expects the endpoint to have a
 specific format. For example:
 
-```bash
+```
 http://localhost:8080/chainweb/0.0/development/chain/1/pact
 ```
 
@@ -262,7 +266,7 @@ Also, `development` represents the version of Chainweb that the node is running.
 Other possible values are `testnet04` and `mainnet01`. Both of these pieces of
 information is returned by querying the `/info` endpoint. For example:
 
-```bash
+```
 http://localhost:8080/info
 ```
 
