@@ -74,12 +74,12 @@ const remarkFrontmatterToProps = () => {
         type: 'props',
         data: {
           frontmatter: {
-            ...data,
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),
             lastModifiedDate: getModifiedDate(getFileName(file)),
             navigation: createNavigation(file),
+            ...data,
           },
         },
       };
