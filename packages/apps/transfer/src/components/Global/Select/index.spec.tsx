@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 describe('Select', () => {
-  test('renders correctly with all props', async () => {
+  it('renders correctly with all props', async () => {
     const handleChange = jest.fn();
 
     const { getByTestId } = render(
@@ -42,7 +42,7 @@ describe('Select', () => {
     expect(handleChange).toHaveBeenCalledTimes(1);
   });
 
-  test('renders correctly with minimal props', () => {
+  it('renders correctly with minimal props', () => {
     const { getByTestId } = render(
       <Select value="option1" data-testid="select">
         <option value="option1">Option 1</option>

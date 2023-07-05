@@ -10,7 +10,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 describe('MainLayout', () => {
-  test('renders correctly', () => {
+  it('renders correctly', () => {
     const { getByTestId } = render(
       <MainLayout title="My Title">Content</MainLayout>,
     );
