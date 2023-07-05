@@ -43,14 +43,6 @@ export const kadenaHostGenerator = (
   }
 };
 
-export interface ICommandRequest {
-  cmd: string;
-  hash: string;
-  sigs: string[];
-}
-
-export type ICommandRequestWithoutHash = Omit<ICommandRequest, 'hash'>;
-
 export interface INetworkOptions {
   networkId: string;
   chainId: string;

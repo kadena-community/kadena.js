@@ -3,8 +3,9 @@ import {
   IPreflightResult,
   parseResponse,
 } from '@kadena/chainweb-node-client';
+import { ICommand } from '@kadena/types';
 
-import { getUrl, ICommandRequest, jsonRequest } from '../utils/utils';
+import { getUrl, jsonRequest } from '../utils/utils';
 
 import fetch from 'cross-fetch';
 
@@ -23,7 +24,7 @@ export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
 
 export const local = async <T extends ILocalOptions>(
   host: string,
-  body: ICommandRequest,
+  body: ICommand,
   options?: T,
 ): Promise<LocalResponse<T>> => {
   const request = jsonRequest(body);

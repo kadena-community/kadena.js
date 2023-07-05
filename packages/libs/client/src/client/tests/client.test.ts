@@ -30,7 +30,8 @@ describe('client', () => {
 
     const body = {
       cmd: JSON.stringify({ networkId, meta: { chainId } }),
-      sigs: ['test-sig'],
+      hash: 'hash',
+      sigs: [{ sig: 'test-sig' }],
     };
 
     await local(body);
@@ -57,7 +58,8 @@ describe('client', () => {
 
     const body = {
       cmd: JSON.stringify({ networkId, meta: { chainId } }),
-      sigs: ['test-sig'],
+      hash: 'hash',
+      sigs: [{ sig: 'test-sig' }],
     };
 
     await local(body);
@@ -88,7 +90,8 @@ describe('client', () => {
 
       const body = {
         cmd: JSON.stringify({ networkId, meta: { chainId } }),
-        sigs: ['test-sig'],
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
       };
 
       await local(body);
@@ -120,7 +123,8 @@ describe('client', () => {
 
       const body = {
         cmd: JSON.stringify({ networkId, meta: { chainId } }),
-        sigs: ['test-sig'],
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
       };
 
       await submit(body);
@@ -159,7 +163,8 @@ describe('client', () => {
 
       const body = {
         cmd: JSON.stringify({ networkId, meta: { chainId } }),
-        sigs: ['test-sig'],
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
       };
 
       const requestKeys = await submit(body);
@@ -209,7 +214,8 @@ describe('client', () => {
 
       const body = {
         cmd: JSON.stringify({ networkId, meta: { chainId } }),
-        sigs: ['test-sig'],
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
       };
 
       const requestKeys = await submit(body);

@@ -27,7 +27,7 @@ describe('local', () => {
     const body = {
       cmd: 'test',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
 
     const result = await local(hostUrl, body);
@@ -56,7 +56,7 @@ describe('local', () => {
     const body = {
       cmd: 'test',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
 
     const result = await local(hostUrl, body, { preflight: true });
@@ -84,7 +84,7 @@ describe('local', () => {
     const body = {
       cmd: 'test',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
 
     const result = await local(hostUrl, body, {
@@ -118,7 +118,7 @@ describe('local', () => {
     const body = {
       cmd: 'test',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
 
     await expect(local(hostUrl, body)).rejects.toThrowError(

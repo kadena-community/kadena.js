@@ -1,3 +1,5 @@
+import { ICommand, IUnsignedCommand } from '@kadena/types';
+
 import { IPactCommand } from './interfaces/IPactCommand';
 import { isCommand } from './utils/isCommand';
 
@@ -7,34 +9,16 @@ import { isCommand } from './utils/isCommand';
  * @param otherSignatures map of the available signatures, in case if a multi-sig transaction already signed by some of the signers
  * @returns
  */
-export const quicksign = (
-  command: string | IPactCommand,
-  otherSignatures: Record<string, string> = {},
-): Promise<{ cmd: string; sigs: string[] }> => {
-  const commandJSon: Partial<IPactCommand> =
-    typeof command === 'string' ? JSON.parse(command) : command;
-  const commandStr =
-    typeof command === 'string' ? command : JSON.stringify(command);
+export const quicksign = (transaction: IUnsignedCommand): Promise<ICommand> => {
+  const commandJSon: Partial<IPactCommand> = JSON.parse(transaction.cmd);
 
   if (isCommand(commandJSon)) {
-    const request = {
-      cmd: commandStr,
-      sigs: commandJSon.signers.map((signer, i) => ({
-        pubKey: signer.pubKey,
-        sig: otherSignatures[signer.pubKey] ?? null,
-      })),
-    };
-
-    console.log('quicksign request', request);
-
     // TODO: implement the quicksign request
     return Promise.resolve({
-      cmd: commandStr,
-      sigs: [
-        ...commandJSon.signers.map(({ pubKey }) => pubKey),
-        ...Object.values(otherSignatures),
-      ],
-    });
+      cmd: transaction.cmd,
+      hash: transaction.hash,
+      sigs: transaction.sigs,
+    } as ICommand);
   }
   return Promise.reject(new Error('INVALID_COMMAND'));
 };

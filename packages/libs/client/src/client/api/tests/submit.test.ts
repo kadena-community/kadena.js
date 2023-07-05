@@ -23,12 +23,12 @@ describe('submit', () => {
     const firstCommand = {
       cmd: 'first',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
     const secondCommand = {
       cmd: 'second',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
 
     const result = await submit(hostUrl, [firstCommand, secondCommand]);
@@ -57,7 +57,7 @@ describe('submit', () => {
     const body = {
       cmd: 'test',
       hash: 'test',
-      sigs: ['test'],
+      sigs: [{ sig: 'test' }],
     };
 
     await expect(submit(hostUrl, [body])).rejects.toThrowError(

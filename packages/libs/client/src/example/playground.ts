@@ -2,9 +2,9 @@
 // this module is just some example code to play with the client
 
 import { ICommandResult } from '@kadena/chainweb-node-client';
+import { ICommand } from '@kadena/types';
 
 import { getClient } from '../client/client';
-import { ICommandRequest } from '../client/utils/utils';
 import {
   addSigner,
   commandBuilder,
@@ -61,8 +61,8 @@ export const cmd = commandBuilder(
   nonce('k:nonce'),
   setProp('networkId', 'mainnet04'),
 );
-
-export const cmd2: Partial<IPactCommand> = commandBuilder(
+// eslint-disable-next-line @rushstack/typedef-var
+export const cmd2 = commandBuilder(
   payload.cont({}),
   addSigner('javadPublicKey', (withCapability) => [
     //
@@ -78,10 +78,10 @@ export const cmd2: Partial<IPactCommand> = commandBuilder(
   setProp('networkId', 'mainnet04'),
 );
 
-const commandWithSignatures: ICommandRequest = {
+const commandWithSignatures: ICommand = {
   cmd: JSON.stringify(cmd),
   hash: 'str',
-  sigs: [''],
+  sigs: [{ sig: '' }],
 };
 
 const getHostUrl = (networkId: string, chainId: string): string => {
@@ -167,5 +167,5 @@ export function composeCommands(): Partial<IPactCommand> {
     ]),
   );
 
-  return commandBuilder(mainnetConfig, transfer);
+  return commandBuilder(mainnetConfig, transfer).getPactCommand();
 }

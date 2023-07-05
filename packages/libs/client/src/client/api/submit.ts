@@ -1,12 +1,13 @@
 import { parseResponse } from '@kadena/chainweb-node-client';
+import { ICommand } from '@kadena/types';
 
-import { getUrl, ICommandRequest, jsonRequest } from '../utils/utils';
+import { getUrl, jsonRequest } from '../utils/utils';
 
 import fetch from 'cross-fetch';
 
 export const submit = async (
   host: string,
-  body: ICommandRequest[],
+  body: ICommand[],
 ): Promise<string[]> => {
   const request = jsonRequest({ cmds: body });
   const url = getUrl(host, `api/v1/send`);

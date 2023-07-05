@@ -55,9 +55,9 @@ export async function doSafeTransfer(
     {
       nonce: 'tadasd',
     },
-  ) as IPactCommand;
+  );
 
-  const signedCommand = await quicksign(command);
+  const signedCommand = await quicksign(command.getTransaction());
 
   const receivedKeys = await submit(signedCommand);
   const status = await pollStatus(receivedKeys);

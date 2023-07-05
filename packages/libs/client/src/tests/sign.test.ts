@@ -1,3 +1,5 @@
+import { ICommand } from '@kadena/types';
+
 import { IPactCommand } from '../interfaces/IPactCommand';
 import { quicksign } from '../sign';
 
@@ -24,36 +26,20 @@ const sampleCommand: IPactCommand = {
   },
 };
 
+const testTr = {
+  cmd: JSON.stringify(sampleCommand),
+  hash: 'hash',
+  sigs: [{ sig: 'test' }],
+};
+
 describe('quicksign', () => {
   it('returns a signed transaction', async () => {
-    const result = await quicksign(sampleCommand);
-    expect(result).toStrictEqual({
-      cmd: JSON.stringify(sampleCommand),
-      sigs: ['bob_public_key'],
-    });
+    const result = await quicksign(testTr);
+    expect(result).toStrictEqual(testTr);
   });
   it("throws an error if the command doesn't match ICommand interface", async () => {
-    await expect(() => quicksign({} as IPactCommand)).rejects.toThrowError(
+    await expect(() => quicksign({} as ICommand)).rejects.toThrowError(
       new Error('INVALID_COMMAND'),
     );
-  });
-  it('accepts string as a command', async () => {
-    const strCommand = JSON.stringify(sampleCommand);
-    const result = await quicksign(strCommand);
-    expect(result).toStrictEqual({
-      cmd: strCommand,
-      sigs: ['bob_public_key'],
-    });
-  });
-
-  it('adds the signer if the passed as second argd', async () => {
-    const strCommand = JSON.stringify(sampleCommand);
-    const result = await quicksign(strCommand, {
-      alicePublicKey: 'alice_signature',
-    });
-    expect(result).toStrictEqual({
-      cmd: strCommand,
-      sigs: ['bob_public_key', 'alice_signature'],
-    });
   });
 });

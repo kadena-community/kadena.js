@@ -1,5 +1,6 @@
 import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
+import { ICommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
 
@@ -9,7 +10,6 @@ import { getStatus, pollStatus } from './api/status';
 import { submit } from './api/submit';
 import { getRequestStorage } from './utils/request-storege';
 import {
-  ICommandRequestWithoutHash,
   INetworkOptions,
   IPollOptions,
   IPollRequestPromise,
@@ -26,15 +26,13 @@ interface IClient {
    * calls '/local' endpoint
    */
   local: <T extends ILocalOptions>(
-    command: ICommandRequestWithoutHash,
+    command: ICommand,
     options?: T,
   ) => Promise<LocalResponse<T>>;
   /**
    * calls '/send' endpoint
    */
-  submit: (
-    commandsList: ICommandRequestWithoutHash[] | ICommandRequestWithoutHash,
-  ) => Promise<string[]>;
+  submit: (commandsList: ICommand[] | ICommand) => Promise<string[]>;
   /**
    * calls '/poll' endpoint several times to get the status of all requests. if the requests submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
@@ -113,7 +111,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
       const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
-      return local(hostUrl, { ...body, hash: blakeHash(body.cmd) }, options);
+      return local(hostUrl, body, options);
     },
     async submit(body) {
       const commands = Array.isArray(body) ? body : [body];
