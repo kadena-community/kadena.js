@@ -21,16 +21,6 @@ layout: full
 const createEditOverwrite = (filename) =>
   `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
 
-const createGeneratedWarning = () => {
-  return `
-  
-  {/* 
-hier comes a comment 
-*/}
-  
-  `;
-};
-
 export const createSlug = (str) => {
   if (!str) return '';
   return str
@@ -94,9 +84,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
         menuTitle,
         order,
         createEditOverwrite(filename),
-      ) +
-        createGeneratedWarning() +
-        doc,
+      ) + doc,
       {
         flag: 'w',
       },
