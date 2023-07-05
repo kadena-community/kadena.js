@@ -42,7 +42,9 @@ const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
   const router = useRouter();
 
-  const debug = Debug('kadena-transfer:pages:cross-chain-transfer-tracker');
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
+  );
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] =
     useState<string>(router.query?.reqKey as string) || '';

@@ -49,7 +49,9 @@ interface IPactResultError {
 }
 
 const CrossChainTransferFinisher: FC = () => {
-  const debug = Debug('kadena-transfer:pages:cross-chain-transfer-finisher');
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
+  );
   const { t } = useTranslation('common');
   const { network } = useAppContext();
 

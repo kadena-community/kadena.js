@@ -23,7 +23,7 @@ const FAUCET_PRIVATE_KEY = env(
   '<PROVIDE_FAUCET_PRIVATEKEY_HERE>',
 );
 
-const debug = Debug('kadena-transfer:services:faucet-index');
+const debug = Debug('kadena-transfer:services:faucet');
 
 export const fundExistingAccount = async (
   account: string,
