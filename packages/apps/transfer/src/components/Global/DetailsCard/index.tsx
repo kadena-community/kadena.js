@@ -1,4 +1,5 @@
 import { AccountText } from '../AccountText';
+import { MaskedValue } from '@kadena/react-ui';
 
 import {
   StyledContentContainer,
@@ -37,8 +38,9 @@ export const DetailCard: FC<IDetailCardProps> = ({
       {icon}
       <StyledInfoContainer>
         {isAccount ? (
-          <AccountText title={firstTitle} account={firstContent} />
+          <MaskedValue title={firstTitle} value={firstContent} />
         ) : (
+          // <AccountText title={firstTitle} account={firstContent} />
           <div>
             <StyledInfoItemTitle>{firstTitle}</StyledInfoItemTitle>
             <StyledInfoItemLine>{firstContent}</StyledInfoItemLine>

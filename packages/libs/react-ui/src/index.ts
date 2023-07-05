@@ -50,4 +50,6 @@ export {
   IInputWrapperProps,
   Tag,
   ITagProps,
+  MaskedValue,
+  IMaskedValueProps,
 } from './components';

@@ -1,5 +1,13 @@
 import { styled, SystemIcons } from '@kadena/react-components';
 
+export const StyledAccountContainer = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  alignSelf: 'stretch',
+  gap: '$2',
+});
+
 export const StyledAccountText = styled('div', {
   width: '100%',
 });
@@ -19,14 +27,6 @@ export const StyledAccountNo = styled('div', {
   font: '$mono',
   fontWeight: '$semiBold',
   flex: '1',
-});
-
-export const StyledAccountContainer = styled('div', {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  alignSelf: 'stretch',
-  gap: '$2',
 });
 
 export const StyledEyeOffIcon = styled(SystemIcons.EyeOffOutline, {
