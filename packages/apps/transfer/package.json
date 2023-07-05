@@ -15,8 +15,7 @@
     "generate:contracts": "npm run generate:coin:contract && npm run generate:faucet:contract",
     "generate:faucet:contract": "npx @kadena/pactjs-cli contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
-    "lint": "next lint",
-    "lint:fix": "eslint --fix .",
+    "lint": "eslint ./src --fix",
     "start": "next start",
     "test": "jest --silent"
   },
