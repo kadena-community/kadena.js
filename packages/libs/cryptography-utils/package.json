@@ -37,7 +37,6 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
   "dependencies": {
