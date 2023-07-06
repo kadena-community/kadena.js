@@ -356,7 +356,7 @@ describe('Pact proxy', () => {
     expect(onPoll.mock.lastCall[0].cmd).toBeDefined();
   });
 
-  it('should reject when timeout of polling has been exceeded', async () => {
+  it('rejects when the timeout of polling has been exceeded', async () => {
     jest.useFakeTimers();
 
     const builder = new PactCommand();
