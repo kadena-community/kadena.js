@@ -134,7 +134,7 @@ The module you want to retrieve (e.g. "coin")
 Using the contract we'll now generate all the functions (`defun`s) with their
 (typed) arguments and the capabilities (`defcap`s).
 
-```bash
+```sh
 pactjs contract-generate --file "./contracts/coin.module.pact"
 ```
 
