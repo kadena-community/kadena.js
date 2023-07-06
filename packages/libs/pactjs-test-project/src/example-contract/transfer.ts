@@ -1,7 +1,8 @@
-import { poll, SendResponse } from '@kadena/chainweb-node-client';
+import { poll } from '@kadena/chainweb-node-client';
 import {
   addSigner,
   commandBuilder,
+  createTransaction,
   Pact,
   payload,
   setMeta,
@@ -41,8 +42,9 @@ async function transactionMain(): Promise<void> {
     setProp('networkId', 'testnet04'),
   );
 
-  const tx = cmdBuilder.createTransaction();
+  const tx = createTransaction(cmdBuilder);
 
+  console.log('unsigned transaction', JSON.stringify(tx));
   const res = await signWithChainweaver(tx);
 
   console.log('sigs', res[0].sigs);

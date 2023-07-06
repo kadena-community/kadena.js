@@ -5,6 +5,7 @@ export * from './signing';
 export * from './signing-api/v1/quicksign';
 export * from './signing-api/v1/sign';
 export * from './commandBuilder';
+export * from './utils/createTransaction';
 
 export type { IPact, IPactModules } from './pact';
 

@@ -12,6 +12,10 @@ export const addSignatures: (
   transaction: IUnsignedCommand,
   ...signatures: { sig: string; pubKey?: string }[]
 ) => IUnsignedCommand | ICommand = (transaction, ...signatures) => {
+  debug(`Adding signatures to transaction
+  transaction: ${JSON.stringify(transaction)}
+  signatures: ${JSON.stringify(signatures)}`);
+
   const { cmd, hash, sigs } = transaction;
   const parsedTransaction = parseTransactionCommand(transaction);
   if (allSignaturesHavePubKeys(signatures)) {

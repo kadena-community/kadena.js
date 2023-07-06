@@ -35,6 +35,11 @@ export const addSigner: IAddSigner;
 // @alpha (undocumented)
 export const commandBuilder: ICommandBuilder;
 
+// Warning: (ae-incompatible-release-tags) The symbol "createTransaction" is marked as @public, but its signature references "IPactCommand" which is marked as @alpha
+//
+// @public (undocumented)
+export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
+
 // Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
 //

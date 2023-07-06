@@ -30,7 +30,7 @@ interface IPayload {
  */
 export const payload: IPayload = {
   exec: (...codes: string[]) => {
-    const pld: IExecPayload = { exec: { code: codes.join('') } };
+    const pld: IExecPayload = { exec: { code: codes.join(''), data: {} } };
     return {
       payload: pld,
       // _brand is a trick to make the type inferring work but it's not a real field in the payload

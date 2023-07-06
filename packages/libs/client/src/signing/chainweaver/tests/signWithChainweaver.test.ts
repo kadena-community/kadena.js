@@ -116,9 +116,9 @@ describe('signWithChainweaver', () => {
     );
 
     const unsignedTransaction = createTransaction(command);
-    const signedTransaction = await signWithChainweaver(unsignedTransaction);
+    const txWithOneSig = await signWithChainweaver(unsignedTransaction);
 
-    expect(signedTransaction[0].sigs).toStrictEqual([
+    expect(txWithOneSig[0].sigs).toStrictEqual([
       { sig: 'gas-key-sig' },
       undefined,
     ]);
@@ -145,7 +145,7 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse2),
     });
 
-    const signedTx = await signWithChainweaver(unsignedTransaction);
+    const signedTx = await signWithChainweaver(txWithOneSig[0]);
     expect(signedTx[0].sigs).toEqual([
       { sig: 'gas-key-sig' },
       { sig: 'transfer-key-sig' },
