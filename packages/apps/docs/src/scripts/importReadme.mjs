@@ -63,9 +63,43 @@ const divideIntoPages = (md) => {
   }, []);
 };
 
+const createToC = (md) => {
+  const linkReferences = [];
+  const definitions = [];
+
+  const getTypes = (tree, type, arr) => {
+    tree.children.forEach((branch) => {
+      if (branch.type === type) {
+        arr.push(branch);
+        return;
+      }
+      if (!branch.children) return;
+
+      return getTypes(branch, type, arr);
+    });
+  };
+
+  getTypes(md, 'linkReference', linkReferences);
+  getTypes(md, 'definition', definitions);
+
+  console.log(definitions);
+  linkReferences.map((ref) => {
+    const label = ref.label;
+    const definition = definitions.find((def) => def.label === ref.label);
+    if (!definition) {
+      throw new Error('no definition found');
+    }
+    ref.type = 'link';
+    ref.url = definition.url;
+  });
+};
+
 const importDocs = (filename, destination, parentTitle, RootOrder) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
+
   const md = remark.parse(doc);
+  const tableOfContent = createToC(md);
+  // console.log(md.children[7]);
 
   divideIntoPages(md).forEach((page, idx) => {
     const title = getTitle(page);
