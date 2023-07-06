@@ -58,7 +58,7 @@ export const Analytics: FC = () => {
               'analytics_storage': 'denied'
             });
 
-            gtag('config', '${process.env.NEXT_PUBLIC_TRACKING_ID}');
+            gtag('config', '${process.env.TRACKING_ID}');
           `,
         }}
       />
