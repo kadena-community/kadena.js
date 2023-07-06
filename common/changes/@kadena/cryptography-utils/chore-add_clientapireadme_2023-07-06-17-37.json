@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "small changes in readme",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}
