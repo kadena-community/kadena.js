@@ -17,16 +17,16 @@ layout: full
 ---  
 `;
 };
-const getTypes = (tree, type, arr) => {
+const getTypes = (tree, type, arr = []) => {
   tree.children.forEach((branch) => {
     if (branch.type === type) {
       arr.push(branch);
-      return;
     }
-    if (!branch.children) return;
+    if (!branch.children) return arr;
 
     return getTypes(branch, type, arr);
   });
+  return arr;
 };
 
 const createEditOverwrite = (filename) =>
@@ -82,8 +82,7 @@ const divideIntoPages = (md) => {
 // find the correct title
 // if the title is a h2 (start of the new page)
 const findHeading = (tree, slug) => {
-  const headings = [];
-  getTypes(tree, 'heading', headings);
+  const headings = getTypes(tree, 'heading');
 
   const heading = headings.find((heading) => {
     return createSlug(heading.children[0].value) === slug;
@@ -127,11 +126,8 @@ const recreateUrl = (pages, url, root) => {
 
 // because we are creating new pages, we need to link the references to the correct pages
 const relinkLinkReferences = (md, pages, root) => {
-  const linkReferences = [];
-  const definitions = [];
-
-  getTypes(md, 'linkReference', linkReferences);
-  getTypes(md, 'definition', definitions);
+  const definitions = getTypes(md, 'definition');
+  const linkReferences = getTypes(md, 'linkReference');
 
   linkReferences.map((ref) => {
     const definition = definitions.find((def) => def.label === ref.label);
@@ -154,11 +150,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   const md = remark.parse(doc);
 
   const pages = divideIntoPages(md);
-  const tableOfContent = relinkLinkReferences(
-    md,
-    pages,
-    `/docs/${destination}/`,
-  );
+  relinkLinkReferences(md, pages, `/docs/${destination}/`);
 
   pages.forEach((page, idx) => {
     const title = getTitle(page);
