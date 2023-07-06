@@ -150,7 +150,10 @@ const CrossChainTransferFinisher: FC = () => {
             }
           },
         });
-        setFinalResults({ ...pollResult });
+        setFinalResults({
+          requestKey: pollResult.reqKey,
+          status: pollResult.result.status,
+        });
       } catch (tx) {
         setFinalResults({ ...tx });
       }
