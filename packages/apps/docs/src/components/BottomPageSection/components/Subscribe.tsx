@@ -25,7 +25,7 @@ export const Subscribe: FC = () => {
   return (
     <section data-cy="subscribe">
       <Stack direction="column" spacing="sm">
-        <Heading as="h6">Recieve important developer updates</Heading>
+        <Heading as="h6">Receive important developer updates</Heading>
 
         {!hasSuccess ? (
           <>
