@@ -33,7 +33,7 @@ echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --passwo
 Note that the package is not yet published, so for now you need to clone this
 repo and make a symlink.
 
-```bash
+```sh
 $ npm install --global @kadena/kda-cli
 ```
 
@@ -41,7 +41,7 @@ $ npm install --global @kadena/kda-cli
 
 To install the executable from this repo:
 
-```bash
+```sh
 rush install --to @kadena/kda-cli
 rush build --to @kadena/kda-cli
 chmod +x ./lib/index.js
@@ -52,7 +52,7 @@ ln -s $(pwd)/lib/index.js $NVM_BIN/kda
 
 ## CLI
 
-```bash
+```sh
 $ kda --help
 
   Usage
