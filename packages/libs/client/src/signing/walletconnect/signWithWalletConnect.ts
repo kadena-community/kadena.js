@@ -28,8 +28,8 @@ export function createWalletConnectSign(
     }
 
     const signingRequest: ISigningRequest = {
-      code: parsedTransaction.payload.code,
-      data: parsedTransaction.payload.data as { [key: string]: unknown },
+      code: parsedTransaction.payload.exec.code ?? '',
+      data: parsedTransaction.payload.exec.data as { [key: string]: unknown },
       caps: parsedTransaction.signers.flatMap((signer) => {
         if (signer.clist === undefined) {
           return [];

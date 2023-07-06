@@ -19,8 +19,10 @@ describe('signWithWalletConnect', () => {
   beforeEach(() => {
     transaction = {
       payload: {
-        code: '(coin.transfer "bonnie" "clyde" 1)',
-        data: { 'test-data': 'test-data' },
+        exec: {
+          code: '(coin.transfer "bonnie" "clyde" 1)',
+          data: { 'test-data': 'test-data' },
+        },
       },
       meta: {
         chainId: '1',
@@ -75,8 +77,8 @@ describe('signWithWalletConnect', () => {
         jsonrpc: '2.0',
         method: 'kadena_sign_v1',
         params: {
-          code: transaction.payload.code,
-          data: transaction.payload.data,
+          code: transaction.payload.exec.code,
+          data: transaction.payload.exec.data,
           caps: [
             {
               role: 'test-cap-name',

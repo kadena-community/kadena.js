@@ -18,8 +18,10 @@ describe('quicksignWithWalletConnect', () => {
   beforeEach(() => {
     transaction = {
       payload: {
-        code: '(coin.transfer "bonnie" "clyde" 1)',
-        data: { 'test-data': 'test-data' },
+        exec: {
+          code: '(coin.transfer "bonnie" "clyde" 1)',
+          data: { 'test-data': 'test-data' },
+        },
       },
       meta: {
         chainId: '1',
@@ -122,7 +124,7 @@ describe('quicksignWithWalletConnect', () => {
         params: {
           commandSigDatas: [
             {
-              cmd: '{"payload":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
+              cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
               sigs: [
                 {
                   pubKey: 'test-pub-key',
@@ -137,7 +139,7 @@ describe('quicksignWithWalletConnect', () => {
 
     expect(result).toEqual([
       {
-        cmd: '{"payload":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
+        cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
         hash: 'test-hash',
         sigs: [{ sig: 'test-sig' }],
       },
