@@ -1,5 +1,3 @@
-import './coin-contract';
-
 import {
   addSigner,
   commandBuilder,
@@ -7,12 +5,14 @@ import {
   setMeta,
   setProp,
 } from '../../index';
-import { Pact } from '../../pact';
+import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
 import { mergePayload } from '../commandBuilder';
 import { addData } from '../utils/addData';
 
-const { coin } = Pact.modules;
+import { ICoin } from './coin-contract';
+
+const coin: ICoin = getModule('coin');
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 

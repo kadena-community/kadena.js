@@ -8,6 +8,7 @@ import { ChainId } from '@kadena/types';
 import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
+import { IExecPayload as IExecPayload_2 } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import { SessionTypes } from '@walletconnect/types';
 
@@ -25,19 +26,17 @@ export const addData: <T extends string, D extends string | number | boolean | o
 // @alpha (undocumented)
 export const addKeyset: IAddKeyset;
 
-// Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IAddSigner_2" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const addSigner: IAddSigner;
+export const addSigner: IAddSigner_2;
 
 // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
 export const commandBuilder: ICommandBuilder;
 
-// Warning: (ae-incompatible-release-tags) The symbol "createTransaction" is marked as @public, but its signature references "IPactCommand" which is marked as @alpha
-//
-// @public (undocumented)
+// @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
 // Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
@@ -119,6 +118,10 @@ export interface IExecPayload {
 
 // @alpha (undocumented)
 export interface IPact {
+    // Warning: (ae-forgotten-export) The symbol "IFluentBuilder" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    command: IFluentBuilder;
     // (undocumented)
     modules: IPactModules;
 }

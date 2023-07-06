@@ -21,26 +21,22 @@ interface ITransferCrosschainCapability {
   (name: 'coin.CREDIT', receiver: string): ICapabilityItem;
 }
 
-declare module '../../pact' {
-  export interface IPactModules {
-    coin: {
-      transfer: (
-        from: string,
-        to: string,
-        amount: { decimal: string },
-      ) => string & {
-        capability: ITransferCapability;
-      };
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'transfer-crosschain': (
-        sender: string,
-        receiver: string,
-        receiverGuard: string,
-        targetChain: string,
-        amount: { decimal: string },
-      ) => string & {
-        capability: ITransferCrosschainCapability;
-      };
-    };
-  }
+export interface ICoin {
+  transfer: (
+    from: string,
+    to: string,
+    amount: { decimal: string },
+  ) => string & {
+    capability: ITransferCapability;
+  };
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  'transfer-crosschain': (
+    sender: string,
+    receiver: string,
+    receiverGuard: string,
+    targetChain: string,
+    amount: { decimal: string },
+  ) => string & {
+    capability: ITransferCrosschainCapability;
+  };
 }

@@ -2,7 +2,9 @@ import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { IUnsignedCommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
-
+/**
+ * @alpha
+ */
 export const createTransaction: (
   pactCommand: Partial<IPactCommand>,
 ) => IUnsignedCommand = (pactCommand) => {

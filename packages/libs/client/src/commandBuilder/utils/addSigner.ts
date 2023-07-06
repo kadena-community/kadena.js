@@ -55,7 +55,7 @@ export const addSigner: IAddSigner = ((
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
-type UnionToIntersection<U> = (
+export type UnionToIntersection<U> = (
   U extends unknown ? (k: U) => void : never
 ) extends (k: infer I) => void
   ? I

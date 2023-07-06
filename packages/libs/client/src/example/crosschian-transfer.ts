@@ -5,6 +5,7 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client/client';
+import { ICoin } from '../commandBuilder/test/coin-contract';
 import {
   addSigner,
   commandBuilder,
@@ -14,11 +15,11 @@ import {
   setMeta,
   setProp,
 } from '../index';
-import { Pact } from '../pact';
+import { getModule } from '../pact';
 import { quicksign } from '../sign';
 import { createTransaction } from '../utils/createTransaction';
 
-const { coin } = Pact.modules;
+const coin: ICoin = getModule('coin');
 
 interface IAccount {
   account: string;

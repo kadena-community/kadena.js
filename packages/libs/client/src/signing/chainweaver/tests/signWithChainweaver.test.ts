@@ -6,16 +6,19 @@ jest.mock('cross-fetch', () => {
 });
 
 import { commandBuilder } from '../../../commandBuilder/commandBuilder';
+import { ICoin } from '../../../commandBuilder/test/coin-contract';
 import { addSigner } from '../../../commandBuilder/utils/addSigner';
 import { payload } from '../../../commandBuilder/utils/payload';
 import { setMeta } from '../../../commandBuilder/utils/setMeta';
-import { Pact } from '../../../pact';
+import { getModule } from '../../../pact';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
 } from '../../../signing-api/v1/quicksign';
 import { createTransaction } from '../../../utils/createTransaction';
 import { signWithChainweaver } from '../signWithChainweaver';
+
+const coin: ICoin = getModule('coin');
 
 import fetch from 'cross-fetch';
 
@@ -30,9 +33,7 @@ describe('signWithChainweaver', () => {
     });
 
     const command = commandBuilder(
-      payload.exec(
-        Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
-      ),
+      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('signer-key', (withCap) => [withCap('coin.GAS')]),
     );
 
@@ -65,9 +66,7 @@ describe('signWithChainweaver', () => {
     });
 
     const command = commandBuilder(
-      payload.exec(
-        Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
-      ),
+      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('', (withCap) => [withCap('coin.GAS')]),
       setMeta({
         sender: '',
@@ -102,9 +101,7 @@ describe('signWithChainweaver', () => {
     });
 
     const command = commandBuilder(
-      payload.exec(
-        Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
-      ),
+      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
       addSigner('transfer-signer-pubkey', (withCap) => [
         withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
@@ -171,9 +168,7 @@ describe('signWithChainweaver', () => {
     });
 
     const command = commandBuilder(
-      payload.exec(
-        Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
-      ),
+      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
     );
 

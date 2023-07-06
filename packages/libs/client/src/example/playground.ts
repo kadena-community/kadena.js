@@ -5,6 +5,7 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ICommand } from '@kadena/types';
 
 import { getClient } from '../client/client';
+import { ICoin } from '../commandBuilder/test/coin-contract';
 import {
   addSigner,
   commandBuilder,
@@ -14,9 +15,9 @@ import {
   setMeta,
   setProp,
 } from '../index';
-import { getModule, Pact } from '../pact';
+import { getModule } from '../pact';
 
-const { coin } = Pact.modules;
+const coin: ICoin = getModule('coin');
 
 interface IAdminCapability {
   (name: 'test.ADMIN'): ICapabilityItem;

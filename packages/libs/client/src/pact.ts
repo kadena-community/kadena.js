@@ -1,5 +1,9 @@
 import { createExp } from '@kadena/pactjs';
 
+import {
+  createFluentBuilder,
+  IFluentBuilder,
+} from './fluentBuilder/fluentBuilder';
 import { parseType } from './utils/parseType';
 
 /**
@@ -12,6 +16,7 @@ export interface IPactModules {}
  */
 export interface IPact {
   modules: IPactModules;
+  command: IFluentBuilder;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +56,7 @@ export const Pact: IPact = {
   get modules() {
     return pactCreator();
   },
-  // "any" just for now, we can remove it after updated the deceleration generator
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any;
+  get command() {
+    return createFluentBuilder();
+  },
+};

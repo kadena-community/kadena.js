@@ -2,7 +2,6 @@ import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { isExecCommand } from '../../interfaces/isExecCommand';
 import { ISignSingleFunction } from '../ISignFunction';
-import { addSignatures } from '../utils/addSignature';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import { ISigningRequest, TWalletConnectChainId } from './walletConnectTypes';

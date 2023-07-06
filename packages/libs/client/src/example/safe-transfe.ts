@@ -4,12 +4,13 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 
 import { getClient } from '../client/client';
+import { ICoin } from '../commandBuilder/test/coin-contract';
 import { addSigner, commandBuilder, payload, setMeta, setProp } from '../index';
-import { Pact } from '../pact';
+import { getModule } from '../pact';
 import { quicksign } from '../sign';
 import { createTransaction } from '../utils/createTransaction';
 
-const { coin } = Pact.modules;
+const coin: ICoin = getModule('coin');
 
 const getHostUrl = (networkId: string, chainId: string): string =>
   `http://localhost:8080/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
