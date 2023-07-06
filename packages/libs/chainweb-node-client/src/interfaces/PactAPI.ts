@@ -1,5 +1,4 @@
 import type {
-  ChainId,
   IBase64Url,
   ICommand,
   IMetaData,
@@ -188,7 +187,7 @@ export type ListenResponse = ICommandResult;
  */
 export interface ISPVRequestBody {
   requestKey: IBase64Url;
-  targetChainId: ChainId;
+  targetChainId: ChainwebChainId;
 }
 
 /**
