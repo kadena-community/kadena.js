@@ -4,13 +4,13 @@ import { IUnsignedCommand } from '@kadena/types';
 import { IPactCommand } from '../interfaces/IPactCommand';
 
 export const createTransaction: (
-  pactCommand: IPactCommand,
+  pactCommand: Partial<IPactCommand>,
 ) => IUnsignedCommand = (pactCommand) => {
   const cmd = JSON.stringify(pactCommand);
   const hash = blakeHash(cmd);
   return {
     cmd,
     hash,
-    sigs: Array.from(Array(pactCommand.signers.length)),
+    sigs: Array.from(Array(pactCommand.signers?.length ?? 0)),
   };
 };

@@ -28,6 +28,7 @@ async function transactionMain(): Promise<void> {
   const onlyKey = (s: string): string => s.split(':')[1];
 
   const amount: { decimal: string } = { decimal: '0.1337' };
+
   const cmdBuilder = commandBuilder(
     payload.exec(
       Pact.modules.coin.transfer(senderAccount, receiverAccount, amount),

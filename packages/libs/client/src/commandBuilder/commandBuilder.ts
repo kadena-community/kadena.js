@@ -153,7 +153,7 @@ export const commandBuilder: ICommandBuilder = (
     createPactCommand,
     createTransaction: () => {
       const pactCommand = createPactCommand();
-      return createTransaction(pactCommand as Required<IPactCommand>);
+      return createTransaction(pactCommand);
     },
     validate: () => isPactCommand(createPactCommand()),
   });
