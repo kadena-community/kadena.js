@@ -1,6 +1,7 @@
 import {
   ChainwebNetworkId,
   createSendRequest,
+  ICommandResult,
   IPollResponse,
   local,
   poll,
@@ -60,7 +61,7 @@ export interface ICommandBuilder<
         pollRequest: Promise<IPollResponse>,
       ) => void;
     },
-  ): Promise<this>;
+  ): Promise<ICommandResult>;
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
     ...sig: {
@@ -365,7 +366,7 @@ export class PactCommand
         pollRequest: Promise<IPollResponse>,
       ) => void;
     },
-  ): Promise<this> {
+  ): Promise<ICommandResult> {
     if (this.requestKey === undefined) {
       throw new Error('`requestKey` not found');
     }
@@ -396,7 +397,7 @@ export class PactCommand
               // resolve the Promise when we get a "success" response
               this.status = 'success';
               clearTimeout(cancelTimeout);
-              resolve(this);
+              resolve(result[this.requestKey!]);
             } else if (result[this.requestKey!]?.result.status === 'failure') {
               // reject the Promise when we get a "failure" response
               this.status = 'failure';

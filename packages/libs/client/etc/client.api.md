@@ -9,6 +9,7 @@ import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
+import { ICommandResult } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
@@ -119,7 +120,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         interval?: number;
         timeout?: number;
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
-    }): Promise<this>;
+    }): Promise<ICommandResult>;
     // (undocumented)
     send(apiHost: string): Promise<SendResponse>;
     // (undocumented)
@@ -341,7 +342,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         interval?: number;
         timeout?: number;
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
-    }): Promise<this>;
+    }): Promise<ICommandResult>;
     // (undocumented)
     publicMeta: {
         chainId: ChainId;
