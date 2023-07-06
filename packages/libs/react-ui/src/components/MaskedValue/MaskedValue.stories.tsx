@@ -21,6 +21,16 @@ const meta: Meta<IMaskedValueProps> = {
         type: 'boolean',
       },
     },
+    startUnmaskedValues: {
+      control: {
+        type: 'number',
+      },
+    },
+    endUnmaskedValues: {
+      control: {
+        type: 'number',
+      },
+    },
   },
 };
 
@@ -34,14 +44,24 @@ export const Primary: Story = {
     title: 'Account',
     value: 'k:1234567890abcdef',
     defaultVisibility: false,
+    startUnmaskedValues: 6,
+    endUnmaskedValues: 4,
   },
-  render: ({ title, value, defaultVisibility }) => {
+  render: ({
+    title,
+    value,
+    defaultVisibility,
+    startUnmaskedValues,
+    endUnmaskedValues,
+  }) => {
     return (
       <>
         <MaskedValue
           title={title}
           value={value}
           defaultVisibility={defaultVisibility}
+          startUnmaskedValues={startUnmaskedValues}
+          endUnmaskedValues={endUnmaskedValues}
         />
       </>
     );
