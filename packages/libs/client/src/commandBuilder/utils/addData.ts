@@ -18,16 +18,20 @@ export const addData = <
   data: D,
 ): {
   payload: {
-    data: {
-      [key in T]: D;
+    exec: {
+      data: {
+        [key in T]: D;
+      };
     };
   };
 } => ({
   payload: {
-    data: {
-      [name as string]: data,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any,
+    exec: {
+      data: {
+        [name as string]: data,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+    },
   },
 });
 
@@ -38,10 +42,12 @@ interface IAddKeyset {
     ...publicKeys: string[]
   ): {
     payload: {
-      data: {
-        [key in NAME]: {
-          publicKeys: string[];
-          pred: PRED;
+      exec: {
+        data: {
+          [key in NAME]: {
+            publicKeys: string[];
+            pred: PRED;
+          };
         };
       };
     };
@@ -53,10 +59,12 @@ interface IAddKeyset {
     ...publicKeys: string[]
   ): {
     payload: {
-      data: {
-        [key in NAME]: {
-          publicKeys: string[];
-          pred: PRED;
+      exec: {
+        data: {
+          [key in NAME]: {
+            publicKeys: string[];
+            pred: PRED;
+          };
         };
       };
     };

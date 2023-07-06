@@ -3,7 +3,9 @@ import { createTransaction } from '../createTransaction';
 
 const pactCommand: IPactCommand = {
   payload: {
-    code: '(coin.transfer "alice" "bob" 12.1)',
+    exec: {
+      code: '(coin.transfer "alice" "bob" 12.1)',
+    },
   },
   signers: [
     {

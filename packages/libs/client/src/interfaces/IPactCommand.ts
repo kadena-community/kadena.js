@@ -5,22 +5,22 @@ import { ChainId, ICap } from '@kadena/types';
  */
 export interface IExecPayload {
   // executable pact code
-  // exec: {
-  code: string;
-  data?: Record<string, unknown>;
-  // };
+  exec: {
+    code?: string;
+    data?: Record<string, unknown>;
+  };
 }
 /**
  * @alpha
  */
 export interface IContinuationPayload {
-  // cont: {
-  pactId?: string;
-  step?: string;
-  rollback?: boolean;
-  data?: Record<string, unknown>;
-  proof?: string;
-  // };
+  cont: {
+    pactId?: string;
+    step?: string;
+    rollback?: boolean;
+    data?: Record<string, unknown>;
+    proof?: string;
+  };
 }
 /**
  * @alpha

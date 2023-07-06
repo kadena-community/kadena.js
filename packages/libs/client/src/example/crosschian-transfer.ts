@@ -49,7 +49,7 @@ function debitInTheFirstChain(
 }
 
 function creditInTheTargetChain(
-  continuation: IContinuationPayload,
+  continuation: IContinuationPayload['cont'],
   targetChainId: ChainId,
 ): IPactCommand {
   return commandBuilder(

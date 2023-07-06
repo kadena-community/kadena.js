@@ -3,7 +3,9 @@ import { quicksign } from '../sign';
 
 const sampleCommand: IPactCommand = {
   payload: {
-    code: '(coin.transfer "alice" "bob" 12.1)',
+    exec: {
+      code: '(coin.transfer "alice" "bob" 12.1)',
+    },
   },
   signers: [
     {

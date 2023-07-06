@@ -11,32 +11,28 @@ export const mergePayload = (
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
 
-  const mergedData: { data?: Record<string, unknown> } = {};
-
-  // merge data
-  if ('data' in payload || 'data' in newPayload) {
-    mergedData.data = { ...payload.data, ...newPayload.data };
-  }
-  // merge code
-  if ('code' in payload && 'code' in newPayload) {
+  if ('exec' in payload && 'exec' in newPayload) {
     return {
-      code: payload.code + newPayload.code,
-      ...mergedData,
-    };
-  }
-  // newPayload is just data
-  if (Object.keys(newPayload).length === 1 && 'data' in newPayload) {
-    return {
-      ...payload,
-      ...mergedData,
+      exec: {
+        code: (payload.exec.code ?? '') + (newPayload.exec.code ?? ''),
+        data: {
+          ...payload.exec.data,
+          ...newPayload.exec.data,
+        },
+      },
     };
   }
 
-  // payload is just data
-  if (Object.keys(payload).length === 1 && 'data' in payload) {
+  if ('cont' in payload && 'cont' in newPayload) {
     return {
-      ...newPayload,
-      ...mergedData,
+      cont: {
+        ...payload,
+        ...newPayload,
+        data: {
+          ...payload.cont.data,
+          ...newPayload.cont.data,
+        },
+      },
     };
   }
 

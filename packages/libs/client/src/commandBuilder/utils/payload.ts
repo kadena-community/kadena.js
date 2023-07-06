@@ -20,7 +20,7 @@ interface IExec {
 
 interface IPayload {
   exec: IExec;
-  cont: (options: IContinuationPayload) => {
+  cont: (options: IContinuationPayload['cont']) => {
     payload: IContinuationPayload & { _brand: 'cont' };
   };
 }
@@ -30,7 +30,7 @@ interface IPayload {
  */
 export const payload: IPayload = {
   exec: (...codes: string[]) => {
-    const pld: IExecPayload = { code: codes.join('') };
+    const pld: IExecPayload = { exec: { code: codes.join('') } };
     return {
       payload: pld,
       // _brand is a trick to make the type inferring work but it's not a real field in the payload
@@ -40,6 +40,6 @@ export const payload: IPayload = {
   cont: (options) => ({
     // _brand is a trick to make the type inferring work but it's not a real field in the payload
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    payload: options as any,
+    payload: { cont: options } as any,
   }),
 };

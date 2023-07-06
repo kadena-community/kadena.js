@@ -10,7 +10,9 @@ describe('isCommand', () => {
     expect(
       isPactCommand({
         payload: {
-          code: '(coin.transfer "alice" "bob" 12.1)',
+          exec: {
+            code: '(coin.transfer "alice" "bob" 12.1)',
+          },
         },
         signers: [
           {
@@ -53,7 +55,9 @@ describe('isCommand', () => {
     };
     const command: IPactCommand = {
       payload: {
-        code: '(coin.transfer "alice" "bob" 12.1)',
+        exec: {
+          code: '(coin.transfer "alice" "bob" 12.1)',
+        },
       },
       signers: [
         {

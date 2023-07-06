@@ -8,9 +8,9 @@ import {
   setProp,
 } from '../../index';
 import { Pact } from '../../pact';
+import { createTransaction } from '../../utils/createTransaction';
 import { mergePayload } from '../commandBuilder';
 import { addData } from '../utils/addData';
-import { createTransaction } from '../../utils/createTransaction';
 
 const { coin } = Pact.modules;
 
@@ -21,7 +21,9 @@ describe('payload.exec', () => {
     const command = payload.exec(
       coin.transfer('alice', 'bob', { decimal: '12.1' }),
     );
-    expect(command.payload.code).toBe('(coin.transfer "alice" "bob" 12.1)');
+    expect(command.payload.exec.code).toBe(
+      '(coin.transfer "alice" "bob" 12.1)',
+    );
   });
 
   it('adds multiple command', () => {
@@ -29,7 +31,7 @@ describe('payload.exec', () => {
       coin.transfer('alice', 'bob', { decimal: '0.1' }),
       coin.transfer('bob', 'alice', { decimal: '0.1' }),
     );
-    expect(command.payload.code).toBe(
+    expect(command.payload.exec.code).toBe(
       '(coin.transfer "alice" "bob" 0.1)(coin.transfer "bob" "alice" 0.1)',
     );
   });
@@ -294,7 +296,9 @@ describe('signer', () => {
 
 describe('mergePayload', () => {
   it('merge code part of two payload', () => {
-    expect(mergePayload({ code: '(one)' }, { code: '(two)' })).toEqual({
+    expect(
+      mergePayload({ exec: { code: '(one)' } }, { exec: { code: '(two)' } }),
+    ).toEqual({
       code: '(one)(two)',
     });
   });
@@ -302,8 +306,8 @@ describe('mergePayload', () => {
   it('merge data part of two payload', () => {
     expect(
       mergePayload(
-        { code: '(one)', data: { one: 'test' } },
-        { code: '(two)', data: { two: 'test' } },
+        { exec: { code: '(one)', data: { one: 'test' } } },
+        { exec: { code: '(two)', data: { two: 'test' } } },
       ),
     ).toEqual({
       code: '(one)(two)',
@@ -316,19 +320,24 @@ describe('mergePayload', () => {
 
   it('returns the non-undefined if one of the inputs is undefined', () => {
     expect(
-      mergePayload({ code: '(one)', data: { one: 'test' } }, undefined),
+      mergePayload(
+        { exec: { code: '(one)', data: { one: 'test' } } },
+        undefined,
+      ),
     ).toEqual({ code: '(one)', data: { one: 'test' } });
 
     expect(
-      mergePayload(undefined, { code: '(one)', data: { one: 'test' } }),
+      mergePayload(undefined, {
+        exec: { code: '(one)', data: { one: 'test' } },
+      }),
     ).toEqual({ code: '(one)', data: { one: 'test' } });
   });
 
   it('returns merged data', () => {
     expect(
       mergePayload(
-        { data: { one: 'test' } },
-        { pactId: '1', data: { two: 'test' } },
+        { cont: { data: { one: 'test' } } },
+        { cont: { pactId: '1', data: { two: 'test' } } },
       ),
     ).toEqual({
       pactId: '1',
@@ -336,13 +345,15 @@ describe('mergePayload', () => {
     });
 
     expect(
-      mergePayload(undefined, { code: '(one)', data: { one: 'test' } }),
+      mergePayload(undefined, {
+        exec: { code: '(one)', data: { one: 'test' } },
+      }),
     ).toEqual({ code: '(one)', data: { one: 'test' } });
   });
 
   it('throws error if object are not the same brand', () => {
-    expect(() => mergePayload({ code: 'test' }, { pactId: '1' })).toThrowError(
-      new Error('PAYLOAD_NOT_MERGEABLE'),
-    );
+    expect(() =>
+      mergePayload({ exec: { code: 'test' } }, { cont: { pactId: '1' } }),
+    ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
   });
 });
