@@ -1,6 +1,10 @@
 import { ICommand } from '@kadena/types';
 
-import { ISignSingleFunction } from './ISignFunction';
+import { isExecCommand } from '../../interfaces/isExecCommand';
+import { ISignSingleFunction } from '../ISignFunction';
+import { addSignatures } from '../utils/addSignature';
+import { parseTransactionCommand } from '../utils/parseTransactionCommand';
+
 import { ISigningRequest, TWalletConnectChainId } from './walletConnectTypes';
 
 import Client from '@walletconnect/sign-client';
@@ -18,13 +22,19 @@ export function createWalletConnectSign(
   walletConnectChainId: TWalletConnectChainId,
 ): ISignSingleFunction {
   const signWithWalletConnect: ISignSingleFunction = async (transaction) => {
-    transaction.createCommand(); // this will generate the nonce that we pass below
+    const parsedTransaction = parseTransactionCommand(transaction);
+    if (!isExecCommand(parsedTransaction)) {
+      throw new Error('`cont` transactions are not supported');
+    }
 
     const signingRequest: ISigningRequest = {
-      code: transaction.code,
-      data: transaction.data,
-      caps: transaction.signers.flatMap((signer) =>
-        signer.caps.map(({ name, args }) => {
+      code: parsedTransaction.payload.code,
+      data: parsedTransaction.payload.data as { [key: string]: unknown },
+      caps: parsedTransaction.signers.flatMap((signer) => {
+        if (signer.clist === undefined) {
+          return [];
+        }
+        return signer.clist.map(({ name, args }) => {
           const nameArr = name.split('.');
 
           return {
@@ -35,14 +45,14 @@ export function createWalletConnectSign(
               args,
             },
           };
-        }),
-      ),
-      nonce: transaction.nonce,
-      chainId: transaction.publicMeta.chainId,
-      gasLimit: transaction.publicMeta.gasLimit,
-      gasPrice: transaction.publicMeta.gasPrice,
-      sender: transaction.publicMeta.sender,
-      ttl: transaction.publicMeta.ttl,
+        });
+      }),
+      nonce: parsedTransaction.nonce,
+      chainId: parsedTransaction.meta.chainId,
+      gasLimit: parsedTransaction.meta.gasLimit,
+      gasPrice: parsedTransaction.meta.gasPrice,
+      sender: parsedTransaction.meta.sender,
+      ttl: parsedTransaction.meta.ttl,
     };
 
     const transactionRequest = {
@@ -64,13 +74,7 @@ export function createWalletConnectSign(
 
     const { cmd, sigs } = response.body;
 
-    transaction.addSignatures(
-      ...sigs.map((sig, i) => ({
-        ...transaction.signers[i],
-        sig: sig.sig,
-      })),
-    );
-
+    transaction = addSignatures(transaction, ...sigs);
     transaction.cmd = cmd;
 
     return response.body;

@@ -1,22 +1,26 @@
-import { ICap } from '@kadena/types';
+import { ChainId, ICap } from '@kadena/types';
 
 /**
  * @alpha
  */
 export interface IExecPayload {
   // executable pact code
-  code: string;
-  data?: Record<string, unknown>;
+  // exec: {
+    code: string;
+    data?: Record<string, unknown>;
+  // };
 }
 /**
  * @alpha
  */
 export interface IContinuationPayload {
-  pactId?: string;
-  step?: string;
-  rollback?: boolean;
-  data?: Record<string, unknown>;
-  proof?: string;
+  // cont: {
+    pactId?: string;
+    step?: string;
+    rollback?: boolean;
+    data?: Record<string, unknown>;
+    proof?: string;
+  // };
 }
 /**
  * @alpha
@@ -30,7 +34,7 @@ export type ICapabilityItem = ICap;
 export interface IPactCommand {
   payload: IExecPayload | IContinuationPayload;
   meta: {
-    chainId: string;
+    chainId: ChainId;
     sender: string;
     gasLimit: number;
     gasPrice: number;

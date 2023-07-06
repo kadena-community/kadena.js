@@ -1,10 +1,11 @@
-import { IPactCommand } from '../../interfaces/IPactCommand';
-import { ICommandBuilder } from '../../pact';
 import {
   IQuickSignRequestBody,
   IQuicksignResponse,
   IQuicksignSigner,
 } from '../../signing-api/v1/quicksign';
+import { ISignFunction } from '../ISignFunction';
+import { addSignatures } from '../utils/addSignature';
+import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
@@ -15,15 +16,13 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
 /**
  * @alpha
  */
-export async function signWithChainweaver<T1 extends string, T2>(
-  ...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]
-): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]> {
+export const signWithChainweaver: ISignFunction = async (...transactions) => {
   const quickSignRequest: IQuickSignRequestBody = {
     cmdSigDatas: transactions.map((t) => {
-      const command = t.createCommand();
+      const parsedTransaction = parseTransactionCommand(t);
       return {
-        cmd: command.cmd,
-        sigs: t.signers.map((signer, i) => {
+        cmd: t.cmd,
+        sigs: parsedTransaction.signers.map((signer, i) => {
           return {
             pubKey: signer.pubKey,
             sig: t.sigs[i]?.sig ?? null,
@@ -54,7 +53,8 @@ export async function signWithChainweaver<T1 extends string, T2>(
     }
 
     result.responses.map((signedCommand, i) => {
-      transactions[i].addSignatures(
+      transactions[i] = addSignatures(
+        transactions[i],
         ...signedCommand.commandSigData.sigs.filter(isASigner),
       );
     });
@@ -69,7 +69,7 @@ export async function signWithChainweaver<T1 extends string, T2>(
         `${error}`,
     );
   }
-}
+};
 
 function isASigner(signer: IQuicksignSigner): signer is {
   pubKey: string;

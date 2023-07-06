@@ -14,7 +14,7 @@ const pactCommand: IPactCommand = {
   networkId: 'test-network-id',
   nonce: 'test-nonce',
   meta: {
-    chainId: 'test-chain-id',
+    chainId: '1',
     creationTime: 123,
     gasLimit: 400,
     gasPrice: 381,
@@ -28,7 +28,7 @@ describe('createTransaction', () => {
     const transaction = createTransaction(pactCommand);
 
     expect(transaction.hash).toBe(
-      '8GTxDPc0F4RG-j4ZgfJA97HvVXHy5Z1sOzAhwWbukAs',
+      'YuqQyJtXv9OxlsC6VKtARAqH1B9HmWFi7T5T7qOBTRY',
     );
   });
 

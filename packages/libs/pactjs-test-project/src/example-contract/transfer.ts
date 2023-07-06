@@ -1,5 +1,13 @@
 import { poll, SendResponse } from '@kadena/chainweb-node-client';
-import { Pact, signWithChainweaver } from '@kadena/client';
+import {
+  addSigner,
+  commandBuilder,
+  Pact,
+  payload,
+  setMeta,
+  setProp,
+  signWithChainweaver,
+} from '@kadena/client';
 
 const apiHost = (
   chainId: string,
@@ -20,48 +28,38 @@ async function transactionMain(): Promise<void> {
   const onlyKey = (s: string): string => s.split(':')[1];
 
   const amount: { decimal: string } = { decimal: '0.1337' };
+  const cmdBuilder = commandBuilder(
+    payload.exec(
+      Pact.modules.coin.transfer(senderAccount, receiverAccount, amount),
+    ),
+    addSigner(onlyKey(senderAccount), (withCap) => [
+      withCap('coin.TRANSFER', senderAccount, receiverAccount, amount),
+      withCap('coin.GAS'),
+    ]),
+    setMeta({ chainId: '1', sender: senderAccount }),
+    setProp('networkId', 'testnet04'),
+  );
 
-  const unsignedTransaction = Pact.modules.coin
-    .transfer(
-      senderAccount,
-      receiverAccount,
-      // () => '(read-keyset "ks")',
-      amount,
-    )
-    // .addData({
-    //   ks: {
-    //     keys: [onlyKey(receiverAccount)],
-    //     pred: 'keys-all',
-    //   },
-    // })
-    .addCap(
-      'coin.TRANSFER',
-      onlyKey(senderAccount),
-      senderAccount,
-      receiverAccount,
-      amount,
-    )
-    .addCap('coin.GAS', onlyKey(senderAccount))
-    .setMeta({ sender: senderAccount }, 'testnet04');
+  const tx = cmdBuilder.createTransaction();
 
-  const res = await signWithChainweaver(unsignedTransaction);
+  const res = await signWithChainweaver(tx);
 
   console.log('sigs', res[0].sigs);
   console.log('signed transactions', JSON.stringify(res, null, 2));
 
   const sendRequests = res.map((tx) => {
-    console.log('sending transaction', tx.code);
-    return tx.send(testnetChain1ApiHost);
+    console.log('sending transaction', tx.cmd);
+    // return tx.send(testnetChain1ApiHost);
   });
 
-  const sendResponses = await Promise.all(sendRequests);
-  sendResponses.map(async function startPolling(
-    sendResponse: SendResponse,
-  ): Promise<void> {
-    console.log('sendResponse', sendResponse);
-    const requestKey = (await sendRequests[0]).requestKeys[0];
-    await pollMain(requestKey);
-  });
+  // const sendResponses = await Promise.all(sendRequests);
+  // sendResponses.map(async function startPolling(
+  //   sendResponse: SendResponse,
+  // ): Promise<void> {
+  //   console.log('sendResponse', sendResponse);
+  //   const requestKey = (await sendRequests[0]).requestKeys[0];
+  //   await pollMain(requestKey);
+  // });
 }
 
 async function pollMain(...requestKeys: string[]): Promise<void> {

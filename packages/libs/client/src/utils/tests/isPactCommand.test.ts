@@ -20,7 +20,7 @@ describe('isCommand', () => {
         networkId: 'test-network-id',
         nonce: 'test-nonce',
         meta: {
-          chainId: 'test-chain-id',
+          chainId: '0',
           creationTime: 123,
           gasLimit: 400,
           gasPrice: 381,
@@ -63,7 +63,7 @@ describe('isCommand', () => {
       networkId: 'test-network-id',
       nonce: 'test-nonce',
       meta: {
-        chainId: 'test-chain-id',
+        chainId: '0',
         creationTime: 123,
         gasLimit: 400,
         gasPrice: 381,

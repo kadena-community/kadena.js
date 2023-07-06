@@ -1,5 +1,7 @@
-import { PactCommand } from '../../../pact';
-import { ISignSingleFunction } from '../ISignFunction';
+import { IPactCommand } from '../../../interfaces/IPactCommand';
+import { isExecCommand } from '../../../interfaces/isExecCommand';
+import { createTransaction } from '../../../utils/createTransaction';
+import { ISignSingleFunction } from '../../ISignFunction';
 import { createWalletConnectSign } from '../signWithWalletConnect';
 import { TWalletConnectChainId } from '../walletConnectTypes';
 
@@ -9,25 +11,29 @@ import { SessionTypes } from '@walletconnect/types';
 jest.spyOn(console, 'log').mockImplementation(() => {});
 
 describe('signWithWalletConnect', () => {
-  let transaction: PactCommand;
+  let transaction: IPactCommand;
   const session = { topic: 'test-topic' } as unknown as SessionTypes.Struct;
   const walletConnectChainId: TWalletConnectChainId = 'kadena:testnet04';
   let signWithWalletConnect: ISignSingleFunction;
 
   beforeEach(() => {
-    transaction = Object.assign(new PactCommand(), {
-      code: '(coin.transfer "bonnie" "clyde" 1)',
-      data: 'test-data',
-      publicMeta: {
-        chainId: 'test-chain-id',
-        gasLimit: 'test-gas-limit',
-        gasPrice: 'test-gas-price',
+    transaction = {
+      payload: {
+        code: '(coin.transfer "bonnie" "clyde" 1)',
+        data: { 'test-data': 'test-data' },
+      },
+      meta: {
+        chainId: '1',
+        gasLimit: 1000,
+        gasPrice: 1e-8,
         sender: 'test-sender',
-        ttl: 'test-ttl',
+        ttl: 30 * 6 /* time for 6 blocks to be mined */,
+        creationTime: 1234,
       },
       signers: [
         {
-          caps: [
+          pubKey: 'test-pub-key',
+          clist: [
             {
               name: 'cap.test-cap-name',
               args: ['test-cap-arg'],
@@ -35,9 +41,9 @@ describe('signWithWalletConnect', () => {
           ],
         },
       ],
-      createCommand: jest.fn(),
-      addSignatures: jest.fn(),
-    });
+      networkId: 'test-network-id',
+      nonce: 'test-nonce',
+    };
   });
 
   it('signs a transaction', async () => {
@@ -56,7 +62,10 @@ describe('signWithWalletConnect', () => {
       walletConnectChainId,
     );
 
-    const result = await signWithWalletConnect(transaction);
+    const result = await signWithWalletConnect(createTransaction(transaction));
+    if (!isExecCommand(transaction)) {
+      throw new Error('not an exec command');
+    }
 
     expect(client.request).toHaveBeenCalledWith({
       topic: session.topic,
@@ -66,8 +75,8 @@ describe('signWithWalletConnect', () => {
         jsonrpc: '2.0',
         method: 'kadena_sign_v1',
         params: {
-          code: transaction.code,
-          data: transaction.data,
+          code: transaction.payload.code,
+          data: transaction.payload.data,
           caps: [
             {
               role: 'test-cap-name',
@@ -79,23 +88,15 @@ describe('signWithWalletConnect', () => {
             },
           ],
           nonce: transaction.nonce,
-          chainId: transaction.publicMeta.chainId,
-          gasLimit: transaction.publicMeta.gasLimit,
-          gasPrice: transaction.publicMeta.gasPrice,
-          sender: transaction.publicMeta.sender,
-          ttl: transaction.publicMeta.ttl,
+          chainId: transaction.meta.chainId,
+          gasLimit: transaction.meta.gasLimit,
+          gasPrice: transaction.meta.gasPrice,
+          sender: transaction.meta.sender,
+          ttl: transaction.meta.ttl,
         },
       },
     });
-
-    expect(transaction.createCommand).toHaveBeenCalled();
-
-    expect(transaction.addSignatures).toHaveBeenCalledWith({
-      ...transaction.signers[0],
-      sig: 'test-sig',
-    });
-
-    expect(transaction.cmd).toBe('test-cmd');
+    expect(result.cmd).toBe('test-cmd');
 
     expect(result).toEqual({
       cmd: 'test-cmd',
@@ -119,7 +120,7 @@ describe('signWithWalletConnect', () => {
     );
 
     try {
-      await signWithWalletConnect(transaction);
+      await signWithWalletConnect(createTransaction(transaction));
       // Fail test if signWithWalletConnect() doesn't throw. Next line shouldn't be reached.
       expect(true).toBe(false);
     } catch (e) {

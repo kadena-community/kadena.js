@@ -4,8 +4,12 @@
 
 ```ts
 
+import { ChainId } from '@kadena/types';
+import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
+import { ICommand } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
+import { SessionTypes } from '@walletconnect/types';
 
 // @alpha (undocumented)
 export const addData: <T extends string, D extends string | number | boolean | object>(name: T, data: D) => {
@@ -28,6 +32,17 @@ export const addSigner: IAddSigner;
 //
 // @alpha (undocumented)
 export const commandBuilder: ICommandBuilder;
+
+// Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
+
+// Warning: (ae-forgotten-export) The symbol "ISignSingleFunction" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
 // @alpha (undocumented)
 export type ICapabilityItem = ICap;
@@ -106,7 +121,7 @@ export interface IPact {
 export interface IPactCommand {
     // (undocumented)
     meta: {
-        chainId: string;
+        chainId: ChainId;
         sender: string;
         gasLimit: number;
         gasPrice: number;
@@ -218,6 +233,9 @@ export const setMeta: (options: {
 
 // @alpha (undocumented)
 export const setProp: <T extends keyof IPactCommand>(item: T, value: IPactCommand[T]) => { [key in T]: IPactCommand[T]; };
+
+// @alpha (undocumented)
+export const signWithChainweaver: ISignFunction;
 
 // (No @packageDocumentation comment for this package)
 

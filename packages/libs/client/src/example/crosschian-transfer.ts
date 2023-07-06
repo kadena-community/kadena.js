@@ -2,6 +2,7 @@
 // this module is just a code snippet for the cross chain transfer
 
 import { ICommandResult } from '@kadena/chainweb-node-client';
+import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client/client';
 import { IPactCommandBuilder } from '../commandBuilder/commandBuilder';
@@ -21,7 +22,7 @@ const { coin } = Pact.modules;
 interface IAccount {
   account: string;
   publicKey: string;
-  chainId: string;
+  chainId: ChainId;
   guard: string;
 }
 
@@ -48,7 +49,7 @@ function debitInTheFirstChain(
 
 function creditInTheTargetChain(
   continuation: IContinuationPayload,
-  targetChainId: string,
+  targetChainId: ChainId,
 ): IPactCommandBuilder {
   return commandBuilder(
     payload.cont(continuation),

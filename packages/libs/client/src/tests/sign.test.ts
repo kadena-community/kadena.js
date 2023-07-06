@@ -15,7 +15,7 @@ const sampleCommand: IPactCommand = {
   networkId: 'test-network-id',
   nonce: 'test-nonce',
   meta: {
-    chainId: 'test-chain-id',
+    chainId: '1',
     creationTime: 123,
     gasLimit: 400,
     gasPrice: 381,

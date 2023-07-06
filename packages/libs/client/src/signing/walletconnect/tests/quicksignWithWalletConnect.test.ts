@@ -1,5 +1,6 @@
-import { PactCommand } from '../../../pact';
-import { ISignFunction } from '../ISignFunction';
+import { IPactCommand } from '../../../interfaces/IPactCommand';
+import { createTransaction } from '../../../utils/createTransaction';
+import { ISignFunction } from '../../ISignFunction';
 import { createWalletConnectQuicksign } from '../quicksignWithWalletConnect';
 import { TWalletConnectChainId } from '../walletConnectTypes';
 
@@ -9,25 +10,28 @@ import { SessionTypes } from '@walletconnect/types';
 jest.spyOn(console, 'log').mockImplementation(() => {});
 
 describe('quicksignWithWalletConnect', () => {
-  let transaction: PactCommand;
+  let transaction: IPactCommand;
   const session = { topic: 'test-topic' } as unknown as SessionTypes.Struct;
   const walletConnectChainId: TWalletConnectChainId = 'kadena:testnet04';
   let quicksignWithWalletConnect: ISignFunction;
 
   beforeEach(() => {
-    transaction = Object.assign(new PactCommand(), {
-      code: '(coin.transfer "bonnie" "clyde" 1)',
-      data: 'test-data',
-      publicMeta: {
-        chainId: 'test-chain-id',
-        gasLimit: 'test-gas-limit',
-        gasPrice: 'test-gas-price',
+    transaction = {
+      payload: {
+        code: '(coin.transfer "bonnie" "clyde" 1)',
+        data: { 'test-data': 'test-data' },
+      },
+      meta: {
+        chainId: '1',
+        gasLimit: 10000,
+        gasPrice: 1e-8,
         sender: 'test-sender',
-        ttl: 'test-ttl',
+        ttl: 30 * 6 /* time for 6 blocks to be mined */,
+        creationTime: 1234,
       },
       signers: [
         {
-          caps: [
+          clist: [
             {
               name: 'test-cap-name',
               args: ['test-cap-arg'],
@@ -36,9 +40,9 @@ describe('quicksignWithWalletConnect', () => {
           pubKey: 'test-pub-key',
         },
       ],
-      createCommand: jest.fn(() => ({ cmd: 'test-cmd', hash: 'test-hash' })),
-      addSignatures: jest.fn(),
-    });
+      networkId: 'testnet-id',
+      nonce: '',
+    };
   });
 
   it('throws when no transactions are passed', async () => {
@@ -104,7 +108,9 @@ describe('quicksignWithWalletConnect', () => {
       walletConnectChainId,
     );
 
-    const result = await quicksignWithWalletConnect(transaction);
+    const unsignedTransaction = createTransaction(transaction);
+    unsignedTransaction.hash = 'test-hash';
+    const result = await quicksignWithWalletConnect(unsignedTransaction);
 
     expect(client.request).toHaveBeenCalledWith({
       topic: session.topic,
@@ -116,7 +122,7 @@ describe('quicksignWithWalletConnect', () => {
         params: {
           commandSigDatas: [
             {
-              cmd: 'test-cmd',
+              cmd: '{"payload":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
               sigs: [
                 {
                   pubKey: 'test-pub-key',
@@ -129,17 +135,11 @@ describe('quicksignWithWalletConnect', () => {
       },
     });
 
-    expect(transaction.createCommand).toHaveBeenCalled();
-
-    expect(transaction.addSignatures).toHaveBeenCalledWith({
-      ...transaction.signers[0],
-      sig: 'test-sig',
-    });
-
     expect(result).toEqual([
       {
-        cmd: 'test-cmd',
+        cmd: '{"payload":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
         hash: 'test-hash',
+        sigs: [{ sig: 'test-sig' }],
       },
     ]);
   });
@@ -156,7 +156,7 @@ describe('quicksignWithWalletConnect', () => {
     );
 
     try {
-      await quicksignWithWalletConnect(transaction);
+      await quicksignWithWalletConnect(createTransaction(transaction));
       // Fail test if quicksignWithWalletConnect() doesn't throw. Next line shouldn't be reached.
       expect(true).toBe(false);
     } catch (e) {
@@ -180,7 +180,7 @@ describe('quicksignWithWalletConnect', () => {
     );
 
     try {
-      await quicksignWithWalletConnect(transaction);
+      await quicksignWithWalletConnect(createTransaction(transaction));
       // Fail test if quicksignWithWalletConnect() doesn't throw. Next line shouldn't be reached.
       expect(true).toBe(false);
     } catch (e) {
@@ -227,12 +227,12 @@ describe('quicksignWithWalletConnect', () => {
     );
 
     try {
-      await quicksignWithWalletConnect(transaction);
+      await quicksignWithWalletConnect(createTransaction(transaction));
       // Fail test if quicksignWithWalletConnect() doesn't throw. Next line shouldn't be reached.
       expect(true).toBe(false);
     } catch (e) {
       expect(e.message).toContain(
-        'Hash of the transaction signed by the wallet does not match. Our hash: test-hash, wallet hash: test-hash-different',
+        'Hash of the transaction signed by the wallet does not match. Our hash',
       );
     }
   });
