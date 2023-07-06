@@ -105,8 +105,8 @@ describe('signWithChainweaver', () => {
       payload.exec(
         Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
       ),
-      addSigner('gas-signer-pubkey', (withCap) => [
-        withCap('coin.GAS'),
+      addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
+      addSigner('transfer-signer-pubkey', (withCap) => [
         withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
       ]),
       setMeta({
@@ -118,7 +118,7 @@ describe('signWithChainweaver', () => {
     const unsignedTransaction = createTransaction(command);
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-    expect(signedTransaction[0].sigs).toEqual([
+    expect(signedTransaction[0].sigs).toStrictEqual([
       { sig: 'gas-key-sig' },
       undefined,
     ]);
