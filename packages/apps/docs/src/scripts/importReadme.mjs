@@ -182,17 +182,44 @@ const importDocs = (filename, destination, parentTitle, options) => {
 /**
  * Files to be imported
  */
+/** /libs/chainweb-node-client */
+importDocs(
+  'libs/chainweb-node-client/README.md',
+  'chainweb/node-client',
+  'Node Client',
+  {
+    RootOrder: 2,
+  },
+);
 
-importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', {
-  RootOrder: 6,
+/** /libs/chainweb-stream-client */
+importDocs(
+  'libs/chainweb-stream-client/README.md',
+  'chainweb/stream-client',
+  'Stream Client',
+  {
+    RootOrder: 1,
+  },
+);
+
+/** /libs/chainwebjs */
+importDocs('libs/chainwebjs/README.md', 'chainweb/js-bindings', 'JS bindings', {
+  RootOrder: 3,
 });
+
+/** /libs/client */
 importDocs('libs/client/README.md', 'kadena/client', 'Client', {
   RootOrder: 7,
 });
+
 importDocs('libs/client/etc/client.api.md', 'kadena/client/api', 'Client Api', {
   RootOrder: 99,
   hideEditLink: true,
 });
+importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', {
+  RootOrder: 6,
+});
+
 importDocs('tools/pactjs-cli/README.md', 'pact/cli', 'CLI tool', {
   RootOrder: 6,
 });
@@ -205,24 +232,5 @@ importDocs(
   },
 );
 importDocs('tools/kda-cli/README.md', 'build/tools/kda-cli', 'KDA CLI', {
-  RootOrder: 3,
-});
-importDocs(
-  'libs/chainweb-stream-client/README.md',
-  'chainweb/stream-client',
-  'Stream Client',
-  {
-    RootOrder: 1,
-  },
-);
-importDocs(
-  'libs/chainweb-node-client/README.md',
-  'chainweb/node-client',
-  'Node Client',
-  {
-    RootOrder: 2,
-  },
-);
-importDocs('libs/chainwebjs/README.md', 'chainweb/js-bindings', 'JS bindings', {
   RootOrder: 3,
 });
