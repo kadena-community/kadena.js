@@ -5,6 +5,7 @@ import React, {
   createContext,
   FC,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -38,15 +39,15 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
     setMounted(true);
   }, []);
 
-  const renderModal = (node: ReactNode, title?: string): void => {
+  const renderModal = useCallback((node: ReactNode, title?: string): void => {
     setContent(node);
     setTitle(title);
-  };
+  }, []);
 
-  const clearModal = (): void => {
+  const clearModal = useCallback((): void => {
     setContent(undefined);
     setTitle(undefined);
-  };
+  }, []);
 
   const isOpen: boolean = mounted && Boolean(ref.current) && Boolean(content);
 
