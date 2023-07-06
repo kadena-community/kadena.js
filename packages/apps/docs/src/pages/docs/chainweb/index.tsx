@@ -1,12 +1,10 @@
-import { Heading, Stack, Text } from '@kadena/react-components';
+import { Heading, Stack } from '@kadena/react-components';
 
-import { BrowseSection } from '@/components';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
 import React, { FC } from 'react';
 
 const Home: FC = () => {
