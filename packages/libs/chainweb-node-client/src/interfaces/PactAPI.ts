@@ -55,6 +55,9 @@ interface IChainwebResponseMetaData {
 
 // TODO: Move Chainweb Specific Types
 
+/**
+ * @alpha
+ */
 // eslint-disable-next-line @rushstack/typedef-var
 export const CHAINS = [
   '0',
