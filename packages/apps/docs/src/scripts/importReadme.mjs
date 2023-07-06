@@ -207,3 +207,11 @@ importDocs(
 importDocs('tools/kda-cli/README.md', 'build/tools/kda-cli', 'KDA CLI', {
   RootOrder: 3,
 });
+importDocs(
+  'libs/chainweb-stream-client/README.md',
+  'chainweb/stream-client',
+  'Stream Client',
+  {
+    RootOrder: 1,
+  },
+);

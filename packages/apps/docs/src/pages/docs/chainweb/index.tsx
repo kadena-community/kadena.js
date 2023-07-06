@@ -1,17 +1,22 @@
-import { Specs } from '@/components/Specs';
-import apiSpecs from '@/specs/chainweb/chainweb.openapi.json';
-import { ILayout } from '@/types/Layout';
+import { Heading, Stack, Text } from '@kadena/react-components';
+
+import { BrowseSection } from '@/components';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive';
 import { GetStaticProps } from 'next';
-import { OpenAPIV3 } from 'openapi-types';
+import Link from 'next/link';
 import React, { FC } from 'react';
 
-const Home: FC<ILayout> = () => {
-  const specs = apiSpecs as unknown as OpenAPIV3.Document;
-  return <Specs specs={specs} />;
+const Home: FC = () => {
+  return (
+    <Stack direction="column" spacing="2xl">
+      <div>
+        <Heading as="h2">Chainweb</Heading>
+      </div>
+    </Stack>
+  );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -19,14 +24,14 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
-        title: 'Chainweb',
+        title: 'Intro to Chainweb',
         menu: 'Chainweb',
-        subTitle: 'Be a part of our ecosystem',
-        label: 'Chainweb',
-        order: 5,
-        description: 'Be a part of our ecosystem',
-        layout: 'home',
-        icon: 'Chainweb',
+        subTitle: 'Build the future on Kadena',
+        label: 'Introduction',
+        order: 0,
+        description: 'Welcome to Chainwebs documentation!',
+        layout: 'landing',
+        icon: 'QuickStart',
       },
     },
   };
