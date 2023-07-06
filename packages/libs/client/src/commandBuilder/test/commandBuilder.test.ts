@@ -45,9 +45,11 @@ describe('payload.cont', () => {
       step: '1',
     });
     expect(command.payload).toEqual({
-      pactId: '1',
-      proof: 'test-proof',
-      step: '1',
+      cont: {
+        pactId: '1',
+        proof: 'test-proof',
+        step: '1',
+      },
     });
   });
 });
@@ -64,7 +66,9 @@ describe('commandBuilder', () => {
     );
     expect(command).toStrictEqual({
       payload: {
-        code: '(coin.transfer "alice" "bob" 12.1)',
+        exec: {
+          code: '(coin.transfer "alice" "bob" 12.1)',
+        },
       },
       signers: [
         {
@@ -104,7 +108,9 @@ describe('commandBuilder', () => {
 
     expect(command).toStrictEqual({
       payload: {
-        code: '(coin.transfer "alice" "bob" 12.1)',
+        exec: {
+          code: '(coin.transfer "alice" "bob" 12.1)',
+        },
       },
       signers: [
         {
@@ -147,7 +153,9 @@ describe('commandBuilder', () => {
         payload.exec(coin.transfer('alice', 'bob', { decimal: '1' })),
       ).payload,
     ).toEqual({
-      code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
+      exec: {
+        code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
+      },
     });
   });
 
@@ -162,8 +170,10 @@ describe('commandBuilder', () => {
         addData('two', 'test'),
       ).payload,
     ).toEqual({
-      code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
-      data: { one: 'test', two: 'test' },
+      exec: {
+        code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
+        data: { one: 'test', two: 'test' },
+      },
     });
   });
 
@@ -247,8 +257,8 @@ describe('commandBuilder', () => {
         ),
       ),
     ).toEqual({
-      cmd: '{"payload":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)"},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',
-      hash: '7i3D4FRFWC0HN9idADroLC9cLontDaeWiYSjSKwPjXQ',
+      cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)"}},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',
+      hash: '_s6C0UU3AcMHyXRqwKKgEDBl0rbDPlJe6TKRp9jvuFE',
       sigs: [undefined],
     });
   });
@@ -299,7 +309,9 @@ describe('mergePayload', () => {
     expect(
       mergePayload({ exec: { code: '(one)' } }, { exec: { code: '(two)' } }),
     ).toEqual({
-      code: '(one)(two)',
+      exec: {
+        code: '(one)(two)',
+      },
     });
   });
 
@@ -310,10 +322,12 @@ describe('mergePayload', () => {
         { exec: { code: '(two)', data: { two: 'test' } } },
       ),
     ).toEqual({
-      code: '(one)(two)',
-      data: {
-        one: 'test',
-        two: 'test',
+      exec: {
+        code: '(one)(two)',
+        data: {
+          one: 'test',
+          two: 'test',
+        },
       },
     });
   });
@@ -324,13 +338,13 @@ describe('mergePayload', () => {
         { exec: { code: '(one)', data: { one: 'test' } } },
         undefined,
       ),
-    ).toEqual({ code: '(one)', data: { one: 'test' } });
+    ).toEqual({ exec: { code: '(one)', data: { one: 'test' } } });
 
     expect(
       mergePayload(undefined, {
         exec: { code: '(one)', data: { one: 'test' } },
       }),
-    ).toEqual({ code: '(one)', data: { one: 'test' } });
+    ).toEqual({ exec: { code: '(one)', data: { one: 'test' } } });
   });
 
   it('returns merged data', () => {
@@ -340,15 +354,17 @@ describe('mergePayload', () => {
         { cont: { pactId: '1', data: { two: 'test' } } },
       ),
     ).toEqual({
-      pactId: '1',
-      data: { one: 'test', two: 'test' },
+      cont: {
+        pactId: '1',
+        data: { one: 'test', two: 'test' },
+      },
     });
 
     expect(
       mergePayload(undefined, {
         exec: { code: '(one)', data: { one: 'test' } },
       }),
-    ).toEqual({ code: '(one)', data: { one: 'test' } });
+    ).toEqual({ exec: { code: '(one)', data: { one: 'test' } } });
   });
 
   it('throws error if object are not the same brand', () => {

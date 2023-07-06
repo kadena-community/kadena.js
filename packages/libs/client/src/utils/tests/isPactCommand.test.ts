@@ -77,7 +77,7 @@ describe('isCommand', () => {
     };
 
     expect(isPactCommand(deleteProperty(command, 'payload'))).toBe(false);
-    expect(isPactCommand(deleteProperty(command, 'payload.code'))).toBe(false);
+    expect(isPactCommand(deleteProperty(command, 'payload.exec'))).toBe(false);
     expect(isPactCommand(deleteProperty(command, 'networkId'))).toBe(false);
     expect(isPactCommand(deleteProperty(command, 'nonce'))).toBe(false);
     expect(isPactCommand(deleteProperty(command, 'meta'))).toBe(false);

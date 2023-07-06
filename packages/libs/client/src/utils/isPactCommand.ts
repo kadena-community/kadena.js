@@ -5,7 +5,7 @@ export const isPactCommand = (
 ): command is IPactCommand => {
   if (command.payload === undefined) return false;
 
-  if (!('code' in command.payload) && !('pactId' in command.payload))
+  if (!('exec' in command.payload) && !('cont' in command.payload))
     return false;
   if (command.networkId === undefined) return false;
   if (command.nonce === undefined) return false;

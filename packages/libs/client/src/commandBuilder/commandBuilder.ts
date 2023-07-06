@@ -15,10 +15,14 @@ export const mergePayload = (
     return {
       exec: {
         code: (payload.exec.code ?? '') + (newPayload.exec.code ?? ''),
-        data: {
-          ...payload.exec.data,
-          ...newPayload.exec.data,
-        },
+        ...(payload.exec.data || newPayload.exec.data
+          ? {
+              data: {
+                ...payload.exec.data,
+                ...newPayload.exec.data,
+              },
+            }
+          : {}),
       },
     };
   }
@@ -26,12 +30,16 @@ export const mergePayload = (
   if ('cont' in payload && 'cont' in newPayload) {
     return {
       cont: {
-        ...payload,
-        ...newPayload,
-        data: {
-          ...payload.cont.data,
-          ...newPayload.cont.data,
-        },
+        ...payload.cont,
+        ...newPayload.cont,
+        ...(payload.cont.data || newPayload.cont.data
+          ? {
+              data: {
+                ...payload.cont.data,
+                ...newPayload.cont.data,
+              },
+            }
+          : {}),
       },
     };
   }

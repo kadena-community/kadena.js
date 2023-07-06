@@ -30,7 +30,7 @@ describe('createTransaction', () => {
     const transaction = createTransaction(pactCommand);
 
     expect(transaction.hash).toBe(
-      'YuqQyJtXv9OxlsC6VKtARAqH1B9HmWFi7T5T7qOBTRY',
+      'fo-INzZ1jYEYILEavqawvkBmGld6DajK7ozxGZF8knM',
     );
   });
 

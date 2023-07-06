@@ -5,16 +5,14 @@
 ```ts
 
 import { ChainId } from '@kadena/types';
-import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
-import { ICommand } from '@kadena/types';
-import { IUnsignedCommand } from '@kadena/types';
-import { SessionTypes } from '@walletconnect/types';
 
 // @alpha (undocumented)
 export const addData: <T extends string, D extends string | number | boolean | object>(name: T, data: D) => {
     payload: {
-        data: { [key in T]: D; };
+        exec: {
+            data: { [key in T]: D; };
+        };
     };
 };
 
@@ -32,17 +30,6 @@ export const addSigner: IAddSigner;
 //
 // @alpha (undocumented)
 export const commandBuilder: ICommandBuilder;
-
-// Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
-
-// Warning: (ae-forgotten-export) The symbol "ISignSingleFunction" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
 // @alpha (undocumented)
 export type ICapabilityItem = ICap;
@@ -92,23 +79,22 @@ export interface IChainweaverSignBody {
 // @alpha (undocumented)
 export interface IContinuationPayload {
     // (undocumented)
-    data?: Record<string, unknown>;
-    // (undocumented)
-    pactId?: string;
-    // (undocumented)
-    proof?: string;
-    // (undocumented)
-    rollback?: boolean;
-    // (undocumented)
-    step?: string;
+    cont: {
+        pactId?: string;
+        step?: string;
+        rollback?: boolean;
+        data?: Record<string, unknown>;
+        proof?: string;
+    };
 }
 
 // @alpha (undocumented)
 export interface IExecPayload {
     // (undocumented)
-    code: string;
-    // (undocumented)
-    data?: Record<string, unknown>;
+    exec: {
+        code?: string;
+        data?: Record<string, unknown>;
+    };
 }
 
 // @alpha (undocumented)
@@ -233,9 +219,6 @@ export const setMeta: (options: {
 
 // @alpha (undocumented)
 export const setProp: <T extends keyof IPactCommand>(item: T, value: IPactCommand[T]) => { [key in T]: IPactCommand[T]; };
-
-// @alpha (undocumented)
-export const signWithChainweaver: ISignFunction;
 
 // (No @packageDocumentation comment for this package)
 
