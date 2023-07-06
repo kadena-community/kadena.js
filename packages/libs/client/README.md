@@ -16,21 +16,21 @@ API Reference can be found here [client.api.md][1]
 
 ## Release @kadena/client
 
-We've created a library that allows Javascript/Typescript users to easily
-interact with the Kadena Blockchain. Creating contracts is explicitly left out
-as it's a lot more complicated to transpile Javascript to Pact.
+`@kadena/client` allows JavaScript/TypeScript users to easily interact with the
+Kadena Blockchain.
 
 Interaction with the Kadena Blockchain works in multiple ways. With
-@kadena/client there are two ways you will be able to interact with the Kadena
-Blockchain. The two ways are:
+`@kadena/client` you will be able to interact with the Kadena Blockchain in two
+ways:
 
-[**1. contract based**][2], and [**2. template based**][3], and [**3. modular
-pact command**][4].
+1.  [contract based][2]
+2.  [template based][3]
+3.  [modular pact command][4]
 
-There's also information on an [**Integrated way of signing using
-Chainweaver**][5]. With @kadena/client you can also [**Send a request to the
-blockchain**][6]. They will be covered in this article. We will also be
-exploring the concepts and rationale of @kadena/client.
+There's also information on an [integrated way of signing using Chainweaver][5].
+With `@kadena/client` you can also [send a request to the blockchain][6]. That's
+covered in this article. We'll also be exploring the concepts and rationale of
+`@kadena/client`.
 
 - [kadena.js - Client][7]
   - [Release @kadena/client][8]
@@ -52,43 +52,31 @@ exploring the concepts and rationale of @kadena/client.
 
 ## Prerequisites
 
-Please note that we are not going over installation of nodejs and package
-management as this information is widely available on the internet. We will,
-however, provide the bare minimum of the information and details you will need
-in order to start using @kadena/client, which are:
-
-- install nodejs version 14.x or 16.x
-- create a directory, bootstrap a `package.json` by running `npm init` or
-  `npm init -y` to use defaults
-- install typescript `npm install -g typescript`
-- install the client `npm install @kadena/client`
-- install the commandline tool `npm install @kadena/pactjs-cli`
-- install the optional typescript runner for nodejs `npm install ts-node`
+To use `@kadena/client`, Node.js v14 or higher is required. Let's install the
+bare minimum you need to get started:
 
 ```sh
 mkdir my-dapp-with-kadena-client
 cd my-dapp-with-kadena-client
 npm init -y
-npm install -g typescript
-tsc --init
-npm install --save @kadena/client
-npm install -g --save-dev @kadena/pactjs-cli ts-node
+npm install @kadena/client
+npm install --save-dev @kadena/pactjs-cli typescript ts-node
+npx tsc --init
 ```
 
-## Contract based interaction using @kadena/client
+# Contract-based interaction using @kadena/client
 
-We wanted `@kadena/client` to be independent of anything so this is just a tool
-that can be used with arbitrary contracts. That is also the reason why you have
-to _generate_ the interfaces that are used by `@kadena/client`. You can use the
-smart-contracts from the blockchain or from your own local smart-contracts.
+We wanted `@kadena/client` to be independent so this is a tool that can be used
+with arbitrary contracts. That is also why you have to _generate_ the interfaces
+used by `@kadena/client`. You can use the smart contracts from the blockchain or
+from your own local smart contracts.
 
 For the **template based interaction** we will provide a repository with
 templates that can be used.
 
 ### Load contracts from the blockchain
 
-Using the commandline tool `@kadena/pactjs-cli`, download the contracts you want
-to create Typescript interfaces for.
+Let's download the contracts you want to create Typescript interfaces for:
 
 ```sh
 mkdir contracts
@@ -103,23 +91,17 @@ Help information on retrieve-contract
 
 ```txt
 > pactjs retrieve-contract --help
-Usage: index retrieve-contract [options]
+Usage: pactjs retrieve-contract [options]
 
-Retrieve contract from api.chainweb.com in a /local call
+Retrieve contract from a chainweb-api in a /local call (see also: https://github.com/kadena-io/chainweb-node#configuring-running-and-monitoring-the-health-of-a-chainweb-node).
 
 Options:
--m, --module <module>
-The module you want to retrieve (e.g. "coin")
-
--o, --out <file> File to write the contract
-
--n, --network <network> Network to retrieve from (default "mainnet") (default:
-"mainnet")
-
--c, --chain <number> Chain to retrieve from (default 1) (default: 1)
-
--h, --help display help for command
-
+  -m, --module <module>    The module you want to retrieve (e.g. "coin")
+  -o, --out <file>         File to write the contract to
+  --api <url>              API to retrieve from (e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact")
+  -n, --network <network>  Network to retrieve from (default "mainnet") (default: "mainnet")
+  -c, --chain <number>     Chain to retrieve from (default 1) (default: 1)
+  -h, --help               display help for command
 ```
 
 ### Generate interfaces
