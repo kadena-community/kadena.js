@@ -179,6 +179,10 @@ const importDocs = (filename, destination, parentTitle, options) => {
   });
 };
 
+/**
+ * Files to be imported
+ */
+
 importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', {
   RootOrder: 6,
 });
