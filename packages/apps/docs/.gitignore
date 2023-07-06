@@ -7,3 +7,5 @@ src/pages/docs/pact/cli
 src/pages/docs/build/tools/create-kadena-app
 src/pages/docs/build/tools/kda-cli
 src/pages/docs/chainweb/stream-client
+src/pages/docs/chainweb/node-client
+src/pages/docs/chainweb/js-bindings

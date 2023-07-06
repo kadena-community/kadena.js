@@ -215,3 +215,14 @@ importDocs(
     RootOrder: 1,
   },
 );
+importDocs(
+  'libs/chainweb-node-client/README.md',
+  'chainweb/node-client',
+  'Node Client',
+  {
+    RootOrder: 2,
+  },
+);
+importDocs('libs/chainwebjs/README.md', 'chainweb/js-bindings', 'JS bindings', {
+  RootOrder: 3,
+});
