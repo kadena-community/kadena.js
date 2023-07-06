@@ -1,4 +1,5 @@
 import { Specs } from '@/components/Specs';
+import specs from '@/specs/chainweb/chainweb.openapi.json';
 import { ILayout } from '@/types/Layout';
 import {
   checkSubTreeForActive,
@@ -17,11 +18,10 @@ const Home: FC<IProps> = ({ specs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const specs = await import('../../../specs/chainweb/chainweb.openapi.json');
-
+  console.log(specs);
   return {
     props: {
-      specs: specs.default,
+      specs,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Chainweb',

@@ -1,4 +1,5 @@
 import { Specs } from '@/components/Specs';
+import specs from '@/specs/pact/pact.openapi.json';
 import { ILayout } from '@/types/Layout';
 import {
   checkSubTreeForActive,
@@ -17,11 +18,9 @@ const Home: FC<IProps> = ({ specs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const specs = await import('../../../../specs/pact/pact.openapi.json');
-
   return {
     props: {
-      specs: specs.default,
+      specs,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Pact OpenAPI',
