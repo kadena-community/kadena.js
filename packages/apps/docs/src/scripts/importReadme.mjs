@@ -29,8 +29,10 @@ const getTypes = (tree, type, arr = []) => {
   return arr;
 };
 
-const createEditOverwrite = (filename) =>
-  `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
+const createEditOverwrite = (filename, options) => {
+  if (options.hideEditLink) return '';
+  return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
+};
 
 export const createSlug = (str) => {
   if (!str) return '';
@@ -144,7 +146,7 @@ const relinkLinkReferences = (md, pages, root) => {
   });
 };
 
-const importDocs = (filename, destination, parentTitle, RootOrder) => {
+const importDocs = (filename, destination, parentTitle, options) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
@@ -156,7 +158,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
     const menuTitle = idx === 0 ? parentTitle : title;
-    const order = idx === 0 ? RootOrder : idx;
+    const order = idx === 0 ? options.RootOrder : idx;
 
     const doc = toMarkdown(page);
 
@@ -168,7 +170,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
         title,
         menuTitle,
         order,
-        createEditOverwrite(filename),
+        createEditOverwrite(filename, options),
       ) + doc,
       {
         flag: 'w',
@@ -177,5 +179,27 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   });
 };
 
-importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
-importDocs('libs/client/README.md', 'kadena/client', 'Client', 7);
+importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', {
+  RootOrder: 6,
+});
+importDocs('libs/client/README.md', 'kadena/client', 'Client', {
+  RootOrder: 7,
+});
+importDocs('libs/client/etc/client.api.md', 'kadena/client/api', 'Client Api', {
+  RootOrder: 99,
+  hideEditLink: true,
+});
+importDocs('tools/pactjs-cli/README.md', 'pact/cli', 'CLI tool', {
+  RootOrder: 6,
+});
+importDocs(
+  'tools/create-kadena-app/README.md',
+  'build/tools/create-kadena-app',
+  'Create Kadena App',
+  {
+    RootOrder: 2,
+  },
+);
+importDocs('tools/kda-cli/README.md', 'build/tools/kda-cli', 'KDA CLI', {
+  RootOrder: 3,
+});
