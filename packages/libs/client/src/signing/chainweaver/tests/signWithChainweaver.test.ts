@@ -9,7 +9,6 @@ import { commandBuilder } from '../../../commandBuilder/commandBuilder';
 import { addSigner } from '../../../commandBuilder/utils/addSigner';
 import { payload } from '../../../commandBuilder/utils/payload';
 import { setMeta } from '../../../commandBuilder/utils/setMeta';
-import { IPactCommand } from '../../../interfaces/IPactCommand';
 import { Pact } from '../../../pact';
 import {
   IQuicksignResponse,
@@ -35,9 +34,9 @@ describe('signWithChainweaver', () => {
         Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
       ),
       addSigner('signer-key', (withCap) => [withCap('coin.GAS')]),
-    ).createPactCommand();
+    );
 
-    const unsignedTransaction = createTransaction(command as IPactCommand);
+    const unsignedTransaction = createTransaction(command);
     const sigs = command.signers!.map((sig, i) => {
       return {
         pubKey: command.signers![i].pubKey,
@@ -74,14 +73,12 @@ describe('signWithChainweaver', () => {
         sender: '',
         chainId: '0',
       }),
-    ).createPactCommand();
+    );
 
     // expected: throws an error
-    signWithChainweaver(createTransaction(command as IPactCommand)).catch(
-      (e) => {
-        expect(e).toBeDefined();
-      },
-    );
+    signWithChainweaver(createTransaction(command)).catch((e) => {
+      expect(e).toBeDefined();
+    });
   });
 
   it('adds signatures in multisig fashion to the transactions', async () => {
@@ -116,12 +113,15 @@ describe('signWithChainweaver', () => {
         sender: '',
         chainId: '0',
       }),
-    ).createPactCommand();
+    );
 
-    const unsignedTransaction = createTransaction(command as IPactCommand);
+    const unsignedTransaction = createTransaction(command);
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-    expect(signedTransaction[0].sigs).toEqual([{ sig: 'gas-key-sig' }, undefined]);
+    expect(signedTransaction[0].sigs).toEqual([
+      { sig: 'gas-key-sig' },
+      undefined,
+    ]);
 
     // set a new mock response for the second signature
     const mockedResponse2: IQuicksignResponseOutcomes = {
@@ -175,9 +175,9 @@ describe('signWithChainweaver', () => {
         Pact.modules.coin.transfer('k:from', 'k:to', { decimal: '1.0' }),
       ),
       addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
-    ).createPactCommand();
+    );
 
-    const unsignedTransaction = createTransaction(command as IPactCommand);
+    const unsignedTransaction = createTransaction(command);
 
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 

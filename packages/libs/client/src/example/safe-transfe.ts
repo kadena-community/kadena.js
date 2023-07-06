@@ -7,6 +7,7 @@ import { getClient } from '../client/client';
 import { addSigner, commandBuilder, payload, setMeta, setProp } from '../index';
 import { Pact } from '../pact';
 import { quicksign } from '../sign';
+import { createTransaction } from '../utils/createTransaction';
 
 const { coin } = Pact.modules;
 
@@ -46,7 +47,7 @@ export async function doSafeTransfer(
     },
   );
 
-  const signedCommand = await quicksign(command.createTransaction());
+  const signedCommand = await quicksign(createTransaction(command));
 
   const receivedKeys = await submit(signedCommand);
   const status = await pollStatus(receivedKeys);

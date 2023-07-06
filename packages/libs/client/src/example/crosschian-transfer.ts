@@ -5,17 +5,18 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client/client';
-import { IPactCommandBuilder } from '../commandBuilder/commandBuilder';
 import {
   addSigner,
   commandBuilder,
   IContinuationPayload,
+  IPactCommand,
   payload,
   setMeta,
   setProp,
 } from '../index';
 import { Pact } from '../pact';
 import { quicksign } from '../sign';
+import { createTransaction } from '../utils/createTransaction';
 
 const { coin } = Pact.modules;
 
@@ -30,7 +31,7 @@ function debitInTheFirstChain(
   from: IAccount,
   to: IAccount,
   amount: string,
-): IPactCommandBuilder {
+): IPactCommand {
   return commandBuilder(
     payload.exec(
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
@@ -44,19 +45,19 @@ function debitInTheFirstChain(
     ]),
     setMeta({ chainId: from.chainId }),
     setProp('networkId', 'testnet04'),
-  );
+  ) as IPactCommand;
 }
 
 function creditInTheTargetChain(
   continuation: IContinuationPayload,
   targetChainId: ChainId,
-): IPactCommandBuilder {
+): IPactCommand {
   return commandBuilder(
     payload.cont(continuation),
     addSigner('test', (withCapability) => [withCapability('test')]),
     setMeta({ chainId: targetChainId }),
     setProp('networkId', 'testnet04'),
-  );
+  ) as IPactCommand;
 }
 
 const { submit, pollSpv, pollStatus } = getClient();
@@ -71,9 +72,8 @@ export async function doCrossChianTransfer(
   to: IAccount,
   amount: string,
 ): Promise<[boolean, ICommandResult, ICommandResult | undefined]> {
-  await Promise.resolve(
-    debitInTheFirstChain(from, to, amount).createTransaction(),
-  )
+  await Promise.resolve(debitInTheFirstChain(from, to, amount))
+    .then(createTransaction)
     .then(quicksign)
     .then(submit)
     .then(pollStatus)
@@ -93,15 +93,16 @@ export async function doCrossChianTransfer(
           step: '1',
         },
         to.chainId,
-      ).createTransaction(),
+      ),
     )
+    .then(createTransaction)
     .then(quicksign)
     .then(submit)
     .then(pollStatus);
 
   // or we can use async/await
 
-  const unsignedTr = debitInTheFirstChain(from, to, amount).createTransaction();
+  const unsignedTr = createTransaction(debitInTheFirstChain(from, to, amount));
 
   const transaction = await quicksign(unsignedTr);
   const [sendRequestKey] = await submit(transaction);
@@ -120,9 +121,11 @@ export async function doCrossChianTransfer(
       step: '1',
     },
     to.chainId,
-  ).createTransaction();
+  );
 
-  const unsignedContinuationTr = await quicksign(continuation);
+  const unsignedContinuationTr = await quicksign(
+    createTransaction(continuation),
+  );
   const [contRequestKey] = await submit(unsignedContinuationTr);
 
   const { [contRequestKey]: creditResult } = await pollStatus(contRequestKey);

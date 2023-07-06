@@ -167,5 +167,5 @@ export function composeCommands(): Partial<IPactCommand> {
     ]),
   );
 
-  return commandBuilder(mainnetConfig, transfer).createPactCommand();
+  return commandBuilder(mainnetConfig, transfer);
 }
