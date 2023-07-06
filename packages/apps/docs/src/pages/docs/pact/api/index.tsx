@@ -17,7 +17,6 @@ const Home: FC<ILayout> = () => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      specs,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Pact OpenAPI',
