@@ -17,6 +17,17 @@ layout: full
 ---  
 `;
 };
+const getTypes = (tree, type, arr = []) => {
+  tree.children.forEach((branch) => {
+    if (branch.type === type) {
+      arr.push(branch);
+    }
+    if (!branch.children) return arr;
+
+    return getTypes(branch, type, arr);
+  });
+  return arr;
+};
 
 const createEditOverwrite = (filename) =>
   `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
@@ -26,13 +37,14 @@ export const createSlug = (str) => {
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[\W_]+/g, '-')
+    .replace(/[^\w\s]+/g, '')
+    .replace(/ /g, '-')
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 };
 
 const getTitle = (pageAST) => {
-  const node = pageAST[0];
+  const node = pageAST.children[0];
   if (node.type !== 'heading' || node.depth !== 2) {
     throw new Error('first node is not a Heading');
   }
@@ -50,7 +62,7 @@ const createDir = (dir) => {
 };
 
 const divideIntoPages = (md) => {
-  return md.children.reduce((acc, val) => {
+  const pages = md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
       acc.push([val]);
     } else {
@@ -61,19 +73,92 @@ const divideIntoPages = (md) => {
 
     return acc;
   }, []);
+
+  const rootedPages = pages.map((page) => createTreeRoot(page));
+
+  return rootedPages;
+};
+
+// find the correct title
+// if the title is a h2 (start of the new page)
+const findHeading = (tree, slug) => {
+  const headings = getTypes(tree, 'heading');
+
+  const heading = headings.find((heading) => {
+    return createSlug(heading.children[0].value) === slug;
+  });
+
+  if (heading && heading.depth > 1) {
+    return tree.children[0];
+  }
+  return;
+};
+
+// when we have a URL starting with '#',
+// we need to recreate it, to send to the correct page
+const recreateUrl = (pages, url, root) => {
+  if (!url.startsWith('#')) return url;
+
+  const slug = url.substring(1);
+
+  return pages.reduce((acc, page, idx) => {
+    const headingNode = findHeading(page, slug);
+
+    if (headingNode) {
+      const pageTitle = headingNode.children[0].value;
+      const pageSlug = createSlug(pageTitle);
+
+      let url = `${root}`;
+      if (idx > 0) {
+        url = `${url}/${pageSlug}`;
+      }
+
+      if (pageSlug !== slug) {
+        url = `${url}#${slug}`;
+      }
+
+      return url;
+    }
+
+    return acc;
+  }, '');
+};
+
+// because we are creating new pages, we need to link the references to the correct pages
+const relinkLinkReferences = (md, pages, root) => {
+  const definitions = getTypes(md, 'definition');
+  const linkReferences = getTypes(md, 'linkReference');
+
+  linkReferences.map((ref) => {
+    const definition = definitions.find((def) => def.label === ref.label);
+    if (!definition) {
+      throw new Error('no definition found');
+    }
+
+    ref.type = 'link';
+    ref.url = recreateUrl(pages, definition.url, root);
+    ref.children[0].value = `${ref.children[0].value} `; // a hack. if the name is the same as the URL, MD will not render it correctly
+    delete ref.label;
+    delete ref.identifier;
+    delete ref.referenceType;
+  });
 };
 
 const importDocs = (filename, destination, parentTitle, RootOrder) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
+
   const md = remark.parse(doc);
 
-  divideIntoPages(md).forEach((page, idx) => {
+  const pages = divideIntoPages(md);
+  relinkLinkReferences(md, pages, `/docs/${destination}/`);
+
+  pages.forEach((page, idx) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
     const menuTitle = idx === 0 ? parentTitle : title;
     const order = idx === 0 ? RootOrder : idx;
 
-    const doc = toMarkdown(createTreeRoot(page));
+    const doc = toMarkdown(page);
 
     createDir(`${DOCSROOT}${destination}`);
 
@@ -93,3 +178,4 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
 };
 
 importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
+importDocs('libs/client/README.md', 'kadena/client', 'Client', 7);
