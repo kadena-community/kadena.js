@@ -18,7 +18,6 @@ const Home: FC<IProps> = ({ specs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log(specs);
   return {
     props: {
       specs,
