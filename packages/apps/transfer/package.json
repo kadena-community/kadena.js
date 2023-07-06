@@ -63,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "@vanilla-extract/css": "1.11.1",
+    "@vanilla-extract/jest-transform": "1.1.1",
     "@vanilla-extract/next-plugin": "2.1.2",
     "debug": "~4.3.4",
     "eslint": "^8.15.0",
