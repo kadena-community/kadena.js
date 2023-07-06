@@ -16,9 +16,6 @@ import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
 import { readFileSync } from 'fs';
 
 const options = {
-  experimental: {
-    largePageDataBytes: 140 * 100000,
-  },
   // Use one of Shiki's packaged themes
   theme: {
     light: 'github-light',

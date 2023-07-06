@@ -1,5 +1,5 @@
 import { Specs } from '@/components/Specs';
-import specs from '@/specs/pact/pact.openapi.json';
+import apiSpecs from '@/specs/pact/pact.openapi.json';
 import { ILayout } from '@/types/Layout';
 import {
   checkSubTreeForActive,
@@ -9,11 +9,8 @@ import { GetStaticProps } from 'next';
 import { OpenAPIV3 } from 'openapi-types';
 import React, { FC } from 'react';
 
-interface IProps extends ILayout {
-  specs: OpenAPIV3.Document;
-}
-
-const Home: FC<IProps> = ({ specs }) => {
+const Home: FC<ILayout> = () => {
+  const specs = apiSpecs as unknown as OpenAPIV3.Document;
   return <Specs specs={specs} />;
 };
 
