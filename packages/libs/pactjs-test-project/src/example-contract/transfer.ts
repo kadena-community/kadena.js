@@ -40,10 +40,9 @@ async function transactionMain(): Promise<void> {
         }),
         Pact.modules.coin.rotate('', () => ''),
       ),
-      addSigner(onlyKey(senderAccount), (withCap) => [
+      addSigner(onlyKey(senderAccount), (withCap: any) => [
         withCap('coin.TRANSFER', senderAccount, receiverAccount, amount),
         withCap('coin.GAS'),
-        withCap('coin.ROTATE', ''),
       ]),
       setMeta({ chainId: '1', sender: senderAccount }),
       setProp('networkId', 'testnet04'),

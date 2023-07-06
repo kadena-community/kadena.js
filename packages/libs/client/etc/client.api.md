@@ -8,7 +8,10 @@ import { ChainId } from '@kadena/types';
 import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
+import { ICommandResult } from '@kadena/chainweb-node-client';
 import { IExecPayload as IExecPayload_2 } from '@kadena/types';
+import { IPollResponse } from '@kadena/chainweb-node-client';
+import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
 import { SessionTypes } from '@walletconnect/types';
 
@@ -49,6 +52,11 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 //
 // @alpha (undocumented)
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
+
+// Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const getClient: IGetClient;
 
 // @alpha (undocumented)
 export type ICapabilityItem = ICap;

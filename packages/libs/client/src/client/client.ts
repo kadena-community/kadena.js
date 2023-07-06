@@ -1,6 +1,6 @@
 import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { ICommand } from '@kadena/types';
+import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
 
@@ -26,7 +26,7 @@ interface IClient {
    * calls '/local' endpoint
    */
   local: <T extends ILocalOptions>(
-    transaction: ICommand,
+    transaction: ICommand | IUnsignedCommand,
     options?: T,
   ) => Promise<LocalResponse<T>>;
   /**
@@ -85,6 +85,9 @@ interface IGetClient {
   ): IClient;
 }
 
+/**
+ * @alpha
+ */
 export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
