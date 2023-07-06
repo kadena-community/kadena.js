@@ -27,7 +27,7 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",
-    "lint": "eslint ./src --ext .js,.t,.tsx --fix",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "test": "ava"
   },
   "ava": {
