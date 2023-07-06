@@ -31,14 +31,12 @@
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
     "mkdirp": "~1.0.4",
-    "ramda": "~0.28.0",
     "rimraf": "~3.0.2",
     "yaml": "~2.1.1",
     "zod": "~3.18.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
@@ -47,7 +45,6 @@
     "@types/heft-jest": "~1.0.3",
     "@types/mkdirp": "~1.0.2",
     "@types/node": "^16.0.0",
-    "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
     "eslint": "^8.15.0",
     "prettier": "~2.8.8",
