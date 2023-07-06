@@ -245,7 +245,8 @@ describe('Pact proxy', () => {
         timeout: 5000,
       })
       .then((t) => {
-        expect(t.status).toBe('success');
+        expect(builder.status).toBe('success');
+        expect(t.result.status).toBe('success');
       });
 
     await advanceTimersAndFlushPromises(1000);
