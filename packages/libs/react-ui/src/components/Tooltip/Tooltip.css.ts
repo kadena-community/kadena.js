@@ -17,8 +17,11 @@ export const container = style([
     width: 'max-content',
   }),
   {
-    position: 'relative',
+    position: 'absolute',
+    top: '50%',
+    marginRight: '-50%',
     border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+    display: 'none',
   },
 ]);
 
@@ -37,3 +40,7 @@ export const arrowLeft = style([
     borderBottom: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
   },
 ]);
+
+export const visibleClass = style({
+  display: 'block',
+});

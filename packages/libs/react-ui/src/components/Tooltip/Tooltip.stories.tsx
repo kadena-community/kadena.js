@@ -1,7 +1,9 @@
-import { ITooltipProps, Tooltip } from './Tooltip';
+import { IconButton, SystemIcon } from '..';
+
+import { ITooltipProps, Tooltip } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useRef } from 'react';
 
 const meta: Meta<
   {
@@ -9,7 +11,6 @@ const meta: Meta<
   } & ITooltipProps
 > = {
   title: 'Components/Tooltip',
-  component: Tooltip,
   argTypes: {
     text: {
       control: {
@@ -32,9 +33,22 @@ export const Dynamic: Story = {
     text: "I'm a tooltip, look at me!",
   },
   render: ({ text }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
     return (
       <>
-        <Tooltip>{text}</Tooltip>
+        <IconButton
+          title="hover me"
+          icon={SystemIcon.Information}
+          onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
+            Tooltip.handler(e, ref)
+          }
+          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
+            Tooltip.handler(e, ref)
+          }
+        />
+
+        <Tooltip.Root ref={ref}>{text}</Tooltip.Root>
       </>
     );
   },

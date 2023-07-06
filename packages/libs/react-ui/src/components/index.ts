@@ -33,3 +33,4 @@ export {
 export { Box, IBoxProps } from './Box/Box';
 export { Link, ILinkProps } from './Link/Link';
 export { Tag, ITagProps } from './Tag/Tag';
+export { Tooltip, ITooltipProps } from './Tooltip/Tooltip';

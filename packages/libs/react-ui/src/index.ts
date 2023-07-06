@@ -50,4 +50,6 @@ export {
   IInputWrapperProps,
   Tag,
   ITagProps,
+  Tooltip,
+  ITooltipProps,
 } from './components';
