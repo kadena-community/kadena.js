@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "comment": "Consistent fenced code block shell language",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-cli"
+}
