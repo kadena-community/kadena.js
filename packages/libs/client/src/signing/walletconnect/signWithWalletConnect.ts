@@ -1,4 +1,4 @@
-import { ICommand } from '@kadena/types';
+import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { isExecCommand } from '../../interfaces/isExecCommand';
 import { ISignSingleFunction } from '../ISignFunction';
@@ -11,7 +11,7 @@ import Client from '@walletconnect/sign-client';
 import { SessionTypes } from '@walletconnect/types';
 
 interface ISigningResponse {
-  body: ICommand;
+  body: ICommand | IUnsignedCommand;
 }
 /**
  * @alpha
@@ -71,11 +71,6 @@ export function createWalletConnectSign(
     if (response?.body === undefined) {
       throw new Error('Error signing transaction');
     }
-
-    const { cmd, sigs } = response.body;
-
-    transaction = addSignatures(transaction, ...sigs);
-    transaction.cmd = cmd;
 
     return response.body;
   };

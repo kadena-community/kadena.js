@@ -68,6 +68,7 @@ describe('commandBuilder', () => {
       payload: {
         exec: {
           code: '(coin.transfer "alice" "bob" 12.1)',
+          data: {},
         },
       },
       signers: [
@@ -110,6 +111,7 @@ describe('commandBuilder', () => {
       payload: {
         exec: {
           code: '(coin.transfer "alice" "bob" 12.1)',
+          data: {},
         },
       },
       signers: [
@@ -155,6 +157,7 @@ describe('commandBuilder', () => {
     ).toEqual({
       exec: {
         code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
+        data: {},
       },
     });
   });
@@ -257,8 +260,8 @@ describe('commandBuilder', () => {
         ),
       ),
     ).toEqual({
-      cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)"}},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',
-      hash: '_s6C0UU3AcMHyXRqwKKgEDBl0rbDPlJe6TKRp9jvuFE',
+      cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)","data":{}}},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',
+      hash: 'XjFto2SijaGZpRzdwWdZDkPI7WheTUuIMs8DHaqL2jU',
       sigs: [undefined],
     });
   });
