@@ -5,10 +5,8 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 
 import { getClient } from '../client/client';
 import { ICoin } from '../createPactCommand/test/coin-contract';
-import { addSigner, commandBuilder, payload, setMeta, setProp } from '../index';
-import { getModule } from '../pact';
+import { getModule, Pact } from '../pact';
 import { quicksign } from '../sign';
-import { createTransaction } from '../utils/createTransaction';
 
 const coin: ICoin = getModule('coin');
 
@@ -22,33 +20,31 @@ export async function doSafeTransfer(
   to: { account: string; publicKey: string },
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  const command = commandBuilder(
-    payload.exec(
+  const unsignedTr = Pact.command
+    .execute(
       coin.transfer('asd', 'asdasd', { decimal: '1' }),
       // the first two transfers are to make sure the receiver has also signed the command
       coin.transfer(from.account, to.account, { decimal: '1' }),
       coin.transfer(to.account, from.account, { decimal: '1' }),
       // the actual transfer
       coin.transfer(from.account, to.account, { decimal: amount }),
-    ),
-    addSigner(from.publicKey, (withCapability) => [
+    )
+    .addSigner(from.publicKey, (withCapability) => [
       withCapability('coin.TRANSFER', from.account, to.account, {
         decimal: (Number(amount) + 1).toString(),
       }),
-    ]),
-    addSigner(to.publicKey, (withCapability) => [
+    ])
+    .addSigner(to.publicKey, (withCapability) => [
       withCapability('coin.TRANSFER', to.account, from.account, {
         decimal: '1',
       }),
-    ]),
-    setProp('networkId', 'mainnet01'),
-    setMeta({ chainId: '1' }),
-    {
-      nonce: 'tadasd',
-    },
-  );
+    ])
+    .setNetworkId('mainnet01')
+    .setMeta({ chainId: '1' })
+    .setNonce('tadasd')
+    .createTransaction();
 
-  const signedCommand = await quicksign(createTransaction(command));
+  const signedCommand = await quicksign(unsignedTr);
 
   const receivedKeys = await submit(signedCommand);
   const status = await pollStatus(receivedKeys);

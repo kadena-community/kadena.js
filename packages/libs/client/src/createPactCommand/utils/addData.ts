@@ -1,5 +1,3 @@
-import { IPactCommand } from '../../interfaces/IPactCommand';
-
 type ReadKeyset = <T extends string>(name: T) => `(read-keyset "${T}")`;
 
 /**

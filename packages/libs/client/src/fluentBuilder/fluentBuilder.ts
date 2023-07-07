@@ -2,7 +2,7 @@ import { IExecPayload, IUnsignedCommand } from '@kadena/types';
 
 import {
   addSigner,
-  commandBuilder,
+  createPactCommand,
   payload,
   setMeta,
   setProp,
@@ -90,29 +90,31 @@ export const createFluentBuilder = (): IFluentBuilder => {
     let command: Partial<IPactCommand> = init;
     const builder: IBuilder<T> = {
       addSigner: (pubKey, cap?: unknown) => {
-        command = commandBuilder(
-          command,
+        command = createPactCommand(
           addSigner(
             pubKey,
             cap as (withCapability: CAP) => ICapabilityItem[],
           ) as (cmd: Partial<IPactCommand>) => Partial<IPactCommand>,
-        );
+        )(command);
         return builder;
       },
       setMeta: (meta) => {
-        command = commandBuilder(command, setMeta(meta));
+        command = createPactCommand(setMeta(meta))(command);
         return builder;
       },
       setNetworkId: (id: string) => {
-        command = commandBuilder(command, setProp('networkId', id));
+        command = createPactCommand(setProp('networkId', id))(command);
         return builder;
       },
       setNonce: (arg: string | ((cmd: Partial<IPactCommand>) => string)) => {
         const nonce = typeof arg === 'function' ? arg(command) : arg;
-        command = commandBuilder(command, setProp('nonce', nonce));
+        command = createPactCommand(setProp('nonce', nonce))(command);
         return builder;
       },
-      getCommand: () => commandBuilder(command),
+      getCommand: () => {
+        command = createPactCommand(command)();
+        return command;
+      },
       createTransaction: () => createTransaction(builder.getCommand()),
     };
     return builder;

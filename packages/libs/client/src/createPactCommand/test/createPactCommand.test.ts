@@ -1,6 +1,6 @@
 import {
   addSigner,
-  commandBuilder,
+  createPactCommand,
   payload,
   setMeta,
   setProp,
@@ -54,16 +54,16 @@ describe('payload.cont', () => {
   });
 });
 
-describe('commandBuilder', () => {
+describe('createPactCommand', () => {
   it('returns command object with signers and capabilities', () => {
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
       ]),
       setProp('nonce', 'test-nonce'),
-    );
+    )();
     expect(command).toStrictEqual({
       payload: {
         exec: {
@@ -89,7 +89,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns a command based on ICommand interface', () => {
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
@@ -105,7 +105,7 @@ describe('commandBuilder', () => {
       }),
       setProp('networkId', 'test-network-id'),
       setProp('nonce', 'test-nonce'),
-    );
+    )();
 
     expect(command).toStrictEqual({
       payload: {
@@ -141,19 +141,19 @@ describe('commandBuilder', () => {
   });
 
   it('adds kjs nonce  if not presented in the input', () => {
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
-    );
+    )();
 
     expect(command.nonce).toBe('kjs:nonce:1690416000000');
   });
 
   it('merges payload if they are exec', () => {
     expect(
-      commandBuilder(
+      createPactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         payload.exec(coin.transfer('alice', 'bob', { decimal: '1' })),
-      ).payload,
+      )().payload,
     ).toEqual({
       exec: {
         code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
@@ -164,14 +164,14 @@ describe('commandBuilder', () => {
 
   it('merges payloads data if they are exec', () => {
     expect(
-      commandBuilder(
+      createPactCommand(
         payload.exec(
           coin.transfer('bob', 'alice', { decimal: '1' }),
           coin.transfer('alice', 'bob', { decimal: '1' }),
         ),
         addData('one', 'test'),
         addData('two', 'test'),
-      ).payload,
+      )().payload,
     ).toEqual({
       exec: {
         code: '(coin.transfer "bob" "alice" 1.0)(coin.transfer "alice" "bob" 1.0)',
@@ -183,25 +183,25 @@ describe('commandBuilder', () => {
   it('throws exception if payloads are not mergable', () => {
     expect(
       () =>
-        commandBuilder(
+        createPactCommand(
           payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
           payload.cont({ pactId: '1' }),
-        ).payload,
+        )().payload,
     ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
   });
 
   it('accepts a signer without a capability', () => {
     expect(
-      commandBuilder(
+      createPactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
-      ).signers,
+      )().signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
   });
 
   it('merges capability arrays of one signer if presented twice', () => {
     expect(
-      commandBuilder(
+      createPactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.GAS'),
@@ -209,7 +209,7 @@ describe('commandBuilder', () => {
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
-      ).signers,
+      )().signers,
     ).toEqual([
       {
         pubKey: 'bob_public_key',
@@ -222,13 +222,13 @@ describe('commandBuilder', () => {
     ]);
 
     expect(
-      commandBuilder(
+      createPactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
         ]),
-      ).signers,
+      )().signers,
     ).toEqual([
       {
         pubKey: 'bob_public_key',
@@ -241,23 +241,23 @@ describe('commandBuilder', () => {
   });
   it("adds creationTime if it's not presented in the meta property", () => {
     expect(
-      commandBuilder(
+      createPactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         setMeta({ chainId: '1' }),
-      ).meta?.creationTime,
+      )().meta?.creationTime,
     ).toBe(1690416000);
   });
 
   it('returns transaction object by calling createTransaction', () => {
     expect(
       createTransaction(
-        commandBuilder(
+        createPactCommand(
           payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
           addSigner('bob_public_key'),
           addSigner('bob_public_key', (withCapability) => [
             withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
           ]),
-        ),
+        )(),
       ),
     ).toEqual({
       cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)","data":{}}},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',

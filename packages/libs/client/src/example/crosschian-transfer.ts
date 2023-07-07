@@ -2,22 +2,13 @@
 // this module is just a code snippet for the cross chain transfer
 
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { ChainId } from '@kadena/types';
+import { ChainId, IUnsignedCommand } from '@kadena/types';
 
 import { getClient } from '../client/client';
 import { ICoin } from '../createPactCommand/test/coin-contract';
-import {
-  addSigner,
-  commandBuilder,
-  IContinuationPayload,
-  IPactCommand,
-  payload,
-  setMeta,
-  setProp,
-} from '../index';
-import { getModule } from '../pact';
+import { IContinuationPayload } from '../index';
+import { getModule, Pact } from '../pact';
 import { quicksign } from '../sign';
-import { createTransaction } from '../utils/createTransaction';
 
 const coin: ICoin = getModule('coin');
 
@@ -32,33 +23,33 @@ function debitInTheFirstChain(
   from: IAccount,
   to: IAccount,
   amount: string,
-): IPactCommand {
-  return commandBuilder(
-    payload.exec(
+): IUnsignedCommand {
+  return Pact.command
+    .execute(
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
         decimal: amount.toString(),
       }),
-    ),
-    addSigner(from.publicKey, (withCapability) => [
+    )
+    .addSigner(from.publicKey, (withCapability) => [
       withCapability('coin.TRANSFER_XCHAIN', from.account, to.account, {
         decimal: '1',
       }),
-    ]),
-    setMeta({ chainId: from.chainId }),
-    setProp('networkId', 'testnet04'),
-  ) as IPactCommand;
+    ])
+    .setMeta({ chainId: from.chainId })
+    .setNetworkId('testnet04')
+    .createTransaction();
 }
 
 function creditInTheTargetChain(
   continuation: IContinuationPayload['cont'],
   targetChainId: ChainId,
-): IPactCommand {
-  return commandBuilder(
-    payload.cont(continuation),
-    addSigner('test', (withCapability) => [withCapability('test')]),
-    setMeta({ chainId: targetChainId }),
-    setProp('networkId', 'testnet04'),
-  ) as IPactCommand;
+): IUnsignedCommand {
+  return Pact.command
+    .continuation(continuation)
+    .addSigner('test', (withCapability) => [withCapability('test')])
+    .setMeta({ chainId: targetChainId })
+    .setNetworkId('testnet04')
+    .createTransaction();
 }
 
 const { submit, pollSpv, pollStatus } = getClient();
@@ -74,7 +65,6 @@ export async function doCrossChianTransfer(
   amount: string,
 ): Promise<[boolean, ICommandResult, ICommandResult | undefined]> {
   await Promise.resolve(debitInTheFirstChain(from, to, amount))
-    .then(createTransaction)
     .then(quicksign)
     .then(submit)
     .then(pollStatus)
@@ -96,14 +86,13 @@ export async function doCrossChianTransfer(
         to.chainId,
       ),
     )
-    .then(createTransaction)
     .then(quicksign)
     .then(submit)
     .then(pollStatus);
 
   // or we can use async/await
 
-  const unsignedTr = createTransaction(debitInTheFirstChain(from, to, amount));
+  const unsignedTr = debitInTheFirstChain(from, to, amount);
 
   const transaction = await quicksign(unsignedTr);
   const [sendRequestKey] = await submit(transaction);
@@ -124,9 +113,7 @@ export async function doCrossChianTransfer(
     to.chainId,
   );
 
-  const unsignedContinuationTr = await quicksign(
-    createTransaction(continuation),
-  );
+  const unsignedContinuationTr = await quicksign(continuation);
   const [contRequestKey] = await submit(unsignedContinuationTr);
 
   const { [contRequestKey]: creditResult } = await pollStatus(contRequestKey);

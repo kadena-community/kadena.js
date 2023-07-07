@@ -37,7 +37,7 @@ export const addSigner: IAddSigner_2;
 // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const commandBuilder: ICommandBuilder;
+export const createPactCommand: ICommandBuilder;
 
 // @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;

@@ -8,7 +8,7 @@ import { getClient } from '../client/client';
 import { ICoin } from '../createPactCommand/test/coin-contract';
 import {
   addSigner,
-  commandBuilder,
+  createPactCommand,
   ICapabilityItem,
   IPactCommand,
   payload,
@@ -44,7 +44,7 @@ const nonce = (
 
 // use the payload type in the output cont/exec
 // eslint-disable-next-line @rushstack/typedef-var
-export const cmd = commandBuilder(
+export const cmd = createPactCommand(
   payload.exec(
     coin.transfer('javad', 'albert', { decimal: '0.1' }),
     test.changeAdmin('albert', 'javad'),
@@ -63,7 +63,7 @@ export const cmd = commandBuilder(
   setProp('networkId', 'mainnet04'),
 );
 // eslint-disable-next-line @rushstack/typedef-var
-export const cmd2 = commandBuilder(
+export const cmd2 = createPactCommand(
   payload.cont({}),
   addSigner('javadPublicKey', (withCapability) => [
     //
@@ -155,12 +155,12 @@ export async function spvExample(): Promise<string> {
 }
 
 export function composeCommands(): Partial<IPactCommand> {
-  const mainnetConfig = commandBuilder(
+  const mainnetConfig = createPactCommand(
     setMeta({ chainId: '1' }),
     setProp('networkId', 'mainnet04'),
   );
 
-  const transfer = commandBuilder(
+  const transfer = createPactCommand(
     payload.exec(coin.transfer('javad', 'albert', { decimal: '0.1' })),
     addSigner('javadPublicKey', (withCapability) => [
       withCapability('coin.GAS'),
@@ -168,5 +168,5 @@ export function composeCommands(): Partial<IPactCommand> {
     ]),
   );
 
-  return commandBuilder(mainnetConfig, transfer);
+  return createPactCommand(mainnetConfig, transfer)();
 }

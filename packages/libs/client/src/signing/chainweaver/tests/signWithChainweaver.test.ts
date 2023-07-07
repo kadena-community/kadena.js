@@ -5,17 +5,12 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { createPactCommand } from '../../../createPactCommand/createPactCommand';
 import { ICoin } from '../../../createPactCommand/test/coin-contract';
-import { addSigner } from '../../../createPactCommand/utils/addSigner';
-import { payload } from '../../../createPactCommand/utils/payload';
-import { setMeta } from '../../../createPactCommand/utils/setMeta';
-import { getModule } from '../../../pact';
+import { getModule, Pact } from '../../../pact';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
 } from '../../../signing-api/v1/quicksign';
-import { createTransaction } from '../../../utils/createTransaction';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 const coin: ICoin = getModule('coin');
@@ -32,12 +27,13 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    const command = createPactCommand(
-      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
-      addSigner('signer-key', (withCap) => [withCap('coin.GAS')]),
-    );
+    const builder = Pact.command
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('signer-key', (withCap) => [withCap('coin.GAS')]);
 
-    const unsignedTransaction = createTransaction(command);
+    const command = builder.getCommand();
+    const unsignedTransaction = builder.createTransaction();
+
     const sigs = command.signers!.map((sig, i) => {
       return {
         pubKey: command.signers![i].pubKey,
@@ -65,17 +61,17 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    const command = createPactCommand(
-      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
-      addSigner('', (withCap) => [withCap('coin.GAS')]),
-      setMeta({
+    const unsignedTransaction = Pact.command
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('', (withCap) => [withCap('coin.GAS')])
+      .setMeta({
         sender: '',
         chainId: '0',
-      }),
-    );
+      })
+      .createTransaction();
 
     // expected: throws an error
-    signWithChainweaver(createTransaction(command)).catch((e) => {
+    signWithChainweaver(unsignedTransaction).catch((e) => {
       expect(e).toBeDefined();
     });
   });
@@ -100,19 +96,18 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    const command = createPactCommand(
-      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
-      addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
-      addSigner('transfer-signer-pubkey', (withCap) => [
+    const unsignedTransaction = Pact.command
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
+      .addSigner('transfer-signer-pubkey', (withCap) => [
         withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
-      ]),
-      setMeta({
+      ])
+      .setMeta({
         sender: '',
         chainId: '0',
-      }),
-    );
+      })
+      .createTransaction();
 
-    const unsignedTransaction = createTransaction(command);
     const txWithOneSig = await signWithChainweaver(unsignedTransaction);
 
     expect(txWithOneSig[0].sigs).toStrictEqual([
@@ -167,12 +162,10 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    const command = createPactCommand(
-      payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
-      addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
-    );
-
-    const unsignedTransaction = createTransaction(command);
+    const unsignedTransaction = Pact.command
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
+      .createTransaction();
 
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
