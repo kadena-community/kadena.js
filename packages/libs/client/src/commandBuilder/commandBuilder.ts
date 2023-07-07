@@ -109,7 +109,8 @@ export const commandBuilder: ICommandBuilder = (
     return acc;
   }, {});
   const dateInMs = Date.now();
-  command.nonce = command.nonce ?? `kjs:nonce:${dateInMs}`;
+  command.nonce ??= `kjs:nonce:${dateInMs}`;
+  command.signers ??= [];
   if (command.meta && command.meta.creationTime === undefined) {
     command.meta.creationTime = Math.floor(dateInMs / 1000);
   }

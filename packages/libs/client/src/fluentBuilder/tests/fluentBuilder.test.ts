@@ -17,6 +17,7 @@ describe('fluentBuilder', () => {
       payload: {
         exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
       },
+      signers: [],
       nonce: 'kjs:nonce:1690416000000',
     });
   });
@@ -32,6 +33,7 @@ describe('fluentBuilder', () => {
 
     expect(command).toStrictEqual({
       payload: { cont: { pactId: '1', proof: 'proof' } },
+      signers: [],
       nonce: 'kjs:nonce:1690416000000',
     });
   });
@@ -75,6 +77,10 @@ describe('fluentBuilder', () => {
       .getCommand();
 
     expect(command).toStrictEqual({
+      payload: {
+        exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
+      },
+      signers: [],
       meta: {
         chainId: '0',
         creationTime: 1690416000,
@@ -84,9 +90,6 @@ describe('fluentBuilder', () => {
         ttl: 28800,
       },
       nonce: 'kjs:nonce:1690416000000',
-      payload: {
-        exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
-      },
     });
   });
   it('returns command with custom nonce', () => {
@@ -97,10 +100,11 @@ describe('fluentBuilder', () => {
       .getCommand();
 
     expect(command).toStrictEqual({
-      nonce: 'test-nonce',
       payload: {
         exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
       },
+      signers: [],
+      nonce: 'test-nonce',
     });
   });
 
@@ -112,10 +116,11 @@ describe('fluentBuilder', () => {
       .getCommand();
 
     expect(command).toStrictEqual({
-      nonce: 'test-nonce:1',
       payload: {
         exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
       },
+      signers: [],
+      nonce: 'test-nonce:1',
     });
   });
 
@@ -130,6 +135,7 @@ describe('fluentBuilder', () => {
       payload: {
         exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
       },
+      signers: [],
       networkId: 'mainnet01',
       nonce: 'kjs:nonce:1690416000000',
     });

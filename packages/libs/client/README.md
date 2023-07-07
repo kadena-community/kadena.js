@@ -162,29 +162,25 @@ Now that everything is bootstrapped, we can start building transactions.
 Create a new file and name it `transfer.ts` (or `.js`).
 
 ```ts
-import { Pact, commandBuilder } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
-const transactionBuilder = commandBuilder(
-  payload.exec(
-    // basic call results in Pact code `(coin.transfer "k:your-pubkey" "k:receiver-pubkey" 231.0)`
+const unsignedTransaction = Pact.command
+  .execute(
     Pact.modules.coin.transfer('k:your-pubkey', 'k:receiver-pubkey', {
       decimal: '231',
     }),
-  ),
-  // Ad signer public key
-  addSigner('your-pubkey', (withCapability) => [
+  )
+  .addSigner('your-pubkey', (withCapability) => [
     // add necessary coin.GAS capability (this defines who pays the gas)
     withCapability('coin.GAS'),
     // add necessary coin.TRANSFER capability
     withCapability('coin.TRANSFER', 'k:your-pubkey', 'k:receiver-pubkey', {
       decimal: '231',
     }),
-  ]),
-  // set chian id and sender
-  setMeta({ chianId: '1', sender: 'your-pubkey' }),
-  // set networkId
-  setProp('networkId', 'mainnet01'),
-);
+  ])
+  .setMeta({ chainId: '1', sender: 'your-pubkey' })
+  .setNetworkId('mainnet01')
+  .createTransaction();
 ```
 
 **Note**
@@ -204,15 +200,7 @@ Take note of the following:
 
 ## Manually signing the transaction
 
-To sign the transaction, you can use the builder to output the `command`. This
-can be pasted into the `SigData` of Chainweaver.
-
-```ts
-// createTransaction() will calculate hashes and finalizes the unsigned transaction
-const unsignedTransaction = transactionBuilder.createTransaction();
-
-console.log(JSON.stringify(unsignedTransaction.cmd));
-```
+the unsignedTransaction can be pasted into the `SigData` of Chainweaver.
 
 Take note of the following:
 
@@ -375,38 +363,32 @@ const transactionBuilder = kadenaCoinTemplates['safe-transfer']({
 const unsignedTransaction = transactionBuilder.createTransaction();
 ```
 
-# Using the PactCommand class
+# Using the fluentBuilder
 
 If you don't wish to generate JS code for your contracts, or use templates, you
 still can use the commandBuilder to build a command, and then easily send it.
 
 ```ts
-import { commandBuilder } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
 const client = getClient(
   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact',
 );
 
-const transactionBuilder = commandBuilder(
-  payload.exec('(format "Hello {}!" [(read-msg "person")])'),
-  // Ad signer public key
-  addSigner('your-pubkey', (withCapability) => [
-    // add necessary coin.GAS capability (this defines who pays the gas)
-    withCapability('coin.GAS'),
-    // add necessary coin.TRANSFER capability
-    withCapability('coin.TRANSFER', 'k:your-pubkey', 'k:receiver-pubkey', {
-      decimal: '231',
-    }),
-  ]),
+const unsignedTransaction = Pact.command
+  .execute('(format "Hello {}!" [(read-msg "person")])')
+  // as signer if its required
+  .addSigner('your-pubkey')
   // set chian id and sender
-  setMeta({ chianId: '8', sender: 'your-pubkey' }),
+  .setMeta({ chainId: '8', sender: 'your-pubkey' })
   // set networkId
-  setProp('testnet04', 'mainnet01'),
-);
+  .setNetworkId('mainnet01')
+  // create transaction with hash
+  .createTransaction();
 
 // Send it or local it
-client.local(transactionBuilder.createTransaction());
-client.submit(transactionBuilder.createTransaction());
+client.local(unsignedTransaction);
+client.submit(unsignedTransaction);
 ```
 
 # Send a request to the blockchain
@@ -446,7 +428,9 @@ on the `coin` contract, we have to trick Typescript a little:
 ```ts
 const res = await local({
   payload: {
-    code: Pact.modules.coin.['get-balance']("albert"),
+    exec:{
+      code: Pact.modules.coin.['get-balance']("albert"),
+    },
   },
 });
 console.log(JSON.stringify(res, null, 2));
