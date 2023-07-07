@@ -1,8 +1,8 @@
-import { ChainId } from '@kadena/types';
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 import { ContCommand, getContCommand, pollSpvProof } from '../contPact';
 
-let targetChainId: ChainId;
+let targetChainId: ChainwebChainId;
 let requestKey: string;
 let apiHost: string;
 let step: number;
