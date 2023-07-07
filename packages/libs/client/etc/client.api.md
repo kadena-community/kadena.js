@@ -15,25 +15,7 @@ import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
 import { SessionTypes } from '@walletconnect/types';
 
-// Warning: (ae-forgotten-export) The symbol "AddDataReturnValue" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const addData: <TKey extends string, TValue extends string | number | boolean | Record<string, unknown>>(key: TKey, value: TValue) => <TCmd extends Partial<IPactCommand>>(cmd: TCmd) => AddDataReturnValue<TCmd, TKey, TValue>;
-
-// Warning: (ae-forgotten-export) The symbol "IAddKeyset_2" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const addKeyset: IAddKeyset_2;
-
-// Warning: (ae-forgotten-export) The symbol "IAddSigner_2" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const addSigner: IAddSigner_2;
-
-// Warning: (ae-forgotten-export) The symbol "ICreatePactCommand" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const createPactCommand: ICreatePactCommand;
+export { ChainId }
 
 // @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
@@ -53,6 +35,8 @@ export function createWalletConnectSign(client: Client, session: SessionTypes.St
 //
 // @alpha (undocumented)
 export const getClient: IGetClient;
+
+export { ICap }
 
 // @alpha (undocumented)
 export type ICapabilityItem = ICap;
@@ -98,6 +82,10 @@ export interface IChainweaverSignBody {
     // (undocumented)
     ttl: number;
 }
+
+export { ICommand }
+
+export { ICommandResult }
 
 // @alpha (undocumented)
 export interface IContinuationPayload {
@@ -160,6 +148,10 @@ export interface IPactCommand {
 export interface IPactModules {
 }
 
+export { IPollResponse }
+
+export { IPreflightResult }
+
 // @alpha (undocumented)
 export interface IQuickSignRequestBody {
     // (undocumented)
@@ -218,6 +210,11 @@ export interface IQuicksignSigner {
     sig: IQuicksignSig;
 }
 
+// @alpha
+export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
+
+export { IUnsignedCommand }
+
 // @alpha (undocumented)
 export interface IUnsignedQuicksignTransaction {
     // (undocumented)
@@ -228,31 +225,6 @@ export interface IUnsignedQuicksignTransaction {
 
 // @alpha (undocumented)
 export const Pact: IPact;
-
-// Warning: (ae-forgotten-export) The symbol "IPayload" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const payload: IPayload;
-
-// Warning: (ae-forgotten-export) The symbol "ReadKeyset" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const readKeyset: ReadKeyset;
-
-// @alpha (undocumented)
-export const setMeta: (options: {
-    chainId: IPactCommand['meta']['chainId'];
-} & Partial<IPactCommand['meta']>) => Pick<IPactCommand, 'meta'>;
-
-// @alpha (undocumented)
-export const setNetworkId: (networkId: string) => {
-    networkId: string;
-};
-
-// @alpha (undocumented)
-export const setNonce: (nonce: string) => {
-    nonce: string;
-};
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;

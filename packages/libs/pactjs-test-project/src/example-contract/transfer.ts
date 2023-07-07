@@ -1,13 +1,8 @@
 import { poll } from '@kadena/chainweb-node-client';
 import {
-  addSigner,
-  commandBuilder,
   createTransaction,
   IPactCommand,
   Pact,
-  payload,
-  setMeta,
-  setProp,
   signWithChainweaver,
 } from '@kadena/client';
 

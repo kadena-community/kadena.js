@@ -1,14 +1,7 @@
-import {
-  addSigner,
-  createPactCommand,
-  payload,
-  setMeta,
-  setNetworkId,
-  setNonce,
-} from '../../index';
+import { addSigner, payload, setMeta, setNetworkId, setNonce } from '../../fp';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
-import { mergePayload } from '../createPactCommand';
+import { createPactCommand, mergePayload } from '../createPactCommand';
 import { addData } from '../utils/addData';
 
 import { ICoin } from './coin-contract';

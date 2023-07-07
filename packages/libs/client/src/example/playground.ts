@@ -5,16 +5,15 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ICommand } from '@kadena/types';
 
 import { getClient } from '../client/client';
-import { ICoin } from '../createPactCommand/test/coin-contract';
 import {
   addSigner,
   createPactCommand,
-  ICapabilityItem,
-  IPactCommand,
   payload,
   setMeta,
   setNetworkId,
-} from '../index';
+} from '../createPactCommand';
+import { ICoin } from '../createPactCommand/test/coin-contract';
+import { ICapabilityItem, IPactCommand } from '../index';
 import { getModule } from '../pact';
 
 const coin: ICoin = getModule('coin');
