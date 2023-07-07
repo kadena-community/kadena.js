@@ -1,9 +1,9 @@
 import { createExp } from '@kadena/pactjs';
 
 import {
-  createFluentBuilder,
-  IFluentBuilder,
-} from './fluentBuilder/fluentBuilder';
+  commandBuilder,
+  ICommandBuilder,
+} from './commandBuilder/commandBuilder';
 import { parseType } from './utils/parseType';
 
 /**
@@ -16,7 +16,7 @@ export interface IPactModules {}
  */
 export interface IPact {
   modules: IPactModules;
-  command: IFluentBuilder;
+  command: ICommandBuilder;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,6 +57,6 @@ export const Pact: IPact = {
     return pactCreator();
   },
   get command() {
-    return createFluentBuilder();
+    return commandBuilder();
   },
 };

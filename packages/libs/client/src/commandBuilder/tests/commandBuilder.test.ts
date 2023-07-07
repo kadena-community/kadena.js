@@ -1,14 +1,14 @@
 import { ICoin } from '../../createPactCommand/test/coin-contract';
 import { getModule } from '../../pact';
-import { createFluentBuilder } from '../fluentBuilder';
+import { commandBuilder } from '../commandBuilder';
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
 const coin: ICoin = getModule('coin');
 
-describe('fluentBuilder', () => {
+describe('commandBuilder', () => {
   it('returns exec payload', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .getCommand();
@@ -23,7 +23,7 @@ describe('fluentBuilder', () => {
   });
 
   it('returns cont payload', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .continuation({
         pactId: '1',
@@ -39,7 +39,7 @@ describe('fluentBuilder', () => {
   });
 
   it('returns command with signers', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addSigner('bob_pubkey', (withCapability) => [
@@ -70,7 +70,7 @@ describe('fluentBuilder', () => {
   });
 
   it('returns command with meta', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setMeta({ chainId: '0' })
@@ -93,7 +93,7 @@ describe('fluentBuilder', () => {
     });
   });
   it('returns command with custom nonce', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce('test-nonce')
@@ -109,7 +109,7 @@ describe('fluentBuilder', () => {
   });
 
   it('returns command with custom nonce by using nonce generator', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce((cmd) => `test-nonce:${Object.keys(cmd).length}`)
@@ -125,7 +125,7 @@ describe('fluentBuilder', () => {
   });
 
   it('returns command with network', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const command = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNetworkId('mainnet01')
@@ -142,7 +142,7 @@ describe('fluentBuilder', () => {
   });
 
   it('returns unsigned transaction', () => {
-    const builder = createFluentBuilder();
+    const builder = commandBuilder();
     const unSignedTr = builder
       .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addSigner('bob_bup_key')

@@ -80,12 +80,12 @@ export interface ICont {
   }>;
 }
 
-export interface IFluentBuilder {
+export interface ICommandBuilder {
   execute: IExec;
   continuation: ICont;
 }
 
-export const createFluentBuilder = (): IFluentBuilder => {
+export const commandBuilder = (): ICommandBuilder => {
   const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
     let command: Partial<IPactCommand> = init;
     const builder: IBuilder<T> = {

@@ -1,4 +1,4 @@
-# CommandBuilder utilities
+# createPactCommand utilities
 
 ## `payload.exec`
 
@@ -13,11 +13,11 @@ import Pact from "@kadena/client"
 // importing coin module that you can generate types of that by using "pactjs-cli"
 const { coin } = Pact.modules;
 
-const command = commandBuilder(
+const command = createPactCommand(
   payload.exec(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   )
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -37,13 +37,13 @@ creating continuation command
 <summary>examples</summary>
 
 ```TypeScript
-const command = commandBuilder(
+const command = createPactCommand(
   payload.cont({
     pactId: '1',
     proof: 'test-proof',
     step: '1',
   })
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -71,14 +71,14 @@ typing from the payload part and recommends the relevant capabilities
 <summary>examples</summary>
 
 ```TypeScript
-const command = commandBuilder(
+const command = createPactCommand(
   payload.exec(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   ),
   addSigner("bob_public_key",(withCapability)=>[
     withCapability("coin.TRANSFER", "bob", "alice", { decimal: "1.1" })
   ])
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -109,11 +109,11 @@ return `(read-keyset "name")` string, useful when generating code.
 <summary>examples</summary>
 
 ```TypeScript
-const command = commandBuilder(
+const command = createPactCommand(
   payload.exec(
     coin.transfer(readKeyset("sender_key"), "bob", { decimal: "1.1" })
   ),
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -139,12 +139,12 @@ adds data to the payload part
 <summary>examples</summary>
 
 ```TypeScript
-const command = commandBuilder (
+const command = createPactCommand (
   payload.exec(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   ),
   addData("name", { value: "test" }),
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -176,12 +176,12 @@ add keyset to the data part
 <summary>examples</summary>
 
 ```TypeScript
-const command = commandBuilder(
+const command = createPactCommand(
   payload.exec(
     coin.transfer(readKeyset("senderKey"), "bob", { decimal: "1.1" })
   ),
   addKeyset("senderKey","keys-one", "the_public_key")
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -208,12 +208,12 @@ returns meta section of the command
 <summary>examples</summary>
 
 ```TypeScript
-const command = commandBuilder(
+const command = createPactCommand(
   payload.exec(
     coin.transfer("alice", "bob", { decimal: "1.1" })
   ),
   setMeta({ chainId : "1" }),
-).getPactCommand()
+)()
 
 //
 const command = {
@@ -243,13 +243,13 @@ A general helper to add a section.
 
 ```TypeScript
 
-const command = commandBuilder(
+const command = createPactCommand(
   payload.exec(
     coin.transfer("alice", "bob", { decimal: "1.1" })
   ),
   setProp("networkId", "mainnet01"),
   setProp("nonce", `k:none:${Date.now()}`),
-).getPactCommand()
+)()
 
 //
 const command = {

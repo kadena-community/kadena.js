@@ -52,7 +52,7 @@ type NoPayload<T> = T extends { payload: unknown } ? never : T;
 type PoF<T> = T | ((a: T) => T);
 
 // TODO : improve the return value to merge all of the inputs as an object
-interface ICommandBuilder {
+interface ICreatePactCommand {
   <F extends Pick<IPactCommand, 'payload'>>(
     payload: F,
     ...rest: [
@@ -72,7 +72,7 @@ interface ICommandBuilder {
 /**
  * @alpha
  */
-export const createPactCommand: ICommandBuilder =
+export const createPactCommand: ICreatePactCommand =
   (
     first: PoF<Partial<IPactCommand>>,
     ...rest: Array<PoF<Partial<IPactCommand>>>

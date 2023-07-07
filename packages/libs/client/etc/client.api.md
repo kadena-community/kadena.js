@@ -34,10 +34,10 @@ export const addKeyset: IAddKeyset;
 // @alpha (undocumented)
 export const addSigner: IAddSigner_2;
 
-// Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ICreatePactCommand" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const createPactCommand: ICommandBuilder;
+export const createPactCommand: ICreatePactCommand;
 
 // @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
@@ -126,10 +126,10 @@ export interface IExecPayload {
 
 // @alpha (undocumented)
 export interface IPact {
-    // Warning: (ae-forgotten-export) The symbol "IFluentBuilder" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    command: IFluentBuilder;
+    command: ICommandBuilder;
     // (undocumented)
     modules: IPactModules;
 }
