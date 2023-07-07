@@ -13,7 +13,7 @@ import {
   IPactCommand,
   payload,
   setMeta,
-  setProp,
+  setNetworkId,
 } from '../index';
 import { getModule } from '../pact';
 
@@ -60,7 +60,7 @@ export const cmd = createPactCommand(
   ]),
   setMeta({ chainId: '1' }),
   nonce('k:nonce'),
-  setProp('networkId', 'mainnet04'),
+  setNetworkId('mainnet04'),
 );
 // eslint-disable-next-line @rushstack/typedef-var
 export const cmd2 = createPactCommand(
@@ -76,7 +76,7 @@ export const cmd2 = createPactCommand(
   ]),
   setMeta({ chainId: '1' }),
   nonce('kms'),
-  setProp('networkId', 'mainnet04'),
+  setNetworkId('mainnet04'),
 );
 
 const commandWithSignatures: ICommand = {
@@ -157,7 +157,7 @@ export async function spvExample(): Promise<string> {
 export function composeCommands(): Partial<IPactCommand> {
   const mainnetConfig = createPactCommand(
     setMeta({ chainId: '1' }),
-    setProp('networkId', 'mainnet04'),
+    setNetworkId('mainnet04'),
   );
 
   const transfer = createPactCommand(

@@ -3,7 +3,8 @@ import {
   createPactCommand,
   payload,
   setMeta,
-  setProp,
+  setNetworkId,
+  setNonce,
 } from '../../index';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
@@ -62,7 +63,7 @@ describe('createPactCommand', () => {
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
       ]),
-      setProp('nonce', 'test-nonce'),
+      setNonce('test-nonce'),
     )();
     expect(command).toStrictEqual({
       payload: {
@@ -103,8 +104,8 @@ describe('createPactCommand', () => {
         creationTime: 123,
         ttl: 1000,
       }),
-      setProp('networkId', 'test-network-id'),
-      setProp('nonce', 'test-nonce'),
+      setNetworkId('test-network-id'),
+      setNonce('test-nonce'),
     )();
 
     expect(command).toStrictEqual({

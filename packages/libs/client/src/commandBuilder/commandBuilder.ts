@@ -1,11 +1,14 @@
 import { IExecPayload, IUnsignedCommand } from '@kadena/types';
 
 import {
+  addData,
+  addKeyset,
   addSigner,
   createPactCommand,
   payload,
   setMeta,
-  setProp,
+  setNetworkId,
+  setNonce,
 } from '../createPactCommand';
 import { UnionToIntersection } from '../createPactCommand/utils/addSigner';
 import {
@@ -47,6 +50,19 @@ interface ISetNonce<T> {
   (nonceGenerator: (cmd: Partial<IPactCommand>) => string): IBuilder<T>;
 }
 
+interface IAddKeyset<T> {
+  <TKey extends string, PRED extends 'keys-all' | 'keys-one' | 'keys-two'>(
+    key: TKey,
+    pred: PRED,
+    ...publicKeys: string[]
+  ): IBuilder<T>;
+
+  <TKey extends string, PRED extends string>(
+    key: TKey,
+    pred: PRED,
+    ...publicKeys: string[]
+  ): IBuilder<T>;
+}
 interface IBuilder<T> {
   addSigner: IAddSigner<T>;
   setMeta: (
@@ -56,6 +72,11 @@ interface IBuilder<T> {
   ) => IBuilder<T>;
   setNonce: ISetNonce<T>;
   setNetworkId: (id: string) => IBuilder<T>;
+  addData: (
+    key: string,
+    data: Record<string, unknown> | string | number | boolean,
+  ) => IBuilder<T>;
+  addKeyset: IAddKeyset<T>;
   createTransaction: () => IUnsignedCommand;
   getCommand: () => Partial<IPactCommand>;
 }
@@ -89,6 +110,19 @@ export const commandBuilder = (): ICommandBuilder => {
   const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
     let command: Partial<IPactCommand> = init;
     const builder: IBuilder<T> = {
+      addData: (
+        key: string,
+        value: Record<string, unknown> | string | number | boolean,
+      ) => {
+        command = createPactCommand(addData(key, value))(command);
+        return builder;
+      },
+      addKeyset: (key: string, pred: string, ...publicKeys: string[]) => {
+        command = createPactCommand(addKeyset(key, pred, ...publicKeys))(
+          command,
+        );
+        return builder;
+      },
       addSigner: (pubKey, cap?: unknown) => {
         command = createPactCommand(
           addSigner(
@@ -103,12 +137,12 @@ export const commandBuilder = (): ICommandBuilder => {
         return builder;
       },
       setNetworkId: (id: string) => {
-        command = createPactCommand(setProp('networkId', id))(command);
+        command = createPactCommand(setNetworkId(id))(command);
         return builder;
       },
       setNonce: (arg: string | ((cmd: Partial<IPactCommand>) => string)) => {
         const nonce = typeof arg === 'function' ? arg(command) : arg;
-        command = createPactCommand(setProp('nonce', nonce))(command);
+        command = createPactCommand(setNonce(nonce))(command);
         return builder;
       },
       getCommand: () => {

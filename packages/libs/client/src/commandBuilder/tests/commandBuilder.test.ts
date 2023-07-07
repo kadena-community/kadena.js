@@ -155,4 +155,66 @@ describe('commandBuilder', () => {
       sigs: [undefined],
     });
   });
+
+  it('returns exec command with data', () => {
+    const builder = commandBuilder();
+    const command = builder
+      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .addData('test', 'value')
+      .getCommand();
+
+    expect(command).toEqual({
+      nonce: 'kjs:nonce:1690416000000',
+      payload: {
+        exec: {
+          code: '(coin.transfer "bob" "alice" 12.0)',
+          data: { test: 'value' },
+        },
+      },
+      signers: [],
+    });
+  });
+
+  it('returns cont command with data', () => {
+    const builder = commandBuilder();
+    const command = builder
+      .continuation({ pactId: '1' })
+      .addData('test', 'value')
+      .getCommand();
+
+    expect(command).toEqual({
+      nonce: 'kjs:nonce:1690416000000',
+      payload: {
+        cont: {
+          pactId: '1',
+          data: { test: 'value' },
+        },
+      },
+      signers: [],
+    });
+  });
+
+  it('returns command with keyset', () => {
+    const builder = commandBuilder();
+    const command = builder
+      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .addKeyset('ks', 'keys-all', 'pub1', 'pub2')
+      .getCommand();
+
+    expect(command).toEqual({
+      nonce: 'kjs:nonce:1690416000000',
+      payload: {
+        exec: {
+          code: '(coin.transfer "bob" "alice" 12.0)',
+          data: {
+            ks: {
+              pred: 'keys-all',
+              publicKeys: ['pub1', 'pub2'],
+            },
+          },
+        },
+      },
+      signers: [],
+    });
+  });
 });

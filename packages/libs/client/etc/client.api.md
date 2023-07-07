@@ -15,19 +15,15 @@ import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
 import { SessionTypes } from '@walletconnect/types';
 
-// @alpha (undocumented)
-export const addData: <T extends string, D extends string | number | boolean | object>(name: T, data: D) => {
-    payload: {
-        exec: {
-            data: { [key in T]: D; };
-        };
-    };
-};
-
-// Warning: (ae-forgotten-export) The symbol "IAddKeyset" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "AddDataReturnValue" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const addKeyset: IAddKeyset;
+export const addData: <TKey extends string, TValue extends string | number | boolean | Record<string, unknown>>(key: TKey, value: TValue) => <TCmd extends Partial<IPactCommand>>(cmd: TCmd) => AddDataReturnValue<TCmd, TKey, TValue>;
+
+// Warning: (ae-forgotten-export) The symbol "IAddKeyset_2" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const addKeyset: IAddKeyset_2;
 
 // Warning: (ae-forgotten-export) The symbol "IAddSigner_2" needs to be exported by the entry point index.d.ts
 //
@@ -249,7 +245,14 @@ export const setMeta: (options: {
 } & Partial<IPactCommand['meta']>) => Pick<IPactCommand, 'meta'>;
 
 // @alpha (undocumented)
-export const setProp: <T extends keyof IPactCommand>(item: T, value: IPactCommand[T]) => { [key in T]: IPactCommand[T]; };
+export const setNetworkId: (networkId: string) => {
+    networkId: string;
+};
+
+// @alpha (undocumented)
+export const setNonce: (nonce: string) => {
+    nonce: string;
+};
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;
