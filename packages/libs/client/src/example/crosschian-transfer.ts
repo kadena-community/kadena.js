@@ -5,7 +5,7 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client/client';
-import { ICoin } from '../commandBuilder/test/coin-contract';
+import { ICoin } from '../createPactCommand/test/coin-contract';
 import {
   addSigner,
   commandBuilder,

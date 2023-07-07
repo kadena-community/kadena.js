@@ -1,3 +1,5 @@
+import { IPactCommand } from '../../interfaces/IPactCommand';
+
 type ReadKeyset = <T extends string>(name: T) => `(read-keyset "${T}")`;
 
 /**
@@ -24,16 +26,18 @@ export const addData = <
       };
     };
   };
-} => ({
-  payload: {
-    exec: {
-      data: {
-        [name as string]: data,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any,
+} => {
+  return {
+    payload: {
+      exec: {
+        data: {
+          [name as string]: data,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+      },
     },
-  },
-});
+  };
+};
 
 interface IAddKeyset {
   <NAME extends string, PRED extends 'keys-all' | 'keys-one' | 'keys-two'>(

@@ -72,7 +72,7 @@ interface ICommandBuilder {
 /**
  * @alpha
  */
-export const commandBuilder: ICommandBuilder = (
+export const createPactCommand: ICommandBuilder = (
   first: PoF<Partial<IPactCommand>>,
   ...rest: Array<PoF<Partial<IPactCommand>>>
 ): Partial<IPactCommand> => {

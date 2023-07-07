@@ -4,7 +4,7 @@
 export * from './signing';
 export * from './signing-api/v1/quicksign';
 export * from './signing-api/v1/sign';
-export * from './commandBuilder';
+export * from './createPactCommand';
 export * from './utils/createTransaction';
 export * from './client/client';
 

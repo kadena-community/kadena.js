@@ -6,8 +6,8 @@ import {
   payload,
   setMeta,
   setProp,
-} from '../commandBuilder';
-import { UnionToIntersection } from '../commandBuilder/utils/addSigner';
+} from '../createPactCommand';
+import { UnionToIntersection } from '../createPactCommand/utils/addSigner';
 import {
   ICapabilityItem,
   IContinuationPayload,

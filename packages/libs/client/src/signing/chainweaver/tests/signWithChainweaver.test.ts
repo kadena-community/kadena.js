@@ -5,11 +5,11 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { commandBuilder } from '../../../commandBuilder/commandBuilder';
-import { ICoin } from '../../../commandBuilder/test/coin-contract';
-import { addSigner } from '../../../commandBuilder/utils/addSigner';
-import { payload } from '../../../commandBuilder/utils/payload';
-import { setMeta } from '../../../commandBuilder/utils/setMeta';
+import { createPactCommand } from '../../../createPactCommand/createPactCommand';
+import { ICoin } from '../../../createPactCommand/test/coin-contract';
+import { addSigner } from '../../../createPactCommand/utils/addSigner';
+import { payload } from '../../../createPactCommand/utils/payload';
+import { setMeta } from '../../../createPactCommand/utils/setMeta';
 import { getModule } from '../../../pact';
 import {
   IQuicksignResponse,
@@ -32,7 +32,7 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('signer-key', (withCap) => [withCap('coin.GAS')]),
     );
@@ -65,7 +65,7 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('', (withCap) => [withCap('coin.GAS')]),
       setMeta({
@@ -100,7 +100,7 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
       addSigner('transfer-signer-pubkey', (withCap) => [
@@ -167,7 +167,7 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    const command = commandBuilder(
+    const command = createPactCommand(
       payload.exec(coin.transfer('k:from', 'k:to', { decimal: '1.0' })),
       addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')]),
     );

@@ -7,7 +7,7 @@ import {
 } from '../../index';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
-import { mergePayload } from '../commandBuilder';
+import { mergePayload } from '../createPactCommand';
 import { addData } from '../utils/addData';
 
 import { ICoin } from './coin-contract';

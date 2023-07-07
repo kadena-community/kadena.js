@@ -1,4 +1,4 @@
-export { commandBuilder } from './commandBuilder';
+export { createPactCommand as commandBuilder } from './createPactCommand';
 export { setProp } from './utils/setProp';
 export { setMeta } from './utils/setMeta';
 export { addSigner } from './utils/addSigner';
