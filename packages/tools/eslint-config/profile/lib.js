@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const findUp = (filename, dir = process.cwd()) => {
-  console.log({ filename, dir });
   const filePath = path.join(dir, filename);
   if (fs.existsSync(filePath)) return filePath;
   const parentDir = path.dirname(dir);
