@@ -1091,7 +1091,7 @@ importers:
 
   ../../packages/tools/eslint-config:
     specifiers:
-      '@kadena-dev/eslint-plugin': ^0.0.4
+      '@kadena-dev/eslint-plugin': workspace:*
       '@next/eslint-plugin-next': ^12.0.8
       '@rushstack/eslint-config': ~3.3.0
       '@typescript-eslint/eslint-plugin': ^5.23.0
@@ -1109,7 +1109,7 @@ importers:
       sort-package-json: ~2.4.1
       typescript: 5.0.4
     dependencies:
-      '@kadena-dev/eslint-plugin': 0.0.4_eslint@8.44.0+typescript@5.0.4
+      '@kadena-dev/eslint-plugin': link:../eslint-plugin
       '@next/eslint-plugin-next': 12.3.4
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@typescript-eslint/eslint-plugin': 5.60.1_cfa258330b4359c79edc87badfcf28a3
@@ -6935,18 +6935,6 @@ packages:
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
-
-  /@kadena-dev/eslint-plugin/0.0.4_eslint@8.44.0+typescript@5.0.4:
-    resolution: {integrity: sha512-r+AGOJ9mugmVff52kkGNQlr/HM+CtloCW6RBwaQoEt4irEkE2zuFmk3oapUiwHFL2jxgvrLphB1N/2xBygk+SQ==}
-    dependencies:
-      '@typescript-eslint/experimental-utils': 5.53.0_eslint@8.44.0+typescript@5.0.4
-      eslint-module-utils: 2.8.0_eslint@8.44.0
-      is-core-module: 2.12.1
-    transitivePeerDependencies:
-      - eslint
-      - supports-color
-      - typescript
-    dev: false
 
   /@leichtgewicht/ip-codec/2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
@@ -25465,7 +25453,7 @@ packages:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.18.2
-      webpack: 5.73.0_webpack-cli@4.10.0
+      webpack: 5.73.0
 
   /terser/5.18.2:
     resolution: {integrity: sha512-Ah19JS86ypbJzTzvUCX7KOsEIhDaRONungA4aYBjEP3JZRf4ocuDzTg4QWZnPn9DEMiMYGJPiSOy7aykoCc70w==}
