@@ -1,8 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
+const findUp = (filename, dir = process.cwd()) => {
+  console.log({ filename, dir });
+  const filePath = path.join(dir, filename);
+  if (fs.existsSync(filePath)) return filePath;
+  const parentDir = path.dirname(dir);
+  if (parentDir === dir) return;
+  return findUp(filename, parentDir);
+};
+
 const prettierOptions = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../../../../.prettierrc'), 'utf8'),
+  fs.readFileSync(findUp('.prettierrc'), 'utf8'),
 );
 
 module.exports = {
