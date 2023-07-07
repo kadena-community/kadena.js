@@ -4,7 +4,6 @@
 
 ```ts
 
-import type { ChainId } from '@kadena/types';
 import type { IBase64Url } from '@kadena/types';
 import type { ICap } from '@kadena/types';
 import type { ICommand } from '@kadena/types';
@@ -180,7 +179,7 @@ export interface ISPVRequestBody {
     // (undocumented)
     requestKey: IBase64Url;
     // (undocumented)
-    targetChainId: ChainId;
+    targetChainId: ChainwebChainId;
 }
 
 // @alpha
