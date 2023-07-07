@@ -1,6 +1,8 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import {
+  ChainwebChainId,
+  ChainwebNetworkId,
+} from '@kadena/chainweb-node-client';
 import { getContCommand, pollSpvProof } from '@kadena/client';
-import { ChainId } from '@kadena/types';
 
 import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
@@ -149,8 +151,8 @@ export async function getXChainTransferInfo({
 }: {
   requestKey: string;
   senderAccount: string;
-  senderChain: ChainId;
-  receiverChain: ChainId;
+  senderChain: ChainwebChainId;
+  receiverChain: ChainwebChainId;
   network: Network;
   t: Translate;
 }): Promise<IStatusData> {
@@ -243,9 +245,9 @@ export async function checkForProof({
   requestKey: string;
   network: Network;
   senderAccount: string;
-  senderChain: ChainId;
+  senderChain: ChainwebChainId;
   receiverAccount: string;
-  receiverChain: ChainId;
+  receiverChain: ChainwebChainId;
   amount: number;
   options?: {
     onPoll?: (status: IStatusData) => void;
