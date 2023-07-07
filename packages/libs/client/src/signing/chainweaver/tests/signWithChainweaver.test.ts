@@ -27,7 +27,7 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    const builder = Pact.command
+    const builder = Pact.builder
       .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('signer-key', (withCap) => [withCap('coin.GAS')]);
 
@@ -61,7 +61,7 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    const unsignedTransaction = Pact.command
+    const unsignedTransaction = Pact.builder
       .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('', (withCap) => [withCap('coin.GAS')])
       .setMeta({
@@ -96,7 +96,7 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    const unsignedTransaction = Pact.command
+    const unsignedTransaction = Pact.builder
       .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
       .addSigner('transfer-signer-pubkey', (withCap) => [
@@ -162,7 +162,7 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    const unsignedTransaction = Pact.command
+    const unsignedTransaction = Pact.builder
       .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
       .createTransaction();

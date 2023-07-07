@@ -129,7 +129,7 @@ export interface IPact {
     // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    command: ICommandBuilder;
+    builder: ICommandBuilder;
     // (undocumented)
     modules: IPactModules;
 }

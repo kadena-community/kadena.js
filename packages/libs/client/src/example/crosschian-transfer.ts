@@ -24,7 +24,7 @@ function debitInTheFirstChain(
   to: IAccount,
   amount: string,
 ): IUnsignedCommand {
-  return Pact.command
+  return Pact.builder
     .execute(
       coin['transfer-crosschain'](from.account, to.account, to.guard, '01', {
         decimal: amount.toString(),
@@ -44,7 +44,7 @@ function creditInTheTargetChain(
   continuation: IContinuationPayload['cont'],
   targetChainId: ChainId,
 ): IUnsignedCommand {
-  return Pact.command
+  return Pact.builder
     .continuation(continuation)
     .addSigner('test', (withCapability) => [withCapability('test')])
     .setMeta({ chainId: targetChainId })

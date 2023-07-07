@@ -16,7 +16,7 @@ export interface IPactModules {}
  */
 export interface IPact {
   modules: IPactModules;
-  command: ICommandBuilder;
+  builder: ICommandBuilder;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,7 +56,7 @@ export const Pact: IPact = {
   get modules() {
     return pactCreator();
   },
-  get command() {
+  get builder() {
     return commandBuilder();
   },
 };
