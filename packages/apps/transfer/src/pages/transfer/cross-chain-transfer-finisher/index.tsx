@@ -1,7 +1,6 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
-import { ChainId } from '@kadena/types';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { DetailCard } from '@/components/Global/DetailsCard';
@@ -117,7 +116,7 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.step,
       pollResults.tx.rollback,
       network,
-      pollResults.tx.receiver.chain as ChainId,
+      pollResults.tx.receiver.chain,
       kadenaXChainGas,
     );
 

@@ -1,7 +1,7 @@
-import { ChainId } from '@kadena/types';
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-export const convertIntToChainId = (value: number): ChainId => {
-  return value.toString() as ChainId;
+export const convertIntToChainId = (value: number): ChainwebChainId => {
+  return value.toString() as ChainwebChainId;
 };
 
 export const validateRequestKey = (key: string): string | undefined => {

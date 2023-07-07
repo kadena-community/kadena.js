@@ -1,6 +1,10 @@
-import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
+import {
+  ChainwebChainId,
+  ICommandResult,
+  IPollResponse,
+} from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
-import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
+import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
@@ -11,8 +15,8 @@ import {
 import { Translate } from 'next-translate';
 
 interface ITransactionData {
-  sender: { chain: ChainId; account: string };
-  receiver: { chain: ChainId; account: string };
+  sender: { chain: ChainwebChainId; account: string };
+  receiver: { chain: ChainwebChainId; account: string };
   amount: number;
   receiverGuard: {
     pred: string;
@@ -100,11 +104,11 @@ export async function getTransferData({
     return {
       tx: {
         sender: {
-          chain: found.chainId.toString() as ChainId,
+          chain: found.chainId.toString() as ChainwebChainId,
           account: senderAccount,
         },
         receiver: {
-          chain: targetChain as ChainId,
+          chain: targetChain as ChainwebChainId,
           account: receiverAccount,
         },
         amount: amount,
