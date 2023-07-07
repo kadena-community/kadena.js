@@ -113,7 +113,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const client: IClient = {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
-      const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
+      const hostUrl = getHost(cmd.networkId, cmd.meta.chainId!);
       return local(hostUrl, body, options);
     },
     async submit(body) {
@@ -123,7 +123,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         throw new Error('EMPTY_COMMAND_LIST');
       }
       const cmd: IPactCommand = JSON.parse(first.cmd);
-      const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
+      const hostUrl = getHost(cmd.networkId, cmd.meta.chainId!);
       const commandsWithHash = commands.map((req) => ({
         ...req,
         hash: blakeHash(req.cmd),

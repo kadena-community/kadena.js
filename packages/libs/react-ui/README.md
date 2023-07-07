@@ -18,7 +18,7 @@ their configuration options.
 
 Run the following commands to install dependencies and build the library:
 
-```bash
+```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 cd packages/libs/react-ui
@@ -47,14 +47,14 @@ Add @kadena/react-ui as a dependency in your `package.json`:
 Then run the following commands to install the package and update the monorepo's
 state:
 
-```bash
+```sh
 rush update
 ```
 
 VE requires bundler configuration to handle CSS. To set this up in Next.js you
 will need to install the following plugin:
 
-```bash
+```sh
 rush add -p @vanilla-extract/next-plugin --dev
 ```
 
@@ -155,7 +155,7 @@ export default MyApp;
 After installing dependencies, you can start Storybook with the following
 command:
 
-```bash
+```sh
 rushx storybook
 ```
 
@@ -165,7 +165,7 @@ The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-```bash
+```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 cd packages/libs/react-ui

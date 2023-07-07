@@ -1,9 +1,9 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-components';
-import { ChainId } from '@kadena/types';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
+import { DetailCard } from '@/components/Global/DetailsCard';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -27,6 +27,7 @@ import {
   StyledTotalChunk,
   StyledTotalContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 import {
   finishXChainTransfer,
   ITransferResult,
@@ -115,7 +116,7 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.step,
       pollResults.tx.rollback,
       network,
-      pollResults.tx.receiver.chain as ChainId,
+      pollResults.tx.receiver.chain,
       kadenaXChainGas,
     );
 
@@ -148,7 +149,10 @@ const CrossChainTransferFinisher: FC = () => {
             }
           },
         });
-        setFinalResults({ ...pollResult });
+        setFinalResults({
+          requestKey: pollResult.reqKey,
+          status: pollResult.result.status,
+        });
       } catch (tx) {
         setFinalResults({ ...tx });
       }
@@ -268,17 +272,22 @@ const CrossChainTransferFinisher: FC = () => {
         {pollResults.tx ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Sender')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`Chain: ${pollResults.tx.sender.chain}`}</StyledInfoItemLine>
-              <StyledInfoItemLine>{`Account: ${pollResults.tx.sender.account}`}</StyledInfoItemLine>
-            </StyledInfoItem>
 
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Receiver')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`Chain: ${pollResults.tx.receiver.chain}`}</StyledInfoItemLine>
-              <StyledInfoItemLine>{`Account: ${pollResults.tx.receiver.account}`}</StyledInfoItemLine>
-            </StyledInfoItem>
+            <DetailCard
+              firstTitle={t('Sender')}
+              firstContent={pollResults.tx.sender.account}
+              secondTitle={t('Chain')}
+              secondContent={pollResults.tx.sender.chain}
+              icon={<FromIconActive />}
+            />
+
+            <DetailCard
+              firstTitle={t('Receiver')}
+              firstContent={pollResults.tx.receiver.account}
+              secondTitle={t('Chain')}
+              secondContent={pollResults.tx.receiver.chain}
+              icon={<ReceiverIconActive />}
+            />
 
             <StyledInfoItem>
               <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>

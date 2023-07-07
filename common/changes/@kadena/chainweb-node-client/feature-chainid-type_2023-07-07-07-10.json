@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "Updated Chain ID type to be usable during runtime as well",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}

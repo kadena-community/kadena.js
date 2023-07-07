@@ -1,6 +1,6 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
-import { ChainId } from '@kadena/types';
 
 import {
   getKadenaConstantByNetwork,
@@ -17,7 +17,7 @@ export interface IModuleResult {
 
 export const describeModule = async (
   moduleName: string,
-  chainId: ChainId,
+  chainId: ChainwebChainId,
   network: Network,
   sender: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,

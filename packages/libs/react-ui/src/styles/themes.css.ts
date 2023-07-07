@@ -74,6 +74,7 @@ export const vars = createGlobalTheme(':root', {
     $24: '6rem', // 96px
     $25: '6.25rem', // 100px
     $32: '8rem', // 128px
+    $35: '8.75rem', // 140px
     $40: '10rem', // 160px
     $48: '12rem', // 192px
     $56: '14rem', // 224px

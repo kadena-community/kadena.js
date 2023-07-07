@@ -12,87 +12,72 @@ Makes use of .kadena/pactjs-generated
 
 <!-- genericHeader end -->
 
-<hr>
-
 API Reference can be found here [client.api.md][1]
-
-<hr>
 
 ## Release @kadena/client
 
-We've created a library that allows Javascript/Typescript users to easily
-interact with the Kadena Blockchain. Creating contracts is explicitly left out
-as it's a lot more complicated to transpile Javascript to Pact.
+`@kadena/client` allows JavaScript/TypeScript users to easily interact with the
+Kadena Blockchain.
 
 Interaction with the Kadena Blockchain works in multiple ways. With
-@kadena/client there are two ways you will be able to interact with the Kadena
-Blockchain. The two ways are:
+`@kadena/client` you will be able to interact with the Kadena Blockchain in two
+ways:
 
-[**1. contract based**][2], and [**2. template based**][3], and [**3. modular
-pact command**][4].
+1.  [contract based][2]
+2.  [template based][3]
+3.  [modular pact command][4]
 
-There's also information on an [**Integrated way of signing using
-Chainweaver**][5]. With @kadena/client you can also [**Send a request to the
-blockchain**][6]. They will be covered in this article. We will also be
-exploring the concepts and rationale of @kadena/client.
+There's also information on an [integrated way of signing using Chainweaver][5].
+With `@kadena/client` you can also [send a request to the blockchain][6]. That's
+covered in this article. We'll also be exploring the concepts and rationale of
+`@kadena/client`.
 
-- [kadena.js - Client][7]
-  - [Release @kadena/client][8]
-- [Prerequisites][9]
-- [Contract based interaction using @kadena/client][2]
-  - [Load contracts from the blockchain][10]
-  - [Generate interfaces][11]
-- [Building a simple transaction from the contract][12]
-  - [Manually singing the transaction][13]
-- [Integrated sign request to **Chainweaver desktop**][5]
-- [Template based interaction using @kadena/client][3]
-  - [Load the contract repository][14]
-  - [Generate code from templates][15]
-  - [A function is generated from a template][16]
-  - [Using the generated code][17]
-- [Send a request to the blockchain][6]
-- [Further development][18]
-- [Contact the team][19]
+- [@kadena/client](#kadenaclient)
+  - [Release @kadena/client](#release-kadenaclient)
+  - [Prerequisites](#prerequisites)
+- [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
+    - [Load contracts from the blockchain](#load-contracts-from-the-blockchain)
+    - [Generate interfaces](#generate-interfaces)
+  - [Building a simple transaction from the contract](#building-a-simple-transaction-from-the-contract)
+    - [Manually signing the transaction](#manually-signing-the-transaction)
+  - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
+  - [Template based interaction using @kadena/client](#template-based-interaction-using-kadenaclient)
+    - [Load the contract repository](#load-the-contract-repository)
+    - [Generate code from templates](#generate-code-from-templates)
+    - [A function is generated from a template](#a-function-is-generated-from-a-template)
+    - [Using the generated code](#using-the-generated-code)
+- [Using the fluentBuilder](#using-the-fluentbuilder)
+  - [Send a request to the blockchain](#send-a-request-to-the-blockchain)
+  - [Further development](#further-development)
+  - [Contact the team](#contact-the-team)
 
-# Prerequisites
+## Prerequisites
 
-Please note that we are not going over installation of nodejs and package
-management as this information is widely available on the internet. We will,
-however, provide the bare minimum of the information and details you will need
-in order to start using @kadena/client, which are:
-
-- install nodejs version 14.x or 16.x
-- create a directory, bootstrap a `package.json` by running `npm init` or
-  `npm init -y` to use defaults
-- install typescript `npm install -g typescript`
-- install the client `npm install @kadena/client`
-- install the commandline tool `npm install @kadena/pactjs-cli`
-- install the optional typescript runner for nodejs `npm install ts-node`
+To use `@kadena/client`, Node.js v14 or higher is required. Let's install the
+bare minimum you need to get started:
 
 ```sh
 mkdir my-dapp-with-kadena-client
 cd my-dapp-with-kadena-client
 npm init -y
-npm install -g typescript
-tsc --init
-npm install --save @kadena/client
-npm install -g --save-dev @kadena/pactjs-cli ts-node
+npm install @kadena/client
+npm install --save-dev @kadena/pactjs-cli typescript ts-node
+npx tsc --init
 ```
 
-# Contract based interaction using @kadena/client
+# Contract-based interaction using @kadena/client
 
-We wanted `@kadena/client` to be independent of anything so this is just a tool
-that can be used with arbitrary contracts. That is also the reason why you have
-to _generate_ the interfaces that are used by `@kadena/client`. You can use the
-smart-contracts from the blockchain or from your own local smart-contracts.
+We wanted `@kadena/client` to be independent so this is a tool that can be used
+with arbitrary contracts. That is also why you have to _generate_ the interfaces
+used by `@kadena/client`. You can use the smart contracts from the blockchain or
+from your own local smart contracts.
 
 For the **template based interaction** we will provide a repository with
 templates that can be used.
 
-## Load contracts from the blockchain
+### Load contracts from the blockchain
 
-Using the commandline tool `@kadena/pactjs-cli`, download the contracts you want
-to create Typescript interfaces for.
+Let's download the contracts you want to create Typescript interfaces for:
 
 ```sh
 mkdir contracts
@@ -101,40 +86,31 @@ npx pactjs retrieve-contract --out "./contracts/coin.module.pact" --module "coin
 
 There are several options to retrieve contracts from another network or chain.
 
-<details>
-  <summary>Help information on retrieve-contract (click to open)
+Help information on retrieve-contract
 
-`pactjs retrieve-contract --help`</summary>
+`pactjs retrieve-contract --help`
 
 ```txt
 > pactjs retrieve-contract --help
-Usage: index retrieve-contract [options]
+Usage: pactjs retrieve-contract [options]
 
-Retrieve contract from api.chainweb.com in a /local call
+Retrieve contract from a chainweb-api in a /local call (see also: https://github.com/kadena-io/chainweb-node#configuring-running-and-monitoring-the-health-of-a-chainweb-node).
 
 Options:
--m, --module <module>
-The module you want to retrieve (e.g. "coin")
-
--o, --out <file> File to write the contract
-
--n, --network <network> Network to retrieve from (default "mainnet") (default:
-"mainnet")
-
--c, --chain <number> Chain to retrieve from (default 1) (default: 1)
-
--h, --help display help for command
-
+  -m, --module <module>    The module you want to retrieve (e.g. "coin")
+  -o, --out <file>         File to write the contract to
+  --api <url>              API to retrieve from (e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact")
+  -n, --network <network>  Network to retrieve from (default "mainnet") (default: "mainnet")
+  -c, --chain <number>     Chain to retrieve from (default 1) (default: 1)
+  -h, --help               display help for command
 ```
 
-</details>
-
-## Generate interfaces
+### Generate interfaces
 
 Using the contract we'll now generate all the functions (`defun`s) with their
 (typed) arguments and the capabilities (`defcap`s).
 
-```bash
+```sh
 pactjs contract-generate --file "./contracts/coin.module.pact"
 ```
 
@@ -151,7 +127,7 @@ by `@kadena/client` to give you type information.
 > **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],`
 > to `compilerOptions` in `tsconfig.json`. Otherwise this will not work
 
-# Building a simple transaction from the contract
+## Building a simple transaction from the contract
 
 > Take a look at
 > [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/simple-transfer.ts][20]
@@ -198,7 +174,7 @@ Take note of the following:
 - `setMeta`s object has a `sender` property, which is a `public-key` this could
   be gas-station address is some scenarios.
 
-## Manually signing the transaction
+### Manually signing the transaction
 
 the unsignedTransaction can be pasted into the `SigData` of Chainweaver.
 
@@ -209,7 +185,7 @@ Take note of the following:
   that's been generated on the transaction when `addSigner`, `setMeta` or other
   changes are made to the transaction
 
-# Integrated sign request to **Chainweaver desktop**
+## Integrated sign request to Chainweaver desktop
 
 Using the `transaction` we can send a sign-request to Chainweaver. **(NB: this
 can only with the desktop version, not the web-version, as it's [exposing port
@@ -231,14 +207,14 @@ const signedTransaction = signWithChainweaver(unsignedTransaction)
 > To **send** the transaction to the blockchain, continue with [**Send a request
 > to the blockchain**][6]
 
-# Template based interaction using @kadena/client
+## Template based interaction using @kadena/client
 
 To provide contract-developers a way to communicate how their contracts should
 be used, we added a way to get autocompletion for templates. Contract-developers
 can now provide their contracts that consumers of their smart-contract can use
 in Javascript.
 
-## Load the contract repository
+### Load the contract repository
 
 For now we have not added a way to directly generate the code from a remote git
 repository. Cloning the template repository as a submodule is a great option.
@@ -250,8 +226,7 @@ git submodule add \
   ./templates/
 ```
 
-<details>
-  <summary>Useful `git submodule` commands (click to open)</summary>
+Useful `git submodule` commands
 
 - Add a Git repository as a submodule:\
   `git submodule add repository_url`
@@ -265,9 +240,7 @@ git submodule add \
 - Install a repository's specified submodules (after cloning the repo):\
   `git submodule update --init --recursive`
 
-</details>
-
-## Generate code from templates
+### Generate code from templates
 
 Usually a template directory/repository contains multiple templates, but they're
 all from the same source. So we're grouping them per directory/repository. This
@@ -291,7 +264,7 @@ Notes on the input (`--file`) and output (`--out`):
   - when the output is a directory, an `index.ts` will be created in that
     directory, containing the code for the templates
 
-## A function is generated from a template
+### A function is generated from a template
 
 Each file in the repository is converted to a function that can be called. The
 function has one argument; an object that contains named key-value pairs for
@@ -315,7 +288,7 @@ myTemplates.hello({ name: 'alber70g' });
 Of course this isn't a valid template to be used as a transaction, so this won't
 work. This outlines the general idea of how templates are used.
 
-## Using the generated code
+### Using the generated code
 
 Let's say we're using this template. Templates **aren't** valid `yaml`. They are
 however checked to be valid transactions when used as templates.
@@ -391,7 +364,7 @@ client.local(unsignedTransaction);
 client.submit(unsignedTransaction);
 ```
 
-# Send a request to the blockchain
+## Send a request to the blockchain
 
 The `@kadena/client` exports `getClient` function that comes with some utility
 functions. this helpers eventually calls pact api [Pactjs API][22].
@@ -440,14 +413,14 @@ console.log(JSON.stringify(res, null, 2));
 > can be found here:
 > [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/pactjs-test-project/src/example-contract/transfer.ts][24]
 
-# Further development
+## Further development
 
 This is the launch post of `@kadena/client`. Next steps will be to see what the
 community thinks of this approach. We'd love to hear your feedback and use
 cases, especially when the current `@kadena/client` and `@kadena/pactjs-cli`
 isn't sufficient.
 
-# Contact the team
+## Contact the team
 
 We try to be available via Discord and Github issues:
 

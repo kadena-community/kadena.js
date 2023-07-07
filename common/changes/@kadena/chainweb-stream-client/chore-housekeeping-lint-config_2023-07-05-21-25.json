@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Fix up lint config",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
