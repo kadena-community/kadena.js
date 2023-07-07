@@ -1,4 +1,5 @@
-import { ChainId, ISigningCap } from '@kadena/types';
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { ISigningCap } from '@kadena/types';
 
 import { IPactCommand } from '../../interfaces/IPactCommand';
 
@@ -12,7 +13,7 @@ export interface ISigningRequest {
   data?: Record<string, unknown>;
   caps: ISigningCap[];
   nonce?: string;
-  chainId?: ChainId;
+  chainId?: ChainwebChainId;
   gasLimit?: number;
   gasPrice?: number;
   ttl?: number;
@@ -26,7 +27,7 @@ export interface IWalletConnectAccount {
   kadenaAccounts: [
     {
       name: string;
-      chains: ChainId[];
+      chains: ChainwebChainId[];
       contract: string;
     },
   ];
@@ -36,7 +37,7 @@ export interface IAccount {
   walletConnectChainId: TWalletConnectChainId;
   network: IPactCommand['networkId']; // Kadena network (mainnet, testnet, devnet)
   account: string; // Kadena account
-  chainId: ChainId; // Kadena ChainId
+  chainId: ChainwebChainId; // Kadena ChainId
 }
 
 export type TSigningType = 'sign' | 'quicksign';

@@ -1,4 +1,5 @@
 import {
+  ChainwebChainId,
   ChainwebNetworkId,
   createSendRequest,
   ICommandResult,
@@ -11,7 +12,6 @@ import {
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import {
-  ChainId,
   ICap,
   ICommand,
   ICommandPayload,
@@ -130,7 +130,7 @@ export class PactCommand
   public code: string;
   public data: Record<string, unknown>;
   public publicMeta: {
-    chainId: ChainId;
+    chainId: ChainwebChainId;
     sender: string;
     gasLimit: number;
     gasPrice: number;
