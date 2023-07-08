@@ -1,0 +1,51 @@
+{
+  "name": "@kadena-dev/create-package",
+  "version": "0.0.0",
+  "description": "Create package from template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/create-package"
+  },
+  "license": "ISC",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "bin": {
+    "create-package": "lib/index.js"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:pkg": "sort-package-json",
+    "format:src": "prettier src --write",
+    "lint": "eslint ./src --ext .js,.ts --fix",
+    "test": ""
+  },
+  "dependencies": {
+    "ink": "^4.1.0",
+    "ink-text-input": "~5.0.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "@types/react": "^18.0.30",
+    "eslint": "^8.15.0",
+    "prettier": "~2.8.8",
+    "sort-package-json": "~2.4.1",
+    "typescript": "5.0.4"
+  }
+}
