@@ -2,6 +2,7 @@ import { Pact } from '../pact';
 
 describe('Pact.modules', () => {
   it('returns pact string equivalent of a function call', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const code = (Pact.modules as any).coin.transfer('alice', 'bob', {
       decimal: '1',
     });
@@ -9,6 +10,7 @@ describe('Pact.modules', () => {
   });
 
   it('returns pact string equivalent of a defpact call', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const code = (Pact.modules as any).coin.defpact['transfer-crosschain'](
       'alice',
       'bob',

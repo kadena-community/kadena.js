@@ -175,7 +175,7 @@ function fileParser(
 
 interface IModuleLoader {
   getModule(moduleFullName: string): Promise<IModuleWithPointer | undefined>;
-  parserFile(content: string): void;
+  parserFile(content: string, namespace?: string): void;
   getStorage(): Map<string, IModuleWithPointer>;
 }
 
@@ -214,8 +214,8 @@ const moduleLoader = (
 
       return storage.get(moduleFullName)!;
     },
-    parserFile(content: string) {
-      parseModule(content);
+    parserFile(content: string, namespace: string) {
+      parseModule(content, namespace);
     },
     getStorage() {
       return storage;
@@ -352,17 +352,19 @@ export async function pactParser({
   contractNames,
   files,
   getContract,
+  namespace,
 }: {
   contractNames?: string[];
   files?: string[];
   getContract: (fullName: string) => Promise<string>;
+  namespace?: string;
 }): Promise<{ [k: string]: IModule }> {
   const loader = moduleLoader(getContract);
 
   // parse files if presented
   if (files !== undefined) {
     files.forEach((content) => {
-      loader.parserFile(content);
+      loader.parserFile(content, namespace);
     });
   }
 

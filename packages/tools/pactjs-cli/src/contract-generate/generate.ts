@@ -1,10 +1,4 @@
-import {
-  FileContractDefinition,
-  generateDts,
-  generateDts2,
-  pactParser,
-  StringContractDefinition,
-} from '@kadena/pactjs-generator';
+import { generateDts, pactParser } from '@kadena/pactjs-generator';
 
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
@@ -46,50 +40,6 @@ function verifyTsconfigTypings(
       );
     }
   }
-}
-
-async function generatorV1(
-  args: IContractGenerateOptions,
-  program: Command,
-): Promise<Map<string, string>> {
-  let pactModule;
-  if (args.contract) {
-    console.log(`Generating Pact contract from ${args.contract}`);
-    const [contract] = args.contract;
-
-    const pactCode = await retrieveContractFromChain(
-      contract,
-      args.api!,
-      args.chain!,
-      args.network!,
-    );
-
-    if (pactCode === undefined || pactCode.length === 0) {
-      program.error('Could not retrieve contract from chain');
-    }
-
-    // if contract is namespaced, use the first part as the namespace
-    const namespace = contract.includes('.')
-      ? contract.split('.')[0]
-      : undefined;
-
-    pactModule = new StringContractDefinition({
-      contract: pactCode,
-      namespace,
-    });
-  } else {
-    const [file] = args.file!;
-    console.log(`Generating Pact contract from ${file}`);
-    pactModule = new FileContractDefinition({
-      path: join(process.cwd(), file!),
-    });
-  }
-
-  const moduleDtss: Map<string, string> = generateDts(
-    pactModule.modulesWithFunctions,
-    args.capsInterface,
-  );
-  return moduleDtss;
 }
 
 async function generatorV2(
@@ -141,6 +91,7 @@ async function generatorV2(
     contractNames: args.contract,
     files,
     getContract,
+    namespace: args.namespace,
   });
 
   if (process.env.DEBUG === 'dev') {
@@ -153,7 +104,7 @@ async function generatorV2(
   const moduleDtss = new Map();
 
   Object.keys(modules).map((name) => {
-    moduleDtss.set(name, generateDts2(name, modules));
+    moduleDtss.set(name, generateDts(name, modules));
   });
 
   return moduleDtss;
@@ -178,9 +129,7 @@ export const generate: IGenerate = (program, version) => async (args) => {
     return;
   }
 
-  const moduleDtss = await (args.typeVersion === 1
-    ? generatorV1(args, program)
-    : generatorV2(args));
+  const moduleDtss = await generatorV2(args);
 
   console.log(`Using package.json at ${targetPackageJson}`);
 

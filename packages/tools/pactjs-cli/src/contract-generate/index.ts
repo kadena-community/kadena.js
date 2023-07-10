@@ -10,10 +10,10 @@ export interface IContractGenerateOptions {
   capsInterface?: string;
   file?: string[];
   contract?: string[];
+  namespace?: string;
   api?: string;
   chain?: number;
   network?: keyof typeof networkMap;
-  typeVersion?: number;
 }
 
 function asList(value: string, prev?: string[]): string[] {
@@ -77,6 +77,10 @@ export function contractGenerateCommand(
       asList,
     )
     .option(
+      '--namespace <string>',
+      'use as the namespace of the contract if its not clear in the contract',
+    )
+    .option(
       '--api <api>',
       'The API to use for retrieving the contract, e.g. "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact"',
     )
@@ -87,14 +91,6 @@ export function contractGenerateCommand(
       )
         .argParser((value) => parseInt(value, 10))
         .default(1),
-    )
-    .addOption(
-      new Option(
-        '--type-version <number>',
-        'creating definition file(s) based on specific interface. could be 1 or 2. Default is 2',
-      )
-        .argParser((value) => parseInt(value, 10))
-        .default(2),
     )
     .option(
       '--network <network>',
