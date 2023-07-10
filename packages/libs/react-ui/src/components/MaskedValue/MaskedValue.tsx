@@ -30,9 +30,14 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
     setVisible(!visible);
   };
 
-  const maskedValue = `${value.slice(0, startUnmaskedValues)}****${value.slice(
-    -endUnmaskedValues,
-  )}`;
+  let maskedValue = value;
+
+  // If the value size is shorter than the unmasked chars, we don't mask it
+  if (startUnmaskedValues + endUnmaskedValues <= value.length - 1) {
+    maskedValue = `${value.slice(0, startUnmaskedValues)}****${value.slice(
+      -endUnmaskedValues,
+    )}`;
+  }
 
   return (
     <div data-testid="kda-masked-value">

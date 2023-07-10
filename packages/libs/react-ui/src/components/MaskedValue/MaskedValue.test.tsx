@@ -33,4 +33,16 @@ describe('MaskedValue', () => {
 
     expect(screen.getByText('TestValue1234')).toBeInTheDocument();
   });
+
+  test('shows unmasked value when unmasked characters are greater or equal than value size', () => {
+    render(
+      <MaskedValue
+        value="TestValue1234"
+        startUnmaskedValues={8}
+        endUnmaskedValues={5}
+      />,
+    );
+
+    expect(screen.getByText('TestValue1234')).toBeInTheDocument();
+  });
 });
