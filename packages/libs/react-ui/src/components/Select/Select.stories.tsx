@@ -43,19 +43,19 @@ export const Dynamic: Story = {
     icon: undefined,
   },
   render: ({ icon, disabled }) => {
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState<string>('1');
     return (
       <Select
         icon={SystemIcon[icon]}
         onChange={(e) => {
           console.log('clicked on', e.target.value);
-          setValue(e.target.value as number);
+          setValue(e.target.value);
         }}
         disabled={Boolean(disabled)}
         value={value}
       >
-        <Option value={1}>option 1</Option>
-        <Option value={2}>option 2</Option>
+        <Option value={'1'}>option 1</Option>
+        <Option value={'2'}>option 2</Option>
       </Select>
     );
   },
