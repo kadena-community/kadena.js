@@ -1,6 +1,11 @@
 import { sprinkles, vars } from '../../styles';
 
-import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 export const inputStatusColor = createVar();
 
@@ -69,6 +74,12 @@ export const leadingTextClass = style([
     paddingX: '$4',
   }),
 ]);
+
+export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
+  return {
+    width: size,
+  };
+});
 
 export const outlinedClass = style([
   sprinkles({

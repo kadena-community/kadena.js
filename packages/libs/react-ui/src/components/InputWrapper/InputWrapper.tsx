@@ -5,6 +5,7 @@ import { InputHelper } from './InputHelper/InputHelper';
 import { Status, statusVariant } from './InputWrapper.css';
 
 import React, { FC, FunctionComponentElement } from 'react';
+import { vars } from 'src/styles';
 
 export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   children:
@@ -14,6 +15,7 @@ export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   disabled?: boolean;
   helperText?: string;
   label?: string;
+  labelWidth?: keyof typeof vars.sizes;
 }
 
 export const InputWrapper: FC<IInputWrapperProps> = ({
@@ -21,6 +23,7 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
   disabled,
   children,
   label,
+  labelWidth,
   htmlFor,
   tag,
   info,
@@ -33,7 +36,17 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
       {label !== undefined && (
         <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
       )}
-      <div className="inputGroup">{children}</div>
+      <div className="inputGroup">
+        {React.Children.map(children, (child) => {
+          if (!React.isValidElement(child)) return null;
+          const props = {
+            ...child.props,
+            leadingTextWidth: labelWidth,
+          };
+
+          return React.cloneElement(child, props);
+        })}
+      </div>
       {Boolean(helperText) && <InputHelper>{helperText}</InputHelper>}
     </div>
   );

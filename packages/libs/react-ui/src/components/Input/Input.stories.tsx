@@ -1,3 +1,4 @@
+import { vars } from '../../styles';
 import { Button } from '../Button/Button';
 import { SystemIcon } from '../Icons';
 import { Stack } from '../Stack/Stack';
@@ -42,6 +43,15 @@ const meta: Meta<
         type: 'text',
       },
     },
+    leadingTextWidth: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        undefined,
+        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
+      ],
+    },
     outlined: {
       control: {
         type: 'boolean',
@@ -65,6 +75,7 @@ export const Dynamic: Story = {
     leftIcon: undefined,
     rightIcon: undefined,
     leadingText: 'Leading',
+    leadingTextWidth: undefined,
     outlined: false,
   },
   render: ({
@@ -72,6 +83,7 @@ export const Dynamic: Story = {
     rightIcon,
     outlined,
     leadingText,
+    leadingTextWidth,
     onChange,
     disabled,
   }) => (
@@ -82,6 +94,7 @@ export const Dynamic: Story = {
       onChange={onChange}
       placeholder="This is a placeholder"
       leadingText={leadingText}
+      leadingTextWidth={leadingTextWidth}
       outlined={outlined}
       disabled={disabled}
     />

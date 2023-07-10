@@ -1,3 +1,4 @@
+import { vars } from '../../styles';
 import { SystemIcon } from '../Icons';
 import { IInputProps, Input } from '../Input/Input';
 
@@ -21,6 +22,15 @@ const meta: Meta<
       control: {
         type: 'text',
       },
+    },
+    labelWidth: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        undefined,
+        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
+      ],
     },
     tag: {
       control: {
@@ -76,15 +86,17 @@ export const Group: Story = {
     helperText: 'This is helper text',
     info: '(optional)',
     label: 'Label',
+    labelWidth: undefined,
     disabled: false,
     status: undefined,
   },
-  render: ({ disabled, status, tag, helperText, info, label }) => {
+  render: ({ disabled, status, tag, helperText, info, label, labelWidth }) => {
     return (
       <InputWrapper
         tag={tag}
         info={info}
         label={label}
+        labelWidth={labelWidth}
         status={status}
         disabled={disabled}
         helperText={helperText}
@@ -100,7 +112,7 @@ export const Group: Story = {
           id="inputStory2"
           placeholder="Input 2"
           disabled={disabled}
-          leadingText="Leading"
+          leadingText="Leading 2"
         />
       </InputWrapper>
     );
