@@ -12,10 +12,7 @@ import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
 export interface ISelectProps
-  extends Omit<
-    React.HTMLAttributes<HTMLSelectElement>,
-    'as' | 'disabled' | 'children' | 'className' | 'onChange' | 'value'
-  > {
+  extends Omit<React.HTMLAttributes<HTMLSelectElement>, 'as' | 'className'> {
   children: React.ReactNode;
   icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   disabled?: boolean;

@@ -4,7 +4,7 @@ import { Option } from './Option';
 import { ISelectProps, Select } from './Select';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const meta: Meta<
   {
@@ -42,17 +42,21 @@ export const Dynamic: Story = {
   args: {
     icon: undefined,
   },
-  render: ({ icon, disabled }) => (
-    <Select
-      icon={SystemIcon[icon]}
-      onChange={(value) => {
-        console.log('clicked on', value);
-      }}
-      disabled={Boolean(disabled)}
-      value={1}
-    >
-      <Option value={1}>option 1</Option>
-      <Option value={2}>option 2</Option>
-    </Select>
-  ),
+  render: ({ icon, disabled }) => {
+    const [value, setValue] = useState(1);
+    return (
+      <Select
+        icon={SystemIcon[icon]}
+        onChange={(e) => {
+          console.log('clicked on', e.target.value);
+          setValue(e.target.value as number);
+        }}
+        disabled={Boolean(disabled)}
+        value={value}
+      >
+        <Option value={1}>option 1</Option>
+        <Option value={2}>option 2</Option>
+      </Select>
+    );
+  },
 };
