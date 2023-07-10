@@ -32,7 +32,7 @@ export type ExtractType<TCommand> = TCommand extends { payload: infer TPayload }
 
 interface IAddSigner<TCommand> {
   /**
-   * Add signer with a publickey or more options by passing the signer object
+   * Add signer without capability
    */
   (
     first:
@@ -40,8 +40,8 @@ interface IAddSigner<TCommand> {
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
   ): IBuilder<TCommand>;
   /**
-   * Add a signer including capabilities, withCapability function comes from
-   * the function you call in the execution part
+   * Add a signer including capabilities. The withCapability function is obtained from
+   * the function you call in the execution part.
    * @example
    * Pact.builder.execute(
    *   Pact.coin.transfer("alice", "bob", \{ decimal:"1" \})
@@ -64,8 +64,8 @@ interface ISetNonce<TCommand> {
    */
   (nonce: string): IBuilder<TCommand>;
   /**
-   * Overriding the default nonce by calling this function; nonceGenerator will receive the command object.
-   * it should return the nonce as string
+   * Overriding the default nonce by calling this function. The `nonceGenerator` function will receive the command object
+   * and should return the nonce as a string.
    */
   (nonceGenerator: (cmd: Partial<IPactCommand>) => string): IBuilder<TCommand>;
 }
@@ -111,8 +111,7 @@ export interface IExec {
     >,
   >(
     ...codes: [...TCodes]
-  ): // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
-  IBuilder<{ payload: IExecPayload & { funs: [...TCodes]; _brand: 'exec' } }>;
+  ): IBuilder<{ payload: IExecPayload & { funs: [...TCodes] } }>;
 }
 
 export interface ICont {
