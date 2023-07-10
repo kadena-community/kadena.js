@@ -31,12 +31,25 @@ export type ExtractType<TCommand> = TCommand extends { payload: infer TPayload }
   : GeneralCapability;
 
 interface IAddSigner<TCommand> {
+  /**
+   * Add signer with a publickey or more options by passing the signer object
+   */
   (
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
   ): IBuilder<TCommand>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /**
+   * Add a signer including capabilities, withCapability function comes from
+   * the function you call in the execution part
+   * @example
+   * Pact.builder.execute(
+   *   Pact.coin.transfer("alice", "bob", \{ decimal:"1" \})
+   * ).addSigner("public_key", (withCapability) =\> [
+   *   withCapability("coin.GAS"),
+   *   withCapability("coin.TRANSFER", "alice", "bob", \{ decimal:"1" \})
+   * ])
+   */
   (
     first:
       | string
@@ -46,7 +59,14 @@ interface IAddSigner<TCommand> {
 }
 
 interface ISetNonce<TCommand> {
+  /**
+   * Overriding the default nonce by calling this function
+   */
   (nonce: string): IBuilder<TCommand>;
+  /**
+   * Overriding the default nonce by calling this function; nonceGenerator will receive the command object.
+   * it should return the nonce as string
+   */
   (nonceGenerator: (cmd: Partial<IPactCommand>) => string): IBuilder<TCommand>;
 }
 

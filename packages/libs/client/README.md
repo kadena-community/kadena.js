@@ -24,8 +24,8 @@ Interaction with the Kadena Blockchain works in multiple ways. With
 ways:
 
 1.  [contract based][2]
-2.  [template based][3]
-3.  [modular pact command][4]
+2.  [modular pact command][3]
+3.  [functional pact command][4]
 
 There's also information on an [integrated way of signing using Chainweaver][5].
 With `@kadena/client` you can also [send a request to the blockchain][6]. That's
@@ -140,7 +140,7 @@ Create a new file and name it `transfer.ts` (or `.js`).
 ```ts
 import { Pact } from '@kadena/client';
 
-const unsignedTransaction = Pact.command
+const unsignedTransaction = Pact.builder
   .execute(
     Pact.modules.coin.transfer('k:your-pubkey', 'k:receiver-pubkey', {
       decimal: '231',
@@ -180,10 +180,8 @@ the unsignedTransaction can be pasted into the `SigData` of Chainweaver.
 
 Take note of the following:
 
-- `createTransaction()` will **finalize** the transaction. The hash will be
-  calculated. In further versions we will invalidate the hash and the command
-  that's been generated on the transaction when `addSigner`, `setMeta` or other
-  changes are made to the transaction
+- `createTransaction()` will return the transaction. The hash will be calculated
+  and command will be serialized.
 
 ## Integrated sign request to Chainweaver desktop
 
@@ -191,14 +189,10 @@ Using the `transaction` we can send a sign-request to Chainweaver. **(NB: this
 can only with the desktop version, not the web-version, as it's [exposing port
 9467][21]**
 
-> **Note**\
-> In the future we will provide an interface with WalletConnect. This is not yet
-> finalized. Once it is, we'll update the `@kadena/client` accordingly
-
 ```ts
 import { signWithChainweaver } from '@kadena/client';
 
-// use the finalized transaction, and sign it with Chainweaver
+// use the transaction, and sign it with Chainweaver
 const signedTransaction = signWithChainweaver(unsignedTransaction)
   .then(console.log)
   .catch(console.error);
@@ -207,150 +201,21 @@ const signedTransaction = signWithChainweaver(unsignedTransaction)
 > To **send** the transaction to the blockchain, continue with [**Send a request
 > to the blockchain**][6]
 
-## Template based interaction using @kadena/client
-
-To provide contract-developers a way to communicate how their contracts should
-be used, we added a way to get autocompletion for templates. Contract-developers
-can now provide their contracts that consumers of their smart-contract can use
-in Javascript.
-
-### Load the contract repository
-
-For now we have not added a way to directly generate the code from a remote git
-repository. Cloning the template repository as a submodule is a great option.
-This gives you a way to version the source of the templates.
-
-```sh
-git submodule add \
-  git@github.com:kadena-community/kadena-coin-templates.git \
-  ./templates/
-```
-
-Useful `git submodule` commands
-
-- Add a Git repository as a submodule:\
-  `git submodule add repository_url`
-
-- Add a Git repository as a submodule at the specified directory:\
-  `git submodule add repository_url path/to/directory`
-
-- Update every submodule to its latest commit:\
-  `git submodule foreach git pull`
-
-- Install a repository's specified submodules (after cloning the repo):\
-  `git submodule update --init --recursive`
-
-### Generate code from templates
-
-Usually a template directory/repository contains multiple templates, but they're
-all from the same source. So we're grouping them per directory/repository. This
-is done by selecting the directory as input for the command.
-
-This command will result in one file containing all the templates.
-
-```sh
-pactjs template-generate --file ./templates/kadena-coin-templates/ --out ./generated/kadena-coin-templates.ts
-```
-
-Notes on the input (`--file`) and output (`--out`):
-
-- `-f, --file`
-  - selecting a file as input will create ONLY code for that file
-  - selecting a directory as input will create code for ALL the templates in the
-    directory
-- `-o, --out`
-  - when the output is a file, the code for the templates will end up in that
-    file
-  - when the output is a directory, an `index.ts` will be created in that
-    directory, containing the code for the templates
-
-### A function is generated from a template
-
-Each file in the repository is converted to a function that can be called. The
-function has one argument; an object that contains named key-value pairs for
-each variable in the template.
-
-For example, a bogus template that looks like this
-
-```txt
-# ./hello.txt
-This is a Hello, {{name}}!
-```
-
-Will have it's function call:
-
-```ts
-import myTemplates from './myTemplates';
-
-myTemplates.hello({ name: 'alber70g' });
-```
-
-Of course this isn't a valid template to be used as a transaction, so this won't
-work. This outlines the general idea of how templates are used.
-
-### Using the generated code
-
-Let's say we're using this template. Templates **aren't** valid `yaml`. They are
-however checked to be valid transactions when used as templates.
-
-```txt
-code: |-
-  (coin.transfer "{{fromAcct}}" "{{toAcct}}" {{amount}})
-data:
-publicMeta:
-  chainId: '{{chain}}'
-  sender: {{fromAcct}}
-  gasLimit: 2500
-  gasPrice: 1.0e-8
-  ttl: 600
-networkId: {{network}}
-signers:
-  - pubKey: {{fromKey}}
-    caps:
-      - name: 'coin.TRANSFER'
-        args: [{{fromAcct}}, {{toAcct}}, {{amount}}]
-      - name: 'coin.GAS'
-        args: []
-type: exec
-```
-
-Each of the `{{name}}`s are variables that can be passed to the template
-function.
-
-The function returns a `CommandBuilder`, this can be used to add metadata to the
-transaction and to `signWithChainweaver(unsignedTx)` [as shown here][5]
-
-```ts
-import kadenaCoinTemplates from './templates/kadena-coin-templates';
-
-// this returns a transactionBuilder
-const transactionBuilder = kadenaCoinTemplates['safe-transfer']({
-  fromAcct: 'k:sender-pubkey',
-  toAcct: 'k:receiver-pubkey',
-  fromKey: 'sender-pubkey',
-  amount: '231',
-  chain: '1',
-  network: 'mainnet01',
-});
-
-const unsignedTransaction = transactionBuilder.createTransaction();
-```
-
-# Using the fluentBuilder
+# Using the commandBuilder
 
 If you don't wish to generate JS code for your contracts, or use templates, you
 still can use the commandBuilder to build a command, and then easily send it.
 
 ```ts
-import { Pact } from '@kadena/client';
+`import { Pact } from '@kadena/client';
 
 const client = getClient(
   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact',
-);
+);`;
 
-const unsignedTransaction = Pact.command
+const unsignedTransaction = Pact.builder
   .execute('(format "Hello {}!" [(read-msg "person")])')
-  // as signer if its required
+  // add signer(s) if its required
   .addSigner('your-pubkey')
   // set chian id and sender
   .setMeta({ chainId: '8', sender: 'your-pubkey' })
@@ -364,10 +229,21 @@ client.local(unsignedTransaction);
 client.submit(unsignedTransaction);
 ```
 
+# Using FP approach
+
+this library uses a couple of utility functions in order to create pactCommand
+you can import those function from `@kadena/client/fp` if you need more
+flexibility on crating command like composing command or lazy loading.
+
+> See:
+> [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/transfer-fp.ts][23]
+> and:
+> [https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/compose-commands.ts][23]
+
 ## Send a request to the blockchain
 
 The `@kadena/client` exports `getClient` function that comes with some utility
-functions. this helpers eventually calls pact api [Pactjs API][22].
+functions. this helpers calls pact api under the hood [Pactjs API][22].
 
 - `local`,
 - `submit` and
@@ -385,8 +261,8 @@ on that.
 const hostUrl = 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact';
 const client = getClient(hostUrl);
 // we need more flexibility to call different chains or even networks, then functions
-// extract networkId and chainId from the cmd part of a transaction and use the hostUrlGenerator to generate the url
-const hostUrlGenerator = (networkId, chainId) =>
+// extract networkId and chainId from the cmd part of the transaction and use the hostUrlGenerator to generate the url
+const hostUrlGenerator = ({ networkId, chainId }) =>
   `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 const { local, submit, getStatus, pollStatus, getSpv, pollSpv } =
   getClient(hostUrlGenerator);
@@ -401,8 +277,8 @@ on the `coin` contract, we have to trick Typescript a little:
 ```ts
 const res = await local({
   payload: {
-    exec:{
-      code: Pact.modules.coin.['get-balance']("albert"),
+    exec: {
+      code: Pact.modules.coin['get-balance']('albert'),
     },
   },
 });
@@ -430,8 +306,8 @@ We try to be available via Discord and Github issues:
 [1]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client/etc/client.api.md
 [2]: #contract-based-interaction-using-kadenaclient
-[3]: #template-based-interaction-using-kadenaclient
-[4]: #using-the-pactcommand-class
+[3]: #using-the-commandBuilder
+[4]: #using-the-createPactCommand
 [5]: #integrated-sign-request-to-chainweaver-desktop
 [6]: #send-a-request-to-the-blockchain
 [7]: #kadenajs---client
