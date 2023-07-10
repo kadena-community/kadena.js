@@ -23,6 +23,7 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "test": ""
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^16.0.0",
+    "eslint": "^8.15.0",
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1"
   }

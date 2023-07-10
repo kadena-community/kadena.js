@@ -22,7 +22,7 @@
     "format:ci": "prettier config cypress src --check",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config cypress src --write",
-    "lint": "eslint ./src --ext .js,.ts,.jsx,.tsx --fix",
+    "lint": "eslint ./src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "test": "echo 'No tests, until there is time to debug the build'"

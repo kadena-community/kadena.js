@@ -3,6 +3,9 @@ import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 
 import { kadenaConstants } from '@/constants/kadena';
+import Debug from 'debug';
+
+const debug = Debug('kadena-transfer:services:list-module');
 
 //List modules PACT code example
 
@@ -13,6 +16,8 @@ export const listModules = async (
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<unknown> => {
+  debug(listModules.name);
+
   // 1 - Create a new PactCommand
   const pactCommand = new PactCommand();
 

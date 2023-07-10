@@ -9,7 +9,7 @@ interface IChainwebGraphProps {
   blocks: Record<number, IBlock[]>;
 }
 
-export function ChainwebGraph({ blocks }: IChainwebGraphProps): JSX.Element {
+export const ChainwebGraph = ({ blocks }: IChainwebGraphProps): JSX.Element => {
   return (
     <>
       <ChainwebHeader />
@@ -24,4 +24,4 @@ export function ChainwebGraph({ blocks }: IChainwebGraphProps): JSX.Element {
         ))}
     </>
   );
-}
+};

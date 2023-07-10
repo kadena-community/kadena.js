@@ -4,7 +4,7 @@ This is a [Next.js][1] project bootstrapped with [`create-next-app`][2].
 
 First, run the development server:
 
-```bash
+```sh
 npm run dev
 # or
 yarn dev

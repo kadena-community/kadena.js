@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Implemented new Chain ID type from @kadena/chainweb-node-client",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

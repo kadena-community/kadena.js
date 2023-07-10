@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
-    "@kadena/client": "workspace:*"
+    "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
