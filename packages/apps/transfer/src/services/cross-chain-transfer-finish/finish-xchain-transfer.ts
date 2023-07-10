@@ -17,7 +17,7 @@ export interface ITransferResult {
   status?: string;
 }
 
-const debug = Debug('transfer-finisher');
+const debug = Debug('kadena-transfer:services:finish-xchain-transfer');
 const gasLimit: number = kadenaConstants.GAS_LIMIT;
 const gasPrice: number = kadenaConstants.GAS_PRICE;
 
@@ -29,6 +29,7 @@ export async function finishXChainTransfer(
   chainId: ChainwebChainId,
   sender: string,
 ): Promise<ContCommand | { error: string }> {
+  debug(finishXChainTransfer.name);
   const host = getKadenaConstantByNetwork(network).apiHost({
     networkId: chainNetwork[network].network,
     chainId,
