@@ -1,12 +1,12 @@
 {
-  "name": "@kadena/pactjs-test-project",
+  "name": "@kadena/client-examples",
   "version": "0.0.1",
   "private": true,
   "description": "Test project to verify pactjs-cli and pactjs-generator",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "packages/libs/pactjs-test-project"
+    "directory": "packages/libs/client-examples"
   },
   "license": "MIT",
   "main": "lib/index.js",

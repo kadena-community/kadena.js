@@ -1,6 +1,6 @@
 <!-- genericHeader start -->
 
-# @kadena/pactjs-test-project
+# @kadena/client-examples
 
 Test project to verify pactjs-cli and pactjs-generator
 
@@ -14,7 +14,7 @@ Test project to verify pactjs-cli and pactjs-generator
 This project demonstrates the use of the `@kadena/pact-cli` together with
 `@kadena/client` for _smart contracts_ and _transaction templates_.
 
-- [pactjs-test-project][1]
+- [client-examples][1]
   - [][2]
 
 ## Smart Contracts
@@ -32,5 +32,5 @@ pnpm install @kadena/pactjs-cli
 curl
 ```
 
-[1]: #pactjs-test-project
+[1]: #client-examples
 [2]: #

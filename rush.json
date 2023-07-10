@@ -510,8 +510,8 @@
     },
 
     {
-      "packageName": "@kadena/pactjs-test-project",
-      "projectFolder": "packages/libs/pactjs-test-project",
+      "packageName": "@kadena/client-examples",
+      "projectFolder": "packages/libs/client-examples",
       "tags": ["libs"],
       "shouldPublish": false
     },
