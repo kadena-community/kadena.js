@@ -6,16 +6,16 @@ import {
 
 interface IExec {
   <
-    T extends Array<
+    TCodes extends Array<
       | (string & {
           capability(name: string, ...args: unknown[]): ICapabilityItem;
         })
       | string
     >,
   >(
-    ...codes: [...T]
+    ...codes: [...TCodes]
   ): // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
-  { payload: IExecPayload & { funs: [...T]; _brand: 'exec' } };
+  { payload: IExecPayload & { funs: [...TCodes]; _brand: 'exec' } };
 }
 
 interface IPayload {

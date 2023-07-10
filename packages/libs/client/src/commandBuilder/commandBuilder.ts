@@ -18,81 +18,81 @@ import {
 } from '../interfaces/IPactCommand';
 import { createTransaction } from '../utils/createTransaction';
 
-type CAP = (name: string, ...args: unknown[]) => ICapabilityItem;
+type GeneralCapability = (name: string, ...args: unknown[]) => ICapabilityItem;
 
-export type ExtractType<T> = T extends { payload: infer A }
-  ? A extends { funs: infer F }
-    ? F extends Array<infer I>
-      ? UnionToIntersection<I> extends { capability: infer C }
-        ? C
-        : CAP
-      : CAP
-    : CAP
-  : CAP;
+export type ExtractType<TCommand> = TCommand extends { payload: infer TPayload }
+  ? TPayload extends { funs: infer TFunctions }
+    ? TFunctions extends Array<infer TFunction>
+      ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
+        ? TCapability
+        : GeneralCapability
+      : GeneralCapability
+    : GeneralCapability
+  : GeneralCapability;
 
-interface IAddSigner<T> {
+interface IAddSigner<TCommand> {
   (
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  ): IBuilder<T>;
+  ): IBuilder<TCommand>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-    capability: (withCapability: ExtractType<T>) => ICapabilityItem[],
-  ): IBuilder<T>;
+    capability: (withCapability: ExtractType<TCommand>) => ICapabilityItem[],
+  ): IBuilder<TCommand>;
 }
 
-interface ISetNonce<T> {
-  (nonce: string): IBuilder<T>;
-  (nonceGenerator: (cmd: Partial<IPactCommand>) => string): IBuilder<T>;
+interface ISetNonce<TCommand> {
+  (nonce: string): IBuilder<TCommand>;
+  (nonceGenerator: (cmd: Partial<IPactCommand>) => string): IBuilder<TCommand>;
 }
 
-interface IAddKeyset<T> {
+interface IAddKeyset<TCommand> {
   <TKey extends string, PRED extends 'keys-all' | 'keys-one' | 'keys-two'>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): IBuilder<T>;
+  ): IBuilder<TCommand>;
 
   <TKey extends string, PRED extends string>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): IBuilder<T>;
+  ): IBuilder<TCommand>;
 }
-interface IBuilder<T> {
-  addSigner: IAddSigner<T>;
+interface IBuilder<TCommand> {
+  addSigner: IAddSigner<TCommand>;
   setMeta: (
     meta: { chainId: IPactCommand['meta']['chainId'] } & Partial<
       IPactCommand['meta']
     >,
-  ) => IBuilder<T>;
-  setNonce: ISetNonce<T>;
-  setNetworkId: (id: string) => IBuilder<T>;
+  ) => IBuilder<TCommand>;
+  setNonce: ISetNonce<TCommand>;
+  setNetworkId: (id: string) => IBuilder<TCommand>;
   addData: (
     key: string,
     data: Record<string, unknown> | string | number | boolean,
-  ) => IBuilder<T>;
-  addKeyset: IAddKeyset<T>;
+  ) => IBuilder<TCommand>;
+  addKeyset: IAddKeyset<TCommand>;
   createTransaction: () => IUnsignedCommand;
   getCommand: () => Partial<IPactCommand>;
 }
 
 export interface IExec {
   <
-    T extends Array<
+    TCodes extends Array<
       | (string & {
           capability(name: string, ...args: unknown[]): ICapabilityItem;
         })
       | string
     >,
   >(
-    ...codes: [...T]
+    ...codes: [...TCodes]
   ): // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
-  IBuilder<{ payload: IExecPayload & { funs: [...T]; _brand: 'exec' } }>;
+  IBuilder<{ payload: IExecPayload & { funs: [...TCodes]; _brand: 'exec' } }>;
 }
 
 export interface ICont {
@@ -127,7 +127,7 @@ export const commandBuilder = (): ICommandBuilder => {
         command = createPactCommand(
           addSigner(
             pubKey,
-            cap as (withCapability: CAP) => ICapabilityItem[],
+            cap as (withCapability: GeneralCapability) => ICapabilityItem[],
           ) as (cmd: Partial<IPactCommand>) => Partial<IPactCommand>,
         )(command);
         return builder;

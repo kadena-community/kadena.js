@@ -47,25 +47,27 @@ export const mergePayload = (
   throw new Error('PAYLOAD_NOT_MERGEABLE');
 };
 
-type NoPayload<T> = T extends { payload: unknown } ? never : T;
+type NoPayload<TCommand> = TCommand extends { payload: unknown }
+  ? never
+  : TCommand;
 
-type PoF<T> = T | ((a: T) => T);
+type DataOrFunction<TData> = TData | ((a: TData) => TData);
 
 // TODO : improve the return value to merge all of the inputs as an object
 interface ICreatePactCommand {
-  <F extends Pick<IPactCommand, 'payload'>>(
-    payload: F,
+  <TPayload extends Pick<IPactCommand, 'payload'>>(
+    payload: TPayload,
     ...rest: [
       ...Array<
         | Partial<IPactCommand>
-        | ((payload: F & Partial<IPactCommand>) => Partial<IPactCommand>)
+        | ((payload: TPayload & Partial<IPactCommand>) => Partial<IPactCommand>)
       >,
     ]
   ): (cmd?: Partial<IPactCommand>) => Partial<IPactCommand>;
 
   (
-    first: PoF<NoPayload<Partial<IPactCommand>>>,
-    ...rest: Array<PoF<Partial<IPactCommand>>>
+    first: DataOrFunction<NoPayload<Partial<IPactCommand>>>,
+    ...rest: Array<DataOrFunction<Partial<IPactCommand>>>
   ): (cmd?: Partial<IPactCommand>) => Partial<IPactCommand>;
 }
 
@@ -74,8 +76,8 @@ interface ICreatePactCommand {
  */
 export const createPactCommand: ICreatePactCommand =
   (
-    first: PoF<Partial<IPactCommand>>,
-    ...rest: Array<PoF<Partial<IPactCommand>>>
+    first: DataOrFunction<Partial<IPactCommand>>,
+    ...rest: Array<DataOrFunction<Partial<IPactCommand>>>
   ): ((cmd?: Partial<IPactCommand>) => Partial<IPactCommand>) =>
   (initial: Partial<IPactCommand> = {}) => {
     const args: Array<
