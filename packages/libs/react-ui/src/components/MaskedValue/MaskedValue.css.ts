@@ -4,12 +4,6 @@ import { createVar, style } from '@vanilla-extract/css';
 
 export const inputStatusColor = createVar();
 
-export const containerClass = style([
-  sprinkles({
-    width: '100%',
-  }),
-]);
-
 export const titleContainer = style([
   sprinkles({
     display: 'flex',
@@ -44,10 +38,6 @@ export const valueContainer = style([
     flex: '1',
   },
 ]);
-
-export const visibleValueContainer = style({
-  width: 'auto',
-});
 
 export const iconContainer = style([
   sprinkles({

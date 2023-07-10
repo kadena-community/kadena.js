@@ -1,14 +1,12 @@
 import { SystemIcon } from '../Icons';
 
 import {
-  containerClass,
+  iconContainer,
   titleContainer,
   valueContainer,
-  iconContainer,
   valueIconContainer,
 } from './MaskedValue.css';
 
-import classNames from 'classnames';
 import React, { FC, useState } from 'react';
 
 export interface IMaskedValueProps {
@@ -32,25 +30,23 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
     setVisible(!visible);
   };
 
+  const maskedValue = `${value.slice(0, startUnmaskedValues)}****${value.slice(
+    -endUnmaskedValues,
+  )}`;
+
   return (
-    <div className={classNames(containerClass)} data-testid="kda-masked-value">
-      <div className={classNames(titleContainer)}>{title}</div>
-      <div className={classNames(valueIconContainer)}>
-        <div className={classNames(valueContainer)}>
-          {visible
-            ? value
-            : `${value.slice(0, startUnmaskedValues)}****${value.slice(
-                -endUnmaskedValues,
-              )}`}
-        </div>
+    <div data-testid="kda-masked-value">
+      <div className={titleContainer}>{title}</div>
+      <div className={valueIconContainer}>
+        <div className={valueContainer}>{visible ? value : maskedValue}</div>
         {visible ? (
           <SystemIcon.EyeOffOutline
-            className={classNames(iconContainer)}
+            className={iconContainer}
             onClick={toggleVisibility}
           />
         ) : (
           <SystemIcon.EyeOutline
-            className={classNames(iconContainer)}
+            className={iconContainer}
             onClick={toggleVisibility}
           />
         )}
