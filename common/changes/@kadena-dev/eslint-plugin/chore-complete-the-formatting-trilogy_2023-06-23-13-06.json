@@ -3,7 +3,7 @@
     {
       "packageName": "@kadena-dev/eslint-plugin",
       "comment": "Complete the formatting trilogy",
-      "type": "none"
+      "type": "patch"
     }
   ],
   "packageName": "@kadena-dev/eslint-plugin"
