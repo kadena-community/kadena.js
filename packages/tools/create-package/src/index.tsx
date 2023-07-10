@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 import App from './App.js';
-import type { Project } from './types.js';
+import type { IProject } from './types.js';
+
 import { render } from 'ink';
 import React from 'react';
 
-const defaults: Project = {
+const defaults: IProject = {
   type: 'lib',
   name: '@kadena-dev/new',
   dir: 'packages/libs/new',

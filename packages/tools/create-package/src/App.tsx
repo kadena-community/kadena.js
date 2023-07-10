@@ -1,19 +1,24 @@
-import { Box, Text, useApp, useFocusManager, useInput } from 'ink';
-import React, { useEffect, useReducer, useState } from 'react';
 import { deployPackage } from './deploy-package.js';
 import { Input } from './Input.js';
 import { Toggle, ToggleBoolean } from './Toggle.js';
-import type { AppState, Project } from './types.js';
+import type { AppState, IProject } from './types.js';
 
-const projectReducer = (state: Project, action: Partial<Project>) => ({
+import { Box, Text, useApp, useFocusManager, useInput } from 'ink';
+import type { FC, PropsWithChildren, Reducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
+
+const projectReducer: Reducer<IProject, Partial<IProject>> = (
+  state,
+  action,
+) => ({
   ...state,
   ...action,
 });
 
-const G = (props: React.PropsWithChildren) => <Text color="green" {...props} />;
-const R = (props: React.PropsWithChildren) => <Text color="red" {...props} />;
+const G: FC<PropsWithChildren> = (props) => <Text color="green" {...props} />;
+const R: FC<PropsWithChildren> = (props) => <Text color="red" {...props} />;
 
-export default function App({ defaults }: { defaults: Project }): JSX.Element {
+export default function App({ defaults }: { defaults: IProject }): JSX.Element {
   const { exit } = useApp();
   const { focusNext, focusPrevious } = useFocusManager();
   const [state, setState] = useState<AppState>('editing');
@@ -28,6 +33,7 @@ export default function App({ defaults }: { defaults: Project }): JSX.Element {
         setState('canceled');
       } else {
         setState('deploying');
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         deployPackage(project).then(() => setState('done'));
       }
     }
@@ -35,7 +41,7 @@ export default function App({ defaults }: { defaults: Project }): JSX.Element {
 
   useEffect(() => {
     const name = project.name.replace(/.*\//, '');
-    set({ dir: project.dir.replace(/\/[^/]*$/, '/' + name) }); // Set dir based on package name
+    set({ dir: project.dir.replace(/\/[^/]*$/, `/${name}`) }); // Set dir based on package name
   }, [project.name]);
 
   useEffect(() => {

@@ -1,20 +1,20 @@
-import React from 'react';
 import { Text, useFocus, useInput } from 'ink';
+import React, { type FC } from 'react';
 
-interface ToggleProps {
+interface IToggleProps {
   value: string;
   values: string[];
   onChange: (value: string) => void;
   autoFocus?: boolean;
 }
 
-interface ToggleBooleanProps {
+interface IToggleBooleanProps {
   value: boolean;
   onChange: (value: boolean) => void;
   autoFocus?: boolean;
 }
 
-export const Toggle = (options: ToggleProps) => {
+export const Toggle: FC<IToggleProps> = (options) => {
   const { value, values, onChange, autoFocus } = options;
   const { isFocused } = useFocus({ autoFocus });
 
@@ -33,7 +33,7 @@ export const Toggle = (options: ToggleProps) => {
   );
 };
 
-export const ToggleBoolean = (options: ToggleBooleanProps) => {
+export const ToggleBoolean: FC<IToggleBooleanProps> = (options) => {
   const { value, onChange, autoFocus } = options;
   const { isFocused } = useFocus({ autoFocus });
 
