@@ -29,8 +29,10 @@ const getTypes = (tree, type, arr = []) => {
   return arr;
 };
 
-const createEditOverwrite = (filename) =>
-  `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
+const createEditOverwrite = (filename, options) => {
+  if (options.hideEditLink) return '';
+  return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
+};
 
 export const createSlug = (str) => {
   if (!str) return '';
@@ -144,7 +146,7 @@ const relinkLinkReferences = (md, pages, root) => {
   });
 };
 
-const importDocs = (filename, destination, parentTitle, RootOrder) => {
+const importDocs = (filename, destination, parentTitle, options) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
@@ -156,7 +158,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
     const menuTitle = idx === 0 ? parentTitle : title;
-    const order = idx === 0 ? RootOrder : idx;
+    const order = idx === 0 ? options.RootOrder : idx;
 
     const doc = toMarkdown(page);
 
@@ -168,7 +170,7 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
         title,
         menuTitle,
         order,
-        createEditOverwrite(filename),
+        createEditOverwrite(filename, options),
       ) + doc,
       {
         flag: 'w',
@@ -177,5 +179,259 @@ const importDocs = (filename, destination, parentTitle, RootOrder) => {
   });
 };
 
-importDocs('libs/kadena.js/README.md', 'kadena/kadenajs', 'KadenaJS', 6);
-importDocs('libs/client/README.md', 'kadena/client', 'Client', 7);
+const importAll = (imports) => {
+  imports.forEach((item) => {
+    importDocs(item.file, item.destination, item.title, item.options);
+  });
+};
+
+/**
+ * Files to be imported
+ */
+const imports = [
+  /** /libs/chainweb-node-client */
+  {
+    file: 'libs/chainweb-node-client/README.md',
+    destination: 'chainweb/node-client',
+    title: 'Node Client',
+    options: {
+      RootOrder: 1,
+    },
+  },
+  {
+    file: 'libs/chainweb-node-client/etc/chainweb-node-client.api.md',
+    destination: 'chainweb/node-client/api',
+    title: 'Client Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/chainweb-stream-client */
+  {
+    file: 'libs/chainweb-stream-client/README.md',
+    destination: 'chainweb/stream-client',
+    title: 'Stream Client',
+    options: {
+      RootOrder: 2,
+    },
+  },
+  {
+    file: 'libs/chainweb-stream-client/etc/chainweb-stream-client.api.md',
+    destination: 'chainweb/stream-client/api',
+    title: 'Stream Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/chainwebjs */
+  {
+    file: 'libs/chainwebjs/README.md',
+    destination: 'chainweb/js-bindings',
+    title: 'JS bindings',
+    options: {
+      RootOrder: 3,
+    },
+  },
+  {
+    file: 'libs/chainwebjs/etc/chainwebjs.api.md',
+    destination: 'chainweb/js-bindings/api',
+    title: 'JS bindings API',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/client */
+  {
+    file: 'libs/client/README.md',
+    destination: 'kadena/client',
+    title: 'Client',
+    options: {
+      RootOrder: 7,
+    },
+  },
+  {
+    file: 'libs/client/etc/client.api.md',
+    destination: 'kadena/client/api',
+    title: 'Client Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/cryptography-utils */
+  {
+    file: 'libs/cryptography-utils/README.md',
+    destination: 'build/tools/cryptography-utils',
+    title: 'Cryptography-Utils',
+    options: {
+      RootOrder: 3,
+    },
+  },
+  {
+    file: 'libs/cryptography-utils/etc/cryptography-utils.api.md',
+    destination: 'build/tools/cryptography-utils/api',
+    title: 'Cryptography-Utils Api',
+    options: {
+      RootOrder: 98,
+      hideEditLink: true,
+    },
+  },
+  {
+    file: 'libs/cryptography-utils/etc/crypto.api.md',
+    destination: 'build/tools/cryptography-utils/crypto-api',
+    title: 'Crypto Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/kadena.js */
+  {
+    file: 'libs/kadena.js/README.md',
+    destination: 'kadena/kadenajs',
+    title: 'KadenaJS',
+    options: {
+      RootOrder: 6,
+    },
+  },
+  /** /libs/pactjs */
+  {
+    file: 'libs/pactjs/README.md',
+    destination: 'pact/pactjs',
+    title: 'PactJS',
+    options: {
+      RootOrder: 6,
+    },
+  },
+  {
+    file: 'libs/pactjs/etc/pactjs.api.md',
+    destination: 'pact/pactjs/api',
+    title: 'PactJS Api',
+    options: {
+      RootOrder: 98,
+      hideEditLink: true,
+    },
+  },
+  {
+    file: 'libs/pactjs/etc/pactjs-utils.api.md',
+    destination: 'pact/pactjs/utils',
+    title: 'PactJS Utils',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/pactjs-generator */
+  {
+    file: 'libs/pactjs-generator/README.md',
+    destination: 'pact/pactjs-generator',
+    title: 'PactJS Generator',
+    options: {
+      RootOrder: 7,
+    },
+  },
+  {
+    file: 'libs/pactjs-generator/etc/pactjs-generator.api.md',
+    destination: 'pact/pactjs-generator/api',
+    title: 'PactJS Generator Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /libs/pactjs-test-project */
+  {
+    file: 'libs/pactjs-test-project/README.md',
+    destination: 'pact/pactjs-test-project',
+    title: 'Test Project',
+    options: {
+      RootOrder: 10,
+    },
+  },
+  {
+    file: 'libs/pactjs-test-project/etc/pactjs-generator.api.md',
+    destination: 'pact/pactjs-test-project/api',
+    title: 'Generator Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  {
+    file: 'libs/pactjs-test-project/etc/pactjs-test-project.api.md',
+    destination: 'pact/pactjs-test-project/project-api',
+    title: 'Test Project Api',
+    options: {
+      RootOrder: 98,
+      hideEditLink: true,
+    },
+  },
+  /** /tools/cookbook */
+  {
+    file: 'tools/cookbook/README.md',
+    destination: 'build/cookbook/cookbook',
+    title: 'JS Cookbook',
+    options: {
+      RootOrder: 2,
+    },
+  },
+  /** /tools/create-kadena-app */
+  {
+    file: 'tools/create-kadena-app/README.md',
+    destination: 'build/tools/create-kadena-app',
+    title: 'Create Kadena App',
+    options: {
+      RootOrder: 2,
+    },
+  },
+  {
+    file: 'tools/create-kadena-app/etc/create-kadena-app.api.md',
+    destination: 'build/tools/create-kadena-app/api',
+    title: 'Create Kadena App',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /tools/kda-cli */
+  {
+    file: 'tools/kda-cli/README.md',
+    destination: 'build/tools/kda-cli',
+    title: 'KDA CLI',
+    options: {
+      RootOrder: 3,
+    },
+  },
+  {
+    file: 'tools/kda-cli/etc/kda-cli.api.md',
+    destination: 'build/tools/kda-cli/api',
+    title: 'KDA CLI Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+  /** /tools/pactjs-cli */
+  {
+    file: 'tools/pactjs-cli/README.md',
+    destination: 'pact/cli',
+    title: 'CLI tool',
+    options: {
+      RootOrder: 6,
+    },
+  },
+  {
+    file: 'tools/pactjs-cli/etc/pactjs-cli.api.md',
+    destination: 'pact/cli/api',
+    title: 'CLI tool Api',
+    options: {
+      RootOrder: 99,
+      hideEditLink: true,
+    },
+  },
+];
+
+importAll(imports);

@@ -11,15 +11,15 @@ Collection of Kadena cryptography utility functions
 
 <!-- genericHeader end -->
 
+## Cryptography Utils
+
 > Cryptography-Utils is a collection of cryptography utility functions. This
 > library is used by kadena.js to hash your transactions. If you have private
 > keys available, you can also sign them with this library.
 
 API Reference can be found here [cryptography-utils.api.md][1]
 
-<hr>
-
-# Usage Examples
+### Usage Examples
 
 ```ts
 import { IKeyPair } from '@kadena/types';
@@ -41,7 +41,7 @@ let keyPair: IKeyPair = {
 let sig: string = sign(commandPayload, keyPair);
 ```
 
-# Available Functions
+### Available Functions
 
 crypto:
 

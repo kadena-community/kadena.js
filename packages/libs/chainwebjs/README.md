@@ -14,9 +14,9 @@ Javascript (Typescript) bindings for the Kadena Chainweb API
 High level Typescript bindings and types for the [Kadena][1] [Chainweb REST
 API][2].
 
-### API Documentation
+## API Documentation
 
-# Usage Examples
+### Usage Examples
 
 ```javascript
 const chainweb = require('@kadena/chainwebjs');
@@ -26,7 +26,7 @@ const chainweb = require('@kadena/chainwebjs');
 import chainweb from '@kadena/chainwebjs';
 ```
 
-## Common parameters:
+### Common parameters:
 
 - `network`: the Kadena Chainweb network identifier.
 - `host`: the Chainweb API host URL, including the schema and possibly the port.
@@ -47,14 +47,14 @@ several pages, which can take some time. When fetching larger numbers of items
 it is recommended to use the functions in the package iteratively and possibly
 also asynchronously in order to increase performance.
 
-## Cuts
+### Cuts
 
 ```javascript
 chainweb.cut.peers().then((x) => console.log('Cut Peers:', x));
 chainweb.cut.current().then((x) => console.log('Current Cut:', x));
 ```
 
-## Chain Items
+### Chain Items
 
 Chain items only include items from the currently winning branch of the chain.
 Orphaned blocks from past forks are not included. In order to avoid retrieving
@@ -176,7 +176,7 @@ stream was started. They are thus useful for prompt notification of new items.
 In order of exhaustively querying all, including old, items, one should also use
 `range` or `recent` queries for the respective type of item.
 
-# Example Values
+## Example Values
 
 Example of a block object:
 
