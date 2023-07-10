@@ -19,7 +19,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "heft build",
     "dev": "tsc --watch",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
@@ -27,7 +27,7 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "test": ""
+    "test": "heft test"
   },
   "dependencies": {
     "ink": "^4.1.0",
