@@ -2,6 +2,7 @@
 // this module is just a code snippet for the safe transfer
 
 import { ICommandResult } from '@kadena/chainweb-node-client';
+import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client/client';
 import { ICoin } from '../createPactCommand/test/coin-contract';
@@ -10,7 +11,13 @@ import { quicksign } from '../sign';
 
 const coin: ICoin = getModule('coin');
 
-const getHostUrl = (networkId: string, chainId: string): string =>
+const getHostUrl = ({
+  networkId,
+  chainId,
+}: {
+  networkId: string;
+  chainId: ChainId;
+}): string =>
   `http://localhost:8080/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 
 const { submit, pollStatus } = getClient(getHostUrl);

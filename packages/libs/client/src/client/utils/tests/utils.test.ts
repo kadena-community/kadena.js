@@ -53,21 +53,23 @@ describe('client utils', () => {
 
   describe('kadenaHostGenerator', () => {
     it('returns mainnet url with the correct chianId', () => {
-      expect(kadenaHostGenerator('mainnet01', '14')).toBe(
-        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/14/pact',
-      );
+      expect(
+        kadenaHostGenerator({ networkId: 'mainnet01', chainId: '14' }),
+      ).toBe('https://api.chainweb.com/chainweb/0.0/mainnet01/chain/14/pact');
     });
 
     it('returns testnet url with the correct chianId', () => {
-      expect(kadenaHostGenerator('testnet04', '14')).toBe(
+      expect(
+        kadenaHostGenerator({ networkId: 'testnet04', chainId: '14' }),
+      ).toBe(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact',
       );
     });
 
     it('throes exception if networkId is not either mainnet01 nor testnet04 ', () => {
-      expect(() => kadenaHostGenerator('incorrect-network', '14')).toThrowError(
-        Error(`UNKNOWN_NETWORK_ID: incorrect-network`),
-      );
+      expect(() =>
+        kadenaHostGenerator({ networkId: 'incorrect-network', chainId: '14' }),
+      ).toThrowError(Error(`UNKNOWN_NETWORK_ID: incorrect-network`));
     });
   });
 

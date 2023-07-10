@@ -2,7 +2,7 @@
 // this module is just some example code to play with the client
 
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { ICommand } from '@kadena/types';
+import { ChainId, ICommand } from '@kadena/types';
 
 import { getClient } from '../client/client';
 import {
@@ -84,7 +84,13 @@ const commandWithSignatures: ICommand = {
   sigs: [{ sig: '' }],
 };
 
-const getHostUrl = (networkId: string, chainId: string): string => {
+const getHostUrl = ({
+  networkId,
+  chainId,
+}: {
+  networkId: string;
+  chainId: ChainId;
+}): string => {
   switch (networkId) {
     case 'devnet':
       return `http://localhost/${chainId}/pact`;
@@ -122,7 +128,7 @@ export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> 
   const someRequestKeys = ['key1', 'key2'];
   const results = pollStatus(someRequestKeys, {
     networkId: 'testnet04',
-    chainId: '01',
+    chainId: '1',
     onPoll: (requestKey) => {
       console.log('polling status of', requestKey);
     },
@@ -146,9 +152,9 @@ export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> 
 
 export async function spvExample(): Promise<string> {
   const someRequestKeys = 'key1';
-  const status = await pollSpv(someRequestKeys, '01', {
+  const status = await pollSpv(someRequestKeys, '1', {
     networkId: 'testnet04',
-    chainId: '01',
+    chainId: '1',
   });
   return status;
 }

@@ -5,10 +5,20 @@ jest.mock('cross-fetch', () => {
   };
 });
 
+import { ChainId } from '@kadena/types';
+
 import { getClient } from '../client';
 import { kadenaHostGenerator, withCounter } from '../utils/utils';
 
 import fetch from 'cross-fetch';
+
+const hostApiGenerator = ({
+  networkId,
+  chainId,
+}: {
+  networkId: string;
+  chainId: ChainId;
+}): string => `http://${networkId}/${chainId}`;
 
 describe('client', () => {
   it('uses the string input as the host for all requests', async () => {
@@ -65,7 +75,7 @@ describe('client', () => {
     await local(body);
 
     expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-      `${kadenaHostGenerator(networkId, chainId)}/api/v1/local`,
+      `${kadenaHostGenerator({ networkId, chainId })}/api/v1/local`,
     );
   });
 
@@ -79,9 +89,6 @@ describe('client', () => {
         text: () => JSON.stringify(response),
         json: () => response,
       });
-
-      const hostApiGenerator = (networkId: string, chainId: string): string =>
-        `http://${networkId}/${chainId}`;
 
       const { local } = getClient(hostApiGenerator);
 
@@ -97,7 +104,7 @@ describe('client', () => {
       await local(body);
 
       expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-        `${hostApiGenerator(networkId, chainId)}/api/v1/local`,
+        `${hostApiGenerator({ networkId, chainId })}/api/v1/local`,
       );
     });
   });
@@ -113,9 +120,6 @@ describe('client', () => {
         json: () => response,
       });
 
-      const hostApiGenerator = (networkId: string, chainId: string): string =>
-        `http://${networkId}/${chainId}`;
-
       const { submit } = getClient(hostApiGenerator);
 
       const networkId = 'mainnet01';
@@ -130,7 +134,7 @@ describe('client', () => {
       await submit(body);
 
       expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-        `${hostApiGenerator(networkId, chainId)}/api/v1/send`,
+        `${hostApiGenerator({ networkId, chainId })}/api/v1/send`,
       );
     });
 
@@ -152,9 +156,6 @@ describe('client', () => {
           });
         }),
       );
-
-      const hostApiGenerator = (networkId: string, chainId: string): string =>
-        `http://${networkId}/${chainId}`;
 
       const { submit } = getClient(hostApiGenerator);
 
@@ -203,9 +204,6 @@ describe('client', () => {
           });
         }),
       );
-
-      const hostApiGenerator = (networkId: string, chainId: string): string =>
-        `http://${networkId}/${chainId}`;
 
       const { submit, pollStatus } = getClient(hostApiGenerator);
 

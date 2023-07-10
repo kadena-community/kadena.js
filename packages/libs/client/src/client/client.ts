@@ -1,6 +1,6 @@
 import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
 
@@ -81,7 +81,10 @@ interface IGetClient {
    * the default value returns kadena testnet or mainnet url based on networkId
    */
   (
-    hostAddressGenerator?: (networkId: string, chainId: string) => string,
+    hostAddressGenerator?: (options: {
+      chainId: ChainId;
+      networkId: string;
+    }) => string,
   ): IClient;
 }
 
@@ -102,7 +105,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         requestKeys.map((requestKey) => [
           requestKey,
           storage.get(requestKey) ??
-            getHost(options?.networkId!, options?.chainId!),
+            getHost({
+              chainId: options?.chainId!,
+              networkId: options?.networkId!,
+            }),
         ]),
       );
       requestStorage = getRequestStorage(map);
@@ -113,7 +119,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const client: IClient = {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
-      const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
+      const hostUrl = getHost({
+        chainId: cmd.meta.chainId,
+        networkId: cmd.networkId,
+      });
       return local(hostUrl, body, options);
     },
     async submit(body) {
@@ -123,7 +132,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         throw new Error('EMPTY_COMMAND_LIST');
       }
       const cmd: IPactCommand = JSON.parse(first.cmd);
-      const hostUrl = getHost(cmd.networkId, cmd.meta.chainId);
+      const hostUrl = getHost({
+        chainId: cmd.meta.chainId,
+        networkId: cmd.networkId,
+      });
       const commandsWithHash = commands.map((req) => ({
         ...req,
         hash: blakeHash(req.cmd),
@@ -181,7 +193,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     pollSpv(requestKey, targetChainId, options) {
       return pollSpv(
         storage.get(requestKey) ??
-          getHost(options?.networkId!, options?.chainId!),
+          getHost({
+            chainId: options?.chainId!,
+            networkId: options?.networkId!,
+          }),
         requestKey,
         targetChainId,
         options,
@@ -190,7 +205,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     getSpv(requestKey, targetChainId, options) {
       return getSpv(
         storage.get(requestKey) ??
-          getHost(options?.networkId!, options?.chainId!),
+          getHost({
+            chainId: options?.chainId!,
+            networkId: options?.networkId!,
+          }),
         requestKey,
         targetChainId,
       );

@@ -1,3 +1,5 @@
+import { ChainId } from '@kadena/types';
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const jsonRequest = (body: object) => ({
   headers: {
@@ -29,10 +31,13 @@ export function getUrl(
   return url.toString();
 }
 
-export const kadenaHostGenerator = (
-  networkId: string,
-  chainId: string,
-): string => {
+export const kadenaHostGenerator = ({
+  networkId,
+  chainId,
+}: {
+  networkId: string;
+  chainId: ChainId;
+}): string => {
   switch (networkId) {
     case 'mainnet01':
       return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
@@ -45,7 +50,7 @@ export const kadenaHostGenerator = (
 
 export interface INetworkOptions {
   networkId: string;
-  chainId: string;
+  chainId: ChainId;
 }
 
 export interface IPollOptions {
