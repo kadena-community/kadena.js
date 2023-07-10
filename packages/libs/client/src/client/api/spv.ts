@@ -1,5 +1,6 @@
+import { IPollOptions } from '../interfaces/interfaces';
 import { retry } from '../utils/retry';
-import { getUrl, IPollOptions, jsonRequest } from '../utils/utils';
+import { getUrl, jsonRequest } from '../utils/utils';
 
 import fetch from 'cross-fetch';
 

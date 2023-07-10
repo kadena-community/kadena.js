@@ -1,12 +1,15 @@
 import { Pact } from '@kadena/client';
 
-import { testnetChain1ApiHost } from './util/host';
+import { local } from './util/client';
 import { Account } from './util/keyFromAccount';
 
 async function getBalance(account: Account): Promise<void> {
-  const res = await Pact.modules.coin['get-balance'](account).local(
-    testnetChain1ApiHost,
-  );
+  const tr = Pact.builder
+    .execute(Pact.modules.coin['get-balance'](account))
+    .createTransaction();
+
+  const res = await local(tr);
+
   console.log(res);
 }
 

@@ -5,16 +5,10 @@ import {
 } from '@kadena/chainweb-node-client';
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
+import { ILocalOptions } from '../interfaces/interfaces';
 import { getUrl, jsonRequest } from '../utils/utils';
 
 import fetch from 'cross-fetch';
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-
-export interface ILocalOptions {
-  preflight?: boolean;
-  signatureValidation?: boolean;
-}
 
 export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
   preflight: true;

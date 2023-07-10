@@ -1,5 +1,7 @@
 import { ChainId } from '@kadena/types';
 
+import { IPollRequestPromise } from '../interfaces/interfaces';
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const jsonRequest = (body: object) => ({
   headers: {
@@ -48,17 +50,6 @@ export const kadenaHostGenerator = ({
   }
 };
 
-export interface INetworkOptions {
-  networkId: string;
-  chainId: ChainId;
-}
-
-export interface IPollOptions {
-  onPoll?: (id: string) => void;
-  timeout?: number;
-  interval?: number;
-}
-
 export interface IExtPromise<T> {
   promise: Promise<T>;
   resolve: (result: T) => void;
@@ -100,10 +91,6 @@ export const getPromise = <T>(): IExtPromise<T> => {
 
 export const mergeAll = <T extends object>(results: Array<T>): T =>
   results.reduce((acc, data) => ({ ...acc, ...data }), {} as T);
-
-export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
-  requests: Record<string, Promise<T>>;
-};
 
 export const mergeAllPollRequestPromises = <T extends object | string>(
   results: Array<IPollRequestPromise<T>>,

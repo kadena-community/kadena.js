@@ -32,7 +32,7 @@ const Options = z
     capsInterface: z.string().optional(),
     api: z.string().optional(),
     chain: z.number().optional(),
-    typeVersion: z.number(),
+    namespace: z.string().optional(),
     network: z.enum(['mainnet', 'testnet']),
   })
   .refine(({ file, contract }) => {

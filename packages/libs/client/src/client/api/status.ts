@@ -4,13 +4,12 @@ import {
   parseResponse,
 } from '@kadena/chainweb-node-client';
 
+import { IPollOptions, IPollRequestPromise } from '../interfaces/interfaces';
 import { retry } from '../utils/retry';
 import {
   getPromise,
   getUrl,
   IExtPromise,
-  IPollOptions,
-  IPollRequestPromise,
   jsonRequest,
   mapRecord,
   mergeAll,

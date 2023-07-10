@@ -1,6 +1,7 @@
 import {
   createTransaction,
   getClient,
+  ICommand,
   Pact,
   signWithChainweaver,
 } from '@kadena/client';
@@ -71,7 +72,7 @@ const main = (
       );
     }
 
-    const resSend = await client.submit()
+    const resSend = await client.submit(signedCommand as ICommand);
   };
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -88,7 +89,7 @@ const publicKey =
 
 // eslint-disable-next-line @rushstack/typedef-var
 const client = getClient(
-  (__networkId, chainId) =>
+  ({ chainId }) =>
     `https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/${chainId}/pact`,
 );
 

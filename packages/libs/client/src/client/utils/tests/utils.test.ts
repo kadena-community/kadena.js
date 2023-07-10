@@ -1,7 +1,7 @@
+import { IPollRequestPromise } from '../../interfaces/interfaces';
 import {
   getPromise,
   getUrl,
-  IPollRequestPromise,
   jsonRequest,
   kadenaHostGenerator,
   mapRecord,

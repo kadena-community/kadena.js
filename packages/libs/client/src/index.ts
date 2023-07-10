@@ -5,18 +5,13 @@ export * from './signing';
 export * from './signing-api/v1/quicksign';
 export * from './signing-api/v1/sign';
 export * from './utils/createTransaction';
-export * from './client/client';
+export * from './client';
 
 export type { IPact, IPactModules } from './pact';
 
 export { Pact } from './pact';
 
-export type {
-  IPactCommand,
-  ICapabilityItem,
-  IContinuationPayload,
-  IExecPayload,
-} from './interfaces/IPactCommand';
+export type * from './interfaces/IPactCommand';
 
 export { ICommandResult } from '@kadena/chainweb-node-client';
 export { IPollResponse } from '@kadena/chainweb-node-client';

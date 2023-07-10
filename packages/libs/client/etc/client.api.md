@@ -109,6 +109,22 @@ export interface IExecPayload {
 }
 
 // @alpha (undocumented)
+export interface ILocalOptions {
+    // (undocumented)
+    preflight?: boolean;
+    // (undocumented)
+    signatureValidation?: boolean;
+}
+
+// @alpha (undocumented)
+export interface INetworkOptions {
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    networkId: string;
+}
+
+// @alpha (undocumented)
 export interface IPact {
     // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
     //
@@ -147,6 +163,21 @@ export interface IPactCommand {
 // @alpha (undocumented)
 export interface IPactModules {
 }
+
+// @alpha (undocumented)
+export interface IPollOptions {
+    // (undocumented)
+    interval?: number;
+    // (undocumented)
+    onPoll?: (id: string) => void;
+    // (undocumented)
+    timeout?: number;
+}
+
+// @alpha (undocumented)
+export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
+    requests: Record<string, Promise<T>>;
+};
 
 export { IPollResponse }
 

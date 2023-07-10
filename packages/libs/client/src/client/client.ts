@@ -4,15 +4,18 @@ import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
 
-import { ILocalOptions, local, LocalResponse } from './api/local';
+import { local, LocalResponse } from './api/local';
 import { getSpv, pollSpv } from './api/spv';
 import { getStatus, pollStatus } from './api/status';
 import { submit } from './api/submit';
-import { getRequestStorage } from './utils/request-storege';
 import {
+  ILocalOptions,
   INetworkOptions,
   IPollOptions,
   IPollRequestPromise,
+} from './interfaces/interfaces';
+import { getRequestStorage } from './utils/request-storege';
+import {
   kadenaHostGenerator,
   mergeAll,
   mergeAllPollRequestPromises,

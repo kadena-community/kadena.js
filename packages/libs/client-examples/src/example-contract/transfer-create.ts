@@ -1,6 +1,8 @@
 import { Pact, signWithChainweaver } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
+import { local } from './util/client';
+
 const apiHost = (
   chainId: string,
   network: string = '',
@@ -28,21 +30,28 @@ async function main(): Promise<void> {
     },
   };
 
-  const unsignedTransaction = await Pact.modules.coin['transfer-create'](
-    sender,
-    receiver,
-    () => '(read-keyset "ks")',
-    amount,
-  )
-    .addData(data)
-    .addCap('coin.TRANSFER', onlyKey(sender), sender, receiver, amount);
+  const unsignedTransaction = Pact.builder
+    .execute(
+      Pact.modules.coin['transfer-create'](
+        sender,
+        receiver,
+        () => '(read-keyset "ks")',
+        amount,
+      ),
+    )
+    .addKeyset('ks', 'keys-all', 'somepublickey')
+    .addSigner(onlyKey(sender), (withCapability) => [
+      withCapability('coin.TRANSFER', sender, receiver, amount),
+    ])
+    .setNetworkId('testnet04')
+    .createTransaction();
 
   console.log(
     'unsigned transaction',
     JSON.stringify(unsignedTransaction, null, 2),
   );
 
-  const localResponse = unsignedTransaction.local(testnetChain1ApiHost);
+  const localResponse = await local(unsignedTransaction);
 
   console.log('response: ', JSON.stringify(localResponse, null, 2));
 

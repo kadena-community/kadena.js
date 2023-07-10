@@ -1,4 +1,6 @@
-import { IPollOptions, sleep } from './utils';
+import { IPollOptions } from '../interfaces/interfaces';
+
+import { sleep } from './utils';
 
 const rejectAfter = (
   timeout: number,

@@ -1,10 +1,5 @@
 import { poll } from '@kadena/chainweb-node-client';
-import {
-  createTransaction,
-  IPactCommand,
-  Pact,
-  signWithChainweaver,
-} from '@kadena/client';
+import { Pact, signWithChainweaver } from '@kadena/client';
 
 const apiHost = (
   chainId: string,
@@ -95,15 +90,6 @@ async function pollMain(...requestKeys: string[]): Promise<void> {
       ...requestKeys.filter((k) => !foundRequestKeys.some((fk) => fk === k)),
     );
   }
-}
-
-async function getBalanceMain() {
-  const res = await Pact.modules.coin['get-balance'](
-    'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
-  )
-    .setMeta({ sender: '', chainId: '10' })
-    .local(testnetChain1ApiHost);
-  console.log(res);
 }
 
 transactionMain().catch(console.error);
