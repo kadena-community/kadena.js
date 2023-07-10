@@ -11,7 +11,7 @@ CLI tool to create a starter project with @kadena/client integration
 
 <!-- genericHeader end -->
 
-<hr>
+## Create Kadena App
 
 The create-kadena-app CLI tool enables you to quickly start a new application
 that has Kadena Blockchain integration set up and ready to go. The application
@@ -32,8 +32,9 @@ Kadena wallet for advanced blockchain usage and smart contract development.
 
 ## Supported Templates
 
-<hr>
-Create Kadena App supports a number of well known and widely used frameworks to choose from when starting a new project. The following project templates are currently available:
+Create Kadena App supports a number of well known and widely used frameworks to
+choose from when starting a new project. The following project templates are
+currently available:
 
 - [Nextjs][3]
 - [Vuejs][4] - _(Under development, coming soon)_
@@ -41,10 +42,9 @@ Create Kadena App supports a number of well known and widely used frameworks to 
 
 ## Usage
 
-<hr>
 The recommended way of using Create Kadena App is through npx.
 
-```sh
+```shell
 npx @kadena/create-kadena-app
 ```
 
@@ -53,7 +53,7 @@ project non-interactively. While we might further expand functionality in the
 future currently there's one command availabe, `generate-project`. See
 create-kadena-app generate --help:
 
-```sh
+```shell
 Usage: create-kadena-app generate-project [options]
 
 Generate starter project
@@ -78,8 +78,6 @@ Options:
 
 ## The Pact smart contract
 
-<hr>
-
 The smart contract is called `cka-message-store` and can be found [here][6]. The
 folder contains two files `message-store.pact` which is the smart contract
 written in Pact but also `message-store.repl` which contains a supporting test
@@ -89,7 +87,7 @@ suite. The contract is also deployed on testnet chain 0 as
 The two main functions of the contract are `read-message` and `write-message`
 which are shown below:
 
-```
+```pact
 (defun read-message (account:string)
   "Read a message for a specific account"
 
@@ -104,7 +102,7 @@ which are shown below:
 Reading a message is unrestricted, so everyone can access the smart contract and
 read the message a user has written, given the acount is provided.
 
-```
+```pact
 (defun write-message (account:string message:string)
   "Write a message"
 
