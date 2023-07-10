@@ -2,6 +2,21 @@
   "name": "@kadena/types",
   "entries": [
     {
+      "version": "0.3.5",
+      "tag": "@kadena/types_v0.3.5",
+      "date": "Mon, 10 Jul 2023 14:25:54 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.10`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.4",
       "tag": "@kadena/types_v0.3.4",
       "date": "Mon, 10 Jul 2023 14:20:26 GMT",

@@ -2,6 +2,21 @@
   "name": "@kadena/pactjs-generator",
   "entries": [
     {
+      "version": "0.1.13",
+      "tag": "@kadena/pactjs-generator_v0.1.13",
+      "date": "Mon, 10 Jul 2023 14:25:54 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.10`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.12",
       "tag": "@kadena/pactjs-generator_v0.1.12",
       "date": "Mon, 10 Jul 2023 14:20:26 GMT",
