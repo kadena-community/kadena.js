@@ -49,7 +49,7 @@ export const Main: FC<IPageProps> = ({
 
       <Template
         layout={
-          isOneOfLayoutType(layoutType, 'landing')
+          isOneOfLayoutType(layoutType, 'landing', 'redocly')
             ? 'landing'
             : isOneOfLayoutType(layoutType, 'code')
             ? 'code'
@@ -73,7 +73,14 @@ export const Main: FC<IPageProps> = ({
           data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
+            isOneOfLayoutType(
+              layoutType,
+              'full',
+              'code',
+              'codeside',
+              'landing',
+              'redocly',
+            )
               ? true
               : false
           }

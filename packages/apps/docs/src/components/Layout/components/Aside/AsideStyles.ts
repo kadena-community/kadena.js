@@ -38,15 +38,17 @@ export const BaseBackground: StyledComponent<
 
 export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
   BaseBackground,
+
   {
     $$shadowWidth: '$sizes$20',
     '&::before': {
+      display: 'none',
+
       content: '',
       position: 'absolute',
       pointerEvents: 'none',
       inset: 0,
       top: '$10',
-      bottom: '$16',
       backgroundColor: '$background',
       backgroundImage: 'url("/assets/bg-vertical.png")',
       backgroundRepeat: 'no-repeat',
@@ -61,6 +63,9 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
         backgroundPositionX:
           'calc(100vw  - ($$asideMenuWidthLGCode + $$shadowWidth))',
       },
+      '@xl': {
+        display: 'block',
+      },
       '@2xl': {
         backgroundPositionX:
           'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthXLCode +  $$shadowWidth))',
@@ -74,7 +79,7 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
         left: 'calc(100vw  - ($$asideMenuWidthLGCode +  $sizes$4))',
       },
       '@2xl': {
-        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - $$asideMenuWidthXLCode)',
+        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthXLCode))',
       },
     },
 

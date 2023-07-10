@@ -15,9 +15,9 @@ export const Template: StyledComponent<
 > = styled('div', {
   $$asideMenuWidthMDDefault: '200px',
   $$asideMenuWidthLGDefault: '300px',
-  $$asideMenuWidthMDCode: '300px',
+  $$asideMenuWidthMDCode: '400px',
   $$asideMenuWidthLGCode: '400px',
-  $$asideMenuWidthXLCode: '500px',
+  $$asideMenuWidthXLCode: '400px',
 
   display: 'grid',
   gridTemplateRows: '$17 auto 1fr auto',
