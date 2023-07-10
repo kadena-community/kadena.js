@@ -48,9 +48,14 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
         content: 'L',
       },
     },
-    '&[data-language="typescript"]': {
+    '&[data-language="typescript"], &[data-language="ts"]': {
       '&::before': {
         content: 'TS',
+      },
+    },
+    '&[data-language="javascript"], &[data-language="ks"]': {
+      '&::before': {
+        content: 'JS',
       },
     },
     '&[data-language="yaml"]': {
@@ -68,7 +73,7 @@ export const StyledCodeWrapper: StyledComponent<'div'> = styled('div', {
         content: 'B',
       },
     },
-    '&[data-language="shell"]': {
+    '&[data-language="shell"], &[data-language="sh"]': {
       '&::before': {
         content: 'S',
       },

@@ -12,10 +12,10 @@ interface IChainwebRowProps {
   height: number;
 }
 
-export function ChainwebRow({
+export const ChainwebRow = ({
   blocks,
   height,
-}: IChainwebRowProps): JSX.Element {
+}: IChainwebRowProps): JSX.Element => {
   const row: Array<IBlock | undefined> = new Array(20).fill(undefined);
   blocks.forEach((block) => (row[block.chainid] = block));
 
@@ -66,4 +66,4 @@ export function ChainwebRow({
       })}
     </Box>
   );
-}
+};

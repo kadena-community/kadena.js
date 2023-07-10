@@ -11,9 +11,9 @@ Collection of utility functions pactjs related
 
 <!-- genericHeader end -->
 
-API Reference can be found here [pactjs.api.md][1]
+## PactJS
 
-<hr>
+API Reference can be found here [pactjs.api.md][1]
 
 crypto:
 

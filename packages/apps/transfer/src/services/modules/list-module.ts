@@ -8,6 +8,9 @@ import {
   Network,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import Debug from 'debug';
+
+const debug = Debug('kadena-transfer:services:list-module');
 
 export interface IModulesResult {
   status?: string;
@@ -22,6 +25,7 @@ export const listModules = async (
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModulesResult> => {
+  debug(listModules.name);
   const pactCommand = new PactCommand();
 
   pactCommand.code = createExp('list-modules');

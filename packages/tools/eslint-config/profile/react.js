@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['./lib', 'plugin:react/recommended'],
-  plugins: ['import', 'simple-import-sort', 'react', 'jsx-a11y'],
+  plugins: ['react', 'jsx-a11y'],
   rules: {
     '@rushstack/typedef-var': 'off',
     // @kadena-dev/typedef-var allows for inferred types in exported constants
@@ -20,6 +20,7 @@ module.exports = {
         unnamedComponents: 'arrow-function',
       },
     ],
+    'import/no-unresolved': ['error', { ignore: ['^@stitches/react'] }],
   },
   settings: {
     react: {

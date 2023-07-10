@@ -1,6 +1,8 @@
 import {
+  ChainwebChainId,
   ChainwebNetworkId,
   createSendRequest,
+  ICommandResult,
   IPollResponse,
   local,
   poll,
@@ -10,7 +12,6 @@ import {
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import {
-  ChainId,
   ICap,
   ICommand,
   ICommandPayload,
@@ -60,7 +61,7 @@ export interface ICommandBuilder<
         pollRequest: Promise<IPollResponse>,
       ) => void;
     },
-  ): Promise<this>;
+  ): Promise<ICommandResult>;
   poll(apiHost: string): Promise<IPollResponse>;
   addSignatures(
     ...sig: {
@@ -129,7 +130,7 @@ export class PactCommand
   public code: string;
   public data: Record<string, unknown>;
   public publicMeta: {
-    chainId: ChainId;
+    chainId: ChainwebChainId;
     sender: string;
     gasLimit: number;
     gasPrice: number;
@@ -365,7 +366,7 @@ export class PactCommand
         pollRequest: Promise<IPollResponse>,
       ) => void;
     },
-  ): Promise<this> {
+  ): Promise<ICommandResult> {
     if (this.requestKey === undefined) {
       throw new Error('`requestKey` not found');
     }
@@ -396,12 +397,12 @@ export class PactCommand
               // resolve the Promise when we get a "success" response
               this.status = 'success';
               clearTimeout(cancelTimeout);
-              resolve(this);
+              resolve(result[this.requestKey!]);
             } else if (result[this.requestKey!]?.result.status === 'failure') {
               // reject the Promise when we get a "failure" response
               this.status = 'failure';
               clearTimeout(cancelTimeout);
-              reject(this);
+              reject(result[this.requestKey!]);
             } else if (Date.now() < endTime) {
               // no "success" response (yet), try again in `interval` seconds
               setTimeout(poll, interval);
@@ -409,7 +410,7 @@ export class PactCommand
               // took longer than the specified `timeout`, reject the Promise
               this.status = 'timeout';
               clearTimeout(cancelTimeout);
-              reject(result);
+              reject(result[this.requestKey!]);
             }
           })
           .catch((err) => console.log('this.poll failed. Error:', err));

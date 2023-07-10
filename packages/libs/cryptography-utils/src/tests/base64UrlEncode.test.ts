@@ -1,6 +1,7 @@
-import { throws } from 'assert';
 import { base64UrlEncode } from '../base64UrlEncode';
 import { uint8ArrayToStr } from '../uint8ArrayToStr';
+
+import { throws } from 'assert';
 
 describe('base64UrlEncode', () => {
   it('takes in a string and outputs a Base 64 URL encoded string', () => {
