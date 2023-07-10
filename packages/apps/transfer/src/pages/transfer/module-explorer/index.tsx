@@ -29,12 +29,12 @@ import {
   listModules,
 } from '@/services/modules/list-module';
 import { convertIntToChainId } from '@/services/utils/utils';
-import useTranslation from 'next-translate/useTranslation';
 import Debug from 'debug';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 
 const ModuleExplorer: FC = () => {
-  const debug = Debug('kadena-transfer:pages:transfer:module-explorer');
+  Debug('kadena-transfer:pages:transfer:module-explorer');
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleSearch, setModuleSearch] = useState<string>('');
