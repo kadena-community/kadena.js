@@ -31,7 +31,9 @@ const getFuncCapInterfaceName = (func: IFunction): string => {
     return '';
   }
 
-  return `ICapability_${func.name.replace(/-/g, '_')}`;
+  const prefix = func.kind === 'defpact' ? 'defpact_' : '';
+
+  return `ICapability_${prefix}${func.name.replace(/-/g, '_')}`;
 };
 
 const indent = (str: string): string =>
@@ -120,6 +122,9 @@ export function generateDts2(
     throw new Error(`Module ${moduleFullName} has no functions`);
   }
 
+  const functions = module.functions.filter(({ kind }) => kind === 'defun');
+  const defpacts = module.functions.filter(({ kind }) => kind === 'defpact');
+
   const capsInterfaces =
     module.functions?.map(genFunCapsInterface).filter(Boolean).join(EOL) || '';
 
@@ -138,7 +143,10 @@ declare module '@kadena/client' {
   export interface IPactModules {
     ${module.doc ? `/**${EOL}* ${module.doc}${EOL}*/${EOL}` : ''}
     "${getModuleFullName(module)}": {
-${indent(indent(module.functions.map(getFunctionType).join(`,${EOL}${EOL}`)))}
+${indent(indent(functions.map(getFunctionType).join(`,${EOL}${EOL}`)))}
+      "defpact":{
+${indent(indent(indent(defpacts.map(getFunctionType).join(`,${EOL}${EOL}`))))}
+      }
     }
   }
 }`;

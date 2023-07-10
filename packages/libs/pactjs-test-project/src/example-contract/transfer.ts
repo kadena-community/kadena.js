@@ -26,24 +26,21 @@ async function transactionMain(): Promise<void> {
 
   const amount: { decimal: string } = { decimal: '0.1337' };
 
-  const cmdBuilder: Required<ReturnType<typeof commandBuilder>> =
-    commandBuilder(
-      payload.exec(
-        Pact.modules.coin.transfer(senderAccount, receiverAccount, amount),
-        Pact.modules.coin.transfer(receiverAccount, senderAccount, {
-          decimal: '0.000000000001',
-        }),
-        Pact.modules.coin.rotate('', () => ''),
-      ),
-      addSigner(onlyKey(senderAccount), (withCap: any) => [
-        withCap('coin.TRANSFER', senderAccount, receiverAccount, amount),
-        withCap('coin.GAS'),
-      ]),
-      setMeta({ chainId: '1', sender: senderAccount }),
-      setProp('networkId', 'testnet04'),
-    ) as IPactCommand;
-
-  const tx = createTransaction(cmdBuilder);
+  const tx = Pact.builder
+    .execute(
+      Pact.modules.coin.transfer(senderAccount, receiverAccount, amount),
+      Pact.modules.coin.transfer(receiverAccount, senderAccount, {
+        decimal: '0.000000000001',
+      }),
+      Pact.modules.coin.rotate('', () => ''),
+    )
+    .addSigner(onlyKey(senderAccount), (withCap) => [
+      withCap('coin.TRANSFER', senderAccount, receiverAccount, amount),
+      withCap('coin.GAS'),
+    ])
+    .setMeta({ chainId: '1', sender: senderAccount })
+    .setNetworkId('testnet04')
+    .createTransaction();
 
   console.log('unsigned transaction', JSON.stringify(tx));
   const res = await signWithChainweaver(tx);

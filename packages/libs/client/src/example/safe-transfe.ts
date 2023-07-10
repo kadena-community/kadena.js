@@ -22,7 +22,6 @@ export async function doSafeTransfer(
 ): Promise<Record<string, ICommandResult>> {
   const unsignedTr = Pact.builder
     .execute(
-      coin.transfer('asd', 'asdasd', { decimal: '1' }),
       // the first two transfers are to make sure the receiver has also signed the command
       coin.transfer(from.account, to.account, { decimal: '1' }),
       coin.transfer(to.account, from.account, { decimal: '1' }),

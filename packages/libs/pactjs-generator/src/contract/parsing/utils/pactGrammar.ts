@@ -37,11 +37,11 @@ export const typeRule = seq(
 
 // (defun|defcap name (a:string,b:object{schema-one},c) @doc "test doc")
 export const method = <T extends IParser>(
-  type: 'defun' | 'defcap',
+  type: 'defun' | 'defcap' | 'defpact',
   bodyParser: T = skipTheRest as T,
 ) =>
   block(
-    id(type),
+    $('kind', id(type)),
     $('name', atom),
     maybe($('returnType', typeRule)),
     block(
@@ -136,6 +136,7 @@ const implementsRule = block(
 
 export const defun = method('defun', functionBody);
 export const defcap = method('defcap', capabilityBody);
+export const defpact = method('defpact', functionBody);
 
 // (module name governance @doc "doc" ... )
 // (interface name @doc "doc" ... )
@@ -152,7 +153,7 @@ export const moduleRule = block(
   maybe($('doc', str)),
   maybe(seq(id('@model'), id('['), repeat(block()), id(']'))),
   repeat(
-    $('functions', defun),
+    $('functions', oneOf(defun, defpact)),
     $('capabilities', defcap),
     $('usedModules', use),
     $('usedInterface', implementsRule),

@@ -12,12 +12,14 @@ describe('getCapabilities', () => {
       governance: 'GOVERNANCE',
       functions: [
         {
+          kind: 'defun',
           name: 'test-function',
           withCapabilities: ['test-capability'],
         },
       ],
       capabilities: [
         {
+          kind: 'defcap',
           name: 'test-capability',
           doc: 'this is a test capability',
         },
@@ -53,17 +55,20 @@ describe('getCapabilities', () => {
       governance: 'GOVERNANCE',
       functions: [
         {
+          kind: 'defun',
           name: 'test-function',
           withCapabilities: ['first-capability'],
         },
       ],
       capabilities: [
         {
+          kind: 'defcap',
           name: 'first-capability',
           doc: 'this is the first capability',
           composeCapabilities: ['second-capability'],
         },
         {
+          kind: 'defcap',
           name: 'second-capability',
           doc: 'this is the second capability',
         },

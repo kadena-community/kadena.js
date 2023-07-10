@@ -15,6 +15,7 @@ interface ISchema {
 
 interface IMethod {
   name: string;
+  kind: string; // 'defun' | 'defcap' | 'defpact'; // need to fix typing
   returnType?: string | { kind: string; value: string };
   doc?: string;
   parameters?: Array<{

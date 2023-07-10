@@ -143,6 +143,13 @@ async function generatorV2(
     getContract,
   });
 
+  if (process.env.DEBUG === 'dev') {
+    writeFileSync(
+      join(process.cwd(), 'modules.json'),
+      JSON.stringify(modules, undefined, 2),
+    );
+  }
+
   const moduleDtss = new Map();
 
   Object.keys(modules).map((name) => {
