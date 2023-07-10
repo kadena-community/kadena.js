@@ -20,20 +20,17 @@ export const containerClassDisabled = style([
 ]);
 
 export const selectContainerClass = style([
-  sprinkles({}),
-  {
+  sprinkles({
     display: 'flex',
-  },
+  }),
 ]);
 
 export const iconClass = style([
   sprinkles({
     marginRight: '$2',
     marginLeft: '$2',
-  }),
-  {
     display: 'block',
-  },
+  }),
 ]);
 
 export const selectClass = style([
@@ -54,5 +51,4 @@ export const optionClass = style([
     backgroundColor: '$neutral1',
     color: '$neutral5',
   }),
-  {},
 ]);

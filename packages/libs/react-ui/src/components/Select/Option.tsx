@@ -4,10 +4,7 @@ import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface IOptionProps
-  extends Omit<
-    React.HTMLAttributes<HTMLOptionElement>,
-    'as' | 'children' | 'className' | 'value'
-  > {
+  extends Omit<React.HTMLAttributes<HTMLOptionElement>, 'as'> {
   children: React.ReactNode;
   value: string[] | string | number;
 }

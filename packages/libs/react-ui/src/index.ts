@@ -52,4 +52,8 @@ export {
   ITagProps,
   MaskedValue,
   IMaskedValueProps,
+  Option,
+  IOptionProps,
+  Select,
+  ISelectProps,
 } from './components';
