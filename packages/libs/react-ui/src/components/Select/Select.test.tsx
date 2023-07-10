@@ -1,17 +1,89 @@
 import { Select } from '@components/Select';
 import { Option } from '@components/Select/Option';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
 describe('Select', () => {
-  test('renders correctly', () => {
+  it('renders without errors', () => {
     const { getByTestId } = render(
-      <Select onChange={() => {}} value={1}>
-        <Option value={1}>option 1</Option>
+      <Select value="1" onChange={() => {}}>
+        <Option value="1">Option 1</Option>
+        <Option value="2">Option 2</Option>
       </Select>,
     );
 
-    const inputContainer = getByTestId('kda-select');
-    expect(inputContainer).toBeInTheDocument();
+    const selectContainer = getByTestId('kda-select');
+    expect(selectContainer).toBeInTheDocument();
+  });
+
+  it('renders the provided children options', () => {
+    const { getByTestId } = render(
+      <Select value="1" onChange={() => {}}>
+        <Option value="1">Option 1</Option>
+        <Option value="2">Option 2</Option>
+      </Select>,
+    );
+
+    const selectContainer = getByTestId('kda-select');
+    const selectElement = selectContainer.querySelector('select');
+    const option1 = selectContainer.querySelector('option[value="1"]');
+    const option2 = selectContainer.querySelector('option[value="2"]');
+
+    expect(selectElement).toBeInTheDocument();
+    expect(option1).toBeInTheDocument();
+    expect(option2).toBeInTheDocument();
+  });
+
+  it('invokes the onChange event handler when an option is selected', () => {
+    const handleChange = jest.fn();
+    const { getByTestId } = render(
+      <Select value="1" onChange={handleChange}>
+        <Option value="1">Option 1</Option>
+        <Option value="2">Option 2</Option>
+      </Select>,
+    );
+
+    const selectContainer = getByTestId('kda-select');
+    const selectElement = selectContainer.querySelector(
+      'select',
+    ) as HTMLSelectElement;
+
+    fireEvent.change(selectElement, { target: { value: '2' } });
+    expect(handleChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('disables the select element when disabled prop is true', () => {
+    const { getByTestId } = render(
+      <Select value="1" onChange={() => {}} disabled>
+        <Option value="1">Option 1</Option>
+        <Option value="2">Option 2</Option>
+      </Select>,
+    );
+
+    const selectContainer = getByTestId('kda-select');
+    const selectElement = selectContainer.querySelector(
+      'select',
+    ) as HTMLSelectElement;
+
+    expect(selectElement.disabled).toBe(true);
+  });
+
+  it('renders an icon when the "icon" prop is provided', () => {
+    const IconMock = jest.fn(() => <span className="icon">User</span>);
+    const { getByTestId, getByText } = render(
+      <Select value="1" onChange={() => {}} icon={IconMock}>
+        <Option value="1">Option 1</Option>
+        <Option value="2">Option 2</Option>
+      </Select>,
+    );
+
+    const selectContainer = getByTestId('kda-select');
+    const selectElement = selectContainer.querySelector('select');
+    const iconElement = selectContainer.querySelector('.icon');
+
+    expect(selectElement).toBeInTheDocument();
+    expect(iconElement).toBeInTheDocument();
+    expect(IconMock).toHaveBeenCalledTimes(1);
+    expect(getByText('User')).toBeInTheDocument();
   });
 });
