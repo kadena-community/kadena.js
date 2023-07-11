@@ -42,4 +42,9 @@ export {
   ITabContentProps,
   TextField,
   ITextFieldProps,
+  Footer,
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
 } from './components';

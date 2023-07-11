@@ -32,3 +32,10 @@ export {
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
 export { Link, ILinkProps } from './Link/Link';
+export {
+  Footer,
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
+} from './Footer/';
