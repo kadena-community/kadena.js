@@ -52,4 +52,5 @@ export {
   ITagProps,
   MaskedValue,
   IMaskedValueProps,
+  ITrackerCardProps,
 } from './components';
