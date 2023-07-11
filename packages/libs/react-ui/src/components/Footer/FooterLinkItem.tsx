@@ -8,23 +8,26 @@ import {
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
+export type Target = '_self' | '_blank';
 export interface IFooterLinkItemProps {
   title: string;
   href?: string;
+  target?: Target;
   color?: keyof typeof colorVariants;
 }
 
 export const FooterLinkItem: FC<IFooterLinkItemProps> = ({
   title,
   href,
+  target = '_blank',
   color = 'default',
 }) => {
   const classLinkList = classNames(linkClass, colorVariants[color]);
   const classSpanList = classNames(spanClass, colorVariants[color]);
   return (
-    <div className={linkBoxClass}>
+    <div className={linkBoxClass} data-testid="kda-footer-link-item">
       {href !== undefined ? (
-        <a className={classLinkList} href={`#${href}`}>
+        <a className={classLinkList} href={href} target={target}>
           {title}
         </a>
       ) : (

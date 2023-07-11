@@ -9,7 +9,6 @@ export interface IFooterIconItemProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   onClick?: React.MouseEventHandler;
-  href?: string;
   title: string;
   text?: string;
   color?: keyof typeof colorVariants;
@@ -17,7 +16,6 @@ export interface IFooterIconItemProps
 
 export const FooterIconItem: FC<IFooterIconItemProps> = ({
   color = 'default',
-  href,
   icon,
   onClick,
   title,
@@ -36,7 +34,7 @@ export const FooterIconItem: FC<IFooterIconItemProps> = ({
       {text !== undefined ? (
         <span className={iconTextClass}>{text}</span>
       ) : null}
-      <a href={`#${href}`}>
+      <a>
         <Icon size="sm" className={colorVariants[color]} />
       </a>
     </div>
