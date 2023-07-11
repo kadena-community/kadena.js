@@ -36,7 +36,7 @@ export const deployPackage: (options: IProject) => Promise<void> = async ({
   const rushConfig = await fs.readFile(RUSH_CONFIG_PATH, 'utf-8');
   const project = {
     packageName: name,
-    tags: [type],
+    tags: [`${type}s`],
     projectFolder: dir,
     shouldPublish: shouldPublish,
   };
