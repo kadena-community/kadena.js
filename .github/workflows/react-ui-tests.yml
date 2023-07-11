@@ -3,21 +3,12 @@ name: React UI Storybook Tests
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
-  pull_request:
-    paths:
-      - packages/libs/react-ui/**
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - packages/libs/react-ui/**
   deployment_status:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event.deployment_status.state == 'success'
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     steps:
       - uses: actions/checkout@v2
       - name: Setup pnpm
