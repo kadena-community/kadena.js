@@ -897,6 +897,7 @@ importers:
       '@vanilla-extract/webpack-plugin': 2.2.0
       classnames: ^2.3.1
       copyfiles: 2.4.1
+      css-loader: ~6.8.1
       eslint: ^8.15.0
       eslint-import-resolver-typescript: 3.5.5
       eslint-plugin-import: ~2.27.5
@@ -923,6 +924,7 @@ importers:
       '@vanilla-extract/recipes': 0.4.0_@vanilla-extract+css@1.11.1
       '@vanilla-extract/sprinkles': 1.6.0_@vanilla-extract+css@1.11.1
       classnames: 2.3.2
+      css-loader: 6.8.1_webpack@5.73.0
       focus-trap-react: 10.1.4_ae99d26bf538c96cd8f1c5ec503a2210
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -25453,7 +25455,7 @@ packages:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.18.2
-      webpack: 5.73.0
+      webpack: 5.73.0_webpack-cli@4.10.0
 
   /terser/5.18.2:
     resolution: {integrity: sha512-Ah19JS86ypbJzTzvUCX7KOsEIhDaRONungA4aYBjEP3JZRf4ocuDzTg4QWZnPn9DEMiMYGJPiSOy7aykoCc70w==}
