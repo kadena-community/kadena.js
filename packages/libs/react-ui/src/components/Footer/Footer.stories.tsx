@@ -1,4 +1,4 @@
-import { IFooterIconItemProps, IFooterLinkItemProps, IFooterPanelProps, SystemIcon } from './../../';
+import { SystemIcon } from './../../';
 import { colorVariants, footerVariants } from './Footer.css';
 import { Footer, IFooterProps } from './index';
 
@@ -9,7 +9,7 @@ const meta: Meta<
   {
     linksCount: number;
     iconsCount: number;
-  } & IFooterProps & IFooterLinkItemProps & IFooterIconItemProps
+  } & IFooterProps
 > = {
   title: 'Layout/Footer',
   argTypes: {
@@ -93,7 +93,7 @@ type Story = StoryObj<
   {
     linksCount: number;
     iconsCount: number;
-  } & IFooterProps & IFooterIconItemProps & IFooterLinkItemProps
+  } & IFooterProps
 >;
 
 export const Primary: Story = {
@@ -108,7 +108,7 @@ export const Primary: Story = {
     const linkItems = links.slice(0, linksCount);
     const iconButtons = icons.slice(0, iconsCount);
     return (
-      <Footer.Root variant={variant}>
+      <Footer.Root variant={variant} color={color}>
         <Footer.Panel variant={variant}>
           {linkItems.map((item, index) => {
             return (

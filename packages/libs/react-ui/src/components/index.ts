@@ -1,4 +1,4 @@
-export { Button, IButtonProps } from './Button/Button';
+export { Button, IButtonProps } from './Button';
 export { Grid, IGridContainerProps, IGridItemProps } from './Grid';
 export { Stack, IStackProps } from './Stack/Stack';
 export { Modal, IModalProps, ModalProvider, useModal } from './Modal';
@@ -6,6 +6,15 @@ export { Card, ICardProps } from './Card/Card';
 export { SystemIcon, ProductIcon, IIconProps } from './Icons';
 export { IconButton, IIconButtonProps } from './IconButton/IconButton';
 export { Tabs, ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
+export {
+  Table,
+  ITableProps,
+  ITBodyProps,
+  ITdProps,
+  IThProps,
+  ITHeadProps,
+  ITrProps,
+} from './Table';
 export {
   Text,
   ITextProps,
@@ -39,3 +48,7 @@ export {
   IFooterIconItemProps,
   IFooterLinkItemProps,
 } from './Footer/';
+export { Tag, ITagProps } from './Tag/Tag';
+export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
+export { Select, ISelectProps } from './Select/Select';
+export { Option, IOptionProps } from './Select/Option';

@@ -10,9 +10,5 @@ export interface IFooterPanelProps {
 
 export const FooterPanel: FC<IFooterPanelProps> = ({ children, variant }) => {
   const classPanelList = classNames(footerPanel, footerPanelVariants[variant]);
-  return (
-    <div className={classPanelList} data-testid="kda-footer-panel">
-      {children}
-    </div>
-  );
+  return <div className={classPanelList}>{children}</div>;
 };
