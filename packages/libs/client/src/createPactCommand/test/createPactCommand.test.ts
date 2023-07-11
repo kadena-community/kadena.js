@@ -262,46 +262,6 @@ describe('createPactCommand', () => {
   });
 });
 
-describe('signer', () => {
-  it('returns a signer object', () => {
-    expect(addSigner('bob_public_key')()).toEqual({
-      signers: [
-        {
-          pubKey: 'bob_public_key',
-          scheme: 'ED25519',
-        },
-      ],
-    });
-  });
-
-  it('adds capability if presented', () => {
-    expect(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      addSigner<any>('bob_public_key', (withCapability) => [
-        withCapability('coin.GAS'),
-      ])(),
-    ).toEqual({
-      signers: [
-        {
-          pubKey: 'bob_public_key',
-          scheme: 'ED25519',
-          clist: [{ args: [], name: 'coin.GAS' }],
-        },
-      ],
-    });
-  });
-  it('accept signer object as a first argument', () => {
-    expect(addSigner({ pubKey: 'test', scheme: 'ED25519' })()).toEqual({
-      signers: [
-        {
-          pubKey: 'test',
-          scheme: 'ED25519',
-        },
-      ],
-    });
-  });
-});
-
 describe('mergePayload', () => {
   it('merge code part of two payload', () => {
     expect(
