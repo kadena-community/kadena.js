@@ -17,8 +17,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     steps:
+      - name: Waiting for 200 from the Vercel Preview
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        id: waitForPreview
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 60
+          allow_inactive: true
+          # access preview url
+      - run: echo ${{steps.waitForPreview.outputs.url}}
+      
       - uses: actions/checkout@v2
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -32,16 +41,6 @@ jobs:
       - name: Rush install (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js install -t @kadena/react-ui
-
-      - name: Waiting for 200 from the Vercel Preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        id: waitForPreview
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 60
-          allow_inactive: true
-        # access preview url
-      - run: echo ${{steps.waitForPreview.outputs.url}}
 
       - name: Smoke Tests
         working-directory: packages/libs/react-ui
