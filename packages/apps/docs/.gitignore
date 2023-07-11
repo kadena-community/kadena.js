@@ -14,3 +14,6 @@ src/pages/docs/build/cookbook/cookbook
 src/pages/docs/chainweb/stream-client
 src/pages/docs/chainweb/node-client
 src/pages/docs/chainweb/js-bindings
+
+next-env.d.ts
+
