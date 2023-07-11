@@ -16,7 +16,7 @@ CLI tool to assist development on the kadena blockchain
 In order to use this cli tool the following packages need to be installed
 manually. In a later version some might be installed via the cli tool.
 
-- [node v16+][1]
+- [node v18+][1]
 - [docker][2]
 
 Login to docker with your [github account][3] , use the _gh access token_ as

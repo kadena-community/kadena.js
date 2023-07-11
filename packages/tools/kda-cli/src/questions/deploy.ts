@@ -35,6 +35,13 @@ const isL2 = ({ deployTargets }: IAnswers): boolean => {
   if (deployTargets?.includes('l1l2')) return true;
   return false;
 };
+
+const isSigningWithPrivateKey = ({ useChainWeaver }: IAnswers): boolean => {
+  if (useChainWeaver === undefined) return false;
+  console.log('useChainWeaver', useChainWeaver);
+  return !useChainWeaver;
+}
+
 const signAndSend = ({
   publicKey,
   secretKey,
@@ -163,10 +170,28 @@ export const deployQuestions: IQuestion[] = [
     when: isL2,
   },
   {
-    message: 'Who is the signer?',
+    message: 'What is the account of the signer?',
     name: 'signer',
     type: 'input',
     when: isDeployTask,
+  },
+  {
+    message: 'What public key do you want to use to sign?',
+    name: 'publicKey',
+    type: 'input',
+    when: isDeployTask,
+  },
+  {
+    message: 'Do you want to use Chainweaver to sign?',
+    name: 'useChainWeaver',
+    type: 'confirm',
+    when: isDeployTask,
+  },
+  {
+    message: 'Please enter your private key to sign',
+    name: 'secretKey',
+    type: 'input',
+    when: isSigningWithPrivateKey,
   },
   {
     message: 'Deploying...',
@@ -177,16 +202,23 @@ export const deployQuestions: IQuestion[] = [
       pactFile = '',
       dataFile = '',
       deployTargets = '',
+      useChainWeaver = true,
       signer = '',
       l1Chains = [],
       l2Chains = [],
+      publicKey = '',
+      secretKey = '',
     }: IAnswers) => {
       if (typeof pactFile !== 'string' || pactFile === '')
         throw new Error('No pact file provided');
       if (typeof dataFile !== 'string' || dataFile === '')
         throw new Error('No data file provided');
-      if (typeof signer !== 'string' || signer === '')
+      if (typeof signer !== 'string' || (signer === '' && !useChainWeaver))
         throw new Error('No signer provided');
+      if (typeof publicKey !== 'string' || publicKey === '')
+        throw new Error('No publicKey provided');
+      if (typeof secretKey !== 'string' || (secretKey === '' && !useChainWeaver))
+        throw new Error('No secretKey provided');
       if (deployTargets === '') throw new Error('No deploy targets provided');
       const pactCode = readFileSync(pactFile, 'utf8');
       const data = JSON.parse(readFileSync(dataFile, 'utf8'));
@@ -194,14 +226,12 @@ export const deployQuestions: IQuestion[] = [
       const deployCommand = setDeploySettings({
         pactCode,
         data,
-        publicKey:
-          '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-        secretKey:
-          '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
-        useChainWeaver: false,
+        publicKey,
+        secretKey,
+        useChainWeaver: Boolean(useChainWeaver),
       });
       if (isL1({ deployTargets }) && Array.isArray(l1Chains)) {
-        await deploy({
+        const res = await deploy({
           chainIds: l1Chains,
           setDeployChainSettings: setDeployChainSettings({
             endpoint: 'http://localhost:8080',
@@ -210,6 +240,7 @@ export const deployQuestions: IQuestion[] = [
           }),
           setDeploySettings: deployCommand,
         });
+        console.log(res)
       }
       if (isL2({ deployTargets }) && Array.isArray(l2Chains))
         await deploy({

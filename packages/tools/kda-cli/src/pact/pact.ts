@@ -104,7 +104,8 @@ export const setMeta =
         gasLimit,
         gasPrice,
         ttl,
-        creationTime: Math.floor(Date.now() / 1000),
+        // Temporarily hack, the docker container seems to be in a different timezone. Since we're moving away from docker this is fine for now.
+        creationTime: Math.floor(Date.now() / 1000) - 50000,
       },
     };
   };
@@ -307,24 +308,23 @@ export const getPayload = <T extends Partial<Payload>>(
 };
 
 interface IQuicksignPayload {
-  sigs: Record<string, string | undefined>;
+  sigs: Array<{ pubKey: string, sig: string | null}>;
   cmd: string;
 }
 interface IQuicksignPayloadRequest {
-  reqs: IQuicksignPayload[];
+  cmdSigDatas: IQuicksignPayload[];
 }
 
 export const getQuicksignPayload = (
   ...payloads: IPactRequest[]
 ): IQuicksignPayloadRequest => {
   return {
-    reqs: payloads.map((payload) => ({
-      sigs: payload.signers.reduce(
-        (sigs, signer) => ({
-          ...sigs,
-          [signer.pubKey]: null,
-        }),
-        {},
+    cmdSigDatas: payloads.map((payload) => ({
+      sigs: payload.signers.map(
+        (signer) => ({
+          pubKey: signer.pubKey,
+          sig: null,
+        })
       ),
       cmd: JSON.stringify(payload),
     })),
@@ -335,7 +335,7 @@ export const signWithChainweaver: Reducer = async (payload) => {
   const pactPayload = getPayload(await payload);
   const quicksignPayload = getQuicksignPayload(pactPayload);
 
-  const response = await fetch('http://127.0.0.1:9467/v1/quickSign', {
+  const response = await fetch('http://127.0.0.1:9467/v1/quicksign', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -344,11 +344,11 @@ export const signWithChainweaver: Reducer = async (payload) => {
   });
   if (!response.ok) throw new Error('Failed to sign with chainweaver');
   const data = await response.json();
-  const [{ sigs }] = data.results;
+  const [{ commandSigData }] = data.responses;
   return {
     ...payload,
     nonce: pactPayload.nonce,
-    sigs: pactPayload.signers.map((signer) => ({ sig: sigs[signer.pubKey] })),
+    sigs: pactPayload.signers.map((signer) => ({ sig: commandSigData.sigs.find((sig: any) => sig.pubKey === signer.pubKey)?.sig })),
   };
 };
 
