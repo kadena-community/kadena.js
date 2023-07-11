@@ -3,7 +3,16 @@ name: React UI Storybook Tests
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
-  deployment_status:
+  pull_request:
+    paths:
+      - packages/libs/react-ui/**
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - packages/libs/react-ui/**
+
 
 jobs:
   test:
