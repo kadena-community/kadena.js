@@ -1,5 +1,3 @@
-import { theme } from '@kadena/react-components';
-
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs';
 import apiSpecs from '@/specs/pact/pact.openapi.json';
