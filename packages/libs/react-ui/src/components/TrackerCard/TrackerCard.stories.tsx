@@ -1,30 +1,22 @@
-import { ITrackerCardProps, TrackerCard } from './TrackerCard';
+import { ILabelValue, ITrackerCardProps, TrackerCard } from './TrackerCard';
 
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { SystemIcon } from '../Icons';
+import { layoutVariant } from './TrackerCard.css';
 
 const meta: Meta<ITrackerCardProps> = {
   title: 'Components/TrackerCard',
   argTypes: {
-    firstTitle: {
+    variant: {
+      options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],
       control: {
-        type: 'text',
+        type: 'select',
       },
     },
-    firstContent: {
+    labelValue: {
       control: {
-        type: 'text',
-      },
-    },
-    secondTitle: {
-      control: {
-        type: 'text',
-      },
-    },
-    secondContent: {
-      control: {
-        type: 'text',
+        type: 'object',
       },
     },
     helperText: {
@@ -36,11 +28,6 @@ const meta: Meta<ITrackerCardProps> = {
       control: {
         type: 'select',
         options: ['mild', 'severe'],
-      },
-    },
-    isAccount: {
-      control: {
-        type: 'boolean',
       },
     },
     icon: {
@@ -59,37 +46,38 @@ export default meta;
 
 type Story = StoryObj<ITrackerCardProps>;
 
+const labelValues: ILabelValue[] = [
+  // {
+  //   label: 'Account',
+  //   value: 'k:1234567890abcdef',
+  //   isAccount: true,
+  // },
+  {
+    label: 'Balance',
+    value: '1000',
+  },
+  {
+    label: 'Debt',
+    value: '6000',
+  },
+];
+
 export const Primary: Story = {
   name: 'TrackerCard',
   args: {
-    firstTitle: 'Account',
-    firstContent: 'k:1234567890abcdef',
-    secondTitle: 'Balance',
-    secondContent: '1000',
+    labelValue: labelValues,
     helperText: 'This is a helper text',
     helperTextType: 'mild',
-    isAccount: true,
     icon: undefined,
+    variant: 'vertical',
   },
-  render: ({
-    firstTitle,
-    firstContent,
-    secondTitle,
-    secondContent,
-    helperText,
-    helperTextType,
-    isAccount,
-    icon: Icon,
-  }) => {
+  render: ({ labelValue, helperText, helperTextType, icon: Icon, variant }) => {
     return (
       <TrackerCard
-        firstTitle={firstTitle}
-        firstContent={firstContent}
-        secondTitle={secondTitle}
-        secondContent={secondContent}
+        variant={variant}
+        labelValue={labelValue}
         helperText={helperText}
         helperTextType={helperTextType}
-        isAccount={isAccount}
         icon={Icon}
       />
     );
