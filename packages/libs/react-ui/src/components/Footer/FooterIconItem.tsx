@@ -1,8 +1,7 @@
 import { SystemIcon } from '../';
 
-import { footerVariants, iconButtonClass, iconTextClass } from './Footer.css';
+import { colorVariants, iconBoxClass, iconTextClass } from './Footer.css';
 
-import { FooterVariant } from '@components/Footer/Footer';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
@@ -10,31 +9,36 @@ export interface IFooterIconItemProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   onClick?: React.MouseEventHandler;
+  href?: string;
+  title: string;
   text?: string;
-  variant?: FooterVariant;
+  color?: keyof typeof colorVariants;
 }
 
 export const FooterIconItem: FC<IFooterIconItemProps> = ({
+  color = 'default',
+  href,
   icon,
   onClick,
+  title,
   text,
-  variant = 'web',
+  ...props
 }) => {
   const Icon = icon;
-
-  const buttonClassList = classNames(iconButtonClass, footerVariants[variant]);
-  const textClassList = classNames(iconTextClass, footerVariants[variant]);
+  const linkClassList = classNames(iconBoxClass, colorVariants[color]);
 
   return (
-    <button
-      className={buttonClassList}
+    <div
+      className={linkClassList}
       onClick={onClick}
       data-testid="kda-footer-icon-item"
     >
       {text !== undefined ? (
-        <span className={textClassList}>{text}</span>
+        <span className={iconTextClass}>{text}</span>
       ) : null}
-      <Icon size="sm" color="inherit" />
-    </button>
+      <a href={`#${href}`}>
+        <Icon size="sm" className={colorVariants[color]} />
+      </a>
+    </div>
   );
 };

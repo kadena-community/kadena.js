@@ -1,19 +1,15 @@
-import { containerClass, footerVariants } from './Footer.css';
+import { colorVariants, containerClass, footerVariants } from './Footer.css';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export type FooterVariant = 'web' | 'application';
-
 export interface IFooterProps {
-  variant?: FooterVariant;
   children: React.ReactNode;
+  color: keyof typeof colorVariants;
+  variant: keyof typeof footerVariants;
 }
 
-export const FooterContainer: FC<IFooterProps> = ({
-  children,
-  variant = 'application',
-}) => {
+export const FooterContainer: FC<IFooterProps> = ({ children, variant }) => {
   const classList = classNames(containerClass, footerVariants[variant]);
   return (
     <footer className={classList} data-testid="kda-footer">

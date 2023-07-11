@@ -1,21 +1,11 @@
-export { Button, IButtonProps } from './Button';
+export { Button, IButtonProps } from './Button/Button';
 export { Grid, IGridContainerProps, IGridItemProps } from './Grid';
-export { Stack, IStackProps } from './Stack';
+export { Stack, IStackProps } from './Stack/Stack';
 export { Modal, IModalProps, ModalProvider, useModal } from './Modal';
-export { Tag, ITagProps } from './Tag';
-export { Card, ICardProps } from './Card';
-export { SystemIcon, ProductIcon, IIconProps } from './Icon';
-export { IconButton, IIconButtonProps } from './IconButton';
+export { Card, ICardProps } from './Card/Card';
+export { SystemIcon, ProductIcon, IIconProps } from './Icons';
+export { IconButton, IIconButtonProps } from './IconButton/IconButton';
 export { Tabs, ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
-export {
-  Table,
-  ITableProps,
-  ITBodyProps,
-  ITdProps,
-  IThProps,
-  ITHeadProps,
-  ITrProps,
-} from './Table';
 export {
   Text,
   ITextProps,
@@ -27,11 +17,7 @@ export {
   ILabelProps,
 } from './Typography';
 export { TextField, ITextFieldProps } from './TextField/TextField';
-export {
-  IInputWrapperProps,
-  InputWrapper,
-  InputWrapperStatus,
-} from './InputWrapper';
+export { IInputWrapperProps, InputWrapper } from './InputWrapper/InputWrapper';
 export { IInputProps, Input } from './Input/Input';
 export {
   Notification,
@@ -44,9 +30,8 @@ export {
   IBreadcrumbsProps,
   IBreadcrumbItemProps,
 } from './Breadcrumbs';
-export { Box, IBoxProps } from './Box';
-export { Link, ILinkProps } from './Link';
-export { Tooltip, ITooltipProps } from './Tooltip';
+export { Box, IBoxProps } from './Box/Box';
+export { Link, ILinkProps } from './Link/Link';
 export {
   Footer,
   IFooterProps,
@@ -54,10 +39,3 @@ export {
   IFooterIconItemProps,
   IFooterLinkItemProps,
 } from './Footer/';
-export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
-export { Select, ISelectProps } from './Select/Select';
-export { Option, IOptionProps } from './Select/Option';
-export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';
-export { Accordion, IAccordionProps } from './Accordion';
-export { Tree, ITreeProps } from './Tree';
-export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';

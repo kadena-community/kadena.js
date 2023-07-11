@@ -1,37 +1,35 @@
-import { footerVariants, linkBoxClass, linkClass } from './Footer.css';
+import {
+  colorVariants,
+  linkBoxClass,
+  linkClass,
+  spanClass,
+} from './Footer.css';
 
-import { FooterVariant } from '@components/Footer/Footer';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export type Target = '_self' | '_blank';
 export interface IFooterLinkItemProps {
-  children: React.ReactNode;
-  variant?: FooterVariant;
+  title: string;
+  href?: string;
+  color?: keyof typeof colorVariants;
 }
 
 export const FooterLinkItem: FC<IFooterLinkItemProps> = ({
-  children,
-  variant = 'web',
+  title,
+  href,
+  color = 'default',
 }) => {
-  const colorStyles = {
-    color: 'inherit',
-    textDecorationColor: 'inherit',
-  };
-
-  const clones = React.Children.map(children, (child) => {
-    // @ts-ignore
-    return React.cloneElement(child, {
-      classNames: [linkClass, footerVariants[variant]],
-      style: colorStyles,
-    });
-  });
-
-  const classList = classNames(linkBoxClass, footerVariants[variant]);
-
+  const classLinkList = classNames(linkClass, colorVariants[color]);
+  const classSpanList = classNames(spanClass, colorVariants[color]);
   return (
-    <div className={classList} data-testid="kda-footer-link-item">
-      <span className={linkClass}>{clones}</span>
+    <div className={linkBoxClass}>
+      {href !== undefined ? (
+        <a className={classLinkList} href={`#${href}`}>
+          {title}
+        </a>
+      ) : (
+        <span className={classSpanList}>{title}</span>
+      )}
     </div>
   );
 };

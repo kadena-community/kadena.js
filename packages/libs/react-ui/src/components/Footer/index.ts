@@ -1,5 +1,5 @@
-import { FooterContainer, FooterVariant, IFooterProps } from './Footer';
-import { FooterIconItem, IFooterIconItemProps } from './FooterIconItem';
+import { FooterContainer, IFooterProps } from './Footer';
+import { FooterIconItem, IFooterIconItemProps} from './FooterIconItem';
 import { FooterLinkItem, IFooterLinkItemProps } from './FooterLinkItem';
 import { FooterPanel, IFooterPanelProps } from './FooterPanel';
 
@@ -10,7 +10,6 @@ export {
   IFooterPanelProps,
   IFooterLinkItemProps,
   IFooterIconItemProps,
-  FooterVariant,
 };
 
 interface IFooter {

@@ -1,33 +1,26 @@
-import { sprinkles, vars } from '../../styles';
+import { ColorType, sprinkles, vars } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const footerVariants = styleVariants({
-  web: [
+  web: [sprinkles({ width: '100%', maxWidth: '100%', flexDirection: 'row' })],
+  mobile: [
     sprinkles({
-      backgroundColor: '$neutral5',
-      color: '$neutral3',
-    }),
-  ],
-  application: [
-    sprinkles({
-      backgroundColor: { darkMode: '$neutral2', lightMode: '$neutral5' },
-      color: { darkMode: '$neutral4', lightMode: '$neutral3' },
+      width: '100%',
+      maxWidth: 'maxContent',
+      flexDirection: 'column',
     }),
   ],
 });
+
 export const containerClass = style([
   sprinkles({
-    maxWidth: { xs: 'maxContent', sm: '100%' },
     height: 'min-content',
     alignItems: 'stretch',
     display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
     justifyContent: 'space-between',
     overflow: 'hidden',
+    bg: '$neutral5',
     borderRadius: '$sm',
   }),
   {
@@ -38,38 +31,89 @@ export const containerClass = style([
       '&:active': {
         color: vars.colors.$negativeContrast,
       },
+      '&:visited': {
+        color: vars.colors.$tertiaryContrast,
+      },
     },
   },
 ]);
 
 export const footerPanel = style([
   sprinkles({
-    width: 'max-content',
+    background: '$neutral5',
     border: 'none',
+    color: '$neutral3',
     alignItems: 'center',
     lineHeight: '$lg',
     display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
     paddingX: '$4',
     paddingY: '$2',
     gap: '$2',
-    justifyContent: 'center',
-    marginX: {
-      xs: 'auto',
-      sm: 0,
-    },
+    flexGrow: 1,
   }),
+  {
+    selectors: {
+      '&:first-child': {
+        justifyContent: 'flex-start',
+      },
+      '&:last-child': {
+        justifyContent: 'flex-end',
+      },
+    },
+  },
 ]);
+
+export const footerPanelVariants = styleVariants({
+  web: [],
+  mobile: [
+    sprinkles({
+      justifyContent: 'center',
+    }),
+    {
+      selectors: {
+        '&:first-child': {
+          justifyContent: 'center',
+        },
+        '&:last-child': {
+          justifyContent: 'center',
+        },
+      },
+    },
+  ],
+});
+
+export type ColorOptions = ColorType | 'default' | 'inverted';
+
+const colors: Record<ColorOptions, ColorOptions> = {
+  default: 'default',
+  inverted: 'inverted',
+  primary: 'primary',
+  secondary: 'secondary',
+  positive: 'positive',
+  warning: 'warning',
+  negative: 'negative',
+};
+
+export const colorVariants = styleVariants(colors, (color) => {
+  if (color === 'default') {
+    return [containerClass, sprinkles({ color: '$neutral3' })];
+  }
+
+  if (color === 'inverted') {
+    return [containerClass, sprinkles({ color: '$neutral2' })];
+  }
+
+  return [containerClass, sprinkles({ color: `$${color}Contrast` })];
+});
 
 export const linkBoxClass = style([
   sprinkles({
     display: 'flex',
     padding: 0,
-    whiteSpace: 'nowrap',
   }),
+  {
+    whiteSpace: 'nowrap',
+  },
 ]);
 
 export const linkClass = style([
@@ -77,9 +121,9 @@ export const linkClass = style([
     display: 'flex',
     fontSize: '$xs',
     marginX: '$1',
-    textDecoration: 'underline',
   }),
   {
+    textDecoration: 'underline',
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -87,19 +131,28 @@ export const linkClass = style([
       '&:active': {
         textDecoration: 'none',
       },
+      '&:visited': {
+        textDecoration: 'none',
+        color: '$primaryAccent',
+      },
     },
   },
 ]);
 
-export const iconButtonClass = style([
+export const spanClass = style([
+  sprinkles({
+    marginRight: '$1',
+  }),
+]);
+
+export const iconBoxClass = style([
   sprinkles({
     display: 'flex',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    whiteSpace: 'nowrap',
-    border: 'none',
-    cursor: 'pointer',
   }),
+  {
+    alignItems: 'center',
+    whiteSpace: 'nowrap',
+  },
 ]);
 
 export const iconTextClass = style([
