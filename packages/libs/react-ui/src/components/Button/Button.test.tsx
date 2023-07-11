@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 describe('Button', () => {
-  test('renders correctly', () => {
+  it('renders correctly', () => {
     const { getByTestId } = render(
       <Button.Root title="Button">Hello, Button!</Button.Root>,
     );

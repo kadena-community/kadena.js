@@ -17,8 +17,15 @@ export const container = style([
     paddingY: '$3',
     border: 'none',
     fontSize: '$base',
+    textDecoration: 'none',
+    lineHeight: '$normal',
   }),
   {
+    selectors: {
+      '&[href]': {
+        display: 'inline-block',
+      },
+    },
     transition: 'background-color 0.4s ease',
     ':hover': {
       backgroundColor: bgHoverColor,
@@ -37,6 +44,7 @@ export const container = style([
       backgroundColor: vars.colors.$neutral3,
       color: vars.colors.$neutral1,
       cursor: 'not-allowed',
+      pointerEvents: 'none',
     },
   },
 ]);

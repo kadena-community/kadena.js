@@ -7,6 +7,7 @@ export interface IButtonProps
   as?: 'button' | 'a';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
+  target?: '_blank' | '_self';
   children: React.ReactNode;
   title?: string;
   disabled?: boolean;
@@ -16,17 +17,27 @@ export interface IButtonProps
 export const Button: FC<IButtonProps> = ({
   as = 'button',
   color = 'primary',
+  target,
   onClick,
   href,
   children,
   ...props
 }) => {
   const ariaLabel = props['aria-label'] ?? props.title;
+  const validAnchor = as === 'a' && href !== undefined && href !== '';
 
-  if (as === 'a' && href !== undefined && href !== '') {
-    <a className={colorVariants[color]} href={href}>
-      {children}
-    </a>;
+  if (validAnchor) {
+    return (
+      <a
+        className={colorVariants[color]}
+        href={href}
+        target={target}
+        aria-label={ariaLabel}
+        data-testid="kda-button"
+      >
+        {children}
+      </a>
+    );
   }
 
   return (

@@ -14,7 +14,7 @@ const meta: Meta<
   title: 'Components/Button',
   component: Button.Root,
   argTypes: {
-    onClick: { action: 'clicked' },
+    onClick: { action: 'clicked', if: { arg: 'as', eq: 'button' } },
     selectIcon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
@@ -33,14 +33,39 @@ const meta: Meta<
       },
     },
     text: {
+      description: 'label text',
       control: {
         type: 'text',
       },
     },
+    href: {
+      description: 'href is required when rendered as anchor',
+      control: {
+        type: 'text',
+      },
+      if: { arg: 'as', eq: 'a' },
+    },
+    target: {
+      description: 'only used when rendered as anchor',
+      control: {
+        options: ['blank', 'self'],
+        control: { type: 'radio' },
+      },
+      if: { arg: 'as', eq: 'a' },
+    },
+    as: {
+      description: 'render as button or anchor',
+      control: {
+        options: ['button', 'a'],
+        control: { type: 'radio' },
+      },
+    },
     disabled: {
+      description: 'only used when rendered as button',
       control: {
         type: 'boolean',
       },
+      if: { arg: 'as', eq: 'button' },
     },
   },
 };
@@ -59,16 +84,22 @@ export const Dynamic: Story = {
     title: 'test title',
     disabled: false,
     text: 'Click me',
+    href: '',
+    target: '_self',
     color: undefined,
+    as: 'button',
   },
-  render: ({ onClick, title, disabled, text, color }) => {
+  render: ({ onClick, title, disabled, text, color, href, target, as }) => {
     return (
       <>
         <Button.Root
           title={title}
-          onClick={onClick}
           disabled={disabled}
           color={color}
+          href={href}
+          target={target}
+          as={as}
+          onClick={onClick}
         >
           {text}
         </Button.Root>
@@ -147,9 +178,22 @@ export const ButtonIcon: Story = {
     title: 'test title',
     disabled: false,
     text: 'Click me',
+    href: '',
+    target: '_self',
     color: undefined,
+    as: 'button',
   },
-  render: ({ onClick, title, disabled, text, color, selectIcon }) => {
+  render: ({
+    onClick,
+    title,
+    disabled,
+    text,
+    color,
+    selectIcon,
+    href,
+    target,
+    as,
+  }) => {
     const Icon = SystemIcon[selectIcon];
     return (
       <>
@@ -158,6 +202,9 @@ export const ButtonIcon: Story = {
           onClick={onClick}
           disabled={disabled}
           color={color}
+          href={href}
+          target={target}
+          as={as}
         >
           <Button.Icon icon={Icon} />
           {text}
@@ -168,7 +215,10 @@ export const ButtonIcon: Story = {
           onClick={onClick}
           disabled={disabled}
           color={color}
+          href={href}
+          target={target}
           style={{ marginTop: '10px' }}
+          as={as}
         >
           {text}
           <Button.Icon icon={Icon} />
