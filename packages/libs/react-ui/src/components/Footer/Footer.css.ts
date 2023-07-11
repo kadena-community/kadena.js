@@ -16,11 +16,12 @@ export const footerVariants = styleVariants({
 export const containerClass = style([
   sprinkles({
     height: 'min-content',
+    backgroundColor: '$neutral5',
+    // color: '$background',
     alignItems: 'stretch',
     display: 'flex',
     justifyContent: 'space-between',
     overflow: 'hidden',
-    bg: '$neutral5',
     borderRadius: '$sm',
   }),
   {
