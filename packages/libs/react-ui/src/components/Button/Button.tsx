@@ -4,7 +4,7 @@ import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
-  as?: 'button' | 'anchor';
+  as?: 'button' | 'a';
   color?: keyof typeof colorVariants;
   children: React.ReactNode;
   href?: string;
@@ -25,7 +25,7 @@ export const Button: FC<IButtonProps> = ({
   ...props
 }) => {
   const ariaLabel = props['aria-label'] ?? props.title;
-  const validAnchor = as === 'anchor' && href !== undefined && href !== '';
+  const validAnchor = as === 'a' && href !== undefined && href !== '';
 
   if (validAnchor) {
     return (
