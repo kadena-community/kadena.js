@@ -1,4 +1,3 @@
-import { IPactCommand } from '../../../interfaces/IPactCommand';
 import { addSigner } from '../addSigner';
 
 describe('addSigner', () => {
