@@ -60,7 +60,6 @@ const colors: Record<ColorOptions, ColorOptions> = {
   warning: 'warning',
   negative: 'negative',
   tertiary: 'tertiary',
-  info: 'info',
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
