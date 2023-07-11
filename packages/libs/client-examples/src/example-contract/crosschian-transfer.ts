@@ -34,6 +34,7 @@ function debitInTheFirstChain(
       ),
     )
     .addSigner(from.publicKey, (withCapability) => [
+      // in typescript this functions suggest you only relevant capabilities
       withCapability(
         'coin.TRANSFER_XCHAIN',
         from.account,

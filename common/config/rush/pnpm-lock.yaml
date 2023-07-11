@@ -590,6 +590,7 @@ importers:
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
+      '@kadena/pactjs': workspace:*
       '@kadena/pactjs-cli': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~3.3.0
@@ -609,6 +610,7 @@ importers:
       '@kadena/chainweb-node-client': link:../chainweb-node-client
       '@kadena/client': link:../client
       '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/pactjs': link:../pactjs
       '@kadena/types': link:../types
       debug: 4.3.4
     devDependencies:
