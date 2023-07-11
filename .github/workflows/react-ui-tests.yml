@@ -24,13 +24,19 @@ jobs:
         run: |
           node common/scripts/install-run-rush.js install -t @kadena/react-ui
 
-      - name: Rush Build
-        run: |
-          node common/scripts/install-run-rush.js build -t @kadena/react-ui
+      - name: Waiting for 200 from the Vercel Preview
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        id: waitForPreview
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 60
+          allow_inactive: true
+        # access preview url
+      - run: echo ${{steps.waitForPreview.outputs.url}}
 
       - name: Smoke Tests
         working-directory: packages/libs/react-ui
         run: |
            npm run test:storybook
         env:
-          TARGET_URL: '${{ github.event.deployment_status.target_url }}'
+          TARGET_URL: '${{steps.waitForPreview.outputs.url}}'
