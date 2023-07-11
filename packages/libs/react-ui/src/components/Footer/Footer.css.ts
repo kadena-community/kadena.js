@@ -17,7 +17,6 @@ export const containerClass = style([
   sprinkles({
     height: 'min-content',
     backgroundColor: '$neutral5',
-    // color: '$background',
     alignItems: 'stretch',
     display: 'flex',
     justifyContent: 'space-between',
@@ -31,9 +30,6 @@ export const containerClass = style([
       },
       '&:active': {
         color: vars.colors.$negativeContrast,
-      },
-      '&:visited': {
-        color: vars.colors.$tertiaryContrast,
       },
     },
   },
@@ -131,10 +127,6 @@ export const linkClass = style([
       },
       '&:active': {
         textDecoration: 'none',
-      },
-      '&:visited': {
-        textDecoration: 'none',
-        color: '$primaryAccent',
       },
     },
   },
