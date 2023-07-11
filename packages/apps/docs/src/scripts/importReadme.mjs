@@ -126,12 +126,8 @@ const recreateUrl = (pages, url, root) => {
   }, '');
 };
 
-// because we are creating new pages, we need to link the references to the correct pages
-const relinkLinkReferences = (md, pages, root) => {
-  const definitions = getTypes(md, 'definition');
-  const linkReferences = getTypes(md, 'linkReference');
-
-  linkReferences.map((ref) => {
+const relinkLinkReferences = (refs, definitions, pages, root) => {
+  refs.map((ref) => {
     const definition = definitions.find((def) => def.label === ref.label);
     if (!definition) {
       throw new Error('no definition found');
@@ -146,13 +142,39 @@ const relinkLinkReferences = (md, pages, root) => {
   });
 };
 
+const relinkImageReferences = (refs, definitions, pages, root) => {
+  refs.map((ref) => {
+    const definition = definitions.find((def) => def.label === ref.label);
+    if (!definition) {
+      throw new Error('no definition found');
+    }
+
+    ref.type = 'image';
+    ref.url = definition.url;
+    ref.alt = definition.alt;
+    delete ref.label;
+    delete ref.identifier;
+    delete ref.referenceType;
+  });
+};
+
+// because we are creating new pages, we need to link the references to the correct pages
+const relinkReferences = (md, pages, root) => {
+  const definitions = getTypes(md, 'definition');
+  const linkReferences = getTypes(md, 'linkReference');
+  const imageReferences = getTypes(md, 'imageReference');
+
+  relinkLinkReferences(linkReferences, definitions, pages, root);
+  relinkImageReferences(imageReferences, definitions, pages, root);
+};
+
 const importDocs = (filename, destination, parentTitle, options) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
 
   const pages = divideIntoPages(md);
-  relinkLinkReferences(md, pages, `/docs/${destination}/`);
+  relinkReferences(md, pages, `/docs/${destination}/`);
 
   pages.forEach((page, idx) => {
     const title = getTitle(page);

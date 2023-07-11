@@ -74,9 +74,13 @@ $ kda --help
 
 To setup your devnet (L1 and L2) you can configure chainweaver as such:
 
-![image][4] ![image][5]
+![image][4]
 
-Then add the account(s) you've funded: ![image][6]
+![image][5]
+
+Then add the account(s) you've funded:
+
+![image][6]
 
 ## Devnet
 

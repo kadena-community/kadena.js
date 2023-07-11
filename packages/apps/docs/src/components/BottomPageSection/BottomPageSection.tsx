@@ -5,6 +5,7 @@ import { Subscribe } from './components/Subscribe';
 import { BottomWrapper, Wrapper } from './style';
 
 import { INavigation, LayoutType } from '@/types/Layout';
+import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -20,7 +21,11 @@ export const BottomPageSection: FC<IProps> = ({
   layout,
 }) => {
   return (
-    <BottomWrapper>
+    <BottomWrapper
+      layout={
+        isOneOfLayoutType(layout, 'redocly', 'code') ? 'redocly' : 'default'
+      }
+    >
       <Stack alignItems="center" justifyContent="space-between">
         <EditPage editLink={editLink} />
         {navigation?.previous !== undefined && (
