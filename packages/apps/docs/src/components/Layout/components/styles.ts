@@ -15,9 +15,7 @@ export const Template: StyledComponent<
 > = styled('div', {
   $$asideMenuWidthMDDefault: '200px',
   $$asideMenuWidthLGDefault: '300px',
-  $$asideMenuWidthMDCode: '400px',
-  $$asideMenuWidthLGCode: '400px',
-  $$asideMenuWidthXLCode: '400px',
+  $$asideMenuWidthCode: '400px',
 
   display: 'grid',
   gridTemplateRows: '$17 auto 1fr auto',
@@ -57,15 +55,15 @@ export const Template: StyledComponent<
       code: {
         '@md': {
           gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDCode)) $$asideMenuWidthMDCode 1%',
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthCode)) $$asideMenuWidthCode 1%',
         },
         '@lg': {
           gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGCode)) $$asideMenuWidthLGCode 1%',
+            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthCode)) $$asideMenuWidthCode 1%',
         },
         '@2xl': {
           gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthXLCode)) $$asideMenuWidthXLCode auto',
+            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthCode)) $$asideMenuWidthCode auto',
         },
       },
 

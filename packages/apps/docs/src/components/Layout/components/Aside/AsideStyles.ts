@@ -57,33 +57,33 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
       '@md': {
         backgroundColor: 'transparent',
         backgroundPositionX:
-          'calc(100vw  - ($$asideMenuWidthMDCode + $$shadowWidth))',
+          'calc(100vw  - ($$asideMenuWidthCode + $$shadowWidth))',
       },
       '@lg': {
         backgroundPositionX:
-          'calc(100vw  - ($$asideMenuWidthLGCode + $$shadowWidth))',
+          'calc(100vw  - ($$asideMenuWidthCode + $$shadowWidth))',
       },
       '@xl': {
         display: 'block',
       },
       '@2xl': {
         backgroundPositionX:
-          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthXLCode + $$shadowWidth))',
+          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthCode + $$shadowWidth))',
       },
     },
     '&::after': {
       backgroundColor: 'transparent',
       '@md': {
-        left: 'calc(100vw  - ($$asideMenuWidthMDCode +  $sizes$4))',
+        left: 'calc(100vw  - ($$asideMenuWidthCode +  $sizes$4))',
       },
       '@lg': {
-        left: 'calc(100vw  - ($$asideMenuWidthLGCode +  $sizes$4  + $4))',
+        left: 'calc(100vw  - ($$asideMenuWidthCode +  $sizes$4  + $4))',
       },
       '@xl': {
         backgroundColor: '$backgroundOverlayColor',
       },
       '@2xl': {
-        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthXLCode + $6 ))',
+        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthCode + $6 ))',
       },
     },
 
@@ -184,7 +184,7 @@ export const Aside: StyledComponent<
           backgroundColor: 'initial',
         },
         '@2xl': {
-          maxWidth: '$$asideMenuWidthXLCode',
+          maxWidth: '$$asideMenuWidthCode',
         },
       },
       default: {},
