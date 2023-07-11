@@ -11,7 +11,7 @@ const Home: FC = () => {
   return (
     <Stack direction="column" spacing="2xl">
       <div>
-        <Heading as="h2">Chainweb</Heading>
+        <Heading as="h2">Marmalade</Heading>
       </div>
     </Stack>
   );
@@ -22,14 +22,14 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
-        title: 'Intro to Chainweb',
-        menu: 'Chainweb',
-        subTitle: 'Build the future on Kadena',
-        label: 'Introduction',
-        order: 5,
-        description: 'Welcome to Chainwebs documentation!',
+        title: 'Intro to Marmalade',
+        menu: 'Marmalade',
+        subTitle: 'Mint a marketplace',
+        label: 's',
+        order: 6,
+        description: 'Mint a marketplace',
         layout: 'landing',
-        icon: 'Chainweb',
+        icon: 'Marmalade',
       },
     },
   };
