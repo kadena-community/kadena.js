@@ -41,6 +41,13 @@ export {
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
 export { Link, ILinkProps } from './Link/Link';
+export {
+  Footer,
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
+} from './Footer/';
 export { Tag, ITagProps } from './Tag/Tag';
 export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
