@@ -45,10 +45,10 @@ export const addSigner: IAddSigner = ((
   return () => ({
     signers: [
       {
-        ...(pubKey ? { pubKey } : {}),
-        ...(scheme ? { scheme } : {}),
+        pubKey,
+        scheme,
         ...(address !== undefined ? { address } : {}),
-        ...(clist ? { clist } : {}),
+        ...(clist !== undefined ? { clist } : {}),
       },
     ],
   });

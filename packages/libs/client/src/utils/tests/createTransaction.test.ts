@@ -46,4 +46,13 @@ describe('createTransaction', () => {
     expect(transaction.sigs).toHaveLength(1);
     expect(transaction.sigs).toStrictEqual([undefined]);
   });
+  it('returns a transaction object with empty sigs array if there is no signers in the pactCommand', () => {
+    const { signers, ...command } = pactCommand;
+
+    expect(signers).toBeDefined();
+
+    const transaction = createTransaction(command);
+
+    expect(transaction.sigs).toHaveLength(0);
+  });
 });
