@@ -207,10 +207,6 @@ const importAll = (imports) => {
   });
 };
 
-importDocs('tools/kda-cli/README.md', 'build/tools/kda-cli', 'KDA CLI', {
-  RootOrder: 3,
-});
-
 /**
  * Files to be imported
  */
@@ -460,4 +456,4 @@ const imports = [
   },
 ];
 
-//importAll(imports);
+importAll(imports);

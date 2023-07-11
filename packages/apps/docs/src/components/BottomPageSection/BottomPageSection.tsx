@@ -20,10 +20,6 @@ export const BottomPageSection: FC<IProps> = ({
   navigation,
   layout,
 }) => {
-  console.log(
-    layout,
-    isOneOfLayoutType(layout, 'redocly', 'code') ? 'redocly' : 'default',
-  );
   return (
     <BottomWrapper
       layout={
