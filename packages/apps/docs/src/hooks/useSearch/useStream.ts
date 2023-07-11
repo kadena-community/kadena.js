@@ -9,6 +9,9 @@ export const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
 
 type StartStream = (query: string, conversation: IConversation) => void;
 
+const searchErrorMessage =
+  'There was a problem. Sorry for the inconvenience. Please try again!';
+
 export const useStream = (): [
   StartStream,
   boolean,
@@ -66,7 +69,7 @@ export const useStream = (): [
           }
         } catch (e) {
           console.warn('messageListener', e);
-          setError(e.message);
+          setError(searchErrorMessage);
           done();
         }
       });
@@ -77,14 +80,14 @@ export const useStream = (): [
           setMetadata(data);
         } catch (e) {
           console.warn('metadataListener', e);
-          setError(e.message);
+          setError(searchErrorMessage);
           done();
         }
       });
 
       source.addEventListener('error', (e) => {
         console.warn('sourceError', e);
-        setError('Error in the source event listener');
+        setError(searchErrorMessage);
         done();
       });
     },
