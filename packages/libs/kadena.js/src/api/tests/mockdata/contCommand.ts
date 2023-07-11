@@ -32,7 +32,7 @@ export const meta: IMetaData = {
   creationTime: 0,
   ttl: 0,
   gasLimit: 0,
-  chainId: '',
+  chainId: '0',
   gasPrice: 0,
   sender: '',
 };
@@ -58,7 +58,7 @@ export const payload: ICommandPayload = {
     creationTime: 0,
     ttl: 0,
     gasLimit: 0,
-    chainId: '',
+    chainId: '0',
     gasPrice: 0,
     sender: '',
   },
@@ -66,20 +66,20 @@ export const payload: ICommandPayload = {
 };
 
 export const signature: SignatureWithHash = {
-  hash: 'neA9dm-puxrTzdyUu466mDv6fagpnHxKPnSaAHuiM2Q',
+  hash: 'XJ_R9bw2-7kPmW6565rF6gZ02sqbtC99Jjyrb3L8bq0',
   pubKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
-  sig: 'dfae888ddbd4d96e90749e2c2d599517095d999da518b5f07bd14307248acd018f82b01c1925af17c5a3f6e2c3938a765d5f53baf713c365dbcec9997a477e00',
+  sig: '4ac912a5fb23cbfe55145b1d630cc9db671dc087b48c107d3f19419c792a6020fed6c851770b2d16728bebb6762458b97ceee691023d19e7a9d875d95f3afe08',
 };
 
 export const stringifiedPayload: CommandPayloadStringifiedJSON =
-  '{"networkId":null,"payload":{"cont":{"proof":null,"pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}';
+  '{"networkId":null,"payload":{"cont":{"proof":null,"pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"0","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}';
 
 export const command: ICommand = {
-  hash: 'neA9dm-puxrTzdyUu466mDv6fagpnHxKPnSaAHuiM2Q',
+  hash: 'XJ_R9bw2-7kPmW6565rF6gZ02sqbtC99Jjyrb3L8bq0',
   sigs: [
     {
-      sig: 'dfae888ddbd4d96e90749e2c2d599517095d999da518b5f07bd14307248acd018f82b01c1925af17c5a3f6e2c3938a765d5f53baf713c365dbcec9997a477e00',
+      sig: '4ac912a5fb23cbfe55145b1d630cc9db671dc087b48c107d3f19419c792a6020fed6c851770b2d16728bebb6762458b97ceee691023d19e7a9d875d95f3afe08',
     },
   ],
-  cmd: '{"networkId":null,"payload":{"cont":{"proof":null,"pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
+  cmd: '{"networkId":null,"payload":{"cont":{"proof":null,"pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"0","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
 };

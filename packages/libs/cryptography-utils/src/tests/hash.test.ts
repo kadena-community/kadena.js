@@ -6,7 +6,7 @@ test('should perform blake2b256 hashing on a string and output hash encoded as u
   const str = JSON.stringify(pactTestCommand);
 
   const actual = hash(str);
-  const expected = 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8';
+  const expected = 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik';
 
   expect(expected).toEqual(actual);
 });

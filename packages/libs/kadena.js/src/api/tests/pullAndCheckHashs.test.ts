@@ -5,7 +5,7 @@ import { signature } from './mockdata/execCommand';
 
 test('Takes in an array of signature objects and check that all signatures signed the same hash, and outputs the hash', () => {
   const actual = pullAndCheckHashs([signature]);
-  const expected = 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8';
+  const expected = 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik';
 
   expect(expected).toEqual(actual);
 });

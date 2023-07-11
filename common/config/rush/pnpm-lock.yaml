@@ -582,6 +582,53 @@ importers:
       sort-package-json: 2.4.1
       ts-node: 10.8.2_@types+node@16.18.38
 
+  ../../packages/libs/client-examples:
+    specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
+      '@kadena-dev/markdown': workspace:*
+      '@kadena/chainweb-node-client': workspace:*
+      '@kadena/client': workspace:*
+      '@kadena/cryptography-utils': workspace:*
+      '@kadena/pactjs-cli': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~3.3.0
+      '@rushstack/heft': ~0.50.6
+      '@types/heft-jest': ~1.0.3
+      '@types/node': ^16.0.0
+      concurrently: ^7.2.2
+      debug: ~4.3.4
+      eslint: ^8.15.0
+      node-fetch: ~2.6.2
+      npm-run-all: ~4.1.5
+      prettier: ~2.8.8
+      sort-package-json: ~2.4.1
+      ts-node: ~10.8.2
+      typescript: 5.0.4
+    dependencies:
+      '@kadena/chainweb-node-client': link:../chainweb-node-client
+      '@kadena/client': link:../client
+      '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/types': link:../types
+      debug: 4.3.4
+    devDependencies:
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/markdown': link:../../tools/remark-plugins
+      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
+      '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
+      '@rushstack/heft': 0.50.7_@types+node@16.18.38
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.18.38
+      concurrently: 7.6.0
+      eslint: 8.44.0
+      node-fetch: 2.6.12
+      npm-run-all: 4.1.5
+      prettier: 2.8.8
+      sort-package-json: 2.4.1
+      ts-node: 10.8.2_37397d4516e2230bd4bd41a4d81dedb8
+      typescript: 5.0.4
+
   ../../packages/libs/cryptography-utils:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
@@ -729,53 +776,6 @@ importers:
       '@types/nearley': 2.11.2
       '@types/node': 16.18.38
       '@types/node-fetch': 2.6.4
-      concurrently: 7.6.0
-      eslint: 8.44.0
-      node-fetch: 2.6.12
-      npm-run-all: 4.1.5
-      prettier: 2.8.8
-      sort-package-json: 2.4.1
-      ts-node: 10.8.2_37397d4516e2230bd4bd41a4d81dedb8
-      typescript: 5.0.4
-
-  ../../packages/libs/pactjs-test-project:
-    specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/heft-rig': workspace:*
-      '@kadena-dev/markdown': workspace:*
-      '@kadena/chainweb-node-client': workspace:*
-      '@kadena/client': workspace:*
-      '@kadena/cryptography-utils': workspace:*
-      '@kadena/pactjs-cli': workspace:*
-      '@kadena/types': workspace:*
-      '@rushstack/eslint-config': ~3.3.0
-      '@rushstack/heft': ~0.50.6
-      '@types/heft-jest': ~1.0.3
-      '@types/node': ^16.0.0
-      concurrently: ^7.2.2
-      debug: ~4.3.4
-      eslint: ^8.15.0
-      node-fetch: ~2.6.2
-      npm-run-all: ~4.1.5
-      prettier: ~2.8.8
-      sort-package-json: ~2.4.1
-      ts-node: ~10.8.2
-      typescript: 5.0.4
-    dependencies:
-      '@kadena/chainweb-node-client': link:../chainweb-node-client
-      '@kadena/client': link:../client
-      '@kadena/cryptography-utils': link:../cryptography-utils
-      '@kadena/types': link:../types
-      debug: 4.3.4
-    devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/heft-rig': link:../../tools/heft-rig
-      '@kadena-dev/markdown': link:../../tools/remark-plugins
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
-      '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
-      '@rushstack/heft': 0.50.7_@types+node@16.18.38
-      '@types/heft-jest': 1.0.3
-      '@types/node': 16.18.38
       concurrently: 7.6.0
       eslint: 8.44.0
       node-fetch: 2.6.12

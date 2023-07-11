@@ -20,8 +20,8 @@ test('/poll should return request keys of txs submitted', async () => {
   };
 
   const commandResult: IPollResponse = {
-    'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8': {
-      reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik': {
+      reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
       txId: null,
       result: {
         data: 3,
