@@ -4,11 +4,12 @@
 
 ```ts
 
-import { ChainId } from '@kadena/types';
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
+import { ICommandResult } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ISignatureJson } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
@@ -53,7 +54,7 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
 // @alpha
-export function getContCommand(requestKey: string, targetChainId: ChainId, apiHost: string, step: number, rollback: boolean): Promise<ContCommand>;
+export function getContCommand(requestKey: string, targetChainId: ChainwebChainId, apiHost: string, step: number, rollback: boolean): Promise<ContCommand>;
 
 // @alpha (undocumented)
 export interface IChainweaverCap {
@@ -119,7 +120,7 @@ export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs exte
         interval?: number;
         timeout?: number;
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
-    }): Promise<this>;
+    }): Promise<ICommandResult>;
     // (undocumented)
     send(apiHost: string): Promise<SendResponse>;
     // (undocumented)
@@ -217,7 +218,7 @@ export interface IPactModules {
 // @alpha (undocumented)
 export interface IPublicMeta {
     // (undocumented)
-    chainId: ChainId;
+    chainId: ChainwebChainId;
     // (undocumented)
     gasLimit: number;
     // (undocumented)
@@ -341,10 +342,10 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
         interval?: number;
         timeout?: number;
         onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
-    }): Promise<this>;
+    }): Promise<ICommandResult>;
     // (undocumented)
     publicMeta: {
-        chainId: ChainId;
+        chainId: ChainwebChainId;
         sender: string;
         gasLimit: number;
         gasPrice: number;
@@ -374,7 +375,7 @@ export class PactCommand implements IPactCommand, ICommandBuilder<Record<string,
 }
 
 // @alpha
-export const pollSpvProof: (requestKey: string, targetChainId: ChainId, apiHost: string, options?: {
+export const pollSpvProof: (requestKey: string, targetChainId: ChainwebChainId, apiHost: string, options?: {
     interval?: number | undefined;
     timeout?: number | undefined;
     onPoll?: ((status: string) => void) | undefined;

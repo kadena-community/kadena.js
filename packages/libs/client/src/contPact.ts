@@ -1,5 +1,6 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { hash as blakeHash } from '@kadena/cryptography-utils';
-import { ChainId, ICommandPayload, IUnsignedCommand } from '@kadena/types';
+import { ICommandPayload, IUnsignedCommand } from '@kadena/types';
 
 import { IContCommand } from './interfaces/IPactCommand';
 import { PactCommand } from './pact';
@@ -110,7 +111,7 @@ export class ContCommand
  */
 export const pollSpvProof = async (
   requestKey: string,
-  targetChainId: ChainId,
+  targetChainId: ChainwebChainId,
   apiHost: string,
   options?: {
     interval?: number;
@@ -179,7 +180,7 @@ export const pollSpvProof = async (
  */
 export async function getContCommand(
   requestKey: string,
-  targetChainId: ChainId,
+  targetChainId: ChainwebChainId,
   apiHost: string,
   step: number,
   rollback: boolean,

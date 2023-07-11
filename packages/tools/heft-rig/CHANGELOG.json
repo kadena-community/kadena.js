@@ -2,6 +2,35 @@
   "name": "@kadena-dev/heft-rig",
   "entries": [
     {
+      "version": "0.0.10",
+      "tag": "@kadena-dev/heft-rig_v0.0.10",
+      "date": "Mon, 10 Jul 2023 14:25:54 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.10`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.9",
+      "tag": "@kadena-dev/heft-rig_v0.0.9",
+      "date": "Mon, 10 Jul 2023 14:20:26 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Remove unused dependencies + fix some lint config"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.9`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.8",
       "tag": "@kadena-dev/heft-rig_v0.0.8",
       "date": "Tue, 04 Jul 2023 08:27:48 GMT",

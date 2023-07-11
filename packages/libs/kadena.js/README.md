@@ -16,21 +16,19 @@ Kadena blockchain
 > the `local`, `development`, `testnet` or `mainnet` Kadena chainweb. It will
 > provide helper function
 
-<hr>
-
 ## Running Tests
 
 ### Unit testing
 
 To run the unit tests:
 
-```shell
+```sh
 $ npm test
 ```
 
 To run single unit tests:
 
-```shell
+```sh
 $ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 ```
 
@@ -41,7 +39,7 @@ $ npm test --single=[nameOfFile] where [nameOfFile] can be a regex
 To run integration tests against a pact server the following command can be
 used:
 
-```shell
+```sh
 $ npm test:integration:pactserver
 ```
 
@@ -53,13 +51,11 @@ instructions at the [Devnet Github repository][2].
 
 The following command can be used:
 
-```shell
+```sh
 $ npm test:integration:devnet
 ```
 
-> <b>TODO</b> make Pact server port configurable
-
-<hr>
+> **TODO** make Pact server port configurable
 
 ## TODO
 

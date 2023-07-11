@@ -1,4 +1,4 @@
-export { Button, IButtonProps } from './Button/Button';
+export { Button, IButtonProps } from './Button';
 export { Grid, IGridContainerProps, IGridItemProps } from './Grid';
 export { Stack, IStackProps } from './Stack/Stack';
 export { Modal, IModalProps, ModalProvider, useModal } from './Modal';
@@ -32,6 +32,10 @@ export {
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
 export { Link, ILinkProps } from './Link/Link';
+export { Tag, ITagProps } from './Tag/Tag';
+export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
+export { Select, ISelectProps } from './Select/Select';
+export { Option, IOptionProps } from './Select/Option';
 export {
   Footer,
   IFooterProps,

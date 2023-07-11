@@ -245,7 +245,8 @@ describe('Pact proxy', () => {
         timeout: 5000,
       })
       .then((t) => {
-        expect(t.status).toBe('success');
+        expect(builder.status).toBe('success');
+        expect(t.result.status).toBe('success');
       });
 
     await advanceTimersAndFlushPromises(1000);
@@ -306,7 +307,8 @@ describe('Pact proxy', () => {
 
     await advanceTimersAndFlushPromises(5000);
 
-    expect(expectingError.status).toBe('failure');
+    expect(builder.status).toBe('failure');
+    expect(expectingError.result.status).toBe('failure');
 
     expect((poll as jest.Mock).mock.calls).toHaveLength(1);
   });
@@ -354,9 +356,40 @@ describe('Pact proxy', () => {
     // expect the first argument to be a transaction with property cmd
     expect(onPoll.mock.lastCall[0].cmd).toBeDefined();
   });
-});
 
-//TODO: Add timeout test case
+  it('rejects when the timeout of polling has been exceeded', async () => {
+    jest.useFakeTimers();
+
+    const builder = new PactCommand();
+    builder.code = '(coin.transfer "from" "to" 1.234)';
+
+    (send as jest.Mock).mockResolvedValue({
+      requestKeys: ['key1'],
+    });
+
+    await builder.send(testURL);
+
+    (poll as jest.Mock).mockResolvedValue({});
+
+    const interval = 1000;
+
+    builder.pollUntil(testURL, { timeout: 2500, interval }).catch((error) => {
+      expect(error).toBe('timeout');
+
+      expect(builder.status).toBe('timeout');
+    });
+
+    await advanceTimersAndFlushPromises(interval);
+
+    expect((poll as jest.Mock).mock.calls).toHaveLength(1);
+
+    await advanceTimersAndFlushPromises(interval);
+
+    expect((poll as jest.Mock).mock.calls).toHaveLength(2);
+
+    await advanceTimersAndFlushPromises(interval);
+  });
+});
 
 describe('TransactionCommand', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -27,6 +27,7 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",
+    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "test": "ava"
   },
   "ava": {
@@ -54,7 +55,6 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",

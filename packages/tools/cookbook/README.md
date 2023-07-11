@@ -50,7 +50,7 @@ In depth documentation for setting up and using @kadena/client can be found at
 
 Example: Running the transfer-create script:
 
-```bash
+```sh
 ts-node src/accounts/transfer-create.ts senderAccount receiverAccount 1
 ```
 

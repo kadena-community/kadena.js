@@ -31,13 +31,13 @@ Alpha version / unstable.
 
 ### With npm
 
-```
+```bash
 npm install @kadena/chainweb-stream-client
 ```
 
 ### With yarn
 
-```
+```bash
 yarn add @kadena/chainweb-stream-client
 ```
 

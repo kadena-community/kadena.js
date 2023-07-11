@@ -1,6 +1,6 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
-import { ChainId } from '@kadena/types';
 
 import {
   getKadenaConstantByNetwork,
@@ -8,6 +8,7 @@ import {
   Network,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import Debug from 'debug';
 
 export interface IModuleResult {
   reqKey?: string;
@@ -15,15 +16,19 @@ export interface IModuleResult {
   code?: string;
 }
 
+const debug = Debug('kadena-transfer:services:describe-module');
+
 export const describeModule = async (
   moduleName: string,
-  chainId: ChainId,
+  chainId: ChainwebChainId,
   network: Network,
   sender: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModuleResult> => {
+  debug(describeModule.name);
+
   const pactCommand = new PactCommand();
   pactCommand.code = createExp(`describe-module "${moduleName}"`);
 

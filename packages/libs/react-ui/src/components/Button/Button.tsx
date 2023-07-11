@@ -1,14 +1,14 @@
 import { colorVariants } from './Button.css';
 
-import React, { FC } from 'react';
+import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'a';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   children: React.ReactNode;
-  title: string;
+  title?: string;
   disabled?: boolean;
   color?: keyof typeof colorVariants;
 }

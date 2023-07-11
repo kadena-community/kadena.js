@@ -1,15 +1,15 @@
 import {
-  listen,
-  poll,
-  send,
-  spv,
-  local,
-  createSendRequest,
-  createPollRequest,
   createListenRequest,
+  createPollRequest,
+  createSendRequest,
+  listen,
+  local,
   mkCap,
   parseResponse,
   parseResponseTEXT,
+  poll,
+  send,
+  spv,
   stringifyAndMakePOSTRequest,
 } from '../';
 
