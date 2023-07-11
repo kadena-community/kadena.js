@@ -4,7 +4,7 @@ import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
-  as?: 'button' | 'a';
+  as?: 'button' | 'anchor';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   target?: '_blank' | '_self';
@@ -25,7 +25,7 @@ export const Button: FC<IButtonProps> = ({
   ...props
 }) => {
   const ariaLabel = props['aria-label'] ?? props.title;
-  const validAnchor = as === 'a' && href !== undefined && href !== '';
+  const validAnchor = as === 'anchor' && href !== undefined && href !== '';
 
   if (validAnchor) {
     return (

@@ -43,7 +43,7 @@ const meta: Meta<
       control: {
         type: 'text',
       },
-      if: { arg: 'as', eq: 'a' },
+      if: { arg: 'as', eq: 'anchor' },
     },
     target: {
       description: 'only used when rendered as anchor',
@@ -51,12 +51,12 @@ const meta: Meta<
         options: ['blank', 'self'],
         control: { type: 'radio' },
       },
-      if: { arg: 'as', eq: 'a' },
+      if: { arg: 'as', eq: 'anchor' },
     },
     as: {
       description: 'render as button or anchor',
       control: {
-        options: ['button', 'a'],
+        options: ['button', 'anchor'],
         control: { type: 'radio' },
       },
     },
