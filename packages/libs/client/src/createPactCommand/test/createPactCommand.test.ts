@@ -1,4 +1,5 @@
 import { addSigner, payload, setMeta, setNetworkId, setNonce } from '../../fp';
+import { IPactCommand } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
 import { createPactCommand, mergePayload } from '../createPactCommand';
@@ -368,5 +369,12 @@ describe('mergePayload', () => {
     expect(() =>
       mergePayload({ exec: { code: 'test' } }, { cont: { pactId: '1' } }),
     ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
+  });
+
+  it('adds creationTime to metadata of mataData is presented but does not have creationTime', () => {
+    const pactCommand = createPactCommand({
+      meta: { chainId: '1' } as IPactCommand['meta'],
+    })();
+    expect(pactCommand.meta?.creationTime).toBe(1690416000);
   });
 });

@@ -6,11 +6,12 @@ jest.mock('cross-fetch', () => {
 });
 
 import { ICoin } from '../../../createPactCommand/test/coin-contract';
-import { getModule, Pact } from '../../../pact';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
-} from '../../../signing-api/v1/quicksign';
+  Pact,
+} from '../../../index';
+import { getModule } from '../../../pact';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 const coin: ICoin = getModule('coin');
