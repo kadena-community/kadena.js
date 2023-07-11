@@ -3,15 +3,10 @@ name: React UI Storybook Tests
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
-  pull_request:
-    paths:
-      - packages/libs/react-ui/**
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - packages/libs/react-ui/**
+  workflow_run:
+    workflows: ["Rush CI (changelog, build, test)"]
+    types:
+      - completed
 
 
 jobs:
@@ -27,7 +22,7 @@ jobs:
           allow_inactive: true
           # access preview url
       - run: echo ${{steps.waitForPreview.outputs.url}}
-      
+
       - uses: actions/checkout@v2
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
