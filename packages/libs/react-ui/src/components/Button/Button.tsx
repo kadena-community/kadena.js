@@ -12,6 +12,7 @@ export interface IButtonProps
   title?: string;
   disabled?: boolean;
   color?: keyof typeof colorVariants;
+  iconAlign?: 'left' | 'right';
 }
 
 export const Button: FC<IButtonProps> = ({

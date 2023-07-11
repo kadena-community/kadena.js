@@ -23,7 +23,7 @@ export const container = style([
   {
     selectors: {
       '&[href]': {
-        display: 'inline-block',
+        display: 'inline-flex',
       },
     },
     transition: 'background-color 0.4s ease',
