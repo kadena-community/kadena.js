@@ -2,18 +2,23 @@ import { ColorType, sprinkles, vars } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
+export const footerVariants = styleVariants({
+  web: [sprinkles({ width: '100%', maxWidth: '100%', flexDirection: 'row' })],
+  mobile: [
+    sprinkles({
+      width: '100%',
+      maxWidth: 'maxContent',
+      flexDirection: 'column',
+    }),
+  ],
+});
+
 export const containerClass = style([
   sprinkles({
-    // width: '100%',
-    maxWidth: { xs: 'maxContent', sm: '100%' },
     height: 'min-content',
     backgroundColor: '$neutral5',
     alignItems: 'stretch',
     display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
     justifyContent: 'space-between',
     overflow: 'hidden',
     borderRadius: '$sm',
@@ -32,25 +37,53 @@ export const containerClass = style([
 
 export const footerPanel = style([
   sprinkles({
-    width: 'min-content',
     background: '$neutral5',
     border: 'none',
-    // color: '$neutral3',
+    color: '$neutral3',
     alignItems: 'center',
     lineHeight: '$lg',
     display: 'flex',
     paddingX: '$4',
     paddingY: '$2',
     gap: '$2',
-    justifyContent: 'center',
-    marginX: {
-      xs: 'auto',
-      sm: 0,
-    },
+    flexGrow: 1,
   }),
+  {
+    selectors: {
+      '&:first-child': {
+        justifyContent: 'flex-start',
+      },
+      '&:last-child': {
+        justifyContent: 'flex-end',
+      },
+    },
+  },
 ]);
 
-export type ColorOptions = ColorType | 'default' | 'inverted' | 'tertiary';
+export const footerPanelVariants = styleVariants({
+  web: [],
+  mobile: [
+    sprinkles({
+      justifyContent: 'center',
+    }),
+    {
+      selectors: {
+        '&:first-child': {
+          justifyContent: 'center',
+        },
+        '&:last-child': {
+          justifyContent: 'center',
+        },
+      },
+    },
+  ],
+});
+
+export type ColorOptions =
+  | ColorType
+  | 'default'
+  | 'inverted'
+  | 'tertiary'
 
 const colors: Record<ColorOptions, ColorOptions> = {
   default: 'default',
@@ -79,8 +112,10 @@ export const linkBoxClass = style([
   sprinkles({
     display: 'flex',
     padding: 0,
-    whiteSpace: 'nowrap',
   }),
+  {
+    whiteSpace: 'nowrap',
+  },
 ]);
 
 export const linkClass = style([
@@ -88,9 +123,9 @@ export const linkClass = style([
     display: 'flex',
     fontSize: '$xs',
     marginX: '$1',
-    textDecoration: 'underline',
   }),
   {
+    textDecoration: 'underline',
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -111,9 +146,11 @@ export const spanClass = style([
 export const iconBoxClass = style([
   sprinkles({
     display: 'flex',
+  }),
+  {
     alignItems: 'center',
     whiteSpace: 'nowrap',
-  }),
+  },
 ]);
 
 export const iconTextClass = style([
