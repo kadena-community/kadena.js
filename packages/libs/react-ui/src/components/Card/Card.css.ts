@@ -55,11 +55,12 @@ export const stackClass = style([
 
 export const disabledClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
-    //color: '$neutral3',
+    backgroundColor: '$neutral1',
     pointerEvents: 'none',
   }),
   {
+    border: `${vars.borderWidths.$md} solid ${vars.colors.$borderSubtle}`,
+
     vars: {
       [textColor]: vars.colors.$neutral3,
     },
