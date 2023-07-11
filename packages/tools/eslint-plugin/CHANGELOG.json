@@ -2,6 +2,35 @@
   "name": "@kadena-dev/eslint-plugin",
   "entries": [
     {
+      "version": "0.0.5",
+      "tag": "@kadena-dev/eslint-plugin_v0.0.5",
+      "date": "Mon, 10 Jul 2023 14:25:54 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Complete the formatting trilogy"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Fix up lint config"
+          },
+          {
+            "comment": "Housekeeping npm-published files"
+          },
+          {
+            "comment": "Replace lint-staged with explicit format script"
+          },
+          {
+            "comment": "Remove unused dependencies + fix some lint config"
+          },
+          {
+            "comment": "Fix reusability and dependencies of eslint packages"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.4",
       "tag": "@kadena-dev/eslint-plugin_v0.0.4",
       "date": "Thu, 22 Jun 2023 09:46:33 GMT",

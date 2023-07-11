@@ -3,7 +3,8 @@ export const createSlug = (str?: string): string => {
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[\W_]+/g, '-')
+    .replace(/[^\w\s]+/g, '')
+    .replace(/ /g, '-')
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 };

@@ -1,6 +1,10 @@
-import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
+import {
+  ChainwebChainId,
+  ICommandResult,
+  IPollResponse,
+} from '@kadena/chainweb-node-client';
 import { PactCommand } from '@kadena/client';
-import { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
+import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
@@ -8,11 +12,12 @@ import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
+import Debug from 'debug';
 import { Translate } from 'next-translate';
 
 interface ITransactionData {
-  sender: { chain: ChainId; account: string };
-  receiver: { chain: ChainId; account: string };
+  sender: { chain: ChainwebChainId; account: string };
+  receiver: { chain: ChainwebChainId; account: string };
   amount: number;
   receiverGuard: {
     pred: string;
@@ -40,6 +45,8 @@ interface IEventData {
   moduleName: string;
 }
 
+const debug = Debug('kadena-transfer:services:get-transfer-data');
+
 export async function getTransferData({
   requestKey,
   network,
@@ -49,6 +56,7 @@ export async function getTransferData({
   network: Network;
   t: Translate;
 }): Promise<ITransferDataResult> {
+  debug(getTransferData.name);
   const validatedRequestKey = validateRequestKey(requestKey);
 
   if (validatedRequestKey === undefined) {
@@ -100,11 +108,11 @@ export async function getTransferData({
     return {
       tx: {
         sender: {
-          chain: found.chainId.toString() as ChainId,
+          chain: found.chainId.toString() as ChainwebChainId,
           account: senderAccount,
         },
         receiver: {
-          chain: targetChain as ChainId,
+          chain: targetChain as ChainwebChainId,
           account: receiverAccount,
         },
         amount: amount,
@@ -123,7 +131,7 @@ export async function getTransferData({
       },
     };
   } catch (e) {
-    console.log(e);
+    debug(e);
     return { error: e.message };
   }
 }

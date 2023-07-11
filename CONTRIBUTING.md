@@ -91,6 +91,20 @@ Use `rushx` instead of `rush` to do the same for only the current package.
 
 For everything else, please discuss.
 
+## Workflow
+
+You are expected to install your own workflow the way you like it. For example,
+some developers like to auto-format code "on save", others before they commit or
+push their changes. That's why this repository does not auto-install Git hooks.
+
+If you want to make sure you don't forget to update the changelog before you
+push code, here's an example to install a Git hook for that:
+
+```bash
+echo "rush change --verify" > .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
 ## Publishing Packages
 
 To publish a new version of updated packages, please make sure you:

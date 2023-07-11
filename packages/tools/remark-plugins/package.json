@@ -16,7 +16,7 @@
     "format:md": "remark README.md -o --use ./lib/index.js",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
-    "lint": "eslint src",
+    "lint": "eslint ./src --ext .ts --fix",
     "test": ""
   },
   "dependencies": {

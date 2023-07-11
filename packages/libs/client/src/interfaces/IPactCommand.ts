@@ -1,5 +1,8 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { ChainId, ICap, ISignatureJson } from '@kadena/types';
+import {
+  ChainwebChainId,
+  ChainwebNetworkId,
+} from '@kadena/chainweb-node-client';
+import { ICap, ISignatureJson } from '@kadena/types';
 
 import { NonceType, Type } from '../pact';
 /**
@@ -28,7 +31,7 @@ export interface IPactCommand {
  * @alpha
  */
 export interface IPublicMeta {
-  chainId: ChainId;
+  chainId: ChainwebChainId;
   sender: string;
   gasLimit: number;
   gasPrice: number;

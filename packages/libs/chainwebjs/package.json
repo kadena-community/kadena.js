@@ -56,7 +56,6 @@
     "format:src": "prettier config src --write",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
     "test": "heft test --no-build"
   },
   "dependencies": {
@@ -77,6 +76,7 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.15.0",
     "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1"
+    "sort-package-json": "~2.4.1",
+    "typescript": "5.0.4"
   }
 }

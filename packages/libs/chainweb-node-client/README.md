@@ -13,8 +13,6 @@ Typed JavaScript wrapper with fetch to call chainweb-node API endpoints
 
 API Reference can be found here [chainweb-node-client.api.md][1]
 
-<hr>
-
 ## Chainweb Node Client
 
 Chainweb Node Client is a typed JavaScript wrapper with fetch to call
@@ -36,8 +34,6 @@ The Pact API will contain the following functions:
 - `send`
 - `spv`
 - `stringifyAndMakePOSTRequest`
-
-<hr>
 
 ## Pact
 
@@ -150,8 +146,6 @@ const body: object = {
 
 stringifyAndMakePOSTRequest(body);
 ```
-
-<hr>
 
 [1]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md

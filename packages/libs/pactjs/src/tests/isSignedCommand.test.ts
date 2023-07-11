@@ -1,4 +1,5 @@
 import { ICommand, IUnsignedCommand } from '@kadena/types';
+
 import { ensureSignedCommand, isSignedCommand } from '../isSignedCommand';
 
 const sampleSignedCommand: IUnsignedCommand = {

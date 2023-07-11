@@ -1,12 +1,11 @@
 import type {
-  ChainId,
-  IMetaData,
+  IBase64Url,
   ICommand,
+  IMetaData,
+  IPactEvent,
+  IPactExec,
   IUnsignedCommand,
   PactValue,
-  IBase64Url,
-  IPactExec,
-  IPactEvent,
   SPVProof,
 } from '@kadena/types';
 
@@ -54,31 +53,41 @@ interface IChainwebResponseMetaData {
 }
 
 // TODO: Move Chainweb Specific Types
+
 /**
- * Stringified Chainweb chain numbers.
  * @alpha
  */
-export type ChainwebChainId =
-  | '0'
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | '7'
-  | '8'
-  | '9'
-  | '10'
-  | '11'
-  | '12'
-  | '13'
-  | '14'
-  | '15'
-  | '16'
-  | '17'
-  | '18'
-  | '19';
+// eslint-disable-next-line @rushstack/typedef-var
+export const CHAINS = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+] as const;
+
+/**
+ * Stringified Chainweb chain numbers.
+ *
+ * @see https://stackoverflow.com/a/45257357/1463352
+ * @alpha
+ */
+export type ChainwebChainId = (typeof CHAINS)[number];
 
 /**
  * Different Chainweb network versions.
@@ -178,7 +187,7 @@ export type ListenResponse = ICommandResult;
  */
 export interface ISPVRequestBody {
   requestKey: IBase64Url;
-  targetChainId: ChainId;
+  targetChainId: ChainwebChainId;
 }
 
 /**

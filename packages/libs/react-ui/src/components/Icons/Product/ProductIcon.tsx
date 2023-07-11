@@ -1,9 +1,11 @@
 import { IconWrapper } from '../IconWrapper';
 
+import { Chainweb as ChainwebIcon } from './svgs/Chainweb';
 import { Concepts as ConceptsIcon } from './svgs/Concepts';
 import { Contribute as ContributeIcon } from './svgs/Contribute';
 import { KadenaOverview as KadenaOverviewIcon } from './svgs/KadenaOverview';
 import { ManageKda as ManageKdaIcon } from './svgs/ManageKda';
+import { Marmalade as MarmaladeIcon } from './svgs/Marmalade';
 import { Overview as OverviewIcon } from './svgs/Overview';
 import { PactDeveloper as PactDeveloperIcon } from './svgs/PactDeveloper';
 import { PactLanguage as PactLanguageIcon } from './svgs/PactLanguage';
@@ -14,10 +16,12 @@ import { Syntax as SyntaxIcon } from './svgs/Syntax';
 import { UsefulTools as UsefulToolsIcon } from './svgs/UsefulTools';
 import { Whitepapers as WhitepapersIcon } from './svgs/Whitepapers';
 
+export const Chainweb = IconWrapper(ChainwebIcon);
 export const Concepts = IconWrapper(ConceptsIcon);
 export const Contribute = IconWrapper(ContributeIcon);
 export const KadenaOverview = IconWrapper(KadenaOverviewIcon);
 export const ManageKda = IconWrapper(ManageKdaIcon);
+export const Marmalade = IconWrapper(MarmaladeIcon);
 export const Overview = IconWrapper(OverviewIcon);
 export const PactDeveloper = IconWrapper(PactDeveloperIcon);
 export const PactLanguage = IconWrapper(PactLanguageIcon);

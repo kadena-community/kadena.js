@@ -63,7 +63,7 @@ export const StyledSection: StyledComponent<
   top: 0,
   transition: 'transform .2s ease',
   margin: '$16 0',
-  padding: '0 $4',
+  padding: '0 $6',
   width: '100%',
   height: '100%',
   overflowY: 'scroll',

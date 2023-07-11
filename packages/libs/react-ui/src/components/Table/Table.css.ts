@@ -33,6 +33,7 @@ export const thClass = style([
     backgroundColor: '$neutral3',
     color: '$neutral6',
     textAlign: 'left',
+    wordBreak: 'break-all',
   }),
 ]);
 
@@ -41,6 +42,7 @@ export const tableClass = style([
     width: '100%',
     borderRadius: '$sm',
     overflow: 'hidden',
+    wordBreak: 'break-all',
   }),
   {
     border: `1px solid ${vars.colors.$neutral3}`,
