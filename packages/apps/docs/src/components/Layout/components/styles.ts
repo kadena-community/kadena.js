@@ -68,6 +68,7 @@ export const Template: StyledComponent<
             'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthXLCode)) $$asideMenuWidthXLCode auto',
         },
       },
+
       landing: {
         gridTemplateColumns: 'auto auto',
         gridTemplateAreas: `
@@ -90,7 +91,7 @@ export const Template: StyledComponent<
         },
         '@2xl': {
           gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) auto',
+            'minmax(1%, auto) $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) minmax(1%, auto)',
         },
       },
     },

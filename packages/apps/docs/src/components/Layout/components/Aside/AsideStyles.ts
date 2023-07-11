@@ -68,18 +68,22 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
       },
       '@2xl': {
         backgroundPositionX:
-          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthXLCode +  $$shadowWidth))',
+          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthXLCode + $$shadowWidth))',
       },
     },
     '&::after': {
+      backgroundColor: 'transparent',
       '@md': {
         left: 'calc(100vw  - ($$asideMenuWidthMDCode +  $sizes$4))',
       },
       '@lg': {
-        left: 'calc(100vw  - ($$asideMenuWidthLGCode +  $sizes$4))',
+        left: 'calc(100vw  - ($$asideMenuWidthLGCode +  $sizes$4  + $4))',
+      },
+      '@xl': {
+        backgroundColor: '$backgroundOverlayColor',
       },
       '@2xl': {
-        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthXLCode))',
+        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthXLCode + $6 ))',
       },
     },
 

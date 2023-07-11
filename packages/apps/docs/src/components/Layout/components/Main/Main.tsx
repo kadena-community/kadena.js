@@ -96,7 +96,7 @@ export const Main: FC<IPageProps> = ({
           editLink={editLink}
           navigation={navigation}
         >
-          {isOneOfLayoutType(layoutType, 'full', 'code') && (
+          {isOneOfLayoutType(layoutType, 'full', 'code', 'redocly') && (
             <>
               <Breadcrumbs menuItems={leftMenuTree} />
               <LastModifiedDate date={lastModifiedDate} />
