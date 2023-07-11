@@ -5,14 +5,14 @@ import React, { ButtonHTMLAttributes, FC } from 'react';
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'anchor';
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  href?: string;
-  target?: '_blank' | '_self';
-  children: React.ReactNode;
-  title?: string;
-  disabled?: boolean;
   color?: keyof typeof colorVariants;
+  children: React.ReactNode;
+  href?: string;
+  disabled?: boolean;
   iconAlign?: 'left' | 'right';
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  target?: '_blank' | '_self';
+  title?: string;
 }
 
 export const Button: FC<IButtonProps> = ({
