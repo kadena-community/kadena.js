@@ -1,10 +1,5 @@
-import {
-  IFooterIconItemProps,
-  IFooterLinkItemProps,
-  IFooterPanelProps,
-  SystemIcon,
-} from './../../';
-import { colorVariants } from './Footer.css';
+import { SystemIcon } from './../../';
+import { colorVariants, footerVariants } from './Footer.css';
 import { Footer, IFooterProps } from './index';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -14,12 +9,16 @@ const meta: Meta<
   {
     linksCount: number;
     iconsCount: number;
-  } & IFooterProps &
-    IFooterLinkItemProps &
-    IFooterIconItemProps
+  } & IFooterProps
 > = {
   title: 'Layout/Footer',
   argTypes: {
+    variant: {
+      options: Object.keys(footerVariants) as (keyof typeof footerVariants)[],
+      control: {
+        type: 'select',
+      },
+    },
     color: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
@@ -94,24 +93,23 @@ type Story = StoryObj<
   {
     linksCount: number;
     iconsCount: number;
-  } & IFooterProps &
-    IFooterIconItemProps &
-    IFooterLinkItemProps
+  } & IFooterProps
 >;
 
 export const Primary: Story = {
   name: 'Footer',
   args: {
+    variant: 'web',
     color: 'default',
     linksCount: 4,
     iconsCount: 3,
   },
-  render: ({ color, linksCount, iconsCount }) => {
+  render: ({ variant, color, linksCount, iconsCount }) => {
     const linkItems = links.slice(0, linksCount);
     const iconButtons = icons.slice(0, iconsCount);
     return (
-      <Footer.Root>
-        <Footer.Panel>
+      <Footer.Root variant={variant} color={color}>
+        <Footer.Panel variant={variant}>
           {linkItems.map((item, index) => {
             return (
               <Footer.LinkItem
@@ -123,7 +121,7 @@ export const Primary: Story = {
             );
           })}
         </Footer.Panel>
-        <Footer.Panel>
+        <Footer.Panel variant={variant}>
           {iconButtons.map((item, index) => {
             return (
               <Footer.IconItem
