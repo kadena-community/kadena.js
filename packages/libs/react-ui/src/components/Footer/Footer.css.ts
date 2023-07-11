@@ -16,11 +16,11 @@ export const footerVariants = styleVariants({
 export const containerClass = style([
   sprinkles({
     height: 'min-content',
+    backgroundColor: '$neutral5',
     alignItems: 'stretch',
     display: 'flex',
     justifyContent: 'space-between',
     overflow: 'hidden',
-    bg: '$neutral5',
     borderRadius: '$sm',
   }),
   {
@@ -30,9 +30,6 @@ export const containerClass = style([
       },
       '&:active': {
         color: vars.colors.$negativeContrast,
-      },
-      '&:visited': {
-        color: vars.colors.$tertiaryContrast,
       },
     },
   },
@@ -82,7 +79,12 @@ export const footerPanelVariants = styleVariants({
   ],
 });
 
-export type ColorOptions = ColorType | 'default' | 'inverted';
+export type ColorOptions =
+  | ColorType
+  | 'default'
+  | 'inverted'
+  | 'tertiary'
+  | 'info';
 
 const colors: Record<ColorOptions, ColorOptions> = {
   default: 'default',
@@ -92,6 +94,7 @@ const colors: Record<ColorOptions, ColorOptions> = {
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',
+  tertiary: 'tertiary',
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
@@ -130,10 +133,6 @@ export const linkClass = style([
       },
       '&:active': {
         textDecoration: 'none',
-      },
-      '&:visited': {
-        textDecoration: 'none',
-        color: '$primaryAccent',
       },
     },
   },
