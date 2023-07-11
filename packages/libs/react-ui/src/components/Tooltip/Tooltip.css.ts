@@ -4,7 +4,6 @@ import { style } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
-    display: 'flex',
     placeItems: 'center',
     gap: '$2',
     borderRadius: '$md',
@@ -15,13 +14,13 @@ export const container = style([
     backgroundColor: '$neutral1',
     color: '$neutral6',
     width: 'max-content',
+    position: 'absolute',
+    display: 'none',
   }),
   {
-    position: 'absolute',
     top: '50%',
     marginRight: '-50%',
     border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-    display: 'none',
   },
 ]);
 
@@ -41,6 +40,8 @@ export const arrowLeft = style([
   },
 ]);
 
-export const visibleClass = style({
-  display: 'block',
-});
+export const visibleClass = style([
+  sprinkles({
+    display: 'flex',
+  }),
+]);
