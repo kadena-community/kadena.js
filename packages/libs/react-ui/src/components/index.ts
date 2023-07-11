@@ -60,3 +60,4 @@ export { Option, IOptionProps } from './Select/Option';
 export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';
 export { Accordion, IAccordionProps } from './Accordion';
 export { Tree, ITreeProps } from './Tree';
+export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';
