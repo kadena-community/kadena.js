@@ -1,3 +1,6 @@
+import { theme } from '@kadena/react-components';
+
+import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs';
 import apiSpecs from '@/specs/pact/pact.openapi.json';
 import { ILayout } from '@/types/Layout';
@@ -11,7 +14,7 @@ import React, { FC } from 'react';
 
 const Home: FC<ILayout> = () => {
   const specs = apiSpecs as unknown as OpenAPIV3.Document;
-  return <Specs specs={specs} />;
+  return <Specs specs={specs} options={options} />;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -25,7 +28,7 @@ export const getStaticProps: GetStaticProps = async () => {
         label: 'Pact OpenAPI',
         order: 5,
         description: 'Be a part of our ecosystem',
-        layout: 'home',
+        layout: 'redocly',
       },
     },
   };

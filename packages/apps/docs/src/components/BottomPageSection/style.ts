@@ -1,5 +1,18 @@
 import { styled, StyledComponent } from '@kadena/react-components';
 
+export const BottomWrapper: StyledComponent<
+  'div',
+  { layout?: 'redocly' | 'default' }
+> = styled('div', {
+  width: '100%',
+  '@xl': {
+    width: '56%',
+  },
+  '@2xl': {
+    width: '60%',
+  },
+});
+
 export const Wrapper: StyledComponent<'div'> = styled('div', {
   display: 'flex',
   width: '100%',
