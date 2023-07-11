@@ -5,7 +5,6 @@ import React, { FC } from 'react';
 
 export interface IFooterProps {
   children: React.ReactNode;
-  color: keyof typeof colorVariants;
   variant: keyof typeof footerVariants;
 }
 

@@ -1,5 +1,5 @@
 import { FooterContainer, IFooterProps } from './Footer';
-import { FooterIconItem, IFooterIconItemProps} from './FooterIconItem';
+import { FooterIconItem, IFooterIconItemProps } from './FooterIconItem';
 import { FooterLinkItem, IFooterLinkItemProps } from './FooterLinkItem';
 import { FooterPanel, IFooterPanelProps } from './FooterPanel';
 
