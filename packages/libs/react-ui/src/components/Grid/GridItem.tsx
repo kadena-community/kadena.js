@@ -15,6 +15,24 @@ export interface IGridItemProps {
   rowSpan?: keyof typeof rowSpanVariants;
 }
 
+const assembleColumnSpanVariants = (
+  columnSpan: ResponsiveInputType,
+): string | string[] => {
+  if (typeof columnSpan === 'number') {
+    return explicitItemColumnVariant[columnSpan];
+  }
+
+  const { sm, md, lg, xl, xxl } = columnSpan;
+
+  return [
+    itemColumnVariants.sm[sm],
+    itemColumnVariants.md[md],
+    itemColumnVariants.lg[lg],
+    itemColumnVariants.xl[xl],
+    itemColumnVariants.xxl[xxl],
+  ];
+};
+
 const GridItem: FC<IGridItemProps> = ({
   children,
   columnSpan,
@@ -23,29 +41,7 @@ const GridItem: FC<IGridItemProps> = ({
   const className = classNames(
     gridItemClass,
     rowSpanVariants[rowSpan],
-    columnSpan &&
-      typeof columnSpan === 'number' &&
-      explicitItemColumnVariant[columnSpan],
-    columnSpan &&
-      typeof columnSpan !== 'number' &&
-      columnSpan.sm &&
-      itemColumnVariants.sm[columnSpan.sm],
-    columnSpan &&
-      typeof columnSpan !== 'number' &&
-      columnSpan.md &&
-      itemColumnVariants.md[columnSpan.md],
-    columnSpan &&
-      typeof columnSpan !== 'number' &&
-      columnSpan.lg &&
-      itemColumnVariants.lg[columnSpan.lg],
-    columnSpan &&
-      typeof columnSpan !== 'number' &&
-      columnSpan.xl &&
-      itemColumnVariants.xl[columnSpan.xl],
-    columnSpan &&
-      typeof columnSpan !== 'number' &&
-      columnSpan.xxl &&
-      itemColumnVariants.xxl[columnSpan.xxl],
+    columnSpan && assembleColumnSpanVariants(columnSpan),
   );
   return (
     <div className={className} data-testid="kda-grid-item">

@@ -15,6 +15,24 @@ export interface IGridRootProps {
   spacing?: keyof typeof gapVariants;
 }
 
+const assembleColumnVariants = (
+  columns: ResponsiveInputType,
+): string | string[] => {
+  if (typeof columns === 'number') {
+    return explicitColumnVariant[columns];
+  }
+
+  const { sm, md, lg, xl, xxl } = columns;
+
+  return [
+    containerColumnVariants.sm[sm],
+    containerColumnVariants.md[md],
+    containerColumnVariants.lg[lg],
+    containerColumnVariants.xl[xl],
+    containerColumnVariants.xxl[xxl],
+  ];
+};
+
 const GridRoot: FC<IGridRootProps> = ({
   children,
   columns,
@@ -23,28 +41,7 @@ const GridRoot: FC<IGridRootProps> = ({
   const classList = classNames(
     gapVariants[spacing],
     gridContainerClass,
-    columns && typeof columns === 'number' && explicitColumnVariant[columns],
-
-    columns &&
-      typeof columns !== 'number' &&
-      columns.sm &&
-      containerColumnVariants.sm[columns.sm],
-    columns &&
-      typeof columns !== 'number' &&
-      columns.md &&
-      containerColumnVariants.md[columns.md],
-    columns &&
-      typeof columns !== 'number' &&
-      columns.lg &&
-      containerColumnVariants.lg[columns.lg],
-    columns &&
-      typeof columns !== 'number' &&
-      columns.xl &&
-      containerColumnVariants.xl[columns.xl],
-    columns &&
-      typeof columns !== 'number' &&
-      columns.xxl &&
-      containerColumnVariants.xxl[columns.xxl],
+    columns && assembleColumnVariants(columns),
   );
   return (
     <div className={classList} data-testid="kda-grid-root">

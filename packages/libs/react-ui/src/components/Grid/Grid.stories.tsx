@@ -93,10 +93,10 @@ export const Primary: Story = {
         >
           <div className={ContentClass}>5</div>
         </Grid.Item>
-        <Grid.Item columnSpan={{ md: 1 }}>
+        <Grid.Item>
           <div className={ContentClass}>6</div>
         </Grid.Item>
-        <Grid.Item columnSpan={{ md: 1 }}>
+        <Grid.Item>
           <div className={ContentClass}>7</div>
         </Grid.Item>
 
