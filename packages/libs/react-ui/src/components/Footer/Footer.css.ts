@@ -84,7 +84,6 @@ export type ColorOptions =
   | 'default'
   | 'inverted'
   | 'tertiary'
-  | 'info';
 
 const colors: Record<ColorOptions, ColorOptions> = {
   default: 'default',
