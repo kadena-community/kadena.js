@@ -53,4 +53,13 @@ export {
   MaskedValue,
   IMaskedValueProps,
   ITrackerCardProps,
+  Option,
+  IOptionProps,
+  Select,
+  ISelectProps,
+  Footer,
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
 } from './components';
