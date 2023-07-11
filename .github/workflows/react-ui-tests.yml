@@ -33,4 +33,4 @@ jobs:
         run: |
            npm run test:storybook
         env:
-          TARGET_URL: ${{needs.build.outputs.storybookUrl}}
+          TARGET_URL: '${{ github.event.deployment_status.target_url }}'
