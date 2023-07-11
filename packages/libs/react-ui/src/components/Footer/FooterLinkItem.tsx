@@ -25,9 +25,9 @@ export const FooterLinkItem: FC<IFooterLinkItemProps> = ({
   const classLinkList = classNames(linkClass, colorVariants[color]);
   const classSpanList = classNames(spanClass, colorVariants[color]);
   return (
-    <div className={linkBoxClass}>
+    <div className={linkBoxClass} data-testid="kda-footer-link-item">
       {href !== undefined ? (
-        <a className={classLinkList} href={`${href}`} target={target}>
+        <a className={classLinkList} href={href} target={target}>
           {title}
         </a>
       ) : (
