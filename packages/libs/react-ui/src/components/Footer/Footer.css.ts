@@ -35,7 +35,6 @@ export const footerPanel = style([
     width: 'min-content',
     background: '$neutral5',
     border: 'none',
-    // color: '$neutral3',
     alignItems: 'center',
     lineHeight: '$lg',
     display: 'flex',
