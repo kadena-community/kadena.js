@@ -192,11 +192,11 @@ policies below).
 
 Some policies that have already been deployed as part of the Marmalade Ecosystem
 are the
-[guard policy](https://github.com/kadena-io/marmalade/blob/main/pact/policy.pact),
+[guard policy](https://github.com/kadena-io/marmalade/blob/main/pact/policies/guard-policy/guard-policy.pact),
 the
-[fixed quote policy](https://github.com/kadena-io/marmalade/blob/main/pact/fixed-quote-policy.pact),
+[fixed quote policy](https://github.com/kadena-io/marmalade/blob/main/pact/policies/fixed-quote-policy/fixed-quote-policy.pact),
 and the
-[fixed quote with royalty policy](https://github.com/kadena-io/marmalade/blob/main/pact/fixed-quote-royalty-policy.pact).
+[fixed quote with royalty policy](https://github.com/kadena-io/marmalade/blob/main/pact/policies/fixed-quote-royalty-policy/fixed-quote-royalty-policy.pact).
 All policies, whether they are custom made or already deployed by marmalade,
 must conform to a standard interface called kip.token-policy-v1, which can be
 viewed
@@ -313,7 +313,7 @@ be using Pinata due to its ease of use.
 And once done, your file is pinned on the decentralized IPFS!
 
 1. Finally, take note of the CID from the uploaded picture and save the link
-   with the format https://gateway.pinata.cloud/ipfs/{YourPicture’sCID}
+   with the format `https://gateway.pinata.cloud/ipfs/{YourPicture’sCID}`
 2. We’re now one step closer to minting the Token on-chain! Next, If you have a
    private public key pair, we’ll go straight to creating and minting the token.
    If not follow
@@ -469,7 +469,7 @@ The mint function allows the NFT creator (or someone else) to mint the token
 that they just created. All it needs is the token name, amount to mint, the
 receiver’s account, the receiver’s keyset, and the signer’s private key.
 
-```typescript title=" "
+```ts
 export const mintToken = async (
   tokenId, // Token name
   amount,
