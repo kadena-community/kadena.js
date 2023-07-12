@@ -49,7 +49,10 @@ export const signWithChainweaver: ISignFunction = async (...transactions) => {
     const result = JSON.parse(bodyText) as IQuicksignResponse;
 
     if ('error' in result) {
-      throw new Error();
+      if ('msg' in result.error) {
+        console.log('error in result', result.error.msg);
+      }
+      throw new Error(JSON.stringify(result.error));
     }
 
     result.responses.map((signedCommand, i) => {
