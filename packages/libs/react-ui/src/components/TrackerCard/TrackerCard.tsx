@@ -12,6 +12,8 @@ import {
   layoutVariant,
   gridVariant,
   LabelValueContainer,
+  gapValueLabelVariant,
+  displayVarant,
 } from './TrackerCard.css';
 
 import React, { FC, useState } from 'react';
@@ -42,37 +44,39 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
 }): JSX.Element => {
   const classCardContainer = classNames(
     CardContainer,
-    layoutVariant[variant],
+    icon ? layoutVariant[variant] : null,
     gridVariant[variant],
   );
 
-  const classlabelValue = classNames(ContentContainer, layoutVariant[variant]);
+  const classLabelValue = classNames(
+    LabelValueContainer,
+    displayVarant[variant],
+    layoutVariant[variant],
+    gapValueLabelVariant[variant],
+  );
 
   return (
     <div className={classCardContainer}>
-      {icon}
+      {icon ? <>{icon}</> : <div />}
       <div className={ContentContainer}>
         <div className={DataContainer}>
           {labelValue.map((item, index) => {
             return (
-              <div>
+              <div className={classLabelValue}>
+                <div className={LabelTitle} key={index}>
+                  {item.label}
+                </div>
                 {item.isAccount && item.value ? (
                   <MaskedValue
                     value={item.value}
-                    title={item.label}
                     defaultVisibility={item.defaultVisible}
                     startUnmaskedValues={item.startUnmasked}
                     endUnmaskedValues={item.endUnmasked}
                     key={index}
                   />
                 ) : (
-                  <div className={LabelValueContainer}>
-                    <div className={LabelTitle} key={index}>
-                      {item.label}
-                    </div>
-                    <div className={LabelValue} key={index}>
-                      {item.value}
-                    </div>
+                  <div className={LabelValue} key={index}>
+                    {item.value}
                   </div>
                 )}
               </div>

@@ -30,6 +30,25 @@ export const gridVariant = styleVariants({
   ],
 });
 
+export const displayVarant = styleVariants({
+  horizontal: [
+    sprinkles({
+      display: 'grid',
+    }),
+    {
+      gridTemplateColumns: '1fr 1fr',
+    },
+  ],
+  vertical: [
+    sprinkles({
+      display: 'grid',
+    }),
+    {
+      gridTemplateRows: '1fr 1fr',
+    },
+  ],
+});
+
 export const gapValueLabelVariant = styleVariants({
   horizontal: [
     sprinkles({
@@ -52,22 +71,13 @@ export const CardContainer = style([
     borderRadius: '$sm',
     alignItems: 'flex-start',
     fontSize: '$sm',
-    // width: '$1',
+    background: '$foreground',
   }),
   {
     boxSizing: 'border-box',
   },
 ]);
 
-// export const GridCardContainer = style([
-//   sprinkles({
-//     display: 'grid',
-//     gap: '$4',
-//   }),
-//   {
-//     gridTemplateColumns: 'auto 1fr',
-//   },
-// ]);
 export const ContentContainer = style([
   sprinkles({
     display: 'flex',
@@ -78,39 +88,32 @@ export const ContentContainer = style([
 
 export const DataContainer = style([
   sprinkles({
-    display: 'flex',
+    display: 'grid',
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '$4',
   }),
-  {
-    flex: '1 0 0',
-  },
 ]);
 
 export const LabelValueContainer = style([
   sprinkles({
-    display: 'flex',
-    flexDirection: 'row',
     alignItems: 'flex-start',
-
-    gap: '$1',
   }),
-  {
-    flex: '1 0 0',
-  },
 ]);
 
 export const LabelTitle = style([
   sprinkles({
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     fontSize: '$sm',
     fontWeight: '$medium',
+    fontFamily: '$main',
+    color: '$neutral3',
   }),
   {
     alignSelf: 'stretch',
+    wordBreak: 'break-word',
   },
 ]);
 
@@ -119,6 +122,7 @@ export const LabelValue = style([
     display: 'inline-block',
     fontWeight: '$normal',
     fontFamily: '$mono',
+    color: '$neutral1',
   }),
   {
     wordBreak: 'break-word',

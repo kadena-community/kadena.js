@@ -47,11 +47,11 @@ export default meta;
 type Story = StoryObj<ITrackerCardProps>;
 
 const labelValues: ILabelValue[] = [
-  // {
-  //   label: 'Account',
-  //   value: 'k:1234567890abcdef',
-  //   isAccount: true,
-  // },
+  {
+    label: 'Account',
+    value: 'k:1234567890abcdef',
+    isAccount: true,
+  },
   {
     label: 'Balance',
     value: '1000',
