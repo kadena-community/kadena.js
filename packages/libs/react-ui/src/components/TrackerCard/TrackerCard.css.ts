@@ -71,7 +71,7 @@ export const CardContainer = style([
     borderRadius: '$sm',
     alignItems: 'flex-start',
     fontSize: '$sm',
-    background: '$foreground',
+    background: '$background',
   }),
   {
     boxSizing: 'border-box',
@@ -109,7 +109,7 @@ export const LabelTitle = style([
     fontSize: '$sm',
     fontWeight: '$medium',
     fontFamily: '$main',
-    color: '$neutral3',
+    color: '$neutral4',
   }),
   {
     alignSelf: 'stretch',
@@ -122,7 +122,7 @@ export const LabelValue = style([
     display: 'inline-block',
     fontWeight: '$normal',
     fontFamily: '$mono',
-    color: '$neutral1',
+    color: '$neutral6',
   }),
   {
     wordBreak: 'break-word',
