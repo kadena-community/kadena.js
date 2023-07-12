@@ -68,4 +68,9 @@ export {
   IOptionProps,
   Select,
   ISelectProps,
+  Footer,
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
 } from './components';
