@@ -26,7 +26,7 @@ function debitInTheFirstChain(
       Pact.modules.coin.defpact['transfer-crosschain'](
         from.account,
         to.account,
-        () => to.guard,
+        to.guard,
         '01',
         {
           decimal: amount.toString(),
@@ -34,7 +34,7 @@ function debitInTheFirstChain(
       ),
     )
     .addSigner(from.publicKey, (withCapability) => [
-      // in typescript this functions suggest you only relevant capabilities
+      // in typescript this function suggests you only relevant capabilities
       withCapability(
         'coin.TRANSFER_XCHAIN',
         from.account,
