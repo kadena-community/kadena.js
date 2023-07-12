@@ -15,6 +15,9 @@ import { SmartContract as SmartContractIcon } from './svgs/SmartContract';
 import { Syntax as SyntaxIcon } from './svgs/Syntax';
 import { UsefulTools as UsefulToolsIcon } from './svgs/UsefulTools';
 import { Whitepapers as WhitepapersIcon } from './svgs/Whitepapers';
+import { Gas as GasIcon } from './svgs/Gas';
+import { Receiver as ReceiverIcon } from './svgs/Receiver';
+import { ReceiverInactive as ReceiverInactiveIcon } from './svgs/ReceiverInactive';
 
 export const Chainweb = IconWrapper(ChainwebIcon);
 export const Concepts = IconWrapper(ConceptsIcon);
@@ -31,3 +34,6 @@ export const SmartContract = IconWrapper(SmartContractIcon);
 export const Syntax = IconWrapper(SyntaxIcon);
 export const UsefulTools = IconWrapper(UsefulToolsIcon);
 export const Whitepapers = IconWrapper(WhitepapersIcon);
+export const Gas = IconWrapper(GasIcon);
+export const Receiver = IconWrapper(ReceiverIcon);
+export const ReceiverInactive = IconWrapper(ReceiverInactiveIcon);
