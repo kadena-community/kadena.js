@@ -40,10 +40,15 @@ const remarkHeadersToProps = () => {
 
     headers.forEach((item, index) => {
       const parent = lastHeading(startArray[0], item);
+      const pageTitle = parent.title ?? '';
 
+      // Heading3 component needs index and page title as a props
+      // to generate the unique anchor link to match with the sidebar menu
+      // for any special characters
       item.data = {
         hProperties: {
           index,
+          pageTitle,
         },
       };
 
@@ -52,6 +57,10 @@ const remarkHeadersToProps = () => {
         tag: getTagName(item.depth),
         title: toString(item) ?? '',
         children: [],
+        // index and page title is used to generate
+        // the unique anchor link for special characters in sidebar menu
+        index,
+        pageTitle,
       };
       parent.children.push(elm);
     });
