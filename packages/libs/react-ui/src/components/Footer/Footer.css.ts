@@ -49,7 +49,7 @@ export const footerPanel = style([
   }),
 ]);
 
-export type ColorOptions = ColorType | 'default' | 'inverted' | 'tertiary';
+export type ColorOptions = ColorType | 'default' | 'inverted';
 
 const colors: Record<ColorOptions, ColorOptions> = {
   default: 'default',
@@ -60,6 +60,7 @@ const colors: Record<ColorOptions, ColorOptions> = {
   warning: 'warning',
   negative: 'negative',
   tertiary: 'tertiary',
+  info: 'info',
 };
 
 export const colorVariants = styleVariants(colors, (color) => {
