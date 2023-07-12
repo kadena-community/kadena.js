@@ -63,23 +63,28 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
   const Icon = icon;
 
   return (
-    <div className={classCardContainer}>
+    <div className={classCardContainer} data-testid="kda-tracker-card">
       {Icon ? (
         <>
-          <Icon />
+          <Icon data-testid="kda-icon" />
         </>
       ) : (
         <div />
       )}
       <div className={ContentContainer}>
-        <div className={DataContainer}>
+        <div className={DataContainer} data-testid="kda-data-container">
           {labelValue?.map((item, index) => {
             return (
               <div
                 className={classLabelValue}
                 key={`label-value-container-${index}`}
+                data-testid={`kda-label-value-container-${index}`}
               >
-                <div className={LabelTitle} key={`label-${index}`}>
+                <div
+                  className={LabelTitle}
+                  key={`label-${index}`}
+                  data-testid={`kda-label-${index}`}
+                >
                   {item.label}
                 </div>
                 {item.isAccount && item.value ? (
@@ -89,9 +94,14 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
                     startUnmaskedValues={item.startUnmasked}
                     endUnmaskedValues={item.endUnmasked}
                     key={`masked-value-${index}`}
+                    data-testid={`kda-masked-value-${index}`}
                   />
                 ) : (
-                  <div className={LabelValue} key={`value-${index}`}>
+                  <div
+                    className={LabelValue}
+                    key={`value-${index}`}
+                    data-testid={`kda-value-${index}`}
+                  >
                     {item.value}
                   </div>
                 )}
@@ -100,7 +110,9 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
           })}
         </div>
         {helperText ? (
-          <div className={classWarningContainer}>{helperText}</div>
+          <div className={classWarningContainer} data-testid="kda-helper-text">
+            {helperText}
+          </div>
         ) : null}
       </div>
     </div>
