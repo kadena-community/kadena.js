@@ -35,7 +35,7 @@
     "format:src": "prettier src --write",
     "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
-    "test": "jest"
+    "test": "jest --silent"
   },
   "dependencies": {
     "@vanilla-extract/css": "1.11.1",
