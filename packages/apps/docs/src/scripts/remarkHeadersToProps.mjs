@@ -38,8 +38,14 @@ const remarkHeadersToProps = () => {
       },
     ];
 
-    headers.forEach((item) => {
+    headers.forEach((item, index) => {
       const parent = lastHeading(startArray[0], item);
+
+      item.data = {
+        hProperties: {
+          index: index,
+        },
+      }
 
       const elm = {
         depth: item.depth,
