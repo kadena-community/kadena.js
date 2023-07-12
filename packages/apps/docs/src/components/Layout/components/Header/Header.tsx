@@ -14,6 +14,7 @@ import { DocsLogo } from '..';
 import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
+import { SearchButton } from './SearchButton';
 import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
@@ -84,7 +85,9 @@ export const Header: FC<IProps> = ({
         </HeaderIconGroup>
         <HeaderIconGroup>
           <ThemeToggle />
-
+          <HideOnMobile>
+            <SearchButton />
+          </HideOnMobile>
           <HamburgerMenuToggle
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
