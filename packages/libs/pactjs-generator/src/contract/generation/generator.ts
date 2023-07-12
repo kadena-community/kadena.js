@@ -8,7 +8,7 @@ const keywordsMap: Record<string, string> = {
   integer: 'IPactInt',
   time: 'Date',
   bool: 'boolean',
-  guard: '() => string',
+  guard: 'PactGuard',
 };
 
 const mapType = (
@@ -79,7 +79,7 @@ function genFunCapsInterface(func: IFunction): string {
         ? `/**${EOL}* ${cap.capability.doc}${EOL}*/`
         : '';
     const addCap = `(${EOL}${parameters
-      .map(indent)
+      .map((line) => indent(line))
       .join(`, ${EOL}`)}): ICapabilityItem`;
     return { comment, addCap };
   });
@@ -133,7 +133,7 @@ export function generateDts(
 
   const dts = `
 import type { ICapabilityItem } from '@kadena/client';
-import type { IPactDecimal, IPactInt } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactGuard } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICapabilityItem;
