@@ -52,4 +52,3 @@ export { Tag, ITagProps } from './Tag/Tag';
 export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
-
