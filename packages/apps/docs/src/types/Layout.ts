@@ -13,7 +13,7 @@ export interface ISubHeaderElement {
   slug?: string;
   children: ISubHeaderElement[];
   index?: number;
-  pageTitle?: string;
+  parentTitle?: string;
 }
 
 export interface INavigation {
