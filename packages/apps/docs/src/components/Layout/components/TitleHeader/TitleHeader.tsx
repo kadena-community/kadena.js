@@ -1,4 +1,5 @@
-import { Heading, ProductIcons, Stack } from '@kadena/react-components';
+import { Heading, Stack } from '@kadena/react-components';
+import { ProductIcon } from '@kadena/react-ui';
 
 import { HeaderWrapper, StyledHeader, SubHeader, Wrapper } from './style';
 
@@ -12,14 +13,14 @@ interface IProps {
 }
 
 export const TitleHeader: FC<IProps> = ({ title, subTitle, icon }) => {
-  const Icon = icon ? ProductIcons[icon] : null;
+  const Icon = icon ? ProductIcon[icon] : null;
 
   return (
     <HeaderWrapper data-cy="titleheader">
       <StyledHeader>
         <Wrapper>
           <Stack alignItems="center">
-            {Icon && <Icon size="lg" />}
+            {Icon && <Icon size="heroHeader" />}
             <Heading as="h1">{title}</Heading>
           </Stack>
           {subTitle !== undefined && (

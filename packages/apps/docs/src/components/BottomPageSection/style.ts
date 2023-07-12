@@ -5,11 +5,22 @@ export const BottomWrapper: StyledComponent<
   { layout?: 'redocly' | 'default' }
 > = styled('div', {
   width: '100%',
-  '@xl': {
-    width: '56%',
+
+  defaultVariants: {
+    layout: 'default',
   },
-  '@2xl': {
-    width: '60%',
+  variants: {
+    layout: {
+      default: {},
+      redocly: {
+        '@xl': {
+          width: '56%',
+        },
+        '@2xl': {
+          width: '60%',
+        },
+      },
+    },
   },
 });
 

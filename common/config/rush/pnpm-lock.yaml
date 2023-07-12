@@ -900,6 +900,7 @@ importers:
       classnames: ^2.3.1
       concurrently: ^7.2.2
       copyfiles: 2.4.1
+      css-loader: ~6.8.1
       eslint: ^8.15.0
       eslint-import-resolver-typescript: 3.5.5
       eslint-plugin-import: ~2.27.5
@@ -928,6 +929,7 @@ importers:
       '@vanilla-extract/recipes': 0.4.0_@vanilla-extract+css@1.11.1
       '@vanilla-extract/sprinkles': 1.6.0_@vanilla-extract+css@1.11.1
       classnames: 2.3.2
+      css-loader: 6.8.1_webpack@5.73.0
       focus-trap-react: 10.1.4_ae99d26bf538c96cd8f1c5ec503a2210
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
