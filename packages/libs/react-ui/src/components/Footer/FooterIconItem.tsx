@@ -1,10 +1,16 @@
 import { vars } from '../../styles';
 import { SystemIcon } from '../';
 
-import { colorVariants, iconBoxClass, iconTextClass } from './Footer.css';
+import {
+  ColorOptions,
+  colorVariants,
+  iconBoxClass,
+  iconTextClass,
+} from './Footer.css';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';
+import { vars } from '../../styles';
 
 export interface IFooterIconItemProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
