@@ -19,9 +19,6 @@ import { SmartContract as SmartContractIcon } from './svgs/SmartContract';
 import { Syntax as SyntaxIcon } from './svgs/Syntax';
 import { UsefulTools as UsefulToolsIcon } from './svgs/UsefulTools';
 import { Whitepapers as WhitepapersIcon } from './svgs/Whitepapers';
-import { Gas as GasIcon } from './svgs/Gas';
-import { Receiver as ReceiverIcon } from './svgs/Receiver';
-import { ReceiverInactive as ReceiverInactiveIcon } from './svgs/ReceiverInactive';
 
 export const BlogChain = IconWrapper(BlogChainIcon);
 export const Chainweb = IconWrapper(ChainwebIcon);

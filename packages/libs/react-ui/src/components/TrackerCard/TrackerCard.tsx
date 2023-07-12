@@ -1,28 +1,38 @@
-import { MaskedValue } from '..';
-import { SystemIcon } from '../Icons';
+import { MaskedValue, ProductIcon } from '..';
 
 import {
   CardContainer,
-  TrackerInfoContainer,
-  TrackerContentContainer,
-  TrackerInfoItemTitle,
-  TrackerInfoItemLine,
+  ContentContainer,
+  DataContainer,
+  displayVarant,
+  gapValueLabelVariant,
+  gridVariant,
+  LabelTitle,
+  LabelValue,
+  LabelValueContainer,
+  layoutVariant,
   TrackerWarningContainer,
+  warningVariant,
 } from './TrackerCard.css';
 
-import React, { FC, useState } from 'react';
+import classNames from 'classnames';
+import React, { FC } from 'react';
 
 export interface ITrackerCardProps {
-  labelValue: ITrackerCardLabel[];
+  labelValue: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon?: JSX.Element;
+  icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
+  variant: keyof typeof layoutVariant;
 }
 
-export interface ITrackerCardLabel {
+export interface ILabelValue {
   label: string;
   value?: string;
   isAccount?: boolean;
+  defaultVisible?: boolean;
+  startUnmasked?: number;
+  endUnmasked?: number;
 }
 
 export const TrackerCard: FC<ITrackerCardProps> = ({
@@ -30,28 +40,68 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
   icon,
   helperText,
   helperTextType = 'mild',
+  variant,
 }): JSX.Element => {
+  const classCardContainer = classNames(
+    CardContainer,
+    icon ? layoutVariant[variant] : null,
+    gridVariant[variant],
+  );
+
+  const classLabelValue = classNames(
+    LabelValueContainer,
+    displayVarant[variant],
+    layoutVariant[variant],
+    gapValueLabelVariant[variant],
+  );
+
+  const classWarningContainer = classNames(
+    TrackerWarningContainer,
+    warningVariant[helperTextType],
+  );
+
+  const Icon = icon;
+
   return (
-    <div className={CardContainer}>
-      {icon}
-      <div className={TrackerInfoContainer}>
-        {isAccount ? (
-          <MaskedValue value={firstContent} title={firstTitle} />
-        ) : (
-          <div>
-            <div className={TrackerInfoItemTitle}>{firstTitle}</div>
-            <div className={TrackerInfoItemLine}>{firstContent}</div>
-          </div>
-        )}
-        <div className={TrackerContentContainer}>
-          <div>
-            <div className={TrackerInfoItemTitle}>{secondTitle}</div>
-            <div className={TrackerInfoItemLine}>{secondContent}</div>
-          </div>
-          {helperText ? (
-            <div className={TrackerWarningContainer}>{helperText}</div>
-          ) : null}
+    <div className={classCardContainer}>
+      {Icon ? (
+        <>
+          <Icon />
+        </>
+      ) : (
+        <div />
+      )}
+      <div className={ContentContainer}>
+        <div className={DataContainer}>
+          {labelValue?.map((item, index) => {
+            return (
+              <div
+                className={classLabelValue}
+                key={`label-value-container-${index}`}
+              >
+                <div className={LabelTitle} key={`label-${index}`}>
+                  {item.label}
+                </div>
+                {item.isAccount && item.value ? (
+                  <MaskedValue
+                    value={item.value}
+                    defaultVisibility={item.defaultVisible}
+                    startUnmaskedValues={item.startUnmasked}
+                    endUnmaskedValues={item.endUnmasked}
+                    key={`masked-value-${index}`}
+                  />
+                ) : (
+                  <div className={LabelValue} key={`value-${index}`}>
+                    {item.value}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
+        {helperText ? (
+          <div className={classWarningContainer}>{helperText}</div>
+        ) : null}
       </div>
     </div>
   );

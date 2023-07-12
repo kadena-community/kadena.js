@@ -1,96 +1,89 @@
-import { ITrackerCardProps, TrackerCard } from './TrackerCard';
+import { ProductIcon } from '../Icons';
+
+import { ILabelValue, ITrackerCardProps, TrackerCard } from './TrackerCard';
+import { layoutVariant } from './TrackerCard.css';
 
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { SystemIcon } from '../Icons';
 
-const meta: Meta<ITrackerCardProps> = {
-  title: 'Components/TrackerCard',
-  argTypes: {
-    firstTitle: {
-      control: {
-        type: 'text',
+const meta: Meta<{ selectIcon: keyof typeof ProductIcon } & ITrackerCardProps> =
+  {
+    title: 'Components/TrackerCard',
+    argTypes: {
+      variant: {
+        options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],
+        control: {
+          type: 'select',
+        },
       },
-    },
-    firstContent: {
-      control: {
-        type: 'text',
+      labelValue: {
+        control: {
+          type: 'object',
+        },
       },
-    },
-    secondTitle: {
-      control: {
-        type: 'text',
+      helperText: {
+        control: {
+          type: 'text',
+        },
       },
-    },
-    secondContent: {
-      control: {
-        type: 'text',
-      },
-    },
-    helperText: {
-      control: {
-        type: 'text',
-      },
-    },
-    helperTextType: {
-      control: {
-        type: 'select',
+      helperTextType: {
+        control: {
+          type: 'select',
+        },
         options: ['mild', 'severe'],
       },
-    },
-    isAccount: {
-      control: {
-        type: 'boolean',
+      selectIcon: {
+        options: [
+          undefined,
+          ...(Object.keys(ProductIcon) as (keyof typeof ProductIcon)[]),
+        ],
+        control: {
+          type: 'select',
+        },
       },
     },
-    icon: {
-      options: [
-        undefined,
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
-      control: {
-        type: 'select',
-      },
-    },
-  },
-};
+  };
 
 export default meta;
 
-type Story = StoryObj<ITrackerCardProps>;
+type Story = StoryObj<
+  { selectIcon: keyof typeof ProductIcon } & ITrackerCardProps
+>;
+
+const labelValues: ILabelValue[] = [
+  {
+    label: 'Account',
+    value: 'k:1234567890abcdef',
+    isAccount: true,
+  },
+  {
+    label: 'Balance',
+    value: '1000',
+  },
+  {
+    label: 'Debt',
+    value: '6000',
+  },
+];
 
 export const Primary: Story = {
   name: 'TrackerCard',
   args: {
-    firstTitle: 'Account',
-    firstContent: 'k:1234567890abcdef',
-    secondTitle: 'Balance',
-    secondContent: '1000',
+    labelValue: labelValues,
     helperText: 'This is a helper text',
     helperTextType: 'mild',
-    isAccount: true,
-    icon: undefined,
+    selectIcon: 'QuickStart',
+    variant: 'vertical',
   },
-  render: ({
-    firstTitle,
-    firstContent,
-    secondTitle,
-    secondContent,
-    helperText,
-    helperTextType,
-    isAccount,
-    icon: Icon,
-  }) => {
+  render: ({ labelValue, helperText, helperTextType, selectIcon, variant }) => {
+    const icon = ProductIcon[selectIcon];
     return (
       <TrackerCard
-        firstTitle={firstTitle}
-        firstContent={firstContent}
-        secondTitle={secondTitle}
-        secondContent={secondContent}
+        variant={variant}
+        labelValue={labelValue}
         helperText={helperText}
         helperTextType={helperTextType}
-        isAccount={isAccount}
-        icon={Icon}
+        icon={icon}
       />
     );
   },
