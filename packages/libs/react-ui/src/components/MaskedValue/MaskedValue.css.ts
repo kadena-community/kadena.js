@@ -11,7 +11,7 @@ export const titleContainer = style([
     fontWeight: '$medium',
     flexDirection: 'column',
     justifyContent: 'center',
-    color: '$neutral3',
+    color: '$neutral4',
   }),
   {
     alignSelf: 'stretch',
@@ -33,7 +33,7 @@ export const valueContainer = style([
     fontFamily: '$mono',
     fontWeight: '$semiBold',
     width: '100%',
-    color: '$neutral1',
+    color: '$neutral6',
   }),
   {
     wordBreak: 'break-word',
@@ -45,6 +45,6 @@ export const iconContainer = style([
   sprinkles({
     width: '$6',
     height: '$6',
-    color: '$neutral1',
+    color: '$neutral6',
   }),
 ]);
