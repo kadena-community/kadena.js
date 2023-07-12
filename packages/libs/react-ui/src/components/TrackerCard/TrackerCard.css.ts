@@ -49,6 +49,19 @@ export const displayVarant = styleVariants({
   ],
 });
 
+export const warningVariant = styleVariants({
+  mild: [
+    sprinkles({
+      color: '$warningContrast',
+    }),
+  ],
+  severe: [
+    sprinkles({
+      color: '$negativeContrast',
+    }),
+  ],
+});
+
 export const gapValueLabelVariant = styleVariants({
   horizontal: [
     sprinkles({

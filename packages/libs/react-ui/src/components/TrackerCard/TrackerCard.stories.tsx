@@ -27,8 +27,8 @@ const meta: Meta<ITrackerCardProps> = {
     helperTextType: {
       control: {
         type: 'select',
-        options: ['mild', 'severe'],
       },
+      options: ['mild', 'severe'],
     },
     icon: {
       options: [

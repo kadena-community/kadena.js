@@ -14,6 +14,7 @@ import {
   LabelValueContainer,
   gapValueLabelVariant,
   displayVarant,
+  warningVariant,
 } from './TrackerCard.css';
 
 import React, { FC, useState } from 'react';
@@ -55,6 +56,11 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     gapValueLabelVariant[variant],
   );
 
+  const classWarningContainer = classNames(
+    TrackerWarningContainer,
+    warningVariant[helperTextType],
+  );
+
   return (
     <div className={classCardContainer}>
       {icon ? <>{icon}</> : <div />}
@@ -84,7 +90,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
           })}
         </div>
         {helperText ? (
-          <div className={TrackerWarningContainer}>{helperText}</div>
+          <div className={classWarningContainer}>{helperText}</div>
         ) : null}
       </div>
     </div>
