@@ -10,11 +10,20 @@ describe('utils createSlug', () => {
     );
   });
 
-  it('should return a slug from given string with index', () => {
-    expect(createSlug('By the power of grayskull!', 1)).toEqual(
-      'by-the-power-of-grayskull-1',
+  it('should ignore index if slug is not empty and not having any special characters', () => {
+    expect(createSlug('By the power of grayskull', 1)).toEqual(
+      'by-the-power-of-grayskull',
     );
     expect(createSlug('here comes spëcíāl characters', 2)).toEqual(
+      'here-comes-special-characters',
+    );
+  });
+
+  it('should return a slug from given string with index', () => {
+    expect(createSlug('By the power of grayskull?', 1)).toEqual(
+      'by-the-power-of-grayskull-1',
+    );
+    expect(createSlug('here comes spëcíāl characters!', 2)).toEqual(
       'here-comes-special-characters-2',
     );
   });
