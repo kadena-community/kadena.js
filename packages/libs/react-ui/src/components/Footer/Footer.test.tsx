@@ -1,9 +1,8 @@
-import { Footer } from '@components/Footer';
 import { SystemIcon } from './../../';
 
+import { Footer } from '@components/Footer';
 import { render } from '@testing-library/react';
 import React from 'react';
-import { footerPanel } from '@components/Footer/Footer.css';
 
 describe('Footer', () => {
   test('renders correctly', () => {
@@ -21,12 +20,10 @@ describe('Footer', () => {
     const icons = [
       {
         icon: SystemIcon.Earth,
-        title: 'Language',
         text: 'English',
       },
       {
         icon: SystemIcon.Account,
-        title: 'Account',
       },
     ];
 
@@ -34,7 +31,7 @@ describe('Footer', () => {
 
     const { getByTestId, getAllByTestId } = render(
       <Footer.Root>
-        <Footer.Panel variant="web">
+        <Footer.Panel>
           {menuLinks.map((item, index) => {
             return (
               <Footer.LinkItem
@@ -46,15 +43,10 @@ describe('Footer', () => {
             );
           })}
         </Footer.Panel>
-        <Footer.Panel variant="web">
+        <Footer.Panel>
           {icons.map((item, index) => {
             return (
-              <Footer.IconItem
-                key={index}
-                title={item.title}
-                color={color}
-                icon={item.icon}
-              />
+              <Footer.IconItem key={index} color={color} icon={item.icon} />
             );
           })}
         </Footer.Panel>
