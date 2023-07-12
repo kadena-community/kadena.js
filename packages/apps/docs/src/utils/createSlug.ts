@@ -12,5 +12,10 @@ export const createSlug = (str?: string, index?: number): string => {
 
   if (index === undefined) return normalizedSlug;
 
-  return `${normalizedSlug}-${index}`;
+  // To check any special character at the end of the string
+  const regex = /^.*[!@#$%^&*?]{1}$/;
+
+  if (str.match(regex)) return `${normalizedSlug}-${index}`;
+
+  return normalizedSlug;
 };
