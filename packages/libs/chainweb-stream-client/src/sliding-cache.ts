@@ -106,7 +106,7 @@ export default class SlidingCache<TShape extends ITransaction>
         }
       } else {
         console.warn(
-          `Ignoring cacheValue=${cacheValue}, minimum tracked is ${minTracked}`,
+          `Ignoring cacheValue=${cacheValue}, minimum tracked is ${minTracked}, max tracked is ${newMaxCacheValue}`,
         );
         retVals.push(false);
       }
@@ -120,7 +120,7 @@ export default class SlidingCache<TShape extends ITransaction>
   public existsCache(
     needle: TShape,
   ): [InSpanRange, Exists, ExistsIdentical, CacheIdx] {
-    // [exists, identical, index]
+    // [in span range, exists, exists in identical confirmation depth, index]
     const spanValue = this.spanValueGetter(needle);
     if (spanValue < this.minSpanValue) {
       return [false, false, false, -1];
@@ -153,7 +153,7 @@ export default class SlidingCache<TShape extends ITransaction>
       (elem) => this.spanValueGetter(elem) >= this.minSpanValue,
     );
     const evictedNum = this.cache.length - nextCache.length;
-    console.log(`Evicted ${evictedNum}`);
+    console.log(`Evicted ${evictedNum} out of ${this.cache.length}.`);
     this.cache = nextCache;
     return evictedNum;
   }
