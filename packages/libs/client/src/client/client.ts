@@ -4,6 +4,7 @@ import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
 
+import { listen } from './api/listen';
 import { local, LocalResponse } from './api/local';
 import { getSpv, pollSpv } from './api/spv';
 import { getStatus, pollStatus } from './api/status';
@@ -53,6 +54,16 @@ interface IClient {
     requestKeys?: string[] | string,
     options?: INetworkOptions,
   ) => Promise<IPollResponse>;
+
+  /**
+   * calls '/listen' endpoint. if the requests submitted outside of the current client context then you need to path networkId
+   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   */
+  listen: (
+    requestKey: string,
+    options?: INetworkOptions,
+  ) => Promise<ICommandResult>;
+
   /**
    * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
@@ -193,6 +204,21 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return mergedResults;
     },
 
+    async listen(requestKey, options) {
+      const hostUrl =
+        storage.get(requestKey) ??
+        getHost({
+          chainId: options?.chainId!,
+          networkId: options?.networkId!,
+        });
+
+      const result = await listen(hostUrl, requestKey);
+
+      storage.remove([requestKey]);
+
+      return result;
+    },
+
     pollSpv(requestKey, targetChainId, options) {
       return pollSpv(
         storage.get(requestKey) ??
@@ -205,6 +231,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         options,
       );
     },
+
     getSpv(requestKey, targetChainId, options) {
       return getSpv(
         storage.get(requestKey) ??

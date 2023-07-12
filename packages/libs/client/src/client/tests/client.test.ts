@@ -253,6 +253,28 @@ describe('client', () => {
     });
   });
 
+  describe('listen', () => {
+    it('calls /listen endpoint get the status of the request', async () => {
+      const response = { reqKey: 'test-key' };
+
+      (fetch as jest.Mock).mockResolvedValue({
+        status: 200,
+        ok: true,
+        text: () => JSON.stringify(response),
+        json: () => response,
+      });
+
+      const { listen } = getClient('http://test-host.com');
+
+      const result = await listen('test-key');
+
+      expect(result).toEqual(response);
+
+      // one for the /send and three times /poll
+      expect(fetch).toBeCalledTimes(1);
+    });
+  });
+
   describe('getSpv', () => {
     it('calls /spv endpoint once to get spv proof', async () => {
       const response = 'proof';
