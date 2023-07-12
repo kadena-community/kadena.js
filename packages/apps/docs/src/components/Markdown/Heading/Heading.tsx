@@ -14,7 +14,7 @@ interface IProp {
   variant?: TagType;
   children: string;
   index?: number;
-  pageTitle?: string;
+  parentTitle?: string;
 }
 
 export interface IHeader {
@@ -76,9 +76,9 @@ export const TaggedHeading: FC<IProp> = ({
   as,
   variant,
   index,
-  pageTitle,
+  parentTitle,
 }) => {
-  const slug = createSlug(children, index, pageTitle);
+  const slug = createSlug(children, index, parentTitle);
 
   return (
     <StyledHeader as={as} variant={variant ?? as}>
