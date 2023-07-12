@@ -14,6 +14,7 @@ interface IProp {
   variant?: TagType;
   children: string;
   index?: number;
+  pageTitle?: string;
 }
 
 export interface IHeader {
@@ -70,8 +71,14 @@ const StyledLinkIcon = styled('a', {
   scrollSnapMarginTop: '$20',
 });
 
-export const TaggedHeading: FC<IProp> = ({ children, as, variant, index }) => {
-  const slug = createSlug(children, index);
+export const TaggedHeading: FC<IProp> = ({
+  children,
+  as,
+  variant,
+  index,
+  pageTitle,
+}) => {
+  const slug = createSlug(children, index, pageTitle);
 
   return (
     <StyledHeader as={as} variant={variant ?? as}>
