@@ -7,8 +7,8 @@ importers:
 
   ../../packages/apps/docs:
     specifiers:
-      '@7-docs/cli': 0.1.7
-      '@7-docs/edge': 0.1.7
+      '@7-docs/cli': 0.1.9
+      '@7-docs/edge': 0.1.9
       '@babel/preset-env': ^7.20.2
       '@babel/preset-react': ^7.18.6
       '@babel/preset-typescript': ^7.21.0
@@ -81,7 +81,7 @@ importers:
       styled-components: ~5.3.10
       typescript: 5.0.4
     dependencies:
-      '@7-docs/edge': 0.1.7
+      '@7-docs/edge': 0.1.9
       '@google-analytics/data': 3.2.2
       '@kadena/react-components': link:../../libs/react-components
       '@kadena/react-ui': link:../../libs/react-ui
@@ -111,7 +111,7 @@ importers:
       shiki: 0.14.3
       styled-components: 5.3.11_react-dom@18.2.0+react@18.2.0
     devDependencies:
-      '@7-docs/cli': 0.1.7
+      '@7-docs/cli': 0.1.9
       '@babel/preset-env': 7.22.5
       '@babel/preset-react': 7.22.5
       '@babel/preset-typescript': 7.22.5
@@ -897,6 +897,7 @@ importers:
       '@vanilla-extract/webpack-plugin': 2.2.0
       classnames: ^2.3.1
       copyfiles: 2.4.1
+      css-loader: ~6.8.1
       eslint: ^8.15.0
       eslint-import-resolver-typescript: 3.5.5
       eslint-plugin-import: ~2.27.5
@@ -923,6 +924,7 @@ importers:
       '@vanilla-extract/recipes': 0.4.0_@vanilla-extract+css@1.11.1
       '@vanilla-extract/sprinkles': 1.6.0_@vanilla-extract+css@1.11.1
       classnames: 2.3.2
+      css-loader: 6.8.1_webpack@5.73.0
       focus-trap-react: 10.1.4_ae99d26bf538c96cd8f1c5ec503a2210
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1393,12 +1395,12 @@ importers:
 
 packages:
 
-  /@7-docs/cli/0.1.7:
-    resolution: {integrity: sha512-FBJ8VFlhDUlvP9j5s7biUgKGa70qXoupLimRnL/9ZsdojSSQYiIfbnB2X6FJYRj+YYaymRdhfwPAzGYKpXH42g==}
+  /@7-docs/cli/0.1.9:
+    resolution: {integrity: sha512-pBE9sMwD06BR/KBkrtyqnb4f6Cz6fcgeJaxLUZcqeQZCYtZ4g4YlA14pm+2sywUeWt9YYM1uDHRXb+zFIsqLOw==}
     hasBin: true
     dependencies:
-      '@7-docs/edge': 0.1.7
-      '@7-docs/shared': 0.1.7
+      '@7-docs/edge': 0.1.9
+      '@7-docs/shared': 0.1.9
       '@octokit/rest': 19.0.13
       '@supabase/supabase-js': 2.26.0
       cheerio: 1.0.0-rc.12
@@ -1422,13 +1424,13 @@ packages:
       - supports-color
     dev: true
 
-  /@7-docs/edge/0.1.7:
-    resolution: {integrity: sha512-8BoZ1abwHa60kXOu5GrDq6YoXKnxehP8N3QxCGGzDWQq5T/m6FXXMlYReDfn9yPi7Buz6jtQeHmnoXU1RJTrKA==}
+  /@7-docs/edge/0.1.9:
+    resolution: {integrity: sha512-TPbkIgLzGI49tg3qZF1huTD4uxxdnumVZ5MSnVO2YuGBD6zYgAVYEttYUZ8Z1+ZGhe7BbljQZV9rC7ZqCCe0dQ==}
     dependencies:
-      '@7-docs/shared': 0.1.7
+      '@7-docs/shared': 0.1.9
 
-  /@7-docs/shared/0.1.7:
-    resolution: {integrity: sha512-9euIY/TBPzwWV7A5SI0ZBR/UTEezUuDZPXkPe8DnFgiuK7OLDsbfCphGazMxfZIAIkjmj0xioYNqOGuzJ3r8ew==}
+  /@7-docs/shared/0.1.9:
+    resolution: {integrity: sha512-/3ieTajNKwD8ri5X+5D9fpmD9RNIyVE+XmF9HfCaJbUI1rwexKyqqpOr3eQ5MttOzWU/P77dzPtkH9oTZbwM6g==}
 
   /@aashutoshrathi/word-wrap/1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
@@ -25453,7 +25455,7 @@ packages:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.18.2
-      webpack: 5.73.0
+      webpack: 5.73.0_webpack-cli@4.10.0
 
   /terser/5.18.2:
     resolution: {integrity: sha512-Ah19JS86ypbJzTzvUCX7KOsEIhDaRONungA4aYBjEP3JZRf4ocuDzTg4QWZnPn9DEMiMYGJPiSOy7aykoCc70w==}

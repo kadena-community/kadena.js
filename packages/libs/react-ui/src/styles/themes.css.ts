@@ -106,22 +106,36 @@ export const vars = createGlobalTheme(':root', {
     $primaryHighContrast: '#002F5C',
 
     $secondaryAccent: '#ED098F',
-    $secondarySurface: '#FDC4E5',
-    $secondaryContrast: '#710444',
+    $secondarySurface: '#FB93D0',
+    $secondaryContrast: '#A30662',
     $secondaryHighContrast: '#580335',
 
-    $tertiaryAccent: '#9d00ff',
-    $tertiarySurface: '#e7c2ff',
-    $tertiaryContrast: '#6400a3',
+    $tertiaryAccent: '#9D00FF',
+    $tertiarySurface: '#C870FF',
+    $tertiaryContrast: '#6400A3',
     $tertiaryHighContrast: '#320052',
+
+    $borderDefault: '#E4E6E7',
+    $borderSubtle: '#D8D9DB',
+    $borderContrast: '#9EA1A6',
+
+    $layoutSurfaceDefault: '#FAFAFA',
+    $layoutSurfaceSubtle: '#F0F0F0',
+    $layoutSurfaceContrast: '#FFFFFF',
+    $layoutSurfaceOverlay: '#757575',
+
+    $infoAccent: '#2997FF',
+    $infoSurface: '#DBEDFF',
+    $infoContrast: '#00498F',
+    $infoHighContrast: '#002F5C',
 
     $positiveAccent: '#5EEA15',
     $positiveSurface: '#E5FFD8',
-    $positiveContrast: '#194D00',
+    $positiveContrast: '#1F6100',
     $positiveHighContrast: '#113300',
 
     $warningAccent: '#FF9900',
-    $warningSurface: '#FFE7C2',
+    $warningSurface: '#2997FF',
     $warningContrast: '#704300',
     $warningHighContrast: '#3D2500',
 
@@ -129,6 +143,8 @@ export const vars = createGlobalTheme(':root', {
     $negativeSurface: '#FFE7E5',
     $negativeContrast: '#75000B',
     $negativeHighContrast: '#410006',
+
+    $disabledContrast: '#C5C7CA',
   },
 });
 
@@ -149,34 +165,52 @@ export const darkThemeClass = createTheme(vars.colors, {
   $primaryHighContrast: '#DBEDFF',
 
   $secondaryAccent: '#ED098F',
-  $secondarySurface: '#580335',
+  $secondarySurface: '#A30662',
   $secondaryContrast: '#FB93D0',
   $secondaryHighContrast: '#FDC4E5',
 
-  $tertiaryAccent: '#9d00ff',
-  $tertiarySurface: '#450070',
-  $tertiaryContrast: '#c870ff',
-  $tertiaryHighContrast: '#e7c2ff',
+  $tertiaryAccent: '#9D00FF',
+  $tertiarySurface: '#6400A3',
+  $tertiaryContrast: '#C870FF',
+  $tertiaryHighContrast: '#E7C2FF',
+
+  $borderDefault: '#303030',
+  $borderSubtle: '#323232',
+  $borderContrast: '#9EA1A6',
+
+  $layoutSurfaceDefault: '#050505',
+  $layoutSurfaceSubtle: '#1A1A1A',
+  $layoutSurfaceContrast: '#000000',
+  $layoutSurfaceOverlay: '#C8C8C8',
+
+  $infoAccent: '#2997FF',
+  $infoSurface: '#00264A',
+  $infoContrast: '#CCE6FF',
+  $infoHighContrast: '#DBEDFF',
 
   $positiveAccent: '#5EEA15',
-  $positiveSurface: '#113300',
+  $positiveSurface: '#0E2900',
   $positiveContrast: '#CBFFB3',
   $positiveHighContrast: '#E5FFD8',
 
   $warningAccent: '#FF9900',
-  $warningSurface: '#3D2500',
-  $warningContrast: '#FFC670',
+  $warningSurface: '#311E00',
+  $warningContrast: '#FFD799',
   $warningHighContrast: '#FFE7C2',
 
   $negativeAccent: '#FF3338',
-  $negativeSurface: '#410006',
-  $negativeContrast: '#FFA8B0',
+  $negativeSurface: '#340005',
+  $negativeContrast: '#FFCCD1',
   $negativeHighContrast: '#FFE7E5',
+
+  $disabledContrast: '#5F6164',
 });
 
 export type ColorType =
   | 'primary'
   | 'secondary'
+  | 'tertiary'
+  | 'info'
   | 'positive'
   | 'warning'
   | 'negative';

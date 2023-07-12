@@ -7,6 +7,15 @@ export { SystemIcon, ProductIcon, IIconProps } from './Icons';
 export { IconButton, IIconButtonProps } from './IconButton/IconButton';
 export { Tabs, ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
 export {
+  Table,
+  ITableProps,
+  ITBodyProps,
+  ITdProps,
+  IThProps,
+  ITHeadProps,
+  ITrProps,
+} from './Table';
+export {
   Text,
   ITextProps,
   Heading,
