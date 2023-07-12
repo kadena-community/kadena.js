@@ -122,7 +122,7 @@ export const heading = recipe({
   defaultVariants: {
     variant: 'h1',
     font: 'main',
-    bold: false,
+    bold: true,
     color: 'default',
     transform: 'none',
   },

@@ -1,9 +1,5 @@
-import {
-  Heading,
-  styled,
-  StyledComponent,
-  SystemIcons,
-} from '@kadena/react-components';
+import { styled, StyledComponent, SystemIcons } from '@kadena/react-components';
+import { Heading } from '@kadena/react-ui';
 
 import { createSlug } from '@/utils';
 import React, { FC } from 'react';
