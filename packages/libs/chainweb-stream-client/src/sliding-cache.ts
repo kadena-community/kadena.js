@@ -1,10 +1,10 @@
 import { ITransaction } from './types';
 
 /*
- *  A De-duplicating cache that keeps the most recent N (.cacheSpan) elements by some attribute value (.cacheGetter callback return value)
+ *  A De-duplicating cache that keeps the most recent N (.cacheSpan) elements by some attribute value (.spanValueGetter callback return value)
  *    - for cw-stream-client:
  *      cacheSpan is the window over which we may receive duplicates when reconnecting, e.g. CONFIRMATION_DEPTH + 3
- *      cacheGetter returns txn => txn.height
+ *      spanValueGetter returns txn => txn.height
  *  - It must support updating elements
  *    - for cw-stream-client: same txn can be received multiple times with different confirmation depths
  *  - An element's identity is returned by identityCheck
@@ -26,7 +26,7 @@ import { ITransaction } from './types';
 
 type SlidingCacheConfig<TShape extends ITransaction> = Pick<
   SlidingCache<TShape>,
-  'cacheGetter' | 'cacheSpan' | 'identityCheck' | 'equalityCheck'
+  'spanValueGetter' | 'cacheSpan' | 'identityCheck' | 'equalityCheck'
 >;
 
 type SlidingCacheConstructor<TShape extends ITransaction> = Partial<
@@ -34,7 +34,7 @@ type SlidingCacheConstructor<TShape extends ITransaction> = Partial<
 >;
 
 const defaults: SlidingCacheConfig<ITransaction> = {
-  cacheGetter: ({ height }) => height,
+  spanValueGetter: ({ height }) => height,
   cacheSpan: 3,
   identityCheck: (a, b) => a.meta?.id === b.meta?.id,
   equalityCheck: (a, b) =>
@@ -42,21 +42,26 @@ const defaults: SlidingCacheConfig<ITransaction> = {
     a.meta?.confirmations === b.meta?.confirmations,
 };
 
+type InSpanRange = boolean;
+type Exists = boolean;
+type ExistsIdentical = boolean;
+type CacheIdx = number;
+
 export default class SlidingCache<TShape extends ITransaction>
   implements SlidingCacheConfig<TShape>
 {
-  public minCacheValue: number = Infinity;
-  public maxCacheValue: number = -Infinity;
+  public minSpanValue: number = Infinity;
+  public maxSpanValue: number = -Infinity;
   public cache: TShape[] = [];
 
-  public cacheGetter: (elem: TShape) => number;
+  public spanValueGetter: (elem: TShape) => number;
   public cacheSpan: number;
   public identityCheck: (a: TShape, b: TShape) => boolean;
   public equalityCheck: (a: TShape, b: TShape) => boolean;
 
   public constructor(params: SlidingCacheConstructor<TShape> = {}) {
     this.cache = [];
-    this.cacheGetter = params.cacheGetter ?? defaults.cacheGetter;
+    this.spanValueGetter = params.spanValueGetter ?? defaults.spanValueGetter;
     this.cacheSpan = params.cacheSpan ?? defaults.cacheSpan;
     this.identityCheck = params.identityCheck ?? defaults.identityCheck;
     this.equalityCheck = params.equalityCheck ?? defaults.equalityCheck;
@@ -64,7 +69,7 @@ export default class SlidingCache<TShape extends ITransaction>
 
   public addCache(...elems: TShape[]): boolean[] {
     let needUpdate = false;
-    let newMaxCacheValue = this.maxCacheValue;
+    let newMaxCacheValue = this.maxSpanValue;
 
     let minTracked = newMaxCacheValue - this.cacheSpan;
     const recalcMinTracked = (): void => {
@@ -74,25 +79,31 @@ export default class SlidingCache<TShape extends ITransaction>
 
     const retVals = [];
     for (const elem of elems) {
-      const cacheValue = this.cacheGetter(elem);
+      const cacheValue = this.spanValueGetter(elem);
       if (cacheValue >= minTracked) {
-        if (cacheValue < this.minCacheValue) {
+        if (cacheValue < this.minSpanValue) {
           needUpdate = true;
-          this.minCacheValue = cacheValue;
+          this.minSpanValue = cacheValue;
         }
         if (cacheValue > newMaxCacheValue) {
           needUpdate = true;
           newMaxCacheValue = cacheValue;
           recalcMinTracked();
         }
-        const [exists, existsIdentical, cacheIdx] = this.existsCache(elem);
-        if (exists && !existsIdentical) {
-          this.cache[cacheIdx] = elem;
+        const [inSpanRange, exists, existsIdentical, cacheIdx] =
+          this.existsCache(elem);
+        if (!inSpanRange) {
+          // outside of cache's sliding window, emit. possible duplicate
+          retVals.push(true);
+        } else {
+          if (exists && !existsIdentical) {
+            this.cache[cacheIdx] = elem;
+          }
+          if (!exists) {
+            this.cache.push(elem);
+          }
+          retVals.push(existsIdentical ? false : true);
         }
-        if (!exists) {
-          this.cache.push(elem);
-        }
-        retVals.push(existsIdentical ? false : true);
       } else {
         console.warn(
           `Ignoring cacheValue=${cacheValue}, minimum tracked is ${minTracked}`,
@@ -106,34 +117,40 @@ export default class SlidingCache<TShape extends ITransaction>
     return retVals;
   }
 
-  public existsCache(needle: TShape): [boolean, boolean, number] {
+  public existsCache(
+    needle: TShape,
+  ): [InSpanRange, Exists, ExistsIdentical, CacheIdx] {
     // [exists, identical, index]
+    const spanValue = this.spanValueGetter(needle);
+    if (spanValue < this.minSpanValue) {
+      return [false, false, false, -1];
+    }
     for (let idx = 0; idx < this.cache.length; idx++) {
       const elem = this.cache[idx];
-      // exists identically (with same confirmation status)
       if (this.equalityCheck(elem, needle)) {
-        return [true, true, idx];
-        // exists by id but with different confirmation status
+        // exists identically (with same confirmation status)
+        return [true, true, true, idx];
       } else if (this.identityCheck(elem, needle)) {
-        return [true, false, idx];
+        // exists by id but with different confirmation status
+        return [true, true, false, idx];
       }
     }
-    return [false, false, -1];
+    return [true, false, false, -1];
   }
 
   private _updateCacheMinMax(newMax: number): void {
-    this.maxCacheValue = newMax;
-    const { minCacheValue, maxCacheValue, cacheSpan } = this;
-    if (maxCacheValue - minCacheValue > cacheSpan) {
+    this.maxSpanValue = newMax;
+    const { minSpanValue, maxSpanValue, cacheSpan } = this;
+    if (maxSpanValue - minSpanValue > cacheSpan) {
       // we can evict
-      this.minCacheValue = maxCacheValue - cacheSpan;
+      this.minSpanValue = maxSpanValue - cacheSpan;
       this._evict();
     }
   }
 
   private _evict(): number {
     const nextCache = this.cache.filter(
-      (elem) => this.cacheGetter(elem) >= this.minCacheValue,
+      (elem) => this.spanValueGetter(elem) >= this.minSpanValue,
     );
     const evictedNum = this.cache.length - nextCache.length;
     console.log(`Evicted ${evictedNum}`);
@@ -141,36 +158,3 @@ export default class SlidingCache<TShape extends ITransaction>
     return evictedNum;
   }
 }
-
-// const l = new SlidingCache();
-//
-// const inputs = [
-//   { meta: { id: 'a1', confirmations: 1 }, height: 1, ...makeTransactionMock() },
-//   { meta: { id: 'a2', confirmations: 1 }, height: 1, ...makeTransactionMock() },
-//   { meta: { id: 'a3', confirmations: 1 }, height: 2, ...makeTransactionMock() },
-//   { meta: { id: 'a4', confirmations: 1 }, height: 3, ...makeTransactionMock() },
-//   { meta: { id: 'a1', confirmations: 2 }, height: 3, ...makeTransactionMock() },
-//   { meta: { id: 'a7', confirmations: 1 }, height: 4, ...makeTransactionMock() },
-//   { meta: { id: 'a2', confirmations: 1 }, height: 1, ...makeTransactionMock() },
-//   { meta: { id: 'a1', confirmations: 3 }, height: 6, ...makeTransactionMock() },
-//   { meta: { id: 'a5', confirmations: 3 }, height: 1, ...makeTransactionMock() },
-// ];
-//
-// const outputs = l.addCache(...inputs);
-//
-// for(let i=0; i<outputs.length; i++) {
-//   console.log(i, outputs[i], inputs[i]);
-// }
-//
-// function makeTransactionMock() {
-//   return {
-//     blockTime: 'Test Time',
-//     blockHash: 'Block Hash',
-//     requestKey: 'Request Key',
-//     idx: 25,
-//     chain: 25,
-//     params: [],
-//     name: 'Event Name',
-//     moduleHash: 'Module Hash'
-//   }
-// }
