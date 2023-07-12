@@ -43,9 +43,9 @@ const remarkHeadersToProps = () => {
 
       item.data = {
         hProperties: {
-          index: index,
+          index,
         },
-      }
+      };
 
       const elm = {
         depth: item.depth,
