@@ -18,7 +18,7 @@ jobs:
         id: waitForPreview
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 60
+          max_timeout: 200
           allow_inactive: true
           # access preview url
       - run: echo ${{steps.waitForPreview.outputs.url}}
@@ -41,5 +41,5 @@ jobs:
         working-directory: packages/libs/react-ui
         run: |
            npm run test:storybook
-        env:
-          TARGET_URL: '${{steps.waitForPreview.outputs.url}}'
+
+
