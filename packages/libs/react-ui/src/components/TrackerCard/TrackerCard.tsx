@@ -1,21 +1,21 @@
-import classNames from 'classnames';
 import { MaskedValue, ProductIcon } from '..';
 
 import {
   CardContainer,
-  DataContainer,
   ContentContainer,
+  DataContainer,
+  displayVarant,
+  gapValueLabelVariant,
+  gridVariant,
   LabelTitle,
   LabelValue,
-  TrackerWarningContainer,
-  layoutVariant,
-  gridVariant,
   LabelValueContainer,
-  gapValueLabelVariant,
-  displayVarant,
+  layoutVariant,
+  TrackerWarningContainer,
   warningVariant,
 } from './TrackerCard.css';
 
+import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface ITrackerCardProps {
@@ -75,7 +75,10 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
         <div className={DataContainer}>
           {labelValue?.map((item, index) => {
             return (
-              <div className={classLabelValue}>
+              <div
+                className={classLabelValue}
+                key={`label-value-container-${index}`}
+              >
                 <div className={LabelTitle} key={`label-${index}`}>
                   {item.label}
                 </div>

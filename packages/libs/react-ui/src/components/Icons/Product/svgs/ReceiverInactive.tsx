@@ -1,5 +1,6 @@
-import * as React from 'react';
 import type { SVGProps } from 'react';
+import * as React from 'react';
+
 const ReceiverInactive: React.FC<SVGProps<SVGSVGElement>> = (
   props: SVGProps<SVGSVGElement>,
 ) => (
