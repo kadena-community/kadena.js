@@ -213,7 +213,7 @@ export const deployQuestions: IQuestion[] = [
         throw new Error('No pact file provided');
       if (typeof dataFile !== 'string' || dataFile === '')
         throw new Error('No data file provided');
-      if (typeof signer !== 'string' || (signer === '' && !useChainWeaver))
+      if (typeof signer !== 'string' || signer === '')
         throw new Error('No signer provided');
       if (typeof publicKey !== 'string' || publicKey === '')
         throw new Error('No publicKey provided');
