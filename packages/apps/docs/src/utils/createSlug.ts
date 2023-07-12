@@ -1,4 +1,8 @@
-export const createSlug = (str?: string, index?: number): string => {
+export const createSlug = (
+  str?: string,
+  index?: number,
+  pageTitle = 'menu',
+): string => {
   if (str === undefined) return '';
   const normalizedSlug = str
     .normalize('NFD')
@@ -8,9 +12,12 @@ export const createSlug = (str?: string, index?: number): string => {
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 
-  if (normalizedSlug === '' && index !== undefined) return `operator-${index}`;
+  const normalizedPageTitle = pageTitle.toLowerCase().replace(/ /g, '-');
 
-  if (index === undefined) return normalizedSlug;
+  if (normalizedSlug === '' && index !== undefined)
+    return `${normalizedPageTitle}-${index}`;
+
+  if (normalizedSlug === '') return normalizedPageTitle;
 
   // To check any special character at the end of the string
   const regex = /^.*[!@#$%^&*?]{1}$/;

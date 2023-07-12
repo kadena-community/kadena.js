@@ -28,8 +28,12 @@ describe('utils createSlug', () => {
     );
   });
 
-  it('should return operator-{index} if slug is empty', () => {
+  it('should return menu-{index} if slug and page title is empty ', () => {
     expect(createSlug('', 1)).toEqual('operator-1');
+  });
+
+  it('should return page title when slug and index is empty ', () => {
+    expect(createSlug('?', undefined, 'page Title')).toEqual('page-title-1');
   });
 
   it('should return empty string if slug is empty and no index is given', () => {
