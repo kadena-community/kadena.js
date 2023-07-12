@@ -53,6 +53,9 @@ export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 2f3818d7 (chore(footer): remove duplicate lines)
+=======
+>>>>>>> 775853e7 (chore(footer): run formatter)
