@@ -26,6 +26,6 @@ export function parseType(
     case 'function':
       return arg();
     default:
-      return arg;
+      return 'any';
   }
 }
