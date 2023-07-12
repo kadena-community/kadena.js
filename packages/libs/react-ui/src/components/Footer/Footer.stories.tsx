@@ -1,12 +1,12 @@
 import {
   IFooterIconItemProps,
   IFooterLinkItemProps,
-  IFooterPanelProps,
   SystemIcon,
 } from './../../';
 import { colorVariants } from './Footer.css';
 import { Footer, IFooterProps } from './index';
 
+import { IconType } from '@components/Icons/IconWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -34,7 +34,7 @@ const meta: Meta<
     },
   },
 };
-const links = [
+const links: { title: string; href: string }[] = [
   {
     title: 'Tutorial',
     href: 'https://kadena.io/',
@@ -61,31 +61,28 @@ const links = [
   },
 ];
 
-const icons = [
+const icons: (
+  | { icon: React.FC<IconType>; text: string }
+  | { icon: React.FC<IconType>; text?: undefined }
+)[] = [
   {
     icon: SystemIcon.Earth,
-    title: 'Language',
     text: 'English',
   },
   {
     icon: SystemIcon.Account,
-    title: 'Account',
   },
   {
     icon: SystemIcon.ApplicationBrackets,
-    title: 'ApplicationBrackets',
   },
   {
     icon: SystemIcon.Information,
-    title: 'Information',
   },
   {
     icon: SystemIcon.HelpCircle,
-    title: 'HelpCircle',
   },
   {
     icon: SystemIcon.MenuOpen,
-    title: 'MenuOpen',
   },
 ];
 
@@ -129,7 +126,6 @@ export const Primary: Story = {
               <Footer.IconItem
                 key={index}
                 icon={item.icon}
-                title={item.title}
                 text={item.text}
                 color={color}
               />
