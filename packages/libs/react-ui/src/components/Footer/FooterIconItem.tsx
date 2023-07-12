@@ -1,9 +1,15 @@
 import { SystemIcon } from '../';
 
-import { colorVariants, iconBoxClass, iconTextClass } from './Footer.css';
+import {
+  ColorOptions,
+  colorVariants,
+  iconBoxClass,
+  iconTextClass,
+} from './Footer.css';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';
+import { vars } from '../../styles';
 
 export interface IFooterIconItemProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
@@ -23,19 +29,34 @@ export const FooterIconItem: FC<IFooterIconItemProps> = ({
   ...props
 }) => {
   const Icon = icon;
-  const linkClassList = classNames(iconBoxClass, colorVariants[color]);
+  const iconTextClassList = classNames(iconTextClass, colorVariants[color]);
+
+  type ColorKey = keyof typeof vars.colors;
+  const getColor = (color: string): string => {
+    const contrast: ColorKey = `$${color}Contrast` as ColorKey;
+    console.log(contrast);
+    if (color === 'default') {
+      return vars.colors.$neutral3;
+    }
+
+    if (color === 'inverted') {
+      return vars.colors.$neutral2;
+    }
+
+    return vars.colors[contrast];
+  };
 
   return (
     <div
-      className={linkClassList}
+      className={iconBoxClass}
       onClick={onClick}
       data-testid="kda-footer-icon-item"
     >
       {text !== undefined ? (
-        <span className={iconTextClass}>{text}</span>
+        <span className={iconTextClassList}>{text}</span>
       ) : null}
       <a>
-        <Icon size="sm" className={colorVariants[color]} />
+        <Icon size="sm" color={getColor(color)} />
       </a>
     </div>
   );

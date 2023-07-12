@@ -33,7 +33,7 @@ describe('Footer', () => {
     const color = 'default';
 
     const { getByTestId, getAllByTestId } = render(
-      <Footer.Root variant="web">
+      <Footer.Root>
         <Footer.Panel variant="web">
           {menuLinks.map((item, index) => {
             return (
