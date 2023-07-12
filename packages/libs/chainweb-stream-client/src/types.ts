@@ -86,6 +86,13 @@ export interface IChainwebStreamConstructorArgs {
 /**
  * @alpha
  */
+export interface IHeightsEvent {
+  data: number;
+}
+
+/**
+ * @alpha
+ */
 export enum ConnectionState {
   Connecting = 0,
   Connected = 1,
