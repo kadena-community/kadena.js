@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import { MaskedValue } from '..';
-import { SystemIcon } from '../Icons';
+import { MaskedValue, ProductIcon } from '..';
 
 import {
   CardContainer,
@@ -17,13 +16,13 @@ import {
   warningVariant,
 } from './TrackerCard.css';
 
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 export interface ITrackerCardProps {
   labelValue: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon?: JSX.Element;
+  icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
   variant: keyof typeof layoutVariant;
 }
 
@@ -61,15 +60,23 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     warningVariant[helperTextType],
   );
 
+  const Icon = icon;
+
   return (
     <div className={classCardContainer}>
-      {icon ? <>{icon}</> : <div />}
+      {Icon ? (
+        <>
+          <Icon />
+        </>
+      ) : (
+        <div />
+      )}
       <div className={ContentContainer}>
         <div className={DataContainer}>
-          {labelValue.map((item, index) => {
+          {labelValue?.map((item, index) => {
             return (
               <div className={classLabelValue}>
-                <div className={LabelTitle} key={index}>
+                <div className={LabelTitle} key={`label-${index}`}>
                   {item.label}
                 </div>
                 {item.isAccount && item.value ? (
@@ -78,10 +85,10 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
                     defaultVisibility={item.defaultVisible}
                     startUnmaskedValues={item.startUnmasked}
                     endUnmaskedValues={item.endUnmasked}
-                    key={index}
+                    key={`masked-value-${index}`}
                   />
                 ) : (
-                  <div className={LabelValue} key={index}>
+                  <div className={LabelValue} key={`value-${index}`}>
                     {item.value}
                   </div>
                 )}

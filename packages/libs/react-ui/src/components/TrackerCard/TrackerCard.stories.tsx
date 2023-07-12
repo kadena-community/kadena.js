@@ -2,49 +2,52 @@ import { ILabelValue, ITrackerCardProps, TrackerCard } from './TrackerCard';
 
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { SystemIcon } from '../Icons';
+import { ProductIcon } from '../Icons';
 import { layoutVariant } from './TrackerCard.css';
 
-const meta: Meta<ITrackerCardProps> = {
-  title: 'Components/TrackerCard',
-  argTypes: {
-    variant: {
-      options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],
-      control: {
-        type: 'select',
+const meta: Meta<{ selectIcon: keyof typeof ProductIcon } & ITrackerCardProps> =
+  {
+    title: 'Components/TrackerCard',
+    argTypes: {
+      variant: {
+        options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],
+        control: {
+          type: 'select',
+        },
+      },
+      labelValue: {
+        control: {
+          type: 'object',
+        },
+      },
+      helperText: {
+        control: {
+          type: 'text',
+        },
+      },
+      helperTextType: {
+        control: {
+          type: 'select',
+        },
+        options: ['mild', 'severe'],
+      },
+      selectIcon: {
+        options: [
+          undefined,
+          ...(Object.keys(ProductIcon) as (keyof typeof ProductIcon)[]),
+        ],
+        control: {
+          type: 'select',
+        },
       },
     },
-    labelValue: {
-      control: {
-        type: 'object',
-      },
-    },
-    helperText: {
-      control: {
-        type: 'text',
-      },
-    },
-    helperTextType: {
-      control: {
-        type: 'select',
-      },
-      options: ['mild', 'severe'],
-    },
-    icon: {
-      options: [
-        undefined,
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
-      control: {
-        type: 'select',
-      },
-    },
-  },
-};
+  };
 
 export default meta;
 
-type Story = StoryObj<ITrackerCardProps>;
+type Story = StoryObj<
+  { selectIcon: keyof typeof ProductIcon } & ITrackerCardProps
+>;
 
 const labelValues: ILabelValue[] = [
   {
@@ -68,17 +71,18 @@ export const Primary: Story = {
     labelValue: labelValues,
     helperText: 'This is a helper text',
     helperTextType: 'mild',
-    icon: undefined,
+    selectIcon: 'QuickStart',
     variant: 'vertical',
   },
-  render: ({ labelValue, helperText, helperTextType, icon: Icon, variant }) => {
+  render: ({ labelValue, helperText, helperTextType, selectIcon, variant }) => {
+    const icon = ProductIcon[selectIcon];
     return (
       <TrackerCard
         variant={variant}
         labelValue={labelValue}
         helperText={helperText}
         helperTextType={helperTextType}
-        icon={Icon}
+        icon={icon}
       />
     );
   },
