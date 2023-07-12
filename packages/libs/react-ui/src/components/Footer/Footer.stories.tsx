@@ -1,7 +1,12 @@
-import { IFooterIconItemProps, IFooterLinkItemProps, IFooterPanelProps, SystemIcon } from './../../';
-import { colorVariants, footerVariants } from './Footer.css';
+import {
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
+  SystemIcon,
+} from './../../';
+import { colorVariants } from './Footer.css';
 import { Footer, IFooterProps } from './index';
 
+import { IconType } from '@components/Icons/IconWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -9,16 +14,12 @@ const meta: Meta<
   {
     linksCount: number;
     iconsCount: number;
-  } & IFooterProps & IFooterLinkItemProps & IFooterIconItemProps
+  } & IFooterProps &
+    IFooterLinkItemProps &
+    IFooterIconItemProps
 > = {
   title: 'Layout/Footer',
   argTypes: {
-    variant: {
-      options: Object.keys(footerVariants) as (keyof typeof footerVariants)[],
-      control: {
-        type: 'select',
-      },
-    },
     color: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
@@ -33,7 +34,7 @@ const meta: Meta<
     },
   },
 };
-const links = [
+const links: { title: string; href: string }[] = [
   {
     title: 'Tutorial',
     href: 'https://kadena.io/',
@@ -60,31 +61,28 @@ const links = [
   },
 ];
 
-const icons = [
+const icons: (
+  | { icon: React.FC<IconType>; text: string }
+  | { icon: React.FC<IconType>; text?: undefined }
+)[] = [
   {
     icon: SystemIcon.Earth,
-    title: 'Language',
     text: 'English',
   },
   {
     icon: SystemIcon.Account,
-    title: 'Account',
   },
   {
     icon: SystemIcon.ApplicationBrackets,
-    title: 'ApplicationBrackets',
   },
   {
     icon: SystemIcon.Information,
-    title: 'Information',
   },
   {
     icon: SystemIcon.HelpCircle,
-    title: 'HelpCircle',
   },
   {
     icon: SystemIcon.MenuOpen,
-    title: 'MenuOpen',
   },
 ];
 
@@ -93,23 +91,24 @@ type Story = StoryObj<
   {
     linksCount: number;
     iconsCount: number;
-  } & IFooterProps & IFooterIconItemProps & IFooterLinkItemProps
+  } & IFooterProps &
+    IFooterIconItemProps &
+    IFooterLinkItemProps
 >;
 
 export const Primary: Story = {
   name: 'Footer',
   args: {
-    variant: 'web',
     color: 'default',
     linksCount: 4,
     iconsCount: 3,
   },
-  render: ({ variant, color, linksCount, iconsCount }) => {
+  render: ({ color, linksCount, iconsCount }) => {
     const linkItems = links.slice(0, linksCount);
     const iconButtons = icons.slice(0, iconsCount);
     return (
-      <Footer.Root variant={variant}>
-        <Footer.Panel variant={variant}>
+      <Footer.Root>
+        <Footer.Panel>
           {linkItems.map((item, index) => {
             return (
               <Footer.LinkItem
@@ -121,13 +120,12 @@ export const Primary: Story = {
             );
           })}
         </Footer.Panel>
-        <Footer.Panel variant={variant}>
+        <Footer.Panel>
           {iconButtons.map((item, index) => {
             return (
               <Footer.IconItem
                 key={index}
                 icon={item.icon}
-                title={item.title}
                 text={item.text}
                 color={color}
               />

@@ -41,11 +41,6 @@ export {
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box/Box';
 export { Link, ILinkProps } from './Link/Link';
-export { Tag, ITagProps } from './Tag/Tag';
-export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
-export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';
-export { Select, ISelectProps } from './Select/Select';
-export { Option, IOptionProps } from './Select/Option';
 export {
   Footer,
   IFooterProps,
@@ -53,3 +48,7 @@ export {
   IFooterIconItemProps,
   IFooterLinkItemProps,
 } from './Footer/';
+export { Tag, ITagProps } from './Tag/Tag';
+export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
+export { Select, ISelectProps } from './Select/Select';
+export { Option, IOptionProps } from './Select/Option';
