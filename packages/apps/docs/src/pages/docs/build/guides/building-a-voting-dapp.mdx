@@ -238,8 +238,8 @@ Don't forget to add the snippet above in the `election` module body.
 :::info
 
 To learn more about guards and capabilities, please visit the
-[Guards, Capabilities and Events](https://pact-language.readthedocs.io/en/latest/pact-reference.html#guards)
-section of the Pact official documentation.
+[Guards, Capabilities and Events](/docs/pact/reference/concepts#guards) section
+of the Pact official documentation.
 
 :::
 
@@ -285,8 +285,8 @@ double-voting.
 
 :::info  
 To find out about all Pact's supported types you can check the
-[Data Types](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=types#data-types)
-section in the Pact official documentation.  
+[Data Types](/docs/pact/reference/concepts#data-types) section in the Pact
+official documentation.  
 :::
 
 :::note  
@@ -482,7 +482,7 @@ requirement for defined keysets.
 Access a module's function using the fully qualified name
 `{namespace}.{module-name}.{function-name}`, e.g. `free.election.vote`. See the
 Pact documentation to
-[read more about namespaces](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=namespace#namespace-declaration).
+[read more about namespaces](/docs/pact/reference/concepts#namespace-declaration).
 
 The `free` namespace is available to use on both `mainnet` and `testnet`.
 
@@ -592,7 +592,7 @@ signing a transaction using `env-sigs`.
 :::note REPL-Only Functions `expect-failure` and `env-sigs` are two of the many
 REPL-only functions that we can use in `.repl` files to test Pact
 smart-contracts by simulating blockchain environment. You can check the
-[complete list of REPL-only functions](https://pact-language.readthedocs.io/en/latest/pact-functions.html#repl-only-functions)
+[complete list of REPL-only functions](/docs/pact/reference/functions/repl-only-functions#repl-only-functions)
 in the Pact official documentation. :::
 
 Next we're going to add some candidates and check if their number of votes is
@@ -677,9 +677,8 @@ Notice the `let` construct that we used above, it is helpful when you need to
 bind some variables to be in the same scope as other logic that uses them. In
 our case we first loaded the number of votes and binded the result to `count`
 variable which we compared with the new count after submitting a vote. Feel free
-to read more about
-[`let` and `let*`](https://pact-language.readthedocs.io/en/latest/pact-reference.html#let)
-in Pact official documentation.
+to read more about [`let` and `let*`](/docs/pact/reference/syntax#let) in Pact
+official documentation.
 
 :::info  
 Write a test Can you think of some cases that we didn't cover? Hint:
@@ -749,9 +748,8 @@ module implements an interface using the `(implements INTERFACE)` construct.
 :::info  
 Pact interfaces are similar to Java's interfaces, Scala's traits, Haskell's
 typeclasses or Solidity's interfaces. If you're not familiar with this concept
-you can
-[read more about it](https://pact-language.readthedocs.io/en/latest/pact-reference.html#interfaces)
-in Pact reference.  
+you can [read more about it](/docs/pact/reference/concepts#interfaces) in Pact
+reference.  
 :::
 
 Let's take a look at the `gas-payer-v1` interface defining a capability and a
@@ -795,7 +793,7 @@ function:
 
 `@doc` is a metadata field used to provide documentation and `@model` is used by
 Pact tooling to verify the correctness of the implementation. You can
-[read more about docs and metadata](https://pact-language.readthedocs.io/en/stable/pact-reference.html?highlight=doc#docs-and-metadata)
+[read more about docs and metadata](/docs/pact/reference/syntax#docs-and-metadata)
 in Pact reference.
 
 :::
@@ -940,14 +938,14 @@ been granted.
 To summarize, a gas station is a coin account with a special guard that's valid
 if both `GAS` and `ALLOW_GAS` capabilities are granted. If you're wondering how
 `GAS_PAYER` is granted, the answer is
-[signature capabilities](https://pact-language.readthedocs.io/en/latest/pact-reference.html#signature-capabilities).
+[signature capabilities](/docs/pact/reference/concepts#signature-capabilities).
 We will see how this works in the frontend section of this tutorial where we
 interact with the smart contracts.
 
 :::info  
 Guards and capabilities are an entire topic that we cannot cover in detail in
 this tutorial. To learn more check the
-[Guards, Capabilities and Events](https://pact-language.readthedocs.io/en/latest/pact-reference.html#guards-capabilities-and-events)
+[Guards, Capabilities and Events](/docs/pact/reference/concepts#guards-capabilities-and-events)
 section of the Pact documentation.  
 :::
 
