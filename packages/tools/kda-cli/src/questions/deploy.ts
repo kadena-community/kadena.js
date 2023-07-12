@@ -240,7 +240,6 @@ export const deployQuestions: IQuestion[] = [
           }),
           setDeploySettings: deployCommand,
         });
-        console.log(res)
       }
       if (isL2({ deployTargets }) && Array.isArray(l2Chains))
         await deploy({
