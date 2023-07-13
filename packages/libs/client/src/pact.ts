@@ -4,7 +4,7 @@ import {
   commandBuilder,
   ICommandBuilder,
 } from './commandBuilder/commandBuilder';
-import { parseType } from './utils/parseType';
+import { parseAsPactValue } from './utils/parseAsPactValue';
 
 /**
  * @alpha
@@ -31,7 +31,7 @@ export const getModule = (name: string): any => {
       return pr;
     },
     apply(target, thisArg, args) {
-      const exp = createExp(code, ...args.map(parseType));
+      const exp = createExp(code, ...args.map(parseAsPactValue));
       code = name;
       return exp;
     },

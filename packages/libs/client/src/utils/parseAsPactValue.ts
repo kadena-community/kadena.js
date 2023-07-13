@@ -4,7 +4,7 @@ import { PactLiteral } from '@kadena/types';
 /**
  * @internal
  */
-export function parseType(
+export function parseAsPactValue(
   arg: PactLiteral | (() => string),
 ): string | number | boolean {
   switch (typeof arg) {
@@ -25,7 +25,9 @@ export function parseType(
       return `"${arg}"`;
     case 'function':
       return arg();
+    case 'boolean':
+      return true;
     default:
-      return 'any';
+      return arg;
   }
 }
