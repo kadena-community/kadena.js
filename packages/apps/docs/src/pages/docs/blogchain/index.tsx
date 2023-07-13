@@ -11,7 +11,7 @@ const Home: FC = () => {
   return (
     <Stack direction="column" spacing="2xl">
       <div>
-        <Heading as="h2">Marmalade</Heading>
+        <Heading as="h2">BlogChain</Heading>
       </div>
     </Stack>
   );
@@ -22,14 +22,14 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
-        title: 'Marmalade',
-        menu: 'Marmalade',
-        subTitle: 'Mint a marketplace',
-        label: 'Marmalade',
-        order: 6,
-        description: 'Mint a marketplace',
+        title: 'BlogChain',
+        menu: 'BlogChain',
+        subTitle: 'articles..articles...articles',
+        label: 'BlogChain',
+        order: 7,
+        description: 'articles..articles...articles',
         layout: 'landing',
-        icon: 'Marmalade',
+        icon: 'BlogChain',
       },
     },
   };
