@@ -1,7 +1,6 @@
 import { TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { StyledOption } from '@/components/Global/Select/styles';
 import dynamic from 'next/dynamic';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
@@ -17,7 +16,8 @@ import {
   StyledResultContainer,
 } from './styles';
 
-import { Select } from '@/components/Global';
+import { ChainSelect } from '@/components/Global';
+import { OnChainSelectChange } from '@/components/Global/ChainSelect';
 import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
@@ -28,7 +28,6 @@ import {
   type IModulesResult,
   listModules,
 } from '@/services/modules/list-module';
-import { convertIntToChainId } from '@/services/utils/utils';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
@@ -46,17 +45,21 @@ const ModuleExplorer: FC = () => {
   const { t } = useTranslation('common');
   const [moduleName, setModuleName] = useState<string>('');
   const [moduleSearch, setModuleSearch] = useState<string>('');
-  const [moduleChain, setModuleChain] = useState<number>(1);
   const [modules, setModules] = useState<IModulesResult>({});
   const [results, setResults] = useState<IModuleResult>({});
 
-  const { network } = useAppContext();
-  const numberOfChains = 20;
+  const { network, chainID, setChainID } = useAppContext();
+  const onChainSelectChange = useCallback<OnChainSelectChange>(
+    (chainID) => {
+      setChainID(chainID);
+    },
+    [setChainID],
+  );
 
   useEffect(() => {
     const fetchModules = async (): Promise<void> => {
       const modules = await listModules(
-        convertIntToChainId(moduleChain),
+        chainID,
         network,
         kadenaConstants.DEFAULT_SENDER,
         kadenaConstants.GAS_PRICE,
@@ -66,7 +69,7 @@ const ModuleExplorer: FC = () => {
     };
 
     fetchModules().catch(console.error);
-  }, [moduleChain, network]);
+  }, [chainID, network]);
 
   const filteredModules = useMemo(
     () =>
@@ -84,7 +87,7 @@ const ModuleExplorer: FC = () => {
     const fetchModule = async (): Promise<void> => {
       const data = await describeModule(
         moduleName,
-        convertIntToChainId(moduleChain),
+        chainID,
         network,
         kadenaConstants.DEFAULT_SENDER,
         kadenaConstants.GAS_PRICE,
@@ -95,19 +98,7 @@ const ModuleExplorer: FC = () => {
     };
 
     fetchModule().catch(console.error);
-  }, [moduleChain, moduleName, network]);
-
-  const renderChainOptions = (): JSX.Element[] => {
-    const options = [];
-    for (let i = 0; i < numberOfChains; i++) {
-      options.push(
-        <StyledOption value={i} key={i}>
-          {i}
-        </StyledOption>,
-      );
-    }
-    return options;
-  };
+  }, [chainID, moduleName, network]);
 
   const onModuleNameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
@@ -133,14 +124,7 @@ const ModuleExplorer: FC = () => {
     >
       <StyledForm>
         <StyledAccountForm>
-          <Select
-            label={t('Select the module chain')}
-            leadingText={t('Chain')}
-            onChange={(e) => setModuleChain(parseInt(e.target.value))}
-            value={moduleChain}
-          >
-            {renderChainOptions()}
-          </Select>
+          <ChainSelect onChange={onChainSelectChange} value={chainID} />
           <TextField
             label={t('Module Name')}
             inputProps={{
