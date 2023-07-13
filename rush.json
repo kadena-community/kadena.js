@@ -455,7 +455,7 @@
       "projectFolder": "packages/libs/client",
       "tags": ["libs"],
       "shouldPublish": true,
-      "versionPolicyName": "alpha"
+      "versionPolicyName": "client"
     },
 
     {
@@ -509,7 +509,7 @@
       "projectFolder": "packages/libs/pactjs-generator",
       "tags": ["libs"],
       "shouldPublish": true,
-      "versionPolicyName": "alpha"
+      "versionPolicyName": "client"
     },
 
     {
@@ -597,7 +597,7 @@
       "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
       "shouldPublish": true,
-      "versionPolicyName": "alpha"
+      "versionPolicyName": "client"
     },
 
     {
