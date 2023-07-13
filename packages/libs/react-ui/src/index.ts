@@ -57,6 +57,8 @@ export {
   IInputWrapperProps,
   Tag,
   ITagProps,
+  Tooltip,
+  ITooltipProps,
   MaskedValue,
   IMaskedValueProps,
   Option,

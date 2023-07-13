@@ -42,6 +42,7 @@ export {
 export { Box, IBoxProps } from './Box/Box';
 export { Link, ILinkProps } from './Link/Link';
 export { Tag, ITagProps } from './Tag/Tag';
+export { Tooltip, ITooltipProps } from './Tooltip/Tooltip';
 export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
