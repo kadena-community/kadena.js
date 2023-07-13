@@ -42,7 +42,7 @@ function verifyTsconfigTypings(
   }
 }
 
-async function generatorV2(
+async function generator(
   args: IContractGenerateOptions,
 ): Promise<Map<string, string>> {
   if (args.contract !== undefined) {
@@ -129,7 +129,7 @@ export const generate: IGenerate = (program, version) => async (args) => {
     return;
   }
 
-  const moduleDtss = await generatorV2(args);
+  const moduleDtss = await generator(args);
 
   console.log(`Using package.json at ${targetPackageJson}`);
 
