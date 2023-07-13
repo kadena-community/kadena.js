@@ -12,6 +12,8 @@ export interface ISubHeaderElement {
   title?: string;
   slug?: string;
   children: ISubHeaderElement[];
+  index?: number;
+  parentTitle?: string;
 }
 
 export interface INavigation {
