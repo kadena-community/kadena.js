@@ -36,17 +36,16 @@ covered in this article. We'll also be exploring the concepts and rationale of
   - [Release @kadena/client](#release-kadenaclient)
   - [Prerequisites](#prerequisites)
 - [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
-  - [Load contracts from the blockchain](#load-contracts-from-the-blockchain)
-  - [Generate interfaces](#generate-interfaces)
+    - [Generate interfaces from the blockchain](#generate-interfaces-from-the-blockchain)
+      - [Generate interfaces locally](#generate-interfaces-locally)
+    - [Downloading contracts from the blockchain](#downloading-contracts-from-the-blockchain)
   - [Building a simple transaction from the contract](#building-a-simple-transaction-from-the-contract)
+  - [Signing](#signing)
     - [Manually signing the transaction](#manually-signing-the-transaction)
-  - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
-  - [Template based interaction using @kadena/client](#template-based-interaction-using-kadenaclient)
-    - [Load the contract repository](#load-the-contract-repository)
-    - [Generate code from templates](#generate-code-from-templates)
-    - [A function is generated from a template](#a-function-is-generated-from-a-template)
-    - [Using the generated code](#using-the-generated-code)
-- [Using the fluentBuilder](#using-the-fluentbuilder)
+    - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
+    - [Signing with a WalletConnect compatible wallet](#signing-with-a-walletconnect-compatible-wallet)
+- [Using the commandBuilder](#using-the-commandbuilder)
+- [Using FP approach](#using-fp-approach)
   - [Send a request to the blockchain](#send-a-request-to-the-blockchain)
   - [Further development](#further-development)
   - [Contact the team](#contact-the-team)
@@ -75,7 +74,38 @@ from your own local smart contracts.
 For the **template based interaction** we will provide a repository with
 templates that can be used.
 
-### Load contracts from the blockchain
+### Generate interfaces from the blockchain
+
+Generate types directly from a contract on the blockchain
+
+```bash
+pactjs contract-generate --contract "coin" --api "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact"
+```
+
+The log shows what has happened. Inside the `node_modules` directory, a new
+package has been created: `.kadena/pactjs-generated`. This package is referenced
+by `@kadena/client` to give you type information.
+
+Now you can use this by
+[creating a transaction that calls a smart-contract function](#building-a-simple-transaction-from-the-contract)
+
+> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],`
+> to `compilerOptions` in `tsconfig.json`. Otherwise this will not work
+
+#### Generate interfaces locally
+
+You can create your own smart-contract or
+[download it from the blockchain](#downloading-contracts-from-the-blockchain)
+using
+
+Using the contract we'll now generate all the functions (`defun`s) with their
+(typed) arguments and the capabilities (`defcap`s).
+
+```sh
+pactjs contract-generate --file "./contracts/coin.module.pact"
+```
+
+### Downloading contracts from the blockchain
 
 Let's download the contracts you want to create Typescript interfaces for:
 
@@ -104,28 +134,6 @@ Options:
   -c, --chain <number>     Chain to retrieve from (default 1) (default: 1)
   -h, --help               display help for command
 ```
-
-### Generate interfaces
-
-Using the contract we'll now generate all the functions (`defun`s) with their
-(typed) arguments and the capabilities (`defcap`s).
-
-```sh
-pactjs contract-generate --file "./contracts/coin.module.pact"
-```
-
-or generating type directly from a contract on the blockchain
-
-```bash
-pactjs contract-generate --contract "coin" --api "https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact"
-```
-
-The log shows what has happened. Inside the `node_modules` directory, a new
-package has been created: `.kadena/pactjs-generated`. This package is referenced
-by `@kadena/client` to give you type information.
-
-> **NOTE:** do not forget to add this `"types": [".kadena/pactjs-generated"],`
-> to `compilerOptions` in `tsconfig.json`. Otherwise this will not work
 
 ## Building a simple transaction from the contract
 
@@ -173,6 +181,16 @@ Take note of the following:
   `coin.TRANSFER` does.
 - `setMeta`s object has a `sender` property, which is a `public-key` this could
   be gas-station address is some scenarios.
+- to add an **Unrestricted Signer**
+  ([Unscoped Signature](https://pact-language.readthedocs.io/en/stable/pact-reference.html?highlight=signer#signature-capabilities)),
+  just call `addSigner` without extra arguments
+
+## Signing
+
+Signing can be done in various ways. Either manually, by signing the hash of the transaction or with a wallet. There's currently two options in @kadena/client to sign with a wallet:
+
+1. [WalletConnect (preferred)](#signing-with-a-walletconnect-compatible-wallet)
+2. [Chainweaver](#integrated-sign-request-to-chainweaver-desktop)
 
 ### Manually signing the transaction
 
@@ -183,7 +201,7 @@ Take note of the following:
 - `createTransaction()` will return the transaction. The hash will be calculated
   and command will be serialized.
 
-## Integrated sign request to Chainweaver desktop
+### Integrated sign request to Chainweaver desktop
 
 Using the `transaction` we can send a sign-request to Chainweaver. **(NB: this
 can only with the desktop version, not the web-version, as it's [exposing port
@@ -201,17 +219,24 @@ const signedTransaction = signWithChainweaver(unsignedTransaction)
 > To **send** the transaction to the blockchain, continue with [**Send a request
 > to the blockchain**][6]
 
+### Signing with a WalletConnect compatible wallet
+
+There's several steps to setup a WalletConnect connections and sign with WalletConnect.
+
+1. Setting up the connection using [`ClientContextProvider.tsx`](https://github.com/kadena-io/wallet-connect-example/blob/main/src/providers/ClientContextProvider.tsx#L69C6-L69C6)
+2. Use `signWithWalletConnect` to request a signature from the wallet (`Transaction.tsx`)[https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104]
+
 # Using the commandBuilder
 
 If you don't wish to generate JS code for your contracts, or use templates, you
 still can use the commandBuilder to build a command, and then easily send it.
 
 ```ts
-`import { Pact } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
 const client = getClient(
   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact',
-);`;
+);
 
 const unsignedTransaction = Pact.builder
   .execute('(format "Hello {}!" [(read-msg "person")])')
@@ -314,7 +339,7 @@ We try to be available via Discord and Github issues:
 [8]: #release-kadenaclient
 [9]: #prerequisites
 [10]: #load-contracts-from-the-blockchain
-[11]: #generate-interfaces
+[11]: #generate-interfaces-from-the-blockchain
 [12]: #building-a-simple-transaction-from-the-contract
 [13]: #manually-singing-the-transaction
 [14]: #load-the-contract-repository
