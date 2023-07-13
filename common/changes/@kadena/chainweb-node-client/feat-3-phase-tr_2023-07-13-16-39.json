@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "fix test commands",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}
