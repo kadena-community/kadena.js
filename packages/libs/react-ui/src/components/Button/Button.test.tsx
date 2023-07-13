@@ -5,7 +5,7 @@ import React from 'react';
 describe('Button', () => {
   it('renders correctly', () => {
     const { getByTestId } = render(
-      <Button.Root title="Button">Hello, Button!</Button.Root>,
+      <Button title="Button">Hello, Button!</Button>,
     );
 
     const buttonContainer = getByTestId('kda-button');
@@ -14,9 +14,9 @@ describe('Button', () => {
 
   it('disables the button when `disabled` prop is true', () => {
     const { getByTestId } = render(
-      <Button.Root title="Button" disabled>
+      <Button title="Button" disabled>
         Hello, Button!
-      </Button.Root>,
+      </Button>,
     );
 
     const buttonContainer = getByTestId('kda-button') as HTMLButtonElement;
@@ -26,9 +26,9 @@ describe('Button', () => {
 
   it('renders as an anchor element when `as` prop = "a"', () => {
     const { getByTestId } = render(
-      <Button.Root title="Button" as="a" href="https://kadena.io/">
+      <Button title="Button" as="a" href="https://kadena.io/">
         Hello, Button!
-      </Button.Root>,
+      </Button>,
     );
 
     const buttonContainer = getByTestId('kda-button') as HTMLAnchorElement;
@@ -40,9 +40,9 @@ describe('Button', () => {
 
   it('requires the `href` prop to be set when rendered as anchor', () => {
     const { getByTestId } = render(
-      <Button.Root title="Button" as="a">
+      <Button title="Button" as="a">
         Hello, Button!
-      </Button.Root>,
+      </Button>,
     );
 
     const buttonContainer = getByTestId('kda-button') as HTMLAnchorElement;
