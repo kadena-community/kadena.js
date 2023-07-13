@@ -11,7 +11,7 @@
     "format:ci": "prettier src --check",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
     "@rushstack/eslint-plugin": "~0.11.0",
