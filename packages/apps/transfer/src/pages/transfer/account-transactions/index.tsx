@@ -1,7 +1,9 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { Option, Select } from '@/components/Global';
+import { ChainSelect } from '@/components/Global';
+import { OnChainSelectChange } from '@/components/Global/ChainSelect';
 import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
@@ -43,14 +45,19 @@ const CheckTransactions: FC = () => {
   const router = useRouter();
   const { network, setNetwork } = useAppContext();
 
-  const [chain, setChain] = useState<string>('');
   const [account, setAccount] = useState<string>('');
   const [results, setResults] = useState<ITransaction[]>([]);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const { chainID, setChainID } = useAppContext();
+  const onChainSelectChange = useCallback<OnChainSelectChange>(
+    (chainID) => {
+      setChainID(chainID);
+    },
+    [setChainID],
+  );
 
   useEffect(() => {
     if (router.isReady) {
-      setChain((router.query.chain as string) || '1');
       setAccount((router.query.account as string) || '');
 
       if (router.query.network) {
@@ -63,15 +70,13 @@ const CheckTransactions: FC = () => {
     if (router.isReady) {
       getAndSetTransactions(
         router.query.network as Network,
-        router.query.chain as string,
+        chainID,
         router.query.account as string,
       ).catch((e) => {
         debug(e);
       });
     }
   }, [router.query.network, router.query.chain, router.query.account]);
-
-  const numberOfChains = 20;
 
   async function checkTransactionsEvent(
     event: React.FormEvent<HTMLFormElement>,
@@ -80,17 +85,16 @@ const CheckTransactions: FC = () => {
     try {
       event.preventDefault();
 
-      if (!chain || !account) return;
+      if (!chainID || !account) return;
 
       router.query = {
         network,
-        chain,
         account,
       };
 
       await router.push(router);
 
-      await getAndSetTransactions(network, chain, account);
+      await getAndSetTransactions(network, chainID, account);
     } catch (e) {
       debug(e);
     }
@@ -98,7 +102,7 @@ const CheckTransactions: FC = () => {
 
   async function getAndSetTransactions(
     network: Network,
-    chain: string,
+    chain: ChainwebChainId,
     account: string,
   ): Promise<void> {
     debug(getAndSetTransactions.name);
@@ -115,20 +119,6 @@ const CheckTransactions: FC = () => {
     setResults(result);
   }
 
-  function renderChainOptions(): JSX.Element[] {
-    debug(renderChainOptions.name);
-    const options = [];
-    for (let i = 0; i < numberOfChains; i++) {
-      options.push(
-        <Option value={i} key={i}>
-          {' '}
-          {i}
-        </Option>,
-      );
-    }
-    return options;
-  }
-
   const onAccountInputChange = useCallback<
     ChangeEventHandler<HTMLInputElement>
   >((e) => {
@@ -141,13 +131,7 @@ const CheckTransactions: FC = () => {
         <StyledContent>
           <form className={formStyle} onSubmit={checkTransactionsEvent}>
             <StyledSmallField>
-              <Select
-                leadingText={t('Chain')}
-                onChange={(e) => setChain(e.target.value)}
-                value={chain}
-              >
-                {renderChainOptions()}
-              </Select>
+              <ChainSelect onChange={onChainSelectChange} value={chainID} />
             </StyledSmallField>
             <StyledMediumField>
               <TextField
