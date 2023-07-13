@@ -364,15 +364,6 @@ const imports = [
       hideEditLink: true,
     },
   },
-  /** /libs/client-examples */
-  {
-    file: 'libs/client-examples/README.md',
-    destination: 'pact/client-examples',
-    title: 'Test Project',
-    options: {
-      RootOrder: 10,
-    },
-  },
   /** /tools/cookbook */
   {
     file: 'tools/cookbook/README.md',
