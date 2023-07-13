@@ -33,7 +33,6 @@ export const containerClass = style([
 export const footerPanel = style([
   sprinkles({
     width: 'min-content',
-    background: '$neutral5',
     border: 'none',
     alignItems: 'center',
     lineHeight: '$lg',
