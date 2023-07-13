@@ -77,7 +77,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
               <StyledLink
                 onClick={(e) => clickMenu(e, item)}
                 href={item.root}
-                data-hassubmenu={!!item.children.length}
+                data-hassubmenu={!!item.children?.length}
               >
                 {item.menu}
               </StyledLink>
