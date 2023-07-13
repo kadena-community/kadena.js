@@ -3,4 +3,4 @@ export * from './Full';
 export * from './Landing';
 export * from './Home';
 export * from './Redocly';
-export * from './BLog';
+export * from './Blog';
