@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs",
+      "comment": "Extend PactNumber with BigNumber and make its API available",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/pactjs"
+}
