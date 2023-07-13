@@ -6,7 +6,7 @@ describe('generateDts', () => {
     const module = `(namespace "user")
       (module test-module governance
         (defcap test-cap (name:string) true)
-        (defun test-func:boolean (parameter-one:string parameter-two:boolean )
+        (defun test-func:bool (parameter-one:string parameter-two:bool )
           (with-capability (test-cap "name"))
         )
       )
@@ -25,7 +25,7 @@ describe('generateDts', () => {
     const module = `(namespace "user")
       (module test-module governance
         (defcap test-cap (name:string) true)
-        (defun test-func:boolean (parameter-one parameter-two:boolean )
+        (defun test-func:bool (parameter-one parameter-two:bool )
           (with-capability (test-cap "name"))
         )
       )
@@ -44,7 +44,7 @@ describe('generateDts', () => {
     const module = `(namespace "user")
       (module test-module governance
         (defcap test-cap (name:string) true)
-        (defun test-func:boolean (parameter-one:object{schema-one} parameter-two:boolean )
+        (defun test-func:bool (parameter-one:object{schema-one} parameter-two:bool )
           (with-capability (test-cap "name"))
         )
       )
@@ -62,7 +62,7 @@ describe('generateDts', () => {
   it('does not generate capability interface if the function uses no capabilities', async () => {
     const module = `(namespace "user")
       (module test-module governance
-        (defun test-func:boolean (parameter-one:number parameter-two:boolean )
+        (defun test-func:bool (parameter-one:decimal parameter-two:bool )
         )
       )
     `;
@@ -79,7 +79,7 @@ describe('generateDts', () => {
   it('throws an exception if requested module is not in the parsed modules', async () => {
     const module = `(namespace "user")
       (module test-module governance
-        (defun test-func:boolean (parameter-one:number parameter-two:boolean )
+        (defun test-func:bool (parameter-one:decimal parameter-two:bool )
         )
       )
     `;
@@ -150,7 +150,7 @@ describe('generateDts', () => {
         (defcap test-cap (name:string)
           @doc "this is defcap doc"
           true)
-        (defun test-func:boolean (parameter-one:object{schema-one} parameter-two:boolean )
+        (defun test-func:bool (parameter-one:object{schema-one} parameter-two:bool )
           @doc "this is defun doc"
           (with-capability (test-cap "name"))
         )

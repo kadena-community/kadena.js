@@ -6,9 +6,11 @@ import { EOL } from 'os';
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',
   integer: 'IPactInt',
+  string: 'string',
   time: 'Date',
   bool: 'boolean',
   guard: 'PactGuard',
+  object: 'object',
 };
 
 const mapType = (
@@ -18,9 +20,12 @@ const mapType = (
     return 'any';
   }
   if (typeof inputType === 'string') {
-    return keywordsMap[inputType] ?? inputType;
+    return keywordsMap[inputType] ?? 'any';
   }
-  return inputType.kind;
+
+  // TODO: import the schema as interface to return kind instead of any
+  // return inputType.kind;
+  return 'any';
 };
 
 const getFuncCapInterfaceName = (func: IFunction): string => {

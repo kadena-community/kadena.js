@@ -38,6 +38,7 @@ describe('getCapabilities', () => {
         reason: 'with-capability',
         origin: 'test-function',
         capability: {
+          kind: 'defcap',
           name: 'test-capability',
           doc: 'this is a test capability',
         },
@@ -87,6 +88,7 @@ describe('getCapabilities', () => {
         reason: 'with-capability',
         origin: 'test-function',
         capability: {
+          kind: 'defcap',
           name: 'first-capability',
           doc: 'this is the first capability',
           composeCapabilities: ['second-capability'],
@@ -98,6 +100,7 @@ describe('getCapabilities', () => {
         reason: 'compose-capability',
         origin: 'first-capability',
         capability: {
+          kind: 'defcap',
           name: 'second-capability',
           doc: 'this is the second capability',
         },
