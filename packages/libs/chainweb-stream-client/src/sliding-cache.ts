@@ -71,44 +71,31 @@ export default class SlidingCache<TShape extends ITransaction>
     let needUpdate = false;
     let newMaxCacheValue = this.maxSpanValue;
 
-    let minTracked = newMaxCacheValue - this.cacheSpan;
-    const recalcMinTracked = (): void => {
-      minTracked = newMaxCacheValue - this.cacheSpan;
-    };
-    recalcMinTracked();
-
     const retVals = [];
     for (const elem of elems) {
       const cacheValue = this.spanValueGetter(elem);
-      if (cacheValue >= minTracked) {
-        if (cacheValue < this.minSpanValue) {
-          needUpdate = true;
-          this.minSpanValue = cacheValue;
-        }
-        if (cacheValue > newMaxCacheValue) {
-          needUpdate = true;
-          newMaxCacheValue = cacheValue;
-          recalcMinTracked();
-        }
-        const [inSpanRange, exists, existsIdentical, cacheIdx] =
-          this.existsCache(elem);
-        if (!inSpanRange) {
-          // outside of cache's sliding window, emit. possible duplicate
-          retVals.push(true);
-        } else {
-          if (exists && !existsIdentical) {
-            this.cache[cacheIdx] = elem;
-          }
-          if (!exists) {
-            this.cache.push(elem);
-          }
-          retVals.push(existsIdentical ? false : true);
-        }
+      if (cacheValue < this.minSpanValue) {
+        needUpdate = true;
+        this.minSpanValue = cacheValue;
+      }
+      if (cacheValue > newMaxCacheValue) {
+        needUpdate = true;
+        newMaxCacheValue = cacheValue;
+      }
+      const [inSpanRange, exists, existsIdentical, cacheIdx] =
+        this.existsCache(elem);
+
+      if (!inSpanRange) {
+        // outside of cache's sliding window, emit. possible duplicate
+        retVals.push(true);
       } else {
-        console.warn(
-          `Ignoring cacheValue=${cacheValue}, minimum tracked is ${minTracked}, max tracked is ${newMaxCacheValue}`,
-        );
-        retVals.push(false);
+        if (exists && !existsIdentical) {
+          this.cache[cacheIdx] = elem;
+        }
+        if (!exists) {
+          this.cache.push(elem);
+        }
+        retVals.push(existsIdentical ? false : true);
       }
     }
     if (needUpdate) {
@@ -120,7 +107,7 @@ export default class SlidingCache<TShape extends ITransaction>
   public existsCache(
     needle: TShape,
   ): [InSpanRange, Exists, ExistsIdentical, CacheIdx] {
-    // [in span range, exists, exists in identical confirmation depth, index]
+    // [in span range, exists (by id), exists with identical confirmation depth, cache index]
     const spanValue = this.spanValueGetter(needle);
     if (spanValue < this.minSpanValue) {
       return [false, false, false, -1];
@@ -153,7 +140,6 @@ export default class SlidingCache<TShape extends ITransaction>
       (elem) => this.spanValueGetter(elem) >= this.minSpanValue,
     );
     const evictedNum = this.cache.length - nextCache.length;
-    console.log(`Evicted ${evictedNum} out of ${this.cache.length}.`);
     this.cache = nextCache;
     return evictedNum;
   }
