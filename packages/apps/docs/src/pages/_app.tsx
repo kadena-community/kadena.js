@@ -47,7 +47,6 @@ export const MyApp = ({
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
 
-  console.log(darkThemeClass, stitchesDarkTheme.className);
   return (
     <>
       <MDXProvider components={markDownComponents}>
