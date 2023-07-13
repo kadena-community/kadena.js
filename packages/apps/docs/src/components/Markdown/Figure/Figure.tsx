@@ -1,4 +1,4 @@
-import { Text } from '@kadena/react-components';
+import { Text } from '@kadena/react-ui';
 
 import { StyledFigure } from './styles';
 

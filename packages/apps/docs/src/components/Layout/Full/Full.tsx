@@ -1,4 +1,4 @@
-import { Heading } from '@kadena/react-components';
+import { Heading } from '@kadena/react-ui';
 
 import {
   Article,

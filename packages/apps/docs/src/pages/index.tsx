@@ -1,4 +1,5 @@
-import { Heading, Stack, Text } from '@kadena/react-components';
+import { Stack } from '@kadena/react-components';
+import { Heading, Text } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
