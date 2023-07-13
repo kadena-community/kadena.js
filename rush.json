@@ -406,6 +406,7 @@
     {
       "packageName": "@kadena/graph",
       "projectFolder": "packages/apps/graph",
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
       "reviewCategory": "prototypes",
       "shouldPublish": false
     },
@@ -413,6 +414,7 @@
     {
       "packageName": "@kadena/graph-client",
       "projectFolder": "packages/apps/graph-client",
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
       "reviewCategory": "prototypes",
       "shouldPublish": false
     },
@@ -421,6 +423,7 @@
       "packageName": "@kadena/docs",
       "projectFolder": "packages/apps/docs",
       "reviewCategory": "prototypes",
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
       "shouldPublish": false
     },
 
@@ -428,7 +431,7 @@
       "packageName": "@kadena/transfer",
       "projectFolder": "packages/apps/transfer",
       "reviewCategory": "prototypes",
-      "decoupledLocalDependencies": ["@kadena/client"],
+      "decoupledLocalDependencies": ["@kadena/client", "@kadena/pactjs-cli"],
       "skipRushCheck": false,
       "shouldPublish": false
     },
@@ -544,7 +547,11 @@
     {
       "packageName": "@kadena/cookbook",
       "projectFolder": "packages/tools/cookbook",
-      "decoupledLocalDependencies": ["@kadena/cookbook", "@kadena/client"],
+      "decoupledLocalDependencies": [
+        "@kadena/cookbook",
+        "@kadena/client",
+        "@kadena/pactjs-cli"
+      ],
       "tags": ["tools"],
       "shouldPublish": false
     },

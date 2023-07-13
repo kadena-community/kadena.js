@@ -31,6 +31,7 @@ const systemProperties = defineProperties({
     outline: ['none'],
     textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
     textDecoration: ['underline', 'none'],
+    wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
   },
 });
 

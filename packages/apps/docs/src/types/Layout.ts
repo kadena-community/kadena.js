@@ -5,13 +5,15 @@ import { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-export type LayoutType = 'full' | 'code' | 'landing' | 'home';
+export type LayoutType = 'full' | 'code' | 'landing' | 'home' | 'redocly';
 
 export interface ISubHeaderElement {
   tag: TagNameType;
   title?: string;
   slug?: string;
   children: ISubHeaderElement[];
+  index?: number;
+  parentTitle?: string;
 }
 
 export interface INavigation {

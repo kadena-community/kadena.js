@@ -22,8 +22,8 @@ export const Heading: FC<IHeadingProps> = ({
   as = 'h1',
   variant = as,
   font = 'main',
-  bold = false,
-  color = 'default',
+  bold = true,
+  color = 'emphasize',
   transform = 'none',
   children,
 }) => {

@@ -12,6 +12,7 @@ import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
+import Debug from 'debug';
 import { Translate } from 'next-translate';
 
 interface ITransactionData {
@@ -44,6 +45,8 @@ interface IEventData {
   moduleName: string;
 }
 
+const debug = Debug('kadena-transfer:services:get-transfer-data');
+
 export async function getTransferData({
   requestKey,
   network,
@@ -53,6 +56,7 @@ export async function getTransferData({
   network: Network;
   t: Translate;
 }): Promise<ITransferDataResult> {
+  debug(getTransferData.name);
   const validatedRequestKey = validateRequestKey(requestKey);
 
   if (validatedRequestKey === undefined) {
@@ -127,7 +131,7 @@ export async function getTransferData({
       },
     };
   } catch (e) {
-    console.log(e);
+    debug(e);
     return { error: e.message };
   }
 }

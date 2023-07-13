@@ -1,12 +1,12 @@
 import {
   Button,
-  Heading,
   Notification,
   NotificationBody,
   Stack,
   SystemIcons,
   TextField,
 } from '@kadena/react-components';
+import { Heading } from '@kadena/react-ui';
 
 import { useSubscribe } from './useSubscribe';
 
