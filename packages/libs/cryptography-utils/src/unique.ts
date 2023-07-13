@@ -10,15 +10,15 @@ interface ICache {
  * ```ts
  *   const cmdHashes = [
  *     'NjduEShgzrjEmAVhprS85hst7mvCqOo6qjGH5j5WHro',
- *     'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
- *     'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+ *     'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
+ *     'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
  *   ];
  *
  *   const uniqueHashesArray = unique(cmdHashes);
  *
  *   // output [
  *   //  'NjduEShgzrjEmAVhprS85hst7mvCqOo6qjGH5j5WHro',
- *   //  'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+ *   //  'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
  *   // ];
  *
  * ```

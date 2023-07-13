@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/types",
+      "comment": "Remove `chainId: ''` added PactGuard",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/types"
+}

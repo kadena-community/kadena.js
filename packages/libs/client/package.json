@@ -10,9 +10,14 @@
   "license": "MIT",
   "main": "lib/index.js",
   "types": "dist/client.d.ts",
+  "exports": {
+    ".": "./lib/index.js",
+    "./fp": "./lib/fp.js"
+  },
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "fp"
   ],
   "scripts": {
     "build": "heft build --clean",
