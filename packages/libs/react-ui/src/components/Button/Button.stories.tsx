@@ -1,6 +1,7 @@
 import { colorVariants } from './Button.css';
+import { ButtonIcon } from './ButtonIcon';
+import { Button, IButtonProps } from '.';
 
-import { Button, IButtonProps } from '@components/Button';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -12,14 +13,32 @@ const meta: Meta<
   } & IButtonProps
 > = {
   title: 'Components/Button',
-  component: Button.Root,
+  component: Button,
+  parameters: {
+    controls: {
+      hideNoControlsWarning: true,
+      sort: 'requiredFirst',
+    },
+  },
   argTypes: {
     onClick: { action: 'clicked', if: { arg: 'as', eq: 'button' } },
-    selectIcon: {
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
+    icon: {
+      options: [
+        ...['-'],
+        ...Object.keys(SystemIcon),
+      ] as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
       },
+      if: { arg: 'loading', eq: false },
+    },
+    iconAlign: {
+      description: 'align icon to left or right',
+      control: {
+        options: ['left', 'right'] as IButtonProps['iconAlign'][],
+        control: { type: 'radio' },
+      },
+      if: { arg: 'selectIcon', neq: '-' },
     },
     color: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
@@ -43,20 +62,20 @@ const meta: Meta<
       control: {
         type: 'text',
       },
-      if: { arg: 'as', eq: 'anchor' },
+      if: { arg: 'as', eq: 'a' },
     },
     target: {
       description: 'only used when rendered as anchor',
       control: {
-        options: ['blank', 'self'],
+        options: ['_blank', '_self'] as IButtonProps['target'][],
         control: { type: 'radio' },
       },
-      if: { arg: 'as', eq: 'anchor' },
+      if: { arg: 'as', eq: 'a' },
     },
     as: {
       description: 'render as button or anchor',
       control: {
-        options: ['button', 'anchor'],
+        options: ['button', 'a'] as IButtonProps['as'][],
         control: { type: 'radio' },
       },
     },
@@ -66,6 +85,12 @@ const meta: Meta<
         type: 'boolean',
       },
       if: { arg: 'as', eq: 'button' },
+    },
+    loading: {
+      description: 'loading state',
+      control: {
+        type: 'boolean',
+      },
     },
   },
 };
@@ -81,148 +106,49 @@ type Story = StoryObj<
 export const Dynamic: Story = {
   name: 'Button',
   args: {
-    title: 'test title',
-    disabled: false,
-    text: 'Click me',
-    href: '',
-    target: '_self',
-    color: undefined,
     as: 'button',
-  },
-  render: ({ onClick, title, disabled, text, color, href, target, as }) => {
-    return (
-      <>
-        <Button.Root
-          title={title}
-          disabled={disabled}
-          color={color}
-          href={href}
-          target={target}
-          as={as}
-          onClick={onClick}
-        >
-          {text}
-        </Button.Root>
-      </>
-    );
-  },
-};
-
-export const Primary: Story = {
-  args: {
-    title: 'Primary Filled',
-    disabled: false,
-    children: 'Primary Filled',
-    color: 'primary',
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    title: 'Secondary Filled',
-    disabled: false,
-    children: 'Secondary Filled',
-    color: 'secondary',
-  },
-};
-
-export const Tertiary: Story = {
-  args: {
-    title: 'Tertiary Filled',
-    disabled: false,
-    children: 'Tertiary Filled',
-    color: 'tertiary',
-  },
-};
-
-export const Info: Story = {
-  args: {
-    title: 'Info Filled',
-    disabled: false,
-    children: 'Info Filled',
-    color: 'info',
-  },
-};
-
-export const Positive: Story = {
-  args: {
-    title: 'Positive Filled',
-    disabled: false,
-    children: 'Positive Filled',
-    color: 'positive',
-  },
-};
-
-export const Negative: Story = {
-  args: {
-    title: 'Negative Filled',
-    disabled: false,
-    children: 'Negative Filled',
-    color: 'negative',
-  },
-};
-
-export const Warning: Story = {
-  args: {
-    title: 'Warning Filled',
-    disabled: false,
-    children: 'Warning Filled',
-    color: 'warning',
-  },
-};
-
-export const ButtonIcon: Story = {
-  name: 'Button with Icon',
-  args: {
-    selectIcon: 'Account',
-    title: 'test title',
-    disabled: false,
-    text: 'Click me',
-    href: '',
-    target: '_self',
     color: undefined,
-    as: 'button',
+    disabled: false,
+    href: '',
+    iconAlign: 'left',
+    loading: false,
+    target: '_self',
+    icon: undefined,
+    text: 'Click me',
+    title: 'test title',
   },
   render: ({
-    onClick,
-    title,
-    disabled,
-    text,
-    color,
-    selectIcon,
-    href,
-    target,
     as,
+    color,
+    disabled,
+    href,
+    iconAlign,
+    loading,
+    onClick,
+    icon,
+    target,
+    text,
+    title,
   }) => {
-    const Icon = SystemIcon[selectIcon];
+    let Icon = icon && SystemIcon[icon];
+    if (loading) {
+      Icon = SystemIcon.Loading;
+    }
     return (
       <>
-        <Button.Root
-          title={title}
-          onClick={onClick}
-          disabled={disabled}
-          color={color}
-          href={href}
-          target={target}
+        <Button
           as={as}
-        >
-          <Button.Icon icon={Icon} />
-          {text}
-        </Button.Root>
-
-        <Button.Root
-          title={title}
-          onClick={onClick}
-          disabled={disabled}
           color={color}
+          disabled={disabled}
           href={href}
+          onClick={onClick}
           target={target}
-          style={{ marginTop: '10px' }}
-          as={as}
+          title={title}
         >
+          {Icon && iconAlign === 'left' && <ButtonIcon icon={Icon} />}
           {text}
-          <Button.Icon icon={Icon} />
-        </Button.Root>
+          {Icon && iconAlign === 'right' && <ButtonIcon icon={Icon} />}
+        </Button>
       </>
     );
   },

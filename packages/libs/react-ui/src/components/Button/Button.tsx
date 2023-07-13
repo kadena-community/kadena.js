@@ -1,8 +1,7 @@
-import { SystemIcon } from '../Icons';
-
 import { colorVariants } from './Button.css';
 import { ButtonIcon } from './ButtonIcon';
 
+import { SystemIcon } from '@components/Icon';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
@@ -13,7 +12,7 @@ export interface IButtonProps
   disabled?: boolean;
   href?: string;
   icon?: keyof typeof SystemIcon;
-  iconAlign?: 'left' | 'right'; // TODO: add icon support to button rather than its own component
+  iconAlign?: 'left' | 'right';
   loading?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   target?: '_blank' | '_self';
