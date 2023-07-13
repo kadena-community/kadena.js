@@ -3,8 +3,6 @@ name: Chromatic
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - packages/libs/react-ui/**
   push:
@@ -12,6 +10,7 @@ on:
       - main
     paths:
       - packages/libs/react-ui/**
+  workflow_dispatch:
 
 jobs:
   chromatic:
