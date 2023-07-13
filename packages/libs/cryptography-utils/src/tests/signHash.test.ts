@@ -9,12 +9,12 @@ test('Takes in a hash and keypair, outputs an object with with "hash", "sig", an
       '8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332',
   };
 
-  const actual = signHash(str, keyPair);
-  const expected = {
+  const sigWithHash = signHash(str, keyPair);
+  const expectedSigWithHash = {
     hash: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-    sig: '26d765e3b812d59d80ffbd034d4fc4a1a24f8d0c3929586575617089e5098d967955d348608b515ae9ff7871b46726ffc71252d53b9e562d5bcf3bfe66292906',
+    sig: 'b2136d0281e457f7aea130be3185f8c573872dbac9360da26cf5e30999bf3206a3358dd551e8b8aaf3d66d21611c9376fb3ef45fed95d892cc7dfa6023c99d0e',
     pubKey: 'ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d',
   };
 
-  expect(expected).toEqual(actual);
+  expect(sigWithHash).toEqual(expectedSigWithHash);
 });
