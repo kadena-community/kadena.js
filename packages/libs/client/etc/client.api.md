@@ -10,6 +10,7 @@ import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import { IExecPayload } from '@kadena/types';
+import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
