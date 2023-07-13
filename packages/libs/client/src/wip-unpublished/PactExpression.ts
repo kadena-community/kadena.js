@@ -2,11 +2,21 @@ import { createExp } from '@kadena/pactjs';
 
 import { parseAsPactValue } from '../utils/parseAsPactValue';
 
+/**
+ * @internal
+ */
 export interface IPactModules {}
+
+/**
+ * @internal
+ */
 export type IPactBuilder = {
   generate(): string;
 } & IPactModules;
 
+/**
+ * @internal
+ */
 export function PactExpression(): IPactBuilder {
   let expression: string = '';
   const path: string[] = [];

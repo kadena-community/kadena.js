@@ -125,7 +125,7 @@ interface IClient extends IClientBasics {
   /**
    * @deprecated use `submit` instead
    *
-   * alias fro submit
+   * alias for submit
    */
   send: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
 

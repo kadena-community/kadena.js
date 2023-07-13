@@ -15,4 +15,7 @@ type ModuleName<T> = T extends `(${infer MOD}.${infer FUNC} ${infer REST})`
 // @ts-ignore
 type FunctionType<T> = IPact['modules'][ModuleName<T>[0]][ModuleName<T>[1]];
 
+/**
+ * @internal
+ */
 export type Transfer = FunctionType<'(coin.transfer )'>;
