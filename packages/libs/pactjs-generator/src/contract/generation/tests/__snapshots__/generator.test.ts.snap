@@ -28,7 +28,7 @@ declare module '@kadena/client' {
       * this is defun doc
       */
       \\"test-func\\": (
-        parameterone: any,
+        parameterone: object,
         parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
@@ -157,7 +157,7 @@ declare module '@kadena/client' {
     
     \\"user.test-module\\": {
       \\"test-func\\": (
-        parameterone: any,
+        parameterone: object,
         parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }

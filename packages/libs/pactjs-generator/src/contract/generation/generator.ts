@@ -25,7 +25,7 @@ const mapType = (
 
   // TODO: import the schema as interface to return kind instead of any
   // return inputType.kind;
-  return 'any';
+  return keywordsMap[inputType.kind] ?? 'any';
 };
 
 const getFuncCapInterfaceName = (func: IFunction): string => {
