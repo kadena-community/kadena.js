@@ -23,5 +23,11 @@ export const apiHostGenerator = ({
 };
 
 // configure the client and export the functions
-export const { submit, local, pollSpv, pollStatus, getStatus, getSpv } =
-  getClient(apiHostGenerator);
+export const {
+  submit,
+  local,
+  pollCreateSpv,
+  pollStatus,
+  getStatus,
+  createSpv,
+} = getClient(apiHostGenerator);

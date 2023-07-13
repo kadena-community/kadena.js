@@ -7,7 +7,7 @@ import {
 } from '@kadena/client';
 import { ChainId, IUnsignedCommand } from '@kadena/types';
 
-import { pollSpv, pollStatus, submit } from './util/client';
+import { pollCreateSpv, pollStatus, submit } from './util/client';
 
 interface IAccount {
   account: string;
@@ -80,7 +80,9 @@ export async function doCrossChianTransfer(
         ? Promise.reject('DEBIT REJECTED')
         : status,
     )
-    .then((status) => Promise.all([status, pollSpv(status.reqKey, to.chainId)]))
+    .then((status) =>
+      Promise.all([status, pollCreateSpv(status.reqKey, to.chainId)]),
+    )
     .then(([status, proof]) =>
       creditInTheTargetChain(
         {
