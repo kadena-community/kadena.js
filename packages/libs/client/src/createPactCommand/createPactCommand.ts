@@ -1,13 +1,13 @@
 import {
-  IContinuationPayload,
-  IExecPayload,
+  IContinuationPayloadObject,
+  IExecPayloadObject,
   IPactCommand,
 } from '../interfaces/IPactCommand';
 
 export const mergePayload = (
   payload: IPactCommand['payload'] | undefined,
   newPayload: IPactCommand['payload'] | undefined,
-): IExecPayload | IContinuationPayload | undefined => {
+): IExecPayloadObject | IContinuationPayloadObject | undefined => {
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
 

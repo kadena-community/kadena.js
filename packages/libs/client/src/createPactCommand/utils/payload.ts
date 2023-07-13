@@ -1,7 +1,7 @@
 import {
   ICapabilityItem,
-  IContinuationPayload,
-  IExecPayload,
+  IContinuationPayloadObject,
+  IExecPayloadObject,
 } from '../../interfaces/IPactCommand';
 
 interface IExec {
@@ -15,13 +15,13 @@ interface IExec {
   >(
     ...codes: [...TCodes]
   ): // use _branch to add type inferring for using it when user call signer function then we can show a related list of capabilities
-  { payload: IExecPayload & { funs: [...TCodes]; _brand: 'exec' } };
+  { payload: IExecPayloadObject & { funs: [...TCodes]; _brand: 'exec' } };
 }
 
 interface IPayload {
   exec: IExec;
-  cont: (options: IContinuationPayload['cont']) => {
-    payload: IContinuationPayload & { _brand: 'cont' };
+  cont: (options: IContinuationPayloadObject['cont']) => {
+    payload: IContinuationPayloadObject & { _brand: 'cont' };
   };
 }
 
@@ -30,7 +30,9 @@ interface IPayload {
  */
 export const payload: IPayload = {
   exec: (...codes: string[]) => {
-    const pld: IExecPayload = { exec: { code: codes.join(''), data: {} } };
+    const pld: IExecPayloadObject = {
+      exec: { code: codes.join(''), data: {} },
+    };
     return {
       payload: pld,
       // _brand is a trick to make the type inferring work but it's not a real field in the payload

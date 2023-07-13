@@ -20,14 +20,6 @@ export interface IPollOptions {
 /**
  * @alpha
  */
-export interface ILocalOptions {
-  preflight?: boolean;
-  signatureValidation?: boolean;
-}
-
-/**
- * @alpha
- */
 export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
   requests: Record<string, Promise<T>>;
 };

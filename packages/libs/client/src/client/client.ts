@@ -1,16 +1,22 @@
-import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
-import { hash as blakeHash } from '@kadena/cryptography-utils';
+import {
+  ICommandResult,
+  ILocalOptions,
+  IPollResponse,
+  IPreflightResult,
+  listen,
+  local,
+  LocalRequestBody,
+  LocalResponse,
+  poll,
+  send,
+} from '@kadena/chainweb-node-client';
 import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { IPactCommand } from '../interfaces/IPactCommand';
 
-import { listen } from './api/listen';
-import { local, LocalResponse } from './api/local';
 import { getSpv, pollSpv } from './api/spv';
-import { getStatus, pollStatus } from './api/status';
-import { submit } from './api/submit';
+import { pollStatus } from './api/status';
 import {
-  ILocalOptions,
   INetworkOptions,
   IPollOptions,
   IPollRequestPromise,
@@ -27,19 +33,43 @@ type IOptions = IPollOptions &
 
 interface IClient {
   /**
-   * calls '/local' endpoint
+   * calls '/local' endpoint with options that could br also undefined,
+   *
+   * *Note:* the default values of preflight and signatureVerification are `true`
    */
   local: <T extends ILocalOptions>(
-    transaction: ICommand | IUnsignedCommand,
+    transaction: LocalRequestBody,
     options?: T,
   ) => Promise<LocalResponse<T>>;
+
+  /**
+   * calls '/local' endpoint with both preflight and signatureVerification `true`,
+   */
+  preflight?: (
+    transaction: ICommand | IUnsignedCommand,
+  ) => Promise<IPreflightResult>;
+
+  /**
+   * calls '/local' endpoint with preflight `false` and signatureVerification `true`,
+   */
+  signatureVerification?: (transaction: ICommand) => Promise<ICommandResult>;
+
+  /**
+   * calls '/local' with minimum both preflight and signatureVerification `false`
+   */
+  runPact?: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+
+  /**
+   * @deprecated alias for `submit`
+   */
+  send?: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
   /**
    * calls '/send' endpoint
    */
   submit: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
   /**
    * calls '/poll' endpoint several times to get the status of all requests. if the requests submitted outside of the current client context then you need to path networkId
-   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   pollStatus: (
     requestKeys?: string[] | string,
@@ -48,7 +78,7 @@ interface IClient {
 
   /**
    * calls '/poll' endpoint only once. if the requests submitted outside of the current client context then you need to path networkId
-   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   getStatus: (
     requestKeys?: string[] | string,
@@ -56,8 +86,15 @@ interface IClient {
   ) => Promise<IPollResponse>;
 
   /**
+   * @deprecated alias for `getStatus`
+   */
+  getPoll?: (
+    requestKeys?: string[] | string,
+    options?: INetworkOptions,
+  ) => Promise<IPollResponse>;
+  /**
    * calls '/listen' endpoint. if the requests submitted outside of the current client context then you need to path networkId
-   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   listen: (
     requestKey: string,
@@ -66,11 +103,11 @@ interface IClient {
 
   /**
    * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
-   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   pollSpv: (
     requestKey: string,
-    targetChainId: string,
+    targetChainId: ChainId,
     options?: IOptions,
   ) => Promise<string>;
 
@@ -80,7 +117,7 @@ interface IClient {
    */
   getSpv: (
     requestKey: string,
-    targetChainId: string,
+    targetChainId: ChainId,
     options?: INetworkOptions,
   ) => Promise<string>;
 }
@@ -109,6 +146,19 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
   const storage = getRequestStorage();
 
+  const getStoredHost = (
+    requestKey: string,
+    options?: Partial<INetworkOptions>,
+  ): string => {
+    return (
+      storage.get(requestKey) ??
+      getHost({
+        chainId: options?.chainId!,
+        networkId: options?.networkId!,
+      })
+    );
+  };
+
   function groupByHost(
     requestKeys?: string[],
     options?: IOptions,
@@ -118,11 +168,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       const map = new Map<string, string>(
         requestKeys.map((requestKey) => [
           requestKey,
-          storage.get(requestKey) ??
-            getHost({
-              chainId: options?.chainId!,
-              networkId: options?.networkId!,
-            }),
+          getStoredHost(requestKey, options),
         ]),
       );
       requestStorage = getRequestStorage(map);
@@ -137,7 +183,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      return local(hostUrl, body, options);
+      return local(body, hostUrl, options);
     },
     async submit(body) {
       const commands = Array.isArray(body) ? body : [body];
@@ -150,14 +196,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      const commandsWithHash = commands.map((req) => ({
-        ...req,
-        hash: blakeHash(req.cmd),
-      }));
-      const requestIds = await submit(hostUrl, commandsWithHash);
-      storage.add(hostUrl, requestIds);
+      const { requestKeys } = await send({ cmds: commands }, hostUrl);
+      storage.add(hostUrl, requestKeys);
 
-      return requestIds;
+      return requestKeys;
     },
     pollStatus(
       requestKeys?: string[] | string,
@@ -191,7 +233,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
       const results = await Promise.all(
         groupByHost(keys, options).map(([hostUrl, requestKeys]) =>
-          getStatus(hostUrl, requestKeys).catch(() => ({} as IPollResponse)),
+          poll({ requestKeys }, hostUrl),
         ),
       );
 
@@ -205,14 +247,9 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     },
 
     async listen(requestKey, options) {
-      const hostUrl =
-        storage.get(requestKey) ??
-        getHost({
-          chainId: options?.chainId!,
-          networkId: options?.networkId!,
-        });
+      const hostUrl = getStoredHost(requestKey, options);
 
-      const result = await listen(hostUrl, requestKey);
+      const result = await listen({ listen: requestKey }, hostUrl);
 
       storage.remove([requestKey]);
 
@@ -220,28 +257,13 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     },
 
     pollSpv(requestKey, targetChainId, options) {
-      return pollSpv(
-        storage.get(requestKey) ??
-          getHost({
-            chainId: options?.chainId!,
-            networkId: options?.networkId!,
-          }),
-        requestKey,
-        targetChainId,
-        options,
-      );
+      const hostUrl = getStoredHost(requestKey, options);
+      return pollSpv(hostUrl, requestKey, targetChainId, options);
     },
 
-    getSpv(requestKey, targetChainId, options) {
-      return getSpv(
-        storage.get(requestKey) ??
-          getHost({
-            chainId: options?.chainId!,
-            networkId: options?.networkId!,
-          }),
-        requestKey,
-        targetChainId,
-      );
+    async getSpv(requestKey, targetChainId, options) {
+      const hostUrl = getStoredHost(requestKey, options);
+      return getSpv(hostUrl, requestKey, targetChainId);
     },
   };
 

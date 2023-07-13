@@ -1,36 +1,26 @@
+import { spv, SPVResponse } from '@kadena/chainweb-node-client';
+import { ChainId } from '@kadena/types';
+
 import { IPollOptions } from '../interfaces/interfaces';
 import { retry } from '../utils/retry';
-import { getUrl, jsonRequest } from '../utils/utils';
-
-import fetch from 'cross-fetch';
 
 export async function getSpv(
   host: string,
   requestKey: string,
-  targetChainId: string,
-): Promise<string> {
-  const request = jsonRequest({ requestKey, targetChainId });
-  const url = getUrl(host, 'spv');
-
-  try {
-    const response = await fetch(url, request);
-    if (response.ok) {
-      return await response.text();
-    }
-    throw await response.text();
-  } catch (error) {
-    console.error(`An error occurred while calling spv API:`, error);
-    throw error;
-  }
+  targetChainId: ChainId,
+): Promise<SPVResponse> {
+  const proof = await spv({ requestKey, targetChainId }, host);
+  if (typeof proof !== 'string') throw new Error('PROOF_IS_NOT_AVAILABLE');
+  return proof;
 }
 
 export const pollSpv = (
   host: string,
   requestKey: string,
-  targetChainId: string,
+  targetChainId: ChainId,
   pollingOptions?: IPollOptions,
-): Promise<string> => {
-  const task = async (): Promise<string> =>
+): Promise<SPVResponse> => {
+  const task = async (): Promise<SPVResponse> =>
     getSpv(host, requestKey, targetChainId);
 
   const retrySpv = retry(task);

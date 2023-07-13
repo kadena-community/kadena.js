@@ -3,7 +3,7 @@ import { ChainId, ICap } from '@kadena/types';
 /**
  * @alpha
  */
-export interface IExecPayload {
+export interface IExecPayloadObject {
   // executable pact code
   exec: {
     code?: string;
@@ -13,7 +13,7 @@ export interface IExecPayload {
 /**
  * @alpha
  */
-export interface IContinuationPayload {
+export interface IContinuationPayloadObject {
   cont: {
     pactId?: string;
     step?: string;
@@ -32,7 +32,7 @@ export type ICapabilityItem = ICap;
  * @alpha
  */
 export interface IPactCommand {
-  payload: IExecPayload | IContinuationPayload;
+  payload: IExecPayloadObject | IContinuationPayloadObject;
   meta: {
     chainId: ChainId;
     sender: string;

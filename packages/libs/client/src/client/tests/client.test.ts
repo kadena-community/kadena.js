@@ -1,16 +1,18 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
+jest.mock('@kadena/chainweb-node-client', () => ({
+  __esModule: true,
+  ...jest.requireActual('@kadena/chainweb-node-client'),
+  poll: jest.fn(),
+  spv: jest.fn(),
+  send: jest.fn(),
+  local: jest.fn(),
+  listen: jest.fn(),
+}));
 
+import * as chainwebClient from '@kadena/chainweb-node-client';
 import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client';
 import { kadenaHostGenerator, withCounter } from '../utils/utils';
-
-import fetch from 'cross-fetch';
 
 const hostApiGenerator = ({
   networkId,
@@ -24,31 +26,26 @@ describe('client', () => {
   it('uses the string input as the host for all requests', async () => {
     const response = { reqKey: 'test-key' };
 
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify(response),
-      json: () => response,
-    });
+    (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
     const hostUrl = 'http://test-blockchian-host.com';
 
     const { local } = getClient(hostUrl);
 
-    const chainId = '1';
-    const networkId = 'mainnet01';
-
     const body = {
-      cmd: JSON.stringify({ networkId, meta: { chainId } }),
+      cmd: JSON.stringify({ networkId: 'mainnet01', meta: { chainId: '1' } }),
       hash: 'hash',
       sigs: [{ sig: 'test-sig' }],
     };
 
-    await local(body);
+    const result = await local(body);
 
-    expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-      `${hostUrl}/api/v1/local`,
-    );
+    expect(result).toEqual(response);
+
+    expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
+      body,
+      hostUrl,
+    ]);
   });
 
   it('uses kadenaHostGenerator if called without argument', async () => {
@@ -56,12 +53,7 @@ describe('client', () => {
 
     const response = { reqKey: 'test-key' };
 
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify(response),
-      json: () => response,
-    });
+    (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
     const networkId = 'mainnet01';
     const chainId = '1';
@@ -74,21 +66,17 @@ describe('client', () => {
 
     await local(body);
 
-    expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-      `${kadenaHostGenerator({ networkId, chainId })}/api/v1/local`,
-    );
+    expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
+      body,
+      kadenaHostGenerator({ networkId, chainId }),
+    ]);
   });
 
   describe('local', () => {
     it('uses the hostApiGenerator function to generate hostUrl for local request', async () => {
       const response = { reqKey: 'test-key' };
 
-      (fetch as jest.Mock).mockResolvedValue({
-        status: 200,
-        ok: true,
-        text: () => JSON.stringify(response),
-        json: () => response,
-      });
+      (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
       const { local } = getClient(hostApiGenerator);
 
@@ -103,9 +91,10 @@ describe('client', () => {
 
       await local(body);
 
-      expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-        `${hostApiGenerator({ networkId, chainId })}/api/v1/local`,
-      );
+      expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
+        body,
+        hostApiGenerator({ networkId, chainId }),
+      ]);
     });
   });
 
@@ -113,12 +102,7 @@ describe('client', () => {
     it('uses the hostApiGenerator function to generate hostUrl for submit request', async () => {
       const response = { requestKeys: ['test-key'] };
 
-      (fetch as jest.Mock).mockResolvedValue({
-        status: 200,
-        ok: true,
-        text: () => JSON.stringify(response),
-        json: () => response,
-      });
+      (chainwebClient.send as jest.Mock).mockResolvedValue(response);
 
       const { submit } = getClient(hostApiGenerator);
 
@@ -133,29 +117,16 @@ describe('client', () => {
 
       await submit(body);
 
-      expect((fetch as jest.Mock).mock.calls[0][0]).toBe(
-        `${hostApiGenerator({ networkId, chainId })}/api/v1/send`,
+      expect(chainwebClient.send).toBeCalledWith(
+        { cmds: [body] },
+        hostApiGenerator({ networkId, chainId }),
       );
     });
 
     it('returns requestKeys', async () => {
-      const response = [
-        // /send response
-        { requestKeys: ['test-key'] },
-        // /poll response
-        { 'test-key': { reqKey: 'test-key' } },
-      ];
-
-      (fetch as jest.Mock).mockImplementation(
-        withCounter((counter) => {
-          return Promise.resolve({
-            status: 200,
-            ok: true,
-            text: () => JSON.stringify(response[counter - 1]),
-            json: () => response[counter - 1],
-          });
-        }),
-      );
+      (chainwebClient.send as jest.Mock).mockResolvedValue({
+        requestKeys: ['test-key'],
+      });
 
       const { submit } = getClient(hostApiGenerator);
 
@@ -184,8 +155,6 @@ describe('client', () => {
   describe('pollStatus', () => {
     it('calls /poll endpoint several times to get the final status of the request', async () => {
       const response = [
-        // /send response
-        { requestKeys: ['test-key'] },
         // first /poll
         {},
         // second /poll
@@ -194,14 +163,13 @@ describe('client', () => {
         { 'test-key': { reqKey: 'test-key' } },
       ];
 
-      (fetch as jest.Mock).mockImplementation(
+      (chainwebClient.send as jest.Mock).mockResolvedValue({
+        requestKeys: ['test-key'],
+      });
+
+      (chainwebClient.poll as jest.Mock).mockImplementation(
         withCounter((counter) => {
-          return Promise.resolve({
-            status: 200,
-            ok: true,
-            text: () => JSON.stringify(response[counter - 1]),
-            json: () => response[counter - 1],
-          });
+          return Promise.resolve(response[counter - 1]);
         }),
       );
 
@@ -224,10 +192,10 @@ describe('client', () => {
         interval: 10,
       });
 
-      expect(result).toEqual(response[3]);
+      expect(result).toEqual(response[2]);
 
-      // one for the /send and three times /poll
-      expect(fetch).toBeCalledTimes(4);
+      expect(chainwebClient.send).toBeCalledTimes(1);
+      expect(chainwebClient.poll).toBeCalledTimes(3);
     });
   });
 
@@ -235,12 +203,7 @@ describe('client', () => {
     it('calls /poll endpoint once to get the status of the request', async () => {
       const response = {};
 
-      (fetch as jest.Mock).mockResolvedValue({
-        status: 200,
-        ok: true,
-        text: () => JSON.stringify(response),
-        json: () => response,
-      });
+      (chainwebClient.poll as jest.Mock).mockResolvedValue(response);
 
       const { getStatus } = getClient('http://test-host.com');
 
@@ -248,8 +211,7 @@ describe('client', () => {
 
       expect(result).toEqual(response);
 
-      // one for the /send and three times /poll
-      expect(fetch).toBeCalledTimes(1);
+      expect(chainwebClient.poll).toBeCalledTimes(1);
     });
   });
 
@@ -257,12 +219,7 @@ describe('client', () => {
     it('calls /listen endpoint get the status of the request', async () => {
       const response = { reqKey: 'test-key' };
 
-      (fetch as jest.Mock).mockResolvedValue({
-        status: 200,
-        ok: true,
-        text: () => JSON.stringify(response),
-        json: () => response,
-      });
+      (chainwebClient.listen as jest.Mock).mockResolvedValue(response);
 
       const { listen } = getClient('http://test-host.com');
 
@@ -271,7 +228,7 @@ describe('client', () => {
       expect(result).toEqual(response);
 
       // one for the /send and three times /poll
-      expect(fetch).toBeCalledTimes(1);
+      expect(chainwebClient.listen).toBeCalledTimes(1);
     });
   });
 
@@ -279,12 +236,7 @@ describe('client', () => {
     it('calls /spv endpoint once to get spv proof', async () => {
       const response = 'proof';
 
-      (fetch as jest.Mock).mockResolvedValue({
-        status: 200,
-        ok: true,
-        text: () => response,
-        json: () => JSON.parse(response),
-      });
+      (chainwebClient.spv as jest.Mock).mockResolvedValue(response);
 
       const { getSpv } = getClient('http://test-host.com');
 
@@ -293,7 +245,7 @@ describe('client', () => {
       expect(result).toEqual(response);
 
       // one for the /send and three times /poll
-      expect(fetch).toBeCalledTimes(1);
+      expect(chainwebClient.spv).toBeCalledTimes(1);
     });
   });
 
@@ -301,26 +253,13 @@ describe('client', () => {
     it('calls /spv endpoint once to get spv proof', async () => {
       const response = 'proof';
 
-      (fetch as jest.Mock).mockImplementation(
-        withCounter((counter) =>
-          Promise.resolve(
-            counter < 4
-              ? {
-                  status: 400,
-                  ok: false,
-                  text: () => 'not found',
-                  json: () => {
-                    throw new Error('not found');
-                  },
-                }
-              : {
-                  status: 200,
-                  ok: true,
-                  text: () => response,
-                  json: () => response,
-                },
-          ),
-        ),
+      (chainwebClient.spv as jest.Mock).mockImplementation(
+        withCounter((counter) => {
+          if (counter < 4) {
+            return Promise.reject(new Error('not found'));
+          }
+          return Promise.resolve(response);
+        }),
       );
 
       const { pollSpv } = getClient('http://test-host.com');
@@ -330,7 +269,7 @@ describe('client', () => {
       expect(result).toEqual(response);
 
       // one for the /send and three times /poll
-      expect(fetch).toBeCalledTimes(4);
+      expect(chainwebClient.spv).toBeCalledTimes(4);
     });
   });
 });

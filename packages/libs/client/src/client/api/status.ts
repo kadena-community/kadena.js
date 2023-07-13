@@ -1,37 +1,8 @@
-import {
-  ICommandResult,
-  IPollResponse,
-  parseResponse,
-} from '@kadena/chainweb-node-client';
+import { ICommandResult, poll } from '@kadena/chainweb-node-client';
 
 import { IPollOptions, IPollRequestPromise } from '../interfaces/interfaces';
 import { retry } from '../utils/retry';
-import {
-  getPromise,
-  getUrl,
-  IExtPromise,
-  jsonRequest,
-  mapRecord,
-  mergeAll,
-} from '../utils/utils';
-
-import fetch from 'cross-fetch';
-
-export const getStatus = async (
-  host: string,
-  requestKeys: string[],
-): Promise<IPollResponse> => {
-  const request = jsonRequest({ requestKeys });
-  const url = getUrl(host, `api/v1/poll`);
-
-  try {
-    const response = await fetch(url, request);
-    return await parseResponse(response);
-  } catch (error) {
-    console.error(`An error occurred while calling poll API:`, error);
-    throw error;
-  }
-};
+import { getPromise, IExtPromise, mapRecord, mergeAll } from '../utils/utils';
 
 export interface IPollStatus {
   (
@@ -60,7 +31,7 @@ export const pollStatus: IPollStatus = (
   );
   const task = async (): Promise<void> => {
     requestKeys.forEach(onPoll);
-    const pollResponse = await getStatus(host, requestKeys);
+    const pollResponse = await poll({ requestKeys }, host);
     Object.values(pollResponse).forEach((item) => {
       prs[item.reqKey].resolve(item);
       requestKeys = requestKeys.filter((key) => key !== item.reqKey);

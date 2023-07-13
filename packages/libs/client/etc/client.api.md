@@ -9,10 +9,13 @@ import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { IExecPayload as IExecPayload_2 } from '@kadena/types';
+import { IExecPayload } from '@kadena/types';
+import { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
+import { LocalRequestBody } from '@kadena/chainweb-node-client';
+import { LocalResponse } from '@kadena/chainweb-node-client';
 import { SessionTypes } from '@walletconnect/types';
 
 export { ChainId }
@@ -88,7 +91,7 @@ export { ICommand }
 export { ICommandResult }
 
 // @alpha (undocumented)
-export interface IContinuationPayload {
+export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
         pactId?: string;
@@ -100,20 +103,12 @@ export interface IContinuationPayload {
 }
 
 // @alpha (undocumented)
-export interface IExecPayload {
+export interface IExecPayloadObject {
     // (undocumented)
     exec: {
         code?: string;
         data?: Record<string, unknown>;
     };
-}
-
-// @alpha (undocumented)
-export interface ILocalOptions {
-    // (undocumented)
-    preflight?: boolean;
-    // (undocumented)
-    signatureValidation?: boolean;
 }
 
 // @alpha (undocumented)
@@ -150,7 +145,7 @@ export interface IPactCommand {
     // (undocumented)
     nonce: string;
     // (undocumented)
-    payload: IExecPayload | IContinuationPayload;
+    payload: IExecPayloadObject | IContinuationPayloadObject;
     // (undocumented)
     signers: Array<{
         pubKey: string;

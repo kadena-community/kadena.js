@@ -1,87 +1,13 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
+jest.mock('@kadena/chainweb-node-client', () => ({
+  __esModule: true,
+  ...jest.requireActual('@kadena/chainweb-node-client'),
+  poll: jest.fn(),
+}));
+
+import { poll } from '@kadena/chainweb-node-client';
 
 import { sleep, withCounter } from '../../utils/utils';
-import { getStatus, pollStatus } from '../status';
-
-import fetch from 'cross-fetch';
-
-describe('getStatus', () => {
-  it('calls the /poll endpoint and returns the status of a request if its ready', async () => {
-    const response = {
-      ['key-1']: {
-        reqKey: 'key-1',
-      },
-    };
-
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify(response),
-      json: () => response,
-    });
-
-    const hostUrl = "http://test-blockchian-host.com'";
-
-    const requestKeys = ['key-1', 'key-2'];
-
-    const result = await getStatus(hostUrl, requestKeys);
-
-    expect(result['key-1'].reqKey).toBe('key-1');
-
-    expect(fetch).toBeCalledWith(`${hostUrl}/api/v1/poll`, {
-      body: JSON.stringify({ requestKeys }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
-  });
-
-  it('calls the /poll endpoint and returns empty list if the statuses of none of the request are ready', async () => {
-    const response = {};
-
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      ok: true,
-      text: () => JSON.stringify(response),
-      json: () => response,
-    });
-
-    const hostUrl = "http://test-blockchian-host.com'";
-
-    const requestKeys = ['key-1', 'key-2'];
-
-    const result = await getStatus(hostUrl, requestKeys);
-
-    expect(result).toEqual({});
-
-    expect(fetch).toBeCalledWith(`${hostUrl}/api/v1/poll`, {
-      body: JSON.stringify({ requestKeys }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
-  });
-
-  it('throws an error if the response.ok is false', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 500,
-      ok: false,
-      text: () => 'Internal Server Error',
-      json: () => {
-        throw new Error('Internal Server Error');
-      },
-    });
-
-    const hostUrl = "http://test-blockchian-host.com'";
-
-    await expect(getStatus(hostUrl, ['test-key'])).rejects.toThrowError(
-      new Error('Internal Server Error'),
-    );
-  });
-});
+import { pollStatus } from '../status';
 
 describe('pollStatus', () => {
   it('calls the /poll endpoint several times till it gets the status of all request keys', async () => {
@@ -92,17 +18,8 @@ describe('pollStatus', () => {
       { 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (fetch as jest.Mock).mockImplementation(
-      withCounter((counter) => {
-        return Promise.resolve({
-          status: 200,
-          ok: true,
-          text: () => {
-            JSON.stringify(responses[counter - 1] ?? {});
-          },
-          json: () => responses[counter - 1] ?? {},
-        });
-      }),
+    (poll as jest.Mock).mockImplementation(
+      withCounter((counter) => responses[counter - 1] ?? {}),
     );
 
     const hostUrl = "http://test-blockchian-host.com'";
@@ -118,7 +35,7 @@ describe('pollStatus', () => {
       'key-2': { reqKey: 'key-2' },
     });
 
-    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(poll).toHaveBeenCalledTimes(4);
   });
 
   it('throws TIME_OUT_REJECT if the task get longer that in timeout option', async () => {
@@ -129,17 +46,10 @@ describe('pollStatus', () => {
       { 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (fetch as jest.Mock).mockImplementation(
+    (poll as jest.Mock).mockImplementation(
       withCounter(async (counter) => {
         await sleep(501);
-        return Promise.resolve({
-          status: 200,
-          ok: true,
-          text: () => {
-            JSON.stringify(responses[counter - 1] ?? {});
-          },
-          json: () => responses[counter - 1] ?? {},
-        });
+        return responses[counter - 1] ?? {};
       }),
     );
 
@@ -163,17 +73,8 @@ describe('pollStatus', () => {
       { 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (fetch as jest.Mock).mockImplementation(
-      withCounter(async (counter) => {
-        return Promise.resolve({
-          status: 200,
-          ok: true,
-          text: () => {
-            JSON.stringify(responses[counter - 1] ?? {});
-          },
-          json: () => responses[counter - 1] ?? {},
-        });
-      }),
+    (poll as jest.Mock).mockImplementation(
+      withCounter((counter) => responses[counter - 1] ?? {}),
     );
 
     const onPoll = jest.fn();
@@ -209,17 +110,8 @@ describe('pollStatus', () => {
       { 'key-1': { reqKey: 'key-1' }, 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (fetch as jest.Mock).mockImplementation(
-      withCounter((counter) => {
-        return Promise.resolve({
-          status: 200,
-          ok: true,
-          text: () => {
-            JSON.stringify(responses[counter - 1] ?? {});
-          },
-          json: () => responses[counter - 1] ?? {},
-        });
-      }),
+    (poll as jest.Mock).mockImplementation(
+      withCounter((counter) => responses[counter - 1] ?? {}),
     );
 
     const hostUrl = "http://test-blockchian-host.com'";
@@ -233,6 +125,6 @@ describe('pollStatus', () => {
       'key-2': { reqKey: 'key-2' },
     });
 
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(poll).toHaveBeenCalledTimes(1);
   });
 });

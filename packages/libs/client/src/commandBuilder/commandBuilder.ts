@@ -13,7 +13,7 @@ import {
 import { UnionToIntersection } from '../createPactCommand/utils/addSigner';
 import {
   ICapabilityItem,
-  IContinuationPayload,
+  IContinuationPayloadObject,
   IPactCommand,
 } from '../interfaces/IPactCommand';
 import { createTransaction } from '../utils/createTransaction';
@@ -115,8 +115,8 @@ export interface IExec {
 }
 
 export interface ICont {
-  (options: IContinuationPayload['cont']): IBuilder<{
-    payload: IContinuationPayload;
+  (options: IContinuationPayloadObject['cont']): IBuilder<{
+    payload: IContinuationPayloadObject;
   }>;
 }
 
@@ -176,7 +176,7 @@ export const commandBuilder = (): ICommandBuilder => {
     execute: (...codes: string[]) => {
       return getBuilder(payload.exec(...codes));
     },
-    continuation: (contOptions: IContinuationPayload['cont']) => {
+    continuation: (contOptions: IContinuationPayloadObject['cont']) => {
       return getBuilder(payload.cont(contOptions));
     },
   };
