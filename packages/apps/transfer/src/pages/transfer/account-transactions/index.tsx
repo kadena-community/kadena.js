@@ -2,8 +2,7 @@ import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { ChainSelect } from '@/components/Global';
-import { OnChainSelectChange } from '@/components/Global/ChainSelect';
+import { type OnChainSelectChange, ChainSelect } from '@/components/Global';
 import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {

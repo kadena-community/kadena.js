@@ -16,8 +16,7 @@ import {
   StyledResultContainer,
 } from './styles';
 
-import { ChainSelect } from '@/components/Global';
-import { OnChainSelectChange } from '@/components/Global/ChainSelect';
+import { type OnChainSelectChange, ChainSelect } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {

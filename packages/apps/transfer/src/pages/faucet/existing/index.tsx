@@ -5,8 +5,7 @@ import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
 import FormStatusNotification from './notification';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { ChainSelect } from '@/components/Global';
-import { OnChainSelectChange } from '@/components/Global/ChainSelect';
+import { type OnChainSelectChange, ChainSelect } from '@/components/Global';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledAccountForm,
