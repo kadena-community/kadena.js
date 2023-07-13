@@ -1,4 +1,10 @@
+import Debug from 'debug';
+
+const debug = Debug('kadena-transfer:utils:file-download');
+
 export function downloadFileToBrowser(filename: string, data: string): void {
+  debug(downloadFileToBrowser.name);
+
   const blob = new Blob([data], { type: 'text/csv' });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

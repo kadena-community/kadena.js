@@ -96,6 +96,24 @@ export const Secondary: Story = {
   },
 };
 
+export const Tertiary: Story = {
+  args: {
+    title: 'Tertiary Filled',
+    disabled: false,
+    children: 'Tertiary Filled',
+    color: 'tertiary',
+  },
+};
+
+export const Info: Story = {
+  args: {
+    title: 'Info Filled',
+    disabled: false,
+    children: 'Info Filled',
+    color: 'info',
+  },
+};
+
 export const Positive: Story = {
   args: {
     title: 'Positive Filled',

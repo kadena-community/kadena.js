@@ -7,7 +7,7 @@ export const tabsContainer = style([
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    width: '100%',
+    flexGrow: 1,
     marginBottom: '$4',
   }),
   {
@@ -24,6 +24,9 @@ export const tabClass = style([
     backgroundColor: 'transparent',
     color: '$foreground',
   }),
+  {
+    whiteSpace: 'nowrap',
+  },
 ]);
 
 export const selectedClass = style([
@@ -45,5 +48,15 @@ export const selectorLine = style([
     bottom: '-4px', // for some reason a negative cant be done with vars
     transition: 'all .4s ease',
     transform: `translateX(0)`,
+  },
+]);
+
+export const tabsContainerWrapper = style([
+  sprinkles({
+    display: 'flex',
+    width: '100%',
+  }),
+  {
+    overflowY: 'scroll',
   },
 ]);

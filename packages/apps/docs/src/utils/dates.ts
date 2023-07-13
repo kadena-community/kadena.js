@@ -1,5 +1,4 @@
-import addMonths from 'date-fns/addMonths';
-import format from 'date-fns/format';
+import { addMonths, format } from 'date-fns';
 
 export const getOneMonthAgo = (date: Date): Date => {
   return addMonths(date, -1);

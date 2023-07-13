@@ -2,20 +2,30 @@ import { Divider, Stack } from '@kadena/react-components';
 
 import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
-import { Wrapper } from './style';
+import { BottomWrapper, Wrapper } from './style';
 
-import { INavigation } from '@/types/Layout';
+import { INavigation, LayoutType } from '@/types/Layout';
+import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
   editLink?: string;
   navigation?: INavigation;
+  layout?: LayoutType;
 }
 
-export const BottomPageSection: FC<IProps> = ({ editLink, navigation }) => {
+export const BottomPageSection: FC<IProps> = ({
+  editLink,
+  navigation,
+  layout,
+}) => {
   return (
-    <>
+    <BottomWrapper
+      layout={
+        isOneOfLayoutType(layout, 'redocly', 'code') ? 'redocly' : 'default'
+      }
+    >
       <Stack alignItems="center" justifyContent="space-between">
         <EditPage editLink={editLink} />
         {navigation?.previous !== undefined && (
@@ -38,6 +48,6 @@ export const BottomPageSection: FC<IProps> = ({ editLink, navigation }) => {
         <div />
         <Subscribe />
       </Wrapper>
-    </>
+    </BottomWrapper>
   );
 };

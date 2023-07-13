@@ -2,13 +2,14 @@ import { Wrapper } from './styles';
 
 import { OpenAPIV3 } from 'openapi-types';
 import React, { FC, useEffect, useState } from 'react';
-import { RedocStandalone } from 'redoc';
+import { RedocRawOptions, RedocStandalone } from 'redoc';
 
 interface IProps {
   specs: OpenAPIV3.Document;
+  options: RedocRawOptions;
 }
 
-export const Specs: FC<IProps> = ({ specs }) => {
+export const Specs: FC<IProps> = ({ specs, options }) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -21,20 +22,7 @@ export const Specs: FC<IProps> = ({ specs }) => {
   return (
     <>
       <Wrapper>
-        <RedocStandalone
-          spec={specs}
-          options={{
-            pathInMiddlePanel: true,
-            theme: {
-              colors: {
-                primary: {
-                  main: 'RGB(218,52,140)', // Kadena pink
-                },
-              },
-            },
-            expandResponses: '200,201,204',
-          }}
-        />
+        <RedocStandalone spec={specs} options={options} />
       </Wrapper>
     </>
   );
