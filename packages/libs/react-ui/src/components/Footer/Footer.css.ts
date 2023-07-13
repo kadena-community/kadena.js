@@ -4,7 +4,6 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    // width: '100%',
     maxWidth: { xs: 'maxContent', sm: '100%' },
     height: 'min-content',
     backgroundColor: '$neutral5',
