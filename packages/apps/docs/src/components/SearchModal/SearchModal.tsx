@@ -16,6 +16,7 @@ export const SearchModal: FC = () => {
     staticSearchResults,
     conversation,
     outputStream,
+    error,
   } = useSearch();
 
   return (
@@ -44,6 +45,7 @@ export const SearchModal: FC = () => {
           outputStream={outputStream}
           limitResults={10}
           query={query}
+          error={error}
         />
       </Wrapper>
     </>
