@@ -29,17 +29,17 @@ function makeTestObject(
 describe('SlidingCache', () => {
   const CACHE_SPAN = 5;
 
-  const SPAN_VALUE_GETTER = ({ height }: IAccountTransaction) => height;
+  const SPAN_VALUE_GETTER = ({ height }: IAccountTransaction): number => height;
 
   const IDENTITY_CHECK = (
-    { meta: { id: id_a } }: IAccountTransaction,
-    { meta: { id: id_b } }: IAccountTransaction,
-  ) => id_a === id_b;
+    { meta: { id: idA } }: IAccountTransaction,
+    { meta: { id: idB } }: IAccountTransaction,
+  ): boolean => idA === idB;
 
   const EQUALITY_CHECK = (
-    { meta: { id: id_a, confirmations: c_a } }: IAccountTransaction,
-    { meta: { id: id_b, confirmations: c_b } }: IAccountTransaction,
-  ) => id_a === id_b && c_a === c_b;
+    { meta: { id: idA, confirmations: confA } }: IAccountTransaction,
+    { meta: { id: idB, confirmations: confB } }: IAccountTransaction,
+  ): boolean => idA === idB && confA === confB;
 
   let slidingCache: SlidingCache<IAccountTransaction> | undefined;
 
@@ -115,6 +115,8 @@ describe('SlidingCache', () => {
     const [shouldEmit] = slidingCache!.addCache(txn);
     const [shouldEmit2] = slidingCache!.addCache(txn2);
 
+    expect(shouldEmit).toBe(true);
+    expect(shouldEmit2).toBe(true);
     expect(slidingCache!.cache.length).toBe(1);
   });
 
