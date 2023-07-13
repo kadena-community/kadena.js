@@ -157,11 +157,7 @@ export function localRaw(requestBody: LocalRequestBody, apiHost: string, { prefl
 // @alpha (undocumented)
 export type LocalRequestBody = ICommand | IUnsignedCommand;
 
-// Warning: (ae-incompatible-release-tags) The symbol "LocalResponse" is marked as @public, but its signature references "ILocalOptions" which is marked as @alpha
-// Warning: (ae-incompatible-release-tags) The symbol "LocalResponse" is marked as @public, but its signature references "ILocalCommandResult" which is marked as @alpha
-// Warning: (ae-incompatible-release-tags) The symbol "LocalResponse" is marked as @public, but its signature references "ICommandResult" which is marked as @alpha
-//
-// @public (undocumented)
+// @alpha (undocumented)
 export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
     preflight?: true;
 } ? ILocalCommandResult : ICommandResult;

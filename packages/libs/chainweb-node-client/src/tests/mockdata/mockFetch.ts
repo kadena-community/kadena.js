@@ -138,7 +138,7 @@ export async function mockFetch(
     case `${testURL}/api/v1/poll`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPollResponse = {
-          'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik': {
+          pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: {
             reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
             txId: null,
             result: {

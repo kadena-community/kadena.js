@@ -20,6 +20,9 @@ export interface ILocalOptions {
   signatureVerification?: boolean;
 }
 
+/**
+ * @alpha
+ */
 export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
   preflight?: true;
 }

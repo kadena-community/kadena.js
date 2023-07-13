@@ -1,6 +1,6 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import {
-  IContinuationPayload,
+  IContinuationPayloadObject,
   isSignedCommand,
   Pact,
   signWithChainweaver,
@@ -51,7 +51,7 @@ function debitInTheFirstChain(
 }
 
 function creditInTheTargetChain(
-  continuation: IContinuationPayload['cont'],
+  continuation: IContinuationPayloadObject['cont'],
   targetChainId: ChainId,
 ): IUnsignedCommand {
   return Pact.builder
