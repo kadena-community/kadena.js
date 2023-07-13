@@ -78,7 +78,7 @@ interface IClientBasics {
    * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
    * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
-  pollSpv: (
+  pollCreateSpv: (
     requestKey: string,
     targetChainId: ChainId,
     options?: IOptions,
@@ -88,7 +88,7 @@ interface IClientBasics {
    * calls '/spv' endpoint only once. if the request submitted outside of the current client context then you need to path networkId
    * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
-  getSpv: (
+  createSpv: (
     requestKey: string,
     targetChainId: ChainId,
     options?: INetworkOptions,
@@ -274,12 +274,12 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return result;
     },
 
-    pollSpv(requestKey, targetChainId, options) {
+    pollCreateSpv(requestKey, targetChainId, options) {
       const hostUrl = getStoredHost(requestKey, options);
       return pollSpv(hostUrl, requestKey, targetChainId, options);
     },
 
-    async getSpv(requestKey, targetChainId, options) {
+    async createSpv(requestKey, targetChainId, options) {
       const hostUrl = getStoredHost(requestKey, options);
       return getSpv(hostUrl, requestKey, targetChainId);
     },

@@ -238,7 +238,7 @@ describe('client', () => {
 
       (chainwebClient.spv as jest.Mock).mockResolvedValue(response);
 
-      const { getSpv } = getClient('http://test-host.com');
+      const { createSpv: getSpv } = getClient('http://test-host.com');
 
       const result = await getSpv('test-key', '2');
 
@@ -262,7 +262,7 @@ describe('client', () => {
         }),
       );
 
-      const { pollSpv } = getClient('http://test-host.com');
+      const { pollCreateSpv: pollSpv } = getClient('http://test-host.com');
 
       const result = await pollSpv('test-key', '2', { interval: 10 });
 
