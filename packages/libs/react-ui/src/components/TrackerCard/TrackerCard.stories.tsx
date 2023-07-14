@@ -52,7 +52,7 @@ type Story = StoryObj<
 
 const labelValues: ILabelValue[] = [
   {
-    label: 'Account',
+    label: 'Account Label',
     value: 'k:1234567890abcdef',
     isAccount: true,
   },
@@ -61,8 +61,8 @@ const labelValues: ILabelValue[] = [
     value: '1000',
   },
   {
-    label: 'Debt',
-    value: '6000',
+    label: 'Transfer',
+    value: '25',
   },
 ];
 
