@@ -124,7 +124,8 @@ export const getStaticProps: GetStaticProps = async () => {
         menu: 'Pact',
         label: 'Pact Test',
         order: 1,
-        description: 'Home page',
+        description:
+          "Welcome to Kadena's documentation! All our Documentation in 1 place. Pact, ChainWeb, KDA, Marmalade etc",
         layout: 'home',
       },
     },
