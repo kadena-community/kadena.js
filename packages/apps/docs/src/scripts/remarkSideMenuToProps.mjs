@@ -23,10 +23,17 @@ const remarkSideMenuToProps = () => {
   return async (tree, file) => {
     const items = checkSubTreeForActive(getPath(file.history[0]));
 
+    const itemsReduced = items.map((item) => {
+      if (item.isMenuOpen) return item;
+
+      delete item.children;
+      return item;
+    });
+
     tree.children.push({
       type: 'props',
       data: {
-        leftMenuTree: items,
+        leftMenuTree: itemsReduced,
       },
     });
 

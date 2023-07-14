@@ -5,7 +5,13 @@ import { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-export type LayoutType = 'full' | 'code' | 'landing' | 'home' | 'redocly';
+export type LayoutType =
+  | 'full'
+  | 'code'
+  | 'landing'
+  | 'home'
+  | 'redocly'
+  | 'blog';
 
 export interface ISubHeaderElement {
   tag: TagNameType;

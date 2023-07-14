@@ -55,6 +55,7 @@ export {
   IInputProps,
   InputWrapper,
   IInputWrapperProps,
+  InputWrapperStatus,
   Tag,
   ITagProps,
   Tooltip,

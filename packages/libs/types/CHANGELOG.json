@@ -2,6 +2,18 @@
   "name": "@kadena/types",
   "entries": [
     {
+      "version": "0.4.0",
+      "tag": "@kadena/types_v0.4.0",
+      "date": "Fri, 14 Jul 2023 10:02:16 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Remove `chainId: ''` added PactGuard"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.5",
       "tag": "@kadena/types_v0.3.5",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

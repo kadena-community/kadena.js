@@ -2,6 +2,23 @@
   "name": "@kadena/pactjs",
   "entries": [
     {
+      "version": "0.3.0",
+      "tag": "@kadena/pactjs_v0.3.0",
+      "date": "Fri, 14 Jul 2023 10:02:16 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Extend PactNumber with BigNumber and make its API available"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.11",
       "tag": "@kadena/pactjs_v0.2.11",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

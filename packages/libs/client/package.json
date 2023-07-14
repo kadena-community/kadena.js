@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "0.6.1",
+  "version": "1.0.0-alpha.1",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -8,12 +8,12 @@
     "directory": "packages/libs/client"
   },
   "license": "MIT",
-  "main": "lib/index.js",
-  "types": "dist/client.d.ts",
   "exports": {
     ".": "./lib/index.js",
     "./fp": "./lib/fp.js"
   },
+  "main": "lib/index.js",
+  "types": "dist/client.d.ts",
   "files": [
     "dist",
     "lib",
