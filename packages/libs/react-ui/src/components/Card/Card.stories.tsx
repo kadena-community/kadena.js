@@ -7,6 +7,7 @@ import React from 'react';
 
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
+  component: Card,
   argTypes: {
     stack: {
       control: {
@@ -14,6 +15,11 @@ const meta: Meta<ICardProps> = {
       },
     },
     fullWidth: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    disabled: {
       control: {
         type: 'boolean',
       },
@@ -29,11 +35,12 @@ export const Primary: Story = {
   args: {
     stack: false,
     fullWidth: false,
+    disabled: false,
   },
-  render: ({ stack, fullWidth }) => {
+  render: ({ stack, fullWidth, disabled }) => {
     return (
       <>
-        <Card stack={stack} fullWidth={fullWidth}>
+        <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
           <h4>Getting Started is Simple</h4>
           <div>
             Learn Kadena&apos;s core concepts & tools for development in 15
@@ -42,7 +49,7 @@ export const Primary: Story = {
 
           <Button title={'Button'}>Hello World Tutorial</Button>
         </Card>
-        <Card stack={stack} fullWidth={fullWidth}>
+        <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
           <h4>Getting Started is Simple</h4>
           <div>
             Learn Kadena&apos;s core concepts & tools for development in 15

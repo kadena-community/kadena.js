@@ -1,21 +1,21 @@
 import { IPactCommand, Pact } from '@kadena/client';
 import {
   addSigner,
-  createPactCommand,
-  payload,
+  composePactCommand,
+  execution,
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
 
 // you can compose command by using the createPactCommand util
 export function composeCommands(): Partial<IPactCommand> {
-  const mainnetConfig = createPactCommand(
+  const mainnetConfig = composePactCommand(
     setMeta({ chainId: '1' }),
     setNetworkId('mainnet04'),
   );
 
-  const transfer = createPactCommand(
-    payload.exec(
+  const transfer = composePactCommand(
+    execution(
       Pact.modules.coin.transfer('javad', 'albert', { decimal: '0.1' }),
     ),
     addSigner('javadPublicKey', (withCapability) => [
@@ -24,5 +24,5 @@ export function composeCommands(): Partial<IPactCommand> {
     ]),
   );
 
-  return createPactCommand(mainnetConfig, transfer)();
+  return composePactCommand(mainnetConfig, transfer)();
 }

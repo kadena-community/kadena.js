@@ -25,7 +25,8 @@ export const apiHostGenerator = ({
 // configure the client and export the functions
 export const {
   submit,
-  local,
+  preflight,
+  dirtyRead,
   pollCreateSpv,
   pollStatus,
   getStatus,

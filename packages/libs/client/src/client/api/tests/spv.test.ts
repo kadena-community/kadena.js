@@ -15,7 +15,7 @@ describe('getSpv', () => {
 
     (spv as jest.Mock).mockResolvedValue(response);
 
-    const hostUrl = 'http://test-blockchian-host.com';
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKey = 'request-key';
     const targetChainId = '1';
@@ -32,7 +32,7 @@ describe('getSpv', () => {
 
     (spv as jest.Mock).mockResolvedValue(response);
 
-    const hostUrl = 'http://test-blockchian-host.com';
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKey = 'request-key';
     const targetChainId = '1';
@@ -58,7 +58,7 @@ describe('pollSpv', () => {
       }),
     );
 
-    const hostUrl = 'http://test-blockchian-host.com';
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKey = 'request-key';
     const targetChainId = '1';

@@ -1,10 +1,4 @@
-import {
-  Notification,
-  NotificationBody,
-  NotificationFooter,
-  SystemIcons,
-} from '@kadena/react-components';
-import { Stack, SystemIcon, useModal } from '@kadena/react-ui';
+import { Box, Stack, SystemIcon, Text, useModal } from '@kadena/react-ui';
 
 import { ConsentButton } from './ConsentButton';
 
@@ -46,18 +40,10 @@ export const ConsentModal: FC = () => {
     }
 
     renderModal(
-      <Notification
-        expand
-        displayCloseButton={false}
-        color="primary"
-        title="Cookie consent"
-        icon={SystemIcons.Cookie}
-      >
-        <NotificationBody>
-          We are using cookies on this website!
-        </NotificationBody>
-        <NotificationFooter>
-          <Stack>
+      <>
+        <Text>We are using cookies on this website!</Text>
+        <Box marginTop="$10">
+          <Stack spacing="$4">
             <ConsentButton
               onClick={handleAccept}
               title="Accept analytics cookies"
@@ -73,8 +59,10 @@ export const ConsentModal: FC = () => {
               Reject <SystemIcon.Close />
             </ConsentButton>
           </Stack>
-        </NotificationFooter>
-      </Notification>,
+        </Box>
+      </>,
+
+      'Cookie consent',
     );
   }, [
     clearModal,
