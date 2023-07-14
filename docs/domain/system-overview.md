@@ -4,10 +4,14 @@
 
 workspace {
   model {
+
     chainwebNode  = softwareSystem "chainweb-node"  {
     }
 
-    pact  = softwareSystem "pact"  {
+    chainwebMiningClient  = softwareSystem "chainweb-mining-client"  {
+    }
+
+    chainwebApi  = softwareSystem "chainweb-api"  {
     }
 
     chainwebData  = softwareSystem "chainweb-data"  {
@@ -16,12 +20,29 @@ workspace {
       cwDataRuntime -> cwDataDatabase "Uses"
     }
 
+
+    pact  = softwareSystem "pact"  {
+    }
+
+    marmelade = softwareSystem "Marmelade" {
+
+    }
+
+     chainweaver = softwareSystem "chainweaver" {
+
+    }
+
+   
+
     group "kadena-community/kadena.js" {
 
         kadenaClient = softwareSystem "@kadena/client" "desc" "Typescript" {
         }
 
-        kadenaTransfer = softwareSystem "@kadena/transfer"  { 
+        kadenaTransfer = softwareSystem "@kadena/transfer"  {
+        }
+
+        kadenaDocs = softwareSystem "@kadena/docs" "desc" "Typescript" {
         }
     }
 
@@ -37,10 +58,10 @@ workspace {
       autolayout lr
     }
 
-    container chainwebData {
-      include * 
-      autolayout lr
-    }
+#    container chainwebData {
+ #     include *
+  #    autolayout lr
+   # }
 
 
 
@@ -49,4 +70,5 @@ workspace {
   }
 
 }
+
 ```
