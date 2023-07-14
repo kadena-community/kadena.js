@@ -16,9 +16,10 @@ import {
   StyledResultContainer,
 } from './styles';
 
-import { type OnChainSelectChange, ChainSelect } from '@/components/Global';
+import { ChainSelect } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
+import { usePersistentChainID } from '@/hooks';
 import {
   type IModuleResult,
   describeModule,
@@ -47,13 +48,8 @@ const ModuleExplorer: FC = () => {
   const [modules, setModules] = useState<IModulesResult>({});
   const [results, setResults] = useState<IModuleResult>({});
 
-  const { network, chainID, setChainID } = useAppContext();
-  const onChainSelectChange = useCallback<OnChainSelectChange>(
-    (chainID) => {
-      setChainID(chainID);
-    },
-    [setChainID],
-  );
+  const { network } = useAppContext();
+  const [chainID, onChainSelectChange] = usePersistentChainID();
 
   useEffect(() => {
     const fetchModules = async (): Promise<void> => {
