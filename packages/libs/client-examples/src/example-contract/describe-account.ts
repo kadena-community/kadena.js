@@ -1,22 +1,22 @@
 import { Pact } from '@kadena/client';
 
-import { dirtyReady } from './util/client';
+import { dirtyRead } from './util/client';
 
 async function getDetail(): Promise<void> {
   const senderAccount: string =
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
 
   const unsignedTransaction = Pact.builder
-    .execute(Pact.modules.coin.details(senderAccount))
+    .execution(Pact.modules.coin.details(senderAccount))
     .createTransaction();
 
-  const res = await dirtyReady(unsignedTransaction);
+  const res = await dirtyRead(unsignedTransaction);
   console.log(res);
 }
 
 async function getBalanceMain(): Promise<void> {
   const tr = Pact.builder
-    .execute(
+    .execution(
       Pact.modules.coin['get-balance'](
         'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
       ),
@@ -25,7 +25,7 @@ async function getBalanceMain(): Promise<void> {
     .setNetworkId('mainnet04')
     .createTransaction();
 
-  const res = await dirtyReady(tr);
+  const res = await dirtyRead(tr);
 
   console.log(res);
 }

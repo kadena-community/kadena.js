@@ -26,7 +26,7 @@ export const apiHostGenerator = ({
 export const {
   submit,
   preflight,
-  dirtyReady,
+  dirtyRead,
   pollCreateSpv,
   pollStatus,
   getStatus,

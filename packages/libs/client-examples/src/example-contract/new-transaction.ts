@@ -12,7 +12,7 @@ async function main(): Promise<void> {
   const signerAccount = sender.split('k:')[1];
 
   const transaction = Pact.builder
-    .execute(
+    .execution(
       Pact.modules.coin['transfer-create'](
         sender,
         receiver,

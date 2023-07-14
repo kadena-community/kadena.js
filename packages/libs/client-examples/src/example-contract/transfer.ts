@@ -12,7 +12,7 @@ async function transactionMain(): Promise<void> {
   const amount: { decimal: string } = { decimal: '0.1337' };
 
   const tx = Pact.builder
-    .execute(
+    .execution(
       Pact.modules.coin.transfer(senderAccount, receiverAccount, amount),
       Pact.modules.coin.transfer(receiverAccount, senderAccount, {
         decimal: '0.000000000001',
