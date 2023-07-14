@@ -1,5 +1,6 @@
 import { IconWrapper } from '../IconWrapper';
 
+import { BlogChain as BlogChainIcon } from './svgs/BlogChain';
 import { Chainweb as ChainwebIcon } from './svgs/Chainweb';
 import { Concepts as ConceptsIcon } from './svgs/Concepts';
 import { Contribute as ContributeIcon } from './svgs/Contribute';
@@ -16,6 +17,7 @@ import { Syntax as SyntaxIcon } from './svgs/Syntax';
 import { UsefulTools as UsefulToolsIcon } from './svgs/UsefulTools';
 import { Whitepapers as WhitepapersIcon } from './svgs/Whitepapers';
 
+export const BlogChain = IconWrapper(BlogChainIcon);
 export const Chainweb = IconWrapper(ChainwebIcon);
 export const Concepts = IconWrapper(ConceptsIcon);
 export const Contribute = IconWrapper(ContributeIcon);
