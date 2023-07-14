@@ -1,4 +1,4 @@
-import { ProductIcons } from '@kadena/react-components';
+import { ProductIcon } from '@kadena/react-ui';
 
 import { ITopDoc } from '@/data/getTopDocs';
 import { ReactNode } from 'react';
@@ -57,7 +57,7 @@ export interface ILayout {
 
 export type LevelType = 1 | 2 | 3;
 
-export type ProductIconNames = keyof typeof ProductIcons;
+export type ProductIconNames = keyof typeof ProductIcon;
 
 export interface IPageProps {
   children?: ReactNode;
