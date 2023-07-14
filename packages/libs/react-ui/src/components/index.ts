@@ -26,7 +26,7 @@ export {
   ILabelProps,
 } from './Typography';
 export { TextField, ITextFieldProps } from './TextField/TextField';
-export { IInputWrapperProps, InputWrapper } from './InputWrapper/InputWrapper';
+export { IInputWrapperProps, InputWrapper, InputWrapperStatus } from './InputWrapper';
 export { IInputProps, Input } from './Input/Input';
 export {
   Notification,
