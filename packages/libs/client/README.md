@@ -14,10 +14,14 @@ Makes use of .kadena/pactjs-generated
 
 API Reference can be found here [client.api.md][1]
 
-## Release @kadena/client
+## Package @kadena/client
 
 `@kadena/client` allows JavaScript/TypeScript users to easily interact with the
 Kadena Blockchain.
+
+> This is the README for v1.0.0 of @kadena/client that introduces a new API  
+> To read the README for the old API (< 0.6.1) read
+> [client_v0.6.1/packages/libs/client/README.md](https://github.com/kadena-community/kadena.js/blob/%40kadena/client_v0.6.1/packages/libs/client/README.md)
 
 Interaction with the Kadena Blockchain works in multiple ways. With
 `@kadena/client` you will be able to interact with the Kadena Blockchain in two
@@ -32,23 +36,24 @@ With `@kadena/client` you can also [send a request to the blockchain][6]. That's
 covered in this article. We'll also be exploring the concepts and rationale of
 `@kadena/client`.
 
-- [@kadena/client][7]
-  - [Release @kadena/client][8]
-  - [Prerequisites][9]
-- [Contract-based interaction using @kadena/client][2]
-  - [Generate interfaces from the blockchain][10]
-    - [Generate interfaces locally][11]
-  - [Downloading contracts from the blockchain][12]
-  - [Building a simple transaction from the contract][13]
-  - [Signing][14]
-    - [Manually signing the transaction][15]
-    - [Integrated sign request to Chainweaver desktop][5]
-    - [Signing with a WalletConnect compatible wallet][16]
-- [Using the commandBuilder][17]
-- [Using FP approach][18]
-  - [Send a request to the blockchain][6]
-  - [Further development][19]
-  - [Contact the team][20]
+- [@kadena/client](#kadenaclient)
+  - [Package @kadena/client](#package-kadenaclient)
+  - [Prerequisites](#prerequisites)
+- [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
+    - [Generate interfaces from the blockchain](#generate-interfaces-from-the-blockchain)
+      - [Generate interfaces locally](#generate-interfaces-locally)
+    - [Downloading contracts from the blockchain](#downloading-contracts-from-the-blockchain)
+  - [Building a simple transaction from the contract](#building-a-simple-transaction-from-the-contract)
+    - [Notes](#notes)
+  - [Signing](#signing)
+    - [Manually signing the transaction](#manually-signing-the-transaction)
+    - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
+    - [Signing with a WalletConnect compatible wallet](#signing-with-a-walletconnect-compatible-wallet)
+- [Using the commandBuilder](#using-the-commandbuilder)
+- [Using FP approach](#using-fp-approach)
+  - [Send a request to the blockchain](#send-a-request-to-the-blockchain)
+  - [Further development](#further-development)
+  - [Contact the team](#contact-the-team)
 
 ## Prerequisites
 
