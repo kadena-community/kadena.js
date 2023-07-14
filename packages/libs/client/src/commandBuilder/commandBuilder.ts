@@ -5,7 +5,8 @@ import {
   addKeyset,
   addSigner,
   composePactCommand,
-  payload,
+  continuation,
+  execution,
   setMeta,
   setNetworkId,
   setNonce,
@@ -121,7 +122,7 @@ export interface ICont {
 }
 
 export interface ICommandBuilder {
-  execute: IExec;
+  execution: IExec;
   continuation: ICont;
 }
 
@@ -173,11 +174,11 @@ export const commandBuilder = (): ICommandBuilder => {
     return builder;
   };
   return {
-    execute: (...codes: string[]) => {
-      return getBuilder(payload.exec(...codes));
+    execution: (...codes: string[]) => {
+      return getBuilder(execution(...codes));
     },
     continuation: (contOptions: IContinuationPayloadObject['cont']) => {
-      return getBuilder(payload.cont(contOptions));
+      return getBuilder(continuation(contOptions));
     },
   };
 };

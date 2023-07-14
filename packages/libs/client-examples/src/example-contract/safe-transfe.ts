@@ -19,7 +19,7 @@ export async function doSafeTransfer(
     .toPactDecimal();
 
   const unsignedTr = Pact.builder
-    .execute(
+    .execution(
       // the first transfer is here to make sure the receiver has also signed the command
       Pact.modules.coin.transfer(to.account, from.account, aLowAmount),
       // the actual transfer

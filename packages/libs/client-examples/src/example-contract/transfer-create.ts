@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   const amount: IPactDecimal = { decimal: '1000.0' };
 
   const unsignedTransaction = Pact.builder
-    .execute(
+    .execution(
       Pact.modules.coin['transfer-create'](
         sender,
         receiver,

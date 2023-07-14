@@ -1,4 +1,11 @@
-import { addSigner, payload, setMeta, setNetworkId, setNonce } from '../../fp';
+import {
+  addSigner,
+  continuation,
+  execution,
+  setMeta,
+  setNetworkId,
+  setNonce,
+} from '../../fp';
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
@@ -11,9 +18,9 @@ const coin: ICoin = getModule('coin');
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
-describe('payload.exec', () => {
+describe('execution', () => {
   it('returns a payload object of a exec command', () => {
-    const command = payload.exec(
+    const command = execution(
       coin.transfer('alice', 'bob', { decimal: '12.1' }),
     );
     expect(command.payload.exec.code).toBe(
@@ -22,7 +29,7 @@ describe('payload.exec', () => {
   });
 
   it('adds multiple command', () => {
-    const command = payload.exec(
+    const command = execution(
       coin.transfer('alice', 'bob', { decimal: '0.1' }),
       coin.transfer('bob', 'alice', { decimal: '0.1' }),
     );
@@ -32,9 +39,9 @@ describe('payload.exec', () => {
   });
 });
 
-describe('payload.cont', () => {
+describe('continuation', () => {
   it('returns a payload object of a cont command', () => {
-    const command = payload.cont({
+    const command = continuation({
       pactId: '1',
       proof: 'test-proof',
       step: '1',
@@ -52,7 +59,7 @@ describe('payload.cont', () => {
 describe('composePactCommand', () => {
   it('returns command object with signers and capabilities', () => {
     const command = composePactCommand(
-      payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
+      execution(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
@@ -85,7 +92,7 @@ describe('composePactCommand', () => {
 
   it('returns a command based on ICommand interface', () => {
     const command = composePactCommand(
-      payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
+      execution(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
@@ -137,7 +144,7 @@ describe('composePactCommand', () => {
 
   it('adds kjs nonce  if not presented in the input', () => {
     const command = composePactCommand(
-      payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+      execution(coin.transfer('bob', 'alice', { decimal: '1' })),
     )();
 
     expect(command.nonce).toBe('kjs:nonce:1690416000000');
@@ -146,8 +153,8 @@ describe('composePactCommand', () => {
   it('merges payload if they are exec', () => {
     expect(
       composePactCommand(
-        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
-        payload.exec(coin.transfer('alice', 'bob', { decimal: '1' })),
+        execution(coin.transfer('bob', 'alice', { decimal: '1' })),
+        execution(coin.transfer('alice', 'bob', { decimal: '1' })),
       )().payload,
     ).toEqual({
       exec: {
@@ -160,7 +167,7 @@ describe('composePactCommand', () => {
   it('merges payloads data if they are exec', () => {
     expect(
       composePactCommand(
-        payload.exec(
+        execution(
           coin.transfer('bob', 'alice', { decimal: '1' }),
           coin.transfer('alice', 'bob', { decimal: '1' }),
         ),
@@ -179,8 +186,8 @@ describe('composePactCommand', () => {
     expect(
       () =>
         composePactCommand(
-          payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
-          payload.cont({ pactId: '1' }),
+          execution(coin.transfer('bob', 'alice', { decimal: '1' })),
+          continuation({ pactId: '1' }),
         )().payload,
     ).toThrowError(new Error('PAYLOAD_NOT_MERGEABLE'));
   });
@@ -188,7 +195,7 @@ describe('composePactCommand', () => {
   it('accepts a signer without a capability', () => {
     expect(
       composePactCommand(
-        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+        execution(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
       )().signers,
     ).toEqual([{ pubKey: 'bob_public_key', scheme: 'ED25519' }]);
@@ -197,7 +204,7 @@ describe('composePactCommand', () => {
   it('merges capability arrays of one signer if presented twice', () => {
     expect(
       composePactCommand(
-        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+        execution(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.GAS'),
         ]),
@@ -218,7 +225,7 @@ describe('composePactCommand', () => {
 
     expect(
       composePactCommand(
-        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+        execution(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),
@@ -237,7 +244,7 @@ describe('composePactCommand', () => {
   it("adds creationTime if it's not presented in the meta property", () => {
     expect(
       composePactCommand(
-        payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+        execution(coin.transfer('bob', 'alice', { decimal: '1' })),
         setMeta({ chainId: '1' }),
       )().meta?.creationTime,
     ).toBe(1690416000);
@@ -247,7 +254,7 @@ describe('composePactCommand', () => {
     expect(
       createTransaction(
         composePactCommand(
-          payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
+          execution(coin.transfer('bob', 'alice', { decimal: '1' })),
           addSigner('bob_public_key'),
           addSigner('bob_public_key', (withCapability) => [
             withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '1' }),

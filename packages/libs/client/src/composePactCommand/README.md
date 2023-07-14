@@ -14,7 +14,7 @@ import Pact from "@kadena/client"
 const { coin } = Pact.modules;
 
 const command = composePactCommand(
-  payload.exec(
+  execution(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   )
 )()
@@ -38,7 +38,7 @@ creating continuation command
 
 ```TypeScript
 const command = composePactCommand(
-  payload.cont({
+  continuation({
     pactId: '1',
     proof: 'test-proof',
     step: '1',
@@ -72,7 +72,7 @@ typing from the payload part and recommends the relevant capabilities
 
 ```TypeScript
 const command = composePactCommand(
-  payload.exec(
+  execution(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   ),
   addSigner("bob_public_key",(withCapability)=>[
@@ -110,7 +110,7 @@ return `(read-keyset "name")` string, useful when generating code.
 
 ```TypeScript
 const command = composePactCommand(
-  payload.exec(
+  execution(
     coin.transfer(readKeyset("sender_key"), "bob", { decimal: "1.1" })
   ),
 )()
@@ -140,7 +140,7 @@ adds data to the payload part
 
 ```TypeScript
 const command = composePactCommand (
-  payload.exec(
+  execution(
     coin.transfer("bob", "alice", { decimal: "1.1" })
   ),
   addData("name", { value: "test" }),
@@ -177,7 +177,7 @@ add keyset to the data part
 
 ```TypeScript
 const command = composePactCommand(
-  payload.exec(
+  execution(
     coin.transfer(readKeyset("senderKey"), "bob", { decimal: "1.1" })
   ),
   addKeyset("senderKey","keys-one", "the_public_key")
@@ -209,7 +209,7 @@ returns meta section of the command
 
 ```TypeScript
 const command = composePactCommand(
-  payload.exec(
+  execution(
     coin.transfer("alice", "bob", { decimal: "1.1" })
   ),
   setMeta({ chainId : "1" }),
@@ -244,7 +244,7 @@ A general helper to add a section.
 ```TypeScript
 
 const command = composePactCommand(
-  payload.exec(
+  execution(
     coin.transfer("alice", "bob", { decimal: "1.1" })
   ),
   setProp("networkId", "mainnet01"),

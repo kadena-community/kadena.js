@@ -111,7 +111,7 @@ interface IClient extends IClientBasics {
   /**
    * calls '/local' with minimum both preflight and signatureVerification `false`
    */
-  dirtyReady: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+  dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
 
   /**
    * calls '/local' with minimum both preflight and signatureVerification `false`
@@ -299,7 +299,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         signatureVerification: true,
       });
     },
-    dirtyReady(body) {
+    dirtyRead(body) {
       return client.local(body, {
         preflight: false,
         signatureVerification: false,

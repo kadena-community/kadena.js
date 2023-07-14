@@ -8,7 +8,7 @@ import {
 import {
   addSigner,
   composePactCommand,
-  payload,
+  execution,
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
@@ -33,7 +33,7 @@ const getTransferCommand = ({
   networkId: string;
 }) =>
   composePactCommand(
-    payload.exec(
+    execution(
       Pact.modules.coin.transfer(sender, receiver, { decimal: amount }),
     ),
     addSigner(signerPublicKey, (withCapability) => [

@@ -10,7 +10,7 @@ async function transfer(
   amount: IPactDecimal,
 ): Promise<void> {
   const transaction = Pact.builder
-    .execute(Pact.modules.coin.transfer(sender, receiver, amount))
+    .execution(Pact.modules.coin.transfer(sender, receiver, amount))
     .addSigner(keyFromAccount(sender), (withCapability) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', sender, receiver, amount),

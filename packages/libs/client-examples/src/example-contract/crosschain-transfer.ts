@@ -22,7 +22,7 @@ function startInTheFirstChain(
   amount: string,
 ): IUnsignedCommand {
   return Pact.builder
-    .execute(
+    .execution(
       Pact.modules.coin.defpact['transfer-crosschain'](
         from.account,
         to.account,
