@@ -2,9 +2,10 @@ import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { type OnChainSelectChange, ChainSelect } from '@/components/Global';
+import { ChainSelect } from '@/components/Global';
 import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
+import { usePersistentChainID } from '@/hooks';
 import {
   StyledContent,
   StyledFormButton,
@@ -47,13 +48,7 @@ const CheckTransactions: FC = () => {
   const [account, setAccount] = useState<string>('');
   const [results, setResults] = useState<ITransaction[]>([]);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
-  const { chainID, setChainID } = useAppContext();
-  const onChainSelectChange = useCallback<OnChainSelectChange>(
-    (chainID) => {
-      setChainID(chainID);
-    },
-    [setChainID],
-  );
+  const [chainID, onChainSelectChange] = usePersistentChainID();
 
   useEffect(() => {
     if (router.isReady) {

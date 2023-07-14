@@ -5,8 +5,8 @@ import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
 import FormStatusNotification from './notification';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { type OnChainSelectChange, ChainSelect } from '@/components/Global';
-import { useAppContext } from '@/context/app-context';
+import { ChainSelect } from '@/components/Global';
+import { usePersistentChainID } from '@/hooks';
 import {
   StyledAccountForm,
   StyledForm,
@@ -31,7 +31,7 @@ const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
   const [accountName, setAccountName] = useState('');
-  const { chainID, setChainID } = useAppContext();
+  const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
     status: RequestStatus;
@@ -94,13 +94,6 @@ const ExistingAccountFaucetPage: FC = () => {
       setAccountName(e.currentTarget.value);
     },
     [],
-  );
-
-  const onChainSelectChange = useCallback<OnChainSelectChange>(
-    (chainID) => {
-      setChainID(chainID);
-    },
-    [setChainID],
   );
 
   return (
