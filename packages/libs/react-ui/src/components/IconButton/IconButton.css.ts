@@ -33,6 +33,8 @@ const colors: Record<ColorOptions, ColorOptions> = {
   inverted: 'inverted',
   primary: 'primary',
   secondary: 'secondary',
+  tertiary: 'tertiary',
+  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',

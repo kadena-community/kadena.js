@@ -22,7 +22,7 @@ manually. In a later version some might be installed via the cli tool.
 Login to docker with your [github account][3] , use the _gh access token_ as
 password:
 
-```
+```bash
 docker login ghcr.io -u <your gh username>
 # or
 echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --password-stdin
@@ -33,7 +33,7 @@ echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --passwo
 Note that the package is not yet published, so for now you need to clone this
 repo and make a symlink.
 
-```bash
+```sh
 $ npm install --global @kadena/kda-cli
 ```
 
@@ -41,7 +41,7 @@ $ npm install --global @kadena/kda-cli
 
 To install the executable from this repo:
 
-```bash
+```sh
 rush install --to @kadena/kda-cli
 rush build --to @kadena/kda-cli
 chmod +x ./lib/index.js
@@ -52,7 +52,7 @@ ln -s $(pwd)/lib/index.js $NVM_BIN/kda
 
 ## CLI
 
-```bash
+```sh
 $ kda --help
 
   Usage
@@ -74,9 +74,13 @@ $ kda --help
 
 To setup your devnet (L1 and L2) you can configure chainweaver as such:
 
-![image][4] ![image][5]
+![image][4]
 
-Then add the account(s) you've funded: ![image][6]
+![image][5]
+
+Then add the account(s) you've funded:
+
+![image][6]
 
 ## Devnet
 

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs",
-  "version": "0.2.9",
+  "version": "0.2.11",
   "description": "Collection of utility functions pactjs related",
   "keywords": [],
   "repository": {
@@ -37,7 +37,7 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
     "@kadena/types": "workspace:*",
@@ -45,7 +45,6 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",

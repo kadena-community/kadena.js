@@ -1,4 +1,5 @@
-import { Heading, SystemIcons, TextField } from '@kadena/react-components';
+import { SystemIcons, TextField } from '@kadena/react-components';
+import { Heading } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
 import { StyledTreeList } from '../TreeMenu/styles';

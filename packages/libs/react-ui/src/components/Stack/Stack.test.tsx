@@ -1,5 +1,6 @@
-import { Stack } from '@components/Stack';
 import { itemClass } from './stories.css';
+
+import { Stack } from '@components/Stack';
 import { render } from '@testing-library/react';
 import React from 'react';
 

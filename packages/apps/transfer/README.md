@@ -20,7 +20,7 @@ To install and run the Kadena Transfer App locally, follow these steps:
 
 2.  Navigate to the `kadena-transfer/packages/apps/transfer` directory:
 
-```bash
+```sh
 cd kadena.js/kadena-transfer/packages/apps/transfer
 ```
 
@@ -29,31 +29,31 @@ cd kadena.js/kadena-transfer/packages/apps/transfer
 Note: On Windows, run in PowerShell as Administrator and restart the terminal
 after installation.
 
-```bash
+```sh
 npm install --global @microsoft/rush
 ```
 
 4.  Install the dependencies:
 
-```bash
+```sh
 rush install
 ```
 
 5.  Build the app and its dependencies:
 
-```bash
+```sh
 rush build -t @kadena/transfer
 ```
 
 6.  Setup environment variables:
 
-```bash
+```sh
 cp .env.example .env.local
 ```
 
 7.  Start the app:
 
-```bash
+```sh
 rushx dev
 ```
 

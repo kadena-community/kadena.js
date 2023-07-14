@@ -142,7 +142,6 @@ export type NetworkId = string | undefined;
  * @alpha
  */
 export type ChainId =
-  | ''
   | '0'
   | '1'
   | '2'

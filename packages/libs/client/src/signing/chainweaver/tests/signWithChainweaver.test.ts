@@ -5,14 +5,16 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { IPactCommand } from '../../../interfaces/IPactCommand';
-import { ICommandBuilder } from '../../../pact';
-import { Pact } from '../../../pactCreator';
+import { ICoin } from '../../../createPactCommand/test/coin-contract';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
-} from '../../../signing-api/v1/quicksign';
+  Pact,
+} from '../../../index';
+import { getModule } from '../../../pact';
 import { signWithChainweaver } from '../signWithChainweaver';
+
+const coin: ICoin = getModule('coin');
 
 import fetch from 'cross-fetch';
 
@@ -26,26 +28,24 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pactModule = Pact.modules as any;
+    const builder = Pact.builder
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('signer-key', (withCap) => [withCap('coin.GAS')]);
 
-    const unsignedCommand = (
-      pactModule.coin.transfer('k:from') as ICommandBuilder<{
-        GAS: [];
-      }> &
-        IPactCommand
-    ).addCap('GAS', 'signer-key');
+    const command = builder.getCommand();
+    const unsignedTransaction = builder.createTransaction();
 
-    const { cmd } = unsignedCommand.createCommand();
-    const sigs = unsignedCommand.sigs.map((sig, i) => {
+    const sigs = command.signers!.map((sig, i) => {
       return {
-        pubKey: unsignedCommand.signers[i].pubKey,
-        sig: sig || null,
+        pubKey: command.signers![i].pubKey,
+        sig: null,
       };
     });
 
-    const body = JSON.stringify({ cmdSigDatas: [{ cmd, sigs }] });
-    await signWithChainweaver(unsignedCommand);
+    const body = JSON.stringify({
+      cmdSigDatas: [{ cmd: unsignedTransaction.cmd, sigs }],
+    });
+    await signWithChainweaver(unsignedTransaction);
 
     expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/quicksign', {
       body,
@@ -62,21 +62,17 @@ describe('signWithChainweaver', () => {
       json: () => {},
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pactModule = Pact.modules as any;
-    const unsignedCommand = (
-      pactModule.coin.transfer('k:from') as ICommandBuilder<{
-        GAS: [];
-      }> &
-        IPactCommand
-    )
-      .addCap('GAS', 'signer-key')
+    const unsignedTransaction = Pact.builder
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('', (withCap) => [withCap('coin.GAS')])
       .setMeta({
         sender: '',
-      });
+        chainId: '0',
+      })
+      .createTransaction();
 
     // expected: throws an error
-    signWithChainweaver(unsignedCommand).catch((e) => {
+    signWithChainweaver(unsignedTransaction).catch((e) => {
       expect(e).toBeDefined();
     });
   });
@@ -101,22 +97,24 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pactModule = Pact.modules as any;
+    const unsignedTransaction = Pact.builder
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
+      .addSigner('transfer-signer-pubkey', (withCap) => [
+        withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
+      ])
+      .setMeta({
+        sender: '',
+        chainId: '0',
+      })
+      .createTransaction();
 
-    const unsignedCommand = (
-      pactModule.coin.transfer('k:from') as ICommandBuilder<{
-        GAS: [];
-        TRANSFER: [sender: string, receiver: string, amount: number];
-      }> &
-        IPactCommand
-    )
-      .addCap('GAS', 'gas-signer-pubkey')
-      .addCap('TRANSFER', 'transfer-signer-pubkey', 'k:from', 'k:to', 1.234);
+    const txWithOneSig = await signWithChainweaver(unsignedTransaction);
 
-    await signWithChainweaver(unsignedCommand);
-
-    expect(unsignedCommand.sigs).toEqual([{ sig: 'gas-key-sig' }, undefined]);
+    expect(txWithOneSig[0].sigs).toStrictEqual([
+      { sig: 'gas-key-sig' },
+      undefined,
+    ]);
 
     // set a new mock response for the second signature
     const mockedResponse2: IQuicksignResponseOutcomes = {
@@ -140,8 +138,8 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse2),
     });
 
-    await signWithChainweaver(unsignedCommand);
-    expect(unsignedCommand.sigs).toEqual([
+    const signedTx = await signWithChainweaver(txWithOneSig[0]);
+    expect(signedTx[0].sigs).toEqual([
       { sig: 'gas-key-sig' },
       { sig: 'transfer-key-sig' },
     ]);
@@ -165,18 +163,13 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pactModule = Pact.modules as any;
+    const unsignedTransaction = Pact.builder
+      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
+      .createTransaction();
 
-    const unsignedCommand = (
-      pactModule.coin.transfer('k:from') as ICommandBuilder<{
-        GAS: [];
-      }> &
-        IPactCommand
-    ).addCap('GAS', 'gas-signer-pubkey');
+    const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-    await signWithChainweaver(unsignedCommand);
-
-    expect(unsignedCommand.sigs).toEqual([undefined]);
+    expect(signedTransaction[0].sigs).toEqual([undefined]);
   });
 });

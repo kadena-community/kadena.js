@@ -1,132 +1,33 @@
-import type { ICommand, IUnsignedCommand, ISignatureJson } from '@kadena/types';
+import { ensureSignedCommand } from '@kadena/pactjs';
+import type { ICommand, ISignatureJson, IUnsignedCommand } from '@kadena/types';
+
 import type {
   ICommandResult,
-  LocalRequestBody,
-  IPreflightResult,
   ILocalCommandResult,
-  LocalResultWithoutPreflight,
+  IPreflightResult,
+  LocalRequestBody,
 } from './interfaces/PactAPI';
-import { parseResponse, parsePreflight } from './parseResponse';
+import { parsePreflight, parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
-import { ensureSignedCommand } from '@kadena/pactjs';
 
 import fetch from 'cross-fetch';
 
-type CmdWithSigs = ICommand;
-type CmdOptionalSigs = ICommand | IUnsignedCommand;
-
 /**
  * @alpha
  */
-export type IOptions =
-  | IOptionsSigVerifyTrue
-  | IOptionsPreflightFalse
-  | IOptionsSigVerifyFalse
-  | IOptionsBothTrue
-  | IOptionsBothFalse
-  | IOptionsPreflightTrue;
-
-/**
- * @alpha
- */
-export interface IOptionsSigVerifyTrue {
+export interface ILocalOptions {
   preflight?: boolean;
-  signatureVerification: true;
-}
-
-/**
- * @alpha
- */
-export interface IOptionsSigVerifyFalse {
-  preflight?: boolean;
-  signatureVerification: false;
-}
-
-/**
- * @alpha
- */
-export interface IOptionsPreflightTrue {
-  preflight: true;
   signatureVerification?: boolean;
 }
 
 /**
  * @alpha
  */
-export interface IOptionsPreflightFalse {
-  preflight: false;
-  signatureVerification?: boolean;
+export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
+  preflight?: true;
 }
-
-/**
- * @alpha
- */
-export interface IOptionsBothTrue {
-  preflight: true;
-  signatureVerification: true;
-}
-
-/**
- * @alpha
- */
-export interface IOptionsBothFalse {
-  preflight: false;
-  signatureVerification: false;
-}
-
-/**
- * @alpha
- */
-export function local(
-  requestBody: CmdOptionalSigs,
-  apiHost: string,
-  options?: IOptionsSigVerifyFalse,
-): Promise<LocalResultWithoutPreflight | LocalResultWithoutPreflight>;
-
-/**
- * @alpha
- */
-export function local(
-  requestBody: CmdOptionalSigs,
-  apiHost: string,
-  options?: IOptionsPreflightFalse,
-): Promise<LocalResultWithoutPreflight>;
-
-/**
- * @alpha
- */
-export function local(
-  requestBody: CmdWithSigs,
-  apiHost: string,
-  options?: IOptionsBothTrue,
-): Promise<ILocalCommandResult>;
-
-/**
- * @alpha
- */
-export function local(
-  requestBody: CmdOptionalSigs,
-  apiHost: string,
-  options?: IOptionsBothFalse,
-): Promise<LocalResultWithoutPreflight>;
-
-/**
- * @alpha
- */
-export function local(
-  requestBody: CmdOptionalSigs,
-  apiHost: string,
-  options?: IOptionsPreflightTrue,
-): Promise<ILocalCommandResult>;
-
-/**
- * @alpha
- */
-export function local(
-  requestBody: CmdWithSigs,
-  apiHost: string,
-  options?: IOptionsSigVerifyTrue,
-): Promise<LocalResultWithoutPreflight | ILocalCommandResult>;
+  ? ILocalCommandResult
+  : ICommandResult;
 
 /**
  * Blocking/sync call to submit a command for non-transactional execution.
@@ -137,11 +38,11 @@ export function local(
  * @param apiHost - API host running a Pact-enabled server.
  * @alpha
  */
-export async function local(
+export async function local<T extends ILocalOptions>(
   requestBody: LocalRequestBody,
   apiHost: string,
-  options?: IOptions,
-): Promise<ILocalCommandResult | LocalResultWithoutPreflight> {
+  options?: T,
+): Promise<LocalResponse<T>> {
   const { signatureVerification = true, preflight = true } = options ?? {};
 
   if (!signatureVerification) {

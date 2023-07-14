@@ -11,6 +11,8 @@ export const getLayout = (layout: string): FC<ILayout> => {
     case 'codeside':
     case 'code':
       return Layouts.Code;
+    case 'redocly':
+      return Layouts.Redocly;
     default:
       return Layouts.Landing;
   }

@@ -1,12 +1,13 @@
 import type {
+  ILocalCommandResult,
   IPollResponse,
+  IPreflightResult,
   ISendRequestBody,
   ListenResponse,
-  ILocalCommandResult,
   SendResponse,
   SPVResponse,
-  IPreflightResult,
 } from '../../interfaces/PactAPI';
+
 import { testSPVProof, testURL } from './Pact';
 
 /**
@@ -42,7 +43,7 @@ export async function mockFetch(
     case `${testURL}/api/v1/local`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: ILocalCommandResult = {
-          reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+          reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
           txId: null,
           result: {
             data: 3,
@@ -64,7 +65,7 @@ export async function mockFetch(
     case `${testURL}/api/v1/local?preflight=false&signatureVerification=true`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: ILocalCommandResult = {
-          reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+          reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
           txId: null,
           result: {
             data: 3,
@@ -88,7 +89,7 @@ export async function mockFetch(
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPreflightResult = {
           preflightResult: {
-            reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+            reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
             txId: null,
             result: {
               data: 3,
@@ -113,7 +114,7 @@ export async function mockFetch(
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPreflightResult = {
           preflightResult: {
-            reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+            reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
             txId: null,
             result: {
               data: 3,
@@ -137,8 +138,8 @@ export async function mockFetch(
     case `${testURL}/api/v1/poll`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: IPollResponse = {
-          'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8': {
-            reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+          pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: {
+            reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
             txId: null,
             result: {
               data: 3,
@@ -161,7 +162,7 @@ export async function mockFetch(
     case `${testURL}/api/v1/listen`: {
       if (init?.body !== null && init?.body !== undefined) {
         const response: ListenResponse = {
-          reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+          reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
           txId: null,
           result: {
             data: 3,

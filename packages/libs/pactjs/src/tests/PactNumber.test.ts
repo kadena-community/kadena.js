@@ -102,4 +102,16 @@ describe('Pact Number', () => {
 
     expect(expected).toEqual(actual);
   });
+
+  it('extends plus form the BigNumber class', () => {
+    const actual = new PactNumber('0.9007199254740991192919');
+    const pactDecimal = actual.plus(1).toPactDecimal();
+    expect(pactDecimal).toStrictEqual({ decimal: '1.9007199254740991192919' });
+  });
+
+  it('extends minus form the BigNumber class', () => {
+    const actual = new PactNumber('0.9007199254740991192919');
+    const pactDecimal = actual.minus('0.9').toPactDecimal();
+    expect(pactDecimal).toStrictEqual({ decimal: '0.0007199254740991192919' });
+  });
 });

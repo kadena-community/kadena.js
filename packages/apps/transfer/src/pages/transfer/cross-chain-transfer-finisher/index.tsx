@@ -1,8 +1,6 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
 import { Button, TextField } from '@kadena/react-ui';
-import { ChainId } from '@kadena/types';
-
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { DetailCard } from '@/components/Global/DetailsCard';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
@@ -49,7 +47,9 @@ interface IPactResultError {
 }
 
 const CrossChainTransferFinisher: FC = () => {
-  const debug = Debug('XChain-Transfer-Finisher');
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
+  );
   const { t } = useTranslation('common');
   const { network } = useAppContext();
 
@@ -74,6 +74,7 @@ const CrossChainTransferFinisher: FC = () => {
     e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
     e.preventDefault();
+    debug(checkRequestKey.name);
 
     if (!requestKey) {
       return;
@@ -103,6 +104,8 @@ const CrossChainTransferFinisher: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
 
+    debug(handleSubmit.name);
+
     if (!pollResults.tx) {
       return;
     }
@@ -117,7 +120,7 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.step,
       pollResults.tx.rollback,
       network,
-      pollResults.tx.receiver.chain as ChainId,
+      pollResults.tx.receiver.chain,
       kadenaXChainGas,
     );
 
@@ -150,8 +153,12 @@ const CrossChainTransferFinisher: FC = () => {
             }
           },
         });
-        setFinalResults({ ...pollResult });
+        setFinalResults({
+          requestKey: pollResult.reqKey,
+          status: pollResult.result.status,
+        });
       } catch (tx) {
+        debug(tx);
         setFinalResults({ ...tx });
       }
     }

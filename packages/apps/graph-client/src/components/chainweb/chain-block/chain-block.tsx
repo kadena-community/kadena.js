@@ -14,7 +14,7 @@ interface IChainBlockProps {
   textColor: string;
 }
 
-export function ChainBlock(props: IChainBlockProps): JSX.Element {
+export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
   const { color, textColor, block } = props;
 
   return (
@@ -49,4 +49,4 @@ export function ChainBlock(props: IChainBlockProps): JSX.Element {
       ) : null}
     </Container>
   );
-}
+};

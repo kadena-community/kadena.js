@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "Simplified types for the `/local` wrapper",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}

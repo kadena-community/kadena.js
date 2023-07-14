@@ -7,6 +7,7 @@ import * as moo from 'moo';
 export const lexer: Lexer = moo.compile({
   decimal: /[-+]?(?:[0-9]+[.])?[0-9]+/,
   boolean: /true|false/,
+  model: { match: /@model\s*\[[^\]]*\]/, lineBreaks: true },
   // https://pact-language.readthedocs.io/en/stable/pact-reference.html#atoms
   atom: {
     match: /[%#+\-_&$@<>=?*!|\/a-zA-Z]+[%#+\-_&$@<>=?*!|\/a-zA-Z0-9]*/,

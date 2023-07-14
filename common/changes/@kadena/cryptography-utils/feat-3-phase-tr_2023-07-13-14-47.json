@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Update tests",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}

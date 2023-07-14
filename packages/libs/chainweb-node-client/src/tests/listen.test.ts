@@ -1,17 +1,16 @@
 jest.mock('cross-fetch');
 
-import fetch, { Response } from 'cross-fetch';
-
 import type {
+  ICommandResult,
   IListenRequestBody,
   ListenResponse,
-  ICommandResult,
 } from '../interfaces/PactAPI';
-
 import { listen } from '../listen';
 
 import { mockFetch } from './mockdata/mockFetch';
 import { testURL } from './mockdata/Pact';
+
+import fetch, { Response } from 'cross-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
@@ -25,7 +24,7 @@ test('/listen should return result of tx queried', async () => {
   };
 
   const commandResult1: ListenResponse = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,

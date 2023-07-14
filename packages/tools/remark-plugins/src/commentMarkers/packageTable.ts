@@ -1,6 +1,6 @@
 import type { RushConfig } from './rush.json';
 
-import { Link, Table, TableRow } from 'mdast';
+import type { Link, Table, TableRow } from 'mdast';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';

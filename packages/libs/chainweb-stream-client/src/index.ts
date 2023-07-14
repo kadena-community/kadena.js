@@ -1,20 +1,21 @@
-import EventSource from 'eventsource';
-import EventEmitter from 'eventemitter2';
 import {
-  parseError,
   ConnectTimeoutError,
   HeartbeatTimeoutError,
+  parseError,
 } from './errors';
+import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
 import {
-  ConnectionState,
-  IChainwebStreamConstructorArgs,
   ChainwebStreamType,
-  ITransaction,
+  ConnectionState,
+  IChainwebStreamConfig,
+  IChainwebStreamConstructorArgs,
   IDebugMsgObject,
   IInitialEvent,
-  IChainwebStreamConfig,
+  ITransaction,
 } from './types';
-import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
+
+import EventEmitter from 'eventemitter2';
+import EventSource from 'eventsource';
 
 export * from './types';
 
@@ -117,6 +118,7 @@ class ChainwebStream extends EventEmitter {
     this._eventSource.onopen = this._handleConnect;
     this._eventSource.onerror = this._handleError;
     // reset & set custom connect timeout handler
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (this._connectTimer) {
       clearTimeout(this._connectTimer);
     }
@@ -169,6 +171,7 @@ class ChainwebStream extends EventEmitter {
     _eventSource.addEventListener('message', this._handleData);
     _eventSource.addEventListener('ping', this._resetHeartbeatTimeout);
     this._resetHeartbeatTimeout();
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (this._connectTimer) {
       clearTimeout(this._connectTimer);
     }
@@ -190,6 +193,7 @@ class ChainwebStream extends EventEmitter {
     this._eventSource?.close();
 
     // cancel connection timeout timer, if exists
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (this._connectTimer) {
       clearTimeout(this._connectTimer);
     }
@@ -214,6 +218,7 @@ class ChainwebStream extends EventEmitter {
     });
 
     this._desiredState = ConnectionState.WaitReconnect;
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (this._reconnectTimer) {
       clearTimeout(this._reconnectTimer);
     }
@@ -344,6 +349,7 @@ class ChainwebStream extends EventEmitter {
   }
 
   private _stopHeartbeatMonitor = (): void => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (this._heartbeatTimer) {
       clearTimeout(this._heartbeatTimer);
     }
@@ -380,7 +386,7 @@ class ChainwebStream extends EventEmitter {
       urlParamArgs.push(['minHeight', String(this._lastHeight - 3)]);
     }
     if (urlParamArgs.length) {
-      path += '?' + new URLSearchParams(urlParamArgs).toString();
+      path += `?${new URLSearchParams(urlParamArgs).toString()}`;
     }
     return `${host}${path}`;
   }

@@ -31,12 +31,12 @@ export const ConsentModal: FC = () => {
   const handleAccept = useCallback(() => {
     setCookieConsent(true);
     clearModal();
-  }, []);
+  }, [clearModal]);
 
   const handleReject = useCallback(() => {
     setCookieConsent(false);
     clearModal();
-  }, []);
+  }, [clearModal]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -76,6 +76,13 @@ export const ConsentModal: FC = () => {
         </NotificationFooter>
       </Notification>,
     );
-  }, [cookieConsent, mounted]);
+  }, [
+    clearModal,
+    cookieConsent,
+    mounted,
+    handleAccept,
+    handleReject,
+    renderModal,
+  ]);
   return null;
 };

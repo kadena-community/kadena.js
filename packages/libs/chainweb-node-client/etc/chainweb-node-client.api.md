@@ -4,7 +4,6 @@
 
 ```ts
 
-import type { ChainId } from '@kadena/types';
 import type { IBase64Url } from '@kadena/types';
 import type { ICap } from '@kadena/types';
 import type { ICommand } from '@kadena/types';
@@ -15,8 +14,11 @@ import type { IUnsignedCommand } from '@kadena/types';
 import type { PactValue } from '@kadena/types';
 import type { SPVProof } from '@kadena/types';
 
+// @alpha (undocumented)
+export const CHAINS: readonly ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"];
+
 // @alpha
-export type ChainwebChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
+export type ChainwebChainId = (typeof CHAINS)[number];
 
 // @alpha
 export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
@@ -87,58 +89,15 @@ export interface ILocalCommandResult {
 }
 
 // @alpha (undocumented)
+export interface ILocalOptions {
+    // (undocumented)
+    preflight?: boolean;
+    // (undocumented)
+    signatureVerification?: boolean;
+}
+
+// @alpha (undocumented)
 export type ILocalResult = IPreflightResult | ICommandResult;
-
-// @alpha (undocumented)
-export type IOptions = IOptionsSigVerifyTrue | IOptionsPreflightFalse | IOptionsSigVerifyFalse | IOptionsBothTrue | IOptionsBothFalse | IOptionsPreflightTrue;
-
-// @alpha (undocumented)
-export interface IOptionsBothFalse {
-    // (undocumented)
-    preflight: false;
-    // (undocumented)
-    signatureVerification: false;
-}
-
-// @alpha (undocumented)
-export interface IOptionsBothTrue {
-    // (undocumented)
-    preflight: true;
-    // (undocumented)
-    signatureVerification: true;
-}
-
-// @alpha (undocumented)
-export interface IOptionsPreflightFalse {
-    // (undocumented)
-    preflight: false;
-    // (undocumented)
-    signatureVerification?: boolean;
-}
-
-// @alpha (undocumented)
-export interface IOptionsPreflightTrue {
-    // (undocumented)
-    preflight: true;
-    // (undocumented)
-    signatureVerification?: boolean;
-}
-
-// @alpha (undocumented)
-export interface IOptionsSigVerifyFalse {
-    // (undocumented)
-    preflight?: boolean;
-    // (undocumented)
-    signatureVerification: false;
-}
-
-// @alpha (undocumented)
-export interface IOptionsSigVerifyTrue {
-    // (undocumented)
-    preflight?: boolean;
-    // (undocumented)
-    signatureVerification: true;
-}
 
 // @alpha
 export interface IPollRequestBody {
@@ -177,7 +136,7 @@ export interface ISPVRequestBody {
     // (undocumented)
     requestKey: IBase64Url;
     // (undocumented)
-    targetChainId: ChainId;
+    targetChainId: ChainwebChainId;
 }
 
 // @alpha
@@ -186,27 +145,8 @@ export function listen(requestBody: IListenRequestBody, apiHost: string): Promis
 // @alpha (undocumented)
 export type ListenResponse = ICommandResult;
 
-// Warning: (ae-forgotten-export) The symbol "CmdOptionalSigs" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsSigVerifyFalse): Promise<LocalResultWithoutPreflight | LocalResultWithoutPreflight>;
-
-// @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightFalse): Promise<LocalResultWithoutPreflight>;
-
-// Warning: (ae-forgotten-export) The symbol "CmdWithSigs" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsBothTrue): Promise<ILocalCommandResult>;
-
-// @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsBothFalse): Promise<LocalResultWithoutPreflight>;
-
-// @alpha (undocumented)
-export function local(requestBody: CmdOptionalSigs, apiHost: string, options?: IOptionsPreflightTrue): Promise<ILocalCommandResult>;
-
-// @alpha (undocumented)
-export function local(requestBody: CmdWithSigs, apiHost: string, options?: IOptionsSigVerifyTrue): Promise<LocalResultWithoutPreflight | ILocalCommandResult>;
+// @alpha
+export function local<T extends ILocalOptions>(requestBody: LocalRequestBody, apiHost: string, options?: T): Promise<LocalResponse<T>>;
 
 // @alpha
 export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
@@ -216,6 +156,11 @@ export function localRaw(requestBody: LocalRequestBody, apiHost: string, { prefl
 
 // @alpha (undocumented)
 export type LocalRequestBody = ICommand | IUnsignedCommand;
+
+// @alpha (undocumented)
+export type LocalResponse<Opt extends ILocalOptions> = Opt extends {
+    preflight?: true;
+} ? ILocalCommandResult : ICommandResult;
 
 // @alpha (undocumented)
 export type LocalResultWithoutPreflight = Omit<ILocalCommandResult, 'preflightWarnings'>;
