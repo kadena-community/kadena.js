@@ -30,7 +30,7 @@ const ChainSelect: FC<
     [onChange],
   );
 
-  const Options = CHAINS.map((chainID) => {
+  const options = CHAINS.map((chainID) => {
     return <Option key={`chain-id-${chainID}`}>{chainID}</Option>;
   });
 
@@ -43,7 +43,7 @@ const ChainSelect: FC<
         value={value}
         icon={() => <SystemIcons.Link />}
       >
-        {Options}
+        {options}
       </Select>
     </InputWrapper>
   );
