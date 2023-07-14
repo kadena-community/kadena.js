@@ -18,28 +18,28 @@ export default function tooltipHandler(
 
   switch (placement) {
     case 'top':
-      node.style.top = `${rect.top - node.offsetHeight}px`;
+      node.style.top = `${rect.top - node.offsetHeight + window.scrollY}px`;
       node.style.left = `${
-        rect.left + rect.width / 2 - node.offsetWidth / 2
+        rect.left + rect.width / 2 - node.offsetWidth / 2 + window.scrollX
       }px`;
       break;
     case 'bottom':
-      node.style.top = `${rect.top + rect.height}px`;
+      node.style.top = `${rect.top + rect.height + window.scrollY}px`;
       node.style.left = `${
-        rect.left + rect.width / 2 - node.offsetWidth / 2
+        rect.left + rect.width / 2 - node.offsetWidth / 2 + window.scrollX
       }px`;
       break;
     case 'left':
       node.style.top = `${
-        rect.top + rect.height / 2 - node.offsetHeight / 2
+        rect.top + rect.height / 2 - node.offsetHeight / 2 + window.scrollY
       }px`;
-      node.style.left = `${rect.left - node.offsetWidth}px`;
+      node.style.left = `${rect.left - node.offsetWidth + window.scrollX}px`;
       break;
     case 'right':
       node.style.top = `${
-        rect.top + rect.height / 2 - node.offsetHeight / 2
+        rect.top + rect.height / 2 - node.offsetHeight / 2 + window.scrollY
       }px`;
-      node.style.left = `${rect.left + rect.width}px`;
+      node.style.left = `${rect.left + rect.width + window.scrollX}px`;
       break;
   }
 }
