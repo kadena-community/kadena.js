@@ -118,7 +118,6 @@ export const LabelTitle = style([
   sprinkles({
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center',
     fontSize: '$sm',
     fontWeight: '$medium',
     fontFamily: '$main',
@@ -150,17 +149,4 @@ export const TrackerWarningContainer = style([
     fontWeight: '$normal',
     fontSize: '$xs',
   }),
-
-  // {
-  //   variants: {
-  //     typedMessage: {
-  //       mild: {
-  //         color: '$warningContrast',
-  //       },
-  //       severe: {
-  //         color: '$negativeContrast',
-  //       },
-  //     },
-  //   },
-  // },
 ]);
