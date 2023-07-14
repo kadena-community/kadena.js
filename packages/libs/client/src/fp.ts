@@ -1,1 +1,1 @@
-export * from './createPactCommand';
+export * from './composePactCommand';

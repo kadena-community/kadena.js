@@ -36,7 +36,7 @@ export async function doSafeTransfer(
     .setNonce('tadasd')
     .createTransaction();
 
-  const [signedCommand] = await signWithChainweaver(unsignedTr);
+  const signedCommand = await signWithChainweaver(unsignedTr);
 
   // probably in this step you need to send the transaction to another party to sign the tr as well, and then send it to the blockchain
   // but for simplicity lets consider you want to transfer from your accounts that you sign in one go via the wallet

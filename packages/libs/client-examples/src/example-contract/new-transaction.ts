@@ -1,7 +1,9 @@
-import { Pact, signWithChainweaver } from '@kadena/client';
+import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
-function main(): void {
+import { pollStatus, submit } from './util/client';
+
+async function main(): Promise<void> {
   const sender =
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
   const receiver =
@@ -37,9 +39,13 @@ function main(): void {
     .setNetworkId('testnet04')
     .createTransaction();
 
-  signWithChainweaver(transaction) // sign
-    .then((x) => console.log(JSON.stringify(x)))
-    .catch(console.log);
+  const signedTr = await signWithChainweaver(transaction); // sign
+
+  if (isSignedCommand(signedTr)) {
+    const requestKeys = await submit(signedTr);
+    const result = pollStatus(requestKeys);
+    console.log(result);
+  }
 }
 
-main();
+main().catch(console.error);

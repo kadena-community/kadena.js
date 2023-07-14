@@ -54,7 +54,7 @@ type NoPayload<TCommand> = TCommand extends { payload: unknown }
 type DataOrFunction<TData> = TData | ((a: TData) => TData);
 
 // TODO : improve the return value to merge all of the inputs as an object
-interface ICreatePactCommand {
+interface IComposePactCommand {
   <TPayload extends Pick<IPactCommand, 'payload'>>(
     payload: TPayload,
     ...rest: [
@@ -74,7 +74,7 @@ interface ICreatePactCommand {
 /**
  * @alpha
  */
-export const createPactCommand: ICreatePactCommand =
+export const composePactCommand: IComposePactCommand =
   (
     first: DataOrFunction<Partial<IPactCommand>>,
     ...rest: Array<DataOrFunction<Partial<IPactCommand>>>

@@ -5,7 +5,7 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { ICoin } from '../../../createPactCommand/test/coin-contract';
+import { ICoin } from '../../../composePactCommand/test/coin-contract';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
@@ -111,7 +111,7 @@ describe('signWithChainweaver', () => {
 
     const txWithOneSig = await signWithChainweaver(unsignedTransaction);
 
-    expect(txWithOneSig[0].sigs).toStrictEqual([
+    expect(txWithOneSig.sigs).toStrictEqual([
       { sig: 'gas-key-sig' },
       undefined,
     ]);
@@ -138,8 +138,8 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse2),
     });
 
-    const signedTx = await signWithChainweaver(txWithOneSig[0]);
-    expect(signedTx[0].sigs).toEqual([
+    const signedTx = await signWithChainweaver(txWithOneSig);
+    expect(signedTx.sigs).toEqual([
       { sig: 'gas-key-sig' },
       { sig: 'transfer-key-sig' },
     ]);
@@ -170,6 +170,6 @@ describe('signWithChainweaver', () => {
 
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-    expect(signedTransaction[0].sigs).toEqual([undefined]);
+    expect(signedTransaction.sigs).toEqual([undefined]);
   });
 });

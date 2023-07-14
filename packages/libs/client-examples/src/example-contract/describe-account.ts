@@ -1,8 +1,8 @@
-import { ICommandResult, Pact } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
-import { local, pollStatus } from './util/client';
+import { dirtyReady } from './util/client';
 
-async function transactionMain(): Promise<void> {
+async function getDetail(): Promise<void> {
   const senderAccount: string =
     'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
 
@@ -10,28 +10,11 @@ async function transactionMain(): Promise<void> {
     .execute(Pact.modules.coin.details(senderAccount))
     .createTransaction();
 
-  const res = await local(unsignedTransaction);
+  const res = await dirtyReady(unsignedTransaction);
   console.log(res);
 }
 
-async function pollMain(
-  ...requestKeys: string[]
-): Promise<Record<string, ICommandResult>> {
-  if (requestKeys.length === 0) {
-    console.log('function called without arguments');
-    throw new Error('NO_KEY');
-  }
-
-  const pollResponse = await pollStatus(requestKeys, {
-    onPoll: (key) => {
-      console.log(`polling for ${key}`);
-    },
-  });
-
-  return pollResponse;
-}
-
-async function getBalanceMain() {
+async function getBalanceMain(): Promise<void> {
   const tr = Pact.builder
     .execute(
       Pact.modules.coin['get-balance'](
@@ -42,9 +25,10 @@ async function getBalanceMain() {
     .setNetworkId('mainnet04')
     .createTransaction();
 
-  const res = await local(tr);
+  const res = await dirtyReady(tr);
 
   console.log(res);
 }
 
-transactionMain().catch(console.error);
+getDetail().catch(console.error);
+getBalanceMain().catch(console.error);

@@ -1,4 +1,4 @@
-import { ICoin } from '../../createPactCommand/test/coin-contract';
+import { ICoin } from '../../composePactCommand/test/coin-contract';
 import { getModule } from '../../pact';
 import { commandBuilder } from '../commandBuilder';
 

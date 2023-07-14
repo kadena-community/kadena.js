@@ -4,13 +4,13 @@ import {
   addData,
   addKeyset,
   addSigner,
-  createPactCommand,
+  composePactCommand,
   payload,
   setMeta,
   setNetworkId,
   setNonce,
-} from '../createPactCommand';
-import { UnionToIntersection } from '../createPactCommand/utils/addSigner';
+} from '../composePactCommand';
+import { UnionToIntersection } from '../composePactCommand/utils/addSigner';
 import {
   ICapabilityItem,
   IContinuationPayloadObject,
@@ -133,17 +133,17 @@ export const commandBuilder = (): ICommandBuilder => {
         key: string,
         value: Record<string, unknown> | string | number | boolean,
       ) => {
-        command = createPactCommand(addData(key, value))(command);
+        command = composePactCommand(addData(key, value))(command);
         return builder;
       },
       addKeyset: (key: string, pred: string, ...publicKeys: string[]) => {
-        command = createPactCommand(addKeyset(key, pred, ...publicKeys))(
+        command = composePactCommand(addKeyset(key, pred, ...publicKeys))(
           command,
         );
         return builder;
       },
       addSigner: (pubKey, cap?: unknown) => {
-        command = createPactCommand(
+        command = composePactCommand(
           addSigner(
             pubKey,
             cap as (withCapability: GeneralCapability) => ICapabilityItem[],
@@ -152,20 +152,20 @@ export const commandBuilder = (): ICommandBuilder => {
         return builder;
       },
       setMeta: (meta) => {
-        command = createPactCommand(setMeta(meta))(command);
+        command = composePactCommand(setMeta(meta))(command);
         return builder;
       },
       setNetworkId: (id: string) => {
-        command = createPactCommand(setNetworkId(id))(command);
+        command = composePactCommand(setNetworkId(id))(command);
         return builder;
       },
       setNonce: (arg: string | ((cmd: Partial<IPactCommand>) => string)) => {
         const nonce = typeof arg === 'function' ? arg(command) : arg;
-        command = createPactCommand(setNonce(nonce))(command);
+        command = composePactCommand(setNonce(nonce))(command);
         return builder;
       },
       getCommand: () => {
-        command = createPactCommand(command)();
+        command = composePactCommand(command)();
         return command;
       },
       createTransaction: () => createTransaction(builder.getCommand()),
