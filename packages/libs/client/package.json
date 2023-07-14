@@ -8,12 +8,12 @@
     "directory": "packages/libs/client"
   },
   "license": "MIT",
-  "main": "lib/index.js",
-  "types": "dist/client.d.ts",
   "exports": {
     ".": "./lib/index.js",
     "./fp": "./lib/fp.js"
   },
+  "main": "lib/index.js",
+  "types": "dist/client.d.ts",
   "files": [
     "dist",
     "lib",
