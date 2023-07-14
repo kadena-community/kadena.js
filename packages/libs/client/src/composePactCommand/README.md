@@ -221,7 +221,7 @@ const command = {
     code: '(coin.transfer "bob" "alice" 1.1)'
   },
   meta:{
-    chianId: "1",
+    chainId: "1",
     gasLimit: 2500,
     gasPrice: 1.0e-8,
     sender: '',

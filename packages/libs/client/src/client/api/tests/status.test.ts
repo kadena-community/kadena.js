@@ -22,7 +22,7 @@ describe('pollStatus', () => {
       withCounter((counter) => responses[counter - 1] ?? {}),
     );
 
-    const hostUrl = "http://test-blockchian-host.com'";
+    const hostUrl = "http://test-blockchain-host.com'";
 
     const requestKeys = ['key-1', 'key-2'];
 
@@ -53,7 +53,7 @@ describe('pollStatus', () => {
       }),
     );
 
-    const hostUrl = "http://test-blockchian-host.com'";
+    const hostUrl = "http://test-blockchain-host.com'";
 
     const requestKeys = ['key-1', 'key-2'];
 
@@ -79,7 +79,7 @@ describe('pollStatus', () => {
 
     const onPoll = jest.fn();
 
-    const hostUrl = "http://test-blockchian-host.com'";
+    const hostUrl = "http://test-blockchain-host.com'";
 
     const requestKeys = ['key-1', 'key-2'];
 
@@ -114,7 +114,7 @@ describe('pollStatus', () => {
       withCounter((counter) => responses[counter - 1] ?? {}),
     );
 
-    const hostUrl = "http://test-blockchian-host.com'";
+    const hostUrl = "http://test-blockchain-host.com'";
 
     const requestKeys = ['key-1', 'key-2'];
 
