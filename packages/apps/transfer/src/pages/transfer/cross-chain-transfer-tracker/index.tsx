@@ -1,5 +1,10 @@
-import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
-import { Status } from '@kadena/react-ui/types/components/InputWrapper/InputWrapper.css';
+import {
+  Button,
+  Heading,
+  InputWrapperStatus,
+  SystemIcon,
+  TextField,
+} from '@kadena/react-ui';
 
 import {
   StyledInfoItem,
@@ -45,7 +50,9 @@ const CrossChainTransferTracker: FC = () => {
   const [requestKey, setRequestKey] =
     useState<string>(router.query?.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
-  const [validRequestKey, setValidRequestKey] = useState<Status | undefined>();
+  const [validRequestKey, setValidRequestKey] = useState<
+    InputWrapperStatus | undefined
+  >();
   const [txError, setTxError] = useState<string>('');
 
   useDidUpdateEffect(() => {
