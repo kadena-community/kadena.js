@@ -81,6 +81,8 @@ const CheckTransactions: FC = () => {
       };
 
       await router.push(router);
+
+      await getAndSetTransactions(network, chain, account);
     } catch (e) {
       debug(e);
     }
