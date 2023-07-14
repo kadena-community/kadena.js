@@ -1,14 +1,14 @@
 import { ICommandResult, local } from '@kadena/chainweb-node-client';
 import { hash as blackHash } from '@kadena/cryptography-utils';
 
-import { createPactCommand, payload } from '../../createPactCommand';
+import { composePactCommand, payload } from '../../composePactCommand';
 
 export function runPact(
   hostUrl: string,
   code: string,
   data: Record<string, unknown>,
 ): Promise<ICommandResult> {
-  const pactCommand = createPactCommand(payload.exec(code), {
+  const pactCommand = composePactCommand(payload.exec(code), {
     payload: { exec: { data } },
   })();
 

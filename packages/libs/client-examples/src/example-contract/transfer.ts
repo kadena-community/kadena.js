@@ -1,16 +1,6 @@
-import { poll } from '@kadena/chainweb-node-client';
-import { Pact, signWithChainweaver } from '@kadena/client';
+import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
 
-const apiHost = (
-  chainId: string,
-  network: string = '',
-  networkId: string = 'mainnet01',
-  apiVersion: string = '0.0',
-): string => {
-  return `https://api.${network}chainweb.com/chainweb/${apiVersion}/${networkId}/chain/${chainId}/pact`;
-};
-
-const testnetChain1ApiHost: string = apiHost('1', 'testnet.', 'testnet04');
+import { pollStatus, submit } from './util/client';
 
 async function transactionMain(): Promise<void> {
   const senderAccount: string =
@@ -38,57 +28,12 @@ async function transactionMain(): Promise<void> {
     .createTransaction();
 
   console.log('unsigned transaction', JSON.stringify(tx));
-  const res = await signWithChainweaver(tx);
+  const tr = await signWithChainweaver(tx);
 
-  console.log('sigs', res[0].sigs);
-  console.log('signed transactions', JSON.stringify(res, null, 2));
-
-  const sendRequests = res.map((tx) => {
-    console.log('sending transaction', tx.cmd);
-    // return tx.send(testnetChain1ApiHost);
-  });
-
-  // const sendResponses = await Promise.all(sendRequests);
-  // sendResponses.map(async function startPolling(
-  //   sendResponse: SendResponse,
-  // ): Promise<void> {
-  //   console.log('sendResponse', sendResponse);
-  //   const requestKey = (await sendRequests[0]).requestKeys[0];
-  //   await pollMain(requestKey);
-  // });
-}
-
-async function pollMain(...requestKeys: string[]): Promise<void> {
-  if (requestKeys.length === 0) {
-    console.log('function called without arguments');
-    return;
-  }
-
-  console.log(`polling for ${requestKeys.join(',')}`);
-  const pollResponse = await poll(
-    {
-      requestKeys,
-    },
-    testnetChain1ApiHost,
-  );
-
-  if (Object.keys(pollResponse).length === 0) {
-    console.log('no transaction found yet');
-    setTimeout(() => pollMain(...requestKeys), 5000);
-  } else {
-    console.log('found transaction');
-    const foundRequestKeys: string[] = [];
-    Object.keys(pollResponse).forEach((requestKey) => {
-      console.log(
-        `${requestKey} poll response`,
-        JSON.stringify(pollResponse[requestKey], undefined, 2),
-      );
-      foundRequestKeys.push(requestKey);
-    });
-
-    await pollMain(
-      ...requestKeys.filter((k) => !foundRequestKeys.some((fk) => fk === k)),
-    );
+  if (isSignedCommand(tr)) {
+    const requestKeys = await submit(tr);
+    const result = await pollStatus(requestKeys);
+    console.log(result);
   }
 }
 

@@ -2,7 +2,7 @@ import { addSigner, payload, setMeta, setNetworkId, setNonce } from '../../fp';
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
-import { createPactCommand, mergePayload } from '../createPactCommand';
+import { composePactCommand, mergePayload } from '../composePactCommand';
 import { addData } from '../utils/addData';
 
 import { ICoin } from './coin-contract';
@@ -49,9 +49,9 @@ describe('payload.cont', () => {
   });
 });
 
-describe('createPactCommand', () => {
+describe('composePactCommand', () => {
   it('returns command object with signers and capabilities', () => {
-    const command = createPactCommand(
+    const command = composePactCommand(
       payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
@@ -84,7 +84,7 @@ describe('createPactCommand', () => {
   });
 
   it('returns a command based on ICommand interface', () => {
-    const command = createPactCommand(
+    const command = composePactCommand(
       payload.exec(coin.transfer('alice', 'bob', { decimal: '12.1' })),
       addSigner('bob_public_key', (withCapability) => [
         withCapability('coin.GAS'),
@@ -136,7 +136,7 @@ describe('createPactCommand', () => {
   });
 
   it('adds kjs nonce  if not presented in the input', () => {
-    const command = createPactCommand(
+    const command = composePactCommand(
       payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
     )();
 
@@ -145,7 +145,7 @@ describe('createPactCommand', () => {
 
   it('merges payload if they are exec', () => {
     expect(
-      createPactCommand(
+      composePactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         payload.exec(coin.transfer('alice', 'bob', { decimal: '1' })),
       )().payload,
@@ -159,7 +159,7 @@ describe('createPactCommand', () => {
 
   it('merges payloads data if they are exec', () => {
     expect(
-      createPactCommand(
+      composePactCommand(
         payload.exec(
           coin.transfer('bob', 'alice', { decimal: '1' }),
           coin.transfer('alice', 'bob', { decimal: '1' }),
@@ -178,7 +178,7 @@ describe('createPactCommand', () => {
   it('throws exception if payloads are not mergable', () => {
     expect(
       () =>
-        createPactCommand(
+        composePactCommand(
           payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
           payload.cont({ pactId: '1' }),
         )().payload,
@@ -187,7 +187,7 @@ describe('createPactCommand', () => {
 
   it('accepts a signer without a capability', () => {
     expect(
-      createPactCommand(
+      composePactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
       )().signers,
@@ -196,7 +196,7 @@ describe('createPactCommand', () => {
 
   it('merges capability arrays of one signer if presented twice', () => {
     expect(
-      createPactCommand(
+      composePactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key', (withCapability) => [
           withCapability('coin.GAS'),
@@ -217,7 +217,7 @@ describe('createPactCommand', () => {
     ]);
 
     expect(
-      createPactCommand(
+      composePactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         addSigner('bob_public_key'),
         addSigner('bob_public_key', (withCapability) => [
@@ -236,7 +236,7 @@ describe('createPactCommand', () => {
   });
   it("adds creationTime if it's not presented in the meta property", () => {
     expect(
-      createPactCommand(
+      composePactCommand(
         payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
         setMeta({ chainId: '1' }),
       )().meta?.creationTime,
@@ -246,7 +246,7 @@ describe('createPactCommand', () => {
   it('returns transaction object by calling createTransaction', () => {
     expect(
       createTransaction(
-        createPactCommand(
+        composePactCommand(
           payload.exec(coin.transfer('bob', 'alice', { decimal: '1' })),
           addSigner('bob_public_key'),
           addSigner('bob_public_key', (withCapability) => [
@@ -332,7 +332,7 @@ describe('mergePayload', () => {
   });
 
   it('adds creationTime to metadata of mataData is presented but does not have creationTime', () => {
-    const pactCommand = createPactCommand({
+    const pactCommand = composePactCommand({
       meta: { chainId: '1' } as IPactCommand['meta'],
     })();
     expect(pactCommand.meta?.creationTime).toBe(1690416000);

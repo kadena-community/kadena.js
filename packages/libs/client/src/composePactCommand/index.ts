@@ -1,4 +1,4 @@
-export { createPactCommand } from './createPactCommand';
+export { composePactCommand } from './composePactCommand';
 export { setNetworkId } from './utils/setNetworkId';
 export { setNonce } from './utils/setNonce';
 export { setMeta } from './utils/setMeta';
