@@ -1,3 +1,5 @@
+import { ICommand, IUnsignedCommand } from '@kadena/types';
+
 import {
   IQuickSignRequestBody,
   IQuicksignResponse,
@@ -16,7 +18,14 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
 /**
  * @alpha
  */
-export const signWithChainweaver: ISignFunction = async (...transactions) => {
+export const signWithChainweaver: ISignFunction = (async (
+  transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+) => {
+  if (transactionList === undefined) {
+    throw new Error('No transaction(s) to sign');
+  }
+  const isList = Array.isArray(transactionList);
+  const transactions = isList ? transactionList : [transactionList];
   const quickSignRequest: IQuickSignRequestBody = {
     cmdSigDatas: transactions.map((t) => {
       const parsedTransaction = parseTransactionCommand(t);
@@ -62,7 +71,7 @@ export const signWithChainweaver: ISignFunction = async (...transactions) => {
       );
     });
 
-    return transactions;
+    return isList ? transactions : transactions[0];
   } catch (error) {
     throw new Error(
       'An error occurred when adding signatures to the command' +
@@ -72,7 +81,7 @@ export const signWithChainweaver: ISignFunction = async (...transactions) => {
         `${error}`,
     );
   }
-};
+}) as ISignFunction;
 
 function isASigner(signer: IQuicksignSigner): signer is {
   pubKey: string;

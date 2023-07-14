@@ -28,7 +28,7 @@ describe('client', () => {
 
     (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
-    const hostUrl = 'http://test-blockchian-host.com';
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const { local } = getClient(hostUrl);
 

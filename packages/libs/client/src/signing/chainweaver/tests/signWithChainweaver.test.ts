@@ -5,7 +5,7 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { ICoin } from '../../../createPactCommand/test/coin-contract';
+import { ICoin } from '../../../composePactCommand/test/coin-contract';
 import {
   IQuicksignResponse,
   IQuicksignResponseOutcomes,
@@ -29,7 +29,7 @@ describe('signWithChainweaver', () => {
     });
 
     const builder = Pact.builder
-      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('signer-key', (withCap) => [withCap('coin.GAS')]);
 
     const command = builder.getCommand();
@@ -63,7 +63,7 @@ describe('signWithChainweaver', () => {
     });
 
     const unsignedTransaction = Pact.builder
-      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('', (withCap) => [withCap('coin.GAS')])
       .setMeta({
         sender: '',
@@ -98,7 +98,7 @@ describe('signWithChainweaver', () => {
     });
 
     const unsignedTransaction = Pact.builder
-      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
       .addSigner('transfer-signer-pubkey', (withCap) => [
         withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
@@ -111,7 +111,7 @@ describe('signWithChainweaver', () => {
 
     const txWithOneSig = await signWithChainweaver(unsignedTransaction);
 
-    expect(txWithOneSig[0].sigs).toStrictEqual([
+    expect(txWithOneSig.sigs).toStrictEqual([
       { sig: 'gas-key-sig' },
       undefined,
     ]);
@@ -138,8 +138,8 @@ describe('signWithChainweaver', () => {
       text: () => JSON.stringify(mockedResponse2),
     });
 
-    const signedTx = await signWithChainweaver(txWithOneSig[0]);
-    expect(signedTx[0].sigs).toEqual([
+    const signedTx = await signWithChainweaver(txWithOneSig);
+    expect(signedTx.sigs).toEqual([
       { sig: 'gas-key-sig' },
       { sig: 'transfer-key-sig' },
     ]);
@@ -164,12 +164,12 @@ describe('signWithChainweaver', () => {
     });
 
     const unsignedTransaction = Pact.builder
-      .execute(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
       .createTransaction();
 
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-    expect(signedTransaction[0].sigs).toEqual([undefined]);
+    expect(signedTransaction.sigs).toEqual([undefined]);
   });
 });

@@ -16,13 +16,13 @@ interface IAccount {
   guard: string;
 }
 
-function debitInTheFirstChain(
+function startInTheFirstChain(
   from: IAccount,
   to: IAccount,
   amount: string,
 ): IUnsignedCommand {
   return Pact.builder
-    .execute(
+    .execution(
       Pact.modules.coin.defpact['transfer-crosschain'](
         from.account,
         to.account,
@@ -50,7 +50,7 @@ function debitInTheFirstChain(
     .createTransaction();
 }
 
-function creditInTheTargetChain(
+function finishInTheTargetChain(
   continuation: IContinuationPayloadObject['cont'],
   targetChainId: ChainId,
 ): IUnsignedCommand {
@@ -62,14 +62,14 @@ function creditInTheTargetChain(
     .createTransaction();
 }
 
-export async function doCrossChianTransfer(
+export async function doCrossChainTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  return Promise.resolve(debitInTheFirstChain(from, to, amount))
-    .then(signWithChainweaver)
-    .then(([command]) =>
+  return Promise.resolve(startInTheFirstChain(from, to, amount))
+    .then((command) => signWithChainweaver(command))
+    .then((command) =>
       isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
     )
     .then(submit)
@@ -84,7 +84,7 @@ export async function doCrossChianTransfer(
       Promise.all([status, pollCreateSpv(status.reqKey, to.chainId)]),
     )
     .then(([status, proof]) =>
-      creditInTheTargetChain(
+      finishInTheTargetChain(
         {
           pactId: status.continuation?.pactId,
           proof,
@@ -94,8 +94,8 @@ export async function doCrossChianTransfer(
         to.chainId,
       ),
     )
-    .then(signWithChainweaver)
-    .then(([command]) =>
+    .then((command) => signWithChainweaver(command))
+    .then((command) =>
       isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
     )
     .then(submit)
