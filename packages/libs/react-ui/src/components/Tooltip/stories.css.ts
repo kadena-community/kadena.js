@@ -4,12 +4,12 @@ import { style } from '@vanilla-extract/css';
 
 export const container = style([
   sprinkles({
-    width: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   }),
   {
-    height: '100vh',
+    height: '110vh',
+    width: '110vw',
   },
 ]);
