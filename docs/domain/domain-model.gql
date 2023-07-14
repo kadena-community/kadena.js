@@ -208,15 +208,14 @@ type TransactionCommandPayload {
 }
 
 type TransactionCommandPayloadMeta {
-  some: String
-  # chainId: Int
-  # creationTime: MsFromPosixEpoch
-  # ttl: Int
-  # gasLimit: Int
-  # gasPrice: Int
-  # sender: String
-  # signer: String
-  # nonce: String
+  chainId: Int
+  creationTime: Int
+  ttl: Int
+  gasLimit: Int
+  gasPrice: Int
+  sender: String
+  signer: String
+  nonce: String
 }
 
 type TransactionCommandResult {
