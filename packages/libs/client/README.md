@@ -69,7 +69,7 @@ npx tsc --init
 We wanted `@kadena/client` to be independent so this is a tool that can be used
 with arbitrary contracts. That is also why you have to _generate_ the interfaces
 used by `@kadena/client`. You can use smart contracts from the blockchain or
-your own locale ones.
+your own local ones.
 
 For the **template based interaction** we will provide a repository with
 templates that can be used.
