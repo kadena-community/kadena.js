@@ -5,6 +5,6 @@ type all = any;
 export const asyncPipe =
   (...args: Array<(arg: all) => all>): ((init: all) => Promise<all>) =>
   (init: all): Promise<all> =>
-    args.reduce((chian, fn) => chian.then(fn), Promise.resolve(init));
+    args.reduce((chain, fn) => chain.then(fn), Promise.resolve(init));
 
 export const head = (args: all[]): any => args[0];

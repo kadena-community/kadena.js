@@ -62,7 +62,7 @@ function finishInTheTargetChain(
     .createTransaction();
 }
 
-export async function doCrossChianTransfer(
+export async function doCrossChainTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
