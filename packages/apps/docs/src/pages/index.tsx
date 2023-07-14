@@ -1,5 +1,5 @@
 import { Stack } from '@kadena/react-components';
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
@@ -27,18 +27,26 @@ const Home: FC<IProps> = ({ topDocs }) => {
             <BrowseSection>
               <BrowseSection.LinkList title="General">
                 <Link href="/docs/kadena">Overview of Kadena</Link>
-                <Link href="/docs/kadena">Manage your KDA</Link>
-                <a href="https://kadena.io">Kadena.io</a>
+                <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
+                <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                  Kadena.io
+                </a>
               </BrowseSection.LinkList>
               <BrowseSection.LinkList title="Developers">
-                <Link href="/docs/kadena">Quick start</Link>
-                <Link href="/docs/kadena">Pact Language resources</Link>
-                <Link href="/docs/kadena">Pact developer tutorials</Link>
+                <Link href="/docs/build/quickstart">Quick start</Link>
+                <Link href="/docs/pact/beginner/language-basics">
+                  Pact Language resources
+                </Link>
+                <Link href="/docs/pact">Pact developer tutorials</Link>
               </BrowseSection.LinkList>
               <BrowseSection.LinkList title="Programs">
-                <Link href="/docs/kadena">Developer program</Link>
-                <Link href="/docs/kadena">Ambassador program</Link>
-                <Link href="/docs/kadena">Technical grants</Link>
+                <Link href="/docs/build/support">Developer program</Link>
+                <Link href="/docs/contribute/ambassadors">
+                  Ambassador program
+                </Link>
+                <Link href="/docs/build/support/technical-grants">
+                  Technical grants
+                </Link>
               </BrowseSection.LinkList>
             </BrowseSection>
           </Box>
@@ -65,7 +73,7 @@ const Home: FC<IProps> = ({ topDocs }) => {
               />
             </BrowseSection>
 
-            <BrowseSection title="Developer">
+            <BrowseSection title="Pact">
               <BrowseSection.LinkBlock
                 title="Pact Language"
                 subtitle="Explore all products"
@@ -79,10 +87,16 @@ const Home: FC<IProps> = ({ topDocs }) => {
                 href="/docs/build/tools"
               />
               <BrowseSection.LinkBlock
-                title="Pact Developer Tutorials"
-                subtitle="Explore all products"
+                title="Beginner Tutorials"
+                subtitle="For starters"
                 icon="PactDeveloper"
-                href="/docs/kadena"
+                href="/docs/pact/beginner"
+              />
+              <BrowseSection.LinkBlock
+                title="Intermediate Tutorials"
+                subtitle="get some more experience"
+                icon="PactDeveloper"
+                href="docs/pact/intermediate"
               />
               <BrowseSection.LinkBlock
                 title="Quickstart"

@@ -37,6 +37,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 
 const Item: FC<IResultProps> = ({ item }) => {
   const url = createLinkFromMD(item.filename);
+  console.log(url);
   return (
     <StyledListItem>
       <Link href={url} passHref legacyBehavior>
