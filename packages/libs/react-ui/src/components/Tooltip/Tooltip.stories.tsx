@@ -1,5 +1,6 @@
 import { IconButton, SystemIcon } from '..';
 
+import { container } from './stories.css';
 import { ITooltipProps, Tooltip } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -17,6 +18,12 @@ const meta: Meta<
         type: 'text',
       },
     },
+    placement: {
+      options: ['top', 'bottom', 'left', 'right'],
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 
@@ -31,12 +38,13 @@ export const Dynamic: Story = {
   name: 'Tooltip',
   args: {
     text: "I'm a tooltip, look at me!",
+    placement: 'right',
   },
-  render: ({ text }) => {
+  render: ({ text, placement }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     return (
-      <>
+      <div className={container}>
         <IconButton
           title="hover me"
           icon={SystemIcon.Information}
@@ -48,8 +56,10 @@ export const Dynamic: Story = {
           }
         />
 
-        <Tooltip.Root ref={ref}>{text}</Tooltip.Root>
-      </>
+        <Tooltip.Root placement={placement} ref={ref}>
+          {text}
+        </Tooltip.Root>
+      </div>
     );
   },
 };
