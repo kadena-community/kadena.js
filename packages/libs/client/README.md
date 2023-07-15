@@ -283,7 +283,7 @@ flexibility on crating command like composing command or lazy loading.
 
 Here are two examples to demonstrate this:
 
-- [example-contract/transfer-fp.ts][30]
+- [example-contract/functional/transfer-fp.ts][30]
 - [example-contract/compose-commands.ts][31]
 
 ## Send a request to the blockchain
