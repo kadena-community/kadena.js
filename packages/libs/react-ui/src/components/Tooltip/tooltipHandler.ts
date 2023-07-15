@@ -13,6 +13,33 @@ export default function tooltipHandler(
     throw new Error('Tooltip node is not defined');
   }
   node.classList.toggle(visibleClass);
-  node.style.top = `${rect.top}px`;
-  node.style.left = `${rect.left + rect.width}px`;
+
+  const placement = node.getAttribute('data-placement');
+
+  switch (placement) {
+    case 'top':
+      node.style.top = `${rect.top - node.offsetHeight + window.scrollY}px`;
+      node.style.left = `${
+        rect.left + rect.width / 2 - node.offsetWidth / 2 + window.scrollX
+      }px`;
+      break;
+    case 'bottom':
+      node.style.top = `${rect.top + rect.height + window.scrollY}px`;
+      node.style.left = `${
+        rect.left + rect.width / 2 - node.offsetWidth / 2 + window.scrollX
+      }px`;
+      break;
+    case 'left':
+      node.style.top = `${
+        rect.top + rect.height / 2 - node.offsetHeight / 2 + window.scrollY
+      }px`;
+      node.style.left = `${rect.left - node.offsetWidth + window.scrollX}px`;
+      break;
+    case 'right':
+      node.style.top = `${
+        rect.top + rect.height / 2 - node.offsetHeight / 2 + window.scrollY
+      }px`;
+      node.style.left = `${rect.left + rect.width + window.scrollX}px`;
+      break;
+  }
 }
