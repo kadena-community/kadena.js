@@ -1,8 +1,7 @@
-import { ProductIcon } from '@components/Icon';
-
 import { containerClass, iconContainer, navClass } from './Breadcrumbs.css';
 import { IBreadcrumbItemProps } from './BreadcrumbsItem';
 
+import { ProductIcon } from '@components/Icon';
 import React, { FC, FunctionComponentElement } from 'react';
 
 export interface IBreadcrumbsProps {

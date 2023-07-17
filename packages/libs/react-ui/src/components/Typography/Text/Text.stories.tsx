@@ -1,4 +1,3 @@
-import { Text } from '@components/Typography/Text/Text';
 import {
   colorVariant,
   elementVariant,
@@ -7,6 +6,7 @@ import {
   transformVariant,
 } from './Text.css';
 
+import { Text } from '@components/Typography/Text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 

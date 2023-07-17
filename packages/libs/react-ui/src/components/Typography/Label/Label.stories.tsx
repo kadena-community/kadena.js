@@ -1,7 +1,6 @@
 import { Input } from '@components/Input';
 import { Stack } from '@components/Stack';
 import { Label } from '@components/Typography/Label/Label';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 

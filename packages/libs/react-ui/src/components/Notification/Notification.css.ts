@@ -1,6 +1,5 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { ColorType, vars } from '@theme/vars.css';
-
 import {
   createVar,
   fallbackVar,
