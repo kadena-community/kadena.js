@@ -102,7 +102,7 @@ const responsiveProperties = defineProperties({
     minWidth: [0],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
-    whiteSpace: ['nowrap'],
+    whiteSpace: ['nowrap', 'break-spaces', 'normal'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],

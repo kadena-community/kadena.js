@@ -26,7 +26,7 @@ export const FooterIconItem: FC<IFooterIconItemProps> = ({
   type ColorKey = keyof typeof vars.colors;
   const getColor = (color: string): string => {
     const contrast: ColorKey = `$${color}Contrast` as ColorKey;
-    console.log(contrast);
+
     if (color === 'default') {
       return vars.colors.$neutral3;
     }
@@ -39,7 +39,7 @@ export const FooterIconItem: FC<IFooterIconItemProps> = ({
   };
 
   return (
-    <div
+    <button
       className={iconBoxClass}
       onClick={onClick}
       data-testid="kda-footer-icon-item"
@@ -47,9 +47,7 @@ export const FooterIconItem: FC<IFooterIconItemProps> = ({
       {text !== undefined ? (
         <span className={iconTextClassList}>{text}</span>
       ) : null}
-      <a>
-        <Icon size="sm" color={getColor(color)} />
-      </a>
-    </div>
+      <Icon size="sm" color={getColor(color)} />
+    </button>
   );
 };

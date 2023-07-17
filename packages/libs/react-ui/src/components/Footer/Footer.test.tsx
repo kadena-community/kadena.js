@@ -34,12 +34,9 @@ describe('Footer', () => {
         <Footer.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <Footer.LinkItem
-                key={index}
-                title={item.title}
-                href={item.href}
-                color={color}
-              />
+              <Footer.LinkItem key={index} color={color}>
+                <a href={item.href}>{item.title}</a>
+              </Footer.LinkItem>
             );
           })}
         </Footer.Panel>

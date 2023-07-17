@@ -1,11 +1,13 @@
 import {
   IFooterIconItemProps,
   IFooterLinkItemProps,
+  Link,
   SystemIcon,
 } from './../../';
 import { colorVariants } from './Footer.css';
 import { Footer, IFooterProps } from './index';
 
+import { Target } from '@components/Footer/FooterLinkItem';
 import { IconType } from '@components/Icons/IconWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -34,14 +36,16 @@ const meta: Meta<
     },
   },
 };
-const links: { title: string; href: string }[] = [
+const links: { title: string; href?: string; target?: Target }[] = [
   {
     title: 'Tutorial',
     href: 'https://kadena.io/',
+    target: '_self',
   },
   {
     title: 'Documentation',
     href: 'https://kadena.io/',
+    target: '_self',
   },
   {
     title: 'Privacy & Policy',
@@ -57,7 +61,6 @@ const links: { title: string; href: string }[] = [
   },
   {
     title: 'Take me there',
-    href: '',
   },
 ];
 
@@ -106,17 +109,21 @@ export const Primary: Story = {
   render: ({ color, linksCount, iconsCount }) => {
     const linkItems = links.slice(0, linksCount);
     const iconButtons = icons.slice(0, iconsCount);
+
     return (
       <Footer.Root>
         <Footer.Panel>
           {linkItems.map((item, index) => {
             return (
-              <Footer.LinkItem
-                key={index}
-                title={item.title}
-                href={item.href}
-                color={color}
-              />
+              <Footer.LinkItem key={index} color={color}>
+                {item.href !== undefined ? (
+                  <a href={item.href} target={item.target}>
+                    {item.title}
+                  </a>
+                ) : (
+                  <span>{item.title}</span>
+                )}
+              </Footer.LinkItem>
             );
           })}
         </Footer.Panel>

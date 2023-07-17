@@ -31,7 +31,7 @@ export const containerClass = style([
 
 export const footerPanel = style([
   sprinkles({
-    width: 'min-content',
+    width: 'max-content',
     border: 'none',
     alignItems: 'center',
     lineHeight: '$lg',
@@ -100,17 +100,13 @@ export const linkClass = style([
   },
 ]);
 
-export const spanClass = style([
-  sprinkles({
-    marginRight: '$1',
-  }),
-]);
-
 export const iconBoxClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'center',
     whiteSpace: 'nowrap',
+    border: 'none',
+    cursor: 'pointer',
   }),
 ]);
 
