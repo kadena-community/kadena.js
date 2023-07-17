@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/naming-convention: 0 */
 import { breakpoints, sprinkles } from '@theme/sprinkles.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -14,70 +15,43 @@ export const gridItemClass = style([
 ]);
 
 export const gapVariants = styleVariants({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xs': [sprinkles({ gridGap: '$2xs' })],
   xs: [sprinkles({ gridGap: '$xs' })],
   sm: [sprinkles({ gridGap: '$sm' })],
   md: [sprinkles({ gridGap: '$md' })],
   lg: [sprinkles({ gridGap: '$lg' })],
   xl: [sprinkles({ gridGap: '$xl' })],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   '2xl': [sprinkles({ gridGap: '$2xl' })],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   '3xl': [sprinkles({ gridGap: '$3xl' })],
 });
 
 export const rowSpanVariants = styleVariants({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   1: [{ gridRow: 'span 1' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   2: [{ gridRow: 'span 2' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   3: [{ gridRow: 'span 3' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   4: [{ gridRow: 'span 4' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   5: [{ gridRow: 'span 5' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   6: [{ gridRow: 'span 6' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   7: [{ gridRow: 'span 7' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   8: [{ gridRow: 'span 8' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   9: [{ gridRow: 'span 9' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   10: [{ gridRow: 'span 10' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   11: [{ gridRow: 'span 11' }],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   12: [{ gridRow: 'span 12' }],
 });
 
 const columnCount: Record<number, number> = {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   1: 1,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   2: 2,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   3: 3,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   4: 4,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   5: 5,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   6: 6,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   7: 7,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   8: 8,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   9: 9,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   10: 10,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   11: 11,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   12: 12,
 };
 
