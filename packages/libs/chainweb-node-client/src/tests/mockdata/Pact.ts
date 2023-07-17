@@ -26,7 +26,7 @@ export const pactTestCommand: ICommandPayload = {
     creationTime: 0,
     ttl: 0,
     gasLimit: 0,
-    chainId: '',
+    chainId: '0',
     gasPrice: 0,
     sender: '',
   },

@@ -1,4 +1,4 @@
-import { SystemIcon } from '../Icons';
+import { SystemIcon } from '../Icon';
 
 import { Option } from './Option';
 import { ISelectProps, Select } from './Select';

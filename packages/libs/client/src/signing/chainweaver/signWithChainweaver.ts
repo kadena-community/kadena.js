@@ -1,10 +1,13 @@
-import { IPactCommand } from '../../interfaces/IPactCommand';
-import { ICommandBuilder } from '../../pact';
+import { ICommand, IUnsignedCommand } from '@kadena/types';
+
 import {
   IQuickSignRequestBody,
   IQuicksignResponse,
   IQuicksignSigner,
 } from '../../signing-api/v1/quicksign';
+import { ISignFunction } from '../ISignFunction';
+import { addSignatures } from '../utils/addSignature';
+import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import fetch from 'cross-fetch';
 import type { Debugger } from 'debug';
@@ -15,15 +18,20 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
 /**
  * @alpha
  */
-export async function signWithChainweaver<T1 extends string, T2>(
-  ...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]
-): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]> {
+export const signWithChainweaver: ISignFunction = (async (
+  transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+) => {
+  if (transactionList === undefined) {
+    throw new Error('No transaction(s) to sign');
+  }
+  const isList = Array.isArray(transactionList);
+  const transactions = isList ? transactionList : [transactionList];
   const quickSignRequest: IQuickSignRequestBody = {
     cmdSigDatas: transactions.map((t) => {
-      const command = t.createCommand();
+      const parsedTransaction = parseTransactionCommand(t);
       return {
-        cmd: command.cmd,
-        sigs: t.signers.map((signer, i) => {
+        cmd: t.cmd,
+        sigs: parsedTransaction.signers.map((signer, i) => {
           return {
             pubKey: signer.pubKey,
             sig: t.sigs[i]?.sig ?? null,
@@ -50,16 +58,20 @@ export async function signWithChainweaver<T1 extends string, T2>(
     const result = JSON.parse(bodyText) as IQuicksignResponse;
 
     if ('error' in result) {
-      throw new Error();
+      if ('msg' in result.error) {
+        console.log('error in result', result.error.msg);
+      }
+      throw new Error(JSON.stringify(result.error));
     }
 
     result.responses.map((signedCommand, i) => {
-      transactions[i].addSignatures(
+      transactions[i] = addSignatures(
+        transactions[i],
         ...signedCommand.commandSigData.sigs.filter(isASigner),
       );
     });
 
-    return transactions;
+    return isList ? transactions : transactions[0];
   } catch (error) {
     throw new Error(
       'An error occurred when adding signatures to the command' +
@@ -69,7 +81,7 @@ export async function signWithChainweaver<T1 extends string, T2>(
         `${error}`,
     );
   }
-}
+}) as ISignFunction;
 
 function isASigner(signer: IQuicksignSigner): signer is {
   pubKey: string;

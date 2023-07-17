@@ -24,7 +24,7 @@
     "format:src": "prettier config src templates --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "rimraf test-* && heft test --no-build && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
+    "test": "rimraf test-* && heft test && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
   "dependencies": {
     "commander": "^9.3.0",

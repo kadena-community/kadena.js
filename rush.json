@@ -406,6 +406,7 @@
     {
       "packageName": "@kadena/graph",
       "projectFolder": "packages/apps/graph",
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
       "reviewCategory": "prototypes",
       "shouldPublish": false
     },
@@ -413,6 +414,7 @@
     {
       "packageName": "@kadena/graph-client",
       "projectFolder": "packages/apps/graph-client",
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
       "reviewCategory": "prototypes",
       "shouldPublish": false
     },
@@ -421,6 +423,7 @@
       "packageName": "@kadena/docs",
       "projectFolder": "packages/apps/docs",
       "reviewCategory": "prototypes",
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
       "shouldPublish": false
     },
 
@@ -428,6 +431,7 @@
       "packageName": "@kadena/transfer",
       "projectFolder": "packages/apps/transfer",
       "reviewCategory": "prototypes",
+      "decoupledLocalDependencies": ["@kadena/client", "@kadena/pactjs-cli", "@kadena/chainweb-node-client"],
       "skipRushCheck": false,
       "shouldPublish": false
     },
@@ -451,7 +455,7 @@
       "projectFolder": "packages/libs/client",
       "tags": ["libs"],
       "shouldPublish": true,
-      "versionPolicyName": "alpha"
+      "versionPolicyName": "client"
     },
 
     {
@@ -505,12 +509,12 @@
       "projectFolder": "packages/libs/pactjs-generator",
       "tags": ["libs"],
       "shouldPublish": true,
-      "versionPolicyName": "alpha"
+      "versionPolicyName": "client"
     },
 
     {
-      "packageName": "@kadena/pactjs-test-project",
-      "projectFolder": "packages/libs/pactjs-test-project",
+      "packageName": "@kadena/client-examples",
+      "projectFolder": "packages/libs/client-examples",
       "tags": ["libs"],
       "shouldPublish": false
     },
@@ -543,7 +547,11 @@
     {
       "packageName": "@kadena/cookbook",
       "projectFolder": "packages/tools/cookbook",
-      "cyclicDependencyProjects": ["@kadena/cookbook"],
+      "decoupledLocalDependencies": [
+        "@kadena/cookbook",
+        "@kadena/client",
+        "@kadena/pactjs-cli"
+      ],
       "tags": ["tools"],
       "shouldPublish": false
     },
@@ -565,7 +573,7 @@
     {
       "packageName": "@kadena-dev/eslint-plugin",
       "projectFolder": "packages/tools/eslint-plugin",
-      "cyclicDependencyProjects": ["@kadena-dev/eslint-plugin"],
+      "decoupledLocalDependencies": ["@kadena-dev/eslint-plugin"],
       "tags": ["tools"],
       "shouldPublish": true
     },
@@ -589,7 +597,7 @@
       "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
       "shouldPublish": true,
-      "versionPolicyName": "alpha"
+      "versionPolicyName": "client"
     },
 
     {
@@ -633,11 +641,29 @@
     //   "reviewCategory": "production",
     //
     //   /**
-    //    * A list of local projects that appear as devDependencies for this project, but cannot be
-    //    * locally linked because it would create a cyclic dependency; instead, the last published
-    //    * version will be installed in the Common folder.
+    //    * A list of Rush project names that are to be installed from NPM
+    //    * instead of linking to the local project.
+    //    *
+    //    * If a project's package.json specifies a dependency that is another Rush project
+    //    * in the monorepo workspace, normally Rush will locally link its folder instead of
+    //    * installing from NPM.  If you are using PNPM workspaces, this is indicated by
+    //    * a SemVer range such as "workspace:^1.2.3".  To prevent mistakes, Rush reports
+    //    * an error if the "workspace:" protocol is missing.
+    //    *
+    //    * Locally linking ensures that regressions are caught as early as possible and is
+    //    * a key benefit of monorepos.  However there are occasional situations where
+    //    * installing from NPM is needed.  A classic example is a cyclic dependency.
+    //    * Imagine three Rush projects: "my-toolchain" depends on "my-tester", which depends
+    //    * on "my-library".  Suppose that we add "my-toolchain" to the "devDependencies"
+    //    * of "my-library" so it can be built by our toolchain.  This cycle creates
+    //    * a problem -- Rush can't build a project using a not-yet-built dependency.
+    //    * We can solve it by adding "my-toolchain" to the "decoupledLocalDependencies"
+    //    * of "my-library", so it builds using the last published release.  Choose carefully
+    //    * which package to decouple; some choices are much easier to manage than others.
+    //    *
+    //    * (In older Rush releases, this setting was called "cyclicDependencyProjects".)
     //    */
-    //   "cyclicDependencyProjects": [
+    //   "decoupledLocalDependencies": [
     //     // "my-toolchain"
     //   ],
     //

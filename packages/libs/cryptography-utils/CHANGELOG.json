@@ -2,6 +2,26 @@
   "name": "@kadena/cryptography-utils",
   "entries": [
     {
+      "version": "0.3.6",
+      "tag": "@kadena/cryptography-utils_v0.3.6",
+      "date": "Fri, 14 Jul 2023 10:02:16 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update tests"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.5",
       "tag": "@kadena/cryptography-utils_v0.3.5",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

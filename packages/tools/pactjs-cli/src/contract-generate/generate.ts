@@ -1,13 +1,8 @@
-import {
-  FileContractDefinition,
-  generateDts,
-  IContractDefinition,
-  StringContractDefinition,
-} from '@kadena/pactjs-generator';
+import { generateDts, pactParser } from '@kadena/pactjs-generator';
 
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { ContractGenerateOptions } from './';
+import { IContractGenerateOptions } from './';
 
 import { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
@@ -47,145 +42,175 @@ function verifyTsconfigTypings(
   }
 }
 
-export const generate =
-  (
-    program: Command,
-    version: string,
-  ): ((args: ContractGenerateOptions) => void) =>
-  async (args: ContractGenerateOptions) => {
-    let pactModule: IContractDefinition;
-    if ('contract' in args) {
-      console.log(`Generating Pact contract from ${args.contract}`);
+async function generator(
+  args: IContractGenerateOptions,
+): Promise<Map<string, string>> {
+  if (args.contract !== undefined) {
+    console.log(
+      `Generating pact contracts from chainweb for ${args.contract.join(',')}`,
+    );
+  }
 
-      const pactCode = await retrieveContractFromChain(
-        args.contract,
+  if (args.file !== undefined) {
+    console.log(
+      `Generating pact contracts from files for ${args.file.join(',')}`,
+    );
+  }
+
+  const getContract = async (name: string): Promise<string> => {
+    console.log('fetching', name);
+    if (
+      args.api !== undefined &&
+      args.chain !== undefined &&
+      args.network !== undefined
+    ) {
+      const content = await retrieveContractFromChain(
+        name,
         args.api,
         args.chain,
         args.network,
       );
-
-      if (pactCode === undefined || pactCode.length === 0) {
-        program.error('Could not retrieve contract from chain');
-      }
-
-      // if contract is namespaced, use the first part as the namespace
-      const namespace = args.contract.includes('.')
-        ? args.contract.split('.')[0]
-        : undefined;
-
-      pactModule = new StringContractDefinition({
-        contract: pactCode,
-        namespace,
-      });
-    } else {
-      console.log(`Generating Pact contract from ${args.file}`);
-      pactModule = new FileContractDefinition({
-        path: join(process.cwd(), args.file!),
-      });
+      return content ?? '';
     }
+    console.log(`
+      the generator tries to fetch ${name} from the blockchain but the api data is not presented.
+      this happen because ${name} mentioned via --contracts directly or it is a dependency of a module.
+      the scrip skips this module
+      `);
+    return '';
+  };
 
-    const moduleDtss: Map<string, string> = generateDts(
-      pactModule.modulesWithFunctions,
-      args.capsInterface,
+  const files: string[] =
+    args.file === undefined
+      ? []
+      : args.file.map((file) =>
+          readFileSync(join(process.cwd(), file), 'utf-8'),
+        );
+
+  const modules = await pactParser({
+    contractNames: args.contract,
+    files,
+    getContract,
+    namespace: args.namespace,
+  });
+
+  if (process.env.DEBUG === 'dev') {
+    writeFileSync(
+      join(process.cwd(), 'modules.json'),
+      JSON.stringify(modules, undefined, 2),
     );
+  }
 
-    // walk up in file tree from process.cwd() to get the package.json
-    const targetPackageJson: string | undefined = shallowFindFile(
-      process.cwd(),
-      'package.json',
-    );
+  const moduleDtss = new Map();
 
-    if (
-      targetPackageJson === undefined ||
-      targetPackageJson.length === 0 ||
-      targetPackageJson === '/'
-    ) {
-      program.error('Could not find package.json');
-    }
+  Object.keys(modules).map((name) => {
+    moduleDtss.set(name, generateDts(name, modules));
+  });
 
-    console.log(`Using package.json at ${targetPackageJson}`);
+  return moduleDtss;
+}
 
-    const targetDirectory: string = join(
+interface IGenerate {
+  (program: Command, version: string): (args: IContractGenerateOptions) => void;
+}
+export const generate: IGenerate = (program, version) => async (args) => {
+  // walk up in file tree from process.cwd() to get the package.json
+  const targetPackageJson: string | undefined = shallowFindFile(
+    process.cwd(),
+    'package.json',
+  );
+
+  if (
+    targetPackageJson === undefined ||
+    targetPackageJson.length === 0 ||
+    targetPackageJson === '/'
+  ) {
+    program.error('Could not find package.json');
+    return;
+  }
+
+  const moduleDtss = await generator(args);
+
+  console.log(`Using package.json at ${targetPackageJson}`);
+
+  const targetDirectory: string = join(
+    dirname(targetPackageJson),
+    'node_modules',
+    TARGET_PACKAGE,
+  );
+
+  if (args.clean === true) {
+    console.log(`Cleaning ${targetDirectory}`);
+    rimraf.sync(targetDirectory);
+  }
+
+  if (!existsSync(targetDirectory)) {
+    console.log(`Creating directory ${targetDirectory}`);
+    mkdirp.sync(targetDirectory);
+  }
+
+  moduleDtss.forEach((dts, moduleName) => {
+    const targetFilePath: string = join(
       dirname(targetPackageJson),
       'node_modules',
       TARGET_PACKAGE,
+      `${moduleName}.d.ts`,
     );
 
-    if (args.clean === true) {
-      console.log(`Cleaning ${targetDirectory}`);
-      rimraf.sync(targetDirectory);
-    }
+    // write dts to index.d.ts to file
+    const indexPath: string = join(targetDirectory, 'index.d.ts');
+    const exportStatement: string = `export * from './${moduleName}';`;
 
-    if (!existsSync(targetDirectory)) {
-      console.log(`Creating directory ${targetDirectory}`);
-      mkdirp.sync(targetDirectory);
-    }
+    // always overwrite existing file
+    console.log(`Writing to new file ${targetFilePath}`);
+    writeFileSync(targetFilePath, dts);
 
-    moduleDtss.forEach((dts, moduleName) => {
-      const targetFilePath: string = join(
-        dirname(targetPackageJson),
-        'node_modules',
-        TARGET_PACKAGE,
-        `${moduleName}.d.ts`,
-      );
-
-      // write dts to index.d.ts to file
-      const indexPath: string = join(targetDirectory, 'index.d.ts');
-      const exportStatement: string = `export * from './${moduleName}';`;
-
-      // always overwrite existing file
-      console.log(`Writing to new file ${targetFilePath}`);
-      writeFileSync(targetFilePath, dts);
-
-      // if indexPath exists, append export to existing file
-      if (existsSync(indexPath)) {
-        console.log(`Appending to existing file ${indexPath}`);
-        const indexDts: string = readFileSync(indexPath, 'utf8');
-        // Append the export to the file if it's not already there.
-        if (!indexDts.includes(exportStatement)) {
-          const separator = indexDts.endsWith('\n') ? '' : '\n';
-          const newIndexDts = [indexDts, exportStatement].join(separator);
-          writeFileSync(indexPath, newIndexDts);
-        }
-      } else {
-        console.log(`Writing to new file ${indexPath}`);
-        writeFileSync(indexPath, exportStatement);
+    // if indexPath exists, append export to existing file
+    if (existsSync(indexPath)) {
+      console.log(`Appending to existing file ${indexPath}`);
+      const indexDts: string = readFileSync(indexPath, 'utf8');
+      // Append the export to the file if it's not already there.
+      if (!indexDts.includes(exportStatement)) {
+        const separator = indexDts.endsWith('\n') ? '' : '\n';
+        const newIndexDts = [indexDts, exportStatement].join(separator);
+        writeFileSync(indexPath, newIndexDts);
       }
-    });
-
-    // write npm init to package.json
-    const defaultPackageJsonPath: string = join(
-      targetDirectory,
-      'package.json',
-    );
-
-    // if exists, do nothing
-    if (existsSync(defaultPackageJsonPath)) {
-      console.log(`Package.json already exists at ${defaultPackageJsonPath}`);
     } else {
-      // write default contents to package.json
-      console.log(`Writing default package.json to ${defaultPackageJsonPath}`);
-      writeFileSync(
-        defaultPackageJsonPath,
-        JSON.stringify(
-          {
-            name: TARGET_PACKAGE,
-            version: version,
-            description: 'TypeScript definitions for @kadena/client',
-            types: 'index.d.ts',
-            keywords: ['pact', 'contract', 'pactjs'],
-            author: `@kadena/pactjs-cli@${version}`,
-          },
-          null,
-          2,
-        ),
-      );
+      console.log(`Writing to new file ${indexPath}`);
+      writeFileSync(indexPath, exportStatement);
     }
+  });
 
-    const tsconfigPath: string | undefined = shallowFindFile(
-      join(process.cwd()),
-      'tsconfig.json',
+  // write npm init to package.json
+  const defaultPackageJsonPath: string = join(targetDirectory, 'package.json');
+
+  // if exists, do nothing
+  if (existsSync(defaultPackageJsonPath)) {
+    console.log(`Package.json already exists at ${defaultPackageJsonPath}`);
+  } else {
+    // write default contents to package.json
+    console.log(`Writing default package.json to ${defaultPackageJsonPath}`);
+    writeFileSync(
+      defaultPackageJsonPath,
+      JSON.stringify(
+        {
+          name: TARGET_PACKAGE,
+          version: version,
+          description: 'TypeScript definitions for @kadena/client',
+          types: 'index.d.ts',
+          keywords: ['pact', 'contract', 'pactjs'],
+          author: `@kadena/pactjs-cli@${version}`,
+        },
+        null,
+        2,
+      ),
     );
+  }
 
-    verifyTsconfigTypings(tsconfigPath, program);
-  };
+  const tsconfigPath: string | undefined = shallowFindFile(
+    join(process.cwd()),
+    'tsconfig.json',
+  );
+
+  verifyTsconfigTypings(tsconfigPath, program);
+};

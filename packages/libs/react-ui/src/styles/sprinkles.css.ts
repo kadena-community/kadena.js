@@ -1,4 +1,4 @@
-import { darkThemeClass, vars } from './themes.css';
+import { darkThemeClass, vars } from './vars.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 
@@ -102,7 +102,7 @@ const responsiveProperties = defineProperties({
     minWidth: [0],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
-    whiteSpace: ['nowrap'],
+    whiteSpace: ['nowrap', 'break-spaces', 'normal'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],

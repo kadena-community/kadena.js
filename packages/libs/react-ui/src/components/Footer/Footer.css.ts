@@ -4,7 +4,6 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    // width: '100%',
     maxWidth: { xs: 'maxContent', sm: '100%' },
     height: 'min-content',
     backgroundColor: '$neutral5',
@@ -32,8 +31,7 @@ export const containerClass = style([
 
 export const footerPanel = style([
   sprinkles({
-    width: 'min-content',
-    background: '$neutral5',
+    width: 'max-content',
     border: 'none',
     alignItems: 'center',
     lineHeight: '$lg',
@@ -102,17 +100,13 @@ export const linkClass = style([
   },
 ]);
 
-export const spanClass = style([
-  sprinkles({
-    marginRight: '$1',
-  }),
-]);
-
 export const iconBoxClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'center',
     whiteSpace: 'nowrap',
+    border: 'none',
+    cursor: 'pointer',
   }),
 ]);
 

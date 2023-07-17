@@ -1,4 +1,5 @@
-import { Heading, Stack } from '@kadena/react-components';
+import { Stack } from '@kadena/react-components';
+import { Heading } from '@kadena/react-ui';
 
 import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';

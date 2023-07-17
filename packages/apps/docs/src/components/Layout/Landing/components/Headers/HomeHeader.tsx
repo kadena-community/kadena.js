@@ -1,4 +1,5 @@
-import { GradientText, Heading, Stack } from '@kadena/react-components';
+import { Stack } from '@kadena/react-components';
+import { GradientText, Heading } from '@kadena/react-ui';
 
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 

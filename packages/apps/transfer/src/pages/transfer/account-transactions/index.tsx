@@ -1,4 +1,4 @@
-import { Button, TextField } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { Option, Select } from '@/components/Global';
@@ -6,9 +6,7 @@ import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledContent,
-  StyledForm,
   StyledFormButton,
-  StyledMainContent,
   StyledMediumField,
   StyledResultContainer,
   StyledSmallField,
@@ -19,6 +17,10 @@ import {
   StyledTableHeader,
   StyledTableRow,
 } from '@/pages/transfer/account-transactions/styles';
+import {
+  formStyle,
+  mainContentStyle,
+} from '@/pages/transfer/account-transactions/styles.css';
 import {
   getTransactions,
   ITransaction,
@@ -123,9 +125,9 @@ const CheckTransactions: FC = () => {
 
   return (
     <MainLayout title={t('Account Transactions')}>
-      <StyledMainContent>
+      <main className={mainContentStyle}>
         <StyledContent>
-          <StyledForm onSubmit={checkTransactionsEvent}>
+          <form className={formStyle} onSubmit={checkTransactionsEvent}>
             <StyledSmallField>
               <Select
                 leadingText={t('Chain')}
@@ -138,6 +140,7 @@ const CheckTransactions: FC = () => {
             <StyledMediumField>
               <TextField
                 inputProps={{
+                  id: 'account-input',
                   placeholder: t('Account'),
                   onChange: (e) =>
                     setAccount((e.target as HTMLInputElement).value),
@@ -146,11 +149,11 @@ const CheckTransactions: FC = () => {
               />
             </StyledMediumField>
             <StyledFormButton>
-              <Button title={t('Check Transactions')}>
+              <Button.Root title={t('Check Transactions')}>
                 {t('Check Transactions')}
-              </Button>
+              </Button.Root>
             </StyledFormButton>
-          </StyledForm>
+          </form>
 
           <StyledResultContainer>
             {results.length ? (
@@ -196,7 +199,7 @@ const CheckTransactions: FC = () => {
             ) : null}
           </StyledResultContainer>
         </StyledContent>
-      </StyledMainContent>
+      </main>
     </MainLayout>
   );
 };

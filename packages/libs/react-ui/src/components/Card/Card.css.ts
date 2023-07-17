@@ -1,11 +1,12 @@
-import { sprinkles, vars } from '../../styles';
+import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
+import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 
-import { style } from '@vanilla-extract/css';
+const textColor = createVar();
 
 export const container = style([
   sprinkles({
     backgroundColor: '$neutral1',
-    color: '$neutral6',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -19,6 +20,7 @@ export const container = style([
   }),
   {
     border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+    color: fallbackVar(textColor, vars.colors.$neutral6),
   },
 ]);
 
@@ -47,6 +49,20 @@ export const stackClass = style([
         width: `calc(100% - ${vars.sizes.$lg} - ${vars.sizes.$lg})`,
         borderBottom: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
       },
+    },
+  },
+]);
+
+export const disabledClass = style([
+  sprinkles({
+    backgroundColor: '$neutral1',
+    pointerEvents: 'none',
+  }),
+  {
+    border: `${vars.borderWidths.$md} solid ${vars.colors.$borderSubtle}`,
+
+    vars: {
+      [textColor]: vars.colors.$neutral3,
     },
   },
 ]);

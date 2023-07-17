@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
 import { StaticResultsList, StyledItem, StyledListItem } from './styles';
 
@@ -37,10 +37,12 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 
 const Item: FC<IResultProps> = ({ item }) => {
   const url = createLinkFromMD(item.filename);
+  const { clearModal } = useModal();
+
   return (
     <StyledListItem>
       <Link href={url} passHref legacyBehavior>
-        <StyledItem key={item.id}>
+        <StyledItem key={item.id} onClick={clearModal}>
           <Heading color="primaryContrast" as="h5">
             {item.title}
           </Heading>

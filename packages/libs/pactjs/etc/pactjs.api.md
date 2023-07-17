@@ -4,9 +4,8 @@
 
 ```ts
 
+import BigNumber from 'bignumber.js';
 import type { ICommand } from '@kadena/types';
-import { IPactDecimal } from '@kadena/types';
-import { IPactInt } from '@kadena/types';
 import type { IUnsignedCommand } from '@kadena/types';
 import { PactCode } from '@kadena/types';
 import { PactValue } from '@kadena/types';
@@ -21,20 +20,8 @@ export function ensureSignedCommand(command: IUnsignedCommand | ICommand): IComm
 export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
 
 // @alpha
-export class PactNumber {
+export class PactNumber extends BigNumber {
     constructor(value: string | number);
-    // (undocumented)
-    toDecimal(): string;
-    // (undocumented)
-    toInteger(): string;
-    // (undocumented)
-    toPactDecimal(): IPactDecimal;
-    // (undocumented)
-    toPactInteger(): IPactInt;
-    // (undocumented)
-    toStringifiedDecimal(): string;
-    // (undocumented)
-    toStringifiedInteger(): string;
 }
 
 // (No @packageDocumentation comment for this package)

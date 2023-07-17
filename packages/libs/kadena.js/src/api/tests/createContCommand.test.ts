@@ -29,5 +29,5 @@ test('Takes in cont command parameters and outputs a command formatted for /send
   );
   const expected = createSendRequest([command]);
 
-  expect(expected).toEqual(actual);
+  expect(actual).toEqual(expected);
 });

@@ -1,7 +1,7 @@
-import { SystemIcon } from './../../';
 import { colorVariants } from './Notification.css';
-import { INotificationProps, Notification } from '.';
 
+import { SystemIcon } from '@components/Icon';
+import { INotificationProps, Notification } from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
