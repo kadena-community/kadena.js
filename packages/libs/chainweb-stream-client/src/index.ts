@@ -16,10 +16,13 @@ import {
   IChainwebStreamConfig,
 } from './types';
 import { isMajorCompatible, isMinorCompatible, isClientAhead } from './semver';
+import { notUndefined } from './util';
+import SlidingCache from './sliding-cache';
 
 export * from './types';
 
 const CLIENT_PROTOCOL_VERSION: string = '0.0.3';
+const MAX_CHAIN_HEIGHT_SPAN: number = 3;
 
 const DEFAULT_CONFIRMATION_DEPTH: number = 6;
 const DEFAULT_CONNECT_TIMEOUT: number = 28_000;
@@ -85,6 +88,8 @@ class ChainwebStream extends EventEmitter {
   // reconnect timer
   private _reconnectTimer?: ReturnType<typeof setTimeout>;
 
+  private _slidingCache: SlidingCache<ITransaction>;
+
   public constructor({
     network,
     host,
@@ -106,6 +111,9 @@ class ChainwebStream extends EventEmitter {
     this.heartbeatTimeoutMs = heartbeatTimeout ?? DEFAULT_HEARTBEAT_TIMEOUT;
     this.maxReconnects = maxReconnects ?? DEFAULT_MAX_RECONNECTS;
     this.confirmationDepth = confirmationDepth ?? DEFAULT_CONFIRMATION_DEPTH;
+    this._slidingCache = new SlidingCache({
+      cacheSpan: 3 * (MAX_CHAIN_HEIGHT_SPAN + this.confirmationDepth),
+    });
   }
 
   /**
@@ -260,7 +268,15 @@ class ChainwebStream extends EventEmitter {
 
   private _processData(data: ITransaction[]): void {
     this._updateLastHeight(data);
-    for (const element of data) {
+
+    // no emiting duplicate events to users:
+    // filter out any elements that have been emitted before
+    const unseen: ITransaction[] = this._slidingCache
+      .addCache(...data)
+      .map((shouldEmit, idx) => (shouldEmit ? data[idx] : undefined))
+      .filter(notUndefined);
+
+    for (const element of unseen) {
       const {
         meta: { confirmations },
       } = element;
@@ -414,7 +430,9 @@ class ChainwebStream extends EventEmitter {
     if (this._lastHeight !== undefined) {
       urlParamArgs.push([
         'minHeight',
-        String(this._lastHeight - this.confirmationDepth - 3),
+        String(
+          this._lastHeight - this.confirmationDepth - MAX_CHAIN_HEIGHT_SPAN,
+        ),
       ]);
     }
     if (urlParamArgs.length) {
