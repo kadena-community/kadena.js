@@ -1,4 +1,4 @@
-import { darkThemeClass, vars } from './themes.css';
+import { darkThemeClass, vars } from './vars.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 

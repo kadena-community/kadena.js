@@ -1,6 +1,13 @@
 # Change Log - @kadena/types
 
-This log was last generated on Mon, 10 Jul 2023 14:25:54 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Jul 2023 10:02:16 GMT and should not be manually modified.
+
+## 0.4.0
+Fri, 14 Jul 2023 10:02:16 GMT
+
+### Minor changes
+
+- Remove `chainId: ''` added PactGuard
 
 ## 0.3.5
 Mon, 10 Jul 2023 14:25:54 GMT

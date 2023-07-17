@@ -1,5 +1,3 @@
-import { vars } from '../../styles';
-import { sprinkles } from '../../styles/sprinkles.css';
 import { inputStatusColor } from '../Input/Input.css';
 
 import {
@@ -7,6 +5,8 @@ import {
   helperTextColor,
 } from './InputHelper/InputHelper.css';
 
+import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
 import { styleVariants } from '@vanilla-extract/css';
 
 export type Status = 'disabled' | 'positive' | 'warning' | 'negative';

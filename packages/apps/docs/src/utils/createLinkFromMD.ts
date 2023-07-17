@@ -1,7 +1,7 @@
 export const createLinkFromMD = (file: string): string => {
   let complete = false;
 
-  return file
+  return `/${file
     .split('/')
     .reverse()
     .reduce((acc: string[], val: string) => {
@@ -14,5 +14,5 @@ export const createLinkFromMD = (file: string): string => {
       return acc;
     }, [])
     .reverse()
-    .join('/');
+    .join('/')}`;
 };

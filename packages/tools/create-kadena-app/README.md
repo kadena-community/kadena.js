@@ -44,7 +44,7 @@ currently available:
 
 The recommended way of using Create Kadena App is through npx.
 
-```shell
+```sh
 npx @kadena/create-kadena-app
 ```
 
@@ -53,7 +53,7 @@ project non-interactively. While we might further expand functionality in the
 future currently there's one command availabe, `generate-project`. See
 create-kadena-app generate --help:
 
-```shell
+```sh
 Usage: create-kadena-app generate-project [options]
 
 Generate starter project

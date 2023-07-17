@@ -1,7 +1,7 @@
 // NOTE: Refer to https://www.joshwcomeau.com/css/custom-css-reset/ for more detailed explanation
 
 import { breakpoints } from './sprinkles.css';
-import { vars } from './themes.css';
+import { vars } from './vars.css';
 
 import { globalStyle } from '@vanilla-extract/css';
 

@@ -1,3 +1,1 @@
-import { Tag } from './Tag';
-
-export { Tag };
+export { Tag, ITagProps } from './Tag';

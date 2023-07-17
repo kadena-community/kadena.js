@@ -1,5 +1,4 @@
-import { ILinkProps, Link } from '.';
-
+import { ILinkProps, Link } from '@components/Link';
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
