@@ -1,13 +1,11 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
 import { SpinnerRoundFilled } from 'spinners-react';
-import { Pact, signWithChainweaver } from '@kadena/client';
+import { Pact, signWithChainweaver, getClient, ChainId } from '@kadena/client';
 import styles from '../styles/main.module.css';
 
 const NETWORK_ID = process.env.NEXT_PUBLIC_KADENA_NETWORK_ID;
-const CHAIN_ID = process.env.NEXT_PUBLIC_KADENA_CHAIN_ID;
-const HOST = process.env.NEXT_PUBLIC_KADENA_HOST;
-const API_HOST = `https://${HOST}/chainweb/0.0/${NETWORK_ID}/chain/${CHAIN_ID}/pact`;
+const CHAIN_ID = process.env.NEXT_PUBLIC_KADENA_CHAIN_ID as ChainId;
 
 const accountKey = (account: string): string => account.split(':')[1];
 
@@ -31,39 +29,37 @@ const Home: React.FC = (): JSX.Element => {
 
   const writeMessage = async (): Promise<void> => {
     try {
-      const transactionBuilder = Pact.modules['free.cka-message-store']
-        ['write-message'](account, messageToWrite)
-        .addCap('coin.GAS', accountKey(account))
-        .addCap(
-          'free.cka-message-store.ACCOUNT-OWNER',
-          accountKey(account),
-          account,
-        )
-        .setMeta(
-          {
-            ttl: 28000,
-            gasLimit: 100000,
-            chainId: CHAIN_ID,
-            gasPrice: 0.000001,
-            sender: account,
-          },
-          NETWORK_ID,
-        );
+      const client = getClient();
+
+      const transaction = Pact.builder
+      .execution(Pact.modules['free.cka-message-store']['write-message'](account, messageToWrite))
+      .addSigner(accountKey(account), (withCapability) => [
+        withCapability('coin.GAS'),
+        withCapability('free.cka-message-store.ACCOUNT-OWNER', account),
+      ])
+      .setMeta({
+          ttl: 28000,
+          gasLimit: 100000,
+          chainId: CHAIN_ID,
+          gasPrice: 0.000001,
+          sender: account
+        }
+      )
+      .setNetworkId(NETWORK_ID)
+      .createTransaction();
 
       setWriteInProgress(true);
 
-      await signWithChainweaver(transactionBuilder);
+      console.log(`Signing transaction: ${transaction.cmd}`);
+      const signedTransaction = await signWithChainweaver(transaction);
 
-      console.log(`Sending transaction: ${transactionBuilder.code}`);
-      const response = await transactionBuilder.send(API_HOST);
+      console.log(`Sending transaction ...`);
+      const requestKeys = await client.submit(signedTransaction);
+      console.log('Send response: ', requestKeys);
 
-      console.log('Send response: ', response);
-      const requestKey = response.requestKeys[0];
-
-      const pollResult = await transactionBuilder.pollUntil(API_HOST, {
-        onPoll: async (transaction, pollRequest): Promise<void> => {
-          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-          console.log(await pollRequest);
+      const pollResult = await client.pollStatus(requestKeys, {
+        onPoll: (id: string):void => {
+          console.log(`Polling ${id}`);
         },
       });
 
@@ -76,10 +72,16 @@ const Home: React.FC = (): JSX.Element => {
   };
 
   const readMessage = async (): Promise<void> => {
-    const transactionBuilder =
-      Pact.modules['free.cka-message-store']['read-message'](account);
-    const { result } = await transactionBuilder.local(API_HOST);
+    const client = getClient();
+    const unsignedTransaction = Pact.builder
+      .execution(Pact.modules['free.cka-message-store']['read-message'](account))
+      .setMeta({ chainId: CHAIN_ID })
+      .setNetworkId(NETWORK_ID)
+      .createTransaction();
 
+    const { result } = await client.local(unsignedTransaction, {
+      preflight: false
+    });
     if (result.status === 'success') {
       setMessageFromChain(result.data.toString());
     } else {

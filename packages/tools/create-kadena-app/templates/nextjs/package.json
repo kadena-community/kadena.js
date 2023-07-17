@@ -18,14 +18,14 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@kadena/client": "^0.1.10",
+    "@kadena/client": "^1.0.0-alpha.3",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "spinners-react": "^1.0.7"
   },
   "devDependencies": {
-    "@kadena/pactjs-cli": "^0.0.12",
+    "@kadena/pactjs-cli": "^1.0.0-alpha.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/node": "18.11.18",
