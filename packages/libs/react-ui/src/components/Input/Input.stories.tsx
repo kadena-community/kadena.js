@@ -1,8 +1,7 @@
 import { Button } from '@components/Button';
+import { SystemIcon } from '@components/Icon';
 import { IInputProps, Input } from '@components/Input';
 import { Stack } from '@components/Stack';
-import { SystemIcon } from '@components/Icon';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 

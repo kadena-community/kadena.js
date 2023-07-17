@@ -1,5 +1,3 @@
-import { SystemIcon } from '@components/Icon';
-
 import {
   containerClass,
   inputClass,
@@ -8,6 +6,7 @@ import {
   outlinedClass,
 } from './Input.css';
 
+import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, forwardRef, InputHTMLAttributes } from 'react';
 

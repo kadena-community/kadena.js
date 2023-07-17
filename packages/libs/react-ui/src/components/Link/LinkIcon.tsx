@@ -1,7 +1,6 @@
-import { SystemIcon } from '@components/Icon';
-
 import { iconContainerClass } from './Link.css';
 
+import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export const LinkIcon: FC = () => {

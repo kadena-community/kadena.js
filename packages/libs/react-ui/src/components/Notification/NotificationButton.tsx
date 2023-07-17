@@ -1,7 +1,6 @@
-import { SystemIcon } from '@components/Icon';
-
 import { colorVariants, iconContainerClass } from './NotificationButton.css';
 
+import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export interface INotificationButtonProps {

@@ -1,7 +1,6 @@
-import { SystemIcon } from '@components/Icon';
-
 import { colorVariants } from './IconButton.css';
 
+import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export interface IIconButtonProps

@@ -1,5 +1,4 @@
 import { ITableProps, Table } from '@components/Table';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
