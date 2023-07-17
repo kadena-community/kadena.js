@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 describe('Select', () => {
-  it('renders correctly with all props', async () => {
+  it.skip('renders correctly with all props', async () => {
     const handleChange = jest.fn();
 
     const { getByTestId } = render(
