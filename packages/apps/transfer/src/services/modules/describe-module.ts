@@ -1,5 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { PactCommand } from '@kadena/client';
+import { Pact, getClient } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 
 import {
@@ -28,22 +28,38 @@ export const describeModule = async (
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModuleResult> => {
   debug(describeModule.name);
+  const networkId = chainNetwork[network].network;
+  const { local } = getClient(getKadenaConstantByNetwork(network).apiHost({
+    networkId,
+    chainId,
+  }));
 
-  const pactCommand = new PactCommand();
-  pactCommand.code = createExp(`describe-module "${moduleName}"`);
+  const transaction = Pact.builder
+    .execution(Pact.modules['describe-module'](moduleName))
+    .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
+    .setNetworkId(networkId)
+    .createTransaction();
 
-  pactCommand.setMeta({ gasLimit, gasPrice, ttl, sender, chainId });
+  const response = await local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
 
-  const response = await pactCommand.local(
-    getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId,
-    }),
-    {
-      signatureVerification: false,
-      preflight: false,
-    },
-  );
+  // const pactCommand = new PactCommand();
+  // pactCommand.code = createExp(`describe-module "${moduleName}"`);
+
+  // pactCommand.setMeta({ gasLimit, gasPrice, ttl, sender, chainId });
+
+  // const response = await pactCommand.local(
+  //   getKadenaConstantByNetwork(network).apiHost({
+  //     networkId: chainNetwork[network].network,
+  //     chainId,
+  //   }),
+  //   {
+  //     signatureVerification: false,
+  //     preflight: false,
+  //   },
+  // );
 
   const { reqKey, result } = response;
 

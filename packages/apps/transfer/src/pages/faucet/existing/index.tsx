@@ -1,4 +1,4 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
+import { IPollResponse, ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Breadcrumbs,
   Button,
@@ -48,6 +48,20 @@ const ExistingAccountFaucetPage: FC = () => {
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
+
+  const onPoll = async (
+    transaction: any,
+    pollRequest: Promise<IPollResponse>,
+  ): Promise<void> => {
+    const request = await pollRequest;
+    const result = request[transaction.requestKey!]?.result;
+    const status = result?.status;
+    if (status === 'failure') {
+      const apiErrorMessage = (result.error as { message: string }).message;
+
+      setRequestStatus({ status: 'erroneous', message: apiErrorMessage });
+    }
+  };
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {

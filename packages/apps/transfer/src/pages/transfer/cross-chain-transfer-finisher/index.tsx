@@ -135,44 +135,44 @@ const CrossChainTransferFinisher: FC = () => {
       kadenaXChainGas,
     );
 
-    if (!(contCommand instanceof ContCommand) && contCommand.error) {
-      setTxError(contCommand.error);
-    }
+    // if (!(contCommand instanceof ContCommand) && contCommand.error) {
+    //   setTxError(contCommand.error);
+    // }
 
-    if (contCommand instanceof ContCommand) {
-      try {
-        const pollResult = await contCommand.pollUntil(host, {
-          onPoll: async (transaction, pollRequest): Promise<void> => {
-            debug(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-            setFinalResults({
-              requestKey: transaction.requestKey,
-              status: transaction.status,
-            });
-            debug(await pollRequest);
-            const data: IPollResponse = await pollRequest;
+    // if (contCommand instanceof ContCommand) {
+    //   try {
+    //     const pollResult = await contCommand.pollUntil(host, {
+    //       onPoll: async (transaction, pollRequest): Promise<void> => {
+    //         debug(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
+    //         setFinalResults({
+    //           requestKey: transaction.requestKey,
+    //           status: transaction.status,
+    //         });
+    //         debug(await pollRequest);
+    //         const data: IPollResponse = await pollRequest;
 
-            // Show correct error message
-            if (
-              Object.keys(data).length > 0 &&
-              Object.values(data)[0].result.status === 'failure'
-            ) {
-              const errorResult: IPactResultError = Object.values(data)[0]
-                .result as IPactResultError;
-              if (errorResult !== undefined) {
-                setTxError(errorResult.error.message);
-              }
-            }
-          },
-        });
-        setFinalResults({
-          requestKey: pollResult.reqKey,
-          status: pollResult.result.status,
-        });
-      } catch (tx) {
-        debug(tx);
-        setFinalResults({ ...tx });
-      }
-    }
+    //         // Show correct error message
+    //         if (
+    //           Object.keys(data).length > 0 &&
+    //           Object.values(data)[0].result.status === 'failure'
+    //         ) {
+    //           const errorResult: IPactResultError = Object.values(data)[0]
+    //             .result as IPactResultError;
+    //           if (errorResult !== undefined) {
+    //             setTxError(errorResult.error.message);
+    //           }
+    //         }
+    //       },
+    //     });
+    //     setFinalResults({
+    //       requestKey: pollResult.reqKey,
+    //       status: pollResult.result.status,
+    //     });
+    //   } catch (tx) {
+    //     debug(tx);
+    //     setFinalResults({ ...tx });
+    //   }
+    // }
   };
 
   const showInputError =

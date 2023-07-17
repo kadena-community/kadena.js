@@ -3,7 +3,7 @@ import {
   ICommandResult,
   IPollResponse,
 } from '@kadena/chainweb-node-client';
-import { PactCommand } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
@@ -63,7 +63,7 @@ export async function getTransferData({
     return { error: t('Invalid length of request key') };
   }
 
-  const pactCommand = new PactCommand();
+  const pactCommand = Pact.builder.createTransaction();
 
   pactCommand.requestKey = requestKey;
 
