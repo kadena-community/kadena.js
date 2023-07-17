@@ -1,6 +1,5 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars, ColorType } from '@theme/vars.css';
-
+import { ColorType, vars } from '@theme/vars.css';
 import { createVar, style, styleVariants } from '@vanilla-extract/css';
 
 const bgHoverColor = createVar(),

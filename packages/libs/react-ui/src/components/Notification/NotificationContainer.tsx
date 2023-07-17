@@ -1,5 +1,3 @@
-import { SystemIcon } from '@components/Icon';
-
 import {
   cardTitleClass,
   closeButtonClass,
@@ -12,6 +10,7 @@ import {
   iconContainerExpandedClass,
 } from './Notification.css';
 
+import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 

@@ -1,5 +1,4 @@
 import { sprinkles } from '@theme/sprinkles.css';
-
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const iconContainer = style([

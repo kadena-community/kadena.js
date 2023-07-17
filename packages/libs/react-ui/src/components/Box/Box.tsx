@@ -1,5 +1,4 @@
 import { Sprinkles, sprinkles } from '@theme/sprinkles.css';
-
 import React, { createElement, ElementType } from 'react';
 
 export interface IBoxProps

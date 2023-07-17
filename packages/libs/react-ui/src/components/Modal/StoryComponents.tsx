@@ -1,7 +1,7 @@
-import { Button } from '@components/Button';
-import { Text } from '@components/Typography/Text/Text';
 import { useModal } from './ModalProvider';
 
+import { Button } from '@components/Button';
+import { Text } from '@components/Typography/Text/Text';
 import React, { FC } from 'react';
 
 const ModalContent: FC = () => {
