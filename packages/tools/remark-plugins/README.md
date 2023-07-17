@@ -31,13 +31,13 @@ Make sure the package is built (`rush build`).
 
 Format a single Markdown file and output the result to `stdout`:
 
-```bash
+```sh
 pnpm dlx remark-cli --use ./packages/tools/remark-plugins/lib/index.js README.md
 ```
 
 Format a single Markdown file and overwrite the same file:
 
-```bash
+```sh
 pnpm dlx remark-cli --use ./packages/tools/remark-plugins/lib/index.js README.md -o
 ```
 

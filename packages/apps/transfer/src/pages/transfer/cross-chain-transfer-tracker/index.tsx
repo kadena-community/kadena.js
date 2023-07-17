@@ -1,9 +1,10 @@
 import {
   Button,
   Heading,
-  SystemIcons,
+  InputWrapperStatus,
+  SystemIcon,
   TextField,
-} from '@kadena/react-components';
+} from '@kadena/react-ui';
 
 import {
   StyledInfoItem,
@@ -33,6 +34,7 @@ import {
   IStatusData,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
+import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
@@ -41,11 +43,16 @@ const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
   const router = useRouter();
 
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
+  );
   const { t } = useTranslation('common');
   const [requestKey, setRequestKey] =
     useState<string>(router.query?.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
-  const [validRequestKey, setValidRequestKey] = useState<'error' | undefined>();
+  const [validRequestKey, setValidRequestKey] = useState<
+    InputWrapperStatus | undefined
+  >();
   const [txError, setTxError] = useState<string>('');
 
   useDidUpdateEffect(() => {
@@ -66,6 +73,7 @@ const CrossChainTransferTracker: FC = () => {
     e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
     e.preventDefault();
+    debug(checkRequestKey.name);
 
     //Clear error message when user starts typing
     setTxError('');
@@ -76,7 +84,7 @@ const CrossChainTransferTracker: FC = () => {
     }
 
     if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey('error');
+      setValidRequestKey('negative');
       return;
     }
     setValidRequestKey(undefined);
@@ -87,6 +95,7 @@ const CrossChainTransferTracker: FC = () => {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
+    debug(handleSubmit);
 
     router.query.reqKey = requestKey;
     await router.push(router);
@@ -107,7 +116,7 @@ const CrossChainTransferTracker: FC = () => {
         },
       });
     } catch (error) {
-      console.log(error);
+      debug(error);
     }
   };
 
@@ -120,23 +129,24 @@ const CrossChainTransferTracker: FC = () => {
             <TextField
               label={t('Request Key')}
               status={validRequestKey}
-              //Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-              helper={!data.receiverAccount ? txError : undefined}
+              // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
+              helperText={!data.receiverAccount ? txError : undefined}
               inputProps={{
+                id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
                 value: requestKey,
-                leftPanel: SystemIcons.KeyIconFilled,
+                leftIcon: SystemIcon.KeyIconFilled,
               }}
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title={t('Search')}>
+            <Button.Root title={t('Search')}>
               {t('Search')}
-              <SystemIcons.Magnify />
-            </Button>
+              <SystemIcon.Magnify />
+            </Button.Root>
           </StyledFormButton>
         </StyledForm>
 

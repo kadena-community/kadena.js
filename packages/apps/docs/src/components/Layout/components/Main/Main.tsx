@@ -49,7 +49,7 @@ export const Main: FC<IPageProps> = ({
 
       <Template
         layout={
-          isOneOfLayoutType(layoutType, 'landing')
+          isOneOfLayoutType(layoutType, 'landing', 'redocly')
             ? 'landing'
             : isOneOfLayoutType(layoutType, 'code')
             ? 'code'
@@ -64,7 +64,7 @@ export const Main: FC<IPageProps> = ({
           menuItems={leftMenuTree}
           layout={layoutType}
         />
-        {isOneOfLayoutType(layoutType, 'landing') && title && (
+        {isOneOfLayoutType(layoutType, 'landing', 'blog') && title && (
           <TitleHeader title={title} subTitle={subTitle} icon={pageIcon} />
         )}
 
@@ -73,7 +73,14 @@ export const Main: FC<IPageProps> = ({
           data-cy="menu"
           isOpen={isMenuOpen}
           inLayout={
-            isOneOfLayoutType(layoutType, 'full', 'code', 'codeside', 'landing')
+            isOneOfLayoutType(
+              layoutType,
+              'full',
+              'code',
+              'codeside',
+              'landing',
+              'redocly',
+            )
               ? true
               : false
           }
@@ -89,7 +96,7 @@ export const Main: FC<IPageProps> = ({
           editLink={editLink}
           navigation={navigation}
         >
-          {isOneOfLayoutType(layoutType, 'full', 'code') && (
+          {isOneOfLayoutType(layoutType, 'full', 'code', 'redocly') && (
             <>
               <Breadcrumbs menuItems={leftMenuTree} />
               <LastModifiedDate date={lastModifiedDate} />

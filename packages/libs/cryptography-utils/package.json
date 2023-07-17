@@ -1,6 +1,6 @@
 {
   "name": "@kadena/cryptography-utils",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "description": "Collection of Kadena cryptography utility functions",
   "keywords": [],
   "repository": {
@@ -37,8 +37,7 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "lint-staged": "lint-staged",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
     "@kadena/types": "workspace:*",
@@ -48,9 +47,9 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",

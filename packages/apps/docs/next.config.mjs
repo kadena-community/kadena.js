@@ -90,6 +90,15 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
   transpilePackages: ['@kadena/react-ui'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+        port: '',
+      },
+    ],
+  },
 };
 
 export default withVanillaExtract(withMDX(nextConfig));

@@ -22,14 +22,14 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src templates --write",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "rimraf test-* && heft test --no-build && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
+    "test": "rimraf test-* && heft test && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
   "dependencies": {
     "commander": "^9.3.0",
     "cross-fetch": "~3.1.5",
     "cross-spawn": "~7.0.3",
-    "ramda": "~0.28.0",
     "yaml": "~2.1.1"
   },
   "devDependencies": {
@@ -43,7 +43,6 @@
     "@types/heft-jest": "~1.0.3",
     "@types/mkdirp": "~1.0.2",
     "@types/node": "^16.0.0",
-    "@types/ramda": "~0.28.15",
     "@types/rimraf": "~3.0.2",
     "cross-env": "~7.0.3",
     "eslint": "^8.15.0",

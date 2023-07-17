@@ -1,6 +1,7 @@
+import type { ICommandPayload } from '@kadena/types';
+
 import type { ISPVRequestBody, SPVResponse } from '../../interfaces/PactAPI';
 
-import type { ICommandPayload } from '@kadena/types';
 export const testURL: string = 'https://fake-api-host.local.co';
 
 export const pactTestCommand: ICommandPayload = {
@@ -25,7 +26,7 @@ export const pactTestCommand: ICommandPayload = {
     creationTime: 0,
     ttl: 0,
     gasLimit: 0,
-    chainId: '',
+    chainId: '0',
     gasPrice: 0,
     sender: '',
   },

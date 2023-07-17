@@ -10,10 +10,10 @@ import { darkThemeClass } from '@kadena/react-ui/theme';
 import { Analytics, ConsentModal } from '@/components';
 import { Main } from '@/components/Layout/components';
 import { markDownComponents } from '@/components/Markdown';
+import { ThemeProvider } from '@/hooks';
 import { IPageMeta, IPageProps } from '@/types/Layout';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
-import { ThemeProvider } from 'next-themes';
 import React, { FC } from 'react';
 
 const GlobalStyles = globalCss({
@@ -53,27 +53,18 @@ export const MyApp = ({
         <ThemeProvider
           attribute="class"
           enableSystem={true}
+          defaultTheme="light"
           value={{
             light: 'light',
-            dark: stitchesDarkTheme.className,
+            dark: `${darkThemeClass} ${stitchesDarkTheme.className}`,
           }}
         >
-          <ThemeProvider
-            attribute="class"
-            enableSystem={true}
-            defaultTheme="light"
-            value={{
-              light: 'light',
-              dark: darkThemeClass,
-            }}
-          >
-            <ModalProvider>
-              <Main {...props}>
-                <Component {...props} />
-              </Main>
-              <ConsentModal />
-            </ModalProvider>
-          </ThemeProvider>
+          <ModalProvider>
+            <Main {...props}>
+              <Component {...props} />
+            </Main>
+            <ConsentModal />
+          </ModalProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />

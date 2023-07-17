@@ -4,9 +4,9 @@ import {
   transformVariants,
 } from '../typography.css';
 
-import { Heading } from './Heading';
 import { boldVariants, elementVariants } from './Heading.css';
 
+import { Heading } from '@components/Typography/Heading/Heading';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 

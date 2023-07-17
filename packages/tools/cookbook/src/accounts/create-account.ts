@@ -3,6 +3,7 @@ import { Pact, signWithChainweaver } from '@kadena/client';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
+// eslint-disable-next-line import/no-unresolved -- TODO FILE NOT FOUND
 import { pollTransactions } from '../utils/poll-transactions';
 
 const HELP: string = `Usage example: \n\nts-node create-account.js k:{gasProviderPublicKey} k:{receiverPublicKey}`;

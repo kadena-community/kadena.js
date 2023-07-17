@@ -1,4 +1,5 @@
-import { Heading, Stack, Text } from '@kadena/react-components';
+import { Stack } from '@kadena/react-components';
+import { Box, Heading } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
@@ -7,7 +8,7 @@ import { getTopDocs, ITopDoc } from '@/data/getTopDocs';
 import {
   checkSubTreeForActive,
   getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive';
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -22,44 +23,33 @@ const Home: FC<IProps> = ({ topDocs }) => {
       <HomeHeader topDocs={topDocs} />
       <Content id="maincontent" layout="home">
         <Article>
-          <Heading as="h4">My Shortcuts</Heading>
-          <Stack direction="column" spacing="2xl">
+          <Box marginBottom="$10">
             <BrowseSection>
-              <BrowseSection.LinkBlock
-                title="Rest API"
-                subtitle="Built-in HTTP and SQL backend"
-                icon="RestApi"
-                href="/docs/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Concepts"
-                subtitle="Distinct Execution modes"
-                icon="Concepts"
-                href="/docs/kadenajs"
-              />
+              <BrowseSection.LinkList title="General">
+                <Link href="/docs/kadena">Overview of Kadena</Link>
+                <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
+                <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                  Kadena.io
+                </a>
+              </BrowseSection.LinkList>
+              <BrowseSection.LinkList title="Developers">
+                <Link href="/docs/build/quickstart">Quick start</Link>
+                <Link href="/docs/pact/beginner/language-basics">
+                  Pact Language resources
+                </Link>
+                <Link href="/docs/pact">Pact developer tutorials</Link>
+              </BrowseSection.LinkList>
+              <BrowseSection.LinkList title="Programs">
+                <Link href="/docs/build/support">Developer program</Link>
+                <Link href="/docs/contribute/ambassadors">
+                  Ambassador program
+                </Link>
+                <Link href="/docs/build/support/technical-grants">
+                  Technical grants
+                </Link>
+              </BrowseSection.LinkList>
             </BrowseSection>
-          </Stack>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <BrowseSection>
-            <BrowseSection.LinkList title="General">
-              <Link href="/docs/kadena">Overview of Kadena</Link>
-              <Link href="/docs/kadena">Manage your KDA</Link>
-              <a href="https://kadena.io">Kadena.io</a>
-            </BrowseSection.LinkList>
-            <BrowseSection.LinkList title="Developers">
-              <Link href="/docs/kadena">Quick start</Link>
-              <Link href="/docs/kadena">Pact Language resources</Link>
-              <Link href="/docs/kadena">Pact developer tutorials</Link>
-            </BrowseSection.LinkList>
-            <BrowseSection.LinkList title="Programs">
-              <Link href="/docs/kadena">Developer program</Link>
-              <Link href="/docs/kadena">Ambassador program</Link>
-              <Link href="/docs/kadena">Technical grants</Link>
-            </BrowseSection.LinkList>
-          </BrowseSection>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
+          </Box>
           <Heading as="h4">Browse by Resources</Heading>
           <Stack direction="column" spacing="2xl">
             <BrowseSection title="General">
@@ -70,26 +60,20 @@ const Home: FC<IProps> = ({ topDocs }) => {
                 href="/docs/pact"
               />
               <BrowseSection.LinkBlock
-                title="Smart Contracts"
+                title="Chainweb"
                 subtitle="Explore all products"
                 icon="SmartContract"
-                href="/docs/kadenajs"
-              />
-              <BrowseSection.LinkBlock
-                title="Syntax"
-                subtitle="Explore all products"
-                icon="Syntax"
-                href="/docs/kadena"
-              />
-              <BrowseSection.LinkBlock
-                title="Contribute"
-                subtitle="Explore all products"
-                icon="Contribute"
                 href="/docs/chainweb"
+              />
+              <BrowseSection.LinkBlock
+                title="Marmalade"
+                subtitle="Explore all products"
+                icon="Marmalade"
+                href="/docs/marmalade"
               />
             </BrowseSection>
 
-            <BrowseSection title="Developer">
+            <BrowseSection title="Pact">
               <BrowseSection.LinkBlock
                 title="Pact Language"
                 subtitle="Explore all products"
@@ -100,13 +84,19 @@ const Home: FC<IProps> = ({ topDocs }) => {
                 title="Useful Tools"
                 subtitle="Explore all products"
                 icon="UsefulTools"
-                href="/docs/kadenajs"
+                href="/docs/build/tools"
               />
               <BrowseSection.LinkBlock
-                title="Pact Developer Tutorials"
-                subtitle="Explore all products"
+                title="Beginner Tutorials"
+                subtitle="For starters"
                 icon="PactDeveloper"
-                href="/docs/kadena"
+                href="/docs/pact/beginner"
+              />
+              <BrowseSection.LinkBlock
+                title="Intermediate Tutorials"
+                subtitle="get some more experience"
+                icon="PactDeveloper"
+                href="docs/pact/intermediate"
               />
               <BrowseSection.LinkBlock
                 title="Quickstart"
@@ -115,27 +105,6 @@ const Home: FC<IProps> = ({ topDocs }) => {
                 href="/docs/chainweb"
               />
             </BrowseSection>
-          </Stack>
-
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <Stack>
-            <Text>
-              test Cookie dragée bear claw ice cream jelly beans fruitcake
-              danish tootsie roll. Donut pastry tiramisu sesame snaps donut
-              tootsie roll candy soufflé. Lollipop toffee ice cream jujubes
-              cookie sugar plum croissant. Cookie toffee chocolate ice cream
-              apple pie. Brownie gummies cupcake halvah sweet roll macaroon
-              soufflé. Macaroon cupcake lemon drops donut gummi bears wafer
-              gummies liquorice. Pie oat cake donut biscuit sugar plum chocolate
-              lemon drops oat cake. Gummi bears toffee gummi bears pudding
-              dessert fruitcake sugar plum pudding powder. Donut marzipan jelly
-              beans candy canes toffee. Sweet toffee powder oat cake marzipan
-              pie gummi bears. Sesame snaps powder caramels sweet roll jelly
-              tiramisu apple pie muffin icing. Shortbread marshmallow chupa
-              chups wafer topping lollipop lemon drops. Pudding cheesecake
-              cookie liquorice cake gingerbread tootsie roll.
-            </Text>
           </Stack>
         </Article>
       </Content>
@@ -155,7 +124,8 @@ export const getStaticProps: GetStaticProps = async () => {
         menu: 'Pact',
         label: 'Pact Test',
         order: 1,
-        description: 'Home page',
+        description:
+          "Welcome to Kadena's documentation! All our Documentation in 1 place. Pact, ChainWeb, KDA, Marmalade etc",
         layout: 'home',
       },
     },

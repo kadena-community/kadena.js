@@ -1,5 +1,11 @@
 import { Button, SystemIcons } from '@kadena/react-components';
-import { Stack, Tabs, useModal } from '@kadena/react-ui';
+import {
+  Notification,
+  Stack,
+  SystemIcon,
+  Tabs,
+  useModal,
+} from '@kadena/react-ui';
 
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
@@ -18,6 +24,7 @@ interface IProps {
   conversation: IConversation;
   limitResults?: number;
   query?: string;
+  error?: string;
 }
 
 const TABNAME = 'searchTabSelected';
@@ -28,6 +35,7 @@ export const SearchResults: FC<IProps> = ({
   outputStream,
   limitResults,
   query,
+  error,
 }) => {
   const { clearModal } = useModal();
   const [selectedTabName, setSelectedTabName] = useState<string>('docs');
@@ -79,6 +87,15 @@ export const SearchResults: FC<IProps> = ({
 
         <Tabs.Content value="qa">
           <ScrollBox>
+            {error && (
+              <Notification.Root
+                color={'negative'}
+                expanded={true}
+                icon={SystemIcon.AlertBox}
+              >
+                {error}
+              </Notification.Root>
+            )}
             <ResultCount count={staticSearchResults.length} />
 
             {conversation?.history.map((interaction, idx) => (

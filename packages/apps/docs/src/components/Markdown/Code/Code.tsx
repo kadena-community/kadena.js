@@ -11,9 +11,5 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
     return <StyledInlineCode>{children}</StyledInlineCode>;
   }
 
-  return (
-    <>
-      <StyledCode {...props}>{children}</StyledCode>;
-    </>
-  );
+  return <StyledCode {...props}>{children}</StyledCode>;
 };

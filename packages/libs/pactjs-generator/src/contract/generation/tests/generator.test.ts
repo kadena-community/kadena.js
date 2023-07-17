@@ -1,211 +1,168 @@
+import { pactParser } from '../../parsing/pactParser';
 import { generateDts } from '../generator';
-import { StringContractDefinition } from '../StringContractDefinition';
 
-const CODE_IMPORTS = `import type { ICommandBuilder, IPactCommand } from '@kadena/client';
-import type { IPactDecimal, IPactInt } from '@kadena/types';`;
+describe('generateDts', () => {
+  it('return type definition file for a module', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defcap test-cap (name:string) true)
+        (defun test-func:bool (parameter-one:string parameter-two:bool )
+          (with-capability (test-cap "name"))
+        )
+      )
+    `;
 
-describe('generator', () => {
-  it('creates a typescript definition from a contract', () => {
-    const contract: string = `(module coin
-      (defun transfer:string (from:string to:string amount:decimal))
-    )`;
-    const parsedContract = new StringContractDefinition({ contract });
-    const dTs = generateDts(parsedContract.modulesWithFunctions)
-      .get('coin')!
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    const expected = `${CODE_IMPORTS}
-declare module '@kadena/client' {
-  export interface ICapabilities { }
-  export interface IPactModules {
-    "coin": {
-      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
-    }
-  }
-}`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    expect(dTs).toBe(expected);
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
   });
 
-  it('creates a typescript definition with DEFCAPS from a contract', () => {
-    const contract: string = `(module coin
-      (defun transfer:string (from:string to:string amount:decimal))
-      (defcap GAS ())
-      (defcap TRANSFER (sender:string receiver:string amount:decimal))
-    )`;
-    const parsedContract = new StringContractDefinition({ contract });
-    const dTs = generateDts(parsedContract.modulesWithFunctions)
-      .get('coin')!
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    const expected = `${CODE_IMPORTS}
-declare module '@kadena/client' {
-  export interface ICapabilities {
-    "coin.GAS": [ ],
-    "coin.TRANSFER": [ sender: string, receiver: string, amount: IPactDecimal ]
-  }
-  export interface IPactModules {
-    "coin": {
-      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
-    }
-  }
-}`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    expect(dTs).toBe(expected);
+  it('use any type if function parameters dont have a type', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defcap test-cap (name:string) true)
+        (defun test-func:bool (parameter-one parameter-two:bool )
+          (with-capability (test-cap "name"))
+        )
+      )
+    `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
   });
 
-  it('creates a typescript definition without incompatible types', () => {
-    const contract: string = `(module module-with-dashes
-      (defun transfer:string (from:string to:string amount))
-    )`;
+  it('use object type if function parameters is object{schema}', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defcap test-cap (name:string) true)
+        (defun test-func:bool (parameter-one:object{schema-one} parameter-two:bool )
+          (with-capability (test-cap "name"))
+        )
+      )
+    `;
 
-    const parsedContract = new StringContractDefinition({ contract });
-    const dTs = generateDts(parsedContract.modulesWithFunctions)
-      .get('module-with-dashes')!
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
 
-    const expected = `${CODE_IMPORTS}
-declare module '@kadena/client' {
-  export interface ICapabilities {
-  }
-  export interface IPactModules {
-    "module-with-dashes": {
-      "transfer": (from: string, to: string, amount: any) => ICommandBuilder<ICapabilities> & IPactCommand
-    }
-  }
-}`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    expect(dTs).toBe(expected);
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
   });
 
-  it('creates a typescript definition without incompatible types', () => {
-    const contract: string = `(module module-with-dashes
-  (defun transfer:string (from:string to:string amount))
-  (defcap GAS ())
-  (defcap TRANSFER (from:string to:string amount))
-)`;
+  it('does not generate capability interface if the function uses no capabilities', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defun test-func:bool (parameter-one:decimal parameter-two:bool )
+        )
+      )
+    `;
 
-    const parsedContract = new StringContractDefinition({ contract });
-    generateDts(parsedContract.modulesWithFunctions);
-    const contractCaps = parsedContract.getCapabilities('module-with-dashes')!;
-    const contractMethods = parsedContract.getMethods('module-with-dashes')!;
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
 
-    expect(Object.keys(contractCaps)).toEqual(['GAS', 'TRANSFER']);
-    expect(Object.keys(contractCaps.TRANSFER.args)).toEqual([
-      'from',
-      'to',
-      'amount',
-    ]);
-    expect(Object.keys(contractMethods)).toEqual(['transfer']);
-    expect(Object.keys(contractMethods.transfer.args)).toEqual([
-      'from',
-      'to',
-      'amount',
-    ]);
-    expect(parsedContract.modules).toEqual(['module-with-dashes']);
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
   });
 
-  it('creates a typescript definition with a namespace', () => {
-    const contract: string = `(namespace 'free-namespace)
-    (module the-free-module
-      (defun transfer:string (from:string to:string amount:decimal))
-    )`;
-    const parsedContract = new StringContractDefinition({ contract });
-    const dTs = generateDts(parsedContract.modulesWithFunctions)
-      .get('the-free-module')!
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    const expected = `${CODE_IMPORTS}
-declare module '@kadena/client' {
-  export interface ICapabilities { }
-  export interface IPactModules {
-    "free-namespace.the-free-module": {
-      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
-    }
-  }
-}`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    expect(dTs).toBe(expected);
+  it('throws an exception if requested module is not in the parsed modules', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defun test-func:bool (parameter-one:decimal parameter-two:bool )
+        )
+      )
+    `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    expect(() => generateDts('user.test-module-2', modules)).toThrowError(
+      `Module user.test-module-2 not found`,
+    );
   });
 
-  it('creates a typescript definition with DEFCAPS from a namespaced contract', () => {
-    const contract: string = `(namespace 'free-namespace)
-    (module the-free-module
-    (defun transfer:string (from:string to:string amount:decimal))
-    (defcap GAS ())
-    (defcap TRANSFER (sender:string receiver:string amount:decimal))
-  )`;
-    const parsedContract = new StringContractDefinition({ contract });
-    const dTs = generateDts(parsedContract.modulesWithFunctions)
-      .get('the-free-module')!
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    const expected = `${CODE_IMPORTS}
-declare module '@kadena/client' {
-  export interface ICapabilities {
-    "free-namespace.the-free-module.GAS": [ ],
-    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: IPactDecimal ]
-  }
-  export interface IPactModules {
-    "free-namespace.the-free-module": {
-      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<ICapabilities> & IPactCommand
-    }
-  }
-}`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
-    expect(dTs).toBe(expected);
+  it('throws an exception if requested module does not have any functions', async () => {
+    const module = `(namespace "user")
+      (module test-module governance)
+    `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    modules['user.test-module'].functions = undefined;
+
+    expect(() => generateDts('user.test-module', modules)).toThrowError(
+      `Module user.test-module has no functions`,
+    );
   });
 
-  it('creates a typescript definition with a custom interface name', () => {
-    const contract: string = `(namespace 'free-namespace)
-    (module the-free-module
-    (defun transfer:string (from:string to:string amount:decimal))
-    (defcap GAS ())
-    (defcap TRANSFER (sender:string receiver:string amount:decimal)))`;
+  it('uses the property type if there is no mapped value for that', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defun test (param:newType))
+      )
+    `;
 
-    const parsedContract = new StringContractDefinition({ contract });
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
 
-    const dTs = generateDts(
-      parsedContract.modulesWithFunctions,
-      'IMyInterfaceName',
-    )
-      .get('the-free-module')!
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
+  });
 
-    const expected = `${CODE_IMPORTS}
-declare module '@kadena/client' {
-  export interface IMyInterfaceName {
-    "free-namespace.the-free-module.GAS": [ ],
-    "free-namespace.the-free-module.TRANSFER": [ sender: string, receiver: string, amount: IPactDecimal ]
-  }
-  export interface IPactModules {
-    "free-namespace.the-free-module": {
-      "transfer": (from: string, to: string, amount: IPactDecimal) => ICommandBuilder<IMyInterfaceName> & IPactCommand
-    }
-  }
-}`
-      .split(/[\s\n]/)
-      .filter((x) => x !== '')
-      .join(' ');
+  it('function parameter is empty if the defun has no param', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        (defun test ())
+      )
+    `;
 
-    expect(dTs).toBe(expected);
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
+  });
+
+  it('adds module, capability and function docs to the dts file', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        @doc "this is module doc"
+        (defcap test-cap (name:string)
+          @doc "this is defcap doc"
+          true)
+        (defun test-func:bool (parameter-one:object{schema-one} parameter-two:bool )
+          @doc "this is defun doc"
+          (with-capability (test-cap "name"))
+        )
+      )
+    `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
-import { ColorType, sprinkles, vars } from '../../styles';
-
+import { sprinkles } from '@theme/sprinkles.css';
+import { ColorType, vars } from '@theme/vars.css';
 import {
   createVar,
   fallbackVar,
@@ -63,6 +63,8 @@ export const contentClass = style([
 const colors: Record<ColorType, ColorType> = {
   primary: 'primary',
   secondary: 'secondary',
+  tertiary: 'tertiary',
+  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',

@@ -1,13 +1,15 @@
 jest.mock('cross-fetch');
 
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
-import type { IUnsignedCommand, SignCommand, ICommand } from '@kadena/types';
-import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
-import { createSendRequest } from '../createSendRequest';
-import { send } from '../send';
 import { ensureSignedCommand } from '@kadena/pactjs';
-import { testURL } from './mockdata/Pact';
+import type { ICommand, IUnsignedCommand, SignCommand } from '@kadena/types';
+
+import { createSendRequest } from '../createSendRequest';
+import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
+import { send } from '../send';
+
 import { mockFetch } from './mockdata/mockFetch';
+import { testURL } from './mockdata/Pact';
 
 import fetch, { Response } from 'cross-fetch';
 
@@ -29,7 +31,9 @@ test('/send should return request keys of txs submitted', async () => {
     cmd: commandStr,
     hash: cmdWithOneSignature1.hash,
     sigs: [
-      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+      typeof cmdWithOneSignature1.sig === 'string'
+        ? { sig: cmdWithOneSignature1.sig }
+        : undefined,
     ],
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);

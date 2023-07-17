@@ -1,4 +1,5 @@
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
+import Debug from 'debug';
 
 export interface ITransaction {
   fromAccount: string;
@@ -14,12 +15,15 @@ export interface ITransaction {
   chain: number;
   crossChainAccount?: string;
 }
+const debug = Debug('kadena-transfer:services:get-transactions');
 
 export async function getTransactions(options: {
   network: Network;
   chain: string;
   account: string;
 }): Promise<ITransaction[]> {
+  debug(getTransactions.name);
+
   const { network, chain, account } = options;
 
   try {
@@ -31,7 +35,7 @@ export async function getTransactions(options: {
 
     return result;
   } catch (error) {
-    console.log(error);
+    debug(error);
   }
 
   return [];

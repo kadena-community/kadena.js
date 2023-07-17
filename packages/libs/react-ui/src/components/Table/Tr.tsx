@@ -1,11 +1,10 @@
-import { IconButton } from '../IconButton/IconButton';
-import { SystemIcon } from '../Icons';
-
 import { trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
 import { CompoundType } from './types';
 
+import { SystemIcon } from '@components/Icon';
+import { IconButton } from '@components/IconButton';
 import React, { FC } from 'react';
 
 export interface ITrProps {

@@ -1,6 +1,8 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import {
+  ChainwebChainId,
+  ChainwebNetworkId,
+} from '@kadena/chainweb-node-client';
 import { ContCommand, getContCommand } from '@kadena/client';
-import { ChainId } from '@kadena/types';
 
 import {
   getKadenaConstantByNetwork,
@@ -15,7 +17,7 @@ export interface ITransferResult {
   status?: string;
 }
 
-const debug = Debug('transfer-finisher');
+const debug = Debug('kadena-transfer:services:finish-xchain-transfer');
 const gasLimit: number = kadenaConstants.GAS_LIMIT;
 const gasPrice: number = kadenaConstants.GAS_PRICE;
 
@@ -24,9 +26,10 @@ export async function finishXChainTransfer(
   step: number,
   rollback: boolean,
   network: Network,
-  chainId: ChainId,
+  chainId: ChainwebChainId,
   sender: string,
 ): Promise<ContCommand | { error: string }> {
+  debug(finishXChainTransfer.name);
   const host = getKadenaConstantByNetwork(network).apiHost({
     networkId: chainNetwork[network].network,
     chainId,

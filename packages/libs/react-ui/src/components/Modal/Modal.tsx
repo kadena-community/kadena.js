@@ -1,7 +1,3 @@
-import { Card } from '../Card/Card';
-import { SystemIcon } from '../Icons';
-import { Heading } from '../Typography';
-
 import {
   background,
   closeButton,
@@ -11,6 +7,9 @@ import {
 } from './Modal.css';
 import { useModal } from './ModalProvider';
 
+import { Card } from '@components/Card';
+import { SystemIcon } from '@components/Icon';
+import { Heading } from '@components/Typography/Heading/Heading';
 import FocusTrap from 'focus-trap-react';
 import React, { FC } from 'react';
 

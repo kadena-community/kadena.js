@@ -1,4 +1,4 @@
-import { Grid } from '@kadena/react-components';
+import { Grid } from '@kadena/react-ui';
 
 import {
   StyledBack,
@@ -31,9 +31,9 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
 
   return (
     <StyledMainLayout>
-      <Grid.Container>
+      <Grid.Root>
         <Grid.Item colStart={1} colEnd={5}>
-          <Grid.Container spacing="xl">
+          <Grid.Root spacing="xl">
             <Grid.Item colStart={1} colEnd={5}>
               <KLogoComponent width="100%" />
             </Grid.Item>
@@ -48,11 +48,11 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
                 <StyledOption value="TESTNET">{t('Testnet')}</StyledOption>
               </Select>
             </Grid.Item>
-          </Grid.Container>
+          </Grid.Root>
         </Grid.Item>
-      </Grid.Container>
+      </Grid.Root>
 
-      <Grid.Container spacing="3xl">
+      <Grid.Root spacing="3xl">
         <Grid.Item colStart={1} colEnd={5}>
           <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
@@ -62,8 +62,8 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
         <Grid.Item colStart={5} colEnd={13}>
           <StyledTitle data-testid="title">{title}</StyledTitle>
         </Grid.Item>
-      </Grid.Container>
-      <Grid.Container spacing="3xl">
+      </Grid.Root>
+      <Grid.Root spacing="3xl">
         <Grid.Item colStart={1} colEnd={5}>
           <SidebarMenu />
         </Grid.Item>
@@ -72,7 +72,7 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
             {children}
           </StyledMainContent>
         </Grid.Item>
-      </Grid.Container>
+      </Grid.Root>
       {Boolean(footer) && <StyledFooter>{footer}</StyledFooter>}
     </StyledMainLayout>
   );

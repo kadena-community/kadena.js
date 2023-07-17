@@ -1,6 +1,21 @@
 # Change Log - @kadena/chainweb-stream-client
 
-This log was last generated on Tue, 04 Jul 2023 08:27:48 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Jul 2023 10:02:16 GMT and should not be manually modified.
+
+## 0.0.8
+Fri, 14 Jul 2023 10:02:16 GMT
+
+_Version update only_
+
+## 0.0.7
+Mon, 10 Jul 2023 14:25:54 GMT
+
+_Version update only_
+
+## 0.0.6
+Mon, 10 Jul 2023 14:20:26 GMT
+
+_Version update only_
 
 ## 0.0.5
 Tue, 04 Jul 2023 08:27:48 GMT

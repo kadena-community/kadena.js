@@ -1,9 +1,8 @@
-import { SystemIcon } from '../Icons';
-import { IInputProps } from '../Input/Input';
 import { statusVariant } from '../InputWrapper/InputWrapper.css';
 
-import { ITextFieldProps, TextField } from './TextField';
-
+import { SystemIcon } from '@components/Icon';
+import { IInputProps } from '@components/Input';
+import { ITextFieldProps, TextField } from '@components/TextField';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 

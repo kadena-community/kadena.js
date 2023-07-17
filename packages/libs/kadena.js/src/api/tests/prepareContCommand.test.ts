@@ -28,7 +28,7 @@ describe('prepareContCommand', () => {
     );
 
     const expected = command;
-    expect(expected).toEqual(actual);
+    expect(actual).toEqual(expected);
   });
 
   it('Creates a signed Pact ContICommandObject with networkId=Mainnet01 and a mock proof', () => {
@@ -45,16 +45,16 @@ describe('prepareContCommand', () => {
     );
 
     const expected: ICommand = {
-      hash: 's5o_HxDkmMYABff21J_3xUMPi4nx0dt-NBHOa3Rjgio',
+      hash: 'gKL0Hd4kzpgVVkjytvwNbhG4_QROpLWr2wjE9VGMwqI',
       sigs: [
         {
-          sig: '3c7b915f10e02c7ae384c0ed0c4a960f70677743dd223b790c778972148f1e310a93e81f16bb480bf99f46b05611c6159e8897a7b9755c754d37f9ad8fbd750d',
+          sig: 'd1120957d56ae9caacfdd0bd0f69c068ccc1d637fb16bce9c9ca51564cbde5828395c406e5d33e2edb23dbdf1969aee55e75032ebaf51291a9bc42103afe210a',
         },
       ],
-      cmd: '{"networkId":"Mainnet01","payload":{"cont":{"proof":"fakeProof","pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
+      cmd: '{"networkId":"Mainnet01","payload":{"cont":{"proof":"fakeProof","pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":{}}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"0","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
     };
 
-    expect(expected).toEqual(actual);
+    expect(actual).toEqual(expected);
   });
 
   it('Creates a signed Pact ContICommandObject with undefined envData', () => {
@@ -71,15 +71,15 @@ describe('prepareContCommand', () => {
     );
 
     const expected: ICommand = {
-      hash: '3eVrb7If4TlWevuiILS6_vKGNSRzjTfDMqCiWdiyzSc',
+      hash: 'W8ub0u-3T39wB1JOa6i1Z6wzm56mRI_U9cwR7AF-5TY',
       sigs: [
         {
-          sig: '59d57d3ec58faf2caf550249a5499f2f0a3ce968aaf41e2f13182533c2bd2eb01a55a276eddd28da775cb7bf2cf4b711ffbb565b7cb7742e1b45298627395504',
+          sig: 'fe164bffb8627ac17066d26880a6fad506b6909384117b0f2eb85c791639364e1b51e5ae7872b298e6f7d8ad6c5175290fbd1866ea1fdd57512bde0e0efec305',
         },
       ],
-      cmd: '{"networkId":"Mainnet01","payload":{"cont":{"proof":"fakeProof","pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":null}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
+      cmd: '{"networkId":"Mainnet01","payload":{"cont":{"proof":"fakeProof","pactId":"TNgO7o8nSZILVCfJPcg5IjHADy-XKvQ7o5RfAieJvwY","rollback":false,"step":1,"data":null}},"signers":[{"pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"meta":{"creationTime":0,"ttl":0,"gasLimit":0,"chainId":"0","gasPrice":0,"sender":""},"nonce":"\\"step01\\""}',
     };
 
-    expect(expected).toEqual(actual);
+    expect(actual).toEqual(expected);
   });
 });

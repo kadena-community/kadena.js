@@ -27,7 +27,7 @@
     "format:ci": "prettier config src --check",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint src --ext .js,.ts --fix",
+    "lint": "eslint ./src --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
     "test": "",
@@ -38,14 +38,11 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/types": "workspace:*",
-    "blakejs": "^1.2.1",
     "exponential-backoff": "^3.1.0",
-    "kadena.js": "workspace:*",
-    "tweetnacl": "^1.0.3"
+    "kadena.js": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",

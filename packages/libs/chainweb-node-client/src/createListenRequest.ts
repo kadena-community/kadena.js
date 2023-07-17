@@ -1,4 +1,5 @@
 import { unique } from '@kadena/cryptography-utils';
+
 import type {
   IListenRequestBody,
   ISendRequestBody,

@@ -4,15 +4,15 @@ import { sign } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type {
   ICommand,
-  SignatureWithHash,
   IUnsignedCommand,
+  SignatureWithHash,
 } from '@kadena/types';
+
 import type {
   ICommandResult,
   ILocalCommandResult,
   LocalResultWithoutPreflight,
 } from '../interfaces/PactAPI';
-
 import { local } from '../local';
 
 import { mockFetch } from './mockdata/mockFetch';
@@ -38,13 +38,15 @@ test('local should return preflight result of tx queried ', async () => {
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
     sigs: [
-      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+      typeof cmdWithOneSignature1.sig === 'string'
+        ? { sig: cmdWithOneSignature1.sig }
+        : undefined,
     ],
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,
@@ -78,13 +80,15 @@ test('local with `{preflight: false}` option returns non-preflight result', asyn
     cmd: commandStr1,
     hash: cmdWithOneSignature1.hash,
     sigs: [
-      cmdWithOneSignature1.sig ? { sig: cmdWithOneSignature1.sig } : undefined,
+      typeof cmdWithOneSignature1.sig === 'string'
+        ? { sig: cmdWithOneSignature1.sig }
+        : undefined,
     ],
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,
@@ -119,7 +123,7 @@ test('local with `{signatureVerification: false}` option returns preflight resul
   };
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,
