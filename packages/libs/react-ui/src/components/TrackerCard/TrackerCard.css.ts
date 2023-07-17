@@ -17,13 +17,11 @@ export const layoutVariant = styleVariants({
 
 export const gridVariant = styleVariants({
   horizontal: [
-    sprinkles({}),
     {
       gridTemplateRows: 'auto 1fr',
     },
   ],
   vertical: [
-    sprinkles({}),
     {
       gridTemplateColumns: 'auto 1fr',
     },
@@ -122,10 +120,10 @@ export const LabelTitle = style([
     fontWeight: '$medium',
     fontFamily: '$main',
     color: '$neutral4',
+    wordBreak: 'break-word',
   }),
   {
     alignSelf: 'stretch',
-    wordBreak: 'break-word',
   },
 ]);
 
@@ -135,10 +133,8 @@ export const LabelValue = style([
     fontWeight: '$normal',
     fontFamily: '$mono',
     color: '$neutral6',
-  }),
-  {
     wordBreak: 'break-word',
-  },
+  }),
 ]);
 
 export const TrackerWarningContainer = style([
