@@ -8,8 +8,6 @@ import { darkThemeClass } from '@kadena/react-ui/theme';
 import { Head, Html, Main, NextScript } from 'next/document';
 import React, { FC, ReactNode } from 'react';
 
-React.useLayoutEffect = React.useEffect;
-
 //@ts-ignore
 const globalStyles = globalCss({
   ...baseGlobalStyles,
