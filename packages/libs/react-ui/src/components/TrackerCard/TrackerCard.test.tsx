@@ -56,6 +56,23 @@ describe('TrackerCard', () => {
     expect(helperText).toBeInTheDocument();
   });
 
+  test('displays correct content', () => {
+    render(
+      <TrackerCard
+        labelValue={labelValue}
+        variant="vertical"
+        helperText="helper text"
+        helperTextType="mild"
+        icon={ProductIcon.QuickStart}
+      />,
+    );
+
+    expect(screen.getByText('Account')).toBeInTheDocument();
+    expect(screen.getByText('k:1234****cdef')).toBeInTheDocument();
+    expect(screen.getByText('Balance')).toBeInTheDocument();
+    expect(screen.getByText('1000')).toBeInTheDocument();
+    expect(screen.getByText('helper text')).toBeInTheDocument();
+  });
   test('icons and value not in document', () => {
     const { getByTestId } = render(
       <TrackerCard
@@ -73,7 +90,9 @@ describe('TrackerCard', () => {
 
     expect(labelValueContainer).toBeInTheDocument();
     expect(maskedValue).toBeInTheDocument();
+    expect(screen.getByText('k:1234****cdef')).toBeInTheDocument();
     expect(label).toBeInTheDocument();
+    expect(screen.getByText('Account')).toBeInTheDocument();
     expect(screen.queryByTestId('kda-icon')).not.toBeInTheDocument();
     expect(screen.queryByTestId('kda-value-0')).not.toBeInTheDocument();
   });
@@ -95,7 +114,9 @@ describe('TrackerCard', () => {
 
     expect(labelValueContainer).toBeInTheDocument();
     expect(label).toBeInTheDocument();
+    expect(screen.getByText('Balance')).toBeInTheDocument();
     expect(value).toBeInTheDocument();
+    expect(screen.getByText('1000')).toBeInTheDocument();
     expect(screen.queryByTestId('kda-masked-value')).not.toBeInTheDocument();
   });
 
@@ -125,7 +146,6 @@ describe('TrackerCard', () => {
   });
 
   test('no more label-value containers than necessary', () => {
-    console.log('labelValue', labelValue);
     const { getByTestId } = render(
       <TrackerCard
         labelValue={labelValue}
@@ -146,5 +166,27 @@ describe('TrackerCard', () => {
     expect(
       screen.queryByTestId('kda-label-value-container-2'),
     ).not.toBeInTheDocument();
+  });
+
+  test('masked value should not be masked when default visible is true', () => {
+    const { getByTestId } = render(
+      <TrackerCard
+        labelValue={[
+          {
+            label: 'Account',
+            value: 'k:1234567890abcdef',
+            isAccount: true,
+            defaultVisible: true,
+          },
+        ]}
+        variant="horizontal"
+        icon={ProductIcon.QuickStart}
+      />,
+    );
+
+    const maskedValue = getByTestId('kda-masked-value');
+
+    expect(maskedValue).toBeInTheDocument();
+    expect(screen.getByText('k:1234567890abcdef')).toBeInTheDocument();
   });
 });
