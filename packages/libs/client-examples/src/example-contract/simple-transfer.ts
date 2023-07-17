@@ -1,7 +1,7 @@
-import { Pact, signWithChainweaver } from '@kadena/client';
-import { ICommand, IPactDecimal } from '@kadena/types';
+import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
+import { IPactDecimal } from '@kadena/types';
 
-import { submit } from './util/client';
+import { pollStatus, submit } from './util/client';
 import { keyFromAccount } from './util/keyFromAccount';
 
 async function transfer(
@@ -10,7 +10,7 @@ async function transfer(
   amount: IPactDecimal,
 ): Promise<void> {
   const transaction = Pact.builder
-    .execute(Pact.modules.coin.transfer(sender, receiver, amount))
+    .execution(Pact.modules.coin.transfer(sender, receiver, amount))
     .addSigner(keyFromAccount(sender), (withCapability) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', sender, receiver, amount),
@@ -19,13 +19,14 @@ async function transfer(
     .setNetworkId("testnet04'")
     .createTransaction();
 
-  // or use signWithChainweaver
   const signedTr = await signWithChainweaver(transaction);
-  console.log('transation.sigs', JSON.stringify(signedTr[0].sigs, null, 2));
+  console.log('transation.sigs', JSON.stringify(signedTr.sigs, null, 2));
 
-  await submit(signedTr as ICommand[]);
-
-  // once signed we can send it to the blockchain
+  if (isSignedCommand(signedTr)) {
+    const requestKeys = await submit(signedTr);
+    const result = pollStatus(requestKeys);
+    console.log(result);
+  }
 }
 
 const myAccount: string =

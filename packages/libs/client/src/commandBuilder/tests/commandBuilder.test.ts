@@ -1,4 +1,4 @@
-import { ICoin } from '../../createPactCommand/test/coin-contract';
+import { ICoin } from '../../composePactCommand/test/coin-contract';
 import { getModule } from '../../pact';
 import { commandBuilder } from '../commandBuilder';
 
@@ -10,7 +10,7 @@ describe('commandBuilder', () => {
   it('returns exec payload', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .getCommand();
 
     expect(command).toStrictEqual({
@@ -41,7 +41,7 @@ describe('commandBuilder', () => {
   it('returns command with signers', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addSigner('bob_pubkey', (withCapability) => [
         withCapability('coin.GAS'),
         withCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '12' }),
@@ -72,7 +72,7 @@ describe('commandBuilder', () => {
   it('returns command with meta', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setMeta({ chainId: '0' })
       .getCommand();
 
@@ -95,7 +95,7 @@ describe('commandBuilder', () => {
   it('returns command with custom nonce', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce('test-nonce')
       .getCommand();
 
@@ -111,7 +111,7 @@ describe('commandBuilder', () => {
   it('returns command with custom nonce by using nonce generator', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce((cmd) => `test-nonce:${Object.keys(cmd).length}`)
       .getCommand();
 
@@ -127,7 +127,7 @@ describe('commandBuilder', () => {
   it('returns command with network', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNetworkId('mainnet01')
       .getCommand();
 
@@ -144,7 +144,7 @@ describe('commandBuilder', () => {
   it('returns unsigned transaction', () => {
     const builder = commandBuilder();
     const unSignedTr = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addSigner('bob_bup_key')
       .setNetworkId('mainnet01')
       .createTransaction();
@@ -159,7 +159,7 @@ describe('commandBuilder', () => {
   it('returns exec command with data', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addData('test', 'value')
       .getCommand();
 
@@ -197,7 +197,7 @@ describe('commandBuilder', () => {
   it('returns command with keyset', () => {
     const builder = commandBuilder();
     const command = builder
-      .execute(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addKeyset('ks', 'keys-all', 'pub1', 'pub2')
       .getCommand();
 

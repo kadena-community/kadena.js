@@ -1,3 +1,5 @@
+import { ICommand, IUnsignedCommand } from '@kadena/types';
+
 import { IQuicksignResponse } from '../../signing-api/v1/quicksign';
 import { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignature';
@@ -16,10 +18,14 @@ export function createWalletConnectQuicksign(
   session: SessionTypes.Struct,
   walletConnectChainId: TWalletConnectChainId,
 ): ISignFunction {
-  const quicksignWithWalletConnect: ISignFunction = async (...transactions) => {
-    if (transactions.length === 0) {
+  const quicksignWithWalletConnect: ISignFunction = (async (
+    transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+  ) => {
+    if (transactionList === undefined) {
       throw new Error('No transaction(s) to sign');
     }
+    const isList = Array.isArray(transactionList);
+    const transactions = isList ? transactionList : [transactionList];
 
     const transactionHashes: string[] = [];
 
@@ -79,8 +85,8 @@ export function createWalletConnectQuicksign(
       throw new Error('Error signing transaction');
     }
 
-    return transactions;
-  };
+    return isList ? transactions : transactions[0];
+  }) as ISignFunction;
 
   return quicksignWithWalletConnect;
 }
