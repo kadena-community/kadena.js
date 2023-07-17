@@ -28,7 +28,13 @@ import {
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 const CheckTransactions: FC = () => {
   const debug = Debug('kadena-transfer:pages:transfer:account-transactions');
@@ -123,6 +129,12 @@ const CheckTransactions: FC = () => {
     return options;
   }
 
+  const onAccountInputChange = useCallback<
+    ChangeEventHandler<HTMLInputElement>
+  >((e) => {
+    setAccount(e.target.value);
+  }, []);
+
   return (
     <MainLayout title={t('Account Transactions')}>
       <main className={mainContentStyle}>
@@ -142,8 +154,7 @@ const CheckTransactions: FC = () => {
                 inputProps={{
                   id: 'account-input',
                   placeholder: t('Account'),
-                  onChange: (e) =>
-                    setAccount((e.target as HTMLInputElement).value),
+                  onChange: onAccountInputChange,
                   value: account,
                 }}
               />

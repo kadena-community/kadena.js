@@ -38,7 +38,13 @@ import {
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 interface IPactResultError {
   status: 'failure';
@@ -175,6 +181,26 @@ const CrossChainTransferFinisher: FC = () => {
     .toFixed(20)
     .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
 
+  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      setRequestKey(e.target.value);
+    },
+    [],
+  );
+
+  const onGasPayerAccountChange = useCallback<
+    ChangeEventHandler<HTMLInputElement>
+  >((e) => {
+    setKadenaXChainGas(e.target.value);
+  }, []);
+
+  const onGasPriceChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      setGasPrice(Number(e.target.value));
+    },
+    [],
+  );
+
   return (
     <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledFinisherContent>
@@ -203,8 +229,7 @@ const CrossChainTransferFinisher: FC = () => {
               inputProps={{
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
-                onChange: (e) =>
-                  setRequestKey((e.target as HTMLInputElement).value),
+                onChange: onRequestKeyChange,
                 onKeyUp: checkRequestKey,
                 defaultValue: requestKey,
               }}
@@ -231,8 +256,7 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
-                    onChange: (e) =>
-                      setKadenaXChainGas((e.target as HTMLInputElement).value),
+                    onChange: onGasPayerAccountChange,
                     defaultValue: kadenaXChainGas,
                   }}
                 />
@@ -241,8 +265,7 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     id: 'gas-price-input',
                     placeholder: t('Enter Gas Price'),
-                    onChange: (e) =>
-                      setGasPrice(Number((e.target as HTMLInputElement).value)),
+                    onChange: onGasPriceChange,
                     defaultValue: formattedGasPrice,
                   }}
                 />
