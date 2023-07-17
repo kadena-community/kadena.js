@@ -6,7 +6,7 @@ import { SearchForm } from '../Search/styles';
 import { Wrapper } from './styles';
 
 import { useSearch } from '@/hooks';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 export const SearchModal: FC = () => {
   const {
@@ -18,6 +18,16 @@ export const SearchModal: FC = () => {
     outputStream,
     error,
   } = useSearch();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!searchInputRef.current || isMounted) {
+      return;
+    }
+    searchInputRef.current.focus();
+    setIsMounted(true);
+  }, [isMounted, searchInputRef]);
 
   return (
     <>
