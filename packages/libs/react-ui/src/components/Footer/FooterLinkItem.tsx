@@ -2,15 +2,12 @@ import { vars } from '../../styles';
 
 import { colorVariants, linkBoxClass, linkClass } from './Footer.css';
 
-import React, { FC } from 'react';
 import classNames from 'classnames';
+import React, { FC } from 'react';
 
 export type Target = '_self' | '_blank';
 export interface IFooterLinkItemProps {
   children: React.ReactNode;
-  // title?: string;
-  // href?: string;
-  // target?: Target;
   color?: keyof typeof colorVariants;
 }
 
