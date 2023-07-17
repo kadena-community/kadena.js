@@ -31,9 +31,7 @@ export const AccordionSection: FC<IAccordionSection> = ({
     : 0;
 
   return (
-    <div
-      className={accordionSectionClass}
-    >
+    <div className={accordionSectionClass}>
       <div
         data-testid="kda-accordion-title"
         onClick={onToggle}
