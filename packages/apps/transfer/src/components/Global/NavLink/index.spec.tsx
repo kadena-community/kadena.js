@@ -10,7 +10,7 @@ import React from 'react';
 
 describe('NavLink', () => {
   const mockUseRouter = useRouter as jest.Mock;
-  test('renders correctly when active', () => {
+  it('renders correctly when active', () => {
     mockUseRouter.mockImplementation(() => ({
       pathname: '/active',
     }));
@@ -34,7 +34,7 @@ describe('NavLink', () => {
     expect(navLinkText).toBeInTheDocument();
   });
 
-  test('renders correctly when not active', () => {
+  it('renders correctly when not active', () => {
     mockUseRouter.mockImplementation(() => ({
       pathname: '/not-active',
     }));

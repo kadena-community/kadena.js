@@ -1,9 +1,5 @@
-import {
-  darkTheme,
-  IconButton,
-  styled,
-  StyledComponent,
-} from '@kadena/react-components';
+import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
+import { IconButton } from '@kadena/react-ui';
 
 import { Container, GridRow } from '@/components/Global';
 import { NavBackground } from '@/resources/svg/generated';

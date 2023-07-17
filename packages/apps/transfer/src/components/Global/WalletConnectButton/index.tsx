@@ -1,5 +1,4 @@
-import { SystemIcons } from '@kadena/react-components';
-import { Button } from '@kadena/react-ui';
+import { Button, SystemIcon } from '@kadena/react-ui';
 
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
@@ -9,7 +8,7 @@ export const WalletConnectButton: FC = () => {
   return (
     <Button.Root title={t('Connect your wallet')} color="positive">
       {t('Connect your wallet')}
-      <SystemIcons.Link />
+      <SystemIcon.Link />
     </Button.Root>
   );
 };

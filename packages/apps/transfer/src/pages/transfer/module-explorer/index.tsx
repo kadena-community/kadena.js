@@ -1,4 +1,4 @@
-import { TextField } from '@kadena/react-components';
+import { TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { StyledOption } from '@/components/Global/Select/styles';
@@ -129,6 +129,7 @@ const ModuleExplorer: FC = () => {
           <TextField
             label={t('Module Name')}
             inputProps={{
+              id: 'module-name-input',
               placeholder: t('Enter desired module name'),
               onChange: (e) =>
                 setModuleSearch((e.target as HTMLInputElement).value),
