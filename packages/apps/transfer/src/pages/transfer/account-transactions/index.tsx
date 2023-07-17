@@ -63,7 +63,7 @@ const CheckTransactions: FC = () => {
         debug(e);
       });
     }
-  }, [router.isReady, getAndSetTransactions]);
+  }, [router.query.network, router.query.chain, router.query.account]);
 
   const numberOfChains = 20;
 
