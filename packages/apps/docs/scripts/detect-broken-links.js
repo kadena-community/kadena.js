@@ -141,23 +141,41 @@ async function processExternalLinks(externalLinks) {
   console.log('finished processing external links')
 }
 
-const main = async () => {
+const main = async ({ includeExternalLinks, reportMd}) => {
   const directoryPath = path.join(__dirname, '../src');
   processFiles(directoryPath);
 
-  await processExternalLinks(externalLinks)
+  if (includeExternalLinks) {
+    await processExternalLinks(externalLinks)
+  }
   
-  // write filesWithBrokenLinks as a markdown file
-  const reportMd = ['# Broken links']
-  for (const filePath in filesWithBrokenLinks) {
-    const links = filesWithBrokenLinks[filePath]
-    reportMd.push(`## ${filePath}`)
-    for (const link of links) {
-      reportMd.push(`- ${link}`)
-    }
+  if (Object.keys(filesWithBrokenLinks).length > 0) {
+    throw new Error('Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2))
   }
 
-  fs.writeFileSync(path.join(__dirname, '../broken-links.md'), reportMd.join('\n'))
+  if (reportMd) {
+    const reportMd = ['# Broken links']
+    for (const filePath in filesWithBrokenLinks) {
+      const links = filesWithBrokenLinks[filePath]
+      reportMd.push(`## ${filePath}`)
+      for (const link of links) {
+        reportMd.push(`- ${link}`)
+      }
+    }
+
+    fs.writeFileSync(path.join(__dirname, '../broken-links.md'), reportMd.join('\n'))
+    console.log('Wrote broken links report to broken-links.md')
+  }  
 }
 
-main()
+const args = process.argv.slice(2);
+
+if (args.length === 0) {
+  main({ includeExternalLinks: false, reportMd: false })
+} else {
+  const includeExternalLinks = args.includes('--include-external-links')
+  const reportMd = args.includes('--report-md')
+
+  main({ includeExternalLinks, reportMd })
+}
+
