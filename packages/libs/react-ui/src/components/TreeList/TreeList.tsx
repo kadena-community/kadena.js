@@ -75,6 +75,7 @@ export const TreeList: FC<ITreeListProps> = ({
               key={index}
               title={item.title}
               items={item?.items ?? []}
+              isOpen={item?.isOpen ?? false}
             />
           ))}
         </div>

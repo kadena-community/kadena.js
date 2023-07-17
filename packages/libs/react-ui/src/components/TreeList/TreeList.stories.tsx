@@ -42,10 +42,12 @@ export const Dynamic: Story = {
       {
         title: 'Child 1',
         items: [{ title: 'Sub Child 1' }, { title: 'Sub Child 2' }],
+        isOpen: true,
       },
       {
         title: 'Child 2',
         items: [{ title: 'Sub Child 1' }, { title: 'Sub Child 2' }],
+        isOpen: true,
       },
     ],
   },
