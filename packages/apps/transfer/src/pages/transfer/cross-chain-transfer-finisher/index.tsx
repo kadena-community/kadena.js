@@ -1,13 +1,9 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
-import {
-  Breadcrumbs,
-  Button,
-  ProductIcon,
-  TextField,
-  TrackerCard,
-} from '@kadena/react-ui';
+import { Button, TextField } from '@kadena/react-ui';
 
+import MainLayout from '@/components/Common/Layout/MainLayout';
+import { DetailCard } from '@/components/Global/DetailsCard';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -31,6 +27,7 @@ import {
   StyledTotalChunk,
   StyledTotalContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 import {
   finishXChainTransfer,
   ITransferResult,
@@ -39,16 +36,11 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
-import { formatNumberAsString } from '@/utils/number';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { ProductIcon, TrackerCard } from '@kadena/react-ui/types/components';
+import { ILabelValue } from '@kadena/react-ui/types/components/TrackerCard/TrackerCard';
 
 interface IPactResultError {
   status: 'failure';
@@ -185,32 +177,8 @@ const CrossChainTransferFinisher: FC = () => {
     .toFixed(20)
     .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setRequestKey(e.target.value);
-    },
-    [],
-  );
-
-  const onGasPayerAccountChange = useCallback<
-    ChangeEventHandler<HTMLInputElement>
-  >((e) => {
-    setKadenaXChainGas(e.target.value);
-  }, []);
-
-  const onGasPriceChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setGasPrice(Number(e.target.value));
-    },
-    [],
-  );
-
   return (
-    <div>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+    <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
       <StyledFinisherContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -237,7 +205,8 @@ const CrossChainTransferFinisher: FC = () => {
               inputProps={{
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
-                onChange: onRequestKeyChange,
+                onChange: (e) =>
+                  setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
                 defaultValue: requestKey,
               }}
@@ -255,7 +224,7 @@ const CrossChainTransferFinisher: FC = () => {
                   }}
                 />
                 <TextField
-                  label={t('Gas Payer')}
+                  label={t('Gas Payer Account')}
                   helperText={
                     isGasStation
                       ? ''
@@ -264,7 +233,8 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
-                    onChange: onGasPayerAccountChange,
+                    onChange: (e) =>
+                      setKadenaXChainGas((e.target as HTMLInputElement).value),
                     defaultValue: kadenaXChainGas,
                   }}
                 />
@@ -273,7 +243,8 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     id: 'gas-price-input',
                     placeholder: t('Enter Gas Price'),
-                    onChange: onGasPriceChange,
+                    onChange: (e) =>
+                      setGasPrice(Number((e.target as HTMLInputElement).value)),
                     defaultValue: formattedGasPrice,
                   }}
                 />
@@ -314,24 +285,11 @@ const CrossChainTransferFinisher: FC = () => {
         {pollResults.tx ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
-            <TrackerCard
-              variant="vertical"
-              labelValues={[
-                {
-                  label: t('Network'),
-                  value: chainNetwork[network].network,
-                },
-                {
-                  label: t('Server'),
-                  value: chainNetwork[network].server,
-                },
-              ]}
-            />
 
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.QuickStart}
-              labelValues={[
+              labelValue={[
                 {
                   label: t('Sender'),
                   value: pollResults.tx.sender.account,
@@ -346,24 +304,8 @@ const CrossChainTransferFinisher: FC = () => {
 
             <TrackerCard
               variant="vertical"
-              icon={ProductIcon.Gas}
-              labelValues={[
-                {
-                  label: t('Gas Payer'),
-                  value: kadenaXChainGas,
-                  isAccount: false,
-                },
-                {
-                  label: t('Price'),
-                  value: formatNumberAsString(gasPrice),
-                },
-              ]}
-            />
-
-            <TrackerCard
-              variant="vertical"
               icon={ProductIcon.Receiver}
-              labelValues={[
+              labelValue={[
                 {
                   label: t('Receiver'),
                   value: pollResults.tx.receiver.account,
@@ -375,6 +317,13 @@ const CrossChainTransferFinisher: FC = () => {
                 },
               ]}
             />
+
+            <StyledInfoItem>
+              <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
+              <StyledInfoItemLine>{`${pollResults.tx.amount} ${t(
+                'KDA',
+              )}`}</StyledInfoItemLine>
+            </StyledInfoItem>
 
             {showMore ? (
               <StyledInfoItem>
@@ -397,7 +346,7 @@ const CrossChainTransferFinisher: FC = () => {
           </StyledInfoBox>
         ) : null}
       </StyledFinisherContent>
-    </div>
+    </MainLayout>
   );
 };
 

@@ -1,12 +1,9 @@
 import {
-  Breadcrumbs,
   Button,
   Heading,
   InputWrapperStatus,
-  ProductIcon,
   SystemIcon,
   TextField,
-  TrackerCard,
 } from '@kadena/react-ui';
 
 import {
@@ -16,6 +13,8 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
+import MainLayout from '@/components/Common/Layout/MainLayout';
+import { DetailCard } from '@/components/Global/DetailsCard';
 import { useAppContext } from '@/context/app-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
@@ -26,21 +25,20 @@ import {
   StyledMainContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
+  FromIconActive,
+  ReceiverIconActive,
+  ReceiverIconInactive,
+} from '@/resources/svg/generated';
+import {
   getTransferStatus,
   IStatusData,
-  StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { ProductIcon, TrackerCard } from '@kadena/react-ui/types/components';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -50,9 +48,8 @@ const CrossChainTransferTracker: FC = () => {
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
   const { t } = useTranslation('common');
-  const [requestKey, setRequestKey] = useState<string>(
-    (router.query?.reqKey as string) || '',
-  );
+  const [requestKey, setRequestKey] =
+    useState<string>(router.query?.reqKey as string) || '';
   const [data, setData] = useState<IStatusData>({});
   const [validRequestKey, setValidRequestKey] = useState<
     InputWrapperStatus | undefined
@@ -124,19 +121,8 @@ const CrossChainTransferTracker: FC = () => {
     }
   };
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setRequestKey(e.target.value);
-    },
-    [],
-  );
-
   return (
-    <div>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+    <MainLayout title={t('Track & trace transactions')}>
       <StyledMainContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -149,7 +135,8 @@ const CrossChainTransferTracker: FC = () => {
               inputProps={{
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
-                onChange: onRequestKeyChange,
+                onChange: (e) =>
+                  setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
                 value: requestKey,
                 leftIcon: SystemIcon.KeyIconFilled,
@@ -170,7 +157,7 @@ const CrossChainTransferTracker: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.QuickStart}
-              labelValues={[
+              labelValue={[
                 {
                   label: t('Sender'),
                   value: data.senderAccount || '',
@@ -200,11 +187,11 @@ const CrossChainTransferTracker: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={
-                data?.id === StatusId.Success
+                data?.id === 3
                   ? ProductIcon.Receiver
                   : ProductIcon.ReceiverInactive
               }
-              labelValues={[
+              labelValue={[
                 {
                   label: t('Receiver'),
                   value: data.receiverAccount || '',
@@ -219,7 +206,7 @@ const CrossChainTransferTracker: FC = () => {
           </StyledInfoBox>
         ) : null}
       </StyledMainContent>
-    </div>
+    </MainLayout>
   );
 };
 
