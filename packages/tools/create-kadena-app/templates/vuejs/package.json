@@ -20,12 +20,12 @@
     "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact"
   },
   "dependencies": {
-    "@kadena/client": "^0.1.10",
+    "@kadena/client": "^1.0.0-alpha.3",
     "epic-spinners": "^2.0.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@kadena/pactjs-cli": "^0.0.8",
+    "@kadena/pactjs-cli": "^1.0.0-alpha.3",
     "@kadena/types": "^0.0.3",
     "@rushstack/eslint-patch": "^1.1.4",
     "@testing-library/jest-dom": "^5.16.5",

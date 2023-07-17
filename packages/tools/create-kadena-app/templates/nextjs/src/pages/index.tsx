@@ -30,7 +30,6 @@ const Home: React.FC = (): JSX.Element => {
   const writeMessage = async (): Promise<void> => {
     try {
       const client = getClient();
-
       const transaction = Pact.builder
       .execution(Pact.modules['free.cka-message-store']['write-message'](account, messageToWrite))
       .addSigner(accountKey(account), (withCapability) => [

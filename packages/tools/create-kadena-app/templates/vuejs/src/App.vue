@@ -1,17 +1,27 @@
 <script lang="ts">
 import { HalfCircleSpinner } from 'epic-spinners';
-import { Pact, signWithChainweaver } from '@kadena/client';
+import {
+  Pact,
+  signWithChainweaver,
+  getClient,
+  type ICommand,
+} from '@kadena/client';
 
-const { VITE_KADENA_NETWORK_ID, VITE_KADENA_CHAIN_ID, VITE_KADENA_HOST } =
-  import.meta.env;
-const API_HOST = `https://${VITE_KADENA_HOST}/chainweb/0.0/${VITE_KADENA_NETWORK_ID}/chain/${VITE_KADENA_CHAIN_ID}/pact`;
+const { VITE_KADENA_NETWORK_ID, VITE_KADENA_CHAIN_ID } = import.meta.env;
 
 const accountKey = (account: string): string => account.split(':')[1];
 
 const readMessage = async (account: string): Promise<string> => {
-  const transactionBuilder =
-    Pact.modules['free.cka-message-store']['read-message'](account);
-  const { result } = await transactionBuilder.local(API_HOST);
+  const client = getClient();
+  const unsignedTransaction = Pact.builder
+    .execution(Pact.modules['free.cka-message-store']['read-message'](account))
+    .setMeta({ chainId: VITE_KADENA_CHAIN_ID })
+    .setNetworkId(VITE_KADENA_NETWORK_ID)
+    .createTransaction();
+
+  const { result } = await client.local(unsignedTransaction, {
+    preflight: false,
+  });
 
   if (result.status === 'success') {
     return result.data.toString();
@@ -26,37 +36,40 @@ const writeMessage = async (
   messageToWrite: string,
 ): Promise<void> => {
   try {
-    const transactionBuilder = Pact.modules['free.cka-message-store']
-      ['write-message'](account, messageToWrite)
-      .addCap('coin.GAS', accountKey(account))
-      .addCap(
-        'free.cka-message-store.ACCOUNT-OWNER',
-        accountKey(account),
-        account,
+    const client = getClient();
+    const transaction = Pact.builder
+      .execution(
+        Pact.modules['free.cka-message-store']['write-message'](
+          account,
+          messageToWrite,
+        ),
       )
-      .setMeta(
-        {
-          ttl: 28000,
-          gasLimit: 10000,
-          chainId: VITE_KADENA_CHAIN_ID,
-          gasPrice: 0.000001,
-          sender: account,
-        },
-        VITE_KADENA_NETWORK_ID,
-      );
+      .addSigner(accountKey(account), (withCapability) => [
+        withCapability('coin.GAS'),
+        withCapability('free.cka-message-store.ACCOUNT-OWNER', account),
+      ])
+      .setMeta({
+        ttl: 28000,
+        gasLimit: 100000,
+        chainId: VITE_KADENA_CHAIN_ID,
+        gasPrice: 0.000001,
+        sender: account,
+      })
+      .setNetworkId(VITE_KADENA_NETWORK_ID)
+      .createTransaction();
 
-    await signWithChainweaver(transactionBuilder);
+    console.log(`Signing transaction: ${transaction.cmd}`);
+    const signedTransaction = (await signWithChainweaver(
+      transaction,
+    )) as ICommand;
 
-    console.log(`Sending transaction: ${transactionBuilder.code}`);
-    const response = await transactionBuilder.send(API_HOST);
+    console.log(`Sending transaction ...`);
+    const requestKeys = await client.submit(signedTransaction);
+    console.log('Send response: ', requestKeys);
 
-    console.log('Send response: ', response);
-    const requestKey = response.requestKeys[0];
-
-    const pollResult = await transactionBuilder.pollUntil(API_HOST, {
-      onPoll: async (transaction, pollRequest): Promise<void> => {
-        console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-        console.log(await pollRequest);
+    const pollResult = await client.pollStatus(requestKeys, {
+      onPoll: (id: string): void => {
+        console.log(`Polling ${id}`);
       },
     });
 
