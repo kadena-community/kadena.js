@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Pact, signWithChainweaver } from '@kadena/client';
+import { Pact, signWithChainweaver, getClient, ICommand } from '@kadena/client';
 import { environment } from './../environments/environment';
 
-const { kadenaNetworkId, kadenaChainId, kadenaHost } = environment;
-const apiHost = `https://${kadenaHost}/chainweb/0.0/${kadenaNetworkId}/chain/${kadenaChainId}/pact`;
+const { kadenaNetworkId, kadenaChainId } = environment;
 
 const accountKey = (account: string): string => account.split(':')[1];
 
@@ -11,42 +10,36 @@ const accountKey = (account: string): string => account.split(':')[1];
 export class AppService {
   async writeMessage(account: string, message: string) {
     try {
-      const transactionBuilder = Pact.modules['free.cka-message-store']
-        ['write-message'](account, message)
-        .addCap('coin.GAS', accountKey(account))
-        .addCap(
-          'free.cka-message-store.ACCOUNT-OWNER',
-          accountKey(account),
-          account,
-        )
-        .setMeta(
-          {
-            ttl: 28000,
-            gasLimit: 100000,
-            chainId: kadenaChainId,
-            gasPrice: 0.000001,
-            sender: account,
-          },
-          kadenaNetworkId,
-        );
+      const client = getClient();
 
-      // `signWithChainweaver` modifies the `transactionBuilder` that's passed,
-      //   so we use this further down
-      // It also returns an array with the transactionBuilders that are passed
-      //   (if one is passed it'll be an array of 1)
+      const transaction = Pact.builder.execution(
+        Pact.modules['free.cka-message-store']['write-message'](account, message)
+      )
+      .addSigner(accountKey(account), (withCapability) => [
+        withCapability('coin.GAS'),
+        withCapability('free.cka-message-store.ACCOUNT-OWNER', account),
+      ])
+      .setMeta({
+          ttl: 28000,
+          gasLimit: 100000,
+          chainId: kadenaChainId,
+          gasPrice: 0.000001,
+          sender: account
+        }
+      )
+      .setNetworkId(kadenaNetworkId)
+      .createTransaction();
 
-      await signWithChainweaver(transactionBuilder);
+      console.log(`Signing transaction: ${transaction.cmd}`);
+      const signedTransaction = await signWithChainweaver(transaction) as ICommand;
 
-      console.log(`Sending transaction: ${transactionBuilder.code}`);
-      const response = await transactionBuilder.send(apiHost);
+      console.log(`Sending transaction ...`);
+      const requestKeys = await client.submit(signedTransaction);
+      console.log('Send response: ', requestKeys);
 
-      console.log('Send response: ', response);
-      const requestKey = response.requestKeys[0];
-
-      const pollResult = await transactionBuilder.pollUntil(apiHost, {
-        onPoll: async (transaction, pollRequest): Promise<void> => {
-          console.log(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-          console.log(await pollRequest);
+      const pollResult = await client.pollStatus(requestKeys, {
+        onPoll: (id: string):void => {
+          console.log(`Polling ${id}`);
         },
       });
 
@@ -58,9 +51,17 @@ export class AppService {
   }
 
   async readMessage(account: string): Promise<string> {
-    const transactionBuilder =
-      Pact.modules['free.cka-message-store']['read-message'](account);
-    const { result } = await transactionBuilder.local(apiHost);
+    const client = getClient();
+    const unsignedTransaction = Pact.builder
+      .execution(Pact.modules['free.cka-message-store']['read-message'](account))
+      .setMeta({ chainId: kadenaChainId })
+      .setNetworkId(kadenaNetworkId)
+      .createTransaction();
+
+    const { result } = await client.local(unsignedTransaction, {
+      preflight: false,
+    });
+
     if (result.status === 'success') {
       return result.data.toString();
     } else {
