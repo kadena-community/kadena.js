@@ -1,7 +1,8 @@
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 export interface ISignFunction {
-  (...transactions: IUnsignedCommand[]): Promise<
+  (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
+  (transactionList: IUnsignedCommand[]): Promise<
     (ICommand | IUnsignedCommand)[]
   >;
 }

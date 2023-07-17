@@ -19,7 +19,7 @@ export async function doSafeTransfer(
     .toPactDecimal();
 
   const unsignedTr = Pact.builder
-    .execute(
+    .execution(
       // the first transfer is here to make sure the receiver has also signed the command
       Pact.modules.coin.transfer(to.account, from.account, aLowAmount),
       // the actual transfer
@@ -36,7 +36,7 @@ export async function doSafeTransfer(
     .setNonce('tadasd')
     .createTransaction();
 
-  const [signedCommand] = await signWithChainweaver(unsignedTr);
+  const signedCommand = await signWithChainweaver(unsignedTr);
 
   // probably in this step you need to send the transaction to another party to sign the tr as well, and then send it to the blockchain
   // but for simplicity lets consider you want to transfer from your accounts that you sign in one go via the wallet

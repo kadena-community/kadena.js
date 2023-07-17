@@ -12,6 +12,7 @@ export const StyledFooter: StyledComponent<'footer'> = styled('footer', {
   gridArea: 'footer',
   zIndex: '$navMenu',
   background: '$neutral2',
+  marginTop: '$40',
 
   [`.${darkTheme} &`]: {
     background: '$neutral3',

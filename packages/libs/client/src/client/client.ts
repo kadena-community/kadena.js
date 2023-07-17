@@ -86,7 +86,7 @@ interface IClientBasics {
 
   /**
    * calls '/spv' endpoint only once. if the request submitted outside of the current client context then you need to path networkId
-   * and chianId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
    */
   createSpv: (
     requestKey: string,
@@ -111,7 +111,7 @@ interface IClient extends IClientBasics {
   /**
    * calls '/local' with minimum both preflight and signatureVerification `false`
    */
-  dirtyReady: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+  dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
 
   /**
    * calls '/local' with minimum both preflight and signatureVerification `false`
@@ -146,7 +146,7 @@ interface IGetClient {
    */
   (hostUrl: string): IClientBasics;
   /**
-   * path a function that let you decide about with host url you should be picked for each request based on networkId and chianId
+   * path a function that let you decide about with host url you should be picked for each request based on networkId and chainId
    * the default value returns kadena testnet or mainnet url based on networkId
    */
   (
@@ -299,7 +299,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         signatureVerification: true,
       });
     },
-    dirtyReady(body) {
+    dirtyRead(body) {
       return client.local(body, {
         preflight: false,
         signatureVerification: false,
