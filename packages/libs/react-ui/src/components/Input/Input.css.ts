@@ -1,6 +1,11 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { createVar, fallbackVar, style, styleVariants } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 export const inputStatusColor = createVar();
 
