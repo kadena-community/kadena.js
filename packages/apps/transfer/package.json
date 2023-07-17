@@ -20,7 +20,7 @@
     "test": "jest --silent"
   },
   "dependencies": {
-    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/chainweb-node-client": "0.4.1",
     "@kadena/client": "0.6.1",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
