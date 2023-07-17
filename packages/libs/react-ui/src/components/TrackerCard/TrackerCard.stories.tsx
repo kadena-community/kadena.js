@@ -1,4 +1,4 @@
-import { ProductIcon } from '../Icons';
+import { ProductIcon } from '../Icon';
 
 import { ILabelValue, ITrackerCardProps, TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
