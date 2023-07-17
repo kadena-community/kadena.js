@@ -38,6 +38,7 @@ import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
+import { ProductIcon, TrackerCard } from '@kadena/react-ui/types/components';
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -153,12 +154,20 @@ const CrossChainTransferTracker: FC = () => {
         {data.receiverAccount ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Transfer Information')}</StyledInfoTitle>
-            <DetailCard
-              firstTitle={t('Sender')}
-              firstContent={data.senderAccount || ''}
-              secondTitle={t('Chain')}
-              secondContent={data.senderChain || ''}
-              icon={<FromIconActive />}
+            <TrackerCard
+              variant="vertical"
+              icon={ProductIcon.QuickStart}
+              labelValue={[
+                {
+                  label: t('Sender'),
+                  value: data.senderAccount || '',
+                  isAccount: true,
+                },
+                {
+                  label: t('Chain'),
+                  value: data.senderChain || '',
+                },
+              ]}
             />
             <StyledInfoItem>
               <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
@@ -174,18 +183,25 @@ const CrossChainTransferTracker: FC = () => {
               <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
               <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
             </StyledInfoItem>
-            <DetailCard
-              firstTitle={t('Receiver')}
-              firstContent={data.receiverAccount || ''}
-              secondTitle={t('Chain')}
-              secondContent={data.receiverChain || ''}
+
+            <TrackerCard
+              variant="vertical"
               icon={
-                data?.id === 3 ? (
-                  <ReceiverIconActive />
-                ) : (
-                  <ReceiverIconInactive />
-                )
+                data?.id === 3
+                  ? ProductIcon.Receiver
+                  : ProductIcon.ReceiverInactive
               }
+              labelValue={[
+                {
+                  label: t('Receiver'),
+                  value: data.receiverAccount || '',
+                  isAccount: true,
+                },
+                {
+                  label: t('Chain'),
+                  value: data.receiverChain || '',
+                },
+              ]}
             />
           </StyledInfoBox>
         ) : null}
