@@ -22,7 +22,7 @@ export const Menu: FC = () => {
       <Accordion
         sections={
           activeMenu.items?.map((item) => ({
-            title: item.title,
+            title: '', // @todo: fix Type error: Property 'title' does not exist on type 'ISidebarSubMenuItem'.
             children: <Tree isOpen={true} items={item.items} />,
           })) ?? []
         }

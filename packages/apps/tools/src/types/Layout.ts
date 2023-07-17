@@ -1,8 +1,4 @@
-import {
-  IAccordionSectionProps,
-  ITreeProps,
-  SystemIcon,
-} from '@kadena/react-ui';
+import { IAccordionProps, ITreeProps, SystemIcon } from '@kadena/react-ui';
 
 export interface IMenuItem {
   title: string;
@@ -11,7 +7,7 @@ export interface IMenuItem {
 }
 
 export interface ISidebarSubMenuItem
-  extends Omit<IAccordionSectionProps, 'isOpen' | 'onToggle' | 'children'> {
+  extends Omit<IAccordionProps, 'isOpen' | 'onToggle' | 'children'> {
   items: ITreeProps[];
 }
 export interface ISidebarToolbarItem {

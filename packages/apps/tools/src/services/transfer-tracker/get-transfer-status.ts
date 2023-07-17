@@ -1,16 +1,10 @@
-import {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
-import { getContCommand, pollSpvProof } from '@kadena/client';
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { ICommand, Pact } from '@kadena/client';
 
 import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
-import {
-  getKadenaConstantByNetwork,
-  kadenaConstants,
-  Network,
-} from '@/constants/kadena';
+import client from '@/constants/client';
+import { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
 import { Translate } from 'next-translate';
@@ -170,53 +164,53 @@ export async function getXChainTransferInfo({
 }): Promise<IStatusData> {
   debug(getXChainTransferInfo.name);
   try {
-    const proofApiHost = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId: senderChain,
-    });
-    const apiHost = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId: receiverChain,
-    });
-    const gasLimit: number = kadenaConstants.GAS_LIMIT;
-    const gasPrice: number = kadenaConstants.GAS_PRICE;
+    const networkId = chainNetwork[network].network;
 
-    const contCommand = await getContCommand(
+    const senderOptions = {
+      networkId,
+      chainId: senderChain,
+    };
+
+    const proof = await client.pollCreateSpv(
       requestKey,
       receiverChain,
-      proofApiHost,
-      1,
-      false,
+      senderOptions,
+    );
+    const status = await client.listen(requestKey, senderOptions);
+    const pactId = status.continuation?.pactId;
+
+    const continuationTransaction = Pact.builder
+      .continuation({
+        pactId,
+        proof,
+        rollback: false,
+        step: 1,
+      })
+      .setNetworkId(networkId)
+      .setMeta({ chainId: receiverChain })
+      .createTransaction();
+
+    const response = await client.dirtyRead(
+      continuationTransaction as ICommand,
     );
 
-    contCommand
-      .setMeta(
-        {
-          chainId: receiverChain,
-          sender: senderAccount,
-          gasLimit,
-          gasPrice,
-        },
-        chainNetwork[network].network as ChainwebNetworkId,
-      )
-      .createCommand();
-
-    const response = await contCommand.local(apiHost, {
-      preflight: false,
-      signatureVerification: false,
-    });
-
-    if (
-      String(response?.result?.error?.type) === 'EvalError' &&
-      String(response?.result?.error?.message).includes('pact completed')
-    ) {
-      return {
-        id: StatusId.Success,
-        status: t('Success'),
-        description: t('Transfer completed successfully'),
-        senderAccount: senderAccount,
-        receiverChain: receiverChain,
+    if ('error' in response?.result) {
+      const error = response.result as unknown as {
+        type: string;
+        message: string;
       };
+      if (
+        String(error.type) === 'EvalError' &&
+        String(error.message).includes('pact completed')
+      ) {
+        return {
+          id: StatusId.Success,
+          status: t('Success'),
+          description: t('Transfer completed successfully'),
+          senderAccount: senderAccount,
+          receiverChain: receiverChain,
+        };
+      }
     }
 
     if (response?.result?.status === 'success') {
@@ -266,19 +260,17 @@ export async function checkForProof({
     onPoll?: (status: IStatusData) => void;
   };
   t: Translate;
-}): Promise<Response | undefined> {
+}): Promise<string | undefined> {
   debug(checkForProof.name);
 
   const { onPoll = () => {} } = { ...options };
 
   try {
-    const apiHost = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId: senderChain,
-    });
     let count = 0;
 
-    return await pollSpvProof(requestKey, receiverChain, apiHost, {
+    return client.pollCreateSpv(requestKey, receiverChain, {
+      networkId: chainNetwork[network].network,
+      chainId: senderChain,
       onPoll: () => {
         // Avoid status update on first two polls (to avoid flickering)
         if (count > 1) {

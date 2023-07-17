@@ -1,4 +1,4 @@
-import { Pact } from '@kadena/client';
+import { getClient, Pact } from '@kadena/client';
 
 import { apiHost } from '../utils/api-host';
 
@@ -18,7 +18,17 @@ const [account] = process.argv.slice(2);
  * @return
  */
 async function details(account: string): Promise<void> {
-  const response = await Pact.modules.coin.details(account).local(apiHost());
+  const { local } = getClient(apiHost());
+
+  const transaction = Pact.builder
+    .execution(Pact.modules.coin.details(account))
+    .setMeta({ chainId: '1' })
+    .createTransaction();
+
+  const response = await local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
 
   console.log(JSON.stringify(response, null, 2));
 }

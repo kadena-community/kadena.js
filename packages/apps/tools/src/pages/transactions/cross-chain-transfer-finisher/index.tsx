@@ -1,5 +1,3 @@
-import { IPollResponse } from '@kadena/chainweb-node-client';
-import { ContCommand } from '@kadena/client';
 import {
   Breadcrumbs,
   Button,
@@ -9,7 +7,7 @@ import {
   TrackerCard,
 } from '@kadena/react-ui';
 
-import { getKadenaConstantByNetwork } from '@/constants/kadena';
+import client from '@/constants/client';
 import { chainNetwork } from '@/constants/network';
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
@@ -52,13 +50,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-
-interface IPactResultError {
-  status: 'failure';
-  error: {
-    message: string;
-  };
-}
 
 const CrossChainTransferFinisher: FC = () => {
   const debug = Debug(
@@ -142,57 +133,48 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
-    const host = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId: pollResults.tx.receiver.chain,
-    });
+    const networkId = chainNetwork[network].network;
 
-    const contCommand = await finishXChainTransfer(
+    const options = {
+      networkId: networkId,
+      chainId: pollResults.tx.sender.chain,
+    };
+
+    const proof = await client.pollCreateSpv(
       requestKey,
-      pollResults.tx.step,
-      pollResults.tx.rollback,
-      network,
       pollResults.tx.receiver.chain,
+      options,
+    );
+
+    const status = await client.listen(requestKey, options);
+
+    const pactId = status.continuation?.pactId;
+
+    const requestKeyOrError = await finishXChainTransfer(
+      {
+        pactId,
+        proof,
+        rollback: false,
+        step: 1,
+      },
+      pollResults.tx.receiver.chain,
+      networkId,
       kadenaXChainGas,
     );
 
-    if (!(contCommand instanceof ContCommand) && contCommand.error) {
-      setTxError(contCommand.error);
+    if (typeof requestKeyOrError !== 'string') {
+      setTxError((requestKeyOrError as { error: string }).error);
     }
 
-    if (contCommand instanceof ContCommand) {
-      try {
-        const pollResult = await contCommand.pollUntil(host, {
-          onPoll: async (transaction, pollRequest): Promise<void> => {
-            debug(`Polling ${requestKey}.\nStatus: ${transaction.status}`);
-            setFinalResults({
-              requestKey: transaction.requestKey,
-              status: transaction.status,
-            });
-            debug(await pollRequest);
-            const data: IPollResponse = await pollRequest;
-
-            // Show correct error message
-            if (
-              Object.keys(data).length > 0 &&
-              Object.values(data)[0].result.status === 'failure'
-            ) {
-              const errorResult: IPactResultError = Object.values(data)[0]
-                .result as IPactResultError;
-              if (errorResult !== undefined) {
-                setTxError(errorResult.error.message);
-              }
-            }
-          },
-        });
-        setFinalResults({
-          requestKey: pollResult.reqKey,
-          status: pollResult.result.status,
-        });
-      } catch (tx) {
-        debug(tx);
-        setFinalResults({ ...tx });
-      }
+    try {
+      const result = await client.listen(requestKeyOrError as string);
+      setFinalResults({
+        requestKey: result.reqKey,
+        status: result.result.status,
+      });
+    } catch (tx) {
+      debug(tx);
+      setFinalResults({ ...tx });
     }
   };
 
