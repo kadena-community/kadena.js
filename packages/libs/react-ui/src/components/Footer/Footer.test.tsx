@@ -43,7 +43,7 @@ describe('Footer', () => {
         <Footer.Panel>
           {icons.map((item, index) => {
             return (
-              <Footer.IconItem key={index} color={color} icon={item.icon} />
+              <Footer.IconItem key={index} color={color} icon={item.icon} text={item.text}/>
             );
           })}
         </Footer.Panel>
@@ -58,5 +58,7 @@ describe('Footer', () => {
     expect(footerPanels).toHaveLength(2);
     expect(menuLinksItems).toHaveLength(2);
     expect(iconItems).toHaveLength(2);
+    expect(menuLinksItems[0]).toHaveTextContent('Tutorial');
+    expect(iconItems[0]).toHaveTextContent('English');
   });
 });
