@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/eslint-plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "src/index.js",
   "files": [
     "src"
@@ -11,16 +11,15 @@
     "format:ci": "prettier src --check",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
+    "@rushstack/eslint-plugin": "~0.11.0",
     "@typescript-eslint/experimental-utils": "~5.53.0",
-    "eslint-module-utils": "^2.7.1"
+    "eslint": "^8.15.0"
   },
   "devDependencies": {
-    "@rushstack/eslint-plugin": "~0.11.0",
     "@rushstack/heft": "~0.50.6",
-    "eslint": "^8.15.0",
     "prettier": "~2.8.8",
     "sort-package-json": "~2.4.1",
     "typescript": "5.0.4"

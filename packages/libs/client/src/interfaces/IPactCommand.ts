@@ -1,58 +1,52 @@
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { ChainId, ICap, ISignatureJson } from '@kadena/types';
+import { ChainId, ICap } from '@kadena/types';
 
-import { NonceType, Type } from '../pact';
+/**
+ * @alpha
+ */
+export interface IExecPayloadObject {
+  // executable pact code
+  exec: {
+    code?: string;
+    data?: Record<string, unknown>;
+  };
+}
+/**
+ * @alpha
+ */
+export interface IContinuationPayloadObject {
+  cont: {
+    pactId?: string;
+    step?: string;
+    rollback?: boolean;
+    data?: Record<string, unknown>;
+    proof?: string;
+  };
+}
+/**
+ * @alpha
+ */
+export type ICapabilityItem = ICap;
+
+// TODO: update filed types based on @Kadena/types
 /**
  * @alpha
  */
 export interface IPactCommand {
-  type: Type;
-  code: string;
-  data: Record<string, unknown>;
-  publicMeta: IPublicMeta;
-  networkId: ChainwebNetworkId;
-  // signers: ISigner[];
-  signers: {
+  payload: IExecPayloadObject | IContinuationPayloadObject;
+  meta: {
+    chainId: ChainId;
+    sender: string;
+    gasLimit: number;
+    gasPrice: number;
+    ttl: number;
+    creationTime: number;
+  };
+  signers: Array<{
     pubKey: string;
-    caps: {
-      name: string;
-      args: ICap['args'];
-    }[];
-  }[];
-  sigs: (ISignatureJson | undefined)[];
-  requestKey?: string;
-  nonce?: NonceType;
-}
-
-/**
- * @alpha
- */
-export interface IPublicMeta {
-  chainId: ChainId;
-  sender: string;
-  gasLimit: number;
-  gasPrice: number;
-  ttl: number;
-}
-
-/**
- * @alpha
- */
-export interface IContCommand {
-  type: Type;
-  data: Record<string, unknown>;
-  publicMeta: IPublicMeta;
-  networkId: ChainwebNetworkId;
-  signers: {
-    pubKey: string;
-    caps: {
-      name: string;
-      args: ICap['args'];
-    }[];
-  }[];
-  proof: string;
-  pactId: string;
-  step: number;
-  rollback: boolean;
-  nonce?: NonceType;
+    address?: string;
+    scheme?: 'ED25519' | 'ETH';
+    clist?: ICapabilityItem[];
+  }>;
+  networkId: string;
+  nonce: string;
 }

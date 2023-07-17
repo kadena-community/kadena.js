@@ -1,6 +1,23 @@
 # Change Log - @kadena/pactjs
 
-This log was last generated on Tue, 04 Jul 2023 08:27:48 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Jul 2023 10:02:16 GMT and should not be manually modified.
+
+## 0.3.0
+Fri, 14 Jul 2023 10:02:16 GMT
+
+### Minor changes
+
+- Extend PactNumber with BigNumber and make its API available
+
+## 0.2.11
+Mon, 10 Jul 2023 14:25:54 GMT
+
+_Version update only_
+
+## 0.2.10
+Mon, 10 Jul 2023 14:20:26 GMT
+
+_Version update only_
 
 ## 0.2.9
 Tue, 04 Jul 2023 08:27:48 GMT

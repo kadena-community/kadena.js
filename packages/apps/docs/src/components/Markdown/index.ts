@@ -1,8 +1,10 @@
-import { Table as TableChildren } from '@kadena/react-components';
+import { Table as TableChildren } from '@kadena/react-ui';
 
+import { BlockQuote } from './BlockQuote';
 import { Code, TitleWrapper } from './Code';
 import { Figure } from './Figure';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
+import { Hr } from './Hr';
 import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
 import { Table } from './Table';
@@ -34,6 +36,10 @@ export const markDownComponents: MDXComponents = {
   h3: Heading3 as FunctionComponent<ExtendedIntrinsicElements['h3']>,
   h4: Heading4 as FunctionComponent<ExtendedIntrinsicElements['h4']>,
   p: Paragraph as FunctionComponent<ExtendedIntrinsicElements['p']>,
+  hr: Hr as FunctionComponent<ExtendedIntrinsicElements['hr']>,
+  blockquote: BlockQuote as FunctionComponent<
+    ExtendedIntrinsicElements['blockquote']
+  >,
   code: Code as FunctionComponent<ExtendedIntrinsicElements['code']>,
   ul: UnorderedList as FunctionComponent<ExtendedIntrinsicElements['ul']>,
   div: TitleWrapper as FunctionComponent<ExtendedIntrinsicElements['div']>,
@@ -46,8 +52,8 @@ export const markDownComponents: MDXComponents = {
     ExtendedIntrinsicElements['thead']
   >,
   tr: TableChildren.Tr as FunctionComponent<ExtendedIntrinsicElements['tr']>,
-  td: TableChildren.Tr.Td as FunctionComponent<ExtendedIntrinsicElements['td']>,
-  th: TableChildren.Tr.Th as FunctionComponent<ExtendedIntrinsicElements['th']>,
+  td: TableChildren.Td as FunctionComponent<ExtendedIntrinsicElements['td']>,
+  th: TableChildren.Th as FunctionComponent<ExtendedIntrinsicElements['th']>,
   'kda-notification': MDNotification as FunctionComponent<
     ExtendedIntrinsicElements['kda-notification']
   >,

@@ -1,5 +1,5 @@
-import { ColorType, sprinkles, vars } from '../../styles';
-
+import { sprinkles } from '@theme/sprinkles.css';
+import { ColorType, vars } from '@theme/vars.css';
 import { createVar, style, styleVariants } from '@vanilla-extract/css';
 
 const bgHoverColor = createVar(),
@@ -44,6 +44,8 @@ export const container = style([
 const colors: Record<ColorType, ColorType> = {
   primary: 'primary',
   secondary: 'secondary',
+  tertiary: 'tertiary',
+  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',

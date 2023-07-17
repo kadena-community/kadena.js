@@ -30,11 +30,12 @@ interface IProps {
   staticSearchResults: SearchResult[];
   conversation: IConversation;
   handleInputChange: FormEventHandler<HTMLInputElement>;
+  error: string | undefined;
 }
 
 export const useSearch = (): IProps => {
   const [conversation, dispatch] = useConversation();
-  const [startStream, isStreaming, outputStream, metadata] = useStream();
+  const [startStream, isStreaming, outputStream, metadata, error] = useStream();
   const router = useRouter();
   const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>(q);
@@ -113,5 +114,6 @@ export const useSearch = (): IProps => {
     staticSearchResults,
     conversation,
     handleInputChange,
+    error,
   };
 };

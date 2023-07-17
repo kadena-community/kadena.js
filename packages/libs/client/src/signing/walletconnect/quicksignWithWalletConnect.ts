@@ -1,6 +1,10 @@
-import { IQuicksignResponse } from '../../signing-api/v1/quicksign';
+import { ICommand, IUnsignedCommand } from '@kadena/types';
 
-import { ISignFunction } from './ISignFunction';
+import { IQuicksignResponse } from '../../signing-api/v1/quicksign';
+import { ISignFunction } from '../ISignFunction';
+import { addSignatures } from '../utils/addSignature';
+import { parseTransactionCommand } from '../utils/parseTransactionCommand';
+
 import { TWalletConnectChainId } from './walletConnectTypes';
 
 import Client from '@walletconnect/sign-client';
@@ -14,20 +18,25 @@ export function createWalletConnectQuicksign(
   session: SessionTypes.Struct,
   walletConnectChainId: TWalletConnectChainId,
 ): ISignFunction {
-  const quicksignWithWalletConnect: ISignFunction = async (...transactions) => {
-    if (!transactions.length) {
+  const quicksignWithWalletConnect: ISignFunction = (async (
+    transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+  ) => {
+    if (transactionList === undefined) {
       throw new Error('No transaction(s) to sign');
     }
+    const isList = Array.isArray(transactionList);
+    const transactions = isList ? transactionList : [transactionList];
 
     const transactionHashes: string[] = [];
 
     const commandSigDatas = transactions.map((pactCommand) => {
-      const { cmd, hash } = pactCommand.createCommand();
+      const { cmd, hash } = pactCommand;
+      const { signers } = parseTransactionCommand(pactCommand);
       transactionHashes.push(hash);
 
       return {
         cmd,
-        sigs: pactCommand.signers.map((signer, i) => ({
+        sigs: signers.map((signer, i) => ({
           pubKey: signer.pubKey,
           sig: pactCommand.sigs[i]?.sig ?? null,
         })),
@@ -69,15 +78,15 @@ export function createWalletConnectQuicksign(
           ) as { pubKey: string; sig: string }[];
 
           // Add the signature(s) that we received from the wallet to the PactCommand(s)
-          transactions[i].addSignatures(...sigs);
+          transactions[i] = addSignatures(transactions[i], ...sigs);
         }
       });
     } else {
       throw new Error('Error signing transaction');
     }
 
-    return transactions.map((transaction) => transaction.createCommand());
-  };
+    return isList ? transactions : transactions[0];
+  }) as ISignFunction;
 
   return quicksignWithWalletConnect;
 }

@@ -46,7 +46,7 @@ test('local should return preflight result of tx queried ', async () => {
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,
@@ -88,7 +88,7 @@ test('local with `{preflight: false}` option returns non-preflight result', asyn
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,
@@ -123,7 +123,7 @@ test('local with `{signatureVerification: false}` option returns preflight resul
   };
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'uolsidh4DWN-D44FoElnosL8e5-cGCGn_0l2Nct5mq8',
+    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
     txId: null,
     result: {
       data: 3,

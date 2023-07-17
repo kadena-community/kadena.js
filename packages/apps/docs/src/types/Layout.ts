@@ -1,17 +1,25 @@
-import { ProductIcons } from '@kadena/react-components';
+import { ProductIcon } from '@kadena/react-ui';
 
 import { ITopDoc } from '@/data/getTopDocs';
 import { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-export type LayoutType = 'full' | 'code' | 'landing' | 'home';
+export type LayoutType =
+  | 'full'
+  | 'code'
+  | 'landing'
+  | 'home'
+  | 'redocly'
+  | 'blog';
 
 export interface ISubHeaderElement {
   tag: TagNameType;
   title?: string;
   slug?: string;
   children: ISubHeaderElement[];
+  index?: number;
+  parentTitle?: string;
 }
 
 export interface INavigation {
@@ -49,7 +57,7 @@ export interface ILayout {
 
 export type LevelType = 1 | 2 | 3;
 
-export type ProductIconNames = keyof typeof ProductIcons;
+export type ProductIconNames = keyof typeof ProductIcon;
 
 export interface IPageProps {
   children?: ReactNode;

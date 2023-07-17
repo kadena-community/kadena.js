@@ -1,5 +1,4 @@
-import { SystemIcon } from '../Icons';
-
+import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export interface IButtonIconProps {

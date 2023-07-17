@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-generator",
-  "version": "0.1.11",
+  "version": "1.0.0-alpha.3",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
     "memfs": "~3.5.1",

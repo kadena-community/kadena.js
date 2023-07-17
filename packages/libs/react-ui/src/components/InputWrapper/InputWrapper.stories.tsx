@@ -1,11 +1,10 @@
-import { vars } from '../../styles';
-import { SystemIcon } from '../Icons';
-import { IInputProps, Input } from '../Input/Input';
-
-import { IInputWrapperProps, InputWrapper } from './InputWrapper';
 import { statusVariant } from './InputWrapper.css';
 
+import { SystemIcon } from '@components/Icon';
+import { IInputProps, Input } from '@components/Input';
+import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
+import { vars } from '@theme/vars.css';
 import React from 'react';
 
 const meta: Meta<

@@ -2,6 +2,98 @@
   "name": "@kadena/chainweb-node-client",
   "entries": [
     {
+      "version": "0.4.2",
+      "tag": "@kadena/chainweb-node-client_v0.4.2",
+      "date": "Fri, 14 Jul 2023 10:02:16 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Simplified types for the `/local` wrapper"
+          }
+        ],
+        "none": [
+          {
+            "comment": "fix test commands"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.3.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.0`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.4.1",
+      "tag": "@kadena/chainweb-node-client_v0.4.1",
+      "date": "Mon, 10 Jul 2023 14:25:54 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.11`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.10`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.4.0",
+      "tag": "@kadena/chainweb-node-client_v0.4.0",
+      "date": "Mon, 10 Jul 2023 14:20:26 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "small changes in readme"
+          },
+          {
+            "comment": "Fix up lint config"
+          },
+          {
+            "comment": "Remove unused dependencies + fix some lint config"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Updated Chain ID type to be usable during runtime as well"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.9`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.9`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.3",
       "tag": "@kadena/chainweb-node-client_v0.3.3",
       "date": "Tue, 04 Jul 2023 08:27:48 GMT",

@@ -1,5 +1,5 @@
-import { ColorType, sprinkles } from '../../styles';
-
+import { sprinkles } from '@theme/sprinkles.css';
+import { ColorType } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
@@ -23,6 +23,8 @@ export const containerClass = style([
 const colors: Record<ColorType, ColorType> = {
   primary: 'primary',
   secondary: 'secondary',
+  tertiary: 'tertiary',
+  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',

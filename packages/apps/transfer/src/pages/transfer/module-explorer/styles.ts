@@ -43,3 +43,34 @@ export const StyledTotalContainer = styled(StyledCodeViewerContainer, {
 export const StyledTotalChunk = styled('div', {
   width: '50%',
 });
+
+export const StyledList = styled('div', {
+  width: '100%',
+  padding: '$4',
+  background: 'rgba(71, 79, 82, 0.4)',
+  borderRadius: '$sm',
+  boxSizing: 'borderBox',
+  mt: '$8',
+});
+
+export const StyledListItem = styled('div', {
+  py: '$3',
+  px: '$6',
+  color: '#FFFFFF',
+  cursor: 'pointer',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  '&:first-child': {
+    borderTopLeftRadius: '$1',
+    borderTopRightRadius: '$1',
+  },
+  '&:last-child': {
+    borderBottomLeftRadius: '$1',
+    borderBottomRightRadius: '$1',
+  },
+  '&:hover': {
+    background: 'rgba(5, 5, 5, 0.5);',
+    fontWeight: '$medium',
+    textDecorationLine: 'underline',
+  },
+});

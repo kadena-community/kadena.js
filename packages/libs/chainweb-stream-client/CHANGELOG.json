@@ -2,6 +2,88 @@
   "name": "@kadena/chainweb-stream-client",
   "entries": [
     {
+      "version": "0.0.8",
+      "tag": "@kadena/chainweb-stream-client_v0.0.8",
+      "date": "Fri, 14 Jul 2023 10:02:16 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Edit `@kadena/client` docs (fix links + improve readability)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.6`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.3.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.0`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.7",
+      "tag": "@kadena/chainweb-stream-client_v0.0.7",
+      "date": "Mon, 10 Jul 2023 14:25:54 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.11`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.5`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.10`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.0.6",
+      "tag": "@kadena/chainweb-stream-client_v0.0.6",
+      "date": "Mon, 10 Jul 2023 14:20:26 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "small changes in readme"
+          },
+          {
+            "comment": "Fix up lint config"
+          },
+          {
+            "comment": "Remove unused dependencies + fix some lint config"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.2.10`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.3.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.0.9`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.0.9`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.5",
       "tag": "@kadena/chainweb-stream-client_v0.0.5",
       "date": "Tue, 04 Jul 2023 08:27:48 GMT",

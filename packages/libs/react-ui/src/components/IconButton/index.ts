@@ -1,3 +1,1 @@
-import { IconButton } from './IconButton';
-
-export { IconButton };
+export { IconButton, IIconButtonProps } from './IconButton';

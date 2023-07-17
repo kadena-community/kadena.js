@@ -58,3 +58,10 @@ export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
  * @alpha
  */
 export type PactValue = PactLiteral | Array<PactValue>;
+
+/**
+ * A guard could be a string or a function that returns string
+ * @alpha
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PactGuard = string | ((...args: any) => string);

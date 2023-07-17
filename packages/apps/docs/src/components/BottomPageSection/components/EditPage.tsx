@@ -7,7 +7,7 @@ interface IProps {
 }
 
 export const EditPage: FC<IProps> = ({ editLink }) => {
-  if (Boolean(editLink) === null) return null;
+  if (!editLink) return null;
   return (
     <Button
       as="a"

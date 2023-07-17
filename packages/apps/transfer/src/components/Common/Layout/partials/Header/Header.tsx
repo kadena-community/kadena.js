@@ -1,4 +1,4 @@
-import { SystemIcons } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
 import {
   StyledBackgroundGlow,
@@ -73,7 +73,7 @@ const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
             <StyledBurgerMenuButton
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               title={t('Menu')}
-              icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
+              icon={isMenuOpen ? SystemIcon.Close : SystemIcon.MenuOpen}
             />
           </GridCol>
         </StyledGridRow>

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-plugin",
+      "comment": "fix test commands",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-plugin"
+}

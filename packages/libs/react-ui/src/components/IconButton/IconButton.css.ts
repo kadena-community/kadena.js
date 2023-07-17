@@ -1,5 +1,5 @@
-import { ColorType, sprinkles, vars } from '../../styles';
-
+import { sprinkles } from '@theme/sprinkles.css';
+import { ColorType, vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const container = style([
@@ -33,6 +33,8 @@ const colors: Record<ColorOptions, ColorOptions> = {
   inverted: 'inverted',
   primary: 'primary',
   secondary: 'secondary',
+  tertiary: 'tertiary',
+  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',

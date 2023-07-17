@@ -1,4 +1,4 @@
-import { Button, TextField } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { Option, Select } from '@/components/Global';
@@ -6,9 +6,7 @@ import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import {
   StyledContent,
-  StyledForm,
   StyledFormButton,
-  StyledMainContent,
   StyledMediumField,
   StyledResultContainer,
   StyledSmallField,
@@ -20,14 +18,21 @@ import {
   StyledTableRow,
 } from '@/pages/transfer/account-transactions/styles';
 import {
+  formStyle,
+  mainContentStyle,
+} from '@/pages/transfer/account-transactions/styles.css';
+import {
   getTransactions,
   ITransaction,
 } from '@/services/accounts/get-transactions';
+import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useState } from 'react';
 
 const CheckTransactions: FC = () => {
+  const debug = Debug('kadena-transfer:pages:transfer:account-transactions');
+
   const { t } = useTranslation('common');
   const router = useRouter();
   const { network, setNetwork } = useAppContext();
@@ -55,16 +60,17 @@ const CheckTransactions: FC = () => {
         router.query.chain as string,
         router.query.account as string,
       ).catch((e) => {
-        console.log(e);
+        debug(e);
       });
     }
-  }, [router.isReady, getAndSetTransactions]);
+  }, [router.query.network, router.query.chain, router.query.account]);
 
   const numberOfChains = 20;
 
   async function checkTransactionsEvent(
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> {
+    debug(checkTransactionsEvent.name);
     try {
       event.preventDefault();
 
@@ -80,7 +86,7 @@ const CheckTransactions: FC = () => {
 
       await getAndSetTransactions(network, chain, account);
     } catch (e) {
-      console.log(e);
+      debug(e);
     }
   }
 
@@ -89,6 +95,7 @@ const CheckTransactions: FC = () => {
     chain: string,
     account: string,
   ): Promise<void> {
+    debug(getAndSetTransactions.name);
     if (!chain || !account) return;
 
     const result = await getTransactions({
@@ -103,6 +110,7 @@ const CheckTransactions: FC = () => {
   }
 
   function renderChainOptions(): JSX.Element[] {
+    debug(renderChainOptions.name);
     const options = [];
     for (let i = 0; i < numberOfChains; i++) {
       options.push(
@@ -117,9 +125,9 @@ const CheckTransactions: FC = () => {
 
   return (
     <MainLayout title={t('Account Transactions')}>
-      <StyledMainContent>
+      <main className={mainContentStyle}>
         <StyledContent>
-          <StyledForm onSubmit={checkTransactionsEvent}>
+          <form className={formStyle} onSubmit={checkTransactionsEvent}>
             <StyledSmallField>
               <Select
                 leadingText={t('Chain')}
@@ -132,6 +140,7 @@ const CheckTransactions: FC = () => {
             <StyledMediumField>
               <TextField
                 inputProps={{
+                  id: 'account-input',
                   placeholder: t('Account'),
                   onChange: (e) =>
                     setAccount((e.target as HTMLInputElement).value),
@@ -140,11 +149,11 @@ const CheckTransactions: FC = () => {
               />
             </StyledMediumField>
             <StyledFormButton>
-              <Button title={t('Check Transactions')}>
+              <Button.Root title={t('Check Transactions')}>
                 {t('Check Transactions')}
-              </Button>
+              </Button.Root>
             </StyledFormButton>
-          </StyledForm>
+          </form>
 
           <StyledResultContainer>
             {results.length ? (
@@ -190,7 +199,7 @@ const CheckTransactions: FC = () => {
             ) : null}
           </StyledResultContainer>
         </StyledContent>
-      </StyledMainContent>
+      </main>
     </MainLayout>
   );
 };

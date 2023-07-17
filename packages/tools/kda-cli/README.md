@@ -22,7 +22,7 @@ manually. In a later version some might be installed via the cli tool.
 Login to docker with your [github account][3] , use the _gh access token_ as
 password:
 
-```
+```sh
 docker login ghcr.io -u <your gh username>
 # or
 echo $GITHUB_TOKEN | docker login ghcr.io --username <your gh username> --password-stdin
@@ -74,9 +74,13 @@ $ kda --help
 
 To setup your devnet (L1 and L2) you can configure chainweaver as such:
 
-![image][4] ![image][5]
+![image][4]
 
-Then add the account(s) you've funded: ![image][6]
+![image][5]
+
+Then add the account(s) you've funded:
+
+![image][6]
 
 ## Devnet
 

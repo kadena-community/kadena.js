@@ -1,8 +1,7 @@
-import { SystemIcon } from '../Icons';
-
 import { colorVariants } from './Button.css';
-import { Button, IButtonProps } from '.';
 
+import { Button, IButtonProps } from '@components/Button';
+import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -93,6 +92,24 @@ export const Secondary: Story = {
     disabled: false,
     children: 'Secondary Filled',
     color: 'secondary',
+  },
+};
+
+export const Tertiary: Story = {
+  args: {
+    title: 'Tertiary Filled',
+    disabled: false,
+    children: 'Tertiary Filled',
+    color: 'tertiary',
+  },
+};
+
+export const Info: Story = {
+  args: {
+    title: 'Info Filled',
+    disabled: false,
+    children: 'Info Filled',
+    color: 'info',
   },
 };
 

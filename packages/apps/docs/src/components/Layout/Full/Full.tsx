@@ -1,4 +1,4 @@
-import { Heading } from '@kadena/react-components';
+import { Heading } from '@kadena/react-ui';
 
 import {
   Article,
@@ -71,7 +71,7 @@ export const Full: FC<ILayout> = ({
       </Content>
       <AsideBackground />
       <Aside data-cy="aside">
-        {aSideMenuTree.length > 0 && (
+        {aSideMenuTree.length > 1 && (
           <StickyAsideWrapper>
             <StickyAside>
               <Heading as="h6" transform="uppercase">
