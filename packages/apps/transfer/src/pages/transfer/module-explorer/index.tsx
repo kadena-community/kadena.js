@@ -31,7 +31,15 @@ import {
 import { convertIntToChainId } from '@/services/utils/utils';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  FC,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 const ModuleExplorer: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer');
@@ -101,6 +109,13 @@ const ModuleExplorer: FC = () => {
     return options;
   };
 
+  const onModuleNameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      setModuleSearch(e.target.value);
+    },
+    [],
+  );
+
   return (
     <MainLayout
       title={t('Kadena Module Explorer')}
@@ -131,8 +146,7 @@ const ModuleExplorer: FC = () => {
             inputProps={{
               id: 'module-name-input',
               placeholder: t('Enter desired module name'),
-              onChange: (e) =>
-                setModuleSearch((e.target as HTMLInputElement).value),
+              onChange: onModuleNameChange,
               value: moduleSearch,
             }}
           />
