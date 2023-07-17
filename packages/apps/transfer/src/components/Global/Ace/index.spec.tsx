@@ -9,7 +9,7 @@ beforeAll(() => {
 });
 
 describe('AceViewerComponent', () => {
-  test('renders correctly without code', () => {
+  it('renders correctly without code', () => {
     render(<AceViewerComponent />);
 
     // Assert that the AceEditor component is rendered

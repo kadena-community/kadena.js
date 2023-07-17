@@ -1,6 +1,6 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
-import { Button, TextField } from '@kadena/react-components';
+import { Button, TextField } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { DetailCard } from '@/components/Global/DetailsCard';
@@ -165,7 +165,8 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const showInputError = pollResults.error === undefined ? undefined : 'error';
+  const showInputError =
+    pollResults.error === undefined ? undefined : 'negative';
   const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
@@ -198,8 +199,9 @@ const CrossChainTransferFinisher: FC = () => {
               label={t('Request Key')}
               info={showInputInfo}
               status={showInputError}
-              helper={showInputHelper}
+              helperText={showInputHelper}
               inputProps={{
+                id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
                 onChange: (e) =>
                   setRequestKey((e.target as HTMLInputElement).value),
@@ -213,6 +215,7 @@ const CrossChainTransferFinisher: FC = () => {
                 <TextField
                   label="Chain Server"
                   inputProps={{
+                    id: 'chain-server-input',
                     placeholder: t('Enter Chain Server'),
                     defaultValue: chainNetwork[network].server,
                     leadingText: chainNetwork[network].network,
@@ -220,12 +223,13 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TextField
                   label={t('Gas Payer Account')}
-                  helper={
+                  helperText={
                     isGasStation
                       ? ''
                       : t('only gas station account is supported')
                   }
                   inputProps={{
+                    id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
                     onChange: (e) =>
                       setKadenaXChainGas((e.target as HTMLInputElement).value),
@@ -235,6 +239,7 @@ const CrossChainTransferFinisher: FC = () => {
                 <TextField
                   label={t('Gas Price')}
                   inputProps={{
+                    id: 'gas-price-input',
                     placeholder: t('Enter Gas Price'),
                     onChange: (e) =>
                       setGasPrice(Number((e.target as HTMLInputElement).value)),
@@ -245,12 +250,12 @@ const CrossChainTransferFinisher: FC = () => {
             ) : null}
           </StyledAccountForm>
           <StyledFormButton>
-            <Button
+            <Button.Root
               title={t('Finish Cross Chain Transfer')}
               disabled={!isGasStation}
             >
               {t('Finish Cross Chain Transfer')}
-            </Button>
+            </Button.Root>
           </StyledFormButton>
 
           {txError.toString() !== '' ? (
