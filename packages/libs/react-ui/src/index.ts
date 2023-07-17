@@ -66,4 +66,8 @@ export {
   IOptionProps,
   Select,
   ISelectProps,
+  TreeList,
+  ITreeListProps,
+  Accordion,
+  IAccordionProps,
 } from './components';
