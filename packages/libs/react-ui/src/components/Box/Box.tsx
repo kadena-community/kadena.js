@@ -2,15 +2,17 @@ import { Sprinkles, sprinkles } from '@theme/sprinkles.css';
 import React, { createElement, ElementType } from 'react';
 
 export interface IBoxProps
-  extends Pick<
-    Sprinkles,
-    | 'margin'
-    | 'marginX'
-    | 'marginY'
-    | 'marginTop'
-    | 'marginBottom'
-    | 'marginLeft'
-    | 'marginRight'
+  extends Partial<
+    Pick<
+      Sprinkles,
+      | 'margin'
+      | 'marginX'
+      | 'marginY'
+      | 'marginTop'
+      | 'marginBottom'
+      | 'marginLeft'
+      | 'marginRight'
+    >
   > {
   component?: ElementType;
   children?: React.ReactNode;
