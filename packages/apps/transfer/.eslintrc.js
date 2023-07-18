@@ -5,4 +5,7 @@ module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/next'],
   parserOptions: { tsconfigRootDir: __dirname },
   ignorePatterns: ['**/generated/**'],
+  rules: {
+    '@kadena-dev/typedef-var': 'off',
+  },
 };
