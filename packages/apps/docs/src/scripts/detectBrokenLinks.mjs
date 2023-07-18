@@ -1,9 +1,9 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
 const __dirname = path.resolve();
 
-const externalLinks = {}
+const externalLinks = {};
 
 function getBrokenLinks(filePath, links) {
   const brokenLinks = [];
@@ -12,19 +12,19 @@ function getBrokenLinks(filePath, links) {
     // clean the link of hash fragments
     link = link.split('#')[0];
     if (link.length === 0) {
-      return
+      return;
     }
     if (link.startsWith('http')) {
       if (!externalLinks[filePath]) {
-        externalLinks[filePath] = []
+        externalLinks[filePath] = [];
       }
 
-      externalLinks[filePath].push(link)
+      externalLinks[filePath].push(link);
       return;
     }
 
     if (link.startsWith('/assets')) {
-      links[index] = path.join('public/', link)
+      links[index] = path.join('public/', link);
     } else {
       links[index] = path.join(directory, link);
     }
@@ -36,7 +36,7 @@ function getBrokenLinks(filePath, links) {
     }
   });
 
-  return brokenLinks
+  return brokenLinks;
 }
 
 function extractBrokenLinksFromTsFile(filePath) {
@@ -45,12 +45,12 @@ function extractBrokenLinksFromTsFile(filePath) {
   const links = [];
   let match;
 
-  while (match = linkRegex.exec(fileContent)) {
+  while ((match = linkRegex.exec(fileContent))) {
     links.push(match[1]);
   }
 
-  const broken = getBrokenLinks(filePath, links)
-  return broken
+  const broken = getBrokenLinks(filePath, links);
+  return broken;
 }
 function extractBrokenLinksFromMdFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -58,20 +58,20 @@ function extractBrokenLinksFromMdFile(filePath) {
   const links = [];
   let match;
 
-  while (match = linkRegex.exec(fileContent)) {
+  while ((match = linkRegex.exec(fileContent))) {
     links.push(match[2]);
   }
 
-  const brokenLinks = getBrokenLinks(filePath, links)
+  const brokenLinks = getBrokenLinks(filePath, links);
 
   return brokenLinks;
 }
 
-const filesWithBrokenLinks = {}
+const filesWithBrokenLinks = {};
 
 function processFiles(directory) {
   const files = fs.readdirSync(directory);
-  files.forEach(file => {
+  files.forEach((file) => {
     const filePath = path.join(directory, file);
     const fileStats = fs.statSync(filePath);
 
@@ -101,11 +101,12 @@ function processFiles(directory) {
 const main = async () => {
   const directoryPath = path.join(__dirname, 'src');
   processFiles(directoryPath);
-  
+
   if (Object.keys(filesWithBrokenLinks).length > 0) {
-    throw new Error('Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2))
+    throw new Error(
+      'Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2),
+    );
   }
+};
 
-}
-
-main()
+main();
