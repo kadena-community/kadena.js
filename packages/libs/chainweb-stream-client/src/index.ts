@@ -204,12 +204,13 @@ class ChainwebStream extends EventEmitter {
 
     const message = parseError(err);
 
-    const willRetry = this._failedConnectionAttempts < this.maxReconnects;
+    const willRetry = this._failedConnectionAttempts <= this.maxReconnects;
     const timeout = this._getTimeout();
     this._debug('_handleError', { message, willRetry, timeout });
 
     if (!willRetry) {
       this._emitError(message);
+      this._emitError('Connection retries exhausted');
       this.disconnect();
       return;
     }
