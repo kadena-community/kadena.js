@@ -2,8 +2,10 @@ import {
   Button,
   Heading,
   InputWrapperStatus,
+  ProductIcon,
   SystemIcon,
   TextField,
+  TrackerCard,
 } from '@kadena/react-ui';
 
 import {
@@ -37,7 +39,6 @@ import { validateRequestKey } from '@/services/utils/utils';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import { ProductIcon, TrackerCard } from '@kadena/react-ui/types/components';
 import React, {
   ChangeEventHandler,
   FC,

@@ -1,6 +1,12 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
-import { Button, TextField } from '@kadena/react-ui';
+import {
+  Button,
+  ProductIcon,
+  TextField,
+  TrackerCard,
+  ILabelValue,
+} from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { DetailCard } from '@/components/Global/DetailsCard';
@@ -38,8 +44,6 @@ import {
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import { ProductIcon, TrackerCard } from '@kadena/react-ui/types/components';
-import { ILabelValue } from '@kadena/react-ui/types/components/TrackerCard/TrackerCard';
 import React, {
   ChangeEventHandler,
   FC,
