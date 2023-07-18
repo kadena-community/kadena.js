@@ -462,9 +462,6 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
-      '@kadena/cryptography-utils': workspace:*
-      '@kadena/pactjs': workspace:*
-      '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
       '@types/eventsource': 1.1.11
@@ -476,9 +473,6 @@ importers:
       prettier: ~2.8.8
       sort-package-json: ~2.4.1
     dependencies:
-      '@kadena/cryptography-utils': link:../cryptography-utils
-      '@kadena/pactjs': link:../pactjs
-      '@kadena/types': link:../types
       eventemitter2: 6.4.9
       eventsource: 2.0.2
     devDependencies:
