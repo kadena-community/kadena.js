@@ -1,4 +1,5 @@
 import { ITransaction } from './types';
+import { isUndefinedOrNull } from './util';
 
 /*
  *  A De-duplicating cache that keeps the most recent N (.cacheSpan) elements by some attribute value (.spanValueGetter callback return value)
@@ -36,10 +37,10 @@ type SlidingCacheConstructor<TShape extends ITransaction> = Partial<
 const defaults: SlidingCacheConfig<ITransaction> = {
   spanValueGetter: ({ height }) => height,
   cacheSpan: 3,
-  identityCheck: (a, b) => a.meta?.id === b.meta?.id,
+  identityCheck: (a, b) => a?.meta?.id === b?.meta?.id,
   equalityCheck: (a, b) =>
-    a.meta?.id === b.meta?.id &&
-    a.meta?.confirmations === b.meta?.confirmations,
+    a?.meta?.id === b?.meta?.id &&
+    a?.meta?.confirmations === b?.meta?.confirmations,
 };
 
 type InSpanRange = boolean;
@@ -73,6 +74,12 @@ export default class SlidingCache<TShape extends ITransaction>
 
     const retVals = [];
     for (const elem of elems) {
+      if (isUndefinedOrNull(elem)) {
+        console.error('Sliding cache: Received null or undefined data element. This should not happen!');
+        // do not emit this
+        retVals.push(false);
+        continue;
+      }
       const cacheValue = this.spanValueGetter(elem);
       if (cacheValue < this.minSpanValue) {
         needUpdate = true;
