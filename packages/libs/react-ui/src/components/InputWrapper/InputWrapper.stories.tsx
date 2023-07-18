@@ -22,7 +22,7 @@ const meta: Meta<
         type: 'text',
       },
     },
-    labelWidth: {
+    leadingTextWidth: {
       control: {
         type: 'select',
       },
@@ -85,17 +85,17 @@ export const Group: Story = {
     helperText: 'This is helper text',
     info: '(optional)',
     label: 'Label',
-    labelWidth: undefined,
+    leadingTextWidth: undefined,
     disabled: false,
     status: undefined,
   },
-  render: ({ disabled, status, tag, helperText, info, label, labelWidth }) => {
+  render: ({ disabled, status, tag, helperText, info, label, leadingTextWidth }) => {
     return (
       <InputWrapper
         tag={tag}
         info={info}
         label={label}
-        labelWidth={labelWidth}
+        leadingTextWidth={leadingTextWidth}
         status={status}
         disabled={disabled}
         helperText={helperText}

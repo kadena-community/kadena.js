@@ -14,7 +14,7 @@ export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   disabled?: boolean;
   helperText?: string;
   label?: string;
-  labelWidth?: keyof typeof vars.sizes;
+  leadingTextWidth?: keyof typeof vars.sizes;
 }
 
 export const InputWrapper: FC<IInputWrapperProps> = ({
@@ -22,7 +22,7 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
   disabled,
   children,
   label,
-  labelWidth,
+  leadingTextWidth,
   htmlFor,
   tag,
   info,
@@ -40,7 +40,7 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
           if (!React.isValidElement(child)) return null;
           const props = {
             ...child.props,
-            leadingTextWidth: labelWidth,
+            leadingTextWidth,
           };
 
           return React.cloneElement(child, props);
