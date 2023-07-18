@@ -36,7 +36,7 @@
     "format:src": "prettier src --write",
     "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
-    "test": "jest --silent"
+    "test": "jest --silent",
   },
   "dependencies": {
     "@kadena/fonts": "~0.0.1",
@@ -88,8 +88,7 @@
     "@vanilla-extract/webpack-plugin": "2.2.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "chromatic": "6.19.9",
-    "copyfiles": "2.4.1",
-    "chromatic": "6.19.9",
+    "copyfiles": "2.4.1", ,
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "~2.27.5",
