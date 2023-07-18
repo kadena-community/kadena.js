@@ -25,7 +25,7 @@
     "theme"
   ],
   "scripts": {
-    "build": "rimraf theme && tsc && tsc -p ./tsconfig.cjs.json && copyfiles -f \"./types/styles/*\" theme",
+    "build": "rimraf theme && tsc  && tsc-alias && tsc -p ./tsconfig.cjs.json && copyfiles -f \"./types/styles/*\" theme",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
@@ -42,10 +42,10 @@
     "@vanilla-extract/recipes": "0.4.0",
     "@vanilla-extract/sprinkles": "1.6.0",
     "classnames": "^2.3.1",
+    "css-loader": "~6.8.1",
     "focus-trap-react": "~10.1.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "css-loader": "~6.8.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
@@ -99,6 +99,7 @@
     "storybook": "^7.0.20",
     "storybook-dark-mode": "^3.0.0",
     "ts-jest": "~29.1.0",
+    "tsc-alias": "~1.8.7",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.0.4",
     "webpack": "~5.73.0"
