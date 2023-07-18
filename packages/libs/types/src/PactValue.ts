@@ -65,3 +65,14 @@ export type PactValue = PactLiteral | Array<PactValue>;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PactGuard = string | ((...args: any) => string);
+
+/**
+ * reference to another module
+ *
+ * {@link https://pact-language.readthedocs.io/en/stable/pact-reference.html?highlight=module%20reference#module-references}
+ *
+ * @alpha
+ */
+export interface IPactModuleReference {
+  moduleReference: string;
+}

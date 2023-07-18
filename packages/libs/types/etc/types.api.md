@@ -146,6 +146,12 @@ export interface IPactInt {
     int: string;
 }
 
+// @alpha
+export interface IPactModuleReference {
+    // (undocumented)
+    moduleReference: string;
+}
+
 // @alpha (undocumented)
 export interface ISignature {
     // (undocumented)

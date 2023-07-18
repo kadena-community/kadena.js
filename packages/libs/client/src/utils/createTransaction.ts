@@ -9,18 +9,13 @@ import { IPactCommand } from '../interfaces/IPactCommand';
 export const createTransaction: (
   pactCommand: Partial<IPactCommand>,
 ) => IUnsignedCommand = (pactCommand) => {
-  const cmd = JSON.stringify(pactCommand);
-
-  // TODO: some wallets might need this,
-  //   when they cannot work with {decimal: string} objects
-
-  // const cmd = JSON.stringify(pactCommand, (key, value) => {
-  //   if (typeof value === 'object' && 'decimal' in value) {
-  //     return `#decimal#${value.decimal}#`;
-  //   } else {
-  //     return value;
-  //   }
-  // }).replace(/"#decimal#(.*)#"/, (__, numberGroup) => numberGroup);
+  const cmd = JSON.stringify(pactCommand, (key, value) => {
+    if (typeof value === 'object' && 'moduleReference' in value) {
+      return `#module-reference#${value.moduleReference}#`;
+    } else {
+      return value;
+    }
+  }).replace(/"#module-reference#(.*)#"/gi, (__, numberGroup) => numberGroup);
 
   const hash = blakeHash(cmd);
   return {
