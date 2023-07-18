@@ -198,7 +198,7 @@ class ChainwebStream extends EventEmitter {
     // close event source; crucial - chrome reconnects, firefox does not
     this._eventSource?.close();
 
-    // cancel connection timeout timer & heartbeat timeout timers, if they exists
+    // cancel connection timeout timer & heartbeat timeout timers, if they exist
     this._clearConnectTimeout();
     this._stopHeartbeatMonitor();
 
