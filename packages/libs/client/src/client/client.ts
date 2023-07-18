@@ -34,9 +34,16 @@ type IOptions = IPollOptions &
 
 interface IClientBasics {
   /**
-   * calls '/local' endpoint with options that could br also undefined,
+   * Sends a command for non-transactional execution.
+   * In a blockchain environment, this would be a node-local "dirty read".
+   * Any database writes or changes to the environment are rolled back.
+   * Gas payment is not required for this function.
    *
-   * *Note:* the default values of preflight and signatureVerification are `true`
+   * Calls the '/local' endpoint with optional options.
+   *
+   * @param transaction - The transaction to be executed.
+   * @param options - Optional settings for preflight and signatureVerification.
+   * @returns A promise that resolves to the local response.
    */
   local: <T extends ILocalOptions>(
     transaction: LocalRequestBody,
@@ -44,12 +51,24 @@ interface IClientBasics {
   ) => Promise<LocalResponse<T>>;
 
   /**
-   * calls '/send' endpoint
+   * Submits one or more public (unencrypted) signed commands to the blockchain for execution.
+   *
+   * Calls the '/send' endpoint.
+   * This is the only function that requires gas payment.
+   *
+   * @param transactionList - The list of transactions to be submitted.
+   * @returns A promise that resolves to an array of transaction hashes.
    */
   submit: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
+
   /**
-   * calls '/poll' endpoint several times to get the status of all requests. if the requests submitted outside of the current client context then you need to path networkId
-   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * Polls the result of one or more submitted requests.
+   * If requestKeys are not passed, it polls the status of all previously submitted requests.
+   * Calls the '/poll' endpoint multiple times to get the status of all requests.
+   *
+   * @param requestKeys - Optional request keys to filter the status polling.
+   * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
+   * @returns A promise that resolves to the poll request promise with the command result.
    */
   pollStatus: (
     requestKeys?: string[] | string,
@@ -57,8 +76,14 @@ interface IClientBasics {
   ) => IPollRequestPromise<ICommandResult>;
 
   /**
-   * calls '/poll' endpoint only once. if the requests submitted outside of the current client context then you need to path networkId
-   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * Gets the result of one or more submitted requests.
+   * If requestKeys are not passed, it polls the status of all previously submitted requests.
+   * If the result is not ready, it returns an empty object.
+   * Calls the '/poll' endpoint only once.
+   *
+   * @param requestKeys - Optional request keys to filter the status polling.
+   * @param options - Optional network options for generating the correct host API address.
+   * @returns A promise that resolves to the poll response with the command result.
    */
   getStatus: (
     requestKeys?: string[] | string,
@@ -66,8 +91,14 @@ interface IClientBasics {
   ) => Promise<IPollResponse>;
 
   /**
-   * calls '/listen' endpoint. if the requests submitted outside of the current client context then you need to path networkId
-   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * Listens for the result of the request. This is a long-polling process that eventually returns the result.
+   * Calls the '/listen' endpoint.
+   *
+   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
+   *
+   * @param requestKey - The request key to listen for.
+   * @param options - Optional network options for generating the correct host API address.
+   * @returns A promise that resolves to the command result.
    */
   listen: (
     requestKey: string,
@@ -75,8 +106,15 @@ interface IClientBasics {
   ) => Promise<ICommandResult>;
 
   /**
-   * calls '/spv' endpoint several times to get the SPV proof. if the request submitted outside of the current client context then you need to path networkId
-   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * Creates an SPV proof for a request. This is required for multi-step tasks.
+   * Calls the '/spv' endpoint several times to retrieve the SPV proof.
+   *
+   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
+   *
+   * @param requestKey - The request key for which the SPV proof is generated.
+   * @param targetChainId - The target chain ID for the SPV proof.
+   * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
+   * @returns A promise that resolves to the generated SPV proof.
    */
   pollCreateSpv: (
     requestKey: string,
@@ -85,8 +123,15 @@ interface IClientBasics {
   ) => Promise<string>;
 
   /**
-   * calls '/spv' endpoint only once. if the request submitted outside of the current client context then you need to path networkId
-   * and chainId as the option in order to generate correct hostApi address if you passed hostApiGenerator function while initiating the client instance
+   * Creates an SPV proof for a request. This is required for multi-step tasks.
+   * Calls the '/spv' endpoint only once.
+   *
+   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
+   *
+   * @param requestKey - The request key for which the SPV proof is generated.
+   * @param targetChainId - The target chain ID for the SPV proof.
+   * @param options - Optional network options for generating the correct host API address.
+   * @returns A promise that resolves to the generated SPV proof.
    */
   createSpv: (
     requestKey: string,
@@ -97,24 +142,30 @@ interface IClientBasics {
 
 interface IClient extends IClientBasics {
   /**
-   * calls '/local' endpoint with both preflight and signatureVerification `true`,
+   * An alias for `local` when both preflight and signatureVerification are `true`.
+   * @see local
    */
   preflight: (
     transaction: ICommand | IUnsignedCommand,
   ) => Promise<ILocalCommandResult>;
 
   /**
-   * calls '/local' endpoint with preflight `false` and signatureVerification `true`,
+   * An alias for `local` when preflight is `false` and signatureVerification is `true`.
+   * @see local
    */
   signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
 
   /**
-   * calls '/local' with minimum both preflight and signatureVerification `false`
+   * An alias for `local` when both preflight and signatureVerification are `false`.
+   * This call has minimum restrictions and can be used to read data from the node.
+   * @see local
    */
   dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
 
   /**
-   * calls '/local' with minimum both preflight and signatureVerification `false`
+   * Generates a command from the code and data, then sends it to the '/local' endpoint.
+   *
+   * @see local
    */
   runPact: (
     code: string,
@@ -123,16 +174,16 @@ interface IClient extends IClientBasics {
   ) => Promise<ICommandResult>;
 
   /**
-   * @deprecated use `submit` instead
+   * @deprecated Use `submit` instead.
    *
-   * alias for submit
+   * Alias for `submit`.
    */
   send: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
 
   /**
-   * @deprecated use `getStatus` instead
+   * @deprecated Use `getStatus` instead.
    *
-   * alias getStatus
+   * Alias for `getStatus`.
    */
   getPoll: (
     requestKeys?: string[] | string,
@@ -142,12 +193,16 @@ interface IClient extends IClientBasics {
 
 interface IGetClient {
   /**
-   * path the url of the host if you only use one host
+   * Generates a client instance by passing the URL of the host.
+   *
+   * Useful when you are working with a single network and chainId.
    */
   (hostUrl: string): IClientBasics;
+
   /**
-   * path a function that let you decide about with host url you should be picked for each request based on networkId and chainId
-   * the default value returns kadena testnet or mainnet url based on networkId
+   * Generates a client instance by passing a hostUrlGenerator function.
+   *
+   * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
    */
   (
     hostAddressGenerator?: (options: {
