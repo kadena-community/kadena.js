@@ -1,22 +1,28 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
+
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
 
 const getFrontMatter = (node) => {
   const { type, value } = node;
-
   if (type === 'yaml') {
     return yaml.load(value);
   }
 };
 
-const getModifiedDate = (file) => {
-  const stats = fs.statSync(file);
-  if (!stats.isFile() || !stats.mtimeMs) return;
+const getModifiedDate = async (file) => {
+  const relativePath = file.replace(process.cwd(), 'packages/apps/docs');
 
-  const date = new Date(stats.mtimeMs);
-  return date.toISOString();
+  const res = await fetch(`https://api.github.com/repos/kadena-community/kadena.js/commits?path=${relativePath}`);
+
+  if (res.ok) {
+    const data = await res.json();
+    return data[0].commit.committer.date;
+  } else {
+    const message = `An error occurred: ${response.status}`;
+    throw new Error(message);
+  };
 };
 
 const getFileName = (file) => {
@@ -66,9 +72,11 @@ const createNavigation = (file) => {
 
 const remarkFrontmatterToProps = () => {
   return async (tree, file) => {
-    tree.children = tree.children.map((node) => {
+    const treeChildren = await Promise.all(tree.children.map(async (node) => {
       const data = getFrontMatter(node);
       if (!data) return node;
+
+      const lastModifiedDate = await getModifiedDate(getFileName(file));
 
       return {
         type: 'props',
@@ -77,13 +85,15 @@ const remarkFrontmatterToProps = () => {
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),
-            lastModifiedDate: getModifiedDate(getFileName(file)),
+            lastModifiedDate,
             navigation: createNavigation(file),
             ...data,
           },
         },
       };
-    });
+    }));
+    tree.children = treeChildren;
+    return tree;
   };
 };
 
