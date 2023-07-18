@@ -1,7 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const http = require('http');
-const https = require('https');
+import fs from 'fs'
+import path from 'path'
+import http from 'http'
+import https from 'https'
+const __dirname = path.resolve();
 
 const externalLinks = {}
 
@@ -142,7 +143,7 @@ async function processExternalLinks(externalLinks) {
 }
 
 const main = async ({ includeExternalLinks, reportMd}) => {
-  const directoryPath = path.join(__dirname, '../src');
+  const directoryPath = path.join(__dirname, 'src');
   processFiles(directoryPath);
 
   if (includeExternalLinks) {
@@ -159,10 +160,10 @@ const main = async ({ includeExternalLinks, reportMd}) => {
       }
     }
 
-    fs.writeFileSync(path.join(__dirname, '../broken-links.md'), reportMd.join('\n'))
+    fs.writeFileSync(path.join(__dirname, 'broken-links.md'), reportMd.join('\n'))
     console.log('Wrote broken links report to broken-links.md')
   }  
-
+  
   if (Object.keys(filesWithBrokenLinks).length > 0) {
     throw new Error('Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2))
   }

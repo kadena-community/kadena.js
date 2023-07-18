@@ -25,7 +25,7 @@
     "lint": "eslint ./src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "brokenLinks": "node scripts/detect-broken-links.js",
+    "brokenLinks": "node src/scripts/detectBrokenLinks.mjs",
     "test": "echo 'No tests, until there is time to debug the build'"
   },
   "dependencies": {
