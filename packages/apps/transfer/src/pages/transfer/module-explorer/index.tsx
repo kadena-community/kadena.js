@@ -131,7 +131,7 @@ const ModuleExplorer: FC = () => {
             inputProps={{
               id: 'module-name-input',
               placeholder: t('Enter desired module name'),
-              onChange: (e) =>
+              onChange: (e: any) =>
                 setModuleSearch((e.target as HTMLInputElement).value),
               value: moduleSearch,
             }}

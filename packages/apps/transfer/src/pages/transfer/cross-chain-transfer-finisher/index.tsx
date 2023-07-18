@@ -203,7 +203,7 @@ const CrossChainTransferFinisher: FC = () => {
               inputProps={{
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
-                onChange: (e) =>
+                onChange: (e: any) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
                 defaultValue: requestKey,
@@ -231,7 +231,7 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
-                    onChange: (e) =>
+                    onChange: (e: any) =>
                       setKadenaXChainGas((e.target as HTMLInputElement).value),
                     defaultValue: kadenaXChainGas,
                   }}
@@ -241,7 +241,7 @@ const CrossChainTransferFinisher: FC = () => {
                   inputProps={{
                     id: 'gas-price-input',
                     placeholder: t('Enter Gas Price'),
-                    onChange: (e) =>
+                    onChange: (e: any) =>
                       setGasPrice(Number((e.target as HTMLInputElement).value)),
                     defaultValue: formattedGasPrice,
                   }}

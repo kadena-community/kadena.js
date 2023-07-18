@@ -135,6 +135,7 @@ const ExistingAccountFaucetPage: FC = () => {
       <StyledForm onSubmit={onFormSubmit}>
         <FormStatusNotification
           status={requestStatus.status}
+          title=''
           body={requestStatus.message}
         />
         <StyledAccountForm>

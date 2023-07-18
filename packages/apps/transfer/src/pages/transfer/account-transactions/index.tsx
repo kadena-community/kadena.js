@@ -142,7 +142,7 @@ const CheckTransactions: FC = () => {
                 inputProps={{
                   id: 'account-input',
                   placeholder: t('Account'),
-                  onChange: (e) =>
+                  onChange: (e: any) =>
                     setAccount((e.target as HTMLInputElement).value),
                   value: account,
                 }}
