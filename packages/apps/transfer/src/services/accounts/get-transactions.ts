@@ -1,3 +1,5 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
+
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
 import Debug from 'debug';
 
@@ -5,21 +7,21 @@ export interface ITransaction {
   fromAccount: string;
   height: number;
   amount: string;
-  crossChainId?: number;
+  crossChainId?: ChainwebChainId;
   toAccount: string;
   blockTime: string;
   requestKey: string;
   token: string;
   blockHash: string;
   idx: number;
-  chain: number;
+  chain: ChainwebChainId;
   crossChainAccount?: string;
 }
 const debug = Debug('kadena-transfer:services:get-transactions');
 
 export async function getTransactions(options: {
   network: Network;
-  chain: string;
+  chain: ChainwebChainId;
   account: string;
 }): Promise<ITransaction[]> {
   debug(getTransactions.name);
