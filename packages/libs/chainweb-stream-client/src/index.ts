@@ -15,7 +15,7 @@ import {
   IInitialEvent,
   ITransaction,
 } from './types';
-import { notUndefined } from './util';
+import { isNotUndefined } from './util';
 
 import EventEmitter from 'eventemitter2';
 import EventSource from 'eventsource';
@@ -276,7 +276,7 @@ class ChainwebStream extends EventEmitter {
     const unseen: ITransaction[] = this._slidingCache
       .addCache(...data)
       .map((shouldEmit, idx) => (shouldEmit ? data[idx] : undefined))
-      .filter(notUndefined);
+      .filter(isNotUndefined);
 
     for (const element of unseen) {
       const {
