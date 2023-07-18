@@ -222,9 +222,9 @@ class ChainwebStream extends EventEmitter {
     });
 
     this._desiredState = ConnectionState.WaitReconnect;
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._reconnectTimer) {
+    if (this._reconnectTimer !== undefined) {
       clearTimeout(this._reconnectTimer);
+      this._reconnectTimer = undefined;
     }
     this._reconnectTimer = setTimeout(this.connect, timeout);
   };
@@ -388,15 +388,16 @@ class ChainwebStream extends EventEmitter {
   }
 
   private _clearConnectTimeout = (): void => {
-    if (this._connectTimer) {
+    if (this._connectTimer !== undefined) {
       clearTimeout(this._connectTimer);
+      this._connectTimer = undefined;
     }
   };
 
   private _stopHeartbeatMonitor = (): void => {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._heartbeatTimer) {
+    if (this._heartbeatTimer !== undefined) {
       clearTimeout(this._heartbeatTimer);
+      this._heartbeatTimer = undefined;
     }
   };
 
