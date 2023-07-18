@@ -51,7 +51,7 @@ for (const evt of ['confirmed', 'unconfirmed']) {
   // received transaction with confirmation depth >= client.confirmationDepth
   client.on(evt, (newTx: ITransaction) =>
     console.log(
-      '[CONFIRMED]',
+      `[${evt.toUpperCase()}]`,
       newTx.meta.id,
       `conf=${newTx.meta.confirmations}`,
       `height=${newTx.height}`,
