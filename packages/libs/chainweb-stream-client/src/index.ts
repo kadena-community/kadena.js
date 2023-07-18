@@ -428,7 +428,7 @@ class ChainwebStream extends EventEmitter {
     // This reconnection strategy of last_height - conf_depth - 3
     // guarrantees that we will not miss events, but it also means
     // that confirmed transactions will be emitted more than once
-    // until we implement de duplication. 3 is the max chain height span
+    // until we implement deduplication. 3 is the max chain height span
     // for current chainweb chain count (20)
     // Discussion here: https://github.com/kadena-community/kadena.js/issues/275
     if (this._lastHeight !== undefined) {

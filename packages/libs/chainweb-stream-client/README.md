@@ -143,7 +143,11 @@ Callback type: `(txn: ITransaction) => void`
 
 ### heights
 
-Emitted when a `heights` event is received by the server. This carries the maximum height as seen from stream-server's corresponding chainweb-data. This event is mostly intended for calculating minheight when reconnecting, but the event itself is exposed to users in case they have use cases beyond that, such as detecting a stalled cw-data.
+Emitted when a `heights` event is received by the server. This carries the
+maximum height as seen from stream-server's corresponding chainweb-data. This
+event is mostly intended for calculating minheight when reconnecting, but the
+event itself is exposed to users in case they have use cases beyond that, such
+as detecting a stalled cw-data.
 
 Callback type: `(maxChainwebDataHeight: number) => void`
 
