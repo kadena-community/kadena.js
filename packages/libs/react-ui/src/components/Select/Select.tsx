@@ -19,6 +19,7 @@ export interface ISelectProps
   value: string[] | string | number;
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
+  ariaLabel: string;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
@@ -30,6 +31,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     icon: Icon,
     disabled = false,
     children,
+    ariaLabel,
     ...rest
   },
   ref,
@@ -49,6 +51,7 @@ export const Select: FC<ISelectProps> = forwardRef<
           </span>
         )}
         <select
+          aria-label={ariaLabel}
           ref={ref}
           className={selectClass}
           disabled={Boolean(disabled)}
