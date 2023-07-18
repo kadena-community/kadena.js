@@ -75,7 +75,9 @@ export default class SlidingCache<TShape extends ITransaction>
     const retVals = [];
     for (const elem of elems) {
       if (isUndefinedOrNull(elem)) {
-        console.error('Sliding cache: Received null or undefined data element. This should not happen!');
+        console.error(
+          'Sliding cache: Received null or undefined data element. This should not happen!',
+        );
         // do not emit this
         retVals.push(false);
         continue;
