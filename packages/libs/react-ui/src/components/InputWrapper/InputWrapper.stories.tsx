@@ -89,7 +89,15 @@ export const Group: Story = {
     disabled: false,
     status: undefined,
   },
-  render: ({ disabled, status, tag, helperText, info, label, leadingTextWidth }) => {
+  render: ({
+    disabled,
+    status,
+    tag,
+    helperText,
+    info,
+    label,
+    leadingTextWidth,
+  }) => {
     return (
       <InputWrapper
         tag={tag}
