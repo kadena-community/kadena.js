@@ -197,7 +197,7 @@ interface IGetClient {
    *
    * Useful when you are working with a single network and chainId.
    */
-  (hostUrl: string): IClientBasics;
+  (hostUrl: string): IClient;
 
   /**
    * Generates a client instance by passing a hostUrlGenerator function.
