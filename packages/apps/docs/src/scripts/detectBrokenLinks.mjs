@@ -24,12 +24,14 @@ function getBrokenLinks(filePath, links) {
     }
 
     if (link.startsWith('/assets')) {
-      links[index] = path.join('../public/', link)
+      links[index] = path.join('public/', link)
     } else {
       links[index] = path.join(directory, link);
     }
 
     if (!fs.existsSync(links[index])) {
+      // remove __dirname from links[index]
+      links[index] = links[index].replace(__dirname, '');
       brokenLinks.push(links[index]);
     }
   });
@@ -77,18 +79,19 @@ function processFiles(directory) {
       processFiles(filePath); // Recursively process subdirectories
     } else {
       const fileExtension = path.extname(filePath);
+      const localFilePath = filePath.replace(__dirname, '');
 
       if (fileExtension === '.md' || fileExtension === '.mdx') {
         const brokenLinks = extractBrokenLinksFromMdFile(filePath);
         if (brokenLinks.length > 0) {
-          filesWithBrokenLinks[filePath] = brokenLinks;
+          filesWithBrokenLinks[localFilePath] = brokenLinks;
         }
       }
 
       if (fileExtension === '.tsx') {
         const brokenLinks = extractBrokenLinksFromTsFile(filePath);
         if (brokenLinks.length > 0) {
-          filesWithBrokenLinks[filePath] = brokenLinks;
+          filesWithBrokenLinks[localFilePath] = brokenLinks;
         }
       }
     }
