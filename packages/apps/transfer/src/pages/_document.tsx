@@ -24,6 +24,7 @@ const Document: FC = () => {
       </TypedHead>
       <body className={`${darkThemeClass} darkTheme`}>
         <Main />
+        <div id="modalportal" />
         <NextScript />
       </body>
     </Html>
