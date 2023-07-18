@@ -1,13 +1,13 @@
 # React UI
 
 @kadena/react-ui is a library used to provide a styling environment and basic
-React components for reuse in Kadena applications.  
-It uses [vanilla-extract/css][1] (will be referred to as VE) to establish a
-system of utility classes (defined as [sprinkles][2]) and CSS variables (defined
-in the theme) that align with Kadena's Design System and exposes them so that
-they can be used with any project or framework. A basic [Storybook][3]
-integration has been implemented so that users can preview components visually
-and interact with their configuration options.
+React components for reuse in Kadena applications. It uses
+[vanilla-extract/css][1] (will be referred to as VE) to establish a system of
+utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
+theme) that align with Kadena's Design System and exposes them so that they can
+be used with any project or framework. A basic [Storybook][3] integration has
+been implemented so that users can preview components visually and interact with
+their configuration options.
 
 > Warning: This library is in its early development stage so elements in the
 > styling environment may change as well as the API for components.
