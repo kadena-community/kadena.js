@@ -1,4 +1,4 @@
-import { addData, addKeyset, readKeyset } from '../addData';
+import { addData, addKeyset } from '../addData';
 
 describe('addData', () => {
   it('return data for exec payload', () => {
@@ -21,12 +21,6 @@ describe('addData', () => {
     expect(addData('test', 'value')({})).toEqual({
       payload: { exec: { data: { test: 'value' } } },
     });
-  });
-});
-
-describe('readKeyset', () => {
-  it('returns read-keyset string', () => {
-    expect(readKeyset('ks')).toBe('(read-keyset "ks")');
   });
 });
 

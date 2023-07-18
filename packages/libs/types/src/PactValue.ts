@@ -60,8 +60,8 @@ export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
 export type PactValue = PactLiteral | Array<PactValue>;
 
 /**
- * A guard could be a string or a function that returns string
+ * Add the return value as is to the command, its useful for adding guard and module reference
  * @alpha
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type PactGuard = string | ((...args: any) => string);
+export type PactReference = () => string;

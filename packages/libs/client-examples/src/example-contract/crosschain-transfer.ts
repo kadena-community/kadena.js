@@ -26,7 +26,7 @@ function startInTheFirstChain(
       Pact.modules.coin.defpact['transfer-crosschain'](
         from.account,
         to.account,
-        to.guard,
+        () => to.guard,
         '01',
         {
           decimal: amount.toString(),
