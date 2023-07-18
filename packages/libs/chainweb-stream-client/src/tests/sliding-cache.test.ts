@@ -1,5 +1,5 @@
-import { IAccountTransaction } from '../types';
 import SlidingCache from '../sliding-cache';
+import { IAccountTransaction } from '../types';
 
 function makeTestObject(
   height: number,

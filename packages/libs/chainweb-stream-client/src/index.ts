@@ -4,21 +4,21 @@ import {
   parseError,
 } from './errors';
 import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
+import SlidingCache from './sliding-cache';
 import {
   ChainwebStreamType,
   ConnectionState,
   IChainwebStreamConfig,
   IChainwebStreamConstructorArgs,
   IDebugMsgObject,
+  IHeightsEvent,
   IInitialEvent,
   ITransaction,
-  IHeightsEvent,
 } from './types';
+import { notUndefined } from './util';
 
 import EventEmitter from 'eventemitter2';
 import EventSource from 'eventsource';
-import { notUndefined } from './util';
-import SlidingCache from './sliding-cache';
 
 export * from './types';
 
