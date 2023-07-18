@@ -28,7 +28,6 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
         }}
       >
         <div>
-          test
           <button
             data-cy="modal-background"
             className={background}
