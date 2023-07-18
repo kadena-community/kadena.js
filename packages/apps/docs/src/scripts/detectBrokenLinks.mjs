@@ -98,13 +98,21 @@ function processFiles(directory) {
   });
 }
 
+const countDeadLinks = (filesWithBrokenLinks) => {
+  return Object.keys(filesWithBrokenLinks).reduce((acc, val) => {
+    console.log(filesWithBrokenLinks[val].length);
+    return acc + filesWithBrokenLinks[val].length;
+  }, 0);
+};
+
 const main = async () => {
   const directoryPath = path.join(__dirname, 'src');
   processFiles(directoryPath);
 
   if (Object.keys(filesWithBrokenLinks).length > 0) {
     throw new Error(
-      'Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2),
+      `Found broken links : ${JSON.stringify(filesWithBrokenLinks, null, 2)} \n
+      Found deadlinks: (${countDeadLinks(filesWithBrokenLinks)})`,
     );
   }
 };
