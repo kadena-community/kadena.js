@@ -58,7 +58,25 @@ const CheckTransactions: FC = () => {
         setNetwork(router.query.network as Network);
       }
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query.account, router.query.network, setNetwork]);
+
+  const getAndSetTransactions = useCallback(
+    async (network: Network, chain: ChainwebChainId, account: string) => {
+      debug(getAndSetTransactions.name);
+      if (!chain || !account) return;
+
+      const result = await getTransactions({
+        network,
+        chain,
+        account,
+      });
+
+      setHasSearched(true);
+
+      setResults(result);
+    },
+    [debug],
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -70,7 +88,14 @@ const CheckTransactions: FC = () => {
         debug(e);
       });
     }
-  }, [router.query.network, router.query.chain, router.query.account]);
+  }, [
+    chainID,
+    debug,
+    getAndSetTransactions,
+    router.isReady,
+    router.query.account,
+    router.query.network,
+  ]);
 
   async function checkTransactionsEvent(
     event: React.FormEvent<HTMLFormElement>,
@@ -92,25 +117,6 @@ const CheckTransactions: FC = () => {
     } catch (e) {
       debug(e);
     }
-  }
-
-  async function getAndSetTransactions(
-    network: Network,
-    chain: ChainwebChainId,
-    account: string,
-  ): Promise<void> {
-    debug(getAndSetTransactions.name);
-    if (!chain || !account) return;
-
-    const result = await getTransactions({
-      network,
-      chain,
-      account,
-    });
-
-    setHasSearched(true);
-
-    setResults(result);
   }
 
   const onAccountInputChange = useCallback<
