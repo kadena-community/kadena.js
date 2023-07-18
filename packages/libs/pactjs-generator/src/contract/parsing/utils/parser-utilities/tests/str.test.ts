@@ -10,6 +10,13 @@ describe('str parser', () => {
     expect(result).toBe('str_test');
   });
 
+  it("should return a string ('text) value if token type is symbol", () => {
+    const pointer = getPointer("'str_test");
+    const result = str(pointer);
+    // quotation marks are removed
+    expect(result).toBe('str_test');
+  });
+
   it('should return FAILED if token type is not string', () => {
     const pointer = getPointer('test');
     const result = str(pointer);
