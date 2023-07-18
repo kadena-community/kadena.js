@@ -134,7 +134,7 @@ const CrossChainTransferTracker: FC = () => {
               inputProps={{
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
-                onChange: (e) =>
+                onChange: (e: any) =>
                   setRequestKey((e.target as HTMLInputElement).value),
                 onKeyUp: checkRequestKey,
                 value: requestKey,

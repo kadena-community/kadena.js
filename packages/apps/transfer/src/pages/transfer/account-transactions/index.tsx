@@ -131,7 +131,7 @@ const CheckTransactions: FC = () => {
             <StyledSmallField>
               <Select
                 leadingText={t('Chain')}
-                onChange={(e) => setChain(e.target.value)}
+                onChange={(e: any) => setChain(e.target.value)}
                 value={chain}
               >
                 {renderChainOptions()}
@@ -142,7 +142,7 @@ const CheckTransactions: FC = () => {
                 inputProps={{
                   id: 'account-input',
                   placeholder: t('Account'),
-                  onChange: (e) =>
+                  onChange: (e: any) =>
                     setAccount((e.target as HTMLInputElement).value),
                   value: account,
                 }}

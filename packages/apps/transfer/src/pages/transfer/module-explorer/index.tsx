@@ -121,7 +121,7 @@ const ModuleExplorer: FC = () => {
           <Select
             label={t('Select the module chain')}
             leadingText={t('Chain')}
-            onChange={(e) => setModuleChain(parseInt(e.target.value))}
+            onChange={(e: any) => setModuleChain(parseInt(e.target.value))}
             value={moduleChain}
           >
             {renderChainOptions()}
@@ -131,7 +131,7 @@ const ModuleExplorer: FC = () => {
             inputProps={{
               id: 'module-name-input',
               placeholder: t('Enter desired module name'),
-              onChange: (e) =>
+              onChange: (e: any) =>
                 setModuleSearch((e.target as HTMLInputElement).value),
               value: moduleSearch,
             }}
