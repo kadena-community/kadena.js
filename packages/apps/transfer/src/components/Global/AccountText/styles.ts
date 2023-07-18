@@ -1,4 +1,5 @@
-import { styled, SystemIcons } from '@kadena/react-components';
+import { styled } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
 export const StyledAccountText = styled('div', {
   width: '100%',
@@ -29,12 +30,12 @@ export const StyledAccountContainer = styled('div', {
   gap: '$2',
 });
 
-export const StyledEyeOffIcon = styled(SystemIcons.EyeOffOutline, {
+export const StyledEyeOffIcon = styled(SystemIcon.EyeOffOutline, {
   width: '24px',
   height: '24px',
 });
 
-export const StyledEyeIcon = styled(SystemIcons.EyeOutline, {
+export const StyledEyeIcon = styled(SystemIcon.EyeOutline, {
   width: '24px',
   height: '24px',
 });

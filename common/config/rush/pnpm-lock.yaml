@@ -7,15 +7,15 @@ importers:
 
   ../../packages/apps/docs:
     specifiers:
-      '@7-docs/cli': 0.1.7
-      '@7-docs/edge': 0.1.7
+      '@7-docs/cli': 0.1.9
+      '@7-docs/edge': 0.1.9
       '@babel/preset-env': ^7.20.2
       '@babel/preset-react': ^7.18.6
       '@babel/preset-typescript': ^7.21.0
       '@google-analytics/data': ~3.2.2
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
-      '@kadena/pactjs-cli': workspace:*
+      '@kadena/pactjs-cli': 0.1.5
       '@kadena/react-components': workspace:*
       '@kadena/react-ui': workspace:*
       '@kadena/types': workspace:*
@@ -61,7 +61,6 @@ importers:
       minisearch: ~6.1.0
       mobx: ~6.9.0
       next: 13.4.5
-      next-themes: ~0.2.1
       openapi-types: ~12.1.3
       prettier: ~2.8.8
       react: ^18.2.0
@@ -81,7 +80,7 @@ importers:
       styled-components: ~5.3.10
       typescript: 5.0.4
     dependencies:
-      '@7-docs/edge': 0.1.7
+      '@7-docs/edge': 0.1.9
       '@google-analytics/data': 3.2.2
       '@kadena/react-components': link:../../libs/react-components
       '@kadena/react-ui': link:../../libs/react-ui
@@ -99,7 +98,6 @@ importers:
       minisearch: 6.1.0
       mobx: 6.9.0
       next: 13.4.5_react-dom@18.2.0+react@18.2.0
-      next-themes: 0.2.1_a19097b605f2c383cd1ccc132698cbdc
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-markdown: 8.0.7_47f64565616ce9f4b97e79f45ae38c30
@@ -111,13 +109,13 @@ importers:
       shiki: 0.14.3
       styled-components: 5.3.11_react-dom@18.2.0+react@18.2.0
     devDependencies:
-      '@7-docs/cli': 0.1.7
+      '@7-docs/cli': 0.1.9
       '@babel/preset-env': 7.22.5
       '@babel/preset-react': 7.22.5
       '@babel/preset-typescript': 7.22.5
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
+      '@kadena/pactjs-cli': 0.1.5
       '@kadena/types': link:../../libs/types
       '@percy/cli': 1.24.2
       '@percy/cypress': 3.1.2_cypress@12.12.0
@@ -160,7 +158,7 @@ importers:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
-      '@kadena/pactjs-cli': workspace:*
+      '@kadena/pactjs-cli': 0.1.5
       '@pothos/core': ~3.24.0
       '@pothos/plugin-prisma': ~3.39.0
       '@pothos/plugin-relay': ~3.32.0
@@ -197,7 +195,7 @@ importers:
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
+      '@kadena/pactjs-cli': 0.1.5
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
       '@types/debug': 4.1.8
@@ -217,7 +215,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
-      '@kadena/pactjs-cli': workspace:*
+      '@kadena/pactjs-cli': 0.1.5
       '@radix-ui/colors': ~0.1.8
       '@radix-ui/react-icons': ~1.1.1
       '@rushstack/eslint-config': ~3.3.0
@@ -262,7 +260,7 @@ importers:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
+      '@kadena/pactjs-cli': 0.1.5
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
       '@types/heft-jest': 1.0.3
@@ -279,11 +277,11 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
-      '@kadena/chainweb-node-client': workspace:*
-      '@kadena/client': workspace:*
+      '@kadena/chainweb-node-client': 0.4.1
+      '@kadena/client': 0.6.1
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
-      '@kadena/pactjs-cli': workspace:*
+      '@kadena/pactjs-cli': 0.1.5
       '@kadena/react-components': workspace:*
       '@kadena/react-ui': workspace:*
       '@kadena/types': workspace:*
@@ -306,6 +304,7 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.23.0
       '@typescript-eslint/parser': ^5.23.0
       '@vanilla-extract/css': 1.11.1
+      '@vanilla-extract/jest-transform': 1.1.1
       '@vanilla-extract/next-plugin': 2.1.2
       ace-builds: ~1.22.1
       debug: ~4.3.4
@@ -328,15 +327,14 @@ importers:
       sort-package-json: ~2.4.1
       typescript: 5.0.4
     dependencies:
-      '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
-      '@kadena/client': link:../../libs/client
+      '@kadena/chainweb-node-client': 0.4.1
+      '@kadena/client': 0.6.1
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       '@kadena/pactjs': link:../../libs/pactjs
       '@kadena/react-components': link:../../libs/react-components
       '@kadena/react-ui': link:../../libs/react-ui
       '@radix-ui/colors': 0.1.9
       '@stitches/react': 1.3.1-1_react@18.2.0
-      '@vanilla-extract/next-plugin': 2.1.2_@types+node@16.18.38+next@13.4.5
       ace-builds: 1.22.1
       jest-standard-reporter: 2.0.0
       js-cookie: 3.0.5
@@ -352,7 +350,7 @@ importers:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
+      '@kadena/pactjs-cli': 0.1.5
       '@kadena/types': link:../../libs/types
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
@@ -371,6 +369,8 @@ importers:
       '@typescript-eslint/eslint-plugin': 5.60.1_cfa258330b4359c79edc87badfcf28a3
       '@typescript-eslint/parser': 5.60.1_eslint@8.44.0+typescript@5.0.4
       '@vanilla-extract/css': 1.11.1
+      '@vanilla-extract/jest-transform': 1.1.1_@types+node@16.18.38
+      '@vanilla-extract/next-plugin': 2.1.2_@types+node@16.18.38+next@13.4.5
       debug: 4.3.4
       eslint: 8.44.0
       eslint-config-next: 13.4.5_eslint@8.44.0+typescript@5.0.4
@@ -582,6 +582,55 @@ importers:
       sort-package-json: 2.4.1
       ts-node: 10.8.2_@types+node@16.18.38
 
+  ../../packages/libs/client-examples:
+    specifiers:
+      '@kadena-dev/eslint-config': workspace:*
+      '@kadena-dev/heft-rig': workspace:*
+      '@kadena-dev/markdown': workspace:*
+      '@kadena/chainweb-node-client': workspace:*
+      '@kadena/client': workspace:*
+      '@kadena/cryptography-utils': workspace:*
+      '@kadena/pactjs': workspace:*
+      '@kadena/pactjs-cli': workspace:*
+      '@kadena/types': workspace:*
+      '@rushstack/eslint-config': ~3.3.0
+      '@rushstack/heft': ~0.50.6
+      '@types/heft-jest': ~1.0.3
+      '@types/node': ^16.0.0
+      concurrently: ^7.2.2
+      debug: ~4.3.4
+      eslint: ^8.15.0
+      node-fetch: ~2.6.2
+      npm-run-all: ~4.1.5
+      prettier: ~2.8.8
+      sort-package-json: ~2.4.1
+      ts-node: ~10.8.2
+      typescript: 5.0.4
+    dependencies:
+      '@kadena/chainweb-node-client': link:../chainweb-node-client
+      '@kadena/client': link:../client
+      '@kadena/cryptography-utils': link:../cryptography-utils
+      '@kadena/pactjs': link:../pactjs
+      '@kadena/types': link:../types
+      debug: 4.3.4
+    devDependencies:
+      '@kadena-dev/eslint-config': link:../../tools/eslint-config
+      '@kadena-dev/heft-rig': link:../../tools/heft-rig
+      '@kadena-dev/markdown': link:../../tools/remark-plugins
+      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
+      '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
+      '@rushstack/heft': 0.50.7_@types+node@16.18.38
+      '@types/heft-jest': 1.0.3
+      '@types/node': 16.18.38
+      concurrently: 7.6.0
+      eslint: 8.44.0
+      node-fetch: 2.6.12
+      npm-run-all: 4.1.5
+      prettier: 2.8.8
+      sort-package-json: 2.4.1
+      ts-node: 10.8.2_37397d4516e2230bd4bd41a4d81dedb8
+      typescript: 5.0.4
+
   ../../packages/libs/cryptography-utils:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
@@ -738,53 +787,6 @@ importers:
       ts-node: 10.8.2_37397d4516e2230bd4bd41a4d81dedb8
       typescript: 5.0.4
 
-  ../../packages/libs/pactjs-test-project:
-    specifiers:
-      '@kadena-dev/eslint-config': workspace:*
-      '@kadena-dev/heft-rig': workspace:*
-      '@kadena-dev/markdown': workspace:*
-      '@kadena/chainweb-node-client': workspace:*
-      '@kadena/client': workspace:*
-      '@kadena/cryptography-utils': workspace:*
-      '@kadena/pactjs-cli': workspace:*
-      '@kadena/types': workspace:*
-      '@rushstack/eslint-config': ~3.3.0
-      '@rushstack/heft': ~0.50.6
-      '@types/heft-jest': ~1.0.3
-      '@types/node': ^16.0.0
-      concurrently: ^7.2.2
-      debug: ~4.3.4
-      eslint: ^8.15.0
-      node-fetch: ~2.6.2
-      npm-run-all: ~4.1.5
-      prettier: ~2.8.8
-      sort-package-json: ~2.4.1
-      ts-node: ~10.8.2
-      typescript: 5.0.4
-    dependencies:
-      '@kadena/chainweb-node-client': link:../chainweb-node-client
-      '@kadena/client': link:../client
-      '@kadena/cryptography-utils': link:../cryptography-utils
-      '@kadena/types': link:../types
-      debug: 4.3.4
-    devDependencies:
-      '@kadena-dev/eslint-config': link:../../tools/eslint-config
-      '@kadena-dev/heft-rig': link:../../tools/heft-rig
-      '@kadena-dev/markdown': link:../../tools/remark-plugins
-      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
-      '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
-      '@rushstack/heft': 0.50.7_@types+node@16.18.38
-      '@types/heft-jest': 1.0.3
-      '@types/node': 16.18.38
-      concurrently: 7.6.0
-      eslint: 8.44.0
-      node-fetch: 2.6.12
-      npm-run-all: 4.1.5
-      prettier: 2.8.8
-      sort-package-json: 2.4.1
-      ts-node: 10.8.2_37397d4516e2230bd4bd41a4d81dedb8
-      typescript: 5.0.4
-
   ../../packages/libs/react-components:
     specifiers:
       '@babel/core': ^7.21.3
@@ -895,6 +897,7 @@ importers:
       '@vanilla-extract/recipes': 0.4.0
       '@vanilla-extract/sprinkles': 1.6.0
       '@vanilla-extract/webpack-plugin': 2.2.0
+      babel-plugin-module-resolver: ^5.0.0
       classnames: ^2.3.1
       copyfiles: 2.4.1
       css-loader: ~6.8.1
@@ -916,6 +919,7 @@ importers:
       storybook: ^7.0.20
       storybook-dark-mode: ^3.0.0
       ts-jest: ~29.1.0
+      tsc-alias: ~1.8.7
       tsconfig-paths: 4.2.0
       typescript: 5.0.4
       webpack: ~5.73.0
@@ -963,6 +967,7 @@ importers:
       '@types/testing-library__jest-dom': 5.14.6
       '@vanilla-extract/jest-transform': 1.1.1_@types+node@16.18.38
       '@vanilla-extract/webpack-plugin': 2.2.0_122540af6761bbdfb0b3ddf5bef86411
+      babel-plugin-module-resolver: 5.0.0
       copyfiles: 2.4.1
       eslint: 8.44.0
       eslint-import-resolver-typescript: 3.5.5_e813a63fe0cff7c4281576d9d101cdc8
@@ -979,6 +984,7 @@ importers:
       storybook: 7.0.24
       storybook-dark-mode: 3.0.0_react-dom@18.2.0+react@18.2.0
       ts-jest: 29.1.1_474cf700da99a65139bc2c1f843d9765
+      tsc-alias: 1.8.7
       tsconfig-paths: 4.2.0
       typescript: 5.0.4
       webpack: 5.73.0
@@ -1013,9 +1019,9 @@ importers:
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
       '@kadena/chainweb-node-client': workspace:*
-      '@kadena/client': workspace:*
+      '@kadena/client': 0.6.1
       '@kadena/cryptography-utils': workspace:*
-      '@kadena/pactjs-cli': workspace:*
+      '@kadena/pactjs-cli': 0.1.5
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
@@ -1027,13 +1033,13 @@ importers:
       ts-node: ~10.8.2
     dependencies:
       '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
-      '@kadena/client': link:../../libs/client
+      '@kadena/client': 0.6.1
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
       '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena-dev/markdown': link:../remark-plugins
-      '@kadena/pactjs-cli': link:../pactjs-cli
+      '@kadena/pactjs-cli': 0.1.5
       '@kadena/types': link:../../libs/types
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
@@ -1395,12 +1401,12 @@ importers:
 
 packages:
 
-  /@7-docs/cli/0.1.7:
-    resolution: {integrity: sha512-FBJ8VFlhDUlvP9j5s7biUgKGa70qXoupLimRnL/9ZsdojSSQYiIfbnB2X6FJYRj+YYaymRdhfwPAzGYKpXH42g==}
+  /@7-docs/cli/0.1.9:
+    resolution: {integrity: sha512-pBE9sMwD06BR/KBkrtyqnb4f6Cz6fcgeJaxLUZcqeQZCYtZ4g4YlA14pm+2sywUeWt9YYM1uDHRXb+zFIsqLOw==}
     hasBin: true
     dependencies:
-      '@7-docs/edge': 0.1.7
-      '@7-docs/shared': 0.1.7
+      '@7-docs/edge': 0.1.9
+      '@7-docs/shared': 0.1.9
       '@octokit/rest': 19.0.13
       '@supabase/supabase-js': 2.26.0
       cheerio: 1.0.0-rc.12
@@ -1424,13 +1430,13 @@ packages:
       - supports-color
     dev: true
 
-  /@7-docs/edge/0.1.7:
-    resolution: {integrity: sha512-8BoZ1abwHa60kXOu5GrDq6YoXKnxehP8N3QxCGGzDWQq5T/m6FXXMlYReDfn9yPi7Buz6jtQeHmnoXU1RJTrKA==}
+  /@7-docs/edge/0.1.9:
+    resolution: {integrity: sha512-TPbkIgLzGI49tg3qZF1huTD4uxxdnumVZ5MSnVO2YuGBD6zYgAVYEttYUZ8Z1+ZGhe7BbljQZV9rC7ZqCCe0dQ==}
     dependencies:
-      '@7-docs/shared': 0.1.7
+      '@7-docs/shared': 0.1.9
 
-  /@7-docs/shared/0.1.7:
-    resolution: {integrity: sha512-9euIY/TBPzwWV7A5SI0ZBR/UTEezUuDZPXkPe8DnFgiuK7OLDsbfCphGazMxfZIAIkjmj0xioYNqOGuzJ3r8ew==}
+  /@7-docs/shared/0.1.9:
+    resolution: {integrity: sha512-/3ieTajNKwD8ri5X+5D9fpmD9RNIyVE+XmF9HfCaJbUI1rwexKyqqpOr3eQ5MttOzWU/P77dzPtkH9oTZbwM6g==}
 
   /@aashutoshrathi/word-wrap/1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
@@ -5290,6 +5296,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm]
     os: [android]
+    dev: true
     optional: true
 
   /@esbuild/android-arm64/0.17.19:
@@ -5305,6 +5312,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [android]
+    dev: true
     optional: true
 
   /@esbuild/android-x64/0.17.19:
@@ -5320,6 +5328,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [android]
+    dev: true
     optional: true
 
   /@esbuild/darwin-arm64/0.17.19:
@@ -5335,6 +5344,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [darwin]
+    dev: true
     optional: true
 
   /@esbuild/darwin-x64/0.17.19:
@@ -5350,6 +5360,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [darwin]
+    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64/0.17.19:
@@ -5365,6 +5376,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [freebsd]
+    dev: true
     optional: true
 
   /@esbuild/freebsd-x64/0.17.19:
@@ -5380,6 +5392,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [freebsd]
+    dev: true
     optional: true
 
   /@esbuild/linux-arm/0.17.19:
@@ -5395,6 +5408,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-arm64/0.17.19:
@@ -5410,6 +5424,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-ia32/0.17.19:
@@ -5425,6 +5440,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [ia32]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-loong64/0.17.19:
@@ -5440,6 +5456,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [loong64]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-mips64el/0.17.19:
@@ -5455,6 +5472,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [mips64el]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-ppc64/0.17.19:
@@ -5470,6 +5488,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [ppc64]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-riscv64/0.17.19:
@@ -5485,6 +5504,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [riscv64]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-s390x/0.17.19:
@@ -5500,6 +5520,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [s390x]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/linux-x64/0.17.19:
@@ -5515,6 +5536,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [linux]
+    dev: true
     optional: true
 
   /@esbuild/netbsd-x64/0.17.19:
@@ -5530,6 +5552,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [netbsd]
+    dev: true
     optional: true
 
   /@esbuild/openbsd-x64/0.17.19:
@@ -5545,6 +5568,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [openbsd]
+    dev: true
     optional: true
 
   /@esbuild/sunos-x64/0.17.19:
@@ -5560,6 +5584,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [sunos]
+    dev: true
     optional: true
 
   /@esbuild/win32-arm64/0.17.19:
@@ -5575,6 +5600,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [win32]
+    dev: true
     optional: true
 
   /@esbuild/win32-ia32/0.17.19:
@@ -5590,6 +5616,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [ia32]
     os: [win32]
+    dev: true
     optional: true
 
   /@esbuild/win32-x64/0.17.19:
@@ -5605,6 +5632,7 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+    dev: true
     optional: true
 
   /@eslint-community/eslint-utils/4.4.0_eslint@8.44.0:
@@ -6937,6 +6965,101 @@ packages:
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
+
+  /@kadena/chainweb-node-client/0.4.1:
+    resolution: {integrity: sha512-AgAEEQy+5ZLMXrP2rI8xZuxbEUNWyk7vh0q4Ti909F2HwHPP1mAp56nZZMlNGKUm6A16BasXmsND1Pow4H95Mw==}
+    requiresBuild: true
+    dependencies:
+      '@kadena/cryptography-utils': 0.3.5
+      '@kadena/pactjs': 0.2.11
+      '@kadena/types': 0.3.5
+      '@types/isomorphic-fetch': 0.0.36
+      cross-fetch: 3.1.8
+      node-fetch: 2.6.12
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@kadena/chainweb-node-client/0.4.1_encoding@0.1.13:
+    resolution: {integrity: sha512-AgAEEQy+5ZLMXrP2rI8xZuxbEUNWyk7vh0q4Ti909F2HwHPP1mAp56nZZMlNGKUm6A16BasXmsND1Pow4H95Mw==}
+    requiresBuild: true
+    dependencies:
+      '@kadena/cryptography-utils': 0.3.5
+      '@kadena/pactjs': 0.2.11
+      '@kadena/types': 0.3.5
+      '@types/isomorphic-fetch': 0.0.36
+      cross-fetch: 3.1.8_encoding@0.1.13
+      node-fetch: 2.6.12_encoding@0.1.13
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@kadena/client/0.6.1:
+    resolution: {integrity: sha512-2F3kyzrHItq/nBYGWRqnGWpiATDT6+xoBxiXrFqiq8ZLDhLMxvc0DHmB5INIDRHfYjbts/tKgFPfuQOk7Si2Og==}
+    dependencies:
+      '@kadena/chainweb-node-client': 0.4.1_encoding@0.1.13
+      '@kadena/cryptography-utils': 0.3.5
+      '@kadena/pactjs': 0.2.11
+      '@kadena/types': 0.3.5
+      '@walletconnect/sign-client': 2.8.6
+      '@walletconnect/types': 2.8.6
+      cross-fetch: 3.1.8_encoding@0.1.13
+      debug: 4.3.4
+      encoding: 0.1.13
+      yaml: 2.1.3
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - bufferutil
+      - lokijs
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /@kadena/cryptography-utils/0.3.5:
+    resolution: {integrity: sha512-z1dVWirsdrGBknmNXK3owsrVSxw65ooH7bWmYpn6UNiRpI6vzg1n+gj8fIUOQHcvLuq7dA57VfrGnNKWKW2pgQ==}
+    dependencies:
+      '@kadena/types': 0.3.5
+      blakejs: 1.2.1
+      buffer: 6.0.3
+      tweetnacl: 1.0.3
+    dev: false
+
+  /@kadena/pactjs-cli/0.1.5:
+    resolution: {integrity: sha512-mo1OJQGQ7gjNkQ3q0cU6r+RrZwQ3fTQaCrln079PWxiUOMoK5OUtbNYPHNt0hr6ZOqkmybNFEW7j/I8rPCHGaA==}
+    hasBin: true
+    dependencies:
+      '@kadena/pactjs-generator': 0.1.13
+      commander: 9.5.0
+      cross-fetch: 3.1.8
+      debug: 4.3.4
+      mkdirp: 1.0.4
+      rimraf: 3.0.2
+      yaml: 2.1.3
+      zod: 3.18.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
+
+  /@kadena/pactjs-generator/0.1.13:
+    resolution: {integrity: sha512-VOliWyJ1X/2hav/FktOOi6HeoVY+P5DNs9+axWmu96Oce5Wdy7MX4Rlqz3Q9eJi/za36NRUNxtD9q1G7NJmB7g==}
+    dependencies:
+      memfs: 3.5.3
+      moo: 0.5.2
+      nearley: 2.20.1
+      yaml: 2.1.3
+    dev: true
+
+  /@kadena/pactjs/0.2.11:
+    resolution: {integrity: sha512-98ojO20l3ijp8rkCSokadm2NRMgigtduSB/5/QqRVa4WUMf5ROS01ocF6fzdp7GVUbBYaw1FEfslv6MXtz++IA==}
+    dependencies:
+      '@kadena/types': 0.3.5
+      bignumber.js: 9.1.1
+    dev: false
+
+  /@kadena/types/0.3.5:
+    resolution: {integrity: sha512-BuQo6ll3ARQqC7/V1BTnKLZp1UrKMtS0a7NbRX7HT+0XYYcteixMUUf/AiPBBEKsSmD+TDlWQvEE7eapPP7ykA==}
+    dev: false
 
   /@leichtgewicht/ip-codec/2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
@@ -11157,6 +11280,7 @@ packages:
       '@babel/core': 7.22.5
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@vanilla-extract/css/1.11.1:
     resolution: {integrity: sha512-iLalh4K4sXgkfzsiFUsiek4IY1/N4jtJKdr1ubpyszPE7W7G2v+DAl8KcmKkRA6vS7k5mFNW34e4fNki6T2cbQ==}
@@ -11197,6 +11321,7 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
 
   /@vanilla-extract/jest-transform/1.1.1_@types+node@16.18.38:
     resolution: {integrity: sha512-xVS9cWo+qrgjxnCCmkfeTesMOH85FsavMOwGLAxyBqxvunin+8aDft85hMo4SzQOVBTzv8aEuEX6IRQK8Zj+Ug==}
@@ -11230,6 +11355,7 @@ packages:
       - supports-color
       - terser
       - webpack
+    dev: true
 
   /@vanilla-extract/private/1.0.3:
     resolution: {integrity: sha512-17kVyLq3ePTKOkveHxXuIJZtGYs+cSoev7BlP+Lf4916qfDhk/HBjvlYDe8egrea7LNPHKwSZJK/bzZC+Q6AwQ==}
@@ -11287,6 +11413,7 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
 
   /@walletconnect/core/2.8.6:
     resolution: {integrity: sha512-rnSqm1KJLcww/v6+UH8JeibQkJ3EKgyUDPfEK0stSEkrIUIcXaFlq3Et8S+vgV8bPhI0MVUhAhFL5OJZ3t2ryg==}
@@ -12451,6 +12578,17 @@ packages:
       resolve: 1.22.2
     dev: false
 
+  /babel-plugin-module-resolver/5.0.0:
+    resolution: {integrity: sha512-g0u+/ChLSJ5+PzYwLwP8Rp8Rcfowz58TJNCe+L/ui4rpzE/mg//JVX0EWBUYoxaextqnwuGHzfGp2hh0PPV25Q==}
+    engines: {node: '>= 16'}
+    dependencies:
+      find-babel-config: 2.0.0
+      glob: 8.1.0
+      pkg-up: 3.1.0
+      reselect: 4.1.8
+      resolve: 1.22.2
+    dev: true
+
   /babel-plugin-named-asset-import/0.3.8_@babel+core@7.22.5:
     resolution: {integrity: sha512-WXiAc++qo7XcJ1ZnTYGtLxmBCVbddAml3CEXgWaBzNzLNoxtQ8AiGEFDMOhot9XjTCQbvP5E77Fj9Gk924f00Q==}
     peerDependencies:
@@ -12973,6 +13111,7 @@ packages:
   /cac/6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
+    dev: true
 
   /cachedir/2.3.0:
     resolution: {integrity: sha512-A+Fezp4zxnit6FanDmv9EqXNAi3vt9DWp51/71UEhXukb7QUuvtv9344h91dyAxuTLoSYJFU299qzR3tzwPAhw==}
@@ -14572,7 +14711,6 @@ packages:
 
   /discontinuous-range/1.0.0:
     resolution: {integrity: sha512-c68LpLbO+7kP/b1Hr1qs8/BJ09F5khZGTxqxZuhzxpmwJKOgRFHJWIb9/KmqnqHhLdO55aOxFH/EGBvUQbL/RQ==}
-    dev: false
 
   /dlv/1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
@@ -15074,6 +15212,7 @@ packages:
       '@esbuild/win32-arm64': 0.17.6
       '@esbuild/win32-ia32': 0.17.6
       '@esbuild/win32-x64': 0.17.6
+    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -15643,6 +15782,7 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       require-like: 0.1.2
+    dev: true
 
   /event-stream/3.3.4:
     resolution: {integrity: sha512-QHpkERcGsR0T7Qm3HNJSyXKEEj8AHNxkY3PK8TS2KJvQ7NiSHe3DDpwVKKtoYprL/AreyzFBeIkBIWChAqn60g==}
@@ -16071,6 +16211,14 @@ packages:
       parseurl: 1.3.3
       statuses: 2.0.1
       unpipe: 1.0.0
+
+  /find-babel-config/2.0.0:
+    resolution: {integrity: sha512-dOKT7jvF3hGzlW60Gc3ONox/0rRZ/tz7WCil0bqA1In/3I8f1BctpXahRnEKDySZqci7u+dqq93sZST9fOJpFw==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      json5: 2.2.3
+      path-exists: 4.0.0
+    dev: true
 
   /find-cache-dir/2.1.0:
     resolution: {integrity: sha512-Tq6PixE0w/VMFfCgbONnkiQIVol/JJL7nRMi20fqzA4NRs9AfeqMGeRdPi3wIhYkxjeBaWh2rxwapn5Tu3IqOQ==}
@@ -18035,6 +18183,7 @@ packages:
 
   /javascript-stringify/2.1.0:
     resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
+    dev: true
 
   /jest-changed-files/27.5.1:
     resolution: {integrity: sha512-buBLMiByfWGCoMsLLzGUUSpAmIAGnbR2KJoMN10ziLhOLvP4e0SlypHnAel8iqQXTrcbmfEY9sSqae5sgUsTvw==}
@@ -20682,6 +20831,7 @@ packages:
       pathe: 1.1.1
       pkg-types: 1.0.3
       ufo: 1.1.2
+    dev: true
 
   /mobx-react-lite/3.4.3_5c467470a83fd08e298402beeaf05b38:
     resolution: {integrity: sha512-NkJREyFTSUXR772Qaai51BnE1voWx56LOL80xG7qkZr6vo8vEaLF3sz1JNUVh+rxmUzxYaqOhfuxTfqUh0FXUg==}
@@ -20726,7 +20876,6 @@ packages:
 
   /moo/0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
-    dev: false
 
   /mri/1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -20766,6 +20915,11 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dev: false
 
+  /mylas/2.1.13:
+    resolution: {integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==}
+    engines: {node: '>=12.0.0'}
+    dev: true
+
   /mz/2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
     dependencies:
@@ -20798,7 +20952,6 @@ packages:
       moo: 0.5.2
       railroad-diagrams: 1.0.0
       randexp: 0.4.6
-    dev: false
 
   /negotiator/0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -20806,18 +20959,6 @@ packages:
 
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
-
-  /next-themes/0.2.1_a19097b605f2c383cd1ccc132698cbdc:
-    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
-    peerDependencies:
-      next: '*'
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      next: 13.4.5_react-dom@18.2.0+react@18.2.0
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    dev: false
 
   /next-tick/1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
@@ -21687,6 +21828,7 @@ packages:
 
   /pathe/1.1.1:
     resolution: {integrity: sha512-d+RQGp0MAYTIaDBIMmOfMwz3E+LOZnxx1HZd5R18mmCZY0QBlK0LDZfPc8FW8Ed2DlvsuE6PRjroDY+wg4+j/Q==}
+    dev: true
 
   /pause-stream/0.0.11:
     resolution: {integrity: sha512-e3FBlXLmN/D1S+zHzanP4E/4Z60oFAa3O051qt1pxa7DEJWKAyil6upYVXCWadEnuoqa4Pkc9oUx9zsxYeRv8A==}
@@ -21892,13 +22034,19 @@ packages:
       jsonc-parser: 3.2.0
       mlly: 1.4.0
       pathe: 1.1.1
+    dev: true
 
   /pkg-up/3.1.0:
     resolution: {integrity: sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==}
     engines: {node: '>=8'}
     dependencies:
       find-up: 3.0.0
-    dev: false
+
+  /plimit-lit/1.5.0:
+    resolution: {integrity: sha512-Eb/MqCb1Iv/ok4m1FqIXqvUKPISufcjZ605hl3KM/n8GaX8zfhtgdLwZU3vKjuHGh2O9Rjog/bHTq8ofIShdng==}
+    dependencies:
+      queue-lit: 1.5.0
+    dev: true
 
   /plur/5.1.0:
     resolution: {integrity: sha512-VP/72JeXqak2KiOzjgKtQen5y3IZHn+9GOuLDafPv0eXa47xq0At93XahYBs26MsifCQ4enGKwbjBTKgb9QJXg==}
@@ -23037,6 +23185,10 @@ packages:
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
 
+  /queue-lit/1.5.0:
+    resolution: {integrity: sha512-IslToJ4eiCEE9xwMzq3viOO5nH8sUWUCwoElrhNMozzr9IIt2qqvB4I+uHu/zJTQVqc9R5DFwok4ijNK1pU3fA==}
+    dev: true
+
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -23063,7 +23215,6 @@ packages:
 
   /railroad-diagrams/1.0.0:
     resolution: {integrity: sha512-cz93DjNeLY0idrCNOH6PviZGRN9GJhsdm9hpn1YCS879fj4W+x5IFJhhkRZcwVgMmFF7R82UA/7Oh+R8lLZg6A==}
-    dev: false
 
   /ramda/0.29.0:
     resolution: {integrity: sha512-BBea6L67bYLtdbOqfp8f58fPMqEwx0doL+pAi8TZyp2YWz8R9G8z9x75CZI8W+ftqhFHCpEX2cRnUUXK130iKA==}
@@ -23075,7 +23226,6 @@ packages:
     dependencies:
       discontinuous-range: 1.0.0
       ret: 0.1.15
-    dev: false
 
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
@@ -23873,6 +24023,7 @@ packages:
 
   /require-like/0.1.2:
     resolution: {integrity: sha512-oyrU88skkMtDdauHDuKVrgR+zuItqr6/c//FXzvmxRGMexSDc6hNvJInGW3LL46n+8b50RykrvwSUIIQH2LQ5A==}
+    dev: true
 
   /require-main-filename/2.0.0:
     resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
@@ -23891,6 +24042,10 @@ packages:
     dependencies:
       lodash: 4.17.21
     dev: false
+
+  /reselect/4.1.8:
+    resolution: {integrity: sha512-ab9EmR80F/zQTMNeneUr4cv+jSwPJgIlvEmVwLerwrWVbpLlBuls9XHzIeTFy4cegU2NHBp3va0LKOzU5qFEYQ==}
+    dev: true
 
   /resolve-cwd/3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
@@ -23981,7 +24136,6 @@ packages:
   /ret/0.1.15:
     resolution: {integrity: sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==}
     engines: {node: '>=0.12'}
-    dev: false
 
   /retry-request/5.0.2:
     resolution: {integrity: sha512-wfI3pk7EE80lCIXprqh7ym48IHYdwmAAzESdbU8Q9l7pnRCk9LEhpbOTNKjz6FARLm/Bl5m+4F0ABxOkYUujSQ==}
@@ -24053,6 +24207,7 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /run-applescript/5.0.0:
     resolution: {integrity: sha512-XcT5rBksx1QdIhlFOCtgZkB99ZEouFZ1E2Kc2LHqNW13U3/74YGdkQRmThTwxy4QIyookibDKYZOPqX//6BlAg==}
@@ -25455,7 +25610,7 @@ packages:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.18.2
-      webpack: 5.73.0_webpack-cli@4.10.0
+      webpack: 5.73.0
 
   /terser/5.18.2:
     resolution: {integrity: sha512-Ah19JS86ypbJzTzvUCX7KOsEIhDaRONungA4aYBjEP3JZRf4ocuDzTg4QWZnPn9DEMiMYGJPiSOy7aykoCc70w==}
@@ -25764,6 +25919,18 @@ packages:
       yn: 3.1.1
     dev: true
 
+  /tsc-alias/1.8.7:
+    resolution: {integrity: sha512-59Q/zUQa3miTf99mLbSqaW0hi1jt4WoG8Uhe5hSZJHQpSoFW9eEwvW7jlKMHXWvT+zrzy3SN9PE/YBhQ+WVydA==}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      commander: 9.5.0
+      globby: 11.1.0
+      mylas: 2.1.13
+      normalize-path: 3.0.0
+      plimit-lit: 1.5.0
+    dev: true
+
   /tsconfig-paths/3.14.2:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==}
     dependencies:
@@ -25943,6 +26110,7 @@ packages:
 
   /ufo/1.1.2:
     resolution: {integrity: sha512-TrY6DsjTQQgyS3E3dBaOXf0TpPD8u9FVrVYmKVegJuFw51n/YB9XPt+U6ydzFG5ZIN7+DIjPbNmXoBj9esYhgQ==}
+    dev: true
 
   /uglify-js/3.17.4:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
@@ -26442,6 +26610,7 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
 
   /vite/4.3.9_@types+node@16.18.38:
     resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
@@ -26469,11 +26638,12 @@ packages:
         optional: true
     dependencies:
       '@types/node': 16.18.38
-      esbuild: 0.17.6
+      esbuild: 0.17.19
       postcss: 8.4.24
       rollup: 3.26.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vscode-oniguruma/1.7.0:
     resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
@@ -27395,7 +27565,6 @@ packages:
 
   /zod/3.18.0:
     resolution: {integrity: sha512-gwTm8RfUCe8l9rDwN5r2A17DkAa8Ez4Yl4yXqc5VqeGaXaJahzYYXbTwvhroZi0SNBqTwh/bKm2N0mpCzuw4bA==}
-    dev: false
 
   /zod/3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}

@@ -51,7 +51,7 @@
     "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "serve-coverage": "python -m SimpleHTTPServer",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",

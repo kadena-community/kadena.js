@@ -1,4 +1,5 @@
-import { styled, Text } from '@kadena/react-components';
+import { styled } from '@kadena/react-components';
+import { Text } from '@kadena/react-ui';
 
 import React, { FC, ReactNode } from 'react';
 

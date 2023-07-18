@@ -14,7 +14,8 @@
     "moduleResolution": "node",
     "removeComments": true,
     "paths": {
-      "@components/*": ["src/components/*"]
+      "@components/*": ["src/components/*"],
+      "@theme/*": ["src/styles/*"]
     }
   },
   "include": ["./src", "./src/**/*"],

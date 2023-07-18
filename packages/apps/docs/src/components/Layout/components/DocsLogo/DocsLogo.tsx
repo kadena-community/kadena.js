@@ -1,4 +1,4 @@
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/hooks';
 import React, { FC } from 'react';
 
 interface IProps {

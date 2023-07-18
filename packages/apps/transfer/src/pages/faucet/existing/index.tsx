@@ -1,17 +1,12 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
-import {
-  Button,
-  Heading,
-  SystemIcons,
-  TextField,
-} from '@kadena/react-components';
+import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
 
 import FormStatusNotification from './notification';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { Select } from '@/components/Global';
-import { StyledOption } from '@/components/Global/Select/styles';
+import { ChainSelect } from '@/components/Global';
+import { usePersistentChainID } from '@/hooks';
 import {
   StyledAccountForm,
   StyledForm,
@@ -30,40 +25,13 @@ import React, {
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 20;
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-export const CHAINS = [
-  '0',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-] as const;
-
-export type ChainTuple = typeof CHAINS;
-export type Chain = ChainTuple[number];
-
 export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
   const [accountName, setAccountName] = useState('');
-  const [chainID, setChainID] = useState<Chain>('0');
+  const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
     status: RequestStatus;
@@ -128,13 +96,6 @@ const ExistingAccountFaucetPage: FC = () => {
     [],
   );
 
-  const onChainSelectChange = useCallback<FormEventHandler<HTMLSelectElement>>(
-    (e) => {
-      setChainID(e.currentTarget.value as Chain);
-    },
-    [],
-  );
-
   return (
     <MainLayout title={t('Add Funds to Existing Account')}>
       <StyledForm onSubmit={onFormSubmit}>
@@ -146,40 +107,29 @@ const ExistingAccountFaucetPage: FC = () => {
           <Heading as="h3">Account</Heading>
           <TextField
             label={t('The account name you would like to fund coins to')}
-            status="error"
+            status="negative"
             inputProps={{
+              id: 'account-name-input',
               onChange: onAccountNameChange,
-              leftPanel: SystemIcons.KIcon,
+              leftIcon: SystemIcon.KIcon,
             }}
           />
-          <Select
-            label={t('Chain ID')}
-            onChange={onChainSelectChange}
-            value={chainID}
-            status="error"
-            leftPanel={SystemIcons.Link}
-          >
-            {CHAINS.map((chainId) => {
-              return (
-                <StyledOption key={`chain-${chainId}`}>{chainId}</StyledOption>
-              );
-            })}
-          </Select>
+          <ChainSelect onChange={onChainSelectChange} value={chainID} />
         </StyledAccountForm>
         <StyledFormButton>
-          <Button
+          <Button.Root
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             disabled={requestStatus.status === 'pending'}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             {requestStatus.status === 'pending' ? (
-              <SystemIcons.Loading
+              <SystemIcon.Loading
                 style={{ animation: '2000ms infinite linear spin' }}
               />
             ) : (
-              <SystemIcons.TrailingIcon />
+              <SystemIcon.TrailingIcon />
             )}
-          </Button>
+          </Button.Root>
         </StyledFormButton>
       </StyledForm>
     </MainLayout>

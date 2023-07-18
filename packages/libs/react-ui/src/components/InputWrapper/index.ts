@@ -1,3 +1,2 @@
-import { InputWrapper } from './InputWrapper';
-
-export { InputWrapper };
+export { InputWrapper, IInputWrapperProps } from './InputWrapper';
+export { Status as InputWrapperStatus } from './InputWrapper.css';

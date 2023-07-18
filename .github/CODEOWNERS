@@ -1,25 +1,26 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/*.*                                            @alber70g
+/*.*                                            @alber70g @webpro
 /*.md                                           @webpro
-/common                                         @alber70g
+/common                                         @alber70g @webpro
 /common/config/rush/pnpm-lock.yaml
 /common/config/rush/repo-state.json
-/packages/apps/graph                            @alber70g
+/packages/apps/graph                            @alber70g @webpro
 /packages/apps/kadena-docs                      @sstraatemans
 
 /packages/libs/chainweb-stream-client           @Takadenoshi
 
-/packages/libs/bootstrap-lib                    @alber70g
-/packages/libs/client                           @alber70g
-/packages/libs/kadena.js                        @alber70g
-/packages/libs/pactjs-generator                 @alber70g
-/packages/libs/types                            @alber70g
-/packages/tools/pactjs-cli                      @alber70g
+/packages/libs/bootstrap-lib                    @alber70g @webpro
+/packages/libs/client                           @alber70g @javadkh2
+/packages/libs/kadena.js                        @alber70g @webpro
+/packages/libs/pactjs-generator                 @alber70g @webpro
+/packages/libs/react-ui                         @eileenmguo @sstraatemans
+/packages/libs/types                            @alber70g @webpro
+/packages/tools/pactjs-cli                      @alber70g @webpro
 /packages/tools/create-kadena-app               @jermaine150
-/packages/tools/eslint-config                   @alber70g
-/packages/tools/eslint-plugin                   @alber70g
-/packages/tools/heft-rig                        @alber70g
+/packages/tools/eslint-config                   @alber70g @webpro
+/packages/tools/eslint-plugin                   @alber70g @webpro
+/packages/tools/heft-rig                        @alber70g @webpro
 /packages/tools/integration-tests               @ggobugi27
 /packages/tools/remark-plugins                  @webpro
-/packages/tools/rush-fix-versions               @alber70g
+/packages/tools/rush-fix-versions               @alber70g @webpro

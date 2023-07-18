@@ -33,10 +33,10 @@ export class FileContractDefinition implements IContractDefinition {
     get modulesWithFunctions(): Output;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ModuleName" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export function generateDts(modules: Output, capsInterfaceName?: string): Map<ModuleName, string>;
+export function generateDts(moduleFullName: string, modules: Record<string, IModule>): string;
 
 // @alpha (undocumented)
 export function generateTemplates(templates: {
@@ -65,6 +65,16 @@ export interface ITemplate {
     // (undocumented)
     parts: TemplateParts;
 }
+
+// @alpha (undocumented)
+export function pactParser({ contractNames, files, getContract, namespace, }: {
+    contractNames?: string[];
+    files?: string[];
+    getContract: (fullName: string) => Promise<string>;
+    namespace?: string;
+}): Promise<{
+    [k: string]: IModule;
+}>;
 
 // @alpha (undocumented)
 export function parseTemplate(template: string): ITemplate;

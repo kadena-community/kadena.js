@@ -10,7 +10,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 describe('SidebarMenu', () => {
-  test('renders correctly with menu items', () => {
+  it('renders correctly with menu items', () => {
     const { getByTestId } = render(<SidebarMenu />);
 
     // Assert that the SidebarMenu component is rendered
