@@ -535,6 +535,7 @@ importers:
       '@kadena/chainweb-node-client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
+      '@kadena/pactjs-cli': workspace:*
       '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
@@ -566,6 +567,7 @@ importers:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
       '@kadena-dev/markdown': link:../../tools/remark-plugins
+      '@kadena/pactjs-cli': link:../../tools/pactjs-cli
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
       '@types/debug': 4.1.8
