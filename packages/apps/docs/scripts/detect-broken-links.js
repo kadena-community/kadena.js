@@ -149,10 +149,6 @@ const main = async ({ includeExternalLinks, reportMd}) => {
     await processExternalLinks(externalLinks)
   }
   
-  if (Object.keys(filesWithBrokenLinks).length > 0) {
-    throw new Error('Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2))
-  }
-
   if (reportMd) {
     const reportMd = ['# Broken links']
     for (const filePath in filesWithBrokenLinks) {
@@ -166,6 +162,11 @@ const main = async ({ includeExternalLinks, reportMd}) => {
     fs.writeFileSync(path.join(__dirname, '../broken-links.md'), reportMd.join('\n'))
     console.log('Wrote broken links report to broken-links.md')
   }  
+
+  if (Object.keys(filesWithBrokenLinks).length > 0) {
+    throw new Error('Found broken links:' + JSON.stringify(filesWithBrokenLinks, null, 2))
+  }
+
 }
 
 const args = process.argv.slice(2);
