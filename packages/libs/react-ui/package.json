@@ -36,7 +36,8 @@
     "format:src": "prettier src --write",
     "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
-    "test": "jest --silent"
+    "test": "jest --silent",
+    "chromatic": "chromatic -b build:storybook"
   },
   "dependencies": {
     "@kadena/fonts": "~0.0.1",
@@ -73,6 +74,7 @@
     "@storybook/react-webpack5": "^7.1.0",
     "@storybook/testing-library": "^0.2.0",
     "@storybook/theming": "~7.1.0",
+    "@storybook/addon-a11y": "7.0.20",
     "@testing-library/dom": "~9.3.1",
     "@testing-library/jest-dom": "~5.17.0",
     "@testing-library/react": "~14.0.0",
@@ -88,6 +90,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "chromatic": "6.19.9",
     "copyfiles": "2.4.1",
+    "chromatic": "6.19.9",
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "~2.27.5",
