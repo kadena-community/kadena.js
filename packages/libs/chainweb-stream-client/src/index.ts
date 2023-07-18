@@ -233,7 +233,16 @@ class ChainwebStream extends EventEmitter {
   private _handleInitial = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as IInitialEvent;
+    const message: IInitialEvent | undefined = this._jsonParse(
+      msg.data,
+      'initial',
+    );
+
+    if (message === undefined) {
+      // initial event unparsable is a fatal condition
+      this._fail(`Failed to parse initial event`);
+      return;
+    }
 
     const { config, data } = message;
 
@@ -245,9 +254,16 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _handleHeights = (msg: MessageEvent<string>): void => {
-    const { data: maxChainwebDataHeight } = JSON.parse(
+    const data: IHeightsEvent | undefined = this._jsonParse(
       msg.data,
-    ) as IHeightsEvent;
+      'heights',
+    );
+
+    if (data === undefined) {
+      return;
+    }
+
+    const { data: maxChainwebDataHeight } = data;
 
     this._debug('_handleHeights');
 
@@ -261,7 +277,11 @@ class ChainwebStream extends EventEmitter {
   private _handleData = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as ITransaction;
+    const message: ITransaction | undefined = this._jsonParse(msg.data, 'data');
+
+    if (message === undefined) {
+      return;
+    }
 
     this._processData([message]);
 
@@ -308,9 +328,30 @@ class ChainwebStream extends EventEmitter {
     }
   }
 
+  private _jsonParse<T>(data: string, label: string): T | undefined {
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      this.emit(
+        'warn',
+        `Could not parse ${label} event JSON data starting with: ${data?.slice(
+          0,
+          80,
+        )}`,
+      );
+      return undefined;
+    }
+  }
+
   private _emitError(msg: string): void {
     console.error(msg);
     this.emit('error', msg);
+  }
+
+  private _fail(msg: string): false {
+    this.disconnect();
+    this._emitError(msg);
+    return false;
   }
 
   private _validateServerConfig(config: IChainwebStreamConfig): boolean {
@@ -323,32 +364,26 @@ class ChainwebStream extends EventEmitter {
       v: serverProtocolVersion,
     } = config;
 
-    const fail = (msg: string): false => {
-      this.disconnect();
-      this._emitError(msg);
-      return false;
-    };
-
     if (network !== this.network) {
-      return fail(
+      return this._fail(
         `Network mismatch: wanted ${this.network}, server is ${network}.`,
       );
     }
 
     if (type !== this.type) {
-      return fail(
+      return this._fail(
         `Parameter mismatch: Expected transactions of type "${this.type}" but received "${type}". This should never happen.`,
       );
     }
 
     if (id !== this.id) {
-      return fail(
+      return this._fail(
         `Parameter mismatch: Expected transactions for ${this.id} but received ${id}. This should never happen.`,
       );
     }
 
     if (maxConf < this.confirmationDepth) {
-      return fail(
+      return this._fail(
         `Configuration mismatch: Client confirmation depth (${this.confirmationDepth}) is larger than server (${maxConf}). Events will never be considered confirmed on the client.`,
       );
     }
@@ -366,7 +401,7 @@ class ChainwebStream extends EventEmitter {
     }
 
     if (!isMajorCompatible(CLIENT_PROTOCOL_VERSION, serverProtocolVersion)) {
-      return fail(
+      return this._fail(
         `Protocol mismatch: Client protocol version ${CLIENT_PROTOCOL_VERSION} is incompatible with server protocol version ${serverProtocolVersion}.`,
       );
     }
