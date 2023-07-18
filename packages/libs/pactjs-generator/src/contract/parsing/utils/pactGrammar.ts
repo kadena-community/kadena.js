@@ -24,12 +24,14 @@ import {
   str,
 } from './parser-utilities';
 
+const kind = oneOf(atom, id('module'));
+
 // :string :object{schema-one} {kind:object,value:schema-one} | string
 export const typeRule = seq(
   id(':'),
   oneOf(
     // types with interface/schema
-    seq($('kind', atom), id('{'), $('value', oneOf(dotedAtom, atom)), id('}')),
+    seq($('kind', kind), id('{'), $('value', oneOf(dotedAtom, atom)), id('}')),
     // primary types
     $(atom),
   ),

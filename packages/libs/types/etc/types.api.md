@@ -250,9 +250,6 @@ export type Nonce = string;
 export type PactCode = string;
 
 // @alpha
-export type PactGuard = string | ((...args: any) => string);
-
-// @alpha
 export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
 
 // @alpha
@@ -261,6 +258,9 @@ export type PactPayload = {
 } | {
     cont: IContPayload;
 };
+
+// @alpha
+export type PactReference = () => string;
 
 // @alpha (undocumented)
 export type PactTransactionHash = IBase64Url;

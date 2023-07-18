@@ -16,7 +16,7 @@ async function main(): Promise<void> {
       Pact.modules.coin['transfer-create'](
         sender,
         receiver,
-        "(read-keyset 'ks)",
+        () => "(read-keyset 'ks)",
         amount,
       ),
     )
