@@ -72,7 +72,7 @@ export async function doCrossChainTransfer(
     .then((command) =>
       isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
     )
-    .then(submit)
+    .then((cmd) => submit(cmd))
     .then(pollStatus)
     .then((result) => Object.values(result)[0])
     .then((status) =>
@@ -98,6 +98,6 @@ export async function doCrossChainTransfer(
     .then((command) =>
       isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
     )
-    .then(submit)
+    .then((cmd) => submit(cmd))
     .then(pollStatus);
 }
