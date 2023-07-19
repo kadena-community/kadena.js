@@ -1,10 +1,4 @@
 import { Header } from './partials';
-
-import { WalletConnectButton } from '@/components/Global';
-import routes from '@/constants/routes';
-import { KLogoComponent } from '@/resources/svg/generated';
-import useTranslation from 'next-translate/useTranslation';
-import React, { type ReactNode, FC } from 'react';
 import {
   gridItemCollapsedSidebarStyle,
   gridItemFooterStyle,
@@ -14,6 +8,12 @@ import {
   gridItemMiniMenuStyle,
   gridStyle,
 } from './styles.css';
+
+import { WalletConnectButton } from '@/components/Global';
+import routes from '@/constants/routes';
+import { KLogoComponent } from '@/resources/svg/generated';
+import useTranslation from 'next-translate/useTranslation';
+import React, { type ReactNode, FC } from 'react';
 
 interface IProps {
   children?: ReactNode;
