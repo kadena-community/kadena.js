@@ -14,7 +14,7 @@ export const gridStyle = style([
   },
 ]);
 
-export const gridItemHeaderStyle = style([
+export const headerStyle = style([
   sprinkles({
     position: 'sticky',
     top: 0,
@@ -58,7 +58,7 @@ export const gridItemCollapsedSidebarStyle = style([
   },
 ]);
 
-export const gridItemFooterStyle = style([
+export const footerStyle = style([
   sprinkles({
     backgroundColor: '$neutral2',
     width: '100%',
