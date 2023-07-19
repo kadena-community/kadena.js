@@ -16,7 +16,6 @@ import {
 } from '../cross-chain-transfer-finisher/styles';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { DetailCard } from '@/components/Global/DetailsCard';
 import { useAppContext } from '@/context/app-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
@@ -26,11 +25,6 @@ import {
   StyledInfoBox,
   StyledMainContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
-import {
-  FromIconActive,
-  ReceiverIconActive,
-  ReceiverIconInactive,
-} from '@/resources/svg/generated';
 import {
   getTransferStatus,
   IStatusData,

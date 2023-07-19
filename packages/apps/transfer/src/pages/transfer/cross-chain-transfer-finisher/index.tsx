@@ -3,7 +3,6 @@ import { ContCommand } from '@kadena/client';
 import { Button, ProductIcon, TextField, TrackerCard } from '@kadena/react-ui';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
-import { DetailCard } from '@/components/Global/DetailsCard';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -27,7 +26,6 @@ import {
   StyledTotalChunk,
   StyledTotalContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
-import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 import {
   finishXChainTransfer,
   ITransferResult,
@@ -36,6 +34,7 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import { formatNumberAsString } from '@/utils/number';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
@@ -45,7 +44,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { formatNumberAsString } from '@/utils/number';
 
 interface IPactResultError {
   status: 'failure';
