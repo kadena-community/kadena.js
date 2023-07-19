@@ -12,10 +12,8 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:contract:crowdfund",
-    "build": "npm run prebuild && tsc --noEmit",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "prebuild": "pnpm run pactjs:generate:contract:file && pnpm run pactjs:generate:contract:crowdfund",
+    "build": "pnpm run prebuild && tsc --noEmit",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",

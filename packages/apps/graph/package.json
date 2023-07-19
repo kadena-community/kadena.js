@@ -8,14 +8,12 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "format": "npm run format:pkg && npm run format:src",
-    "format:ci": "prettier config src --check",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
-    "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "start": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
   },
   "dependencies": {

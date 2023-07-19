@@ -21,9 +21,7 @@
   ],
   "scripts": {
     "build": "heft build --clean",
-    "dev:postinstall": "rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "dev:postinstall": "pnpm run pactjs:retrieve:contract; pnpm run pactjs:generate:contract",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
