@@ -36,14 +36,20 @@ export const Dynamic: Story = {
       {
         title: <span>First Section</span>,
         children: <p>This is the content for the first section</p>,
+        onOpen: () => console.log('open first item'),
+        onClose: () => console.log('close first item'),
       },
       {
         title: <span>Second Section</span>,
         children: <p>This is the content for the second section</p>,
+        onOpen: () => console.log('open second item'),
+        onClose: () => console.log('close second item'),
       },
       {
         title: <span>Third Section</span>,
         children: <p>This is the content for the third section</p>,
+        onOpen: () => console.log('open third item'),
+        onClose: () => console.log('close third item'),
       },
     ],
   },

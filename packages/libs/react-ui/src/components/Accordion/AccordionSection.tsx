@@ -1,7 +1,6 @@
 import { SystemIcon } from '../Icon';
 
 import {
-  accordionContentClass,
   accordionContentWrapperClass,
   accordionSectionClass,
   accordionTitleClass,
@@ -10,13 +9,15 @@ import {
 } from './Accordion.css';
 
 import classNames from 'classnames';
-import React, { FC, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 
 export interface IAccordionSection {
   title: React.ReactNode;
   children: React.ReactNode;
   isOpen: boolean;
   onToggle: () => void;
+  onOpen?: () => void;
+  onClose?: () => void;
 }
 
 export const AccordionSection: FC<IAccordionSection> = ({
@@ -24,11 +25,24 @@ export const AccordionSection: FC<IAccordionSection> = ({
   title,
   children,
   onToggle,
+  onOpen,
+  onClose,
 }) => {
+  const didMountRef = useRef(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const contentWrapperHeight = isOpen
     ? `${contentRef?.current?.clientHeight}px`
     : 0;
+
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+
+    if (isOpen) onOpen?.();
+    else onClose?.();
+  }, [isOpen]);
 
   return (
     <div className={accordionSectionClass}>
@@ -58,9 +72,7 @@ export const AccordionSection: FC<IAccordionSection> = ({
           height: contentWrapperHeight,
         }}
       >
-        <div className={accordionContentClass} ref={contentRef}>
-          {children}
-        </div>
+        <div ref={contentRef}>{children}</div>
       </div>
     </div>
   );

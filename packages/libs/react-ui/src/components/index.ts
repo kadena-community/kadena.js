@@ -51,4 +51,4 @@ export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
 export { Accordion, IAccordionProps } from './Accordion';
-export { TreeList, ITreeListProps } from './TreeList';
+export { Tree, ITreeProps } from './Tree';

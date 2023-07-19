@@ -1,10 +1,8 @@
-import { accordionWrapperClass } from './Accordion.css';
 import { AccordionSection, IAccordionSection } from './AccordionSection';
 
 import React, { FC, useState } from 'react';
 
 export interface IAccordionProps {
-  className?: string;
   sections: Omit<IAccordionSection, 'isOpen' | 'onToggle'>[];
   linked?: boolean;
 }
@@ -27,13 +25,13 @@ export const Accordion: FC<IAccordionProps> = ({ sections, linked = true }) => {
   };
 
   return (
-    <div className={accordionWrapperClass} data-testid="kda-accordion-wrapper">
+    <div data-testid="kda-accordion-wrapper">
       {sections.map((section, index) => (
         <AccordionSection
+          {...section}
           isOpen={isOpen(index)}
           onToggle={() => handleToggle(index)}
-          title={section.title}
-          key={index}
+          key={String(section.title)}
         >
           {section.children}
         </AccordionSection>

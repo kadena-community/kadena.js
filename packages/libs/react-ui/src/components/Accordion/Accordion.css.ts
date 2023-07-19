@@ -1,7 +1,6 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const accordionWrapperClass = style([sprinkles({})]);
 export const accordionSectionClass = style([
   sprinkles({
     marginBottom: '$6',
@@ -51,8 +50,6 @@ export const toggleButtonClass = style([
   },
 ]);
 
-export const accordionToggleClass = style([sprinkles({})]);
-
 export const accordionContentWrapperClass = style([
   {
     height: '0',
@@ -60,5 +57,3 @@ export const accordionContentWrapperClass = style([
     transition: 'height 0.2s ease 0s',
   },
 ]);
-
-export const accordionContentClass = style([sprinkles({})]);

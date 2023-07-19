@@ -51,9 +51,9 @@ export const treeBranchWrapperClass = style([
 ]);
 export const treeBranchWrapperVariant = styleVariants({
   isParent: [
-    {
-      marginLeft: '0',
-    },
+    sprinkles({
+      marginLeft: 0,
+    }),
   ],
   isChild: [
     sprinkles({
