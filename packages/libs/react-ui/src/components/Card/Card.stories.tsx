@@ -40,19 +40,19 @@ export const Primary: Story = {
       <>
         <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
           <h4>Getting Started is Simple</h4>
-          <div>
+          <p>
             Learn Kadena&apos;s core concepts & tools for development in 15
             minutes
-          </div>
+          </p>
 
           <Button title={'Button'}>Hello World Tutorial</Button>
         </Card>
         <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
           <h4>Getting Started is Simple</h4>
-          <div>
+          <p>
             Learn Kadena&apos;s core concepts & tools for development in 15
             minutes
-          </div>
+          </p>
 
           <Button title={'Button'}>Hello World Tutorial</Button>
         </Card>
