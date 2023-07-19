@@ -143,6 +143,20 @@ export const deployQuestions: IQuestion[] = [
     when: isDeployTask,
   },
   {
+    message: 'What is the endpoint of L1?',
+    name: 'l1Endpoint',
+    defaultValue: 'http://devnet:8080',
+    type: 'input',
+    when: isL1,
+  },
+  {
+    message: 'What is the endpoint of L2?',
+    name: 'l2Endpoint',
+    defaultValue: 'http://devnet:8081',
+    type: 'input',
+    when: isL2,
+  },
+  {
     message: 'On which chains on L1 would you like to deploy?',
     name: 'l1Chains',
     type: 'multi-select',
@@ -178,6 +192,8 @@ export const deployQuestions: IQuestion[] = [
       dataFile = '',
       deployTargets = '',
       signer = '',
+      l1Endpoint = '',
+      l2Endpoint = '',
       l1Chains = [],
       l2Chains = [],
     }: IAnswers) => {
@@ -187,6 +203,10 @@ export const deployQuestions: IQuestion[] = [
         throw new Error('No data file provided');
       if (typeof signer !== 'string' || signer === '')
         throw new Error('No signer provided');
+      if (typeof l1Endpoint !== 'string')
+        throw new Error('No L1 endpoint provided');
+      if (typeof l2Endpoint !== 'string')
+        throw new Error('No L2 endpoint provided');
       if (deployTargets === '') throw new Error('No deploy targets provided');
       const pactCode = readFileSync(pactFile, 'utf8');
       const data = JSON.parse(readFileSync(dataFile, 'utf8'));
@@ -204,7 +224,7 @@ export const deployQuestions: IQuestion[] = [
         await deploy({
           chainIds: l1Chains,
           setDeployChainSettings: setDeployChainSettings({
-            endpoint: 'http://localhost:8080',
+            endpoint: l1Endpoint,
             network: 'fast-development',
             signer,
           }),
@@ -215,7 +235,7 @@ export const deployQuestions: IQuestion[] = [
         await deploy({
           chainIds: l2Chains,
           setDeployChainSettings: setDeployChainSettings({
-            endpoint: 'http://localhost:8081',
+            endpoint: l2Endpoint,
             network: 'fast-development',
             signer,
           }),
