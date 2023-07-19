@@ -9,5 +9,5 @@ export interface INotificationHeaderProps {
 export const NotificationHeader: FC<INotificationHeaderProps> = ({
   children,
 }) => {
-  return <div className={headerContainerClass}>{children}</div>;
+  return <header className={headerContainerClass}>{children}</header>;
 };
