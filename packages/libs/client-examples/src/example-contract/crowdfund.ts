@@ -16,7 +16,7 @@ export async function createProject(): Promise<void> {
     .execution(
       Pact.modules['free.crowdfund']['create-project'](
         'id',
-        'an awsome project',
+        'an awesome project',
         literal('coin'),
         new PactNumber('1000').toPactDecimal(),
         new PactNumber('800').toPactDecimal(),
