@@ -86,6 +86,13 @@ export interface IChainwebStreamConstructorArgs {
 /**
  * @alpha
  */
+export interface IHeightsEvent {
+  data: number;
+}
+
+/**
+ * @alpha
+ */
 export enum ConnectionState {
   Connecting = 0,
   Connected = 1,
@@ -109,7 +116,9 @@ export interface IDebugMsgObject {
     | '_handleConnect'
     | '_handleError'
     | '_handleData'
+    | '_handleHeights'
     | '_handleHeartbeatTimeout'
+    | '_updateLastHeight'
     | string;
 
   /*
@@ -121,4 +130,6 @@ export interface IDebugMsgObject {
   willRetry?: boolean;
   timeout?: number;
   length?: number;
+  lastHeight?: number;
+  url?: string;
 }
