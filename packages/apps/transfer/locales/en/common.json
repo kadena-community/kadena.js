@@ -102,5 +102,13 @@
   "Transfer completed successfully": "Transfer completed successfully",
   "Price": "Price",
   "Network": "Network",
-  "Server": "Server"
+  "Server": "Server",
+  "form-status-title-idle": "form-status-title",
+  "form-status-title-erroneous": "form-status-title",
+  "form-status-title-processing": "form-status-title",
+  "form-status-title-successful": "form-status-title",
+  "form-status-body-idle": "form-status-body",
+  "form-status-body-erroneous": "form-status-body",
+  "form-status-body-processing": "form-status-body",
+  "form-status-body-successful": "form-status-body"
 }
