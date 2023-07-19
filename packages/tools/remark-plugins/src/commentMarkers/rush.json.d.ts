@@ -1,8 +1,5 @@
-export interface RushConfig {
-  projects: Array<{
-    packageName: string;
-    projectFolder: string;
-    tags: string[];
-    shouldPublish: boolean;
-  }>;
+export interface PackageListConfig {
+  name: string;
+  path: string;
+  private?: boolean;
 }

@@ -10,7 +10,7 @@
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",
-    "list": "pnpm recursive list --json | jq '[ .[] | { name, version, private, path } ]' > workspace.json",
+    "list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > workspace.json",
     "test": "turbo run test"
   },
   "devDependencies": {
