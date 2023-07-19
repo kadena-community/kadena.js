@@ -1,4 +1,4 @@
-name: Rush CI (changelog, build, test)
+name: CI (build, test, format)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
@@ -10,7 +10,7 @@ on:
 
 env:
   AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'main' && ' ' || format('--to git:origin/{0}', github.base_ref)  }}
+    ${{ github.ref_name == 'main' && ' ' || '--filter=[origin/main]'  }}
 
 jobs:
   build:
@@ -31,44 +31,24 @@ jobs:
         if: github.ref_name != 'main'
         run: git fetch origin ${{ github.base_ref }}
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NodeVersion }}
+          cache: 'pnpm'
 
-      - name: Cache Rush
-        uses: actions/cache@v3
-        with:
-          path: |
-            common/temp/install-run
-            ~/.rush
-          key: cache-rush-${{ runner.os }}-${{ hashFiles('rush.json') }}
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Cache pnpm
-        uses: actions/cache@v3
-        with:
-          path: |
-            common/temp/pnpm-store
-          key: cache-pnpm-${{ runner.os }}
+      - name: Build packages
+        run: pnpm build ${{ env.AFFECTED_OR_ALL }}
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
+      - name: Test packages
+        run: pnpm test ${{ env.AFFECTED_OR_ALL }}
 
-      - name: Rush build + test (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js build --verbose ${{ env.AFFECTED_OR_ALL }}
-          node common/scripts/install-run-rush.js test --verbose ${{ env.AFFECTED_OR_ALL }}
-        env:
-          # Prevent time-based browserslist update warning
-          # See https://github.com/microsoft/rushstack/issues/2981
-          BROWSERSLIST_IGNORE_OLD_DATA: 1
-
-      - name: Rush format (install-run-rush)
+      - name: Verify source code formatting
         if: github.ref_name != 'main'
-        run: |
-          node common/scripts/install-run-rush.js format:ci --verbose ${{ env.AFFECTED_OR_ALL }}
-
-      - name: Rush verify Change Logs (install-run-rush)
-        if: github.ref_name != 'main'
-        run: |
-          node common/scripts/install-run-rush.js change --verify --target-branch origin/${{ github.base_ref }}
+        run: pnpm run format:ci ${{ env.AFFECTED_OR_ALL }}
