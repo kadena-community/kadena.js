@@ -32,6 +32,30 @@ import {
 type IOptions = IPollOptions &
   (INetworkOptions | { networkId?: undefined; chainId?: undefined });
 
+interface ISubmit {
+  /**
+   * Submits one public (unencrypted) signed command to the blockchain for execution.
+   *
+   * Calls the '/send' endpoint.
+   * This is the only function that requires gas payment.
+   *
+   * @param transaction - The transaction to be submitted.
+   * @returns A promise that resolves the requestKey (the transaction hash).
+   */
+  (transaction: ICommand): Promise<string>;
+
+  /**
+   * Submits one or more public (unencrypted) signed commands to the blockchain for execution.
+   *
+   * Calls the '/send' endpoint.
+   * This is the only function that requires gas payment.
+   *
+   * @param transactionList - The list of transactions to be submitted.
+   * @returns A promise that resolves to an array of transaction hashes.
+   */
+  (transactionList: ICommand[]): Promise<string[]>;
+}
+
 interface IClientBasics {
   /**
    * Sends a command for non-transactional execution.
@@ -59,7 +83,7 @@ interface IClientBasics {
    * @param transactionList - The list of transactions to be submitted.
    * @returns A promise that resolves to an array of transaction hashes.
    */
-  submit: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
+  submit: ISubmit;
 
   /**
    * Polls the result of one or more submitted requests.
@@ -178,7 +202,7 @@ interface IClient extends IClientBasics {
    *
    * Alias for `submit`.
    */
-  send: (transactionList: ICommand[] | ICommand) => Promise<string[]>;
+  send: ISubmit;
 
   /**
    * @deprecated Use `getStatus` instead.
@@ -258,8 +282,9 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       });
       return local(body, hostUrl, options);
     },
-    async submit(body) {
-      const commands = Array.isArray(body) ? body : [body];
+    submit: (async (body) => {
+      const isList = Array.isArray(body);
+      const commands = isList ? body : [body];
       const [first] = commands;
       if (first === undefined) {
         throw new Error('EMPTY_COMMAND_LIST');
@@ -272,8 +297,8 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
       storage.add(hostUrl, requestKeys);
 
-      return requestKeys;
-    },
+      return isList ? requestKeys : requestKeys[0];
+    }) as ISubmit,
     pollStatus(
       requestKeys?: string[] | string,
       options?: IOptions,
