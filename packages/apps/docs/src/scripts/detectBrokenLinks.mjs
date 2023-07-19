@@ -26,10 +26,27 @@ function getBrokenLinks(filePath, links) {
     if (link.startsWith('/assets')) {
       links[index] = path.join('public/', link);
     } else {
-      links[index] = path.join(directory, link);
+      links[index] = path.join(__dirname, 'src/pages', link);
     }
 
-    if (!fs.existsSync(links[index])) {
+    // places where the link could live
+    const fileMDX = `${links[index]}.mdx`;
+    const fileTSX = `${links[index]}.tsx`;
+    const fileIndex =
+      links[index]
+        .split('/')
+        .slice(0, links[index].split('/').length - 1)
+        .join('/') + '/index';
+    const fileIndexMDX = `${fileIndex}.mdx`;
+    const fileIndexTSX = `${fileIndex}.tsx`;
+
+    if (
+      !fs.existsSync(links[index]) &&
+      !fs.existsSync(fileMDX) &&
+      !fs.existsSync(fileTSX) &&
+      !fs.existsSync(fileIndexMDX) &&
+      !fs.existsSync(fileIndexTSX)
+    ) {
       // remove __dirname from links[index]
       links[index] = links[index].replace(__dirname, '');
       brokenLinks.push(links[index]);
@@ -100,7 +117,6 @@ function processFiles(directory) {
 
 const countDeadLinks = (filesWithBrokenLinks) => {
   return Object.keys(filesWithBrokenLinks).reduce((acc, val) => {
-    console.log(filesWithBrokenLinks[val].length);
     return acc + filesWithBrokenLinks[val].length;
   }, 0);
 };
