@@ -1,4 +1,5 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
+import { IPollResponse } from '@kadena/chainweb-node-client';
+import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
 import {
   Breadcrumbs,
   Button,
@@ -21,7 +22,13 @@ import {
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, FormEventHandler, useCallback, useState } from 'react';
+import React, {
+  FC,
+  FormEvent,
+  FormEventHandler,
+  useCallback,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -34,10 +41,6 @@ type FormData = z.infer<typeof schema>;
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 20;
 
-const isCustomError = (error: unknown): error is ICommandResult => {
-  return error !== null && typeof error === 'object' && 'result' in error;
-};
-
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
@@ -49,30 +52,50 @@ const ExistingAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
 
+  const onPoll = async (
+    transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
+    pollRequest: Promise<IPollResponse>,
+  ): Promise<void> => {
+    const request = await pollRequest;
+    const result = request[transaction.requestKey!]?.result;
+    const status = result?.status;
+    if (status === 'failure') {
+      const apiErrorMessage = (result.error as { message: string }).message;
+
+      setRequestStatus({ status: 'erroneous', message: apiErrorMessage });
+    }
+  };
+
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       setRequestStatus({ status: 'processing' });
 
       try {
-        await fundExistingAccount(accountName, chainID, AMOUNT_OF_COINS_FUNDED);
+        await fundExistingAccount(
+          accountName,
+          chainID,
+          onPoll,
+          AMOUNT_OF_COINS_FUNDED,
+        );
 
         setRequestStatus({ status: 'successful' });
       } catch (err) {
         let message;
-
-        if (isCustomError(err)) {
-          const result = err.result;
-          const status = result?.status;
-          if (status === 'failure') {
-            message = (result.error as { message: string }).message;
-          }
-        } else if (err instanceof Error) {
+        if (err instanceof Error) {
           message = err.message;
         } else {
           message = String(err);
         }
 
-        setRequestStatus({ status: 'erroneous', message });
+        /*
+         * When the poll callback rejects, it will return `this` (an instance of PactCommand).
+         * We handle the `setRequestStatus` in the poll callback, since we get the actual error
+         * message there. So in this case we can skip `setRequestStatus`, since we already did that.
+         * In other "uncaught" cases we do want to do call `setRequestStatus` here.
+         */
+        if (!(err instanceof PactCommand)) {
+          setRequestStatus({ status: 'erroneous', message });
+        }
       }
     },
     [accountName, chainID],
@@ -101,7 +124,7 @@ const ExistingAccountFaucetPage: FC = () => {
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: t('The coins have been funded to the given account.'),
+            successful: 'The coins have been funded to the given account.',
           }}
           body={requestStatus.message}
         />
