@@ -863,6 +863,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
+      '@kadena/fonts': ~0.0.1
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
       '@rushstack/heft-jest-plugin': ~0.5.12
@@ -920,6 +921,7 @@ importers:
       typescript: 5.0.4
       webpack: ~5.73.0
     dependencies:
+      '@kadena/fonts': 0.0.1
       '@vanilla-extract/css': 1.11.1
       '@vanilla-extract/recipes': 0.4.0_@vanilla-extract+css@1.11.1
       '@vanilla-extract/sprinkles': 1.6.0_@vanilla-extract+css@1.11.1
@@ -7018,6 +7020,12 @@ packages:
       blakejs: 1.2.1
       buffer: 6.0.3
       tweetnacl: 1.0.3
+    dev: false
+
+  /@kadena/fonts/0.0.1:
+    resolution: {integrity: sha512-epUOJbW96Yd827XQD2/6Ibow9qcevgPhVKsUhfzG9L26U4PLMMWZ0KXxIoFQ6DKpQa9xE4GK8DkPzn30pJb+3Q==}
+    dependencies:
+      lodash.kebabcase: 4.1.1
     dev: false
 
   /@kadena/pactjs-cli/0.1.5:
@@ -19795,6 +19803,10 @@ packages:
 
   /lodash.isequal/4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+
+  /lodash.kebabcase/4.1.1:
+    resolution: {integrity: sha512-N8XRTIMMqqDgSy4VLKPnJ/+hpGZN+PHQiJnSenYqPaVV/NCqEogTnAdZLQiGKhxX+JCs8waWq2t1XHWKOmlY8g==}
+    dev: false
 
   /lodash.memoize/4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
