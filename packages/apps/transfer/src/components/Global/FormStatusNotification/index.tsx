@@ -38,7 +38,7 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
     status: 'idle',
   },
 ) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [show, setShow] = useState(status !== 'idle');
 
   useEffect(() => {
