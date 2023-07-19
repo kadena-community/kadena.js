@@ -6,8 +6,8 @@ describe('readKeyset', () => {
   });
 });
 
-describe('reference', () => {
-  it('returns a function that returns the string = always in FP', () => {
+describe('literal', () => {
+  it('returns a function that returns the input', () => {
     expect(literal('free.contract')()).toBe('free.contract');
   });
 });
