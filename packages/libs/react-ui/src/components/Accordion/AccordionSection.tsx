@@ -1,7 +1,6 @@
 import { SystemIcon } from '../Icon';
 
 import {
-  accordionContentWrapperClass,
   accordionSectionClass,
   accordionTitleClass,
   accordionTitleVariants,
@@ -29,10 +28,6 @@ export const AccordionSection: FC<IAccordionSection> = ({
   onClose,
 }) => {
   const didMountRef = useRef(false);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const contentWrapperHeight = isOpen
-    ? `${contentRef?.current?.clientHeight}px`
-    : 0;
 
   useEffect(() => {
     if (!didMountRef.current) {
@@ -66,14 +61,7 @@ export const AccordionSection: FC<IAccordionSection> = ({
         </button>
       </div>
 
-      <div
-        className={accordionContentWrapperClass}
-        style={{
-          height: contentWrapperHeight,
-        }}
-      >
-        <div ref={contentRef}>{children}</div>
-      </div>
+      {isOpen && <div>{children}</div>}
     </div>
   );
 };

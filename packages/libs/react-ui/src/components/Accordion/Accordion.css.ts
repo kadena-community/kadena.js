@@ -49,11 +49,3 @@ export const toggleButtonClass = style([
     },
   },
 ]);
-
-export const accordionContentWrapperClass = style([
-  {
-    height: '0',
-    overflow: 'hidden',
-    transition: 'height 0.2s ease 0s',
-  },
-]);
