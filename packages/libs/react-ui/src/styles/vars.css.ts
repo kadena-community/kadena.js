@@ -135,7 +135,7 @@ export const vars = createGlobalTheme(':root', {
     $positiveHighContrast: '#113300',
 
     $warningAccent: '#FF9900',
-    $warningSurface: '#2997FF',
+    $warningSurface: '#FFE7C2',
     $warningContrast: '#704300',
     $warningHighContrast: '#3D2500',
 
