@@ -14,7 +14,7 @@ export async function createProject(): Promise<void> {
 
   const unsignedTransaction = Pact.builder
     .execution(
-      Pact.modules.crowdfund['create-project'](
+      Pact.modules['free.crowdfund']['create-project'](
         'id',
         'an awsome project',
         literal('coin'),
