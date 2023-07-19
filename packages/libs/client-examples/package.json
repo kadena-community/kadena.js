@@ -12,7 +12,7 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "prebuild": "npm run pactjs:generate:contract:file",
+    "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:contract:crowdfund",
     "build": "npm run prebuild && tsc --noEmit",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
@@ -22,6 +22,7 @@
     "lint": "eslint ./src --ext .js,.ts --fix",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
+    "pactjs:generate:contract:crowdfund": "pactjs contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": ""
   },
   "dependencies": {
