@@ -2,6 +2,77 @@ import { sprinkles } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
+export const layoutVariant = styleVariants({
+  horizontal: [
+    sprinkles({
+      flexDirection: 'row',
+    }),
+  ],
+  vertical: [
+    sprinkles({
+      flexDirection: 'column',
+    }),
+  ],
+});
+
+export const gridVariant = styleVariants({
+  horizontal: [
+    {
+      gridTemplateRows: 'auto 1fr',
+    },
+  ],
+  vertical: [
+    {
+      gridTemplateColumns: 'auto 1fr',
+    },
+  ],
+});
+
+export const displayVariant = styleVariants({
+  horizontal: [
+    sprinkles({
+      display: 'grid',
+    }),
+    {
+      gridTemplateColumns: '1fr 1fr',
+    },
+  ],
+  vertical: [
+    sprinkles({
+      display: 'grid',
+    }),
+    {
+      gridTemplateRows: 'auto 1fr',
+    },
+  ],
+});
+
+export const warningVariant = styleVariants({
+  mild: [
+    sprinkles({
+      color: '$warningContrast',
+    }),
+  ],
+  severe: [
+    sprinkles({
+      color: '$negativeContrast',
+    }),
+  ],
+});
+
+export const gapValueLabelVariant = styleVariants({
+  horizontal: [
+    sprinkles({
+      gap: '$2',
+    }),
+  ],
+  vertical: [
+    sprinkles({
+      gap: 0,
+    }),
+  ],
+});
+
 export const CardContainer = style([
   sprinkles({
     display: 'grid',
@@ -9,68 +80,58 @@ export const CardContainer = style([
     gap: '$4',
     marginTop: '$sm',
     borderRadius: '$sm',
-    flexDirection: 'column',
     alignItems: 'flex-start',
     fontSize: '$sm',
+    background: '$background',
   }),
-  {
-    gridTemplateColumns: 'auto 1fr',
-    boxSizing: 'border-box',
-  },
 ]);
 
-export const GridCardContainer = style([
+export const ContentContainer = style([
+  sprinkles({
+    display: 'flex',
+    gap: '$2',
+    flexDirection: 'column',
+  }),
+]);
+
+export const DataContainer = style([
   sprinkles({
     display: 'grid',
-    gap: '$4',
-  }),
-  {
-    gridTemplateColumns: 'auto 1fr',
-  },
-]);
-
-export const TrackerInfoContainer = style([
-  sprinkles({
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '$4',
   }),
-  {
-    flex: '1 0 0',
-  },
 ]);
 
-export const TrackerContentContainer = style([
+export const LabelValueContainer = style([
   sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '$2',
+    alignItems: 'flex-start',
   }),
 ]);
 
-export const TrackerInfoItemTitle = style([
+export const LabelTitle = style([
   sprinkles({
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     fontSize: '$sm',
     fontWeight: '$medium',
+    fontFamily: '$main',
+    color: '$neutral4',
+    wordBreak: 'break-word',
   }),
   {
     alignSelf: 'stretch',
   },
 ]);
 
-export const TrackerInfoItemLine = style([
+export const LabelValue = style([
   sprinkles({
     display: 'inline-block',
     fontWeight: '$normal',
     fontFamily: '$mono',
-  }),
-  {
+    color: '$neutral6',
     wordBreak: 'break-word',
-  },
+  }),
 ]);
 
 export const TrackerWarningContainer = style([
@@ -81,16 +142,4 @@ export const TrackerWarningContainer = style([
     fontWeight: '$normal',
     fontSize: '$xs',
   }),
-  // {
-  //   variants: {
-  //     typedMessage: {
-  //       mild: {
-  //         color: '$warningContrast',
-  //       },
-  //       severe: {
-  //         color: '$negativeContrast',
-  //       },
-  //     },
-  //   },
-  // },
 ]);
