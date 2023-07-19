@@ -1,12 +1,12 @@
 import { Header } from './partials';
 import {
+  footerStyle,
   gridItemCollapsedSidebarStyle,
-  gridItemFooterStyle,
-  gridItemHeaderStyle,
   gridItemMainStyle,
   gridItemMenuStyle,
   gridItemMiniMenuStyle,
   gridStyle,
+  headerStyle,
 } from './styles.css';
 
 import { WalletConnectButton } from '@/components/Global';
@@ -46,7 +46,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   ];
   return (
     <div>
-      <header className={gridItemHeaderStyle}>
+      <header className={headerStyle}>
         <Header
           logo={<KLogoComponent width={32} height={32} />}
           appTitle={t('Developer Tools')}
@@ -60,7 +60,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <main className={gridItemMainStyle}>{children}</main>
         <aside className={gridItemCollapsedSidebarStyle}></aside>
       </div>
-      <footer className={gridItemFooterStyle}></footer>
+      <footer className={footerStyle}></footer>
     </div>
   );
 };
