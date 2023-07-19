@@ -1,8 +1,7 @@
 import { IconButton, SystemIcon } from '..';
 
 import { container } from './stories.css';
-import { ITooltipProps, Tooltip } from './Tooltip';
-import { tooltipHandler } from './tooltipHandler';
+import { ITooltipProps, Tooltip } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useRef } from 'react';
@@ -13,7 +12,7 @@ const meta: Meta<
   } & ITooltipProps
 > = {
   title: 'Components/Tooltip',
-  component: Tooltip,
+  component: Tooltip.Root,
   argTypes: {
     text: {
       control: {
@@ -51,16 +50,16 @@ export const Dynamic: Story = {
           title="hover me"
           icon={SystemIcon.Information}
           onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
-            tooltipHandler(e, ref)
+            Tooltip.handler(e, ref)
           }
           onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
-            tooltipHandler(e, ref)
+            Tooltip.handler(e, ref)
           }
         />
 
-        <Tooltip placement={placement} ref={ref}>
+        <Tooltip.Root placement={placement} ref={ref}>
           {text}
-        </Tooltip>
+        </Tooltip.Root>
       </div>
     );
   },
