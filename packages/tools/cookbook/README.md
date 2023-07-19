@@ -51,7 +51,7 @@ In depth documentation for setting up and using @kadena/client can be found at
 Example: Running the transfer-create script:
 
 ```sh
-ts-node src/accounts/transfer-create.ts senderAccount receiverAccount 1
+ts-node src/accounts/transfer-create-with-chainweaver.ts senderAccount receiverAccount 1
 ```
 
 ## Notes
