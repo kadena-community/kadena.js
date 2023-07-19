@@ -1,9 +1,0 @@
-{
-  "name": "rush-fix-versions",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {},
-  "dependencies": {
-    "@kadena-dev/rush-fix-versions": "^0.0.3"
-  }
-}
