@@ -10,12 +10,12 @@ The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-```
+```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
+pnpm install
 cd libs/react-components
-rush install
-rushx build
+pnpm build
 cd ~/your-app-root
 ```
 

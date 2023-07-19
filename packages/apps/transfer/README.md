@@ -16,45 +16,26 @@ securely and efficiently using smart contracts on the Kadena blockchain.
 
 To install and run the Kadena Transfer App locally, follow these steps:
 
-1.  Clone the repository: [https://github.com/kadena-community/kadena.js][5]
+1.  Read [CONTRIBUTING.md](../../../CONTRIBUTING.md).
 
-2.  Navigate to the `kadena-transfer/packages/apps/transfer` directory:
-
-```sh
-cd kadena.js/kadena-transfer/packages/apps/transfer
-```
-
-3.  Install rush globally:
-
-Note: On Windows, run in PowerShell as Administrator and restart the terminal
-after installation.
+2.  Build the app and its dependencies:
 
 ```sh
-npm install --global @microsoft/rush
+pnpm --filter @kadena/transfer build
 ```
 
-4.  Install the dependencies:
+3.  Navigate to the `kadena-transfer/packages/apps/transfer` directory
 
-```sh
-rush install
-```
-
-5.  Build the app and its dependencies:
-
-```sh
-rush build -t @kadena/transfer
-```
-
-6.  Setup environment variables:
+4.  Setup environment variables:
 
 ```sh
 cp .env.example .env.local
 ```
 
-7.  Start the app:
+5.  Start the app:
 
 ```sh
-rushx dev
+pnpm dev
 ```
 
 The Kadena Transfer App will be accessible at [http://localhost:3000][6] in your
