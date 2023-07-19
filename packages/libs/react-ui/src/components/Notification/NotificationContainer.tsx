@@ -42,16 +42,16 @@ export const NotificationContainer: FC<INotificationProps> = ({
   );
 
   return (
-    <div className={classList}>
+    <aside className={classList}>
       <span className={iconContainerClass}>
         <Icon size={'md'} />
       </span>
 
       <div>
-        <p className={contentClass}>
+        <div className={contentClass}>
           {title !== undefined && <h4 className={cardTitleClass}>{title}</h4>}
           <p>{children}</p>
-        </p>
+        </div>
       </div>
 
       {hasCloseButton && (
@@ -63,6 +63,6 @@ export const NotificationContainer: FC<INotificationProps> = ({
           </button>
         </span>
       )}
-    </div>
+    </aside>
   );
 };
