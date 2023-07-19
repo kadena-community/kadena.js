@@ -8,9 +8,11 @@ import {
   TextField,
 } from '@kadena/react-ui';
 
-import FormStatusNotification from './notification';
-
-import { ChainSelect } from '@/components/Global';
+import {
+  ChainSelect,
+  FormStatus,
+  FormStatusNotification,
+} from '@/components/Global';
 import { usePersistentChainID } from '@/hooks';
 import {
   StyledAccountForm,
@@ -39,8 +41,6 @@ type FormData = z.infer<typeof schema>;
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 20;
 
-export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
-
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
@@ -48,9 +48,9 @@ const ExistingAccountFaucetPage: FC = () => {
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
-    status: RequestStatus;
+    status: FormStatus;
     message?: string;
-  }>({ status: 'not started' });
+  }>({ status: 'idle' });
 
   const onPoll = async (
     transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
@@ -62,13 +62,13 @@ const ExistingAccountFaucetPage: FC = () => {
     if (status === 'failure') {
       const apiErrorMessage = (result.error as { message: string }).message;
 
-      setRequestStatus({ status: 'failed', message: apiErrorMessage });
+      setRequestStatus({ status: 'erroneous', message: apiErrorMessage });
     }
   };
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
-      setRequestStatus({ status: 'pending' });
+      setRequestStatus({ status: 'processing' });
 
       try {
         await fundExistingAccount(
@@ -78,7 +78,7 @@ const ExistingAccountFaucetPage: FC = () => {
           AMOUNT_OF_COINS_FUNDED,
         );
 
-        setRequestStatus({ status: 'succeeded' });
+        setRequestStatus({ status: 'successful' });
       } catch (err) {
         let message;
         if (err instanceof Error) {
@@ -94,7 +94,7 @@ const ExistingAccountFaucetPage: FC = () => {
          * In other "uncaught" cases we do want to do call `setRequestStatus` here.
          */
         if (!(err instanceof PactCommand)) {
-          setRequestStatus({ status: 'failed', message });
+          setRequestStatus({ status: 'erroneous', message });
         }
       }
     },
@@ -123,6 +123,9 @@ const ExistingAccountFaucetPage: FC = () => {
       <StyledForm onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
+          statusBodies={{
+            successful: 'The coins have been funded to the given account.',
+          }}
           body={requestStatus.message}
         />
         <StyledAccountForm>
@@ -143,10 +146,10 @@ const ExistingAccountFaucetPage: FC = () => {
         <StyledFormButton>
           <Button.Root
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={requestStatus.status === 'pending'}
+            disabled={requestStatus.status === 'processing'}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            {requestStatus.status === 'pending' ? (
+            {requestStatus.status === 'processing' ? (
               <SystemIcon.Loading
                 style={{ animation: '2000ms infinite linear spin' }}
               />
