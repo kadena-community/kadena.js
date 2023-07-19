@@ -47,11 +47,9 @@ export const NotificationContainer: FC<INotificationProps> = ({
         <Icon size={'md'} />
       </span>
 
-      <div>
-        <div className={contentClass}>
-          {title !== undefined && <h4 className={cardTitleClass}>{title}</h4>}
-          <p>{children}</p>
-        </div>
+      <div className={contentClass}>
+        {title !== undefined && <h4 className={cardTitleClass}>{title}</h4>}
+        <p>{children}</p>
       </div>
 
       {hasCloseButton && (
