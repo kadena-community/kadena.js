@@ -367,13 +367,6 @@ const CrossChainTransferFinisher: FC = () => {
               ]}
             />
 
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`${pollResults.tx.amount} ${t(
-                'KDA',
-              )}`}</StyledInfoItemLine>
-            </StyledInfoItem>
-
             {showMore ? (
               <StyledInfoItem>
                 <StyledInfoItemTitle>{t('Receiver guard')}</StyledInfoItemTitle>
