@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 export interface INotificationButtonProps {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   color: keyof typeof colorVariants;
-  onClick?: () => void;
+  onClick?: JSX.IntrinsicElements['button']['onClick'];
   children: React.ReactNode;
 }
 export const NotificationButton: FC<INotificationButtonProps> = ({
