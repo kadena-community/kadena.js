@@ -57,19 +57,28 @@ export const localQuestions: IQuestion[] = [
     message: 'What is the endpoint',
     name: 'endpoint',
     type: 'input',
-    when: ({ network }: IAnswers) => isTruthy(network),
+    when: ({ network, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(network);
+    },
   },
   {
     message: 'What is the command you want to test?',
     name: 'command',
     type: 'input',
-    when: ({ network }: IAnswers) => isTruthy(network),
+    when: ({ network, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(network);
+    },
   },
   {
     message: 'On what chain do you want to execute the command?',
     name: 'chainId',
     type: 'input',
-    when: ({ network }: IAnswers) => isTruthy(network),
+    when: ({ network, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(network);
+    },
   },
   {
     message: 'What capabilities do you need?',

@@ -12,14 +12,16 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 interface IProps {
   task?: string;
+  profile?: string;
 }
-export default function App({ task = '' }: IProps): JSX.Element {
+export default function App({ task = '', profile = '' }: IProps): JSX.Element {
   const [qna, setQNA] = useState<IQuestionAnswer>(
     getNextQuestion({
       current: undefined,
       answers: { task: [task].filter(Boolean) },
       questions,
       answeredQuestions: [],
+      profile,
     }),
   );
   const onAnswer = useCallback<OnAnswer>(

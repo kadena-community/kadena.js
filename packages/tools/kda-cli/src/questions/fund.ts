@@ -47,7 +47,7 @@ export const fundQuestions: IQuestion[] = [
     message: 'What endpoint would you like to use?',
     name: 'endpoint',
     type: 'input',
-    defaultValue: 'http://localhost:8080',
+    defaultValue: 'http://devnet:8080',
     when: fundCondition,
   },
   {

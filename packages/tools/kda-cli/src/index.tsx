@@ -8,6 +8,7 @@ import React from 'react';
 interface IFlags {
   flags: {
     task: string;
+    profile: string;
   };
 }
 
@@ -17,7 +18,8 @@ const cli: IFlags = meow(
     $ kda
 
   Options
-    --task  Task
+    --task     Task
+    --profile  Profile
 
   Examples
     $ kda --task=rerun
@@ -35,8 +37,13 @@ const cli: IFlags = meow(
         default: '',
         alias: 't',
       },
+      profile: {
+        type: 'string',
+        default: '',
+        alias: 'p',
+      },
     },
   },
 );
 
-render(<App task={cli.flags.task} />);
+render(<App task={cli.flags.task} profile={cli.flags.profile} />);
