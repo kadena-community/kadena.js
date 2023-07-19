@@ -45,6 +45,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { formatNumberAsString } from '@/utils/number';
 
 interface IPactResultError {
   status: 'failure';
@@ -247,7 +248,7 @@ const CrossChainTransferFinisher: FC = () => {
                   }}
                 />
                 <TextField
-                  label={t('Gas Payer Account')}
+                  label={t('Gas Payer')}
                   helperText={
                     isGasStation
                       ? ''
@@ -306,6 +307,19 @@ const CrossChainTransferFinisher: FC = () => {
         {pollResults.tx ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
+            <TrackerCard
+              variant="vertical"
+              labelValue={[
+                {
+                  label: t('Network'),
+                  value: chainNetwork[network].network,
+                },
+                {
+                  label: t('Server'),
+                  value: chainNetwork[network].server,
+                },
+              ]}
+            />
 
             <TrackerCard
               variant="vertical"
@@ -319,6 +333,22 @@ const CrossChainTransferFinisher: FC = () => {
                 {
                   label: t('Chain'),
                   value: pollResults.tx.sender.chain,
+                },
+              ]}
+            />
+
+            <TrackerCard
+              variant="vertical"
+              icon={ProductIcon.Gas}
+              labelValue={[
+                {
+                  label: t('Gas Payer'),
+                  value: kadenaXChainGas,
+                  isAccount: false,
+                },
+                {
+                  label: t('Price'),
+                  value: formatNumberAsString(gasPrice),
                 },
               ]}
             />
