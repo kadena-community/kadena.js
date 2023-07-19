@@ -19,10 +19,8 @@ export const headerStyle = style([
     position: 'sticky',
     top: 0,
     width: '100%',
+    height: '$16',
   }),
-  {
-    height: '64px',
-  },
 ]);
 
 export const gridItemMiniMenuStyle = style([
@@ -64,8 +62,6 @@ export const footerStyle = style([
     width: '100%',
     bottom: 0,
     position: 'sticky',
+    height: '$10',
   }),
-  {
-    height: '40px',
-  },
 ]);
