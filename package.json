@@ -1,0 +1,25 @@
+{
+  "name": "@kadena/js-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kadena JS monorepo",
+  "license": "ISC",
+  "scripts": {
+    "build": "turbo run build",
+    "format": "pnpm -r run \"/^format:(md|pkg|src)/\"",
+    "format:ci": "pnpm -r run format:src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "preinstall": "npx --no-install only-allow pnpm",
+    "list": "pnpm recursive list --json | jq '[ .[] | { name, version, private, path } ]' > workspace.json",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "@kadena-dev/markdown": "workspace:*",
+    "only-allow": "^1.1.1",
+    "turbo": "^1.10.8"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=8"
+  }
+}
