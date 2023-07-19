@@ -37,6 +37,7 @@ separately as the ~~trend~~ need arises.
 
 ## TODO
 
+- [ ] Fix `pactjs` bin workarounds/issues e.g. in `@kadena/client-examples`
 - [ ] Find out wat heft/rigs actually do for us
 - [ ] Look into version policies (e.g. to "group" packages)
 - [ ] Enforce fixed version across monorepo for certain/all dependencies
