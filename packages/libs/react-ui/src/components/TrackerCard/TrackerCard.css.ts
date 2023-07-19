@@ -28,7 +28,7 @@ export const gridVariant = styleVariants({
   ],
 });
 
-export const displayVarant = styleVariants({
+export const displayVariant = styleVariants({
   horizontal: [
     sprinkles({
       display: 'grid',
@@ -42,7 +42,7 @@ export const displayVarant = styleVariants({
       display: 'grid',
     }),
     {
-      gridTemplateRows: '1fr 1fr',
+      gridTemplateRows: 'auto 1fr',
     },
   ],
 });
@@ -84,9 +84,6 @@ export const CardContainer = style([
     fontSize: '$sm',
     background: '$background',
   }),
-  {
-    boxSizing: 'border-box',
-  },
 ]);
 
 export const ContentContainer = style([

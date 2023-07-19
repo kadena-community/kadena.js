@@ -4,7 +4,7 @@ import {
   CardContainer,
   ContentContainer,
   DataContainer,
-  displayVarant,
+  displayVariant,
   gapValueLabelVariant,
   gridVariant,
   LabelTitle,
@@ -50,7 +50,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
 
   const classLabelValue = classNames(
     LabelValueContainer,
-    displayVarant[variant],
+    displayVariant[variant],
     layoutVariant[variant],
     gapValueLabelVariant[variant],
   );

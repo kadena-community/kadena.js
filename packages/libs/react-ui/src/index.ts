@@ -67,10 +67,10 @@ export {
   ITooltipProps,
   MaskedValue,
   IMaskedValueProps,
+  TrackerCard,
   ITrackerCardProps,
   Option,
   IOptionProps,
   Select,
   ISelectProps,
-  TrackerCard,
 } from './components';
