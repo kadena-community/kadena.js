@@ -103,12 +103,12 @@
   "Price": "Price",
   "Network": "Network",
   "Server": "Server",
-  "form-status-title-idle": "form-status-title",
-  "form-status-title-erroneous": "form-status-title",
-  "form-status-title-processing": "form-status-title",
-  "form-status-title-successful": "form-status-title",
-  "form-status-body-idle": "form-status-body",
-  "form-status-body-erroneous": "form-status-body",
-  "form-status-body-processing": "form-status-body",
-  "form-status-body-successful": "form-status-body"
+  "form-status-title-erroneous": "Something went wrong",
+  "form-status-title-processing": "Transaction is being processed...",
+  "form-status-title-successful": "Transaction successfully completed",
+  "form-status-title-idle": "Nothing to see here",
+  "form-status-body-erroneous": "Something went wrong.",
+  "form-status-body-processing": "Please have some patience while the transaction is being processed.",
+  "form-status-body-successful": "The transaction has completed successfully.",
+  "form-status-body-idle": "Something went wrong."
 }
