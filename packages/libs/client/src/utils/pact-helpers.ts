@@ -1,4 +1,8 @@
-type ReadKeyset = <TKey extends string>(
+/**
+ *
+ * @alpha
+ */
+export type ReadKeyset = <TKey extends string>(
   key: TKey,
 ) => () => `(read-keyset "${TKey}")`;
 

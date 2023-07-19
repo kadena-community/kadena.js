@@ -256,8 +256,9 @@ export const literal: <T extends string | Record<string, unknown>>(value: T) => 
 // @alpha (undocumented)
 export const Pact: IPact;
 
-// Warning: (ae-forgotten-export) The symbol "ReadKeyset" needs to be exported by the entry point index.d.ts
-//
+// @alpha (undocumented)
+export type ReadKeyset = <TKey extends string>(key: TKey) => () => `(read-keyset "${TKey}")`;
+
 // @alpha (undocumented)
 export const readKeyset: ReadKeyset;
 
