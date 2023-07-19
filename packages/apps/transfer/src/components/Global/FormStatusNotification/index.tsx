@@ -3,7 +3,7 @@ import { INotificationProps, Notification, SystemIcon } from '@kadena/react-ui';
 import { containerStyle } from './styles.css';
 
 import useTranslation from 'next-translate/useTranslation';
-import React, { type FC, useCallback, useState } from 'react';
+import React, { type FC, useCallback, useEffect, useState } from 'react';
 
 export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 
@@ -40,6 +40,10 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
 ) => {
   const { t } = useTranslation();
   const [show, setShow] = useState(status !== 'idle');
+
+  useEffect(() => {
+    setShow(status !== 'idle');
+  }, [status]);
 
   const titles: Titles = {
     ...{
