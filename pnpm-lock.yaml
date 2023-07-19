@@ -815,6 +815,9 @@ importers:
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:../../tools/remark-plugins
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.15.0)(typescript@5.0.4)
