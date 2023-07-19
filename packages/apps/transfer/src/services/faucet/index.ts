@@ -33,7 +33,7 @@ export const fundExistingAccount = async (
   debug(fundExistingAccount.name);
   const keyPair = genKeyPair();
 
-  const transactionBuilder = Pact.builder
+  const transaction = Pact.builder
     .execution(
       Pact.modules['user.coin-faucet']['request-coin'](
         account,
@@ -50,9 +50,8 @@ export const fundExistingAccount = async (
       ),
     ])
     .setMeta({ sender: SENDER_OPERATION_ACCOUNT, chainId })
-    .setNetworkId(NETWORK_ID);
-
-  const transaction = transactionBuilder.createTransaction();
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
 
   const signature1 = sign(transaction.cmd, {
     publicKey: FAUCET_PUBLIC_KEY,
