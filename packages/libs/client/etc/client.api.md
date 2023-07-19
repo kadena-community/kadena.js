@@ -12,8 +12,6 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { IExecPayload } from '@kadena/types';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { ILocalOptions } from '@kadena/chainweb-node-client';
-import { IPactDecimal } from '@kadena/types';
-import { IPactInt } from '@kadena/types';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
@@ -36,9 +34,6 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 //
 // @alpha (undocumented)
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
-
-// @alpha (undocumented)
-const decimal: (value: string) => IPactDecimal;
 
 // Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
 //
@@ -124,9 +119,6 @@ export interface INetworkOptions {
     // (undocumented)
     networkId: string;
 }
-
-// @alpha (undocumented)
-const integer: (value: string) => IPactInt;
 
 // @alpha (undocumented)
 export interface IPact {
@@ -259,25 +251,15 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @alpha (undocumented)
-export const Pact: IPact;
+export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
 
-declare namespace PactValues {
-    export {
-        readKeyset,
-        reference,
-        decimal,
-        integer
-    }
-}
-export { PactValues }
+// @alpha (undocumented)
+export const Pact: IPact;
 
 // Warning: (ae-forgotten-export) The symbol "ReadKeyset" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-const readKeyset: ReadKeyset;
-
-// @alpha (undocumented)
-const reference: <T extends string>(value: T) => () => T;
+export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;
