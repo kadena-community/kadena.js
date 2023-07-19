@@ -130,6 +130,8 @@ const main = async () => {
       `Found broken links : ${JSON.stringify(filesWithBrokenLinks, null, 2)} \n
       Found deadlinks: (${countDeadLinks(filesWithBrokenLinks)})`,
     );
+  } else {
+    console.log('No BrokenLinks Found!');
   }
 };
 
