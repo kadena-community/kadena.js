@@ -45,7 +45,7 @@ yarn add @kadena/chainweb-stream-client
 ## Usage
 
 ```js
-import ChainwebStreamClient from '@kadena/chainweb-stream-client';
+import  { ChainwebStreamClient } from '@kadena/chainweb-stream-client';
 
 const client = new ChainwebStreamClient({
   network: 'mainnet01',
