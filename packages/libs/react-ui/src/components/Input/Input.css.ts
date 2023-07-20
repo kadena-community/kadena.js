@@ -73,6 +73,9 @@ export const leadingTextClass = style([
     alignItems: 'center',
     paddingX: '$4',
   }),
+  {
+    minWidth: 'max-content',
+  },
 ]);
 
 export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
