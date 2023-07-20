@@ -107,7 +107,7 @@ const ExistingAccountFaucetPage: FC = () => {
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: 'The coins have been funded to the given account.',
+            successful: t('The coins have been funded to the given account.'),
           }}
           body={requestStatus.message}
         />
