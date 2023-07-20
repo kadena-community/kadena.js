@@ -297,7 +297,6 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      console.log('send', hostUrl);
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
       storage.add(hostUrl, requestKeys);
 
