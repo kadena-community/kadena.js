@@ -11,7 +11,10 @@ import {
   setNetworkId,
   setNonce,
 } from '../composePactCommand';
-import { UnionToIntersection } from '../composePactCommand/utils/addSigner';
+import {
+  IGeneralCapability,
+  UnionToIntersection,
+} from '../composePactCommand/utils/addSigner';
 import {
   ICapabilityItem,
   IContinuationPayloadObject,
@@ -19,17 +22,15 @@ import {
 } from '../interfaces/IPactCommand';
 import { createTransaction } from '../utils/createTransaction';
 
-type GeneralCapability = (name: string, ...args: unknown[]) => ICapabilityItem;
-
 export type ExtractType<TCommand> = TCommand extends { payload: infer TPayload }
   ? TPayload extends { funs: infer TFunctions }
     ? TFunctions extends Array<infer TFunction>
       ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
         ? TCapability
-        : GeneralCapability
-      : GeneralCapability
-    : GeneralCapability
-  : GeneralCapability;
+        : IGeneralCapability
+      : IGeneralCapability
+    : IGeneralCapability
+  : IGeneralCapability;
 
 interface IAddSigner<TCommand> {
   /**
@@ -147,7 +148,7 @@ export const commandBuilder = (): ICommandBuilder => {
         command = composePactCommand(
           addSigner(
             pubKey,
-            cap as (withCapability: GeneralCapability) => ICapabilityItem[],
+            cap as (withCapability: IGeneralCapability) => ICapabilityItem[],
           ) as (cmd: Partial<IPactCommand>) => Partial<IPactCommand>,
         )(command);
         return builder;
