@@ -85,7 +85,13 @@ const ExistingAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'successful' });
       } catch (err) {
         let message;
-        if (err instanceof Error) {
+        if (isCustomError(err)) {
+          const result = err.result;
+          const status = result?.status;
+          if (status === 'failure') {
+            message = (result.error as { message: string }).message;
+          }
+        } else if (err instanceof Error) {
           message = err.message;
         } else {
           message = String(err);
