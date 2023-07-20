@@ -7,7 +7,8 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
-import { ScrollBox } from './../styles';
+import { LoadingWrapper, ScrollBox } from './../styles';
+import { Loading } from './Loading';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
@@ -69,6 +70,11 @@ export const SearchResults: FC<IProps> = ({
 
         <Tabs.Content value="docs">
           <ScrollBox disabled={!hasScroll}>
+            {semanticIsLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
             {semanticError ? (
               <Notification.Root
                 color={'negative'}
@@ -104,7 +110,7 @@ export const SearchResults: FC<IProps> = ({
 
         <Tabs.Content value="qa">
           <ScrollBox disabled={!hasScroll}>
-            {error ? (
+            {error && (
               <Notification.Root
                 color={'negative'}
                 expanded={true}
@@ -112,31 +118,29 @@ export const SearchResults: FC<IProps> = ({
               >
                 {error}
               </Notification.Root>
-            ) : (
-              <>
-                <ResultCount count={semanticResults.length} />
-
-                {conversation?.history.map((interaction, idx) => (
-                  <div key={`${interaction.input}-${idx}`}>
-                    <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                    <div>
-                      {interaction?.metadata?.map((item, innerIdx) => {
-                        const url = createLinkFromMD(item.title);
-                        return (
-                          <>
-                            <Link key={`${url}-${innerIdx}`} href={url}>
-                              {url}
-                            </Link>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-
-                <div>{outputStream}</div>
-              </>
             )}
+
+            <ResultCount count={semanticResults.length} />
+
+            {conversation?.history.map((interaction, idx) => (
+              <div key={`${interaction.input}-${idx}`}>
+                <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                <div>
+                  {interaction?.metadata?.map((item, innerIdx) => {
+                    const url = createLinkFromMD(item.title);
+                    return (
+                      <>
+                        <Link key={`${url}-${innerIdx}`} href={url}>
+                          {url}
+                        </Link>
+                      </>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+
+            <div>{outputStream}</div>
           </ScrollBox>
         </Tabs.Content>
       </Tabs.Root>
