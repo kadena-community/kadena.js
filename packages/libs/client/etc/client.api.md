@@ -96,7 +96,7 @@ export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
         pactId?: string;
-        step?: string;
+        step?: number;
         rollback?: boolean;
         data?: Record<string, unknown>;
         proof?: string;
