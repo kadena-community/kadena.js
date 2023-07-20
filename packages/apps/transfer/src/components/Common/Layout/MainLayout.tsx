@@ -32,12 +32,9 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
   return (
     <StyledMainLayout>
       <Grid.Root>
-        <Grid.Item colStart={1} colEnd={5}>
+        <Grid.Item>
           <Grid.Root spacing="xl">
-            <Grid.Item colStart={1} colEnd={5}>
-              <KLogoComponent width="100%" />
-            </Grid.Item>
-            <Grid.Item colStart={5} colEnd={11}>
+            <Grid.Item>
               <StyledTextBold>{t('K:Transfer')}</StyledTextBold>
               <Select
                 leadingText={t('Network')}
@@ -53,21 +50,21 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
       </Grid.Root>
 
       <Grid.Root spacing="3xl">
-        <Grid.Item colStart={1} colEnd={5}>
+        <Grid.Item>
           <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
             <span data-testid="back-button">{t('Back')}</span>
           </StyledBack>
         </Grid.Item>
-        <Grid.Item colStart={5} colEnd={13}>
+        <Grid.Item>
           <StyledTitle data-testid="title">{title}</StyledTitle>
         </Grid.Item>
       </Grid.Root>
       <Grid.Root spacing="3xl">
-        <Grid.Item colStart={1} colEnd={5}>
+        <Grid.Item>
           <SidebarMenu />
         </Grid.Item>
-        <Grid.Item colStart={5} colEnd={13}>
+        <Grid.Item>
           <StyledMainContent data-testid="content">
             {children}
           </StyledMainContent>
