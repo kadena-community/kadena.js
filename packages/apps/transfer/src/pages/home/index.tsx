@@ -1,8 +1,7 @@
-import { Grid } from '@kadena/react-ui';
+import { Breadcrumbs, Grid } from '@kadena/react-ui';
 
 import routes from '@/constants/routes';
 import {
-  StyledHomeContainer,
   StyledHomeContent,
   StyledHomeLink,
   StyledHomeTitle,
@@ -48,7 +47,7 @@ const Home: FC = () => {
   ];
 
   return (
-    <StyledHomeContainer>
+    <div>
       <Grid.Root spacing="2xl">
         <Grid.Item>
           <StyledHomeContent>
@@ -77,7 +76,7 @@ const Home: FC = () => {
           </StyledHomeContent>
         </Grid.Item>
       </Grid.Root>
-    </StyledHomeContainer>
+    </div>
   );
 };
 

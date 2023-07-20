@@ -32,7 +32,10 @@ import {
 type IOptions = IPollOptions &
   (INetworkOptions | { networkId?: undefined; chainId?: undefined });
 
-interface ISubmit {
+/**
+ * @alpha
+ */
+export interface ISubmit {
   /**
    * Submits one public (unencrypted) signed command to the blockchain for execution.
    *
@@ -313,16 +316,6 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       // merge all of the result in one object
       const mergedPollRequestPromises = mergeAllPollRequestPromises(results);
 
-      // remove from the pending requests storage
-      Object.entries(mergedPollRequestPromises.requests).forEach(
-        ([key, promise]) => {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          promise.then(() => {
-            storage.remove([key]);
-          });
-        },
-      );
-
       return mergedPollRequestPromises;
     },
     async getStatus(requestKeys, options) {
@@ -337,9 +330,6 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
       // merge all of the result in one object
       const mergedResults = mergeAll(results);
-      const receivedKeys = Object.keys(mergedResults);
-      // remove from the pending requests storage
-      storage.remove(receivedKeys);
 
       return mergedResults;
     },
@@ -348,8 +338,6 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       const hostUrl = getStoredHost(requestKey, options);
 
       const result = await listen({ listen: requestKey }, hostUrl);
-
-      storage.remove([requestKey]);
 
       return result;
     },

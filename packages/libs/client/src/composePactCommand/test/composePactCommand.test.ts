@@ -44,13 +44,14 @@ describe('continuation', () => {
     const command = continuation({
       pactId: '1',
       proof: 'test-proof',
-      step: '1',
+      step: 1,
     });
     expect(command.payload).toEqual({
       cont: {
         pactId: '1',
         proof: 'test-proof',
-        step: '1',
+        step: 1,
+        data: {},
       },
     });
   });

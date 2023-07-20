@@ -1,4 +1,5 @@
 import {
+  Breadcrumbs,
   Button,
   Heading,
   InputWrapperStatus,
@@ -15,7 +16,6 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
 import { useAppContext } from '@/context/app-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
@@ -132,7 +132,11 @@ const CrossChainTransferTracker: FC = () => {
   );
 
   return (
-    <MainLayout title={t('Track & trace transactions')}>
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <StyledMainContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -215,7 +219,7 @@ const CrossChainTransferTracker: FC = () => {
           </StyledInfoBox>
         ) : null}
       </StyledMainContent>
-    </MainLayout>
+    </div>
   );
 };
 

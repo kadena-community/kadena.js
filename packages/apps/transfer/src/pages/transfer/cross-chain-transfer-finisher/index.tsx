@@ -1,8 +1,13 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
-import { Button, ProductIcon, TextField, TrackerCard } from '@kadena/react-ui';
+import {
+  Breadcrumbs,
+  Button,
+  ProductIcon,
+  TextField,
+  TrackerCard,
+} from '@kadena/react-ui';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -201,7 +206,11 @@ const CrossChainTransferFinisher: FC = () => {
   );
 
   return (
-    <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <StyledFinisherContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -388,7 +397,7 @@ const CrossChainTransferFinisher: FC = () => {
           </StyledInfoBox>
         ) : null}
       </StyledFinisherContent>
-    </MainLayout>
+    </div>
   );
 };
 

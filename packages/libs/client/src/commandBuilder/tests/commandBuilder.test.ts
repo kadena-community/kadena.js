@@ -32,7 +32,7 @@ describe('commandBuilder', () => {
       .getCommand();
 
     expect(command).toStrictEqual({
-      payload: { cont: { pactId: '1', proof: 'proof' } },
+      payload: { cont: { pactId: '1', proof: 'proof', data: {} } },
       signers: [],
       nonce: 'kjs:nonce:1690416000000',
     });
@@ -209,7 +209,7 @@ describe('commandBuilder', () => {
           data: {
             ks: {
               pred: 'keys-all',
-              publicKeys: ['pub1', 'pub2'],
+              keys: ['pub1', 'pub2'],
             },
           },
         },
