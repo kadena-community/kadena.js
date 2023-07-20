@@ -1,4 +1,4 @@
-import { Header } from './partials';
+import { FooterWrapper, Header } from './partials';
 import {
   footerStyle,
   gridItemCollapsedSidebarStyle,
@@ -14,9 +14,6 @@ import routes from '@/constants/routes';
 import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
-import { IconButton } from '@kadena/react-ui';
-import { SystemIcons } from '@kadena/react-components';
-import Footer from '@/components/Common/Layout/partials/Footer/Footer';
 
 interface IProps {
   children?: ReactNode;
@@ -47,6 +44,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
       href: routes.MODULE_EXPLORER,
     },
   ];
+
   return (
     <div>
       <header className={headerStyle}>
@@ -63,7 +61,9 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <main className={gridItemMainStyle}>{children}</main>
         <aside className={gridItemCollapsedSidebarStyle}></aside>
       </div>
-      <footer className={footerStyle}></footer>
+      <footer className={footerStyle}>
+        <FooterWrapper />
+      </footer>
     </div>
   );
 };

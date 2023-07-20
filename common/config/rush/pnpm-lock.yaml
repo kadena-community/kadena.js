@@ -317,6 +317,7 @@ importers:
       jest-standard-reporter: ~2.0.0
       js-cookie: ~3.0.5
       next: 13.4.5
+      next-themes: ~0.2.1
       next-translate: ~2.0.6
       next-translate-plugin: ~2.0.5
       prettier: ~2.8.8
@@ -378,6 +379,7 @@ importers:
       ignore-loader: 0.1.2
       jest: 29.5.0_@types+node@16.18.38
       jest-environment-jsdom: 29.5.0
+      next-themes: 0.2.1_a19097b605f2c383cd1ccc132698cbdc
       next-translate-plugin: 2.0.5_next-translate@2.0.6
       prettier: 2.8.8
       sort-package-json: 2.4.1
@@ -20967,6 +20969,18 @@ packages:
 
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+
+  /next-themes/0.2.1_a19097b605f2c383cd1ccc132698cbdc:
+    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: 13.4.5_react-dom@18.2.0+react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: true
 
   /next-tick/1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
