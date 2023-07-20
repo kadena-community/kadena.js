@@ -1,10 +1,15 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
-import { Button, Heading, SystemIcon, TextField } from '@kadena/react-ui';
+import {
+  Breadcrumbs,
+  Button,
+  Heading,
+  SystemIcon,
+  TextField,
+} from '@kadena/react-ui';
 
 import FormStatusNotification from './notification';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
 import { ChainSelect } from '@/components/Global';
 import { usePersistentChainID } from '@/hooks';
 import {
@@ -97,7 +102,11 @@ const ExistingAccountFaucetPage: FC = () => {
   );
 
   return (
-    <MainLayout title={t('Add Funds to Existing Account')}>
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <StyledForm onSubmit={onFormSubmit}>
         <FormStatusNotification
           status={requestStatus.status}
@@ -132,7 +141,7 @@ const ExistingAccountFaucetPage: FC = () => {
           </Button.Root>
         </StyledFormButton>
       </StyledForm>
-    </MainLayout>
+    </div>
   );
 };
 

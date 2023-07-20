@@ -1,6 +1,5 @@
-import { TextField } from '@kadena/react-ui';
+import { Breadcrumbs, TextField } from '@kadena/react-ui';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
 import dynamic from 'next/dynamic';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
@@ -103,20 +102,11 @@ const ModuleExplorer: FC = () => {
   );
 
   return (
-    <MainLayout
-      title={t('Kadena Module Explorer')}
-      footer={
-        <>
-          {Boolean(results.code) && (
-            <StyledResultContainer>
-              <StyledCodeViewerContainer>
-                <AceViewer code={results.code} />
-              </StyledCodeViewerContainer>
-            </StyledResultContainer>
-          )}
-        </>
-      }
-    >
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Module Explorer')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <StyledForm>
         <StyledAccountForm>
           <ChainSelect onChange={onChainSelectChange} value={chainID} />
@@ -145,7 +135,14 @@ const ModuleExplorer: FC = () => {
           </StyledListItem>
         ))}
       </StyledList>
-    </MainLayout>
+      {Boolean(results.code) && (
+        <StyledResultContainer>
+          <StyledCodeViewerContainer>
+            <AceViewer code={results.code} />
+          </StyledCodeViewerContainer>
+        </StyledResultContainer>
+      )}
+    </div>
   );
 };
 
