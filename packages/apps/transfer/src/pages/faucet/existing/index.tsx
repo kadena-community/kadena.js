@@ -44,13 +44,16 @@ const isCustomError = (error: unknown): error is ICommandResult => {
 interface FundExistingAccountResponseBody {
   result: {
     status: string;
-    error: undefined | {
-      message: string;
-    };
+    error:
+      | undefined
+      | {
+          message: string;
+        };
   };
 }
 
-interface FundExistingAccountResponse extends Record<string, FundExistingAccountResponseBody> {}
+interface FundExistingAccountResponse
+  extends Record<string, FundExistingAccountResponseBody> {}
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -68,13 +71,15 @@ const ExistingAccountFaucetPage: FC = () => {
       setRequestStatus({ status: 'processing' });
 
       try {
-        const result = await fundExistingAccount(
+        const result = (await fundExistingAccount(
           accountName,
           chainID,
           AMOUNT_OF_COINS_FUNDED,
-        ) as FundExistingAccountResponse;
+        )) as FundExistingAccountResponse;
 
-        const error = Object.values(result).find(response => response.result.status === 'failure');
+        const error = Object.values(result).find(
+          (response) => response.result.status === 'failure',
+        );
 
         if (error) {
           setRequestStatus({ status: 'erroneous', message: error.result.error?.message || t('An error occurred.')});

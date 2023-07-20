@@ -1,12 +1,11 @@
-import { Pact, getClient, isSignedCommand } from '@kadena/client';
+import { getClient, isSignedCommand, Pact } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
 const HELP: string = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} {senderPrivateKey} k:{receiverPublicKey} {amount}`;
-const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' =
-  'testnet04';
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' = 'testnet04';
 const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 6) {
@@ -36,16 +35,14 @@ async function transferCreate(
   const pactDecimal = { decimal: `${amount}` };
 
   const transaction = Pact.builder
-    .execution(
-        Pact.modules['coin'].transfer(sender, receiver, pactDecimal)
-    )
+    .execution(Pact.modules.coin.transfer(sender, receiver, pactDecimal))
     .addData('ks', {
       keys: [accountKey(receiver)],
       pred: 'keys-all',
     })
     .addSigner(senderPublicKey, (withCap: any) => [
-        withCap('coin.TRANSFER', sender, receiver, pactDecimal),
-        withCap('coin.GAS'),
+      withCap('coin.TRANSFER', sender, receiver, pactDecimal),
+      withCap('coin.GAS'),
     ])
     .setMeta({ chainId: '1', sender })
     .setNetworkId(NETWORK_ID)
@@ -60,7 +57,7 @@ async function transferCreate(
     throw new Error('Failed to sign transaction');
   }
 
-  transaction.sigs = [ { sig: sig.sig } ];
+  transaction.sigs = [{ sig: sig.sig }];
 
   const { submit, pollStatus } = getClient(API_HOST);
 

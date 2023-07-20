@@ -1,4 +1,4 @@
-import { Pact, getClient } from '@kadena/client';
+import { getClient, Pact } from '@kadena/client';
 
 import { apiHost } from '../utils/api-host';
 

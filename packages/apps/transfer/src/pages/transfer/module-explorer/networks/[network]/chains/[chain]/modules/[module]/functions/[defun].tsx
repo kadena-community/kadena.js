@@ -1,4 +1,9 @@
-import { Pact, signWithChainweaver, getClient, isSignedCommand } from '@kadena/client';
+import {
+  getClient,
+  isSignedCommand,
+  Pact,
+  signWithChainweaver,
+} from '@kadena/client';
 import { Button } from '@kadena/react-components';
 
 import { Container, EditorGrid } from './styles';
@@ -40,7 +45,13 @@ const FunctionPage = () => {
     setOutput('');
     const scopedEval = new ScopedEval();
     console.log(code);
-    scopedEval.eval(code, { Pact, getClient, signWithChainweaver, isSignedCommand, Logger });
+    scopedEval.eval(code, {
+      Pact,
+      getClient,
+      signWithChainweaver,
+      isSignedCommand,
+      Logger,
+    });
   };
 
   useEffect(() => {
@@ -95,7 +106,12 @@ const FunctionPage = () => {
               </Button>
             )}
           </>
-          <AceViewer code={code} width={'100%'} readonly={false} onChange={(value: string) => setCode(value)} />
+          <AceViewer
+            code={code}
+            width={'100%'}
+            readonly={false}
+            onChange={(value: string) => setCode(value)}
+          />
         </div>
         <div>
           <h3>{t('Output')}</h3>

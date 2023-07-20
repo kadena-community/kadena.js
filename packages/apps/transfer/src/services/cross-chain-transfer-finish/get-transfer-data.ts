@@ -1,7 +1,4 @@
-import {
-  ChainwebChainId,
-  ICommandResult,
-} from '@kadena/chainweb-node-client';
+import { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
 import { getClient } from '@kadena/client';
 import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
@@ -73,7 +70,7 @@ export async function getTransferData({
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    const request = chainInfos.find(chainInfo => requestKey in chainInfo);
+    const request = chainInfos.find((chainInfo) => requestKey in chainInfo);
 
     if (!request) {
       return { error: t('No request key found') };
@@ -93,13 +90,12 @@ export async function getTransferData({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       found?.continuation?.continuation.args as Array<any>;
 
-    const { step, stepHasRollback, pactId } = found
-      ?.continuation as IPactExec;
+    const { step, stepHasRollback, pactId } = found?.continuation as IPactExec;
 
     return {
       tx: {
         sender: {
-          chain: "1", // todo: fix typing. // found.chainId.toString() as ChainwebChainId,
+          chain: '1', // todo: fix typing. // found.chainId.toString() as ChainwebChainId,
           account: senderAccount,
         },
         receiver: {

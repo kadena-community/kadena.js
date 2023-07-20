@@ -1,4 +1,7 @@
-import { ChainwebChainId, ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import {
+  ChainwebChainId,
+  ChainwebNetworkId,
+} from '@kadena/chainweb-node-client';
 import { getClient, isSignedCommand, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
@@ -69,10 +72,7 @@ export const fundExistingAccount = async (
     chainId,
   });
 
-  transaction.sigs = [
-    { sig: signature1.sig },
-    { sig: signature2.sig },
-  ];
+  transaction.sigs = [{ sig: signature1.sig }, { sig: signature2.sig }];
 
   const { submit, pollStatus } = getClient(apiHost);
 

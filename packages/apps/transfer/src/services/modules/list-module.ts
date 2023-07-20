@@ -1,5 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { Pact, getClient } from '@kadena/client';
+import { getClient, Pact } from '@kadena/client';
 import { createExp } from '@kadena/pactjs';
 
 import {
@@ -27,10 +27,12 @@ export const listModules = async (
 ): Promise<IModulesResult> => {
   debug(listModules.name);
   const networkId = chainNetwork[network].network;
-  const { local } = getClient(getKadenaConstantByNetwork(network).apiHost({
-    networkId,
-    chainId,
-  }));
+  const { local } = getClient(
+    getKadenaConstantByNetwork(network).apiHost({
+      networkId,
+      chainId,
+    }),
+  );
 
   const transaction = Pact.builder
     .execution(Pact.modules['list-modules']())

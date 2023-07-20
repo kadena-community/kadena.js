@@ -1,12 +1,16 @@
-import { Pact, signWithChainweaver, getClient, isSignedCommand } from '@kadena/client';
+import {
+  getClient,
+  isSignedCommand,
+  Pact,
+  signWithChainweaver,
+} from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
 const HELP: string = `Usage example: \n\nts-node transfer-create-with-chainweaver.ts k:{senderPublicKey} k:{receiverPublicKey} {amount}`;
-const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' =
-  'testnet04';
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' = 'testnet04';
 const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 5) {
@@ -32,27 +36,24 @@ async function transferCreate(
   const senderPublicKey = accountKey(sender);
   const pactDecimal: IPactDecimal = { decimal: `${amount}` };
 
-  const {
-    submit,
-    pollStatus,
-  } = getClient(API_HOST);
+  const { submit, pollStatus } = getClient(API_HOST);
 
   const transaction = Pact.builder
     .execution(
-        Pact.modules.coin['transfer-create'](
-          sender,
-          receiver,
-          () => '(read-keyset "ks")',
-          pactDecimal
-        )
+      Pact.modules.coin['transfer-create'](
+        sender,
+        receiver,
+        () => '(read-keyset "ks")',
+        pactDecimal,
+      ),
     )
     .addData('ks', {
       keys: [accountKey(receiver)],
       pred: 'keys-all',
     })
     .addSigner(senderPublicKey, (withCap: any) => [
-        withCap('coin.TRANSFER', sender, receiver, pactDecimal),
-        withCap('coin.GAS'),
+      withCap('coin.TRANSFER', sender, receiver, pactDecimal),
+      withCap('coin.GAS'),
     ])
     .setMeta({ chainId: '1', sender: sender })
     .setNetworkId(NETWORK_ID)

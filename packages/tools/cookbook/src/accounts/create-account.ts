@@ -1,11 +1,15 @@
-import { Pact, signWithChainweaver, getClient, isSignedCommand } from '@kadena/client';
+import {
+  getClient,
+  isSignedCommand,
+  Pact,
+  signWithChainweaver,
+} from '@kadena/client';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
 const HELP: string = `Usage example: \n\nts-node create-account.js k:{gasProviderPublicKey} k:{receiverPublicKey}`;
-const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' =
-  'testnet04';
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' = 'testnet04';
 const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 4) {
@@ -30,18 +34,13 @@ async function createAccount(
 
   const transaction = Pact.builder
     .execution(
-        Pact.modules.coin['create-account'](
-          receiver,
-          () => '(read-keyset "ks")',
-        )
+      Pact.modules.coin['create-account'](receiver, () => '(read-keyset "ks")'),
     )
     .addData('ks', {
       keys: [accountKey(receiver)],
       pred: 'keys-all',
     })
-    .addSigner(gasProviderPublicKey, (withCap: any) => [
-        withCap('coin.GAS'),
-    ])
+    .addSigner(gasProviderPublicKey, (withCap: any) => [withCap('coin.GAS')])
     .setMeta({ chainId: '1', sender: gasProvider })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
@@ -53,10 +52,7 @@ async function createAccount(
     return;
   }
 
-  const {
-    submit,
-    pollStatus,
-  } = getClient(API_HOST);
+  const { submit, pollStatus } = getClient(API_HOST);
 
   const requestKey = await submit(signedTransaction);
   console.log('request key', requestKey);
