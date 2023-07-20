@@ -51,10 +51,10 @@ pre-requisites.
   required for testing in the SDK. You can get up and running with the SDK using
   this tutorial.
 
-- [Project: Loans](/learn-pact/beginner/loans) : You will be building a REPL
-  file for the Loans project covered in a separate tutorial. This isn’t required
-  but is a helpful way to better understand the smart contract used throughout
-  this tutorial.
+- [Project: Loans](/docs/pact/beginner/loans) : You will be building a REPL file
+  for the Loans project covered in a separate tutorial. This isn’t required but
+  is a helpful way to better understand the smart contract used throughout this
+  tutorial.
 
 ## REPL Overview
 
@@ -88,7 +88,7 @@ to code for yourself in a local or production environment. Things like loading
 the pact file into the REPL, setting up the environment data and keys, and
 making function calls will all be done from within the REPL file.
 
-![3-online-editor-callouts](/assets/docs.png)
+![3-online-editor-callouts](/assets/docs/3-online-editor-callouts-e658cfb55f5db40590426ae1364d01bb.png)
 
 You will complete all of this and other important testing features using the
 Pact REPL only built-in functions.
@@ -320,11 +320,11 @@ within the module.
 For this code challenge, you will need to make calls to a few functions from the
 loans project. Here is a brief overview of each of the functions you will call.
 
-| function                                                      | purpose                                                             |
-| ------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [create-a-loan](/learn-pact/beginner/loans/#52-create-a-loan) | Accepts parameters to add the appropriate information to each table |
-| [assign-a-loan](/learn-pact/beginner/loans/#53-assign-a-loan) | Assigns a loan to an entity.                                        |
-| [sell-a-loan](/learn-pact/beginner/loans/#54-sell-a-loan)     | Sell a loan and log details in the loan history table.              |
+| function                                                  | purpose                                                             |
+| --------------------------------------------------------- | ------------------------------------------------------------------- |
+| [create-a-loan](/docs/pact/beginner/loans#52-createaloan) | Accepts parameters to add the appropriate information to each table |
+| [assign-a-loan](/docs/pact/beginner/loans#53-assignaloan) | Assigns a loan to an entity.                                        |
+| [sell-a-loan](/docs/pact/beginner/loans#54-sellaloan)     | Sell a loan and log details in the loan history table.              |
 
 Follow the links provided or view the loans.pact file for more details.
 
@@ -341,7 +341,7 @@ from the loans.pact file and provide your own inputs as needed.
 :::info
 
 If you have not already completed the
-[Project: Loans tutorial](/learn-pact/beginner/loans/)
+[Project: Loans tutorial](/docs/pact/beginner/loans)
 
 , try working through this tutorial to build the entire Loans smart contract for
 yourself!
@@ -357,10 +357,10 @@ challenge for guidance.
 
 Here is a brief overview of the functions you will call in this challenge.
 
-| function                                                                         | purpose                                      |
-| -------------------------------------------------------------------------------- | -------------------------------------------- |
-| [read-loan-inventory](/learn-pact/beginner/loans/#59-read-loan-inventory)        | Reads all loans in the loan inventory table. |
-| [read-loans-with-status](/learn-pact/beginner/loans/#510-read-loans-with-status) | Reads all loans with a specific status.      |
+| function                                                                    | purpose                                      |
+| --------------------------------------------------------------------------- | -------------------------------------------- |
+| [read-loan-inventory](/docs/pact/beginner/loans#59-readloaninventory)       | Reads all loans in the loan inventory table. |
+| [read-loans-with-status](/docs/pact/beginner/loans#510-readloanswithstatus) | Reads all loans with a specific status.      |
 
 :::caution Code Challenge
 
@@ -503,7 +503,7 @@ contracts they are testing.
 
 **Navigate to atoz > keysets > keysets.repl** to view one of these examples.
 
-![6-keysets-repl](/assets/docs/6-keysets-repl.png)
+![6-keysets-repl](/assets/docs/6-keysets-repl-5d449f3cba88a30eb9d0613902e9d99f.png)
 
 In this file you will notice the use of a new built-in function named
 **expect-failure**. Both expect-failure and expect allow you to test if the
@@ -536,7 +536,7 @@ After making this change, the filename **keysets.repl** should now have a red
 squiggle under it and line 35 should have a red dot next to it. Both of these
 indicate that a test is failing within the REPL file.
 
-![7-errors](/assets/docs/7-errors.png)
+![7-errors](/assets/docs/7-errors-46716e2cc8d021cfc8ee72d0ced335a9.png)
 
 To get more information, you can click the dot on line 35 and select the
 triangle to view the source of the error as shown below. Using this detailed

@@ -16,7 +16,7 @@ async function main(): Promise<void> {
       Pact.modules.coin['transfer-create'](
         sender,
         receiver,
-        "(read-keyset 'ks)",
+        () => "(read-keyset 'ks)",
         amount,
       ),
     )
@@ -42,8 +42,8 @@ async function main(): Promise<void> {
   const signedTr = await signWithChainweaver(transaction); // sign
 
   if (isSignedCommand(signedTr)) {
-    const requestKeys = await submit(signedTr);
-    const result = pollStatus(requestKeys);
+    const requestKey = await submit(signedTr);
+    const result = pollStatus(requestKey);
     console.log(result);
   }
 }

@@ -251,7 +251,16 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @alpha (undocumented)
+export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
+
+// @alpha (undocumented)
 export const Pact: IPact;
+
+// @alpha (undocumented)
+export type ReadKeyset = <TKey extends string>(key: TKey) => () => `(read-keyset "${TKey}")`;
+
+// @alpha (undocumented)
+export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;
