@@ -11,8 +11,8 @@ describe('parseType', () => {
 
   it('parses a Date object', () => {
     jest.useFakeTimers();
-    const start = new Date();
-    expect(parseAsPactValue(start)).toEqual(`(time "${start.toISOString()}")`);
+    const start = new Date('2023-07-20T14:55:11.139Z');
+    expect(parseAsPactValue(start)).toEqual(`(time "2023-07-20T14:55:11Z")`);
   });
 
   it('throws exception if number is not integer', () => {
