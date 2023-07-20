@@ -15,8 +15,15 @@ import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
 import { Translate } from 'next-translate';
 
+export enum StatusId {
+  Error = 'error',
+  Pending = 'pending',
+  Success = 'success',
+  NotFound = 'not found',
+}
+
 export interface IStatusData {
-  id?: number;
+  id?: StatusId;
   status?: string;
   description?: string;
   error?: string;
@@ -55,7 +62,7 @@ export async function getTransferStatus({
     // If not found or error
     if (Boolean(transferData?.error) || !transferData?.tx) {
       onPoll({
-        id: 0,
+        id: StatusId.Error,
         status: t('Error'),
         description: transferData.error ?? t('Transfer not found'),
       });
@@ -67,7 +74,7 @@ export async function getTransferStatus({
     // If transfer has no result
     if (!result) {
       onPoll({
-        id: 0,
+        id: StatusId.Error,
         status: t('Error'),
         description: t('Transfer with no result'),
       });
@@ -77,7 +84,7 @@ export async function getTransferStatus({
     // If transfer failed
     if (result.status === 'failure') {
       onPoll({
-        id: 0,
+        id: StatusId.Error,
         status: t('Error'),
         //@ts-ignore
         description: result.error.message,
@@ -125,7 +132,7 @@ export async function getTransferStatus({
     }
 
     onPoll({
-      id: 3,
+      id: StatusId.Success,
       status: t('Success'),
       description: t('Transfer completed successfully'),
       senderAccount: sender.account,
@@ -138,7 +145,7 @@ export async function getTransferStatus({
   } catch (error) {
     debug(error);
     onPoll({
-      id: 0,
+      id: StatusId.Error,
       status: t('Error'),
       description: t('Transfer not found'),
     });
@@ -204,7 +211,7 @@ export async function getXChainTransferInfo({
       String(response?.result?.error?.message).includes('pact completed')
     ) {
       return {
-        id: 3,
+        id: StatusId.Success,
         status: t('Success'),
         description: t('Transfer completed successfully'),
         senderAccount: senderAccount,
@@ -214,7 +221,7 @@ export async function getXChainTransferInfo({
 
     if (response?.result?.status === 'success') {
       return {
-        id: 2,
+        id: StatusId.Pending,
         status: t('Pending'),
         description: t('Transfer pending - waiting for continuation command'),
         senderAccount: senderAccount,
@@ -223,14 +230,14 @@ export async function getXChainTransferInfo({
     }
 
     return {
-      id: 0,
+      id: StatusId.Error,
       status: t('Error'),
       description: t('Transfer not found'),
     };
   } catch (error) {
     debug(error);
     return {
-      id: 0,
+      id: StatusId.Error,
       status: t('Error'),
       description: t('Transfer not found'),
     };
@@ -276,7 +283,7 @@ export async function checkForProof({
         // Avoid status update on first two polls (to avoid flickering)
         if (count > 1) {
           onPoll({
-            id: 1,
+            id: StatusId.Pending,
             status: t('Pending'),
             description: t('Transfer pending - waiting for proof'),
             senderAccount,
@@ -292,7 +299,7 @@ export async function checkForProof({
   } catch (error) {
     debug(error);
     onPoll({
-      id: 0,
+      id: StatusId.Error,
       status: t('Error'),
       description: t('Could not obtain proof information'),
     });

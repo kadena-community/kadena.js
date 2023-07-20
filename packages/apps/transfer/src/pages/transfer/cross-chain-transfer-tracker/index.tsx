@@ -28,6 +28,7 @@ import {
 import {
   getTransferStatus,
   IStatusData,
+  StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import Debug from 'debug';
@@ -165,7 +166,7 @@ const CrossChainTransferTracker: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.QuickStart}
-              labelValue={[
+              labelValues={[
                 {
                   label: t('Sender'),
                   value: data.senderAccount || '',
@@ -195,11 +196,11 @@ const CrossChainTransferTracker: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={
-                data?.id === 3
+                data?.id === StatusId.Success
                   ? ProductIcon.Receiver
                   : ProductIcon.ReceiverInactive
               }
-              labelValue={[
+              labelValues={[
                 {
                   label: t('Receiver'),
                   value: data.receiverAccount || '',

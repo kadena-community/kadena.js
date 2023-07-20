@@ -307,7 +307,7 @@ const CrossChainTransferFinisher: FC = () => {
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
             <TrackerCard
               variant="vertical"
-              labelValue={[
+              labelValues={[
                 {
                   label: t('Network'),
                   value: chainNetwork[network].network,
@@ -322,7 +322,7 @@ const CrossChainTransferFinisher: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.QuickStart}
-              labelValue={[
+              labelValues={[
                 {
                   label: t('Sender'),
                   value: pollResults.tx.sender.account,
@@ -338,7 +338,7 @@ const CrossChainTransferFinisher: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.Gas}
-              labelValue={[
+              labelValues={[
                 {
                   label: t('Gas Payer'),
                   value: kadenaXChainGas,
@@ -354,7 +354,7 @@ const CrossChainTransferFinisher: FC = () => {
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.Receiver}
-              labelValue={[
+              labelValues={[
                 {
                   label: t('Receiver'),
                   value: pollResults.tx.receiver.account,
