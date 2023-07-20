@@ -31,8 +31,8 @@ async function transactionMain(): Promise<void> {
   const tr = await signWithChainweaver(tx);
 
   if (isSignedCommand(tr)) {
-    const requestKeys = await submit(tr);
-    const result = await pollStatus(requestKeys);
+    const requestKey = await submit(tr);
+    const result = await pollStatus(requestKey);
     console.log(result);
   }
 }

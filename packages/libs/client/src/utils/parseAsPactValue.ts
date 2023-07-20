@@ -1,6 +1,11 @@
 import { PactNumber } from '@kadena/pactjs';
 import { PactLiteral } from '@kadena/types';
 
+const isDate = (obj: unknown): obj is Date => {
+  if (typeof obj === 'object' && obj instanceof Date) return true;
+  return false;
+};
+
 /**
  * @internal
  */
@@ -15,6 +20,8 @@ export function parseAsPactValue(
       if ('int' in arg) {
         return new PactNumber(arg.int).toInteger();
       }
+      if (isDate(arg)) return `(time "${arg.toISOString()}")`;
+
       return arg;
     }
     case 'number':
@@ -26,7 +33,7 @@ export function parseAsPactValue(
     case 'function':
       return arg();
     case 'boolean':
-      return true;
+      return arg;
     default:
       return arg;
   }

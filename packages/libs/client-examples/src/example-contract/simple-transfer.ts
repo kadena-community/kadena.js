@@ -23,8 +23,8 @@ async function transfer(
   console.log('transation.sigs', JSON.stringify(signedTr.sigs, null, 2));
 
   if (isSignedCommand(signedTr)) {
-    const requestKeys = await submit(signedTr);
-    const result = pollStatus(requestKeys);
+    const requestKey = await submit(signedTr);
+    const result = pollStatus(requestKey);
     console.log(result);
   }
 }

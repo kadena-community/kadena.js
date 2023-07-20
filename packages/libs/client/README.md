@@ -169,7 +169,7 @@ Create a new file and name it `transfer.ts` (or `.js`):
 import { Pact } from '@kadena/client';
 
 const unsignedTransaction = Pact.builder
-  .execute(
+  .execution(
     Pact.modules.coin.transfer('k:your-pubkey', 'k:receiver-pubkey', {
       decimal: '231',
     }),
@@ -260,7 +260,7 @@ const client = getClient(
 );
 
 const unsignedTransaction = Pact.builder
-  .execute('(format "Hello {}!" [(read-msg "person")])')
+  .execution('(format "Hello {}!" [(read-msg "person")])')
   // add signer(s) if its required
   .addSigner('your-pubkey')
   // set chian id and sender

@@ -3,7 +3,7 @@ import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
 export const vars = createGlobalTheme(':root', {
   fonts: {
     $main: "'Haas Grotesk Display', -apple-system, sans-serif",
-    $mono: "'Kadena Code', Menlo, monospace",
+    $mono: "'Kode Mono', Menlo, monospace",
   },
   fontSizes: {
     $xs: '0.75rem', // 12px
@@ -33,7 +33,7 @@ export const vars = createGlobalTheme(':root', {
     $normal: '400',
     $medium: '500',
     $semiBold: '700',
-    $bold: '900',
+    $bold: '700',
   },
   radii: {
     $sm: '4px',
@@ -135,7 +135,7 @@ export const vars = createGlobalTheme(':root', {
     $positiveHighContrast: '#113300',
 
     $warningAccent: '#FF9900',
-    $warningSurface: '#2997FF',
+    $warningSurface: '#FFE7C2',
     $warningContrast: '#704300',
     $warningHighContrast: '#3D2500',
 

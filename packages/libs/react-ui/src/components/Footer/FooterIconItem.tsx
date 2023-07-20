@@ -1,8 +1,8 @@
-import { vars } from '../../styles';
 import { SystemIcon } from '../';
 
-import { colorVariants, iconBoxClass, iconTextClass } from './Footer.css';
+import { footerVariants, iconButtonClass, iconTextClass } from './Footer.css';
 
+import { FooterVariant } from '@components/Footer/Footer';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
@@ -11,43 +11,30 @@ export interface IFooterIconItemProps
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   onClick?: React.MouseEventHandler;
   text?: string;
-  color?: keyof typeof colorVariants;
+  variant?: FooterVariant;
 }
 
 export const FooterIconItem: FC<IFooterIconItemProps> = ({
-  color = 'default',
   icon,
   onClick,
   text,
+  variant = 'web',
 }) => {
   const Icon = icon;
-  const iconTextClassList = classNames(iconTextClass, colorVariants[color]);
 
-  type ColorKey = keyof typeof vars.colors;
-  const getColor = (color: string): string => {
-    const contrast: ColorKey = `$${color}Contrast` as ColorKey;
-
-    if (color === 'default') {
-      return vars.colors.$neutral3;
-    }
-
-    if (color === 'inverted') {
-      return vars.colors.$neutral2;
-    }
-
-    return vars.colors[contrast];
-  };
+  const buttonClassList = classNames(iconButtonClass, footerVariants[variant]);
+  const textClassList = classNames(iconTextClass, footerVariants[variant]);
 
   return (
     <button
-      className={iconBoxClass}
+      className={buttonClassList}
       onClick={onClick}
       data-testid="kda-footer-icon-item"
     >
       {text !== undefined ? (
-        <span className={iconTextClassList}>{text}</span>
+        <span className={textClassList}>{text}</span>
       ) : null}
-      <Icon size="sm" color={getColor(color)} />
+      <Icon size="sm" color="inherit" />
     </button>
   );
 };

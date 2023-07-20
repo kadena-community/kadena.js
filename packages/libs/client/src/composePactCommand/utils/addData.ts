@@ -1,13 +1,5 @@
 import { IPactCommand } from '../../interfaces/IPactCommand';
 
-type ReadKeyset = <TKey extends string>(key: TKey) => `(read-keyset "${TKey}")`;
-
-/**
- *
- * @alpha
- */
-export const readKeyset: ReadKeyset = (key) => `(read-keyset "${key}")`;
-
 type AddDataReturnValue<TCmd, TKey extends string, TValue> = TCmd extends {
   payload: { cont: unknown };
 }

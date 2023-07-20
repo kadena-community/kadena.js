@@ -69,8 +69,11 @@ ts-node src/accounts/transfer-create.ts senderAccount receiverAccount 1
 
 [1]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client#kadenajs---client
-[2]: ./src/accounts/create-account.ts
-[3]: ./src/accounts/transfer-create.ts
-[4]: ./src/accounts/get-balance.ts
+[2]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/cookbook/src/accounts/create-account.ts
+[3]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/cookbook/src/accounts/transfer-create.ts
+[4]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/cookbook/src/accounts/get-balance.ts
 [5]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client#load-contracts-from-the-blockchain

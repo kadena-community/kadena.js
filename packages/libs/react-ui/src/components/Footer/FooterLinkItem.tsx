@@ -1,57 +1,37 @@
-import { vars } from '../../styles';
+import { footerVariants, linkBoxClass, linkClass } from './Footer.css';
 
-import { colorVariants, linkBoxClass, linkClass } from './Footer.css';
-
+import { FooterVariant } from '@components/Footer/Footer';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export type Target = '_self' | '_blank';
 export interface IFooterLinkItemProps {
   children: React.ReactNode;
-  color?: keyof typeof colorVariants;
+  variant?: FooterVariant;
 }
 
 export const FooterLinkItem: FC<IFooterLinkItemProps> = ({
   children,
-  color = 'default',
+  variant = 'web',
 }) => {
-  type ColorKey = keyof typeof vars.colors;
-  const getColor = (color: string): string => {
-    const contrast: ColorKey = `$${color}Contrast` as ColorKey;
-    console.log(contrast);
-    if (color === 'default') {
-      return vars.colors.$neutral3;
-    }
-
-    if (color === 'inverted') {
-      return vars.colors.$neutral2;
-    }
-
-    return vars.colors[contrast];
-  };
-
   const colorStyles = {
-    color: getColor(color),
-    textDecorationColor: getColor(color),
+    color: 'inherit',
+    textDecorationColor: 'inherit',
   };
 
   const clones = React.Children.map(children, (child) => {
     // @ts-ignore
     return React.cloneElement(child, {
-      className: linkClass,
+      classNames: [linkClass, footerVariants[variant]],
       style: colorStyles,
     });
   });
 
-  // if(!child) {
-  //  return
-  // }
-
-  const classList = classNames(linkClass, colorVariants[color]);
+  const classList = classNames(linkBoxClass, footerVariants[variant]);
 
   return (
-    <div className={linkBoxClass} data-testid="kda-footer-link-item">
-      <a className={classList}>{clones}</a>
+    <div className={classList} data-testid="kda-footer-link-item">
+      <a className={linkClass}>{clones}</a>
     </div>
   );
 };
