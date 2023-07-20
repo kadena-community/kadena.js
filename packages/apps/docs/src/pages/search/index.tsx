@@ -21,7 +21,11 @@ const Search: FC = () => {
     conversation,
     error,
   } = useSearch();
-  const { results: staticSearchResults } = useSemanticSearch(query);
+  const {
+    results: semanticResults,
+    error: semanticError,
+    isLoading: semanticIsLoading,
+  } = useSemanticSearch(query);
 
   return (
     <>
@@ -43,7 +47,9 @@ const Search: FC = () => {
       <Content id="maincontent" layout="home">
         <Article>
           <SearchResults
-            staticSearchResults={staticSearchResults}
+            semanticResults={semanticResults}
+            semanticError={semanticError}
+            semanticIsLoading={semanticIsLoading}
             conversation={conversation}
             outputStream={outputStream}
             query={query}

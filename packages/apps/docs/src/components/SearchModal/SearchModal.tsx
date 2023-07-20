@@ -1,6 +1,6 @@
 import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 
-import { SearchResults } from '../Search/SearchResults';
+import { SearchResults } from '../Search/';
 import { SearchForm } from '../Search/styles';
 
 import { Wrapper } from './styles';
@@ -18,7 +18,11 @@ export const SearchModal: FC = () => {
     outputStream,
     error,
   } = useSearch();
-  const { results: staticSearchResults } = useSemanticSearch(query);
+  const {
+    results: semanticResults,
+    error: semanticError,
+    isLoading: semanticIsLoading,
+  } = useSemanticSearch(query);
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -51,12 +55,15 @@ export const SearchModal: FC = () => {
         </Box>
 
         <SearchResults
-          staticSearchResults={staticSearchResults}
+          semanticResults={semanticResults}
+          semanticError={semanticError}
+          semanticIsLoading={semanticIsLoading}
           conversation={conversation}
           outputStream={outputStream}
           limitResults={10}
           query={query}
           error={error}
+          hasScroll={true}
         />
       </Wrapper>
     </>
