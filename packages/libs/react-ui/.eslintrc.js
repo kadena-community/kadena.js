@@ -13,4 +13,11 @@ module.exports = {
   env: {
     es6: true,
   },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+      },
+    },
+  },
 };
