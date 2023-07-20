@@ -16,3 +16,8 @@ interface IScoredVectorMetaData {
   filePath: string;
   content: string;
 }
+
+interface IFrontmatterData {
+  title?: string;
+  description?: string;
+}

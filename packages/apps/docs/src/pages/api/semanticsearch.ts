@@ -2,20 +2,7 @@ import { embed } from '@/utils/embedder';
 import { PineconeClient } from '@pinecone-database/pinecone';
 import { ScoredVector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
 import fs from 'fs';
-import yaml from 'js-yaml';
-import { fromMarkdown } from 'mdast-util-from-markdown';
-import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
-import { frontmatter } from 'micromark-extension-frontmatter';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-interface IFrontmatterData {
-  title?: string;
-  description?: string;
-}
-
-interface IBranch {
-  value: string;
-}
 
 const namespace = 'kda-docs';
 const PINECONE_URL = process.env.PINECONE_URL;
@@ -42,16 +29,6 @@ const getPineconeClient = async (): Promise<PineconeClient> => {
     });
   }
   return pineconeClient;
-};
-
-const getFrontMatter = (doc: string): IFrontmatterData => {
-  const tree = fromMarkdown(doc.toString(), {
-    extensions: [frontmatter()],
-    mdastExtensions: [frontmatterFromMarkdown()],
-  });
-  const value = tree.children[0] as IBranch;
-
-  return yaml.load(value.value);
 };
 
 const getData = (file: string): IFrontmatterData => {
