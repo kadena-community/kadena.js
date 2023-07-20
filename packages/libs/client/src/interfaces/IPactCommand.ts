@@ -16,7 +16,7 @@ export interface IExecPayloadObject {
 export interface IContinuationPayloadObject {
   cont: {
     pactId?: string;
-    step?: string;
+    step?: number;
     rollback?: boolean;
     data?: Record<string, unknown>;
     proof?: string;
