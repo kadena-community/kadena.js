@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "submit returns single requestKey for one single input + export literal and readKeyset utils",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

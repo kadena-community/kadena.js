@@ -2,10 +2,10 @@ import { visibleClass } from './Tooltip.css';
 
 import React from 'react';
 
-export default function tooltipHandler(
+export const tooltipHandler = (
   event: React.MouseEvent<HTMLElement>,
   ref: React.RefObject<HTMLDivElement>,
-): void {
+): void => {
   const target = event.target as HTMLElement;
   const rect = target.getBoundingClientRect();
   const node = ref.current;
@@ -42,4 +42,4 @@ export default function tooltipHandler(
       node.style.left = `${rect.left + rect.width + window.scrollX}px`;
       break;
   }
-}
+};

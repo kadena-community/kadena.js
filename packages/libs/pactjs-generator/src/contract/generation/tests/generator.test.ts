@@ -165,4 +165,27 @@ describe('generateDts', () => {
     const dts = generateDts('user.test-module', modules);
     expect(dts).toMatchSnapshot();
   });
+
+  it('adds IPactReference as the arg type if it is a module reference', async () => {
+    const module = `(namespace "user")
+      (module test-module governance
+        @doc "this is module doc"
+        (defcap test-cap (name:string)
+          @doc "this is defcap doc"
+          true)
+        (defun test-func:bool (parameter-one:module{schema-one} parameter-two:bool )
+          @doc "this is defun doc"
+          (with-capability (test-cap "name"))
+        )
+      )
+    `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
+  });
 });

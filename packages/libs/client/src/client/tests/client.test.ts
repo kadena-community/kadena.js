@@ -123,7 +123,7 @@ describe('client', () => {
       );
     });
 
-    it('returns requestKeys', async () => {
+    it('returns requestKey if input is a single command', async () => {
       (chainwebClient.send as jest.Mock).mockResolvedValue({
         requestKeys: ['test-key'],
       });
@@ -139,7 +139,28 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestKeys = await submit(body);
+      const requestKey = await submit(body);
+
+      expect(requestKey).toEqual('test-key');
+    });
+
+    it('returns requestKeys if input is an array', async () => {
+      (chainwebClient.send as jest.Mock).mockResolvedValue({
+        requestKeys: ['test-key'],
+      });
+
+      const { submit } = getClient(hostApiGenerator);
+
+      const networkId = 'mainnet01';
+      const chainId = '1';
+
+      const body = {
+        cmd: JSON.stringify({ networkId, meta: { chainId } }),
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
+      };
+
+      const requestKeys = await submit([body]);
 
       expect(requestKeys).toEqual(['test-key']);
     });
@@ -184,11 +205,11 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestKeys = await submit(body);
+      const requestKey = await submit(body);
 
-      expect(requestKeys).toEqual(['test-key']);
+      expect(requestKey).toEqual('test-key');
 
-      const result = await pollStatus(requestKeys, {
+      const result = await pollStatus(requestKey, {
         interval: 10,
       });
 
