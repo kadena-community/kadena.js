@@ -1,8 +1,4 @@
-import {
-  ChainwebChainId,
-  ChainwebNetworkId,
-  IPollResponse,
-} from '@kadena/chainweb-node-client';
+import { ChainwebChainId, ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { getClient, isSignedCommand, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';

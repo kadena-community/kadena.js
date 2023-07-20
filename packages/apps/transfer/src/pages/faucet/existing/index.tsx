@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { IPollResponse, ICommandResult } from '@kadena/chainweb-node-client';
+=======
+>>>>>>> 4e308226 (fix(transfer): faucet/existing)
 import {
   Breadcrumbs,
   Button,
@@ -38,6 +41,17 @@ const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
 };
 
+interface FundExistingAccountResponseBody {
+  result: {
+    status: string;
+    error: undefined | {
+      message: string;
+    };
+  };
+}
+
+interface FundExistingAccountResponse extends Record<string, FundExistingAccountResponseBody> {}
+
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
@@ -49,26 +63,23 @@ const ExistingAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
 
-  const onPoll = async (
-    transaction: any,
-    pollRequest: Promise<IPollResponse>,
-  ): Promise<void> => {
-    const request = await pollRequest;
-    const result = request[transaction.requestKey!]?.result;
-    const status = result?.status;
-    if (status === 'failure') {
-      const apiErrorMessage = (result.error as { message: string }).message;
-
-      setRequestStatus({ status: 'erroneous', message: apiErrorMessage });
-    }
-  };
-
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       setRequestStatus({ status: 'processing' });
 
       try {
-        await fundExistingAccount(accountName, chainID, AMOUNT_OF_COINS_FUNDED);
+        const result = await fundExistingAccount(
+          accountName,
+          chainID,
+          AMOUNT_OF_COINS_FUNDED,
+        ) as FundExistingAccountResponse;
+
+        const error = Object.values(result).find(response => response.result.status === 'failure');
+
+        if (error) {
+          setRequestStatus({ status: 'erroneous', message: error.result.error?.message || t('An error occurred.')});
+          return;
+        }
 
         setRequestStatus({ status: 'successful' });
       } catch (err) {
