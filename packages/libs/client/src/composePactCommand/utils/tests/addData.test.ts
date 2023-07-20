@@ -31,7 +31,7 @@ describe('addKeyset', () => {
         exec: {
           data: {
             test: {
-              publicKeys: ['p1', 'p2'],
+              keys: ['p1', 'p2'],
               pred: 'keys-one',
             },
           },

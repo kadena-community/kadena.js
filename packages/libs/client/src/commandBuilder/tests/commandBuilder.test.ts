@@ -209,7 +209,7 @@ describe('commandBuilder', () => {
           data: {
             ks: {
               pred: 'keys-all',
-              publicKeys: ['pub1', 'pub2'],
+              keys: ['pub1', 'pub2'],
             },
           },
         },

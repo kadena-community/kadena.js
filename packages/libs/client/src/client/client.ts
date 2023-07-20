@@ -32,7 +32,10 @@ import {
 type IOptions = IPollOptions &
   (INetworkOptions | { networkId?: undefined; chainId?: undefined });
 
-interface ISubmit {
+/**
+ * @alpha
+ */
+export interface ISubmit {
   /**
    * Submits one public (unencrypted) signed command to the blockchain for execution.
    *
@@ -294,6 +297,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
+      console.log('send', hostUrl);
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
       storage.add(hostUrl, requestKeys);
 
