@@ -1,11 +1,10 @@
-import {
-  IFooterIconItemProps,
-  IFooterLinkItemProps,
-  SystemIcon,
-} from './../../';
-import { Footer, FooterVariant, IFooterProps } from './index';
+import { Footer, IFooterIconItemProps, IFooterProps } from './index';
 
-import { Target } from '@components/Footer/FooterLinkItem';
+import {
+  IFooterLinkItemProps,
+  Target,
+} from '@components/Footer/FooterLinkItem';
+import { SystemIcon } from '@components/Icon';
 import { IconType } from '@components/Icon/IconWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

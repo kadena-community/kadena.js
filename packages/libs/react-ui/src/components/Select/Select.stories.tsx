@@ -1,8 +1,7 @@
-import { SystemIcon } from '../Icon';
-
 import { Option } from './Option';
 import { ISelectProps, Select } from './Select';
 
+import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 

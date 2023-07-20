@@ -26,7 +26,7 @@ describe('Footer', () => {
       },
     ];
 
-    const { getByTestId, getAllByTestId } = render(
+    const { getByTestId } = render(
       <Footer.Root>
         <Footer.Panel>
           {menuLinks.map((item, index) => {
