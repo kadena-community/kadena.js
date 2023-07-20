@@ -23,7 +23,7 @@ describe('TrackerCard', () => {
   test('renders correctly', () => {
     const { getByTestId } = render(
       <TrackerCard
-        labelValues={labelValue}
+        labelValue={labelValue}
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
@@ -59,7 +59,7 @@ describe('TrackerCard', () => {
   test('displays correct content', () => {
     render(
       <TrackerCard
-        labelValues={labelValue}
+        labelValue={labelValue}
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
@@ -76,7 +76,7 @@ describe('TrackerCard', () => {
   test('icons and value not in document', () => {
     const { getByTestId } = render(
       <TrackerCard
-        labelValues={labelValue.splice(0, 1)}
+        labelValue={labelValue.splice(0, 1)}
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
@@ -100,7 +100,7 @@ describe('TrackerCard', () => {
   test('masked value not in document', () => {
     const { getByTestId } = render(
       <TrackerCard
-        labelValues={labelValue.splice(-1)}
+        labelValue={labelValue.splice(-1)}
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
@@ -123,7 +123,7 @@ describe('TrackerCard', () => {
   test('empty labelValue prop and helper text results in no label-value containers and no helper text', () => {
     const { getByTestId } = render(
       <TrackerCard
-        labelValues={[]}
+        labelValue={[]}
         variant="vertical"
         icon={ProductIcon.QuickStart}
       />,
@@ -148,7 +148,7 @@ describe('TrackerCard', () => {
   test('no more label-value containers than necessary', () => {
     const { getByTestId } = render(
       <TrackerCard
-        labelValues={labelValue}
+        labelValue={labelValue}
         variant="horizontal"
         helperText="helper text"
         helperTextType="mild"
@@ -171,7 +171,7 @@ describe('TrackerCard', () => {
   test('masked value should not be masked when default visible is true', () => {
     const { getByTestId } = render(
       <TrackerCard
-        labelValues={[
+        labelValue={[
           {
             label: 'Account',
             value: 'k:1234567890abcdef',
