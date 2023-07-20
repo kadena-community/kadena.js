@@ -1,9 +1,13 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { ContCommand } from '@kadena/client';
-import { Button, TextField } from '@kadena/react-ui';
+import {
+  Breadcrumbs,
+  Button,
+  ProductIcon,
+  TextField,
+  TrackerCard,
+} from '@kadena/react-ui';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
-import { DetailCard } from '@/components/Global/DetailsCard';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useAppContext } from '@/context/app-context';
@@ -27,7 +31,6 @@ import {
   StyledTotalChunk,
   StyledTotalContainer,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
-import { FromIconActive, ReceiverIconActive } from '@/resources/svg/generated';
 import {
   finishXChainTransfer,
   ITransferResult,
@@ -36,6 +39,7 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import { formatNumberAsString } from '@/utils/number';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
@@ -202,7 +206,11 @@ const CrossChainTransferFinisher: FC = () => {
   );
 
   return (
-    <MainLayout title={t('Kadena Cross Chain Transfer Finisher')}>
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <StyledFinisherContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -247,7 +255,7 @@ const CrossChainTransferFinisher: FC = () => {
                   }}
                 />
                 <TextField
-                  label={t('Gas Payer Account')}
+                  label={t('Gas Payer')}
                   helperText={
                     isGasStation
                       ? ''
@@ -306,29 +314,67 @@ const CrossChainTransferFinisher: FC = () => {
         {pollResults.tx ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>
-
-            <DetailCard
-              firstTitle={t('Sender')}
-              firstContent={pollResults.tx.sender.account}
-              secondTitle={t('Chain')}
-              secondContent={pollResults.tx.sender.chain}
-              icon={<FromIconActive />}
+            <TrackerCard
+              variant="vertical"
+              labelValues={[
+                {
+                  label: t('Network'),
+                  value: chainNetwork[network].network,
+                },
+                {
+                  label: t('Server'),
+                  value: chainNetwork[network].server,
+                },
+              ]}
             />
 
-            <DetailCard
-              firstTitle={t('Receiver')}
-              firstContent={pollResults.tx.receiver.account}
-              secondTitle={t('Chain')}
-              secondContent={pollResults.tx.receiver.chain}
-              icon={<ReceiverIconActive />}
+            <TrackerCard
+              variant="vertical"
+              icon={ProductIcon.QuickStart}
+              labelValues={[
+                {
+                  label: t('Sender'),
+                  value: pollResults.tx.sender.account,
+                  isAccount: true,
+                },
+                {
+                  label: t('Chain'),
+                  value: pollResults.tx.sender.chain,
+                },
+              ]}
             />
 
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`${pollResults.tx.amount} ${t(
-                'KDA',
-              )}`}</StyledInfoItemLine>
-            </StyledInfoItem>
+            <TrackerCard
+              variant="vertical"
+              icon={ProductIcon.Gas}
+              labelValues={[
+                {
+                  label: t('Gas Payer'),
+                  value: kadenaXChainGas,
+                  isAccount: false,
+                },
+                {
+                  label: t('Price'),
+                  value: formatNumberAsString(gasPrice),
+                },
+              ]}
+            />
+
+            <TrackerCard
+              variant="vertical"
+              icon={ProductIcon.Receiver}
+              labelValues={[
+                {
+                  label: t('Receiver'),
+                  value: pollResults.tx.receiver.account,
+                  isAccount: true,
+                },
+                {
+                  label: t('Chain'),
+                  value: pollResults.tx.receiver.chain,
+                },
+              ]}
+            />
 
             {showMore ? (
               <StyledInfoItem>
@@ -351,7 +397,7 @@ const CrossChainTransferFinisher: FC = () => {
           </StyledInfoBox>
         ) : null}
       </StyledFinisherContent>
-    </MainLayout>
+    </div>
   );
 };
 

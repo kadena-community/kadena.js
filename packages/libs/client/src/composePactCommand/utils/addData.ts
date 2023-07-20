@@ -62,7 +62,7 @@ interface IAddKeyset {
     ...publicKeys: string[]
   ): <TCmd extends Partial<IPactCommand>>(
     cmd: TCmd,
-  ) => AddDataReturnValue<TCmd, TKey, { publicKeys: string[]; pred: PRED }>;
+  ) => AddDataReturnValue<TCmd, TKey, { keys: string[]; pred: PRED }>;
 
   <TKey extends string, PRED extends string>(
     key: TKey,
@@ -70,7 +70,7 @@ interface IAddKeyset {
     ...publicKeys: string[]
   ): <TCmd extends Partial<IPactCommand>>(
     cmd: TCmd,
-  ) => AddDataReturnValue<TCmd, TKey, { publicKeys: string[]; pred: PRED }>;
+  ) => AddDataReturnValue<TCmd, TKey, { keys: string[]; pred: PRED }>;
 }
 
 /**
@@ -81,4 +81,4 @@ export const addKeyset: IAddKeyset = (
   name: string,
   pred: string,
   ...publicKeys: string[]
-) => addData(name, { publicKeys, pred });
+) => addData(name, { keys: publicKeys, pred });
