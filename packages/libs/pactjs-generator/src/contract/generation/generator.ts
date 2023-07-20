@@ -1,90 +1,166 @@
-import { Arg, Defcap, Defun, Module, Output } from '../parsing/parser';
+import { IFunction, IModule } from '../parsing/pactParser';
+import { getModuleFullName } from '../parsing/utils/utils';
+
+import { EOL } from 'os';
 
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',
-  integer: 'IPactInteger',
+  integer: 'IPactInt',
+  string: 'string',
   time: 'Date',
   bool: 'boolean',
-  guard: 'Function',
-  'object{fungible-v2.account-details}': 'object',
+  guard: 'PactReference',
+  object: 'object',
 };
 
-const mapType = (name: string | 'undefined'): string => {
-  if (name === 'undefined') {
+const mapType = (
+  inputType?: string | { kind: string; value: string },
+): string => {
+  if (inputType === undefined) {
     return 'any';
   }
-  if (name in keywordsMap) {
-    return keywordsMap[name];
+  if (typeof inputType === 'string') {
+    return keywordsMap[inputType] ?? 'any';
   }
-  // TODO: add automatic type mapping for other types (like object{fungible-v2....})
-  return name;
+
+  if (typeof inputType === 'object' && inputType.kind === 'module')
+    return 'PactReference';
+  // TODO: import the schema as interface to return kind instead of any
+  // return inputType.kind;
+  return keywordsMap[inputType.kind] ?? 'any';
 };
 
-type ModuleName = string;
-
-function generateModuleName(module: Module): string {
-  if (module.namespace.length === 0) {
-    return module.name;
-  } else {
-    return `${module.namespace}.${module.name}`;
+const getFuncCapInterfaceName = (func: IFunction): string => {
+  if (
+    func.allExtractedCaps === undefined ||
+    func.allExtractedCaps.length === 0
+  ) {
+    return '';
   }
+
+  const prefix = func.kind === 'defpact' ? 'defpact_' : '';
+
+  return `ICapability_${prefix}${func.name.replace(/-/g, '_')}`;
+};
+
+const indent = (str: string, depth = 1): string =>
+  str
+    .split(EOL)
+    .map((line) => `${' '.repeat(depth * 2)}${line}`)
+    .join(EOL);
+
+const getParameters = (
+  list?: Array<{
+    name: string;
+    type:
+      | string
+      | {
+          kind: string;
+          value: string;
+        };
+  }>,
+): string[] => {
+  if (!list) return [];
+  return list.map((arg) => {
+    return `${arg.name.replace(/-/g, '')}: ${mapType(arg.type)}`;
+  });
+};
+
+function genFunCapsInterface(func: IFunction): string {
+  if (
+    func.allExtractedCaps === undefined ||
+    func.allExtractedCaps.length === 0
+  ) {
+    return '';
+  }
+  const interfaceName = getFuncCapInterfaceName(func);
+
+  const cap = func.allExtractedCaps.map((cap) => {
+    let parameters = [`name: "${cap.fullModuleName}.${cap.name}"`];
+    if (cap.capability.parameters) {
+      const args = getParameters(cap.capability.parameters);
+      parameters = [...parameters, ...args];
+    }
+    const comment =
+      cap.capability.doc !== undefined
+        ? `/**${EOL}* ${cap.capability.doc}${EOL}*/`
+        : '';
+    const addCap = `(${EOL}${parameters
+      .map((line) => indent(line))
+      .join(`, ${EOL}`)}): ICapabilityItem`;
+    return { comment, addCap };
+  });
+
+  const capStr = cap.map((c) => `${c.comment}${EOL}${c.addCap},`).join(EOL);
+  return `interface ${interfaceName} {${EOL}${indent(capStr)}${EOL}}`;
 }
+
+const getFunctionType = (func: IFunction): string => {
+  const capInterfaceName = getFuncCapInterfaceName(func) || '';
+  const comment =
+    func.doc !== undefined ? `/**${EOL}* ${func.doc}${EOL}*/${EOL}` : '';
+
+  const parameters = getParameters(func.parameters);
+  const lnBreak = parameters.length > 1;
+  const nl = lnBreak ? EOL : '';
+  const caps = capInterfaceName
+    ? `${capInterfaceName} & ICapability_Coin_GAS`
+    : 'ICapability_Coin_GAS';
+  return indent(
+    `${comment}"${func.name}": (${nl}${parameters
+      .map((d) => (lnBreak ? indent(d) : d))
+      .join(`,${nl}`)}) => string & { capability : ${caps}} `,
+  );
+};
 
 /**
  * @alpha
  */
 export function generateDts(
-  modules: Output,
-  capsInterfaceName: string = 'ICapabilities',
-): Map<ModuleName, string> {
-  const moduleDtss: Map<ModuleName, string> = new Map<ModuleName, string>();
-  for (const ModuleName in modules) {
-    if (Object.prototype.hasOwnProperty.call(modules, ModuleName)) {
-      const module: Module = modules[ModuleName];
-      moduleDtss.set(
-        ModuleName,
-        `
-import type { ICommandBuilder, IPactCommand } from '@kadena/client';
-import type { IPactDecimal, IPactInt } from '@kadena/types';
+  moduleFullName: string,
+  modules: Record<string, IModule>,
+): string {
+  const module = modules[moduleFullName];
+  if (module === undefined) {
+    throw new Error(`Module ${moduleFullName} not found`);
+  }
 
+  if (module.functions === undefined) {
+    throw new Error(`Module ${moduleFullName} has no functions`);
+  }
+
+  const functions = module.functions.filter(({ kind }) => kind === 'defun');
+  const defpacts = module.functions.filter(({ kind }) => kind === 'defpact');
+
+  const capsInterfaces =
+    module.functions
+      ?.map(genFunCapsInterface)
+      .filter(Boolean)
+      .join(EOL.repeat(2)) || '';
+
+  const dts = `
+import type { ICapabilityItem } from '@kadena/client';
+import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+
+interface ICapability_Coin_GAS {
+  (name: 'coin.GAS'): ICapabilityItem;
+}
+${capsInterfaces ? `${EOL}${capsInterfaces}${EOL}` : ''}
 declare module '@kadena/client' {
-  export interface ${capsInterfaceName} {
-    ${Object.keys(module.defcaps)
-      .map((defcapName) => {
-        const defcap: Defcap = module.defcaps[defcapName];
-        return `"${generateModuleName(module)}.${defcapName}": [ ${Object.keys(
-          defcap.args,
-        )
-          .map((argName) => {
-            const defcapArg: Arg = defcap.args[argName];
-            return `${argName.replace(/-/g, '')}: ${mapType(defcapArg.type)}`;
-          })
-          .join(', ')} ]`;
-      })
-      .join(', \n')}
-  }
   export interface IPactModules {
-    "${generateModuleName(module)}": {
-       ${Object.keys(module.defuns)
-         .map((defun) => {
-           const fnc: Defun = module.defuns[defun];
-           return `"${fnc.method}": (${Object.keys(fnc.args)
-             .map((arg) => {
-               const argDef: Arg = fnc.args[arg];
-               return `${argDef.name.replace(/-/, '_')}: ${mapType(
-                 argDef.type,
-               )}`;
-             })
-             .join(
-               ', ',
-             )}) => ICommandBuilder<${capsInterfaceName}> & IPactCommand`;
-         })
-         .join(',\n')}
+    ${module.doc ? `/**${EOL}${indent(module.doc, 2)}${indent(EOL, 2)}*/` : ''}
+    "${getModuleFullName(module)}": {
+${indent(functions.map(getFunctionType).join(`,${EOL}${EOL}`), 2)}
+${
+  defpacts.length > 0
+    ? `
+      "defpact":{
+${indent(defpacts.map(getFunctionType).join(`,${EOL}${EOL}`), 3)}
+      }`
+    : ''
+}
     }
   }
-}`,
-      );
-    }
-  }
-  return moduleDtss;
+}`;
+  return dts;
 }

@@ -56,7 +56,7 @@
     "format:src": "prettier config src --write",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint ./src --ext .js,.ts --fix",
-    "test": "heft test --no-build"
+    "test": "heft test"
   },
   "dependencies": {
     "base64url": "^3.0.1",

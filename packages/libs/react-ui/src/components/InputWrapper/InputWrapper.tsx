@@ -1,9 +1,8 @@
-import { IInputProps } from '../Input/Input';
-
 import { IInputHeaderProps, InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';
 import { Status, statusVariant } from './InputWrapper.css';
 
+import { IInputProps } from '@components/Input';
 import React, { FC, FunctionComponentElement } from 'react';
 
 export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {

@@ -64,7 +64,7 @@ export const Main: FC<IPageProps> = ({
           menuItems={leftMenuTree}
           layout={layoutType}
         />
-        {isOneOfLayoutType(layoutType, 'landing') && title && (
+        {isOneOfLayoutType(layoutType, 'landing', 'blog') && title && (
           <TitleHeader title={title} subTitle={subTitle} icon={pageIcon} />
         )}
 

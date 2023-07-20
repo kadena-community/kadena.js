@@ -9,17 +9,22 @@ export const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
 
 type StartStream = (query: string, conversation: IConversation) => void;
 
+const searchErrorMessage =
+  'There was a problem. Sorry for the inconvenience. Please try again!';
+
 export const useStream = (): [
   StartStream,
   boolean,
   string,
   undefined | StreamMetaData[],
+  undefined | string,
 ] => {
   const [outputStream, setOutputStream] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [metadata, setMetadata] = useState<undefined | StreamMetaData[]>(
     undefined,
   );
+  const [error, setError] = useState<undefined | string>(undefined);
 
   const startStream = useCallback(
     (query: string, conversation: IConversation): void => {
@@ -62,9 +67,9 @@ export const useStream = (): [
 
             if (text) setOutputStream((v) => v + text);
           }
-        } catch (error) {
-          //@TODO: add error message in UI
-          console.error(error);
+        } catch (e) {
+          console.warn('messageListener', e);
+          setError(searchErrorMessage);
           done();
         }
       });
@@ -73,15 +78,16 @@ export const useStream = (): [
         try {
           const data = JSON.parse(event.data);
           setMetadata(data);
-        } catch (error) {
-          //@TODO: add error message in UI
-          console.error(error);
+        } catch (e) {
+          console.warn('metadataListener', e);
+          setError(searchErrorMessage);
+          done();
         }
       });
 
-      source.addEventListener('error', (error) => {
-        //@TODO: add error message in UI
-        console.log(error);
+      source.addEventListener('error', (e) => {
+        console.warn('sourceError', e);
+        setError(searchErrorMessage);
         done();
       });
     },
@@ -94,5 +100,5 @@ export const useStream = (): [
     }
   }, [isStreaming, outputStream]);
 
-  return [startStream, isStreaming, outputStream, metadata];
+  return [startStream, isStreaming, outputStream, metadata, error];
 };

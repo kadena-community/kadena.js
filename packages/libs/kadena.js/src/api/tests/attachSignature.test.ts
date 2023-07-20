@@ -7,7 +7,7 @@ describe('attachSignature', () => {
     const actual = attachSignature(stringifiedPayload, [keyPair]);
     const expected = [signature];
 
-    expect(expected).toEqual(actual);
+    expect(actual).toEqual(expected);
   });
 
   it('returns without sig when no keys are given', () => {

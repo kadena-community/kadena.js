@@ -1,12 +1,17 @@
-/**
- * @alpha
- */
-export * from './pact';
-export * from './contPact';
 export * from './signing';
 export * from './signing-api/v1/quicksign';
 export * from './signing-api/v1/sign';
-export * from './interfaces/IPactCommand';
-export * from './buildCommandFromTemplate';
-export * from './buildUnsignedTransaction';
-export * from './pactCreator';
+export * from './utils/createTransaction';
+export * from './utils/pact-helpers';
+export * from './client';
+
+export type { IPact, IPactModules } from './pact';
+
+export { Pact } from './pact';
+
+export type * from './interfaces/IPactCommand';
+
+export { ICommandResult } from '@kadena/chainweb-node-client';
+export { IPollResponse } from '@kadena/chainweb-node-client';
+export { IPreflightResult } from '@kadena/chainweb-node-client';
+export { IUnsignedCommand, ChainId, ICap, ICommand } from '@kadena/types';

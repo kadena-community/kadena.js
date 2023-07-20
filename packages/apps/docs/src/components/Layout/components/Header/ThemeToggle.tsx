@@ -1,7 +1,7 @@
 import { IconButton, SystemIcons } from '@kadena/react-components';
 
+import { useTheme } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import { useTheme } from 'next-themes';
 import React, { FC, useEffect, useState } from 'react';
 
 export const ThemeToggle: FC = () => {

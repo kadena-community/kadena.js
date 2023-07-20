@@ -7,14 +7,14 @@ const DOCSROOT = './src/pages/docs/';
 
 const createFrontMatter = (title, menuTitle, order, editLink) => {
   return `---
-title: ${title}  
-description: Kadena makes blockchain work for everyone.  
-menu: ${menuTitle}  
-label: ${title}  
+title: ${title}
+description: Kadena makes blockchain work for everyone.
+menu: ${menuTitle}
+label: ${title}
 order: ${order}
 editLink: ${editLink}
-layout: full  
----  
+layout: full
+---
 `;
 };
 const getTypes = (tree, type, arr = []) => {
@@ -361,33 +361,6 @@ const imports = [
     title: 'PactJS Generator Api',
     options: {
       RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /libs/pactjs-test-project */
-  {
-    file: 'libs/pactjs-test-project/README.md',
-    destination: 'pact/pactjs-test-project',
-    title: 'Test Project',
-    options: {
-      RootOrder: 10,
-    },
-  },
-  {
-    file: 'libs/pactjs-test-project/etc/pactjs-generator.api.md',
-    destination: 'pact/pactjs-test-project/api',
-    title: 'Generator Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  {
-    file: 'libs/pactjs-test-project/etc/pactjs-test-project.api.md',
-    destination: 'pact/pactjs-test-project/project-api',
-    title: 'Test Project Api',
-    options: {
-      RootOrder: 98,
       hideEditLink: true,
     },
   },

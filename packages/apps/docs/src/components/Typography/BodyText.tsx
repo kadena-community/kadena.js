@@ -1,4 +1,4 @@
-import { ITextProps, Text } from '@kadena/react-components';
+import { ITextProps, Text } from '@kadena/react-ui';
 
 import React, { FC, ReactNode } from 'react';
 

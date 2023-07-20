@@ -4,43 +4,25 @@
 
 ```ts
 
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+import { ChainId } from '@kadena/types';
 import Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
+import { IExecPayload } from '@kadena/types';
+import { ILocalCommandResult } from '@kadena/chainweb-node-client';
+import { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
-import { ISignatureJson } from '@kadena/types';
+import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
-import { PactValue } from '@kadena/types';
-import { SendResponse } from '@kadena/chainweb-node-client';
+import { LocalRequestBody } from '@kadena/chainweb-node-client';
+import { LocalResponse } from '@kadena/chainweb-node-client';
 import { SessionTypes } from '@walletconnect/types';
 
-// @alpha (undocumented)
-export function buildCommandFromTemplate(parts: string[], holes: string[], args: Record<string, string>): string;
-
-// Warning: (ae-internal-missing-underscore) The name "buildUnsignedTransaction" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export function buildUnsignedTransaction(parts: string[], holes: string[], args: Record<string, string>): IPactCommand & ICommandBuilder<{}>;
-
-// @alpha
-export class ContCommand extends PactCommand implements IContCommand, IContCommandBuilder<Record<string, unknown>> {
-    constructor(proof: string, step: number, pactId: string, rollback: boolean);
-    createCommand(): IUnsignedCommand;
-    // (undocumented)
-    pactId: string;
-    // (undocumented)
-    proof: string;
-    // (undocumented)
-    rollback: boolean;
-    // (undocumented)
-    step: number;
-}
+export { ChainId }
 
 // @alpha (undocumented)
-export function createPactCommandFromTemplate(tpl: IPactCommand): PactCommand;
+export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
 // Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
@@ -53,8 +35,15 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 // @alpha (undocumented)
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
-// @alpha
-export function getContCommand(requestKey: string, targetChainId: ChainwebChainId, apiHost: string, step: number, rollback: boolean): Promise<ContCommand>;
+// Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const getClient: IGetClient;
+
+export { ICap }
+
+// @alpha (undocumented)
+export type ICapabilityItem = ICap;
 
 // @alpha (undocumented)
 export interface IChainweaverCap {
@@ -98,87 +87,45 @@ export interface IChainweaverSignBody {
     ttl: number;
 }
 
+export { ICommand }
+
+export { ICommandResult }
+
 // @alpha (undocumented)
-export interface ICommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
+export interface IContinuationPayloadObject {
     // (undocumented)
-    addCap<TCap extends keyof TCaps>(caps: TCap, signer: string, ...args: TCaps[TCap]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
-    addData: (data: IPactCommand['data']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
-    addSignatures(...sig: {
-        pubKey: string;
-        sig: string;
-    }[]): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
-    createCommand(): IUnsignedCommand;
-    // (undocumented)
-    local(apiHost: string, options?: any): Promise<any>;
-    // (undocumented)
-    poll(apiHost: string): Promise<IPollResponse>;
-    // (undocumented)
-    pollUntil(apiHost: string, options?: {
-        interval?: number;
-        timeout?: number;
-        onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
-    }): Promise<ICommandResult>;
-    // (undocumented)
-    send(apiHost: string): Promise<SendResponse>;
-    // (undocumented)
-    setMeta: (publicMeta: Partial<IPactCommand['publicMeta']> & {
-        sender: IPactCommand['publicMeta']['sender'];
-    }, networkId?: IPactCommand['networkId']) => ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
-    setNonceCreator(nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType): ICommandBuilder<TCaps, TArgs> & IPactCommand;
-    // (undocumented)
-    status: string;
+    cont: {
+        pactId?: string;
+        step?: string;
+        rollback?: boolean;
+        data?: Record<string, unknown>;
+        proof?: string;
+    };
 }
 
 // @alpha (undocumented)
-export interface IContCommand {
+export interface IExecPayloadObject {
     // (undocumented)
-    data: Record<string, unknown>;
-    // (undocumented)
-    networkId: ChainwebNetworkId;
-    // (undocumented)
-    nonce?: NonceType;
-    // (undocumented)
-    pactId: string;
-    // (undocumented)
-    proof: string;
-    // (undocumented)
-    publicMeta: IPublicMeta;
-    // (undocumented)
-    rollback: boolean;
-    // (undocumented)
-    signers: {
-        pubKey: string;
-        caps: {
-            name: string;
-            args: ICap['args'];
-        }[];
-    }[];
-    // (undocumented)
-    step: number;
-    // (undocumented)
-    type: Type;
+    exec: {
+        code?: string;
+        data?: Record<string, unknown>;
+    };
 }
 
 // @alpha (undocumented)
-export interface IContCommandBuilder<TCaps extends Record<string, TArgs>, TArgs extends Array<TCaps[keyof TCaps]> = TCaps[keyof TCaps]> {
+export interface INetworkOptions {
     // (undocumented)
-    createCommand(): IUnsignedCommand;
+    chainId: ChainId;
     // (undocumented)
-    pactId: string;
-    // (undocumented)
-    proof: string;
-    // (undocumented)
-    rollback: boolean;
-    // (undocumented)
-    step: number;
+    networkId: string;
 }
 
 // @alpha (undocumented)
 export interface IPact {
+    // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    builder: ICommandBuilder;
     // (undocumented)
     modules: IPactModules;
 }
@@ -186,29 +133,27 @@ export interface IPact {
 // @alpha (undocumented)
 export interface IPactCommand {
     // (undocumented)
-    code: string;
+    meta: {
+        chainId: ChainId;
+        sender: string;
+        gasLimit: number;
+        gasPrice: number;
+        ttl: number;
+        creationTime: number;
+    };
     // (undocumented)
-    data: Record<string, unknown>;
+    networkId: string;
     // (undocumented)
-    networkId: ChainwebNetworkId;
+    nonce: string;
     // (undocumented)
-    nonce?: NonceType;
+    payload: IExecPayloadObject | IContinuationPayloadObject;
     // (undocumented)
-    publicMeta: IPublicMeta;
-    // (undocumented)
-    requestKey?: string;
-    // (undocumented)
-    signers: {
+    signers: Array<{
         pubKey: string;
-        caps: {
-            name: string;
-            args: ICap['args'];
-        }[];
-    }[];
-    // (undocumented)
-    sigs: (ISignatureJson | undefined)[];
-    // (undocumented)
-    type: Type;
+        address?: string;
+        scheme?: 'ED25519' | 'ETH';
+        clist?: ICapabilityItem[];
+    }>;
 }
 
 // @alpha (undocumented)
@@ -216,18 +161,23 @@ export interface IPactModules {
 }
 
 // @alpha (undocumented)
-export interface IPublicMeta {
+export interface IPollOptions {
     // (undocumented)
-    chainId: ChainwebChainId;
+    interval?: number;
     // (undocumented)
-    gasLimit: number;
+    onPoll?: (id: string) => void;
     // (undocumented)
-    gasPrice: number;
-    // (undocumented)
-    sender: string;
-    // (undocumented)
-    ttl: number;
+    timeout?: number;
 }
+
+// @alpha (undocumented)
+export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
+    requests: Record<string, Promise<T>>;
+};
+
+export { IPollResponse }
+
+export { IPreflightResult }
 
 // @alpha (undocumented)
 export interface IQuickSignRequestBody {
@@ -287,13 +237,10 @@ export interface IQuicksignSigner {
     sig: IQuicksignSig;
 }
 
-// @alpha (undocumented)
-export interface ITemplate {
-    // (undocumented)
-    holes: TemplateHoles;
-    // (undocumented)
-    parts: TemplateParts;
-}
+// @alpha
+export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
+
+export { IUnsignedCommand }
 
 // @alpha (undocumented)
 export interface IUnsignedQuicksignTransaction {
@@ -304,94 +251,19 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @alpha (undocumented)
-export type NonceFactory = (t: IPactCommand, dateInMs: number) => NonceType;
-
-// @alpha (undocumented)
-export type NonceType = string;
+export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
 
 // @alpha (undocumented)
 export const Pact: IPact;
 
-// @alpha
-export class PactCommand implements IPactCommand, ICommandBuilder<Record<string, unknown>> {
-    constructor();
-    addCap<T extends Array<PactValue> = Array<PactValue>>(capability: string, signer: string, ...args: T): this;
-    // (undocumented)
-    addData(data: IPactCommand['data']): this;
-    // (undocumented)
-    addSignatures(...sigs: {
-        pubKey: string;
-        sig: string;
-    }[]): this;
-    // (undocumented)
-    cmd: string | undefined;
-    // (undocumented)
-    code: string;
-    createCommand(): IUnsignedCommand;
-    // (undocumented)
-    data: Record<string, unknown>;
-    local(apiHost: string, options?: any): Promise<any>;
-    // (undocumented)
-    networkId: ChainwebNetworkId;
-    // (undocumented)
-    nonce: NonceType | undefined;
-    nonceCreator(t: IPactCommand, dateInMs: number): NonceType;
-    // (undocumented)
-    poll(apiHost: string): Promise<IPollResponse>;
-    pollUntil(apiHost: string, options?: {
-        interval?: number;
-        timeout?: number;
-        onPoll?: (transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>, pollRequest: Promise<IPollResponse>) => void;
-    }): Promise<ICommandResult>;
-    // (undocumented)
-    publicMeta: {
-        chainId: ChainwebChainId;
-        sender: string;
-        gasLimit: number;
-        gasPrice: number;
-        ttl: number;
-    };
-    // (undocumented)
-    requestKey: string | undefined;
-    send(apiHost: string): Promise<SendResponse>;
-    setMeta(publicMeta: Partial<IPactCommand['publicMeta']>, networkId?: IPactCommand['networkId']): this;
-    setNonceCreator(nonceCreator: (t: IPactCommand, dateInMs: number) => NonceType): this;
-    // (undocumented)
-    signers: {
-        pubKey: string;
-        caps: {
-            name: string;
-            args: ICap['args'];
-        }[];
-    }[];
-    // (undocumented)
-    sigs: (ISignatureJson | undefined)[];
-    // Warning: (ae-forgotten-export) The symbol "TransactionStatus" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    status: TransactionStatus;
-    // (undocumented)
-    type: Type;
-}
-
-// @alpha
-export const pollSpvProof: (requestKey: string, targetChainId: ChainwebChainId, apiHost: string, options?: {
-    interval?: number | undefined;
-    timeout?: number | undefined;
-    onPoll?: ((status: string) => void) | undefined;
-} | undefined) => Promise<Response | undefined>;
+// @alpha (undocumented)
+export type ReadKeyset = <TKey extends string>(key: TKey) => () => `(read-keyset "${TKey}")`;
 
 // @alpha (undocumented)
-export function signWithChainweaver<T1 extends string, T2>(...transactions: (IPactCommand & ICommandBuilder<Record<T1, T2>>)[]): Promise<(IPactCommand & ICommandBuilder<Record<T1, T2>>)[]>;
+export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
-export type TemplateHoles = string[];
-
-// @alpha (undocumented)
-export type TemplateParts = string[];
-
-// @alpha (undocumented)
-export type Type = 'exec' | 'cont';
+export const signWithChainweaver: ISignFunction;
 
 // (No @packageDocumentation comment for this package)
 

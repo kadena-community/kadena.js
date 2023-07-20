@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "0.6.1",
+  "version": "1.0.0-alpha.3",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -8,11 +8,16 @@
     "directory": "packages/libs/client"
   },
   "license": "MIT",
+  "exports": {
+    ".": "./lib/index.js",
+    "./fp": "./lib/fp.js"
+  },
   "main": "lib/index.js",
   "types": "dist/client.d.ts",
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "fp"
   ],
   "scripts": {
     "build": "heft build --clean",
@@ -44,6 +49,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",

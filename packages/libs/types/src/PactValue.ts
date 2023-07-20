@@ -41,7 +41,13 @@ export interface IPactDecimal {
  * TODO: add `UTCTime` literal.
  * @alpha
  */
-export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
+export type PactLiteral =
+  | string
+  | number
+  | IPactInt
+  | IPactDecimal
+  | boolean
+  | Date;
 
 /**
  * A sum type representing a `pact` value.
@@ -58,3 +64,10 @@ export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
  * @alpha
  */
 export type PactValue = PactLiteral | Array<PactValue>;
+
+/**
+ * Add the return value as is to the command, its useful for adding guard and module reference
+ * @alpha
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PactReference = () => string;

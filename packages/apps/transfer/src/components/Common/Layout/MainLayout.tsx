@@ -1,4 +1,4 @@
-import { Grid } from '@kadena/react-components';
+import { Grid } from '@kadena/react-ui';
 
 import {
   StyledBack,
@@ -31,13 +31,10 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
 
   return (
     <StyledMainLayout>
-      <Grid.Container>
-        <Grid.Item colStart={1} colEnd={5}>
-          <Grid.Container spacing="xl">
-            <Grid.Item colStart={1} colEnd={5}>
-              <KLogoComponent width="100%" />
-            </Grid.Item>
-            <Grid.Item colStart={5} colEnd={11}>
+      <Grid.Root>
+        <Grid.Item>
+          <Grid.Root spacing="xl">
+            <Grid.Item>
               <StyledTextBold>{t('K:Transfer')}</StyledTextBold>
               <Select
                 leadingText={t('Network')}
@@ -48,31 +45,31 @@ export const MainLayout: FC<IProps> = ({ children, title, footer }: IProps) => {
                 <StyledOption value="TESTNET">{t('Testnet')}</StyledOption>
               </Select>
             </Grid.Item>
-          </Grid.Container>
+          </Grid.Root>
         </Grid.Item>
-      </Grid.Container>
+      </Grid.Root>
 
-      <Grid.Container spacing="3xl">
-        <Grid.Item colStart={1} colEnd={5}>
+      <Grid.Root spacing="3xl">
+        <Grid.Item>
           <StyledBack href={routes.HOME}>
             <StyledChevronLeft width={'20px'} height={'20px'} />
             <span data-testid="back-button">{t('Back')}</span>
           </StyledBack>
         </Grid.Item>
-        <Grid.Item colStart={5} colEnd={13}>
+        <Grid.Item>
           <StyledTitle data-testid="title">{title}</StyledTitle>
         </Grid.Item>
-      </Grid.Container>
-      <Grid.Container spacing="3xl">
-        <Grid.Item colStart={1} colEnd={5}>
+      </Grid.Root>
+      <Grid.Root spacing="3xl">
+        <Grid.Item>
           <SidebarMenu />
         </Grid.Item>
-        <Grid.Item colStart={5} colEnd={13}>
+        <Grid.Item>
           <StyledMainContent data-testid="content">
             {children}
           </StyledMainContent>
         </Grid.Item>
-      </Grid.Container>
+      </Grid.Root>
       {Boolean(footer) && <StyledFooter>{footer}</StyledFooter>}
     </StyledMainLayout>
   );

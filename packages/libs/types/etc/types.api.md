@@ -8,7 +8,7 @@
 export type Base16String = string;
 
 // @alpha (undocumented)
-export type ChainId = '' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
+export type ChainId = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19';
 
 // @alpha (undocumented)
 export type CommandPayloadStringifiedJSON = string;
@@ -250,7 +250,7 @@ export type Nonce = string;
 export type PactCode = string;
 
 // @alpha
-export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean;
+export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date;
 
 // @alpha
 export type PactPayload = {
@@ -258,6 +258,9 @@ export type PactPayload = {
 } | {
     cont: IContPayload;
 };
+
+// @alpha
+export type PactReference = () => string;
 
 // @alpha (undocumented)
 export type PactTransactionHash = IBase64Url;

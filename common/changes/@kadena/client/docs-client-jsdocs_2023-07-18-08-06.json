@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "add jsdoc to client methods",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

@@ -1,6 +1,14 @@
 import { Header } from './partials';
+import {
+  footerStyle,
+  gridItemCollapsedSidebarStyle,
+  gridItemMainStyle,
+  gridItemMenuStyle,
+  gridItemMiniMenuStyle,
+  gridStyle,
+  headerStyle,
+} from './styles.css';
 
-import { StyledLayout } from '@/components/Common/Layout/styles';
 import { WalletConnectButton } from '@/components/Global';
 import routes from '@/constants/routes';
 import { KLogoComponent } from '@/resources/svg/generated';
@@ -40,16 +48,23 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     },
   ];
   return (
-    <StyledLayout data-testid={'layout-container'} className="layout">
-      <Header
-        logo={<KLogoComponent width={32} height={32} />}
-        appTitle={t('Developer Tools')}
-        menu={menu}
-        rightPanel={<WalletConnectButton />}
-      />
-      <main>{children}</main>
-      <Footer />
-    </StyledLayout>
+    <div>
+      <header className={headerStyle}>
+        <Header
+          logo={<KLogoComponent width={32} height={32} />}
+          appTitle={t('Developer Tools')}
+          menu={menu}
+          rightPanel={<WalletConnectButton />}
+        />
+      </header>
+      <div className={gridStyle}>
+        <nav className={gridItemMiniMenuStyle}></nav>
+        <nav className={gridItemMenuStyle}></nav>
+        <main className={gridItemMainStyle}>{children}</main>
+        <aside className={gridItemCollapsedSidebarStyle}></aside>
+      </div>
+      <footer className={footerStyle}></footer>
+    </div>
   );
 };
 

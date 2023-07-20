@@ -1,4 +1,4 @@
-import { Grid } from '@kadena/react-components';
+import { Grid } from '@kadena/react-ui';
 
 import routes from '@/constants/routes';
 import {
@@ -49,7 +49,7 @@ const Home: FC = () => {
 
   return (
     <StyledHomeContainer>
-      <Grid.Container spacing="2xl" templateColumns="repeat(2, 1fr)">
+      <Grid.Root spacing="2xl">
         <Grid.Item>
           <StyledHomeContent>
             <StyledHomeTitle>{t('Cross Chain Transfers')}</StyledHomeTitle>
@@ -76,7 +76,7 @@ const Home: FC = () => {
             ))}
           </StyledHomeContent>
         </Grid.Item>
-      </Grid.Container>
+      </Grid.Root>
     </StyledHomeContainer>
   );
 };
