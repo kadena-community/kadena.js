@@ -1,6 +1,7 @@
 export interface IMostPopularPage {
   path: string;
   views: number;
+  title: string;
 }
 
 export interface IDimensionValue {

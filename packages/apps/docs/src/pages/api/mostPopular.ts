@@ -71,6 +71,7 @@ function pushToTopPages(
     topPages.push({
       path: row.dimensionValues[0].value ?? '',
       views: parseFloat(views),
+      title: row.dimensionValues[1].value ?? '',
     });
   }
 
@@ -135,6 +136,10 @@ const mostPopular = async (
       {
         // Get the page path
         name: 'pagePathPlusQueryString',
+      },
+      {
+        // Get the page title
+        name: 'pageTitle',
       },
     ],
     metrics: [
