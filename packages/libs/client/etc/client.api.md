@@ -96,7 +96,7 @@ export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
         pactId?: string;
-        step?: string;
+        step?: number;
         rollback?: boolean;
         data?: Record<string, unknown>;
         proof?: string;
@@ -239,6 +239,12 @@ export interface IQuicksignSigner {
 
 // @alpha
 export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
+
+// @alpha (undocumented)
+export interface ISubmit {
+    (transaction: ICommand): Promise<string>;
+    (transactionList: ICommand[]): Promise<string[]>;
+}
 
 export { IUnsignedCommand }
 

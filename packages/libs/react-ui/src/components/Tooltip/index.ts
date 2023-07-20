@@ -1,10 +1,12 @@
 import { ITooltipProps, Tooltip as TooltipComponent } from './Tooltip';
-import tooltipHandler from './tooltipHandler';
+import { tooltipHandler } from './tooltipHandler';
 
 export { ITooltipProps };
 
 interface ITooltip {
-  Root: typeof TooltipComponent;
+  Root: React.ForwardRefExoticComponent<
+    Omit<ITooltipProps, 'ref'> & React.RefAttributes<HTMLDivElement>
+  >;
   handler: typeof tooltipHandler;
 }
 

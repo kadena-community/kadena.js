@@ -40,6 +40,12 @@ export const execution: IExec = (...codes: string[]) => {
 /**
  * @alpha
  */
-export const continuation: ICont = (options) => ({
-  payload: { cont: options },
-});
+export const continuation: ICont = (options) => {
+  const clone = { ...options, data: options.data ? options.data : {} };
+  if (clone.proof !== undefined) {
+    clone.proof = clone.proof.replace(/\"/gi, '');
+  }
+  return {
+    payload: { cont: clone },
+  };
+};
