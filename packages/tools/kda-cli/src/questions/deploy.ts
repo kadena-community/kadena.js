@@ -22,14 +22,18 @@ const isDeployTask = ({ task }: IAnswers): boolean => {
   return false;
 };
 
-const isL1 = ({ deployTargets }: IAnswers): boolean => {
+const isL1 = (answers: IAnswers): boolean => {
+  const { deployTargets } = answers;
+  if (!isDeployTask(answers)) return false;
   if (!Array.isArray(deployTargets)) return false;
   if (deployTargets?.includes('l1')) return true;
   if (deployTargets?.includes('l1l2')) return true;
   return false;
 };
 
-const isL2 = ({ deployTargets }: IAnswers): boolean => {
+const isL2 = (answers: IAnswers): boolean => {
+  const { deployTargets } = answers;
+  if (!isDeployTask(answers)) return false;
   if (!Array.isArray(deployTargets)) return false;
   if (deployTargets?.includes('l2')) return true;
   if (deployTargets?.includes('l1l2')) return true;
@@ -188,6 +192,7 @@ export const deployQuestions: IQuestion[] = [
     type: 'execute',
     when: isDeployTask,
     action: async ({
+      task,
       pactFile = '',
       dataFile = '',
       deployTargets = '',
@@ -220,7 +225,8 @@ export const deployQuestions: IQuestion[] = [
           '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
         useChainWeaver: false,
       });
-      if (isL1({ deployTargets }) && Array.isArray(l1Chains)) {
+
+      if (isL1({ deployTargets, task }) && Array.isArray(l1Chains)) {
         await deploy({
           chainIds: l1Chains,
           setDeployChainSettings: setDeployChainSettings({
@@ -231,7 +237,7 @@ export const deployQuestions: IQuestion[] = [
           setDeploySettings: deployCommand,
         });
       }
-      if (isL2({ deployTargets }) && Array.isArray(l2Chains))
+      if (isL2({ deployTargets, task }) && Array.isArray(l2Chains))
         await deploy({
           chainIds: l2Chains,
           setDeployChainSettings: setDeployChainSettings({

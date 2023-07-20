@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+
 export interface IAnswers {
   [key: string]: string | boolean | string[];
 }

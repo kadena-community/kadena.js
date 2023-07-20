@@ -84,25 +84,37 @@ export const localQuestions: IQuestion[] = [
     message: 'What capabilities do you need?',
     name: 'capabilities',
     type: 'multi-input',
-    when: ({ command }: IAnswers) => isTruthy(command),
+    when: ({ command, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(command);
+    },
   },
   {
     message: 'Who is signing the transaction?',
     name: 'signer',
     type: 'input',
-    when: ({ command }: IAnswers) => isTruthy(command),
+    when: ({ command, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(command);
+    },
   },
   {
     message: 'What is the public key of the signer?',
     name: 'publicKey',
     type: 'input',
-    when: ({ signer }: IAnswers) => isTruthy(signer),
+    when: ({ signer, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(signer);
+    },
   },
   {
     message: 'Signing command...',
     name: 'signCommand',
     type: 'execute',
-    when: ({ signer }: IAnswers) => isTruthy(signer),
+    when: ({ signer, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(signer);
+    },
     action: async (answers: IAnswers) => {
       if (!isValidSigningAnswers(answers)) throw new Error('Invalid answers');
 
@@ -148,7 +160,10 @@ export const localQuestions: IQuestion[] = [
     message: 'Executing command...',
     name: 'executeCommand',
     type: 'execute',
-    when: ({ signCommand }: IAnswers) => isTruthy(signCommand),
+    when: ({ signCommand, task }: IAnswers) => {
+      if (Array.isArray(task)) return isTruthy(task?.includes('local'));
+      return isTruthy(signCommand);
+    },
     action: async (answers: IAnswers) => {
       const { signCommand } = answers;
 

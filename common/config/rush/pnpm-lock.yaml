@@ -1223,6 +1223,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
+      '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
@@ -1245,6 +1246,7 @@ importers:
       yaml: ~2.1.1
     dependencies:
       '@inkjs/ui': 1.0.0_ink@4.2.0
+      '@kadena/client': link:../../libs/client
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       cross-spawn: 7.0.3
       dotenv: 16.0.3

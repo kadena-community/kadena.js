@@ -1,5 +1,5 @@
 import { deployQuestions } from './deploy.js';
-import { devnetQuestions } from './devnet.js';
+// import { devnetQuestions } from './devnet.js';
 import { fundQuestions } from './fund.js';
 import { localQuestions } from './local.js';
 import { IAnswers, IQuestion } from './questions.js';
@@ -15,18 +15,18 @@ export const questions: IQuestion[] = [
         label: 'Rerun',
         value: 'rerun',
       },
-      {
-        label: 'Setup devnet',
-        value: 'setup',
-      },
-      {
-        label: 'Start devnet',
-        value: 'start',
-      },
-      {
-        label: 'Stop devnet',
-        value: 'stop',
-      },
+      // {
+      // label: 'Setup devnet',
+      // value: 'setup',
+      // },
+      // {
+      // label: 'Start devnet',
+      // value: 'start',
+      // },
+      // {
+      // label: 'Stop devnet',
+      // value: 'stop',
+      // },
       {
         label: 'Fund devnet accounts',
         value: 'fund',
@@ -55,7 +55,7 @@ export const questions: IQuestion[] = [
     },
   },
   ...localQuestions,
-  ...devnetQuestions,
+  // ...devnetQuestions,
   ...fundQuestions,
   ...deployQuestions,
 ];
