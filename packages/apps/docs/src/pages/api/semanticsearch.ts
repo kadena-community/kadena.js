@@ -1,4 +1,5 @@
 import { embed } from '@/utils/embedder';
+import { getFrontMatter } from '@/utils/markdown';
 import { PineconeClient } from '@pinecone-database/pinecone';
 import { ScoredVector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
 import fs from 'fs';
