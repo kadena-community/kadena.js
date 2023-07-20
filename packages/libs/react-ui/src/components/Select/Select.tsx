@@ -12,7 +12,10 @@ import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
 export interface ISelectProps
-  extends Omit<React.HTMLAttributes<HTMLSelectElement>, 'as' | 'className'> {
+  extends Omit<
+    React.HTMLAttributes<HTMLSelectElement>,
+    'aria-label' | 'as' | 'className'
+  > {
   children: React.ReactNode;
   icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   disabled?: boolean;
