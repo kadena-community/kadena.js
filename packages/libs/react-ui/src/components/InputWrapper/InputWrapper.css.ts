@@ -1,10 +1,9 @@
-import { inputStatusColor } from '../Input/Input.css';
-
 import {
   helperIconColor,
   helperTextColor,
 } from './InputHelper/InputHelper.css';
 
+import { inputStatusColor } from '@components/Input/Input.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import { styleVariants } from '@vanilla-extract/css';

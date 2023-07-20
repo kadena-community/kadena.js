@@ -1,5 +1,3 @@
-import { SystemIcon } from '../Icon';
-
 import {
   treeBranchWrapperVariant,
   treeTitleClass,
@@ -10,6 +8,7 @@ import {
   treeWrapperClass,
 } from './Tree.css';
 
+import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, useState } from 'react';
 

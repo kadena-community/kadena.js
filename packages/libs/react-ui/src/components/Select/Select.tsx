@@ -1,5 +1,3 @@
-import { SystemIcon } from '../Icon';
-
 import {
   containerClass,
   containerClassDisabled,
@@ -8,6 +6,7 @@ import {
   selectContainerClass,
 } from './Select.css';
 
+import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
