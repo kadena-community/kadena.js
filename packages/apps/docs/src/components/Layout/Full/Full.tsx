@@ -61,6 +61,9 @@ export const Full: FC<ILayout> = ({
     return () => observer.disconnect();
   }, [activeItem, router.asPath]);
 
+  const showSideMenu: boolean =
+    aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
+
   return (
     <>
       <Content id="maincontent">
@@ -71,7 +74,7 @@ export const Full: FC<ILayout> = ({
       </Content>
       <AsideBackground />
       <Aside data-cy="aside">
-        {aSideMenuTree.length > 1 && (
+        {showSideMenu && (
           <StickyAsideWrapper>
             <StickyAside>
               <Heading as="h6" transform="uppercase">

@@ -3,8 +3,7 @@ import {
   IFooterLinkItemProps,
   SystemIcon,
 } from './../../';
-import { colorVariants } from './Footer.css';
-import { Footer, IFooterProps } from './index';
+import { Footer, FooterVariant, IFooterProps } from './index';
 
 import { Target } from '@components/Footer/FooterLinkItem';
 import { IconType } from '@components/Icon/IconWrapper';
@@ -19,10 +18,10 @@ const meta: Meta<
     IFooterLinkItemProps &
     IFooterIconItemProps
 > = {
-  title: 'Layout/Footer',
+  title: 'Navigation/Footer',
   argTypes: {
-    color: {
-      options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
+    variant: {
+      options: ['web', 'application'],
       control: {
         type: 'select',
       },
@@ -101,20 +100,20 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Footer',
   args: {
-    color: 'default',
     linksCount: 4,
     iconsCount: 3,
+    variant: 'web',
   },
-  render: ({ color, linksCount, iconsCount }) => {
+  render: ({ linksCount, iconsCount, variant }) => {
     const linkItems = links.slice(0, linksCount);
     const iconButtons = icons.slice(0, iconsCount);
 
     return (
-      <Footer.Root>
+      <Footer.Root variant={variant}>
         <Footer.Panel>
           {linkItems.map((item, index) => {
             return (
-              <Footer.LinkItem key={index} color={color}>
+              <Footer.LinkItem key={index} variant={variant}>
                 {item.href !== undefined ? (
                   <a href={item.href} target={item.target}>
                     {item.title}
@@ -130,10 +129,10 @@ export const Primary: Story = {
           {iconButtons.map((item, index) => {
             return (
               <Footer.IconItem
+                variant={variant}
                 key={index}
                 icon={item.icon}
                 text={item.text}
-                color={color}
               />
             );
           })}

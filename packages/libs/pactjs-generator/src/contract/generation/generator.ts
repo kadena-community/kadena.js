@@ -9,7 +9,7 @@ const keywordsMap: Record<string, string> = {
   string: 'string',
   time: 'Date',
   bool: 'boolean',
-  guard: 'PactGuard',
+  guard: 'PactReference',
   object: 'object',
 };
 
@@ -23,6 +23,8 @@ const mapType = (
     return keywordsMap[inputType] ?? 'any';
   }
 
+  if (typeof inputType === 'object' && inputType.kind === 'module')
+    return 'PactReference';
   // TODO: import the schema as interface to return kind instead of any
   // return inputType.kind;
   return keywordsMap[inputType.kind] ?? 'any';
@@ -138,7 +140,7 @@ export function generateDts(
 
   const dts = `
 import type { ICapabilityItem } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactGuard } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICapabilityItem;
