@@ -1,9 +1,7 @@
 import { IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
-import { loadSearchResults } from './utils';
 
 import debounce from 'lodash.debounce';
-import { SearchResult } from 'minisearch';
 import { useRouter } from 'next/router';
 import {
   ChangeEvent,
@@ -27,7 +25,6 @@ interface IProps {
   handleSubmit: (evt: FormEvent<HTMLFormElement>) => Promise<void>;
   outputStream: string;
   query: string | undefined;
-  staticSearchResults: SearchResult[];
   conversation: IConversation;
   handleInputChange: FormEventHandler<HTMLInputElement>;
   error: string | undefined;
@@ -39,10 +36,6 @@ export const useSearch = (): IProps => {
   const router = useRouter();
   const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>(q);
-
-  const [staticSearchResults, setStaticSearchResults] = useState<
-    SearchResult[]
-  >([]);
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -59,9 +52,8 @@ export const useSearch = (): IProps => {
     async (value: string): Promise<void> => {
       if (value === null) return;
       dispatch({ type: 'setInput', value });
-      await loadSearchResults(value, setStaticSearchResults);
     },
-    [dispatch, setStaticSearchResults],
+    [dispatch],
   );
 
   const updateQueryDebounced = useMemo(() => {
@@ -111,7 +103,6 @@ export const useSearch = (): IProps => {
     handleSubmit,
     outputStream,
     query,
-    staticSearchResults,
     conversation,
     handleInputChange,
     error,

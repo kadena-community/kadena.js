@@ -4,6 +4,7 @@ import { SearchForm, SearchResults } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
 import { useSearch } from '@/hooks';
+import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -17,9 +18,10 @@ const Search: FC = () => {
     outputStream,
     handleSubmit,
     query,
-    staticSearchResults,
     conversation,
+    error,
   } = useSearch();
+  const { results: staticSearchResults } = useSemanticSearch(query);
 
   return (
     <>
@@ -45,6 +47,7 @@ const Search: FC = () => {
             conversation={conversation}
             outputStream={outputStream}
             query={query}
+            error={error}
           />
         </Article>
       </Content>

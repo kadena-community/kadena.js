@@ -6,6 +6,7 @@ import { SearchForm } from '../Search/styles';
 import { Wrapper } from './styles';
 
 import { useSearch } from '@/hooks';
+import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
 import React, { FC, useEffect, useState } from 'react';
 
 export const SearchModal: FC = () => {
@@ -13,11 +14,11 @@ export const SearchModal: FC = () => {
     searchInputRef,
     query,
     handleSubmit,
-    staticSearchResults,
     conversation,
     outputStream,
     error,
   } = useSearch();
+  const { results: staticSearchResults } = useSemanticSearch(query);
 
   const [isMounted, setIsMounted] = useState(false);
 

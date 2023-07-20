@@ -13,13 +13,12 @@ import { ScrollBox } from './styles';
 
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
-import { SearchResult } from 'minisearch';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  staticSearchResults: SearchResult[];
+  staticSearchResults: ISearchResult[];
   outputStream: string;
   conversation: IConversation;
   limitResults?: number;
