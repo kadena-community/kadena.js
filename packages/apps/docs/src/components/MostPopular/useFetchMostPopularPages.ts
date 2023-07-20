@@ -1,22 +1,31 @@
-import { useEffect } from 'react';
+import { IMostPopularPage } from '@/types/MostPopularData';
+import { useEffect, useState } from 'react';
 
-export const useFetchMostPopularPages = (): void => {
-  const abortController = new AbortController();
+interface IHookResult {
+  data: IMostPopularPage[];
+}
 
-  async function fetchMostPopularPages(): Promise<void> {
-    const res = await fetch('/api/mostPopular');
-    const data = await res.json();
-    console.log(data);
-    return data;
-  }
+export const useFetchMostPopularPages = (slug = '/'): IHookResult => {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetchMostPopularPages();
+    const abortController = new AbortController();
+
+    async function fetchMostPopularPages(): Promise<void> {
+      const res = await fetch(`/api/mostPopular?slug=${slug}`);
+      const data = await res.json();
+      setData(data);
+    }
+    fetchMostPopularPages().catch((err) => {
+      console.error(err);
+    });
 
     return () => {
       abortController.abort();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [slug]);
+
+  return {
+    data,
+  };
 };
