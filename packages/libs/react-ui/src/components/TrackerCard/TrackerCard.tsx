@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface ITrackerCardProps {
-  labelValue: ILabelValue[];
+  labelValues: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
   icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
@@ -36,7 +36,7 @@ export interface ILabelValue {
 }
 
 export const TrackerCard: FC<ITrackerCardProps> = ({
-  labelValue,
+  labelValues,
   icon,
   helperText,
   helperTextType = 'mild',
@@ -64,16 +64,10 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
 
   return (
     <div className={classCardContainer} data-testid="kda-tracker-card">
-      {Icon ? (
-        <>
-          <Icon data-testid="kda-icon" />
-        </>
-      ) : (
-        <div />
-      )}
+      {Icon ? <Icon data-testid="kda-icon" /> : <div />}
       <div className={ContentContainer}>
         <div className={DataContainer} data-testid="kda-data-container">
-          {labelValue?.map((item, index) => {
+          {labelValues?.map((item, index) => {
             return (
               <div
                 className={classLabelValue}
