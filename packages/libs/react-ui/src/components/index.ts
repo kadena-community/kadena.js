@@ -46,7 +46,17 @@ export {
 } from './Breadcrumbs';
 export { Box, IBoxProps } from './Box';
 export { Link, ILinkProps } from './Link';
-export { Tooltip, ITooltipProps } from './Tooltip/Tooltip';
+export { Tooltip, ITooltipProps } from './Tooltip';
+export {
+  Footer,
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
+} from './Footer/';
 export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
+export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';
+export { Accordion, IAccordionProps } from './Accordion';
+export { Tree, ITreeProps } from './Tree';
