@@ -50,3 +50,5 @@ export { Tooltip, ITooltipProps } from './Tooltip';
 export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
+export { Accordion, IAccordionProps } from './Accordion';
+export { Tree, ITreeProps } from './Tree';
