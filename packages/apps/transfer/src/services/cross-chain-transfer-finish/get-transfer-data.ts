@@ -1,9 +1,8 @@
 import {
   ChainwebChainId,
   ICommandResult,
-  IPollResponse,
 } from '@kadena/chainweb-node-client';
-import { Pact } from '@kadena/client';
+import { getClient } from '@kadena/client';
 import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
@@ -63,52 +62,44 @@ export async function getTransferData({
     return { error: t('Invalid length of request key') };
   }
 
-  const pactCommand = Pact.builder.createTransaction();
-
-  pactCommand.requestKey = requestKey;
-
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
       const host = getKadenaConstantByNetwork(network).apiHost({
         networkId: chainNetwork[network].network,
         chainId: convertIntToChainId(chainId),
       });
-      return pactCommand.poll(host);
+      const { getStatus } = getClient(host);
+      return getStatus(requestKey);
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    const found: { chainId: number; tx: ICommandResult } | undefined =
-      chainInfos.reduce(
-        (
-          acc: { chainId: number; tx: ICommandResult } | undefined,
-          curr: IPollResponse,
-          chain: number,
-          array: IPollResponse[],
-        ) => {
-          array.splice(chain - 1);
-          if (curr[requestKey] !== undefined) {
-            return { chainId: chain, tx: curr[validatedRequestKey] };
-          }
-        },
-        undefined,
-      );
+    const request = chainInfos.find(chainInfo => requestKey in chainInfo);
 
-    if (found === undefined) {
+    if (!request) {
       return { error: t('No request key found') };
+    }
+
+    const found = request[requestKey];
+
+    const { events, result } = found;
+
+    const errorMessage = result.error?.message;
+
+    if (errorMessage) {
+      return { error: errorMessage };
     }
 
     const [senderAccount, receiverAccount, guard, targetChain, amount] =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      found.tx?.continuation?.continuation.args as Array<any>;
+      found?.continuation?.continuation.args as Array<any>;
 
-    const { step, stepHasRollback, pactId } = found.tx
+    const { step, stepHasRollback, pactId } = found
       ?.continuation as IPactExec;
-    const { events, result } = found.tx;
 
     return {
       tx: {
         sender: {
-          chain: found.chainId.toString() as ChainwebChainId,
+          chain: "1", // todo: fix typing. // found.chainId.toString() as ChainwebChainId,
           account: senderAccount,
         },
         receiver: {
