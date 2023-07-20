@@ -1,4 +1,4 @@
-import { IPollResponse } from '@kadena/chainweb-node-client';
+import { ICommandResult, IPollResponse } from '@kadena/chainweb-node-client';
 import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
 import {
   Breadcrumbs,
@@ -40,6 +40,10 @@ type FormData = z.infer<typeof schema>;
 
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 20;
+
+const isCustomError = (error: any): error is ICommandResult => {
+  return typeof error === 'object' && 'result' in error;
+};
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
