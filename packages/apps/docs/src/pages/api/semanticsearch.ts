@@ -13,6 +13,10 @@ interface IFrontmatterData {
   description?: string;
 }
 
+interface IBranch {
+  value: string;
+}
+
 const namespace = 'kda-docs';
 const PINECONE_URL = process.env.PINECONE_URL;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -45,7 +49,7 @@ const getFrontMatter = (doc: string): IFrontmatterData => {
     extensions: [frontmatter()],
     mdastExtensions: [frontmatterFromMarkdown()],
   });
-  const value = tree.children[0] as unknown as any;
+  const value = tree.children[0] as IBranch;
 
   return yaml.load(value.value);
 };
@@ -53,7 +57,6 @@ const getFrontMatter = (doc: string): IFrontmatterData => {
 const getData = (file: string): IFrontmatterData => {
   if (fs.existsSync(file)) {
     const doc = fs.readFileSync(file, 'utf-8');
-
     const data = getFrontMatter(doc);
 
     return {
@@ -78,6 +81,36 @@ const cleanUpContent = (content: string): string | undefined => {
 
   // If no match is found, return null
   return;
+};
+
+const mapMatches = (match: ScoredVector): ISearchResult => {
+  const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
+  return {
+    id: match.id,
+    score: match.score,
+    filePath: metadata.filePath,
+    content: cleanUpContent(metadata.content),
+    ...getData(metadata.filePath),
+  } as ISearchResult;
+};
+
+const reduceMatches = (
+  acc: ScoredVector[],
+  val: ScoredVector,
+): ScoredVector[] => {
+  //taking out double results
+  const metadata = (val.metadata as IScoredVectorMetaData) ?? {};
+  if (
+    acc.find((item: ScoredVector) => {
+      const itemMetadata = (item.metadata as IScoredVectorMetaData) ?? {};
+      return itemMetadata.filePath === metadata.filePath;
+    })
+  ) {
+    return acc;
+  }
+  acc.push(val);
+
+  return acc;
 };
 
 const search = async (
@@ -109,32 +142,7 @@ const search = async (
   });
 
   const newResults =
-    result.matches
-      ?.reduce((acc: ScoredVector[], val: ScoredVector) => {
-        //taking out double results
-        const metadata = (val.metadata as IScoredVectorMetaData) ?? {};
-        if (
-          acc.find((item: ScoredVector) => {
-            const itemMetadata = (item.metadata as IScoredVectorMetaData) ?? {};
-            return itemMetadata.filePath === metadata.filePath;
-          })
-        ) {
-          return acc;
-        }
-        acc.push(val);
-
-        return acc;
-      }, [])
-      .map((match: ScoredVector): ISearchResult => {
-        const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
-        return {
-          id: match.id,
-          score: match.score,
-          filePath: metadata.filePath,
-          content: cleanUpContent(metadata.content),
-          ...getData(metadata.filePath),
-        } as ISearchResult;
-      }) ?? [];
+    result.matches?.reduce(reduceMatches, []).map(mapMatches) ?? [];
 
   res.status(200).json(newResults);
   res.end();
