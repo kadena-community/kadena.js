@@ -16,7 +16,7 @@ const meta: Meta<{ selectIcon: keyof typeof ProductIcon } & ITrackerCardProps> =
           type: 'select',
         },
       },
-      labelValue: {
+      labelValues: {
         control: {
           type: 'object',
         },
@@ -69,18 +69,24 @@ const labelValues: ILabelValue[] = [
 export const Primary: Story = {
   name: 'TrackerCard',
   args: {
-    labelValue: labelValues,
+    labelValues: labelValues,
     helperText: 'This is a helper text',
     helperTextType: 'mild',
     selectIcon: 'QuickStart',
     variant: 'vertical',
   },
-  render: ({ labelValue, helperText, helperTextType, selectIcon, variant }) => {
+  render: ({
+    labelValues,
+    helperText,
+    helperTextType,
+    selectIcon,
+    variant,
+  }) => {
     const icon = ProductIcon[selectIcon];
     return (
       <TrackerCard
         variant={variant}
-        labelValue={labelValue}
+        labelValues={labelValues}
         helperText={helperText}
         helperTextType={helperTextType}
         icon={icon}
