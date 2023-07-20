@@ -46,6 +46,7 @@ export const Dynamic: Story = {
     const [value, setValue] = useState<string>('1');
     return (
       <Select
+        ariaLabel={'select'}
         icon={SystemIcon[icon]}
         onChange={(e) => {
           console.log('clicked on', e.target.value);

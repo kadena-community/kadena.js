@@ -12,13 +12,17 @@ import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
 export interface ISelectProps
-  extends Omit<React.HTMLAttributes<HTMLSelectElement>, 'as' | 'className'> {
+  extends Omit<
+    React.HTMLAttributes<HTMLSelectElement>,
+    'aria-label' | 'as' | 'className'
+  > {
   children: React.ReactNode;
   icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   disabled?: boolean;
   value: string[] | string | number;
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
+  ariaLabel: string;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
@@ -30,6 +34,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     icon: Icon,
     disabled = false,
     children,
+    ariaLabel,
     ...rest
   },
   ref,
@@ -49,6 +54,7 @@ export const Select: FC<ISelectProps> = forwardRef<
           </span>
         )}
         <select
+          aria-label={ariaLabel}
           ref={ref}
           className={selectClass}
           disabled={Boolean(disabled)}
