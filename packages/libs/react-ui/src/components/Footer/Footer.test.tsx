@@ -27,14 +27,12 @@ describe('Footer', () => {
       },
     ];
 
-    const color = 'default';
-
     const { getByTestId, getAllByTestId } = render(
       <Footer.Root>
         <Footer.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <Footer.LinkItem key={index} color={color}>
+              <Footer.LinkItem key={index} variant="web">
                 <a href={item.href}>{item.title}</a>
               </Footer.LinkItem>
             );
@@ -44,8 +42,8 @@ describe('Footer', () => {
           {icons.map((item, index) => {
             return (
               <Footer.IconItem
+                variant="web"
                 key={index}
-                color={color}
                 icon={item.icon}
                 text={item.text}
               />

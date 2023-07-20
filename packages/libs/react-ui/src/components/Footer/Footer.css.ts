@@ -1,12 +1,25 @@
-import { ColorType, sprinkles, vars } from '../../styles';
+import { sprinkles, vars } from '../../styles';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
+export const footerVariants = styleVariants({
+  web: [
+    sprinkles({
+      backgroundColor: '$neutral5',
+      color: '$neutral3',
+    }),
+  ],
+  application: [
+    sprinkles({
+      backgroundColor: { darkMode: '$neutral2', lightMode: '$neutral5' },
+      color: { darkMode: '$neutral4', lightMode: '$neutral3' },
+    }),
+  ],
+});
 export const containerClass = style([
   sprinkles({
     maxWidth: { xs: 'maxContent', sm: '100%' },
     height: 'min-content',
-    backgroundColor: '$neutral5',
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: {
@@ -36,6 +49,10 @@ export const footerPanel = style([
     alignItems: 'center',
     lineHeight: '$lg',
     display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
     paddingX: '$4',
     paddingY: '$2',
     gap: '$2',
@@ -46,32 +63,6 @@ export const footerPanel = style([
     },
   }),
 ]);
-
-export type ColorOptions = ColorType | 'default' | 'inverted';
-
-const colors: Record<ColorOptions, ColorOptions> = {
-  default: 'default',
-  inverted: 'inverted',
-  primary: 'primary',
-  secondary: 'secondary',
-  positive: 'positive',
-  warning: 'warning',
-  negative: 'negative',
-  tertiary: 'tertiary',
-  info: 'info',
-};
-
-export const colorVariants = styleVariants(colors, (color) => {
-  if (color === 'default') {
-    return [containerClass, sprinkles({ color: '$neutral3' })];
-  }
-
-  if (color === 'inverted') {
-    return [containerClass, sprinkles({ color: '$neutral2' })];
-  }
-
-  return [containerClass, sprinkles({ color: `$${color}Contrast` })];
-});
 
 export const linkBoxClass = style([
   sprinkles({
@@ -100,10 +91,11 @@ export const linkClass = style([
   },
 ]);
 
-export const iconBoxClass = style([
+export const iconButtonClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'center',
+    backgroundColor: 'transparent',
     whiteSpace: 'nowrap',
     border: 'none',
     cursor: 'pointer',
