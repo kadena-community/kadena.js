@@ -9,21 +9,21 @@ import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path';
 
-const lastMonths = 3;
+function getStartDateOfLastMonths(lastMonths = 3): string {
+  // Get today's date
+  const today = new Date();
+  // Get `${lastMonths}` months ago from today
+  const startDate = new Date(today.setMonth(today.getMonth() - lastMonths));
+  // Get the year
+  const year = startDate.getFullYear();
+  // Get the month
+  const month = startDate.getMonth() + 1;
+  // Get the day
+  const day = startDate.getDate();
 
-// Get today's date
-const today = new Date();
-// Get lastMonths months ago
-const startDate = new Date(today.setMonth(today.getMonth() - lastMonths));
-// Get the year
-const year = startDate.getFullYear();
-// Get the month
-const month = startDate.getMonth() + 1;
-// Get the day
-const day = startDate.getDate();
-
-// Put it in Google's date format
-const dayFormat = `${year}-${month - lastMonths}-${day}`;
+  // Put it in Google's date format
+  return `${year}-${month - lastMonths}-${day}`;
+}
 
 function getModifiedTimeInSeconds(file: string): number | undefined {
   if (!fs.existsSync(file)) return;
@@ -127,7 +127,7 @@ const mostPopular = async (
     property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID}`,
     dateRanges: [
       {
-        startDate: dayFormat,
+        startDate: getStartDateOfLastMonths(3),
         endDate: 'today',
       },
     ],
