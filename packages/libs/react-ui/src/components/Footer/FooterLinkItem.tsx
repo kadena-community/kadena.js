@@ -31,7 +31,7 @@ export const FooterLinkItem: FC<IFooterLinkItemProps> = ({
 
   return (
     <div className={classList} data-testid="kda-footer-link-item">
-      <a className={linkClass}>{clones}</a>
+      <span className={linkClass}>{clones}</span>
     </div>
   );
 };
