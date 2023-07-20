@@ -1,3 +1,8 @@
+import {
+  IMostPopularPage,
+  IRow,
+  IRunReportResponse,
+} from '@/types/MostPopularData';
 import analyticsDataClient from '@/utils/analyticsDataClient';
 import storeAnalyticsData from '@/utils/storeAnalyticsData';
 import fs from 'fs';
@@ -31,8 +36,9 @@ function getModifiedTimeInSeconds(file: string): number | undefined {
   return seconds;
 }
 
+// Check if the cache is older than a day
 function validateCache(): boolean {
-  const dayInSecs = 86400;
+  const dayInSecs = 86400; // 24 * 60 * 60
   const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
 
   const fileLastModifiedTime: number | undefined =
@@ -45,18 +51,79 @@ function validateCache(): boolean {
   return false;
 }
 
+function pushToTopPages(
+  topPages: IMostPopularPage[],
+  row: IRow,
+): IMostPopularPage[] {
+  if (row === undefined || !row.dimensionValues || !row.metricValues)
+    return topPages;
+
+  const isPageAlreadyExist: IMostPopularPage | undefined = topPages.find(
+    (page) => page.path === row.dimensionValues?.[0]?.value,
+  );
+
+  if (isPageAlreadyExist) {
+    isPageAlreadyExist.views =
+      parseFloat(isPageAlreadyExist.views.toString()) +
+      parseFloat(row.metricValues?.[0]?.value ?? '0');
+  } else {
+    const views = row.metricValues?.[0].value ?? '0';
+    topPages.push({
+      path: row.dimensionValues[0].value ?? '',
+      views: parseFloat(views),
+    });
+  }
+
+  return topPages;
+}
+
+function getMostPopularPages(
+  data: IRunReportResponse,
+  slug: string,
+  limit: number,
+): IMostPopularPage[] {
+  let topPages: IMostPopularPage[] = [];
+  (data?.rows || []).forEach((row: IRow) => {
+    if (row.dimensionValues?.[0]) {
+      const value = row.dimensionValues[0].value ?? slug;
+
+      // Not including the current page
+      if (value === slug) return;
+
+      // Not including search pages
+      if (value.startsWith('/search')) return;
+
+      if (!value.startsWith(slug)) return;
+    }
+    topPages = pushToTopPages(topPages, row);
+  });
+
+  return topPages.sort((a, b) => b.views - a.views).slice(0, limit);
+}
+
+interface IReqQuery {
+  slug?: string;
+  limit?: number;
+}
+
 const mostPopular = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
+  const {
+    query: { slug = '/', limit = 5 },
+  } = req as { query: IReqQuery };
+
   if (!validateCache()) {
     const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
-    const data = fs.readFileSync(dataFilePath, 'utf8');
-    res.status(200).json(JSON.parse(data));
+    const data: string = fs.readFileSync(dataFilePath, 'utf8');
+    const mostPopularPages = getMostPopularPages(JSON.parse(data), slug, limit);
+    res.status(200).json(mostPopularPages);
     return;
   }
 
-  const [response] = await analyticsDataClient.runReport({
+  // If the cache is older than a day, use the API
+  const [response] = (await analyticsDataClient.runReport({
     property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID}`,
     dateRanges: [
       {
@@ -76,10 +143,13 @@ const mostPopular = async (
         name: 'activeUsers',
       },
     ],
-  });
+  })) as unknown as [IRunReportResponse];
 
+  const mostPopularPages = getMostPopularPages(response, slug, limit);
+
+  // Store complete data in a file to avoid hitting the API limit
   await storeAnalyticsData(response);
-  res.status(200).json(response);
+  res.status(200).json(mostPopularPages);
 };
 
 export default mostPopular;
