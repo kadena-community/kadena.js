@@ -45,7 +45,7 @@ export const Primary: Story = {
             minutes
           </div>
 
-          <Button.Root title={'Button'}>Hello World Tutorial</Button.Root>
+          <Button title={'Button'}>Hello World Tutorial</Button>
         </Card>
         <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
           <h4>Getting Started is Simple</h4>
@@ -54,7 +54,7 @@ export const Primary: Story = {
             minutes
           </div>
 
-          <Button.Root title={'Button'}>Hello World Tutorial</Button.Root>
+          <Button title={'Button'}>Hello World Tutorial</Button>
         </Card>
       </>
     );
