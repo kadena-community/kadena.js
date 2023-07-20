@@ -65,7 +65,10 @@ export type UnionToIntersection<T> = (
   ? I
   : never;
 
-type GeneralCapability = (name: string, ...args: unknown[]) => ICapabilityItem;
+export interface IGeneralCapability {
+  (name: string, ...args: unknown[]): ICapabilityItem;
+  (name: 'coin.GAS'): ICapabilityItem;
+}
 
 type ExtractType<TCmdReducer> = TCmdReducer extends (cmd: {
   payload: infer TPayload;
@@ -74,7 +77,7 @@ type ExtractType<TCmdReducer> = TCmdReducer extends (cmd: {
     ? TFunctions extends Array<infer TFunction>
       ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
         ? TCapability
-        : GeneralCapability
-      : GeneralCapability
-    : GeneralCapability
-  : GeneralCapability;
+        : IGeneralCapability
+      : IGeneralCapability
+    : IGeneralCapability
+  : IGeneralCapability;
