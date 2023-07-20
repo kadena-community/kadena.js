@@ -21,8 +21,6 @@ export const embed = async (text: string): Promise<IEmbedding> => {
 
   const { error, data } = await response.json();
 
-  if (error !== undefined) throw new Error(error.message);
-
   if (data[0].embedding === undefined)
     throw new Error('No embedding returned from the completions endpoint');
 

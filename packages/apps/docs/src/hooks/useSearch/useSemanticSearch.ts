@@ -7,18 +7,22 @@ interface ISemanticSearch {
 
 export const useSemanticSearch = (query?: string): ISemanticSearch => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean | undefined>(false);
   const [results, setResults] = useState<ISearchResult[]>([]);
 
   const getSearchResults = async (query: string): Promise<void> => {
-    const data = await fetch('/api/semanticsearch', {
-      method: 'POST',
-      body: JSON.stringify({
-        query,
-      }),
-    });
+    const response = await fetch(`/api/semanticsearch?query=${query}`);
 
-    const json = await data.json();
-    setResults(json);
+    const data = await response.json();
+
+    if (data.status !== undefined && data.status >= 400) {
+      setError(error);
+      setResults([]);
+      return;
+    }
+
+    setError(undefined);
+    setResults(data);
   };
 
   useEffect(() => {

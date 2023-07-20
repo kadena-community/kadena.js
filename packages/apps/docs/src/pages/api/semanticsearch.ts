@@ -84,19 +84,19 @@ const search = async (
   req: NextApiRequest,
   res: NextApiResponse<ISearchResult[] | IResponseError>,
 ): Promise<void> => {
-  if (req.method !== 'POST') {
-    res.status(405).json({
-      status: 405,
-      message: 'Use POST Method',
-    });
-    res.end();
-    return;
-  }
   const client = await getPineconeClient();
   const index = client.Index(namespace);
-  const { query } = JSON.parse(req.body);
+  const { query } = req.query;
 
-  const queryEmbedding = await embed(query);
+  if (query === undefined) {
+    res.status(405).json({
+      status: 400,
+      message: 'No query found',
+    });
+    res.end();
+  }
+
+  const queryEmbedding = await embed(query as string);
 
   const result = await index.query({
     queryRequest: {
