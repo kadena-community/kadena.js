@@ -18,6 +18,7 @@ import {
   StyledFormButton,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
 import { fundExistingAccount } from '@/services/faucet';
+import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
   FC,
@@ -26,6 +27,14 @@ import React, {
   useCallback,
   useState,
 } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+const schema = z.object({
+  name: z.string().min(3).max(256),
+});
+
+type FormData = z.infer<typeof schema>;
 
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 20;
@@ -58,9 +67,7 @@ const ExistingAccountFaucetPage: FC = () => {
   };
 
   const onFormSubmit = useCallback(
-    async (e: FormEvent) => {
-      e.preventDefault();
-
+    async (data: FormData) => {
       setRequestStatus({ status: 'pending' });
 
       try {
@@ -101,13 +108,19 @@ const ExistingAccountFaucetPage: FC = () => {
     [],
   );
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
   return (
     <div>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <StyledForm onSubmit={onFormSubmit}>
+      <StyledForm onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
           body={requestStatus.message}
@@ -116,12 +129,14 @@ const ExistingAccountFaucetPage: FC = () => {
           <Heading as="h3">Account</Heading>
           <TextField
             label={t('The account name you would like to fund coins to')}
-            status="negative"
+            status={errors.name ? 'negative' : undefined}
             inputProps={{
+              ...register('name'),
               id: 'account-name-input',
               onChange: onAccountNameChange,
               leftIcon: SystemIcon.KIcon,
             }}
+            helperText={errors.name?.message ?? ''}
           />
           <ChainSelect onChange={onChainSelectChange} value={chainID} />
         </StyledAccountForm>
