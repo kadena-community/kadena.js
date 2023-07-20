@@ -26,7 +26,7 @@ export async function createProject(
         literal('coin'),
         new PactNumber('1000').toPactDecimal(),
         new PactNumber('800').toPactDecimal(),
-        new Date(),
+        new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
         new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         sender.account,
         readKeyset('owner-guard'),
@@ -47,6 +47,7 @@ export async function createProject(
     const response = await listen(requestKey);
     if (response.result.status === 'success') {
       console.log('success', response);
+      return;
     }
     console.error('error', response);
     throw new Error('failure');
@@ -54,7 +55,7 @@ export async function createProject(
 }
 
 const senderAccount: string =
-  'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
+  'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11';
 
 createProject(`id:${Date.now()}`, 'An awesome project', {
   account: senderAccount,
