@@ -42,6 +42,12 @@ export const gridItemMenuStyle = style([
 ]);
 
 export const gridItemMainStyle = style([
+  sprinkles({
+    paddingTop: '$2',
+    paddingBottom: '$2',
+    paddingLeft: '$6',
+    paddingRight: '$6',
+  }),
   {
     gridArea: 'main',
   },

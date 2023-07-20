@@ -2,15 +2,6 @@ import { styled } from '@kadena/react-components';
 
 import Link from 'next/link';
 
-export const StyledHomeContainer = styled('div', {
-  margin: 'auto',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  pt: '$25',
-  color: 'white',
-});
-
 export const StyledHomeContent = styled('div', {
   width: '100%',
   display: 'flex',
