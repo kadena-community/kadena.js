@@ -27,7 +27,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   } = useSemanticSearch(limitResults);
 
   useEffect(() => {
-    if (query?.trim() !== undefined && query?.trim() !== '') {
+    if (query !== undefined && query.trim() !== '') {
       if (tabName === 'qa') {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         handleSearchSubmit(query);
