@@ -1,12 +1,10 @@
 import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 
-import { Search, SearchResults } from '../Search/';
+import { Search } from '../Search/';
 import { SearchForm } from '../Search/styles';
 
 import { Wrapper } from './styles';
 
-import { useSearch } from '@/hooks';
-import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
 import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 export const SearchModal: FC = () => {

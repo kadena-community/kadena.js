@@ -1,10 +1,8 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 
-import { Search, SearchForm, SearchResults } from '@/components';
+import { Search, SearchForm } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
-import { useSearch } from '@/hooks';
-import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
 import {
   checkSubTreeForActive,
   getPathName,
