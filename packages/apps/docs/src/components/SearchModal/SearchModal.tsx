@@ -1,30 +1,27 @@
 import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 
-import { SearchResults } from '../Search/';
+import { Search, SearchResults } from '../Search/';
 import { SearchForm } from '../Search/styles';
 
 import { Wrapper } from './styles';
 
 import { useSearch } from '@/hooks';
 import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 export const SearchModal: FC = () => {
-  const {
-    searchInputRef,
-    query,
-    handleSubmit,
-    conversation,
-    outputStream,
-    error,
-  } = useSearch();
-  const {
-    results: semanticResults,
-    error: semanticError,
-    isLoading: semanticIsLoading,
-  } = useSemanticSearch(query);
-
   const [isMounted, setIsMounted] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const [query, setQuery] = useState<string | undefined>();
+
+  const handleSubmit = async (
+    evt: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    evt.preventDefault();
+
+    const value = searchInputRef.current?.value ?? '';
+    setQuery(value);
+  };
 
   useEffect(() => {
     if (!searchInputRef.current || isMounted) {
@@ -54,17 +51,7 @@ export const SearchModal: FC = () => {
           </SearchForm>
         </Box>
 
-        <SearchResults
-          semanticResults={semanticResults}
-          semanticError={semanticError}
-          semanticIsLoading={semanticIsLoading}
-          conversation={conversation}
-          outputStream={outputStream}
-          limitResults={10}
-          query={query}
-          error={error}
-          hasScroll={true}
-        />
+        <Search query={query} hasScroll={true} />
       </Wrapper>
     </>
   );

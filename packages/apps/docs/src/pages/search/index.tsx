@@ -1,6 +1,6 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 
-import { SearchForm, SearchResults } from '@/components';
+import { Search, SearchForm, SearchResults } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
 import { useSearch } from '@/hooks';
@@ -17,29 +17,12 @@ interface IQuery {
   q?: string;
 }
 
-const Search: FC = () => {
+const SearchPage: FC = () => {
   const router = useRouter();
   const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>(q);
-  const [tabName, setTabName] = useState<string | undefined>();
+
   const searchInputRef = useRef<HTMLInputElement | null>(null);
-
-  const {
-    outputStream,
-    handleSubmit: handleSearchSubmit,
-    conversation,
-    error,
-  } = useSearch();
-  const {
-    results: semanticResults,
-    error: semanticError,
-    isLoading: semanticIsLoading,
-    handleSubmit: handleSemanticSubmit,
-  } = useSemanticSearch();
-
-  const onTabSelect = (tabName: string): void => {
-    setTabName(tabName);
-  };
 
   const handleSubmit = async (
     evt: FormEvent<HTMLFormElement>,
@@ -55,18 +38,6 @@ const Search: FC = () => {
       setQuery(q);
     }
   }, [q, setQuery]);
-
-  useEffect(() => {
-    if (query !== undefined) {
-      if (tabName === 'qa') {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        handleSearchSubmit(query);
-      }
-      if (tabName === 'docs') {
-        handleSemanticSubmit(query);
-      }
-    }
-  }, [query, tabName, handleSemanticSubmit, handleSearchSubmit]);
 
   return (
     <>
@@ -87,16 +58,7 @@ const Search: FC = () => {
       </SearchHeader>
       <Content id="maincontent" layout="home">
         <Article>
-          <SearchResults
-            semanticResults={semanticResults}
-            semanticError={semanticError}
-            semanticIsLoading={semanticIsLoading}
-            conversation={conversation}
-            outputStream={outputStream}
-            query={query}
-            error={error}
-            onTabSelect={onTabSelect}
-          />
+          <Search query={query} />
         </Article>
       </Content>
     </>
@@ -120,4 +82,4 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
   };
 };
 
-export default Search;
+export default SearchPage;

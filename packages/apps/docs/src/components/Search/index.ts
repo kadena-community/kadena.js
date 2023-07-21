@@ -1,2 +1,2 @@
 export * from './styles';
-export * from './components/SearchResults';
+export * from './Search';
