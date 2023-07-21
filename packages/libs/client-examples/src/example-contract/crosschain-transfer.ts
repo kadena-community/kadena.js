@@ -81,7 +81,7 @@ function finishInTheTargetChain(
     .setMeta({
       chainId: targetChainId,
       sender: gasPayer,
-      // this need to be blow 850 if you want to use gas-station otherwise the gas-station deos
+      // this need to be less than or equal 850 if you want to use gas-station otherwise the gas-station does not pay the gas
       gasLimit: 850,
     });
 
