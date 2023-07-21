@@ -16,13 +16,13 @@ function getStartDateOfLastMonths(lastMonths = 3): string {
   const startDate = new Date(today.setMonth(today.getMonth() - lastMonths));
   // Get the year
   const year = startDate.getFullYear();
-  // Get the month
+  // Get the month (add 1 because JS counts months from 0 to 11)
   const month = startDate.getMonth() + 1;
   // Get the day
   const day = startDate.getDate();
 
   // Put it in Google's date format
-  return `${year}-${month - lastMonths}-${day}`;
+  return `${year}-${month}-${day}`;
 }
 
 function getModifiedTimeInSeconds(file: string): number | undefined {
@@ -102,23 +102,34 @@ function getMostPopularPages(
   return topPages.sort((a, b) => b.views - a.views).slice(0, limit);
 }
 
-interface IReqQuery {
+interface IMostPopularQuery {
   slug?: string;
-  limit?: number;
+  limit?: string;
+}
+
+type ApiRequestWithoutQuery = Omit<NextApiRequest, 'query'>;
+interface IMostPopularPagesRequest extends ApiRequestWithoutQuery {
+  query: IMostPopularQuery;
 }
 
 const mostPopular = async (
-  req: NextApiRequest,
+  req: IMostPopularPagesRequest,
   res: NextApiResponse,
 ): Promise<void> => {
   const {
-    query: { slug = '/', limit = 5 },
-  } = req as { query: IReqQuery };
+    query: { slug = '/', limit = '5' },
+  } = req;
+
+  const limitNumber = parseInt(limit, 10);
 
   if (!validateCache()) {
     const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
     const data: string = fs.readFileSync(dataFilePath, 'utf8');
-    const mostPopularPages = getMostPopularPages(JSON.parse(data), slug, limit);
+    const mostPopularPages = getMostPopularPages(
+      JSON.parse(data),
+      slug,
+      limitNumber,
+    );
     res.status(200).json(mostPopularPages);
     return;
   }
@@ -150,7 +161,7 @@ const mostPopular = async (
     ],
   })) as unknown as [IRunReportResponse];
 
-  const mostPopularPages = getMostPopularPages(response, slug, limit);
+  const mostPopularPages = getMostPopularPages(response, slug, limitNumber);
 
   // Store complete data in a file to avoid hitting the API limit
   await storeAnalyticsData(response);
