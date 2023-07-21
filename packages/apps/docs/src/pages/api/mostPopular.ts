@@ -37,12 +37,11 @@ function getModifiedTimeInSeconds(file: string): number | undefined {
 }
 
 // Check if the cache is older than a day
-function validateCache(): boolean {
+function validateCache(filePath: string): boolean {
   const dayInSecs = 86400; // 24 * 60 * 60
-  const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
 
   const fileLastModifiedTime: number | undefined =
-    getModifiedTimeInSeconds(dataFilePath) ?? 0;
+    getModifiedTimeInSeconds(filePath) ?? 0;
 
   if (!fileLastModifiedTime) return true;
 
@@ -125,8 +124,9 @@ const mostPopular = async (
 
   const limitNumber = parseInt(limit, 10);
 
-  if (!validateCache()) {
-    const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
+  const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
+
+  if (!validateCache(dataFilePath)) {
     const data: string = fs.readFileSync(dataFilePath, 'utf8');
     const mostPopularPages = getMostPopularPages(
       JSON.parse(data),
@@ -167,7 +167,7 @@ const mostPopular = async (
   const mostPopularPages = getMostPopularPages(response, slug, limitNumber);
 
   // Store complete data in a file to avoid hitting the API limit
-  await storeAnalyticsData(response);
+  await storeAnalyticsData(dataFilePath, JSON.stringify(response));
   res.status(200).json(mostPopularPages);
 };
 
