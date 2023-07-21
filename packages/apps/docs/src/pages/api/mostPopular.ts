@@ -94,6 +94,9 @@ function getMostPopularPages(
       // Not including search pages
       if (value.startsWith('/search')) return;
 
+      // Not including `__tests` pages
+      if (value.includes('/__tests')) return;
+
       if (!value.startsWith(slug)) return;
     }
     topPages = pushToTopPages(topPages, row);

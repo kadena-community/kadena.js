@@ -3,9 +3,9 @@ import { BrowseSection } from '../BrowseSection';
 import { useFetchMostPopularPages } from './useFetchMostPopularPages';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { FC } from 'react';
 
-const MostPopular = (): JSX.Element => {
+const MostPopular: FC = () => {
   const { data } = useFetchMostPopularPages();
 
   return (
