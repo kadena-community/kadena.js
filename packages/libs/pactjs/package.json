@@ -38,13 +38,13 @@
     "test": "heft test"
   },
   "dependencies": {
-    "@kadena/types": "workspace:*",
     "bignumber.js": "^9.0.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",

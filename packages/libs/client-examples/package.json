@@ -28,7 +28,6 @@
     "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
     "debug": "~4.3.4"
   },
   "devDependencies": {
@@ -36,6 +35,7 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",

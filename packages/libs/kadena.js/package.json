@@ -55,7 +55,6 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
     "node-fetch": "~2.6.2",
     "tweetnacl": "^1.0.3",
     "webpack": "~5.73.0"
@@ -64,6 +63,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
