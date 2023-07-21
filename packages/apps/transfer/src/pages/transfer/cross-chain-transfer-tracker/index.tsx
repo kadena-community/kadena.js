@@ -1,9 +1,12 @@
 import {
+  Breadcrumbs,
   Button,
   Heading,
   InputWrapperStatus,
+  ProductIcon,
   SystemIcon,
   TextField,
+  TrackerCard,
 } from '@kadena/react-ui';
 
 import {
@@ -13,8 +16,6 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
-import { DetailCard } from '@/components/Global/DetailsCard';
 import { useAppContext } from '@/context/app-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
@@ -25,13 +26,9 @@ import {
   StyledMainContent,
 } from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
-  FromIconActive,
-  ReceiverIconActive,
-  ReceiverIconInactive,
-} from '@/resources/svg/generated';
-import {
   getTransferStatus,
   IStatusData,
+  StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import Debug from 'debug';
@@ -135,7 +132,11 @@ const CrossChainTransferTracker: FC = () => {
   );
 
   return (
-    <MainLayout title={t('Track & trace transactions')}>
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <StyledMainContent>
         <StyledForm onSubmit={handleSubmit}>
           <StyledAccountForm>
@@ -166,12 +167,20 @@ const CrossChainTransferTracker: FC = () => {
         {data.receiverAccount ? (
           <StyledInfoBox>
             <StyledInfoTitle>{t('Transfer Information')}</StyledInfoTitle>
-            <DetailCard
-              firstTitle={t('Sender')}
-              firstContent={data.senderAccount || ''}
-              secondTitle={t('Chain')}
-              secondContent={data.senderChain || ''}
-              icon={<FromIconActive />}
+            <TrackerCard
+              variant="vertical"
+              icon={ProductIcon.QuickStart}
+              labelValues={[
+                {
+                  label: t('Sender'),
+                  value: data.senderAccount || '',
+                  isAccount: true,
+                },
+                {
+                  label: t('Chain'),
+                  value: data.senderChain || '',
+                },
+              ]}
             />
             <StyledInfoItem>
               <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
@@ -187,23 +196,30 @@ const CrossChainTransferTracker: FC = () => {
               <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
               <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
             </StyledInfoItem>
-            <DetailCard
-              firstTitle={t('Receiver')}
-              firstContent={data.receiverAccount || ''}
-              secondTitle={t('Chain')}
-              secondContent={data.receiverChain || ''}
+
+            <TrackerCard
+              variant="vertical"
               icon={
-                data?.id === 3 ? (
-                  <ReceiverIconActive />
-                ) : (
-                  <ReceiverIconInactive />
-                )
+                data?.id === StatusId.Success
+                  ? ProductIcon.Receiver
+                  : ProductIcon.ReceiverInactive
               }
+              labelValues={[
+                {
+                  label: t('Receiver'),
+                  value: data.receiverAccount || '',
+                  isAccount: true,
+                },
+                {
+                  label: t('Chain'),
+                  value: data.receiverChain || '',
+                },
+              ]}
             />
           </StyledInfoBox>
         ) : null}
       </StyledMainContent>
-    </MainLayout>
+    </div>
   );
 };
 

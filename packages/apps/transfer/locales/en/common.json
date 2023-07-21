@@ -41,7 +41,7 @@
   "mainnet01": "mainnet01",
   "Not a Cross Chain Request Key": "Not a Cross Chain Request Key",
   "Enter Request Key": "Enter Request Key",
-  "Gas Payer Account": "Gas Payer Account",
+  "Gas Payer": "Gas Payer",
   "only single pubkey accounts are supported": "only single pubkey accounts are supported",
   "Gas Price": "Gas Price",
   "Enter Gas Payer": "Enter Gas Payer",
@@ -99,5 +99,8 @@
   "Transfer pending - wating for proof": "Transfer pending - wating for proof",
   "Transfer pending - waiting for continuation command": "Transfer pending - waiting for continuation command",
   "Could not obtain proof information": "Could not obtain proof information",
-  "Transfer completed successfully": "Transfer completed successfully"
+  "Transfer completed successfully": "Transfer completed successfully",
+  "Price": "Price",
+  "Network": "Network",
+  "Server": "Server"
 }

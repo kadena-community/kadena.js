@@ -67,6 +67,8 @@ export {
   ITooltipProps,
   MaskedValue,
   IMaskedValueProps,
+  TrackerCard,
+  ITrackerCardProps,
   Option,
   IOptionProps,
   Select,

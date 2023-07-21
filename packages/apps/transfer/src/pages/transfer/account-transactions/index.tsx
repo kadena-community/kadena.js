@@ -1,7 +1,6 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { Button, TextField } from '@kadena/react-ui';
+import { Breadcrumbs, Button, TextField } from '@kadena/react-ui';
 
-import MainLayout from '@/components/Common/Layout/MainLayout';
 import { ChainSelect } from '@/components/Global';
 import { Network } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
@@ -120,7 +119,11 @@ const CheckTransactions: FC = () => {
   }, []);
 
   return (
-    <MainLayout title={t('Account Transactions')}>
+    <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Account Transactions')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
       <main className={mainContentStyle}>
         <StyledContent>
           <form className={formStyle} onSubmit={checkTransactionsEvent}>
@@ -189,7 +192,7 @@ const CheckTransactions: FC = () => {
           </StyledResultContainer>
         </StyledContent>
       </main>
-    </MainLayout>
+    </div>
   );
 };
 

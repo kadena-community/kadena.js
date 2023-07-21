@@ -39,7 +39,7 @@ describe('Pact.modules', () => {
       readKeyset('ks'),
     );
     expect(code).toBe(
-      '(crowdfund.create-project "id" "an awesome project" coin 1000.0 800.0 (time "2023-07-19T10:04:15.599Z") (time "2023-08-18T10:04:15.599Z") "bob" (read-keyset "ks"))',
+      '(crowdfund.create-project "id" "an awesome project" coin 1000.0 800.0 (time "2023-07-19T10:04:15Z") (time "2023-08-18T10:04:15Z") "bob" (read-keyset "ks"))',
     );
   });
 });

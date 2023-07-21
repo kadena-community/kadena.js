@@ -1,5 +1,3 @@
-import { SystemIcon } from '../Icon';
-
 import {
   accordionSectionClass,
   accordionTitleClass,
@@ -7,6 +5,7 @@ import {
   toggleButtonClass,
 } from './Accordion.css';
 
+import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, useEffect, useRef } from 'react';
 
