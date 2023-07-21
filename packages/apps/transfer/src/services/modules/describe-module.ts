@@ -1,6 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { getClient, Pact } from '@kadena/client';
-import { createExp } from '@kadena/pactjs';
 
 import {
   getKadenaConstantByNetwork,
@@ -36,10 +35,8 @@ export const describeModule = async (
     }),
   );
 
-  const modules: any = Pact.modules;
-  const describe: any = modules['describe-module'];
   const transaction = Pact.builder
-    .execution(describe(moduleName))
+    .execution(Pact.modules['describe-module'](moduleName))
     .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
     .setNetworkId(networkId)
     .createTransaction();
@@ -54,6 +51,6 @@ export const describeModule = async (
   return {
     reqKey,
     status: result.status,
-    code: ('data' in result) ? (result.data as string) : '',
+    code: 'data' in result ? (result.data as string) : '',
   };
 };

@@ -1,4 +1,4 @@
-import { getClient } from "@kadena/client";
+import { getClient } from '@kadena/client';
 
 const client = getClient();
 

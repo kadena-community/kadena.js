@@ -33,9 +33,8 @@ export const listModules = async (
     }),
   );
 
-  const modules: any = Pact.modules;
   const transaction = Pact.builder
-    .execution(modules['list-modules']())
+    .execution(Pact.modules['list-modules']())
     .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
     .setNetworkId(networkId)
     .createTransaction();

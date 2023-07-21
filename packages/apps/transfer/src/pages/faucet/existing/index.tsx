@@ -41,7 +41,7 @@ const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
 };
 
-interface FundExistingAccountResponseBody {
+interface IFundExistingAccountResponseBody {
   result: {
     status: string;
     error:
@@ -52,8 +52,8 @@ interface FundExistingAccountResponseBody {
   };
 }
 
-interface FundExistingAccountResponse
-  extends Record<string, FundExistingAccountResponseBody> {}
+interface IFundExistingAccountResponse
+  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -75,7 +75,7 @@ const ExistingAccountFaucetPage: FC = () => {
           accountName,
           chainID,
           AMOUNT_OF_COINS_FUNDED,
-        )) as FundExistingAccountResponse;
+        )) as IFundExistingAccountResponse;
 
         const error = Object.values(result).find(
           (response) => response.result.status === 'failure',
@@ -148,7 +148,11 @@ const ExistingAccountFaucetPage: FC = () => {
             }}
             helperText={errors.name?.message ?? ''}
           />
-          <ChainSelect onChange={onChainSelectChange} value={chainID} ariaLabel={'hello'} />
+          <ChainSelect
+            onChange={onChainSelectChange}
+            value={chainID}
+            ariaLabel={'hello'}
+          />
         </StyledAccountForm>
         <StyledFormButton>
           <Button.Root

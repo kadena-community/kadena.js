@@ -12,14 +12,14 @@ import Debug from 'debug';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ScopedEval from 'scoped-eval';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
 });
 
-const FunctionPage = () => {
+const FunctionPage: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer:module:function');
   const { t } = useTranslation('common');
   const [snippet, setSnippet] = useState('');
@@ -32,7 +32,7 @@ const FunctionPage = () => {
 
   useEffect(() => {
     setOutput(`${output}\n${log}`.trim());
-  }, [timestamp]);
+  }, [timestamp, output, log]);
 
   const Logger = {
     log(data: string) {
@@ -41,10 +41,9 @@ const FunctionPage = () => {
     },
   };
 
-  const runSnippet = () => {
+  const runSnippet = (): void => {
     setOutput('');
     const scopedEval = new ScopedEval();
-    console.log(code);
     scopedEval.eval(code, {
       Pact,
       getClient,

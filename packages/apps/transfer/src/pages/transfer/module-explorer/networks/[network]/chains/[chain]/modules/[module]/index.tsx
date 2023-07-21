@@ -15,14 +15,15 @@ import { Container, Details, EditorGrid, StyledListItem } from './styles';
 import { describeModule } from '@/services/modules/describe-module';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
-const ModulePage = () => {
+const ModulePage: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer:module');
   const { t } = useTranslation('common');
   const [pactCode, setPactCode] = useState('');
   const [functions, setFunctions] = useState({});
   const [capabilities, setCapabilities] = useState({});
+  const [interfaces, setInterfaces] = useState([]);
   const router = useRouter();
   const { network, chain, module } = router.query;
 
@@ -49,21 +50,20 @@ const ModulePage = () => {
         1000,
       );
 
-      setPactCode(data?.code || '');
+      setPactCode(data?.code.code || '');
 
       const moduleNameParts = moduleName.split('.');
       const namespace =
         moduleNameParts.length > 1 ? moduleNameParts[0] : undefined;
 
       const pactModule = new StringContractDefinition({
-        contract: data?.code || '',
+        contract: data?.code.code || '',
         namespace,
       });
 
-      console.log(pactModule);
-
-      // setCapabilities(pactModule._raw[moduleName].defcaps);
-      // setFunctions(pactModule._raw[moduleName].defuns);
+      setCapabilities(pactModule._raw[moduleName].defcaps);
+      setFunctions(pactModule._raw[moduleName].defuns);
+      setInterfaces(data?.code.interfaces);
     };
 
     fetchModule().catch(console.error);
@@ -114,6 +114,9 @@ const ModulePage = () => {
             <h4>{t('Constants')}</h4>
             <h4>{t('Pacts')}</h4>
             <h4>{t('Interfaces')}</h4>
+            {interfaces.map((key) => (
+              <StyledListItem key={key}>{key}</StyledListItem>
+            ))}
           </Details>
         </div>
       </EditorGrid>

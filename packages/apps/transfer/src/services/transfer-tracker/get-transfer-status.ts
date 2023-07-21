@@ -1,15 +1,10 @@
-import {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { ICommand, Pact } from '@kadena/client';
 
 import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
-import {
-  getKadenaConstantByNetwork,
-  kadenaConstants,
-  Network,
-} from '@/constants/kadena';
+import client from '@/constants/client';
+import { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
 import { Translate } from 'next-translate';
@@ -169,64 +164,58 @@ export async function getXChainTransferInfo({
 }): Promise<IStatusData> {
   debug(getXChainTransferInfo.name);
   try {
-    const proofApiHost = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
+    const networkId = chainNetwork[network].network;
+
+    const senderOptions = {
+      networkId,
       chainId: senderChain,
-    });
-    const apiHost = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId: receiverChain,
-    });
-    const gasLimit: number = kadenaConstants.GAS_LIMIT;
-    const gasPrice: number = kadenaConstants.GAS_PRICE;
+    };
 
-    // const contCommand = await getContCommand(
-    //   requestKey,
-    //   receiverChain,
-    //   proofApiHost,
-    //   1,
-    //   false,
-    // );
+    const proof = await client.pollCreateSpv(
+      requestKey,
+      receiverChain,
+      senderOptions,
+    );
+    const status = await client.listen(requestKey, senderOptions);
+    const pactId = status.continuation?.pactId;
 
-    // contCommand
-    //   .setMeta(
-    //     {
-    //       chainId: receiverChain,
-    //       sender: senderAccount,
-    //       gasLimit,
-    //       gasPrice,
-    //     },
-    //     chainNetwork[network].network as ChainwebNetworkId,
-    //   )
-    //   .createCommand();
+    const continuationTransaction = Pact.builder
+      .continuation({
+        pactId,
+        proof,
+        rollback: false,
+        step: 1,
+      })
+      .setNetworkId(networkId)
+      .setMeta({ chainId: receiverChain })
+      .createTransaction();
 
-    // const response = await contCommand.local(apiHost, {
-    //   preflight: false,
-    //   signatureVerification: false,
-    // });
+    const response = await client.dirtyRead(
+      continuationTransaction as ICommand,
+    );
 
-    // if (
-    //   String(response?.result?.error?.type) === 'EvalError' &&
-    //   String(response?.result?.error?.message).includes('pact completed')
-    // ) {
-    //   return {
-    //     id: StatusId.Success,
-    //     status: t('Success'),
-    //     description: t('Transfer completed successfully'),
-    //     senderAccount: senderAccount,
-    //     receiverChain: receiverChain,
-    //   };
-    // }
+    if (
+      String(response?.result?.error?.type) === 'EvalError' &&
+      String(response?.result?.error?.message).includes('pact completed')
+    ) {
+      return {
+        id: StatusId.Success,
+        status: t('Success'),
+        description: t('Transfer completed successfully'),
+        senderAccount: senderAccount,
+        receiverChain: receiverChain,
+      };
+    }
 
-    // if (response?.result?.status === 'success') {
-    //   return {
-    //     id: StatusId.Pending,
-    //     status: t('Pending'),
-    //     description: t('Transfer pending - waiting for continuation command'),
-    //     senderAccount: senderAccount,
-    //     receiverChain: receiverChain,
-    //   };
-    // }
+    if (response?.result?.status === 'success') {
+      return {
+        id: StatusId.Pending,
+        status: t('Pending'),
+        description: t('Transfer pending - waiting for continuation command'),
+        senderAccount: senderAccount,
+        receiverChain: receiverChain,
+      };
+    }
 
     return {
       id: StatusId.Error,
@@ -265,37 +254,34 @@ export async function checkForProof({
     onPoll?: (status: IStatusData) => void;
   };
   t: Translate;
-}): Promise<Response | undefined> {
+}): Promise<string | undefined> {
   debug(checkForProof.name);
 
   const { onPoll = () => {} } = { ...options };
 
   try {
-    const apiHost = getKadenaConstantByNetwork(network).apiHost({
-      networkId: chainNetwork[network].network,
-      chainId: senderChain,
-    });
     let count = 0;
 
-    // return await pollSpvProof(requestKey, receiverChain, apiHost, {
-    //   onPoll: () => {
-    //     // Avoid status update on first two polls (to avoid flickering)
-    //     if (count > 1) {
-    //       onPoll({
-    //         id: StatusId.Pending,
-    //         status: t('Pending'),
-    //         description: t('Transfer pending - waiting for proof'),
-    //         senderAccount,
-    //         senderChain,
-    //         receiverAccount,
-    //         receiverChain,
-    //         amount,
-    //       });
-    //     }
-    //     count++;
-    //   },
-    // });
-    return new Promise(() => undefined)
+    return client.pollCreateSpv(requestKey, receiverChain, {
+      networkId: chainNetwork[network].network,
+      chainId: senderChain,
+      onPoll: () => {
+        // Avoid status update on first two polls (to avoid flickering)
+        if (count > 1) {
+          onPoll({
+            id: StatusId.Pending,
+            status: t('Pending'),
+            description: t('Transfer pending - waiting for proof'),
+            senderAccount,
+            senderChain,
+            receiverAccount,
+            receiverChain,
+            amount,
+          });
+        }
+        count++;
+      },
+    });
   } catch (error) {
     debug(error);
     onPoll({

@@ -8,7 +8,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-export interface Onchange {
+export interface IOnchange {
   (value: string): void;
 }
 
@@ -17,7 +17,7 @@ export interface IAceEditorProps {
   width?: string;
   height?: string;
   readonly?: boolean;
-  onChange?: Onchange;
+  onChange?: IOnchange;
 }
 
 const AceViewerComponent: FC<IAceEditorProps> = ({
