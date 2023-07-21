@@ -25,9 +25,14 @@ export const SearchModal: FC = () => {
     if (!searchInputRef.current || isMounted) {
       return;
     }
-    searchInputRef.current.focus();
     setIsMounted(true);
   }, [isMounted, searchInputRef]);
+
+  useEffect(() => {
+    if (searchInputRef.current && isMounted) {
+      searchInputRef.current.focus();
+    }
+  }, [isMounted]);
 
   return (
     <>
