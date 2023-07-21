@@ -1,6 +1,6 @@
 import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
-import { StaticResultsList, StyledItem, StyledListItem } from './../styles';
+import { StaticResultsList, StyledItem, StyledListItem } from '../styles';
 
 import { createLinkFromMD } from '@/utils';
 import Link from 'next/link';

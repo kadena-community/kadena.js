@@ -10,7 +10,9 @@ interface ISemanticSearch {
 const searchErrorMessage =
   'There was a problem. Sorry for the inconvenience. Please try again!';
 
-export const useSemanticSearch = (): ISemanticSearch => {
+export const useSemanticSearch = (
+  limitResults: number = 50,
+): ISemanticSearch => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [results, setResults] = useState<ISearchResult[]>([]);
@@ -18,7 +20,9 @@ export const useSemanticSearch = (): ISemanticSearch => {
 
   const getSearchResults = async (query: string): Promise<void> => {
     try {
-      const response = await fetch(`/api/semanticsearch?query=${query}`);
+      const response = await fetch(
+        `/api/semanticsearch?query=${query}&limit=${limitResults}`,
+      );
 
       const data = await response.json();
 

@@ -1,4 +1,4 @@
-import { embed } from '@/utils/embedder';
+import { embed } from '@/utils/createEmbedding';
 import { getFrontMatter } from '@/utils/markdown';
 import { PineconeClient } from '@pinecone-database/pinecone';
 import { ScoredVector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
@@ -97,7 +97,7 @@ const search = async (
 ): Promise<void> => {
   const client = await getPineconeClient();
   const index = client.Index(namespace);
-  const { query } = req.query;
+  const { query, limit = 50 } = req.query;
 
   if (query === undefined) {
     res.status(405).json({
@@ -112,7 +112,7 @@ const search = async (
   const result = await index.query({
     queryRequest: {
       vector: queryEmbedding.values,
-      topK: 50,
+      topK: parseInt(limit as string, 10),
       includeMetadata: true,
       includeValues: false,
       namespace,
