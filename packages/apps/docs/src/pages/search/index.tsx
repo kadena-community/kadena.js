@@ -10,14 +10,23 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
+
+interface IQuery {
+  q?: string;
+}
 
 const Search: FC = () => {
+  const router = useRouter();
+  const { q } = router.query as IQuery;
+  const [query, setQuery] = useState<string | undefined>(q);
+  const [tabName, setTabName] = useState<string | undefined>();
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
   const {
-    searchInputRef,
     outputStream,
-    handleSubmit,
-    query,
+    handleSubmit: handleSearchSubmit,
     conversation,
     error,
   } = useSearch();
@@ -25,7 +34,39 @@ const Search: FC = () => {
     results: semanticResults,
     error: semanticError,
     isLoading: semanticIsLoading,
-  } = useSemanticSearch(query);
+    handleSubmit: handleSemanticSubmit,
+  } = useSemanticSearch();
+
+  const onTabSelect = (tabName: string): void => {
+    setTabName(tabName);
+  };
+
+  const handleSubmit = async (
+    evt: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    evt.preventDefault();
+
+    const value = searchInputRef.current?.value ?? '';
+    setQuery(value);
+  };
+
+  useEffect(() => {
+    if (q !== undefined && q !== '') {
+      setQuery(q);
+    }
+  }, [q, setQuery]);
+
+  useEffect(() => {
+    if (query !== undefined) {
+      if (tabName === 'qa') {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        handleSearchSubmit(query);
+      }
+      if (tabName === 'docs') {
+        handleSemanticSubmit(query);
+      }
+    }
+  }, [query, tabName, handleSemanticSubmit, handleSearchSubmit]);
 
   return (
     <>
@@ -54,6 +95,7 @@ const Search: FC = () => {
             outputStream={outputStream}
             query={query}
             error={error}
+            onTabSelect={onTabSelect}
           />
         </Article>
       </Content>

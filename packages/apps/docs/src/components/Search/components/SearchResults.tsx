@@ -28,6 +28,7 @@ interface IProps {
   query?: string;
   error?: string;
   hasScroll?: boolean;
+  onTabSelect: (tabName: string) => void;
 }
 
 const TABNAME = 'searchTabSelected';
@@ -42,6 +43,7 @@ export const SearchResults: FC<IProps> = ({
   query,
   error,
   hasScroll = false,
+  onTabSelect,
 }) => {
   const { clearModal } = useModal();
   const [selectedTabName, setSelectedTabName] = useState<string>('docs');
@@ -51,6 +53,7 @@ export const SearchResults: FC<IProps> = ({
     const buttonName = (e.target as HTMLElement).getAttribute('data-value');
     if (buttonName === null) return;
     localStorage.setItem(TABNAME, buttonName);
+    onTabSelect(buttonName);
   };
 
   useEffect(() => {
@@ -59,7 +62,8 @@ export const SearchResults: FC<IProps> = ({
     if (value === null) return;
 
     setSelectedTabName(value);
-  }, [setSelectedTabName, setIsMounted]);
+    onTabSelect(value);
+  }, [setSelectedTabName, setIsMounted, onTabSelect]);
 
   if (!isMounted) return null;
   return (
@@ -119,8 +123,6 @@ export const SearchResults: FC<IProps> = ({
                 {error}
               </Notification.Root>
             )}
-
-            <ResultCount count={semanticResults.length} />
 
             {conversation?.history.map((interaction, idx) => (
               <div key={`${interaction.input}-${idx}`}>

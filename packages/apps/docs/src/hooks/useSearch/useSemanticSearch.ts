@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface ISemanticSearch {
   isLoading: boolean;
   results: ISearchResult[];
   error?: string;
+  handleSubmit: (value: string) => void;
 }
 
 const searchErrorMessage =
   'There was a problem. Sorry for the inconvenience. Please try again!';
 
-export const useSemanticSearch = (query?: string): ISemanticSearch => {
+export const useSemanticSearch = (): ISemanticSearch => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [results, setResults] = useState<ISearchResult[]>([]);
+  const [query, setQuery] = useState<string | undefined>();
 
   const getSearchResults = async (query: string): Promise<void> => {
     try {
@@ -38,18 +40,21 @@ export const useSemanticSearch = (query?: string): ISemanticSearch => {
     setIsLoading(false);
   }, [results]);
 
-  useEffect(() => {
-    setError(undefined);
-    if (query !== undefined) {
+  const handleSubmit = useCallback(
+    async (value: string): Promise<void> => {
+      if (value === undefined || query === value) return;
+      setError(undefined);
       setIsLoading(true);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      getSearchResults(query);
-    }
-  }, [query]);
+      setQuery(value);
+      await getSearchResults(value);
+    },
+    [setError, setIsLoading, setQuery, query],
+  );
 
   return {
     isLoading,
     results,
     error,
+    handleSubmit,
   };
 };
