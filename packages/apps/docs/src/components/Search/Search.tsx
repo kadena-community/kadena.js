@@ -7,15 +7,17 @@ import React, { FC, useEffect, useState } from 'react';
 interface IProps {
   query?: string;
   hasScroll?: boolean;
+  limitResults?: number;
 }
 
-export const Search: FC<IProps> = ({ query, hasScroll }) => {
+export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   const [tabName, setTabName] = useState<string | undefined>();
   const {
     outputStream,
     handleSubmit: handleSearchSubmit,
     conversation,
     error,
+    isLoading,
   } = useSearch();
   const {
     results: semanticResults,
@@ -50,8 +52,10 @@ export const Search: FC<IProps> = ({ query, hasScroll }) => {
         outputStream={outputStream}
         query={query}
         error={error}
+        isLoading={isLoading}
         hasScroll={hasScroll}
         onTabSelect={onTabSelect}
+        limitResults={limitResults}
       />
     </section>
   );

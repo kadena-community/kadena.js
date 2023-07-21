@@ -27,6 +27,7 @@ interface IProps {
   limitResults?: number;
   query?: string;
   error?: string;
+  isLoading: boolean;
   hasScroll?: boolean;
   onTabSelect: (tabName: string) => void;
 }
@@ -42,6 +43,7 @@ export const SearchResults: FC<IProps> = ({
   limitResults,
   query,
   error,
+  isLoading,
   hasScroll = false,
   onTabSelect,
 }) => {
@@ -114,6 +116,11 @@ export const SearchResults: FC<IProps> = ({
 
         <Tabs.Content value="qa">
           <ScrollBox disabled={!hasScroll}>
+            {isLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
             {error && (
               <Notification.Root
                 color={'negative'}

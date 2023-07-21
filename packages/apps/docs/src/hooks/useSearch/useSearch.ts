@@ -17,12 +17,14 @@ interface IProps {
   outputStream: string;
   conversation: IConversation;
   error: string | undefined;
+  isLoading: boolean;
 }
 
 export const useSearch = (): IProps => {
   const [query, setQuery] = useState<string | undefined>();
   const [conversation, dispatch] = useConversation();
-  const [startStream, isStreaming, outputStream, metadata, error] = useStream();
+  const [startStream, isStreaming, outputStream, metadata, error, isLoading] =
+    useStream();
   const router = useRouter();
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -75,5 +77,6 @@ export const useSearch = (): IProps => {
     outputStream,
     conversation,
     error,
+    isLoading,
   };
 };

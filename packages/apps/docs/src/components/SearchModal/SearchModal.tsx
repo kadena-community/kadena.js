@@ -54,7 +54,7 @@ export const SearchModal: FC = () => {
           </SearchForm>
         </Box>
 
-        <Search query={query} hasScroll={true} />
+        <Search query={query} hasScroll={true} limitResults={10} />
       </Wrapper>
     </>
   );

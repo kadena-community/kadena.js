@@ -18,6 +18,7 @@ export const useStream = (): [
   string,
   undefined | StreamMetaData[],
   undefined | string,
+  boolean,
 ] => {
   const [outputStream, setOutputStream] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
@@ -25,11 +26,14 @@ export const useStream = (): [
     undefined,
   );
   const [error, setError] = useState<undefined | string>(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const startStream = useCallback(
     (query: string, conversation: IConversation): void => {
       const searchParams = new URLSearchParams();
 
+      setError(undefined);
+      setIsLoading(true);
       searchParams.set('query', encodeURIComponent(query));
       conversation.history.forEach((interaction) => {
         searchParams.append(
@@ -58,6 +62,7 @@ export const useStream = (): [
       };
 
       source.addEventListener('message', (event) => {
+        setIsLoading(false);
         try {
           if (event.data.trim() === '[DONE]') {
             done();
@@ -75,6 +80,7 @@ export const useStream = (): [
       });
 
       source.addEventListener('metadata', (event) => {
+        setIsLoading(false);
         try {
           const data = JSON.parse(event.data);
           setMetadata(data);
@@ -86,6 +92,7 @@ export const useStream = (): [
       });
 
       source.addEventListener('error', (e) => {
+        setIsLoading(false);
         console.warn('sourceError', e);
         setError(searchErrorMessage);
         done();
@@ -100,5 +107,5 @@ export const useStream = (): [
     }
   }, [isStreaming, outputStream]);
 
-  return [startStream, isStreaming, outputStream, metadata, error];
+  return [startStream, isStreaming, outputStream, metadata, error, isLoading];
 };

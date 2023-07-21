@@ -55,10 +55,13 @@ const Item: FC<IResultProps> = ({ item }) => {
 };
 
 export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
+  const limitedResults =
+    limitResults !== undefined ? results.slice(0, limitResults) : results;
+
   return (
     <Box marginY="$10">
       <StaticResultsList>
-        {results.map((item) => {
+        {limitedResults.map((item) => {
           return <Item item={item} key={item.id} />;
         })}
       </StaticResultsList>
