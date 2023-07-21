@@ -62,8 +62,8 @@ const ModulePage = () => {
 
       console.log(pactModule);
 
-      setCapabilities(pactModule._raw[moduleName].defcaps);
-      setFunctions(pactModule._raw[moduleName].defuns);
+      // setCapabilities(pactModule._raw[moduleName].defcaps);
+      // setFunctions(pactModule._raw[moduleName].defuns);
     };
 
     fetchModule().catch(console.error);

@@ -80,10 +80,9 @@ export async function getTransferData({
 
     const { events, result } = found;
 
-    const errorMessage = result.error?.message;
-
-    if (errorMessage) {
-      return { error: errorMessage };
+    if ('error' in result) {
+      return result.error;
+      // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
     }
 
     const [senderAccount, receiverAccount, guard, targetChain, amount] =

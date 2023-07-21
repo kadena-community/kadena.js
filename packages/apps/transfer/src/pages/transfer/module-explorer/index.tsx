@@ -58,27 +58,6 @@ const ModuleExplorer: FC = () => {
     [modules, moduleSearch],
   );
 
-  useEffect(() => {
-    if (!moduleName) {
-      return;
-    }
-
-    const fetchModule = async (): Promise<void> => {
-      const data = await describeModule(
-        moduleName,
-        chainID,
-        network,
-        kadenaConstants.DEFAULT_SENDER,
-        kadenaConstants.GAS_PRICE,
-        1000,
-      );
-
-      setResults(data);
-    };
-
-    fetchModule().catch(console.error);
-  }, [chainID, moduleName, network]);
-
   const onModuleNameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setModuleSearch(e.target.value);
@@ -94,7 +73,7 @@ const ModuleExplorer: FC = () => {
       </Breadcrumbs.Root>
       <StyledForm>
         <StyledAccountForm>
-          <ChainSelect onChange={onChainSelectChange} value={chainID} />
+          <ChainSelect onChange={onChainSelectChange} value={chainID} ariaLabel={'hello'} />
           <TextField
             label={t('Module Name')}
             inputProps={{
@@ -111,7 +90,7 @@ const ModuleExplorer: FC = () => {
         {filteredModules?.map((module) => (
           <StyledListItem key={module} data-module-name={module}>
             <a
-              href={`/transfer/module-explorer/networks/${network}/chains/${moduleChain}/modules/${module}`}
+              href={`/transfer/module-explorer/networks/${network}/chains/${chainID}/modules/${module}`}
             >
               {module}
             </a>

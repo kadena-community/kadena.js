@@ -2,7 +2,6 @@ import {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import { getContCommand, pollSpvProof } from '@kadena/client';
 
 import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
@@ -181,53 +180,53 @@ export async function getXChainTransferInfo({
     const gasLimit: number = kadenaConstants.GAS_LIMIT;
     const gasPrice: number = kadenaConstants.GAS_PRICE;
 
-    const contCommand = await getContCommand(
-      requestKey,
-      receiverChain,
-      proofApiHost,
-      1,
-      false,
-    );
+    // const contCommand = await getContCommand(
+    //   requestKey,
+    //   receiverChain,
+    //   proofApiHost,
+    //   1,
+    //   false,
+    // );
 
-    contCommand
-      .setMeta(
-        {
-          chainId: receiverChain,
-          sender: senderAccount,
-          gasLimit,
-          gasPrice,
-        },
-        chainNetwork[network].network as ChainwebNetworkId,
-      )
-      .createCommand();
+    // contCommand
+    //   .setMeta(
+    //     {
+    //       chainId: receiverChain,
+    //       sender: senderAccount,
+    //       gasLimit,
+    //       gasPrice,
+    //     },
+    //     chainNetwork[network].network as ChainwebNetworkId,
+    //   )
+    //   .createCommand();
 
-    const response = await contCommand.local(apiHost, {
-      preflight: false,
-      signatureVerification: false,
-    });
+    // const response = await contCommand.local(apiHost, {
+    //   preflight: false,
+    //   signatureVerification: false,
+    // });
 
-    if (
-      String(response?.result?.error?.type) === 'EvalError' &&
-      String(response?.result?.error?.message).includes('pact completed')
-    ) {
-      return {
-        id: StatusId.Success,
-        status: t('Success'),
-        description: t('Transfer completed successfully'),
-        senderAccount: senderAccount,
-        receiverChain: receiverChain,
-      };
-    }
+    // if (
+    //   String(response?.result?.error?.type) === 'EvalError' &&
+    //   String(response?.result?.error?.message).includes('pact completed')
+    // ) {
+    //   return {
+    //     id: StatusId.Success,
+    //     status: t('Success'),
+    //     description: t('Transfer completed successfully'),
+    //     senderAccount: senderAccount,
+    //     receiverChain: receiverChain,
+    //   };
+    // }
 
-    if (response?.result?.status === 'success') {
-      return {
-        id: StatusId.Pending,
-        status: t('Pending'),
-        description: t('Transfer pending - waiting for continuation command'),
-        senderAccount: senderAccount,
-        receiverChain: receiverChain,
-      };
-    }
+    // if (response?.result?.status === 'success') {
+    //   return {
+    //     id: StatusId.Pending,
+    //     status: t('Pending'),
+    //     description: t('Transfer pending - waiting for continuation command'),
+    //     senderAccount: senderAccount,
+    //     receiverChain: receiverChain,
+    //   };
+    // }
 
     return {
       id: StatusId.Error,
@@ -278,24 +277,25 @@ export async function checkForProof({
     });
     let count = 0;
 
-    return await pollSpvProof(requestKey, receiverChain, apiHost, {
-      onPoll: () => {
-        // Avoid status update on first two polls (to avoid flickering)
-        if (count > 1) {
-          onPoll({
-            id: StatusId.Pending,
-            status: t('Pending'),
-            description: t('Transfer pending - waiting for proof'),
-            senderAccount,
-            senderChain,
-            receiverAccount,
-            receiverChain,
-            amount,
-          });
-        }
-        count++;
-      },
-    });
+    // return await pollSpvProof(requestKey, receiverChain, apiHost, {
+    //   onPoll: () => {
+    //     // Avoid status update on first two polls (to avoid flickering)
+    //     if (count > 1) {
+    //       onPoll({
+    //         id: StatusId.Pending,
+    //         status: t('Pending'),
+    //         description: t('Transfer pending - waiting for proof'),
+    //         senderAccount,
+    //         senderChain,
+    //         receiverAccount,
+    //         receiverChain,
+    //         amount,
+    //       });
+    //     }
+    //     count++;
+    //   },
+    // });
+    return new Promise(() => undefined)
   } catch (error) {
     debug(error);
     onPoll({

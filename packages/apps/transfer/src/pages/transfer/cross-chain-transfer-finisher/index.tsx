@@ -1,5 +1,4 @@
 import { IPollResponse } from '@kadena/chainweb-node-client';
-import { ContCommand } from '@kadena/client';
 import {
   Breadcrumbs,
   Button,
@@ -49,6 +48,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import client from '@/constants/client';
 
 interface IPactResultError {
   status: 'failure';
@@ -121,19 +121,21 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
-    const host = getKadenaConstantByNetwork(network).apiHost({
+    const proof = await client.pollCreateSpv(requestKey, pollResults.tx.receiver.chain, {
       networkId: chainNetwork[network].network,
-      chainId: pollResults.tx.receiver.chain,
+      chainId: pollResults.tx.sender.chain,
     });
 
-    const contCommand = await finishXChainTransfer(
-      requestKey,
-      pollResults.tx.step,
-      pollResults.tx.rollback,
-      network,
-      pollResults.tx.receiver.chain,
-      kadenaXChainGas,
-    );
+    console.log(proof);
+
+    // const contCommand = await finishXChainTransfer(
+    //   requestKey,
+    //   pollResults.tx.step,
+    //   pollResults.tx.rollback,
+    //   network,
+    //   pollResults.tx.receiver.chain,
+    //   kadenaXChainGas,
+    // );
 
     // if (!(contCommand instanceof ContCommand) && contCommand.error) {
     //   setTxError(contCommand.error);

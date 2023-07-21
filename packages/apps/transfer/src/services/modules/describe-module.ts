@@ -36,8 +36,10 @@ export const describeModule = async (
     }),
   );
 
+  const modules: any = Pact.modules;
+  const describe: any = modules['describe-module'];
   const transaction = Pact.builder
-    .execution(Pact.modules['describe-module'](moduleName))
+    .execution(describe(moduleName))
     .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
     .setNetworkId(networkId)
     .createTransaction();
@@ -47,27 +49,11 @@ export const describeModule = async (
     signatureVerification: false,
   });
 
-  // const pactCommand = new PactCommand();
-  // pactCommand.code = createExp(`describe-module "${moduleName}"`);
-
-  // pactCommand.setMeta({ gasLimit, gasPrice, ttl, sender, chainId });
-
-  // const response = await pactCommand.local(
-  //   getKadenaConstantByNetwork(network).apiHost({
-  //     networkId: chainNetwork[network].network,
-  //     chainId,
-  //   }),
-  //   {
-  //     signatureVerification: false,
-  //     preflight: false,
-  //   },
-  // );
-
   const { reqKey, result } = response;
 
   return {
     reqKey,
     status: result.status,
-    code: result.data?.code,
+    code: ('data' in result) ? (result.data as string) : '',
   };
 };

@@ -2,7 +2,7 @@ import {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import { ContCommand, getContCommand } from '@kadena/client';
+import { getClient, Pact } from '@kadena/client';
 
 import {
   getKadenaConstantByNetwork,
@@ -28,47 +28,49 @@ export async function finishXChainTransfer(
   network: Network,
   chainId: ChainwebChainId,
   sender: string,
-): Promise<ContCommand | { error: string }> {
+): Promise<any | { error: string }> {
   debug(finishXChainTransfer.name);
   const host = getKadenaConstantByNetwork(network).apiHost({
     networkId: chainNetwork[network].network,
     chainId,
   });
 
+  const { pollStatus } = getClient();
+
   try {
-    const contCommand = await getContCommand(
-      requestKey,
-      chainId,
-      host,
-      step + 1,
-      rollback,
-    );
+  //   const contCommand = await getContCommand(
+  //     chainId,
+  //     host,
+  //     step + 1,
+  //     rollback,
+  //   );
 
-    contCommand.setMeta(
-      {
-        chainId,
-        sender,
-        gasLimit,
-        gasPrice,
-      },
-      chainNetwork[network].network as ChainwebNetworkId,
-    );
+  //   contCommand.setMeta(
+  //     {
+  //       chainId,
+  //       sender,
+  //       gasLimit,
+  //       gasPrice,
+  //     },
+  //     chainNetwork[network].network as ChainwebNetworkId,
+  //   );
 
-    contCommand.createCommand();
+  //   contCommand.createCommand();
 
-    const localResult = await contCommand.local(host, {
-      preflight: false,
-      signatureVerification: false,
-    });
+  //   const localResult = await contCommand.local(host, {
+  //     preflight: false,
+  //     signatureVerification: false,
+  //   });
 
-    if (localResult.result.status !== 'success') {
-      debug(localResult.result.error.message);
-      return { error: localResult.result.error.message };
-    }
+  //   if (localResult.result.status !== 'success') {
+  //     debug(localResult.result.error.message);
+  //     return { error: localResult.result.error.message };
+  //   }
 
-    await contCommand.send(host);
+  //   await contCommand.send(host);
 
-    return contCommand;
+  //   return contCommand;
+    throw new Error('testing');
   } catch (e) {
     debug(e.message);
     return { error: e.message };
