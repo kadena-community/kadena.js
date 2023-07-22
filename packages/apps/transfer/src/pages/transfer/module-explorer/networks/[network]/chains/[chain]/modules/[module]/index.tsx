@@ -21,9 +21,9 @@ const ModulePage: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer:module');
   const { t } = useTranslation('common');
   const [pactCode, setPactCode] = useState('');
-  const [functions, setFunctions] = useState({});
-  const [capabilities, setCapabilities] = useState({});
-  const [interfaces, setInterfaces] = useState([]);
+  const [functions, setFunctions] = useState<Record<string, { method: string }> | undefined>({});
+  const [capabilities, setCapabilities] = useState<Record<string, { defcap: string }> | undefined>({});
+  const [interfaces, setInterfaces] = useState<string[]>([]);
   const router = useRouter();
   const { network, chain, module } = router.query;
 
@@ -50,20 +50,20 @@ const ModulePage: FC = () => {
         1000,
       );
 
-      setPactCode(data?.code.code || '');
+      setPactCode(data.code?.code || '');
 
       const moduleNameParts = moduleName.split('.');
       const namespace =
         moduleNameParts.length > 1 ? moduleNameParts[0] : undefined;
 
       const pactModule = new StringContractDefinition({
-        contract: data?.code.code || '',
+        contract: data?.code?.code || '',
         namespace,
       });
 
-      setCapabilities(pactModule._raw[moduleName].defcaps);
-      setFunctions(pactModule._raw[moduleName].defuns);
-      setInterfaces(data?.code.interfaces);
+      setCapabilities(pactModule.getCapabilities(moduleName));
+      setFunctions(pactModule.getMethods(moduleName));
+      setInterfaces(data.code?.interfaces || []);
     };
 
     fetchModule().catch(console.error);
@@ -88,9 +88,9 @@ const ModulePage: FC = () => {
           <h3>{t('Details')}</h3>
           <Details>
             <h4>{t('Functions')}</h4>
-            {!Object.keys(functions)?.length &&
+            {!Object.keys(functions || {})?.length &&
               t('No functions in this module.')}
-            {Object.keys(functions)?.map((key) => (
+            {Object.keys(functions || {})?.map((key) => (
               <StyledListItem key={key}>
                 <a
                   href={`/transfer/module-explorer/networks/${network}/chains/${chain}/modules/${module}/functions/${key}`}
@@ -100,9 +100,9 @@ const ModulePage: FC = () => {
               </StyledListItem>
             ))}
             <h4>{t('Capabilities')}</h4>
-            {!Object.keys(capabilities)?.length &&
+            {!Object.keys(capabilities || {})?.length &&
               t('No capabilities in this module.')}
-            {Object.keys(capabilities)?.map((key) => (
+            {Object.keys(capabilities || {})?.map((key) => (
               <StyledListItem key={key}>
                 <a
                   href={`/transfer/module-explorer/networks/${network}/chains/${chain}/modules/${module}/capabilities/${key}`}

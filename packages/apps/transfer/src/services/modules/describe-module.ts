@@ -12,7 +12,10 @@ import Debug from 'debug';
 export interface IModuleResult {
   reqKey?: string;
   status?: string;
-  code?: string;
+  code?: {
+    code: string;
+    interfaces: string[];
+  };
 }
 
 const debug = Debug('kadena-transfer:services:describe-module');
