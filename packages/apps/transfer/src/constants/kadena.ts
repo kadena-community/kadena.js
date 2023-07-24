@@ -1,6 +1,7 @@
 import { env } from '@/utils/env';
 
 export type Network = 'MAINNET' | 'TESTNET';
+export type DevOption = 'BASIC' | 'BACKEND' | 'DAPP';
 
 type KadenaConstants = {
   [K in Network]: {
