@@ -13,7 +13,7 @@ const FooterWrapper: FC = () => {
   const { renderModal } = useModal();
 
   const { t } = useTranslation('common');
-  const openModal = (): void => renderModal(<OptionsModal />, 'title');
+  const openModal = (): void => renderModal(<OptionsModal />);
 
   const toggleTheme = (): void => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -61,7 +61,12 @@ const FooterWrapper: FC = () => {
           return (
             <Footer.LinkItem key={index} variant="application">
               {item.href !== undefined ? (
-                <Link className={linkClass} href={item.href} target={item.target} passHref>
+                <Link
+                  className={linkClass}
+                  href={item.href}
+                  target={item.target}
+                  passHref
+                >
                   {item.title}
                 </Link>
               ) : (

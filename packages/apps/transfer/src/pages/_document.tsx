@@ -22,7 +22,7 @@ const Document: FC = () => {
       <TypedHead>
         <style dangerouslySetInnerHTML={{ __html: getCssText() }}></style>
       </TypedHead>
-      <body className={`${darkThemeClass} darkTheme`}>
+      <body>
         <Main />
         <div id="modalportal" />
         <NextScript />
