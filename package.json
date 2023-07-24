@@ -22,6 +22,6 @@
     "@kadena-dev/markdown": "workspace:*",
     "only-allow": "^1.1.1",
     "syncpack": "^10.7.3",
-    "turbo": "^1.10.8"
+    "turbo": "^1.10.9"
   }
 }
