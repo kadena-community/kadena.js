@@ -43,7 +43,12 @@ describe('Footer', () => {
         <Footer.Panel>
           {icons.map((item, index) => {
             return (
-              <Footer.IconItem key={index} color={color} icon={item.icon} />
+              <Footer.IconItem
+                key={index}
+                color={color}
+                icon={item.icon}
+                title=""
+              />
             );
           })}
         </Footer.Panel>

@@ -2,6 +2,7 @@ import { SystemIcon } from '../';
 
 import { colorVariants, iconBoxClass, iconTextClass } from './Footer.css';
 
+import { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 

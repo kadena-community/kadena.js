@@ -1,6 +1,5 @@
-import { colorVariants, containerClass } from './Footer.css';
+import { containerClass } from './Footer.css';
 
-import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface IFooterProps {

@@ -1,14 +1,13 @@
 import {
   IFooterIconItemProps,
   IFooterLinkItemProps,
-  Link,
   SystemIcon,
 } from './../../';
 import { colorVariants } from './Footer.css';
 import { Footer, IFooterProps } from './index';
 
 import { Target } from '@components/Footer/FooterLinkItem';
-import { IconType } from '@components/Icons/IconWrapper';
+import { IconType } from '@components/Icon/IconWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -135,6 +134,7 @@ export const Primary: Story = {
                 icon={item.icon}
                 text={item.text}
                 color={color}
+                title=""
               />
             );
           })}
