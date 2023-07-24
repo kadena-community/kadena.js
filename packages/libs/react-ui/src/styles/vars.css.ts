@@ -90,6 +90,9 @@ export const vars = createGlobalTheme(':root', {
     $3xl: 'var(--spacing-3xl)',
   },
   colors: {
+    $white: '#FFFFFF',
+    $black: '#000000',
+
     $foreground: '#050505',
     $background: '#FAFAFA',
 
@@ -149,6 +152,9 @@ export const vars = createGlobalTheme(':root', {
 });
 
 export const darkThemeClass = createTheme(vars.colors, {
+  $white: '#FFFFFF',
+  $black: '#000000',
+
   $foreground: '#FAFAFA',
   $background: '#050505',
 

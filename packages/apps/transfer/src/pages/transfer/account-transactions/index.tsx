@@ -1,9 +1,11 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, TextField } from '@kadena/react-ui';
+import { Breadcrumbs, Button, SystemIcon, TextField } from '@kadena/react-ui';
 
 import { ChainSelect } from '@/components/Global';
 import { Network } from '@/constants/kadena';
+import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
+import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import {
   StyledContent,
@@ -49,6 +51,29 @@ const CheckTransactions: FC = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
+  useToolbar([
+    {
+      title: t('Account Transaction'),
+      icon: SystemIcon.Account,
+      href: Routes.ACCOUNT_TRANSACTIONS,
+    },
+    {
+      title: t('Cross Chain'),
+      icon: SystemIcon.Transition,
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      title: t('Finalize Cross Chain'),
+      icon: SystemIcon.TransitionMasked,
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+    },
+    {
+      title: t('Module Explorer'),
+      icon: SystemIcon.BadgeAccount,
+      href: Routes.MODULE_EXPLORER,
+    },
+  ]);
+
   useEffect(() => {
     if (router.isReady) {
       setAccount((router.query.account as string) || '');
@@ -57,6 +82,7 @@ const CheckTransactions: FC = () => {
         setNetwork(router.query.network as Network);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   useEffect(() => {
@@ -69,6 +95,7 @@ const CheckTransactions: FC = () => {
         debug(e);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.network, router.query.chain, router.query.account]);
 
   async function checkTransactionsEvent(
