@@ -155,7 +155,11 @@ const CheckTransactions: FC = () => {
         <StyledContent>
           <form className={formStyle} onSubmit={checkTransactionsEvent}>
             <StyledSmallField>
-              <ChainSelect onChange={onChainSelectChange} value={chainID} />
+              <ChainSelect
+                onChange={onChainSelectChange}
+                value={chainID}
+                ariaLabel="Select chain"
+              />
             </StyledSmallField>
             <StyledMediumField>
               <TextField
