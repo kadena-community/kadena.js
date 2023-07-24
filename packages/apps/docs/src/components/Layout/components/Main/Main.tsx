@@ -19,6 +19,8 @@ export const Main: FC<IPageProps> = ({
     icon: pageIcon,
     editLink,
     navigation,
+    publishDate,
+    author,
   },
   aSideMenuTree,
   leftMenuTree,
@@ -95,6 +97,8 @@ export const Main: FC<IPageProps> = ({
           aSideMenuTree={aSideMenuTree}
           editLink={editLink}
           navigation={navigation}
+          author={author}
+          publishDate={publishDate}
         >
           {isOneOfLayoutType(layoutType, 'full', 'code', 'redocly') && (
             <>
