@@ -1,4 +1,4 @@
-import { Breadcrumbs, TextField } from '@kadena/react-ui';
+import { Breadcrumbs, SystemIcon, TextField } from '@kadena/react-ui';
 
 import dynamic from 'next/dynamic';
 
@@ -17,7 +17,9 @@ import {
 
 import { ChainSelect } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
+import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
+import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import {
   type IModuleResult,
@@ -49,6 +51,29 @@ const ModuleExplorer: FC = () => {
 
   const { network } = useAppContext();
   const [chainID, onChainSelectChange] = usePersistentChainID();
+
+  useToolbar([
+    {
+      title: t('Account Transaction'),
+      icon: SystemIcon.Account,
+      href: Routes.ACCOUNT_TRANSACTIONS,
+    },
+    {
+      title: t('Cross Chain'),
+      icon: SystemIcon.Transition,
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      title: t('Finalize Cross Chain'),
+      icon: SystemIcon.TransitionMasked,
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+    },
+    {
+      title: t('Module Explorer'),
+      icon: SystemIcon.BadgeAccount,
+      href: Routes.MODULE_EXPLORER,
+    },
+  ]);
 
   useEffect(() => {
     const fetchModules = async (): Promise<void> => {

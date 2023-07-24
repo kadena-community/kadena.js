@@ -15,7 +15,6 @@ import { StyledOption } from '@/components/Global/Select/styles';
 import { Network } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
-import { KLogoComponent } from '@/resources/svg/generated';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
 

@@ -11,6 +11,7 @@ import React, { type FC, type FormEventHandler, useCallback } from 'react';
 
 export type OnChainSelectChange = (value: ChainwebChainId) => void;
 
+// eslint-disable-next-line @kadena-dev/typedef-var
 const ELEMENT_ID = 'select-chain-id';
 
 const ChainSelect: FC<

@@ -16,7 +16,9 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
+import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
+import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
   StyledAccountForm,
@@ -45,11 +47,34 @@ import React, {
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
   const router = useRouter();
+  const { t } = useTranslation('common');
+
+  useToolbar([
+    {
+      title: t('Account Transaction'),
+      icon: SystemIcon.Account,
+      href: Routes.ACCOUNT_TRANSACTIONS,
+    },
+    {
+      title: t('Cross Chain'),
+      icon: SystemIcon.Transition,
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      title: t('Finalize Cross Chain'),
+      icon: SystemIcon.TransitionMasked,
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+    },
+    {
+      title: t('Module Explorer'),
+      icon: SystemIcon.BadgeAccount,
+      href: Routes.MODULE_EXPLORER,
+    },
+  ]);
 
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
-  const { t } = useTranslation('common');
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
