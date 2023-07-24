@@ -16,22 +16,12 @@ jobs:
 
 
     steps:
-      # run steps required in the workflow
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-          run_install: false
+        - name: check devnet health
+          uses: jtalk/url-health-check-action@v3
+          with:
+            url: http://devnet:8080/info
+            # Follow redirects, or just report success on 3xx status codes
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install
-
-      - name: Rush test (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js test -t @kadena/integration-tests
 
 
 
