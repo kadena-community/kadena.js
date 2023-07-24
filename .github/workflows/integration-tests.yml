@@ -5,9 +5,6 @@ on: [push]
 jobs:
   Test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/tools/integration-tests
 
     services:
       devnet:
@@ -25,10 +22,15 @@ jobs:
           version: 7
           run_install: false
 
+      - name: Rush install (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js install -t @kadena/integration-tests
+
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
       - run: npm run test
+        working-directory: packages/tools/integration-tests
 
 
 
