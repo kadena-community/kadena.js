@@ -22,35 +22,24 @@ const FooterWrapper: FC = () => {
 
   const links = [
     {
-      title: 'Tutorial',
+      title: t('Tutorial'),
       href: 'https://kadena.io/',
       target: '_self',
     },
     {
-      title: 'Documentation',
+      title: t('Documentation'),
       href: 'https://kadena.io/',
       target: '_self',
     },
     {
-      title: 'Privacy & Policy',
-      href: '',
+      title: t('Privacy & Policy'),
+      href: 'https://kadena.io/',
+      target: '_self',
     },
     {
       title: 'Terms of use',
-      href: '',
-    },
-  ];
-
-  const icons = [
-    {
-      icon: SystemIcon.ApplicationBrackets,
-    },
-    {
-      icon: SystemIcon.ThemeLightDark,
-    },
-    {
-      icon: SystemIcon.Earth,
-      text: 'English',
+      href: 'https://kadena.io/',
+      target: '_self',
     },
   ];
 

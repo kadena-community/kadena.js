@@ -102,5 +102,17 @@
   "Transfer completed successfully": "Transfer completed successfully",
   "Price": "Price",
   "Network": "Network",
-  "Server": "Server"
+  "Server": "Server",
+  "Tutorial": "Tutorial",
+  "Documentation": "Documentation",
+  "Privacy & Policy": "Privacy & Policy",
+  "Terms of use": "Terms of use",
+  "Save": "Save",
+  "Basic User Interface": "Basic User Interface",
+  "This view can be used for basic operations and handling things within the user interface.": "This view can be used for basic operations and handling things within the user interface.",
+  "Backend Developers": "Backend Developers",
+  "for PACT developers": "for PACT developers",
+  "This option is meant for developers who need more sophisticated options within the user interface.": "This option is meant for developers who need more sophisticated options within the user interface.",
+  "dApp Developers": "dApp Developers",
+  "for Javascript developers": "for Javascript developers"
 }

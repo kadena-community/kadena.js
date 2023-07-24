@@ -14,7 +14,7 @@ const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
   <ThemeProvider
     attribute="class"
     enableSystem={true}
-    defaultTheme="light"
+    defaultTheme="system"
     value={{
       light: 'light',
       dark: darkThemeClass,
