@@ -6,14 +6,14 @@
   "license": "ISC",
   "scripts": {
     "build": "turbo run build",
-    "format": "pnpm -r run \"/^format:(md|pkg|src)/\"",
+    "format": "pnpm run \"/^format:.*/\" && pnpm -r run \"/^format:.*/\"",
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",
-    "list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > workspace.json",
-    "list-versions": "syncpack list-mismatches",
-    "fix-versions": "syncpack fix-mismatches",
-    "test": "turbo run test"
+    "lint": "pnpm run lint:fix-versions && turbo run lint",
+    "lint:fix-versions": "syncpack fix-mismatches",
+    "test": "turbo run test",
+    "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > workspace.json"
   },
   "engines": {
     "node": ">=16",
