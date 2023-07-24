@@ -123,7 +123,11 @@ const ExistingAccountFaucetPage: FC = () => {
               leftIcon: SystemIcon.KIcon,
             }}
           />
-          <ChainSelect onChange={onChainSelectChange} value={chainID} />
+          <ChainSelect
+            onChange={onChainSelectChange}
+            value={chainID}
+            ariaLabel="Select chain"
+          />
         </StyledAccountForm>
         <StyledFormButton>
           <Button.Root

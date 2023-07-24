@@ -41,7 +41,7 @@ const command = composePactCommand(
   continuation({
     pactId: '1',
     proof: 'test-proof',
-    step: '1',
+    step: 1,
   })
 )()
 
@@ -50,7 +50,7 @@ const command = {
   payload: {
     pactId: '1',
     proof: 'test-proof',
-    step: '1',
+    step: 1,
   }
 }
 ```
