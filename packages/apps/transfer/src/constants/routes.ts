@@ -5,4 +5,5 @@ export default {
   ACCOUNT_TRANSACTIONS: '/transfer/account-transactions',
   MODULE_EXPLORER: '/transfer/module-explorer',
   FAUCET_EXISTING: '/faucet/existing',
+  BALANCE: '/balance',
 } as const;

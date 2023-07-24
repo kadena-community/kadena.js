@@ -6,6 +6,7 @@ import FormStatusNotification from './notification';
 
 import MainLayout from '@/components/Common/Layout/MainLayout';
 import { ChainSelect } from '@/components/Global';
+import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import {
   StyledAccountForm,
@@ -51,6 +52,12 @@ const ExistingAccountFaucetPage: FC = () => {
       setRequestStatus({ status: 'failed', message: apiErrorMessage });
     }
   };
+  useToolbar([
+    {
+      title: t('Existing'),
+      icon: SystemIcon.History,
+    },
+  ]);
 
   const onFormSubmit = useCallback(
     async (e: FormEvent) => {

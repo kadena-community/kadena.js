@@ -1,17 +1,18 @@
-import { Header } from './partials';
+import { Header, Sidebar } from './partials';
 import {
   footerStyle,
   gridItemCollapsedSidebarStyle,
   gridItemMainStyle,
-  gridItemMenuStyle,
-  gridItemMiniMenuStyle,
   gridStyle,
+  gridVariants,
   headerStyle,
 } from './styles.css';
 
 import { WalletConnectButton } from '@/components/Global';
 import routes from '@/constants/routes';
+import { useLayoutContext } from '@/context';
 import { KLogoComponent } from '@/resources/svg/generated';
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
 
@@ -21,27 +22,20 @@ interface IProps {
 
 export const Layout: FC<IProps> = ({ children }: IProps) => {
   const { t } = useTranslation('common');
+  const { isMenuOpen } = useLayoutContext();
 
   const menu = [
     {
-      title: t('Home'),
-      href: routes.HOME,
-    },
-    {
-      title: t('Tracker'),
-      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Finisher'),
-      href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
+      title: t('Faucet'),
+      href: routes.FAUCET_EXISTING,
     },
     {
       title: t('Transactions'),
       href: routes.ACCOUNT_TRANSACTIONS,
     },
     {
-      title: t('Explorer'),
-      href: routes.MODULE_EXPLORER,
+      title: t('Balance'),
+      href: routes.BALANCE,
     },
   ];
   return (
@@ -54,9 +48,13 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
           rightPanel={<WalletConnectButton />}
         />
       </header>
-      <div className={gridStyle}>
-        <nav className={gridItemMiniMenuStyle}></nav>
-        <nav className={gridItemMenuStyle}></nav>
+      <div
+        className={classNames(
+          gridStyle,
+          gridVariants[isMenuOpen ? 'hasMenu' : 'noMenu'],
+        )}
+      >
+        <Sidebar />
         <main className={gridItemMainStyle}>{children}</main>
         <aside className={gridItemCollapsedSidebarStyle}></aside>
       </div>

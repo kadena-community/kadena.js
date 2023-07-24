@@ -1,18 +1,30 @@
 import { sprinkles } from '@kadena/react-ui/theme';
 
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const gridStyle = style([
   sprinkles({
     display: 'grid',
   }),
   {
-    gridTemplateAreas: `"mini-menu menu main collapsed-sidebar"`,
-    gridTemplateColumns: '64px 280px auto 64px',
     justifyItems: 'stretch',
     alignItems: 'stretch',
   },
 ]);
+export const gridVariants = styleVariants({
+  hasMenu: [
+    {
+      gridTemplateAreas: `"mini-menu menu main collapsed-sidebar"`,
+      gridTemplateColumns: '64px 280px auto 64px',
+    },
+  ],
+  noMenu: [
+    {
+      gridTemplateAreas: `"mini-menu main collapsed-sidebar"`,
+      gridTemplateColumns: '64px auto 64px',
+    },
+  ],
+});
 
 export const headerStyle = style([
   sprinkles({
@@ -21,24 +33,6 @@ export const headerStyle = style([
     width: '100%',
     height: '$16',
   }),
-]);
-
-export const gridItemMiniMenuStyle = style([
-  sprinkles({
-    backgroundColor: '$neutral2',
-  }),
-  {
-    gridArea: 'mini-menu',
-  },
-]);
-
-export const gridItemMenuStyle = style([
-  sprinkles({
-    backgroundColor: '$neutral2',
-  }),
-  {
-    gridArea: 'menu',
-  },
 ]);
 
 export const gridItemMainStyle = style([

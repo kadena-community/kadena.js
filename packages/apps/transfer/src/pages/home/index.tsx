@@ -1,6 +1,7 @@
-import { Grid } from '@kadena/react-ui';
+import { Grid, SystemIcon } from '@kadena/react-ui';
 
 import routes from '@/constants/routes';
+import { useToolbar } from '@/context/layout-context';
 import {
   StyledHomeContainer,
   StyledHomeContent,
@@ -15,6 +16,20 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   const { t } = useTranslation('common');
+  useToolbar([
+    {
+      title: t('Account'),
+      icon: SystemIcon.BadgeAccount,
+    },
+    {
+      title: t('Scan'),
+      icon: SystemIcon.QrcodeScan,
+    },
+    {
+      title: t('Profile'),
+      icon: SystemIcon.ShieldAccountVariantOutline,
+    },
+  ]);
 
   const transferMenu = [
     {

@@ -75,4 +75,5 @@ export {
   ITreeProps,
   Accordion,
   IAccordionProps,
+  IAccordionSectionProps,
 } from './components';
