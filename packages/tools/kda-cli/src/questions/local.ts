@@ -1,5 +1,6 @@
 import {
   ChainId,
+  createTransaction,
   getClient,
   ICap,
   isSignedCommand,
@@ -93,7 +94,7 @@ const apiHostGenerator =
       default:
         return `${
           endpoint ?? 'http://localhost:8080'
-        }/chainweb/0.0/fast/chain/${chainId ?? '1'}/pact`;
+        }/chainweb/0.0/fast-development/chain/${chainId ?? '1'}/pact`;
     }
   };
 
@@ -206,6 +207,7 @@ export const localQuestions: IQuestion[] = [
             ...capabilities.map(mapCapability),
           ]),
         ),
+        createTransaction,
         (tx) => {
           console.log(JSON.stringify(tx, null, 2));
           return tx;

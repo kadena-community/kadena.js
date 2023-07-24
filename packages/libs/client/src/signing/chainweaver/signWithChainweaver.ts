@@ -21,6 +21,7 @@ const debug: Debugger = _debug('pactjs:signWithChainweaver');
 export const signWithChainweaver: ISignFunction = (async (
   transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
 ) => {
+  console.log('signWithChainweaver', transactionList);
   if (transactionList === undefined) {
     throw new Error('No transaction(s) to sign');
   }
@@ -28,6 +29,8 @@ export const signWithChainweaver: ISignFunction = (async (
   const transactions = isList ? transactionList : [transactionList];
   const quickSignRequest: IQuickSignRequestBody = {
     cmdSigDatas: transactions.map((t) => {
+      console.log('t', t);
+
       const parsedTransaction = parseTransactionCommand(t);
       return {
         cmd: t.cmd,
@@ -40,6 +43,8 @@ export const signWithChainweaver: ISignFunction = (async (
       };
     }),
   };
+
+  console.log('quickSignRequest', quickSignRequest);
 
   const body: string = JSON.stringify(quickSignRequest);
 
