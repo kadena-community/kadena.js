@@ -1,15 +1,19 @@
 import {
-  addCapabilities,
-  addCapability,
-  buildCommand,
-  local,
-  setCommand,
-  setDomain,
+  ChainId,
+  getClient,
+  ICap,
+  isSignedCommand,
+  signWithChainweaver,
+} from '@kadena/client';
+import {
+  addSigner,
+  composePactCommand,
+  execution,
   setMeta,
   setNetworkId,
-  SignedPayload,
-  signWithChainweaver,
-} from '../pact/pact.js';
+} from '@kadena/client/fp';
+import { PactValue } from '@kadena/types';
+
 import { isTruthy } from '../utils/bool.js';
 
 import { IAnswers, IQuestion } from './questions.js';
@@ -37,12 +41,62 @@ const isValidSigningAnswers = (
   if (typeof answers.endpoint !== 'string') throw new Error('Invalid endpoint');
   return true;
 };
-const isSignCommand = (
-  signCommand: unknown,
-): signCommand is Partial<SignedPayload> => {
-  if (typeof signCommand !== 'object') return false;
-  return true;
+const mapCapValue = (
+  value?: string,
+  // eslint-disable-next-line @rushstack/no-new-null
+): null | string | number | { int: number } => {
+  if (value === undefined) return null;
+  if (value.startsWith('"') && value.endsWith('"'))
+    return value.replace(/^"|"$/g, '');
+  if (value.includes('.')) return parseFloat(value);
+  return { int: parseInt(value, 10) };
 };
+export const mapCapability = (cap: string): ICap => {
+  const [name, ...args] = cap.split(' ');
+  if (!name) throw new Error('Invalid capability');
+  const [lastArg, ...rargs] = args.reverse();
+  return {
+    name: name.replace(/^\(/, ''),
+    args: [...rargs.reverse(), lastArg?.replace(/\)$/, '')]
+      .map(mapCapValue)
+      .filter((x) => x !== null) as PactValue[],
+  };
+};
+// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any
+type all = any;
+export const asyncPipe =
+  (...args: Array<(arg: all) => all>): ((init: all) => Promise<all>) =>
+  (init: all): Promise<all> =>
+    args.reduce((chain, fn) => chain.then(fn), Promise.resolve(init));
+
+const apiHostGenerator =
+  (
+    endpoint?: string,
+  ): (({
+    networkId,
+    chainId,
+  }: {
+    networkId: string;
+    chainId: ChainId;
+  }) => string) =>
+  ({ networkId, chainId }) => {
+    switch (networkId) {
+      case 'mainnet01':
+        return `${
+          endpoint ?? 'https://api.chainweb.com'
+        }/chainweb/0.0/${networkId}/chain/${chainId ?? '1'}/pact`;
+      case 'testnet04':
+        return `${
+          endpoint ?? 'https://api.testnet.chainweb.com'
+        }/chainweb/0.0/testnet04/chain/${chainId ?? '1'}/pact`;
+      case 'fast-development':
+      default:
+        return `${
+          endpoint ?? 'http://localhost:8080'
+        }/chainweb/0.0/fast/chain/${chainId ?? '1'}/pact`;
+    }
+  };
+
 export const localQuestions: IQuestion[] = [
   {
     message: 'On which network are you testing?',
@@ -120,12 +174,12 @@ export const localQuestions: IQuestion[] = [
 
       const {
         network,
-        endpoint,
         command,
         capabilities,
         signer,
         publicKey,
         chainId,
+        endpoint,
       } = answers;
       await new Promise<void>((resolve) => {
         setTimeout(() => {
@@ -133,24 +187,36 @@ export const localQuestions: IQuestion[] = [
         }, 2000);
       });
 
-      const res = await buildCommand(
-        setCommand(command),
-        setMeta({
-          gasLimit: 1000,
-          gasPrice: 0.0000001,
-          ttl: 60000,
-          chainId: chainId,
-          sender: signer,
-        }),
-        addCapability({
-          name: 'coin.GAS',
-          args: [],
-          signer: publicKey,
-        }),
-        addCapabilities(capabilities, publicKey),
-        setNetworkId(network),
-        setDomain(endpoint),
+      if (typeof command !== 'string') throw new Error('Invalid command');
+
+      const { preflight } = getClient(apiHostGenerator(endpoint));
+      const res = await asyncPipe(
+        composePactCommand(
+          execution(command),
+          setMeta({
+            gasLimit: 1000,
+            gasPrice: 0.0000001,
+            ttl: 60000,
+            chainId: chainId as ChainId,
+            sender: signer,
+          }),
+          setNetworkId(network),
+          addSigner(publicKey, (withCapability) => [
+            withCapability('coin.GAS'),
+            ...capabilities.map(mapCapability),
+          ]),
+        ),
+        (tx) => {
+          console.log(JSON.stringify(tx, null, 2));
+          return tx;
+        },
         signWithChainweaver,
+        (tr) => (isSignedCommand(tr) ? tr : Promise.reject('TR_NOT_SIGNED')),
+        // do preflight first to check if everything is ok without paying gas
+        (tr) => preflight(tr).then((res) => [tr, res]),
+        ([tr, res]) =>
+          res.result.status === 'success' ? tr : Promise.reject(res),
+        // submit the tr if the preflight is ok
       )({});
 
       return res;
@@ -165,13 +231,14 @@ export const localQuestions: IQuestion[] = [
       return isTruthy(signCommand);
     },
     action: async (answers: IAnswers) => {
-      const { signCommand } = answers;
+      const { signCommand, endpoint } = answers;
 
-      if (!isSignCommand(signCommand)) throw new Error('Invalid signCommand');
+      if (typeof endpoint !== 'string') throw new Error('Invalid endpoint');
+      if (!isTruthy(signCommand)) throw new Error('Invalid signCommand');
 
-      const res = await buildCommand(
-        local({ signatureValidation: false, preflight: false }),
-      )(signCommand);
+      const { submit, pollStatus } = getClient(apiHostGenerator(endpoint));
+      const res = await asyncPipe(submit, pollStatus)(signCommand);
+
       return { result: res?.result, response: res?.response };
     },
   },

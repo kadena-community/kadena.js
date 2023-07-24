@@ -1225,6 +1225,8 @@ importers:
       '@kadena-dev/markdown': workspace:*
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
+      '@kadena/pactjs-cli': workspace:*
+      '@kadena/types': workspace:*
       '@rushstack/eslint-config': ~3.3.0
       '@rushstack/heft': ~0.50.6
       '@types/cross-spawn': ~6.0.2
@@ -1258,6 +1260,8 @@ importers:
       '@kadena-dev/eslint-config': link:../eslint-config
       '@kadena-dev/heft-rig': link:../heft-rig
       '@kadena-dev/markdown': link:../remark-plugins
+      '@kadena/pactjs-cli': link:../pactjs-cli
+      '@kadena/types': link:../../libs/types
       '@rushstack/eslint-config': 3.3.2_eslint@8.44.0+typescript@5.0.4
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
       '@types/cross-spawn': 6.0.2
