@@ -9,8 +9,9 @@ import {
 import { IPactCommand } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
-import { composePactCommand, mergePayload } from '../composePactCommand';
+import { composePactCommand } from '../composePactCommand';
 import { addData } from '../utils/addData';
+import { mergePayload } from '../utils/patchCommand';
 
 import { ICoin } from './coin-contract';
 
@@ -266,6 +267,34 @@ describe('composePactCommand', () => {
       cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 1.0)","data":{}}},"signers":[{"pubKey":"bob_public_key","scheme":"ED25519","clist":[{"name":"coin.TRANSFER","args":["bob","alice",{"decimal":"1"}]}]}],"nonce":"kjs:nonce:1690416000000"}',
       hash: 'XjFto2SijaGZpRzdwWdZDkPI7WheTUuIMs8DHaqL2jU',
       sigs: [undefined],
+    });
+  });
+
+  it('adds does not set sender if its not presented', () => {
+    const command: Partial<IPactCommand> = composePactCommand(
+      composePactCommand(execution('(test)'), setMeta({ sender: 'test' })),
+      composePactCommand(execution('(test 2)'), setMeta({ chainId: '1' })),
+      setMeta({
+        gasLimit: 1,
+        gasPrice: 1,
+        creationTime: 0,
+        ttl: 1,
+      }),
+    )();
+
+    expect(command.payload).toEqual({
+      exec: {
+        code: '(test)(test 2)',
+        data: {},
+      },
+    });
+    expect(command.meta).toEqual({
+      sender: 'test',
+      chainId: '1',
+      gasLimit: 1,
+      gasPrice: 1,
+      creationTime: 0,
+      ttl: 1,
     });
   });
 });

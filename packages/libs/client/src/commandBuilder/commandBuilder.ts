@@ -11,7 +11,9 @@ import {
   setNetworkId,
   setNonce,
 } from '../composePactCommand';
+import { ValidDataTypes } from '../composePactCommand/utils/addData';
 import { UnionToIntersection } from '../composePactCommand/utils/addSigner';
+import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import {
   ICapabilityItem,
   IContinuationPayloadObject,
@@ -93,10 +95,7 @@ interface IBuilder<TCommand> {
   ) => IBuilder<TCommand>;
   setNonce: ISetNonce<TCommand>;
   setNetworkId: (id: string) => IBuilder<TCommand>;
-  addData: (
-    key: string,
-    data: Record<string, unknown> | string | number | boolean,
-  ) => IBuilder<TCommand>;
+  addData: (key: string, data: ValidDataTypes) => IBuilder<TCommand>;
   addKeyset: IAddKeyset<TCommand>;
   createTransaction: () => IUnsignedCommand;
   getCommand: () => Partial<IPactCommand>;
@@ -128,46 +127,47 @@ export interface ICommandBuilder {
 
 export const commandBuilder = (): ICommandBuilder => {
   const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
-    let command: Partial<IPactCommand> = init;
+    let reducer: (command: Partial<IPactCommand>) => Partial<IPactCommand> =
+      composePactCommand(init);
     const builder: IBuilder<T> = {
-      addData: (
-        key: string,
-        value: Record<string, unknown> | string | number | boolean,
-      ) => {
-        command = composePactCommand(addData(key, value))(command);
+      addData: (key: string, value: ValidDataTypes) => {
+        reducer = composePactCommand(reducer, addData(key, value));
         return builder;
       },
       addKeyset: (key: string, pred: string, ...publicKeys: string[]) => {
-        command = composePactCommand(addKeyset(key, pred, ...publicKeys))(
-          command,
+        reducer = composePactCommand(
+          reducer,
+          addKeyset(key, pred, ...publicKeys),
         );
         return builder;
       },
       addSigner: (pubKey, cap?: unknown) => {
-        command = composePactCommand(
+        reducer = composePactCommand(
+          reducer,
           addSigner(
             pubKey,
             cap as (withCapability: GeneralCapability) => ICapabilityItem[],
           ) as (cmd: Partial<IPactCommand>) => Partial<IPactCommand>,
-        )(command);
+        );
         return builder;
       },
       setMeta: (meta) => {
-        command = composePactCommand(setMeta(meta))(command);
+        reducer = composePactCommand(reducer, setMeta(meta));
         return builder;
       },
       setNetworkId: (id: string) => {
-        command = composePactCommand(setNetworkId(id))(command);
+        reducer = composePactCommand(reducer, setNetworkId(id));
         return builder;
       },
       setNonce: (arg: string | ((cmd: Partial<IPactCommand>) => string)) => {
-        const nonce = typeof arg === 'function' ? arg(command) : arg;
-        command = composePactCommand(setNonce(nonce))(command);
+        reducer = composePactCommand(reducer, (cmd) => {
+          const nonce = typeof arg === 'function' ? arg(cmd) : arg;
+          return patchCommand(cmd, setNonce(nonce));
+        });
         return builder;
       },
       getCommand: () => {
-        command = composePactCommand(command)();
-        return command;
+        return reducer({});
       },
       createTransaction: () => createTransaction(builder.getCommand()),
     };
