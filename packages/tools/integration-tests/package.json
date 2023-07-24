@@ -30,7 +30,7 @@
     "lint": "eslint ./src --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
-    "test": "",
+    "test": "heft test --test-path-pattern devnet*",
     "test:integration:devnet": "heft test --test-path-pattern devnet*",
     "test:integration:pactserver": "concurrently \"npm:start:pact\" \"sleep 5 && heft test --test-path-pattern pact-server* && sleep 5\" --kill-others"
   },
