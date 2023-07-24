@@ -11,18 +11,20 @@ import {
 } from '@kadena/react-ui';
 
 import {
-  modalButton,
-  modalOptionsContent,
-  radioItemWrapper,
-  titleTag,
-  largeIcon,
+  largeIconStyle,
+  modalButtonStyle,
+  modalOptionsContentStyle,
+  radioItemWrapperStyle,
+  titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
 import { devOptions } from '@/constants/dev-options';
 import { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
 
 export const OptionsModal: FC = () => {
+  const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
 
@@ -36,12 +38,10 @@ export const OptionsModal: FC = () => {
         {options.map((item) => {
           const [key, value] = item;
 
-          const Icon = value.icon;
-
           return (
             <div
               key={value.title}
-              className={radioItemWrapper}
+              className={radioItemWrapperStyle}
               onClick={() => setSelected(key as DevOption)}
             >
               <Card fullWidth>
@@ -63,10 +63,10 @@ export const OptionsModal: FC = () => {
                     title="Radio"
                     icon={value.icon}
                     color="default"
-                    className={largeIcon}
+                    className={largeIconStyle}
                   />
                   <Stack direction="column" marginX="$md">
-                    <div className={titleTag}>
+                    <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
                       {value.tag !== undefined ? <Tag>{value.tag}</Tag> : null}
                     </div>
@@ -90,16 +90,16 @@ export const OptionsModal: FC = () => {
 
   return (
     <Modal title="Settings">
-      <div className={modalOptionsContent}>
+      <div className={modalOptionsContentStyle}>
         {renderOptions()}
 
-        <div className={modalButton}>
+        <div className={modalButtonStyle}>
           <Button.Root
             title="Save"
             onClick={() => handleSave()}
             color="primary"
           >
-            Save
+            {`${t('Save')}`}
           </Button.Root>
         </div>
       </div>
