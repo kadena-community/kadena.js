@@ -34,9 +34,9 @@ const meta: Meta<
     },
     iconAlign: {
       description: 'align icon to left or right',
+      options: ['left', 'right'] as IButtonProps['iconAlign'][],
       control: {
-        options: ['left', 'right'] as IButtonProps['iconAlign'][],
-        control: { type: 'radio' },
+        type: 'radio',
       },
       if: { arg: 'selectIcon', neq: '-' },
     },
@@ -66,17 +66,17 @@ const meta: Meta<
     },
     target: {
       description: 'only used when rendered as anchor',
+      options: ['_blank', '_self'] as IButtonProps['target'][],
       control: {
-        options: ['_blank', '_self'] as IButtonProps['target'][],
-        control: { type: 'radio' },
+        type: 'radio',
       },
       if: { arg: 'as', eq: 'a' },
     },
     as: {
       description: 'render as button or anchor',
+      options: ['button', 'a'] as IButtonProps['as'][],
       control: {
-        options: ['button', 'a'] as IButtonProps['as'][],
-        control: { type: 'radio' },
+        type: 'radio',
       },
     },
     disabled: {
@@ -144,6 +144,7 @@ export const Dynamic: Story = {
           onClick={onClick}
           target={target}
           title={title}
+          data-loading={loading}
         >
           {Icon && iconAlign === 'left' && <ButtonIcon icon={Icon} />}
           {text}
