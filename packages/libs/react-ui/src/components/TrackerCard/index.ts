@@ -1,3 +1,3 @@
-import { TrackerCard } from './TrackerCard';
+import { ITrackerCardProps, TrackerCard } from './TrackerCard';
 
-export { TrackerCard };
+export { TrackerCard, ITrackerCardProps };

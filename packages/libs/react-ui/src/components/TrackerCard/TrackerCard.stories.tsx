@@ -1,8 +1,7 @@
-import { ProductIcon } from '../Icons';
-
 import { ILabelValue, ITrackerCardProps, TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
 
+import { ProductIcon } from '@components/Icon';
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
