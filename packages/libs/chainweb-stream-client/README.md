@@ -13,8 +13,8 @@ Chainweb-stream client for browsers and node.js
 
 [Chainweb-stream][1] client for browsers and node.js
 
-Stream account or module/event transactions from chainweb-stream, including their
-confirmation depth.
+Stream account or module/event transactions from chainweb-stream, including
+their confirmation depth.
 
 Introduces and normalizes the following features across environments:
 
@@ -68,7 +68,7 @@ Find more detailed examples under `src/examples`.
 | network           |   Yes    | Chainweb network                                                | \`mainnet01             | testnet04 | ...\` |
 | type              |   Yes    | Transaction type to stream (event/account)                      | \`event                 | account\` |       |
 | id                |   Yes    | Account ID or module/event name                                 | `k:abcdef01234..`       |           |       |
-| host              |   Yes    | Chainweb-stream backend URL                                        | `http://localhost:4000` |           |       |
+| host              |   Yes    | Chainweb-stream backend URL                                     | `http://localhost:4000` |           |       |
 | limit             |    No    | Initial data load limit                                         | 100                     |           |       |
 | connectTimeout    |    No    | Connection timeout in ms                                        | 10_000                  |           |       |
 | heartbeatTimeout  |    No    | Stale connection timeout in ms                                  | 30_000                  |           |       |

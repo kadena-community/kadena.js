@@ -16,7 +16,7 @@ securely and efficiently using smart contracts on the Kadena blockchain.
 
 To install and run the Kadena Transfer App locally, follow these steps:
 
-1.  Read [CONTRIBUTING.md](../../../CONTRIBUTING.md).
+1.  Read [CONTRIBUTING.md][5].
 
 2.  Build the app and its dependencies:
 
@@ -98,7 +98,7 @@ the `LICENSE` file for more information.
 [2]: #installation
 [3]: #usage
 [4]: #license
-[5]: https://github.com/kadena-community/kadena.js
+[5]: ../../../CONTRIBUTING.md
 [6]: http://localhost:3000
 [7]:
   https://github.com/kadena-community/kadena.js/blob/kadena-transfer/packages/apps/transfer/LICENSE
