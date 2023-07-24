@@ -1,5 +1,5 @@
 # generated resources
-src/data/searchindex.json
+src/data/searchIndex.json
 src/data/menu.mjs
 src/pages/docs/kadena/kadenajs
 src/pages/docs/kadena/client

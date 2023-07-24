@@ -1,86 +1,49 @@
 import { IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
-import { loadSearchResults } from './utils';
 
-import debounce from 'lodash.debounce';
-import { SearchResult } from 'minisearch';
 import { useRouter } from 'next/router';
 import {
-  ChangeEvent,
-  FormEvent,
-  FormEventHandler,
   MutableRefObject,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
 
-interface IQuery {
-  q?: string;
-}
-
 interface IProps {
   //eslint-disable-next-line @rushstack/no-new-null
   searchInputRef: MutableRefObject<HTMLInputElement | null>;
-  handleSubmit: (evt: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmit: (value: string) => Promise<void>;
   outputStream: string;
-  query: string | undefined;
-  staticSearchResults: SearchResult[];
   conversation: IConversation;
-  handleInputChange: FormEventHandler<HTMLInputElement>;
   error: string | undefined;
+  isLoading: boolean;
 }
 
 export const useSearch = (): IProps => {
+  const [query, setQuery] = useState<string | undefined>();
   const [conversation, dispatch] = useConversation();
-  const [startStream, isStreaming, outputStream, metadata, error] = useStream();
+  const [startStream, isStreaming, outputStream, metadata, error, isLoading] =
+    useStream();
   const router = useRouter();
-  const { q } = router.query as IQuery;
-  const [query, setQuery] = useState<string | undefined>(q);
-
-  const [staticSearchResults, setStaticSearchResults] = useState<
-    SearchResult[]
-  >([]);
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
-
-  const updateQuery = useCallback(
-    (value: string): void => {
-      setQuery(value);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`${router.route}?q=${value}`);
-    },
-    [router],
-  );
 
   const startSearch = useCallback(
     async (value: string): Promise<void> => {
       if (value === null) return;
       dispatch({ type: 'setInput', value });
-      await loadSearchResults(value, setStaticSearchResults);
     },
-    [dispatch, setStaticSearchResults],
+    [dispatch],
   );
 
-  const updateQueryDebounced = useMemo(() => {
-    return debounce(updateQuery, 500);
-  }, [updateQuery]);
-
-  const handleInputChange = (event: FormEvent<HTMLInputElement>): void => {
-    const { currentTarget } = event as unknown as ChangeEvent<HTMLInputElement>;
-    const value = currentTarget.value;
-    updateQueryDebounced(value);
-  };
-
-  useEffect(() => {
-    if (q !== undefined && q !== '') {
-      setQuery(q);
-      //eslint-disable-next-line @typescript-eslint/no-floating-promises
-      startSearch(q);
-    }
-  }, [q, startSearch]);
+  const updateQuery = useCallback(
+    (value: string): void => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      startSearch(value);
+    },
+    [startSearch],
+  );
 
   useEffect(() => {
     if (outputStream.length > 0 && !isStreaming) {
@@ -94,26 +57,26 @@ export const useSearch = (): IProps => {
     }
   }, [conversation.input, conversation, startStream]);
 
-  const handleSubmit = async (
-    evt: FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    evt.preventDefault();
+  const handleSubmit = useCallback(
+    async (value: string): Promise<void> => {
+      if (value === undefined || query === value) return;
 
-    dispatch({ type: 'reset' });
-    if (query === null) return;
-
-    const value = searchInputRef.current?.value ?? '';
-    await updateQuery(value);
-  };
+      dispatch({ type: 'reset' });
+      setQuery(value);
+      await updateQuery(value);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`${router.route}?q=${value}`);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dispatch, updateQuery, setQuery, query],
+  );
 
   return {
     searchInputRef,
     handleSubmit,
     outputStream,
-    query,
-    staticSearchResults,
     conversation,
-    handleInputChange,
     error,
+    isLoading,
   };
 };
