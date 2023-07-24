@@ -89,7 +89,7 @@ export async function doCrossChainTransfer(
           pactId: status.continuation?.pactId,
           proof,
           rollback: false,
-          step: '1',
+          step: 1,
         },
         to.chainId,
       ),

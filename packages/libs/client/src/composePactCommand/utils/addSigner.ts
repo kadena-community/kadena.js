@@ -1,11 +1,13 @@
 import { ICapabilityItem, IPactCommand } from '../../interfaces/IPactCommand';
 
+import { patchCommand } from './patchCommand';
+
 interface IAddSigner {
   (
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  ): () => Pick<IPactCommand, 'signers'>;
+  ): () => Partial<IPactCommand>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <TCommand extends any>(
     first:
@@ -42,16 +44,18 @@ export const addSigner: IAddSigner = ((
     }));
   }
 
-  return () => ({
-    signers: [
-      {
-        pubKey,
-        scheme,
-        ...(address !== undefined ? { address } : {}),
-        ...(clist !== undefined ? { clist } : {}),
-      },
-    ],
-  });
+  return (cmd: Partial<IPactCommand>) =>
+    patchCommand(cmd, {
+      signers: [
+        {
+          pubKey,
+          scheme,
+          ...(address !== undefined ? { address } : {}),
+          ...(clist !== undefined ? { clist } : {}),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+      ],
+    });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
