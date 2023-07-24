@@ -11,7 +11,7 @@ const Home: FC = () => {
   return (
     <Stack direction="column" spacing="2xl">
       <div>
-        <Heading as="h2">BlogChain 2023</Heading>
+        <Heading as="h2">BlogChain 2018</Heading>
       </div>
     </Stack>
   );
@@ -22,12 +22,12 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
-        title: 'BlogChain 2023',
-        menu: '2023',
-        subTitle: '2023',
-        label: '2023',
-        order: 6,
-        description: 'articles..articles...articles 2023',
+        title: 'BlogChain 2018',
+        menu: '2018',
+        subTitle: '2018',
+        label: '2018',
+        order: 1,
+        description: 'articles..articles...articles 2018',
         layout: 'landing',
         icon: 'BlogChain',
       },
