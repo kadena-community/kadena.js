@@ -39,6 +39,8 @@ export interface IPageMeta {
   lastModifiedDate?: Date;
   icon?: ProductIconNames;
   navigation: INavigation;
+  publishDate?: string;
+  author?: string;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
@@ -53,6 +55,8 @@ export interface ILayout {
   aSideMenuTree?: ISubHeaderElement[];
   editLink?: string;
   navigation?: INavigation;
+  publishDate?: string;
+  author?: string;
 }
 
 export type LevelType = 1 | 2 | 3;
@@ -79,4 +83,6 @@ export interface IMenuData {
   layout: LayoutType;
   isMenuOpen: boolean;
   isActive: boolean;
+  publishDate?: string;
+  author?: string;
 }
