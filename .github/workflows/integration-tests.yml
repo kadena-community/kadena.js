@@ -18,7 +18,7 @@ jobs:
 
     steps:
         - name: check container health
-          run: docker ps -a
+          run: docker container ls
         - name: check devnet health
           uses: jtalk/url-health-check-action@v3
           with:
