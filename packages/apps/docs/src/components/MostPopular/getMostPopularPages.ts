@@ -1,10 +1,12 @@
 import { IMostPopularPage } from '@/types/MostPopularData';
 
-interface IHookResult {
+interface IGetMostPopularPagesResult {
   data: IMostPopularPage[];
 }
 
-export const getMostPopularPages = async (slug = '/'): Promise<IHookResult> => {
+export const getMostPopularPages = async (
+  slug = '/',
+): Promise<IGetMostPopularPagesResult> => {
   async function fetchMostPopularPages(): Promise<IMostPopularPage[]> {
     const res = await fetch(`/api/mostPopular?slug=${slug}`);
     const data = await res.json();
