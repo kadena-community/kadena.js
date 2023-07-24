@@ -5,12 +5,17 @@ on: [push]
 jobs:
   Test:
     runs-on: ubuntu-latest
-    container: node:16-bullseye
+
     services:
       devnet:
         image: enof/devnet
+        options: >-
+          --memory=8g
+          --cpus=4
         ports:
           - 8080:1337
+
+
 
     steps:
       # run steps required in the workflow
