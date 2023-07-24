@@ -128,7 +128,11 @@ const ExistingAccountFaucetPage: FC = () => {
             }}
             helperText={errors.name?.message ?? ''}
           />
-          <ChainSelect onChange={onChainSelectChange} value={chainID} />
+          <ChainSelect
+            onChange={onChainSelectChange}
+            value={chainID}
+            ariaLabel="Account name"
+          />
         </StyledAccountForm>
         <StyledFormButton>
           <Button
