@@ -6,6 +6,7 @@ module.exports = {
       dependencies: [
         '@kadena/chainweb-node-client',
         '@kadena/client',
+        '@kadena/fonts',
         '@kadena/pactjs-cli',
         '@kadena-dev/eslint-plugin',
       ],
