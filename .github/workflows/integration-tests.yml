@@ -17,8 +17,10 @@ jobs:
 
 
     steps:
-        - name: check container health
-          run: docker container ls
+        - name: Wait for the database to start
+          run: wget -qO- https://raw.githubusercontent.com/eficode/wait-for/$WAIT_FOR_VERSION/wait-for | sh -s -- localhost:8080/info -- echo "Devnet up"
+          env:
+            WAIT_FOR_VERSION: 4df3f9262d84cab0039c07bf861045fbb3c20ab7 # v2.2.3
         - name: check devnet health
           uses: jtalk/url-health-check-action@v3
           with:
