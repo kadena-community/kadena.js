@@ -3,7 +3,7 @@ export { Grid, IGridContainerProps, IGridItemProps } from './Grid';
 export { Stack, IStackProps } from './Stack/Stack';
 export { Modal, IModalProps, ModalProvider, useModal } from './Modal';
 export { Card, ICardProps } from './Card/Card';
-export { SystemIcon, ProductIcon, IIconProps } from './Icons';
+export { SystemIcon, ProductIcon, IIconProps } from './Icon';
 export { IconButton, IIconButtonProps } from './IconButton/IconButton';
 export { Tabs, ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
 export {
