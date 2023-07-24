@@ -52,12 +52,10 @@ const doTransfer = asyncPipe(
   // for example hear we add gasLimit and gasPrice
   composePactCommand(
     // read meta from the input command
-    ({ meta }) =>
-      setMeta({
-        chainId: meta?.chainId!,
-        gasLimit: 2400,
-        gasPrice: 0.00000001,
-      }),
+    setMeta({
+      gasLimit: 2400,
+      gasPrice: 0.00000001,
+    }),
   ),
   createTransaction,
   signWithChainweaver,
