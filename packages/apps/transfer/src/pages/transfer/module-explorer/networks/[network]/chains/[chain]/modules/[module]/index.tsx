@@ -49,30 +49,32 @@ const ModulePage: FC = () => {
         1000,
       );
 
-      if (result.status === 'failure') {
+      if (result.status === 'failure' && 'error' in result) {
         throw new Error(JSON.stringify(result.error));
       }
 
-      const r = (result as unknown) as {
+      const resultSuccess = (result as unknown) as {
         data: {
           code: string;
           interfaces: string[];
         }
       }
-      setPactCode(r.data.code || '');
+
+      const pactCode = resultSuccess.data.code || '';
+      setPactCode(pactCode);
 
       const moduleNameParts = moduleName.split('.');
       const namespace =
         moduleNameParts.length > 1 ? moduleNameParts[0] : undefined;
 
       const pactModule = new StringContractDefinition({
-        contract: r.data.code || '',
+        contract: pactCode,
         namespace,
       });
 
       setCapabilities(pactModule.getCapabilities(moduleName));
       setFunctions(pactModule.getMethods(moduleName));
-      setInterfaces(r.data.interfaces || []);
+      setInterfaces(resultSuccess.data.interfaces || []);
     };
 
     fetchModule().catch(console.error);
