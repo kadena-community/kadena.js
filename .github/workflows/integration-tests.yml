@@ -5,6 +5,9 @@ on: [push]
 jobs:
   Test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/tools/integration
 
     services:
       devnet:
@@ -25,7 +28,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-          working-directory: packages/tools/integration-tests
       - run: npm run test
 
 
