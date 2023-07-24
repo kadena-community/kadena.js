@@ -26,11 +26,9 @@ jobs:
         run: |
           node common/scripts/install-run-rush.js install
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - run: npm run test
-        working-directory: packages/tools/integration-tests
+      - name: Rush test (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js test -t @kadena/integration-tests
 
 
 
