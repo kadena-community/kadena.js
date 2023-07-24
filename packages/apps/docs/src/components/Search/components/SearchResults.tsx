@@ -7,35 +7,45 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
+import { LoadingWrapper, ScrollBox } from './../styles';
+import { Loading } from './Loading';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
-import { ScrollBox } from './styles';
 
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
-import { SearchResult } from 'minisearch';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  staticSearchResults: SearchResult[];
+  semanticResults: ISearchResult[];
+  semanticError?: string;
+  semanticIsLoading: boolean;
   outputStream: string;
   conversation: IConversation;
   limitResults?: number;
   query?: string;
   error?: string;
+  isLoading: boolean;
+  hasScroll?: boolean;
+  onTabSelect: (tabName: string) => void;
 }
 
 const TABNAME = 'searchTabSelected';
 
 export const SearchResults: FC<IProps> = ({
-  staticSearchResults,
+  semanticResults,
+  semanticError,
+  semanticIsLoading,
   conversation,
   outputStream,
   limitResults,
   query,
   error,
+  isLoading,
+  hasScroll = false,
+  onTabSelect,
 }) => {
   const { clearModal } = useModal();
   const [selectedTabName, setSelectedTabName] = useState<string>('docs');
@@ -45,6 +55,7 @@ export const SearchResults: FC<IProps> = ({
     const buttonName = (e.target as HTMLElement).getAttribute('data-value');
     if (buttonName === null) return;
     localStorage.setItem(TABNAME, buttonName);
+    onTabSelect(buttonName);
   };
 
   useEffect(() => {
@@ -53,7 +64,8 @@ export const SearchResults: FC<IProps> = ({
     if (value === null) return;
 
     setSelectedTabName(value);
-  }, [setSelectedTabName, setIsMounted]);
+    onTabSelect(value);
+  }, [setSelectedTabName, setIsMounted, onTabSelect]);
 
   if (!isMounted) return null;
   return (
@@ -63,30 +75,52 @@ export const SearchResults: FC<IProps> = ({
         <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
         <Tabs.Content value="docs">
-          <ScrollBox>
-            <ResultCount count={staticSearchResults.length} />
-            <StaticResults
-              limitResults={limitResults}
-              results={staticSearchResults}
-            />
-            {limitResults !== undefined && query !== undefined ? (
-              <Stack justifyContent="flex-end">
-                <Link href={`/search?q=${query}`} passHref legacyBehavior>
-                  <Button
-                    icon={SystemIcons.TrailingIcon}
-                    title="Go to search results"
-                    onClick={clearModal}
-                  >
-                    Go to search results
-                  </Button>
-                </Link>
-              </Stack>
-            ) : null}
+          <ScrollBox disabled={!hasScroll}>
+            {semanticIsLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
+            {semanticError ? (
+              <Notification.Root
+                color={'negative'}
+                expanded={true}
+                icon={SystemIcon.AlertBox}
+              >
+                {semanticError}
+              </Notification.Root>
+            ) : (
+              <>
+                <ResultCount count={semanticResults.length} />
+                <StaticResults
+                  limitResults={limitResults}
+                  results={semanticResults}
+                />
+                {limitResults !== undefined && query !== undefined ? (
+                  <Stack justifyContent="flex-end">
+                    <Link href={`/search?q=${query}`} passHref legacyBehavior>
+                      <Button
+                        icon={SystemIcons.TrailingIcon}
+                        title="Go to search results"
+                        onClick={clearModal}
+                      >
+                        Go to search results
+                      </Button>
+                    </Link>
+                  </Stack>
+                ) : null}
+              </>
+            )}
           </ScrollBox>
         </Tabs.Content>
 
         <Tabs.Content value="qa">
-          <ScrollBox>
+          <ScrollBox disabled={!hasScroll}>
+            {isLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
             {error && (
               <Notification.Root
                 color={'negative'}
@@ -96,17 +130,16 @@ export const SearchResults: FC<IProps> = ({
                 {error}
               </Notification.Root>
             )}
-            <ResultCount count={staticSearchResults.length} />
 
             {conversation?.history.map((interaction, idx) => (
               <div key={`${interaction.input}-${idx}`}>
                 <ReactMarkdown>{interaction?.output}</ReactMarkdown>
                 <div>
-                  {interaction?.metadata?.map((item, idx) => {
+                  {interaction?.metadata?.map((item, innerIdx) => {
                     const url = createLinkFromMD(item.title);
                     return (
                       <>
-                        <Link key={`${url}-${idx}`} href={url}>
+                        <Link key={`${url}-${innerIdx}`} href={url}>
                           {url}
                         </Link>
                       </>

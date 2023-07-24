@@ -1,25 +1,41 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 
-import { SearchForm, SearchResults } from '@/components';
+import { Search, SearchForm } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
-import { useSearch } from '@/hooks';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
-const Search: FC = () => {
-  const {
-    searchInputRef,
-    outputStream,
-    handleSubmit,
-    query,
-    staticSearchResults,
-    conversation,
-  } = useSearch();
+interface IQuery {
+  q?: string;
+}
+
+const SearchPage: FC = () => {
+  const router = useRouter();
+  const { q } = router.query as IQuery;
+  const [query, setQuery] = useState<string | undefined>(q);
+
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleSubmit = async (
+    evt: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    evt.preventDefault();
+
+    const value = searchInputRef.current?.value ?? '';
+    setQuery(value);
+  };
+
+  useEffect(() => {
+    if (q !== undefined && q !== '') {
+      setQuery(q);
+    }
+  }, [q, setQuery]);
 
   return (
     <>
@@ -40,12 +56,7 @@ const Search: FC = () => {
       </SearchHeader>
       <Content id="maincontent" layout="home">
         <Article>
-          <SearchResults
-            staticSearchResults={staticSearchResults}
-            conversation={conversation}
-            outputStream={outputStream}
-            query={query}
-          />
+          <Search query={query} />
         </Article>
       </Content>
     </>
@@ -69,4 +80,4 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
   };
 };
 
-export default Search;
+export default SearchPage;
