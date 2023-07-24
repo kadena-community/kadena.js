@@ -26,7 +26,7 @@ import { backOff } from 'exponential-backoff';
 
 const devnetNetwork: ChainwebNetworkId = 'development';
 const devnetApiHostChain0: string =
-  'http://localhost:8080/chainweb/0.0/fast-development/chain/0/pact';
+  'http://127.0.0.1:8080/chainweb/0.0/fast-development/chain/0/pact';
 const devnetApiHostChain1: string =
   'http://localhost:8080/chainweb/0.0/fast-development/chain/1/pact';
 const devnetKeyPair = {
