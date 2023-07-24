@@ -73,10 +73,7 @@ const ModuleExplorer: FC = () => {
       </Breadcrumbs.Root>
       <StyledForm>
         <StyledAccountForm>
-          <ChainSelect
-            onChange={onChainSelectChange}
-            value={chainID}
-          />
+          <ChainSelect onChange={onChainSelectChange} value={chainID} />
           <TextField
             label={t('Module Name')}
             inputProps={{
