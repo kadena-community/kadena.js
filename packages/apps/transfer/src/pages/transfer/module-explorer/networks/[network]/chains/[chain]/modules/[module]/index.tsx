@@ -1,6 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { StringContractDefinition } from '@kadena/pactjs-generator';
-
 import { kadenaConstants, Network } from '@/constants/kadena';
 import { convertIntToChainId } from '@/services/utils/utils';
 import dynamic from 'next/dynamic';
@@ -41,7 +40,7 @@ const ModulePage: FC = () => {
     const moduleName: string = module as string;
 
     const fetchModule = async (): Promise<void> => {
-      const { data } = await describeModule(
+      const { result } = await describeModule(
         moduleName,
         chainId,
         typedNetwork,
@@ -50,20 +49,30 @@ const ModulePage: FC = () => {
         1000,
       );
 
-      setPactCode(data?.code || '');
+      if (result.status === 'failure') {
+        throw new Error(JSON.stringify(result.error));
+      }
+
+      const r = (result as unknown) as {
+        data: {
+          code: string;
+          interfaces: string[];
+        }
+      }
+      setPactCode(r.data.code || '');
 
       const moduleNameParts = moduleName.split('.');
       const namespace =
         moduleNameParts.length > 1 ? moduleNameParts[0] : undefined;
 
       const pactModule = new StringContractDefinition({
-        contract: data?.code || '',
+        contract: r.data.code || '',
         namespace,
       });
 
       setCapabilities(pactModule.getCapabilities(moduleName));
       setFunctions(pactModule.getMethods(moduleName));
-      setInterfaces(data?.interfaces || []);
+      setInterfaces(r.data.interfaces || []);
     };
 
     fetchModule().catch(console.error);

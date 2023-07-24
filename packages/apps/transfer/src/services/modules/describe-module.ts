@@ -1,4 +1,4 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { ChainwebChainId, ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { getClient, Pact } from '@kadena/client';
 
 import {
@@ -8,13 +8,6 @@ import {
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
-import { PactValue } from '../../../../../libs/types/lib';
-
-export interface IModuleResult {
-  reqKey?: string;
-  status?: string;
-  data?: PactValue;
-}
 
 const debug = Debug('kadena-transfer:services:describe-module');
 
@@ -26,7 +19,7 @@ export const describeModule = async (
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<IModuleResult> => {
+): Promise<ILocalCommandResult> => {
   debug(describeModule.name);
   const networkId = chainNetwork[network].network;
   const { local } = getClient(
@@ -42,23 +35,8 @@ export const describeModule = async (
     .setNetworkId(networkId)
     .createTransaction();
 
-  const response = await local(transaction, {
+  return await local(transaction, {
     preflight: false,
     signatureVerification: false,
   });
-
-  const { reqKey, result } = response;
-
-  if (result.status === 'failure') {
-    return {
-      reqKey,
-      status: result.status,
-    };
-  }
-
-  return {
-    reqKey,
-    status: result.status,
-    data: result.data,
-  };
 };
