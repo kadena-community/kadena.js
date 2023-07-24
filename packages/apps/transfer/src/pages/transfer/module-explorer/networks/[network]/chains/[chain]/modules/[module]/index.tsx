@@ -41,7 +41,7 @@ const ModulePage: FC = () => {
     const moduleName: string = module as string;
 
     const fetchModule = async (): Promise<void> => {
-      const data = await describeModule(
+      const { data } = await describeModule(
         moduleName,
         chainId,
         typedNetwork,
@@ -50,20 +50,20 @@ const ModulePage: FC = () => {
         1000,
       );
 
-      setPactCode(data.code?.code || '');
+      setPactCode(data?.code || '');
 
       const moduleNameParts = moduleName.split('.');
       const namespace =
         moduleNameParts.length > 1 ? moduleNameParts[0] : undefined;
 
       const pactModule = new StringContractDefinition({
-        contract: data?.code?.code || '',
+        contract: data?.code || '',
         namespace,
       });
 
       setCapabilities(pactModule.getCapabilities(moduleName));
       setFunctions(pactModule.getMethods(moduleName));
-      setInterfaces(data.code?.interfaces || []);
+      setInterfaces(data?.interfaces || []);
     };
 
     fetchModule().catch(console.error);

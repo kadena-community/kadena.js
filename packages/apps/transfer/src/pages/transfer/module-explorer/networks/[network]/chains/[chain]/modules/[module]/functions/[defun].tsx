@@ -32,7 +32,7 @@ const FunctionPage: FC = () => {
 
   useEffect(() => {
     setOutput(`${output}\n${log}`.trim());
-  }, [timestamp, output, log]);
+  }, [timestamp]);
 
   const Logger = {
     log(data: string) {

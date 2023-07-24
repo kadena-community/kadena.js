@@ -8,14 +8,12 @@ import {
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';
+import { PactValue } from '../../../../../libs/types/lib';
 
 export interface IModuleResult {
   reqKey?: string;
   status?: string;
-  code?: {
-    code: string;
-    interfaces: string[];
-  };
+  data?: PactValue;
 }
 
 const debug = Debug('kadena-transfer:services:describe-module');
@@ -39,7 +37,7 @@ export const describeModule = async (
   );
 
   const transaction = Pact.builder
-    .execution(Pact.modules['describe-module'](moduleName))
+    .execution(`(describe-module "${moduleName}")`)
     .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
     .setNetworkId(networkId)
     .createTransaction();
@@ -51,9 +49,16 @@ export const describeModule = async (
 
   const { reqKey, result } = response;
 
+  if (result.status === 'failure') {
+    return {
+      reqKey,
+      status: result.status,
+    };
+  }
+
   return {
     reqKey,
     status: result.status,
-    code: 'data' in result ? (result.data as string) : '',
+    data: result.data,
   };
 };
