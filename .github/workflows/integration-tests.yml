@@ -18,11 +18,12 @@ jobs:
 
     steps:
         - name: docker list
-          run: ifconfig -a eth0|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"
+          run: echo '::set-output name=HOST::ifconfig -a eth0|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"'
+          id: getHost
         - name: check devnet health
           uses: jtalk/url-health-check-action@v3
           with:
-            url: http://127.0.0.1:8080/info
+            url: http://${{steps.getHost.outputs.HOST}}:8080/info
             # Follow redirects, or just report success on 3xx status codes
             max-attempts: 20 # Optional, defaults to 1
             # Delay between retries
