@@ -21,10 +21,6 @@ jobs:
         run: |
           node common/scripts/install-run-rush.js install -t @kadena/integration-tests
 
-      - name: Rush Build
-        run: |
-          node common/scripts/install-run-rush.js build -t @kadena/integration-tests
-
       - name: Rush Integration Test
         run: |
           node common/scripts/install-run-rush.js test:integration:devnet -t @kadena/integration-tests
