@@ -5,7 +5,7 @@ on: [push]
 jobs:
   Test:
     runs-on: ubuntu-latest
-
+    container: node:16-bullseye
     services:
       devnet:
         image: enof/devnet
