@@ -24,7 +24,7 @@ jobs:
             # Follow redirects, or just report success on 3xx status codes
             max-attempts: 20 # Optional, defaults to 1
             # Delay between retries
-            retry-delay: 10 # Optional, only applicable to max-attempts > 1
+            retry-delay: 5s # Optional, only applicable to max-attempts > 1
 
 
 
