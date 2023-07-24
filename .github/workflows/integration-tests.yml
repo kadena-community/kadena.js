@@ -21,7 +21,7 @@ jobs:
           run: |
             HOST=$(ifconfig -a eth0|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:")
             echo ${HOST}
-            echo "{HOST}=${HOST}" >> $GITHUB_STATE
+            echo "{HOST}=${HOST}" >> $GITHUB_OUTPUT
           id: getHost
         - name: check devnet health
           uses: jtalk/url-health-check-action@v3
