@@ -23,7 +23,7 @@ import {
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, FormEventHandler, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -57,7 +57,6 @@ interface IFundExistingAccountResponse
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
-  const [accountName, setAccountName] = useState('');
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
@@ -79,7 +78,7 @@ const ExistingAccountFaucetPage: FC = () => {
 
       try {
         const result = (await fundExistingAccount(
-          accountName,
+          data.name,
           chainID,
           AMOUNT_OF_COINS_FUNDED,
         )) as IFundExistingAccountResponse;
@@ -115,14 +114,7 @@ const ExistingAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [accountName, chainID],
-  );
-
-  const onAccountNameChange = useCallback<FormEventHandler<HTMLInputElement>>(
-    (e) => {
-      setAccountName(e.currentTarget.value);
-    },
-    [],
+    [chainID],
   );
 
   const {
@@ -153,7 +145,6 @@ const ExistingAccountFaucetPage: FC = () => {
             inputProps={{
               ...register('name'),
               id: 'account-name-input',
-              onChange: onAccountNameChange,
               leftIcon: SystemIcon.KIcon,
             }}
             helperText={errors.name?.message ?? ''}
