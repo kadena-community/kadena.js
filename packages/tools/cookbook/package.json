@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
-    "@kadena/client": "1.0.0-alpha.4",
+    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*"
   },
   "devDependencies": {
