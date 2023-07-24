@@ -1,4 +1,7 @@
-import { ChainwebChainId, ILocalCommandResult } from '@kadena/chainweb-node-client';
+import {
+  ChainwebChainId,
+  ILocalCommandResult,
+} from '@kadena/chainweb-node-client';
 import { getClient, Pact } from '@kadena/client';
 
 import {

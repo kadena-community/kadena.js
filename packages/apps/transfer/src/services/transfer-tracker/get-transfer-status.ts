@@ -194,17 +194,23 @@ export async function getXChainTransferInfo({
       continuationTransaction as ICommand,
     );
 
-    if (
-      String(response?.result?.error?.type) === 'EvalError' &&
-      String(response?.result?.error?.message).includes('pact completed')
-    ) {
-      return {
-        id: StatusId.Success,
-        status: t('Success'),
-        description: t('Transfer completed successfully'),
-        senderAccount: senderAccount,
-        receiverChain: receiverChain,
+    if ('error' in response?.result) {
+      const error = response.result as unknown as {
+        type: string;
+        message: string;
       };
+      if (
+        String(error.type) === 'EvalError' &&
+        String(error.message).includes('pact completed')
+      ) {
+        return {
+          id: StatusId.Success,
+          status: t('Success'),
+          description: t('Transfer completed successfully'),
+          senderAccount: senderAccount,
+          receiverChain: receiverChain,
+        };
+      }
     }
 
     if (response?.result?.status === 'success') {
