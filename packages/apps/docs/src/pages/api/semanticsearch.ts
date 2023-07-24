@@ -1,8 +1,8 @@
+import { menuData } from '@/data/menu.mjs';
+import { IMenuData } from '@/types/Layout';
 import { embed } from '@/utils/createEmbedding';
-import { getFrontMatter } from '@/utils/markdown';
 import { PineconeClient } from '@pinecone-database/pinecone';
 import { ScoredVector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
-import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const namespace = 'kda-docs';
@@ -32,16 +32,49 @@ const getPineconeClient = async (): Promise<PineconeClient> => {
   return pineconeClient;
 };
 
-const getData = (file: string): IFrontmatterData => {
-  if (fs.existsSync(file)) {
-    const doc = fs.readFileSync(file, 'utf-8');
-    const data = getFrontMatter(doc);
+const filenameToRoute = (filename: string): string => {
+  // Remove "src/pages" from the start of the filename
+  let route = filename.replace(/^src\/pages/, '');
 
+  // Remove file extension from the filename
+  route = route.replace(/\.(mdx|tsx)$/, '');
+
+  // If the filename ends with "index.*", remove that from the URL
+  route = route.replace(/\/index$/, '');
+
+  // Add a leading "/" if it's missing
+  if (!route.startsWith('/')) {
+    route = `/${route}`;
+  }
+
+  return route;
+};
+
+const getData = (file: string): IFrontmatterData => {
+  const tree = menuData as IMenuData[];
+
+  let foundItem: IMenuData;
+  const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {
+    tree.forEach((item) => {
+      console.log(item.root, file);
+      if (item.root === file) {
+        foundItem = item;
+      } else {
+        return findPage(item.children, file);
+      }
+    });
+
+    return foundItem;
+  };
+
+  const item = findPage(tree, file);
+  if (item !== undefined) {
     return {
-      title: data.title,
-      description: data.description,
+      title: item.title,
+      description: item.description,
     };
   }
+
   return {};
 };
 
@@ -63,12 +96,13 @@ const cleanUpContent = (content: string): string | undefined => {
 
 const mapMatches = (match: ScoredVector): ISearchResult => {
   const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
+  console.log(metadata);
   return {
     id: match.id,
     score: match.score,
     filePath: metadata.filePath,
     content: cleanUpContent(metadata.content),
-    ...getData(metadata.filePath),
+    ...getData(filenameToRoute(metadata.filePath)),
   } as ISearchResult;
 };
 

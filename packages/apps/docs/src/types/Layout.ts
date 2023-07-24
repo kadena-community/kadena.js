@@ -67,3 +67,16 @@ export interface IPageProps {
   leftMenuTree: IMenuItem[];
   topDocs: ITopDoc[];
 }
+
+export interface IMenuData {
+  children: IMenuData[];
+  root: string;
+  title: string;
+  description: string;
+  menu: string;
+  label: string;
+  order: number;
+  layout: LayoutType;
+  isMenuOpen: boolean;
+  isActive: boolean;
+}

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
 interface ISemanticSearch {
@@ -17,6 +18,7 @@ export const useSemanticSearch = (
   const [error, setError] = useState<string | undefined>();
   const [results, setResults] = useState<ISearchResult[]>([]);
   const [query, setQuery] = useState<string | undefined>();
+  const router = useRouter();
 
   const getSearchResults = async (query: string): Promise<void> => {
     try {
@@ -50,8 +52,12 @@ export const useSemanticSearch = (
       setError(undefined);
       setIsLoading(true);
       setQuery(value);
+
+      await router.push(`${router.route}?q=${value}`);
+
       await getSearchResults(value);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setError, setIsLoading, setQuery, query],
   );
 
