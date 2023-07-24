@@ -20,6 +20,7 @@ jobs:
         - name: docker list
           run: |
             HOST=$(ifconfig -a eth0|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:")
+            echo ${HOST}
             echo "{HOST}=${HOST}" >> $GITHUB_STATE
           id: getHost
         - name: check devnet health
