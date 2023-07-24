@@ -43,11 +43,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Lint packages
-        run: pnpm lint ${{ env.AFFECTED_OR_ALL }}
-
       - name: Build packages
         run: pnpm build ${{ env.AFFECTED_OR_ALL }}
+
+      - name: Lint packages
+        run: pnpm lint ${{ env.AFFECTED_OR_ALL }}
 
       - name: Test packages
         run: pnpm test ${{ env.AFFECTED_OR_ALL }}
