@@ -10,7 +10,6 @@ jobs:
       devnet:
         image: enof/devnet
         options: >-
-          --network="host"
           --memory=8g
         ports:
           - 8080:1337
