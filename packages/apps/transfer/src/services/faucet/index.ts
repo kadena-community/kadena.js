@@ -39,8 +39,10 @@ export const fundExistingAccount = async (
         new PactNumber(amount).toPactDecimal(),
       ),
     )
+    //@ts-ignore
     .addSigner(FAUCET_PUBLIC_KEY, (withCap) => [withCap('coin.GAS')])
     .addSigner(keyPair.publicKey, (withCap) => [
+      //@ts-ignore
       withCap(
         'coin.TRANSFER',
         SENDER_ACCOUNT,

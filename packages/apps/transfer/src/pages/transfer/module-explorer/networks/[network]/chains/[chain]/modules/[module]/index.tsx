@@ -1,5 +1,6 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { StringContractDefinition } from '@kadena/pactjs-generator';
+
 import { kadenaConstants, Network } from '@/constants/kadena';
 import { convertIntToChainId } from '@/services/utils/utils';
 import dynamic from 'next/dynamic';
@@ -20,8 +21,12 @@ const ModulePage: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer:module');
   const { t } = useTranslation('common');
   const [pactCode, setPactCode] = useState('');
-  const [functions, setFunctions] = useState<Record<string, { method: string }> | undefined>({});
-  const [capabilities, setCapabilities] = useState<Record<string, { defcap: string }> | undefined>({});
+  const [functions, setFunctions] = useState<
+    Record<string, { method: string }> | undefined
+  >({});
+  const [capabilities, setCapabilities] = useState<
+    Record<string, { defcap: string }> | undefined
+  >({});
   const [interfaces, setInterfaces] = useState<string[]>([]);
   const router = useRouter();
   const { network, chain, module } = router.query;
@@ -53,12 +58,12 @@ const ModulePage: FC = () => {
         throw new Error(JSON.stringify(result.error));
       }
 
-      const resultSuccess = (result as unknown) as {
+      const resultSuccess = result as unknown as {
         data: {
           code: string;
           interfaces: string[];
-        }
-      }
+        };
+      };
 
       const pactCode = resultSuccess.data.code || '';
       setPactCode(pactCode);
