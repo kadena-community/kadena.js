@@ -32,11 +32,10 @@ function getBrokenLinks(filePath, links) {
     // places where the link could live
     const fileMDX = `${links[index]}.mdx`;
     const fileTSX = `${links[index]}.tsx`;
-    const fileIndex =
-      links[index]
-        .split('/')
-        .slice(0, links[index].split('/').length - 1)
-        .join('/') + '/index';
+    const fileIndex = `${links[index]
+      .split('/')
+      .slice(0, links[index].split('/').length - 1)
+      .join('/')}/index`;
     const fileIndexMDX = `${fileIndex}.mdx`;
     const fileIndexTSX = `${fileIndex}.tsx`;
 
