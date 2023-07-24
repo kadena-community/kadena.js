@@ -131,7 +131,6 @@ const CheckTransactions: FC = () => {
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
-                ariaLabel={'hello'}
               />
             </StyledSmallField>
             <StyledMediumField>

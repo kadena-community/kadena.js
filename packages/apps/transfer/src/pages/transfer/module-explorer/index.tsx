@@ -76,7 +76,6 @@ const ModuleExplorer: FC = () => {
           <ChainSelect
             onChange={onChainSelectChange}
             value={chainID}
-            ariaLabel={'hello'}
           />
           <TextField
             label={t('Module Name')}
