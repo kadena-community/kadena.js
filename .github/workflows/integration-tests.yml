@@ -1,0 +1,30 @@
+name: Integration Tests
+
+on: [push]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    services:
+      devnet:
+        image: enof/devnet
+        ports:
+          - 8080:1337
+
+    steps:
+      # run steps required in the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Rush install (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js install -t @kadena/integration-tests
+
+      - name: Rush Build
+        run: |
+          node common/scripts/install-run-rush.js build -t @kadena/integration-tests
+
+      - name: Rush Integration Test
+        run: |
+          node common/scripts/install-run-rush.js test:integration:devnet -t @kadena/integration-tests
