@@ -6,9 +6,9 @@ import React, { FC } from 'react';
 export const WalletConnectButton: FC = () => {
   const { t } = useTranslation();
   return (
-    <Button.Root title={t('Connect your wallet')} color="positive">
+    <Button title={t('Connect your wallet')} color="positive">
       {t('Connect your wallet')}
       <SystemIcon.Link />
-    </Button.Root>
+    </Button>
   );
 };
