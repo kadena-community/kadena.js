@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Fix links in client readme",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
