@@ -9,3 +9,4 @@ export * from './ConsentModal';
 export * from './LastModifiedDate';
 export * from './Search';
 export * from './SearchModal';
+export * from './MostPopular';

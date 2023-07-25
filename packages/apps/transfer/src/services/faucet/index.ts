@@ -28,11 +28,11 @@ const debug = Debug('kadena-transfer:services:faucet');
 export const fundExistingAccount = async (
   account: string,
   chainId: ChainwebChainId,
+  amount = 100,
   onPoll?: (
     transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
     pollRequest: Promise<IPollResponse>,
   ) => void,
-  amount = 100,
 ): Promise<unknown> => {
   debug(fundExistingAccount.name);
   const keyPair = genKeyPair();

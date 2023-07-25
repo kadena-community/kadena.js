@@ -272,6 +272,7 @@ importers:
 
   ../../packages/apps/transfer:
     specifiers:
+      '@hookform/resolvers': ~3.1.1
       '@jest/reporters': ~29.5.0
       '@jest/types': ~29.5.0
       '@kadena-dev/eslint-config': workspace:*
@@ -324,10 +325,13 @@ importers:
       react: ^18.2.0
       react-ace: ~10.1.0
       react-dom: ^18.2.0
+      react-hook-form: ~7.45.0
       react-scripts: 5.0.1
       sort-package-json: ~2.4.1
       typescript: 5.0.4
+      zod: ~3.18.0
     dependencies:
+      '@hookform/resolvers': 3.1.1_react-hook-form@7.45.2
       '@kadena/chainweb-node-client': 0.4.1
       '@kadena/client': 0.6.1
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
@@ -345,7 +349,9 @@ importers:
       react: 18.2.0
       react-ace: 10.1.0_react-dom@18.2.0+react@18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.45.2_react@18.2.0
       react-scripts: 5.0.1_774e68646b4e4594d2106b3ba6959211
+      zod: 3.18.0
     devDependencies:
       '@jest/reporters': 29.5.0
       '@jest/types': 29.5.0
@@ -6399,6 +6405,14 @@ packages:
     dependencies:
       '@hapi/hoek': 9.3.0
     dev: true
+
+  /@hookform/resolvers/3.1.1_react-hook-form@7.45.2:
+    resolution: {integrity: sha512-tS16bAUkqjITNSvbJuO1x7MXbn7Oe8ZziDTJdA9mMvsoYthnOOiznOTGBYwbdlYBgU+tgpI/BtTU3paRbCuSlg==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.45.2_react@18.2.0
+    dev: false
 
   /@humanwhocodes/config-array/0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}
@@ -23415,6 +23429,15 @@ packages:
 
   /react-error-overlay/6.0.11:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
+    dev: false
+
+  /react-hook-form/7.45.2_react@18.2.0:
+    resolution: {integrity: sha512-9s45OdTaKN+4NSTbXVqeDITd/nwIg++nxJGL8+OD5uf1DxvhsXQ641kaYHk5K28cpIOTYm71O/fYk7rFaygb3A==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-inspector/6.0.2_react@18.2.0:

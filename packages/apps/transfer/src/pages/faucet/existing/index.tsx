@@ -1,5 +1,4 @@
-import { IPollResponse } from '@kadena/chainweb-node-client';
-import { ICommandBuilder, IPactCommand, PactCommand } from '@kadena/client';
+import { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Breadcrumbs,
   Button,
@@ -8,9 +7,11 @@ import {
   TextField,
 } from '@kadena/react-ui';
 
-import FormStatusNotification from './notification';
-
-import { ChainSelect } from '@/components/Global';
+import {
+  ChainSelect,
+  FormStatus,
+  FormStatusNotification,
+} from '@/components/Global';
 import { usePersistentChainID } from '@/hooks';
 import {
   StyledAccountForm,
@@ -18,19 +19,24 @@ import {
   StyledFormButton,
 } from '@/pages/transfer/cross-chain-transfer-finisher/styles';
 import { fundExistingAccount } from '@/services/faucet';
+import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  FC,
-  FormEvent,
-  FormEventHandler,
-  useCallback,
-  useState,
-} from 'react';
+import React, { FC, FormEventHandler, useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+const schema = z.object({
+  name: z.string().min(3).max(256),
+});
+
+type FormData = z.infer<typeof schema>;
 
 // TODO: This needs to be changed to 100, when the contract is redeployed
 const AMOUNT_OF_COINS_FUNDED: number = 20;
 
-export type RequestStatus = 'not started' | 'pending' | 'succeeded' | 'failed';
+const isCustomError = (error: unknown): error is ICommandResult => {
+  return error !== null && typeof error === 'object' && 'result' in error;
+};
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -39,56 +45,34 @@ const ExistingAccountFaucetPage: FC = () => {
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
-    status: RequestStatus;
+    status: FormStatus;
     message?: string;
-  }>({ status: 'not started' });
-
-  const onPoll = async (
-    transaction: IPactCommand & ICommandBuilder<Record<string, unknown>>,
-    pollRequest: Promise<IPollResponse>,
-  ): Promise<void> => {
-    const request = await pollRequest;
-    const result = request[transaction.requestKey!]?.result;
-    const status = result?.status;
-    if (status === 'failure') {
-      const apiErrorMessage = (result.error as { message: string }).message;
-
-      setRequestStatus({ status: 'failed', message: apiErrorMessage });
-    }
-  };
+  }>({ status: 'idle' });
 
   const onFormSubmit = useCallback(
-    async (e: FormEvent) => {
-      e.preventDefault();
-
-      setRequestStatus({ status: 'pending' });
+    async (data: FormData) => {
+      setRequestStatus({ status: 'processing' });
 
       try {
-        await fundExistingAccount(
-          accountName,
-          chainID,
-          onPoll,
-          AMOUNT_OF_COINS_FUNDED,
-        );
+        await fundExistingAccount(accountName, chainID, AMOUNT_OF_COINS_FUNDED);
 
-        setRequestStatus({ status: 'succeeded' });
+        setRequestStatus({ status: 'successful' });
       } catch (err) {
         let message;
-        if (err instanceof Error) {
+
+        if (isCustomError(err)) {
+          const result = err.result;
+          const status = result?.status;
+          if (status === 'failure') {
+            message = (result.error as { message: string }).message;
+          }
+        } else if (err instanceof Error) {
           message = err.message;
         } else {
           message = String(err);
         }
 
-        /*
-         * When the poll callback rejects, it will return `this` (an instance of PactCommand).
-         * We handle the `setRequestStatus` in the poll callback, since we get the actual error
-         * message there. So in this case we can skip `setRequestStatus`, since we already did that.
-         * In other "uncaught" cases we do want to do call `setRequestStatus` here.
-         */
-        if (!(err instanceof PactCommand)) {
-          setRequestStatus({ status: 'failed', message });
-        }
+        setRequestStatus({ status: 'erroneous', message });
       }
     },
     [accountName, chainID],
@@ -101,37 +85,48 @@ const ExistingAccountFaucetPage: FC = () => {
     [],
   );
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
   return (
     <div>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <StyledForm onSubmit={onFormSubmit}>
+      <StyledForm onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
+          statusBodies={{
+            successful: t('The coins have been funded to the given account.'),
+          }}
           body={requestStatus.message}
         />
         <StyledAccountForm>
           <Heading as="h3">Account</Heading>
           <TextField
             label={t('The account name you would like to fund coins to')}
-            status="negative"
+            status={errors.name ? 'negative' : undefined}
             inputProps={{
+              ...register('name'),
               id: 'account-name-input',
               onChange: onAccountNameChange,
               leftIcon: SystemIcon.KIcon,
             }}
+            helperText={errors.name?.message ?? ''}
           />
           <ChainSelect onChange={onChainSelectChange} value={chainID} />
         </StyledAccountForm>
         <StyledFormButton>
           <Button.Root
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={requestStatus.status === 'pending'}
+            disabled={requestStatus.status === 'processing'}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            {requestStatus.status === 'pending' ? (
+            {requestStatus.status === 'processing' ? (
               <SystemIcon.Loading
                 style={{ animation: '2000ms infinite linear spin' }}
               />
