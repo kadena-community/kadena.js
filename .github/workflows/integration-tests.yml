@@ -5,6 +5,7 @@ on: [push]
 jobs:
   Test:
     runs-on: ubuntu-latest
+    container: node:18
 
     services:
       devnet:
