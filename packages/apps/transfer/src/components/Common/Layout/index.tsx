@@ -1,4 +1,4 @@
-import { Header } from './partials';
+import { FooterWrapper, Header } from './partials';
 import {
   footerStyle,
   gridItemCollapsedSidebarStyle,
@@ -44,6 +44,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
       href: routes.MODULE_EXPLORER,
     },
   ];
+
   return (
     <div>
       <header className={headerStyle}>
@@ -60,7 +61,9 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <main className={gridItemMainStyle}>{children}</main>
         <aside className={gridItemCollapsedSidebarStyle}></aside>
       </div>
-      <footer className={footerStyle}></footer>
+      <footer className={footerStyle}>
+        <FooterWrapper />
+      </footer>
     </div>
   );
 };
