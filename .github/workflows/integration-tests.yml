@@ -15,7 +15,6 @@ jobs:
         # Set health checks to wait until postgres has started
         options: >-
           -t
-          --health-cmd "curl --fail http://localhost:8080/info || exit 1"
           --health-interval 30s
           --health-timeout 30s
           --health-retries 5
