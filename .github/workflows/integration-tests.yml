@@ -22,6 +22,9 @@ jobs:
           - 8080:1337
 
     steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 2
 #        - name: Sleep for 10s
 #          uses: juliangruber/sleep-action@v2.0.0
 #          with:
