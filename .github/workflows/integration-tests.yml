@@ -16,17 +16,19 @@ jobs:
         options: >-
           -a STDOUT
           -t
-          --health-cmd "curl --silent --fail http://127.0.0.1:8080/info || exit 1"
-          --health-interval 30s
-          --health-timeout 30s
-          --health-retries 5
-          --health-start-period 2m
           --memory 7g
           --cpus 2
         ports:
           - 8080:1337
 
     steps:
+        - name: Sleep for 10s
+          uses: juliangruber/sleep-action@v2.0.0
+          with:
+            time: 300s
+        - name: Rush format (install-run-rush)
+          run: |
+            docker ps -a
         - name: check devnet health
           uses: jtalk/url-health-check-action@v3
           with:
