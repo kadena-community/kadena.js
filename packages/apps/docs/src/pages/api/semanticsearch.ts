@@ -56,7 +56,6 @@ const getData = (file: string): IFrontmatterData => {
   let foundItem: IMenuData;
   const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {
     tree.forEach((item) => {
-      console.log(item.root, file);
       if (item.root === file) {
         foundItem = item;
       } else {
@@ -96,7 +95,6 @@ const cleanUpContent = (content: string): string | undefined => {
 
 const mapMatches = (match: ScoredVector): ISearchResult => {
   const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
-  console.log(metadata);
   return {
     id: match.id,
     score: match.score,

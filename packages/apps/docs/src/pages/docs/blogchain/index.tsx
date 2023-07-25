@@ -1,13 +1,20 @@
+import { BlogItem } from '@/components/Blog';
 import { Article, Content, TitleHeader } from '@/components/Layout/components';
-import { IPageProps } from '@/types/Layout';
+import { getInitBlogPosts } from '@/hooks/useBlog/utils';
+import { IMenuData, IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { getData } from '@/utils/staticGeneration/getData.mjs';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
-const BlogChainHome: FC<IPageProps> = ({ frontmatter }) => {
+interface IProps extends IPageProps {
+  posts: IMenuData[];
+}
+
+const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
   return (
     <>
       <TitleHeader
@@ -16,16 +23,22 @@ const BlogChainHome: FC<IPageProps> = ({ frontmatter }) => {
         icon={frontmatter.icon}
       />
       <Content id="maincontent" layout="home">
-        <Article></Article>
+        <Article>
+          {posts.map((item) => (
+            <BlogItem key={item.root} item={item} />
+          ))}
+        </Article>
       </Content>
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const posts = getInitBlogPosts(getData(), 0, 10);
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      posts,
       frontmatter: {
         title: 'BlogChain',
         menu: 'BlogChain',
