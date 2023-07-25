@@ -1,7 +1,12 @@
-import { Article, CodeBackground, Content } from '../components';
+import { Article, Content } from '../components';
+import { Template } from '../components/Template';
+
+import { CodeBackground, PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout } from '@/types/Layout';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { LastModifiedDate } from '@/components/LastModifiedDate';
+import { IPageProps } from '@/types/Layout';
 import React, { FC } from 'react';
 import { RedocRawOptions } from 'redoc';
 
@@ -37,26 +42,29 @@ export const options: RedocRawOptions = {
   expandResponses: '200,201,204',
 };
 
-export const Redocly: FC<ILayout> = ({
+export const Redocly: FC<IPageProps> = ({
   children,
-  isAsideOpen,
-  editLink,
-  navigation,
+  frontmatter,
+  leftMenuTree,
 }) => {
   return (
-    <>
-      <Content id="maincontent" layout="code">
-        <Article>
-          {children}
-          <BottomPageSection
-            editLink={editLink}
-            navigation={navigation}
-            layout="code"
-          />
-        </Article>
-      </Content>
-      <CodeBackground isOpen={isAsideOpen} />
-    </>
+    <PageGrid>
+      <Template menuItems={leftMenuTree}>
+        <Content id="maincontent" layout="code">
+          <Article>
+            <Breadcrumbs menuItems={leftMenuTree} />
+            <LastModifiedDate date={frontmatter.lastModifiedDate} />
+            {children}
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+              layout="code"
+            />
+          </Article>
+        </Content>
+        <CodeBackground />
+      </Template>
+    </PageGrid>
   );
 };
 
