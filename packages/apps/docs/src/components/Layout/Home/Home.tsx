@@ -7,7 +7,9 @@ import React, { FC } from 'react';
 export const Home: FC<IPageProps> = ({ children, leftMenuTree }) => {
   return (
     <BasePageGrid>
-      <Template menuItems={leftMenuTree}>{children}</Template>
+      <Template menuItems={leftMenuTree} hideSideMenu>
+        {children}
+      </Template>
     </BasePageGrid>
   );
 };

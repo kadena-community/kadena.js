@@ -9,9 +9,16 @@ import React, { FC, ReactNode, useState } from 'react';
 interface IProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
+  layout?: 'normal' | 'landing';
+  hideSideMenu?: boolean;
 }
 
-export const Template: FC<IProps> = ({ children, menuItems }) => {
+export const Template: FC<IProps> = ({
+  children,
+  menuItems,
+  layout = 'normal',
+  hideSideMenu = false,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
 
@@ -26,7 +33,6 @@ export const Template: FC<IProps> = ({ children, menuItems }) => {
   };
 
   const closeMenu = (): void => setIsMenuOpen(false);
-
   return (
     <>
       <Header
@@ -37,7 +43,12 @@ export const Template: FC<IProps> = ({ children, menuItems }) => {
         menuItems={menuItems}
       />
       <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
-      <Menu data-cy="menu" isOpen={isMenuOpen} inLayout={true} layout="normal">
+      <Menu
+        data-cy="menu"
+        isOpen={isMenuOpen}
+        inLayout={!hideSideMenu}
+        layout={layout}
+      >
         <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
       </Menu>
       {children}

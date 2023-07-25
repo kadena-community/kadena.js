@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps = async () => {
         label: 'BlogChain',
         order: 7,
         description: 'articles..articles...articles',
-        layout: 'landing',
+        layout: 'home',
         icon: 'BlogChain',
       },
     },

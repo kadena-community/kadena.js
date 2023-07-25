@@ -14,7 +14,7 @@ export const Landing: FC<IPageProps> = ({
 }) => {
   return (
     <PageGrid>
-      <Template menuItems={leftMenuTree}>
+      <Template menuItems={leftMenuTree} layout="landing">
         <TitleHeader
           title={frontmatter.title}
           subTitle={frontmatter.subTitle}

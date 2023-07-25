@@ -17,7 +17,7 @@ export const Blog: FC<IPageProps> = ({
 }) => {
   return (
     <PageGrid>
-      <Template menuItems={leftMenuTree}>
+      <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
         <TitleHeader
           title={frontmatter.title}
           subTitle={frontmatter.subTitle}
