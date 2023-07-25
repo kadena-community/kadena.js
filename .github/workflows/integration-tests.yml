@@ -12,7 +12,7 @@ jobs:
         image: enof/devnet
         # Set health checks to wait until postgres has started
         options: >-
-          --health-cmd "/bin/bash -c exec 3<>/dev/tcp/localhost/1848; printf "GET /health-check HTTP/1.1\r\nhost: http://localhost:1848\r\nConnection: close\r\n\r\n" >&3; grep -q "200 OK" <&3 || exit 1"
+          --health-cmd "exec 3<>/dev/tcp/localhost/1848; printf "GET /health-check HTTP/1.1\r\nhost: http://localhost:1848\r\nConnection: close\r\n\r\n" >&3; grep -q "200 OK" <&3 || exit 1"
           --health-interval 30s
           --health-timeout 30s
           --health-retries 5
