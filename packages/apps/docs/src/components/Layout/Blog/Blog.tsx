@@ -1,35 +1,81 @@
 import { Stack } from '@kadena/react-ui';
 
-import { Article, Content } from '../components';
+import {
+  Article,
+  BaseTemplate,
+  Content,
+  Footer,
+  Header,
+  TitleHeader,
+} from '../components';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout } from '@/types/Layout';
+import { IPageProps } from '@/types/Layout';
 import { formatISODate } from '@/utils/dates';
-import React, { FC } from 'react';
+import Head from 'next/head';
+import React, { FC, useState } from 'react';
 
-export const Blog: FC<ILayout> = ({
+export const Blog: FC<IPageProps> = ({
   children,
-  editLink,
-  navigation,
-  publishDate,
-  author,
+  frontmatter,
+  leftMenuTree,
 }) => {
-  return (
-    <Content id="maincontent">
-      <Article>
-        <Stack justifyContent="space-between">
-          {publishDate && (
-            <time dateTime={publishDate}>
-              {formatISODate(new Date(publishDate))}
-            </time>
-          )}
-          <div>author: {author}</div>
-        </Stack>
-        {children}
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
 
-        <BottomPageSection editLink={editLink} navigation={navigation} />
-      </Article>
-    </Content>
+  const toggleMenu = (): void => {
+    setIsMenuOpen((v) => !v);
+    setIsAsideOpen(false);
+  };
+
+  const toggleAside = (): void => {
+    setIsAsideOpen((v) => !v);
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <>
+      <Head>
+        <title>{frontmatter.title}</title>
+        <meta name="title" content={frontmatter.title} />
+        <meta name="description" content={frontmatter.description} />
+      </Head>
+      <BaseTemplate>
+        <Header
+          toggleMenu={toggleMenu}
+          toggleAside={toggleAside}
+          isMenuOpen={isMenuOpen}
+          isAsideOpen={isAsideOpen}
+          menuItems={leftMenuTree}
+        />
+
+        <TitleHeader
+          title={frontmatter.title}
+          subTitle={frontmatter.subTitle}
+          icon={frontmatter.icon}
+        />
+
+        <Content id="maincontent">
+          <Article>
+            <Stack justifyContent="space-between">
+              {frontmatter.publishDate && (
+                <time dateTime={frontmatter.publishDate}>
+                  {formatISODate(new Date(frontmatter.publishDate))}
+                </time>
+              )}
+              <div>author: {frontmatter.author}</div>
+            </Stack>
+            {children}
+
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+            />
+          </Article>
+        </Content>
+        <Footer />
+      </BaseTemplate>
+    </>
   );
 };
 

@@ -6,27 +6,51 @@ import {
   AsideBackground,
   AsideList,
   Content,
+  Footer,
+  Header,
   ListItem,
+  Menu,
+  MenuBack,
   StickyAside,
   StickyAsideWrapper,
 } from '../components';
+import { SideMenu } from '../components/SideMenu';
+
+import { Template } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout } from '@/types/Layout';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { LastModifiedDate } from '@/components/LastModifiedDate';
+import { IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
-export const Full: FC<ILayout> = ({
+export const Full: FC<IPageProps> = ({
   children,
   aSideMenuTree = [],
-  editLink,
-  navigation,
+  frontmatter,
+  leftMenuTree,
 }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const [activeItem, setActiveItem] = useState<string>('');
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
+
+  const toggleMenu = (): void => {
+    setIsMenuOpen((v) => !v);
+    setIsAsideOpen(false);
+  };
+
+  const toggleAside = (): void => {
+    setIsAsideOpen((v) => !v);
+    setIsMenuOpen(false);
+  };
+
+  const closeMenu = (): void => setIsMenuOpen(false);
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
     const { isIntersecting } = entry;
@@ -66,38 +90,63 @@ export const Full: FC<ILayout> = ({
 
   return (
     <>
-      <Content id="maincontent">
-        <Article ref={scrollRef}>
-          {children}
-          <BottomPageSection editLink={editLink} navigation={navigation} />
-        </Article>
-      </Content>
-      <AsideBackground />
-      <Aside data-cy="aside">
-        {showSideMenu && (
-          <StickyAsideWrapper>
-            <StickyAside>
-              <Heading as="h6" transform="uppercase">
-                On this page
-              </Heading>
-              <AsideList ref={menuRef}>
-                {aSideMenuTree.map((innerItem) => {
-                  const innerSlug = createSlug(innerItem.title);
-                  return (
-                    <ListItem
-                      key={innerSlug}
-                      scrollArea={scrollRef.current}
-                      item={innerItem}
-                      activeItem={activeItem}
-                      setActiveItem={setActiveItem}
-                    />
-                  );
-                })}
-              </AsideList>
-            </StickyAside>
-          </StickyAsideWrapper>
-        )}
-      </Aside>
+      <Head>
+        <title>{frontmatter.title}</title>
+        <meta name="title" content={frontmatter.title} />
+        <meta name="description" content={frontmatter.description} />
+      </Head>
+      <Template>
+        <Header
+          toggleMenu={toggleMenu}
+          toggleAside={toggleAside}
+          isMenuOpen={isMenuOpen}
+          isAsideOpen={isAsideOpen}
+          menuItems={leftMenuTree}
+        />
+        <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
+        <Menu data-cy="menu" isOpen={isMenuOpen} inLayout={true}>
+          <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
+        </Menu>
+
+        <Content id="maincontent">
+          <Article ref={scrollRef}>
+            <Breadcrumbs menuItems={leftMenuTree} />
+            <LastModifiedDate date={frontmatter.lastModifiedDate} />
+            {children}
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+            />
+          </Article>
+        </Content>
+        <AsideBackground />
+        <Aside data-cy="aside">
+          {showSideMenu && (
+            <StickyAsideWrapper>
+              <StickyAside>
+                <Heading as="h6" transform="uppercase">
+                  On this page
+                </Heading>
+                <AsideList ref={menuRef}>
+                  {aSideMenuTree.map((innerItem) => {
+                    const innerSlug = createSlug(innerItem.title);
+                    return (
+                      <ListItem
+                        key={innerSlug}
+                        scrollArea={scrollRef.current}
+                        item={innerItem}
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                      />
+                    );
+                  })}
+                </AsideList>
+              </StickyAside>
+            </StickyAsideWrapper>
+          )}
+        </Aside>
+        <Footer />
+      </Template>
     </>
   );
 };

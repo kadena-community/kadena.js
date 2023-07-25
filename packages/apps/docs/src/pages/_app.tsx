@@ -8,10 +8,10 @@ import { ModalProvider } from '@kadena/react-ui';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics, ConsentModal } from '@/components';
-import { Main } from '@/components/Layout/components';
 import { markDownComponents } from '@/components/Markdown';
 import { ThemeProvider } from '@/hooks';
 import { IPageMeta, IPageProps } from '@/types/Layout';
+import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
 import React, { FC } from 'react';
@@ -47,6 +47,8 @@ export const MyApp = ({
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
 
+  const Layout = getLayout(props.frontmatter.layout);
+
   return (
     <>
       <MDXProvider components={markDownComponents}>
@@ -60,9 +62,9 @@ export const MyApp = ({
           }}
         >
           <ModalProvider>
-            <Main {...props}>
+            <Layout {...props}>
               <Component {...props} />
-            </Main>
+            </Layout>
             <ConsentModal />
           </ModalProvider>
         </ThemeProvider>
