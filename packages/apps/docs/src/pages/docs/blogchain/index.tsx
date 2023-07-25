@@ -1,4 +1,4 @@
-import { BlogItem } from '@/components/Blog';
+import { BlogItem, BlogList } from '@/components/Blog';
 import { Article, Content, TitleHeader } from '@/components/Layout/components';
 import { getInitBlogPosts } from '@/hooks/useBlog/utils';
 import { IMenuData, IPageProps } from '@/types/Layout';
@@ -24,9 +24,11 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
       />
       <Content id="maincontent" layout="home">
         <Article>
-          {posts.map((item) => (
-            <BlogItem key={item.root} item={item} />
-          ))}
+          <BlogList>
+            {posts.map((item) => (
+              <BlogItem key={item.root} item={item} />
+            ))}
+          </BlogList>
         </Article>
       </Content>
     </>

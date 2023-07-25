@@ -9,7 +9,14 @@ interface IProps {
 export const BlogItem: FC<IProps> = ({ item }) => {
   return (
     <li>
-      <Link href={item.root}>{item.title}</Link>
+      <Link href={item.root}>
+        <h4>{item.author}</h4>
+        <h3>{item.title}</h3>
+        <div>{item.description}</div>
+        <footer>
+          <time dateTime={item.publishDate}>{item.publishDate}</time>
+        </footer>
+      </Link>
     </li>
   );
 };
