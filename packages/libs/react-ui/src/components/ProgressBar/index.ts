@@ -1,1 +1,1 @@
-export { ProgressBar, IProgressBarProps } from './ProgressBar';
+export { ProgressBar, type IProgressBarProps } from './ProgressBar';
