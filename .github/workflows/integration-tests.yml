@@ -23,7 +23,7 @@ jobs:
             fetch-depth: 2
         # TODO: Replace this with a decent unit test
         - name: Fund Account
-          run: docker run --rm -t -v $(pwd):/app/ --add-host=devnet:host-gateway enof/kda-cli --profile=.fund-profile.json
+          run: docker run --rm -v $(pwd):/app/ --add-host=devnet:host-gateway enof/kda-cli --profile=.fund-profile.json
           working-directory: packages/tools/integration-tests
 
 
