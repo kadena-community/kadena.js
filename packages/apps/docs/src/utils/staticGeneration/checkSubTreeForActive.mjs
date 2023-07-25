@@ -45,6 +45,8 @@ const mapSubTree = (pathname) => (item) => {
     newItem.isActive = false;
   }
 
+  delete newItem.description;
+
   // is the actual item active
   if (!newItem.children) newItem.children = [];
   newItem.children = newItem.children.map(mapSubTree(pathname));
