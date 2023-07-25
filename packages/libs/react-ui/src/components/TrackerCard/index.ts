@@ -1,3 +1,1 @@
-import { TrackerCard } from './TrackerCard';
-
-export { TrackerCard };
+export { TrackerCard } from './TrackerCard';
