@@ -15,7 +15,7 @@ export const BasePageGrid: StyledComponent<'div'> = styled('div', {
   $$asideMenuWidthCode: '400px',
 
   display: 'grid',
-  gridTemplateRows: '$17 auto 1fr auto',
+  gridTemplateRows: '0 auto 1fr auto',
   gridTemplateColumns: 'auto auto',
   gridTemplateAreas: `
       "header header"

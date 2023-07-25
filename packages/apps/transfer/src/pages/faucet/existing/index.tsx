@@ -12,6 +12,8 @@ import {
   FormStatus,
   FormStatusNotification,
 } from '@/components/Global';
+import Routes from '@/constants/routes';
+import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import {
   StyledAccountForm,
@@ -48,6 +50,14 @@ const ExistingAccountFaucetPage: FC = () => {
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
+
+  useToolbar([
+    {
+      title: t('Existing'),
+      icon: SystemIcon.History,
+      href: Routes.FAUCET_EXISTING,
+    },
+  ]);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {

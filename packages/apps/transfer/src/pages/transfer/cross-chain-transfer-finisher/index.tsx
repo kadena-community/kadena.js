@@ -4,13 +4,16 @@ import {
   Breadcrumbs,
   Button,
   ProductIcon,
+  SystemIcon,
   TextField,
   TrackerCard,
 } from '@kadena/react-ui';
 
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
+import { useToolbar } from '@/context/layout-context';
 import {
   StyledAccountForm,
   StyledCheckbox,
@@ -73,6 +76,29 @@ const CrossChainTransferFinisher: FC = () => {
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
+
+  useToolbar([
+    {
+      title: t('Account Transaction'),
+      icon: SystemIcon.Account,
+      href: Routes.ACCOUNT_TRANSACTIONS,
+    },
+    {
+      title: t('Cross Chain'),
+      icon: SystemIcon.Transition,
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      title: t('Finalize Cross Chain'),
+      icon: SystemIcon.TransitionMasked,
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+    },
+    {
+      title: t('Module Explorer'),
+      icon: SystemIcon.BadgeAccount,
+      href: Routes.MODULE_EXPLORER,
+    },
+  ]);
 
   useEffect(() => {
     setRequestKey('');

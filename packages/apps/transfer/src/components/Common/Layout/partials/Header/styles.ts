@@ -11,10 +11,12 @@ const menuHeight = '$16';
 export const StyledHeader = styled('header', {
   backgroundColor: '$neutral5',
   color: '$neutral2',
+  borderBottom: `1px solid $neutral4`,
 
   [`.${darkTheme} &`]: {
     background: '$neutral2',
     color: '$neutral5',
+    borderBottom: `1px solid $neutral3`,
   },
 });
 

@@ -1,4 +1,5 @@
 import {
+  accordionContentWrapperClass,
   accordionSectionClass,
   accordionTitleClass,
   accordionTitleVariants,
@@ -9,7 +10,7 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, useEffect, useRef } from 'react';
 
-export interface IAccordionSection {
+export interface IAccordionSectionProps {
   title: React.ReactNode;
   children: React.ReactNode;
   isOpen: boolean;
@@ -18,7 +19,7 @@ export interface IAccordionSection {
   onClose?: () => void;
 }
 
-export const AccordionSection: FC<IAccordionSection> = ({
+export const AccordionSection: FC<IAccordionSectionProps> = ({
   isOpen = false,
   title,
   children,
@@ -60,7 +61,7 @@ export const AccordionSection: FC<IAccordionSection> = ({
         </button>
       </div>
 
-      {isOpen && <div>{children}</div>}
+      {isOpen && <div className={accordionContentWrapperClass}>{children}</div>}
     </div>
   );
 };
