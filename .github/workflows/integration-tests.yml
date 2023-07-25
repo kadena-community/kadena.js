@@ -20,6 +20,7 @@ jobs:
           --health-retries 5
           --health-start-period 2m
           --memory 7g
+          --cpus 2
         ports:
           - 8080:1337
 
