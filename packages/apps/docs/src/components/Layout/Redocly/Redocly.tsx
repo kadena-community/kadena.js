@@ -1,7 +1,7 @@
-import { Article, CodeBackground, Content } from '../components';
+import { Article, Content } from '../components';
 import { Template } from '../components/Template';
 
-import { PageGrid } from './styles';
+import { CodeBackground, PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';

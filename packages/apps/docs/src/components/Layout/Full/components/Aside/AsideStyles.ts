@@ -36,59 +36,6 @@ export const BaseBackground: StyledComponent<
   },
 });
 
-export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
-  BaseBackground,
-
-  {
-    $$shadowWidth: '$sizes$20',
-    '&::before': {
-      display: 'none',
-
-      content: '',
-      position: 'absolute',
-      pointerEvents: 'none',
-      inset: 0,
-      top: '$10',
-      backgroundColor: '$background',
-      backgroundImage: 'url("/assets/bg-vertical.png")',
-      backgroundRepeat: 'no-repeat',
-      backgroundPositionY: '-100px',
-      backgroundPositionX: '-100px',
-      '@md': {
-        backgroundColor: 'transparent',
-        backgroundPositionX:
-          'calc(100vw  - ($$asideMenuWidthCode + $$shadowWidth))',
-      },
-      '@lg': {
-        backgroundPositionX:
-          'calc(100vw  - ($$asideMenuWidthCode + $$shadowWidth))',
-      },
-      '@xl': {
-        display: 'block',
-      },
-      '@2xl': {
-        backgroundPositionX:
-          'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2 ) - ($$asideMenuWidthCode + $$shadowWidth))',
-      },
-    },
-    '&::after': {
-      backgroundColor: 'transparent',
-      '@md': {
-        left: 'calc(100vw  - ($$asideMenuWidthCode +  $sizes$4))',
-      },
-      '@lg': {
-        left: 'calc(100vw  - ($$asideMenuWidthCode +  $sizes$4  + $4))',
-      },
-      '@xl': {
-        backgroundColor: '$backgroundOverlayColor',
-      },
-      '@2xl': {
-        left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthCode + $6 ))',
-      },
-    },
-  },
-);
-
 export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
   BaseBackground,
   {
