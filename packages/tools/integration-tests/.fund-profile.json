@@ -1,0 +1,8 @@
+{
+  "task": ["fund"],
+  "account": "test",
+  "network": "fast-development",
+  "chainId": "1",
+  "endpoint": "http://devnet:8080",
+  "publicKey": "457117167173a2afafdd72fd05106eaee745a37d808476455d3b1a8acc9ad8d5"
+}
