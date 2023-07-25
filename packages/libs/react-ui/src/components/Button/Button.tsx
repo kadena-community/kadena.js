@@ -1,13 +1,18 @@
-import { colorVariants } from './Button.css';
+import {
+  buttonLoadingClass,
+  colorVariants,
+  iconLoadingClass,
+} from './Button.css';
 import { ButtonIcon } from './ButtonIcon';
 
 import { SystemIcon } from '@components/Icon';
+import cx from 'classnames';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'a';
-  color?: keyof typeof colorVariants;
+  variant?: keyof typeof colorVariants;
   children: React.ReactNode;
   disabled?: boolean;
   href?: string;
@@ -22,7 +27,7 @@ export interface IButtonProps
 export const Button: FC<IButtonProps> = ({
   as = 'button',
   children,
-  color = 'primary',
+  variant = 'primary',
   href,
   icon,
   iconAlign,
@@ -39,18 +44,36 @@ export const Button: FC<IButtonProps> = ({
     Icon = SystemIcon.Loading;
   }
 
+  const buttonClassname = cx(colorVariants[variant], {
+    [buttonLoadingClass]: loading,
+  });
+
+  const iconClassname = cx({
+    [iconLoadingClass]: loading,
+  });
+
+  const buttonChildren = (
+    <>
+      {Icon && iconAlign === 'left' && (
+        <ButtonIcon icon={Icon} className={iconClassname} />
+      )}
+      {children}
+      {Icon && iconAlign === 'right' && (
+        <ButtonIcon icon={Icon} className={iconClassname} />
+      )}
+    </>
+  );
+
   if (renderAsAnchor) {
     return (
       <a
         aria-label={ariaLabel}
-        className={colorVariants[color]}
+        className={buttonClassname}
         data-testid="kda-button"
         href={href}
         target={target}
       >
-        {loading && Icon && iconAlign === 'left' && <ButtonIcon icon={Icon} />}
-        {children}
-        {loading && Icon && iconAlign === 'right' && <ButtonIcon icon={Icon} />}
+        {buttonChildren}
       </a>
     );
   }
@@ -59,13 +82,11 @@ export const Button: FC<IButtonProps> = ({
     <button
       {...props}
       aria-label={ariaLabel}
-      className={colorVariants[color]}
+      className={buttonClassname}
       data-testid="kda-button"
       onClick={onClick}
     >
-      {loading && Icon && iconAlign === 'left' && <ButtonIcon icon={Icon} />}
-      {children}
-      {loading && Icon && iconAlign === 'right' && <ButtonIcon icon={Icon} />}
+      {buttonChildren}
     </button>
   );
 };

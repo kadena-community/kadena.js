@@ -1,9 +1,11 @@
-import { colorVariants } from './Button.css';
+import type { IButtonProps } from './Button';
+import { Button } from './Button';
+import { colorVariants, iconLoadingClass } from './Button.css';
 import { ButtonIcon } from './ButtonIcon';
-import { Button, IButtonProps } from '.';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import cx from 'classnames';
 import React from 'react';
 
 const meta: Meta<
@@ -21,7 +23,13 @@ const meta: Meta<
     },
   },
   argTypes: {
-    onClick: { action: 'clicked', if: { arg: 'as', eq: 'button' } },
+    onClick: {
+      action: 'clicked',
+      if: { arg: 'as', eq: 'button' },
+      table: {
+        disable: true,
+      },
+    },
     icon: {
       options: [
         ...['-'],
@@ -40,7 +48,7 @@ const meta: Meta<
       },
       if: { arg: 'selectIcon', neq: '-' },
     },
-    color: {
+    variant: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
         type: 'select',
@@ -91,11 +99,11 @@ const meta: Meta<
       control: {
         type: 'boolean',
       },
+      if: { arg: 'as', eq: 'button' },
     },
   },
 };
 
-export default meta;
 type Story = StoryObj<
   {
     text: string;
@@ -107,7 +115,7 @@ export const Dynamic: Story = {
   name: 'Button',
   args: {
     as: 'button',
-    color: undefined,
+    variant: 'primary',
     disabled: false,
     href: '',
     iconAlign: 'left',
@@ -119,7 +127,7 @@ export const Dynamic: Story = {
   },
   render: ({
     as,
-    color,
+    variant = 'primary',
     disabled,
     href,
     iconAlign,
@@ -134,23 +142,38 @@ export const Dynamic: Story = {
     if (loading) {
       Icon = SystemIcon.Loading;
     }
-    return (
+
+    const iconClassname = cx({
+      [iconLoadingClass]: loading,
+    });
+
+    const buttonChildren = (
       <>
-        <Button
-          as={as}
-          color={color}
-          disabled={disabled}
-          href={href}
-          onClick={onClick}
-          target={target}
-          title={title}
-          data-loading={loading}
-        >
-          {Icon && iconAlign === 'left' && <ButtonIcon icon={Icon} />}
-          {text}
-          {Icon && iconAlign === 'right' && <ButtonIcon icon={Icon} />}
-        </Button>
+        {Icon && iconAlign === 'left' && (
+          <ButtonIcon icon={Icon} className={iconClassname} />
+        )}
+        {text}
+        {Icon && iconAlign === 'right' && (
+          <ButtonIcon icon={Icon} className={iconClassname} />
+        )}
       </>
+    );
+
+    return (
+      <Button
+        as={as}
+        disabled={disabled}
+        href={href}
+        loading={loading}
+        onClick={onClick}
+        target={target}
+        title={title}
+        variant={variant}
+      >
+        {buttonChildren}
+      </Button>
     );
   },
 };
+
+export default meta;
