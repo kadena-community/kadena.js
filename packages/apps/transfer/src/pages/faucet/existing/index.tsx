@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-import { IPollResponse, ICommandResult } from '@kadena/chainweb-node-client';
-=======
->>>>>>> 4e308226 (fix(transfer): faucet/existing)
+import { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Breadcrumbs,
   Button,
