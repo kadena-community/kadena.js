@@ -1,4 +1,5 @@
-import { ILinkProps, Link as LinkRoot } from './Link';
+import type { ILinkProps } from './Link';
+import { Link as LinkRoot } from './Link';
 import { LinkIcon } from './LinkIcon';
 
 import { FC } from 'react';

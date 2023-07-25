@@ -1,7 +1,11 @@
-import { FooterContainer, FooterVariant, IFooterProps } from './Footer';
-import { FooterIconItem, IFooterIconItemProps } from './FooterIconItem';
-import { FooterLinkItem, IFooterLinkItemProps } from './FooterLinkItem';
-import { FooterPanel, IFooterPanelProps } from './FooterPanel';
+import type { FooterVariant, IFooterProps } from './Footer';
+import { FooterContainer } from './Footer';
+import type { IFooterIconItemProps } from './FooterIconItem';
+import { FooterIconItem } from './FooterIconItem';
+import type { IFooterLinkItemProps } from './FooterLinkItem';
+import { FooterLinkItem } from './FooterLinkItem';
+import type { IFooterPanelProps } from './FooterPanel';
+import { FooterPanel } from './FooterPanel';
 
 import { FC } from 'react';
 
