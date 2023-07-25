@@ -1,65 +1,51 @@
-import { Article, Content } from '../components';
+import { Stack } from '@kadena/react-ui';
+
+import { Article, Content, TitleHeader } from '../components';
+import { Template } from '../components/Template';
+
+import { PageGrid } from './styles';
 
 import { ArticleMetadataItem, ArticleTopMetadata } from './BlogStyles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout } from '@/types/Layout';
-import formatDistance from 'date-fns/formatDistance';
-import React, { FC, useEffect } from 'react';
+import { IPageProps } from '@/types/Layout';
+import { formatISODate } from '@/utils/dates';
+import React, { FC } from 'react';
 
-// read time calculation
-// calculations based on this article: https://infusion.media/content-marketing/how-to-calculate-reading-time/
-function calculateReadingTime(text: string): number {
-  const wordsPerMinute = 200;
-  const numberOfWords = text.split(/\s/g).length;
-  const minutes = numberOfWords / wordsPerMinute;
-  const readTime = Math.ceil(minutes);
-  return readTime;
-}
-
-export const Blog: FC<ILayout> = ({
+export const Blog: FC<IPageProps> = ({
   children,
-  editLink,
-  navigation,
-  publishDate,
-  author,
+  frontmatter,
+  leftMenuTree,
 }) => {
-  const [readTime, setReadTime] = React.useState(0);
-
-  useEffect(() => {
-    const article = document.querySelector('article');
-    if (!article) {
-      return;
-    }
-
-    const text = article.textContent;
-    if (!text) {
-      return;
-    }
-    setReadTime(calculateReadingTime(text));
-  }, []);
-
   return (
-    <Content id="maincontent">
-      <Article>
-        <ArticleTopMetadata>
-          <ArticleMetadataItem>
-            <span>{readTime} minutes read</span>
-          </ArticleMetadataItem>
-          <ArticleMetadataItem>
-            {publishDate && (
-              <time dateTime={publishDate}>
-                Published {formatDistance(new Date(publishDate!), new Date())}
-              </time>
-            )}
-          </ArticleMetadataItem>
-          <ArticleMetadataItem>By {author}</ArticleMetadataItem>
-        </ArticleTopMetadata>
-        {children}
+    <PageGrid>
+      <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
+        <TitleHeader
+          title={frontmatter.title}
+          subTitle={frontmatter.subTitle}
+          icon={frontmatter.icon}
+        />
 
-        <BottomPageSection editLink={editLink} navigation={navigation} />
-      </Article>
-    </Content>
+        <Content id="maincontent">
+          <Article>
+            <Stack justifyContent="space-between">
+              {frontmatter.publishDate && (
+                <time dateTime={frontmatter.publishDate}>
+                  {formatISODate(new Date(frontmatter.publishDate))}
+                </time>
+              )}
+              <div>author: {frontmatter.author}</div>
+            </Stack>
+            {children}
+
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+            />
+          </Article>
+        </Content>
+      </Template>
+    </PageGrid>
   );
 };
 
