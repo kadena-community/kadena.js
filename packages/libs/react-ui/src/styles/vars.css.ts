@@ -26,6 +26,8 @@ export const vars = createGlobalTheme(':root', {
     $12xl: '5.25rem', // 84px
   },
   lineHeights: {
+    $initial: 'initial',
+    $normal: 'normal',
     $base: '1.4',
     $lg: '1.9',
   },
