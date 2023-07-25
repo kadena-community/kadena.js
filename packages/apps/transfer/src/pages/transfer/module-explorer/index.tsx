@@ -1,28 +1,16 @@
 import { Breadcrumbs, TextField } from '@kadena/react-ui';
 
-import dynamic from 'next/dynamic';
-
-const AceViewer = dynamic(import('@/components/Global/Ace'), {
-  ssr: false,
-});
-
 import {
   StyledAccountForm,
-  StyledCodeViewerContainer,
   StyledForm,
   StyledList,
   StyledListItem,
-  StyledResultContainer,
 } from './styles';
 
 import { ChainSelect } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import { usePersistentChainID } from '@/hooks';
-import {
-  type IModuleResult,
-  describeModule,
-} from '@/services/modules/describe-module';
 import {
   type IModulesResult,
   listModules,
@@ -32,7 +20,6 @@ import useTranslation from 'next-translate/useTranslation';
 import React, {
   ChangeEventHandler,
   FC,
-  SyntheticEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -42,10 +29,8 @@ import React, {
 const ModuleExplorer: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer');
   const { t } = useTranslation('common');
-  const [moduleName, setModuleName] = useState<string>('');
   const [moduleSearch, setModuleSearch] = useState<string>('');
   const [modules, setModules] = useState<IModulesResult>({});
-  const [results, setResults] = useState<IModuleResult>({});
 
   const { network } = useAppContext();
   const [chainID, onChainSelectChange] = usePersistentChainID();
@@ -72,27 +57,6 @@ const ModuleExplorer: FC = () => {
       ),
     [modules, moduleSearch],
   );
-
-  useEffect(() => {
-    if (!moduleName) {
-      return;
-    }
-
-    const fetchModule = async (): Promise<void> => {
-      const data = await describeModule(
-        moduleName,
-        chainID,
-        network,
-        kadenaConstants.DEFAULT_SENDER,
-        kadenaConstants.GAS_PRICE,
-        1000,
-      );
-
-      setResults(data);
-    };
-
-    fetchModule().catch(console.error);
-  }, [chainID, moduleName, network]);
 
   const onModuleNameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
@@ -124,24 +88,15 @@ const ModuleExplorer: FC = () => {
       <StyledList>
         {!filteredModules?.length && t('No modules found.')}
         {filteredModules?.map((module) => (
-          <StyledListItem
-            key={module}
-            data-module-name={module}
-            onClick={(e: SyntheticEvent<HTMLDivElement>) =>
-              setModuleName(e.currentTarget.dataset.moduleName || '')
-            }
-          >
-            {module}
+          <StyledListItem key={module} data-module-name={module}>
+            <a
+              href={`/transfer/module-explorer/networks/${network}/chains/${chainID}/modules/${module}`}
+            >
+              {module}
+            </a>
           </StyledListItem>
         ))}
       </StyledList>
-      {Boolean(results.code) && (
-        <StyledResultContainer>
-          <StyledCodeViewerContainer>
-            <AceViewer code={results.code} />
-          </StyledCodeViewerContainer>
-        </StyledResultContainer>
-      )}
     </div>
   );
 };

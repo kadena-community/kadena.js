@@ -1,15 +1,11 @@
 import {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
-import { ContCommand, getContCommand } from '@kadena/client';
+  ChainId,
+  ICommand,
+  IContinuationPayloadObject,
+  Pact,
+} from '@kadena/client';
 
-import {
-  getKadenaConstantByNetwork,
-  kadenaConstants,
-  Network,
-} from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
+import client from '@/constants/client';
 import Debug from 'debug';
 
 export interface ITransferResult {
@@ -18,57 +14,27 @@ export interface ITransferResult {
 }
 
 const debug = Debug('kadena-transfer:services:finish-xchain-transfer');
-const gasLimit: number = kadenaConstants.GAS_LIMIT;
-const gasPrice: number = kadenaConstants.GAS_PRICE;
 
 export async function finishXChainTransfer(
-  requestKey: string,
-  step: number,
-  rollback: boolean,
-  network: Network,
-  chainId: ChainwebChainId,
-  sender: string,
-): Promise<ContCommand | { error: string }> {
+  continuation: IContinuationPayloadObject['cont'],
+  targetChainId: ChainId,
+  networkId: string,
+  gasPayer: string = 'kadena-xchain-gas',
+): Promise<string | { error: string }> {
   debug(finishXChainTransfer.name);
-  const host = getKadenaConstantByNetwork(network).apiHost({
-    networkId: chainNetwork[network].network,
-    chainId,
-  });
 
   try {
-    const contCommand = await getContCommand(
-      requestKey,
-      chainId,
-      host,
-      step + 1,
-      rollback,
-    );
-
-    contCommand.setMeta(
-      {
-        chainId,
-        sender,
-        gasLimit,
-        gasPrice,
-      },
-      chainNetwork[network].network as ChainwebNetworkId,
-    );
-
-    contCommand.createCommand();
-
-    const localResult = await contCommand.local(host, {
-      preflight: false,
-      signatureVerification: false,
-    });
-
-    if (localResult.result.status !== 'success') {
-      debug(localResult.result.error.message);
-      return { error: localResult.result.error.message };
-    }
-
-    await contCommand.send(host);
-
-    return contCommand;
+    const continuationTransaction = Pact.builder
+      .continuation(continuation)
+      .setNetworkId(networkId)
+      .setMeta({
+        chainId: targetChainId,
+        sender: gasPayer,
+        // this needs to be below 850 if you want to use gas-station otherwise the gas-station does
+        gasLimit: 850,
+      })
+      .createTransaction();
+    return await client.submit(continuationTransaction as ICommand);
   } catch (e) {
     debug(e.message);
     return { error: e.message };

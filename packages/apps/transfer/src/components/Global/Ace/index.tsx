@@ -8,28 +8,43 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-export interface IAceEditorProps {
-  code?: string;
+export interface IOnchange {
+  (value: string): void;
 }
 
-const AceViewerComponent: FC<IAceEditorProps> = ({ code }) => (
+export interface IAceEditorProps {
+  code?: string;
+  width?: string;
+  height?: string;
+  readonly?: boolean;
+  onChange?: IOnchange;
+}
+
+const AceViewerComponent: FC<IAceEditorProps> = ({
+  code,
+  width,
+  height,
+  readonly,
+  onChange,
+}) => (
   <AceEditor
     mode="clojure"
     theme="one_dark"
     name="ace-editor"
     value={code}
+    onChange={onChange}
     editorProps={{ $blockScrolling: true }}
     setOptions={{
       enableSnippets: true,
       showLineNumbers: true,
       tabSize: 2,
     }}
-    width="94%"
+    width={width || '94%'}
+    height={height || '40rem'}
     style={{ margin: '0 auto' }}
     fontSize={14}
     showPrintMargin={false}
-    readOnly={true}
-    height="40rem"
+    readOnly={readonly !== false}
   />
 );
 

@@ -1,4 +1,4 @@
-import { Breadcrumbs, Grid } from '@kadena/react-ui';
+import { Grid } from '@kadena/react-ui';
 
 import routes from '@/constants/routes';
 import {
