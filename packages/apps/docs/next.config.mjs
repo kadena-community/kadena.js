@@ -90,6 +90,9 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
   transpilePackages: ['@kadena/react-ui'],
+  experimental: {
+    largePageDataBytes: 130 * 100000,
+  },
   images: {
     remotePatterns: [
       {
