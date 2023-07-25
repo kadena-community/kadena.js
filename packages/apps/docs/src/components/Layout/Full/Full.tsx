@@ -1,22 +1,16 @@
 import { Heading } from '@kadena/react-ui';
 
+import { Article, Content } from '../components';
+import { Template } from '../components/Template';
+
 import {
-  Article,
   Aside,
   AsideBackground,
   AsideList,
-  Content,
-  Footer,
-  Header,
   ListItem,
-  Menu,
-  MenuBack,
   StickyAside,
   StickyAsideWrapper,
-} from '../components';
-import { SideMenu } from '../components/SideMenu';
-import { Template } from '../components/Template';
-
+} from './components/Aside';
 import { PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
@@ -37,20 +31,6 @@ export const Full: FC<IPageProps> = ({
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const [activeItem, setActiveItem] = useState<string>('');
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
-
-  const toggleMenu = (): void => {
-    setIsMenuOpen((v) => !v);
-    setIsAsideOpen(false);
-  };
-
-  const toggleAside = (): void => {
-    setIsAsideOpen((v) => !v);
-    setIsMenuOpen(false);
-  };
-
-  const closeMenu = (): void => setIsMenuOpen(false);
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
     const { isIntersecting } = entry;
