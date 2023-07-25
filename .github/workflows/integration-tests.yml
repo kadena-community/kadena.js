@@ -18,10 +18,6 @@ jobs:
           --memory 7g
           --cpus 2
           --health-cmd "curl --silent --fail http://devnet:1337/info || exit 1"
-          --health-interval 30s
-          --health-timeout 30s
-          --health-retries 5
-          --health-start-period 2m
         ports:
           - 8080:1337
 
