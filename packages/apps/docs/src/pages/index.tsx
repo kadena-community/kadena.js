@@ -114,11 +114,11 @@ const Home: FC<IProps> = ({ topDocs }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const topDocs = await getTopDocs();
-  const leftMenuTree = await checkSubTreeForActive(getPathName(__filename));
+
   return {
     props: {
       topDocs: topDocs,
-      leftMenuTree,
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Welcome to Kadena docs',
         menu: 'Pact',
