@@ -11,7 +11,7 @@ jobs:
         image: enof/devnet
         # Set health checks to wait until postgres has started
         options: >-
-          --health-cmd curl --silent --fail http://lcalhost:8080/info || exit 1"
+          --health-cmd curl --silent --fail http://lcalhost:8080/info || exit 1k
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
