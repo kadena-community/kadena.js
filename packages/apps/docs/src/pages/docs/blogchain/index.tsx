@@ -1,6 +1,5 @@
-import { Heading, Stack } from '@kadena/react-components';
-
 import { Article, Content, TitleHeader } from '@/components/Layout/components';
+import { IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -8,7 +7,7 @@ import {
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
-const Home: FC = ({ frontmatter }) => {
+const BlogChainHome: FC<IPageProps> = ({ frontmatter }) => {
   return (
     <>
       <TitleHeader
@@ -41,4 +40,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default Home;
+export default BlogChainHome;
