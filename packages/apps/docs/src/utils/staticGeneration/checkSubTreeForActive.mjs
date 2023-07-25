@@ -31,7 +31,18 @@ const IsMenuOpen = (pathname, itemRoot) =>
 const isPathRoot = (pathname, itemRoot) => itemRoot === pathname;
 
 const mapSubTree = (pathname) => (item) => {
-  const newItem = { ...item };
+  const {
+    description,
+    subTitle,
+    layout,
+    navigation,
+    editLink,
+    order,
+    lastModifiedDate,
+    publishDate,
+    author,
+    ...newItem
+  } = item;
 
   if (IsMenuOpen(pathname, newItem.root)) {
     newItem.isMenuOpen = true;
@@ -46,6 +57,7 @@ const mapSubTree = (pathname) => (item) => {
   }
 
   delete newItem.description;
+  delete newItem.subTitle;
 
   // is the actual item active
   if (!newItem.children) newItem.children = [];
