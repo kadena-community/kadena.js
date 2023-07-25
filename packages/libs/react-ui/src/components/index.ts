@@ -71,3 +71,5 @@ export { Accordion } from './Accordion';
 export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
 export { Tree } from './Tree';
 export type { ITreeProps } from './Tree';
+export { ProgressBar } from './ProgressBar';
+export type { IProgressBarProps } from './ProgressBar';
