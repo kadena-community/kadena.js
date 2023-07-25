@@ -82,5 +82,5 @@ export const fundExistingAccount = async (
 
   const requestKeys = await submit(transaction);
 
-  return await pollStatus(requestKeys;
+  return await pollStatus(requestKeys);
 };
