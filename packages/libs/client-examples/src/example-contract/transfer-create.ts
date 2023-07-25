@@ -8,7 +8,7 @@ import { IPactDecimal } from '@kadena/types';
 
 import { listen, preflight, submit } from './util/client';
 
-const NETWORK_ID: string = 'fast-development';
+const NETWORK_ID: string = 'testnet04';
 
 async function main(): Promise<void> {
   const senderAccount =
