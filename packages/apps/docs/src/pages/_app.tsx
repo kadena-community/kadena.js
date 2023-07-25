@@ -50,8 +50,6 @@ export const MyApp = ({
 
   const Layout = getLayout(props.frontmatter.layout);
 
-  console.log(11, props.leftMenuTree);
-
   return (
     <>
       <Head>
