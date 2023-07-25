@@ -13,7 +13,6 @@ import { Template } from './styles';
 
 import { NotFound } from '@/components/NotFound';
 import { IPageProps } from '@/types/Layout';
-import Head from 'next/head';
 import React, { FC, useState } from 'react';
 
 export const Landing: FC<IPageProps> = ({
@@ -37,47 +36,40 @@ export const Landing: FC<IPageProps> = ({
   const closeMenu = (): void => setIsMenuOpen(false);
 
   return (
-    <>
-      <Head>
-        <title>{frontmatter.title}</title>
-        <meta name="title" content={frontmatter.title} />
-        <meta name="description" content={frontmatter.description} />
-      </Head>
-      <Template>
-        <Header
-          toggleMenu={toggleMenu}
-          toggleAside={toggleAside}
-          isMenuOpen={isMenuOpen}
-          isAsideOpen={isAsideOpen}
-          menuItems={leftMenuTree}
-        />
+    <Template>
+      <Header
+        toggleMenu={toggleMenu}
+        toggleAside={toggleAside}
+        isMenuOpen={isMenuOpen}
+        isAsideOpen={isAsideOpen}
+        menuItems={leftMenuTree}
+      />
 
-        <TitleHeader
-          title={frontmatter.title}
-          subTitle={frontmatter.subTitle}
-          icon={frontmatter.icon}
-        />
+      <TitleHeader
+        title={frontmatter.title}
+        subTitle={frontmatter.subTitle}
+        icon={frontmatter.icon}
+      />
 
-        <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
-        <Menu
-          data-cy="menu"
-          isOpen={isMenuOpen}
-          inLayout={true}
-          layout={'landing'}
-        >
-          <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
-        </Menu>
+      <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
+      <Menu
+        data-cy="menu"
+        isOpen={isMenuOpen}
+        inLayout={true}
+        layout={'landing'}
+      >
+        <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
+      </Menu>
 
-        <Content id="maincontent" layout="code">
-          <Article>
-            {children}
+      <Content id="maincontent" layout="code">
+        <Article>
+          {children}
 
-            <NotFound />
-          </Article>
-        </Content>
-        <Footer />
-      </Template>
-    </>
+          <NotFound />
+        </Article>
+      </Content>
+      <Footer />
+    </Template>
   );
 };
 

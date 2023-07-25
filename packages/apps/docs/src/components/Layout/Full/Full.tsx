@@ -23,7 +23,6 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
 import { IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
@@ -89,65 +88,58 @@ export const Full: FC<IPageProps> = ({
     aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
 
   return (
-    <>
-      <Head>
-        <title>{frontmatter.title}</title>
-        <meta name="title" content={frontmatter.title} />
-        <meta name="description" content={frontmatter.description} />
-      </Head>
-      <Template>
-        <Header
-          toggleMenu={toggleMenu}
-          toggleAside={toggleAside}
-          isMenuOpen={isMenuOpen}
-          isAsideOpen={isAsideOpen}
-          menuItems={leftMenuTree}
-        />
-        <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
-        <Menu data-cy="menu" isOpen={isMenuOpen} inLayout={true}>
-          <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
-        </Menu>
+    <Template>
+      <Header
+        toggleMenu={toggleMenu}
+        toggleAside={toggleAside}
+        isMenuOpen={isMenuOpen}
+        isAsideOpen={isAsideOpen}
+        menuItems={leftMenuTree}
+      />
+      <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
+      <Menu data-cy="menu" isOpen={isMenuOpen} inLayout={true}>
+        <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
+      </Menu>
 
-        <Content id="maincontent">
-          <Article ref={scrollRef}>
-            <Breadcrumbs menuItems={leftMenuTree} />
-            <LastModifiedDate date={frontmatter.lastModifiedDate} />
-            {children}
-            <BottomPageSection
-              editLink={frontmatter.editLink}
-              navigation={frontmatter.navigation}
-            />
-          </Article>
-        </Content>
-        <AsideBackground />
-        <Aside data-cy="aside">
-          {showSideMenu && (
-            <StickyAsideWrapper>
-              <StickyAside>
-                <Heading as="h6" transform="uppercase">
-                  On this page
-                </Heading>
-                <AsideList ref={menuRef}>
-                  {aSideMenuTree.map((innerItem) => {
-                    const innerSlug = createSlug(innerItem.title);
-                    return (
-                      <ListItem
-                        key={innerSlug}
-                        scrollArea={scrollRef.current}
-                        item={innerItem}
-                        activeItem={activeItem}
-                        setActiveItem={setActiveItem}
-                      />
-                    );
-                  })}
-                </AsideList>
-              </StickyAside>
-            </StickyAsideWrapper>
-          )}
-        </Aside>
-        <Footer />
-      </Template>
-    </>
+      <Content id="maincontent">
+        <Article ref={scrollRef}>
+          <Breadcrumbs menuItems={leftMenuTree} />
+          <LastModifiedDate date={frontmatter.lastModifiedDate} />
+          {children}
+          <BottomPageSection
+            editLink={frontmatter.editLink}
+            navigation={frontmatter.navigation}
+          />
+        </Article>
+      </Content>
+      <AsideBackground />
+      <Aside data-cy="aside">
+        {showSideMenu && (
+          <StickyAsideWrapper>
+            <StickyAside>
+              <Heading as="h6" transform="uppercase">
+                On this page
+              </Heading>
+              <AsideList ref={menuRef}>
+                {aSideMenuTree.map((innerItem) => {
+                  const innerSlug = createSlug(innerItem.title);
+                  return (
+                    <ListItem
+                      key={innerSlug}
+                      scrollArea={scrollRef.current}
+                      item={innerItem}
+                      activeItem={activeItem}
+                      setActiveItem={setActiveItem}
+                    />
+                  );
+                })}
+              </AsideList>
+            </StickyAside>
+          </StickyAsideWrapper>
+        )}
+      </Aside>
+      <Footer />
+    </Template>
   );
 };
 

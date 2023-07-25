@@ -14,6 +14,7 @@ import { IPageMeta, IPageProps } from '@/types/Layout';
 import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import React, { FC } from 'react';
 
 const GlobalStyles = globalCss({
@@ -51,6 +52,11 @@ export const MyApp = ({
 
   return (
     <>
+      <Head>
+        <title>{props.frontmatter.title}</title>
+        <meta name="title" content={props.frontmatter.title} />
+        <meta name="description" content={props.frontmatter.description} />
+      </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider
           attribute="class"

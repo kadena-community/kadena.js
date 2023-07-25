@@ -12,7 +12,6 @@ import {
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { IPageProps } from '@/types/Layout';
 import { formatISODate } from '@/utils/dates';
-import Head from 'next/head';
 import React, { FC, useState } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -34,48 +33,41 @@ export const Blog: FC<IPageProps> = ({
   };
 
   return (
-    <>
-      <Head>
-        <title>{frontmatter.title}</title>
-        <meta name="title" content={frontmatter.title} />
-        <meta name="description" content={frontmatter.description} />
-      </Head>
-      <BaseTemplate>
-        <Header
-          toggleMenu={toggleMenu}
-          toggleAside={toggleAside}
-          isMenuOpen={isMenuOpen}
-          isAsideOpen={isAsideOpen}
-          menuItems={leftMenuTree}
-        />
+    <BaseTemplate>
+      <Header
+        toggleMenu={toggleMenu}
+        toggleAside={toggleAside}
+        isMenuOpen={isMenuOpen}
+        isAsideOpen={isAsideOpen}
+        menuItems={leftMenuTree}
+      />
 
-        <TitleHeader
-          title={frontmatter.title}
-          subTitle={frontmatter.subTitle}
-          icon={frontmatter.icon}
-        />
+      <TitleHeader
+        title={frontmatter.title}
+        subTitle={frontmatter.subTitle}
+        icon={frontmatter.icon}
+      />
 
-        <Content id="maincontent">
-          <Article>
-            <Stack justifyContent="space-between">
-              {frontmatter.publishDate && (
-                <time dateTime={frontmatter.publishDate}>
-                  {formatISODate(new Date(frontmatter.publishDate))}
-                </time>
-              )}
-              <div>author: {frontmatter.author}</div>
-            </Stack>
-            {children}
+      <Content id="maincontent">
+        <Article>
+          <Stack justifyContent="space-between">
+            {frontmatter.publishDate && (
+              <time dateTime={frontmatter.publishDate}>
+                {formatISODate(new Date(frontmatter.publishDate))}
+              </time>
+            )}
+            <div>author: {frontmatter.author}</div>
+          </Stack>
+          {children}
 
-            <BottomPageSection
-              editLink={frontmatter.editLink}
-              navigation={frontmatter.navigation}
-            />
-          </Article>
-        </Content>
-        <Footer />
-      </BaseTemplate>
-    </>
+          <BottomPageSection
+            editLink={frontmatter.editLink}
+            navigation={frontmatter.navigation}
+          />
+        </Article>
+      </Content>
+      <Footer />
+    </BaseTemplate>
   );
 };
 
