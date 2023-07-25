@@ -1,21 +1,13 @@
-import {
-  Article,
-  CodeBackground,
-  Content,
-  Footer,
-  Header,
-  Menu,
-  MenuBack,
-} from '../components';
-import { SideMenu } from '../components/SideMenu';
+import { Article, CodeBackground, Content } from '../components';
+import { Template } from '../components/Template';
 
-import { Template } from './styles';
+import { PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
 import { IPageProps } from '@/types/Layout';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { RedocRawOptions } from 'redoc';
 
 export const options: RedocRawOptions = {
@@ -55,51 +47,24 @@ export const Redocly: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
-
-  const toggleMenu = (): void => {
-    setIsMenuOpen((v) => !v);
-    setIsAsideOpen(false);
-  };
-
-  const toggleAside = (): void => {
-    setIsAsideOpen((v) => !v);
-    setIsMenuOpen(false);
-  };
-
-  const closeMenu = (): void => setIsMenuOpen(false);
-
   return (
-    <Template>
-      <Header
-        toggleMenu={toggleMenu}
-        toggleAside={toggleAside}
-        isMenuOpen={isMenuOpen}
-        isAsideOpen={isAsideOpen}
-        menuItems={leftMenuTree}
-        layout="code"
-      />
-      <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
-      <Menu data-cy="menu" isOpen={isMenuOpen} inLayout={true} layout="normal">
-        <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
-      </Menu>
-
-      <Content id="maincontent" layout="code">
-        <Article>
-          <Breadcrumbs menuItems={leftMenuTree} />
-          <LastModifiedDate date={frontmatter.lastModifiedDate} />
-          {children}
-          <BottomPageSection
-            editLink={frontmatter.editLink}
-            navigation={frontmatter.navigation}
-            layout="code"
-          />
-        </Article>
-      </Content>
-      <CodeBackground isOpen={isAsideOpen} />
-      <Footer />
-    </Template>
+    <PageGrid>
+      <Template menuItems={leftMenuTree}>
+        <Content id="maincontent" layout="code">
+          <Article>
+            <Breadcrumbs menuItems={leftMenuTree} />
+            <LastModifiedDate date={frontmatter.lastModifiedDate} />
+            {children}
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+              layout="code"
+            />
+          </Article>
+        </Content>
+        <CodeBackground />
+      </Template>
+    </PageGrid>
   );
 };
 

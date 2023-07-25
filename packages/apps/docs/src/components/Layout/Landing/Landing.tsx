@@ -1,75 +1,35 @@
-import {
-  Article,
-  Content,
-  Footer,
-  Header,
-  Menu,
-  MenuBack,
-  TitleHeader,
-} from '../components';
-import { SideMenu } from '../components/SideMenu';
+import { Article, Content, TitleHeader } from '../components';
+import { Template } from '../components/Template';
 
-import { Template } from './styles';
+import { PageGrid } from './styles';
 
 import { NotFound } from '@/components/NotFound';
 import { IPageProps } from '@/types/Layout';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 export const Landing: FC<IPageProps> = ({
   children,
   frontmatter,
   leftMenuTree,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
-
-  const toggleMenu = (): void => {
-    setIsMenuOpen((v) => !v);
-    setIsAsideOpen(false);
-  };
-
-  const toggleAside = (): void => {
-    setIsAsideOpen((v) => !v);
-    setIsMenuOpen(false);
-  };
-
-  const closeMenu = (): void => setIsMenuOpen(false);
-
   return (
-    <Template>
-      <Header
-        toggleMenu={toggleMenu}
-        toggleAside={toggleAside}
-        isMenuOpen={isMenuOpen}
-        isAsideOpen={isAsideOpen}
-        menuItems={leftMenuTree}
-      />
+    <PageGrid>
+      <Template menuItems={leftMenuTree}>
+        <TitleHeader
+          title={frontmatter.title}
+          subTitle={frontmatter.subTitle}
+          icon={frontmatter.icon}
+        />
 
-      <TitleHeader
-        title={frontmatter.title}
-        subTitle={frontmatter.subTitle}
-        icon={frontmatter.icon}
-      />
+        <Content id="maincontent" layout="code">
+          <Article>
+            {children}
 
-      <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
-      <Menu
-        data-cy="menu"
-        isOpen={isMenuOpen}
-        inLayout={true}
-        layout={'landing'}
-      >
-        <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
-      </Menu>
-
-      <Content id="maincontent" layout="code">
-        <Article>
-          {children}
-
-          <NotFound />
-        </Article>
-      </Content>
-      <Footer />
-    </Template>
+            <NotFound />
+          </Article>
+        </Content>
+      </Template>
+    </PageGrid>
   );
 };
 

@@ -9,7 +9,7 @@ export const Wrapper: StyledComponent<'div'> = styled('div', {
   margin: '0 auto',
 });
 
-export const BaseTemplate: StyledComponent<'div'> = styled('div', {
+export const BasePageGrid: StyledComponent<'div'> = styled('div', {
   $$asideMenuWidthMDDefault: '200px',
   $$asideMenuWidthLGDefault: '300px',
   $$asideMenuWidthCode: '400px',

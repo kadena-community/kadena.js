@@ -1,9 +1,9 @@
 import { styled, StyledComponent } from '@kadena/react-components';
 
-import { BaseTemplate } from '../components';
+import { BasePageGrid } from '../components';
 
-export const Template: StyledComponent<typeof BaseTemplate> = styled(
-  BaseTemplate,
+export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
+  BasePageGrid,
   {
     gridTemplateColumns: 'auto auto',
     gridTemplateAreas: `

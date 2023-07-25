@@ -86,24 +86,6 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
         left: 'calc($sizes$pageWidth + ((100vw - $sizes$pageWidth) /2) - ($$asideMenuWidthCode + $6 ))',
       },
     },
-
-    variants: {
-      isOpen: {
-        true: {
-          transform: 'translateX(0)',
-          '&::before': {
-            '@md': {
-              '@md': {},
-            },
-          },
-          '&::after': {
-            '@md': {
-              '@md': {},
-            },
-          },
-        },
-      },
-    },
   },
 );
 

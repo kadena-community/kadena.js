@@ -15,8 +15,9 @@ import {
   StickyAsideWrapper,
 } from '../components';
 import { SideMenu } from '../components/SideMenu';
+import { Template } from '../components/Template';
 
-import { Template } from './styles';
+import { PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -88,58 +89,47 @@ export const Full: FC<IPageProps> = ({
     aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
 
   return (
-    <Template>
-      <Header
-        toggleMenu={toggleMenu}
-        toggleAside={toggleAside}
-        isMenuOpen={isMenuOpen}
-        isAsideOpen={isAsideOpen}
-        menuItems={leftMenuTree}
-      />
-      <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
-      <Menu data-cy="menu" isOpen={isMenuOpen} inLayout={true}>
-        <SideMenu closeMenu={closeMenu} menuItems={leftMenuTree} />
-      </Menu>
-
-      <Content id="maincontent">
-        <Article ref={scrollRef}>
-          <Breadcrumbs menuItems={leftMenuTree} />
-          <LastModifiedDate date={frontmatter.lastModifiedDate} />
-          {children}
-          <BottomPageSection
-            editLink={frontmatter.editLink}
-            navigation={frontmatter.navigation}
-          />
-        </Article>
-      </Content>
-      <AsideBackground />
-      <Aside data-cy="aside">
-        {showSideMenu && (
-          <StickyAsideWrapper>
-            <StickyAside>
-              <Heading as="h6" transform="uppercase">
-                On this page
-              </Heading>
-              <AsideList ref={menuRef}>
-                {aSideMenuTree.map((innerItem) => {
-                  const innerSlug = createSlug(innerItem.title);
-                  return (
-                    <ListItem
-                      key={innerSlug}
-                      scrollArea={scrollRef.current}
-                      item={innerItem}
-                      activeItem={activeItem}
-                      setActiveItem={setActiveItem}
-                    />
-                  );
-                })}
-              </AsideList>
-            </StickyAside>
-          </StickyAsideWrapper>
-        )}
-      </Aside>
-      <Footer />
-    </Template>
+    <PageGrid>
+      <Template menuItems={leftMenuTree}>
+        <Content id="maincontent">
+          <Article ref={scrollRef}>
+            <Breadcrumbs menuItems={leftMenuTree} />
+            <LastModifiedDate date={frontmatter.lastModifiedDate} />
+            {children}
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+            />
+          </Article>
+        </Content>
+        <AsideBackground />
+        <Aside data-cy="aside">
+          {showSideMenu && (
+            <StickyAsideWrapper>
+              <StickyAside>
+                <Heading as="h6" transform="uppercase">
+                  On this page
+                </Heading>
+                <AsideList ref={menuRef}>
+                  {aSideMenuTree.map((innerItem) => {
+                    const innerSlug = createSlug(innerItem.title);
+                    return (
+                      <ListItem
+                        key={innerSlug}
+                        scrollArea={scrollRef.current}
+                        item={innerItem}
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                      />
+                    );
+                  })}
+                </AsideList>
+              </StickyAside>
+            </StickyAsideWrapper>
+          )}
+        </Aside>
+      </Template>
+    </PageGrid>
   );
 };
 
