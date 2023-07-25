@@ -14,7 +14,7 @@ jobs:
           PC_DISABLE_TUI: true
         # Set health checks to wait until postgres has started
         options: >-
-          -a
+          -a STDOUT
           -t
           --memory 7g
           --cpus 2
