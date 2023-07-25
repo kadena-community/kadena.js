@@ -30,7 +30,7 @@ interface IProps {
   toggleAside: () => void;
   isAsideOpen: boolean;
   menuItems: IMenuItem[];
-  layout: LayoutType;
+  layout?: LayoutType;
 }
 
 export const Header: FC<IProps> = ({
@@ -39,7 +39,7 @@ export const Header: FC<IProps> = ({
   toggleAside,
   isAsideOpen,
   menuItems,
-  layout,
+  layout = 'full',
 }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
 

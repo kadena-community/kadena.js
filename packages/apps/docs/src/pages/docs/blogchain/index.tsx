@@ -1,5 +1,5 @@
-import { Heading, Stack } from '@kadena/react-components';
-
+import { Article, Content, TitleHeader } from '@/components/Layout/components';
+import { IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -7,13 +7,18 @@ import {
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
-const Home: FC = () => {
+const BlogChainHome: FC<IPageProps> = ({ frontmatter }) => {
   return (
-    <Stack direction="column" spacing="2xl">
-      <div>
-        <Heading as="h2">BlogChain</Heading>
-      </div>
-    </Stack>
+    <>
+      <TitleHeader
+        title={frontmatter.title}
+        subTitle={frontmatter.subTitle}
+        icon={frontmatter.icon}
+      />
+      <Content id="maincontent" layout="home">
+        <Article></Article>
+      </Content>
+    </>
   );
 };
 
@@ -24,15 +29,15 @@ export const getStaticProps: GetStaticProps = async () => {
       frontmatter: {
         title: 'BlogChain',
         menu: 'BlogChain',
-        subTitle: 'articles..articles...articles',
+        subTitle: 'The place where the blog meets the chain',
         label: 'BlogChain',
         order: 7,
-        description: 'articles..articles...articles',
-        layout: 'landing',
+        description: 'The place where the blog meets the chain',
+        layout: 'home',
         icon: 'BlogChain',
       },
     },
   };
 };
 
-export default Home;
+export default BlogChainHome;

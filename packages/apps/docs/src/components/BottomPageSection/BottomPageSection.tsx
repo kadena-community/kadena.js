@@ -4,28 +4,23 @@ import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
 import { BottomWrapper, Wrapper } from './style';
 
-import { INavigation, LayoutType } from '@/types/Layout';
-import { isOneOfLayoutType } from '@/utils';
+import { INavigation } from '@/types/Layout';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
   editLink?: string;
   navigation?: INavigation;
-  layout?: LayoutType;
+  layout?: 'default' | 'code';
 }
 
 export const BottomPageSection: FC<IProps> = ({
   editLink,
   navigation,
-  layout,
+  layout = 'default',
 }) => {
   return (
-    <BottomWrapper
-      layout={
-        isOneOfLayoutType(layout, 'redocly', 'code') ? 'redocly' : 'default'
-      }
-    >
+    <BottomWrapper layout={layout}>
       <Stack alignItems="center" justifyContent="space-between">
         <EditPage editLink={editLink} />
         {navigation?.previous !== undefined && (
