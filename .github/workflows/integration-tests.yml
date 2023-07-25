@@ -33,7 +33,7 @@ jobs:
 #          run: |
 #            docker ps -a
         - name: Fund Account
-          run: docker run --rm -it -v $(pwd):/app/ --add-host=devnet:host-gateway enof/kda-cli --profile=.fund-profile.json
+          run: docker run --rm -t -v $(pwd):/app/ --add-host=devnet:host-gateway enof/kda-cli --profile=.fund-profile.json
           working-directory: packages/tools/integration-tests
 #        - name: check devnet health
 #          uses: jtalk/url-health-check-action@v3
