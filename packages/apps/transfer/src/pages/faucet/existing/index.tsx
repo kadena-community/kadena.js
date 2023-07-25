@@ -79,7 +79,10 @@ const ExistingAccountFaucetPage: FC = () => {
         );
 
         if (error) {
-          setRequestStatus({ status: 'erroneous', message: error.result.error?.message || t('An error occurred.')});
+          setRequestStatus({
+            status: 'erroneous',
+            message: error.result.error?.message || t('An error occurred.'),
+          });
           return;
         }
 
