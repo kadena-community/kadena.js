@@ -278,7 +278,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
-      '@kadena/chainweb-node-client': workspace:*
+      '@kadena/chainweb-node-client': 0.4.2
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
@@ -334,7 +334,7 @@ importers:
       zod: ~3.18.0
     dependencies:
       '@hookform/resolvers': 3.1.1_react-hook-form@7.45.2
-      '@kadena/chainweb-node-client': link:../../libs/chainweb-node-client
+      '@kadena/chainweb-node-client': 0.4.2
       '@kadena/client': link:../../libs/client
       '@kadena/cryptography-utils': link:../../libs/cryptography-utils
       '@kadena/pactjs': link:../../libs/pactjs
@@ -6984,10 +6984,44 @@ packages:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
 
+  /@kadena/chainweb-node-client/0.4.2:
+    resolution: {integrity: sha512-jNSnp2f7/rBXmie8AtysjP4HKdZajlJne5zliF9PvZv/aXhtYoz2DkOuaFrCyxk5+BQXnfrHGxzJXTCF9dOjaw==}
+    requiresBuild: true
+    dependencies:
+      '@kadena/cryptography-utils': 0.3.6
+      '@kadena/pactjs': 0.3.0
+      '@kadena/types': 0.4.0
+      '@types/isomorphic-fetch': 0.0.36
+      cross-fetch: 3.1.8
+      node-fetch: 2.6.12
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@kadena/cryptography-utils/0.3.6:
+    resolution: {integrity: sha512-TsVmWRlqvJZDTf5Dzo21P4mwvHtyfFWT5xa5Mr2oz1m9GBsafQ8CmZfRwrdxIvw2ZppNdmU2V4ji0we9N9AARQ==}
+    dependencies:
+      '@kadena/types': 0.4.0
+      blakejs: 1.2.1
+      buffer: 6.0.3
+      tweetnacl: 1.0.3
+    dev: false
+
   /@kadena/fonts/0.0.1:
     resolution: {integrity: sha512-epUOJbW96Yd827XQD2/6Ibow9qcevgPhVKsUhfzG9L26U4PLMMWZ0KXxIoFQ6DKpQa9xE4GK8DkPzn30pJb+3Q==}
     dependencies:
       lodash.kebabcase: 4.1.1
+    dev: false
+
+  /@kadena/pactjs/0.3.0:
+    resolution: {integrity: sha512-b0qIeJ3eAbuOaEbV9dNi9zzxciooeJWzSaeycKDhTbEWAbnKD6pXWRcYPojG2t0pNwMQZyb2kIRIV93D08E5bA==}
+    dependencies:
+      '@kadena/types': 0.4.0
+      bignumber.js: 9.1.1
+    dev: false
+
+  /@kadena/types/0.4.0:
+    resolution: {integrity: sha512-fXId5LebFigIcMMG2JlPW/wMNf5sw81VqjoCVh7TmZnuMvT9YJDsYQahD8qdrXWxbFAssRXyIEe4oPsm2aQ5/Q==}
     dev: false
 
   /@leichtgewicht/ip-codec/2.0.4:
