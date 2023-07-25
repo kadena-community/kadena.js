@@ -9,24 +9,23 @@ jobs:
     services:
       devnet:
         image: enof/devnet
+        # Set health checks to wait until postgres has started
         options: >-
-          -m 7g
+          --health-cmd curl --silent --fail http://lcalhost:8080/info || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          --memory 7g
         ports:
           - 8080:1337
 
 
 
     steps:
-        - name: docker list
-          run: |
-            HOST=$(ifconfig -a eth0|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:")
-            echo ${HOST}
-            echo "DEVNET_HOST=${HOST}" >> $GITHUB_OUTPUT
-          id: getHost
         - name: check devnet health
           uses: jtalk/url-health-check-action@v3
           with:
-            url: http://${{steps.getHost.outputs.DEVNET_HOST}}:8080/info
+            url: http://devnet:8080/info
             # Follow redirects, or just report success on 3xx status codes
             max-attempts: 20 # Optional, defaults to 1
             # Delay between retries
