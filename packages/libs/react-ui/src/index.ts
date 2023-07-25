@@ -45,6 +45,7 @@ export type {
   ITreeProps,
   IAccordionProps,
   IProgressBarProps,
+  IAccordionSectionProps,
 } from './components';
 
 export {
