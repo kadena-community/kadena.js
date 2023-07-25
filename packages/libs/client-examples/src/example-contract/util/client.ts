@@ -20,7 +20,7 @@ export const apiHostGenerator = ({
       }/pact`;
     case 'testnet04':
     default:
-      return `https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/${
+      return `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${
         chainId ?? '1'
       }/pact`;
   }

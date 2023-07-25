@@ -12,7 +12,7 @@ const senderAccount: string =
 const receiverAccount: string =
   'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11';
 
-const NETWORK_ID: string = 'fast-development';
+const NETWORK_ID: string = 'testnet04';
 
 async function transfer(
   sender: string,
@@ -29,7 +29,7 @@ async function transfer(
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
-  console.log('transaction', transaction);
+  console.log('transaction', JSON.parse(transaction.cmd));
 
   const signedTr = await signWithChainweaver(transaction);
   console.log('transation.sigs', JSON.stringify(signedTr.sigs, null, 2));

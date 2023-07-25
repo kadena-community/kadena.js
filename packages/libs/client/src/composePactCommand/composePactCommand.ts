@@ -8,6 +8,8 @@ type NoPayload<TCommand> = TCommand extends { payload: unknown }
 
 type DataOrFunction<TData> = TData | ((a: TData) => TData);
 
+type InitialInput = Partial<IPactCommand> | (() => Partial<IPactCommand>);
+
 // TODO : improve the return value to merge all of the inputs as an object
 interface IComposePactCommand {
   <TPayload extends Pick<IPactCommand, 'payload'>>(
@@ -18,12 +20,12 @@ interface IComposePactCommand {
         | ((payload: TPayload & Partial<IPactCommand>) => Partial<IPactCommand>)
       >,
     ]
-  ): (cmd?: Partial<IPactCommand>) => Partial<IPactCommand>;
+  ): (cmd?: InitialInput) => Partial<IPactCommand>;
 
   (
     first: DataOrFunction<NoPayload<Partial<IPactCommand>>>,
     ...rest: Array<DataOrFunction<Partial<IPactCommand>>>
-  ): (cmd?: Partial<IPactCommand>) => Partial<IPactCommand>;
+  ): (cmd?: InitialInput) => Partial<IPactCommand>;
 }
 
 const finalizeCommand = (
@@ -56,17 +58,20 @@ export const composePactCommand: IComposePactCommand =
   (
     first: DataOrFunction<Partial<IPactCommand>>,
     ...rest: Array<DataOrFunction<Partial<IPactCommand>>>
-  ): ((cmd?: Partial<IPactCommand>) => Partial<IPactCommand>) =>
-  (initial: Partial<IPactCommand> = {}) => {
+  ): ((cmd?: InitialInput) => Partial<IPactCommand>) =>
+  (initial: InitialInput = {}) => {
     const args: Array<
       | Partial<IPactCommand>
       | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>)
     > = [first, ...rest];
-    const command = args.reduce<Partial<IPactCommand>>((acc, next: unknown) => {
-      return typeof next === 'function'
-        ? next(acc)
-        : patchCommand(acc, next as Partial<IPactCommand>);
-    }, initial);
+    const command = args.reduce<Partial<IPactCommand>>(
+      (acc, next: unknown) => {
+        return typeof next === 'function'
+          ? next(acc)
+          : patchCommand(acc, next as Partial<IPactCommand>);
+      },
+      typeof initial === 'function' ? initial() : initial,
+    );
     const finalCommand = finalizeCommand(command);
     return finalCommand;
   };
