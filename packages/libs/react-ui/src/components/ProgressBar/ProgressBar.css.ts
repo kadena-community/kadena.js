@@ -13,9 +13,11 @@ export const circleColorVariant = styleVariants({
     }),
   ],
   incomplete: [
-    {
-      border: '2px solid #9EA1A6',
-    },
+    sprinkles({
+      borderWidth: '$md',
+      borderColor: '$neutral3',
+      borderStyle: 'solid',
+    }),
   ],
 });
 
