@@ -6,6 +6,7 @@ import {
   lineContainerStyle,
   lineStyle,
   progressBarStyle,
+  textColorVariant,
   textContainerStyle,
 } from './ProgressBar.css';
 
@@ -23,11 +24,7 @@ export interface ICheckpoint {
 
 export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
   return (
-    <div
-      className={progressBarStyle}
-      data-testid="kda-progress-bar"
-      key={'progress-bar'}
-    >
+    <div className={progressBarStyle} data-testid="kda-progress-bar">
       {checkpoints.map((checkpoint, index) => {
         return (
           <>
@@ -64,7 +61,14 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
                   circleColorVariant[checkpoint.status],
                 )}
               />
-              <div className={textContainerStyle}>{checkpoint.title}</div>
+              <div
+                className={classNames(
+                  textContainerStyle,
+                  textColorVariant[checkpoint.status],
+                )}
+              >
+                {checkpoint.title}
+              </div>
             </div>
           </>
         );

@@ -37,6 +37,24 @@ export const lineColorVariant = styleVariants({
   ],
 });
 
+export const textColorVariant = styleVariants({
+  complete: [
+    sprinkles({
+      color: '$neutral6',
+    }),
+  ],
+  pending: [
+    sprinkles({
+      color: '$neutral6',
+    }),
+  ],
+  incomplete: [
+    sprinkles({
+      color: '$neutral3',
+    }),
+  ],
+});
+
 export const progressBarStyle = style([
   sprinkles({
     display: 'flex',
@@ -63,7 +81,6 @@ export const textContainerStyle = style([
     fontFamily: '$main',
     fontWeight: '$normal',
     lineHeight: '$base',
-    color: '$neutral6',
   }),
 ]);
 
@@ -79,8 +96,10 @@ export const lineStyle = style([
   sprinkles({
     borderRadius: '$sm',
     height: '$2',
-    width: '$1',
   }),
+  {
+    width: '2px',
+  },
 ]);
 
 export const lineContainerStyle = style([
@@ -90,20 +109,9 @@ export const lineContainerStyle = style([
     flexDirection: 'column',
     gap: '$1',
     height: '$6',
-    marginLeft: '$1',
   }),
   {
+    marginLeft: '5px',
     alignSelf: 'stretch',
   },
-]);
-
-export const dottedLine = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '$2',
-    width: '$1',
-    height: '$1',
-    backgroundColor: '$infoAccent',
-  }),
 ]);
