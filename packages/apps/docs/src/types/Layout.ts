@@ -41,6 +41,7 @@ export interface IPageMeta {
   navigation: INavigation;
   publishDate?: string;
   author?: string;
+  readingTimeInMinutes?: number;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;

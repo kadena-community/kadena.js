@@ -1,15 +1,12 @@
-import { Stack } from '@kadena/react-ui';
-
 import { Article, Content, TitleHeader } from '../components';
 import { Template } from '../components/Template';
 
-import { PageGrid } from './styles';
-
 import { ArticleMetadataItem, ArticleTopMetadata } from './BlogStyles';
+import { PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { IPageProps } from '@/types/Layout';
-import { formatISODate } from '@/utils/dates';
+import { formatDistance } from 'date-fns';
 import React, { FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -17,25 +14,33 @@ export const Blog: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
+  const { readingTimeInMinutes, publishDate, author } = frontmatter;
+
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
         <TitleHeader
-          title={frontmatter.title}
-          subTitle={frontmatter.subTitle}
-          icon={frontmatter.icon}
+          title="BlogChain"
+          subTitle="The place where the blog meets the chain"
+          icon="BlogChain"
         />
 
         <Content id="maincontent">
           <Article>
-            <Stack justifyContent="space-between">
-              {frontmatter.publishDate && (
-                <time dateTime={frontmatter.publishDate}>
-                  {formatISODate(new Date(frontmatter.publishDate))}
-                </time>
-              )}
-              <div>author: {frontmatter.author}</div>
-            </Stack>
+            <ArticleTopMetadata>
+              <ArticleMetadataItem>
+                <span>{readingTimeInMinutes} minutes read</span>
+              </ArticleMetadataItem>
+              <ArticleMetadataItem>
+                {publishDate && (
+                  <time dateTime={publishDate}>
+                    Published{' '}
+                    {formatDistance(new Date(publishDate!), new Date())}
+                  </time>
+                )}
+              </ArticleMetadataItem>
+              <ArticleMetadataItem>By {author}</ArticleMetadataItem>
+            </ArticleTopMetadata>
             {children}
 
             <BottomPageSection
