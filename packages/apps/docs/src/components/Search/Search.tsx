@@ -1,7 +1,6 @@
 import { SearchResults } from './components/SearchResults';
 
 import { useSearch } from '@/hooks';
-import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC, useEffect, useState } from 'react';
 
@@ -12,43 +11,24 @@ interface IProps {
 }
 
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
-  const [tabName, setTabName] = useState<string | undefined>();
+  const [, setTabName] = useState<string | undefined>();
   const {
+    metadata,
     outputStream,
-    handleSubmit: handleSearchSubmit,
+    handleSubmit,
     conversation,
     error,
     isLoading,
-  } = useSearch();
-  const {
-    results: semanticResults,
-    error: semanticError,
-    isLoading: semanticIsLoading,
-    handleSubmit: handleSemanticSubmit,
-  } = useSemanticSearch(limitResults);
+  } = useSearch(limitResults);
 
   useEffect(() => {
-    if (
-      query !== undefined &&
-      query.trim() !== '' &&
-      tabName !== undefined &&
-      tabName.trim() !== ''
-    ) {
-      if (tabName === 'qa') {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        handleSearchSubmit(query);
-      }
-      if (tabName === 'docs') {
-        handleSemanticSubmit(query);
-      }
-
-      analyticsEvent(EVENT_NAMES['click:search'], {
-        query,
-        tabName,
-      });
+    if (query !== undefined && query.trim() !== '') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      handleSubmit(query);
+      analyticsEvent(EVENT_NAMES['click:search'], { query });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, tabName]);
+  }, [query, handleSubmit]);
 
   const onTabSelect = (tabName: string): void => {
     setTabName(tabName);
@@ -57,9 +37,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   return (
     <section>
       <SearchResults
-        semanticResults={semanticResults}
-        semanticError={semanticError}
-        semanticIsLoading={semanticIsLoading}
+        semanticResults={metadata ?? []}
         conversation={conversation}
         outputStream={outputStream}
         query={query}
