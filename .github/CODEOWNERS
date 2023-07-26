@@ -24,3 +24,4 @@
 /packages/tools/integration-tests               @ggobugi27
 /packages/tools/remark-plugins                  @webpro
 /packages/tools/rush-fix-versions               @alber70g @webpro
+/packages/apps/immutable-records                @barthuijgen
