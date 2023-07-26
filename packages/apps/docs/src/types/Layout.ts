@@ -42,6 +42,7 @@ export interface IPageMeta {
   publishDate?: string;
   author?: string;
   readingTimeInMinutes?: number;
+  wordCount?: number;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
