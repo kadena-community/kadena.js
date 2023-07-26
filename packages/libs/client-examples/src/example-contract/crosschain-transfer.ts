@@ -81,7 +81,7 @@ function finishInTheTargetChain(
     .setMeta({
       chainId: targetChainId,
       sender: gasPayer,
-      // this need to be less than or equal 850 if you want to use gas-station otherwise the gas-station does not pay the gas
+      // this need to be less than or equal to 850 if you want to use gas-station, otherwise the gas-station does not pay the gas
       gasLimit: 850,
     });
 
@@ -107,7 +107,7 @@ async function doCrossChainTransfer(
       .then(inspect('LISTEN_RESULT'))
       .then((status) =>
         status.result.status === 'failure'
-          ? Promise.reject('DEBIT REJECTED')
+          ? Promise.reject(new Error('DEBIT REJECTED'))
           : status,
       )
       .then((status) =>
