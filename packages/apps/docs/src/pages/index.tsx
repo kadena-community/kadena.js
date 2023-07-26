@@ -4,7 +4,8 @@ import { Box, Heading } from '@kadena/react-ui';
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { getTopDocs, ITopDoc } from '@/data/getTopDocs';
+import { getMostPopularPages } from '@/components/MostPopular/getMostPopularPages';
+import { IMostPopularPage } from '@/types/MostPopularData';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -14,13 +15,13 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
-  topDocs: ITopDoc[];
+  popularPages: IMostPopularPage[];
 }
 
-const Home: FC<IProps> = ({ topDocs }) => {
+const Home: FC<IProps> = ({ popularPages }) => {
   return (
     <>
-      <HomeHeader topDocs={topDocs} />
+      <HomeHeader popularPages={popularPages} />
       <Content id="maincontent" layout="home">
         <Article>
           <Box marginBottom="$10">
@@ -113,11 +114,11 @@ const Home: FC<IProps> = ({ topDocs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const topDocs = await getTopDocs();
+  const { data } = await getMostPopularPages();
 
   return {
     props: {
-      topDocs: topDocs,
+      popularPages: data,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Welcome to Kadena docs',

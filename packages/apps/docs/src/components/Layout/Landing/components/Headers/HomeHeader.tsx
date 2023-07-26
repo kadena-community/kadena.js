@@ -3,16 +3,15 @@ import { GradientText, Heading } from '@kadena/react-ui';
 
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 
-import { LinkList } from '@/components/LinkList';
-import { ITopDoc } from '@/data/getTopDocs';
-import Link from 'next/link';
+import { MostPopular } from '@/components/MostPopular';
+import { IMostPopularPage } from '@/types/MostPopularData';
 import React, { FC } from 'react';
 
 interface IProps {
-  topDocs: ITopDoc[];
+  popularPages: IMostPopularPage[];
 }
 
-export const HomeHeader: FC<IProps> = ({ topDocs }) => {
+export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   return (
     <StyledHeader>
       <Wrapper>
@@ -29,15 +28,7 @@ export const HomeHeader: FC<IProps> = ({ topDocs }) => {
             </SubHeader>
           </Stack>
           <div style={{ width: '150px' }}></div>
-          {topDocs?.length > 0 && (
-            <LinkList title="Most viewed docs">
-              {topDocs.map((item) => (
-                <Link key={item.url} href={item.url}>
-                  {item.label}
-                </Link>
-              ))}
-            </LinkList>
-          )}
+          <MostPopular pages={popularPages} title="Most viewed docs" />
         </Stack>
       </Wrapper>
     </StyledHeader>
