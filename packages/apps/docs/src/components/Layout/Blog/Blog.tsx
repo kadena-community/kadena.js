@@ -2,6 +2,7 @@ import { Article, Content, TitleHeader } from '../components';
 import { Template } from '../components/Template';
 
 import { ArticleMetadataItem, ArticleTopMetadata } from './BlogStyles';
+import { BottomBlogSection } from './BottomBlogSection';
 import { PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
@@ -15,7 +16,7 @@ export const Blog: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   const { readingTimeInMinutes, publishDate, author } = frontmatter;
-
+  console.log(frontmatter);
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
@@ -43,7 +44,8 @@ export const Blog: FC<IPageProps> = ({
             </ArticleTopMetadata>
             {children}
 
-            <BottomPageSection
+            <BottomBlogSection
+              frontmatter={frontmatter}
               editLink={frontmatter.editLink}
               navigation={frontmatter.navigation}
             />
