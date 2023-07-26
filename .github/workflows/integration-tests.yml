@@ -3,7 +3,7 @@ name: Integration Tests
 on: [push]
 
 jobs:
-  Test:
+  integration-tests:
     runs-on: ubuntu-latest
     container: node:18
 
