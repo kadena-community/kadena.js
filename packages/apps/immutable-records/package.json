@@ -6,6 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "format": "npm run format:pkg && npm run format:src",
+    "format:ci": "prettier src --check",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "lint": "next lint",
