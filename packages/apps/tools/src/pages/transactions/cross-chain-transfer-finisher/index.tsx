@@ -41,6 +41,7 @@ import {
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { formatNumberAsString } from '@/utils/number';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
@@ -50,6 +51,31 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+interface IPactResultError {
+  status: 'failure';
+  error: {
+    message: string;
+  };
+}
+
+// @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
+const DOMAIN_NAME_REGEX =
+  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
+
+const RequestLength = { MIN: 43, MAX: 44 };
+
+const schema = z.object({
+  requestKey: z.string().min(RequestLength.MIN).max(RequestLength.MAX),
+  advancedOptions: z.boolean().optional(),
+  server: z.string().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name').optional(),
+  gasPayer: z.string().min(3).max(256).optional(),
+  gasPrice: z.number().positive().max(1).optional(),
+});
+
+type FormData = z.infer<typeof schema>;
 
 const CrossChainTransferFinisher: FC = () => {
   const debug = Debug(
@@ -58,11 +84,6 @@ const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
   const { network } = useAppContext();
 
-  const [requestKey, setRequestKey] = useState<string>('');
-  const [kadenaXChainGas, setKadenaXChainGas] =
-    useState<string>('kadena-xchain-gas');
-  const [gasPrice, setGasPrice] = useState<number>(0.00000001);
-  const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
@@ -86,12 +107,12 @@ const CrossChainTransferFinisher: FC = () => {
     },
   ]);
 
-  useEffect(() => {
-    setRequestKey('');
-    setPollResults({});
-    setFinalResults({});
-    setTxError('');
-  }, [network]);
+  // useEffect(() => {
+  //   setRequestKey('');
+  //   setPollResults({});
+  //   setFinalResults({});
+  //   setTxError('');
+  // }, [network]);
 
   const checkRequestKey = async (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -99,7 +120,9 @@ const CrossChainTransferFinisher: FC = () => {
     e.preventDefault();
     debug(checkRequestKey.name);
 
-    if (!requestKey) {
+    const requestKey = e.currentTarget.value;
+
+    if (requestKey.length < RequestLength.MIN || requestKey.length > 44) {
       return;
     }
 
@@ -122,11 +145,7 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    e.preventDefault();
-
+  const handleSubmit = async (data: FormData) => {
     debug(handleSubmit.name);
 
     if (!pollResults.tx) {
@@ -135,18 +154,21 @@ const CrossChainTransferFinisher: FC = () => {
 
     const networkId = chainNetwork[network].network;
 
+    // TODO: Remove
+    // return;
+
     const options = {
       networkId: networkId,
       chainId: pollResults.tx.sender.chain,
     };
 
     const proof = await client.pollCreateSpv(
-      requestKey,
+      data.requestKey,
       pollResults.tx.receiver.chain,
       options,
     );
 
-    const status = await client.listen(requestKey, options);
+    const status = await client.listen(data.requestKey, options);
 
     const pactId = status.continuation?.pactId;
 
@@ -159,7 +181,15 @@ const CrossChainTransferFinisher: FC = () => {
       },
       pollResults.tx.receiver.chain,
       networkId,
-      kadenaXChainGas,
+      data.gasPayer,
+
+      // const contCommand = await finishXChainTransfer(
+      //   data.requestKey,
+      //   pollResults.tx.step,
+      //   pollResults.tx.rollback,
+      //   network,
+      //   pollResults.tx.receiver.chain,
+      //   data.gasPayer!,
     );
 
     if (typeof requestKeyOrError !== 'string') {
@@ -175,38 +205,72 @@ const CrossChainTransferFinisher: FC = () => {
     } catch (tx) {
       debug(tx);
       setFinalResults({ ...tx });
+      // if (contCommand instanceof ContCommand) {
+      //   try {
+      //     const pollResult = await contCommand.pollUntil(host, {
+      //       onPoll: async (transaction, pollRequest): Promise<void> => {
+      //         // debug(`Polling ${data.requestKey}.\nStatus: ${transaction.status}`);
+      //         setFinalResults({
+      //           requestKey: transaction.requestKey,
+      //           status: transaction.status,
+      //         });
+      //         debug(await pollRequest);
+      //         const data: IPollResponse = await pollRequest;
+
+      //         // Show correct error message
+      //         if (
+      //           Object.keys(data).length > 0 &&
+      //           Object.values(data)[0].result.status === 'failure'
+      //         ) {
+      //           const errorResult: IPactResultError = Object.values(data)[0]
+      //             .result as IPactResultError;
+      //           if (errorResult !== undefined) {
+      //             setTxError(errorResult.error.message);
+      //           }
+      //         }
+      //       },
+      //     });
+      //     setFinalResults({
+      //       requestKey: pollResult.reqKey,
+      //       status: pollResult.result.status,
+      //     });
+      //   } catch (tx) {
+      //     debug(tx);
+      //     setFinalResults({ ...tx });
+      //   }
     }
   };
 
-  const showInputError =
-    pollResults.error === undefined ? undefined : 'negative';
-  const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
-  const showInputHelper =
-    pollResults.error !== undefined ? pollResults.error : '';
-  const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
-  const formattedGasPrice = gasPrice
-    .toFixed(20)
-    .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
+  // const showInputError =
+  //   pollResults.error === undefined ? undefined : 'negative';
+  // const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
+  // const showInputHelper =
+  //   pollResults.error !== undefined ? pollResults.error : '';
+  // const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
+  // const formattedGasPrice = gasPrice
+  //   .toFixed(20)
+  //   .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setRequestKey(e.target.value);
+  const {
+    register,
+    handleSubmit: validateThenSubmit,
+    watch,
+    formState: { errors },
+    getValues,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    values: {
+      server: chainNetwork[network].server,
+      requestKey: 'IjqP2vrzhL5NoCICC1m29gMVTCts1l5YWjDkhHmuefQ',
+      gasPayer: 'kadena-xchain-gas',
+      gasPrice: 0.00000001,
     },
-    [],
-  );
-
-  const onGasPayerAccountChange = useCallback<
-    ChangeEventHandler<HTMLInputElement>
-  >((e) => {
-    setKadenaXChainGas(e.target.value);
-  }, []);
-
-  const onGasPriceChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setGasPrice(Number(e.target.value));
+    resetOptions: {
+      keepDirtyValues: true,
     },
-    [],
-  );
+  });
+
+  const watchAdvancedOptions = watch('advancedOptions');
 
   return (
     <div>
@@ -215,16 +279,15 @@ const CrossChainTransferFinisher: FC = () => {
         <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <StyledFinisherContent>
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={validateThenSubmit(handleSubmit)}>
           <StyledAccountForm>
             <StyledToggleContainer>
               <StyledFieldCheckbox>
                 <StyledCheckbox
+                  {...register('advancedOptions')}
                   type="checkbox"
-                  id={'advanced-options'}
+                  id="advanced-options"
                   placeholder={t('Enter private key to sign the transaction')}
-                  onChange={() => setAdvancedOptions(!advancedOptions)}
-                  value={advancedOptions.toString()}
                 />
                 <StyledCheckboxLabel htmlFor="advanced-options">
                   {t('Advanced options')}
@@ -234,50 +297,57 @@ const CrossChainTransferFinisher: FC = () => {
 
             <TextField
               label={t('Request Key')}
-              info={showInputInfo}
-              status={showInputError}
-              helperText={showInputHelper}
+              // info={showInputInfo}
+              // status={showInputError}
+              // helperText={showInputHelper}
+              status={errors.requestKey ? 'negative' : undefined}
+              helperText={errors.requestKey?.message ?? ''}
               inputProps={{
+                ...register('requestKey'),
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
-                onChange: onRequestKeyChange,
                 onKeyUp: checkRequestKey,
-                defaultValue: requestKey,
               }}
             />
 
-            {advancedOptions ? (
+            {watchAdvancedOptions ? (
               <>
                 <TextField
                   label="Chain Server"
+                  status={errors.server ? 'negative' : undefined}
+                  helperText={errors.server?.message ?? ''}
                   inputProps={{
+                    ...register('server', { shouldUnregister: true }),
                     id: 'chain-server-input',
                     placeholder: t('Enter Chain Server'),
-                    defaultValue: chainNetwork[network].server,
                     leadingText: chainNetwork[network].network,
                   }}
                 />
                 <TextField
                   label={t('Gas Payer')}
-                  helperText={
-                    isGasStation
-                      ? ''
-                      : t('only gas station account is supported')
-                  }
+                  // helperText={
+                  //   isGasStation
+                  //     ? ''
+                  //     : t('only gas station account is supported')
+                  // }
+                  status={errors.gasPayer ? 'negative' : undefined}
+                  helperText={errors.gasPayer?.message ?? ''}
                   inputProps={{
+                    ...register('gasPayer', { shouldUnregister: true }),
                     id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
-                    onChange: onGasPayerAccountChange,
-                    defaultValue: kadenaXChainGas,
                   }}
                 />
                 <TextField
                   label={t('Gas Price')}
+                  status={errors.gasPrice ? 'negative' : undefined}
+                  helperText={errors.gasPrice?.message ?? ''}
                   inputProps={{
+                    ...register('gasPrice', {
+                      shouldUnregister: true,
+                    }),
                     id: 'gas-price-input',
                     placeholder: t('Enter Gas Price'),
-                    onChange: onGasPriceChange,
-                    defaultValue: formattedGasPrice,
                   }}
                 />
               </>
@@ -286,7 +356,7 @@ const CrossChainTransferFinisher: FC = () => {
           <StyledFormButton>
             <Button
               title={t('Finish Cross Chain Transfer')}
-              disabled={!isGasStation}
+              // disabled={!isGasStation}
             >
               {t('Finish Cross Chain Transfer')}
             </Button>
@@ -353,12 +423,12 @@ const CrossChainTransferFinisher: FC = () => {
               labelValues={[
                 {
                   label: t('Gas Payer'),
-                  value: kadenaXChainGas,
+                  value: getValues('gasPayer'),
                   isAccount: false,
                 },
                 {
                   label: t('Price'),
-                  value: formatNumberAsString(gasPrice),
+                  value: formatNumberAsString(getValues('gasPrice')!),
                 },
               ]}
             />
