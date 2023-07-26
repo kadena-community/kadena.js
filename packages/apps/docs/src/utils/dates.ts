@@ -15,8 +15,6 @@ export const formatISODate = (date: Date): string => format(date, 'yyyy-MM-dd');
 
 export const formatDateDistance = (date: Date): string => {
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
 
   if (isToday(date) || isFuture(date)) {
     return 'today';
