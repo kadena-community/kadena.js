@@ -1,1 +1,2 @@
-export { Tree, ITreeProps } from './Tree';
+export { Tree } from './Tree';
+export type { ITreeProps } from './Tree';

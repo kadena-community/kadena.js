@@ -5,6 +5,7 @@ import { ArticleMetadataItem, ArticleTopMetadata } from './BlogStyles';
 import { BottomBlogSection } from './BottomBlogSection';
 import { PageGrid } from './styles';
 
+import { FormatDate } from '@/components/Blog';
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { IPageProps } from '@/types/Layout';
 import { formatDistance } from 'date-fns';

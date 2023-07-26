@@ -49,7 +49,6 @@ export const AsideBackground: StyledComponent<typeof BaseBackground> = styled(
       position: 'absolute',
       pointerEvents: 'none',
       inset: 0,
-      top: '$10',
       zIndex: 0,
       backgroundImage: 'url("/assets/bg-code.png")',
       backgroundRepeat: 'no-repeat',

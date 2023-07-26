@@ -49,3 +49,9 @@ export const toggleButtonClass = style([
     },
   },
 ]);
+export const accordionContentWrapperClass = style([
+  sprinkles({
+    paddingTop: '$2',
+    paddingBottom: '$2',
+  }),
+]);

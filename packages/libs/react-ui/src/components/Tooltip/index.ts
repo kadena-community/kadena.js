@@ -1,4 +1,5 @@
-import { ITooltipProps, Tooltip as TooltipComponent } from './Tooltip';
+import type { ITooltipProps } from './Tooltip';
+import { Tooltip as TooltipComponent } from './Tooltip';
 import { tooltipHandler } from './tooltipHandler';
 
 export { ITooltipProps };

@@ -1,6 +1,7 @@
-import { Breadcrumbs, Grid } from '@kadena/react-ui';
+import { Grid, SystemIcon } from '@kadena/react-ui';
 
-import routes from '@/constants/routes';
+import Routes from '@/constants/routes';
+import { useToolbar } from '@/context/layout-context';
 import {
   StyledHomeContent,
   StyledHomeLink,
@@ -14,27 +15,44 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   const { t } = useTranslation('common');
+  useToolbar([
+    {
+      title: t('Account'),
+      icon: SystemIcon.BadgeAccount,
+      href: Routes.ACCOUNT_TRANSACTIONS,
+    },
+    {
+      title: t('Faucet'),
+      icon: SystemIcon.QrcodeScan,
+      href: Routes.FAUCET_EXISTING,
+    },
+    {
+      title: t('Balance'),
+      icon: SystemIcon.ShieldAccountVariantOutline,
+      href: Routes.BALANCE,
+    },
+  ]);
 
   const transferMenu = [
     {
       icon: Chain,
       title: t('Cross Chain Transfer Tracker'),
-      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
       icon: Chain,
       title: t('Cross Chain Transfer Finisher'),
-      href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
     },
     {
       icon: Account,
       title: t('Account Transactions'),
-      href: routes.ACCOUNT_TRANSACTIONS,
+      href: Routes.ACCOUNT_TRANSACTIONS,
     },
     {
       icon: Chain,
       title: t('Module explorer'),
-      href: routes.MODULE_EXPLORER,
+      href: Routes.MODULE_EXPLORER,
     },
   ];
 
@@ -42,7 +60,7 @@ const Home: FC = () => {
     {
       icon: Account,
       title: t('Existing account'),
-      href: routes.FAUCET_EXISTING,
+      href: Routes.FAUCET_EXISTING,
     },
   ];
 

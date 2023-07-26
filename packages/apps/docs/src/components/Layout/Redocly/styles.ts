@@ -39,12 +39,10 @@ export const CodeBackground: StyledComponent<typeof BaseBackground> = styled(
     $$shadowWidth: '$sizes$20',
     '&::before': {
       display: 'none',
-
       content: '',
       position: 'absolute',
       pointerEvents: 'none',
       inset: 0,
-      top: '$10',
       backgroundColor: '$background',
       backgroundImage: 'url("/assets/bg-vertical.png")',
       backgroundRepeat: 'no-repeat',
