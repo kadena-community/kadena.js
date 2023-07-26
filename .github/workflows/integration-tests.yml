@@ -29,12 +29,12 @@ jobs:
 
         - name: Rush install (install-run-rush)
           run: |
-            node common/scripts/install-run-rush.js install -t @kadena/integration-tests
+            node common/scripts/install-run-rush.js install -t @kadena/client
 
         - name: Run Integration Tests
           run: |
             node ./../../../common/scripts/install-run-rushx.js test:integration
-          working-directory: packages/tools/integration-tests
+          working-directory: packages/libs/client/
 
 
 

@@ -1,6 +1,5 @@
 import { fund } from './util/simple-transfer';
 
-import assert from 'node:assert/strict';
 import before, { describe, it } from 'node:test';
 
 describe('Fund account and perform transfer.', async () => {
