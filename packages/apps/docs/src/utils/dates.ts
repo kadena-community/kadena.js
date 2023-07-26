@@ -2,7 +2,11 @@ import {
   addMonths,
   compareDesc as compareDescFns,
   format,
+  formatDistance,
+  isFuture,
+  isToday,
   isValid,
+  isYesterday,
 } from 'date-fns';
 
 export const getOneMonthAgo = (date: Date): Date => {
@@ -22,4 +26,17 @@ export const compareDesc = (dateLeft?: string, dateRight?: string): number => {
     throw new Error(`invalid date compare: ${dateLeft} : ${dateRight} `);
   }
   return compareDescFns(left, right);
+};
+
+export const formatDateDistance = (date: Date): string => {
+  const today = new Date();
+
+  if (isToday(date) || isFuture(date)) {
+    return 'today';
+  }
+  if (isYesterday(date)) {
+    return 'yesterday';
+  }
+
+  return `${formatDistance(date, today)} ago`;
 };

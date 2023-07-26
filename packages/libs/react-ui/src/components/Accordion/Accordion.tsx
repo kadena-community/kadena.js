@@ -1,9 +1,9 @@
-import { AccordionSection, IAccordionSection } from './AccordionSection';
+import { AccordionSection, IAccordionSectionProps } from './AccordionSection';
 
 import React, { FC, useState } from 'react';
 
 export interface IAccordionProps {
-  sections: Omit<IAccordionSection, 'isOpen' | 'onToggle'>[];
+  sections: Omit<IAccordionSectionProps, 'isOpen' | 'onToggle'>[];
   linked?: boolean;
 }
 

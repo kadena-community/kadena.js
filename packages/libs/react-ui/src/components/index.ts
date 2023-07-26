@@ -58,5 +58,9 @@ export { MaskedValue, IMaskedValueProps } from './MaskedValue/MaskedValue';
 export { Select, ISelectProps } from './Select/Select';
 export { Option, IOptionProps } from './Select/Option';
 export { TrackerCard, ITrackerCardProps } from './TrackerCard/TrackerCard';
-export { Accordion, IAccordionProps } from './Accordion';
+export {
+  Accordion,
+  IAccordionProps,
+  IAccordionSectionProps,
+} from './Accordion';
 export { Tree, ITreeProps } from './Tree';

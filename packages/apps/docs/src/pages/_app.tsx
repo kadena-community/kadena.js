@@ -8,8 +8,9 @@ import { ModalProvider } from '@kadena/react-ui';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics, ConsentModal } from '@/components';
+import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
-import { ThemeProvider } from '@/hooks';
+import { MenuProvider, ThemeProvider } from '@/hooks';
 import { IPageMeta, IPageProps } from '@/types/Layout';
 import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
@@ -68,10 +69,13 @@ export const MyApp = ({
           }}
         >
           <ModalProvider>
-            <Layout {...props}>
-              <Component {...props} />
-            </Layout>
-            <ConsentModal />
+            <MenuProvider>
+              <Header menuItems={props.leftMenuTree} />
+              <Layout {...props}>
+                <Component {...props} />
+              </Layout>
+              <ConsentModal />
+            </MenuProvider>
           </ModalProvider>
         </ThemeProvider>
       </MDXProvider>
