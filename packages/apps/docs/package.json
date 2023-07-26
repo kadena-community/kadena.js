@@ -37,7 +37,6 @@
     "@mdx-js/loader": "~2.3.0",
     "@mdx-js/react": "~2.3.0",
     "@next/mdx": "~13.3.4",
-    "@pinecone-database/pinecone": "~0.1.6",
     "@vanilla-extract/css": "1.12.0",
     "acorn": "~8.8.2",
     "classnames": "^2.3.1",

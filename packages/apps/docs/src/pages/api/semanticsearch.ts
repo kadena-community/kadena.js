@@ -1,36 +1,5 @@
 import { menuData } from '@/data/menu.mjs';
 import { IMenuData } from '@/types/Layout';
-import { embed } from '@/utils/createEmbedding';
-import { PineconeClient } from '@pinecone-database/pinecone';
-import { ScoredVector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
-import { NextApiRequest, NextApiResponse } from 'next';
-
-const namespace = 'kda-docs';
-const PINECONE_URL = process.env.PINECONE_URL;
-const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
-const PINECONE_ENVIRONMENT = process.env.PINECONE_ENVIRONMENT;
-
-if (PINECONE_ENVIRONMENT === undefined)
-  throw new Error('Env var PINECONE_ENVIRONMENT missing');
-if (PINECONE_URL === undefined) throw new Error('Env var PINECONE_URL missing');
-if (PINECONE_API_KEY === undefined)
-  throw new Error('Env var PINECONE_API_KEY missing');
-
-let pineconeClient: PineconeClient | undefined;
-
-const getPineconeClient = async (): Promise<PineconeClient> => {
-  if (pineconeClient) {
-    return pineconeClient;
-  } else {
-    pineconeClient = new PineconeClient();
-
-    await pineconeClient.init({
-      apiKey: PINECONE_API_KEY,
-      environment: PINECONE_ENVIRONMENT,
-    });
-  }
-  return pineconeClient;
-};
 
 const filenameToRoute = (filename: string): string => {
   // Remove "src/pages" from the start of the filename
@@ -93,7 +62,7 @@ const cleanUpContent = (content: string): string | undefined => {
   return;
 };
 
-const mapMatches = (match: ScoredVector): ISearchResult => {
+const mapMatches = (match: QueryResult): ISearchResult => {
   const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
   return {
     id: match.id,
@@ -104,14 +73,11 @@ const mapMatches = (match: ScoredVector): ISearchResult => {
   } as ISearchResult;
 };
 
-const reduceMatches = (
-  acc: ScoredVector[],
-  val: ScoredVector,
-): ScoredVector[] => {
+const reduceMatches = (acc: QueryResult[], val: QueryResult): QueryResult[] => {
   //taking out double results
   const metadata = (val.metadata as IScoredVectorMetaData) ?? {};
   if (
-    acc.find((item: ScoredVector) => {
+    acc.find((item: QueryResult) => {
       const itemMetadata = (item.metadata as IScoredVectorMetaData) ?? {};
       return itemMetadata.filePath === metadata.filePath;
     })
@@ -122,40 +88,3 @@ const reduceMatches = (
 
   return acc;
 };
-
-const search = async (
-  req: NextApiRequest,
-  res: NextApiResponse<ISearchResult[] | IResponseError>,
-): Promise<void> => {
-  const client = await getPineconeClient();
-  const index = client.Index(namespace);
-  const { query, limit = 50 } = req.query;
-
-  if (query === undefined) {
-    res.status(405).json({
-      status: 400,
-      message: 'No query found',
-    });
-    res.end();
-  }
-
-  const queryEmbedding = await embed(query as string);
-
-  const result = await index.query({
-    queryRequest: {
-      vector: queryEmbedding.values,
-      topK: parseInt(limit as string, 10),
-      includeMetadata: true,
-      includeValues: false,
-      namespace,
-    },
-  });
-
-  const newResults =
-    result.matches?.reduce(reduceMatches, []).map(mapMatches) ?? [];
-
-  res.status(200).json(newResults);
-  res.end();
-};
-
-export default search;
