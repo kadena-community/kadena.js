@@ -1,7 +1,9 @@
-import Image from 'next/image';
 import styles from './page.module.css';
 
-export default function Home() {
+import Image from 'next/image';
+import { FC } from 'react';
+
+const Home: FC = () => {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -92,4 +94,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;

@@ -26,6 +26,8 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@types/gtag.js": "~0.0.12",
+    "@types/heft-jest": "~1.0.3",
     "@vanilla-extract/next-plugin": "2.1.2",
     "prettier": "~3.0.0",
     "sort-package-json": "~2.5.1"

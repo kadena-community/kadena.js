@@ -274,6 +274,8 @@ importers:
     specifiers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
+      '@types/gtag.js': ~0.0.12
+      '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
       '@types/react': ^18.2.15
       '@types/react-dom': 18.2.7
@@ -301,6 +303,8 @@ importers:
     devDependencies:
       '@kadena-dev/eslint-config': link:../../tools/eslint-config
       '@kadena-dev/heft-rig': link:../../tools/heft-rig
+      '@types/gtag.js': 0.0.12
+      '@types/heft-jest': 1.0.3
       '@vanilla-extract/next-plugin': 2.1.2_@types+node@16.18.38+next@13.4.5
       prettier: 3.0.0
       sort-package-json: 2.5.1
