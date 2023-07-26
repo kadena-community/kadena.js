@@ -45,6 +45,4 @@ async function transfer(
   }
 }
 
-console.log(process.argv);
-
 transfer(senderAccount, receiverAccount, { decimal: '1' }).catch(console.error);

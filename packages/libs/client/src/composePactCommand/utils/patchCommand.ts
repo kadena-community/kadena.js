@@ -51,29 +51,34 @@ export function patchCommand(
   command: Partial<IPactCommand>,
   patch: Partial<IPactCommand>,
 ): Partial<IPactCommand> {
-  const next = { ...command };
+  const state = { ...command };
   if (patch.payload !== undefined) {
-    next.payload = mergePayload(next.payload, patch.payload);
+    state.payload = mergePayload(state.payload, patch.payload);
   }
   if (patch.meta !== undefined) {
-    next.meta = { ...next.meta, ...patch.meta };
+    state.meta = { ...state.meta, ...patch.meta };
   }
   if (patch.nonce !== undefined) {
-    next.nonce = patch.nonce;
+    state.nonce = patch.nonce;
   }
   if (patch.networkId !== undefined) {
-    next.networkId = patch.networkId;
+    state.networkId = patch.networkId;
   }
   if (patch.signers !== undefined) {
     patch.signers.forEach((signer) => {
-      next.signers ??= [];
-      const prev = next.signers.find(({ pubKey }) => signer.pubKey === pubKey);
-      if (prev !== undefined) {
-        prev.clist = [...(prev.clist ?? []), ...(signer.clist ?? [])];
+      state.signers ??= [];
+      const foundSigner = state.signers.find(
+        ({ pubKey }) => signer.pubKey === pubKey,
+      );
+      if (foundSigner !== undefined) {
+        foundSigner.clist = [
+          ...(foundSigner.clist ?? []),
+          ...(signer.clist ?? []),
+        ];
       } else {
-        next.signers.push(signer);
+        state.signers.push(signer);
       }
     });
   }
-  return next;
+  return state;
 }
