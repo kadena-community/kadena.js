@@ -1,30 +1,21 @@
-import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
+import { styled, StyledComponent } from '@kadena/react-components';
 import { IconButton } from '@kadena/react-ui';
 
 import { Container, GridRow } from '@/components/Global';
 import { NavBackground } from '@/resources/svg/generated';
 import Link from 'next/link';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-const menuHeight = '$16';
-
 export const StyledHeader = styled('header', {
-  backgroundColor: '$neutral5',
-  color: '$neutral2',
-  borderBottom: `1px solid $neutral4`,
-
-  [`.${darkTheme} &`]: {
-    background: '$neutral2',
-    color: '$neutral5',
-    borderBottom: `1px solid $neutral3`,
-  },
+  backgroundColor: '$gray90',
+  color: '$gray20',
+  borderBottom: `1px solid $gray60`,
 });
 
 export const StyledContainer = styled(Container, {
   position: 'relative',
   px: '$4',
   py: '$2',
-  height: menuHeight,
+  height: '$16',
 });
 
 export const StyledGridRow = styled(GridRow, {
@@ -53,7 +44,7 @@ export const StyledTitle = styled(Link, {
 export const StyledMenuItem = styled(Link, {
   fontSize: '$base',
   fontWeight: '$medium',
-  color: '$neutral3',
+  color: '$gray40',
   transition: 'color 0.2s',
   padding: '$2 0',
 
@@ -62,10 +53,6 @@ export const StyledMenuItem = styled(Link, {
   },
   '&:hover': {
     color: '$white',
-  },
-
-  [`.${darkTheme} &`]: {
-    color: '$neutral4',
   },
 });
 
@@ -80,7 +67,7 @@ export const StyledBurgerMenuButton: StyledComponent<typeof IconButton> =
   styled(IconButton);
 
 export const StyledMobileMenu = styled('div', {
-  backgroundColor: '$neutral5',
+  backgroundColor: '$gray90',
   display: 'flex',
   flexDirection: 'column',
   padding: '0 $4 $4',
@@ -96,10 +83,6 @@ export const StyledMobileMenu = styled('div', {
   },
   '@lg': {
     display: 'none',
-  },
-
-  [`.${darkTheme} &`]: {
-    background: '$neutral2',
   },
 
   variants: {

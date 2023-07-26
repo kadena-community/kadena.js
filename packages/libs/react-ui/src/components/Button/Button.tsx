@@ -30,7 +30,7 @@ export const Button: FC<IButtonProps> = ({
   variant = 'primary',
   href,
   icon,
-  iconAlign,
+  iconAlign = 'right',
   loading,
   onClick,
   target,

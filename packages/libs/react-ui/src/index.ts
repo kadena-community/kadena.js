@@ -46,6 +46,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   ITrProps,
+  IProgressBarProps,
 } from './components';
 
 export {
@@ -81,4 +82,5 @@ export {
   TrackerCard,
   Tree,
   useModal,
+  ProgressBar,
 } from './components';
