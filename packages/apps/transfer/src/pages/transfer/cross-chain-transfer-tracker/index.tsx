@@ -13,6 +13,8 @@ import {
 import {
   accountFormStyle,
   formButtonStyle,
+  formHeaderStyle,
+  formHeaderTitleStyle,
   formStyle,
   infoBoxStyle,
   infoTitleStyle,
@@ -160,8 +162,10 @@ const CrossChainTransferTracker: FC = () => {
       </Breadcrumbs.Root>
       <div className={mainContentStyle}>
         <form className={formStyle} onSubmit={handleSubmit}>
+          <div className={formHeaderStyle}>
+            <div className={formHeaderTitleStyle}>Search Request</div>
+          </div>
           <div className={accountFormStyle}>
-            <Heading as="h5">Search Request</Heading>
             <TextField
               label={t('Request Key')}
               status={validRequestKey}

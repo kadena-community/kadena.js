@@ -25,9 +25,13 @@ export const accountFormStyle = style([
   sprinkles({
     padding: '$4',
     borderRadius: '$sm',
-    // '> *': {
-    //   marginBottom: '$8 ',
-    // },
+    display: 'flex',
+    flexDirection: 'column',
+    // alignItems: 'flex-start',
+    paddingBottom: '$10',
+    paddingTop: '$10',
+    paddingRight: '$10',
+    paddingLeft: '$10',
   }),
   {
     alignSelf: 'stretch',
@@ -61,7 +65,18 @@ export const formHeaderStyle = style([
   }),
   {
     alignSelf: 'stretch',
+    background: 'rgba(71, 79, 82, 0.4)',
   },
+]);
+
+export const formHeaderTitleStyle = style([
+  sprinkles({
+    fontSize: '$xl',
+    fontFamily: '$main',
+    fontWeight: '$semiBold',
+    lineHeight: '$normal',
+    color: '$neutral6',
+  }),
 ]);
 
 export const infoBoxStyle = style([
