@@ -1198,6 +1198,7 @@ importers:
       '@kadena/client': workspace:*
       '@kadena/cryptography-utils': workspace:*
       '@kadena/pactjs': workspace:*
+      '@kadena/pactjs-cli': workspace:*
       '@kadena/types': workspace:*
       '@types/jest': ^29.5.1
       exponential-backoff: ^3.1.0
@@ -1215,6 +1216,7 @@ importers:
       exponential-backoff: 3.1.1
       kadena.js: link:../../libs/kadena.js
     devDependencies:
+      '@kadena/pactjs-cli': link:../pactjs-cli
       '@types/jest': 29.5.2
       jest: 29.5.0_ts-node@10.8.2
       ts-jest: 29.1.1_jest@29.5.0+typescript@5.0.4

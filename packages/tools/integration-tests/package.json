@@ -45,6 +45,7 @@
     "kadena.js": "workspace:*"
   },
   "devDependencies": {
+    "@kadena/pactjs-cli": "workspace:*",
     "jest": "~29.5.0",
     "typescript": "5.0.4",
     "ts-jest": "~29.1.0",
