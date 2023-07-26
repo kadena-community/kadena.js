@@ -44,18 +44,18 @@ export async function fund(
   //console.log(`signed transaction: ${signedTx.cmd}`);
 
   const preflightResult = await preflight(signedTx);
-  console.log(preflightResult);
+  //console.log(preflightResult);
   if (preflightResult.result.status === 'failure') {
     console.error(preflightResult.result.status);
     throw new Error('failure');
   }
 
-  console.log('preflight successful');
+  //console.log('preflight successful');
 
   if (isSignedCommand(signedTx)) {
     const requestKey = await submit(signedTx);
     const response = await listen(requestKey);
-    console.log('result: ' + response);
+    //console.log('result: ' + response);
 
     if (response.result.status === 'failure') {
       console.error(response);
