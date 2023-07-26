@@ -1,4 +1,4 @@
-import { ChainId } from '@kadena/types';
+import { ChainId, NetworkId } from '@kadena/types';
 
 import { getClient } from '../../index';
 
@@ -7,7 +7,7 @@ export const apiHostGenerator = ({
   networkId,
   chainId,
 }: {
-  networkId: string;
+  networkId: NetworkId;
   chainId: ChainId;
 }): string => {
   switch (networkId) {
