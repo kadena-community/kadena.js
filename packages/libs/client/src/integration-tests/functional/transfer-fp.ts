@@ -33,9 +33,13 @@ const getTransferCommand = ({
 }) =>
   composePactCommand(
     execution(
-      Pact.modules.coin.transfer(sender, receiver, { decimal: amount }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (Pact.modules as any).coin.transfer(sender, receiver, {
+        decimal: amount,
+      }),
     ),
-    addSigner(signerPublicKey, (withCapability) => [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addSigner(signerPublicKey, (withCapability: any) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', sender, receiver, {
         decimal: amount,

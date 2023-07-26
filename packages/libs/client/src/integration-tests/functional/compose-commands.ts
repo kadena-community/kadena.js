@@ -16,9 +16,13 @@ export function composeCommands(): Partial<IPactCommand> {
 
   const transfer = composePactCommand(
     execution(
-      Pact.modules.coin.transfer('javad', 'albert', { decimal: '0.1' }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (Pact.modules as any).coin.transfer('javad', 'albert', {
+        decimal: '0.1',
+      }),
     ),
-    addSigner('javadPublicKey', (withCapability) => [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addSigner('javadPublicKey', (withCapability: any) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
     ]),
