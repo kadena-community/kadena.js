@@ -4,29 +4,25 @@ import {
   Heading,
   InputWrapperStatus,
   ProductIcon,
+  ProgressBar,
   SystemIcon,
   TextField,
   TrackerCard,
 } from '@kadena/react-ui';
 
 import {
-  StyledInfoItem,
-  StyledInfoItemLine,
-  StyledInfoItemTitle,
-  StyledInfoTitle,
-} from '../cross-chain-transfer-finisher/styles';
+  accountFormStyle,
+  formButtonStyle,
+  formStyle,
+  infoBoxStyle,
+  infoTitleStyle,
+  mainContentStyle,
+} from './styles.css';
 
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
-import {
-  StyledAccountForm,
-  StyledForm,
-  StyledFormButton,
-  StyledInfoBox,
-  StyledMainContent,
-} from '@/pages/transfer/cross-chain-transfer-tracker/styles';
 import {
   getTransferStatus,
   IStatusData,
@@ -162,9 +158,9 @@ const CrossChainTransferTracker: FC = () => {
         <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <StyledMainContent>
-        <StyledForm onSubmit={handleSubmit}>
-          <StyledAccountForm>
+      <div className={mainContentStyle}>
+        <form className={formStyle} onSubmit={handleSubmit}>
+          <div className={accountFormStyle}>
             <Heading as="h5">Search Request</Heading>
             <TextField
               label={t('Request Key')}
@@ -180,17 +176,17 @@ const CrossChainTransferTracker: FC = () => {
                 leftIcon: SystemIcon.KeyIconFilled,
               }}
             />
-          </StyledAccountForm>
-          <StyledFormButton>
+          </div>
+          <div className={formButtonStyle}>
             <Button title={t('Search')} icon="Magnify" iconAlign="right">
               {t('Search')}
             </Button>
-          </StyledFormButton>
-        </StyledForm>
+          </div>
+        </form>
 
         {data.receiverAccount ? (
-          <StyledInfoBox>
-            <StyledInfoTitle>{t('Transfer Information')}</StyledInfoTitle>
+          <div className={infoBoxStyle}>
+            <div className={infoTitleStyle}>{t('Transfer Information')}</div>
             <TrackerCard
               variant="vertical"
               icon={ProductIcon.QuickStart}
@@ -206,20 +202,27 @@ const CrossChainTransferTracker: FC = () => {
                 },
               ]}
             />
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Amount')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{` ${data.amount} ${t(
-                'KDA',
-              )}`}</StyledInfoItemLine>
-            </StyledInfoItem>
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Status')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`${data.status} `}</StyledInfoItemLine>
-            </StyledInfoItem>
-            <StyledInfoItem>
-              <StyledInfoItemTitle>{t('Description')}</StyledInfoItemTitle>
-              <StyledInfoItemLine>{`${data.description} `}</StyledInfoItemLine>
-            </StyledInfoItem>
+            {/*  Progress Bar will only show if the transfer is in progress /
+            completed.  If an error occurs, the notification will display the
+            error and no progress bar will show */}
+            <ProgressBar
+              checkpoints={[
+                {
+                  status: 'complete',
+                  title: t('Initiated transaction'),
+                },
+                {
+                  status:
+                    data?.id === StatusId.Success ? 'complete' : 'pending',
+                  title: data.description || 'An error has occurred',
+                },
+                {
+                  status:
+                    data.id === StatusId.Pending ? 'incomplete' : 'complete',
+                  title: t('Transfer complete'),
+                },
+              ]}
+            />
 
             <TrackerCard
               variant="vertical"
@@ -240,9 +243,9 @@ const CrossChainTransferTracker: FC = () => {
                 },
               ]}
             />
-          </StyledInfoBox>
+          </div>
         ) : null}
-      </StyledMainContent>
+      </div>
     </div>
   );
 };
