@@ -9,14 +9,16 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
 
 const FooterWrapper: FC = () => {
-  const { theme, setTheme } = useTheme();
+  const { systemTheme, theme, setTheme } = useTheme();
   const { renderModal } = useModal();
+
+  const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const { t } = useTranslation('common');
   const openModal = (): void => renderModal(<OptionsModal />);
 
   const toggleTheme = (): void => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
   };
 
@@ -24,22 +26,22 @@ const FooterWrapper: FC = () => {
     {
       title: t('Tutorial'),
       href: 'https://kadena.io/',
-      target: '_self',
+      target: '_blank',
     },
     {
       title: t('Documentation'),
       href: 'https://kadena.io/',
-      target: '_self',
+      target: '_blank',
     },
     {
       title: t('Privacy & Policy'),
       href: 'https://kadena.io/',
-      target: '_self',
+      target: '_blank',
     },
     {
       title: 'Terms of use',
       href: 'https://kadena.io/',
-      target: '_self',
+      target: '_blank',
     },
   ];
 

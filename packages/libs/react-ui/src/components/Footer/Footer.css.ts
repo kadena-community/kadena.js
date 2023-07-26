@@ -5,14 +5,14 @@ import { style, styleVariants } from '@vanilla-extract/css';
 export const footerVariants = styleVariants({
   web: [
     sprinkles({
-      backgroundColor: '$neutral5',
-      color: '$neutral3',
+      backgroundColor: '$layoutSurfaceSubtle',
+      color: '$gray40',
     }),
   ],
   application: [
     sprinkles({
-      backgroundColor: { darkMode: '$neutral2', lightMode: '$neutral5' },
-      color: { darkMode: '$neutral4', lightMode: '$neutral3' },
+      backgroundColor: '$gray90',
+      color: '$gray40',
     }),
   ],
 });
@@ -28,7 +28,6 @@ export const containerClass = style([
     },
     justifyContent: 'space-between',
     overflow: 'hidden',
-    borderRadius: '$sm',
   }),
   {
     selectors: {

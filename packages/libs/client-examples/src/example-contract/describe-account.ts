@@ -2,12 +2,16 @@ import { Pact } from '@kadena/client';
 
 import { dirtyRead } from './util/client';
 
-async function getDetail(): Promise<void> {
-  const senderAccount: string =
-    'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
+const account: string =
+  'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
 
+const NETWORK_ID: string = 'testnet04';
+
+async function getDetail(): Promise<void> {
   const unsignedTransaction = Pact.builder
-    .execution(Pact.modules.coin.details(senderAccount))
+    .execution(Pact.modules.coin.details(account))
+    .setMeta({ chainId: '0' })
+    .setNetworkId(NETWORK_ID)
     .createTransaction();
 
   const res = await dirtyRead(unsignedTransaction);
@@ -16,13 +20,9 @@ async function getDetail(): Promise<void> {
 
 async function getBalanceMain(): Promise<void> {
   const tr = Pact.builder
-    .execution(
-      Pact.modules.coin['get-balance'](
-        'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
-      ),
-    )
-    .setMeta({ sender: '', chainId: '10' })
-    .setNetworkId('mainnet04')
+    .execution(Pact.modules.coin['get-balance'](account))
+    .setMeta({ chainId: '0' })
+    .setNetworkId(NETWORK_ID)
     .createTransaction();
 
   const res = await dirtyRead(tr);

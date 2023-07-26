@@ -1,44 +1,62 @@
-import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
+import {
+  isSignedCommand,
+  Pact,
+  readKeyset,
+  signWithChainweaver,
+} from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
-import { pollStatus, preflight, submit } from './util/client';
+import { listen, preflight, submit } from './util/client';
 
-function onlyKey(account: string): string {
-  return account.split(':')[1];
-}
+const NETWORK_ID: string = 'testnet04';
 
 async function main(): Promise<void> {
-  const sender: string =
-    'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
-  const receiver: string = 'k:somepublickey';
-  const amount: IPactDecimal = { decimal: '1000.0' };
+  const senderAccount =
+    'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
+  const receiverAccount =
+    'k:1a98599ff4677a119565d852b29b0d447c5051cb2c49673c32cba3fae096e209';
+  const amount: IPactDecimal = { decimal: '0.23' };
+  const signerKey = senderAccount.split('k:')[1];
+  const receiverKey = receiverAccount.split('k:')[1];
 
-  const unsignedTransaction = Pact.builder
+  const transaction = Pact.builder
     .execution(
       Pact.modules.coin['transfer-create'](
-        sender,
-        receiver,
-        () => '(read-keyset "ks")',
+        senderAccount,
+        receiverAccount,
+        readKeyset('ks'),
         amount,
       ),
     )
-    .addKeyset('ks', 'keys-all', 'somepublickey')
-    .addSigner(onlyKey(sender), (withCapability) => [
-      withCapability('coin.TRANSFER', sender, receiver, amount),
+    .addSigner(signerKey, (withCapability) => [
+      withCapability('coin.GAS'),
+      withCapability('coin.TRANSFER', senderAccount, receiverAccount, amount),
     ])
-    .setNetworkId('testnet04')
+    .addKeyset('ks', 'keys-all', receiverKey)
+    .setMeta({
+      chainId: '1',
+      gasLimit: 1000,
+      gasPrice: 1.0e-6,
+      sender: senderAccount,
+      ttl: 10 * 60, // 10 minutes
+    })
+    .setNetworkId(NETWORK_ID)
     .createTransaction();
 
-  // simulate running the tr with preflight
-  const localResponse = await preflight(unsignedTransaction);
+  const signedTx = await signWithChainweaver(transaction);
 
-  console.log('preflight response: ', JSON.stringify(localResponse, null, 2));
+  const preflightResult = await preflight(signedTx);
 
-  const signedTr = await signWithChainweaver(unsignedTransaction);
+  if (preflightResult.result.status === 'failure') {
+    console.error(preflightResult.result.status);
+    throw new Error('failure');
+  }
 
-  if (isSignedCommand(signedTr)) {
-    const requestKey = await submit(signedTr);
-    const result = await pollStatus(requestKey);
+  console.log('preflight successful');
+
+  if (isSignedCommand(signedTx)) {
+    const requestKey = await submit(signedTx);
+    const result = await listen(requestKey);
     console.log(result);
   }
 }

@@ -14,7 +14,7 @@ import {
 } from '@kadena/client/fp';
 
 import { pollStatus, preflight, submit } from '../util/client';
-import { asyncPipe } from '../util/fp-helpers';
+import { asyncPipe, inspect } from '../util/fp-helpers';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-function-return-type
 const getTransferCommand = ({
@@ -51,14 +51,12 @@ const doTransfer = asyncPipe(
   // you can edit the command form the input or complete it if it needs more information
   // for example hear we add gasLimit and gasPrice
   composePactCommand(
-    // read meta from the input command
-    ({ meta }) =>
-      setMeta({
-        chainId: meta?.chainId!,
-        gasLimit: 2400,
-        gasPrice: 0.00000001,
-      }),
+    setMeta({
+      gasLimit: 2400,
+      gasPrice: 0.00000001,
+    }),
   ),
+  inspect('command'),
   createTransaction,
   signWithChainweaver,
   (tr) => (isSignedCommand(tr) ? tr : Promise.reject('TR_NOT_SIGNED')),
@@ -73,14 +71,14 @@ const doTransfer = asyncPipe(
 doTransfer(
   getTransferCommand({
     sender:
-      'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+      'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
     receiver:
-      'k:e34b62cb48526f89e419dae4e918996d66582b5951361c98ee387665a94b7ad8',
+      'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
     amount: '0.1337',
     signerPublicKey:
-      '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+      'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
     chainId: '0',
-    networkId: 'mainnet01',
+    networkId: 'fast-development',
   }),
 )
   .then(console.log)

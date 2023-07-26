@@ -1,6 +1,11 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { ColorType, vars } from '@theme/vars.css';
-import { createVar, style, styleVariants } from '@vanilla-extract/css';
+import {
+  createVar,
+  keyframes,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 const bgHoverColor = createVar(),
   bgActiveColor = createVar(),
@@ -17,8 +22,15 @@ export const container = style([
     paddingY: '$3',
     border: 'none',
     fontSize: '$base',
+    textDecoration: 'none',
+    lineHeight: '$normal',
   }),
   {
+    selectors: {
+      '&[href]': {
+        display: 'inline-flex',
+      },
+    },
     transition: 'background-color 0.4s ease',
     ':hover': {
       backgroundColor: bgHoverColor,
@@ -37,11 +49,28 @@ export const container = style([
       backgroundColor: vars.colors.$neutral3,
       color: vars.colors.$neutral1,
       cursor: 'not-allowed',
+      pointerEvents: 'none',
     },
   },
 ]);
 
-const colors: Record<ColorType, ColorType> = {
+const rotate = keyframes({
+  '0%': { transform: 'rotate(0deg)' },
+  '100%': { transform: 'rotate(360deg)' },
+});
+
+export const buttonLoadingClass = style({
+  pointerEvents: 'none',
+});
+
+export const iconLoadingClass = style({
+  animationName: rotate,
+  animationDuration: '1.5s',
+  animationIterationCount: 'infinite',
+  animationTimingFunction: 'linear',
+});
+
+const variants: Record<ColorType, ColorType> = {
   primary: 'primary',
   secondary: 'secondary',
   tertiary: 'tertiary',
@@ -51,18 +80,18 @@ const colors: Record<ColorType, ColorType> = {
   negative: 'negative',
 };
 
-export const colorVariants = styleVariants(colors, (color) => {
+export const colorVariants = styleVariants(variants, (variant) => {
   return [
     container,
     sprinkles({
-      color: `$${color}Surface`,
-      bg: `$${color}Contrast`,
+      color: `$${variant}Surface`,
+      bg: `$${variant}Contrast`,
     }),
     {
       vars: {
-        [bgHoverColor]: vars.colors[`$${color}HighContrast`],
-        [bgActiveColor]: vars.colors[`$${color}Accent`],
-        [focusOutlineColor]: vars.colors[`$${color}Accent`],
+        [bgHoverColor]: vars.colors[`$${variant}HighContrast`],
+        [bgActiveColor]: vars.colors[`$${variant}Accent`],
+        [focusOutlineColor]: vars.colors[`$${variant}Accent`],
       },
     },
   ];

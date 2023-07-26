@@ -11,7 +11,12 @@ import {
   setNetworkId,
   setNonce,
 } from '../composePactCommand';
-import { UnionToIntersection } from '../composePactCommand/utils/addSigner';
+import { ValidDataTypes } from '../composePactCommand/utils/addData';
+import {
+  IGeneralCapability,
+  UnionToIntersection,
+} from '../composePactCommand/utils/addSigner';
+import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import {
   ICapabilityItem,
   IContinuationPayloadObject,
@@ -19,17 +24,15 @@ import {
 } from '../interfaces/IPactCommand';
 import { createTransaction } from '../utils/createTransaction';
 
-type GeneralCapability = (name: string, ...args: unknown[]) => ICapabilityItem;
-
 export type ExtractType<TCommand> = TCommand extends { payload: infer TPayload }
   ? TPayload extends { funs: infer TFunctions }
     ? TFunctions extends Array<infer TFunction>
       ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
         ? TCapability
-        : GeneralCapability
-      : GeneralCapability
-    : GeneralCapability
-  : GeneralCapability;
+        : IGeneralCapability
+      : IGeneralCapability
+    : IGeneralCapability
+  : IGeneralCapability;
 
 interface IAddSigner<TCommand> {
   /**
@@ -93,10 +96,7 @@ interface IBuilder<TCommand> {
   ) => IBuilder<TCommand>;
   setNonce: ISetNonce<TCommand>;
   setNetworkId: (id: string) => IBuilder<TCommand>;
-  addData: (
-    key: string,
-    data: Record<string, unknown> | string | number | boolean,
-  ) => IBuilder<TCommand>;
+  addData: (key: string, data: ValidDataTypes) => IBuilder<TCommand>;
   addKeyset: IAddKeyset<TCommand>;
   createTransaction: () => IUnsignedCommand;
   getCommand: () => Partial<IPactCommand>;
@@ -126,48 +126,71 @@ export interface ICommandBuilder {
   continuation: ICont;
 }
 
+interface IStatefullCompose {
+  composeWith: (
+    patch:
+      | Partial<IPactCommand>
+      | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>),
+  ) => void;
+  readonly finalize: (command: Partial<IPactCommand>) => Partial<IPactCommand>;
+}
+
+const statefullCompose = (init: Partial<IPactCommand>): IStatefullCompose => {
+  let reducer: (command: Partial<IPactCommand>) => Partial<IPactCommand> =
+    composePactCommand(init);
+  const composeWith = (
+    patch:
+      | Partial<IPactCommand>
+      | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>),
+  ): void => {
+    reducer = composePactCommand(reducer, patch);
+  };
+  return {
+    composeWith,
+    get finalize() {
+      return reducer;
+    },
+  };
+};
+
 export const commandBuilder = (): ICommandBuilder => {
   const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
-    let command: Partial<IPactCommand> = init;
+    const state = statefullCompose(init);
     const builder: IBuilder<T> = {
-      addData: (
-        key: string,
-        value: Record<string, unknown> | string | number | boolean,
-      ) => {
-        command = composePactCommand(addData(key, value))(command);
+      addData: (key: string, value: ValidDataTypes) => {
+        state.composeWith(addData(key, value));
         return builder;
       },
       addKeyset: (key: string, pred: string, ...publicKeys: string[]) => {
-        command = composePactCommand(addKeyset(key, pred, ...publicKeys))(
-          command,
-        );
+        state.composeWith(addKeyset(key, pred, ...publicKeys));
         return builder;
       },
       addSigner: (pubKey, cap?: unknown) => {
-        command = composePactCommand(
+        state.composeWith(
           addSigner(
             pubKey,
-            cap as (withCapability: GeneralCapability) => ICapabilityItem[],
+            cap as (withCapability: IGeneralCapability) => ICapabilityItem[],
           ) as (cmd: Partial<IPactCommand>) => Partial<IPactCommand>,
-        )(command);
+        );
         return builder;
       },
       setMeta: (meta) => {
-        command = composePactCommand(setMeta(meta))(command);
+        state.composeWith(setMeta(meta));
         return builder;
       },
       setNetworkId: (id: string) => {
-        command = composePactCommand(setNetworkId(id))(command);
+        state.composeWith(setNetworkId(id));
         return builder;
       },
       setNonce: (arg: string | ((cmd: Partial<IPactCommand>) => string)) => {
-        const nonce = typeof arg === 'function' ? arg(command) : arg;
-        command = composePactCommand(setNonce(nonce))(command);
+        state.composeWith((cmd) => {
+          const nonce = typeof arg === 'function' ? arg(cmd) : arg;
+          return patchCommand(cmd, setNonce(nonce));
+        });
         return builder;
       },
       getCommand: () => {
-        command = composePactCommand(command)();
-        return command;
+        return state.finalize({});
       },
       createTransaction: () => createTransaction(builder.getCommand()),
     };

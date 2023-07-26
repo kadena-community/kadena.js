@@ -878,6 +878,7 @@ importers:
       '@rushstack/heft': ~0.50.6
       '@rushstack/heft-jest-plugin': ~0.5.12
       '@storybook/addon-actions': ^7.0.20
+      '@storybook/addon-controls': ^7.0.20
       '@storybook/addon-essentials': ^7.0.20
       '@storybook/addon-interactions': ^7.0.20
       '@storybook/addon-links': ^7.0.20
@@ -952,6 +953,7 @@ importers:
       '@rushstack/heft': 0.50.7_@types+node@16.18.38
       '@rushstack/heft-jest-plugin': 0.5.13_c7b81aa6722f9697dbfd4c2498a07e80
       '@storybook/addon-actions': 7.0.24_react-dom@18.2.0+react@18.2.0
+      '@storybook/addon-controls': 7.0.24_react-dom@18.2.0+react@18.2.0
       '@storybook/addon-essentials': 7.0.24_react-dom@18.2.0+react@18.2.0
       '@storybook/addon-interactions': 7.0.24_react-dom@18.2.0+react@18.2.0
       '@storybook/addon-links': 7.0.24_react-dom@18.2.0+react@18.2.0
