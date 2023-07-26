@@ -9,7 +9,8 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "test": "echo 'boilerplate'"
   },
   "dependencies": {
     "@types/node": "^16.0.0",
