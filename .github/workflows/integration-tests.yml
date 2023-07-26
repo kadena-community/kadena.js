@@ -22,10 +22,22 @@ jobs:
         - uses: actions/checkout@v3
           with:
             fetch-depth: 2
-        # TODO: Replace this with a decent unit test
-        - name: Fund Account
-          run: docker run --rm -v $(pwd):/app/ --add-host=devnet:host-gateway enof/kda-cli --profile=.fund-profile.json
+
+        - uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+
+        - name: Rush install (install-run-rush)
+          run: |
+            node common/scripts/install-run-rush.js install -t @kadena/integration-tests
+
+        - name: Run Integration Tests
+          run: |
+            node ./../../../common/scripts/install-run-rushx.js test:integration
           working-directory: packages/tools/integration-tests
+
+
+
 
 
 

@@ -31,7 +31,7 @@
     "precommit": "pnpm run src/test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/test/pact-server.conf",
     "test": "node --test --test-reporter spec --loader ts-node/esm src/test/*.test.ts",
-    "test:integration:devnet": "heft src/test --test-path-pattern devnet*",
+    "test:integration": "node --test --test-reporter spec --loader ts-node/esm src/test/*.test.ts",
     "test:integration:pactserver": "concurrently \\\"npm:start:pact\\\" \\\"sleep 5 && heft src/test --test-path-pattern pact-server* && sleep 5\\\" --kill-others"
   },
   "dependencies": {
