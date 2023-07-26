@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
+import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
@@ -26,8 +27,11 @@ const convertFile = (file) => {
     data = JSON.parse(metaString);
   }
 
+  const readTime = getReadTime(doc);
+
   return {
     ...data,
+    ...readTime,
     isMenuOpen: false,
     isActive: false,
   };

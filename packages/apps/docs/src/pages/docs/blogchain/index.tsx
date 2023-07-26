@@ -37,6 +37,7 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = getInitBlogPosts(getData(), 0, 10);
+
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
