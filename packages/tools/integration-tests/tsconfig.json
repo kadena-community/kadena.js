@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "types": ["node"],
-    "module": "esnext"
+    "module": "esnext",
+    "allowSyntheticDefaultImports": true
   }
 }
