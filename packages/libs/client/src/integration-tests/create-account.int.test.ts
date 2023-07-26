@@ -1,12 +1,16 @@
+import { fund } from './util/simple-transfer';
+
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import before, { describe, it } from 'node:test';
 
-describe('top level test', () => {
-  it('subtest 1', () => {
-    assert.strictEqual(1, 1);
-  });
+describe('Fund account and perform transfer.', async () => {
+  await before(async () => {
+    await fund(
+      'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
+      '2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
+      { decimal: '100' },
+    );
+    console.log('Add 100 KDA');
 
-  it('subtest 2', () => {
-    assert.strictEqual(2, 2);
   });
 });
