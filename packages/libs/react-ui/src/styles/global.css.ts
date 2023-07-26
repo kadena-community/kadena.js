@@ -7,6 +7,8 @@ import { vars } from './vars.css';
 
 import { globalFontFace, globalStyle } from '@vanilla-extract/css';
 
+export { breakpoints, vars };
+
 /*
     0. Add fonts
 */
@@ -91,7 +93,7 @@ globalStyle('#root, #__next', {
 });
 
 /*
-    10. Kadena Design System 
+    10. Kadena Design System
 */
 globalStyle(':root', {
   vars: {

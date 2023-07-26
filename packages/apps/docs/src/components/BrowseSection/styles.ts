@@ -7,8 +7,39 @@ import {
 
 import Link from 'next/link';
 
-export const StyledSection: StyledComponent<'section'> = styled('section', {
-  width: '100%',
+export const StyledSection: StyledComponent<
+  'section',
+  {
+    direction?: 'row' | 'column';
+  }
+> = styled('section', {
+  variants: {
+    direction: {
+      row: {
+        width: '100%',
+      },
+      column: {
+        width: 'auto',
+      },
+    },
+  },
+});
+
+export const StyledLinkList: StyledComponent<'ul'> = styled('ul', {
+  padding: '0 $5',
+  listStyle: 'disc',
+  '& li': {
+    color: '$primaryContrast',
+    lineHeight: '$lg',
+    '& a': {
+      color: '$primaryContrast',
+      textDecoration: 'none',
+      '&:hover': {
+        color: '$primaryHighContrast',
+        textDecoration: 'underline',
+      },
+    },
+  },
 });
 
 export const StyledList: StyledComponent<'ul'> = styled('ul', {
@@ -26,9 +57,6 @@ export const StyledListItem: StyledComponent<'li'> = styled('li', {
   padding: '0 $4',
   '@md': {
     flexBasis: '30%',
-  },
-  '&:nth-child(3n + 1)': {
-    paddingLeft: 0,
   },
 });
 

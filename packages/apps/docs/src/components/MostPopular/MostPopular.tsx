@@ -1,4 +1,4 @@
-import { BrowseSection } from '../BrowseSection';
+import { BrowseSection } from './BrowseSection';
 
 import { IMostPopularPage } from '@/types/MostPopularData';
 import Link from 'next/link';
@@ -11,16 +11,12 @@ interface IProps {
 
 const MostPopular: FC<IProps> = ({ pages = [], title }) => {
   return (
-    <BrowseSection>
-      <BrowseSection.LinkList title={title}>
-        {pages.map((page, index) => {
-          return (
-            <Link href={page.path} key={`most-popular-${index}`}>
-              {page.title}
-            </Link>
-          );
-        })}
-      </BrowseSection.LinkList>
+    <BrowseSection title={title}>
+      {pages.map((page) => (
+        <Link href={page.path} key={page.title}>
+          {page.title}
+        </Link>
+      ))}
     </BrowseSection>
   );
 };
