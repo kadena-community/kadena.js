@@ -33,8 +33,6 @@ describe('Button', () => {
 
     const buttonContainer = getByTestId('kda-button') as HTMLAnchorElement;
 
-    console.log(buttonContainer.nodeName);
-
     expect(buttonContainer.nodeName === 'A').toBe(true);
   });
 
