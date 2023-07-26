@@ -5,9 +5,9 @@ import { Template } from '../components/Template';
 
 import { PageGrid } from './styles';
 
+import { FormatDate } from '@/components/Blog';
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { IPageProps } from '@/types/Layout';
-import { formatISODate } from '@/utils/dates';
 import React, { FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -28,9 +28,9 @@ export const Blog: FC<IPageProps> = ({
           <Article>
             <Stack justifyContent="space-between">
               {frontmatter.publishDate && (
-                <time dateTime={frontmatter.publishDate}>
-                  {formatISODate(new Date(frontmatter.publishDate))}
-                </time>
+                <span>
+                  Published: <FormatDate date={frontmatter.publishDate} />
+                </span>
               )}
               <div>author: {frontmatter.author}</div>
             </Stack>
