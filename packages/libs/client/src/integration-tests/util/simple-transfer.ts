@@ -120,7 +120,6 @@ export async function fund(
       throw new Error('Transaction failed');
     }
   }
-
 }
 
 function signByKeyPair(transaction: IUnsignedCommand): ICommand {

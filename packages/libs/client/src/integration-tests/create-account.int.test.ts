@@ -1,6 +1,6 @@
 import { fund } from './util/simple-transfer';
 
-import before, { describe, it } from 'node:test';
+import before, { describe } from 'node:test';
 
 describe('Fund account and perform transfer.', async () => {
   await before(async () => {
@@ -10,6 +10,5 @@ describe('Fund account and perform transfer.', async () => {
       { decimal: '100' },
     );
     console.log('Add 100 KDA');
-
   });
 });
