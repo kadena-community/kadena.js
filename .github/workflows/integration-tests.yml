@@ -29,7 +29,7 @@ jobs:
 
         - name: Rush install (install-run-rush)
           run: |
-            node common/scripts/install-run-rush.js install -t @kadena/client
+            node common/scripts/install-run-rush.js install
 
         - name: Run Integration Tests
           run: |
