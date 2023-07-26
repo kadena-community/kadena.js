@@ -43,9 +43,9 @@ async function main(): Promise<void> {
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
-  const signedTr = await signWithChainweaver(transaction); // sign
+  const signedTx = await signWithChainweaver(transaction);
 
-  const preflightResult = await preflight(signedTr);
+  const preflightResult = await preflight(signedTx);
 
   if (preflightResult.result.status === 'failure') {
     console.error(preflightResult.result.status);
@@ -54,8 +54,8 @@ async function main(): Promise<void> {
 
   console.log('preflight successful');
 
-  if (isSignedCommand(signedTr)) {
-    const requestKey = await submit(signedTr);
+  if (isSignedCommand(signedTx)) {
+    const requestKey = await submit(signedTx);
     const result = await listen(requestKey);
     console.log(result);
   }
