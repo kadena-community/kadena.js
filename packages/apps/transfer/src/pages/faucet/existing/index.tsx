@@ -132,17 +132,13 @@ const ExistingAccountFaucetPage: FC = () => {
         </StyledAccountForm>
         <StyledFormButton>
           <Button
+            loading={requestStatus.status === 'processing'}
+            icon="TrailingIcon"
+            iconAlign="right"
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             disabled={requestStatus.status === 'processing'}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            {requestStatus.status === 'processing' ? (
-              <SystemIcon.Loading
-                style={{ animation: '2000ms infinite linear spin' }}
-              />
-            ) : (
-              <SystemIcon.TrailingIcon />
-            )}
           </Button>
         </StyledFormButton>
       </StyledForm>
