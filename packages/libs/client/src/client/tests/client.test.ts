@@ -9,31 +9,24 @@ jest.mock('@kadena/chainweb-node-client', () => ({
 }));
 
 import * as chainwebClient from '@kadena/chainweb-node-client';
-import { ChainId } from '@kadena/types';
 
 import { getClient } from '../client';
-import { kadenaHostGenerator, withCounter } from '../utils/utils';
-
-const hostApiGenerator = ({
-  networkId,
-  chainId,
-}: {
-  networkId: string;
-  chainId: ChainId;
-}): string => `http://${networkId}/${chainId}`;
+import { withCounter } from '../utils/utils';
 
 describe('client', () => {
-  it('uses the string input as the host for all requests', async () => {
+  it('uses the networks option to generate the host for all requests', async () => {
     const response = { reqKey: 'test-key' };
 
     (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
-    const hostUrl = 'http://test-blockchain-host.com';
-
-    const { local } = getClient(hostUrl);
+    const { local } = getClient({
+      networks: {
+        mynet01: 'http://myblockchain.net',
+      },
+    });
 
     const body = {
-      cmd: JSON.stringify({ networkId: 'mainnet01', meta: { chainId: '1' } }),
+      cmd: JSON.stringify({ networkId: 'mynet01', meta: { chainId: '1' } }),
       hash: 'hash',
       sigs: [{ sig: 'test-sig' }],
     };
@@ -44,7 +37,34 @@ describe('client', () => {
 
     expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
       body,
-      hostUrl,
+      'http://myblockchain.net/chainweb/0.0/mynet01/chain/1/pact',
+    ]);
+  });
+
+  it('uses the url generator in networks option to generate the host for all requests', async () => {
+    const response = { reqKey: 'test-key' };
+
+    (chainwebClient.local as jest.Mock).mockResolvedValue(response);
+
+    const { local } = getClient({
+      networks: {
+        mynet01: (chainId) => `http://myblockchain.net/${chainId}/pact`,
+      },
+    });
+
+    const body = {
+      cmd: JSON.stringify({ networkId: 'mynet01', meta: { chainId: '1' } }),
+      hash: 'hash',
+      sigs: [{ sig: 'test-sig' }],
+    };
+
+    const result = await local(body);
+
+    expect(result).toEqual(response);
+
+    expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
+      body,
+      'http://myblockchain.net/1/pact',
     ]);
   });
 
@@ -68,19 +88,23 @@ describe('client', () => {
 
     expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
       body,
-      kadenaHostGenerator({ networkId, chainId }),
+      'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact',
     ]);
   });
 
   describe('local', () => {
-    it('uses the hostApiGenerator function to generate hostUrl for local request', async () => {
+    it('uses the hostMap object to generate hostUrl for local request', async () => {
       const response = { reqKey: 'test-key' };
 
       (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
-      const { local } = getClient(hostApiGenerator);
+      const { local } = getClient({
+        networks: {
+          'my-network': 'http://localhost:8080/',
+        },
+      });
 
-      const networkId = 'mainnet01';
+      const networkId = 'my-network';
       const chainId = '1';
 
       const body = {
@@ -93,7 +117,7 @@ describe('client', () => {
 
       expect((chainwebClient.local as jest.Mock).mock.calls[0]).toEqual([
         body,
-        hostApiGenerator({ networkId, chainId }),
+        `http://localhost:8080/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
       ]);
     });
   });
@@ -104,9 +128,13 @@ describe('client', () => {
 
       (chainwebClient.send as jest.Mock).mockResolvedValue(response);
 
-      const { submit } = getClient(hostApiGenerator);
+      const { submit } = getClient({
+        networks: {
+          'my-network': 'http://localhost:8080/',
+        },
+      });
 
-      const networkId = 'mainnet01';
+      const networkId = 'my-network';
       const chainId = '1';
 
       const body = {
@@ -119,7 +147,7 @@ describe('client', () => {
 
       expect(chainwebClient.send).toBeCalledWith(
         { cmds: [body] },
-        hostApiGenerator({ networkId, chainId }),
+        `http://localhost:8080/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
       );
     });
 
@@ -128,7 +156,7 @@ describe('client', () => {
         requestKeys: ['test-key'],
       });
 
-      const { submit } = getClient(hostApiGenerator);
+      const { submit } = getClient();
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -149,7 +177,7 @@ describe('client', () => {
         requestKeys: ['test-key'],
       });
 
-      const { submit } = getClient(hostApiGenerator);
+      const { submit } = getClient();
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -166,7 +194,7 @@ describe('client', () => {
     });
 
     it('throes an error if the command list is empty', async () => {
-      const { submit } = getClient(() => 'http://test-host.com');
+      const { submit } = getClient();
       await expect(submit([])).rejects.toThrowError(
         new Error('EMPTY_COMMAND_LIST'),
       );
@@ -194,7 +222,7 @@ describe('client', () => {
         }),
       );
 
-      const { submit, pollStatus } = getClient(hostApiGenerator);
+      const { submit, pollStatus } = getClient();
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -226,9 +254,12 @@ describe('client', () => {
 
       (chainwebClient.poll as jest.Mock).mockResolvedValue(response);
 
-      const { getStatus } = getClient('http://test-host.com');
+      const { getStatus } = getClient();
 
-      const result = await getStatus('test-key');
+      const result = await getStatus('test-key', {
+        networkId: 'testnet04',
+        chainId: '0',
+      });
 
       expect(result).toEqual(response);
 
@@ -242,9 +273,12 @@ describe('client', () => {
 
       (chainwebClient.listen as jest.Mock).mockResolvedValue(response);
 
-      const { listen } = getClient('http://test-host.com');
+      const { listen } = getClient();
 
-      const result = await listen('test-key');
+      const result = await listen('test-key', {
+        networkId: 'testnet04',
+        chainId: '0',
+      });
 
       expect(result).toEqual(response);
 
@@ -259,9 +293,12 @@ describe('client', () => {
 
       (chainwebClient.spv as jest.Mock).mockResolvedValue(response);
 
-      const { createSpv: getSpv } = getClient('http://test-host.com');
+      const { createSpv: getSpv } = getClient();
 
-      const result = await getSpv('test-key', '2');
+      const result = await getSpv('test-key', '2', {
+        networkId: 'testnet04',
+        chainId: '0',
+      });
 
       expect(result).toEqual(response);
 
@@ -283,9 +320,13 @@ describe('client', () => {
         }),
       );
 
-      const { pollCreateSpv: pollSpv } = getClient('http://test-host.com');
+      const { pollCreateSpv: pollSpv } = getClient();
 
-      const result = await pollSpv('test-key', '2', { interval: 10 });
+      const result = await pollSpv('test-key', '2', {
+        interval: 10,
+        networkId: 'testnet04',
+        chainId: '0',
+      });
 
       expect(result).toEqual(response);
 
