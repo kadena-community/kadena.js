@@ -30,10 +30,6 @@ export const container = style([
       '&[href]': {
         display: 'inline-flex',
       },
-      '&[loading]': {
-        pointerEvents: 'none',
-        cursor: 'wait',
-      },
     },
     transition: 'background-color 0.4s ease',
     ':hover': {
