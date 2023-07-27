@@ -59,9 +59,9 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <main className={gridItemMainStyle}>{children}</main>
         <aside className={gridItemCollapsedSidebarStyle}></aside>
       </div>
-      <footer className={footerStyle}>
+      <div className={footerStyle}>
         <FooterWrapper />
-      </footer>
+      </div>
     </div>
   );
 };
