@@ -168,9 +168,9 @@ const CheckTransactions: FC = () => {
               />
             </StyledMediumField>
             <StyledFormButton>
-              <Button.Root title={t('Check Transactions')}>
+              <Button title={t('Check Transactions')}>
                 {t('Check Transactions')}
-              </Button.Root>
+              </Button>
             </StyledFormButton>
           </form>
 

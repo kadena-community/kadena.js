@@ -131,7 +131,7 @@ const ExistingAccountFaucetPage: FC = () => {
           <ChainSelect onChange={onChainSelectChange} value={chainID} />
         </StyledAccountForm>
         <StyledFormButton>
-          <Button.Root
+          <Button
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             disabled={requestStatus.status === 'processing'}
           >
@@ -143,7 +143,7 @@ const ExistingAccountFaucetPage: FC = () => {
             ) : (
               <SystemIcon.TrailingIcon />
             )}
-          </Button.Root>
+          </Button>
         </StyledFormButton>
       </StyledForm>
     </div>
