@@ -32,13 +32,11 @@ export const useGetBlogs = (): IReturn => {
       }
     } catch (e) {
       setIsLoading(false);
-      console.log(e);
       setError('There was an issue, please try again later');
     }
   };
 
   const handleLoad = (isRetry: boolean): void => {
-    console.log(isRetry, error, (isDone || error !== undefined) && !isRetry);
     if ((isDone || error !== undefined) && !isRetry) {
       setIsLoading(false);
       return;
@@ -58,7 +56,6 @@ export const useGetBlogs = (): IReturn => {
   }, [isLoading]);
 
   useEffect(() => {
-    console.log(222);
     setIsLoading(false);
   }, [setIsLoading, data]);
 
