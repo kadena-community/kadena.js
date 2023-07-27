@@ -126,25 +126,47 @@ export interface ICommandBuilder {
   continuation: ICont;
 }
 
+interface IStatefullCompose {
+  composeWith: (
+    patch:
+      | Partial<IPactCommand>
+      | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>),
+  ) => void;
+  readonly finalize: (command: Partial<IPactCommand>) => Partial<IPactCommand>;
+}
+
+const statefullCompose = (init: Partial<IPactCommand>): IStatefullCompose => {
+  let reducer: (command: Partial<IPactCommand>) => Partial<IPactCommand> =
+    composePactCommand(init);
+  const composeWith = (
+    patch:
+      | Partial<IPactCommand>
+      | ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>),
+  ): void => {
+    reducer = composePactCommand(reducer, patch);
+  };
+  return {
+    composeWith,
+    get finalize() {
+      return reducer;
+    },
+  };
+};
+
 export const commandBuilder = (): ICommandBuilder => {
   const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
-    let reducer: (command: Partial<IPactCommand>) => Partial<IPactCommand> =
-      composePactCommand(init);
+    const state = statefullCompose(init);
     const builder: IBuilder<T> = {
       addData: (key: string, value: ValidDataTypes) => {
-        reducer = composePactCommand(reducer, addData(key, value));
+        state.composeWith(addData(key, value));
         return builder;
       },
       addKeyset: (key: string, pred: string, ...publicKeys: string[]) => {
-        reducer = composePactCommand(
-          reducer,
-          addKeyset(key, pred, ...publicKeys),
-        );
+        state.composeWith(addKeyset(key, pred, ...publicKeys));
         return builder;
       },
       addSigner: (pubKey, cap?: unknown) => {
-        reducer = composePactCommand(
-          reducer,
+        state.composeWith(
           addSigner(
             pubKey,
             cap as (withCapability: IGeneralCapability) => ICapabilityItem[],
@@ -153,22 +175,22 @@ export const commandBuilder = (): ICommandBuilder => {
         return builder;
       },
       setMeta: (meta) => {
-        reducer = composePactCommand(reducer, setMeta(meta));
+        state.composeWith(setMeta(meta));
         return builder;
       },
       setNetworkId: (id: string) => {
-        reducer = composePactCommand(reducer, setNetworkId(id));
+        state.composeWith(setNetworkId(id));
         return builder;
       },
       setNonce: (arg: string | ((cmd: Partial<IPactCommand>) => string)) => {
-        reducer = composePactCommand(reducer, (cmd) => {
+        state.composeWith((cmd) => {
           const nonce = typeof arg === 'function' ? arg(cmd) : arg;
           return patchCommand(cmd, setNonce(nonce));
         });
         return builder;
       },
       getCommand: () => {
-        return reducer({});
+        return state.finalize({});
       },
       createTransaction: () => createTransaction(builder.getCommand()),
     };
