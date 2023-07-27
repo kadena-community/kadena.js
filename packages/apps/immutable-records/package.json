@@ -7,6 +7,7 @@
     "dev": "next dev",
     "format": "npm run format:pkg && npm run format:src",
     "format:ci": "prettier src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "lint": "next lint",
@@ -30,6 +31,7 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@types/gtag.js": "~0.0.12",
     "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
     "@vanilla-extract/next-plugin": "2.1.2",
     "prettier": "~3.0.0",
     "sort-package-json": "~2.5.1"
