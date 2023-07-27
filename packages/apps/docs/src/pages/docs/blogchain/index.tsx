@@ -1,3 +1,4 @@
+import { InfiniteScroll } from '@/components';
 import { BlogItem, BlogList } from '@/components/Blog';
 import { Article, Content, TitleHeader } from '@/components/Layout/components';
 import { getInitBlogPosts } from '@/hooks/useBlog/utils';
@@ -8,13 +9,22 @@ import {
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 interface IProps extends IPageProps {
   posts: IMenuData[];
 }
 
 const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
+  const [extraPosts, setExtraPosts] = useState<IMenuData[]>([]);
+
+  const handleLoad = async (): Promise<void> => {
+    const result = await fetch('/api/blog?offset=10&limit=10');
+    const data = (await result.json()) as IMenuData[];
+
+    setExtraPosts((v) => [...v, ...data]);
+  };
+
   return (
     <>
       <TitleHeader
@@ -28,6 +38,10 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
             {posts.map((item) => (
               <BlogItem key={item.root} item={item} />
             ))}
+            {extraPosts.map((item) => (
+              <BlogItem key={item.root} item={item} />
+            ))}
+            <InfiniteScroll handleLoad={handleLoad} />
           </BlogList>
         </Article>
       </Content>
@@ -40,7 +54,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename), true),
       posts,
       frontmatter: {
         title: 'BlogChain',

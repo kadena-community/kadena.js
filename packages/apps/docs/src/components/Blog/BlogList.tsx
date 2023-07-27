@@ -7,5 +7,9 @@ interface IProps {
 }
 
 export const BlogList: FC<IProps> = ({ children }) => {
-  return <ul className={bloglist}>{children}</ul>;
+  return (
+    <section>
+      <ul className={bloglist}>{children}</ul>
+    </section>
+  );
 };

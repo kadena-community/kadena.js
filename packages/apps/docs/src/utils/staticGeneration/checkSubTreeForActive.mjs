@@ -30,7 +30,7 @@ const IsMenuOpen = (pathname, itemRoot) =>
 
 const isPathRoot = (pathname, itemRoot) => itemRoot === pathname;
 
-const mapSubTree = (pathname) => (item) => {
+const mapSubTree = (pathname, noChildren, isRoot) => (item) => {
   const {
     description,
     subTitle,
@@ -60,17 +60,19 @@ const mapSubTree = (pathname) => (item) => {
   delete newItem.subTitle;
 
   // is the actual item active
-  if (!newItem.children) newItem.children = [];
-  newItem.children = newItem.children.map(mapSubTree(pathname));
+  if (!newItem.children || noChildren) newItem.children = [];
+  if (isRoot && newItem.root !== pathname) newItem.children = [];
+  newItem.children = newItem.children.map(mapSubTree(pathname, noChildren));
 
   return newItem;
 };
 
-export const checkSubTreeForActive = (path) => {
+export const checkSubTreeForActive = (path, noChildren = false) => {
   const tree = getData();
 
   if (!path) {
     throw new Error('no path');
   }
-  return tree.map(mapSubTree(path));
+
+  return tree.map(mapSubTree(path, noChildren, true));
 };

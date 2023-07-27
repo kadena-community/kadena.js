@@ -1,26 +1,20 @@
 import { menuData } from '@/data/menu.mjs';
+import { getInitBlogPosts } from '@/hooks/useBlog/utils';
 import { IMenuData } from '@/types/Layout';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const STARTBRANCH = '/docs/blogchain';
-
 const search = async (
   req: NextApiRequest,
-  res: NextApiResponse<IMenuData | IResponseError>,
+  res: NextApiResponse<IMenuData[] | IResponseError>,
 ): Promise<void> => {
-  const startBranch = menuData.find(
-    (item) => item.root === STARTBRANCH,
-  ) as IMenuData;
+  const { limit = 10, offset = 0 } = req.query as unknown as {
+    limit: number;
+    offset: number;
+  };
 
-  if (startBranch === undefined) {
-    res.status(404).json({
-      status: 404,
-      message: 'No posts found',
-    });
-    res.end();
-  }
+  const data = getInitBlogPosts(menuData as IMenuData[], offset, limit);
 
-  res.status(200).json(startBranch);
+  res.status(200).json(data);
   res.end();
 };
 
