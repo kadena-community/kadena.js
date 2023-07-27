@@ -1,4 +1,9 @@
-import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
+import {
+  darkTheme,
+  Stack,
+  styled,
+  StyledComponent,
+} from '@kadena/react-components';
 
 import { InnerWrapper } from '@/components/Layout/components/styles';
 
@@ -36,5 +41,11 @@ export const SubHeader: StyledComponent<'span'> = styled('span', {
   fontSize: '$xl',
   [`.${darkTheme} &`]: {
     color: '$neutral4',
+  },
+});
+
+export const StyledStack: StyledComponent<typeof Stack> = styled(Stack, {
+  '@md': {
+    flexWrap: 'nowrap',
   },
 });
