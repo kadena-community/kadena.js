@@ -9,7 +9,7 @@ import {
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import { GetStaticProps } from 'next';
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 interface IProps extends IPageProps {
   posts: IMenuData[];
@@ -17,13 +17,49 @@ interface IProps extends IPageProps {
 
 const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
   const [extraPosts, setExtraPosts] = useState<IMenuData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
+  const [isDone, setIsDone] = useState<boolean>(false);
 
-  const handleLoad = async (): Promise<void> => {
-    const result = await fetch('/api/blog?offset=10&limit=10');
-    const data = (await result.json()) as IMenuData[];
+  const limit = 10;
+  const [offset, setOffset] = useState<number>(limit);
 
-    setExtraPosts((v) => [...v, ...data]);
+  const startReload = (): void => {
+    if (isDone || error) return;
+    setIsLoading(true);
   };
+  const startRetry = (): void => {
+    setError(undefined);
+    startReload();
+  };
+
+  const handleLoad = useCallback(async (): Promise<void> => {
+    if (isDone) return;
+    try {
+      const result = await fetch(`/api/blog?offset=${offset}&limit=${limit}`);
+      const data = (await result.json()) as IMenuData[];
+      setExtraPosts((v) => [...v, ...data]);
+      setOffset((v) => v + limit);
+
+      if (data.length < limit) {
+        setIsDone(true);
+      }
+    } catch (e) {
+      setIsLoading(false);
+      setError('There was an issue, please try again later');
+    }
+  }, [setExtraPosts, setOffset, setIsLoading, setError, limit, offset, isDone]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [setIsLoading, extraPosts]);
+
+  useEffect(() => {
+    if (!isLoading) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    handleLoad();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
 
   return (
     <>
@@ -41,7 +77,13 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
             {extraPosts.map((item) => (
               <BlogItem key={item.root} item={item} />
             ))}
-            <InfiniteScroll handleLoad={handleLoad} />
+            <InfiniteScroll
+              handleLoad={startReload}
+              handleRetry={startRetry}
+              isLoading={isLoading}
+              error={error}
+              isDone={isDone}
+            />
           </BlogList>
         </Article>
       </Content>
