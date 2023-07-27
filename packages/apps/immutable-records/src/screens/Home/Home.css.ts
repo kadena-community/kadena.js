@@ -6,4 +6,7 @@ export const container = style([
   sprinkles({
     margin: '$4',
   }),
+  {
+    background: '#ccc',
+  },
 ]);
