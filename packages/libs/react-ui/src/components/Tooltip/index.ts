@@ -2,7 +2,7 @@ import type { ITooltipProps } from './Tooltip';
 import { Tooltip as TooltipComponent } from './Tooltip';
 import { tooltipHandler } from './tooltipHandler';
 
-export { ITooltipProps };
+export type { ITooltipProps };
 
 interface ITooltip {
   Root: React.ForwardRefExoticComponent<

@@ -13,7 +13,7 @@ interface ITabs {
   Content: FC<ITabContentProps>;
 }
 
-export { ITabsContainerProps, ITabProps, ITabContentProps };
+export type { ITabsContainerProps, ITabProps, ITabContentProps };
 
 export const Tabs: ITabs = {
   Root: TabsContainer,

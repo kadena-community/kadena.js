@@ -5,7 +5,7 @@ import GridRoot from './GridRoot';
 
 import { FC } from 'react';
 
-export { IGridRootProps as IGridContainerProps, IGridItemProps };
+export type { IGridRootProps as IGridContainerProps, IGridItemProps };
 
 interface IGrid {
   Root: FC<IGridRootProps>;

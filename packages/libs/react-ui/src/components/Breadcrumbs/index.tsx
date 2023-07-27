@@ -10,7 +10,7 @@ interface IBreadcrumbs {
   Item: FC<IBreadcrumbItemProps>;
 }
 
-export { IBreadcrumbsProps, IBreadcrumbItemProps };
+export type { IBreadcrumbsProps, IBreadcrumbItemProps };
 
 export const Breadcrumbs: IBreadcrumbs = {
   Root: BreadcrumbsContainer,
