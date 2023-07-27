@@ -66,7 +66,7 @@ export const OptionsModal: FC = () => {
 
   const options = Object.entries(devOptions);
 
-  const renderOptions = () => {
+  const renderOptions = (): React.JSX.Element => {
     return (
       <>
         {options.map((item) => {
