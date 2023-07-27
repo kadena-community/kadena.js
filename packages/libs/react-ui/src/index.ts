@@ -44,6 +44,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   IAccordionProps,
+  IAccordionSectionProps,
 } from './components';
 
 export {
