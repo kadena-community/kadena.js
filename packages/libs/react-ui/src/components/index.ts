@@ -24,6 +24,7 @@ export { TextField } from './TextField/TextField';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
+export { ProgressBar } from './ProgressBar';
 
 export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
 export type { IBoxProps } from './Box';
@@ -72,3 +73,4 @@ export type {
   ITHeadProps,
   ITrProps,
 } from './Table';
+export type { IProgressBarProps } from './ProgressBar';
