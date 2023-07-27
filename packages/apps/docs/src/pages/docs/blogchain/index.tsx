@@ -1,3 +1,5 @@
+import { Stack } from '@kadena/react-ui';
+
 import { InfiniteScroll } from '@/components';
 import { BlogItem, BlogList } from '@/components/Blog';
 import { Article, Content, TitleHeader } from '@/components/Layout/components';
@@ -61,6 +63,7 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
+  const firstPost = posts.shift();
   return (
     <>
       <TitleHeader
@@ -70,21 +73,29 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
       />
       <Content id="maincontent" layout="home">
         <Article>
-          <BlogList>
-            {posts.map((item) => (
-              <BlogItem key={item.root} item={item} />
-            ))}
-            {extraPosts.map((item) => (
-              <BlogItem key={item.root} item={item} />
-            ))}
-            <InfiniteScroll
-              handleLoad={startReload}
-              handleRetry={startRetry}
-              isLoading={isLoading}
-              error={error}
-              isDone={isDone}
-            />
-          </BlogList>
+          {firstPost && (
+            <BlogList>
+              <BlogItem key={firstPost.root} item={firstPost} />
+            </BlogList>
+          )}
+          <Stack>
+            <BlogList>
+              {posts.map((item) => (
+                <BlogItem key={item.root} item={item} />
+              ))}
+              {extraPosts.map((item) => (
+                <BlogItem key={item.root} item={item} />
+              ))}
+              <InfiniteScroll
+                handleLoad={startReload}
+                handleRetry={startRetry}
+                isLoading={isLoading}
+                error={error}
+                isDone={isDone}
+              />
+            </BlogList>
+            <div>sidemenu</div>
+          </Stack>
         </Article>
       </Content>
     </>

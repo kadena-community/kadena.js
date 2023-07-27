@@ -1,5 +1,6 @@
-import { Heading } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/react-ui';
 
+import { Avatar } from '../Avatar';
 import { FormatDate } from '../FormatDate';
 
 import { blogitem, footer, link, metaItem } from './styles.css';
@@ -16,9 +17,12 @@ export const BlogItem: FC<IProps> = ({ item }) => {
   return (
     <li className={blogitem}>
       <Link className={link} href={item.root}>
-        <Heading as="h4" variant="h6">
-          {item.author}
-        </Heading>
+        <Stack alignItems="center" spacing="$2">
+          <Avatar name={item.author} />
+          <Heading as="h4" variant="h6">
+            {item.author}
+          </Heading>
+        </Stack>
         <Heading as="h3" variant="h5">
           {item.title}
         </Heading>

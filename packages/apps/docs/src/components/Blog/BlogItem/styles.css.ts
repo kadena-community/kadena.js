@@ -6,8 +6,11 @@ export const blogitem = style([
   sprinkles({
     padding: 0,
     borderRadius: '$md',
+    backgroundColor: 'transparent',
   }),
   {
+    willChange: 'background-color',
+    transition: 'background-color .2s ease',
     selectors: {
       '&:hover': {
         backgroundColor: vars.colors.$neutral2,
