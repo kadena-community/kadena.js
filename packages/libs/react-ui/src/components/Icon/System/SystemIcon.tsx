@@ -64,10 +64,10 @@ import { SlashForward as SlashForwardSvg } from './svgs/SlashForward';
 import { StopCircle as StopCircleSvg } from './svgs/StopCircle';
 import { ThemeLightDark as ThemeLightDarkSvg } from './svgs/ThemeLightDark';
 import { TrailingIcon as TrailingIconSvg } from './svgs/TrailingIcon';
-import { Twitter as TwitterSvg } from './svgs/Twitter';
-import { UsbFlashDrive as UsbFlashDriveSvg } from './svgs/UsbFlashDrive';
 import { Transition as TransitionSvg } from './svgs/Transition';
 import { TransitionMasked as TransitionMaskedSvg } from './svgs/TransitionMasked';
+import { Twitter as TwitterSvg } from './svgs/Twitter';
+import { UsbFlashDrive as UsbFlashDriveSvg } from './svgs/UsbFlashDrive';
 
 export const Account = IconWrapper(AccountSvg);
 export const AlertBox = IconWrapper(AlertBoxSvg);

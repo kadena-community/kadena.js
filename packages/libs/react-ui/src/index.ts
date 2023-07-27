@@ -44,6 +44,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   IAccordionProps,
+  IProgressBarProps,
   IAccordionSectionProps,
 } from './components';
 
@@ -81,4 +82,5 @@ export {
   Select,
   Tree,
   Accordion,
+  ProgressBar,
 } from './components';
