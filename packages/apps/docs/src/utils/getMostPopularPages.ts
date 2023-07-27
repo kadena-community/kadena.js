@@ -110,6 +110,15 @@ export default async function getMostPopularPages(
 ): Promise<IMostPopularPage[]> {
   const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
 
+  const { GOOGLE_ANALYTICS_PROPERTY_ID, GOOGLE_APPLICATION_CREDENTIALS } =
+    process.env;
+
+  if (
+    GOOGLE_ANALYTICS_PROPERTY_ID === undefined ||
+    GOOGLE_APPLICATION_CREDENTIALS === undefined
+  )
+    return [];
+
   if (!validateCache(dataFilePath)) {
     const data: string = fs.readFileSync(dataFilePath, 'utf8');
     const mostPopularPages = getTopPages(JSON.parse(data), slug, limit);
@@ -118,7 +127,7 @@ export default async function getMostPopularPages(
 
   // If the cache is older than a day, use the API
   const [response] = (await analyticsDataClient.runReport({
-    property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID}`,
+    property: `properties/${GOOGLE_ANALYTICS_PROPERTY_ID}`,
     dateRanges: [
       {
         startDate: getStartDateOfLastMonths(3),

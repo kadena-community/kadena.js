@@ -28,9 +28,11 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
               Explore our guides and examples to build on Kadena
             </SubHeader>
           </Stack>
-          <div className={mostPopularWrapper}>
-            <MostPopular pages={popularPages} title="Most viewed docs" />
-          </div>
+          {popularPages.length > 0 && (
+            <div className={mostPopularWrapper}>
+              <MostPopular pages={popularPages} title="Most viewed docs" />
+            </div>
+          )}
         </StyledStack>
       </Wrapper>
     </StyledHeader>
