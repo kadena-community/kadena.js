@@ -12,7 +12,7 @@ export const avatar = style([
     backgroundColor: '$primaryContrast',
     color: '$primarySurface',
     fontWeight: '$bold',
-    fontSize: '$lg',
+    fontSize: '$md',
   }),
   {
     borderRadius: '100%',
