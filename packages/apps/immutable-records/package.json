@@ -15,16 +15,12 @@
     "test": "echo 'boilerplate'"
   },
   "dependencies": {
-    "@types/node": "^16.0.0",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "18.2.7",
     "@vanilla-extract/css": "1.12.0",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "next": "13.4.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "5.1.6"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -32,8 +28,11 @@
     "@types/gtag.js": "~0.0.12",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "18.2.7",
     "@vanilla-extract/next-plugin": "2.1.2",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1"
+    "sort-package-json": "~2.5.1",
+    "typescript": "5.1.6"
   }
 }
