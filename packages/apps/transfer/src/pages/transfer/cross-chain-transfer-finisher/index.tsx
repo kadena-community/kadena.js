@@ -307,12 +307,12 @@ const CrossChainTransferFinisher: FC = () => {
             ) : null}
           </StyledAccountForm>
           <StyledFormButton>
-            <Button.Root
+            <Button
               title={t('Finish Cross Chain Transfer')}
               disabled={!isGasStation}
             >
               {t('Finish Cross Chain Transfer')}
-            </Button.Root>
+            </Button>
           </StyledFormButton>
 
           {txError.toString() !== '' ? (

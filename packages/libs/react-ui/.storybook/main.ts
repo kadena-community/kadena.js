@@ -7,6 +7,7 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
+    '@storybook/addon-controls',
     '@storybook/addon-interactions',
     'storybook-dark-mode',
   ],
@@ -18,7 +19,7 @@ const config: StorybookConfig = {
     autodocs: true,
   },
   // Add this for Vanilla Extract
-  webpackFinal(config, options) {
+  webpackFinal(config) {
     // Add Vanilla-Extract and MiniCssExtract Plugins
     config.plugins?.push(
       new VanillaExtractPlugin(),

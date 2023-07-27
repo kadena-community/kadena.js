@@ -66,7 +66,7 @@ export const OptionsModal: FC = () => {
 
   const options = Object.entries(devOptions);
 
-  const renderOptions = () => {
+  const renderOptions = (): React.JSX.Element => {
     return (
       <>
         {options.map((item) => {
@@ -128,13 +128,13 @@ export const OptionsModal: FC = () => {
         {renderOptions()}
 
         <div className={modalButtonStyle}>
-          <Button.Root
+          <Button
             title={`${t('Save')}`}
             onClick={() => handleSave()}
             color="primary"
           >
             {`${t('Save')}`}
-          </Button.Root>
+          </Button>
         </div>
       </div>
     </Modal>

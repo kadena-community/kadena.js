@@ -13,8 +13,6 @@ import React, { FC } from 'react';
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
   <ThemeProvider
     attribute="class"
-    enableSystem={true}
-    defaultTheme="system"
     value={{
       light: 'light',
       dark: darkThemeClass,
