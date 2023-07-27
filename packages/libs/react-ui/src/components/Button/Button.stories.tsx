@@ -117,7 +117,7 @@ export const Dynamic: Story = {
     as: 'button',
     variant: 'primary',
     disabled: false,
-    href: '',
+    href: 'https://kadena.io',
     iconAlign: 'left',
     loading: false,
     target: '_self',
