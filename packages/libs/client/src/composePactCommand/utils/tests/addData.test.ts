@@ -1,19 +1,19 @@
 import { addData, addKeyset } from '../addData';
 
 describe('addData', () => {
-  it('return data for exec payload', () => {
+  it('add data for exec payload', () => {
     expect(
       addData('test', 'value')({ payload: { exec: { code: '(func)' } } }),
     ).toEqual({
-      payload: { exec: { data: { test: 'value' } } },
+      payload: { exec: { code: '(func)', data: { test: 'value' } } },
     });
   });
 
-  it('return data for cont payload', () => {
+  it('add data for cont payload', () => {
     expect(
       addData('test', 'value')({ payload: { cont: { pactId: '1' } } }),
     ).toEqual({
-      payload: { cont: { data: { test: 'value' } } },
+      payload: { cont: { pactId: '1', data: { test: 'value' } } },
     });
   });
 

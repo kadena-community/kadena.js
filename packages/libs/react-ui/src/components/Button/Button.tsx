@@ -1,43 +1,92 @@
-import { colorVariants } from './Button.css';
+import {
+  buttonLoadingClass,
+  colorVariants,
+  iconLoadingClass,
+} from './Button.css';
+import { ButtonIcon } from './ButtonIcon';
 
+import { SystemIcon } from '@components/Icon';
+import cx from 'classnames';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'a';
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  href?: string;
+  variant?: keyof typeof colorVariants;
   children: React.ReactNode;
-  title?: string;
   disabled?: boolean;
-  color?: keyof typeof colorVariants;
+  href?: string;
+  icon?: keyof typeof SystemIcon;
+  iconAlign?: 'left' | 'right';
+  loading?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  target?: '_blank' | '_self';
+  title?: string;
 }
 
 export const Button: FC<IButtonProps> = ({
   as = 'button',
-  color = 'primary',
-  onClick,
-  href,
   children,
+  variant = 'primary',
+  href,
+  icon,
+  iconAlign = 'right',
+  loading,
+  onClick,
+  target,
   ...props
 }) => {
   const ariaLabel = props['aria-label'] ?? props.title;
+  const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 
-  if (as === 'a' && href !== undefined && href !== '') {
-    <a className={colorVariants[color]} href={href}>
+  let Icon = icon && SystemIcon[icon];
+  if (loading) {
+    Icon = SystemIcon.Loading;
+  }
+
+  const buttonClassname = cx(colorVariants[variant], {
+    [buttonLoadingClass]: loading,
+  });
+
+  const iconClassname = cx({
+    [iconLoadingClass]: loading,
+  });
+
+  const buttonChildren = (
+    <>
+      {Icon && iconAlign === 'left' && (
+        <ButtonIcon icon={Icon} className={iconClassname} />
+      )}
       {children}
-    </a>;
+      {Icon && iconAlign === 'right' && (
+        <ButtonIcon icon={Icon} className={iconClassname} />
+      )}
+    </>
+  );
+
+  if (renderAsAnchor) {
+    return (
+      <a
+        aria-label={ariaLabel}
+        className={buttonClassname}
+        data-testid="kda-button"
+        href={href}
+        target={target}
+      >
+        {buttonChildren}
+      </a>
+    );
   }
 
   return (
     <button
       {...props}
-      className={colorVariants[color]}
-      onClick={onClick}
       aria-label={ariaLabel}
+      className={buttonClassname}
       data-testid="kda-button"
+      onClick={onClick}
     >
-      {children}
+      {buttonChildren}
     </button>
   );
 };

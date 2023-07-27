@@ -3,6 +3,7 @@ import os from 'os';
 import path from 'path';
 
 import yaml from 'js-yaml';
+import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
@@ -49,9 +50,11 @@ const convertFile = (file) => {
       title: data.title,
     });
   }
+  const readTime = getReadTime(doc);
 
   return {
     ...data,
+    ...readTime,
     isMenuOpen: false,
     isActive: false,
   };
