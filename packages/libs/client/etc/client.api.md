@@ -35,10 +35,10 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 // @alpha (undocumented)
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
-// Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const getClient: IGetClient;
+// @alpha
+export const getClient: (options?: {
+    networks: Record<string, string | ((chianId: ChainId) => string)>;
+} | undefined) => IClient;
 
 export { ICap }
 
@@ -85,6 +85,20 @@ export interface IChainweaverSignBody {
     signingPubKey: string;
     // (undocumented)
     ttl: number;
+}
+
+// Warning: (ae-forgotten-export) The symbol "IClientBasics" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export interface IClient extends IClientBasics {
+    dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+    // @deprecated (undocumented)
+    getPoll: (requestKeys?: string[] | string, options?: INetworkOptions) => Promise<IPollResponse>;
+    preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
+    runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
+    // @deprecated (undocumented)
+    send: ISubmit;
+    signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
 }
 
 export { ICommand }

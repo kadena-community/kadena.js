@@ -22,12 +22,9 @@ import {
   IPollOptions,
   IPollRequestPromise,
 } from './interfaces/interfaces';
+import { getHostUrl } from './utils/getHostUrl';
 import { getRequestStorage } from './utils/request-storege';
-import {
-  kadenaHostGenerator,
-  mergeAll,
-  mergeAllPollRequestPromises,
-} from './utils/utils';
+import { mergeAll, mergeAllPollRequestPromises } from './utils/utils';
 
 type IOptions = IPollOptions &
   (INetworkOptions | { networkId?: undefined; chainId?: undefined });
@@ -167,7 +164,10 @@ interface IClientBasics {
   ) => Promise<string>;
 }
 
-interface IClient extends IClientBasics {
+/**
+ * @alpha
+ */
+export interface IClient extends IClientBasics {
   /**
    * An alias for `local` when both preflight and signatureVerification are `true`.
    * @see local
@@ -218,32 +218,45 @@ interface IClient extends IClientBasics {
   ) => Promise<IPollResponse>;
 }
 
-interface IGetClient {
-  /**
-   * Generates a client instance by passing the URL of the host.
-   *
-   * Useful when you are working with a single network and chainId.
-   */
-  (hostUrl: string): IClient;
-
-  /**
-   * Generates a client instance by passing a hostUrlGenerator function.
-   *
-   * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
-   */
-  (
-    hostAddressGenerator?: (options: {
-      chainId: ChainId;
-      networkId: string;
-    }) => string,
-  ): IClient;
-}
-
 /**
  * @alpha
+ * Returns helper functions to interact with the blockchain API.
+ *
+ * The main advantage of using `getClient` is that you only need to pass the networks object
+ * once, which reduces redundant code and enhances code clarity. Additionally, `getClient`
+ * keeps track of requests, so if a user utilizes the `submit` function and later calls the
+ * `listen` function, it uses the same network and chainId as the initial request.
+ *
+ * *note:* the `getClient` function is already aware of `mainnet01` and `testnet04` by default.
+ * There's no need to pass them via the networks property in the configuration options. you
+ * only need to pass the base url not the complete url
+ *
+ * @param options - Configuration object containing networks
+ * @returns An object with helper functions.
+ *
+ * @example
+ * ```
+ * // with no options
+ * const { submit, listen } = getClient()
+ *
+ * const requestKey = await submit(signedTx);
+ * const result = await listen(requestKey)
+ *
+ * // with a custom network
+ * const { submit, listen } = getClient({
+ *   networks: {
+ *     // the url for chain 1 would be http://localhost/chainweb/0.0/devnet/chain/1/pact
+ *     "devnet": "http://localhost:",
+ *     // pass url generator for more custom urls
+ *     "my-network" : (chainId) => "https://my-network-url/${chainId}/pact"
+ *   }
+ * })
+ * ```
  */
-export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
-  const getHost = typeof host === 'string' ? () => host : host;
+export const getClient = (options?: {
+  networks: Record<string, string | ((chianId: ChainId) => string)>;
+}): IClient => {
+  const getHost = getHostUrl(options?.networks);
   const storage = getRequestStorage();
 
   const getStoredHost = (
