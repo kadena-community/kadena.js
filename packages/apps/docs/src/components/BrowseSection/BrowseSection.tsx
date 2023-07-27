@@ -23,13 +23,16 @@ export type BrowseSectionType = FC<IBrowseSectionProps> & {
 };
 
 const BrowseSection: BrowseSectionType = ({
-  /* eslint-disable react/prop-types */
+  /* eslint-disable-next-line react/prop-types */
   children,
+  /* eslint-disable-next-line react/prop-types */
   title,
+  /* eslint-disable-next-line react/prop-types */
   titleAs = 'h6',
+  /* eslint-disable-next-line react/prop-types */
   direction = 'column',
+  /* eslint-disable-next-line react/prop-types */
   className,
-  /* eslint-enable react/prop-types */
 }) => {
   const Wrapper = direction === 'column' ? StyledLinkList : StyledList;
 

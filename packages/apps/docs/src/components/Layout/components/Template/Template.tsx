@@ -4,7 +4,7 @@ import { Menu, MenuBack } from '../styles';
 
 import { useMenu } from '@/hooks';
 import { IMenuItem } from '@/types/Layout';
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;
