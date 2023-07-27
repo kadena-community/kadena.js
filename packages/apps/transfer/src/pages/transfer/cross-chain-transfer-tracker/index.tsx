@@ -182,9 +182,8 @@ const CrossChainTransferTracker: FC = () => {
             />
           </StyledAccountForm>
           <StyledFormButton>
-            <Button title={t('Search')}>
+            <Button title={t('Search')} icon="Magnify" iconAlign="right">
               {t('Search')}
-              <SystemIcon.Magnify />
             </Button>
           </StyledFormButton>
         </StyledForm>
