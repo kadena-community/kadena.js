@@ -5,8 +5,7 @@ const Document: FC = () => {
   const TypedHead = Head as unknown as FC<{ children?: ReactNode }>;
   return (
     <Html lang="en">
-      <TypedHead>
-      </TypedHead>
+      <TypedHead></TypedHead>
       <body>
         <Main />
         <div id="modalportal" />
