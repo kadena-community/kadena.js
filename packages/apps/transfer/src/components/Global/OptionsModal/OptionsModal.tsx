@@ -128,13 +128,13 @@ export const OptionsModal: FC = () => {
         {renderOptions()}
 
         <div className={modalButtonStyle}>
-          <Button.Root
+          <Button
             title={`${t('Save')}`}
             onClick={() => handleSave()}
             color="primary"
           >
             {`${t('Save')}`}
-          </Button.Root>
+          </Button>
         </div>
       </div>
     </Modal>
