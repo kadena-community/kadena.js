@@ -85,4 +85,6 @@ export interface IMenuData {
   isActive: boolean;
   publishDate?: string;
   author?: string;
+  wordCount?: number;
+  readingTimeInMinutes?: number;
 }
