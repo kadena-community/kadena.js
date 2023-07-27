@@ -137,7 +137,7 @@ const ModuleExplorer: FC = () => {
           <ChainSelect
             onChange={onChainSelectChange}
             value={chainID}
-            ariaLabel="Select chain"
+            ariaLabel="Select Chain ID"
           />
           <TextField
             label={t('Module Name')}
