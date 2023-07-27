@@ -1,19 +1,22 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const gridItemMiniMenuStyle = style([
+export const sidebarClass = style([
   sprinkles({
-    backgroundColor: '$neutral5',
+    position: 'fixed',
+    left: 0,
+    top: '$16',
+    bottom: '$10',
+    backgroundColor: '$gray90',
+    display: 'flex',
   }),
+]);
+
+export const gridItemMiniMenuStyle = style([
   {
-    gridArea: 'mini-menu',
+    height: '100%',
     borderRight: `1px solid ${vars.colors.$borderSubtle}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$neutral2,
-      },
-    },
   },
 ]);
 
@@ -34,29 +37,13 @@ export const gridMiniMenuListButtonStyle = style([
         color: vars.colors.$white,
       },
       '&:active': {
-        color: vars.colors.$negativeSurface,
+        color: vars.colors.$red20,
       },
       '&.active': {
-        backgroundColor: vars.colors.$secondaryContrast,
+        backgroundColor: vars.colors.$pink80,
       },
       '&.active:hover': {
-        color: vars.colors.$secondarySurface,
-      },
-
-      [`${darkThemeClass} &`]: {
-        color: vars.colors.$neutral5,
-      },
-      [`${darkThemeClass} &:hover`]: {
-        color: vars.colors.$white,
-      },
-      [`${darkThemeClass} &:active`]: {
-        color: vars.colors.$negativeContrast,
-      },
-      [`${darkThemeClass} &.active`]: {
-        backgroundColor: vars.colors.$secondarySurface,
-      },
-      [`${darkThemeClass} &.active:hover`]: {
-        color: vars.colors.$secondaryHighContrast,
+        color: vars.colors.$pink40,
       },
     },
   },
@@ -64,12 +51,7 @@ export const gridMiniMenuListButtonStyle = style([
 
 export const gridMiniMenuListItemStyle = style([
   {
-    borderBottom: `1px solid ${vars.colors.$borderContrast}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
-      },
-    },
+    borderBottom: `1px solid ${vars.colors.$gray40}`,
   },
 ]);
 
@@ -88,10 +70,8 @@ export const gridItemMenuStyle = style([
     backgroundColor: '$neutral2',
     padding: '$6',
     paddingTop: '$4',
+    width: '$64',
   }),
-  {
-    gridArea: 'menu',
-  },
 ]);
 
 export const subMenuTitleClass = style([
