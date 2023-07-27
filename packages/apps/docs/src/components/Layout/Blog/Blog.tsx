@@ -11,7 +11,7 @@ import {
 import { ArticleMetadataItem, PageGrid } from './styles';
 
 import { IPageProps } from '@/types/Layout';
-import { formatDistance } from 'date-fns';
+import { formatDateDistance } from '@/utils/dates';
 import React, { FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -45,8 +45,7 @@ export const Blog: FC<IPageProps> = ({
               <ArticleMetadataItem>
                 {publishDate && (
                   <time dateTime={publishDate}>
-                    Published{' '}
-                    {formatDistance(new Date(publishDate!), new Date())} ago
+                    Published {formatDateDistance(new Date(publishDate))}
                   </time>
                 )}
               </ArticleMetadataItem>
