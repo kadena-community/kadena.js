@@ -2,7 +2,7 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const browseSectionWrapper = style([
+const browseSectionWrapper = style([
   sprinkles({
     gap: '$4',
     paddingY: 0,
@@ -17,3 +17,5 @@ export const browseSectionWrapper = style([
     },
   },
 ]);
+
+export { browseSectionWrapper };

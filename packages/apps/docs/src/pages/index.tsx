@@ -1,7 +1,7 @@
 import { Stack } from '@kadena/react-components';
 import { Box, Heading } from '@kadena/react-ui';
 
-import { browseSectionWrapper } from './styles.css';
+import { browseSectionWrapper } from '../styles/index.css';
 
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
