@@ -61,7 +61,7 @@ const mapSubTree = (pathname, noChildren, isRoot) => (item) => {
 
   // is the actual item active
   if (!newItem.children || noChildren) newItem.children = [];
-  if (isRoot && newItem.root !== pathname) newItem.children = [];
+  if (isRoot && !pathname.includes(newItem.root)) newItem.children = [];
   newItem.children = newItem.children.map(mapSubTree(pathname, noChildren));
 
   return newItem;
