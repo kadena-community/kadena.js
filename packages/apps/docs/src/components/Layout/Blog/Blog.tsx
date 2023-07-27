@@ -26,7 +26,8 @@ export const Blog: FC<IPageProps> = ({
     frontmatter.navigation?.next?.related ||
     frontmatter.navigation?.previous?.related ||
     [];
-
+  const readingTimeLabel =
+    readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
@@ -40,7 +41,7 @@ export const Blog: FC<IPageProps> = ({
           <Article>
             <div className={articleTopMetadataClass}>
               <ArticleMetadataItem>
-                {readingTimeInMinutes} minutes read
+                {readingTimeInMinutes} {readingTimeLabel} read
               </ArticleMetadataItem>
               <ArticleMetadataItem>
                 {publishDate && (
