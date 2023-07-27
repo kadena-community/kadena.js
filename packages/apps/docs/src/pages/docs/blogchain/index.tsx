@@ -27,8 +27,8 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
     data: extraPosts,
   } = useGetBlogs();
 
-  const startRetry = (): void => {
-    handleLoad();
+  const startRetry = (isRetry: boolean = false): void => {
+    handleLoad(isRetry);
   };
 
   const [firstPost, ...allPosts] = posts;
@@ -57,7 +57,6 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
               ))}
               <InfiniteScroll
                 handleLoad={startRetry}
-                handleRetry={startRetry}
                 isLoading={isLoading}
                 error={error}
                 isDone={isDone}

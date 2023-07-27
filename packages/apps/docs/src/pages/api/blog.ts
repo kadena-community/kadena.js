@@ -14,8 +14,7 @@ const search = async (
 
   const data = getInitBlogPosts(menuData as IMenuData[], offset, limit);
 
-  res.status(200).json(data);
-  res.end();
+  res.json(data);
 };
 
 export default search;

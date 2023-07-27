@@ -2,7 +2,7 @@ import { IMenuData } from '@/types/Layout';
 import { useEffect, useState } from 'react';
 
 interface IReturn {
-  handleLoad: () => void;
+  handleLoad: (isRetry: boolean) => void;
   isLoading: boolean;
   error?: string;
   isDone: boolean;
@@ -19,6 +19,7 @@ export const useGetBlogs = (): IReturn => {
 
   const get = async (): Promise<void> => {
     setError(undefined);
+
     if (isDone) return;
     try {
       const result = await fetch(`/api/blog?offset=${offset}&limit=${limit}`);
@@ -26,28 +27,38 @@ export const useGetBlogs = (): IReturn => {
       getData((v) => [...v, ...items]);
       setOffset((v) => v + limit);
 
-      if (data.length < limit) {
+      if (items.length < limit) {
         setIsDone(true);
       }
     } catch (e) {
       setIsLoading(false);
+      console.log(e);
       setError('There was an issue, please try again later');
     }
   };
 
-  const handleLoad = (): void => {
-    if (isDone || error !== undefined) return;
+  const handleLoad = (isRetry: boolean): void => {
+    console.log(isRetry, error, (isDone || error !== undefined) && !isRetry);
+    if ((isDone || error !== undefined) && !isRetry) {
+      setIsLoading(false);
+      return;
+    }
+
+    if (isRetry) {
+      setError(undefined);
+    }
     setIsLoading(true);
   };
 
   useEffect(() => {
-    if (!isLoading) return;
+    if (!isLoading || error !== undefined) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {
+    console.log(222);
     setIsLoading(false);
   }, [setIsLoading, data]);
 

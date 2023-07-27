@@ -4,8 +4,7 @@ import { Loading } from '@/components';
 import React, { FC, useEffect, useRef } from 'react';
 
 interface IProps {
-  handleLoad: () => void;
-  handleRetry: () => void;
+  handleLoad: (isRetry: boolean) => void;
   isLoading: boolean;
   error?: string;
   isDone?: boolean;
@@ -13,7 +12,6 @@ interface IProps {
 
 export const InfiniteScroll: FC<IProps> = ({
   handleLoad,
-  handleRetry,
   isLoading,
   error,
   isDone,
@@ -22,15 +20,22 @@ export const InfiniteScroll: FC<IProps> = ({
 
   useEffect(() => {
     if (!loadRef?.current) return;
+    let target: Element;
 
     const observer = new IntersectionObserver(([entry]) => {
+      target = entry.target;
       if (entry.isIntersecting) {
-        handleLoad();
-        observer.unobserve(entry.target);
+        handleLoad(false);
+        observer.unobserve(target);
       }
     });
 
     observer.observe(loadRef.current);
+
+    return () => {
+      if (target === undefined) return;
+      observer.unobserve(target);
+    };
   }, [isLoading, handleLoad]);
 
   return (
@@ -41,7 +46,11 @@ export const InfiniteScroll: FC<IProps> = ({
           <>
             <Heading as="h5">{error}</Heading>
 
-            <Button onClick={handleRetry} icon="Refresh" iconAlign="left">
+            <Button
+              onClick={() => handleLoad(true)}
+              icon="Refresh"
+              iconAlign="left"
+            >
               Try again
             </Button>
           </>
