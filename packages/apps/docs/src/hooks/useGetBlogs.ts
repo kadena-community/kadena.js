@@ -1,7 +1,15 @@
 import { IMenuData } from '@/types/Layout';
 import { useEffect, useState } from 'react';
 
-export const useGetBlogs = () => {
+interface IReturn {
+  handleLoad: () => void;
+  isLoading: boolean;
+  error?: string;
+  isDone: boolean;
+  data: IMenuData[];
+}
+
+export const useGetBlogs = (): IReturn => {
   const limit = 10;
   const [offset, setOffset] = useState<number>(limit);
   const [isDone, setIsDone] = useState<boolean>(false);

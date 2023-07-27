@@ -12,7 +12,7 @@ import {
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import { GetStaticProps } from 'next';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC } from 'react';
 
 interface IProps extends IPageProps {
   posts: IMenuData[];
