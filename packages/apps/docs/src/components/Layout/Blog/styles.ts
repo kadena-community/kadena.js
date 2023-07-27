@@ -17,7 +17,7 @@ export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
     gridTemplateAreas: `
             "header header"
             "pageheader pageheader"
-            "content content"
+            "content"
             "footer footer"
           `,
 
@@ -28,7 +28,7 @@ export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
       gridTemplateAreas: `
               "header header header header"
               "pageheader pageheader pageheader pageheader"
-              ". menu content ."
+              ". content ."
               "footer footer footer footer"
             `,
     },
