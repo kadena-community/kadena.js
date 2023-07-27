@@ -66,10 +66,14 @@ export async function headers2blocks(
     }
 
     // index payloads by payloadHash
-    const paysMap = pays.reduce((m, c) => {
-      m[c.payloadHash] = c as unknown as IBlockPayloadMap<ITransactionElement>;
-      return m;
-    }, {} as { [key: string]: IBlockPayloadMap<ITransactionElement> });
+    const paysMap = pays.reduce(
+      (m, c) => {
+        m[c.payloadHash] =
+          c as unknown as IBlockPayloadMap<ITransactionElement>;
+        return m;
+      },
+      {} as { [key: string]: IBlockPayloadMap<ITransactionElement> },
+    );
 
     missing = missing.filter((hdr, i) => {
       const pay = paysMap[hdr.payloadHash];
