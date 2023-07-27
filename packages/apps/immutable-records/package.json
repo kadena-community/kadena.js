@@ -5,12 +5,13 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "format": "npm run format:pkg && npm run format:src",
+    "format": "npm run format:pkg && npm run format:src && npm run format:md",
     "format:ci": "prettier src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "lint": "next lint",
+    "precommit": "rush update && rush lint -t @kadena/immutable-records && rush build -t @kadena/immutable-records",
     "start": "next start",
     "test": "echo 'boilerplate'"
   },
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@types/gtag.js": "~0.0.12",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
