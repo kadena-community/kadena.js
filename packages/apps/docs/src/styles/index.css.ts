@@ -1,4 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
@@ -11,11 +11,15 @@ const browseSectionWrapper = style([
   {
     flexBasis: '48%',
     '@media': {
-      [`screen and (min-width: ${768 / 16}rem)`]: {
+      [breakpoints.md]: {
         flexBasis: '30%',
       },
     },
   },
 ]);
+
+export const fullWidth = style({
+  width: '100%',
+});
 
 export { browseSectionWrapper };
