@@ -1,13 +1,38 @@
+import { Stack } from '@kadena/react-ui';
+
+import { InfiniteScroll } from '@/components';
+import { BlogItem, BlogList } from '@/components/Blog';
 import { Article, Content, TitleHeader } from '@/components/Layout/components';
-import { IPageProps } from '@/types/Layout';
+import { useGetBlogs } from '@/hooks';
+import { getInitBlogPosts } from '@/hooks/useBlog/utils';
+import { IMenuData, IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { getData } from '@/utils/staticGeneration/getData.mjs';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
-const BlogChainHome: FC<IPageProps> = ({ frontmatter }) => {
+interface IProps extends IPageProps {
+  posts: IMenuData[];
+}
+
+const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
+  const {
+    handleLoad,
+    error,
+    isLoading,
+    isDone,
+    data: extraPosts,
+  } = useGetBlogs();
+
+  const startRetry = (isRetry: boolean = false): void => {
+    handleLoad(isRetry);
+  };
+
+  const [firstPost, ...allPosts] = posts;
+
   return (
     <>
       <TitleHeader
@@ -16,16 +41,42 @@ const BlogChainHome: FC<IPageProps> = ({ frontmatter }) => {
         icon={frontmatter.icon}
       />
       <Content id="maincontent" layout="home">
-        <Article></Article>
+        <Article>
+          {firstPost && (
+            <BlogList>
+              <BlogItem key={firstPost.root} item={firstPost} />
+            </BlogList>
+          )}
+          <Stack>
+            <BlogList>
+              {allPosts.map((item) => (
+                <BlogItem key={item.root} item={item} />
+              ))}
+              {extraPosts.map((item) => (
+                <BlogItem key={item.root} item={item} />
+              ))}
+              <InfiniteScroll
+                handleLoad={startRetry}
+                isLoading={isLoading}
+                error={error}
+                isDone={isDone}
+              />
+            </BlogList>
+            <div>sidemenu</div>
+          </Stack>
+        </Article>
       </Content>
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const posts = getInitBlogPosts(getData(), 0, 10);
+
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename), true),
+      posts,
       frontmatter: {
         title: 'BlogChain',
         menu: 'BlogChain',

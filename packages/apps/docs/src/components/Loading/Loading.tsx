@@ -1,4 +1,4 @@
-import { Loader } from '../styles';
+import { Loader } from './styles';
 
 import React, { FC } from 'react';
 
