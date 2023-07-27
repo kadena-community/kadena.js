@@ -6,8 +6,8 @@ import { browseSectionWrapper } from '../styles/index.css';
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { getMostPopularPages } from '@/components/MostPopular/getMostPopularPages';
 import { IMostPopularPage } from '@/types/MostPopularData';
+import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -118,11 +118,11 @@ const Home: FC<IProps> = ({ popularPages }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await getMostPopularPages();
+  const mostPopularPages = await getMostPopularPages();
 
   return {
     props: {
-      popularPages: data,
+      popularPages: mostPopularPages,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Welcome to Kadena docs',
