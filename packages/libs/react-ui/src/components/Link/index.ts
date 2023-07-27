@@ -4,7 +4,7 @@ import { LinkIcon } from './LinkIcon';
 
 import { FC } from 'react';
 
-export { ILinkProps };
+export type { ILinkProps };
 
 interface ILink {
   Root: FC<ILinkProps>;

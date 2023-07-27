@@ -1,3 +1,51 @@
+export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
+export type { IBoxProps } from './Box';
+export type { IBreadcrumbsProps, IBreadcrumbItemProps } from './Breadcrumbs';
+export type { IButtonProps } from './Button';
+export type { ICardProps } from './Card';
+export type { IGridContainerProps, IGridItemProps } from './Grid';
+export type { IIconButtonProps } from './IconButton';
+export type { IIconProps } from './Icon';
+export type { IInputProps } from './Input/Input';
+export type { IInputWrapperProps, InputWrapperStatus } from './InputWrapper';
+export type { ILinkProps } from './Link';
+export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
+export type { IModalProps } from './Modal';
+export type { IOptionProps } from './Select/Option';
+export type { ISelectProps } from './Select/Select';
+export type { IStackProps } from './Stack';
+export type { ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
+export type { ITagProps } from './Tag';
+export type { ITextFieldProps } from './TextField/TextField';
+export type { ITooltipProps } from './Tooltip';
+export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
+export type { ITreeProps } from './Tree';
+export type {
+  IFooterProps,
+  IFooterPanelProps,
+  IFooterIconItemProps,
+  IFooterLinkItemProps,
+} from './Footer';
+export type {
+  INotificationProps,
+  INotificationHeaderProps,
+  INotificationActionsProps,
+} from './Notification';
+export type {
+  ITableProps,
+  ITBodyProps,
+  ITdProps,
+  IThProps,
+  ITHeadProps,
+  ITrProps,
+} from './Table';
+export type {
+  ITextProps,
+  IHeadingProps,
+  IGradientTextProps,
+  ILabelProps,
+} from './Typography';
+
 export { Accordion } from './Accordion';
 export { Box } from './Box';
 export { Breadcrumbs } from './Breadcrumbs';
@@ -13,7 +61,6 @@ export { MaskedValue } from './MaskedValue/MaskedValue';
 export { Modal, ModalProvider, useModal } from './Modal';
 export { Notification } from './Notification';
 export { Option } from './Select/Option';
-export { ProgressBar } from './ProgressBar';
 export { Select } from './Select/Select';
 export { Stack } from './Stack';
 export { SystemIcon, ProductIcon } from './Icon';
@@ -25,52 +72,3 @@ export { TextField } from './TextField/TextField';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
-
-export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
-export type { IBoxProps } from './Box';
-export type { IBreadcrumbsProps, IBreadcrumbItemProps } from './Breadcrumbs';
-export type { IButtonProps } from './Button';
-export type { ICardProps } from './Card';
-export type { IGridContainerProps, IGridItemProps } from './Grid';
-export type { IIconButtonProps } from './IconButton';
-export type { IIconProps } from './Icon';
-export type { IInputProps } from './Input/Input';
-export type { IInputWrapperProps, InputWrapperStatus } from './InputWrapper';
-export type { ILinkProps } from './Link';
-export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
-export type { IModalProps } from './Modal';
-export type { IProgressBarProps } from './ProgressBar';
-export type { IOptionProps } from './Select/Option';
-export type { ISelectProps } from './Select/Select';
-export type { IStackProps } from './Stack';
-export type { ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
-export type { ITagProps } from './Tag';
-export type { ITextFieldProps } from './TextField/TextField';
-export type { ITooltipProps } from './Tooltip';
-export type { ITrackerCardProps } from './TrackerCard/TrackerCard';
-export type { ITreeProps } from './Tree';
-export type {
-  IFooterProps,
-  IFooterPanelProps,
-  IFooterIconItemProps,
-  IFooterLinkItemProps,
-} from './Footer/';
-export type {
-  ILabelProps,
-  IGradientTextProps,
-  IHeadingProps,
-  ITextProps,
-} from './Typography';
-export type {
-  INotificationProps,
-  INotificationHeaderProps,
-  INotificationActionsProps,
-} from './Notification';
-export type {
-  ITableProps,
-  ITBodyProps,
-  ITdProps,
-  IThProps,
-  ITHeadProps,
-  ITrProps,
-} from './Table';
