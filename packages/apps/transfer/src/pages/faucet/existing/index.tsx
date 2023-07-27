@@ -131,7 +131,7 @@ const ExistingAccountFaucetPage: FC = () => {
           <ChainSelect
             onChange={onChainSelectChange}
             value={chainID}
-            ariaLabel="Select chain"
+            ariaLabel="Select Chain ID"
           />
         </StyledAccountForm>
         <StyledFormButton>
