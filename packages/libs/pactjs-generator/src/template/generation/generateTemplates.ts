@@ -36,12 +36,12 @@ export default {${templates
       .map(
         (t) => `
   "${t.name}": (args: {${t.template.holes
-          .reduce(uniq, [] as string[])
-          .map(
-            (h) => `
+    .reduce(uniq, [] as string[])
+    .map(
+      (h) => `
     "${h}": string,`,
-          )
-          .join('')}
+    )
+    .join('')}
   }): ICommandBuilder<{}> => {
     const parts = ${fixArrayFormatting(JSON.stringify(t.template.parts))};
     const holes = ${fixArrayFormatting(JSON.stringify(t.template.holes))};
