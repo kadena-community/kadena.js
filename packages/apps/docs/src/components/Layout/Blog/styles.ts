@@ -2,6 +2,14 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 import { BasePageGrid } from '../components';
 
+export const ArticleMetadataItem: StyledComponent<'span'> = styled('span', {
+  '::before': {
+    content: '"•"',
+    height: '100%',
+    margin: '$3',
+  },
+});
+
 export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
   BasePageGrid,
   {
@@ -30,29 +38,3 @@ export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
     },
   },
 );
-
-// BottomBlogSection
-
-export const BottomWrapper: StyledComponent<
-  'div',
-  { layout?: 'code' | 'default' }
-> = styled('div', {
-  width: '100%',
-
-  defaultVariants: {
-    layout: 'default',
-  },
-  variants: {
-    layout: {
-      default: {},
-      code: {
-        '@xl': {
-          width: '56%',
-        },
-        '@2xl': {
-          width: '60%',
-        },
-      },
-    },
-  },
-});

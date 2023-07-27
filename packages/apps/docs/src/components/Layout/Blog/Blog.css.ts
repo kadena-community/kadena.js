@@ -1,24 +1,37 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
+
+import { style } from '@vanilla-extract/css';
+
+export const relatedLinksContainer = style([
+  sprinkles({
+    paddingLeft: '$5',
+    paddingTop: '$3',
+  }),
+]);
 
 export const bottomWrapperClass = style([
+  sprinkles({
+    width: '100%',
+    paddingTop: '$20',
+    marginTop: '$20',
+  }),
   {
-    display: 'flex',
-
-    border: '1px solid purple',
+    borderTop: `1px solid ${vars.colors.$borderDefault}`,
   },
 ]);
 
-export const bottomWrapperVariants = styleVariants({
-  left: [
-    bottomWrapperClass,
-    {
-      justifyContent: 'flex-start',
-    },
-  ],
-  right: [
-    bottomWrapperClass,
-    {
-      justifyContent: 'flex-end',
-    },
-  ],
-});
+export const articleTopMetadataClass = style([
+  sprinkles({
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: '$5',
+    paddingX: 0,
+    paddingY: '$5',
+  }),
+  {
+    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
+    opacity: '0.6',
+  },
+]);

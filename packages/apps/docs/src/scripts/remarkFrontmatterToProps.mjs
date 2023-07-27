@@ -81,6 +81,7 @@ const remarkFrontmatterToProps = () => {
   return async (tree, file) => {
     tree.children = tree.children.map((node) => {
       const data = getFrontMatter(node);
+
       if (!data) return node;
 
       return {

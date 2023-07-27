@@ -1,12 +1,15 @@
+import { Grid, Stack } from '@kadena/react-ui';
+
 import { Article, Content, TitleHeader } from '../components';
 import { Template } from '../components/Template';
 
-import { ArticleMetadataItem, ArticleTopMetadata } from './BlogStyles';
-import { BottomBlogSection } from './BottomBlogSection';
-import { PageGrid } from './styles';
+import {
+  articleTopMetadataClass,
+  bottomWrapperClass,
+  relatedLinksContainer,
+} from './Blog.css';
+import { ArticleMetadataItem, PageGrid } from './styles';
 
-import { FormatDate } from '@/components/Blog';
-import { BottomPageSection } from '@/components/BottomPageSection';
 import { IPageProps } from '@/types/Layout';
 import { formatDistance } from 'date-fns';
 import React, { FC } from 'react';
@@ -17,7 +20,13 @@ export const Blog: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   const { readingTimeInMinutes, publishDate, author } = frontmatter;
-  console.log(frontmatter);
+  // TODO: figure out why the frontmatter.related isn't carrying over from the menu.mjs file
+  const related =
+    frontmatter.related ||
+    frontmatter.navigation?.next?.related ||
+    frontmatter.navigation?.previous?.related ||
+    [];
+
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
@@ -29,27 +38,55 @@ export const Blog: FC<IPageProps> = ({
 
         <Content id="maincontent">
           <Article>
-            <ArticleTopMetadata>
+            <div className={articleTopMetadataClass}>
               <ArticleMetadataItem>
-                <span>{readingTimeInMinutes} minutes read</span>
+                {readingTimeInMinutes} minutes read
               </ArticleMetadataItem>
               <ArticleMetadataItem>
                 {publishDate && (
                   <time dateTime={publishDate}>
                     Published{' '}
-                    {formatDistance(new Date(publishDate!), new Date())}
+                    {formatDistance(new Date(publishDate!), new Date())} ago
                   </time>
                 )}
               </ArticleMetadataItem>
-              <ArticleMetadataItem>By {author}</ArticleMetadataItem>
-            </ArticleTopMetadata>
+            </div>
             {children}
 
-            <BottomBlogSection
-              frontmatter={frontmatter}
-              editLink={frontmatter.editLink}
-              navigation={frontmatter.navigation}
-            />
+            <div className={bottomWrapperClass}>
+              <Grid.Root spacing={'xl'} columns={12}>
+                <Grid.Item columnSpan={4}>
+                  <Stack
+                    alignItems="flex-start"
+                    justifyContent="space-between"
+                    direction={'column'}
+                  >
+                    <span>
+                      By <b>{author}</b>
+                    </span>
+                  </Stack>
+                </Grid.Item>
+
+                <Grid.Item columnSpan={8}>
+                  {Boolean(related) && (
+                    <Stack
+                      alignItems="flex-start"
+                      justifyContent="space-between"
+                      direction={'column'}
+                    >
+                      <b>Other articles by {author}</b>
+                      <ul className={relatedLinksContainer}>
+                        {related.map((item, index) => (
+                          <li key={index}>
+                            <a href={item.root}>{item.title}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    </Stack>
+                  )}
+                </Grid.Item>
+              </Grid.Root>
+            </div>
           </Article>
         </Content>
       </Template>

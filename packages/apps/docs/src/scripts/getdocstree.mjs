@@ -1,8 +1,13 @@
 import * as fs from 'fs';
+import os from 'os';
+import path from 'path';
+
 import yaml from 'js-yaml';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
+
+const authorsToArticles = {};
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
@@ -24,6 +29,25 @@ const convertFile = (file) => {
     metaString = metaString.replace(/,(\s*[}\]])/g, '$1');
 
     data = JSON.parse(metaString);
+  }
+
+  if (data.layout === 'blog') {
+    const author = data.author;
+    if (!authorsToArticles[author]) {
+      authorsToArticles[author] = [];
+    }
+    // remove "./src/pages" from the "file" var
+    let root = file
+      .split('/')
+      .splice(3, file.length - 1)
+      .join('/');
+    // remove the file extension
+    root = root.split('.').at(0);
+
+    authorsToArticles[author].push({
+      url: root,
+      title: data.title,
+    });
   }
 
   return {
@@ -123,11 +147,21 @@ const createTree = (rootDir, parent = []) => {
     }
   });
 
+  // assign the articles by the same author
+  parent.forEach((item) => {
+    if (item.author) {
+      item.related = authorsToArticles[item.author]
+        .filter((i) => i.url !== item.root)
+        .splice(0, 5);
+    }
+  });
+
   return parent;
 };
 
 const result = createTree(INITIALPATH, TREE);
 
+// write menu file
 const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
 export const menuData = ${JSON.stringify(result, null, 2)}`;
 

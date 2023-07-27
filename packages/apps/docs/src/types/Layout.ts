@@ -27,6 +27,11 @@ export interface INavigation {
   next?: IMenuItem;
 }
 
+export interface IRelatedPage {
+  root: string;
+  title: string;
+}
+
 export interface IPageMeta {
   title: string; // title of the HEAD info
   subTitle?: string;
@@ -43,6 +48,7 @@ export interface IPageMeta {
   author?: string;
   readingTimeInMinutes?: number;
   wordCount?: number;
+  related?: IRelatedPage[];
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
