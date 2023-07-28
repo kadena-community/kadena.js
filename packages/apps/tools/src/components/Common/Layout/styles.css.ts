@@ -13,12 +13,12 @@ export const headerStyle = style([
 
 export const gridItemMainStyle = style([
   sprinkles({
-    paddingTop: '$18',
-    paddingBottom: '$12',
-    paddingLeft: '$20',
-    paddingRight: '$20',
+    paddingTop: '$20',
+    paddingBottom: '$16',
   }),
   {
+    paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
+    paddingRight: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     selectors: {
       '&.isMenuOpen': {
         paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$6})`,

@@ -29,11 +29,11 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     },
     {
       title: t('Transactions'),
-      href: routes.ACCOUNT_TRANSACTIONS,
+      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
-      title: t('Balance'),
-      href: routes.BALANCE,
+      title: t('Account'),
+      href: routes.ACCOUNT_TRANSACTIONS,
     },
   ];
 

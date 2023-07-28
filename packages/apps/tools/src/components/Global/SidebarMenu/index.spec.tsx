@@ -1,6 +1,6 @@
 jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
-    pathname: '/transfer',
+    pathname: '/transactions',
   })),
 }));
 
@@ -26,7 +26,6 @@ describe('SidebarMenu', () => {
     expect(menuItemTexts).toEqual([
       'K:Cross Chain Transfer Tracker',
       'K:Cross Chain Transfer Finisher',
-      'K:Account Transactions',
       'K:Module explorer',
     ]); // Update the expected text values based on your menu configuration
   });
