@@ -34,9 +34,6 @@ importers:
       '@next/mdx':
         specifier: ~13.3.4
         version: 13.3.4(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0)
-      '@pinecone-database/pinecone':
-        specifier: ~0.1.6
-        version: 0.1.6
       '@vanilla-extract/css':
         specifier: 1.12.0
         version: 1.12.0
@@ -6379,15 +6376,6 @@ packages:
     resolution: {integrity: sha512-sqxex+UnUoKN046jZS8UHB1YnQuJ0/lzMQaCdNKrF1F/U/1j/LrGywjXI9+NsGa29FdcZfU17530qt961sPgow==}
     engines: {node: '>=14'}
     dev: true
-
-  /@pinecone-database/pinecone@0.1.6:
-    resolution: {integrity: sha512-tCnVc28udecthhgSBTdcMhYEW+xsR++AdZasp+ZE/AvUD1hOR2IR3edjk9m0sDxZyvXbno2KeqUbLIOZr7sCTw==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      cross-fetch: 3.1.8(encoding@0.1.13)
-    transitivePeerDependencies:
-      - encoding
-    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}

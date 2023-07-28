@@ -12,19 +12,21 @@ import {
   scrollBoxClass,
   scrollBoxEnabledClass,
 } from './../styles.css';
+import type { IQueryResult } from '../../../types';
+
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
 import { Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
-import { createLinkFromMD } from '@/utils';
 import classnames from 'classnames';
+import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  semanticResults: ISearchResult[];
+  semanticResults: IQueryResult[];
   semanticError?: string;
   semanticIsLoading: boolean;
   outputStream: string;
@@ -146,13 +148,12 @@ export const SearchResults: FC<IProps> = ({
                 <ReactMarkdown>{interaction?.output}</ReactMarkdown>
                 <div>
                   {interaction?.metadata?.map((item, innerIdx) => {
-                    const url = createLinkFromMD(item.title);
+                    if (!item.filePath) return;
+                    const url = filePathToRoute(item.filePath);
                     return (
-                      <>
-                        <Link key={`${url}-${innerIdx}`} href={url}>
-                          {url}
-                        </Link>
-                      </>
+                      <Link key={`${url}-${innerIdx}`} href={url}>
+                        {url}
+                      </Link>
                     );
                   })}
                 </div>

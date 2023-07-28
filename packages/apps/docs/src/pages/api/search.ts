@@ -39,4 +39,10 @@ export const config = {
   runtime: 'edge',
 };
 
-export default getCompletionHandler({ OPENAI_API_KEY, query, system, prompt });
+export default getCompletionHandler({
+  OPENAI_API_KEY,
+  query,
+  system,
+  prompt,
+  fields: 'title,content,filePath',
+});
