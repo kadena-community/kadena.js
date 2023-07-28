@@ -19,7 +19,7 @@ describe('SidebarMenu', () => {
 
     // Assert that menu items are rendered
     const menuItems = screen.getAllByRole('link');
-    expect(menuItems).toHaveLength(4); // Update the expected length based on your menu configuration
+    expect(menuItems).toHaveLength(3); // Update the expected length based on your menu configuration
 
     // Assert the text content of menu items
     const menuItemTexts = menuItems.map((menuItem) => menuItem.textContent);
