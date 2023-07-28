@@ -1,4 +1,4 @@
-# Kadena Transfer App
+# Kadena Tools App
 
 This repository contains the source code and documentation for the Kadena
 Transfer App, a decentralized application (dApp) built on the Kadena blockchain
@@ -7,10 +7,10 @@ securely and efficiently using smart contracts on the Kadena blockchain.
 
 ## Table of Contents
 
-- [Table of Contents][1]
-- [Installation][2]
-- [Usage][3]
-- [License][4]
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
 
 ## Installation
 
@@ -18,10 +18,10 @@ To install and run the Kadena Transfer App locally, follow these steps:
 
 1.  Clone the repository: [https://github.com/kadena-community/kadena.js][5]
 
-2.  Navigate to the `kadena-transfer/packages/apps/transfer` directory:
+2.  Navigate to the `kadena-transfer/packages/apps/tools` directory:
 
 ```sh
-cd kadena.js/kadena-transfer/packages/apps/transfer
+cd kadena.js/kadena-transfer/packages/apps/tools
 ```
 
 3.  Install rush globally:
@@ -42,7 +42,7 @@ rush install
 5.  Build the app and its dependencies:
 
 ```sh
-rush build -t @kadena/transfer
+rush build -t @kadena/tools
 ```
 
 6.  Setup environment variables:
@@ -120,4 +120,4 @@ the `LICENSE` file for more information.
 [5]: https://github.com/kadena-community/kadena.js
 [6]: http://localhost:3000
 [7]:
-  https://github.com/kadena-community/kadena.js/blob/kadena-transfer/packages/apps/transfer/LICENSE
+  https://github.com/kadena-community/kadena.js/blob/kadena-transfer/packages/apps/tools/LICENSE
