@@ -110,8 +110,9 @@ export default async function getMostPopularPages(
 ): Promise<IMostPopularPage[]> {
   const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
 
-  const { GOOGLE_ANALYTICS_PROPERTY_ID, GOOGLE_APPLICATION_CREDENTIALS } =
-    process.env;
+  const GOOGLE_ANALYTICS_PROPERTY_ID = process.env.GOOGLE_ANALYTICS_PROPERTY_ID;
+  const GOOGLE_APPLICATION_CREDENTIALS =
+    process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
   if (
     GOOGLE_ANALYTICS_PROPERTY_ID === undefined ||
@@ -126,36 +127,43 @@ export default async function getMostPopularPages(
   }
 
   // If the cache is older than a day, use the API
-  const [response] = (await analyticsDataClient.runReport({
-    property: `properties/${GOOGLE_ANALYTICS_PROPERTY_ID}`,
-    dateRanges: [
-      {
-        startDate: getStartDateOfLastMonths(3),
-        endDate: 'today',
-      },
-    ],
-    dimensions: [
-      {
-        // Get the page path
-        name: 'pagePathPlusQueryString',
-      },
-      {
-        // Get the page title
-        name: 'pageTitle',
-      },
-    ],
-    metrics: [
-      {
-        // And tell me how many active users there were for each of those
-        name: 'activeUsers',
-      },
-    ],
-  })) as unknown as [IRunReportResponse];
+  try {
+    const [response] = (await analyticsDataClient.runReport({
+      property: `properties/${GOOGLE_ANALYTICS_PROPERTY_ID}`,
+      dateRanges: [
+        {
+          startDate: getStartDateOfLastMonths(3),
+          endDate: 'today',
+        },
+      ],
+      dimensions: [
+        {
+          // Get the page path
+          name: 'pagePathPlusQueryString',
+        },
+        {
+          // Get the page title
+          name: 'pageTitle',
+        },
+      ],
+      metrics: [
+        {
+          // And tell me how many active users there were for each of those
+          name: 'activeUsers',
+        },
+      ],
+    })) as unknown as [IRunReportResponse];
 
-  const mostPopularPages = getTopPages(response, slug, limit);
+    const mostPopularPages = getTopPages(response, slug, limit);
 
-  // Store complete data in a file to avoid hitting the API limit
-  await storeAnalyticsData(dataFilePath, JSON.stringify(response));
+    // Store complete data in a file to avoid hitting the API limit
+    await storeAnalyticsData(dataFilePath, JSON.stringify(response));
 
-  return mostPopularPages;
+    return mostPopularPages;
+  } catch (error) {
+    // Even if the API fails, we still want to show the page
+    // so we return an empty array
+    console.error(error);
+    return [];
+  }
 }
