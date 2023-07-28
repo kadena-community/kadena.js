@@ -58,7 +58,7 @@ Capability-based guards solve these potential issues.
 However, the later introduction of module references now brings third-party code
 into the mix, with the unfortunate property that **anywhere the owning module
 calls into module reference code, that third-party code now passes the module
-guard.** This is also true for defpact guards: while the current Pact ID is
+guard**. This is also true for defpact guards: while the current Pact ID is
 validated, invoking modrefs in any way will pass the guard.
 
 Fortunately, building user guards using require-capability offers a truly secure
