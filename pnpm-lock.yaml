@@ -25582,7 +25582,7 @@ packages:
     resolution: {integrity: sha512-5+JDIs4hqKfHnJcVCxTid1yBoI/++FfF/1PFdSMpaftZZZY+qg2JFruRbf7PaIwa9KgLotXQV3gSjtY0IdcFGQ==}
     dependencies:
       '@types/concat-stream': 2.0.0
-      '@types/debug': 4.1.7
+      '@types/debug': 4.1.8
       '@types/is-empty': 1.2.1
       '@types/node': 18.16.19
       '@types/unist': 2.0.7
