@@ -138,26 +138,9 @@ export const Dynamic: Story = {
     text,
     title,
   }) => {
-    let Icon = icon && SystemIcon[icon];
     if (loading) {
-      Icon = SystemIcon.Loading;
+      icon = 'Loading';
     }
-
-    const iconClassname = cx({
-      [iconLoadingClass]: loading,
-    });
-
-    const buttonChildren = (
-      <>
-        {Icon && iconAlign === 'left' && (
-          <ButtonIcon icon={Icon} className={iconClassname} />
-        )}
-        {text}
-        {Icon && iconAlign === 'right' && (
-          <ButtonIcon icon={Icon} className={iconClassname} />
-        )}
-      </>
-    );
 
     return (
       <Button
@@ -169,8 +152,10 @@ export const Dynamic: Story = {
         target={target}
         title={title}
         variant={variant}
+        icon={icon}
+        iconAlign={iconAlign}
       >
-        {buttonChildren}
+        {text}
       </Button>
     );
   },
