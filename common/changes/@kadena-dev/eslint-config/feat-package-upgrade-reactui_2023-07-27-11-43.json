@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/eslint-config",
+      "comment": "formatting and linting",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/eslint-config"
+}

@@ -26,7 +26,7 @@ export const gridMiniMenuListButtonStyle = style([
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    color: '$neutral2',
+    color: '$gray20',
     padding: '$5',
   }),
   {
@@ -51,7 +51,7 @@ export const gridMiniMenuListButtonStyle = style([
 
 export const gridMiniMenuListItemStyle = style([
   {
-    borderBottom: `1px solid ${vars.colors.$gray40}`,
+    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
   },
 ]);
 
@@ -67,16 +67,17 @@ export const gridMiniMenuListStyle = style([
 
 export const gridItemMenuStyle = style([
   sprinkles({
-    backgroundColor: '$neutral2',
     padding: '$6',
     paddingTop: '$4',
-    width: '$64',
   }),
+  {
+    width: `calc(${vars.sizes.$64} + ${vars.sizes.$6})`,
+  },
 ]);
 
 export const subMenuTitleClass = style([
   sprinkles({
-    color: '$foreground',
+    color: '$gray10',
     fontSize: '$md',
     display: 'flex',
     justifyContent: 'space-between',

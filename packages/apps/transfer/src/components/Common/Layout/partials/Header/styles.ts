@@ -5,12 +5,6 @@ import { Container, GridRow } from '@/components/Global';
 import { NavBackground } from '@/resources/svg/generated';
 import Link from 'next/link';
 
-export const StyledHeader = styled('header', {
-  backgroundColor: '$gray90',
-  color: '$gray20',
-  borderBottom: `1px solid $gray60`,
-});
-
 export const StyledContainer = styled(Container, {
   position: 'relative',
   px: '$4',

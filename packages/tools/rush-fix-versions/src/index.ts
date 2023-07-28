@@ -79,14 +79,17 @@ ${mismatchedVersion.versions
       return projects.map((p) => getPackageJson(p, rushJson, gitRootPath));
     })
     .reduce((a, b) => a.concat(b), [])
-    .reduce((acc, curr) => {
-      if (acc.find((a) => a.path === curr.path)) {
-        return acc;
-      } else {
-        acc.push(curr);
-        return acc;
-      }
-    }, [] as { path: string; contents: IPackageJson }[]);
+    .reduce(
+      (acc, curr) => {
+        if (acc.find((a) => a.path === curr.path)) {
+          return acc;
+        } else {
+          acc.push(curr);
+          return acc;
+        }
+      },
+      [] as { path: string; contents: IPackageJson }[],
+    );
 
   packageJsonsToFix.forEach(({ path, contents }) => {
     console.log(`Fixing ${dirname(path)}/${basename(path)}`);
