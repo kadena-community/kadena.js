@@ -6,7 +6,7 @@ import remarkFrontMatter from 'remark-frontmatter';
 import remarkGFM from 'remark-gfm';
 import remarkOrderLinks from 'remark-order-reference-links';
 import remarkParse from 'remark-parse';
-import remarkPrettier from 'remark-prettier';
+import unifiedPrettier from 'unified-prettier';
 import remarkReferenceLinks from 'remark-reference-links';
 import type { Preset } from 'unified';
 
@@ -16,7 +16,7 @@ const remarkPresetKadena: Preset = {
     remarkFrontMatter,
     remarkParse,
     [handleCommentMarkers, commentMarkers],
-    remarkPrettier,
+    unifiedPrettier,
     remarkGFM,
     fencedCodeBlocks,
     remarkReferenceLinks,
