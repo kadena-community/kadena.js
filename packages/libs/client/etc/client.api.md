@@ -271,6 +271,17 @@ export const readKeyset: ReadKeyset;
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;
 
+// Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export type WithCapability<TCode extends string & {
+    capability: unknown;
+}> = ExtractCapabilityType<{
+    payload: {
+        funs: [TCode];
+    };
+}>;
+
 // (No @packageDocumentation comment for this package)
 
 ```

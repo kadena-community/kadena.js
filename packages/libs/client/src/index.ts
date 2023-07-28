@@ -6,6 +6,7 @@ export * from './utils/pact-helpers';
 export * from './client';
 
 export type { IPact, IPactModules } from './pact';
+export type { WithCapability } from './interfaces/type-utilities';
 
 export { Pact } from './pact';
 

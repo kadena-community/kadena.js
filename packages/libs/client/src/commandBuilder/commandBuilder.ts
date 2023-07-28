@@ -12,27 +12,17 @@ import {
   setNonce,
 } from '../composePactCommand';
 import { ValidDataTypes } from '../composePactCommand/utils/addData';
-import {
-  IGeneralCapability,
-  UnionToIntersection,
-} from '../composePactCommand/utils/addSigner';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import {
   ICapabilityItem,
   IContinuationPayloadObject,
   IPactCommand,
 } from '../interfaces/IPactCommand';
+import {
+  ExtractCapabilityType,
+  IGeneralCapability,
+} from '../interfaces/type-utilities';
 import { createTransaction } from '../utils/createTransaction';
-
-export type ExtractType<TCommand> = TCommand extends { payload: infer TPayload }
-  ? TPayload extends { funs: infer TFunctions }
-    ? TFunctions extends Array<infer TFunction>
-      ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
-        ? TCapability
-        : IGeneralCapability
-      : IGeneralCapability
-    : IGeneralCapability
-  : IGeneralCapability;
 
 interface IAddSigner<TCommand> {
   /**
@@ -58,7 +48,9 @@ interface IAddSigner<TCommand> {
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-    capability: (withCapability: ExtractType<TCommand>) => ICapabilityItem[],
+    capability: (
+      withCapability: ExtractCapabilityType<TCommand>,
+    ) => ICapabilityItem[],
   ): IBuilder<TCommand>;
 }
 
