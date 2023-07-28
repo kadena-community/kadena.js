@@ -275,6 +275,7 @@ importers:
       '@kadena-dev/eslint-config': workspace:*
       '@kadena-dev/heft-rig': workspace:*
       '@kadena-dev/markdown': workspace:*
+      '@kadena/react-ui': workspace:*
       '@types/gtag.js': ~0.0.12
       '@types/heft-jest': ~1.0.3
       '@types/node': ^16.0.0
@@ -291,6 +292,7 @@ importers:
       sort-package-json: ~2.5.1
       typescript: 5.1.6
     dependencies:
+      '@kadena/react-ui': link:../../libs/react-ui
       '@vanilla-extract/css': 1.12.0
       eslint: 8.45.0
       eslint-config-next: 13.4.5_eslint@8.45.0+typescript@5.1.6
