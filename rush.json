@@ -436,8 +436,8 @@
     },
 
     {
-      "packageName": "@kadena/transfer",
-      "projectFolder": "packages/apps/transfer",
+      "packageName": "@kadena/tools",
+      "projectFolder": "packages/apps/tools",
       "reviewCategory": "prototypes",
       "decoupledLocalDependencies": [
         "@kadena/client",
