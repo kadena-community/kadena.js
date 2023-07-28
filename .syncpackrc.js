@@ -1,4 +1,7 @@
-module.exports = {
+// @ts-check
+
+/** @type {import("syncpack").RcFile} */
+const config = {
   versionGroups: [
     {
       label: 'Internal packages that have inconsistent version usage',
@@ -36,3 +39,5 @@ module.exports = {
     },
   ],
 };
+
+module.exports = config;
