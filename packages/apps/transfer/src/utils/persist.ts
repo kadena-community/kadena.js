@@ -28,11 +28,14 @@ export const getItems = (): { [key: string]: unknown } => {
 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!cookies) return {};
-  return Object.keys(cookies).reduce((results, key) => {
-    const match: null | string[] = key.match(getName('(.*)'));
-    if (match) results[match[1]] = cookies[key];
-    return results;
-  }, {} as { [key: string]: string });
+  return Object.keys(cookies).reduce(
+    (results, key) => {
+      const match: null | string[] = key.match(getName('(.*)'));
+      if (match) results[match[1]] = cookies[key];
+      return results;
+    },
+    {} as { [key: string]: string },
+  );
 };
 
 export const purge = (): void => {

@@ -15,7 +15,9 @@ type MakeArr<Type> = {
 };
 
 interface IRepeat {
-  <T extends Array<IParser>>(...parsers: T): IParser<
+  <T extends Array<IParser>>(
+    ...parsers: T
+  ): IParser<
     IWrappedData<
       Partial<
         UnionToIntersection<

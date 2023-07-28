@@ -5,7 +5,6 @@ import {
   StyledBurgerMenuButton,
   StyledContainer,
   StyledGridRow,
-  StyledHeader,
   StyledLeftPanelWrapper,
   StyledLogoWrapper,
   StyledMenuItem,
@@ -13,6 +12,7 @@ import {
   StyledNav,
   StyledTitle,
 } from './styles';
+import { headerClass } from './styles.css';
 
 import { GridCol } from '@/components/Global';
 import Routes from '@/constants/routes';
@@ -44,7 +44,7 @@ const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
   );
 
   return (
-    <StyledHeader>
+    <div className={headerClass}>
       <StyledContainer type="fixed">
         <StyledBackgroundGlow />
         <StyledGridRow>
@@ -82,7 +82,7 @@ const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
         {renderMenu('mobile')}
         {rightPanel}
       </StyledMobileMenu>
-    </StyledHeader>
+    </div>
   );
 };
 
