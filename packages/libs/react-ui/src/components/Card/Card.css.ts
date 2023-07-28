@@ -1,4 +1,3 @@
-import { colorPalette, hexToRgba } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
 import { createVar, style } from '@vanilla-extract/css';
@@ -7,8 +6,14 @@ const textColor = createVar();
 
 export const container = style([
   sprinkles({
-    backgroundColor: '$gray10',
-    color: '$gray100',
+    backgroundColor: {
+      lightMode: '$gray10',
+      darkMode: '$gray90',
+    },
+    color: {
+      lightMode: '$gray100',
+      darkMode: '$gray20',
+    },
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -21,11 +26,10 @@ export const container = style([
     position: 'relative',
   }),
   {
-    border: `1px solid ${hexToRgba(colorPalette.$gray40, 0.4)}`,
+    border: `1px solid ${vars.colors.$gray30}`,
     selectors: {
       [`${darkThemeClass} &`]: {
-        backgroundColor: hexToRgba(colorPalette.$gray60, 0.4),
-        color: colorPalette.$gray20,
+        border: `1px solid ${vars.colors.$gray60}`,
       },
     },
   },
