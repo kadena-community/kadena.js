@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "next_build": "next build",
+    "build": "node build.mjs",
     "dev": "next dev",
     "format": "npm run format:pkg && npm run format:src && npm run format:md",
     "format:ci": "prettier src --check",
