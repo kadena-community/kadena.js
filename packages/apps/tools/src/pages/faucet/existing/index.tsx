@@ -19,7 +19,7 @@ import {
   StyledAccountForm,
   StyledForm,
   StyledFormButton,
-} from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+} from '@/pages/transactions/cross-chain-transfer-finisher/styles';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
