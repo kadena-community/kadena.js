@@ -122,7 +122,7 @@ export const vars = createGlobalTheme(':root', {
     $layoutSurfaceCard: hexToRgba(colorPalette.$gray20, 0.6),
     $layoutSurfaceContrast: colorPalette.$white,
     $layoutSurfaceOverlay: hexToRgba(colorPalette.$gray90, 0.6),
-    
+
     // Status
 
     $infoSurface: colorPalette.$blue20,
@@ -193,7 +193,7 @@ export const darkThemeClass = createTheme(vars.colors, {
   $layoutSurfaceCard: hexToRgba(colorPalette.$gray60, 0.4),
   $layoutSurfaceContrast: colorPalette.$black,
   $layoutSurfaceOverlay: hexToRgba(colorPalette.$gray10, 0.8),
-    
+
   // Status
 
   $infoSurface: hexToRgba(colorPalette.$blue100, 0.8),
