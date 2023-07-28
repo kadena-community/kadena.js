@@ -17,7 +17,7 @@ const systemProperties = defineProperties({
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
-    borderStyles: ['solid', 'none'],
+    borderStyle: ['solid', 'none'],
     cursor: ['pointer', 'not-allowed'],
     flexWrap: ['wrap', 'nowrap'],
     top: vars.sizes,
@@ -102,6 +102,7 @@ const responsiveProperties = defineProperties({
     minWidth: [0],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
+    whiteSpace: ['nowrap', 'break-spaces', 'normal'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],

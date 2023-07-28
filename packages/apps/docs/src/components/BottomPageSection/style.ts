@@ -2,7 +2,7 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 export const BottomWrapper: StyledComponent<
   'div',
-  { layout?: 'redocly' | 'default' }
+  { layout?: 'code' | 'default' }
 > = styled('div', {
   width: '100%',
 
@@ -12,7 +12,7 @@ export const BottomWrapper: StyledComponent<
   variants: {
     layout: {
       default: {},
-      redocly: {
+      code: {
         '@xl': {
           width: '56%',
         },

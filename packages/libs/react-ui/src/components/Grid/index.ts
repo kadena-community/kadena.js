@@ -1,16 +1,18 @@
-import GridContainer, { IGridContainerProps } from './GridContainer';
-import GridItem, { IGridItemProps } from './GridItem';
+import type { IGridItemProps } from './GridItem';
+import GridItem from './GridItem';
+import type { IGridRootProps } from './GridRoot';
+import GridRoot from './GridRoot';
 
 import { FC } from 'react';
 
-export { IGridContainerProps, IGridItemProps };
+export type { IGridRootProps as IGridContainerProps, IGridItemProps };
 
 interface IGrid {
-  Root: FC<IGridContainerProps>;
+  Root: FC<IGridRootProps>;
   Item: FC<IGridItemProps>;
 }
 
 export const Grid: IGrid = {
-  Root: GridContainer,
+  Root: GridRoot,
   Item: GridItem,
 };

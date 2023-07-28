@@ -96,7 +96,7 @@ export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
         pactId?: string;
-        step?: string;
+        step?: number;
         rollback?: boolean;
         data?: Record<string, unknown>;
         proof?: string;
@@ -240,6 +240,12 @@ export interface IQuicksignSigner {
 // @alpha
 export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
 
+// @alpha (undocumented)
+export interface ISubmit {
+    (transaction: ICommand): Promise<string>;
+    (transactionList: ICommand[]): Promise<string[]>;
+}
+
 export { IUnsignedCommand }
 
 // @alpha (undocumented)
@@ -251,7 +257,16 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @alpha (undocumented)
+export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
+
+// @alpha (undocumented)
 export const Pact: IPact;
+
+// @alpha (undocumented)
+export type ReadKeyset = <TKey extends string>(key: TKey) => () => `(read-keyset "${TKey}")`;
+
+// @alpha (undocumented)
+export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;

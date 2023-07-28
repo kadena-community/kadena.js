@@ -16,7 +16,9 @@ export interface ISeq {
    * The function returns a wrappedData that is created by unwrapping all of its children.
    * However, if there is only one wrapped object without a name, the function returns it without performing any unwrapping
    */
-  <T extends Array<IParser>>(...parsers: T): IParser<
+  <T extends Array<IParser>>(
+    ...parsers: T
+  ): IParser<
     IWrappedData<
       UnionToIntersection<
         UnwrappedObjects<IsWrappedData<RuleReturnType<T[number]>>>

@@ -26,7 +26,7 @@ export const getStaticProps: GetStaticProps = async () => {
         menu: '2023',
         subTitle: '2023',
         label: '2023',
-        order: 3,
+        order: 6,
         description: 'articles..articles...articles 2023',
         layout: 'landing',
         icon: 'BlogChain',

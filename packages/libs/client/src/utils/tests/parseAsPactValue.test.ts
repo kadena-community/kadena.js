@@ -9,6 +9,12 @@ describe('parseType', () => {
     expect(parseAsPactValue({ int: '10' })).toEqual('10');
   });
 
+  it('parses a Date object', () => {
+    jest.useFakeTimers();
+    const start = new Date('2023-07-20T14:55:11.139Z');
+    expect(parseAsPactValue(start)).toEqual(`(time "2023-07-20T14:55:11Z")`);
+  });
+
   it('throws exception if number is not integer', () => {
     expect(() => parseAsPactValue({ int: '10.1' })).toThrowError(
       new Error('PactNumber is not an integer'),

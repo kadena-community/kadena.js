@@ -1,6 +1,7 @@
 # generated resources
-src/data/searchindex.json
+src/data/searchIndex.json
 src/data/menu.mjs
+src/data/mostPopular.json
 src/pages/docs/kadena/kadenajs
 src/pages/docs/kadena/client
 src/pages/docs/pact/cli

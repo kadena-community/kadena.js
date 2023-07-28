@@ -8,7 +8,7 @@ const client: ChainwebStreamClient = new ChainwebStreamClient({
   host: 'http://localhost:4000/',
 
   // optional
-  limit: 100,
+  limit: 0,
   connectTimeout: 15_000,
   // intentionally setting this to a very small value, should sync the server setting
   heartbeatTimeout: 1_000,

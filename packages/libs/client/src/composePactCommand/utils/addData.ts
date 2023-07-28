@@ -1,57 +1,29 @@
 import { IPactCommand } from '../../interfaces/IPactCommand';
 
-type ReadKeyset = <TKey extends string>(key: TKey) => `(read-keyset "${TKey}")`;
+import { patchCommand } from './patchCommand';
+
+export type ValidDataTypes =
+  | Record<string, unknown>
+  | string
+  | number
+  | boolean
+  | Array<ValidDataTypes>;
 
 /**
  *
  * @alpha
  */
-export const readKeyset: ReadKeyset = (key) => `(read-keyset "${key}")`;
-
-type AddDataReturnValue<TCmd, TKey extends string, TValue> = TCmd extends {
-  payload: { cont: unknown };
-}
-  ? {
-      payload: {
-        cont: {
-          data: {
-            [key in TKey]: TValue;
-          };
-        };
-      };
-    }
-  : {
-      payload: {
-        exec: {
-          data: {
-            [key in TKey]: TValue;
-          };
-        };
-      };
-    };
-
-/**
- *
- * @alpha
- */
-export const addData =
-  <
-    TKey extends string,
-    TValue extends Record<string, unknown> | string | number | boolean,
-  >(
-    key: TKey,
-    value: TValue,
-  ): (<TCmd extends Partial<IPactCommand>>(
-    cmd: TCmd,
-  ) => AddDataReturnValue<TCmd, TKey, TValue>) =>
-  <TCmd extends Partial<IPactCommand>>(
-    cmd: TCmd,
-  ): AddDataReturnValue<TCmd, TKey, TValue> => {
-    let target = 'exec';
+export const addData: (
+  key: string,
+  value: ValidDataTypes,
+) => (cmd: Partial<IPactCommand>) => Partial<IPactCommand> =
+  (key: string, value: ValidDataTypes) =>
+  (cmd: Partial<IPactCommand>): Partial<IPactCommand> => {
+    let target: 'exec' | 'cont' = 'exec';
     if (cmd.payload && 'cont' in cmd.payload) {
       target = 'cont';
     }
-    return {
+    const patch: unknown = {
       payload: {
         [target]: {
           data: {
@@ -59,8 +31,8 @@ export const addData =
           },
         },
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
+    };
+    return patchCommand(cmd, patch as Partial<IPactCommand>);
   };
 
 interface IAddKeyset {
@@ -68,17 +40,13 @@ interface IAddKeyset {
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): <TCmd extends Partial<IPactCommand>>(
-    cmd: TCmd,
-  ) => AddDataReturnValue<TCmd, TKey, { publicKeys: string[]; pred: PRED }>;
+  ): (cmd: Partial<IPactCommand>) => Partial<IPactCommand>;
 
   <TKey extends string, PRED extends string>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): <TCmd extends Partial<IPactCommand>>(
-    cmd: TCmd,
-  ) => AddDataReturnValue<TCmd, TKey, { publicKeys: string[]; pred: PRED }>;
+  ): (cmd: Partial<IPactCommand>) => Partial<IPactCommand>;
 }
 
 /**
@@ -89,4 +57,4 @@ export const addKeyset: IAddKeyset = (
   name: string,
   pred: string,
   ...publicKeys: string[]
-) => addData(name, { publicKeys, pred });
+) => addData(name, { keys: publicKeys, pred });

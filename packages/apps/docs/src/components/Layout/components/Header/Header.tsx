@@ -19,29 +19,20 @@ import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
+import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
-  toggleMenu: () => void;
-  isMenuOpen: boolean;
-  toggleAside: () => void;
-  isAsideOpen: boolean;
   menuItems: IMenuItem[];
-  layout: LayoutType;
+  layout?: LayoutType;
 }
 
-export const Header: FC<IProps> = ({
-  toggleMenu,
-  isMenuOpen,
-  toggleAside,
-  isAsideOpen,
-  menuItems,
-  layout,
-}) => {
+export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
+  const { toggleMenu, isMenuOpen, toggleAside, isAsideOpen } = useMenu();
 
   return (
     <StyledHeader>

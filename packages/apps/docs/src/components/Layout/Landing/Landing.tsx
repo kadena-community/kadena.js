@@ -1,18 +1,35 @@
-import { Article, Content } from '../components';
+import { Article, Content, TitleHeader } from '../components';
+import { Template } from '../components/Template';
+
+import { PageGrid } from './styles';
 
 import { NotFound } from '@/components/NotFound';
-import { ILayout } from '@/types/Layout';
+import { IPageProps } from '@/types/Layout';
 import React, { FC } from 'react';
 
-export const Landing: FC<ILayout> = ({ children }) => {
+export const Landing: FC<IPageProps> = ({
+  children,
+  frontmatter,
+  leftMenuTree,
+}) => {
   return (
-    <Content id="maincontent" layout="code">
-      <Article>
-        {children}
+    <PageGrid>
+      <Template menuItems={leftMenuTree} layout="landing">
+        <TitleHeader
+          title={frontmatter.title}
+          subTitle={frontmatter.subTitle}
+          icon={frontmatter.icon}
+        />
 
-        <NotFound />
-      </Article>
-    </Content>
+        <Content id="maincontent" layout="code">
+          <Article>
+            {children}
+
+            <NotFound />
+          </Article>
+        </Content>
+      </Template>
+    </PageGrid>
   );
 };
 

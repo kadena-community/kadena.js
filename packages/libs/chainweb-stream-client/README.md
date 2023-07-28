@@ -2,7 +2,7 @@
 
 # @kadena/chainweb-stream-client
 
-Chainweb SSE client for browsers and node.js
+Chainweb-stream client for browsers and node.js
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -11,10 +11,10 @@ Chainweb SSE client for browsers and node.js
 
 <!-- genericHeader end -->
 
-[Chainweb-SSE][1] client for browsers and node.js
+[Chainweb-stream][1] client for browsers and node.js
 
-Stream account or module/event transactions from chainweb-SSE, including their
-confirmation depth/status updates.
+Stream account or module/event transactions from chainweb-stream, including their
+confirmation depth.
 
 Introduces and normalizes the following features across environments:
 
@@ -22,6 +22,7 @@ Introduces and normalizes the following features across environments:
 - Initial connection timeout
 - Stale connection detection
 - Transaction confirmation status classification (unconfirmed/confirmed)
+- Server/client configuration compatibility checks
 
 ## Status
 
@@ -47,6 +48,7 @@ yarn add @kadena/chainweb-stream-client
 import ChainwebStreamClient from '@kadena/chainweb-stream-client';
 
 const client = new ChainwebStreamClient({
+  network: 'mainnet01',
   type: 'event',
   id: 'coin',
   host: 'http://localhost:4000/',
@@ -66,7 +68,7 @@ Find more detailed examples under `src/examples`.
 | network           |   Yes    | Chainweb network                                                | \`mainnet01             | testnet04 | ...\` |
 | type              |   Yes    | Transaction type to stream (event/account)                      | \`event                 | account\` |       |
 | id                |   Yes    | Account ID or module/event name                                 | `k:abcdef01234..`       |           |       |
-| host              |   Yes    | Chainweb-SSE backend URL                                        | `http://localhost:4000` |           |       |
+| host              |   Yes    | Chainweb-stream backend URL                                        | `http://localhost:4000` |           |       |
 | limit             |    No    | Initial data load limit                                         | 100                     |           |       |
 | connectTimeout    |    No    | Connection timeout in ms                                        | 10_000                  |           |       |
 | heartbeatTimeout  |    No    | Stale connection timeout in ms                                  | 30_000                  |           |       |
@@ -139,6 +141,16 @@ unconfirmed transactions
 
 Callback type: `(txn: ITransaction) => void`
 
+### heights
+
+Emitted when a `heights` event is received by the server. This carries the
+maximum height as seen from stream-server's corresponding chainweb-data. This
+event is mostly intended for calculating minheight when reconnecting, but the
+event itself is exposed to users in case they have use cases beyond that, such
+as detecting a stalled cw-data.
+
+Callback type: `(maxChainwebDataHeight: number) => void`
+
 ### data
 
 Emitted when any transaction payload is received (unconfirmd and confirmed.)
@@ -175,7 +187,7 @@ unexpected behaviors.
 
 Callback type: `(dbg: IDebugMsgObject) => void`
 
-[1]: https://github.com/kadena-io/chainweb-sse
+[1]: https://github.com/kadena-io/chainweb-stream
 [2]: #will-reconnect
 [3]: #error
 [4]: #reconnect

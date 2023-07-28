@@ -113,9 +113,9 @@ export const InlineWithButton: Story = {
         placeholder="This is a placeholder"
         outlined
       />
-      <Button.Root title="Submit" onClick={() => {}}>
+      <Button title="Submit" onClick={() => {}}>
         Submit
-      </Button.Root>
+      </Button>
     </Stack>
   ),
 };

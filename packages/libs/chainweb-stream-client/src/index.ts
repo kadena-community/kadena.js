@@ -4,22 +4,26 @@ import {
   parseError,
 } from './errors';
 import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
+import SlidingCache from './sliding-cache';
 import {
   ChainwebStreamType,
   ConnectionState,
   IChainwebStreamConfig,
   IChainwebStreamConstructorArgs,
   IDebugMsgObject,
+  IHeightsEvent,
   IInitialEvent,
   ITransaction,
 } from './types';
+import { isNotUndefined } from './util';
 
 import EventEmitter from 'eventemitter2';
 import EventSource from 'eventsource';
 
 export * from './types';
 
-const CLIENT_PROTOCOL_VERSION: string = '0.0.2';
+const CLIENT_PROTOCOL_VERSION: string = '0.0.3';
+const MAX_CHAIN_HEIGHT_SPAN: number = 3;
 
 const DEFAULT_CONFIRMATION_DEPTH: number = 6;
 const DEFAULT_CONNECT_TIMEOUT: number = 28_000;
@@ -85,6 +89,8 @@ class ChainwebStream extends EventEmitter {
   // reconnect timer
   private _reconnectTimer?: ReturnType<typeof setTimeout>;
 
+  private _slidingCache: SlidingCache<ITransaction>;
+
   public constructor({
     network,
     host,
@@ -106,22 +112,23 @@ class ChainwebStream extends EventEmitter {
     this.heartbeatTimeoutMs = heartbeatTimeout ?? DEFAULT_HEARTBEAT_TIMEOUT;
     this.maxReconnects = maxReconnects ?? DEFAULT_MAX_RECONNECTS;
     this.confirmationDepth = confirmationDepth ?? DEFAULT_CONFIRMATION_DEPTH;
+    this._slidingCache = new SlidingCache({
+      cacheSpan: 3 * (MAX_CHAIN_HEIGHT_SPAN + this.confirmationDepth),
+    });
   }
 
   /**
    * Call to initialize connection
    */
   public connect = (): void => {
-    this._debug('connect');
     this._desiredState = ConnectionState.Connected;
-    this._eventSource = new EventSource(this._makeConnectionURL());
+    const connectionURL = this._makeConnectionURL();
+    this._debug('connect', { url: connectionURL });
+    this._eventSource = new EventSource(connectionURL);
     this._eventSource.onopen = this._handleConnect;
     this._eventSource.onerror = this._handleError;
     // reset & set custom connect timeout handler
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._connectTimer) {
-      clearTimeout(this._connectTimer);
-    }
+    this._clearConnectTimeout();
     this._connectTimer = setTimeout(
       () => this._handleError(new ConnectTimeoutError(this.connectTimeoutMs)),
       this.connectTimeoutMs,
@@ -168,13 +175,12 @@ class ChainwebStream extends EventEmitter {
       );
     }
     _eventSource.addEventListener('initial', this._handleInitial);
-    _eventSource.addEventListener('message', this._handleData);
+    _eventSource.addEventListener('heights', this._handleHeights);
     _eventSource.addEventListener('ping', this._resetHeartbeatTimeout);
+    // note: generic data handler for unlabelled event (not `event: message` unlike above)
+    _eventSource.addEventListener('message', this._handleData);
     this._resetHeartbeatTimeout();
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._connectTimer) {
-      clearTimeout(this._connectTimer);
-    }
+    this._clearConnectTimeout();
     this.emit(this._totalConnectionAttempts ? 'reconnect' : 'connect');
     this._totalConnectionAttempts += 1;
   };
@@ -192,20 +198,19 @@ class ChainwebStream extends EventEmitter {
     // close event source; crucial - chrome reconnects, firefox does not
     this._eventSource?.close();
 
-    // cancel connection timeout timer, if exists
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._connectTimer) {
-      clearTimeout(this._connectTimer);
-    }
+    // cancel connection timeout timer & heartbeat timeout timers, if they exist
+    this._clearConnectTimeout();
+    this._stopHeartbeatMonitor();
 
     const message = parseError(err);
 
-    const willRetry = this._failedConnectionAttempts < this.maxReconnects;
+    const willRetry = this._failedConnectionAttempts <= this.maxReconnects;
     const timeout = this._getTimeout();
     this._debug('_handleError', { message, willRetry, timeout });
 
     if (!willRetry) {
       this._emitError(message);
+      this._emitError('Connection retries exhausted');
       this.disconnect();
       return;
     }
@@ -218,9 +223,9 @@ class ChainwebStream extends EventEmitter {
     });
 
     this._desiredState = ConnectionState.WaitReconnect;
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._reconnectTimer) {
+    if (this._reconnectTimer !== undefined) {
       clearTimeout(this._reconnectTimer);
+      this._reconnectTimer = undefined;
     }
     this._reconnectTimer = setTimeout(this.connect, timeout);
   };
@@ -228,7 +233,16 @@ class ChainwebStream extends EventEmitter {
   private _handleInitial = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as IInitialEvent;
+    const message: IInitialEvent | undefined = this._jsonParse(
+      msg.data,
+      'initial',
+    );
+
+    if (message === undefined) {
+      // initial event unparsable is a fatal condition
+      this._fail(`Failed to parse initial event`);
+      return;
+    }
 
     const { config, data } = message;
 
@@ -239,10 +253,35 @@ class ChainwebStream extends EventEmitter {
     this._processData(data);
   };
 
+  private _handleHeights = (msg: MessageEvent<string>): void => {
+    const data: IHeightsEvent | undefined = this._jsonParse(
+      msg.data,
+      'heights',
+    );
+
+    if (data === undefined) {
+      return;
+    }
+
+    const { data: maxChainwebDataHeight } = data;
+
+    this._debug('_handleHeights');
+
+    this.emit('heights', maxChainwebDataHeight);
+
+    this._updateLastHeight([maxChainwebDataHeight]);
+
+    this._resetHeartbeatTimeout();
+  };
+
   private _handleData = (msg: MessageEvent<string>): void => {
     this._debug('_handleData', { length: msg.data?.length });
 
-    const message = JSON.parse(msg.data) as ITransaction;
+    const message: ITransaction | undefined = this._jsonParse(msg.data, 'data');
+
+    if (message === undefined) {
+      return;
+    }
 
     this._processData([message]);
 
@@ -250,12 +289,16 @@ class ChainwebStream extends EventEmitter {
   };
 
   private _processData(data: ITransaction[]): void {
-    this._lastHeight = data.reduce(
-      (highest, { height }) => (height > highest ? height : highest),
-      this._lastHeight ?? 0,
-    );
+    this._updateLastHeight(data);
 
-    for (const element of data) {
+    // no emiting duplicate events to users:
+    // filter out any elements that have been emitted before
+    const unseen: ITransaction[] = this._slidingCache
+      .addCache(...data)
+      .map((shouldEmit, idx) => (shouldEmit ? data[idx] : undefined))
+      .filter(isNotUndefined);
+
+    for (const element of unseen) {
       const {
         meta: { confirmations },
       } = element;
@@ -268,9 +311,47 @@ class ChainwebStream extends EventEmitter {
     }
   }
 
+  private _updateLastHeight(data: ITransaction[] | number[]): void {
+    if (!data.length) {
+      return;
+    }
+
+    const heights = data.map((element: ITransaction | number) =>
+      typeof element === 'number' ? element : element.height,
+    );
+
+    const newLastHeight = Math.max(this._lastHeight ?? 0, ...heights);
+
+    if (newLastHeight !== this._lastHeight) {
+      this._lastHeight = newLastHeight;
+      this._debug('_updateLastHeight', { lastHeight: this._lastHeight });
+    }
+  }
+
+  private _jsonParse<T>(data: string, label: string): T | undefined {
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      this.emit(
+        'warn',
+        `Could not parse ${label} event JSON data starting with: ${data?.slice(
+          0,
+          80,
+        )}`,
+      );
+      return undefined;
+    }
+  }
+
   private _emitError(msg: string): void {
     console.error(msg);
     this.emit('error', msg);
+  }
+
+  private _fail(msg: string): false {
+    this.disconnect();
+    this._emitError(msg);
+    return false;
   }
 
   private _validateServerConfig(config: IChainwebStreamConfig): boolean {
@@ -283,32 +364,26 @@ class ChainwebStream extends EventEmitter {
       v: serverProtocolVersion,
     } = config;
 
-    const fail = (msg: string): false => {
-      this.disconnect();
-      this._emitError(msg);
-      return false;
-    };
-
     if (network !== this.network) {
-      return fail(
+      return this._fail(
         `Network mismatch: wanted ${this.network}, server is ${network}.`,
       );
     }
 
     if (type !== this.type) {
-      return fail(
+      return this._fail(
         `Parameter mismatch: Expected transactions of type "${this.type}" but received "${type}". This should never happen.`,
       );
     }
 
     if (id !== this.id) {
-      return fail(
+      return this._fail(
         `Parameter mismatch: Expected transactions for ${this.id} but received ${id}. This should never happen.`,
       );
     }
 
     if (maxConf < this.confirmationDepth) {
-      return fail(
+      return this._fail(
         `Configuration mismatch: Client confirmation depth (${this.confirmationDepth}) is larger than server (${maxConf}). Events will never be considered confirmed on the client.`,
       );
     }
@@ -326,7 +401,7 @@ class ChainwebStream extends EventEmitter {
     }
 
     if (!isMajorCompatible(CLIENT_PROTOCOL_VERSION, serverProtocolVersion)) {
-      return fail(
+      return this._fail(
         `Protocol mismatch: Client protocol version ${CLIENT_PROTOCOL_VERSION} is incompatible with server protocol version ${serverProtocolVersion}.`,
       );
     }
@@ -348,10 +423,17 @@ class ChainwebStream extends EventEmitter {
     return true;
   }
 
+  private _clearConnectTimeout = (): void => {
+    if (this._connectTimer !== undefined) {
+      clearTimeout(this._connectTimer);
+      this._connectTimer = undefined;
+    }
+  };
+
   private _stopHeartbeatMonitor = (): void => {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (this._heartbeatTimer) {
+    if (this._heartbeatTimer !== undefined) {
       clearTimeout(this._heartbeatTimer);
+      this._heartbeatTimer = undefined;
     }
   };
 
@@ -378,12 +460,19 @@ class ChainwebStream extends EventEmitter {
     if (this.limit !== undefined) {
       urlParamArgs.push(['limit', String(this.limit)]);
     }
-    // TODO This reconnection strategy of -3 from last max height
+    // This reconnection strategy of last_height - conf_depth - 3
     // guarrantees that we will not miss events, but it also means
     // that confirmed transactions will be emitted more than once
+    // until we implement deduplication. 3 is the max chain height span
+    // for current chainweb chain count (20)
     // Discussion here: https://github.com/kadena-community/kadena.js/issues/275
     if (this._lastHeight !== undefined) {
-      urlParamArgs.push(['minHeight', String(this._lastHeight - 3)]);
+      urlParamArgs.push([
+        'minHeight',
+        String(
+          this._lastHeight - this.confirmationDepth - MAX_CHAIN_HEIGHT_SPAN,
+        ),
+      ]);
     }
     if (urlParamArgs.length) {
       path += `?${new URLSearchParams(urlParamArgs).toString()}`;

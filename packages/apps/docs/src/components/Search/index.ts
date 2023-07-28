@@ -1,2 +1,2 @@
 export * from './styles';
-export * from './SearchResults';
+export * from './Search';

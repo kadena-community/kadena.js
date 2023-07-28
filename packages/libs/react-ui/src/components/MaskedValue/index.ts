@@ -1,3 +1,1 @@
-import { MaskedValue } from './MaskedValue';
-
-export { MaskedValue };
+export { MaskedValue } from './MaskedValue';

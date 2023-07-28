@@ -81,7 +81,7 @@ export const {
     },
     fonts: {
       main: "'Haas Grotesk Display', -apple-system, sans-serif",
-      mono: "'Kadena Code', Menlo, monospace",
+      mono: "'Kode Mono', Menlo, monospace",
     },
     fontSizes: {
       xs: '0.75rem', // 12px
@@ -107,7 +107,7 @@ export const {
       normal: 400,
       medium: 500,
       semiBold: 700,
-      bold: 900,
+      bold: 700,
     },
     lineHeights: {
       base: 1.4,

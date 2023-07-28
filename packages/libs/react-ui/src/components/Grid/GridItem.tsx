@@ -1,40 +1,50 @@
-import { gridItemClass } from './Grid.css';
+import {
+  explicitItemColumnVariant,
+  gridItemClass,
+  itemColumnVariants,
+  ResponsiveInputType,
+  rowSpanVariants,
+} from './Grid.css';
 
-import React, { CSSProperties, FC, ReactNode } from 'react';
-
-export type ColSpanType = number | 'auto';
+import classNames from 'classnames';
+import React, { FC, ReactNode } from 'react';
 
 export interface IGridItemProps {
   children?: ReactNode;
-  colStart?: ColSpanType;
-  colEnd?: ColSpanType;
-  rowStart?: ColSpanType;
-  rowEnd?: ColSpanType;
-  area?: CSSProperties['gridArea'];
+  columnSpan?: ResponsiveInputType;
+  rowSpan?: keyof typeof rowSpanVariants;
 }
+
+const assembleColumnSpanVariants = (
+  columnSpan: ResponsiveInputType,
+): string | string[] => {
+  if (typeof columnSpan === 'number') {
+    return explicitItemColumnVariant[columnSpan];
+  }
+
+  const { sm, md, lg, xl, xxl } = columnSpan;
+
+  return [
+    itemColumnVariants.sm[sm],
+    itemColumnVariants.md[md],
+    itemColumnVariants.lg[lg],
+    itemColumnVariants.xl[xl],
+    itemColumnVariants.xxl[xxl],
+  ];
+};
 
 const GridItem: FC<IGridItemProps> = ({
   children,
-  colStart,
-  colEnd,
-  rowStart,
-  rowEnd,
-  area,
+  columnSpan,
+  rowSpan = 1,
 }) => {
-  const styles =
-    area === undefined
-      ? {
-          gridColumnStart: colStart,
-          gridColumnEnd: colEnd,
-          gridRowStart: rowStart,
-          gridRowEnd: rowEnd,
-        }
-      : {
-          gridArea: area,
-        };
-
+  const className = classNames(
+    gridItemClass,
+    rowSpanVariants[rowSpan],
+    columnSpan && assembleColumnSpanVariants(columnSpan),
+  );
   return (
-    <div className={gridItemClass} style={styles}>
+    <div className={className} data-testid="kda-grid-item">
       {children}
     </div>
   );

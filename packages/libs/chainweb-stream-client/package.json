@@ -1,7 +1,7 @@
 {
   "name": "@kadena/chainweb-stream-client",
-  "version": "0.0.8",
-  "description": "Chainweb SSE client for browsers and node.js",
+  "version": "0.0.9",
+  "description": "Chainweb-stream client for browsers and node.js",
   "keywords": [],
   "repository": {
     "type": "git",
@@ -11,16 +11,10 @@
   "license": "ISC",
   "contributors": [
     {
+      "name": "Tasos"
+    },
+    {
       "name": "Albert"
-    },
-    {
-      "name": "Linda"
-    },
-    {
-      "name": "Hee Kyun"
-    },
-    {
-      "name": "Randy"
     }
   ],
   "main": "lib/index.js",
@@ -40,9 +34,6 @@
     "test": "heft test"
   },
   "dependencies": {
-    "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
     "eventemitter2": "~6.4.9",
     "eventsource": "~2.0.2"
   },
@@ -55,8 +46,8 @@
     "@types/eventsource": "1.1.11",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1"
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
+    "sort-package-json": "~2.5.1"
   }
 }

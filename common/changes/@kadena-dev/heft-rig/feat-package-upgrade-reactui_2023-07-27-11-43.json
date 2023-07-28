@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/heft-rig",
+      "comment": "formatting and linting",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena-dev/heft-rig"
+}

@@ -1,8 +1,18 @@
 import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
-import { pollStatus, submit } from './util/client';
+import { listen, submit } from './util/client';
 import { keyFromAccount } from './util/keyFromAccount';
+
+// npx ts-node simple-transfer.ts
+
+// change these two accounts with your accounts
+const senderAccount: string =
+  'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
+const receiverAccount: string =
+  'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11';
+
+const NETWORK_ID: string = 'testnet04';
 
 async function transfer(
   sender: string,
@@ -15,22 +25,24 @@ async function transfer(
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', sender, receiver, amount),
     ])
-    .setMeta({ chainId: '1', sender: keyFromAccount(sender) })
-    .setNetworkId("testnet04'")
+    .setMeta({ chainId: '0', sender })
+    .setNetworkId(NETWORK_ID)
     .createTransaction();
+
+  console.log('transaction', JSON.parse(transaction.cmd));
 
   const signedTr = await signWithChainweaver(transaction);
   console.log('transation.sigs', JSON.stringify(signedTr.sigs, null, 2));
 
   if (isSignedCommand(signedTr)) {
-    const requestKeys = await submit(signedTr);
-    const result = pollStatus(requestKeys);
-    console.log(result);
+    const requestKey = await submit(signedTr);
+    const response = await listen(requestKey);
+    if (response.result.status === 'failure') {
+      throw response.result.error;
+    } else {
+      console.log(response.result);
+    }
   }
 }
 
-const myAccount: string =
-  'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
-const receiver: string = 'albert';
-
-transfer(myAccount, receiver, { decimal: '10' }).catch(console.error);
+transfer(senderAccount, receiverAccount, { decimal: '1' }).catch(console.error);

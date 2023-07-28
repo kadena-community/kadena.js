@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs",
+      "comment": "formatting and linting",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/pactjs"
+}

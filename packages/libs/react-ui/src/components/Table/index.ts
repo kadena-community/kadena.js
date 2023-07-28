@@ -1,13 +1,26 @@
-import { ITableProps, Table as TableContainer } from './Table';
-import { ITBodyProps, TBody } from './TBody';
-import { ITdProps, Td } from './Td';
-import { IThProps, Th } from './Th';
-import { ITHeadProps, THead } from './THead';
-import { ITrProps, Tr } from './Tr';
+import type { ITableProps } from './Table';
+import { Table as TableContainer } from './Table';
+import type { ITBodyProps } from './TBody';
+import { TBody } from './TBody';
+import type { ITdProps } from './Td';
+import { Td } from './Td';
+import type { IThProps } from './Th';
+import { Th } from './Th';
+import type { ITHeadProps } from './THead';
+import { THead } from './THead';
+import type { ITrProps } from './Tr';
+import { Tr } from './Tr';
 
 import { FC } from 'react';
 
-export { ITableProps, ITBodyProps, ITHeadProps, ITrProps, IThProps, ITdProps };
+export type {
+  ITableProps,
+  ITBodyProps,
+  ITHeadProps,
+  ITrProps,
+  IThProps,
+  ITdProps,
+};
 
 interface ITable {
   Root: FC<ITableProps>;

@@ -169,7 +169,7 @@ Create a new file and name it `transfer.ts` (or `.js`):
 import { Pact } from '@kadena/client';
 
 const unsignedTransaction = Pact.builder
-  .execute(
+  .execution(
     Pact.modules.coin.transfer('k:your-pubkey', 'k:receiver-pubkey', {
       decimal: '231',
     }),
@@ -260,7 +260,7 @@ const client = getClient(
 );
 
 const unsignedTransaction = Pact.builder
-  .execute('(format "Hello {}!" [(read-msg "person")])')
+  .execution('(format "Hello {}!" [(read-msg "person")])')
   // add signer(s) if its required
   .addSigner('your-pubkey')
   // set chian id and sender
@@ -283,8 +283,8 @@ flexibility on crating command like composing command or lazy loading.
 
 Here are two examples to demonstrate this:
 
-- [example-contract/transfer-fp.ts][30]
-- [example-contract/compose-commands.ts][31]
+- [example-contract/functional/transfer-fp.ts][30]
+- [example-contract/functional/compose-commands.ts][31]
 
 ## Send a request to the blockchain
 
@@ -383,9 +383,9 @@ We are available via Discord and Github issues:
 [29]:
   https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104
 [30]:
-  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/transfer-fp.ts
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/functional/transfer-fp.ts
 [31]:
-  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/compose-commands.ts
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/functional/compose-commands.ts
 [32]: https://api.chainweb.com/openapi/pact.html
 [33]:
   https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/get-balance.ts

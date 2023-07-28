@@ -1,8 +1,8 @@
-import { IconButton, SystemIcon } from '..';
-
 import { container } from './stories.css';
-import { ITooltipProps, Tooltip } from '.';
+import { ITooltipProps, Tooltip } from './';
 
+import { SystemIcon } from '@components/Icon';
+import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useRef } from 'react';
 
@@ -12,6 +12,7 @@ const meta: Meta<
   } & ITooltipProps
 > = {
   title: 'Components/Tooltip',
+  component: Tooltip.Root,
   argTypes: {
     text: {
       control: {

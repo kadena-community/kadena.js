@@ -9,16 +9,13 @@ export const Wrapper: StyledComponent<'div'> = styled('div', {
   margin: '0 auto',
 });
 
-export const Template: StyledComponent<
-  'div',
-  { layout?: 'landing' | 'normal' | 'code' | undefined }
-> = styled('div', {
+export const BasePageGrid: StyledComponent<'div'> = styled('div', {
   $$asideMenuWidthMDDefault: '200px',
   $$asideMenuWidthLGDefault: '300px',
   $$asideMenuWidthCode: '400px',
 
   display: 'grid',
-  gridTemplateRows: '$17 auto 1fr auto',
+  gridTemplateRows: '0 auto 1fr auto',
   gridTemplateColumns: 'auto auto',
   gridTemplateAreas: `
       "header header"
@@ -30,6 +27,8 @@ export const Template: StyledComponent<
   margin: '0 auto',
   minHeight: '100vh',
   '@md': {
+    gridTemplateColumns:
+      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDDefault)) $$asideMenuWidthMDDefault 1%',
     gridTemplateAreas: `
         "header header header header header"
         "pageheader pageheader pageheader pageheader pageheader"
@@ -37,62 +36,10 @@ export const Template: StyledComponent<
         "footer footer footer footer footer"
       `,
   },
-  defaultVariants: {
-    layout: 'normal',
-  },
-  variants: {
-    layout: {
-      normal: {
-        '@md': {
-          gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDDefault)) $$asideMenuWidthMDDefault 1%',
-        },
-        '@2xl': {
-          gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGDefault)) $$asideMenuWidthLGDefault auto',
-        },
-      },
-      code: {
-        '@md': {
-          gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthCode)) $$asideMenuWidthCode 1%',
-        },
-        '@lg': {
-          gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthCode)) $$asideMenuWidthCode 1%',
-        },
-        '@2xl': {
-          gridTemplateColumns:
-            'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthCode)) $$asideMenuWidthCode auto',
-        },
-      },
 
-      landing: {
-        gridTemplateColumns: 'auto auto',
-        gridTemplateAreas: `
-            "header header"
-            "pageheader pageheader"
-            "content content"
-            "footer footer"
-          `,
-
-        '@md': {
-          gridTemplateColumns:
-            '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
-
-          gridTemplateAreas: `
-              "header header header header"
-              "pageheader pageheader pageheader pageheader"
-              ". menu content ."
-              "footer footer footer footer"
-            `,
-        },
-        '@2xl': {
-          gridTemplateColumns:
-            'minmax(1%, auto) $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) minmax(1%, auto)',
-        },
-      },
-    },
+  '@2xl': {
+    gridTemplateColumns:
+      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGDefault)) $$asideMenuWidthLGDefault auto',
   },
 });
 

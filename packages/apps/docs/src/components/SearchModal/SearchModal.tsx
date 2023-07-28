@@ -1,23 +1,38 @@
 import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 
-import { SearchResults } from '../Search/SearchResults';
+import { Search } from '../Search/';
 import { SearchForm } from '../Search/styles';
 
 import { Wrapper } from './styles';
 
-import { useSearch } from '@/hooks';
-import React, { FC } from 'react';
+import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 export const SearchModal: FC = () => {
-  const {
-    searchInputRef,
-    query,
-    handleSubmit,
-    staticSearchResults,
-    conversation,
-    outputStream,
-    error,
-  } = useSearch();
+  const [isMounted, setIsMounted] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const [query, setQuery] = useState<string | undefined>();
+
+  const handleSubmit = async (
+    evt: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    evt.preventDefault();
+
+    const value = searchInputRef.current?.value ?? '';
+    setQuery(value);
+  };
+
+  useEffect(() => {
+    if (!searchInputRef.current || isMounted) {
+      return;
+    }
+    setIsMounted(true);
+  }, [isMounted, searchInputRef]);
+
+  useEffect(() => {
+    if (searchInputRef.current && isMounted) {
+      searchInputRef.current.focus();
+    }
+  }, [isMounted]);
 
   return (
     <>
@@ -39,14 +54,7 @@ export const SearchModal: FC = () => {
           </SearchForm>
         </Box>
 
-        <SearchResults
-          staticSearchResults={staticSearchResults}
-          conversation={conversation}
-          outputStream={outputStream}
-          limitResults={10}
-          query={query}
-          error={error}
-        />
+        <Search query={query} hasScroll={true} limitResults={10} />
       </Wrapper>
     </>
   );

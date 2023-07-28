@@ -1,5 +1,7 @@
-import { BreadcrumbsContainer, IBreadcrumbsProps } from './Breadcrumbs';
-import { BreadcrumbsItem, IBreadcrumbItemProps } from './BreadcrumbsItem';
+import type { IBreadcrumbsProps } from './Breadcrumbs';
+import { BreadcrumbsContainer } from './Breadcrumbs';
+import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
+import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 import { FC } from 'react';
 
@@ -8,7 +10,7 @@ interface IBreadcrumbs {
   Item: FC<IBreadcrumbItemProps>;
 }
 
-export { IBreadcrumbsProps, IBreadcrumbItemProps };
+export type { IBreadcrumbsProps, IBreadcrumbItemProps };
 
 export const Breadcrumbs: IBreadcrumbs = {
   Root: BreadcrumbsContainer,

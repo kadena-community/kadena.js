@@ -1,19 +1,19 @@
-import { addData, addKeyset, readKeyset } from '../addData';
+import { addData, addKeyset } from '../addData';
 
 describe('addData', () => {
-  it('return data for exec payload', () => {
+  it('add data for exec payload', () => {
     expect(
       addData('test', 'value')({ payload: { exec: { code: '(func)' } } }),
     ).toEqual({
-      payload: { exec: { data: { test: 'value' } } },
+      payload: { exec: { code: '(func)', data: { test: 'value' } } },
     });
   });
 
-  it('return data for cont payload', () => {
+  it('add data for cont payload', () => {
     expect(
       addData('test', 'value')({ payload: { cont: { pactId: '1' } } }),
     ).toEqual({
-      payload: { cont: { data: { test: 'value' } } },
+      payload: { cont: { pactId: '1', data: { test: 'value' } } },
     });
   });
 
@@ -24,12 +24,6 @@ describe('addData', () => {
   });
 });
 
-describe('readKeyset', () => {
-  it('returns read-keyset string', () => {
-    expect(readKeyset('ks')).toBe('(read-keyset "ks")');
-  });
-});
-
 describe('addKeyset', () => {
   it('returns keyset data format', () => {
     expect(addKeyset('test', 'keys-one', 'p1', 'p2')({})).toEqual({
@@ -37,7 +31,7 @@ describe('addKeyset', () => {
         exec: {
           data: {
             test: {
-              publicKeys: ['p1', 'p2'],
+              keys: ['p1', 'p2'],
               pred: 'keys-one',
             },
           },
