@@ -42,7 +42,7 @@ const Home: FC = () => {
         Kadena Developer Tools
       </Heading>
       <Heading bold={false} variant="h4" color="default">
-        Explore the developer tools descriptive text
+        Explore the developer tools platform.
       </Heading>
       <div style={{ width: '680px' }}>
         <Card fullWidth>
@@ -50,7 +50,7 @@ const Home: FC = () => {
           <p>
             Changelog with the latest updates to the Kadena Development Tools.
           </p>
-          <br/>
+          <br />
           <Table.Root>
             <Table.Body>
               <Table.Tr>
