@@ -1,7 +1,14 @@
 import { menuData } from '@/data/menu.mjs';
+import { IFrontmatterData } from '@/types';
 import { IMenuData } from '@/types/Layout';
+import type { StreamMetaData } from '@7-docs/edge';
 
-const filenameToRoute = (filename: string): string => {
+interface IQueryResult extends StreamMetaData {
+  content?: string;
+  description?: string;
+}
+
+export const filePathToRoute = (filename: string): string => {
   // Remove "src/pages" from the start of the filename
   let route = filename.replace(/^src\/pages/, '');
 
@@ -62,29 +69,19 @@ const cleanUpContent = (content: string): string | undefined => {
   return;
 };
 
-const mapMatches = (match: QueryResult): ISearchResult => {
-  const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
+export const mapMatches = (metadata: StreamMetaData): IQueryResult => {
+  const content =
+    typeof metadata.content !== 'undefined'
+      ? cleanUpContent(metadata.content)
+      : undefined;
+  const data =
+    typeof metadata.filePath !== 'undefined'
+      ? getData(filePathToRoute(metadata.filePath))
+      : {};
+
   return {
-    id: match.id,
-    score: match.score,
-    filePath: metadata.filePath,
-    content: cleanUpContent(metadata.content),
-    ...getData(filenameToRoute(metadata.filePath)),
-  } as ISearchResult;
-};
-
-const reduceMatches = (acc: QueryResult[], val: QueryResult): QueryResult[] => {
-  //taking out double results
-  const metadata = (val.metadata as IScoredVectorMetaData) ?? {};
-  if (
-    acc.find((item: QueryResult) => {
-      const itemMetadata = (item.metadata as IScoredVectorMetaData) ?? {};
-      return itemMetadata.filePath === metadata.filePath;
-    })
-  ) {
-    return acc;
-  }
-  acc.push(val);
-
-  return acc;
+    ...metadata,
+    content,
+    ...data,
+  };
 };

@@ -2,6 +2,7 @@ import { SearchResults } from './components/SearchResults';
 
 import { useSearch } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { mapMatches } from '@/pages/api/semanticsearch';
 import React, { FC, useEffect, useState } from 'react';
 
 interface IProps {
@@ -13,13 +14,17 @@ interface IProps {
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   const [, setTabName] = useState<string | undefined>();
   const {
-    metadata,
+    metadata = [],
     outputStream,
     handleSubmit,
     conversation,
     error,
     isLoading,
   } = useSearch(limitResults);
+
+  const semanticResults = metadata
+    .map((metadata) => ({ ...metadata, filePath: metadata.title })) // TODO delete this line
+    .map(mapMatches);
 
   useEffect(() => {
     if (query !== undefined && query.trim() !== '') {
@@ -37,7 +42,8 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   return (
     <section>
       <SearchResults
-        semanticResults={metadata ?? []}
+        semanticResults={semanticResults}
+        semanticIsLoading={isLoading}
         conversation={conversation}
         outputStream={outputStream}
         query={query}
