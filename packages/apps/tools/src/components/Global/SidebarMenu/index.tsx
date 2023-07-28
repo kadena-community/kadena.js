@@ -14,7 +14,14 @@ export const SidebarMenu: FC = (props) => {
   const menuItems: {
     [key: string]: Array<{ icon: unknown; title: string; href: string }>;
   } = {
-    transfer: [
+    faucet: [
+      {
+        icon: Account,
+        title: t('Existing account'),
+        href: routes.FAUCET_EXISTING,
+      },
+    ],
+    transactions: [
       {
         icon: Chain,
         title: t('Cross Chain Transfer Tracker'),
@@ -26,21 +33,16 @@ export const SidebarMenu: FC = (props) => {
         href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
       {
-        icon: Account,
-        title: t('Account Transactions'),
-        href: routes.ACCOUNT_TRANSACTIONS,
-      },
-      {
         icon: Chain,
         title: t('Module explorer'),
         href: routes.MODULE_EXPLORER,
       },
     ],
-    faucet: [
+    account: [
       {
         icon: Account,
-        title: t('Existing account'),
-        href: routes.FAUCET_EXISTING,
+        title: t('Account Transactions'),
+        href: routes.ACCOUNT_TRANSACTIONS,
       },
     ],
   };
