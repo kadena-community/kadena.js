@@ -9,7 +9,7 @@ import { NotificationHeader } from './NotificationHeader';
 
 import { FC } from 'react';
 
-export {
+export type {
   INotificationProps,
   INotificationHeaderProps,
   INotificationActionsProps,

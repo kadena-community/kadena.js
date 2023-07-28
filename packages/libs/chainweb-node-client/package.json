@@ -57,8 +57,8 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1"
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
+    "sort-package-json": "~2.5.1"
   }
 }

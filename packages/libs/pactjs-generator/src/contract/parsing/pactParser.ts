@@ -109,12 +109,15 @@ const getUsedModules = (
   allUsedModules?: IUsedModules[],
 ): Array<Omit<IUsedModules, 'location'>> => {
   if (!allUsedModules) return [];
-  const list = allUsedModules.reduce((list, { location, ...mod }) => {
-    if (location !== undefined && location < moduleLoc) {
-      return [...list, mod];
-    }
-    return list;
-  }, [] as Exclude<IPactTree['usedModules'], undefined>);
+  const list = allUsedModules.reduce(
+    (list, { location, ...mod }) => {
+      if (location !== undefined && location < moduleLoc) {
+        return [...list, mod];
+      }
+      return list;
+    },
+    [] as Exclude<IPactTree['usedModules'], undefined>,
+  );
 
   return list;
 };

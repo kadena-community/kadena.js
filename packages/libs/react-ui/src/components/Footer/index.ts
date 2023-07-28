@@ -9,7 +9,7 @@ import { FooterPanel } from './FooterPanel';
 
 import { FC } from 'react';
 
-export {
+export type {
   IFooterProps,
   IFooterPanelProps,
   IFooterLinkItemProps,
