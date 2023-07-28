@@ -54,11 +54,6 @@ const ModuleExplorer: FC = () => {
 
   useToolbar([
     {
-      title: t('Account Transaction'),
-      icon: SystemIcon.Account,
-      href: Routes.ACCOUNT_TRANSACTIONS,
-    },
-    {
       title: t('Cross Chain'),
       icon: SystemIcon.Transition,
       href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
@@ -70,7 +65,7 @@ const ModuleExplorer: FC = () => {
     },
     {
       title: t('Module Explorer'),
-      icon: SystemIcon.BadgeAccount,
+      icon: SystemIcon.Earth,
       href: Routes.MODULE_EXPLORER,
     },
   ]);

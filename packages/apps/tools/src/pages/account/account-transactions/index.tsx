@@ -19,11 +19,11 @@ import {
   StyledTableHead,
   StyledTableHeader,
   StyledTableRow,
-} from '@/pages/transfer/account-transactions/styles';
+} from '@/pages/account/account-transactions/styles';
 import {
   formStyle,
   mainContentStyle,
-} from '@/pages/transfer/account-transactions/styles.css';
+} from '@/pages/account/account-transactions/styles.css';
 import {
   getTransactions,
   ITransaction,
@@ -56,21 +56,6 @@ const CheckTransactions: FC = () => {
       title: t('Account Transaction'),
       icon: SystemIcon.Account,
       href: Routes.ACCOUNT_TRANSACTIONS,
-    },
-    {
-      title: t('Cross Chain'),
-      icon: SystemIcon.Transition,
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Finalize Cross Chain'),
-      icon: SystemIcon.TransitionMasked,
-      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
-    },
-    {
-      title: t('Module Explorer'),
-      icon: SystemIcon.BadgeAccount,
-      href: Routes.MODULE_EXPLORER,
     },
   ]);
 

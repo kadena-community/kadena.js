@@ -26,7 +26,7 @@ import {
   StyledFormButton,
   StyledInfoBox,
   StyledMainContent,
-} from '@/pages/transfer/cross-chain-transfer-tracker/styles';
+} from '@/pages/transactions/cross-chain-transfer-tracker/styles';
 import {
   getTransferStatus,
   IStatusData,
@@ -51,11 +51,6 @@ const CrossChainTransferTracker: FC = () => {
 
   useToolbar([
     {
-      title: t('Account Transaction'),
-      icon: SystemIcon.Account,
-      href: Routes.ACCOUNT_TRANSACTIONS,
-    },
-    {
       title: t('Cross Chain'),
       icon: SystemIcon.Transition,
       href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
@@ -67,7 +62,7 @@ const CrossChainTransferTracker: FC = () => {
     },
     {
       title: t('Module Explorer'),
-      icon: SystemIcon.BadgeAccount,
+      icon: SystemIcon.Earth,
       href: Routes.MODULE_EXPLORER,
     },
   ]);
