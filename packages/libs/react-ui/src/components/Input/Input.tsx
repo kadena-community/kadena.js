@@ -4,6 +4,7 @@ import {
   inputContainerClass,
   leadingTextClass,
   leadingTextWidthVariant,
+  leadingTextWrapperClass,
   outlinedClass,
 } from './Input.css';
 
@@ -50,14 +51,16 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
         data-testid="kda-input"
       >
         {Boolean(leadingText) && (
-          <span
-            className={classNames(
-              leadingTextClass,
-              leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
-            )}
-          >
-            {leadingText}
-          </span>
+          <div className={leadingTextWrapperClass}>
+            <span
+              className={classNames(
+                leadingTextClass,
+                leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
+              )}
+            >
+              {leadingText}
+            </span>
+          </div>
         )}
         <div className={inputContainerClass}>
           {LeftIcon && <LeftIcon size="md" />}

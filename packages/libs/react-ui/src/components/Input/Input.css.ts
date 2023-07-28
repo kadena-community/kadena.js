@@ -68,14 +68,25 @@ export const inputClass = style([
 
 export const leadingTextClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
-    display: 'flex',
+    overflow: 'hidden',
+    display: 'inline-block',
+    minWidth: 0,
     alignItems: 'center',
     paddingX: '$4',
   }),
   {
-    minWidth: 'max-content',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
+]);
+
+export const leadingTextWrapperClass = style([
+  sprinkles({
+    backgroundColor: '$neutral2',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
 ]);
 
 export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
