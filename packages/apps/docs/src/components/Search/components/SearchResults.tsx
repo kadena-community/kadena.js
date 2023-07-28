@@ -8,10 +8,10 @@ import {
 } from '@kadena/react-ui';
 
 import { LoadingWrapper, ScrollBox } from './../styles';
-import { Loading } from './Loading';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
+import { Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
 import Link from 'next/link';

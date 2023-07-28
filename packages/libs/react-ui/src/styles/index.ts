@@ -1,2 +1,4 @@
-export { sprinkles, Sprinkles, breakpoints } from './sprinkles.css';
-export { vars, darkThemeClass, ColorType } from './vars.css';
+export { sprinkles, breakpoints } from './sprinkles.css';
+export type { Sprinkles } from './sprinkles.css';
+export { vars, darkThemeClass } from './vars.css';
+export type { ColorType } from './vars.css';

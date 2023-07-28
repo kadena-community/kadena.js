@@ -23,7 +23,7 @@
     "@prisma/client": "^4.7.1",
     "debug": "~4.3.4",
     "dotenv": "~16.0.3",
-    "eslint": "^8.15.0",
+    "eslint": "^8.45.0",
     "graphql": "~16.6.0",
     "graphql-scalars": "~1.20.1",
     "graphql-yoga": "~3.1.1",
@@ -40,7 +40,7 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1"
+    "prettier": "~3.0.0",
+    "sort-package-json": "~2.5.1"
   }
 }

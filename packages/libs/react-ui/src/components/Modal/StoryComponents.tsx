@@ -64,12 +64,12 @@ export const Content: FC<IProps> = ({ title }) => {
 
   return (
     <>
-      <Button.Root
+      <Button
         onClick={() => renderModal(<ModalContent />, title)}
         title="openModal"
       >
         Open modal
-      </Button.Root>
+      </Button>
 
       <Text>
         Dessert gummies pie biscuit chocolate bar cheesecake. Toffee chocolate

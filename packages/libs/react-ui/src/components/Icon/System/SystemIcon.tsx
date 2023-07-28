@@ -64,6 +64,8 @@ import { SlashForward as SlashForwardSvg } from './svgs/SlashForward';
 import { StopCircle as StopCircleSvg } from './svgs/StopCircle';
 import { ThemeLightDark as ThemeLightDarkSvg } from './svgs/ThemeLightDark';
 import { TrailingIcon as TrailingIconSvg } from './svgs/TrailingIcon';
+import { Transition as TransitionSvg } from './svgs/Transition';
+import { TransitionMasked as TransitionMaskedSvg } from './svgs/TransitionMasked';
 import { Twitter as TwitterSvg } from './svgs/Twitter';
 import { UsbFlashDrive as UsbFlashDriveSvg } from './svgs/UsbFlashDrive';
 
@@ -137,3 +139,5 @@ export const TrailingIcon = IconWrapper(TrailingIconSvg);
 export const Twitter = IconWrapper(TwitterSvg);
 export const UsbFlashDrive = IconWrapper(UsbFlashDriveSvg);
 export const Circle = IconWrapper(CircleSvg);
+export const Transition = IconWrapper(TransitionSvg);
+export const TransitionMasked = IconWrapper(TransitionMaskedSvg);

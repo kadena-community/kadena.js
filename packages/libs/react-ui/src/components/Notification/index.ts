@@ -1,23 +1,15 @@
-import {
-  INotificationActionsProps,
-  NotificationActions,
-} from './NotificationActions';
-import {
-  INotificationButtonProps,
-  NotificationButton,
-} from './NotificationButton';
-import {
-  INotificationProps,
-  NotificationContainer,
-} from './NotificationContainer';
-import {
-  INotificationHeaderProps,
-  NotificationHeader,
-} from './NotificationHeader';
+import type { INotificationActionsProps } from './NotificationActions';
+import { NotificationActions } from './NotificationActions';
+import type { INotificationButtonProps } from './NotificationButton';
+import { NotificationButton } from './NotificationButton';
+import type { INotificationProps } from './NotificationContainer';
+import { NotificationContainer } from './NotificationContainer';
+import type { INotificationHeaderProps } from './NotificationHeader';
+import { NotificationHeader } from './NotificationHeader';
 
 import { FC } from 'react';
 
-export {
+export type {
   INotificationProps,
   INotificationHeaderProps,
   INotificationActionsProps,

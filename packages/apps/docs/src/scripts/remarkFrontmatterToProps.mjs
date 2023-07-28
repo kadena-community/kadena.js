@@ -1,5 +1,6 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
+import { getReadTime } from './utils.mjs';
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
 
@@ -74,6 +75,7 @@ const remarkFrontmatterToProps = () => {
         type: 'props',
         data: {
           frontmatter: {
+            ...getReadTime(file.value),
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),

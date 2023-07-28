@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.8",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -53,9 +53,9 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "@walletconnect/types": "~2.8.1",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
+    "sort-package-json": "~2.5.1",
     "ts-node": "~10.8.2"
   }
 }

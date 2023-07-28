@@ -7,11 +7,11 @@ export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export type LayoutType =
   | 'full'
-  | 'code'
   | 'landing'
   | 'home'
   | 'redocly'
-  | 'blog';
+  | 'blog'
+  | 'code';
 
 export interface ISubHeaderElement {
   tag: TagNameType;
@@ -39,6 +39,8 @@ export interface IPageMeta {
   lastModifiedDate?: Date;
   icon?: ProductIconNames;
   navigation: INavigation;
+  publishDate?: string;
+  author?: string;
 }
 export interface IMenuItem extends IPageMeta {
   root: string;
@@ -53,6 +55,8 @@ export interface ILayout {
   aSideMenuTree?: ISubHeaderElement[];
   editLink?: string;
   navigation?: INavigation;
+  publishDate?: string;
+  author?: string;
 }
 
 export type LevelType = 1 | 2 | 3;
@@ -79,4 +83,8 @@ export interface IMenuData {
   layout: LayoutType;
   isMenuOpen: boolean;
   isActive: boolean;
+  publishDate?: string;
+  author?: string;
+  wordCount?: number;
+  readingTimeInMinutes?: number;
 }

@@ -1,4 +1,5 @@
 import { ICoin } from '../../composePactCommand/test/coin-contract';
+import { IExecPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { commandBuilder } from '../commandBuilder';
 
@@ -112,7 +113,9 @@ describe('commandBuilder', () => {
     const builder = commandBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
-      .setNonce((cmd) => `test-nonce:${Object.keys(cmd).length}`)
+      .setNonce((cmd) => {
+        return `test-nonce:${(cmd.payload as IExecPayloadObject).exec.code}`;
+      })
       .getCommand();
 
     expect(command).toStrictEqual({
@@ -120,7 +123,7 @@ describe('commandBuilder', () => {
         exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
       },
       signers: [],
-      nonce: 'test-nonce:1',
+      nonce: 'test-nonce:(coin.transfer "bob" "alice" 12.0)',
     });
   });
 
@@ -150,8 +153,8 @@ describe('commandBuilder', () => {
       .createTransaction();
 
     expect(unSignedTr).toStrictEqual({
-      cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 12.0)","data":{}}},"nonce":"kjs:nonce:1690416000000","networkId":"mainnet01","signers":[{"pubKey":"bob_bup_key","scheme":"ED25519"}]}',
-      hash: 'OPcc4TsVRXTV_EtpbivnSBu71Znegy50-S3if5QADVY',
+      cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bob\\" \\"alice\\" 12.0)","data":{}}},"nonce":"kjs:nonce:1690416000000","signers":[{"pubKey":"bob_bup_key","scheme":"ED25519"}],"networkId":"mainnet01"}',
+      hash: '_sjzo-mOADRp7XEXIupbNHTGrKzbm-A3fKZhtzXcwxM',
       sigs: [undefined],
     });
   });

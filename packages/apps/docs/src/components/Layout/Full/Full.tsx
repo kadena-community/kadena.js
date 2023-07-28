@@ -1,27 +1,31 @@
 import { Heading } from '@kadena/react-ui';
 
+import { Article, Content } from '../components';
+import { Template } from '../components/Template';
+
 import {
-  Article,
   Aside,
   AsideBackground,
   AsideList,
-  Content,
   ListItem,
   StickyAside,
   StickyAsideWrapper,
-} from '../components';
+} from './components/Aside';
+import { PageGrid } from './styles';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
-import { ILayout } from '@/types/Layout';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { LastModifiedDate } from '@/components/LastModifiedDate';
+import { IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
-export const Full: FC<ILayout> = ({
+export const Full: FC<IPageProps> = ({
   children,
   aSideMenuTree = [],
-  editLink,
-  navigation,
+  frontmatter,
+  leftMenuTree,
 }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -65,40 +69,47 @@ export const Full: FC<ILayout> = ({
     aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
 
   return (
-    <>
-      <Content id="maincontent">
-        <Article ref={scrollRef}>
-          {children}
-          <BottomPageSection editLink={editLink} navigation={navigation} />
-        </Article>
-      </Content>
-      <AsideBackground />
-      <Aside data-cy="aside">
-        {showSideMenu && (
-          <StickyAsideWrapper>
-            <StickyAside>
-              <Heading as="h6" transform="uppercase">
-                On this page
-              </Heading>
-              <AsideList ref={menuRef}>
-                {aSideMenuTree.map((innerItem) => {
-                  const innerSlug = createSlug(innerItem.title);
-                  return (
-                    <ListItem
-                      key={innerSlug}
-                      scrollArea={scrollRef.current}
-                      item={innerItem}
-                      activeItem={activeItem}
-                      setActiveItem={setActiveItem}
-                    />
-                  );
-                })}
-              </AsideList>
-            </StickyAside>
-          </StickyAsideWrapper>
-        )}
-      </Aside>
-    </>
+    <PageGrid>
+      <Template menuItems={leftMenuTree}>
+        <Content id="maincontent">
+          <Article ref={scrollRef}>
+            <Breadcrumbs menuItems={leftMenuTree} />
+            <LastModifiedDate date={frontmatter.lastModifiedDate} />
+            {children}
+            <BottomPageSection
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
+            />
+          </Article>
+        </Content>
+        <AsideBackground />
+        <Aside data-cy="aside">
+          {showSideMenu && (
+            <StickyAsideWrapper>
+              <StickyAside>
+                <Heading as="h6" transform="uppercase">
+                  On this page
+                </Heading>
+                <AsideList ref={menuRef}>
+                  {aSideMenuTree.map((innerItem) => {
+                    const innerSlug = createSlug(innerItem.title);
+                    return (
+                      <ListItem
+                        key={innerSlug}
+                        scrollArea={scrollRef.current}
+                        item={innerItem}
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                      />
+                    );
+                  })}
+                </AsideList>
+              </StickyAside>
+            </StickyAsideWrapper>
+          )}
+        </Aside>
+      </Template>
+    </PageGrid>
   );
 };
 

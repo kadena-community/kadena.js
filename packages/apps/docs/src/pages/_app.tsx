@@ -8,12 +8,14 @@ import { ModalProvider } from '@kadena/react-ui';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics, ConsentModal } from '@/components';
-import { Main } from '@/components/Layout/components';
+import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
-import { ThemeProvider } from '@/hooks';
+import { MenuProvider, ThemeProvider } from '@/hooks';
 import { IPageMeta, IPageProps } from '@/types/Layout';
+import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import React, { FC } from 'react';
 
 const GlobalStyles = globalCss({
@@ -47,8 +49,15 @@ export const MyApp = ({
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
 
+  const Layout = getLayout(props.frontmatter.layout);
+
   return (
     <>
+      <Head>
+        <title>{props.frontmatter.title}</title>
+        <meta name="title" content={props.frontmatter.title} />
+        <meta name="description" content={props.frontmatter.description} />
+      </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider
           attribute="class"
@@ -60,10 +69,13 @@ export const MyApp = ({
           }}
         >
           <ModalProvider>
-            <Main {...props}>
-              <Component {...props} />
-            </Main>
-            <ConsentModal />
+            <MenuProvider>
+              <Header menuItems={props.leftMenuTree} />
+              <Layout {...props}>
+                <Component {...props} />
+              </Layout>
+              <ConsentModal />
+            </MenuProvider>
           </ModalProvider>
         </ThemeProvider>
       </MDXProvider>
