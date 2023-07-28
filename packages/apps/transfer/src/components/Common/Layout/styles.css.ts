@@ -1,4 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
@@ -18,6 +18,13 @@ export const gridItemMainStyle = style([
     paddingLeft: '$20',
     paddingRight: '$20',
   }),
+  {
+    selectors: {
+      '&.isMenuOpen': {
+        paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$6})`,
+      },
+    },
+  },
 ]);
 
 export const gridItemCollapsedSidebarStyle = style([
