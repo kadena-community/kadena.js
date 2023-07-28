@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "next_build": "next build",
     "build": "node build.mjs",
     "dev": "next dev",
     "format": "npm run format:pkg && npm run format:src && npm run format:md",
@@ -12,6 +11,7 @@
     "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "lint": "next lint",
+    "next_build": "next build",
     "precommit": "rush update && rush lint -t @kadena/immutable-records && rush build -t @kadena/immutable-records",
     "start": "next start",
     "test": "echo 'boilerplate'"

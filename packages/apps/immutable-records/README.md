@@ -1,8 +1,6 @@
 <!-- genericHeader start -->
 
-# immutable records
-
-A auctioning dApp for NFTs.
+# @kadena/immutable-records
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -11,11 +9,13 @@ A auctioning dApp for NFTs.
 
 <!-- genericHeader end -->
 
+A auctioning dApp for NFTs.
+
 ## Getting Started
 
 First, run the development server:
 
-```bash
+```sh
 npm run dev
 # or
 yarn dev
@@ -23,5 +23,6 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the
-result.
+Open [http://localhost:3000][1] with your browser to see the result.
+
+[1]: http://localhost:3000
