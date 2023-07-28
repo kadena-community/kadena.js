@@ -37,16 +37,15 @@ const convertFile = (file) => {
     if (!authorsToArticles[author]) {
       authorsToArticles[author] = [];
     }
-    // remove "./src/pages" from the "file" var
-    let root = file
+
+    const root = `/${file
       .split('/')
       .splice(3, file.length - 1)
-      .join('/');
-    // remove the file extension
-    root = root.split('.').at(0);
+      .join('/')
+      .replace(/\.mdx?$/, '')}`;
 
     authorsToArticles[author].push({
-      url: root,
+      root,
       title: data.title,
     });
   }

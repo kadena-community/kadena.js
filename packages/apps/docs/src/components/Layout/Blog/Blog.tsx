@@ -12,6 +12,7 @@ import { ArticleMetadataItem, PageGrid } from './styles';
 
 import { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
+import Link from 'next/link';
 import React, { FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -28,6 +29,7 @@ export const Blog: FC<IPageProps> = ({
     [];
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
+
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
@@ -78,7 +80,7 @@ export const Blog: FC<IPageProps> = ({
                       <ul className={relatedLinksContainer}>
                         {related.map((item, index) => (
                           <li key={index}>
-                            <a href={item.root}>{item.title}</a>
+                            <Link href={item.root}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
