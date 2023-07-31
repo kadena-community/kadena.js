@@ -15,7 +15,12 @@ import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
-import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
+import {
+  HeaderIconGroup,
+  HeaderSocialIconGroup,
+  HideOnMobile,
+  SkipNav,
+} from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
@@ -60,20 +65,22 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
         </HideOnMobile>
         <Spacer />
 
-        <HeaderIconGroup>
+        <HeaderSocialIconGroup>
           <IconButton
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
             icon={SystemIcons.Twitter}
             color="inverted"
           />
           <IconButton
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://github.com/kadena-community"
             title="Go to our Github"
             icon={SystemIcons.Github}
             color="inverted"
           />
-        </HeaderIconGroup>
+        </HeaderSocialIconGroup>
         <HeaderIconGroup>
           <ThemeToggle />
           <HideOnMobile>
