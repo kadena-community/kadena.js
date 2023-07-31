@@ -52,10 +52,9 @@
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "preinstall": "npx only-allow pnpm",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
   "dependencies": {
@@ -76,7 +75,6 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "typescript": "5.1.6"
   }
 }
