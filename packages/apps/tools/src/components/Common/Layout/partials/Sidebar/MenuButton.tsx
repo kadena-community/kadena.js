@@ -4,8 +4,7 @@ import { gridMiniMenuListButtonStyle } from './styles.css';
 
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { FC, useRef } from 'react';
-import { ButtonHTMLAttributes } from 'react/index';
+import React, { ButtonHTMLAttributes, FC, useRef } from 'react';
 
 export interface IMenuButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {

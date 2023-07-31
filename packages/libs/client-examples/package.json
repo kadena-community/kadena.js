@@ -17,9 +17,8 @@
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts,.json --fix",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:crowdfund": "pactjs contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
@@ -47,7 +46,6 @@
     "node-fetch": "~2.6.2",
     "npm-run-all": "~4.1.5",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "ts-node": "~10.8.2",
     "typescript": "5.1.6"
   }

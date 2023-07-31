@@ -9,7 +9,6 @@
     "build": "heft build --clean",
     "format": "npm run format:pkg && npm run format:src",
     "format:ci": "prettier src --check",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
     "test": "heft test"
   },
@@ -21,7 +20,6 @@
   "devDependencies": {
     "@rushstack/heft": "~0.50.6",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "typescript": "5.1.6"
   }
 }
