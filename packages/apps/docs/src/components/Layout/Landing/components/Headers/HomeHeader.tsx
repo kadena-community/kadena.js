@@ -1,5 +1,4 @@
-import { Stack } from '@kadena/react-components';
-import { GradientText, Heading } from '@kadena/react-ui';
+import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 
@@ -19,8 +18,8 @@ export const HomeHeader: FC<IProps> = ({ topDocs }) => {
         <Heading as="h1" variant="h2">
           Kadena
         </Heading>
-        <Stack spacing="2xl">
-          <Stack direction="column" spacing="2xs">
+        <Stack spacing="$2xl">
+          <Stack direction="column" spacing="$2xs">
             <Heading as="h2" variant="h4">
               Build your <GradientText>own</GradientText> Internet
             </Heading>
