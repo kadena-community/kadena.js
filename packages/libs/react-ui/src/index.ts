@@ -83,6 +83,7 @@ export {
   Tree,
   useModal,
   ProgressBar,
+  Divider,
 } from './components';
 
 export { breakpoints } from './styles';

@@ -1,11 +1,9 @@
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
-import { colorVariants, iconLoadingClass } from './Button.css';
-import { ButtonIcon } from './ButtonIcon';
+import { colorVariants } from './Button.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
-import cx from 'classnames';
 import React from 'react';
 
 const meta: Meta<
