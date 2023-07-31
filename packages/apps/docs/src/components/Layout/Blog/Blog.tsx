@@ -21,7 +21,7 @@ export const Blog: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   const { readingTimeInMinutes, publishDate, author } = frontmatter;
-  const related = frontmatter.related || []
+  const related = frontmatter.related || [];
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
