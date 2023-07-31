@@ -8,11 +8,10 @@
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "postinstall": "npm run generate:sdk",
-    "lint": "eslint ./src --fix",
+    "lint": "eslint package.json src --fix",
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && rushx start",
@@ -49,7 +48,6 @@
     "@types/node": "^16.0.0",
     "concurrently": "^7.2.2",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "ts-node": "~10.8.2"
   }
 }
