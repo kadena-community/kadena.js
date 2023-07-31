@@ -98,13 +98,13 @@
   {
     "name": "@kadena/react-components",
     "version": "0.0.1",
-    "private": false,
+    "private": true,
     "path": "packages/libs/react-components"
   },
   {
     "name": "@kadena/react-ui",
     "version": "0.0.1",
-    "private": false,
+    "private": true,
     "path": "packages/libs/react-ui"
   },
   {
