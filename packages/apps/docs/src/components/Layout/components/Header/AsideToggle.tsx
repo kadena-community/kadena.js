@@ -1,4 +1,4 @@
-import { SystemIcon } from '@kadena/react-ui';
+import { SystemIcons } from '@kadena/react-components';
 
 import { HamburgerButton } from './styles';
 
@@ -14,7 +14,7 @@ export const AsideToggle: FC<IProps> = ({ toggleAside, isAsideOpen }) => {
     <HamburgerButton
       title="Open the code"
       onClick={toggleAside}
-      icon={isAsideOpen ? SystemIcon.Close : SystemIcon.Code}
+      icon={isAsideOpen ? SystemIcons.Close : SystemIcons.Code}
       color="inverted"
     />
   );
