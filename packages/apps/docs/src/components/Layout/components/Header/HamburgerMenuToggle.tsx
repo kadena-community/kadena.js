@@ -1,4 +1,4 @@
-import { SystemIcon } from '@kadena/react-ui';
+import { SystemIcons } from '@kadena/react-components';
 
 import { HamburgerButton } from './styles';
 
@@ -15,7 +15,7 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
       data-cy="hamburgermenu"
       title="Open the sidemenu"
       onClick={toggleMenu}
-      icon={isMenuOpen ? SystemIcon.Close : SystemIcon.MenuOpen}
+      icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
       color="inverted"
     />
   );
