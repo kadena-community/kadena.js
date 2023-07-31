@@ -77,6 +77,8 @@ export {
   ITreeProps,
   Accordion,
   IAccordionProps,
+  ProgressBar,
+  Divider,
 } from './components';
 
 export { breakpoints } from './styles';
