@@ -20,7 +20,10 @@ export function parseAsPactValue(
       if ('int' in arg) {
         return new PactNumber(arg.int).toInteger();
       }
-      if (isDate(arg)) return `(time "${arg.toISOString()}")`;
+      if (isDate(arg)) {
+        const isoTime = `${arg.toISOString().split('.')[0]}Z`;
+        return `(time "${isoTime}")`;
+      }
 
       return arg;
     }
