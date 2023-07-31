@@ -90,7 +90,6 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
 
   useEffect(() => {
     const changeSize = (): void => {
-      console.log(1);
       selectItem(activeRef.current, router.pathname);
     };
 
