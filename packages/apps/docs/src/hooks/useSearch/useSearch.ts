@@ -1,7 +1,7 @@
 import { IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
 
-import { MetaData } from '@7-docs/edge';
+import { StreamMetaData } from '@7-docs/edge';
 import { useRouter } from 'next/router';
 import {
   MutableRefObject,
@@ -12,7 +12,7 @@ import {
 } from 'react';
 
 interface IProps {
-  metadata?: MetaData[];
+  metadata?: StreamMetaData[];
   //eslint-disable-next-line @rushstack/no-new-null
   searchInputRef: MutableRefObject<HTMLInputElement | null>;
   handleSubmit: (value: string) => Promise<void>;
