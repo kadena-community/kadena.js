@@ -5,13 +5,12 @@ import { Code, TitleWrapper } from './Code';
 import { Figure } from './Figure';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { Hr } from './Hr';
+import { Link } from './Link';
 import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
 import { Table } from './Table';
 import { UnorderedList } from './UnorderedList';
 import { Youtube } from './Youtube';
-
-import Link from 'next/link';
 
 export type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
   'kda-notification': React.DetailedHTMLProps<

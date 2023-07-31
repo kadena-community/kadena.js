@@ -119,8 +119,10 @@ const recreateUrl = (pages, url, root) => {
         url = `${url}#${slug}`;
       }
 
-      // remove double slashes from url, if any
-      url = url.replace(/\/\//g, '/');
+      // remove double slashes from internal url, if any
+      if (!url.includes('http')) {
+        url = url.replace(/\/\//g, '/');
+      }
 
       return url;
     }
