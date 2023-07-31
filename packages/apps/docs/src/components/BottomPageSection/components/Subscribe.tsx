@@ -2,11 +2,10 @@ import {
   Button,
   Notification,
   NotificationBody,
-  Stack,
   SystemIcons,
   TextField,
 } from '@kadena/react-components';
-import { Heading } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/react-ui';
 
 import { useSubscribe } from './useSubscribe';
 
@@ -24,13 +23,13 @@ export const Subscribe: FC = () => {
 
   return (
     <section data-cy="subscribe">
-      <Stack direction="column" spacing="sm">
+      <Stack direction="column" spacing="$sm">
         <Heading as="h6">Receive important developer updates</Heading>
 
         {!hasSuccess ? (
           <>
             <form>
-              <Stack spacing="sm">
+              <Stack spacing="$sm">
                 <TextField
                   inputProps={{
                     type: 'email',

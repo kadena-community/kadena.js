@@ -1,4 +1,5 @@
-import { Divider, Stack } from '@kadena/react-components';
+import { Divider } from '@kadena/react-components';
+import { Stack } from '@kadena/react-ui';
 
 import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';

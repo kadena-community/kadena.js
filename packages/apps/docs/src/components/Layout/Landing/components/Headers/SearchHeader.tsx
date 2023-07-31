@@ -1,5 +1,4 @@
-import { Stack } from '@kadena/react-components';
-import { GradientText, Heading } from '@kadena/react-ui';
+import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 
@@ -16,12 +15,12 @@ export const SearchHeader: FC<IProps> = ({ children }) => {
         <Heading as="h1" variant="h2">
           Search spaces
         </Heading>
-        <Stack direction="column" spacing="2xs">
+        <Stack direction="column" spacing="$2xs">
           <Heading as="h2" variant="h4">
             Traditional or the <GradientText>new</GradientText> way
           </Heading>
           <SubHeader>Explore our content across spaces</SubHeader>
-          {children}
+          <>{children}</>
         </Stack>
       </Wrapper>
     </StyledHeader>

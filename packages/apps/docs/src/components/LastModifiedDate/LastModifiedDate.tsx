@@ -1,6 +1,7 @@
 //  TODO: Find a better source for the last modified date (https://app.asana.com/0/1204649083736950/1204804598558906/f)
 
-//import { Stack, Text } from '@kadena/react-components';
+//import {  Text } from '@kadena/react-components';
+// import { Stack } from '@kadena/react-ui';
 //import { formatISODate } from '@/utils/dates';
 //import React, { FC } from 'react';
 import { FC } from 'react';
