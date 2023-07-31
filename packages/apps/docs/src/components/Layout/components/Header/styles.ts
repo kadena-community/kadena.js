@@ -40,6 +40,14 @@ export const HeaderIconGroup: StyledComponent<'div'> = styled('div', {
   marginLeft: '$6',
 });
 
+export const HeaderSocialIconGroup: StyledComponent<typeof HeaderIconGroup> =
+  styled(HeaderIconGroup, {
+    display: 'none',
+    '@lg': {
+      display: 'flex',
+    },
+  });
+
 export const HideOnMobile: StyledComponent<'div'> = styled('div', {
   display: 'none',
   '@md': {

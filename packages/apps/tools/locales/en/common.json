@@ -123,5 +123,7 @@
   "form-status-body-erroneous": "Something went wrong.",
   "form-status-body-processing": "Please have some patience while the transaction is being processed.",
   "form-status-body-successful": "The transaction has completed successfully.",
-  "form-status-body-idle": "Nothing to see here."
+  "form-status-body-idle": "Nothing to see here.",
+  "Kadena Tools": "Kadena Tools",
+  "Startpage": "Startpage"
 }
