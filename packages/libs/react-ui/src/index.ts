@@ -84,3 +84,5 @@ export {
   useModal,
   ProgressBar,
 } from './components';
+
+export { breakpoints } from './styles';
