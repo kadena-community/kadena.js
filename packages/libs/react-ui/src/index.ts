@@ -74,9 +74,7 @@ export {
   Select,
   ISelectProps,
   Tree,
-  ITreeProps,
-  Accordion,
-  IAccordionProps,
+  Divider,
 } from './components';
 
 export { breakpoints } from './styles';
