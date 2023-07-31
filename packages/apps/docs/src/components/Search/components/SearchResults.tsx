@@ -1,5 +1,5 @@
-import { Button, SystemIcons } from '@kadena/react-components';
 import {
+  Button,
   Notification,
   Stack,
   SystemIcon,
@@ -100,7 +100,8 @@ export const SearchResults: FC<IProps> = ({
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
-                        icon={SystemIcons.TrailingIcon}
+                        icon={"TrailingIcon"}
+                        iconAlign='right'
                         title="Go to search results"
                         onClick={clearModal}
                       >
