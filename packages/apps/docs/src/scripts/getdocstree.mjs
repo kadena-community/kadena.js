@@ -6,8 +6,6 @@ import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 
-const authorsToArticles = {};
-
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
@@ -30,23 +28,6 @@ const convertFile = (file) => {
     data = JSON.parse(metaString);
   }
 
-  if (data.layout === 'blog') {
-    const author = data.author;
-    if (!authorsToArticles[author]) {
-      authorsToArticles[author] = [];
-    }
-
-    const root = `/${file
-      .split('/')
-      .splice(3, file.length - 1)
-      .join('/')
-      .replace(/\.mdx?$/, '')}`;
-
-    authorsToArticles[author].push({
-      root,
-      title: data.title,
-    });
-  }
   const readTime = getReadTime(doc);
 
   return {
@@ -151,16 +132,6 @@ const createTree = (rootDir, parent = []) => {
 };
 
 const result = createTree(INITIALPATH, TREE);
-
-// write related articles file
-fs.writeFileSync(
-  './src/data/relatedArticles.mjs',
-  `export const authorsToArticles = ${JSON.stringify(
-    authorsToArticles,
-    null,
-    2,
-  )}`,
-);
 
 // write menu file
 const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */

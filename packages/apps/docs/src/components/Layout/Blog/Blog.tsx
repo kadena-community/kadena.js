@@ -65,7 +65,7 @@ export const Blog: FC<IPageProps> = ({
                 </Grid.Item>
 
                 <Grid.Item columnSpan={8}>
-                  {Boolean(related) && (
+                  {related.length > 0 && (
                     <Stack
                       alignItems="flex-start"
                       justifyContent="space-between"
