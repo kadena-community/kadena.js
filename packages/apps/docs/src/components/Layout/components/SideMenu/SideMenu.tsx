@@ -1,5 +1,4 @@
-import { SystemIcons, TextField } from '@kadena/react-components';
-import { Heading } from '@kadena/react-ui';
+import { Heading, SystemIcon, TextField } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
 import { StyledTreeList } from '../TreeMenu/styles';
@@ -63,9 +62,10 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       <ShowOnMobile>
         <TextField
           inputProps={{
+            id: 'search',
             onKeyUp: handleKeyPress,
             placeholder: 'Search',
-            leftPanel: () => <SystemIcons.Magnify />,
+            leftIcon: SystemIcon.Magnify,
             'aria-label': 'Search',
           }}
         ></TextField>
@@ -75,7 +75,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           {menuItems.map((item) => (
             <StyledItem key={item.root}>
               <StyledLink
-                onClick={(e) => clickMenu(e, item)}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => clickMenu(e, item)}
                 href={item.root}
                 data-hassubmenu={!!item.children?.length}
               >
