@@ -1,5 +1,4 @@
-import { Stack } from '@kadena/react-components';
-import { Box, Heading } from '@kadena/react-ui';
+import { Box, Heading, Stack } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
@@ -51,7 +50,7 @@ const Home: FC<IProps> = ({ topDocs }) => {
             </BrowseSection>
           </Box>
           <Heading as="h4">Browse by Resources</Heading>
-          <Stack direction="column" spacing="2xl">
+          <Stack direction="column" spacing="$2xl">
             <BrowseSection title="General">
               <BrowseSection.LinkBlock
                 title="Overview of Pact"
