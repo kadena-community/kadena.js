@@ -1,4 +1,4 @@
-import { IconButton, SystemIcons } from '@kadena/react-components';
+import { IconButton, SystemIcon } from '@kadena/react-ui';
 
 import {
   InnerWrapper,
@@ -73,13 +73,13 @@ export const Header: FC<IProps> = ({
           <IconButton
             onClick={() => alert('todo, make an href')}
             title="Go to our Twitter"
-            icon={SystemIcons.Twitter}
+            icon={SystemIcon.Twitter}
             color="inverted"
           />
           <IconButton
             onClick={() => alert('todo, make an href')}
             title="Go to our Github"
-            icon={SystemIcons.Github}
+            icon={SystemIcon.Github}
             color="inverted"
           />
         </HeaderIconGroup>
