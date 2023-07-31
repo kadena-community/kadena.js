@@ -88,5 +88,17 @@ export const useHeaderAnimation = (): IUseHeaderReturn => {
     return () => router.events.off('routeChangeStart', changeUrl);
   }, [activeRef, router.events, router.pathname, selectItem]);
 
+  useEffect(() => {
+    const changeSize = (): void => {
+      selectItem(activeRef.current, router.pathname);
+    };
+
+    window.addEventListener('resize', changeSize);
+
+    return () => {
+      window.removeEventListener('resize', changeSize);
+    };
+  }, [activeRef, router.pathname, selectItem]);
+
   return { hasPath: hasPath, listRef, backgroundRef };
 };
