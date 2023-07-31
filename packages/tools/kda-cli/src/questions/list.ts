@@ -24,10 +24,10 @@ export const listQuestions: IQuestion[] = [
     when: listCondition,
   },
   {
-    message: 'How much height do you want to go back? (default: 500)',
+    message: 'How much height do you want to go back? (default: 1000)',
     name: 'height',
     type: 'input',
-    defaultValue: '500',
+    defaultValue: '1000',
     when: listCondition,
   },
   {
@@ -54,7 +54,7 @@ export const listQuestions: IQuestion[] = [
       const heightRes = await fetch(
         `${endpoint}/chainweb/0.0/${network}/chain/${chainId}/header?minheight=${
           height - Number(minheight)
-        }`,
+        }&limit=1000`,
         {
           method: 'GET',
           headers: {
