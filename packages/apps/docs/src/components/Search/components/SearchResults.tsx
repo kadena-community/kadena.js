@@ -100,8 +100,8 @@ export const SearchResults: FC<IProps> = ({
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
-                        icon={"TrailingIcon"}
-                        iconAlign='right'
+                        icon={'TrailingIcon'}
+                        iconAlign="right"
                         title="Go to search results"
                         onClick={clearModal}
                       >

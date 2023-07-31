@@ -75,7 +75,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           {menuItems.map((item) => (
             <StyledItem key={item.root}>
               <StyledLink
-                onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => clickMenu(e, item)}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                  clickMenu(e, item)
+                }
                 href={item.root}
                 data-hassubmenu={!!item.children?.length}
               >
