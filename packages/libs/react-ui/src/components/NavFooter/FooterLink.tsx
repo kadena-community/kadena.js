@@ -1,18 +1,17 @@
 import { footerVariants, linkBoxClass, linkClass } from './Footer.css';
 
-import { FooterVariant } from '@components/Footer/Footer';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export type Target = '_self' | '_blank';
-export interface IFooterLinkItemProps {
+export interface IFooterLinkProps {
   children: React.ReactNode;
-  variant?: FooterVariant;
+  variant?: keyof typeof footerVariants;
 }
 
-export const FooterLinkItem: FC<IFooterLinkItemProps> = ({
+export const FooterLink: FC<IFooterLinkProps> = ({
   children,
-  variant = 'web',
+  variant = 'dynamic',
 }) => {
   const colorStyles = {
     color: 'inherit',

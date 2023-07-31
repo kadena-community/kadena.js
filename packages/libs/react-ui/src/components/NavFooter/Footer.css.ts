@@ -1,15 +1,15 @@
-import { sprinkles, vars } from '../../styles';
-
+import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const footerVariants = styleVariants({
-  web: [
+  dynamic: [
     sprinkles({
       backgroundColor: '$layoutSurfaceSubtle',
       color: '$gray40',
     }),
   ],
-  application: [
+  dark: [
     sprinkles({
       backgroundColor: '$gray90',
       color: '$gray40',

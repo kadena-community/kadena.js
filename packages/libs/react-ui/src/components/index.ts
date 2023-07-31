@@ -22,11 +22,11 @@ export type { ITooltipProps } from './Tooltip';
 export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
-  IFooterProps,
-  IFooterPanelProps,
-  IFooterIconItemProps,
-  IFooterLinkItemProps,
-} from './Footer';
+  INavFooterRootProps,
+  INavFooterPanelProps,
+  INavFooterIconButtonProps,
+  INavFooterLinkProps,
+} from './NavFooter';
 export type {
   INotificationProps,
   INotificationHeaderProps,
@@ -52,7 +52,7 @@ export { Box } from './Box';
 export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
-export { Footer } from './Footer/';
+export { NavFooter } from './NavFooter';
 export { Grid } from './Grid';
 export { IconButton } from './IconButton';
 export { Input } from './Input/Input';
