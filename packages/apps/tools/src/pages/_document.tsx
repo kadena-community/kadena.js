@@ -1,3 +1,5 @@
+import { bodyStyle } from './styles.css';
+
 import { Head, Html, Main, NextScript } from 'next/document';
 import React, { FC, ReactNode } from 'react';
 
@@ -6,7 +8,7 @@ const Document: FC = () => {
   return (
     <Html lang="en">
       <TypedHead></TypedHead>
-      <body>
+      <body className={bodyStyle}>
         <Main />
         <div id="modalportal" />
         <NextScript />

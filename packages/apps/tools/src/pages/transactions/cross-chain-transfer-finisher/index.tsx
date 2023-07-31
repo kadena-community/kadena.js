@@ -33,7 +33,7 @@ import {
   StyledToggleContainer,
   StyledTotalChunk,
   StyledTotalContainer,
-} from '@/pages/transfer/cross-chain-transfer-finisher/styles';
+} from '@/pages/transactions/cross-chain-transfer-finisher/styles';
 import {
   finishXChainTransfer,
   ITransferResult,
@@ -79,11 +79,6 @@ const CrossChainTransferFinisher: FC = () => {
 
   useToolbar([
     {
-      title: t('Account Transaction'),
-      icon: SystemIcon.Account,
-      href: Routes.ACCOUNT_TRANSACTIONS,
-    },
-    {
       title: t('Cross Chain'),
       icon: SystemIcon.Transition,
       href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
@@ -95,7 +90,7 @@ const CrossChainTransferFinisher: FC = () => {
     },
     {
       title: t('Module Explorer'),
-      icon: SystemIcon.BadgeAccount,
+      icon: SystemIcon.Earth,
       href: Routes.MODULE_EXPLORER,
     },
   ]);
