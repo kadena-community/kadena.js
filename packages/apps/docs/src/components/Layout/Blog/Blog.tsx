@@ -20,13 +20,8 @@ export const Blog: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const { readingTimeInMinutes, publishDate, author } = frontmatter;
-  // TODO: figure out why the frontmatter.related isn't carrying over from the menu.mjs file
-  const related =
-    frontmatter.related ||
-    frontmatter.navigation?.next?.related ||
-    frontmatter.navigation?.previous?.related ||
-    [];
+  const { readingTimeInMinutes, publishDate, author, related } = frontmatter;
+
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
