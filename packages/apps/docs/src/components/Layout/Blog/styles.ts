@@ -22,19 +22,23 @@ export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
           `,
 
     '@md': {
-      gridTemplateColumns:
-        '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
+      gridTemplateColumns: '0% 5% auto 5%',
 
+      gridTemplateAreas: `
+              "header header header header"
+              "pageheader pageheader pageheader pageheader"
+              ". content . ."
+              "footer footer footer footer"
+            `,
+    },
+    '@2xl': {
+      gridTemplateColumns: '0% minmax(20%, auto) auto minmax(20%, auto)',
       gridTemplateAreas: `
               "header header header header"
               "pageheader pageheader pageheader pageheader"
               ". content ."
               "footer footer footer footer"
             `,
-    },
-    '@2xl': {
-      gridTemplateColumns:
-        'minmax(1%, auto) $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) minmax(1%, auto)',
     },
   },
 );

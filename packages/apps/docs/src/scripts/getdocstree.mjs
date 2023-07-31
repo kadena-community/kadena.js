@@ -8,8 +8,6 @@ import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 
-const authorsToArticles = {};
-
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
@@ -32,23 +30,6 @@ const convertFile = (file) => {
     data = JSON.parse(metaString);
   }
 
-  if (data.layout === 'blog') {
-    const author = data.author;
-    if (!authorsToArticles[author]) {
-      authorsToArticles[author] = [];
-    }
-
-    const root = `/${file
-      .split('/')
-      .splice(3, file.length - 1)
-      .join('/')
-      .replace(/\.mdx?$/, '')}`;
-
-    authorsToArticles[author].push({
-      root,
-      title: data.title,
-    });
-  }
   const readTime = getReadTime(doc);
 
   return {
@@ -146,15 +127,6 @@ const createTree = (rootDir, parent = []) => {
       child.children = createTree(currentFile, child.children);
 
       return child.children;
-    }
-  });
-
-  // assign the articles by the same author
-  parent.forEach((item) => {
-    if (item.author) {
-      item.related = authorsToArticles[item.author]
-        .filter((i) => i.url !== item.root)
-        .splice(0, 5);
     }
   });
 
