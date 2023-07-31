@@ -51,4 +51,10 @@ describe('parseType', () => {
   it('returns arg, if its a boolean', () => {
     expect(parseAsPactValue(true)).toEqual(true);
   });
+
+  it('returns arg, if its not match with any conditions', () => {
+    const input = Symbol('test');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(parseAsPactValue(input as any)).toEqual(input);
+  });
 });

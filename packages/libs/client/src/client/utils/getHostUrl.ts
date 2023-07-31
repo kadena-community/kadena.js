@@ -21,11 +21,7 @@ type HostUrlGenerator = ({
   chainId,
 }: Partial<INetworkOptions>) => string;
 
-export const getHostUrl = (host?: string | HostsMap): HostUrlGenerator => {
-  if (typeof host === 'string') {
-    return ({ networkId, chainId }: Partial<INetworkOptions>) =>
-      getUrl(host, networkId ?? 'mainnet01', chainId ?? '1');
-  }
+export const getHostUrl = (host?: HostsMap): HostUrlGenerator => {
   const mapWithDefaults: HostsMap = {
     testnet04: 'https://api.testnet.chainweb.com',
     mainnet01: 'https://api.chainweb.com',

@@ -2,7 +2,7 @@ import { IPollOptions } from '../interfaces/interfaces';
 
 import { sleep } from './utils';
 
-const rejectAfter = (
+export const rejectAfter = (
   timeout: number,
 ): {
   stopTimer: () => void;
