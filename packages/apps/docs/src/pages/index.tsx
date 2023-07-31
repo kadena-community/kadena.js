@@ -1,5 +1,4 @@
-import { Stack } from '@kadena/react-components';
-import { Box, Heading } from '@kadena/react-ui';
+import { Box, Heading, Stack } from '@kadena/react-ui';
 
 import { browseSectionWrapper } from '../styles/index.css';
 
@@ -27,7 +26,7 @@ const Home: FC<IProps> = ({ popularPages }) => {
       <Content id="maincontent" layout="home">
         <Article>
           <Box marginBottom="$10">
-            <Stack flexWrap="wrap" spacing="2xs">
+            <Stack wrap="wrap" spacing="$2xs">
               <BrowseSection title="General" className={browseSectionWrapper}>
                 <Link href="/docs/kadena">Overview of Kadena</Link>
                 <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
@@ -57,7 +56,7 @@ const Home: FC<IProps> = ({ popularPages }) => {
             </Stack>
           </Box>
           <Heading as="h4">Browse by Resources</Heading>
-          <Stack direction="column" spacing="2xl">
+          <Stack direction="column" spacing="$2xl">
             <BrowseSection title="General" titleAs="h5" direction="row">
               <BrowseSection.LinkBlock
                 title="Overview of Pact"
