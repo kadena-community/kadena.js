@@ -1,5 +1,4 @@
-import { Stack } from '@kadena/react-components';
-import { Heading, Text } from '@kadena/react-ui';
+import { Heading, Stack, Text } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
 import {
@@ -12,7 +11,7 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   return (
-    <Stack direction="column" spacing="2xl">
+    <Stack direction="column" spacing="$2xl">
       <div>
         <Heading as="h2">Welcome to Kadena&apos;s documentation!</Heading>
         <Text>
