@@ -8,7 +8,7 @@ export const getMostPopularPages = async (
   slug = '/',
 ): Promise<IGetMostPopularPagesResult> => {
   async function fetchMostPopularPages(): Promise<IMostPopularPage[]> {
-    const res = await fetch(`/api/mostPopular?slug=${slug}`);
+    const res = await fetch(`api/mostpopular?slug=${slug}`);
     const data = await res.json();
     return data;
   }

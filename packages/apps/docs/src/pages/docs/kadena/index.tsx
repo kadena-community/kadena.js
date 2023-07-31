@@ -1,6 +1,8 @@
 import { Stack } from '@kadena/react-components';
 import { Heading, Text } from '@kadena/react-ui';
 
+import { browseSectionWrapper, fullWidth } from '../../../styles/index.css';
+
 import { BrowseSection } from '@/components';
 import {
   checkSubTreeForActive,
@@ -38,14 +40,14 @@ const Home: FC = () => {
         </Text>
       </div>
 
-      <BrowseSection>
-        <BrowseSection.LinkList title="General">
+      <Stack flexWrap="wrap" spacing="2xs" className={fullWidth}>
+        <BrowseSection title="General" className={browseSectionWrapper}>
           <Link href="/docs/kadena/overview">Overview of Kadena</Link>
           <Link href="/docs/kadena/whitepapers">Whitepapers</Link>
           <Link href="/docs/kadena/code-of-conduct">Code of Conduct</Link>
           <a href="https://kadena.io">Kadena.io</a>
-        </BrowseSection.LinkList>
-        <BrowseSection.LinkList title="Support">
+        </BrowseSection>
+        <BrowseSection title="Support" className={browseSectionWrapper}>
           <Link href="/docs/kadena/support">FAQ</Link>
           <Link href="/docs/kadena/support/developer-program">
             Developer Program
@@ -53,16 +55,16 @@ const Home: FC = () => {
           <Link href="/docs/kadena/support/technical-grants">
             Technical Grants
           </Link>
-        </BrowseSection.LinkList>
-        <BrowseSection.LinkList title="Resources">
+        </BrowseSection>
+        <BrowseSection title="Resources" className={browseSectionWrapper}>
           <Link href="/docs/kadena/resources">Overview</Link>
           <Link href="/docs/kadena/resources/press-kit">Press Kit</Link>
           <Link href="/docs/kadena/resources/glossary">Glossary</Link>
           <Link href="/docs/kadena/resources/glossary/kadena-content-repository">
             Content Repo
           </Link>
-        </BrowseSection.LinkList>
-      </BrowseSection>
+        </BrowseSection>
+      </Stack>
     </Stack>
   );
 };
