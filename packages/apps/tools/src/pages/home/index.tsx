@@ -6,8 +6,11 @@ import {
   Table,
 } from '@kadena/react-ui';
 
+import HelpCenter from './HelpCenter';
+
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
+import { homeWrapperClass } from '@/pages/home/styles.css';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
 
@@ -32,7 +35,8 @@ const Home: FC = () => {
   ]);
 
   return (
-    <div>
+    <div className={homeWrapperClass}>
+      <HelpCenter />
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Kadena Tools')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Startpage')}</Breadcrumbs.Item>
