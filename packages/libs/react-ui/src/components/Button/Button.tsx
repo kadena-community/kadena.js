@@ -19,7 +19,9 @@ export interface IButtonProps
   icon?: keyof typeof SystemIcon;
   iconAlign?: 'left' | 'right';
   loading?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | React.FormEventHandler<HTMLButtonElement>;
   target?: '_blank' | '_self';
   title?: string;
 }
