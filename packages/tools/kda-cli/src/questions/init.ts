@@ -1,6 +1,7 @@
 import { deployQuestions } from './deploy.js';
 // import { devnetQuestions } from './devnet.js';
 import { fundQuestions } from './fund.js';
+import { listQuestions } from './list.js';
 import { localQuestions } from './local.js';
 import { IAnswers, IQuestion } from './questions.js';
 
@@ -32,6 +33,10 @@ export const questions: IQuestion[] = [
         value: 'fund',
       },
       {
+        label: 'List transactions',
+        value: 'list',
+      },
+      {
         label: 'Deploy a smart contract',
         value: 'deploy',
       },
@@ -57,5 +62,6 @@ export const questions: IQuestion[] = [
   ...localQuestions,
   // ...devnetQuestions,
   ...fundQuestions,
+  ...listQuestions,
   ...deployQuestions,
 ];
