@@ -1,3 +1,4 @@
+import { SystemIcon } from '..';
 import { colorVariants } from './Button.css';
 
 import React, { ButtonHTMLAttributes, FC } from 'react';
@@ -5,11 +6,18 @@ import React, { ButtonHTMLAttributes, FC } from 'react';
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
   as?: 'button' | 'a';
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  href?: string;
+  variant?: keyof typeof colorVariants;
   children: React.ReactNode;
-  title?: string;
   disabled?: boolean;
+  href?: string;
+  icon?: keyof typeof SystemIcon;
+  iconAlign?: 'left' | 'right';
+  loading?: boolean;
+  onClick?:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | React.FormEventHandler<HTMLButtonElement>;
+  target?: '_blank' | '_self';
+  title?: string;
   color?: keyof typeof colorVariants;
 }
 
