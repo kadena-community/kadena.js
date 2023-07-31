@@ -17,7 +17,6 @@
 /packages/libs/react-ui                         @eileenmguo @sstraatemans
 /packages/libs/types                            @alber70g @webpro
 /packages/tools/pactjs-cli                      @alber70g @webpro
-/packages/tools/create-kadena-app               @jermaine150
 /packages/tools/eslint-config                   @alber70g @webpro
 /packages/tools/eslint-plugin                   @alber70g @webpro
 /packages/tools/heft-rig                        @alber70g @webpro
