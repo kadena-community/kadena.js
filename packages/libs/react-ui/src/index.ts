@@ -78,3 +78,5 @@ export {
   Accordion,
   IAccordionProps,
 } from './components';
+
+export { breakpoints } from './styles';

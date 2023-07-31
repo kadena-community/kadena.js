@@ -1,5 +1,4 @@
-import { Button, Text } from '@kadena/react-components';
-import { Heading } from '@kadena/react-ui';
+import { Button, Heading, Text } from '@kadena/react-ui';
 
 import { Section } from './styles';
 
