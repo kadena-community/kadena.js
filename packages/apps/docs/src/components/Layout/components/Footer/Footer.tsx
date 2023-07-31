@@ -1,4 +1,4 @@
-import { IconButton, SystemIcons } from '@kadena/react-components';
+import { IconButton, SystemIcon } from '@kadena/react-ui';
 
 import { Spacer } from '../styles';
 import { DocsLogo } from '..';
@@ -18,18 +18,18 @@ export const Footer: FC = () => {
           <DocsLogo />
           <IconButton
             title="Go to our Github"
-            icon={SystemIcons.Github}
+            icon={SystemIcon.Github}
             onClick={() => alert('todo, make an href')}
           />
           <IconButton
             title="Go to our Twitter"
-            icon={SystemIcons.Twitter}
+            icon={SystemIcon.Twitter}
             onClick={() => alert('todo, make an href')}
           />
           <IconButton
             onClick={() => alert('todo, make an href')}
             title="Go to our Linkedin"
-            icon={SystemIcons.Linkedin}
+            icon={SystemIcon.Linkedin}
           />
         </Box>
         <Spacer />
