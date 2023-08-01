@@ -26,7 +26,7 @@ export const containerClass = style([
 export const logoClass = style([
   sprinkles({
     display: 'flex',
-    marginRight: '$8',
+    marginRight: '$6',
   }),
 ]);
 
@@ -41,22 +41,31 @@ export const navClass = style([
 export const linkClass = style([
   sprinkles({
     alignItems: 'center',
+    borderRadius: '$sm',
     color: '$gray40',
     display: 'flex',
     fontSize: '$sm',
-    marginRight: '$10',
+    marginRight: '$6',
     marginX: '$1',
     textDecoration: 'none',
   }),
   {
     alignSelf: 'center',
+    padding: '4px 8px 4px 4px',
   },
   {
     selectors: {
       '&:hover': {
+        color: vars.colors.$white,
+        textDecoration: 'none',
+      },
+      '&:focus': {
+        color: vars.colors.$blue40,
         textDecoration: 'none',
       },
       '&:active': {
+        color: vars.colors.$gray90,
+        backgroundColor: vars.colors.$white,
         textDecoration: 'none',
       },
     },
