@@ -38,19 +38,6 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 // @alpha (undocumented)
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
-// Warning: (ae-forgotten-export) The symbol "UnionToIntersection" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "IGeneralCapability" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "ExtractType" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export type ExtractType<TCommand> = TCommand extends {
-    payload: infer TPayload;
-} ? TPayload extends {
-    funs: infer TFunctions;
-} ? TFunctions extends Array<infer TFunction> ? UnionToIntersection<TFunction> extends {
-    capability: infer TCapability;
-} ? TCapability : IGeneralCapability : IGeneralCapability : IGeneralCapability : IGeneralCapability;
-
 // Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
@@ -324,6 +311,17 @@ export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;
+
+// Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export type WithCapability<TCode extends string & {
+    capability: unknown;
+}> = ExtractCapabilityType<{
+    payload: {
+        funs: [TCode];
+    };
+}>;
 
 // (No @packageDocumentation comment for this package)
 
