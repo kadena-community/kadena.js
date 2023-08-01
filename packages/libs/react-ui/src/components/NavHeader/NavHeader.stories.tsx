@@ -1,13 +1,11 @@
-import type { INavHeaderProps, INavItemTarget } from './NavHeader';
+import type { INavHeaderProps, INavItems } from './NavHeader';
 import { NavHeader } from './';
 
 import { logoVariants } from '@components/Logo';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-type StoryProps = { linksCount: number } & INavHeaderProps;
-
-const items: { title: string; href: string; target?: INavItemTarget }[] = [
+const navItems: INavItems = [
   {
     title: 'Faucet',
     href: '/faucet',
@@ -21,6 +19,8 @@ const items: { title: string; href: string; target?: INavItemTarget }[] = [
     href: '/balance',
   },
 ];
+
+type StoryProps = { linksCount: number } & INavHeaderProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',
@@ -46,7 +46,7 @@ const meta: Meta<StoryProps> = {
       }
     },
     linksCount: {
-      control: { type: 'range', min: 1, max: items.length, step: 1 },
+      control: { type: 'range', min: 1, max: navItems.length, step: 1 },
     },
   },
 };
@@ -55,11 +55,10 @@ type Story = StoryObj<StoryProps>;
 
 export const Dynamic: Story = {
   name: 'NavHeader',
-  args: { brand: logoVariants[0], linksCount: items.length },
+  args: { brand: logoVariants[0], linksCount: navItems.length },
   render: ({ brand, linksCount } ) => {
-    const navItems = items.slice(0, linksCount);
     return (
-      <NavHeader brand={brand} items={navItems} />
+      <NavHeader brand={brand} items={navItems.slice(0, linksCount)} />
     );
   },
 };
