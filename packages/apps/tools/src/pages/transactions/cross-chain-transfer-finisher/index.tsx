@@ -44,13 +44,7 @@ import { formatNumberAsString } from '@/utils/number';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
