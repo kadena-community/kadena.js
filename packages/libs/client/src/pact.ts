@@ -1,9 +1,9 @@
 import { createExp } from '@kadena/pactjs';
 
 import {
-  commandBuilder,
+  createTransactionBuilder,
   ICommandBuilder,
-} from './commandBuilder/commandBuilder';
+} from './createTransactionBuilder/createTransactionBuilder';
 import { parseAsPactValue } from './utils/parseAsPactValue';
 
 /**
@@ -59,6 +59,6 @@ export const Pact: IPact = {
     return pactCreator();
   },
   get builder() {
-    return commandBuilder();
+    return createTransactionBuilder();
   },
 };

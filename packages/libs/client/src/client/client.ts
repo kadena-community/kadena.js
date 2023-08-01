@@ -167,7 +167,10 @@ interface IClientBasics {
   ) => Promise<string>;
 }
 
-interface IClient extends IClientBasics {
+/**
+ * @alpha
+ */
+export interface IClient extends IClientBasics {
   /**
    * An alias for `local` when both preflight and signatureVerification are `true`.
    * @see local
