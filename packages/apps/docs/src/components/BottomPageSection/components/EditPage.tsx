@@ -1,4 +1,4 @@
-import { Button } from '@kadena/react-ui';
+import { Button } from '@kadena/react-components';
 
 import React, { FC } from 'react';
 
