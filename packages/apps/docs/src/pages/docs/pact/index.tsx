@@ -1,15 +1,15 @@
 import { Button, Card, Grid, Heading, Stack, Text } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
+import { MostPopular } from '@/components/MostPopular';
+import { IMostPopularPage } from '@/types/MostPopularData';
+import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import getMostPopularPages from '@/utils/getMostPopularPages';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
-import { MostPopular } from '@/components/MostPopular';
-import { IMostPopularPage } from '@/types/MostPopularData';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -17,13 +17,15 @@ interface IProps {
 
 const Home: FC<IProps> = ({ popularPages = [] }) => {
   return (
-    <Stack direction="column" spacing="$2xs">
-      <Stack direction="column">
-        <Heading as="h4">Smart-contract language</Heading>
-        <Text as="p">
-          designed for correct, transactional execution on a
-          high-performance blockchain.
-        </Text>
+    <Stack direction="column" spacing="$2xl">
+      <Stack direction="column" spacing="$md">
+        <Stack direction="column">
+          <Heading as="h4">Smart-contract language</Heading>
+          <Text as="p">
+            designed for correct, transactional execution on a high-performance
+            blockchain.
+          </Text>
+        </Stack>
         <Grid.Root columns={10} spacing="md">
           <Grid.Item
             columnSpan={{
@@ -35,7 +37,7 @@ const Home: FC<IProps> = ({ popularPages = [] }) => {
               <Stack direction="column" spacing="$sm">
                 <Heading as="h6">Getting Started is Simple</Heading>
                 <Text as="p">
-                  Learn Kadena's core concepts & tools for development in 15
+                  Learn Kadena&apos;s core concepts & tools for development in 15
                   minutes.
                 </Text>
                 <Stack direction="row" spacing="$sm">
@@ -65,60 +67,62 @@ const Home: FC<IProps> = ({ popularPages = [] }) => {
           )}
         </Grid.Root>
       </Stack>
-      <Heading as="h6">Browse by Resources</Heading>
-      <Stack direction="column" spacing="$sm">
-        <BrowseSection title="General" titleAs="h6" direction="row">
-          <BrowseSection.LinkBlock
-            title="Overview of Pact"
-            subtitle="Explore all products"
-            icon="Overview"
-            href="/docs/pact"
-          />
-          <BrowseSection.LinkBlock
-            title="Chainweb"
-            subtitle="Explore all products"
-            icon="SmartContract"
-            href="/docs/chainweb"
-          />
-          <BrowseSection.LinkBlock
-            title="Marmalade"
-            subtitle="Explore all products"
-            icon="Marmalade"
-            href="/docs/marmalade"
-          />
-        </BrowseSection>
-        <BrowseSection title="Pact" titleAs="h6" direction="row">
-          <BrowseSection.LinkBlock
-            title="Pact Language"
-            subtitle="Explore all products"
-            icon="PactLanguage"
-            href="/docs/pact"
-          />
-          <BrowseSection.LinkBlock
-            title="Useful Tools"
-            subtitle="Explore all products"
-            icon="UsefulTools"
-            href="/docs/build/tools"
-          />
-          <BrowseSection.LinkBlock
-            title="Beginner Tutorials"
-            subtitle="For starters"
-            icon="PactDeveloper"
-            href="/docs/pact/beginner"
-          />
-          <BrowseSection.LinkBlock
-            title="Intermediate Tutorials"
-            subtitle="get some more experience"
-            icon="PactDeveloper"
-            href="docs/pact/intermediate"
-          />
-          <BrowseSection.LinkBlock
-            title="Quickstart"
-            subtitle="Explore all products"
-            icon="QuickStart"
-            href="/docs/chainweb"
-          />
-        </BrowseSection>
+      <Stack direction="column" spacing="$md">
+        <Heading as="h6">Browse by Resources</Heading>
+        <Stack direction="column" spacing="$md">
+          <BrowseSection title="General" titleAs="h6" direction="row">
+            <BrowseSection.LinkBlock
+              title="Overview of Pact"
+              subtitle="Explore all products"
+              icon="Overview"
+              href="/docs/pact"
+            />
+            <BrowseSection.LinkBlock
+              title="Chainweb"
+              subtitle="Explore all products"
+              icon="SmartContract"
+              href="/docs/chainweb"
+            />
+            <BrowseSection.LinkBlock
+              title="Marmalade"
+              subtitle="Explore all products"
+              icon="Marmalade"
+              href="/docs/marmalade"
+            />
+          </BrowseSection>
+          <BrowseSection title="Pact" titleAs="h6" direction="row">
+            <BrowseSection.LinkBlock
+              title="Pact Language"
+              subtitle="Explore all products"
+              icon="PactLanguage"
+              href="/docs/pact"
+            />
+            <BrowseSection.LinkBlock
+              title="Useful Tools"
+              subtitle="Explore all products"
+              icon="UsefulTools"
+              href="/docs/build/tools"
+            />
+            <BrowseSection.LinkBlock
+              title="Beginner Tutorials"
+              subtitle="For starters"
+              icon="PactDeveloper"
+              href="/docs/pact/beginner"
+            />
+            <BrowseSection.LinkBlock
+              title="Intermediate Tutorials"
+              subtitle="get some more experience"
+              icon="PactDeveloper"
+              href="docs/pact/intermediate"
+            />
+            <BrowseSection.LinkBlock
+              title="Quickstart"
+              subtitle="Explore all products"
+              icon="QuickStart"
+              href="/docs/chainweb"
+            />
+          </BrowseSection>
+        </Stack>
       </Stack>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { Heading, IHeadingProps } from '@kadena/react-ui';
+import { Heading, IHeadingProps, Stack } from '@kadena/react-ui';
 
 import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';
@@ -50,7 +50,11 @@ const BrowseSection: BrowseSectionType = ({
 
   return (
     <section className={containerClass}>
-      {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
+      {Boolean(title) && (
+        <Stack direction="row" marginBottom="$sm">
+          <Heading as={titleAs}>{title}</Heading>
+        </Stack>
+      )}
       <ul className={directionVariants[direction]}>
         {React.Children.map(children, (child) => {
           if (
