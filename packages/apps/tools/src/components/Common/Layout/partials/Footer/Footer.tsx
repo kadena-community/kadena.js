@@ -46,11 +46,11 @@ const FooterWrapper: FC = () => {
   ];
 
   return (
-    <NavFooter.Root variant="dark">
+    <NavFooter.Root darkMode>
       <NavFooter.Panel>
         {links.map((item, index) => {
           return (
-            <NavFooter.Link key={index} variant="dark">
+            <NavFooter.Link key={index}>
               {item.href !== undefined ? (
                 <Link
                   className={linkClass}
@@ -69,17 +69,14 @@ const FooterWrapper: FC = () => {
       </NavFooter.Panel>
       <NavFooter.Panel>
         <NavFooter.IconButton
-          variant="dark"
           icon={SystemIcon.ApplicationBrackets}
           onClick={() => openModal()}
         />
         <NavFooter.IconButton
-          variant="dark"
           icon={SystemIcon.ThemeLightDark}
           onClick={() => toggleTheme()}
         />
         <NavFooter.IconButton
-          variant="dark"
           icon={SystemIcon.ApplicationBrackets}
           text="English"
         />
