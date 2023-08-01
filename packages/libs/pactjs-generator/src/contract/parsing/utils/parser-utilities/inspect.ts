@@ -13,9 +13,9 @@ interface IInspector {
     name: ExceptKeywords<T, 'inspect'>,
     parser: P,
   ): (pointer: IPointer) => RuleReturn<RuleReturnType<P>, T>;
-  <P extends IParser>(parser: P): (
-    pointer: IPointer,
-  ) => RuleReturn<RuleReturnType<P>, undefined>;
+  <P extends IParser>(
+    parser: P,
+  ): (pointer: IPointer) => RuleReturn<RuleReturnType<P>, undefined>;
 }
 
 export const $: IInspector = (one: string | IParser, second?: IParser) =>

@@ -6,9 +6,9 @@ import remarkFrontMatter from 'remark-frontmatter';
 import remarkGFM from 'remark-gfm';
 import remarkOrderLinks from 'remark-order-reference-links';
 import remarkParse from 'remark-parse';
-import unifiedPrettier from 'unified-prettier';
 import remarkReferenceLinks from 'remark-reference-links';
 import type { Preset } from 'unified';
+import unifiedPrettier from 'unified-prettier';
 
 const remarkPresetKadena: Preset = {
   settings: {},
