@@ -83,6 +83,7 @@ export {
   TrackerCard,
   Tree,
   useModal,
+  Divider,
 } from './components';
 
 export { breakpoints } from './styles';
