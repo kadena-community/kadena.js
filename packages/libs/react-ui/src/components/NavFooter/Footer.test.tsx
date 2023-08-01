@@ -1,5 +1,5 @@
-import { Footer } from '@components/Footer';
 import { SystemIcon } from '@components/Icon';
+import { NavFooter } from '@components/NavFooter';
 import { render } from '@testing-library/react';
 import React from 'react';
 
@@ -27,29 +27,29 @@ describe('Footer', () => {
     ];
 
     const { getByTestId } = render(
-      <Footer.Root>
-        <Footer.Panel>
+      <NavFooter.Root>
+        <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <Footer.LinkItem key={index} variant="web">
+              <NavFooter.Link key={index} variant="dynamic">
                 <a href={item.href}>{item.title}</a>
-              </Footer.LinkItem>
+              </NavFooter.Link>
             );
           })}
-        </Footer.Panel>
-        <Footer.Panel>
+        </NavFooter.Panel>
+        <NavFooter.Panel>
           {icons.map((item, index) => {
             return (
-              <Footer.IconItem
-                variant="web"
+              <NavFooter.IconButton
+                variant="dynamic"
                 key={index}
                 icon={item.icon}
                 text={item.text}
               />
             );
           })}
-        </Footer.Panel>
-      </Footer.Root>,
+        </NavFooter.Panel>
+      </NavFooter.Root>,
     );
 
     const footerContainer = getByTestId('kda-footer');
@@ -79,38 +79,38 @@ describe('Footer', () => {
     ];
 
     const { getAllByTestId } = render(
-      <Footer.Root>
-        <Footer.Panel>
+      <NavFooter.Root>
+        <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <Footer.LinkItem key={index} variant="web">
+              <NavFooter.Link key={index} variant="dynamic">
                 <a href={item.href}>{item.title}</a>
-              </Footer.LinkItem>
+              </NavFooter.Link>
             );
           })}
-        </Footer.Panel>
-        <Footer.Panel>
+        </NavFooter.Panel>
+        <NavFooter.Panel>
           {icons.map((item, index) => {
             return (
-              <Footer.IconItem
-                variant="web"
+              <NavFooter.IconButton
+                variant="dynamic"
                 key={index}
                 icon={item.icon}
                 text={item.text}
               />
             );
           })}
-        </Footer.Panel>
-      </Footer.Root>,
+        </NavFooter.Panel>
+      </NavFooter.Root>,
     );
 
     const footerPanels = getAllByTestId('kda-footer-panel');
     const menuLinksItems = getAllByTestId('kda-footer-link-item');
-    const iconItems = getAllByTestId('kda-footer-icon-item');
+    const iconButtons = getAllByTestId('kda-footer-icon-item');
     expect(footerPanels).toHaveLength(2);
     expect(menuLinksItems).toHaveLength(2);
-    expect(iconItems).toHaveLength(2);
+    expect(iconButtons).toHaveLength(2);
     expect(menuLinksItems[0]).toHaveTextContent('Tutorial');
-    expect(iconItems[0]).toHaveTextContent('English');
+    expect(iconButtons[0]).toHaveTextContent('English');
   });
 });
