@@ -8,9 +8,8 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "start": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
@@ -40,7 +39,6 @@
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
-    "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1"
+    "prettier": "~3.0.0"
   }
 }

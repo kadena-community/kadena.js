@@ -15,9 +15,8 @@
     "prebuild": "pnpm run pactjs:generate:contract:file && pnpm run pactjs:generate:contract:crowdfund",
     "build": "pnpm run prebuild && tsc --noEmit",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "pactjs:generate:contract:file": "node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --file src/example-contract/coin.contract.pact && node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:crowdfund": "node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
@@ -45,7 +44,6 @@
     "node-fetch": "~2.6.2",
     "npm-run-all": "~4.1.5",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "ts-node": "~10.8.2",
     "typescript": "5.1.6"
   }

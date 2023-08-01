@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Move sort-package-json to eslint plugin",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}

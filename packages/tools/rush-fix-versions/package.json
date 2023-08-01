@@ -19,9 +19,8 @@
   "scripts": {
     "build": "heft build",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": ""
   },
   "dependencies": {
@@ -38,7 +37,6 @@
     "@types/inquirer": "^9.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1"
+    "prettier": "~3.0.0"
   }
 }

@@ -7,13 +7,12 @@
     "dev": "pnpm run generate:icons && next dev",
     "eject": "react-scripts eject",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier locales src --write",
     "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "pnpm run generate:coin:contract && pnpm run generate:faucet:contract",
     "generate:faucet:contract": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
-    "lint": "eslint ./src --fix",
+    "lint": "eslint package.json src --ext .ts,.tsx, --fix",
     "start": "next start",
     "test": "jest --silent"
   },
@@ -77,7 +76,6 @@
     "jest-environment-jsdom": "~29.6.1",
     "next-translate-plugin": "~2.0.5",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "typescript": "5.1.6"
   },
   "volta": {

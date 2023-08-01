@@ -16,9 +16,8 @@
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
     "dev": "pnpm run /^build:.*/ && next dev",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config cypress src --write",
-    "lint": "eslint ./src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
+    "lint": "eslint package.json src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "test": "echo 'No tests, until there is time to debug the build'"
@@ -92,7 +91,6 @@
     "micromark-extension-frontmatter": "~1.1.0",
     "openapi-types": "~12.1.3",
     "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1",
     "start-server-and-test": "~2.0.0",
     "storybook": "^7.1.0",
     "storybook-addon-next-router": "~4.0.2",

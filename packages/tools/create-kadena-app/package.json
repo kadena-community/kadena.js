@@ -18,9 +18,8 @@
   "scripts": {
     "build": "heft build --clean",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src templates --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "rimraf test-* && heft test && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
@@ -46,7 +45,6 @@
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
     "rimraf": "~5.0.1",
-    "sort-package-json": "~2.5.1",
     "ts-node": "~10.8.2"
   }
 }

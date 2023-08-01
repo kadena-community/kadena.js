@@ -9,7 +9,6 @@
   "scripts": {
     "build": "",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier profiles --write",
     "test": ""
   },
@@ -26,8 +25,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1"
+    "prettier": "~3.0.0"
   },
   "peerDependencies": {
     "@rushstack/heft": "~0.50.6"
