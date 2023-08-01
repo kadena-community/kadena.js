@@ -1,8 +1,10 @@
+import { Content } from './../../../../apps/docs/src/components/Layout/components/ArticleStyles';
 export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
 export type { IBoxProps } from './Box';
 export type { IBreadcrumbsProps, IBreadcrumbItemProps } from './Breadcrumbs';
 export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
+export type { IContentHeaderProps } from './ContentHeader';
 export type { IGridContainerProps, IGridItemProps } from './Grid';
 export type { IIconButtonProps } from './IconButton';
 export type { IIconProps } from './Icon';
@@ -52,6 +54,7 @@ export { Box } from './Box';
 export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
+export { ContentHeader } from './ContentHeader';
 export { NavFooter } from './NavFooter';
 export { Grid } from './Grid';
 export { IconButton } from './IconButton';

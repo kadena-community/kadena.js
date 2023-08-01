@@ -7,7 +7,7 @@ import {
   transformVariant,
 } from './Text.css';
 
-import className from 'classnames';
+import cn from 'classnames';
 import React, { FC } from 'react';
 
 export interface ITextProps {
@@ -18,6 +18,7 @@ export interface ITextProps {
   color?: keyof typeof colorVariant;
   transform?: keyof typeof transformVariant;
   size?: keyof typeof sizeVariant;
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -29,15 +30,17 @@ export const Text: FC<ITextProps> = ({
   size = 'lg',
   color = 'default',
   transform = 'none',
+  className = '',
   children,
 }) => {
-  const classList = className(
+  const classList = cn(
     elementVariant[variant],
     fontVariant[font],
     sizeVariant[size],
     colorVariant[color],
     transformVariant[transform],
     { [boldClass]: bold },
+    className,
   );
 
   switch (as) {
