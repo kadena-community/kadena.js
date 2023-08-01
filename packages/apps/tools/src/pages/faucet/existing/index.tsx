@@ -1,17 +1,14 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import {
-  Breadcrumbs,
-  Button,
-  Heading,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Breadcrumbs, Button, Heading, SystemIcon } from '@kadena/react-ui';
 
 import {
   ChainSelect,
   FormStatus,
   FormStatusNotification,
 } from '@/components/Global';
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
@@ -28,7 +25,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const schema = z.object({
-  name: z.string().min(3).max(256),
+  name: NAME_VALIDATION,
 });
 
 type FormData = z.infer<typeof schema>;
@@ -139,15 +136,10 @@ const ExistingAccountFaucetPage: FC = () => {
         />
         <StyledAccountForm>
           <Heading as="h3">Account</Heading>
-          <TextField
+          <AccountNameField
+            inputProps={register('name')}
+            error={errors.name}
             label={t('The account name you would like to fund coins to')}
-            status={errors.name ? 'negative' : undefined}
-            inputProps={{
-              ...register('name'),
-              id: 'account-name-input',
-              leftIcon: SystemIcon.KIcon,
-            }}
-            helperText={errors.name?.message ?? ''}
           />
           <ChainSelect
             onChange={onChainSelectChange}
