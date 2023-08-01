@@ -1,4 +1,3 @@
-import { Content } from './../../../../apps/docs/src/components/Layout/components/ArticleStyles';
 export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
 export type { IBoxProps } from './Box';
 export type { IBreadcrumbsProps, IBreadcrumbItemProps } from './Breadcrumbs';
