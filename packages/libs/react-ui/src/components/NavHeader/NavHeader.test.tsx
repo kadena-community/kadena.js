@@ -4,9 +4,7 @@ import React from 'react';
 
 describe('NavHeader', () => {
   it('renders correctly', () => {
-    const { getByTestId } = render(
-      <NavHeader />,
-    );
+    const { getByTestId } = render(<NavHeader />);
 
     const navHeaderContainer = getByTestId('kda-navheader');
     expect(navHeaderContainer).toBeInTheDocument();

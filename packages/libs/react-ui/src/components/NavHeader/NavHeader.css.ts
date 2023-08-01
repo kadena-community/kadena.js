@@ -28,11 +28,11 @@ export const logoClass = style([
   sprinkles({
     display: 'flex',
     marginRight: '$6',
-    marginLeft: '$3'
+    marginLeft: '$3',
   }),
   {
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 ]);
 
 export const navClass = style([

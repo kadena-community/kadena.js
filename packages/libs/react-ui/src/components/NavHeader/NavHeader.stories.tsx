@@ -31,22 +31,25 @@ const meta: Meta<StoryProps> = {
     },
     docs: {
       description: {
-        component: 'Note: maximum navigation items is currently limited.\n\nPending design update to support more items.'
+        component:
+          'Note: maximum navigation items is currently limited.\n\nPending design update to support more items.',
       },
     },
   },
   argTypes: {
     brand: {
-      options: logoVariants,
       control: {
         type: 'select',
       },
+      description: 'Logo variant',
+      options: logoVariants,
       table: {
         defaultValue: { summary: logoVariants[0] },
-      }
+      },
     },
     linksCount: {
       control: { type: 'range', min: 1, max: navItems.length, step: 1 },
+      description: 'Sample navigation items',
     },
   },
 };
@@ -56,10 +59,8 @@ type Story = StoryObj<StoryProps>;
 export const Dynamic: Story = {
   name: 'NavHeader',
   args: { brand: logoVariants[0], linksCount: navItems.length },
-  render: ({ brand, linksCount } ) => {
-    return (
-      <NavHeader brand={brand} items={navItems.slice(0, linksCount)} />
-    );
+  render: ({ brand, linksCount }) => {
+    return <NavHeader brand={brand} items={navItems.slice(0, linksCount)} />;
   },
 };
 
