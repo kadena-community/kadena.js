@@ -6,6 +6,7 @@ export const containerClass = style([
   sprinkles({
     alignItems: 'stretch',
     backgroundColor: '$gray90',
+    color: '$gray40',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
@@ -69,10 +70,21 @@ export const linkClass = style([
         textDecoration: 'none',
       },
       '&:active': {
-        color: vars.colors.$gray90,
         backgroundColor: vars.colors.$white,
+        color: vars.colors.$gray90,
         textDecoration: 'none',
       },
     },
+  },
+]);
+
+export const childrenClass = style([
+  sprinkles({
+    display: 'flex',
+    marginLeft: 'auto',
+    marginRight: '$3',
+  }),
+  {
+    alignSelf: 'center',
   },
 ]);
