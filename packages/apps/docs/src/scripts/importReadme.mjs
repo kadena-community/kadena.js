@@ -383,24 +383,6 @@ const imports = [
       RootOrder: 2,
     },
   },
-  /** /tools/create-kadena-app */
-  {
-    file: 'tools/create-kadena-app/README.md',
-    destination: 'build/tools/create-kadena-app',
-    title: 'Create Kadena App',
-    options: {
-      RootOrder: 2,
-    },
-  },
-  {
-    file: 'tools/create-kadena-app/etc/create-kadena-app.api.md',
-    destination: 'build/tools/create-kadena-app/api',
-    title: 'Create Kadena App',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
   /** /tools/kda-cli */
   {
     file: 'tools/kda-cli/README.md',
