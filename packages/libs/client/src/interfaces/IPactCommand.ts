@@ -33,13 +33,14 @@ export type ICapabilityItem = ICap;
  */
 export interface IPactCommand {
   payload: IExecPayloadObject | IContinuationPayloadObject;
+  // the builder will add all default values
   meta: {
     chainId: ChainId;
-    sender: string;
-    gasLimit: number;
-    gasPrice: number;
-    ttl: number;
-    creationTime: number;
+    sender?: string;
+    gasLimit?: number;
+    gasPrice?: number;
+    ttl?: number;
+    creationTime?: number;
   };
   signers: Array<{
     pubKey: string;
