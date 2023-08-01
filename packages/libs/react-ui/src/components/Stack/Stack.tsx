@@ -77,7 +77,7 @@ export const Stack = ({
         paddingBottom,
         paddingLeft,
         paddingRight,
-        width
+        width,
       }),
       'data-testid': 'kda-stack',
     },
