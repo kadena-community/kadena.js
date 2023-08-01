@@ -18,7 +18,7 @@
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
     "dev": "npm run build:scripts && next dev",
-    "format": "npm run format:pkg && npm run format:src",
+    "format": "npm run format:src",
     "format:ci": "prettier config cypress src --check",
     "format:src": "prettier config cypress src --write",
     "lint": "eslint package.json src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
