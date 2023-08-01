@@ -5,7 +5,7 @@ import React from 'react';
 describe('NavHeader', () => {
   it('renders correctly', () => {
     const { getByTestId } = render(
-      <NavHeader.Root>Hello, Header!</NavHeader.Root>,
+      <NavHeader />,
     );
 
     const navHeaderContainer = getByTestId('kda-navheader');
