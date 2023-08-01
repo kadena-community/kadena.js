@@ -14,7 +14,7 @@ export const container = style([
     backgroundColor: '$neutral1',
     color: '$neutral6',
     width: 'max-content',
-    position: 'absolute',
+    position: 'fixed',
     display: 'none',
   }),
   {

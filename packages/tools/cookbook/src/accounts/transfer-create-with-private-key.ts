@@ -1,12 +1,11 @@
-import { PactCommand } from '@kadena/client';
+import { getClient, isSignedCommand, Pact } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
 const HELP: string = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} {senderPrivateKey} k:{receiverPublicKey} {amount}`;
-const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' | undefined =
-  'testnet04';
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' = 'testnet04';
 const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 6) {
@@ -33,26 +32,23 @@ async function transferCreate(
   amount: number,
 ): Promise<void> {
   const senderPublicKey = accountKey(sender);
-  const guardData: Record<string, unknown> = {
-    ks: {
-      keys: [accountKey(receiver)],
-      pred: 'keys-all',
-    },
-  };
-
   const pactDecimal = { decimal: `${amount}` };
 
-  const transactionBuilder = new PactCommand();
-  transactionBuilder.code = `(coin.transfer "${sender}" "${receiver}" ${amount})`;
-  transactionBuilder
-    .addData(guardData)
-    .addCap('coin.GAS', senderPublicKey)
-    .addCap('coin.TRANSFER', senderPublicKey, sender, receiver, pactDecimal)
-    .setMeta({ chainId: '1', sender }, NETWORK_ID);
+  const transaction = Pact.builder
+    .execution(Pact.modules.coin.transfer(sender, receiver, pactDecimal))
+    .addData('ks', {
+      keys: [accountKey(receiver)],
+      pred: 'keys-all',
+    })
+    .addSigner(senderPublicKey, (withCap: any) => [
+      withCap('coin.TRANSFER', sender, receiver, pactDecimal),
+      withCap('coin.GAS'),
+    ])
+    .setMeta({ chainId: '1', sender })
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
 
-  const cmd = transactionBuilder.createCommand();
-
-  const sig = sign(cmd.cmd, {
+  const sig = sign(transaction.cmd, {
     publicKey: senderPublicKey,
     secretKey: senderPrivateKey,
   });
@@ -61,21 +57,19 @@ async function transferCreate(
     throw new Error('Failed to sign transaction');
   }
 
-  transactionBuilder.addSignatures({ pubKey: senderPublicKey, sig: sig.sig });
+  transaction.sigs = [{ sig: sig.sig }];
 
-  await transactionBuilder.send(API_HOST);
+  const { submit, pollStatus } = getClient(API_HOST);
 
-  const pollResult = await transactionBuilder.pollUntil(API_HOST, {
-    onPoll: async (transaction, pollRequest): Promise<void> => {
-      console.log(
-        `Polling ${transaction.requestKey}.\nStatus: ${transaction.status}`,
-      );
-      console.log(await pollRequest);
-    },
-  });
+  if (!isSignedCommand(transaction)) {
+    throw new Error('Command was not signed.');
+  }
+
+  const requestKey = await submit(transaction);
+  const result = await pollStatus(requestKey);
 
   console.log('Polling Completed.');
-  console.log(pollResult);
+  console.log(result);
 }
 
 transferCreate(

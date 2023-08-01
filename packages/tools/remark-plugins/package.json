@@ -11,12 +11,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier src --check",
     "format:md": "remark README.md -o --use ./lib/index.js",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
-    "lint": "eslint ./src --ext .ts --fix",
+    "lint": "eslint package.json src --ext .ts --fix",
     "test": ""
   },
   "dependencies": {
@@ -28,8 +27,8 @@
     "remark-gfm": "~3.0.1",
     "remark-order-reference-links": "^0.0.3",
     "remark-parse": "^10.0.2",
-    "remark-prettier": "^2.0.0",
     "remark-reference-links": "^6.0.1",
+    "unified-prettier": "^1.0.1",
     "strip-json-comments": "^5.0.0",
     "unist-util-visit": "^4.1.2"
   },
@@ -38,10 +37,9 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@types/mdast": "^3.0.11",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1",
-    "typescript": "5.0.4",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
+    "typescript": "5.1.6",
     "unified": "^10.1.2",
     "vfile": "5.3.7"
   }

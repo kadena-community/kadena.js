@@ -1,11 +1,17 @@
 import { ICapabilityItem, IPactCommand } from '../../interfaces/IPactCommand';
+import {
+  ExtractCapabilityType,
+  IGeneralCapability,
+} from '../../interfaces/type-utilities';
+
+import { patchCommand } from './patchCommand';
 
 interface IAddSigner {
   (
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  ): () => Pick<IPactCommand, 'signers'>;
+  ): () => Partial<IPactCommand>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <TCommand extends any>(
     first:
@@ -42,35 +48,23 @@ export const addSigner: IAddSigner = ((
     }));
   }
 
-  return () => ({
-    signers: [
-      {
-        pubKey,
-        scheme,
-        ...(address !== undefined ? { address } : {}),
-        ...(clist !== undefined ? { clist } : {}),
-      },
-    ],
-  });
+  return (cmd: Partial<IPactCommand>) =>
+    patchCommand(cmd, {
+      signers: [
+        {
+          pubKey,
+          scheme,
+          ...(address !== undefined ? { address } : {}),
+          ...(clist !== undefined ? { clist } : {}),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+      ],
+    });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
-
-export type UnionToIntersection<T> = (
-  T extends unknown ? (k: T) => void : never
-) extends (k: infer I) => void
-  ? I
-  : never;
-
-type GeneralCapability = (name: string, ...args: unknown[]) => ICapabilityItem;
 
 type ExtractType<TCmdReducer> = TCmdReducer extends (cmd: {
   payload: infer TPayload;
 }) => unknown
-  ? TPayload extends { funs: infer TFunctions }
-    ? TFunctions extends Array<infer TFunction>
-      ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
-        ? TCapability
-        : GeneralCapability
-      : GeneralCapability
-    : GeneralCapability
-  : GeneralCapability;
+  ? ExtractCapabilityType<{ payload: TPayload }>
+  : IGeneralCapability;

@@ -3,9 +3,13 @@ import { Pact } from '@kadena/client';
 import { dirtyRead } from './util/client';
 import { Account } from './util/keyFromAccount';
 
+const NETWORK_ID: string = 'testnet04';
+
 async function getBalance(account: Account): Promise<void> {
   const tr = Pact.builder
     .execution(Pact.modules.coin['get-balance'](account))
+    .setMeta({ chainId: '0' })
+    .setNetworkId(NETWORK_ID)
     .createTransaction();
 
   // we don't want to submit a transaction for just reading data,
@@ -16,6 +20,6 @@ async function getBalance(account: Account): Promise<void> {
 }
 
 const myAccount: string =
-  'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
+  'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
 
 getBalance(myAccount).catch(console.error);

@@ -24,6 +24,9 @@ export { ChainId }
 // @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
+// @alpha
+export const createTransactionBuilder: (initial?: Partial<IPactCommand>) => ICommandBuilder;
+
 // Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
 //
@@ -39,6 +42,24 @@ export function createWalletConnectSign(client: Client, session: SessionTypes.St
 //
 // @alpha (undocumented)
 export const getClient: IGetClient;
+
+// @alpha (undocumented)
+export interface IBuilder<TCommand> {
+    // Warning: (ae-forgotten-export) The symbol "ValidDataTypes" needs to be exported by the entry point index.d.ts
+    addData: (key: string, data: ValidDataTypes) => IBuilder<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "IAddKeyset" needs to be exported by the entry point index.d.ts
+    addKeyset: IAddKeyset<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
+    addSigner: IAddSigner<TCommand>;
+    createTransaction: () => IUnsignedCommand;
+    getCommand: () => Partial<IPactCommand>;
+    setMeta: (meta: {
+        chainId: IPactCommand['meta']['chainId'];
+    } & Partial<IPactCommand['meta']>) => IBuilder<TCommand>;
+    setNetworkId: (id: string) => IBuilder<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "ISetNonce" needs to be exported by the entry point index.d.ts
+    setNonce: ISetNonce<TCommand>;
+}
 
 export { ICap }
 
@@ -87,7 +108,29 @@ export interface IChainweaverSignBody {
     ttl: number;
 }
 
+// Warning: (ae-forgotten-export) The symbol "IClientBasics" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export interface IClient extends IClientBasics {
+    dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+    // @deprecated (undocumented)
+    getPoll: (requestKeys?: string[] | string, options?: INetworkOptions) => Promise<IPollResponse>;
+    preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
+    runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
+    // @deprecated (undocumented)
+    send: ISubmit;
+    signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+}
+
 export { ICommand }
+
+// @alpha (undocumented)
+export interface ICommandBuilder {
+    // Warning: (ae-forgotten-export) The symbol "ICont" needs to be exported by the entry point index.d.ts
+    continuation: ICont;
+    // Warning: (ae-forgotten-export) The symbol "IExec" needs to be exported by the entry point index.d.ts
+    execution: IExec;
+}
 
 export { ICommandResult }
 
@@ -122,8 +165,6 @@ export interface INetworkOptions {
 
 // @alpha (undocumented)
 export interface IPact {
-    // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     builder: ICommandBuilder;
     // (undocumented)
@@ -135,11 +176,11 @@ export interface IPactCommand {
     // (undocumented)
     meta: {
         chainId: ChainId;
-        sender: string;
-        gasLimit: number;
-        gasPrice: number;
-        ttl: number;
-        creationTime: number;
+        sender?: string;
+        gasLimit?: number;
+        gasPrice?: number;
+        ttl?: number;
+        creationTime?: number;
     };
     // (undocumented)
     networkId: string;
@@ -270,6 +311,17 @@ export const readKeyset: ReadKeyset;
 
 // @alpha (undocumented)
 export const signWithChainweaver: ISignFunction;
+
+// Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export type WithCapability<TCode extends string & {
+    capability: unknown;
+}> = ExtractCapabilityType<{
+    payload: {
+        funs: [TCode];
+    };
+}>;
 
 // (No @packageDocumentation comment for this package)
 

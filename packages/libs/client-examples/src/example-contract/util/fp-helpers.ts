@@ -8,3 +8,10 @@ export const asyncPipe =
     args.reduce((chain, fn) => chain.then(fn), Promise.resolve(init));
 
 export const head = (args: all[]): any => args[0];
+
+export const inspect =
+  (tag: string): (<T extends unknown>(data: T) => T) =>
+  <T extends any>(data: T): T => {
+    console.log(tag, data);
+    return data;
+  };

@@ -15,33 +15,29 @@ import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
-import { HeaderIconGroup, HideOnMobile, SkipNav } from './styles';
+import {
+  HeaderIconGroup,
+  HeaderSocialIconGroup,
+  HideOnMobile,
+  SkipNav,
+} from './styles';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
+import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
-  toggleMenu: () => void;
-  isMenuOpen: boolean;
-  toggleAside: () => void;
-  isAsideOpen: boolean;
   menuItems: IMenuItem[];
-  layout: LayoutType;
+  layout?: LayoutType;
 }
 
-export const Header: FC<IProps> = ({
-  toggleMenu,
-  isMenuOpen,
-  toggleAside,
-  isAsideOpen,
-  menuItems,
-  layout,
-}) => {
+export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
+  const { toggleMenu, isMenuOpen, toggleAside, isAsideOpen } = useMenu();
 
   return (
     <StyledHeader>
@@ -69,20 +65,22 @@ export const Header: FC<IProps> = ({
         </HideOnMobile>
         <Spacer />
 
-        <HeaderIconGroup>
+        <HeaderSocialIconGroup>
           <IconButton
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
             icon={SystemIcon.Twitter}
             color="inverted"
           />
           <IconButton
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://github.com/kadena-community"
             title="Go to our Github"
             icon={SystemIcon.Github}
             color="inverted"
           />
-        </HeaderIconGroup>
+        </HeaderSocialIconGroup>
         <HeaderIconGroup>
           <ThemeToggle />
           <HideOnMobile>

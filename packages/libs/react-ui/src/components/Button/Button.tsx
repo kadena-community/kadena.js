@@ -1,6 +1,12 @@
-import { SystemIcon } from '..';
-import { colorVariants } from './Button.css';
+import {
+  buttonLoadingClass,
+  colorVariants,
+  iconLoadingClass,
+} from './Button.css';
+import { ButtonIcon } from './ButtonIcon';
 
+import { SystemIcon } from '@components/Icon';
+import cx from 'classnames';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
@@ -18,34 +24,71 @@ export interface IButtonProps
     | React.FormEventHandler<HTMLButtonElement>;
   target?: '_blank' | '_self';
   title?: string;
-  color?: keyof typeof colorVariants;
 }
 
 export const Button: FC<IButtonProps> = ({
   as = 'button',
-  color = 'primary',
-  onClick,
-  href,
   children,
+  variant = 'primary',
+  href,
+  icon,
+  iconAlign = 'right',
+  loading,
+  onClick,
+  target,
   ...props
 }) => {
   const ariaLabel = props['aria-label'] ?? props.title;
+  const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 
-  if (as === 'a' && href !== undefined && href !== '') {
-    <a className={colorVariants[color]} href={href}>
+  let Icon = icon && SystemIcon[icon];
+  if (loading) {
+    Icon = SystemIcon.Loading;
+  }
+
+  const buttonClassname = cx(colorVariants[variant], {
+    [buttonLoadingClass]: loading,
+  });
+
+  const iconClassname = cx({
+    [iconLoadingClass]: loading,
+  });
+
+  const buttonChildren = (
+    <>
+      {Icon && iconAlign === 'left' && (
+        <ButtonIcon icon={Icon} className={iconClassname} />
+      )}
       {children}
-    </a>;
+      {Icon && iconAlign === 'right' && (
+        <ButtonIcon icon={Icon} className={iconClassname} />
+      )}
+    </>
+  );
+
+  if (renderAsAnchor) {
+    return (
+      <a
+        aria-label={ariaLabel}
+        className={buttonClassname}
+        data-testid="kda-button"
+        href={href}
+        target={target}
+      >
+        {buttonChildren}
+      </a>
+    );
   }
 
   return (
     <button
       {...props}
-      className={colorVariants[color]}
-      onClick={onClick}
       aria-label={ariaLabel}
+      className={buttonClassname}
       data-testid="kda-button"
+      onClick={onClick}
     >
-      {children}
+      {buttonChildren}
     </button>
   );
 };

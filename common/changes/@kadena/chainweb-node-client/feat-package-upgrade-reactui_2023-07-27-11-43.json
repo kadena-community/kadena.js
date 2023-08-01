@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-node-client",
+      "comment": "formatting and linting",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-node-client"
+}

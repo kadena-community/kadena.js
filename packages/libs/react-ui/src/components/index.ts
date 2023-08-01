@@ -1,4 +1,4 @@
-export type { IAccordionProps } from './Accordion';
+export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
 export type { IBoxProps } from './Box';
 export type { IBreadcrumbsProps, IBreadcrumbItemProps } from './Breadcrumbs';
 export type { IButtonProps } from './Button';
@@ -12,6 +12,7 @@ export type { ILinkProps } from './Link';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
 export type { IModalProps } from './Modal';
 export type { IOptionProps } from './Select/Option';
+export type { IProgressBarProps } from './ProgressBar';
 export type { ISelectProps } from './Select/Select';
 export type { IStackProps } from './Stack';
 export type { ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
@@ -20,6 +21,12 @@ export type { ITextFieldProps } from './TextField/TextField';
 export type { ITooltipProps } from './Tooltip';
 export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
+export type {
+  INavFooterRootProps,
+  INavFooterPanelProps,
+  INavFooterIconButtonProps,
+  INavFooterLinkProps,
+} from './NavFooter';
 export type {
   INotificationProps,
   INotificationHeaderProps,
@@ -45,7 +52,7 @@ export { Box } from './Box';
 export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
-export { Footer } from './Footer/';
+export { NavFooter } from './NavFooter';
 export { Grid } from './Grid';
 export { IconButton } from './IconButton';
 export { Input } from './Input/Input';
@@ -55,6 +62,7 @@ export { MaskedValue } from './MaskedValue/MaskedValue';
 export { Modal, ModalProvider, useModal } from './Modal';
 export { Notification } from './Notification';
 export { Option } from './Select/Option';
+export { ProgressBar } from './ProgressBar';
 export { Select } from './Select/Select';
 export { Stack } from './Stack';
 export { SystemIcon, ProductIcon } from './Icon';

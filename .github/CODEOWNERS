@@ -11,13 +11,12 @@
 /packages/libs/chainweb-stream-client           @Takadenoshi
 
 /packages/libs/bootstrap-lib                    @alber70g @webpro
-/packages/libs/client                           @alber70g @javadkh2
+/packages/libs/client                           @alber70g @javadkh2 @webpro
 /packages/libs/kadena.js                        @alber70g @webpro
 /packages/libs/pactjs-generator                 @alber70g @webpro
 /packages/libs/react-ui                         @eileenmguo @sstraatemans
 /packages/libs/types                            @alber70g @webpro
 /packages/tools/pactjs-cli                      @alber70g @webpro
-/packages/tools/create-kadena-app               @jermaine150
 /packages/tools/eslint-config                   @alber70g @webpro
 /packages/tools/eslint-plugin                   @alber70g @webpro
 /packages/tools/heft-rig                        @alber70g @webpro
