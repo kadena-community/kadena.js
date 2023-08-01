@@ -1,17 +1,13 @@
-import type { INavHeaderContainerProps } from './NavHeader';
-import { navClass } from './NavHeader.css';
-import { Target } from './NavHeaderLink';
-import { INavHeaderLogoProps } from './NavHeaderLogo';
+import type { INavHeaderProps, INavItemTarget } from './NavHeader';
 import { NavHeader } from './';
 
 import type { LogoVariant } from '@components/Logo';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-type StoryProps = { linksCount: number } & INavHeaderContainerProps &
-  INavHeaderLogoProps;
+type StoryProps = { linksCount: number } & INavHeaderProps;
 
-const links: { title: string; href: string; target?: Target }[] = [
+const items: { title: string; href: string; target?: INavItemTarget }[] = [
   {
     title: 'Faucet',
     href: '/faucet',
@@ -27,11 +23,16 @@ const links: { title: string; href: string; target?: Target }[] = [
 ];
 
 const meta: Meta<StoryProps> = {
-  title: 'NavHeader',
+  title: 'Navigation/NavHeader',
   parameters: {
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',
+    },
+    docs: {
+      description: {
+        component: 'Note: maximum navigation items is currently limited.\n\nPending design update to support more items.'
+      },
     },
   },
   argTypes: {
@@ -42,7 +43,7 @@ const meta: Meta<StoryProps> = {
       },
     },
     linksCount: {
-      control: { type: 'range', min: 1, max: links.length, step: 1 },
+      control: { type: 'range', min: 1, max: items.length, step: 1 },
     },
   },
 };
@@ -51,36 +52,11 @@ type Story = StoryObj<StoryProps>;
 
 export const Dynamic: Story = {
   name: 'NavHeader',
-  args: { brand: 'default', linksCount: links.length },
-  render: ({ brand, linksCount }) => {
-    const navItems = links.slice(0, linksCount);
+  args: { brand: 'default', linksCount: items.length },
+  render: ({ brand, linksCount } ) => {
+    const navItems = items.slice(0, linksCount);
     return (
-      <NavHeader.Root>
-        <NavHeader.Logo brand={brand} />
-        <nav className={navClass}>
-          {navItems.map((item, index) => {
-            return (
-              <NavHeader.Link key={index} title={item.title} href={item.href} />
-            );
-            // return (
-            //   <Footer.LinkItem key={index} variant={variant}>
-            //     {item.href !== undefined ? (
-            //       <a href={item.href} target={item.target}>
-            //         {item.title}
-            //       </a>
-            //     ) : (
-            //       <span>{item.title}</span>
-            //     )}
-            //   </Footer.LinkItem>
-            // );
-          })}
-        </nav>
-        {/* <NavHeader.NavItem href="/">Home</NavHeader.NavItem>
-          <NavHeader.NavItem href="/about">About</NavHeader.NavItem>
-          <NavHeader.NavItem href="/contact">Contact</NavHeader.NavItem> */}
-        {/* </NavHeader.Nav>
-        <NavHeader.Content>Hello World</NavHeader.Content> */}
-      </NavHeader.Root>
+      <NavHeader brand={brand} items={navItems} />
     );
   },
 };
