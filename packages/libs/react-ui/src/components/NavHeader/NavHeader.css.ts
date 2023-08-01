@@ -9,6 +9,7 @@ export const containerClass = style([
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
+    height: '$16',
     justifyContent: 'flex-start',
   }),
   {
@@ -27,7 +28,11 @@ export const logoClass = style([
   sprinkles({
     display: 'flex',
     marginRight: '$6',
+    marginLeft: '$3'
   }),
+  {
+    alignSelf: 'center'
+  }
 ]);
 
 export const navClass = style([
