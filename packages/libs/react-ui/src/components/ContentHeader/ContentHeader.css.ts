@@ -6,11 +6,11 @@ export const containerClass = style([
   sprinkles({
     display: 'grid',
     gap: '$md',
+    alignItems: 'center',
   }),
   {
     gridRowGap: vars.sizes.$xs,
-    alignItems: 'center',
-    gridTemplateColumns: 'max-content 1fr',
+    gridTemplateColumns: 'auto 1fr',
   },
 ]);
 
