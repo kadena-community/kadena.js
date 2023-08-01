@@ -222,9 +222,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       start-server-and-test:
         specifier: ~2.0.0
         version: 2.0.0
@@ -310,9 +307,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/apps/graph-client:
     dependencies:
@@ -401,9 +395,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -416,12 +407,6 @@ importers:
       '@vanilla-extract/css':
         specifier: 1.12.0
         version: 1.12.0
-      eslint:
-        specifier: ^8.45.0
-        version: 8.45.0
-      eslint-config-next:
-        specifier: 13.4.5
-        version: 13.4.5(eslint@8.45.0)(typescript@5.1.6)
       next:
         specifier: 13.4.5
         version: 13.4.5(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
@@ -441,6 +426,9 @@ importers:
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:../../tools/remark-plugins
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.45.0)(typescript@5.1.6)
       '@types/gtag.js':
         specifier: ~0.0.12
         version: 0.0.12
@@ -459,12 +447,15 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: 2.1.2
         version: 2.1.2(@types/node@16.0.0)(next@13.4.5)(webpack@5.88.2)
+      eslint:
+        specifier: ^8.45.0
+        version: 8.45.0
+      eslint-config-next:
+        specifier: 13.4.5
+        version: 13.4.5(eslint@8.45.0)(typescript@5.1.6)
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -643,9 +634,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -698,9 +686,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/libs/chainweb-node-client:
     dependencies:
@@ -750,9 +735,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/libs/chainweb-stream-client:
     dependencies:
@@ -793,9 +775,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/libs/chainwebjs:
     dependencies:
@@ -845,9 +824,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -918,9 +894,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -985,9 +958,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -1037,9 +1007,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/libs/kadena.js:
     dependencies:
@@ -1095,9 +1062,6 @@ importers:
       serve:
         specifier: ^13.0.2
         version: 13.0.2
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-loader:
         specifier: ^9.3.0
         version: 9.3.0(typescript@5.1.6)(webpack@5.88.2)
@@ -1141,9 +1105,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/libs/pactjs-generator:
     dependencies:
@@ -1205,9 +1166,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -1305,9 +1263,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       storybook:
         specifier: ^7.1.0
         version: 7.1.0
@@ -1492,9 +1447,6 @@ importers:
       rimraf:
         specifier: ~5.0.1
         version: 5.0.1
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       storybook:
         specifier: ^7.1.0
         version: 7.1.0
@@ -1543,9 +1495,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -1595,9 +1544,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -1662,9 +1608,6 @@ importers:
       rimraf:
         specifier: ~5.0.1
         version: 5.0.1
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -1701,6 +1644,9 @@ importers:
       eslint-plugin-import:
         specifier: ~2.27.5
         version: 2.27.5(@typescript-eslint/parser@5.23.0)(eslint-import-resolver-typescript@3.5.5)(eslint@8.45.0)
+      eslint-plugin-json-files:
+        specifier: ~3.0.0
+        version: 3.0.0(eslint@8.45.0)
       eslint-plugin-jsx-a11y:
         specifier: ~6.7.1
         version: 6.7.1(eslint@8.45.0)
@@ -1720,9 +1666,6 @@ importers:
         specifier: ~12.0.0
         version: 12.0.0
     devDependencies:
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -1745,9 +1688,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -1788,9 +1728,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/tools/integration-tests:
     dependencies:
@@ -1837,9 +1774,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/tools/kda-cli:
     dependencies:
@@ -1907,9 +1841,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -1980,9 +1911,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
   packages/tools/remark-plugins:
     dependencies:
@@ -2038,9 +1966,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -2090,9 +2015,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      sort-package-json:
-        specifier: ~2.5.1
-        version: 2.5.1
 
 packages:
 
@@ -4416,7 +4338,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       espree: 9.6.1
       globals: 13.20.0
       ignore: 5.2.4
@@ -4961,7 +4883,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.6.0
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /@graphql-tools/prisma-loader@7.2.72(@types/node@16.0.0)(graphql@16.6.0):
@@ -5004,7 +4926,7 @@ packages:
       '@ardatan/relay-compiler': 12.0.0(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       graphql: 16.6.0
-      tslib: 2.4.1
+      tslib: 2.6.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -5198,7 +5120,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -5217,6 +5139,11 @@ packages:
   /@humanwhocodes/module-importer@1.0.1:
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
     engines: {node: '>=12.22'}
+
+  /@humanwhocodes/momoa@2.0.4:
+    resolution: {integrity: sha512-RE815I4arJFtt+FVeU1Tgp9/Xvecacji8w/V6XtXsWWH/wz/eNkNbhb+ny/+PlVZjV0rxQpRSQKNKE3lcktHEA==}
+    engines: {node: '>=10.10.0'}
+    dev: false
 
   /@humanwhocodes/object-schema@1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
@@ -9448,6 +9375,13 @@ packages:
     resolution: {integrity: sha512-frsJrz2t/CeGifcu/6uRo4b+SzAwT4NYCVPu1GN8IB9XTzrpPkGuV0tmh9mN+/L0PklAlsC3u5Fxt0ju00LXIw==}
     dev: true
 
+  /@types/glob@7.2.0:
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    dependencies:
+      '@types/minimatch': 5.1.2
+      '@types/node': 16.0.0
+    dev: false
+
   /@types/glob@8.1.0:
     resolution: {integrity: sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w==}
     dependencies:
@@ -9875,7 +9809,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.59.11
       '@typescript-eslint/type-utils': 5.59.11(eslint@8.45.0)(typescript@5.1.6)
       '@typescript-eslint/utils': 5.59.11(eslint@8.45.0)(typescript@5.1.6)
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.45.0
       grapheme-splitter: 1.0.4
       ignore: 5.2.4
@@ -9994,7 +9928,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.59.11
       '@typescript-eslint/types': 5.59.11
       '@typescript-eslint/typescript-estree': 5.59.11(typescript@5.1.6)
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.45.0
       typescript: 5.1.6
     transitivePeerDependencies:
@@ -10067,7 +10001,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 5.59.11(typescript@5.1.6)
       '@typescript-eslint/utils': 5.59.11(eslint@8.45.0)(typescript@5.1.6)
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.45.0
       tsutils: 3.21.0(typescript@5.1.6)
       typescript: 5.1.6
@@ -10196,7 +10130,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.11
       '@typescript-eslint/visitor-keys': 5.59.11
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
@@ -11897,6 +11831,20 @@ packages:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
     dev: true
 
+  /better-ajv-errors@1.2.0(ajv@8.12.0):
+    resolution: {integrity: sha512-UW+IsFycygIo7bclP9h5ugkNH8EjCSgqyFB/yQ4Hqqa1OEYDtb0uFIkYE0b6+CjkgJYVM5UKI/pJPxjYe9EZlA==}
+    engines: {node: '>= 12.13.0'}
+    peerDependencies:
+      ajv: 4.11.8 - 8
+    dependencies:
+      '@babel/code-frame': 7.22.5
+      '@humanwhocodes/momoa': 2.0.4
+      ajv: 8.12.0
+      chalk: 4.1.2
+      jsonpointer: 5.0.1
+      leven: 3.1.0
+    dev: false
+
   /better-opn@3.0.2:
     resolution: {integrity: sha512-aVNobHnJqLiUelTaHat9DZ1qM2w0C0Eym4LPI/3JxOnSokGVdsl1T1kN7TFvsEAD8G47A6VKQ0TVHqbBnYMJlQ==}
     engines: {node: '>=12.0.0'}
@@ -12374,7 +12322,7 @@ packages:
       path-case: 3.0.4
       sentence-case: 3.0.4
       snake-case: 3.0.4
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /char-regex@1.0.2:
@@ -13484,17 +13432,6 @@ packages:
       ms: 2.1.3
       supports-color: 8.1.1
 
-  /debug@4.3.4:
-    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-
   /debug@4.3.4(supports-color@5.5.0):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -13722,12 +13659,6 @@ packages:
   /detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
-    dev: true
-
-  /detect-indent@7.0.1:
-    resolution: {integrity: sha512-Mc7QhQ8s+cLrnUfU/Ji94vG/r8M26m8f++vyres4ZoojaRDpZ1eSIh/EpzLNwlWuvzSZ3UbDFspjFvTDXe6e/g==}
-    engines: {node: '>=12.20'}
-    dev: true
 
   /detect-libc@2.0.1:
     resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==}
@@ -13739,11 +13670,6 @@ packages:
   /detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
-
-  /detect-newline@4.0.0:
-    resolution: {integrity: sha512-1aXUEPdfGdzVPFpzGJJNgq9o81bGg1s09uxTWsqBlo9PI332uyJRQq13+LK/UN4JfxJbFdCXonUFQ9R/p7yCtw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: true
 
   /detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
@@ -14672,6 +14598,20 @@ packages:
       - typescript
     dev: true
 
+  /eslint-plugin-json-files@3.0.0(eslint@8.45.0):
+    resolution: {integrity: sha512-sv9ma6T1i9VxB6WqciiO9mzHxToF+hxeN4rwxGtew75uPTiSAI0E9Zyw4YsCz6p7WJD5XeRpV0JeG7YokI6MOg==}
+    engines: {node: '>=16.13'}
+    peerDependencies:
+      eslint: '>=5'
+    dependencies:
+      ajv: 8.12.0
+      better-ajv-errors: 1.2.0(ajv@8.12.0)
+      eslint: 8.45.0
+      requireindex: 1.2.0
+      semver: 7.5.4
+      sort-package-json: 1.57.0
+    dev: false
+
   /eslint-plugin-jsx-a11y@6.7.1(eslint@8.45.0):
     resolution: {integrity: sha512-63Bog4iIethyo8smBklORknVjB0T2dwB8Mr/hIC+fBS0uyHdYYpzM/Ed+YC8VxTjlXHEWFOdmgwcDn1U2L9VCA==}
     engines: {node: '>=4.0'}
@@ -14944,7 +14884,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.1
@@ -15958,11 +15898,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /get-stdin@9.0.0:
-    resolution: {integrity: sha512-dVKBjfWisLAicarI2Sf+JuBE/DghV4UzNAVe9yhEJuzeREd3JhOTE9cUaJTeSa77fsbQUK3pcOpJfM59+VKZaA==}
-    engines: {node: '>=12'}
-    dev: true
-
   /get-stream@4.1.0:
     resolution: {integrity: sha512-GMat4EJ5161kIy2HevLlr4luNjBgvmj413KaQA7jt4V8B4RDsfpHk7WQ9GVqfYyyx8OS/L66Kox+rJRNklLK7w==}
     engines: {node: '>=6'}
@@ -16020,9 +15955,9 @@ packages:
       - supports-color
     dev: true
 
-  /git-hooks-list@3.1.0:
-    resolution: {integrity: sha512-LF8VeHeR7v+wAbXqfgRlTSX/1BJR9Q1vEMR8JAz1cEg6GX07+zyj3sAdDvYjj/xnlIfVuGgj4qBei1K3hKH+PA==}
-    dev: true
+  /git-hooks-list@1.0.3:
+    resolution: {integrity: sha512-Y7wLWcrLUXwk2noSka166byGCvhMtDRpgHdzCno1UQv/n/Hegp++a2xBWJL1lJarnKD3SWaljD+0z1ztqxuKyQ==}
+    dev: false
 
   /github-slugger@1.5.0:
     resolution: {integrity: sha512-wIh+gKBI9Nshz2o46B0B3f5k/W+WI9ZAv6y5Dn5WJ5SK1t0TnDimB4WE5rmTD05ZAIn8HALCZVmCsvj0w0v0lw==}
@@ -16154,6 +16089,20 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       define-properties: 1.2.0
+
+  /globby@10.0.0:
+    resolution: {integrity: sha512-3LifW9M4joGZasyYPz2A1U74zbC/45fvpXUvO/9KbSa+VV0aGZarWkfdgKyR9sExNP0t0x0ss/UMJpNpcaTspw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@types/glob': 7.2.0
+      array-union: 2.1.0
+      dir-glob: 3.0.1
+      fast-glob: 3.3.0
+      glob: 7.2.3
+      ignore: 5.2.4
+      merge2: 1.4.1
+      slash: 3.0.0
+    dev: false
 
   /globby@11.1.0:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
@@ -17196,7 +17145,7 @@ packages:
   /is-lower-case@2.0.2:
     resolution: {integrity: sha512-bVcMJy4X5Og6VZfdOZstSexlEy20Sr0k/p/b2IlQJlfdKAQuMpiv5w2Ccxb8sKdRUNAG1PnHVHjFSdRDVS6NlQ==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /is-map@2.0.2:
@@ -17261,6 +17210,11 @@ packages:
   /is-plain-obj@1.1.0:
     resolution: {integrity: sha512-yvkRyxmFKEOQ4pNXCmJG5AEQNlXJS5LaONXo5/cLdTZdWvsZ1ioJEonLGAosKlMWE8lwUy/bJzMjcw8az73+Fg==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /is-plain-obj@2.1.0:
+    resolution: {integrity: sha512-YWnfyRwxL/+SsrWYfOpUtz5b3YD+nyfkHvjbcanzk8zgyO4ASD67uVMRt8k5bM4lLMDnXfriRhOpemw+NfT1eA==}
+    engines: {node: '>=8'}
     dev: false
 
   /is-plain-obj@3.0.0:
@@ -17385,7 +17339,7 @@ packages:
   /is-upper-case@2.0.2:
     resolution: {integrity: sha512-44pxmxAvnnAOwBg4tHPnkfvgjPwbc5QIsSstNU+YcJ1ovxVzCWpSGosPJOZh/a1tdl81fbgnLc9LLv+x2ywbPQ==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /is-weakmap@2.0.1:
@@ -19244,13 +19198,13 @@ packages:
   /lower-case-first@2.0.2:
     resolution: {integrity: sha512-EVm/rR94FJTZi3zefZ82fLWab+GX14LJN4HrWBcuo6Evmsl9hEfnqxgcHCKb9q+mNf6EVdsjx/qucYFIIB84pg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
 
   /lru-cache@10.0.0:
     resolution: {integrity: sha512-svTf/fzsKHffP42sujkO/Rjs37BCIsQVRCeNYIm9WN8rgT7ffoUnRtZCqU+6BqcSBdv8gwJeTz8knJpgACeQMw==}
@@ -20024,7 +19978,7 @@ packages:
     resolution: {integrity: sha512-uD66tJj54JLYq0De10AhWycZWGQNUvDI55xPgk2sQM5kn1JYlhbCMTtEeT27+vAhW2FBQxLlOmS3pmA7/2z4aA==}
     dependencies:
       '@types/debug': 4.1.8
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       decode-named-character-reference: 1.0.2
       micromark-core-commonmark: 1.1.0
       micromark-factory-space: 1.1.0
@@ -23480,7 +23434,6 @@ packages:
   /requireindex@1.2.0:
     resolution: {integrity: sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==}
     engines: {node: '>=0.10.5'}
-    dev: true
 
   /requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
@@ -24197,20 +24150,19 @@ packages:
 
   /sort-object-keys@1.1.3:
     resolution: {integrity: sha512-855pvK+VkU7PaKYPc+Jjnmt4EzejQHyhhF33q31qG8x7maDzkeFhAAThdCYay11CISO+qAMwjOBP+fPZe0IPyg==}
-    dev: true
+    dev: false
 
-  /sort-package-json@2.5.1:
-    resolution: {integrity: sha512-vx/KoZxm8YNMUqdlw7SGTfqR5pqZ/sUfgOuRtDILiOy/3AvzhAibyUe2cY3OpLs3oRSow9up4yLVtQaM24rbDQ==}
+  /sort-package-json@1.57.0:
+    resolution: {integrity: sha512-FYsjYn2dHTRb41wqnv+uEqCUvBpK3jZcTp9rbz2qDTmel7Pmdtf+i2rLaaPMRZeSVM60V3Se31GyWFpmKs4Q5Q==}
     hasBin: true
     dependencies:
-      detect-indent: 7.0.1
-      detect-newline: 4.0.0
-      get-stdin: 9.0.0
-      git-hooks-list: 3.1.0
-      globby: 13.2.2
-      is-plain-obj: 4.1.0
+      detect-indent: 6.1.0
+      detect-newline: 3.1.0
+      git-hooks-list: 1.0.3
+      globby: 10.0.0
+      is-plain-obj: 2.1.0
       sort-object-keys: 1.1.3
-    dev: true
+    dev: false
 
   /source-list-map@2.0.1:
     resolution: {integrity: sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==}
@@ -24338,7 +24290,7 @@ packages:
   /sponge-case@1.0.1:
     resolution: {integrity: sha512-dblb9Et4DAtiZ5YSUZHLl4XhH4uK80GhAZrVXdN4O2P4gQ40Wa5UIOPUHlA/nFd2PLblBZWUioLMMAVrgpoYcA==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /sprintf-js@1.0.3:
@@ -24901,7 +24853,7 @@ packages:
   /swap-case@2.0.2:
     resolution: {integrity: sha512-kc6S2YS/2yXbtkSMunBtKdah4VFETZ8Oh6ONSmSd9bRxhqTrtARUCBUiWXH3xVPpvR7tz2CSnkuXVE42EcGnMw==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /swc-loader@0.2.3(@swc/core@1.3.71)(webpack@5.88.2):
@@ -25238,7 +25190,7 @@ packages:
   /title-case@3.0.3:
     resolution: {integrity: sha512-e1zGYRvbffpcHIrnuqT0Dh+gEJtDaxDSoG4JAIpq4oDFyooziLBIiYQv0GBT4FUAnUop5uZ1hiIAj7oAF6sOCA==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /titleize@3.0.0:
@@ -25825,7 +25777,7 @@ packages:
       '@types/node': 18.16.19
       '@types/unist': 2.0.7
       concat-stream: 2.0.0
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       fault: 2.0.1
       glob: 8.1.0
       ignore: 5.2.4
@@ -26026,13 +25978,13 @@ packages:
   /upper-case-first@2.0.2:
     resolution: {integrity: sha512-514ppYHBaKwfJRK/pNC6c/OxfGa0obSnAl106u97Ed0I625Nin96KAjttZF6ZL3e1XLtphxnqrOi9iWgm+u+bg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /upper-case@2.0.2:
     resolution: {integrity: sha512-KgdgDGJt2TpuwBUIjgG6lzw2GWFRCW9Qkfkiv0DxqHHLYJHmtmdUIKcZd8rHgFSjopVTlw6ggzCm1b8MFQwikg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: true
 
   /uri-js@4.4.1:
