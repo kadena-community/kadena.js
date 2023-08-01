@@ -1,7 +1,10 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, SystemIcon, TextField } from '@kadena/react-ui';
+import { Breadcrumbs, Button, SystemIcon } from '@kadena/react-ui';
 
 import { ChainSelect } from '@/components/Global';
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
@@ -37,7 +40,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const schema = z.object({
-  name: z.string().min(3).max(256),
+  name: NAME_VALIDATION,
 });
 
 type FormData = z.infer<typeof schema>;
@@ -154,16 +157,10 @@ const CheckTransactions: FC = () => {
               />
             </StyledSmallField>
             <StyledMediumField>
-              <TextField
+              <AccountNameField
+                inputProps={register('name')}
+                error={errors.name}
                 label={t('Account')}
-                status={errors.name ? 'negative' : undefined}
-                inputProps={{
-                  ...register('name'),
-                  id: 'account-input',
-                  placeholder: t('Account'),
-                  leftIcon: SystemIcon.KIcon,
-                }}
-                helperText={errors.name?.message ?? ''}
               />
             </StyledMediumField>
             <StyledFormButton>
