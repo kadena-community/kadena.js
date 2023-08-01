@@ -19,7 +19,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "heft build",
+    "build": "rushx pactjs:generate:coin && heft build",
     "dev": "heft build -w",
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
@@ -28,6 +28,7 @@
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",
     "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
+    "pactjs:generate:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
     "test": "ava"
   },
   "ava": {
@@ -45,8 +46,8 @@
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
-    "@kadena/cryptography-utils": "workspace:*",
     "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
     "cross-spawn": "~7.0.3",
     "dotenv": "~16.0.3",
     "ink": "^4.1.0",
