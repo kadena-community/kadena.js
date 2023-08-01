@@ -1,15 +1,15 @@
 import { ICoin } from '../../composePactCommand/test/coin-contract';
 import { IExecPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
-import { commandBuilder } from '../commandBuilder';
+import { createTransactionBuilder } from '../createTransactionBuilder';
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
 const coin: ICoin = getModule('coin');
 
-describe('commandBuilder', () => {
+describe('createTransactionBuilder', () => {
   it('returns exec payload', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .getCommand();
@@ -24,7 +24,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns cont payload', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .continuation({
         pactId: '1',
@@ -40,7 +40,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns command with signers', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addSigner('bob_pubkey', (withCapability) => [
@@ -71,7 +71,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns command with meta', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setMeta({ chainId: '0' })
@@ -94,7 +94,7 @@ describe('commandBuilder', () => {
     });
   });
   it('returns command with custom nonce', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce('test-nonce')
@@ -110,7 +110,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns command with custom nonce by using nonce generator', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce((cmd) => {
@@ -128,7 +128,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns command with network', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNetworkId('mainnet01')
@@ -145,7 +145,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns unsigned transaction', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const unSignedTr = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addSigner('bob_bup_key')
@@ -160,7 +160,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns exec command with data', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addData('test', 'value')
@@ -179,7 +179,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns cont command with data', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .continuation({ pactId: '1' })
       .addData('test', 'value')
@@ -198,7 +198,7 @@ describe('commandBuilder', () => {
   });
 
   it('returns command with keyset', () => {
-    const builder = commandBuilder();
+    const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .addKeyset('ks', 'keys-all', 'pub1', 'pub2')
@@ -222,7 +222,7 @@ describe('commandBuilder', () => {
   });
 
   it('accepts initials and merges them to the final result', () => {
-    const builder = commandBuilder({
+    const builder = createTransactionBuilder({
       networkId: 'my-network',
       meta: {
         chainId: '0',

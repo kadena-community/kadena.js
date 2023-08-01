@@ -21,11 +21,11 @@ import { SessionTypes } from '@walletconnect/types';
 
 export { ChainId }
 
-// @alpha
-export const commandBuilder: (initial?: Partial<IPactCommand>) => ICommandBuilder;
-
 // @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
+
+// @alpha
+export const createTransactionBuilder: (initial?: Partial<IPactCommand>) => ICommandBuilder;
 
 // Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts

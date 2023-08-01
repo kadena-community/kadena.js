@@ -311,7 +311,7 @@ const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
  *
  * @alpha
  */
-export const commandBuilder = (
+export const createTransactionBuilder = (
   initial?: Partial<IPactCommand>,
 ): ICommandBuilder => {
   return {

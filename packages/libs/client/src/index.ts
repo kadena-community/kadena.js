@@ -4,7 +4,7 @@ export * from './signing-api/v1/sign';
 export * from './utils/createTransaction';
 export * from './utils/pact-helpers';
 export * from './client';
-export * from './commandBuilder/commandBuilder';
+export * from './createTransactionBuilder/createTransactionBuilder';
 
 export type { IPact, IPactModules } from './pact';
 export type { WithCapability } from './interfaces/type-utilities';
