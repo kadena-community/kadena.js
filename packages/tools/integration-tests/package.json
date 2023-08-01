@@ -25,9 +25,8 @@
     "build": "heft build --clean",
     "format": "npm run format:pkg && npm run format:src",
     "format:ci": "prettier config src --check",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",
     "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
     "test": "",
@@ -50,7 +49,6 @@
     "@types/node": "^16.0.0",
     "concurrently": "^7.2.2",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "sort-package-json": "~2.5.1"
+    "prettier": "~3.0.0"
   }
 }

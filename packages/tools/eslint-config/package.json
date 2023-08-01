@@ -11,7 +11,6 @@
     "build": "",
     "format": "npm run format:pkg && npm run format:src",
     "format:ci": "prettier mixins profile --check",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier mixins profile --write",
     "lint": "eslint ./mixins ./profile --ext .js,.ts --fix",
     "test": ""
@@ -32,10 +31,10 @@
     "eslint-plugin-react": "~7.31.11",
     "eslint-plugin-simple-import-sort": "~7.0.0",
     "prettier": "~3.0.0",
-    "prettier-eslint": "~12.0.0"
+    "prettier-eslint": "~12.0.0",
+    "eslint-plugin-json-files": "~3.0.0"
   },
   "devDependencies": {
-    "sort-package-json": "~2.5.1",
     "typescript": "5.1.6"
   }
 }

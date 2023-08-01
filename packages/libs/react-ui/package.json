@@ -2,6 +2,7 @@
   "name": "@kadena/react-ui",
   "version": "0.0.1",
   "description": "A react component library built on Kadena's Design System",
+  "private": true,
   "license": "ISC",
   "author": "",
   "exports": {
@@ -31,9 +32,8 @@
     "format": "npm run format:md && npm run format:pkg && npm run format:src",
     "format:ci": "prettier src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier src --write",
-    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "jest --silent"
   },
@@ -97,7 +97,6 @@
     "prettier": "~3.0.0",
     "prop-types": "^15.8.1",
     "rimraf": "~5.0.1",
-    "sort-package-json": "~2.5.1",
     "storybook": "^7.1.0",
     "storybook-dark-mode": "^3.0.0",
     "ts-jest": "~29.1.0",

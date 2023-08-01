@@ -1,6 +1,11 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 export const inputStatusColor = createVar();
 
@@ -63,12 +68,32 @@ export const inputClass = style([
 
 export const leadingTextClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
-    display: 'flex',
+    overflow: 'hidden',
+    display: 'inline-block',
+    minWidth: 0,
     alignItems: 'center',
     paddingX: '$4',
   }),
+  {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 ]);
+
+export const leadingTextWrapperClass = style([
+  sprinkles({
+    backgroundColor: '$neutral2',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
+]);
+
+export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
+  return {
+    width: size,
+  };
+});
 
 export const outlinedClass = style([
   sprinkles({

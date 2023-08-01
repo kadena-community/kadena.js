@@ -15,27 +15,16 @@ export const gridItemMainStyle = style([
   sprinkles({
     paddingTop: '$20',
     paddingBottom: '$16',
+    paddingRight: '$6',
   }),
   {
     paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
-    paddingRight: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     selectors: {
       '&.isMenuOpen': {
         paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$6})`,
       },
     },
   },
-]);
-
-export const gridItemCollapsedSidebarStyle = style([
-  sprinkles({
-    position: 'fixed',
-    right: 0,
-    top: '$16',
-    bottom: '$10',
-    backgroundColor: '$gray90',
-    width: '$16',
-  }),
 ]);
 
 export const footerStyle = style([

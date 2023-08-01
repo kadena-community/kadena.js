@@ -1,10 +1,5 @@
 import { FooterWrapper, Header, Sidebar } from './partials';
-import {
-  footerStyle,
-  gridItemCollapsedSidebarStyle,
-  gridItemMainStyle,
-  headerStyle,
-} from './styles.css';
+import { footerStyle, gridItemMainStyle, headerStyle } from './styles.css';
 
 import { WalletConnectButton } from '@/components/Global';
 import routes from '@/constants/routes';
@@ -51,7 +46,6 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
       <main className={classNames(gridItemMainStyle, { isMenuOpen })}>
         {children}
       </main>
-      <aside className={gridItemCollapsedSidebarStyle}></aside>
       <div className={footerStyle}>
         <FooterWrapper />
       </div>

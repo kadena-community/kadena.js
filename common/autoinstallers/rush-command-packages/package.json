@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "prettier": "^2.7.1",
-    "prettier-quick": "^0.0.5",
-    "sort-package-json": "^1.57.0"
+    "prettier-quick": "^0.0.5"
   }
 }

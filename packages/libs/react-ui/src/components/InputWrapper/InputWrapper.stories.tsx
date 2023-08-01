@@ -4,6 +4,7 @@ import { SystemIcon } from '@components/Icon';
 import { IInputProps, Input } from '@components/Input';
 import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
+import { vars } from '@theme/vars.css';
 import React from 'react';
 
 const meta: Meta<
@@ -20,6 +21,15 @@ const meta: Meta<
       control: {
         type: 'text',
       },
+    },
+    leadingTextWidth: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        undefined,
+        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
+      ],
     },
     tag: {
       control: {
@@ -75,15 +85,25 @@ export const Group: Story = {
     helperText: 'This is helper text',
     info: '(optional)',
     label: 'Label',
+    leadingTextWidth: undefined,
     disabled: false,
     status: undefined,
   },
-  render: ({ disabled, status, tag, helperText, info, label }) => {
+  render: ({
+    disabled,
+    status,
+    tag,
+    helperText,
+    info,
+    label,
+    leadingTextWidth,
+  }) => {
     return (
       <InputWrapper
         tag={tag}
         info={info}
         label={label}
+        leadingTextWidth={leadingTextWidth}
         status={status}
         disabled={disabled}
         helperText={helperText}
@@ -99,7 +119,7 @@ export const Group: Story = {
           id="inputStory2"
           placeholder="Input 2"
           disabled={disabled}
-          leadingText="Leading"
+          leadingText="Leading 2"
         />
       </InputWrapper>
     );

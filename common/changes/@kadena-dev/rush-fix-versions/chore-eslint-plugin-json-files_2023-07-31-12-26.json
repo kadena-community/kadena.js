@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/rush-fix-versions",
+      "comment": "Move sort-package-json to eslint plugin",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena-dev/rush-fix-versions"
+}
