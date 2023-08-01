@@ -1,7 +1,7 @@
 import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
 import { mostPopularWrapper } from './style.css';
-import { StyledHeader, StyledStack, SubHeader, Wrapper } from './styles';
+import { StyledHeader, SubHeader, Wrapper } from './styles';
 
 import { MostPopular } from '@/components/MostPopular';
 import { IMostPopularPage } from '@/types/MostPopularData';
