@@ -1,6 +1,7 @@
 import { Link } from '@components/Link';
 import {
   containerClass,
+  childrenClass,
   linkClass,
   logoClass,
   navClass,
@@ -15,19 +16,23 @@ export type INavItems = INavItem[];
 
 export interface INavHeaderProps {
   brand?: LogoVariant;
+  children?: React.ReactNode;
   items?: INavItems;
 }
 
 export const NavHeader: FC<INavHeaderProps> = ({
   brand = logoVariants[0],
+  children,
   items,
 }) => {
   return (
     <header className={containerClass} data-testid="kda-navheader">
       <div className={logoClass}>
-        <Link.Root href="/" target="_self">
-          <Logo variant={brand} />
-        </Link.Root>
+        {logoVariants.includes(brand) && (
+          <Link.Root href="/" target="_self">
+            <Logo variant={brand} />
+          </Link.Root>
+        )}
       </div>
       <nav className={navClass}>
         {items &&
@@ -44,6 +49,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
             );
           })}
       </nav>
+      <div className={childrenClass}>{children}</div>
     </header>
   );
 };
