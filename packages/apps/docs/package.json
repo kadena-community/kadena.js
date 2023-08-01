@@ -63,7 +63,7 @@
     "@babel/preset-typescript": "^7.21.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@kadena/pactjs-cli": "0.1.5",
+    "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@percy/cli": "~1.24.0",
     "@percy/cypress": "~3.1.2",

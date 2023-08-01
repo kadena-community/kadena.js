@@ -439,11 +439,7 @@
       "packageName": "@kadena/tools",
       "projectFolder": "packages/apps/tools",
       "reviewCategory": "prototypes",
-      "decoupledLocalDependencies": [
-        "@kadena/client",
-        "@kadena/pactjs-cli",
-        "@kadena/chainweb-node-client"
-      ],
+      "decoupledLocalDependencies": ["@kadena/chainweb-node-client"],
       "skipRushCheck": false,
       "shouldPublish": false
     },
