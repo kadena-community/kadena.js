@@ -21,6 +21,9 @@ import { SessionTypes } from '@walletconnect/types';
 
 export { ChainId }
 
+// @alpha
+export const commandBuilder: (initial?: Partial<IPactCommand>) => ICommandBuilder;
+
 // @alpha (undocumented)
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
@@ -35,10 +38,41 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 // @alpha (undocumented)
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
 
+// Warning: (ae-forgotten-export) The symbol "UnionToIntersection" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IGeneralCapability" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-missing-underscore) The name "ExtractType" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export type ExtractType<TCommand> = TCommand extends {
+    payload: infer TPayload;
+} ? TPayload extends {
+    funs: infer TFunctions;
+} ? TFunctions extends Array<infer TFunction> ? UnionToIntersection<TFunction> extends {
+    capability: infer TCapability;
+} ? TCapability : IGeneralCapability : IGeneralCapability : IGeneralCapability : IGeneralCapability;
+
 // Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
 export const getClient: IGetClient;
+
+// @alpha (undocumented)
+export interface IBuilder<TCommand> {
+    // Warning: (ae-forgotten-export) The symbol "ValidDataTypes" needs to be exported by the entry point index.d.ts
+    addData: (key: string, data: ValidDataTypes) => IBuilder<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "IAddKeyset" needs to be exported by the entry point index.d.ts
+    addKeyset: IAddKeyset<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
+    addSigner: IAddSigner<TCommand>;
+    createTransaction: () => IUnsignedCommand;
+    getCommand: () => Partial<IPactCommand>;
+    setMeta: (meta: {
+        chainId: IPactCommand['meta']['chainId'];
+    } & Partial<IPactCommand['meta']>) => IBuilder<TCommand>;
+    setNetworkId: (id: string) => IBuilder<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "ISetNonce" needs to be exported by the entry point index.d.ts
+    setNonce: ISetNonce<TCommand>;
+}
 
 export { ICap }
 
@@ -87,7 +121,29 @@ export interface IChainweaverSignBody {
     ttl: number;
 }
 
+// Warning: (ae-forgotten-export) The symbol "IClientBasics" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export interface IClient extends IClientBasics {
+    dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+    // @deprecated (undocumented)
+    getPoll: (requestKeys?: string[] | string, options?: INetworkOptions) => Promise<IPollResponse>;
+    preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
+    runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
+    // @deprecated (undocumented)
+    send: ISubmit;
+    signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+}
+
 export { ICommand }
+
+// @alpha (undocumented)
+export interface ICommandBuilder {
+    // Warning: (ae-forgotten-export) The symbol "ICont" needs to be exported by the entry point index.d.ts
+    continuation: ICont;
+    // Warning: (ae-forgotten-export) The symbol "IExec" needs to be exported by the entry point index.d.ts
+    execution: IExec;
+}
 
 export { ICommandResult }
 
@@ -122,8 +178,6 @@ export interface INetworkOptions {
 
 // @alpha (undocumented)
 export interface IPact {
-    // Warning: (ae-forgotten-export) The symbol "ICommandBuilder" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     builder: ICommandBuilder;
     // (undocumented)

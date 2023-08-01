@@ -220,4 +220,34 @@ describe('commandBuilder', () => {
       signers: [],
     });
   });
+
+  it('accepts initials and merges them to the final result', () => {
+    const builder = commandBuilder({
+      networkId: 'my-network',
+      meta: {
+        chainId: '0',
+        sender: 'sender',
+        gasLimit: 1,
+        gasPrice: 1,
+        ttl: 1,
+        creationTime: 1,
+      },
+    });
+    const command = builder.execution('(+ 1 1)').getCommand();
+
+    expect(command).toEqual({
+      meta: {
+        chainId: '0',
+        creationTime: 1,
+        gasLimit: 1,
+        gasPrice: 1,
+        sender: 'sender',
+        ttl: 1,
+      },
+      networkId: 'my-network',
+      nonce: 'kjs:nonce:1690416000000',
+      payload: { exec: { code: '(+ 1 1)', data: {} } },
+      signers: [],
+    });
+  });
 });
