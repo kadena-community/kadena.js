@@ -1,6 +1,6 @@
 import { SystemIcon } from '..';
 
-import { footerVariants, iconButtonClass, iconTextClass } from './Footer.css';
+import { iconButtonClass, iconTextClass } from './Footer.css';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';
@@ -10,19 +10,17 @@ export interface IFooterIconButtonProps
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   onClick?: React.MouseEventHandler;
   text?: string;
-  variant?: keyof typeof footerVariants;
 }
 
 export const FooterIconButton: FC<IFooterIconButtonProps> = ({
   icon,
   onClick,
   text,
-  variant = 'dynamic',
 }) => {
   const Icon = icon;
 
-  const buttonClassList = classNames(iconButtonClass, footerVariants[variant]);
-  const textClassList = classNames(iconTextClass, footerVariants[variant]);
+  const buttonClassList = classNames(iconButtonClass);
+  const textClassList = classNames(iconTextClass);
 
   return (
     <button
