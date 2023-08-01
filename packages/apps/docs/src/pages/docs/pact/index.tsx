@@ -37,8 +37,8 @@ const Home: FC<IProps> = ({ popularPages = [] }) => {
               <Stack direction="column" spacing="$sm">
                 <Heading as="h6">Getting Started is Simple</Heading>
                 <Text as="p">
-                  Learn Kadena&apos;s core concepts & tools for development in 15
-                  minutes.
+                  Learn Kadena&apos;s core concepts & tools for development in
+                  15 minutes.
                 </Text>
                 <Stack direction="row" spacing="$sm">
                   <Button
@@ -138,7 +138,7 @@ export const getStaticProps: GetStaticProps = async () => {
         title: 'Pact',
         menu: 'Pact',
         subTitle: 'The safest, most user-friendly language for smart contracts',
-        label: 'Pact',
+        label: 'Introduction',
         order: 0,
         description: 'Kadena makes blockchain work for everyone.',
         layout: 'landing',
