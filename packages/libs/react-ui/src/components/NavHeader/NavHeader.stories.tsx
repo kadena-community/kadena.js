@@ -1,7 +1,7 @@
 import type { INavHeaderProps, INavItemTarget } from './NavHeader';
 import { NavHeader } from './';
 
-import type { LogoVariant } from '@components/Logo';
+import { logoVariants } from '@components/Logo';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -37,10 +37,13 @@ const meta: Meta<StoryProps> = {
   },
   argTypes: {
     brand: {
-      options: ['default', 'DevTools', 'Docs'] as LogoVariant[],
+      options: logoVariants,
       control: {
         type: 'select',
       },
+      table: {
+        defaultValue: { summary: logoVariants[0] },
+      }
     },
     linksCount: {
       control: { type: 'range', min: 1, max: items.length, step: 1 },
@@ -52,7 +55,7 @@ type Story = StoryObj<StoryProps>;
 
 export const Dynamic: Story = {
   name: 'NavHeader',
-  args: { brand: 'default', linksCount: items.length },
+  args: { brand: logoVariants[0], linksCount: items.length },
   render: ({ brand, linksCount } ) => {
     const navItems = items.slice(0, linksCount);
     return (
