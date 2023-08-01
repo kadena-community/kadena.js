@@ -283,6 +283,16 @@ const imports = [
       hideEditLink: true,
     },
   },
+
+  {
+    file: 'libs/client-examples/README.md',
+    destination: 'kadena/client-examples',
+    title: 'Client examples',
+    options: {
+      RootOrder: 8,
+    },
+  },
+
   /** /libs/cryptography-utils */
   {
     file: 'libs/cryptography-utils/README.md',
