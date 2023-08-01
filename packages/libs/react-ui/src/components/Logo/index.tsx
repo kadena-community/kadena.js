@@ -4,7 +4,7 @@ import { KadenaDocsLogo } from './variants/KadenaDocs';
 
 import React, { FC, SVGProps } from 'react';
 
-type LogoVariant = 'default' | 'DevTools' | 'Docs';
+export type LogoVariant = 'default' | 'DevTools' | 'Docs';
 
 const renderSwitch = (
   logo: LogoVariant = 'default',
