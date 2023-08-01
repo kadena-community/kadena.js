@@ -189,11 +189,11 @@ export interface IPactCommand {
     // (undocumented)
     meta: {
         chainId: ChainId;
-        sender: string;
-        gasLimit: number;
-        gasPrice: number;
-        ttl: number;
-        creationTime: number;
+        sender?: string;
+        gasLimit?: number;
+        gasPrice?: number;
+        ttl?: number;
+        creationTime?: number;
     };
     // (undocumented)
     networkId: string;
