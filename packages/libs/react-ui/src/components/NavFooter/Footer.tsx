@@ -12,19 +12,14 @@ export const FooterContainer: FC<IFooterProps> = ({
   children,
   darkMode = false,
 }) => {
-
-  const footerContent = (    
+  const footerContent = (
     <footer className={containerClass} data-testid="kda-footer">
       {children}
     </footer>
-  )
+  );
 
   if (darkMode) {
-    return (
-      <div className={darkThemeClass}>
-        {footerContent}
-      </div>
-    )
+    return <div className={darkThemeClass}>{footerContent}</div>;
   }
 
   return footerContent;

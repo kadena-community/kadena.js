@@ -1,4 +1,4 @@
-import {  linkBoxClass, linkClass } from './Footer.css';
+import { linkBoxClass, linkClass } from './Footer.css';
 
 import React, { FC } from 'react';
 
@@ -7,9 +7,7 @@ export interface IFooterLinkProps {
   children: React.ReactNode;
 }
 
-export const FooterLink: FC<IFooterLinkProps> = ({
-  children,
-}) => {
+export const FooterLink: FC<IFooterLinkProps> = ({ children }) => {
   const colorStyles = {
     color: 'inherit',
     textDecorationColor: 'inherit',
@@ -22,7 +20,6 @@ export const FooterLink: FC<IFooterLinkProps> = ({
       style: colorStyles,
     });
   });
-
 
   return (
     <div className={linkBoxClass} data-testid="kda-footer-link-item">
