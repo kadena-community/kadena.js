@@ -114,7 +114,7 @@ const ExistingAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID],
+    [chainID, t],
   );
 
   const {
