@@ -1,6 +1,5 @@
 import {  linkBoxClass, linkClass } from './Footer.css';
 
-import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export type Target = '_self' | '_blank';
@@ -24,10 +23,9 @@ export const FooterLink: FC<IFooterLinkProps> = ({
     });
   });
 
-  const classList = classNames(linkBoxClass);
 
   return (
-    <div className={classList} data-testid="kda-footer-link-item">
+    <div className={linkBoxClass} data-testid="kda-footer-link-item">
       <span className={linkClass}>{clones}</span>
     </div>
   );

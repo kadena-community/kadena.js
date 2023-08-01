@@ -2,7 +2,6 @@ import { SystemIcon } from '..';
 
 import { iconButtonClass, iconTextClass } from './Footer.css';
 
-import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface IFooterIconButtonProps
@@ -19,17 +18,14 @@ export const FooterIconButton: FC<IFooterIconButtonProps> = ({
 }) => {
   const Icon = icon;
 
-  const buttonClassList = classNames(iconButtonClass);
-  const textClassList = classNames(iconTextClass);
-
   return (
     <button
-      className={buttonClassList}
+      className={iconButtonClass}
       onClick={onClick}
       data-testid="kda-footer-icon-item"
     >
       {text !== undefined ? (
-        <span className={textClassList}>{text}</span>
+        <span className={iconTextClass}>{text}</span>
       ) : null}
       <Icon size="sm" color="inherit" />
     </button>
