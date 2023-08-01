@@ -5,35 +5,35 @@ import React, { type FC } from 'react';
 import { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
-interface IAccountNameFieldProps {
+interface IAccountNameFieldProps
+  extends Partial<Omit<ITextFieldProps, 'inputProps'>> {
+  inputProps: Partial<ITextFieldProps['inputProps']>;
   error?: FieldError;
-  label?: ITextFieldProps['label'];
-  inputProps: Omit<
-    ITextFieldProps['inputProps'],
-    'id' | 'placeholder' | 'leftIcon'
-  >;
 }
 
+// @see; https://github.com/kadena-io/chainweb-node/blob/master/pact/coin-contract/v5/coin-v5.pact#L14
 export const NAME_VALIDATION = z.string().min(3).max(256);
 
 const AccountNameField: FC<IAccountNameFieldProps> = ({
   error,
   label,
   inputProps,
+  ...rest
 }) => {
   const { t } = useTranslation('common');
 
   return (
     <TextField
-      label={label ?? t('Account')}
+      label={t('Account')}
+      status={error ? 'negative' : undefined}
+      helperText={error?.message ?? ''}
+      {...rest}
       inputProps={{
-        ...inputProps,
         id: 'account-name-input',
         placeholder: t('Account'),
         leftIcon: SystemIcon.KIcon,
+        ...inputProps,
       }}
-      status={error ? 'negative' : undefined}
-      helperText={error?.message ?? ''}
     />
   );
 };
