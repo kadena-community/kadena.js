@@ -1,5 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { StringContractDefinition } from '@kadena/pactjs-generator';
+import { contractParser } from '@kadena/pactjs-generator';
 
 import { kadenaConstants, Network } from '@/constants/kadena';
 import { convertIntToChainId } from '@/services/utils/utils';
@@ -19,12 +19,8 @@ import React, { FC, useEffect, useState } from 'react';
 const ModulePage: FC = () => {
   const { t } = useTranslation('common');
   const [pactCode, setPactCode] = useState('');
-  const [functions, setFunctions] = useState<
-    Record<string, { method: string }> | undefined
-  >({});
-  const [capabilities, setCapabilities] = useState<
-    Record<string, { defcap: string }> | undefined
-  >({});
+  const [functions, setFunctions] = useState<Array<{ name: string }>>([]);
+  const [capabilities, setCapabilities] = useState<Array<{ name: string }>>([]);
   const [interfaces, setInterfaces] = useState<string[]>([]);
   const router = useRouter();
   const { network, chain, module } = router.query;
@@ -70,13 +66,16 @@ const ModulePage: FC = () => {
       const namespace =
         moduleNameParts.length > 1 ? moduleNameParts[0] : undefined;
 
-      const pactModule = new StringContractDefinition({
-        contract: pactCode,
-        namespace,
-      });
+      const [pactModules] = contractParser(pactCode, namespace);
+      const pactModule = pactModules.find(
+        ({ name, namespace }) =>
+          (namespace ? `${namespace}.${name}` : name) === moduleName,
+      );
+      if (pactModule) {
+        setFunctions(pactModule.functions ?? []);
+        setCapabilities(pactModule.capabilities ?? []);
+      }
 
-      setCapabilities(pactModule.getCapabilities(moduleName));
-      setFunctions(pactModule.getMethods(moduleName));
       setInterfaces(resultSuccess.data.interfaces || []);
     };
 
@@ -102,16 +101,14 @@ const ModulePage: FC = () => {
           <h3>{t('Details')}</h3>
           <Details>
             <h4>{t('Functions')}</h4>
-            {!Object.keys(functions || {})?.length &&
-              t('No functions in this module.')}
-            {Object.keys(functions || {})?.map((key) => (
-              <StyledListItem key={key}>{key}</StyledListItem>
+            {!functions.length && t('No functions in this module.')}
+            {functions.map(({ name }) => (
+              <StyledListItem key={name}>{name}</StyledListItem>
             ))}
             <h4>{t('Capabilities')}</h4>
-            {!Object.keys(capabilities || {})?.length &&
-              t('No capabilities in this module.')}
-            {Object.keys(capabilities || {})?.map((key) => (
-              <StyledListItem key={key}>{key}</StyledListItem>
+            {!capabilities.length && t('No capabilities in this module.')}
+            {capabilities.map(({ name }) => (
+              <StyledListItem key={name}>{name}</StyledListItem>
             ))}
             <h4>{t('Constants')}</h4>
             <h4>{t('Pacts')}</h4>
