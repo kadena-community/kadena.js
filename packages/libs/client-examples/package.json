@@ -17,9 +17,9 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
-    "pactjs:generate:contract:file": "node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --file src/example-contract/coin.contract.pact && node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --file src/example-contract/marmalade.module.pact",
-    "pactjs:generate:contract:chain": "node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
-    "pactjs:generate:contract:crowdfund": "node ./node_modules/@kadena/pactjs-cli/lib/index.js contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
+    "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
+    "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
+    "pactjs:generate:contract:crowdfund": "pactjs contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": ""
   },
   "dependencies": {
