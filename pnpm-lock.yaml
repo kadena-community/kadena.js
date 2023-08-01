@@ -127,8 +127,8 @@ importers:
         specifier: workspace:*
         version: link:../../tools/heft-rig
       '@kadena/pactjs-cli':
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
@@ -284,8 +284,8 @@ importers:
         specifier: workspace:*
         version: link:../../tools/heft-rig
       '@kadena/pactjs-cli':
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.1.6)
@@ -366,8 +366,8 @@ importers:
         specifier: workspace:*
         version: link:../../tools/remark-plugins
       '@kadena/pactjs-cli':
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.1.6)
@@ -466,17 +466,20 @@ importers:
         specifier: ~3.1.1
         version: 3.1.1(react-hook-form@7.45.0)
       '@kadena/chainweb-node-client':
-        specifier: 0.4.1
-        version: 0.4.1(encoding@0.1.13)
+        specifier: 0.4.2
+        version: link:../../libs/chainweb-node-client
       '@kadena/client':
-        specifier: 0.6.1
-        version: 0.6.1
+        specifier: workspace:*
+        version: link:../../libs/client
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../libs/pactjs
+      '@kadena/pactjs-generator':
+        specifier: workspace:*
+        version: link:../../libs/pactjs-generator
       '@kadena/react-components':
         specifier: workspace:*
         version: link:../../libs/react-components
@@ -545,8 +548,8 @@ importers:
         specifier: workspace:*
         version: link:../../tools/remark-plugins
       '@kadena/pactjs-cli':
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
@@ -1505,8 +1508,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/chainweb-node-client
       '@kadena/client':
-        specifier: 0.6.1
-        version: 0.6.1
+        specifier: workspace:*
+        version: link:../../libs/client
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
@@ -1521,8 +1524,8 @@ importers:
         specifier: workspace:*
         version: link:../remark-plugins
       '@kadena/pactjs-cli':
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: workspace:*
+        version: link:../pactjs-cli
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
@@ -1544,70 +1547,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      ts-node:
-        specifier: ~10.8.2
-        version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
-
-  packages/tools/create-kadena-app:
-    dependencies:
-      commander:
-        specifier: ^9.3.0
-        version: 9.3.0
-      cross-fetch:
-        specifier: ~3.1.5
-        version: 3.1.5(encoding@0.1.13)
-      cross-spawn:
-        specifier: ~7.0.3
-        version: 7.0.3
-      yaml:
-        specifier: ~2.1.1
-        version: 2.1.1
-    devDependencies:
-      '@kadena-dev/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@kadena-dev/heft-rig':
-        specifier: workspace:*
-        version: link:../heft-rig
-      '@kadena-dev/markdown':
-        specifier: workspace:*
-        version: link:../remark-plugins
-      '@rushstack/eslint-config':
-        specifier: ~3.3.0
-        version: 3.3.0(eslint@8.45.0)(typescript@5.1.6)
-      '@rushstack/heft':
-        specifier: ~0.50.6
-        version: 0.50.6(@types/node@16.0.0)
-      '@types/cross-spawn':
-        specifier: ~6.0.2
-        version: 6.0.2
-      '@types/debug':
-        specifier: ~4.1.7
-        version: 4.1.7
-      '@types/heft-jest':
-        specifier: ~1.0.3
-        version: 1.0.3
-      '@types/mkdirp':
-        specifier: ~1.0.2
-        version: 1.0.2
-      '@types/node':
-        specifier: ^16.0.0
-        version: 16.0.0
-      '@types/rimraf':
-        specifier: ~3.0.2
-        version: 3.0.2
-      cross-env:
-        specifier: ~7.0.3
-        version: 7.0.3
-      eslint:
-        specifier: ^8.45.0
-        version: 8.45.0
-      prettier:
-        specifier: ~3.0.0
-        version: 3.0.0
-      rimraf:
-        specifier: ~5.0.1
-        version: 5.0.1
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@16.0.0)(typescript@5.1.6)
@@ -2156,7 +2095,7 @@ packages:
     resolution: {integrity: sha512-xhlTqH0m31mnsG0tIP4ETgfSB6gXDaYYsUWTrlUV93fFQPI9dd8hE0Ot6MHLCtqgB32hwJAC3YZMWlXZw7AleA==}
     engines: {node: '>=14'}
     dependencies:
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -5811,91 +5750,10 @@ packages:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
 
-  /@kadena/chainweb-node-client@0.4.1(encoding@0.1.13):
-    resolution: {integrity: sha512-AgAEEQy+5ZLMXrP2rI8xZuxbEUNWyk7vh0q4Ti909F2HwHPP1mAp56nZZMlNGKUm6A16BasXmsND1Pow4H95Mw==}
-    requiresBuild: true
-    dependencies:
-      '@kadena/cryptography-utils': 0.3.5
-      '@kadena/pactjs': 0.2.11
-      '@kadena/types': 0.3.5
-      '@types/isomorphic-fetch': 0.0.36
-      cross-fetch: 3.1.5(encoding@0.1.13)
-      node-fetch: 2.6.12(encoding@0.1.13)
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  /@kadena/client@0.6.1:
-    resolution: {integrity: sha512-2F3kyzrHItq/nBYGWRqnGWpiATDT6+xoBxiXrFqiq8ZLDhLMxvc0DHmB5INIDRHfYjbts/tKgFPfuQOk7Si2Og==}
-    dependencies:
-      '@kadena/chainweb-node-client': 0.4.1(encoding@0.1.13)
-      '@kadena/cryptography-utils': 0.3.5
-      '@kadena/pactjs': 0.2.11
-      '@kadena/types': 0.3.5
-      '@walletconnect/sign-client': 2.8.1
-      '@walletconnect/types': 2.8.1
-      cross-fetch: 3.1.5(encoding@0.1.13)
-      debug: 4.3.4(supports-color@5.5.0)
-      encoding: 0.1.13
-      yaml: 2.1.1
-    transitivePeerDependencies:
-      - '@react-native-async-storage/async-storage'
-      - bufferutil
-      - lokijs
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  /@kadena/cryptography-utils@0.3.5:
-    resolution: {integrity: sha512-z1dVWirsdrGBknmNXK3owsrVSxw65ooH7bWmYpn6UNiRpI6vzg1n+gj8fIUOQHcvLuq7dA57VfrGnNKWKW2pgQ==}
-    dependencies:
-      '@kadena/types': 0.3.5
-      blakejs: 1.2.1
-      buffer: 6.0.3
-      tweetnacl: 1.0.3
-    dev: false
-
   /@kadena/fonts@0.0.1:
     resolution: {integrity: sha512-epUOJbW96Yd827XQD2/6Ibow9qcevgPhVKsUhfzG9L26U4PLMMWZ0KXxIoFQ6DKpQa9xE4GK8DkPzn30pJb+3Q==}
     dependencies:
       lodash.kebabcase: 4.1.1
-    dev: false
-
-  /@kadena/pactjs-cli@0.1.5:
-    resolution: {integrity: sha512-mo1OJQGQ7gjNkQ3q0cU6r+RrZwQ3fTQaCrln079PWxiUOMoK5OUtbNYPHNt0hr6ZOqkmybNFEW7j/I8rPCHGaA==}
-    hasBin: true
-    dependencies:
-      '@kadena/pactjs-generator': 0.1.13
-      commander: 9.5.0
-      cross-fetch: 3.1.5(encoding@0.1.13)
-      debug: 4.3.4(supports-color@5.5.0)
-      mkdirp: 1.0.4
-      rimraf: 3.0.2
-      yaml: 2.1.1
-      zod: 3.18.0
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
-  /@kadena/pactjs-generator@0.1.13:
-    resolution: {integrity: sha512-VOliWyJ1X/2hav/FktOOi6HeoVY+P5DNs9+axWmu96Oce5Wdy7MX4Rlqz3Q9eJi/za36NRUNxtD9q1G7NJmB7g==}
-    dependencies:
-      memfs: 3.5.1
-      moo: 0.5.1
-      nearley: 2.20.1
-      yaml: 2.1.1
-    dev: true
-
-  /@kadena/pactjs@0.2.11:
-    resolution: {integrity: sha512-98ojO20l3ijp8rkCSokadm2NRMgigtduSB/5/QqRVa4WUMf5ROS01ocF6fzdp7GVUbBYaw1FEfslv6MXtz++IA==}
-    dependencies:
-      '@kadena/types': 0.3.5
-      bignumber.js: 9.0.2
-    dev: false
-
-  /@kadena/types@0.3.5:
-    resolution: {integrity: sha512-BuQo6ll3ARQqC7/V1BTnKLZp1UrKMtS0a7NbRX7HT+0XYYcteixMUUf/AiPBBEKsSmD+TDlWQvEE7eapPP7ykA==}
     dev: false
 
   /@leichtgewicht/ip-codec@2.0.4:
@@ -5920,7 +5778,7 @@ packages:
       detect-libc: 2.0.1
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -6275,7 +6133,7 @@ packages:
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       is-plain-object: 5.0.0
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       universal-user-agent: 6.0.0
     transitivePeerDependencies:
       - encoding
@@ -6887,7 +6745,7 @@ packages:
       js-yaml: 4.1.0
       lodash.isequal: 4.5.0
       minimatch: 5.1.6
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       pluralize: 8.0.0
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
@@ -8074,7 +7932,7 @@ packages:
       glob: 10.3.3
       handlebars: 4.7.7
       lazy-universal-dotenv: 4.0.0
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       picomatch: 2.3.1
       pkg-dir: 5.0.0
       pretty-hrtime: 1.0.3
@@ -9438,6 +9296,7 @@ packages:
 
   /@types/isomorphic-fetch@0.0.36:
     resolution: {integrity: sha512-ulw4d+vW1HKn4oErSmNN2HYEcHGq0N1C5exlrMM0CRqX1UUpFhGb5lwiom5j9KN3LBJJDLRmYIZz1ghm7FIzZw==}
+    dev: true
 
   /@types/istanbul-lib-coverage@2.0.4:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
@@ -10753,7 +10612,7 @@ packages:
       busboy: 1.6.0
       form-data-encoder: 1.9.0
       formdata-node: 4.4.1
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       undici: 5.22.1
       web-streams-polyfill: 3.2.1
     transitivePeerDependencies:
@@ -10768,7 +10627,7 @@ packages:
       busboy: 1.6.0
       form-data-encoder: 1.9.0
       formdata-node: 4.4.1
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       undici: 5.22.1
       web-streams-polyfill: 3.2.1
     transitivePeerDependencies:
@@ -12969,14 +12828,6 @@ packages:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
 
-  /cross-env@7.0.3:
-    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
-    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
-    hasBin: true
-    dependencies:
-      cross-spawn: 7.0.3
-    dev: true
-
   /cross-fetch@3.1.5(encoding@0.1.13):
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
@@ -13737,6 +13588,7 @@ packages:
 
   /discontinuous-range@1.0.0:
     resolution: {integrity: sha512-c68LpLbO+7kP/b1Hr1qs8/BJ09F5khZGTxqxZuhzxpmwJKOgRFHJWIb9/KmqnqHhLdO55aOxFH/EGBvUQbL/RQ==}
+    dev: false
 
   /dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
@@ -15847,7 +15699,7 @@ packages:
       extend: 3.0.2
       https-proxy-agent: 5.0.1
       is-stream: 2.0.1
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -16157,7 +16009,7 @@ packages:
       fast-text-encoding: 1.0.6
       google-auth-library: 8.9.0
       is-stream-ended: 0.1.4
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       object-hash: 3.0.0
       proto3-json-serializer: 1.1.1
       protobufjs: 7.2.4
@@ -20219,6 +20071,7 @@ packages:
 
   /moo@0.5.1:
     resolution: {integrity: sha512-I1mnb5xn4fO80BH9BLcF0yLypy2UKl+Cb01Fu0hJRkJjlCRtxZMWkTdAtDd5ZqCOxtCkhmRwyI57vWT+1iZ67w==}
+    dev: false
 
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -20296,6 +20149,7 @@ packages:
       moo: 0.5.1
       railroad-diagrams: 1.0.0
       randexp: 0.4.6
+    dev: false
 
   /negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -20419,7 +20273,7 @@ packages:
     resolution: {integrity: sha512-5IAMBTl9p6PaAjYCnMv5FmqIF6GcZnawAVnzaCG0rX2aYZJ4CxEkZNtVPuTRug7fL7wyM5BQYTlAzcyMPi6oTQ==}
     dev: true
 
-  /node-fetch@2.6.12(encoding@0.1.13):
+  /node-fetch@2.6.12:
     resolution: {integrity: sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -20428,7 +20282,6 @@ packages:
       encoding:
         optional: true
     dependencies:
-      encoding: 0.1.13
       whatwg-url: 5.0.0
 
   /node-fetch@2.6.2:
@@ -22608,6 +22461,7 @@ packages:
 
   /railroad-diagrams@1.0.0:
     resolution: {integrity: sha512-cz93DjNeLY0idrCNOH6PviZGRN9GJhsdm9hpn1YCS879fj4W+x5IFJhhkRZcwVgMmFF7R82UA/7Oh+R8lLZg6A==}
+    dev: false
 
   /ramda@0.29.0:
     resolution: {integrity: sha512-BBea6L67bYLtdbOqfp8f58fPMqEwx0doL+pAi8TZyp2YWz8R9G8z9x75CZI8W+ftqhFHCpEX2cRnUUXK130iKA==}
@@ -22619,6 +22473,7 @@ packages:
     dependencies:
       discontinuous-range: 1.0.0
       ret: 0.1.15
+    dev: false
 
   /randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
@@ -23537,6 +23392,7 @@ packages:
   /ret@0.1.15:
     resolution: {integrity: sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==}
     engines: {node: '>=0.12'}
+    dev: false
 
   /retry-request@5.0.2:
     resolution: {integrity: sha512-wfI3pk7EE80lCIXprqh7ym48IHYdwmAAzESdbU8Q9l7pnRCk9LEhpbOTNKjz6FARLm/Bl5m+4F0ABxOkYUujSQ==}
@@ -24836,7 +24692,7 @@ packages:
     hasBin: true
     dependencies:
       call-me-maybe: 1.0.2
-      node-fetch: 2.6.12(encoding@0.1.13)
+      node-fetch: 2.6.12
       node-fetch-h2: 2.3.0
       node-readfiles: 0.2.0
       oas-kit-common: 1.0.8
@@ -27208,6 +27064,7 @@ packages:
 
   /zod@3.18.0:
     resolution: {integrity: sha512-gwTm8RfUCe8l9rDwN5r2A17DkAa8Ez4Yl4yXqc5VqeGaXaJahzYYXbTwvhroZi0SNBqTwh/bKm2N0mpCzuw4bA==}
+    dev: false
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}

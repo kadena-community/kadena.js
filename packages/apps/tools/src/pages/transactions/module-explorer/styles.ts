@@ -68,9 +68,4 @@ export const StyledListItem = styled('div', {
     borderBottomLeftRadius: '$1',
     borderBottomRightRadius: '$1',
   },
-  '&:hover': {
-    background: 'rgba(5, 5, 5, 0.5);',
-    fontWeight: '$medium',
-    textDecorationLine: 'underline',
-  },
 });

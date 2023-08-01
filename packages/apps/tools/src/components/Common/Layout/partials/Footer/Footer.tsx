@@ -1,4 +1,4 @@
-import { Footer, SystemIcon, useModal } from '@kadena/react-ui';
+import { NavFooter, SystemIcon, useModal } from '@kadena/react-ui';
 
 import { linkClass } from './styles.css';
 
@@ -46,11 +46,11 @@ const FooterWrapper: FC = () => {
   ];
 
   return (
-    <Footer.Root>
-      <Footer.Panel>
+    <NavFooter.Root variant="dark">
+      <NavFooter.Panel>
         {links.map((item, index) => {
           return (
-            <Footer.LinkItem key={index} variant="application">
+            <NavFooter.Link key={index} variant="dark">
               {item.href !== undefined ? (
                 <Link
                   className={linkClass}
@@ -63,28 +63,28 @@ const FooterWrapper: FC = () => {
               ) : (
                 <span>{item.title}</span>
               )}
-            </Footer.LinkItem>
+            </NavFooter.Link>
           );
         })}
-      </Footer.Panel>
-      <Footer.Panel>
-        <Footer.IconItem
-          variant="application"
+      </NavFooter.Panel>
+      <NavFooter.Panel>
+        <NavFooter.IconButton
+          variant="dark"
           icon={SystemIcon.ApplicationBrackets}
           onClick={() => openModal()}
         />
-        <Footer.IconItem
-          variant="application"
+        <NavFooter.IconButton
+          variant="dark"
           icon={SystemIcon.ThemeLightDark}
           onClick={() => toggleTheme()}
         />
-        <Footer.IconItem
-          variant="application"
+        <NavFooter.IconButton
+          variant="dark"
           icon={SystemIcon.ApplicationBrackets}
           text="English"
         />
-      </Footer.Panel>
-    </Footer.Root>
+      </NavFooter.Panel>
+    </NavFooter.Root>
   );
 };
 

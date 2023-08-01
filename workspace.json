@@ -120,12 +120,6 @@
     "path": "packages/tools/cookbook"
   },
   {
-    "name": "@kadena/create-kadena-app",
-    "version": "0.1.0",
-    "private": false,
-    "path": "packages/tools/create-kadena-app"
-  },
-  {
     "name": "@kadena-dev/eslint-config",
     "version": "0.0.10",
     "private": false,
