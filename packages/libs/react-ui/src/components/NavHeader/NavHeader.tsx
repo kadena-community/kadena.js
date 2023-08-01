@@ -5,7 +5,8 @@ import React, { FC } from 'react';
 import Logo, { LogoVariant, logoVariants } from '@components/Logo';
 
 export type INavItemTarget = '_self' | '_blank';
-export type INavItems = { title: string; href: string; target?: INavItemTarget }[];
+export type INavItem = { title: string; href: string; target?: INavItemTarget };
+export type INavItems = INavItem[];
 
 export interface INavHeaderProps {
   brand?: LogoVariant;
