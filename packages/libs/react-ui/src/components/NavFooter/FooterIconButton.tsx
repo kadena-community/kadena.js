@@ -1,24 +1,23 @@
-import { SystemIcon } from '../';
+import { SystemIcon } from '..';
 
 import { footerVariants, iconButtonClass, iconTextClass } from './Footer.css';
 
-import { FooterVariant } from '@components/Footer/Footer';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export interface IFooterIconItemProps
+export interface IFooterIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   onClick?: React.MouseEventHandler;
   text?: string;
-  variant?: FooterVariant;
+  variant?: keyof typeof footerVariants;
 }
 
-export const FooterIconItem: FC<IFooterIconItemProps> = ({
+export const FooterIconButton: FC<IFooterIconButtonProps> = ({
   icon,
   onClick,
   text,
-  variant = 'web',
+  variant = 'dynamic',
 }) => {
   const Icon = icon;
 

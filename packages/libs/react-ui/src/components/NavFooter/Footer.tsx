@@ -3,16 +3,14 @@ import { containerClass, footerVariants } from './Footer.css';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export type FooterVariant = 'web' | 'application';
-
 export interface IFooterProps {
-  variant?: FooterVariant;
+  variant?: keyof typeof footerVariants;
   children: React.ReactNode;
 }
 
 export const FooterContainer: FC<IFooterProps> = ({
   children,
-  variant = 'application',
+  variant = 'dynamic',
 }) => {
   const classList = classNames(containerClass, footerVariants[variant]);
   return (
