@@ -24,7 +24,7 @@ export const codeWrapper = style([
     {
         borderLeft: `4px solid ${vars.colors.$borderDefault}`,        
         borderRadius: `${vars.radii.$sm} 0px 0px ${vars.radii.$sm}`,
-
+        wordBreak: 'break-all',
         selectors: {
             '&[data-language]::before': {
                 display: 'flex',

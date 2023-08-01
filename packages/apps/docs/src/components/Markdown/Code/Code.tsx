@@ -1,4 +1,4 @@
-import { inlineCode } from './style.css';
+import { codeWrapper, inlineCode } from './style.css';
 import { StyledCode, StyledInlineCode } from './styles';
 
 import React, { FC, ReactNode } from 'react';
@@ -12,5 +12,6 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
     return <code className={inlineCode}>{children}</code>;
   }
 
-  return <StyledCode {...props}>{children}</StyledCode>;
+  return <div className={codeWrapper} {...props}>{children}</div>;
+  //return <StyledCode {...props}>{children}</StyledCode>;
 };
