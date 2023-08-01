@@ -43,10 +43,8 @@ Overview of the main packages maintained in this repository:
 | [@kadena/pactjs][47]                 | [![version][49]][48] |
 | [@kadena/pactjs-cli][50]             | [![version][52]][51] |
 | [@kadena/pactjs-generator][53]       | [![version][55]][54] |
-| [@kadena/react-components][56]       | [![version][58]][57] |
-| [@kadena/react-ui][59]               | [![version][61]][60] |
-| [@kadena/types][62]                  | [![version][64]][63] |
-| [kadena.js][65]                      | [![version][67]][66] |
+| [@kadena/types][56]                  | [![version][58]][57] |
+| [kadena.js][59]                      | [![version][61]][60] |
 
 <!--packageTable end -->
 
@@ -54,7 +52,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][69]][68]
+[![Contributors][63]][62]
 
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
@@ -128,20 +126,12 @@ Special thanks to the wonderful people who have contributed to this project:
 [54]: packages/libs/pactjs-generator/CHANGELOG.md
 [55]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
 [56]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-components
-[57]: packages/libs/react-components/CHANGELOG.md
-[58]: https://img.shields.io/npm/v/@kadena/react-components.svg
-[59]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-ui
-[60]: packages/libs/react-ui/CHANGELOG.md
-[61]: https://img.shields.io/npm/v/@kadena/react-ui.svg
-[62]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
-[63]: packages/libs/types/CHANGELOG.md
-[64]: https://img.shields.io/npm/v/@kadena/types.svg
-[65]:
+[57]: packages/libs/types/CHANGELOG.md
+[58]: https://img.shields.io/npm/v/@kadena/types.svg
+[59]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/kadena.js
-[66]: packages/libs/kadena.js/CHANGELOG.md
-[67]: https://img.shields.io/npm/v/kadena.js.svg
-[68]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[69]: https://contrib.rocks/image?repo=kadena-community/kadena.js
+[60]: packages/libs/kadena.js/CHANGELOG.md
+[61]: https://img.shields.io/npm/v/kadena.js.svg
+[62]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[63]: https://contrib.rocks/image?repo=kadena-community/kadena.js
