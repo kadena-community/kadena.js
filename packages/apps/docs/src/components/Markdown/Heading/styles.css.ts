@@ -28,7 +28,7 @@ export const header = style([
     display: 'flex',
     alignItems: 'center',
     fontSize: '$2xl',
-  })
+  }),
 ]);
 
 export const headerVariants = styleVariants({
