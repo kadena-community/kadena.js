@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "",
-    "format": "npm run format:pkg && npm run format:src",
+    "format": "npm run format:src",
     "format:ci": "prettier mixins profile --check",
     "format:src": "prettier mixins profile --write",
     "lint": "eslint ./mixins ./profile --ext .js,.ts --fix",

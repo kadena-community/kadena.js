@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier profiles --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier profiles --write",

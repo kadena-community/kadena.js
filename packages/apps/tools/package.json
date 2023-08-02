@@ -6,7 +6,7 @@
     "build": "npm run generate:icons && npm run generate:contracts && next build",
     "dev": "npm run generate:icons && next dev",
     "eject": "react-scripts eject",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier locales src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier locales src --write",
