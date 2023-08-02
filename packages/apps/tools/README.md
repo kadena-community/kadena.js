@@ -7,10 +7,10 @@ securely and efficiently using smart contracts on the Kadena blockchain.
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
+- [Table of Contents][1]
+- [Installation][2]
+- [Usage][3]
+- [License][4]
 
 ## Installation
 
