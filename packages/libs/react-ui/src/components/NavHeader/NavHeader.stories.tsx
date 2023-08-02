@@ -20,6 +20,14 @@ const navItems: INavItems = [
     title: 'Balance',
     href: '#balance',
   },
+  {
+    title: 'Learn Pact',
+    href: '#pact',
+  },
+  {
+    title: 'Marmalade',
+    href: '#marmalade',
+  },
 ];
 
 type StoryProps = {
@@ -37,7 +45,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'Note: maximum navigation items is currently limited.\n\nPending design update to support more items.',
+          'Note: maximum navigation items is currently limited (not technically enforced).\n\nPending design update to support more items.',
       },
     },
   },
@@ -67,7 +75,7 @@ type Story = StoryObj<StoryProps>;
 
 export const Dynamic: Story = {
   name: 'NavHeader',
-  args: { brand: logoVariants[0], linksCount: navItems.length },
+  args: { brand: logoVariants[0], linksCount: 3 },
   render: ({ brand, linksCount, renderChildren = false }) => {
     return (
       <NavHeader brand={brand} items={navItems.slice(0, linksCount)}>

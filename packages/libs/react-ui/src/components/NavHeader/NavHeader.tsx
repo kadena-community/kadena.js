@@ -17,7 +17,11 @@ import Logo, { LogoVariant, logoVariants } from '@components/Logo';
 import { NavGlow } from './assets/glow';
 
 export type INavItemTarget = '_self' | '_blank';
-export type INavItem = { title: string; href: string; target?: INavItemTarget };
+export type INavItem = {
+  title: string;
+  href: string;
+  target?: INavItemTarget;
+};
 export type INavItems = INavItem[];
 
 export interface INavHeaderProps {
@@ -37,6 +41,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
 
   const [glowX, setGlowX] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
+  const prevGlowX = useRef<number>(glowX);
 
   useEffect(() => {
     const activeNavElement = navRef.current?.querySelector(
@@ -57,6 +62,11 @@ export const NavHeader: FC<INavHeaderProps> = ({
           activeNavBounds.width / 2,
       );
   }, [glowX, activeNav]);
+
+  useEffect(() => {
+    prevGlowX.current = glowX;
+  }, [glowX]);
+
   return (
     <header
       className={containerClass}
@@ -65,7 +75,10 @@ export const NavHeader: FC<INavHeaderProps> = ({
     >
       <div
         className={glowClass}
-        style={{ transform: `translateX(${glowX}px)` }}
+        style={{
+          transform: `translateX(${glowX}px)`,
+          transitionDuration: `${Math.abs(glowX - prevGlowX.current) * 2}ms`,
+        }}
         ref={glowRef}
       >
         <NavGlow />
