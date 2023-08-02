@@ -15,6 +15,7 @@
     "lint:versions": "syncpack list-mismatches",
     "lint:fix-versions": "syncpack fix-mismatches",
     "test": "turbo run test",
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish",
     "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > packages.json"
   },
   "engines": {

@@ -1,52 +1,41 @@
-name: Rush release (version --bump, publish)
+name: Release
+
+# Taken from: https://github.com/changesets/action#with-publishing
+# TODO: get/set GITHUB_TOKEN and NPM_TOKEN
+
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  push:
+    branches:
+      - DISABLED_main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
-  build:
-    name: Node.js v${{ matrix.NodeVersion }}
+  release:
+    name: Release
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        NodeVersion: [16]
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 2
-          token: ${{ secrets.ACTIONS_RELEASE_KADENA_JS }}
-      - name: Git config user
-        run: |
-          git config --local user.name "Kadena Rushbot"
-          git config --local user.email "kadena-rushbot@users.noreply.github.com"
-      - uses: actions/setup-node@v3
+          node-version: 18
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
         with:
-          node-version: ${{ matrix.NodeVersion }}
-      - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
-      - name: Rush install (install-run-rush)
-        run: node common/scripts/install-run-rush.js install
-      - name: Rush test (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js build --verbose
-          node common/scripts/install-run-rush.js test --verbose
+          publish: pnpm publish-packages
         env:
-          # Prevent time-based browserslist update warning
-          # See https://github.com/microsoft/rushstack/issues/2981
-          BROWSERSLIST_IGNORE_OLD_DATA: 1
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Disabled this step; it's better to run this step locally and submit it
-      # as a PR. This makes a release explicit instead of automatic
-      # - name: Rush version bump (install-run-rush)
-      #   run: node common/scripts/install-run-rush.js version --bump --target-branch main
-
-      - name: Rush publish (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch main
-      # - name: Rush test (rush-lib)
-      #   run: node apps/rush/lib/start-dev.js test --verbose --production --timeline
-      #   env:
-      #     # Prevent time-based browserslist update warning
-      #     # See https://github.com/microsoft/rushstack/issues/2981
-      #     BROWSERSLIST_IGNORE_OLD_DATA: 1
-      # - name: Ensure repo README is up-to-date
-      #   run: node repo-scripts/repo-toolbox/lib/start.js readme --verify
+      # - name: Send a Slack notification if a publish happens
+        # if: steps.changesets.outputs.published == 'true'
+        # You can do something when a publish happens.
+        # run: my-slack-bot send-notification --message "A new version of ${GITHUB_REPOSITORY} was published!"
