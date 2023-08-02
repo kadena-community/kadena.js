@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier src --check",
     "format:md": "remark README.md -o --use ./lib/index.js",
     "format:src": "prettier src --write",

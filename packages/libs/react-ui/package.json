@@ -29,7 +29,7 @@
     "build": "rimraf theme && tsc && tsc-alias && tsc -p ./tsconfig.cjs.json && tsc-alias -p ./tsconfig.cjs.json && copyfiles -f \"./types/styles/*\" theme",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier src --write",
