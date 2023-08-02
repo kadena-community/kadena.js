@@ -47,7 +47,6 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
-import { formatNumberAsString } from '@/utils/number';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
@@ -70,7 +69,6 @@ const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
   server: z.string().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name').optional(),
-  gasPrice: z.number().positive().max(1).optional(),
   gasPayer: NAME_VALIDATION.optional(),
 });
 
@@ -249,9 +247,6 @@ const CrossChainTransferFinisher: FC = () => {
   // const showInputHelper =
   //   pollResults.error !== undefined ? pollResults.error : '';
   // const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
-  // const formattedGasPrice = gasPrice
-  //   .toFixed(20)
-  //   .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
 
   const {
     register,
@@ -265,7 +260,6 @@ const CrossChainTransferFinisher: FC = () => {
       server: chainNetwork[network].server,
       requestKey: 'IjqP2vrzhL5NoCICC1m29gMVTCts1l5YWjDkhHmuefQ',
       gasPayer: 'kadena-xchain-gas',
-      gasPrice: 0.00000001,
     },
     resetOptions: {
       keepDirtyValues: true,
@@ -326,18 +320,6 @@ const CrossChainTransferFinisher: FC = () => {
                     placeholder: t('Enter Your Account'),
                   }}
                   error={errors.gasPayer}
-                />
-                <TextField
-                  label={t('Gas Price')}
-                  status={errors.gasPrice ? 'negative' : undefined}
-                  helperText={errors.gasPrice?.message ?? ''}
-                  inputProps={{
-                    ...register('gasPrice', {
-                      shouldUnregister: true,
-                    }),
-                    id: 'gas-price-input',
-                    placeholder: t('Enter Gas Price'),
-                  }}
                 />
               </>
             ) : null}
@@ -414,10 +396,6 @@ const CrossChainTransferFinisher: FC = () => {
                   label: t('Gas Payer'),
                   value: getValues('gasPayer'),
                   isAccount: false,
-                },
-                {
-                  label: t('Price'),
-                  value: formatNumberAsString(getValues('gasPrice')!),
                 },
               ]}
             />
