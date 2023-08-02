@@ -154,9 +154,6 @@ const CrossChainTransferFinisher: FC = () => {
 
     const networkId = chainNetwork[network].network;
 
-    // TODO: Remove
-    // return;
-
     const options = {
       networkId: networkId,
       chainId: pollResults.tx.sender.chain,
@@ -182,14 +179,6 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.receiver.chain,
       networkId,
       data.gasPayer,
-
-      // const contCommand = await finishXChainTransfer(
-      //   data.requestKey,
-      //   pollResults.tx.step,
-      //   pollResults.tx.rollback,
-      //   network,
-      //   pollResults.tx.receiver.chain,
-      //   data.gasPayer!,
     );
 
     if (typeof requestKeyOrError !== 'string') {
@@ -205,48 +194,8 @@ const CrossChainTransferFinisher: FC = () => {
     } catch (tx) {
       debug(tx);
       setFinalResults({ ...tx });
-      // if (contCommand instanceof ContCommand) {
-      //   try {
-      //     const pollResult = await contCommand.pollUntil(host, {
-      //       onPoll: async (transaction, pollRequest): Promise<void> => {
-      //         // debug(`Polling ${data.requestKey}.\nStatus: ${transaction.status}`);
-      //         setFinalResults({
-      //           requestKey: transaction.requestKey,
-      //           status: transaction.status,
-      //         });
-      //         debug(await pollRequest);
-      //         const data: IPollResponse = await pollRequest;
-
-      //         // Show correct error message
-      //         if (
-      //           Object.keys(data).length > 0 &&
-      //           Object.values(data)[0].result.status === 'failure'
-      //         ) {
-      //           const errorResult: IPactResultError = Object.values(data)[0]
-      //             .result as IPactResultError;
-      //           if (errorResult !== undefined) {
-      //             setTxError(errorResult.error.message);
-      //           }
-      //         }
-      //       },
-      //     });
-      //     setFinalResults({
-      //       requestKey: pollResult.reqKey,
-      //       status: pollResult.result.status,
-      //     });
-      //   } catch (tx) {
-      //     debug(tx);
-      //     setFinalResults({ ...tx });
-      //   }
     }
   };
-
-  // const showInputError =
-  //   pollResults.error === undefined ? undefined : 'negative';
-  // const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
-  // const showInputHelper =
-  //   pollResults.error !== undefined ? pollResults.error : '';
-  // const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
 
   const {
     register,
@@ -258,11 +207,12 @@ const CrossChainTransferFinisher: FC = () => {
     resolver: zodResolver(schema),
     values: {
       server: chainNetwork[network].server,
-      requestKey: 'IjqP2vrzhL5NoCICC1m29gMVTCts1l5YWjDkhHmuefQ',
+      requestKey: '',
       gasPayer: 'kadena-xchain-gas',
     },
+    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {
-      keepDirtyValues: true,
+      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
     },
   });
 
