@@ -23,9 +23,9 @@ export const NavGlow: React.FC<SVGProps<SVGSVGElement>> = () => (
         width="256"
         height="158"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+        <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -45,8 +45,8 @@ export const NavGlow: React.FC<SVGProps<SVGSVGElement>> = () => (
         y2="35.5324"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#ED098F"></stop>
-        <stop offset="1" stop-color="#2997FF"></stop>
+        <stop stopColor="#ED098F"></stop>
+        <stop offset="1" stopColor="#2997FF"></stop>
       </linearGradient>
     </defs>
   </svg>
