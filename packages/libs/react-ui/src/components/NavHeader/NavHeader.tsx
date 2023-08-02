@@ -32,7 +32,6 @@ export const NavHeader: FC<INavHeaderProps> = ({
   items,
 }) => {
   const headerRef = useRef<HTMLInputElement>(null);
-  const logoRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLInputElement>(null);
   const glowRef = useRef<HTMLInputElement>(null);
 
@@ -44,7 +43,6 @@ export const NavHeader: FC<INavHeaderProps> = ({
       `li:nth-child(${activeNav}) a`,
     );
     const headerBounds = headerRef.current?.getBoundingClientRect();
-    const logoBounds = logoRef.current?.getBoundingClientRect();
     const activeNavBounds = activeNavElement?.getBoundingClientRect();
     const glowBounds = glowRef.current?.getBoundingClientRect();
 
@@ -56,7 +54,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
             glowBounds!.width / 2 +
             activeNavBounds!.width / 2,
     );
-  }, [logoRef, glowX, activeNav]);
+  }, [glowX, activeNav]);
   return (
     <header
       className={containerClass}
@@ -70,7 +68,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
       >
         <NavGlow />
       </div>
-      <div className={logoClass} ref={logoRef}>
+      <div className={logoClass}>
         {logoVariants.includes(brand) && (
           <Link.Root href="/" target="_self">
             <Logo variant={brand} />
