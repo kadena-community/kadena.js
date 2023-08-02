@@ -7,7 +7,9 @@ import {
   TrackerCard,
 } from '@kadena/react-ui';
 
-import RequestKeyField from '@/components/Global/RequestKeyField';
+import RequestKeyField, {
+  REQUEST_KEY_VALIDATION,
+} from '@/components/Global/RequestKeyField';
 import client from '@/constants/client';
 import { chainNetwork } from '@/constants/network';
 import Routes from '@/constants/routes';
@@ -60,10 +62,8 @@ interface IPactResultError {
 const DOMAIN_NAME_REGEX =
   /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
-const RequestLength = { MIN: 43, MAX: 44 };
-
 const schema = z.object({
-  requestKey: z.string().min(RequestLength.MIN).max(RequestLength.MAX),
+  requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
   server: z.string().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name').optional(),
   gasPayer: z.string().min(3).max(256).optional(),

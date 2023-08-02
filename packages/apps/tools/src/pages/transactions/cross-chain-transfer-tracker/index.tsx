@@ -14,7 +14,9 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
-import RequestKeyField from '@/components/Global/RequestKeyField';
+import RequestKeyField, {
+  REQUEST_KEY_VALIDATION,
+} from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
 import { useToolbar } from '@/context/layout-context';
@@ -40,10 +42,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-const RequestLength = { MIN: 43, MAX: 44 };
-
 const schema = z.object({
-  requestKey: z.string().min(RequestLength.MIN).max(RequestLength.MAX),
+  requestKey: REQUEST_KEY_VALIDATION,
 });
 
 type FormData = z.infer<typeof schema>;
