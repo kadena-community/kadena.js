@@ -1,8 +1,8 @@
 {
   "name": "@kadena/react-ui",
   "version": "0.0.1",
-  "description": "A react component library built on Kadena's Design System",
   "private": true,
+  "description": "A react component library built on Kadena's Design System",
   "license": "ISC",
   "author": "",
   "exports": {

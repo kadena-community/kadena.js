@@ -1,6 +1,6 @@
-import { darkThemeClass } from '@theme/vars.css';
 import { containerClass } from './Footer.css';
 
+import { darkThemeClass } from '@theme/vars.css';
 import React, { FC } from 'react';
 
 export interface IFooterProps {
