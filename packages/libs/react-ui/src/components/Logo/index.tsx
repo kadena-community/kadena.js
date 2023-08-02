@@ -4,11 +4,11 @@ import { KadenaDocsLogo } from './variants/KadenaDocs';
 
 import React, { FC, SVGProps } from 'react';
 
-export type LogoVariant = 'default' | 'DevTools' | 'Docs';
-export const logoVariants = ['default', 'DevTools', 'Docs'] as LogoVariant[];
+export type LogoVariant = 'Kadena' | 'DevTools' | 'Docs';
+export const logoVariants = ['Kadena', 'DevTools', 'Docs'] as LogoVariant[];
 
 const renderSwitch = (
-  logo: LogoVariant = 'default',
+  logo: LogoVariant = 'Kadena',
 ): FC<SVGProps<SVGSVGElement>> => {
   switch (logo) {
     case 'Docs':
