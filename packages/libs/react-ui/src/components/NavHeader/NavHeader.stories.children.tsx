@@ -7,9 +7,9 @@ export const NavHeaderChildren: FC = () => {
       as="button"
       icon="Link"
       onClick={() => {}}
+      style={{ marginLeft: '1rem' }}
       title="test title"
       variant="positive"
-      style={{ marginLeft: '1rem' }}
     >
       Connect your wallet
     </Button>
