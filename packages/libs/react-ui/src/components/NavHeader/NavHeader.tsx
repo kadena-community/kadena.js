@@ -46,18 +46,16 @@ export const NavHeader: FC<INavHeaderProps> = ({
     const glowBounds = glowRef.current?.getBoundingClientRect();
     const headerBounds = headerRef.current?.getBoundingClientRect();
 
-    if (!activeNavBounds || !glowBounds || !headerBounds) return;
-
     const noActiveNav = activeNav === 0;
 
-    setGlowX(
-      noActiveNav
-        ? -glowBounds.width / 2
-        : activeNavBounds.x -
-            headerBounds.x -
-            glowBounds.width / 2 +
-            activeNavBounds.width / 2,
-    );
+    if (noActiveNav && glowBounds) setGlowX(-glowBounds.width / 2);
+    else if (activeNavBounds && glowBounds && headerBounds)
+      setGlowX(
+        activeNavBounds.x -
+          headerBounds.x -
+          glowBounds.width / 2 +
+          activeNavBounds.width / 2,
+      );
   }, [glowX, activeNav]);
   return (
     <header
