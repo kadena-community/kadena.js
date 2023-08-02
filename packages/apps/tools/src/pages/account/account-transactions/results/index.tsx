@@ -182,6 +182,7 @@ const CheckTransactions: FC = () => {
                 <Table.Th>{t('Date Time')}</Table.Th>
                 <Table.Th>{t('Amount')}</Table.Th>
                 <Table.Th>{t('Sender')}</Table.Th>
+                <Table.Th></Table.Th>
               </Table.Tr>
             </Table.Head>
             <Table.Body>
@@ -192,18 +193,14 @@ const CheckTransactions: FC = () => {
                   return <Table.Tr key={index}></Table.Tr>;
                 }
 
-                const accountText = isIncomming
-                  ? result.fromAccount
-                  : result.toAccount;
-
                 return (
-                  <Table.Tr key={index}>
+                  <Table.Tr key={index} url={''}>
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
                     <Table.Td>{result.amount}</Table.Td>
                     <Table.Td>
-                      {displayAccountName(accountText as string)}
+                      {displayAccountName(result.fromAccount as string)}
                     </Table.Td>
                   </Table.Tr>
                 );
@@ -219,29 +216,26 @@ const CheckTransactions: FC = () => {
               <Table.Tr>
                 <Table.Th>{t('Date Time')}</Table.Th>
                 <Table.Th>{t('Amount')}</Table.Th>
-                <Table.Th>{t('Sender')}</Table.Th>
+                <Table.Th>{t('Receiver')}</Table.Th>
+                <Table.Th></Table.Th>
               </Table.Tr>
             </Table.Head>
             <Table.Body>
               {results.map((result, index) => {
-                const isIncomming = result.toAccount === router.query.account;
+                const isOutgoing = result.fromAccount === router.query.account;
 
-                if (isIncomming) {
+                if (!isOutgoing) {
                   return <Table.Tr key={index}></Table.Tr>;
                 }
 
-                const accountText = isIncomming
-                  ? result.toAccount
-                  : result.fromAccount;
-
                 return (
-                  <Table.Tr key={index}>
+                  <Table.Tr key={index} url={''}>
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
                     <Table.Td>{result.amount}</Table.Td>
                     <Table.Td>
-                      {displayAccountName(accountText as string)}
+                      {displayAccountName(result.toAccount as string)}
                     </Table.Td>
                   </Table.Tr>
                 );
