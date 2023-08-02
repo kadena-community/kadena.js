@@ -7,7 +7,7 @@ interface IProp {
 }
 
 export const Link: FC<IProp> = ({ children, href, ...props }) => {
-  if (typeof children === 'string' && children.includes('http')) {
+  if (typeof children === 'string' && !href.includes('http')) {
     return (
       <NextLink href={href} {...props}>
         {children}

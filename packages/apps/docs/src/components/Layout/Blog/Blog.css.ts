@@ -2,13 +2,6 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const relatedLinksContainer = style([
-  sprinkles({
-    paddingLeft: '$5',
-    paddingTop: '$3',
-  }),
-]);
-
 export const bottomWrapperClass = style([
   sprinkles({
     width: '100%',

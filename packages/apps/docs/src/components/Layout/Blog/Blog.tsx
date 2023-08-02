@@ -3,16 +3,11 @@ import { Grid, Stack } from '@kadena/react-ui';
 import { Article, Content, TitleHeader } from '../components';
 import { Template } from '../components/Template';
 
-import {
-  articleTopMetadataClass,
-  bottomWrapperClass,
-  relatedLinksContainer,
-} from './Blog.css';
+import { articleTopMetadataClass, bottomWrapperClass } from './Blog.css';
 import { ArticleMetadataItem, PageGrid } from './styles';
 
 import { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
-import Link from 'next/link';
 import React, { FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -21,7 +16,6 @@ export const Blog: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   const { readingTimeInMinutes, publishDate, author } = frontmatter;
-  const related = frontmatter.related || [];
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
@@ -62,25 +56,6 @@ export const Blog: FC<IPageProps> = ({
                       By <b>{author}</b>
                     </span>
                   </Stack>
-                </Grid.Item>
-
-                <Grid.Item columnSpan={8}>
-                  {related.length > 0 && (
-                    <Stack
-                      alignItems="flex-start"
-                      justifyContent="space-between"
-                      direction={'column'}
-                    >
-                      <b>Other articles by {author}</b>
-                      <ul className={relatedLinksContainer}>
-                        {related.map((item, index) => (
-                          <li key={index}>
-                            <Link href={item.root}>{item.title}</Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </Stack>
-                  )}
                 </Grid.Item>
               </Grid.Root>
             </div>
