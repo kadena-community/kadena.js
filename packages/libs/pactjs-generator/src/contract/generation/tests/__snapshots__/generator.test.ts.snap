@@ -13,14 +13,14 @@ interface ICapability_test_func {
   * this is defcap doc
   */
   (
-    name: \\"user.test-module.test-cap\\",
+    name: \\"user.test-module.test-cap\\", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
     /**
-    this is module doc
+    this is module doc    
     */
     \\"user.test-module\\": {
       /**
@@ -28,7 +28,7 @@ declare module '@kadena/client' {
       */
       \\"test-func\\": (
         parameterone: PactReference,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -37,8 +37,7 @@ declare module '@kadena/client' {
 
 exports[`generateDts adds module, capability and function docs to the dts file 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -49,14 +48,14 @@ interface ICapability_test_func {
   * this is defcap doc
   */
   (
-    name: \\"user.test-module.test-cap\\",
+    name: \\"user.test-module.test-cap\\", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
     /**
-    this is module doc
+    this is module doc    
     */
     \\"user.test-module\\": {
       /**
@@ -64,7 +63,7 @@ declare module '@kadena/client' {
       */
       \\"test-func\\": (
         parameterone: object,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -73,8 +72,7 @@ declare module '@kadena/client' {
 
 exports[`generateDts does not generate capability interface if the function uses no capabilities 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -82,11 +80,11 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
+    
     \\"user.test-module\\": {
       \\"test-func\\": (
         parameterone: IPactDecimal,
-        parametertwo: boolean) => string & { capability : ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_Coin_GAS} 
 
     }
   }
@@ -95,8 +93,7 @@ declare module '@kadena/client' {
 
 exports[`generateDts function parameter is empty if the defun has no param 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -104,9 +101,9 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
+    
     \\"user.test-module\\": {
-      \\"test\\": () => string & { capability : ICapability_Coin_GAS}
+      \\"test\\": () => string & { capability : ICapability_Coin_GAS} 
 
     }
   }
@@ -115,27 +112,26 @@ declare module '@kadena/client' {
 
 exports[`generateDts return type definition file for a module 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
 }
 
 interface ICapability_test_func {
-
+  
   (
-    name: \\"user.test-module.test-cap\\",
+    name: \\"user.test-module.test-cap\\", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
+    
     \\"user.test-module\\": {
       \\"test-func\\": (
         parameterone: string,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -144,27 +140,26 @@ declare module '@kadena/client' {
 
 exports[`generateDts use any type if function parameters dont have a type 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
 }
 
 interface ICapability_test_func {
-
+  
   (
-    name: \\"user.test-module.test-cap\\",
+    name: \\"user.test-module.test-cap\\", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
+    
     \\"user.test-module\\": {
       \\"test-func\\": (
         parameterone: any,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -173,27 +168,26 @@ declare module '@kadena/client' {
 
 exports[`generateDts use object type if function parameters is object{schema} 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
 }
 
 interface ICapability_test_func {
-
+  
   (
-    name: \\"user.test-module.test-cap\\",
+    name: \\"user.test-module.test-cap\\", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
+    
     \\"user.test-module\\": {
       \\"test-func\\": (
         parameterone: object,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -202,8 +196,7 @@ declare module '@kadena/client' {
 
 exports[`generateDts uses the property type if there is no mapped value for that 1`] = `
 "
-import type { ICap } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -211,9 +204,9 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
+    
     \\"user.test-module\\": {
-      \\"test\\": (param: any) => string & { capability : ICapability_Coin_GAS}
+      \\"test\\": (param: any) => string & { capability : ICapability_Coin_GAS} 
 
     }
   }
