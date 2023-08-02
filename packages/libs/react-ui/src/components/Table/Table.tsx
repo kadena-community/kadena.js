@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { tableClass } from './Table.css';
 import { TBody } from './TBody';
 import { THead } from './THead';
@@ -7,11 +8,12 @@ import React, { FC } from 'react';
 
 export interface ITableProps {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;
+  striped?: boolean;
 }
 
-export const Table: FC<ITableProps> = ({ children }) => {
+export const Table: FC<ITableProps> = ({ children, striped }) => {
   return (
-    <table className={tableClass}>
+    <table className={striped ? classNames(tableClass, 'stripedClass') : tableClass}>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
