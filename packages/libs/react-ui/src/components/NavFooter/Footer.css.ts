@@ -1,21 +1,7 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
-export const footerVariants = styleVariants({
-  dynamic: [
-    sprinkles({
-      backgroundColor: '$layoutSurfaceSubtle',
-      color: '$gray40',
-    }),
-  ],
-  dark: [
-    sprinkles({
-      backgroundColor: '$gray90',
-      color: '$gray40',
-    }),
-  ],
-});
 export const containerClass = style([
   sprinkles({
     maxWidth: { xs: 'maxContent', sm: '100%' },
@@ -28,6 +14,8 @@ export const containerClass = style([
     },
     justifyContent: 'space-between',
     overflow: 'hidden',
+    backgroundColor: '$layoutSurfaceSubtle',
+    color: '$gray40',
   }),
   {
     selectors: {
@@ -98,6 +86,7 @@ export const iconButtonClass = style([
     whiteSpace: 'nowrap',
     border: 'none',
     cursor: 'pointer',
+    color: '$gray40',
   }),
 ]);
 
