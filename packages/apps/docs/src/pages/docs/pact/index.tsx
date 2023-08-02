@@ -45,11 +45,10 @@ const Home: FC<IProps> = ({ popularPages = [] }) => {
                     title="Get Started"
                     iconAlign="right"
                     icon="TrailingIcon"
+                    as="a"
+                    href="/docs/pact/beginner"
                   >
                     Get Started
-                  </Button>
-                  <Button title="Hello world tutorial" as="a" href="/">
-                    Hello world tutorial
                   </Button>
                 </Stack>
               </Stack>
@@ -139,7 +138,7 @@ export const getStaticProps: GetStaticProps = async () => {
         menu: 'Pact',
         subTitle: 'The safest, most user-friendly language for smart contracts',
         label: 'Introduction',
-        order: 0,
+        order: 2,
         description: 'Kadena makes blockchain work for everyone.',
         layout: 'landing',
         icon: 'PactDeveloper',
