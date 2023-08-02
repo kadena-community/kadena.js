@@ -31,7 +31,7 @@ describe('Footer', () => {
         <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <NavFooter.Link key={index} variant="dynamic">
+              <NavFooter.Link key={index}>
                 <a href={item.href}>{item.title}</a>
               </NavFooter.Link>
             );
@@ -41,7 +41,6 @@ describe('Footer', () => {
           {icons.map((item, index) => {
             return (
               <NavFooter.IconButton
-                variant="dynamic"
                 key={index}
                 icon={item.icon}
                 text={item.text}
@@ -83,7 +82,7 @@ describe('Footer', () => {
         <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <NavFooter.Link key={index} variant="dynamic">
+              <NavFooter.Link key={index}>
                 <a href={item.href}>{item.title}</a>
               </NavFooter.Link>
             );
@@ -93,7 +92,6 @@ describe('Footer', () => {
           {icons.map((item, index) => {
             return (
               <NavFooter.IconButton
-                variant="dynamic"
                 key={index}
                 icon={item.icon}
                 text={item.text}

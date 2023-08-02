@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/cryptography-utils",
+      "comment": "Remove format:pkg everywhere",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/cryptography-utils"
+}

@@ -16,6 +16,7 @@ export const container = style([
     width: 'max-content',
     position: 'fixed',
     display: 'none',
+    pointerEvents: 'none',
   }),
   {
     top: '50%',
@@ -30,6 +31,7 @@ export const baseArrow = style([
     width: '$4',
     height: '$4',
     backgroundColor: '$neutral1',
+    pointerEvents: 'none',
   }),
   {
     rotate: '45deg',

@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "format": "npm run format:pkg && npm run format:src",
+    "format": "npm run format:src",
     "format:ci": "prettier config src --check",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
