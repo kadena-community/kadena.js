@@ -5,7 +5,7 @@ import React, { type FC } from 'react';
 import { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
-const RequestLength = { MIN: 43, MAX: 44 };
+export const RequestLength = { MIN: 43, MAX: 44 };
 
 export const REQUEST_KEY_VALIDATION = z
   .string()

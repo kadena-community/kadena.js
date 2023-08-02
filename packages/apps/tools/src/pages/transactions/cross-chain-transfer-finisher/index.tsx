@@ -9,6 +9,7 @@ import {
 
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
+  RequestLength,
 } from '@/components/Global/RequestKeyField';
 import client from '@/constants/client';
 import { chainNetwork } from '@/constants/network';
@@ -117,7 +118,10 @@ const CrossChainTransferFinisher: FC = () => {
 
     const requestKey = e.currentTarget.value;
 
-    if (requestKey.length < RequestLength.MIN || requestKey.length > 44) {
+    if (
+      requestKey.length < RequestLength.MIN ||
+      requestKey.length > RequestLength.MAX
+    ) {
       return;
     }
 
