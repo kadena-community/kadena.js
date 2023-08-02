@@ -16,6 +16,7 @@
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",

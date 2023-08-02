@@ -6,6 +6,7 @@
     "build": "pnpm run generate:icons && pnpm run generate:contracts && next build",
     "dev": "pnpm run generate:icons && next dev",
     "eject": "react-scripts eject",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier locales src --write",
     "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",

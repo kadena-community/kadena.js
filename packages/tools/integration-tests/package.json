@@ -23,6 +23,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "precommit": "pnpm run test --silent",

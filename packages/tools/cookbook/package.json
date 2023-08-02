@@ -10,6 +10,7 @@
   "scripts": {
     "build": "",
     "dev:postinstall": "mkdir -p ./contracts; pnpm run pactjs:retrieve:contract; pnpm run pactjs:generate:contract",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts,.json --fix",

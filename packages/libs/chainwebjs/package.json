@@ -49,6 +49,7 @@
   ],
   "scripts": {
     "build": "heft build --clean",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "preinstall": "npx only-allow pnpm",

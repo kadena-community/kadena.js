@@ -15,6 +15,7 @@
     "prebuild": "pnpm run pactjs:generate:contract:file && pnpm run pactjs:generate:contract:crowdfund",
     "build": "pnpm run prebuild && tsc --noEmit",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",

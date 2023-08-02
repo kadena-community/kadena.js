@@ -5,6 +5,7 @@
   "scripts": {
     "build": "pnpm run postinstall && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",

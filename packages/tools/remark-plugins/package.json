@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use ./lib/index.js",
     "format:src": "prettier src --write",
     "lint": "eslint package.json src --ext .ts --fix",

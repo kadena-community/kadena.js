@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node build.mjs",
     "dev": "next dev",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier src --write",
     "lint": "eslint package.json src --ext .ts,.tsx, --fix",

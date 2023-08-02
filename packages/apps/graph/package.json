@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",

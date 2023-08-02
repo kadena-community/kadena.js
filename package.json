@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "build": "turbo run build",
-    "format": "pnpm run \"/^format:.*/\" && pnpm -r run \"/^format:.*/\"",
+    "format": "pnpm run /^format:.*/ && pnpm -r run format",
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",

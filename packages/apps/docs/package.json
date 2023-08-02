@@ -16,6 +16,7 @@
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
     "dev": "pnpm run /^build:.*/ && next dev",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config cypress src --write",
     "lint": "eslint package.json src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
     "start": "next start",

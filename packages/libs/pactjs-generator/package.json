@@ -24,6 +24,7 @@
     "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
