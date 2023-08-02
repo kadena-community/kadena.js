@@ -9,15 +9,15 @@ import { NavHeaderChildren } from './NavHeader.stories.children';
 const navItems: INavItems = [
   {
     title: 'Faucet',
-    href: '#',
+    href: '#faucet',
   },
   {
     title: 'Transactions',
-    href: '#',
+    href: '#transactions',
   },
   {
     title: 'Balance',
-    href: '#',
+    href: '#balance',
   },
 ];
 
@@ -57,7 +57,7 @@ const meta: Meta<StoryProps> = {
     },
     renderChildren: {
       control: { type: 'boolean' },
-      description: 'Populate children with sample content?',
+      description: 'Populate (right-hand side) children with sample content?',
     },
   },
 };
