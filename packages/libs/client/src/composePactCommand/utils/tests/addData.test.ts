@@ -1,4 +1,4 @@
-import { addData, addKeyset } from '../addData';
+import { addData } from '../addData';
 
 describe('addData', () => {
   it('add data for exec payload', () => {
@@ -20,23 +20,6 @@ describe('addData', () => {
   it('return data for exec payload if input does not have payload', () => {
     expect(addData('test', 'value')({})).toEqual({
       payload: { exec: { data: { test: 'value' } } },
-    });
-  });
-});
-
-describe('addKeyset', () => {
-  it('returns keyset data format', () => {
-    expect(addKeyset('test', 'keys-one', 'p1', 'p2')({})).toEqual({
-      payload: {
-        exec: {
-          data: {
-            test: {
-              keys: ['p1', 'p2'],
-              pred: 'keys-one',
-            },
-          },
-        },
-      },
     });
   });
 });

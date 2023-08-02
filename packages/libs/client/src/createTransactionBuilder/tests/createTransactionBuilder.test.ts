@@ -1,5 +1,5 @@
 import { ICoin } from '../../composePactCommand/test/coin-contract';
-import { IExecPayloadObject } from '../../interfaces/IPactCommand';
+import { IExecutionPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransactionBuilder } from '../createTransactionBuilder';
 
@@ -114,7 +114,9 @@ describe('createTransactionBuilder', () => {
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
       .setNonce((cmd) => {
-        return `test-nonce:${(cmd.payload as IExecPayloadObject).exec.code}`;
+        return `test-nonce:${
+          (cmd.payload as IExecutionPayloadObject).exec.code
+        }`;
       })
       .getCommand();
 

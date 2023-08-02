@@ -1,7 +1,7 @@
 import { ChainId } from '@kadena/types';
 
 /**
- * @alpha
+ * @public
  */
 export interface INetworkOptions {
   networkId: string;
@@ -9,7 +9,8 @@ export interface INetworkOptions {
 }
 
 /**
- * @alpha
+ * Options for any polling action on {@link IClient}
+ * @public
  */
 export interface IPollOptions {
   onPoll?: (id: string) => void;
@@ -18,7 +19,7 @@ export interface IPollOptions {
 }
 
 /**
- * @alpha
+ * @public
  */
 export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
   requests: Record<string, Promise<T>>;

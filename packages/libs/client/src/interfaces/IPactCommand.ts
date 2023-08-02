@@ -1,17 +1,20 @@
 import { ChainId, ICap } from '@kadena/types';
 
 /**
- * @alpha
+ * The payload of a Execution transaction
+ * @public
  */
-export interface IExecPayloadObject {
+export interface IExecutionPayloadObject {
   // executable pact code
   exec: {
     code?: string;
     data?: Record<string, unknown>;
   };
 }
+
 /**
- * @alpha
+ * The payload of a Continuation transaction
+ * @public
  */
 export interface IContinuationPayloadObject {
   cont: {
@@ -22,17 +25,20 @@ export interface IContinuationPayloadObject {
     proof?: string;
   };
 }
+
 /**
- * @alpha
+ * @beta
+ * @deprecated Use {@link @kadena/types#ICap} instead
  */
 export type ICapabilityItem = ICap;
 
 // TODO: update filed types based on @Kadena/types
 /**
- * @alpha
+ * The non-serialized transaction payload
+ * @public
  */
 export interface IPactCommand {
-  payload: IExecPayloadObject | IContinuationPayloadObject;
+  payload: IExecutionPayloadObject | IContinuationPayloadObject;
   // the builder will add all default values
   meta: {
     chainId: ChainId;
@@ -46,7 +52,7 @@ export interface IPactCommand {
     pubKey: string;
     address?: string;
     scheme?: 'ED25519' | 'ETH';
-    clist?: ICapabilityItem[];
+    clist?: ICap[];
   }>;
   networkId: string;
   nonce: string;

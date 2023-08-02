@@ -7,6 +7,7 @@ import { IPactCommand } from '../../interfaces/IPactCommand';
  * This is the interface for the signing request that is sent to the wallet.
  * It differs from the type in @kadena/types. When that is updated, we should
  * use that type instead.
+ * @internal
  */
 export interface ISigningRequest {
   code: string;
@@ -21,6 +22,9 @@ export interface ISigningRequest {
   extraSigners?: string[];
 }
 
+/**
+ * @internal
+ */
 export interface IWalletConnectAccount {
   account: string;
   contracts?: string[];
@@ -33,13 +37,13 @@ export interface IWalletConnectAccount {
   ];
 }
 
-export interface IAccount {
-  walletConnectChainId: TWalletConnectChainId;
-  network: IPactCommand['networkId']; // Kadena network (mainnet, testnet, devnet)
-  account: string; // Kadena account
-  chainId: ChainwebChainId; // Kadena ChainId
-}
-
-export type TSigningType = 'sign' | 'quicksign';
-
+/**
+ * The Blockchain that's used WalletConnect context
+ *
+ * @remarks
+ * For kadena it is `kadena:<networkId>`
+ *
+ * For reference see {@link https://github.com/kadena-io/KIPs/blob/master/kip-0017.md#pairing-with-walletconnect | KIP-0017 WalletConnect Specification }
+ * @public
+ */
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`; //kadena:mainnet01, kadena:testnet04, kadena:development

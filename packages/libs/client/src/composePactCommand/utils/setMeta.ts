@@ -3,7 +3,8 @@ import { IPactCommand } from '../../interfaces/IPactCommand';
 import { patchCommand } from './patchCommand';
 
 /**
- * @alpha
+ * Reducer to set `meta` on {@link IPactCommand.meta}
+ * @public
  */
 export const setMeta =
   (

@@ -65,7 +65,7 @@ typing from the payload part and recommends the relevant capabilities
 | parameter          | type                                                                       | description                                                                                |
 | ------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | signer             | string \| { pubKey: string; scheme?: 'ED25519' \| 'ETH', address?:string } | public key of the signer or object including publicKey, schema, and address                |
-| capabilityCallBack | (withCapability)=> ICapabilityItem[]                                       | it gives withCapability function to users in order to add capabilities to the signer part. |
+| capabilityCallBack | (withCapability)=> ICap[]                                       | it gives withCapability function to users in order to add capabilities to the signer part. |
 
 <details>
 <summary>examples</summary>
