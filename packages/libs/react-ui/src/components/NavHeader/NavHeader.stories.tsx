@@ -1,9 +1,10 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import type { INavHeaderProps, INavItems } from './NavHeader';
-import { NavHeader } from './';
+
+import React from 'react';
 
 import { logoVariants } from '@components/Logo';
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import { NavHeader } from './';
 import { NavHeaderChildren } from './NavHeader.stories.children';
 
 const navItems: INavItems = [

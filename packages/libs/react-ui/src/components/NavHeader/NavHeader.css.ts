@@ -54,8 +54,8 @@ export const navListClass = style([
     justifyContent: 'center',
   }),
   {
-    listStyle: 'none',
     alignSelf: 'center',
+    listStyle: 'none',
     zIndex: 1,
   },
 ]);
@@ -123,11 +123,11 @@ export const childrenClass = style([
 
 export const glowClass = style([
   {
+    left: 0,
+    pointerEvents: 'none',
     position: 'absolute',
     top: 0,
-    left: 0,
-    zIndex: 0,
-    pointerEvents: 'none',
     transition: 'all 0.3s ease',
+    zIndex: 0,
   },
 ]);

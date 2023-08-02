@@ -1,13 +1,13 @@
 import { Link } from '@components/Link';
 import {
-  containerClass,
-  childrenClass,
-  linkClass,
   activeLinkClass,
-  logoClass,
-  navWrapperClass,
-  navListClass,
+  childrenClass,
+  containerClass,
   glowClass,
+  linkClass,
+  logoClass,
+  navListClass,
+  navWrapperClass,
 } from './NavHeader.css';
 
 import classNames from 'classnames';
@@ -31,9 +31,9 @@ export const NavHeader: FC<INavHeaderProps> = ({
   children,
   items,
 }) => {
+  const glowRef = useRef<HTMLInputElement>(null);
   const headerRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLInputElement>(null);
-  const glowRef = useRef<HTMLInputElement>(null);
 
   const [glowX, setGlowX] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
@@ -42,9 +42,9 @@ export const NavHeader: FC<INavHeaderProps> = ({
     const activeNavElement = navRef.current?.querySelector(
       `li:nth-child(${activeNav}) a`,
     );
-    const headerBounds = headerRef.current?.getBoundingClientRect();
     const activeNavBounds = activeNavElement?.getBoundingClientRect();
     const glowBounds = glowRef.current?.getBoundingClientRect();
+    const headerBounds = headerRef.current?.getBoundingClientRect();
 
     const noActiveNav = activeNav === 0;
 
