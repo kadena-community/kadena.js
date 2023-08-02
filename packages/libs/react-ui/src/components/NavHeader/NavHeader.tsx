@@ -50,7 +50,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
 
     setGlowX(
       activeNav === 0
-        ? -logoBounds!.x + headerBounds!.x / 2 + logoBounds!.width / 2 - 20
+        ? -glowBounds!.width / 2
         : activeNavBounds!.x -
             headerBounds!.x -
             glowBounds!.width / 2 +

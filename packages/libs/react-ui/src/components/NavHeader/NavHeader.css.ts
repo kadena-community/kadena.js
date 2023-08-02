@@ -75,7 +75,7 @@ export const linkClass = style([
   {
     alignSelf: 'center',
     padding: `${vars.sizes.$1} ${vars.sizes.$2}`,
-    transition: 'background 0.1s ease',
+    transition: 'background 0.1s ease, color 0.1s ease',
   },
   {
     selectors: {
