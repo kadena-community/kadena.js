@@ -67,7 +67,32 @@ const Home: FC<IProps> = ({ popularPages = [] }) => {
         </Grid.Root>
       </Stack>
       <Stack direction="column" spacing="$md">
-        <Heading as="h6">Browse by Resources</Heading>
+        <Heading as="h5">Learn about Pact</Heading>
+        <Stack direction="row" spacing="$sm">
+          <Stack direction="column" spacing="$sm">
+            <Heading as="h6">Chainweaver Web Pact Editor</Heading>
+            <Text as="p">
+              Chainweb is a braided, parallelized proof-of-work consensus
+              mechanism that improves throughput and scalability.
+            </Text>
+          </Stack>
+          <Stack direction="column" spacing="$sm">
+            <Heading as="h6">Language Basics</Heading>
+            <Text as="p">
+              Kadena&apos;s Chainweaver is designed as a one-stop-shop for
+              interacting with the blockchain.
+            </Text>
+          </Stack>
+          <Stack direction="column" spacing="$sm">
+            <Heading as="h6">Hello World</Heading>
+            <Text as="p">
+              Exclusive resources and support for you to build your best dApp.
+            </Text>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack direction="column" spacing="$md">
+        <Heading as="h5">Browse by Resources</Heading>
         <Stack direction="column" spacing="$md">
           <BrowseSection title="General" titleAs="h6" direction="row">
             <BrowseSection.LinkBlock
