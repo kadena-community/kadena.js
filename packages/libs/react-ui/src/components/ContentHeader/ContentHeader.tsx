@@ -19,9 +19,9 @@ export const ContentHeader: FC<IContentHeaderProps> = ({
       <Icon size="md" />
       <Heading as="h4">{heading}</Heading>
       {description ? (
-        <Text as="p" className={descriptionClass}>
-          {description}
-        </Text>
+        <div className={descriptionClass}>
+          <Text as="p">{description}</Text>
+        </div>
       ) : null}
     </div>
   );

@@ -18,7 +18,6 @@ export interface ITextProps {
   color?: keyof typeof colorVariant;
   transform?: keyof typeof transformVariant;
   size?: keyof typeof sizeVariant;
-  className?: string;
   children: React.ReactNode;
 }
 
@@ -30,7 +29,6 @@ export const Text: FC<ITextProps> = ({
   size = 'lg',
   color = 'default',
   transform = 'none',
-  className = '',
   children,
 }) => {
   const classList = cn(
@@ -40,7 +38,6 @@ export const Text: FC<ITextProps> = ({
     colorVariant[color],
     transformVariant[transform],
     { [boldClass]: bold },
-    className,
   );
 
   switch (as) {
