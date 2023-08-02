@@ -16,7 +16,6 @@ export const NAME_VALIDATION = z.string().min(3).max(256);
 
 const AccountNameField: FC<IAccountNameFieldProps> = ({
   error,
-  label,
   inputProps,
   ...rest
 }) => {
