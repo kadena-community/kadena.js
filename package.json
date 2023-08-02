@@ -8,7 +8,7 @@
     "build": "turbo run build",
     "format": "pnpm run /^format:.*/ && pnpm -r run format",
     "format:ci": "pnpm -r run format:src --check",
-    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:fix-versions": "syncpack fix-mismatches",

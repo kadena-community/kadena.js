@@ -35,16 +35,15 @@ Overview of the main packages maintained in this repository:
 | [@kadena/chainweb-stream-client][23] | [![version][25]][24] |
 | [@kadena/chainwebjs][26]             | [![version][28]][27] |
 | [@kadena/client][29]                 | [![version][31]][30] |
-| [@kadena/create-kadena-app][32]      | [![version][34]][33] |
-| [@kadena/cryptography-utils][35]     | [![version][37]][36] |
-| [@kadena/docs][38]                   | [![version][40]][39] |
-| [@kadena/graph][41]                  | [![version][43]][42] |
-| [@kadena/kda-cli][44]                | [![version][46]][45] |
-| [@kadena/pactjs][47]                 | [![version][49]][48] |
-| [@kadena/pactjs-cli][50]             | [![version][52]][51] |
-| [@kadena/pactjs-generator][53]       | [![version][55]][54] |
-| [@kadena/types][56]                  | [![version][58]][57] |
-| [kadena.js][59]                      | [![version][61]][60] |
+| [@kadena/cryptography-utils][32]     | [![version][34]][33] |
+| [@kadena/docs][35]                   | [![version][37]][36] |
+| [@kadena/graph][38]                  | [![version][40]][39] |
+| [@kadena/kda-cli][41]                | [![version][43]][42] |
+| [@kadena/pactjs][44]                 | [![version][46]][45] |
+| [@kadena/pactjs-cli][47]             | [![version][49]][48] |
+| [@kadena/pactjs-generator][50]       | [![version][52]][51] |
+| [@kadena/types][53]                  | [![version][55]][54] |
+| [kadena.js][56]                      | [![version][58]][57] |
 
 <!--packageTable end -->
 
@@ -52,7 +51,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][63]][62]
+[![Contributors][60]][59]
 
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
@@ -95,43 +94,39 @@ Special thanks to the wonderful people who have contributed to this project:
 [30]: packages/libs/client/CHANGELOG.md
 [31]: https://img.shields.io/npm/v/@kadena/client.svg
 [32]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app
-[33]: packages/tools/create-kadena-app/CHANGELOG.md
-[34]: https://img.shields.io/npm/v/@kadena/create-kadena-app.svg
-[35]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/cryptography-utils
-[36]: packages/libs/cryptography-utils/CHANGELOG.md
-[37]: https://img.shields.io/npm/v/@kadena/cryptography-utils.svg
-[38]: https://github.com/kadena-community/kadena.js/tree/main/packages/apps/docs
-[39]: packages/apps/docs/CHANGELOG.md
-[40]: https://img.shields.io/npm/v/@kadena/docs.svg
-[41]:
+[33]: packages/libs/cryptography-utils/CHANGELOG.md
+[34]: https://img.shields.io/npm/v/@kadena/cryptography-utils.svg
+[35]: https://github.com/kadena-community/kadena.js/tree/main/packages/apps/docs
+[36]: packages/apps/docs/CHANGELOG.md
+[37]: https://img.shields.io/npm/v/@kadena/docs.svg
+[38]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/apps/graph
-[42]: packages/apps/graph/CHANGELOG.md
-[43]: https://img.shields.io/npm/v/@kadena/graph.svg
-[44]:
+[39]: packages/apps/graph/CHANGELOG.md
+[40]: https://img.shields.io/npm/v/@kadena/graph.svg
+[41]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/tools/kda-cli
-[45]: packages/tools/kda-cli/CHANGELOG.md
-[46]: https://img.shields.io/npm/v/@kadena/kda-cli.svg
-[47]:
+[42]: packages/tools/kda-cli/CHANGELOG.md
+[43]: https://img.shields.io/npm/v/@kadena/kda-cli.svg
+[44]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs
-[48]: packages/libs/pactjs/CHANGELOG.md
-[49]: https://img.shields.io/npm/v/@kadena/pactjs.svg
-[50]:
+[45]: packages/libs/pactjs/CHANGELOG.md
+[46]: https://img.shields.io/npm/v/@kadena/pactjs.svg
+[47]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/tools/pactjs-cli
-[51]: packages/tools/pactjs-cli/CHANGELOG.md
-[52]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
-[53]:
+[48]: packages/tools/pactjs-cli/CHANGELOG.md
+[49]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
+[50]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs-generator
-[54]: packages/libs/pactjs-generator/CHANGELOG.md
-[55]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
-[56]:
+[51]: packages/libs/pactjs-generator/CHANGELOG.md
+[52]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
+[53]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
-[57]: packages/libs/types/CHANGELOG.md
-[58]: https://img.shields.io/npm/v/@kadena/types.svg
-[59]:
+[54]: packages/libs/types/CHANGELOG.md
+[55]: https://img.shields.io/npm/v/@kadena/types.svg
+[56]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/kadena.js
-[60]: packages/libs/kadena.js/CHANGELOG.md
-[61]: https://img.shields.io/npm/v/kadena.js.svg
-[62]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[63]: https://contrib.rocks/image?repo=kadena-community/kadena.js
+[57]: packages/libs/kadena.js/CHANGELOG.md
+[58]: https://img.shields.io/npm/v/kadena.js.svg
+[59]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[60]: https://contrib.rocks/image?repo=kadena-community/kadena.js
