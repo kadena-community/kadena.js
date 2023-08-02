@@ -67,15 +67,15 @@ export const linkClass = style([
     color: '$gray40',
     display: 'flex',
     fontSize: '$sm',
+    fontWeight: '$semiBold',
     marginRight: '$6',
     marginX: '$1',
     textDecoration: 'none',
   }),
   {
     alignSelf: 'center',
-    padding: '4px 8px 4px 8px',
+    padding: `${vars.sizes.$1} ${vars.sizes.$2}`,
     transition: 'background 0.1s ease',
-    fontWeight: vars.fontWeights.$semiBold,
   },
   {
     selectors: {
