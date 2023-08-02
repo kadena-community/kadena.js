@@ -87,7 +87,7 @@ function genFunCapsInterface(func: IFunction): string {
         : '';
     const addCap = `(${EOL}${parameters
       .map((line) => indent(line))
-      .join(`, ${EOL}`)}): ICapabilityItem`;
+      .join(`, ${EOL}`)}): ICap`;
     return { comment, addCap };
   });
 
@@ -139,11 +139,10 @@ export function generateDts(
       .join(EOL.repeat(2)) || '';
 
   const dts = `
-import type { ICapabilityItem } from '@kadena/client';
-import type { IPactDecimal, IPactInt, PactReference } from '@kadena/types';
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
-  (name: 'coin.GAS'): ICapabilityItem;
+  (name: 'coin.GAS'): ICap;
 }
 ${capsInterfaces ? `${EOL}${capsInterfaces}${EOL}` : ''}
 declare module '@kadena/client' {
