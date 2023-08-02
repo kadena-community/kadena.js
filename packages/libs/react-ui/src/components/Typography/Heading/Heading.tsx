@@ -41,7 +41,7 @@ export const Heading: FC<IHeadingProps> = ({
     case 'h3':
       return <h3 className={classList}>{children}</h3>;
     case 'h4':
-      return <h3 className={classList}>{children}</h3>;
+      return <h4 className={classList}>{children}</h4>;
     case 'h5':
       return <h5 className={classList}>{children}</h5>;
     case 'h6':

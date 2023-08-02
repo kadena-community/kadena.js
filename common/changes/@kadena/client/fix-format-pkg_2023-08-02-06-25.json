@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Remove format:pkg everywhere",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

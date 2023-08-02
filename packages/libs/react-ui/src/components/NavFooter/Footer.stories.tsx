@@ -5,18 +5,16 @@ import { IFooterLinkProps, Target } from '@components/NavFooter/FooterLink';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<
-  {
-    linksCount: number;
-    iconsCount: number;
-  } & IFooterLinkProps
-> = {
+const meta: Meta<{
+  linksCount: number;
+  iconsCount: number;
+  darkMode: boolean;
+}> = {
   title: 'Navigation/Footer',
   argTypes: {
-    variant: {
-      options: ['dynamic', 'dark'],
+    darkMode: {
       control: {
-        type: 'select',
+        type: 'boolean',
       },
     },
     linksCount: {
@@ -82,30 +80,29 @@ const icons: (
 ];
 
 export default meta;
-type Story = StoryObj<
-  {
-    linksCount: number;
-    iconsCount: number;
-  } & IFooterLinkProps
->;
+type Story = StoryObj<{
+  linksCount: number;
+  iconsCount: number;
+  darkMode: boolean;
+}>;
 
 export const Primary: Story = {
   name: 'Footer',
   args: {
     linksCount: 4,
     iconsCount: 3,
-    variant: 'dynamic',
+    darkMode: false,
   },
-  render: ({ linksCount, iconsCount, variant }) => {
+  render: ({ linksCount, iconsCount, darkMode }) => {
     const linkItems = links.slice(0, linksCount);
     const iconButtons = icons.slice(0, iconsCount);
 
     return (
-      <NavFooter.Root variant={variant}>
+      <NavFooter.Root darkMode={darkMode}>
         <NavFooter.Panel>
           {linkItems.map((item, index) => {
             return (
-              <NavFooter.Link key={index} variant={variant}>
+              <NavFooter.Link key={index}>
                 {item.href !== undefined ? (
                   <a href={item.href} target={item.target}>
                     {item.title}
@@ -121,7 +118,6 @@ export const Primary: Story = {
           {iconButtons.map((item, index) => {
             return (
               <NavFooter.IconButton
-                variant={variant}
                 key={index}
                 icon={item.icon}
                 text={item.text}
