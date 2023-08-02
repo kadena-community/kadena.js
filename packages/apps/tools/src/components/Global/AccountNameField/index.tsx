@@ -17,6 +17,8 @@ export const NAME_VALIDATION = z.string().min(3).max(256);
 const AccountNameField: FC<IAccountNameFieldProps> = ({
   error,
   inputProps,
+  status,
+  helperText,
   ...rest
 }) => {
   const { t } = useTranslation('common');
@@ -24,8 +26,8 @@ const AccountNameField: FC<IAccountNameFieldProps> = ({
   return (
     <TextField
       label={t('Account')}
-      status={error ? 'negative' : undefined}
-      helperText={error?.message ?? ''}
+      status={error ? 'negative' : status}
+      helperText={error?.message ?? helperText}
       {...rest}
       inputProps={{
         id: 'account-name-input',
