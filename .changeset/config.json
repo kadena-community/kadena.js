@@ -4,7 +4,7 @@
   "commit": false,
   "fixed": [["@kadena/client", "@kadena/pactjs-generator", "@kadena/pactjs-cli"]],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": []
