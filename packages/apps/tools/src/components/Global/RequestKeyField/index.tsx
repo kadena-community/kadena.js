@@ -21,6 +21,8 @@ interface IRequestKeyFieldProps
 const RequestKeyField: FC<IRequestKeyFieldProps> = ({
   error,
   inputProps,
+  status,
+  helperText,
   ...rest
 }) => {
   const { t } = useTranslation('common');
@@ -28,8 +30,8 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
   return (
     <TextField
       label={t('Request Key')}
-      status={error ? 'negative' : undefined}
-      helperText={error?.message ?? ''}
+      status={error ? 'negative' : status}
+      helperText={error?.message ?? helperText}
       {...rest}
       inputProps={{
         id: 'request-key-input',
