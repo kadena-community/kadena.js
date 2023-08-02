@@ -1,8 +1,13 @@
-import { styled, StyledComponent, SystemIcons } from '@kadena/react-components';
-import { Heading } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
+
+import {
+  headerIconLink,
+  headerIconLinkHovered,
+  headerVariants,
+} from './styles.css';
 
 import { createSlug } from '@/utils';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
@@ -17,56 +22,6 @@ export interface IHeader {
   children: string;
 }
 
-const StyledHeader: StyledComponent<
-  typeof Heading,
-  { as?: TagType; variant?: TagType }
-> = styled(Heading, {
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  a: {
-    opacity: 0,
-    transition: 'opacity .3s ease',
-  },
-  '&:hover': {
-    a: {
-      opacity: 1,
-    },
-  },
-  defaultVariants: {
-    variant: 'h2',
-  },
-  variants: {
-    variant: {
-      h1: {
-        fontSize: '$3xl',
-      },
-      h2: {
-        fontSize: '$2xl',
-      },
-      h3: {
-        fontSize: '$xl',
-      },
-      h4: {
-        fontSize: '$lg',
-      },
-      h5: {
-        fontSize: '$md',
-      },
-      h6: {
-        fontSize: '$base',
-      },
-    },
-  },
-});
-
-const StyledLinkIcon = styled('a', {
-  display: 'inline-block',
-  paddingLeft: '$3',
-  scrollMarginTop: '$20',
-  scrollSnapMarginTop: '$20',
-});
-
 export const TaggedHeading: FC<IProp> = ({
   children,
   as,
@@ -76,12 +31,101 @@ export const TaggedHeading: FC<IProp> = ({
 }) => {
   const slug = createSlug(children, index, parentTitle);
 
-  return (
-    <StyledHeader as={as} variant={variant ?? as}>
-      {children}
-      <StyledLinkIcon id={slug} href={`#${slug}`}>
-        <SystemIcons.Link />
-      </StyledLinkIcon>
-    </StyledHeader>
+  // vanilla-extract doesn't support styling subcomponents
+  // globalStyle doesn't support simple pseudo selectors
+  // only way around the hover behavior is via state + variants
+  const [linkHoverVariant, setLinkHoverVariant] = useState<boolean>(false);
+
+  const onMouseOver = (): void => {
+    setLinkHoverVariant(true);
+  };
+
+  const onMouseLeave = (): void => {
+    setLinkHoverVariant(false);
+  };
+
+  const ArticleLink = (
+    <a
+      className={linkHoverVariant ? headerIconLinkHovered : headerIconLink}
+      id={slug}
+      href={`#${slug}`}
+    >
+      <SystemIcon.Link />
+    </a>
   );
+  switch (as) {
+    case 'h2':
+      return (
+        <h2
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onFocus={() => {}}
+          className={headerVariants[variant ?? as]}
+        >
+          {children}
+          {ArticleLink}
+        </h2>
+      );
+    case 'h3':
+      return (
+        <h3
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onFocus={() => {}}
+          className={headerVariants[variant ?? as]}
+        >
+          {children}
+          {ArticleLink}
+        </h3>
+      );
+    case 'h4':
+      return (
+        <h4
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onFocus={() => {}}
+          className={headerVariants[variant ?? as]}
+        >
+          {children}
+          {ArticleLink}
+        </h4>
+      );
+    case 'h5':
+      return (
+        <h5
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onFocus={() => {}}
+          className={headerVariants[variant ?? as]}
+        >
+          {children}
+          {ArticleLink}
+        </h5>
+      );
+    case 'h6':
+      return (
+        <h6
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onFocus={() => {}}
+          className={headerVariants[variant ?? as]}
+        >
+          {children}
+          {ArticleLink}
+        </h6>
+      );
+    case 'h1':
+    default:
+      return (
+        <h1
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onFocus={() => {}}
+          className={headerVariants[variant ?? as]}
+        >
+          {children}
+          {ArticleLink}
+        </h1>
+      );
+  }
 };
