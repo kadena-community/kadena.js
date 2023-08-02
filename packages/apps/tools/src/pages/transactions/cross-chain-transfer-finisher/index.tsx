@@ -7,6 +7,9 @@ import {
   TrackerCard,
 } from '@kadena/react-ui';
 
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
   RequestLength,
@@ -67,8 +70,8 @@ const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
   server: z.string().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name').optional(),
-  gasPayer: z.string().min(3).max(256).optional(),
   gasPrice: z.number().positive().max(1).optional(),
+  gasPayer: NAME_VALIDATION.optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -315,20 +318,14 @@ const CrossChainTransferFinisher: FC = () => {
                     leadingText: chainNetwork[network].network,
                   }}
                 />
-                <TextField
+                <AccountNameField
                   label={t('Gas Payer')}
-                  // helperText={
-                  //   isGasStation
-                  //     ? ''
-                  //     : t('only gas station account is supported')
-                  // }
-                  status={errors.gasPayer ? 'negative' : undefined}
-                  helperText={errors.gasPayer?.message ?? ''}
                   inputProps={{
                     ...register('gasPayer', { shouldUnregister: true }),
                     id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
                   }}
+                  error={errors.gasPayer}
                 />
                 <TextField
                   label={t('Gas Price')}
