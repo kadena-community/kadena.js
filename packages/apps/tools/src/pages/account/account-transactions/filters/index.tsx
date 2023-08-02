@@ -1,4 +1,5 @@
 import {
+  Box,
   Breadcrumbs,
   Button,
   Card,
@@ -9,16 +10,17 @@ import {
   SystemIcon,
 } from '@kadena/react-ui';
 
+import { mainContentClass, submitClass } from './styles.css';
+
 import { ChainSelect } from '@/components/Global';
 import Routes from '@/constants/routes';
+import { useAppContext } from '@/context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import { mainContentStyle, submitStyle } from './styles.css';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useState } from 'react';
-import { useAppContext } from '@/context';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(
@@ -33,7 +35,7 @@ const CheckTransactions: FC = () => {
 
   useToolbar([
     {
-      title: t('Account Transaction'),
+      title: t('Account Transactions'),
       icon: SystemIcon.Account,
       href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
@@ -68,15 +70,15 @@ const CheckTransactions: FC = () => {
         <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Filters')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <br />
+      <Box marginBottom="$3" />
       <Heading bold={false} as="h5">
         {t('Account Transaction Filters')}
       </Heading>
-      <section className={mainContentStyle}>
+      <section className={mainContentClass}>
         <form onSubmit={checkTransactionsEvent}>
           <Card fullWidth>
             <Heading as="h6">Filters</Heading>
-            <br />
+            <Box marginBottom="$4" />
             <Grid.Root columns={2}>
               <Grid.Item>
                 <ChainSelect
@@ -96,7 +98,7 @@ const CheckTransactions: FC = () => {
               </Grid.Item>
             </Grid.Root>
           </Card>
-          <section className={submitStyle}>
+          <section className={submitClass}>
             <Button icon="TrailingIcon">{t('Search for transactions')}</Button>
           </section>
         </form>
