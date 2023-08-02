@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Remove format:pkg everywhere",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
