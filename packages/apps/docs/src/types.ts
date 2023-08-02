@@ -9,3 +9,8 @@ export interface IQueryResult extends StreamMetaData {
   content?: string;
   description?: string;
 }
+
+export interface IResponseError {
+  status: number;
+  message: string;
+}
