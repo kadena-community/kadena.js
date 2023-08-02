@@ -7,6 +7,7 @@ import {
   TrackerCard,
 } from '@kadena/react-ui';
 
+import RequestKeyField from '@/components/Global/RequestKeyField';
 import client from '@/constants/client';
 import { chainNetwork } from '@/constants/network';
 import Routes from '@/constants/routes';
@@ -289,19 +290,12 @@ const CrossChainTransferFinisher: FC = () => {
               </StyledFieldCheckbox>
             </StyledToggleContainer>
 
-            <TextField
-              label={t('Request Key')}
-              // info={showInputInfo}
-              // status={showInputError}
-              // helperText={showInputHelper}
-              status={errors.requestKey ? 'negative' : undefined}
-              helperText={errors.requestKey?.message ?? ''}
+            <RequestKeyField
               inputProps={{
                 ...register('requestKey'),
-                id: 'request-key-input',
-                placeholder: t('Enter Request Key'),
                 onKeyUp: checkRequestKey,
               }}
+              error={errors.requestKey}
             />
 
             {watchAdvancedOptions ? (

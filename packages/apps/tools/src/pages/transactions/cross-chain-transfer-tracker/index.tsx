@@ -4,7 +4,6 @@ import {
   Heading,
   ProductIcon,
   SystemIcon,
-  TextField,
   TrackerCard,
 } from '@kadena/react-ui';
 
@@ -15,6 +14,7 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
+import RequestKeyField from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
 import { useToolbar } from '@/context/layout-context';
@@ -147,17 +147,12 @@ const CrossChainTransferTracker: FC = () => {
         <StyledForm onSubmit={validateThenSubmit(handleSubmit)}>
           <StyledAccountForm>
             <Heading as="h5">Search Request</Heading>
-            <TextField
-              label={t('Request Key')}
-              status={errors.requestKey ? 'negative' : undefined}
-              helperText={getHelperText()}
+            <RequestKeyField
               inputProps={{
                 ...register('requestKey'),
-                id: 'request-key-input',
-                placeholder: t('Enter Request Key'),
                 onKeyUp: checkRequestKey,
-                leftIcon: SystemIcon.KeyIconFilled,
               }}
+              error={errors.requestKey}
             />
           </StyledAccountForm>
           <StyledFormButton>
