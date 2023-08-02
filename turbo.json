@@ -1,6 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "@kadena/client-examples#build": {
+      "dependsOn": ["@kadena/client#build", "@kadena/pactjs-cli#build"]
+    },
+    "@kadena/tools#build": {
+      "dependsOn": ["@kadena/pactjs-cli#build"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["lib", "dist", ".next", "!.next/cache/**"],
