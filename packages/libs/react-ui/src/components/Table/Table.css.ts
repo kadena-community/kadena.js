@@ -17,10 +17,10 @@ export const trClass = style([
   }),
   {
     selectors: {
-      [`.stripedClass &:nth-child(even)`]: {
+      '.stripedClass &:nth-child(even)': {
         background: vars.colors.$neutral2,
       },
-      [`.stripedClass &:hover`]: {
+      '.stripedClass &:hover': {
         background: vars.colors.$primarySurface,
       },
     },
