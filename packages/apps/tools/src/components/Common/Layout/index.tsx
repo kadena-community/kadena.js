@@ -28,7 +28,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     },
     {
       title: t('Account'),
-      href: routes.ACCOUNT_TRANSACTIONS,
+      href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ];
 

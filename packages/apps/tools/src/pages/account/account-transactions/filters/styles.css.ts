@@ -3,11 +3,15 @@ import { sprinkles } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const mainContentStyle = style([
-  sprinkles({
-    display: 'flex',
-    justifyContent: 'flex-start',
-    gap: '$16',
-  }),
+  {
+    width: '680px',
+  },
+]);
+
+export const submitStyle = style([
+  {
+    float: 'right',
+  },
 ]);
 
 export const formStyle = style([
