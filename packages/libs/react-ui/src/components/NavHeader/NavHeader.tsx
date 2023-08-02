@@ -48,8 +48,6 @@ export const NavHeader: FC<INavHeaderProps> = ({
     const activeNavBounds = activeNavElement?.getBoundingClientRect();
     const glowBounds = glowRef.current?.getBoundingClientRect();
 
-    console.log(activeNavElement);
-
     setGlowX(
       activeNav === 0
         ? -logoBounds!.x + headerBounds!.x / 2 + logoBounds!.width / 2 - 20
