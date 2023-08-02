@@ -13,9 +13,7 @@ export interface ITableProps {
 
 export const Table: FC<ITableProps> = ({ children, striped }) => {
   return (
-    <table
-      className={striped ? classNames(tableClass, 'stripedClass') : tableClass}
-    >
+    <table className={classNames(tableClass, { stripedClass: striped })}>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
