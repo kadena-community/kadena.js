@@ -12,7 +12,6 @@ import AccountNameField, {
 } from '@/components/Global/AccountNameField';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
-  RequestLength,
 } from '@/components/Global/RequestKeyField';
 import client from '@/constants/client';
 import { chainNetwork } from '@/constants/network';
@@ -47,10 +46,11 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -104,13 +104,6 @@ const CrossChainTransferFinisher: FC = () => {
     },
   ]);
 
-  // useEffect(() => {
-  //   setRequestKey('');
-  //   setPollResults({});
-  //   setFinalResults({});
-  //   setTxError('');
-  // }, [network]);
-
   const checkRequestKey = async (
     e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
@@ -119,10 +112,7 @@ const CrossChainTransferFinisher: FC = () => {
 
     const requestKey = e.currentTarget.value;
 
-    if (
-      requestKey.length < RequestLength.MIN ||
-      requestKey.length > RequestLength.MAX
-    ) {
+    if (!validateRequestKey(requestKey)) {
       return;
     }
 
@@ -203,6 +193,7 @@ const CrossChainTransferFinisher: FC = () => {
     watch,
     formState: { errors },
     getValues,
+    resetField,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: {
@@ -217,6 +208,20 @@ const CrossChainTransferFinisher: FC = () => {
   });
 
   const watchAdvancedOptions = watch('advancedOptions');
+  const watchGasPayer = watch('gasPayer');
+
+  const isGasStation = watchGasPayer === 'kadena-xchain-gas';
+  const showInputError =
+    pollResults.error === undefined ? undefined : 'negative';
+  const showInputHelper =
+    pollResults.error !== undefined ? pollResults.error : '';
+
+  useEffect(() => {
+    resetField('requestKey');
+    setPollResults({});
+    setFinalResults({});
+    setTxError('');
+  }, [network, resetField]);
 
   return (
     <div>
@@ -242,6 +247,8 @@ const CrossChainTransferFinisher: FC = () => {
             </StyledToggleContainer>
 
             <RequestKeyField
+              helperText={showInputHelper}
+              status={showInputError}
               inputProps={{
                 ...register('requestKey'),
                 onKeyUp: checkRequestKey,
@@ -277,7 +284,7 @@ const CrossChainTransferFinisher: FC = () => {
           <StyledFormButton>
             <Button
               title={t('Finish Cross Chain Transfer')}
-              // disabled={!isGasStation}
+              disabled={!isGasStation}
             >
               {t('Finish Cross Chain Transfer')}
             </Button>
