@@ -7,9 +7,6 @@ export type SignClient = Awaited<
   >
 >;
 
-const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
-const RELAY_URL = process.env.NEXT_PUBLIC_RELAY_URL;
-
 const CLIENT_EVENTS = [
   'session_proposal',
   'session_update',
@@ -39,18 +36,12 @@ export class WalletConnectClient {
   // Pass through all events for testing purposes
   onEvent = Evt.create<ClientEvents>();
 
-  async init() {
-    if (!RELAY_URL || !PROJECT_ID) {
-      throw Error(
-        "Missing env vars 'NEXT_PUBLIC_RELAY_URL' and/or 'NEXT_PUBLIC_PROJECT_ID' ",
-      );
-    }
-
+  async init({ projectId, relayUrl }: { projectId: string; relayUrl: string }) {
     // Init client
     const { SignClient } = await import('@walletconnect/sign-client');
     this.client = await SignClient.init({
-      relayUrl: RELAY_URL,
-      projectId: PROJECT_ID,
+      relayUrl,
+      projectId,
     });
 
     CLIENT_EVENTS.forEach((event) => {
@@ -77,6 +68,23 @@ export class WalletConnectClient {
     const sessionKey = this.client.session.keys.at(-1) ?? null;
     const session = sessionKey ? this.client.session.get(sessionKey) : null;
     return session?.topic ?? null;
+  }
+
+  getNamespace() {
+    const topic = this.sessionTopic();
+    const session = topic && this.client?.session.get(topic);
+    if (!session) return null;
+    return session.namespaces.kadena as {
+      accounts: string[];
+      chains: string[];
+      events: string[];
+      methods: string[];
+    };
+  }
+
+  getAccounts() {
+    const kadena = this.getNamespace();
+    return kadena ? kadena.accounts : [];
   }
 
   async disconnect() {

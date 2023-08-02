@@ -3,6 +3,9 @@ import { createClient, type WalletConnectClient } from './connect.client';
 import { useEffect, useState } from 'react';
 import { useEvt } from 'evt/hooks';
 
+const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID!;
+const RELAY_URL = process.env.NEXT_PUBLIC_RELAY_URL!;
+
 export const useWalletConnect = () => {
   const [client, setClient] = useState<WalletConnectClient | null>(null);
   // sessionTopic could be read directly from client, but we need state for force react to rerender
@@ -32,7 +35,10 @@ export const useWalletConnect = () => {
     (async () => {
       const client = await createClient();
       setClient(client);
-      await client.init();
+      await client.init({
+        projectId: PROJECT_ID,
+        relayUrl: RELAY_URL,
+      });
     })();
 
     return () => client?.unmount();
@@ -51,5 +57,6 @@ export const useWalletConnect = () => {
     sessionTopic,
     connect,
     disconnect,
+    accounts: client?.getAccounts(),
   };
 };
