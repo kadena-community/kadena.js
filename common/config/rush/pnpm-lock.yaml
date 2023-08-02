@@ -1299,11 +1299,11 @@ importers:
       remark-gfm: ~3.0.1
       remark-order-reference-links: ^0.0.3
       remark-parse: ^10.0.2
-      remark-prettier: ^2.0.0
       remark-reference-links: ^6.0.1
       strip-json-comments: ^5.0.0
       typescript: 5.1.6
       unified: ^10.1.2
+      unified-prettier: ^1.0.1
       unist-util-visit: ^4.1.2
       vfile: 5.3.7
     dependencies:
@@ -1315,9 +1315,9 @@ importers:
       remark-gfm: 3.0.1
       remark-order-reference-links: 0.0.3
       remark-parse: 10.0.2
-      remark-prettier: 2.0.0_prettier@3.0.0
       remark-reference-links: 6.0.1
       strip-json-comments: 5.0.1
+      unified-prettier: 1.0.2_prettier@3.0.0
       unist-util-visit: 4.1.2
     devDependencies:
       '@kadena-dev/eslint-config': link:../eslint-config
@@ -23420,21 +23420,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /remark-prettier/2.0.0_prettier@3.0.0:
-    resolution: {integrity: sha512-66v8KoqnBivhcfjtahHmHU7qkQuVPq/JIsqTW8suqI8mVuHCpxjapoY2XIBLjC5J7suYICVtNRBXRwrRX7a1hA==}
-    engines: {node: '>=14.0.0'}
-    deprecated: Use unified-consistency and unified-prettier instead
-    peerDependencies:
-      prettier: ^2
-    dependencies:
-      '@types/mdast': 3.0.12
-      '@types/prettier': 2.7.3
-      mdast-util-to-markdown: 1.5.0
-      prettier: 3.0.0
-      prettier-linter-helpers: 1.0.0
-      vfile-location: 4.1.0
-    dev: false
-
   /remark-reference-links/6.0.1:
     resolution: {integrity: sha512-34wY2C6HXSuKVTRtyJJwefkUD8zBOZOSHFZ4aSTnU2F656gr9WeuQ2dL6IJDK3NPd2F6xKF2t4XXcQY9MygAXg==}
     dependencies:
@@ -25818,6 +25803,15 @@ packages:
       - supports-color
     dev: false
 
+  /unified-prettier/1.0.2_prettier@3.0.0:
+    resolution: {integrity: sha512-Hal9mbA+X9cRiVc3SPKo7L2cL1/PIdYxA2XX93iQVDs1uAVLjFaS/Qg4miFgBXypMrgXWclBU5c6+H9I0atjCw==}
+    peerDependencies:
+      prettier: ^3.0.0
+    dependencies:
+      prettier: 3.0.0
+      unified: 10.1.2
+    dev: false
+
   /unified/10.1.2:
     resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
     dependencies:
@@ -26151,13 +26145,6 @@ packages:
       core-util-is: 1.0.2
       extsprintf: 1.3.0
     dev: true
-
-  /vfile-location/4.1.0:
-    resolution: {integrity: sha512-YF23YMyASIIJXpktBa4vIGLJ5Gs88UB/XePgqPmTa7cDA+JeO3yclbpheQYCHjVHBn/yePzrXuygIL+xbvRYHw==}
-    dependencies:
-      '@types/unist': 2.0.7
-      vfile: 5.3.7
-    dev: false
 
   /vfile-message/3.1.4:
     resolution: {integrity: sha512-fa0Z6P8HUrQN4BZaX05SIVXic+7kE3b05PWAtPuYP9QLHsLKYR7/AlLW3NtOrpXRLeawpDLMsVkmk5DG0NXgWw==}
