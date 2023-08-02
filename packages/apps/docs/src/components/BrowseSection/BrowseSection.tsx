@@ -2,10 +2,17 @@ import { Heading, IHeadingProps } from '@kadena/react-ui';
 
 import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';
-import { StyledLinkList, StyledList, StyledSection } from './styles';
+import {
+  sectionRowContainer,
+  columnLinkList,
+  rowLinkList,
+  columnLinkListItem,
+  columnLink,
+} from './styles.css';
 
 import Link from 'next/link';
 import React, { FC, FunctionComponentElement } from 'react';
+import classnames from 'classnames';
 
 export interface IBrowseSectionProps {
   title?: string;
@@ -34,12 +41,23 @@ const BrowseSection: BrowseSectionType = ({
   /* eslint-disable-next-line react/prop-types */
   className,
 }) => {
-  const Wrapper = direction === 'column' ? StyledLinkList : StyledList;
+  const containerClass = classnames(className, {
+    [sectionRowContainer]: direction === 'row',
+  });
+
+  const listClassName = classnames({
+    [columnLinkList]: direction === 'column',
+    [rowLinkList]: direction === 'row',
+  });
+
+  const listItemClassName = classnames({
+    [columnLinkListItem]: direction === 'row',
+  });
 
   return (
-    <StyledSection direction={direction} className={className}>
+    <section className={containerClass}>
       {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
-      <Wrapper>
+      <ul className={listClassName}>
         {React.Children.map(children, (child) => {
           if (
             !React.isValidElement(child) ||
@@ -49,14 +67,26 @@ const BrowseSection: BrowseSectionType = ({
           ) {
             throw new Error('not a child for the BrowseSection Component');
           }
+
           if (child.type === LinkBlock) {
             return child;
           }
 
-          return <li>{child}</li>;
+          if (child.type !== LinkBlock) {
+            if (React.isValidElement(child)) {
+              const childWithProps = React.cloneElement(child, {
+                // @ts-ignore
+                className: columnLink,
+              });
+
+              return <li className={columnLinkListItem}>{childWithProps}</li>;
+            }
+          }
+
+          return <li className={listItemClassName}>{child}</li>;
         })}
-      </Wrapper>
-    </StyledSection>
+      </ul>
+    </section>
   );
 };
 
