@@ -1,4 +1,4 @@
-import { IconButton, SystemIcons } from '@kadena/react-components';
+import { IconButton, SystemIcon } from '@kadena/react-ui';
 
 import {
   InnerWrapper,
@@ -70,14 +70,14 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             as="a"
             href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
-            icon={SystemIcons.Twitter}
+            icon={SystemIcon.Twitter}
             color="inverted"
           />
           <IconButton
             as="a"
             href="https://github.com/kadena-community"
             title="Go to our Github"
-            icon={SystemIcons.Github}
+            icon={SystemIcon.Github}
             color="inverted"
           />
         </HeaderSocialIconGroup>

@@ -96,6 +96,48 @@ const meta: Meta<typeof Stack> = {
       options: ['wrap', 'nowrap'] as Sprinkles['flexWrap'][],
       control: { type: 'select' },
     },
+    padding: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingX: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingY: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingTop: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingBottom: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingLeft: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingRight: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 

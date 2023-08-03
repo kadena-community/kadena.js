@@ -1,5 +1,4 @@
-import { Stack } from '@kadena/react-components';
-import { Heading, ProductIcon } from '@kadena/react-ui';
+import { Heading, ProductIcon, Stack } from '@kadena/react-ui';
 
 import { HeaderWrapper, StyledHeader, SubHeader, Wrapper } from './style';
 

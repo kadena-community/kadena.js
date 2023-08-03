@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-components';
+import { Heading, Stack } from '@kadena/react-ui';
 
 import {
   checkSubTreeForActive,
@@ -9,7 +9,7 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   return (
-    <Stack direction="column" spacing="2xl">
+    <Stack direction="column" spacing="$2xl">
       <div>
         <Heading as="h2">BlogChain 2023</Heading>
       </div>
