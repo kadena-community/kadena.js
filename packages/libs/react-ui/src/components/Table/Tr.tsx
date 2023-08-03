@@ -10,9 +10,10 @@ import React, { FC } from 'react';
 export interface ITrProps {
   children?: CompoundType<typeof Td> | CompoundType<typeof Th>;
   url?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const Tr: FC<ITrProps> = ({ children, url }) => {
+export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
   return (
     <tr className={trClass}>
       {React.Children.map(children, (child) => {
@@ -25,15 +26,26 @@ export const Tr: FC<ITrProps> = ({ children, url }) => {
         return child;
       })}
 
-      {url !== undefined && (
+      {url !== undefined ? (
         <td className={linkButtonClass}>
           <IconButton
-            as={'a'}
+            as="a"
             href={url}
             title={url}
             icon={SystemIcon.TrailingIcon}
           />
         </td>
+      ) : onClick !== undefined ? (
+        <td className={linkButtonClass}>
+          <IconButton
+            as="button"
+            title=""
+            onClick={onClick}
+            icon={SystemIcon.TrailingIcon}
+          />
+        </td>
+      ) : (
+        ''
       )}
     </tr>
   );
