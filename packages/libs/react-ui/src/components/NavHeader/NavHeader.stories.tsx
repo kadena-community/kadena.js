@@ -6,7 +6,7 @@ import { logoVariants } from '@components/BrandLogo';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const navItems: INavItems = [
+const sampleNavItems: INavItems = [
   {
     title: 'Faucet',
     href: '#faucet',
@@ -32,6 +32,8 @@ const navItems: INavItems = [
 type StoryProps = {
   linksCount: number;
   renderContent: boolean;
+  useCustomNavigation: boolean;
+  customNavigation: INavItems;
 } & INavHeaderProps;
 
 const meta: Meta<StoryProps> = {
@@ -59,9 +61,22 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: logoVariants[0] },
       },
     },
+    useCustomNavigation: {
+      control: { type: 'boolean' },
+      description: 'Add your own navigation items instead of the sample ones?',
+    },
     linksCount: {
-      control: { type: 'range', min: 1, max: navItems.length, step: 1 },
+      control: { type: 'range', min: 1, max: sampleNavItems.length, step: 1 },
       description: 'Adjust sample navigation items count',
+      if: { arg: 'useCustomNavigation', neq: true },
+    },
+    customNavigation: {
+      defaultValue: [],
+      description: 'Custom navigation items',
+      control: {
+        type: 'array',
+      },
+      if: { arg: 'useCustomNavigation', eq: true },
     },
     renderContent: {
       control: { type: 'boolean' },
@@ -74,8 +89,20 @@ type Story = StoryObj<StoryProps>;
 
 export const Dynamic: Story = {
   name: 'NavHeader',
-  args: { brand: logoVariants[0], linksCount: 3 },
-  render: ({ brand, linksCount, renderContent = false }) => {
+  args: {
+    brand: logoVariants[0],
+    linksCount: 3,
+    customNavigation: sampleNavItems,
+  },
+  render: ({
+    brand,
+    useCustomNavigation,
+    customNavigation,
+    linksCount,
+    renderContent = false,
+  }) => {
+    const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
+    console.log(navItems);
     return (
       <NavHeader brand={brand}>
         <NavHeaderNavigation>
