@@ -12,9 +12,10 @@ import {
 
 import classNames from 'classnames';
 
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useRef } from 'react';
 import Logo, { LogoVariant, logoVariants } from '@components/Logo';
 import { NavGlow } from './assets/glow';
+import useGlow from './useGlow';
 
 export type INavItemTarget = '_self' | '_blank';
 export type INavItem = {
@@ -35,37 +36,15 @@ export const NavHeader: FC<INavHeaderProps> = ({
   children,
   items,
 }) => {
-  const glowRef = useRef<HTMLInputElement>(null);
-  const headerRef = useRef<HTMLInputElement>(null);
-  const navRef = useRef<HTMLInputElement>(null);
-
-  const [glowX, setGlowX] = useState(0);
-  const [activeNav, setActiveNav] = useState(0);
-  const prevGlowX = useRef<number>(glowX);
-
-  useEffect(() => {
-    const activeNavElement = navRef.current?.querySelector(
-      `li:nth-child(${activeNav}) a`,
-    );
-    const activeNavBounds = activeNavElement?.getBoundingClientRect();
-    const glowBounds = glowRef.current?.getBoundingClientRect();
-    const headerBounds = headerRef.current?.getBoundingClientRect();
-
-    const noActiveNav = activeNav === 0;
-
-    if (noActiveNav && glowBounds) setGlowX(-glowBounds.width / 2);
-    else if (activeNavBounds && glowBounds && headerBounds)
-      setGlowX(
-        activeNavBounds.x -
-          headerBounds.x -
-          glowBounds.width / 2 +
-          activeNavBounds.width / 2,
-      );
-  }, [glowX, activeNav]);
-
-  useEffect(() => {
-    prevGlowX.current = glowX;
-  }, [glowX]);
+  const {
+    glowX,
+    prevGlowX,
+    activeNav,
+    setActiveNav,
+    glowRef,
+    headerRef,
+    navRef,
+  } = useGlow();
 
   return (
     <header
@@ -77,7 +56,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
         className={glowClass}
         style={{
           transform: `translateX(${glowX}px)`,
-          transitionDuration: `${Math.abs(glowX - prevGlowX.current) * 2}ms`,
+          transitionDuration: `${Math.abs(glowX - prevGlowX) * 2}ms`,
         }}
         ref={glowRef}
       >
