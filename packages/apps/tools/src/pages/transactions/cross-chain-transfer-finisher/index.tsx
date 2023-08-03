@@ -68,7 +68,11 @@ const DOMAIN_NAME_REGEX =
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
-  server: z.string().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name').optional(),
+  server: z
+    .string()
+    .trim()
+    .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
+    .optional(),
   gasPayer: NAME_VALIDATION.optional(),
 });
 
