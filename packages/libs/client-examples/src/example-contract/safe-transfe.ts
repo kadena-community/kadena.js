@@ -36,7 +36,7 @@ async function doSafeTransfer(
       withCapability('coin.TRANSFER', to.account, from.account, aLowAmount),
     ])
     .setNetworkId(NETWORK_ID)
-    .setMeta({ chainId: '1', sender: from.account })
+    .setMeta({ chainId: '1', senderAccount: from.account })
     .createTransaction();
 
   const signedCommand = await signWithChainweaver(unsignedTr);

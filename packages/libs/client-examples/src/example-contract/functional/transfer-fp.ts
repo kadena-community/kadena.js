@@ -42,7 +42,7 @@ const getTransferCommand = ({
         decimal: amount,
       }),
     ]),
-    setMeta({ sender, chainId }),
+    setMeta({ senderAccount: sender, chainId }),
     setNetworkId(networkId),
   );
 

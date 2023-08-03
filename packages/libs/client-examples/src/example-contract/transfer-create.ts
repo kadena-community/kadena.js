@@ -37,7 +37,7 @@ async function main(): Promise<void> {
       chainId: '1',
       gasLimit: 1000,
       gasPrice: 1.0e-6,
-      sender: senderAccount,
+      senderAccount,
       ttl: 10 * 60, // 10 minutes
     })
     .setNetworkId(NETWORK_ID)

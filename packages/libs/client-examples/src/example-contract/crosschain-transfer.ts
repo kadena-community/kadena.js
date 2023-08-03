@@ -61,7 +61,7 @@ function startInTheFirstChain(
       ),
     ])
     .addKeyset('receiver-guard', 'keys-all', to.publicKey)
-    .setMeta({ chainId: from.chainId, sender: from.account })
+    .setMeta({ chainId: from.chainId, senderAccount: from.account })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 }
@@ -80,7 +80,7 @@ function finishInTheTargetChain(
     // ])
     .setMeta({
       chainId: targetChainId,
-      sender: gasPayer,
+      senderAccount: gasPayer,
       // this need to be less than or equal to 850 if you want to use gas-station, otherwise the gas-station does not pay the gas
       gasLimit: 850,
     });
@@ -97,7 +97,9 @@ async function doCrossChainTransfer(
     Promise.resolve(startInTheFirstChain(from, to, amount))
       .then((command) => signWithChainweaver(command))
       .then((command) =>
-        isSignedTransaction(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
+        isSignedTransaction(command)
+          ? command
+          : Promise.reject('CMD_NOT_SIGNED'),
       )
       // inspect is only for development you can remove them
       .then(inspect('EXEC_SIGNED'))

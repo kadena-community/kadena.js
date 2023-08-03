@@ -25,7 +25,7 @@ async function transfer(
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', sender, receiver, amount),
     ])
-    .setMeta({ chainId: '0', sender })
+    .setMeta({ chainId: '0', senderAccount: sender })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 

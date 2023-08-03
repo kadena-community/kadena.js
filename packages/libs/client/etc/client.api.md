@@ -58,9 +58,9 @@ export interface IBuilder<TCommand> {
     addSigner: IAddSigner<TCommand>;
     createTransaction: () => IUnsignedCommand;
     getCommand: () => Partial<IPactCommand>;
-    setMeta: (meta: {
-        chainId: IPactCommand['meta']['chainId'];
-    } & Partial<IPactCommand['meta']>) => IBuilder<TCommand>;
+    setMeta: (meta: Partial<Omit<IPactCommand['meta'], 'sender'>> & {
+        senderAccount?: string;
+    }) => IBuilder<TCommand>;
     setNetworkId: (id: string) => IBuilder<TCommand>;
     // Warning: (ae-forgotten-export) The symbol "ISetNonce" needs to be exported by the entry point index.d.ts
     setNonce: ISetNonce<TCommand>;

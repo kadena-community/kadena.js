@@ -48,7 +48,7 @@ export const fundExistingAccount = async (
         new PactNumber(amount).toPactDecimal(),
       ),
     ])
-    .setMeta({ sender: SENDER_OPERATION_ACCOUNT, chainId })
+    .setMeta({ senderAccount: SENDER_OPERATION_ACCOUNT, chainId })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 

@@ -116,9 +116,9 @@ export interface IBuilder<TCommand> {
    * ```
    */
   setMeta: (
-    meta: { chainId: IPactCommand['meta']['chainId'] } & Partial<
-      IPactCommand['meta']
-    >,
+    meta: Partial<Omit<IPactCommand['meta'], 'sender'>> & {
+      senderAccount?: string;
+    },
   ) => IBuilder<TCommand>;
   /**
    * Set nonce
