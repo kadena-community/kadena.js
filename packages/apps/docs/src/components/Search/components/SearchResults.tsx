@@ -19,7 +19,6 @@ import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
 
-
 interface IProps {
   semanticResults: ISearchResult[];
   semanticError?: string;
