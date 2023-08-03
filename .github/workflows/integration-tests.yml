@@ -9,7 +9,6 @@ on:
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
-    container: node:18
 
     services:
       devnet:
@@ -33,8 +32,7 @@ jobs:
 
       - name: Rush install (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js install
-          node common/scripts/install-run-rush.js build
+          node common/scripts/install-run-rush.js install -t @kadena/client
       - name: Run Integration Tests
         run: |
           node ./../../../common/scripts/install-run-rushx.js test:integration
