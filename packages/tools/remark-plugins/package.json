@@ -28,8 +28,8 @@
     "remark-order-reference-links": "^0.0.3",
     "remark-parse": "^10.0.2",
     "remark-reference-links": "^6.0.1",
-    "unified-prettier": "^1.0.1",
     "strip-json-comments": "^5.0.0",
+    "unified-prettier": "^1.0.1",
     "unist-util-visit": "^4.1.2"
   },
   "devDependencies": {
