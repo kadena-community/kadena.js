@@ -1,6 +1,17 @@
 # Change Log - @kadena-dev/eslint-config
 
-This log was last generated on Mon, 10 Jul 2023 14:25:54 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Aug 2023 08:34:21 GMT and should not be manually modified.
+
+## 0.1.0
+Thu, 03 Aug 2023 08:34:21 GMT
+
+### Minor changes
+
+- Move sort-package-json to eslint plugin
+
+### Patches
+
+- formatting and linting
 
 ## 0.0.10
 Mon, 10 Jul 2023 14:25:54 GMT

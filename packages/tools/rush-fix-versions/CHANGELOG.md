@@ -1,6 +1,13 @@
 # Change Log - @kadena-dev/rush-fix-versions
 
-This log was last generated on Mon, 10 Jul 2023 14:25:54 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Aug 2023 08:34:21 GMT and should not be manually modified.
+
+## 0.0.7
+Thu, 03 Aug 2023 08:34:21 GMT
+
+### Patches
+
+- formatting and linting
 
 ## 0.0.6
 Mon, 10 Jul 2023 14:25:54 GMT

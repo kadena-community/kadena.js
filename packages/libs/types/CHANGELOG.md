@@ -1,6 +1,14 @@
 # Change Log - @kadena/types
 
-This log was last generated on Fri, 14 Jul 2023 10:02:16 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Aug 2023 08:34:21 GMT and should not be manually modified.
+
+## 0.4.1
+Thu, 03 Aug 2023 08:34:21 GMT
+
+### Patches
+
+- formatting and linting
+- rename PactGuard ro PactReference to be more general
 
 ## 0.4.0
 Fri, 14 Jul 2023 10:02:16 GMT
