@@ -95,10 +95,10 @@ export const linkClass = style([
 ]);
 
 export const activeLinkClass = style([
-  {
-    backgroundColor: vars.colors.$white,
-    color: vars.colors.$gray90,
-  },
+  sprinkles({
+    backgroundColor: '$white',
+    color: '$gray90',
+  }),
   {
     selectors: {
       '&:hover': {
