@@ -1,14 +1,12 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-import type { LogoVariant } from '@components/Logo';
-
 import {
   activeLinkClass,
+  glowClass,
   linkClass,
   navListClass,
   navWrapperClass,
-  glowClass,
 } from './NavHeader.css';
 
 import { NavGlow } from './assets/glow';
@@ -16,9 +14,9 @@ import useGlow from './useGlow';
 
 export type INavItemTarget = '_self' | '_blank';
 export type INavItem = {
-  title: string;
   href: string;
   target?: INavItemTarget;
+  title: string;
 };
 export type INavItems = INavItem[];
 
