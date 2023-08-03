@@ -66,7 +66,11 @@ export async function getTransferData({
         chainId: convertIntToChainId(chainId),
       });
       const { getStatus } = getClient(host);
-      return getStatus(requestKey);
+      return getStatus({
+        requestKey,
+        chainId: convertIntToChainId(chainId),
+        networkId: chainNetwork[network].network,
+      });
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 

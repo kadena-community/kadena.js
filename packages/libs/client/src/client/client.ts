@@ -22,15 +22,21 @@ import {
   IPollOptions,
   IPollRequestPromise,
 } from './interfaces/interfaces';
-import { getRequestStorage } from './utils/request-storege';
 import {
+  groupByHost,
   kadenaHostGenerator,
   mergeAll,
   mergeAllPollRequestPromises,
 } from './utils/utils';
 
-type IOptions = IPollOptions &
-  (INetworkOptions | { networkId?: undefined; chainId?: undefined });
+/**
+ * @public
+ */
+interface IRequestObject {
+  requestKey: string;
+  chainId: ChainId;
+  networkId: string;
+}
 
 /**
  * @public
@@ -43,9 +49,9 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transaction - The transaction to be submitted.
-   * @returns A promise that resolves the requestKey (the transaction hash).
+   * @returns A promise that resolves the requestObject (including the requestKey, chianId and networkId).
    */
-  (transaction: ICommand): Promise<string>;
+  (transaction: ICommand): Promise<IRequestObject>;
 
   /**
    * Submits one or more public (unencrypted) signed commands to the blockchain for execution.
@@ -56,7 +62,7 @@ export interface ISubmit {
    * @param transactionList - The list of transactions to be submitted.
    * @returns A promise that resolves to an array of transaction hashes.
    */
-  (transactionList: ICommand[]): Promise<string[]>;
+  (transactionList: ICommand[]): Promise<IRequestObject[]>;
 }
 
 /**
@@ -87,7 +93,7 @@ export interface IBaseClient {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves to an array of transaction hashes.
+   * @returns A promise that resolves to an array of request objects.
    */
   submit: ISubmit;
 
@@ -96,13 +102,13 @@ export interface IBaseClient {
    * If requestKeys are not passed, it polls the status of all previously submitted requests.
    * Calls the '/poll' endpoint multiple times to get the status of all requests.
    *
-   * @param requestKeys - Optional request keys to filter the status polling.
-   * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
+   * @param requestObjects - request objects to status polling.
+   * @param options - options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the poll request promise with the command result.
    */
   pollStatus: (
-    requestKeys?: string[] | string,
-    options?: IOptions,
+    requestObjects: IRequestObject[] | IRequestObject,
+    options?: IPollOptions,
   ) => IPollRequestPromise<ICommandResult>;
 
   /**
@@ -111,13 +117,11 @@ export interface IBaseClient {
    * If the result is not ready, it returns an empty object.
    * Calls the '/poll' endpoint only once.
    *
-   * @param requestKeys - Optional request keys to filter the status polling.
-   * @param options - Optional network options for generating the correct host API address.
+   * @param requestObjects - request objects to get status.
    * @returns A promise that resolves to the poll response with the command result.
    */
   getStatus: (
-    requestKeys?: string[] | string,
-    options?: INetworkOptions,
+    requestObjects: IRequestObject[] | IRequestObject,
   ) => Promise<IPollResponse>;
 
   /**
@@ -126,14 +130,10 @@ export interface IBaseClient {
    *
    * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestKey - The request key to listen for.
-   * @param options - Optional network options for generating the correct host API address.
+   * @param requestObject - The request object to listen for.
    * @returns A promise that resolves to the command result.
    */
-  listen: (
-    requestKey: string,
-    options?: INetworkOptions,
-  ) => Promise<ICommandResult>;
+  listen: (requestObject: IRequestObject) => Promise<ICommandResult>;
 
   /**
    * Creates an SPV proof for a request. This is required for multi-step tasks.
@@ -141,15 +141,15 @@ export interface IBaseClient {
    *
    * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestKey - The request key for which the SPV proof is generated.
+   * @param requestObject - The request key for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
    * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the generated SPV proof.
    */
   pollCreateSpv: (
-    requestKey: string,
+    requestObject: IRequestObject,
     targetChainId: ChainId,
-    options?: IOptions,
+    options?: IPollOptions,
   ) => Promise<string>;
 
   /**
@@ -158,15 +158,14 @@ export interface IBaseClient {
    *
    * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestKey - The request key for which the SPV proof is generated.
+   * @param requestObject - The request object for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
    * @param options - Optional network options for generating the correct host API address.
    * @returns A promise that resolves to the generated SPV proof.
    */
   createSpv: (
-    requestKey: string,
+    requestObject: IRequestObject,
     targetChainId: ChainId,
-    options?: INetworkOptions,
   ) => Promise<string>;
 }
 
@@ -226,8 +225,7 @@ export interface IClient extends IBaseClient {
    * @deprecated Use `getStatus` instead.
    */
   getPoll: (
-    requestKeys?: string[] | string,
-    options?: INetworkOptions,
+    requestObjects: IRequestObject[] | IRequestObject,
   ) => Promise<IPollResponse>;
 }
 
@@ -263,37 +261,6 @@ export interface IGetClient {
  */
 export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
-  const storage = getRequestStorage();
-
-  const getStoredHost = (
-    requestKey: string,
-    options?: Partial<INetworkOptions>,
-  ): string => {
-    return (
-      storage.get(requestKey) ??
-      getHost({
-        chainId: options?.chainId!,
-        networkId: options?.networkId!,
-      })
-    );
-  };
-
-  function groupByHost(
-    requestKeys?: string[],
-    options?: IOptions,
-  ): [string, string[]][] {
-    let requestStorage = storage;
-    if (requestKeys !== undefined) {
-      const map = new Map<string, string>(
-        requestKeys.map((requestKey) => [
-          requestKey,
-          getStoredHost(requestKey, options),
-        ]),
-      );
-      requestStorage = getRequestStorage(map);
-    }
-    return requestStorage.groupByHost();
-  }
 
   const client: IBaseClient = {
     local(body, options) {
@@ -317,17 +284,34 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         networkId: cmd.networkId,
       });
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
-      storage.add(hostUrl, requestKeys);
 
-      return isList ? requestKeys : requestKeys[0];
+      return isList
+        ? requestKeys.map((key) => ({
+            requestKey: key,
+            chainId: cmd.meta.chainId,
+            networkId: cmd.networkId,
+          }))
+        : {
+            requestKey: requestKeys[0],
+            chainId: cmd.meta.chainId,
+            networkId: cmd.networkId,
+          };
     }) as ISubmit,
     pollStatus(
-      requestKeys?: string[] | string,
-      options?: IOptions,
+      requestObjects?: IRequestObject[] | IRequestObject,
+      options?: IPollOptions,
     ): IPollRequestPromise<ICommandResult> {
+      if (requestObjects === undefined) {
+        throw new Error('NO_REQUEST_KEY');
+      }
+      const requestsList = Array.isArray(requestObjects)
+        ? requestObjects
+        : [requestObjects];
       const results = groupByHost(
-        typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
-        options,
+        requestsList.map(({ requestKey, chainId, networkId }) => ({
+          requestKey,
+          hostUrl: getHost({ chainId, networkId }),
+        })),
       ).map(([hostUrl, requestKeys]) =>
         pollStatus(hostUrl, requestKeys, options),
       );
@@ -337,14 +321,21 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
       return mergedPollRequestPromises;
     },
-    async getStatus(requestKeys, options) {
-      const keys =
-        typeof requestKeys === 'string' ? [requestKeys] : requestKeys;
+    async getStatus(requestObjects) {
+      if (requestObjects === undefined) {
+        throw new Error('NO_REQUEST_KEY');
+      }
+      const requestsList = Array.isArray(requestObjects)
+        ? requestObjects
+        : [requestObjects];
 
       const results = await Promise.all(
-        groupByHost(keys, options).map(([hostUrl, requestKeys]) =>
-          poll({ requestKeys }, hostUrl),
-        ),
+        groupByHost(
+          requestsList.map(({ requestKey, chainId, networkId }) => ({
+            requestKey,
+            hostUrl: getHost({ chainId, networkId }),
+          })),
+        ).map(([hostUrl, requestKeys]) => poll({ requestKeys }, hostUrl)),
       );
 
       // merge all of the result in one object
@@ -353,21 +344,21 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return mergedResults;
     },
 
-    async listen(requestKey, options) {
-      const hostUrl = getStoredHost(requestKey, options);
+    async listen({ requestKey, chainId, networkId }) {
+      const hostUrl = getHost({ chainId, networkId });
 
       const result = await listen({ listen: requestKey }, hostUrl);
 
       return result;
     },
 
-    pollCreateSpv(requestKey, targetChainId, options) {
-      const hostUrl = getStoredHost(requestKey, options);
+    pollCreateSpv({ requestKey, chainId, networkId }, targetChainId, options) {
+      const hostUrl = getHost({ chainId, networkId });
       return pollSpv(hostUrl, requestKey, targetChainId, options);
     },
 
-    async createSpv(requestKey, targetChainId, options) {
-      const hostUrl = getStoredHost(requestKey, options);
+    async createSpv({ requestKey, chainId, networkId }, targetChainId) {
+      const hostUrl = getHost({ chainId, networkId });
       return getSpv(hostUrl, requestKey, targetChainId);
     },
   };

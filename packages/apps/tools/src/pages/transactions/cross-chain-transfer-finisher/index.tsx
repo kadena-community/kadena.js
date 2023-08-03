@@ -148,18 +148,18 @@ const CrossChainTransferFinisher: FC = () => {
 
     const networkId = chainNetwork[network].network;
 
-    const options = {
+    const requestObject = {
+      requestKey: data.requestKey,
       networkId: networkId,
       chainId: pollResults.tx.sender.chain,
     };
 
     const proof = await client.pollCreateSpv(
-      data.requestKey,
+      requestObject,
       pollResults.tx.receiver.chain,
-      options,
     );
 
-    const status = await client.listen(data.requestKey, options);
+    const status = await client.listen(requestObject);
 
     const pactId = status.continuation?.pactId;
 
@@ -180,7 +180,11 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     try {
-      const result = await client.listen(requestKeyOrError as string);
+      const result = await client.listen({
+        requestKey: requestKeyOrError as string,
+        networkId,
+        chainId: pollResults.tx.receiver.chain,
+      });
       setFinalResults({
         requestKey: result.reqKey,
         status: result.result.status,

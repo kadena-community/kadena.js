@@ -139,9 +139,13 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestKey = await submit(body);
+      const requestObject = await submit(body);
 
-      expect(requestKey).toEqual('test-key');
+      expect(requestObject).toEqual({
+        requestKey: 'test-key',
+        chainId: '1',
+        networkId: 'mainnet01',
+      });
     });
 
     it('returns requestKeys if input is an array', async () => {
@@ -160,9 +164,11 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestKeys = await submit([body]);
+      const requestObjects = await submit([body]);
 
-      expect(requestKeys).toEqual(['test-key']);
+      expect(requestObjects).toEqual([
+        { requestKey: 'test-key', chainId: '1', networkId: 'mainnet01' },
+      ]);
     });
 
     it('throes an error if the command list is empty', async () => {
@@ -205,11 +211,11 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestKey = await submit(body);
+      const requestObject = await submit(body);
 
-      expect(requestKey).toEqual('test-key');
+      expect(requestObject.requestKey).toEqual('test-key');
 
-      const result = await pollStatus(requestKey, {
+      const result = await pollStatus(requestObject, {
         interval: 10,
       });
 
@@ -226,9 +232,13 @@ describe('client', () => {
 
       (chainwebClient.poll as jest.Mock).mockResolvedValue(response);
 
-      const { getStatus } = getClient('http://test-host.com');
+      const { getStatus } = getClient();
 
-      const result = await getStatus('test-key');
+      const result = await getStatus({
+        requestKey: 'test-key',
+        chainId: '0',
+        networkId: 'testnet04',
+      });
 
       expect(result).toEqual(response);
 
@@ -242,9 +252,13 @@ describe('client', () => {
 
       (chainwebClient.listen as jest.Mock).mockResolvedValue(response);
 
-      const { listen } = getClient('http://test-host.com');
+      const { listen } = getClient();
 
-      const result = await listen('test-key');
+      const result = await listen({
+        requestKey: 'test-key',
+        chainId: '0',
+        networkId: 'testnet04',
+      });
 
       expect(result).toEqual(response);
 
@@ -259,9 +273,16 @@ describe('client', () => {
 
       (chainwebClient.spv as jest.Mock).mockResolvedValue(response);
 
-      const { createSpv: getSpv } = getClient('http://test-host.com');
+      const { createSpv: getSpv } = getClient();
 
-      const result = await getSpv('test-key', '2');
+      const result = await getSpv(
+        {
+          requestKey: 'test-key',
+          chainId: '0',
+          networkId: 'testnet04',
+        },
+        '2',
+      );
 
       expect(result).toEqual(response);
 
@@ -285,7 +306,15 @@ describe('client', () => {
 
       const { pollCreateSpv: pollSpv } = getClient('http://test-host.com');
 
-      const result = await pollSpv('test-key', '2', { interval: 10 });
+      const result = await pollSpv(
+        {
+          requestKey: 'testnet04:0:test-key',
+          chainId: '0',
+          networkId: 'testnet04',
+        },
+        '2',
+        { interval: 10 },
+      );
 
       expect(result).toEqual(response);
 
