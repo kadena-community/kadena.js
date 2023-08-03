@@ -27,6 +27,15 @@ export const trClass = style([
   },
 ]);
 
+export const linkButtonClass = style([
+  sprinkles({
+    marginRight: '$2',
+  }),
+  {
+    float: 'right',
+  },
+]);
+
 export const thClass = style([
   sprinkles({
     paddingY: '$3',
