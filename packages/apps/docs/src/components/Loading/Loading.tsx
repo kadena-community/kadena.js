@@ -1,9 +1,9 @@
-import { Loader } from './styles';
+import { loader } from './styles.css';
 
 import React, { FC } from 'react';
 
 export const Loading: FC = () => (
-  <Loader>
+  <div className={loader}>
     <svg
       width="24"
       height="24"
@@ -16,5 +16,5 @@ export const Loading: FC = () => (
         fill="#A30662"
       />
     </svg>
-  </Loader>
+  </div>
 );
