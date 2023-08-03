@@ -1,6 +1,6 @@
 import { Heading } from '@kadena/react-ui';
 
-import { list, listItem, link } from './styles.css';
+import { link, list, listItem } from './styles.css';
 
 import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';

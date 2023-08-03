@@ -3,16 +3,16 @@ import { Heading, IHeadingProps } from '@kadena/react-ui';
 import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';
 import {
-  sectionRowContainer,
-  columnLinkList,
-  rowLinkList,
-  columnLinkListItem,
   columnLink,
+  columnLinkList,
+  columnLinkListItem,
+  rowLinkList,
+  sectionRowContainer,
 } from './styles.css';
 
+import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, FunctionComponentElement } from 'react';
-import classnames from 'classnames';
 
 export interface IBrowseSectionProps {
   title?: string;

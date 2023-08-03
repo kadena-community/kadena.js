@@ -1,6 +1,6 @@
 import { Box, Stack, SystemIcon, Text, useModal } from '@kadena/react-ui';
 
-import { consentButtonPositive, consentButtonNegative } from './styles.css';
+import { consentButtonNegative, consentButtonPositive } from './styles.css';
 
 import { updateConsent } from '@/utils/analytics';
 import React, { FC, useCallback, useEffect, useState } from 'react';

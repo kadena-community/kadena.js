@@ -7,17 +7,17 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
-import { scrollBox, scrollBoxEnabled, loadingWrapper } from './../styles.css';
+import { loadingWrapper, scrollBox, scrollBoxEnabled } from './../styles.css';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
 import { Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
+import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import classnames from 'classnames';
 
 interface IProps {
   semanticResults: ISearchResult[];

@@ -1,9 +1,9 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 
 import { Search } from '@/components';
-import { searchForm } from '@/components/Search/styles.css';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
+import { searchForm } from '@/components/Search/styles.css';
 import {
   checkSubTreeForActive,
   getPathName,

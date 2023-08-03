@@ -1,4 +1,4 @@
-import { sprinkles, breakpoints, vars } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
