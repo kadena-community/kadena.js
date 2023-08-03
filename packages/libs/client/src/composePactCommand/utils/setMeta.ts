@@ -8,12 +8,17 @@ import { patchCommand } from './patchCommand';
  */
 export const setMeta =
   (
-    options: Partial<IPactCommand['meta']>,
+    options: Partial<Omit<IPactCommand['meta'], 'sender'>> & {
+      senderAccount?: string;
+    },
   ): ((command: Partial<IPactCommand>) => Partial<IPactCommand>) =>
-  (command) =>
-    patchCommand(command, {
+  (command) => {
+    const { senderAccount, ...rest } = options;
+    return patchCommand(command, {
       meta: {
         ...command.meta,
-        ...options,
+        ...rest,
+        ...(senderAccount !== undefined ? { sender: senderAccount } : {}),
       } as IPactCommand['meta'],
     });
+  };

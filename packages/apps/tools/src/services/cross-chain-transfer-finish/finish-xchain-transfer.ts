@@ -29,7 +29,7 @@ export async function finishXChainTransfer(
       .setNetworkId(networkId)
       .setMeta({
         chainId: targetChainId,
-        sender: gasPayer,
+        senderAccount: gasPayer,
         // this needs to be below 850 if you want to use gas-station otherwise the gas-station does
         gasLimit: 850,
       })

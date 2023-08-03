@@ -66,7 +66,7 @@ describe('signWithChainweaver', () => {
       .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('', (withCap) => [withCap('coin.GAS')])
       .setMeta({
-        sender: '',
+        senderAccount: '',
         chainId: '0',
       })
       .createTransaction();
@@ -104,7 +104,7 @@ describe('signWithChainweaver', () => {
         withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
       ])
       .setMeta({
-        sender: '',
+        senderAccount: '',
         chainId: '0',
       })
       .createTransaction();
