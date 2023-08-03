@@ -1,4 +1,11 @@
+import classNames from 'classnames';
+import React, { FC } from 'react';
+
+import type { LogoVariant } from '@components/Logo';
+
 import { Link } from '@components/Link';
+import Logo, { logoVariants } from '@components/Logo';
+
 import {
   activeLinkClass,
   childrenClass,
@@ -10,10 +17,6 @@ import {
   navWrapperClass,
 } from './NavHeader.css';
 
-import classNames from 'classnames';
-
-import React, { FC } from 'react';
-import Logo, { LogoVariant, logoVariants } from '@components/Logo';
 import { NavGlow } from './assets/glow';
 import useGlow from './useGlow';
 
@@ -38,7 +41,7 @@ export const NavHeader: FC<INavHeaderProps> = ({
 }) => {
   const {
     glowX,
-    prevGlowX,
+    animationDuration,
     activeNav,
     setActiveNav,
     glowRef,
@@ -49,16 +52,16 @@ export const NavHeader: FC<INavHeaderProps> = ({
   return (
     <header
       className={containerClass}
-      ref={headerRef}
       data-testid="kda-navheader"
+      ref={headerRef}
     >
       <div
         className={glowClass}
+        ref={glowRef}
         style={{
           transform: `translateX(${glowX}px)`,
-          transitionDuration: `${Math.abs(glowX - prevGlowX) * 2}ms`,
+          transitionDuration: `${animationDuration}ms`,
         }}
-        ref={glowRef}
       >
         <NavGlow />
       </div>
