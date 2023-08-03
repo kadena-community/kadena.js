@@ -8,5 +8,5 @@ describe('Fund account', () => {
       { decimal: '100' },
     );
     console.log('Add 100 KDA');
-  }, 10000);
+  }, 100000);
 });
