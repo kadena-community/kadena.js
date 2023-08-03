@@ -12,7 +12,7 @@ interface IAccountNameFieldProps
 }
 
 // @see; https://github.com/kadena-io/chainweb-node/blob/master/pact/coin-contract/v5/coin-v5.pact#L14
-export const NAME_VALIDATION = z.string().min(3).max(256);
+export const NAME_VALIDATION = z.string().trim().min(3).max(256);
 
 const AccountNameField: FC<IAccountNameFieldProps> = ({
   error,
