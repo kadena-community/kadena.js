@@ -17,8 +17,7 @@ const useGlow = (): IUseGlowReturn => {
 
   const [glowX, setGlowX] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
-  const prevGlowRef = useRef<number>(glowX);
-  let prevGlowX = 0;
+  const prevGlowX = useRef<number>(glowX);
 
   useEffect(() => {
     const activeNavElement = navRef.current?.querySelector(
@@ -41,12 +40,12 @@ const useGlow = (): IUseGlowReturn => {
   }, [glowX, activeNav]);
 
   useEffect(() => {
-    prevGlowX = prevGlowRef.current;
+    prevGlowX.current = glowX;
   }, [glowX]);
 
   return {
     glowX,
-    prevGlowX,
+    prevGlowX: prevGlowX.current,
     activeNav,
     setActiveNav,
     glowRef,
