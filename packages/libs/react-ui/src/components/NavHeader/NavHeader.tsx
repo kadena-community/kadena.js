@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 
-import type { LogoVariant } from '@components/Logo';
+import type { LogoVariant } from '@components/BrandLogo';
 
 import { Link } from '@components/Link';
-import Logo, { logoVariants } from '@components/Logo';
+import Logo, { logoVariants } from '@components/BrandLogo';
 
 import { containerClass, logoClass } from './NavHeader.css';
 

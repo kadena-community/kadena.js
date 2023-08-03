@@ -20,9 +20,9 @@ const renderSwitch = (
   }
 };
 
-const Logo: FC<{ variant?: LogoVariant }> = ({ variant }) => {
+const BrandLogo: FC<{ variant?: LogoVariant }> = ({ variant }) => {
   const LogoComponent = renderSwitch(variant);
   return <LogoComponent />;
 };
 
-export default Logo;
+export default BrandLogo;
