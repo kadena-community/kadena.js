@@ -1,5 +1,12 @@
 import { Evt } from 'evt';
 import { WalletConnectModal, createModalInstance } from './connect.modal';
+import {
+  CLIENT_ERRORS,
+  CLIENT_EVENTS,
+  ClientEvents,
+  getAccountsRequest,
+  timeout,
+} from './connect.utils';
 
 export type SignClient = Awaited<
   ReturnType<
@@ -7,39 +14,35 @@ export type SignClient = Awaited<
   >
 >;
 
-const CLIENT_EVENTS = [
-  'session_proposal',
-  'session_update',
-  'session_extend',
-  'session_ping',
-  'session_delete',
-  'session_expire',
-  'session_request',
-  'session_request_sent',
-  'session_event',
-  'proposal_expire',
-] as const;
-
-type ClientEventTypes = (typeof CLIENT_EVENTS)[number];
-type ClientEvents = [ClientEventTypes, unknown];
-
-// https://docs.walletconnect.com/2.0/specs/clients/sign/error-codes
-const CLIENT_ERRORS = {
-  USER_DISCONNECTED: { code: 6000, message: 'User disconnected.' },
+export type KadenaAccount = {
+  name: string;
+  contract: string;
+  chains: string[];
 };
 
 export class WalletConnectClient {
-  client: SignClient | null = null;
+  _client: SignClient | null = null;
+  // calls ping on connect, response times out the connection is probably terminated
+  likelyInvalidSession: boolean | null = null;
+  updateInterval: ReturnType<typeof setInterval> | null = null;
   modal: WalletConnectModal | null = null;
+  kadenaAccounts: Record<string, KadenaAccount[] | undefined> = {};
   onConnect = Evt.create<string>();
   onDisconnect = Evt.create<void>();
+  onUpdate = Evt.create<void>();
   // Pass through all events for testing purposes
   onEvent = Evt.create<ClientEvents>();
 
+  get client() {
+    if (!this._client) {
+      throw Error('Client is not initialized. Call init() first');
+    }
+    return this._client;
+  }
+
   async init({ projectId, relayUrl }: { projectId: string; relayUrl: string }) {
-    // Init client
     const { SignClient } = await import('@walletconnect/sign-client');
-    this.client = await SignClient.init({
+    this._client = await SignClient.init({
       relayUrl,
       projectId,
     });
@@ -50,27 +53,56 @@ export class WalletConnectClient {
       });
     });
 
-    this.loadExistingConnection();
-
     // Init modal
     this.modal = await createModalInstance();
+
+    await this.loadExistingConnection();
+
+    if (!this.updateInterval) {
+      this.updateInterval = setInterval(() => {
+        this.testSession();
+      }, 10_000);
+    }
   }
 
-  loadExistingConnection() {
+  async loadExistingConnection() {
     const topic = this.sessionTopic();
     if (topic) {
       this.onConnect.post(topic);
+      await this.testSession();
+    }
+  }
+
+  async testSession() {
+    const topic = this.sessionTopic();
+    if (!topic) return;
+    const result = await Promise.race([
+      this.client?.ping({ topic }).then(() => 'ok'),
+      timeout('timeout', 1000),
+    ]);
+
+    if (result === 'ok') {
+      this.likelyInvalidSession = false;
+      this.onUpdate.post();
+    } else if (result === 'timeout') {
+      this.likelyInvalidSession = true;
+      this.onUpdate.post();
+    } else {
+      console.warn('unknown ping reponse', result);
     }
   }
 
   sessionTopic() {
-    if (!this.client) return null;
+    if (!this._client) return null;
     const sessionKey = this.client.session.keys.at(-1) ?? null;
     const session = sessionKey ? this.client.session.get(sessionKey) : null;
+    // console.log(
+    //   `sessionTopic keys: ${this.client.session.keys.length}, last: ${sessionKey}`,
+    // );
     return session?.topic ?? null;
   }
 
-  getNamespace() {
+  getNamespaceKadena() {
     const topic = this.sessionTopic();
     const session = topic && this.client?.session.get(topic);
     if (!session) return null;
@@ -83,7 +115,7 @@ export class WalletConnectClient {
   }
 
   getAccounts() {
-    const kadena = this.getNamespace();
+    const kadena = this.getNamespaceKadena();
     return kadena ? kadena.accounts : [];
   }
 
@@ -94,13 +126,12 @@ export class WalletConnectClient {
         topic: session,
         reason: CLIENT_ERRORS.USER_DISCONNECTED,
       });
+      this.likelyInvalidSession = null;
       this.onDisconnect.post();
     }
   }
 
   async connect() {
-    if (!this.client || !this.modal) throw Error('client not initialized');
-
     const response = await this.client.connect({
       pairingTopic: undefined,
       requiredNamespaces: {
@@ -120,20 +151,52 @@ export class WalletConnectClient {
       },
     });
 
-    response.approval().then((session) => {
-      this.modal?.closeModal();
-      this.onConnect.post(session.topic);
-    });
+    this.modal?.openModal({ uri: response.uri });
 
-    this.modal.openModal({ uri: response.uri });
+    // Wait for approval (this can take a while)
+    const session = await response.approval();
+    this.modal?.closeModal();
+    this.onConnect.post(session.topic);
+  }
+
+  async getKadenaAccounts(account: string) {
+    const topic = this.sessionTopic();
+    if (!topic) return;
+
+    if (!this.getAccounts().includes(account)) {
+      throw Error('Invalid account');
+    }
+
+    const [chain, network] = account.split(':');
+    const response = await this.client.request<{
+      accounts: {
+        kadenaAccounts: KadenaAccount[];
+      }[];
+    }>({
+      topic,
+      chainId: `${chain}:${network}`,
+      request: getAccountsRequest(account),
+    });
+    this.kadenaAccounts[account] = response.accounts.flatMap((account) =>
+      account.kadenaAccounts.map((_account) => ({
+        chains: _account.chains,
+        contract: _account.contract,
+        name: _account.name,
+      })),
+    );
+    this.onUpdate.post();
+    // console.log('response', response);
   }
 
   unmount() {
     this.modal?.closeModal();
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
   }
 }
 
-export const createClient = async () => {
+export const createClient = () => {
   const client = new WalletConnectClient();
   return client;
 };

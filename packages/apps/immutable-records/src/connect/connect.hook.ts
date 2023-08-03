@@ -1,44 +1,52 @@
-import { createClient, type WalletConnectClient } from './connect.client';
+'use client';
 
-import { useEffect, useState } from 'react';
+import { createClient } from './connect.client';
+
+import { useEffect, useContext } from 'react';
 import { useEvt } from 'evt/hooks';
-
-const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID!;
-const RELAY_URL = process.env.NEXT_PUBLIC_RELAY_URL!;
+import { WalletConnectContext } from './connect.context';
+import { useRenderhook } from './connect.utils';
 
 export const useWalletConnect = () => {
-  const [client, setClient] = useState<WalletConnectClient | null>(null);
-  // sessionTopic could be read directly from client, but we need state for force react to rerender
-  const [sessionTopic, setSessionTopic] = useState<string | null>(
-    () => client?.sessionTopic() ?? null,
-  );
+  const { client, setClient, projectId, relayUrl } =
+    useContext(WalletConnectContext);
+  const render = useRenderhook();
 
   useEvt(
     (ctx) => {
-      client?.onEvent.attach(ctx, ([event, data]) => {
+      if (!client) return;
+      client.onEvent.attach(ctx, ([event, data]) => {
         console.log('onEvent evt', { event, data });
       });
-      client?.onConnect.attach(ctx, (topic) => {
+      client.onConnect.attach(ctx, () => {
         console.log('onConnect evt');
-        setSessionTopic(topic);
+        render();
       });
-      client?.onDisconnect.attach(ctx, () => {
+      client.onDisconnect.attach(ctx, () => {
         console.log('onDisconnect evt');
-        setSessionTopic(client.sessionTopic());
+        render();
+      });
+      client.onUpdate.attach(ctx, () => {
+        console.log('onUpdate evt', client.likelyInvalidSession);
+        render();
       });
     },
     [client],
   );
 
   useEffect(() => {
-    console.log('init useWalletConnect');
     (async () => {
-      const client = await createClient();
-      setClient(client);
-      await client.init({
-        projectId: PROJECT_ID,
-        relayUrl: RELAY_URL,
-      });
+      if (client) {
+        if (process.env.NODE_ENV !== 'development') {
+          console.warn('Client already initialized');
+        }
+        return;
+      }
+
+      console.log('init useWalletConnect');
+      const _client = createClient();
+      setClient(_client);
+      await _client.init({ projectId, relayUrl });
     })();
 
     return () => client?.unmount();
@@ -52,11 +60,19 @@ export const useWalletConnect = () => {
     await client?.disconnect();
   };
 
+  const getKadenaAccounts = async (account: string) => {
+    await client?.getKadenaAccounts(account);
+    render();
+  };
+
   return {
     initialized: !!client,
-    sessionTopic,
+    sessionTopic: client?.sessionTopic() ?? null,
+    likelyInvalidSession: client?.likelyInvalidSession ?? null,
     connect,
     disconnect,
-    accounts: client?.getAccounts(),
+    getKadenaAccounts,
+    accounts: client?.getAccounts() ?? [],
+    kadenaAccounts: client?.kadenaAccounts ?? {},
   };
 };
