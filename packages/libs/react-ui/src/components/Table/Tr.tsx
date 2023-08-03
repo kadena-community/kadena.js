@@ -1,4 +1,4 @@
-import { trClass } from './Table.css';
+import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
 import { CompoundType } from './types';
@@ -26,7 +26,7 @@ export const Tr: FC<ITrProps> = ({ children, url }) => {
       })}
 
       {url !== undefined && (
-        <td>
+        <td className={linkButtonClass}>
           <IconButton
             as={'a'}
             href={url}
