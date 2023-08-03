@@ -13,7 +13,7 @@ export const tdClass = style([
 export const trClass = style([
   sprinkles({
     backgroundColor: '$neutral1',
-    height: '$10',
+    height: '$12',
   }),
   {
     selectors: {
@@ -24,6 +24,15 @@ export const trClass = style([
         background: vars.colors.$primarySurface,
       },
     },
+  },
+]);
+
+export const linkButtonClass = style([
+  sprinkles({
+    marginRight: '$2',
+  }),
+  {
+    float: 'right',
   },
 ]);
 
