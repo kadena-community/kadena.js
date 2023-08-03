@@ -8,6 +8,8 @@ import type { Changeset } from '@changesets/types';
 // Script only creates, not deletes files
 // Usage: `npx tsx convert-changelog.ts` or `pnpm dlx tsx convert-changelog.ts`
 
+const types = ['none', 'patch', 'minor', 'major'];
+
 const baseDir = dirname(fileURLToPath(import.meta.url));
 
 const main = async () => {
@@ -15,22 +17,33 @@ const main = async () => {
   const filePaths = files.map((file) => join(baseDir, file));
   const changelogs = await Promise.all(filePaths.map((p) => import(p)));
 
-  const changesets = changelogs.reduce((acc, item) => {
+  const changesets = changelogs.reduce((changesets, item) => {
     item.changes.forEach((change) => {
-      const existingItem = acc.find((item) => item.summary === change.comment);
-      if (existingItem) {
-        existingItem.releases.push({
-          name: change.packageName,
-          type: change.type,
-        });
+      const changeset = changesets.find(
+        (changeset) => changeset.summary === change.comment,
+      );
+      if (changeset) {
+        const release = changeset.releases.find(
+          (release) => release.name === change.packageName,
+        );
+        if (release) {
+          const type = release?.type ? types.indexOf(release.type) : 0;
+          changeset.releases[changeset.releases.indexOf(release)].type =
+            types[Math.max(types.indexOf(change.type), type)];
+        } else {
+          changeset.releases.push({
+            name: change.packageName,
+            type: change.type,
+          });
+        }
       } else {
-        acc.push({
+        changesets.push({
           summary: change.comment,
           releases: [{ name: change.packageName, type: change.type }],
         });
       }
     });
-    return acc;
+    return changesets;
   }, [] as Changeset[]);
 
   await Promise.all(
