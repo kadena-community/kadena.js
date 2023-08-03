@@ -5,6 +5,9 @@ import React from 'react';
 
 import { logoVariants } from '@components/Logo';
 import { NavHeader } from './';
+import { NavHeaderNavigation } from './';
+import { NavHeaderContent } from './';
+
 import { NavHeaderChildren } from './NavHeader.stories.children';
 
 const navItems: INavItems = [
@@ -32,7 +35,7 @@ const navItems: INavItems = [
 
 type StoryProps = {
   linksCount: number;
-  renderChildren: boolean;
+  renderContent: boolean;
 } & INavHeaderProps;
 
 const meta: Meta<StoryProps> = {
@@ -64,7 +67,7 @@ const meta: Meta<StoryProps> = {
       control: { type: 'range', min: 1, max: navItems.length, step: 1 },
       description: 'Adjust sample navigation items count',
     },
-    renderChildren: {
+    renderContent: {
       control: { type: 'boolean' },
       description: 'Populate (right-hand side) children with sample content?',
     },
@@ -76,10 +79,23 @@ type Story = StoryObj<StoryProps>;
 export const Dynamic: Story = {
   name: 'NavHeader',
   args: { brand: logoVariants[0], linksCount: 3 },
-  render: ({ brand, linksCount, renderChildren = false }) => {
+  render: ({ brand, linksCount, renderContent = false }) => {
     return (
-      <NavHeader brand={brand} items={navItems.slice(0, linksCount)}>
-        {renderChildren && <NavHeaderChildren />}
+      <NavHeader brand={brand}>
+        <NavHeaderNavigation>
+          {navItems.slice(0, linksCount).map((item, index) => {
+            return (
+              <a href={item.href} target={item.target} key={index}>
+                {item.title}
+              </a>
+            );
+          })}
+        </NavHeaderNavigation>
+        {renderContent && (
+          <NavHeaderContent>
+            <NavHeaderChildren />
+          </NavHeaderContent>
+        )}
       </NavHeader>
     );
   },

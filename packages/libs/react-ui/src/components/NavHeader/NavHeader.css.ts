@@ -30,7 +30,6 @@ export const containerClass = style([
 export const logoClass = style([
   sprinkles({
     display: 'flex',
-    marginRight: '$6',
     marginLeft: '$3',
   }),
   {
