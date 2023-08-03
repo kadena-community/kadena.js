@@ -45,34 +45,37 @@ const subscribe = async (
     CreateResponse(res, 500, 'Not a valid email address');
   }
 
-  const { lists } = await mailchimp.lists.getAllLists();
-  if (lists.length === 0) {
+  const response = await mailchimp.lists.getAllLists();
+  if (!('lists' in response)) {
+    CreateResponse(res, 500, 'Something went wrong, please try again later');
+  } else if (response.lists.length === 0) {
     CreateResponse(res, 500, 'No Maillist found, sorry for the inconvenience');
-  }
-  const list = lists[0];
+  } else {
+    const list = response.lists[0];
 
-  let result;
-  try {
-    result = await mailchimp.lists.addListMember(list.id, {
-      email_address: email,
-      status: 'subscribed',
-    });
-  } catch (err) {
-    if (
-      err.status === 400 &&
-      err.response.body.title.toLowerCase() === 'member exists'
-    ) {
-      CreateResponse(res, 200, 'Thank you for subscribing...again');
+    let result;
+    try {
+      result = await mailchimp.lists.addListMember(list.id, {
+        email_address: email,
+        status: 'subscribed',
+      });
+    } catch (err) {
+      if (
+        err.status === 400 &&
+        err.response.body.title.toLowerCase() === 'member exists'
+      ) {
+        CreateResponse(res, 200, 'Thank you for subscribing...again');
+      }
+
+      CreateResponse(res, 500, 'Something went wrong, please try again later');
     }
 
-    CreateResponse(res, 500, 'Something went wrong, please try again later');
-  }
+    if (typeof result?.status === 'number' && result.status > 400) {
+      CreateResponse(res, 500, 'Something went wrong, please try again later');
+    }
 
-  if (result.statusCode > 400) {
-    CreateResponse(res, 500, 'Something went wrong, please try again later');
+    CreateResponse(res, 200, 'Thank you for subscribing');
   }
-
-  CreateResponse(res, 200, 'Thank you for subscribing');
 };
 
 export default subscribe;

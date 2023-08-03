@@ -80,6 +80,7 @@
     "@storybook/testing-library": "^0.2.0",
     "@types/gtag.js": "~0.0.12",
     "@types/heft-jest": "~1.0.3",
+    "@types/mailchimp__mailchimp_marketing": "~3.0.10",
     "@types/node": "^16.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
