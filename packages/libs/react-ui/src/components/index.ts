@@ -76,3 +76,4 @@ export { TextField } from './TextField/TextField';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
+export { Divider } from './Divider/Divider';

@@ -6,7 +6,7 @@ import { IAnswers, IQuestion } from './questions.js';
 
 export const questions: IQuestion[] = [
   {
-    message: 'What would you like to do?',
+    message: 'What would you like to do? (use spacebar to select an option)',
     name: 'task',
     type: 'multi-select',
     defaultValue: ['rerun'],

@@ -1,9 +1,9 @@
-import { media } from '@kadena/react-components';
+import { breakpoints } from '@kadena/react-ui';
 
 import { useEffect, useState } from 'react';
 
-export const useMediaQuery = (queryName: keyof typeof media): boolean => {
-  const query = media[queryName];
+export const useMediaQuery = (queryName: keyof typeof breakpoints): boolean => {
+  const query = breakpoints[queryName];
   const getMatches = (query: string): boolean => {
     // Prevents SSR issues
     if (typeof window !== 'undefined') {
