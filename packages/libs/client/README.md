@@ -350,7 +350,7 @@ Here are two examples of old to new rewrites
 - [Sending a `coin.transfer` transaction][23]
 - [Reading balance using `coin.get-balance`][24]
 
-### Sending a transaction `transfer`
+### Sending a transaction 'transfer'
 
 Old implementation
 
@@ -437,7 +437,7 @@ transfer(senderAccount, senderPublicKey, receiverAccount, {
 }).catch(console.error);
 ```
 
-### Read from the blockchain `getBalance`
+### Read from the blockchain 'getBalance'
 
 Old implementation
 

@@ -46,6 +46,8 @@ export const createSlug = (str) => {
 };
 
 const getTitle = (pageAST) => {
+  // TODO: flatten all children recursively to prevent issue with
+  // E.g. ## some title with `code`
   const node = pageAST.children[0];
   if (node.type !== 'heading' || node.depth !== 2) {
     throw new Error('first node is not a Heading');
