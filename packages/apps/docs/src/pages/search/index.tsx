@@ -1,6 +1,7 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 
-import { Search, SearchForm } from '@/components';
+import { Search } from '@/components';
+import { searchForm } from '@/components/Search/styles.css';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
 import {
@@ -40,7 +41,7 @@ const SearchPage: FC = () => {
   return (
     <>
       <SearchHeader>
-        <SearchForm onSubmit={handleSubmit}>
+        <form className={searchForm} onSubmit={handleSubmit}>
           <TextField
             inputProps={{
               id: 'searchInput',
@@ -52,7 +53,7 @@ const SearchPage: FC = () => {
               'aria-label': 'Search',
             }}
           />
-        </SearchForm>
+        </form>
       </SearchHeader>
       <Content id="maincontent" layout="home">
         <Article>
