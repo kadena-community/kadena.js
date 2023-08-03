@@ -97,7 +97,9 @@ async function doCrossChainTransfer(
     Promise.resolve(startInTheFirstChain(from, to, amount))
       .then((command) => signWithChainweaver(command))
       .then((command) =>
-        isSignedTransaction(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
+        isSignedTransaction(command)
+          ? command
+          : Promise.reject('CMD_NOT_SIGNED'),
       )
       // inspect is only for development you can remove them
       .then(inspect('EXEC_SIGNED'))
