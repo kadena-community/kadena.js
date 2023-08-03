@@ -308,7 +308,7 @@ describe('client', () => {
 
       const result = await pollSpv(
         {
-          requestKey: 'testnet04:0:test-key',
+          requestKey: 'test-key',
           chainId: '0',
           networkId: 'testnet04',
         },
