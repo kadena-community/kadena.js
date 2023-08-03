@@ -1,0 +1,40 @@
+name: Integration Tests
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    container: node:18
+
+    services:
+      devnet:
+        image: enof/devnet
+        options: >-
+          -t
+          --memory 7g
+          --cpus 2
+          --health-cmd "curl --silent --fail http://devnet:1337/info || exit 1"
+        ports:
+          - 8080:1337
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Rush install (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js install
+      - name: Run Integration Tests
+        run: |
+          node ./../../../common/scripts/install-run-rushx.js test:integration
+        working-directory: packages/libs/client/
