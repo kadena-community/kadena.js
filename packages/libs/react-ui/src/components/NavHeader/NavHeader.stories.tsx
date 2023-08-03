@@ -102,7 +102,6 @@ export const Dynamic: Story = {
     renderContent = false,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
-    console.log(navItems);
     return (
       <NavHeader brand={brand}>
         <NavHeaderNavigation>
