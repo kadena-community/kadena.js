@@ -9,5 +9,6 @@
       "statements": 90
     }
   },
-  "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"]
+  "modulePathIgnorePatterns": ["/src/integration-tests"],
+  "coveragePathIgnorePatterns": ["/node_modules/", "/tests/", "/integration-tests/"]
 }
