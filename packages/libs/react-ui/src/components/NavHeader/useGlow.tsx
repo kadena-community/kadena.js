@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 
 interface IUseGlowReturn {
   glowX: number;
-  prevGlowX: number;
+  animationDuration: number;
   activeNav: number;
   setActiveNav: React.Dispatch<React.SetStateAction<number>>;
   glowRef: React.RefObject<HTMLDivElement>;
@@ -18,6 +18,7 @@ const useGlow = (): IUseGlowReturn => {
   const [glowX, setGlowX] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
   const prevGlowX = useRef<number>(glowX);
+  const glowAnimationSpeed = useRef<number>(0);
 
   useEffect(() => {
     const activeNavElement = navRef.current?.querySelector(
@@ -43,9 +44,11 @@ const useGlow = (): IUseGlowReturn => {
     prevGlowX.current = glowX;
   }, [glowX]);
 
+  glowAnimationSpeed.current = Math.abs(glowX - prevGlowX.current) * 2;
+
   return {
     glowX,
-    prevGlowX: prevGlowX.current,
+    animationDuration: glowAnimationSpeed.current,
     activeNav,
     setActiveNav,
     glowRef,
