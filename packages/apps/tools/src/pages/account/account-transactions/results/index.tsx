@@ -3,6 +3,7 @@ import {
   Box,
   Breadcrumbs,
   Button,
+  ContentHeader,
   Grid,
   Heading,
   SystemIcon,
@@ -101,6 +102,8 @@ const CheckTransactions: FC = () => {
   ): Promise<void> {
     debug(refreshResultsEvent.name);
 
+    setResults([]);
+
     event.preventDefault();
 
     getAndSetTransactions(
@@ -174,8 +177,8 @@ const CheckTransactions: FC = () => {
 
       <Grid.Root columns={2}>
         <Grid.Item>
-          <Heading as="h6">{t('Incoming transactions')}</Heading>
-          <Box marginBottom="$6" />
+          <ContentHeader heading={t('Incoming transactions')} icon={SystemIcon.ChevronDown} description='This table is listing all the incoming transaction sorted by date.' />
+          <Box marginBottom="$10" />
           <Table.Root>
             <Table.Head>
               <Table.Tr>
@@ -209,8 +212,8 @@ const CheckTransactions: FC = () => {
           </Table.Root>
         </Grid.Item>
         <Grid.Item>
-          <Heading as="h6">{t('Outgoing transactions')}</Heading>
-          <Box marginBottom="$6" />
+          <ContentHeader heading={t('Outgoing transactions')} icon={SystemIcon.ChevronUp} description='This table is listing all the outgoing transaction sorted by date.' />
+          <Box marginBottom="$10" />
           <Table.Root>
             <Table.Head>
               <Table.Tr>
