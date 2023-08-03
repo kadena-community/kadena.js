@@ -1,7 +1,7 @@
 import { sign } from '@kadena/cryptography-utils';
 import { ICommand, IPactDecimal, IUnsignedCommand } from '@kadena/types';
 
-import { isSignedCommand, Pact, readKeyset } from '../../index';
+import { isSignedTransaction, Pact, readKeyset } from '../../index';
 
 import { listen, preflight, submit } from './client';
 
@@ -36,7 +36,7 @@ export async function fund(
       chainId: '1',
       gasLimit: 1000,
       gasPrice: 1.0e-6,
-      sender: senderAccount,
+      senderAccount: senderAccount,
       ttl: 10 * 60, // 10 minutes
     })
     .setNetworkId(NETWORK_ID)
@@ -50,7 +50,7 @@ export async function fund(
     throw new Error('failure');
   }
 
-  if (isSignedCommand(signedTx)) {
+  if (isSignedTransaction(signedTx)) {
     const requestKey = await submit(signedTx);
     const response = await listen(requestKey);
 
