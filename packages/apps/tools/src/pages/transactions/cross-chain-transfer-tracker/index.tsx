@@ -122,20 +122,15 @@ const CrossChainTransferTracker: FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: { requestKey: router.query.reqKey as string },
+    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
+    resetOptions: {
+      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
+    },
   });
 
-  const getHelperText = (): string => {
-    if (errors.requestKey?.message) {
-      return errors.requestKey.message;
-    }
-
-    // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-    if (!data.receiverAccount) {
-      return txError;
-    }
-
-    return '';
-  };
+  const showInputError = txError === '' ? undefined : 'negative';
+  // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
+  const showInputHelper = !data.receiverAccount ? txError : undefined;
 
   return (
     <div>
@@ -148,6 +143,8 @@ const CrossChainTransferTracker: FC = () => {
           <StyledAccountForm>
             <Heading as="h5">Search Request</Heading>
             <RequestKeyField
+              helperText={showInputHelper}
+              status={showInputError}
               inputProps={{
                 ...register('requestKey'),
                 onKeyUp: checkRequestKey,
