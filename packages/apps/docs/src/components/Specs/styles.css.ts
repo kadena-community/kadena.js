@@ -61,3 +61,7 @@ globalStyle(`${specsWrapper} .api-content ul[role="tablist"]`, {
 globalStyle(`${specsWrapper} .api-content select + label`, {
   width: '100%',
 });
+
+globalStyle(`${specsWrapper} .api-content div[role="tabpanel"]`, {
+  marginBottom: vars.sizes.$md,
+});
