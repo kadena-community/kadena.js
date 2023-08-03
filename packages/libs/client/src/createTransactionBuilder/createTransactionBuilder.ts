@@ -79,8 +79,7 @@ interface IAddKeyset<TCommand> {
 /**
  * The interface of the return value `Pact.builder.execution` or `Pact.builder.continuation`
  *
- * @remarks
- * See {@link Pact}
+ * @see {@link IPact}
  * @public
  */
 export interface IBuilder<TCommand> {
@@ -322,10 +321,10 @@ export const createTransactionBuilder = (
   initial?: Partial<IPactCommand>,
 ): ITransactionBuilder => {
   return {
-    execution: (...codes: string[]) => {
+    execution: (...pactExpressions: string[]) => {
       const init = initial
-        ? patchCommand(initial, execution(...codes))
-        : execution(...codes);
+        ? patchCommand(initial, execution(...pactExpressions))
+        : execution(...pactExpressions);
 
       return getBuilder(init);
     },

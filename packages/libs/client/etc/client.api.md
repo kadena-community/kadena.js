@@ -281,7 +281,7 @@ export interface ISingleSignFunction {
 }
 
 // @public
-export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
+export function isSignedTransaction(command: IUnsignedCommand | ICommand): command is ICommand;
 
 // @public (undocumented)
 export interface ISubmit {

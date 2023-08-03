@@ -38,12 +38,12 @@ export interface IWalletConnectAccount {
 }
 
 /**
- * The Blockchain that's used WalletConnect context
+ * The Blockchain that's used in a WalletConnect context
  *
  * @remarks
  * For kadena it is `kadena:<networkId>`
  *
- * For reference see {@link https://github.com/kadena-io/KIPs/blob/master/kip-0017.md#pairing-with-walletconnect | KIP-0017 WalletConnect Specification }
+ * @see Reference {@link https://github.com/kadena-io/KIPs/blob/master/kip-0017.md#pairing-with-walletconnect | KIP-0017 WalletConnect Specification }
  * @public
  */
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`; //kadena:mainnet01, kadena:testnet04, kadena:development

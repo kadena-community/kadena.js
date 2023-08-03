@@ -1,4 +1,4 @@
-import { isSignedCommand } from '../isSignedCommand';
+import { isSignedTransaction } from '../isSignedTransaction';
 
 describe('isSignedCommand', () => {
   it('returns true if command is signed', () => {
@@ -7,7 +7,7 @@ describe('isSignedCommand', () => {
       hash: 'hash',
       sigs: [{ sig: 'sig' }],
     };
-    expect(isSignedCommand(command)).toBe(true);
+    expect(isSignedTransaction(command)).toBe(true);
   });
 
   it('returns false if command is not signed', () => {
@@ -16,6 +16,6 @@ describe('isSignedCommand', () => {
       hash: 'hash',
       sigs: [undefined],
     };
-    expect(isSignedCommand(command)).toBe(false);
+    expect(isSignedTransaction(command)).toBe(false);
   });
 });

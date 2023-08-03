@@ -8,7 +8,7 @@ import { ICommand, IUnsignedCommand } from '@kadena/types';
 
  * @public
  */
-export function isSignedCommand(
+export function isSignedTransaction(
   command: IUnsignedCommand | ICommand,
 ): command is ICommand {
   return command.sigs.every((s) => s?.sig !== undefined);

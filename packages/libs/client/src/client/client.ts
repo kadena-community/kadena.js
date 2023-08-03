@@ -187,7 +187,7 @@ export interface IClient extends IBaseClient {
    * An alias for `local` when preflight is `false` and signatureVerification is `true`.
    *
    * @remarks
-   * See {@link IBaseClient.local | local() function}
+   * @see {@link IBaseClient.local | local() function}
    */
   signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
 
@@ -196,14 +196,14 @@ export interface IClient extends IBaseClient {
    * This call has minimum restrictions and can be used to read data from the node.
    *
    * @remarks
-   * See {@link IBaseClient.local | local() function}
+   * @see {@link IBaseClient.local | local() function}
    */
   dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
 
   /**
    * Generates a command from the code and data, then sends it to the '/local' endpoint.
    *
-   * See {@link IBaseClient.local | local() function}
+   * @see {@link IBaseClient.local | local() function}
    */
   runPact: (
     code: string,
