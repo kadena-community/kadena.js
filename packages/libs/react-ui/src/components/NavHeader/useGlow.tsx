@@ -44,15 +44,6 @@ const useGlow = (): IUseGlowReturn => {
 
   glowAnimationSpeed.current = Math.abs(glowX - prevGlowX.current) * 2;
 
-  console.log({
-    activeNav,
-    animationDuration: glowAnimationSpeed.current,
-    glowRef,
-    glowX,
-    navRef,
-    setActiveNav,
-  });
-
   return {
     activeNav,
     animationDuration: glowAnimationSpeed.current,
