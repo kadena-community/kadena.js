@@ -3,16 +3,14 @@ import { useState, useRef, useEffect } from 'react';
 interface IUseGlowReturn {
   glowX: number;
   animationDuration: number;
+  glowRef: React.RefObject<HTMLDivElement>;
+  navRef: React.RefObject<HTMLDivElement>;
   activeNav: number;
   setActiveNav: React.Dispatch<React.SetStateAction<number>>;
-  glowRef: React.RefObject<HTMLDivElement>;
-  headerRef: React.RefObject<HTMLHeadElement>;
-  navRef: React.RefObject<HTMLDivElement>;
 }
 
 const useGlow = (): IUseGlowReturn => {
   const glowRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLHeadElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
   const [glowX, setGlowX] = useState(0);
@@ -26,7 +24,7 @@ const useGlow = (): IUseGlowReturn => {
     );
     const activeNavBounds = activeNavElement?.getBoundingClientRect();
     const glowBounds = glowRef.current?.getBoundingClientRect();
-    const headerBounds = headerRef.current?.getBoundingClientRect();
+    const headerBounds = navRef.current?.parentElement?.getBoundingClientRect();
 
     const noActiveNav = activeNav === 0;
 
@@ -46,14 +44,22 @@ const useGlow = (): IUseGlowReturn => {
 
   glowAnimationSpeed.current = Math.abs(glowX - prevGlowX.current) * 2;
 
+  console.log({
+    glowX,
+    animationDuration: glowAnimationSpeed.current,
+    activeNav,
+    glowRef,
+    navRef,
+    setActiveNav,
+  });
+
   return {
     glowX,
     animationDuration: glowAnimationSpeed.current,
     activeNav,
-    setActiveNav,
     glowRef,
-    headerRef,
     navRef,
+    setActiveNav,
   };
 };
 
