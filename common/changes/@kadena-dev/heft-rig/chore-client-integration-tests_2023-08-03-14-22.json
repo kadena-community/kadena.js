@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/heft-rig",
+      "comment": "Don't run integration tests as part of the default unit test profile",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena-dev/heft-rig"
+}
