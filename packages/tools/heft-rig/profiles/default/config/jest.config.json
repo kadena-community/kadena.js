@@ -10,5 +10,9 @@
     }
   },
   "modulePathIgnorePatterns": ["/src/integration-tests"],
-  "coveragePathIgnorePatterns": ["/node_modules/", "/tests/", "/integration-tests/"]
+  "coveragePathIgnorePatterns": [
+    "/node_modules/",
+    "/tests/",
+    "/integration-tests/"
+  ]
 }
