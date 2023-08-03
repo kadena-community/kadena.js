@@ -12,8 +12,8 @@ export const containerClass = style([
     flexWrap: 'nowrap',
     height: '$16',
     justifyContent: 'flex-start',
-    position: 'relative',
     overflow: 'hidden',
+    position: 'relative',
   }),
   {
     selectors: {
