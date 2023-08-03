@@ -142,7 +142,7 @@ const CheckTransactions: FC = () => {
         <Grid.Item>
           <div className={headerButtonGroupClass}>
             <form onSubmit={resetFiltersEvent}>
-              <Button icon="History">{t('Reset all filters')}</Button>
+              <Button icon="TrashCan">{t('Reset all filters')}</Button>
             </form>
             <form onSubmit={refreshResultsEvent}>
               <Button icon="Refresh">{t('Reload')}</Button>
@@ -177,7 +177,7 @@ const CheckTransactions: FC = () => {
 
       <Grid.Root columns={2}>
         <Grid.Item>
-          <ContentHeader heading={t('Incoming transactions')} icon={SystemIcon.ChevronDown} description='This table is listing all the incoming transaction sorted by date.' />
+          <ContentHeader heading={t('Incoming transactions')} icon={SystemIcon.ArrowCollapseDown} description='This table is listing all the incoming transaction sorted by date.' />
           <Box marginBottom="$10" />
           <Table.Root>
             <Table.Head>
@@ -212,7 +212,7 @@ const CheckTransactions: FC = () => {
           </Table.Root>
         </Grid.Item>
         <Grid.Item>
-          <ContentHeader heading={t('Outgoing transactions')} icon={SystemIcon.ChevronUp} description='This table is listing all the outgoing transaction sorted by date.' />
+          <ContentHeader heading={t('Outgoing transactions')} icon={SystemIcon.ArrowExpandUp} description='This table is listing all the outgoing transaction sorted by date.' />
           <Box marginBottom="$10" />
           <Table.Root>
             <Table.Head>
