@@ -1,14 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import type { INavHeaderProps, INavItems } from './NavHeader';
-
-import React from 'react';
+import { NavHeaderChildren } from './NavHeader.stories.children';
+import { NavHeader, NavHeaderContent, NavHeaderNavigation } from './';
 
 import { logoVariants } from '@components/BrandLogo';
-import { NavHeader } from './';
-import { NavHeaderNavigation } from './';
-import { NavHeaderContent } from './';
-
-import { NavHeaderChildren } from './NavHeader.stories.children';
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 const navItems: INavItems = [
   {

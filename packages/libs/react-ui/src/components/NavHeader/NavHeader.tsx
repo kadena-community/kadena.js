@@ -1,18 +1,16 @@
-import React, { FC } from 'react';
-
-import type { LogoVariant } from '@components/BrandLogo';
-
-import { Link } from '@components/Link';
-import Logo, { logoVariants } from '@components/BrandLogo';
-
 import { containerClass, logoClass } from './NavHeader.css';
 
+import type { LogoVariant } from '@components/BrandLogo';
+import Logo, { logoVariants } from '@components/BrandLogo';
+import { Link } from '@components/Link';
+import React, { FC } from 'react';
+
 export type INavItemTarget = '_self' | '_blank';
-export type INavItem = {
+export interface INavItem {
   title: string;
   href: string;
   target?: INavItemTarget;
-};
+}
 export type INavItems = INavItem[];
 
 export interface INavHeaderProps {

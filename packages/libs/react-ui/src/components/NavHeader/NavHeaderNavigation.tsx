@@ -1,6 +1,4 @@
-import classNames from 'classnames';
-import React, { FC } from 'react';
-
+import { NavGlow } from './assets/glow';
 import {
   activeLinkClass,
   glowClass,
@@ -8,16 +6,17 @@ import {
   navListClass,
   navWrapperClass,
 } from './NavHeader.css';
-
-import { NavGlow } from './assets/glow';
 import useGlow from './useGlow';
 
+import classNames from 'classnames';
+import React, { FC } from 'react';
+
 export type INavItemTarget = '_self' | '_blank';
-export type INavItem = {
+export interface INavItem {
   href: string;
   target?: INavItemTarget;
   title: string;
-};
+}
 export type INavItems = INavItem[];
 
 export interface INavHeaderNavigationProps {
@@ -47,8 +46,8 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           <li key={`navItem-${index}`} onClick={() => setActiveNav(index + 1)}>
             {React.cloneElement(
               child as React.ReactElement<
-                any,
-                string | React.JSXElementConstructor<any>
+                HTMLElement,
+                string | React.JSXElementConstructor<JSX.Element>
               >,
               {
                 className: classNames(linkClass, {
