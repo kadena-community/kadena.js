@@ -1,7 +1,7 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   IContinuationPayloadObject,
-  isSignedCommand,
+  isSignedTransaction,
   Pact,
   readKeyset,
   signWithChainweaver,
@@ -97,7 +97,7 @@ async function doCrossChainTransfer(
     Promise.resolve(startInTheFirstChain(from, to, amount))
       .then((command) => signWithChainweaver(command))
       .then((command) =>
-        isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
+        isSignedTransaction(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
       )
       // inspect is only for development you can remove them
       .then(inspect('EXEC_SIGNED'))
@@ -130,7 +130,7 @@ async function doCrossChainTransfer(
       // // uncomment the following lines if you want to pay gas from your account not the gas-station
       // .then((command) => signWithChainweaver(command))
       // .then((command) =>
-      //   isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
+      //   isSignedTransaction(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
       // )
       // .then(inspect('CONT_SIGNED'))
       .then((cmd) => submit(cmd))

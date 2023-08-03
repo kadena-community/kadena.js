@@ -1,6 +1,6 @@
 import {
   getClient,
-  isSignedCommand,
+  isSignedTransaction,
   literal,
   Pact,
   readKeyset,
@@ -40,7 +40,7 @@ export async function createProject(
 
   const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-  if (isSignedCommand(signedTransaction)) {
+  if (isSignedTransaction(signedTransaction)) {
     const { submit, listen } = getClient();
     const requestKey = await submit(signedTransaction);
     console.log('requestKey', requestKey);
