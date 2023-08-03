@@ -24,7 +24,8 @@
     "react-dom": "^18.2.0",
     "@walletconnect/modal": "~2.6.1",
     "@walletconnect/sign-client": "~2.8.1",
-    "evt": "~2.4.22"
+    "evt": "~2.4.22",
+    "@kadena/client": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -40,6 +41,8 @@
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "prettier": "~3.0.0",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "pino-pretty": "~10.2.0",
+    "lokijs": "~1.5.12"
   }
 }

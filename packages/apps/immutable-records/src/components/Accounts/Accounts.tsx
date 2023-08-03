@@ -6,12 +6,28 @@ import { useWalletConnect } from '@/connect/connect.hook';
 import { FC, useEffect, useState } from 'react';
 import { container } from './Accounts.css';
 import { Button } from '@kadena/react-ui';
+import { BalanceItem, getBalance } from '@/app/services/chainweb';
 
-const KadenaAccountBalance: FC<{ account: string }> = ({ account }) => {
+const KadenaAccountBalance: FC<{ account: KadenaAccount; network: string }> = ({
+  account,
+  network,
+}) => {
+  const [balance, setBalance] = useState<string | null>(null);
+
   useEffect(() => {
-    console.log(`fetch balance ${account}`);
+    console.log(
+      `fetch balance ${account.name}, ${network}, ${account.chains[0]}`,
+    );
+    getBalance(
+      account.name,
+      network,
+      account.chains[0] as BalanceItem['chain'],
+    ).then((balance) => {
+      setBalance(balance.balance);
+    });
   }, []);
-  return 0;
+
+  return <span>{balance ?? 'loading...'}</span>;
 };
 
 const KadenaAccounts: FC<{
@@ -24,6 +40,9 @@ const KadenaAccounts: FC<{
   if (!accounts[selected]) {
     return <span>Loading accounts...</span>;
   }
+
+  const [, network] = selected?.split(':') ?? [];
+
   return (
     <div className={container}>
       <table>
@@ -38,7 +57,7 @@ const KadenaAccounts: FC<{
             <tr key={account.name}>
               <td>{account.name}</td>
               <td>
-                <KadenaAccountBalance account={account.name} />
+                <KadenaAccountBalance account={account} network={network} />
               </td>
             </tr>
           ))}
@@ -59,6 +78,8 @@ export const Accounts: FC = () => {
       getKadenaAccounts(selectedAccount);
     }
   }, [selectedAccount]);
+
+  console.log({ selectedAccount });
 
   return (
     <div>
