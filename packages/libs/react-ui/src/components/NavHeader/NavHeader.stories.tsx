@@ -3,7 +3,7 @@ import type { INavHeaderProps, INavItems } from './NavHeader';
 
 import React from 'react';
 
-import { logoVariants } from '@components/Logo';
+import { logoVariants } from '@components/BrandLogo';
 import { NavHeader } from './';
 import { NavHeaderNavigation } from './';
 import { NavHeaderContent } from './';
