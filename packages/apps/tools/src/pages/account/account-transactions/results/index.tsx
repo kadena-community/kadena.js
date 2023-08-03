@@ -177,7 +177,11 @@ const CheckTransactions: FC = () => {
 
       <Grid.Root columns={2}>
         <Grid.Item>
-          <ContentHeader heading={t('Incoming transactions')} icon={SystemIcon.ArrowCollapseDown} description='This table is listing all the incoming transaction sorted by date.' />
+          <ContentHeader
+            heading={t('Incoming transactions')}
+            icon={SystemIcon.ArrowCollapseDown}
+            description="This table is listing all the incoming transaction sorted by date."
+          />
           <Box marginBottom="$10" />
           <Table.Root>
             <Table.Head>
@@ -212,7 +216,11 @@ const CheckTransactions: FC = () => {
           </Table.Root>
         </Grid.Item>
         <Grid.Item>
-          <ContentHeader heading={t('Outgoing transactions')} icon={SystemIcon.ArrowExpandUp} description='This table is listing all the outgoing transaction sorted by date.' />
+          <ContentHeader
+            heading={t('Outgoing transactions')}
+            icon={SystemIcon.ArrowExpandUp}
+            description="This table is listing all the outgoing transaction sorted by date."
+          />
           <Box marginBottom="$10" />
           <Table.Root>
             <Table.Head>
