@@ -20,7 +20,6 @@ import RequestKeyField, {
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
 import { useToolbar } from '@/context/layout-context';
-import { useDidUpdateEffect } from '@/hooks';
 import {
   StyledAccountForm,
   StyledForm,
@@ -33,7 +32,6 @@ import {
   IStatusData,
   StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
-import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
