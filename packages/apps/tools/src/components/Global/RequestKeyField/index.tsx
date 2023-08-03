@@ -7,10 +7,17 @@ import * as z from 'zod';
 
 export const RequestLength = { MIN: 43, MAX: 44 };
 
-export const REQUEST_KEY_VALIDATION = z
-  .string()
-  .min(RequestLength.MIN)
-  .max(RequestLength.MAX);
+export const REQUEST_KEY_VALIDATION = z.string().refine(
+  (val) => {
+    if (val.length === RequestLength.MAX) {
+      return val[val.length - 1] === '=';
+    }
+    return val.length === RequestLength.MIN;
+  },
+  {
+    message: 'Your request key is invalid. Please provide a valid request key.',
+  },
+);
 
 interface IRequestKeyFieldProps
   extends Partial<Omit<ITextFieldProps, 'inputProps'>> {
