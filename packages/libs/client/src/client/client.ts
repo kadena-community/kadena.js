@@ -33,7 +33,7 @@ type IOptions = IPollOptions &
   (INetworkOptions | { networkId?: undefined; chainId?: undefined });
 
 /**
- * @alpha
+ * @public
  */
 export interface ISubmit {
   /**
@@ -59,7 +59,10 @@ export interface ISubmit {
   (transactionList: ICommand[]): Promise<string[]>;
 }
 
-interface IClientBasics {
+/**
+ * @public
+ */
+export interface IBaseClient {
   /**
    * Sends a command for non-transactional execution.
    * In a blockchain environment, this would be a node-local "dirty read".
@@ -168,9 +171,10 @@ interface IClientBasics {
 }
 
 /**
- * @alpha
+ * Interface for the {@link getClient | getClient()} return value
+ * @public
  */
-export interface IClient extends IClientBasics {
+export interface IClient extends IBaseClient {
   /**
    * An alias for `local` when both preflight and signatureVerification are `true`.
    * @see local
@@ -181,21 +185,25 @@ export interface IClient extends IClientBasics {
 
   /**
    * An alias for `local` when preflight is `false` and signatureVerification is `true`.
-   * @see local
+   *
+   * @remarks
+   * @see {@link IBaseClient.local | local() function}
    */
   signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
 
   /**
    * An alias for `local` when both preflight and signatureVerification are `false`.
    * This call has minimum restrictions and can be used to read data from the node.
-   * @see local
+   *
+   * @remarks
+   * @see {@link IBaseClient.local | local() function}
    */
   dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
 
   /**
    * Generates a command from the code and data, then sends it to the '/local' endpoint.
    *
-   * @see local
+   * @see {@link IBaseClient.local | local() function}
    */
   runPact: (
     code: string,
@@ -204,16 +212,18 @@ export interface IClient extends IClientBasics {
   ) => Promise<ICommandResult>;
 
   /**
-   * @deprecated Use `submit` instead.
-   *
    * Alias for `submit`.
+   * Use {@link IBaseClient.submit | submit() function}
+   *
+   * @deprecated Use `submit` instead.
    */
   send: ISubmit;
 
   /**
-   * @deprecated Use `getStatus` instead.
-   *
+   * Use {@link IBaseClient.getStatus | getStatus() function}
    * Alias for `getStatus`.
+   *
+   * @deprecated Use `getStatus` instead.
    */
   getPoll: (
     requestKeys?: string[] | string,
@@ -221,11 +231,15 @@ export interface IClient extends IClientBasics {
   ) => Promise<IPollResponse>;
 }
 
-interface IGetClient {
+/**
+ * @public
+ */
+export interface IGetClient {
   /**
    * Generates a client instance by passing the URL of the host.
    *
    * Useful when you are working with a single network and chainId.
+   * @param hostUrl - the URL to use in the client
    */
   (hostUrl: string): IClient;
 
@@ -233,6 +247,7 @@ interface IGetClient {
    * Generates a client instance by passing a hostUrlGenerator function.
    *
    * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
+   * @param hostAddressGenerator - the function that generates the URL based on `chainId` and `networkId` from the transaction
    */
   (
     hostAddressGenerator?: (options: {
@@ -243,7 +258,8 @@ interface IGetClient {
 }
 
 /**
- * @alpha
+ * Creates Chainweb client
+ * @public
  */
 export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
@@ -279,7 +295,7 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
     return requestStorage.groupByHost();
   }
 
-  const client: IClientBasics = {
+  const client: IBaseClient = {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
       const hostUrl = getHost({

@@ -1,4 +1,6 @@
-import { ICapabilityItem, IPactCommand } from '../../interfaces/IPactCommand';
+import { ICap } from '@kadena/types';
+
+import { IPactCommand } from '../../interfaces/IPactCommand';
 import {
   ExtractCapabilityType,
   IGeneralCapability,
@@ -17,12 +19,14 @@ interface IAddSigner {
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-    capability: (withCapability: ExtractType<TCommand>) => ICapabilityItem[],
+    capability: (withCapability: ExtractType<TCommand>) => ICap[],
   ): TCommand;
 }
 
 /**
- * @alpha
+ * Reducer to add a signer and capabilities on a {@link IPactCommand}
+ *
+ * @public
  */
 export const addSigner: IAddSigner = ((
   first:
@@ -33,7 +37,7 @@ export const addSigner: IAddSigner = ((
       name: string,
       ...args: unknown[]
     ) => { name: string; args: unknown[] },
-  ) => ICapabilityItem[],
+  ) => ICap[],
 ): unknown => {
   const {
     pubKey,

@@ -131,7 +131,7 @@
      *
      * Valid values are: "prerelease", "release", "minor", "patch", "major"
      */
-    "nextBump": "prerelease",
+    "nextBump": "major"
 
     /**
      * (Optional) If specified, all packages in the set share a common CHANGELOG.md file.
@@ -140,7 +140,7 @@
      * If this field is omitted, then a separate CHANGELOG.md file will be maintained for each
      * package in the set.
      */
-    "mainProject": "@kadena/client"
+    // "mainProject": "@kadena/client"
 
     /**
      * (Optional) If enabled, the "rush change" command will prompt the user for their email address

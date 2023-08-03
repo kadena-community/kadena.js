@@ -2,7 +2,7 @@ import {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import { getClient, isSignedCommand, Pact } from '@kadena/client';
+import { getClient, isSignedTransaction, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -76,7 +76,7 @@ export const fundExistingAccount = async (
 
   const { submit, pollStatus } = getClient(apiHost);
 
-  if (!isSignedCommand(transaction)) {
+  if (!isSignedTransaction(transaction)) {
     throw new Error('Transaction is not signed');
   }
 

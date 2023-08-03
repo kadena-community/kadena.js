@@ -1,4 +1,4 @@
-import { IExecPayload, IUnsignedCommand } from '@kadena/types';
+import { ICap, IExecPayload, IUnsignedCommand } from '@kadena/types';
 
 import {
   addData,
@@ -14,7 +14,6 @@ import {
 import { ValidDataTypes } from '../composePactCommand/utils/addData';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import {
-  ICapabilityItem,
   IContinuationPayloadObject,
   IPactCommand,
 } from '../interfaces/IPactCommand';
@@ -48,9 +47,7 @@ interface IAddSigner<TCommand> {
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-    capability: (
-      withCapability: ExtractCapabilityType<TCommand>,
-    ) => ICapabilityItem[],
+    capability: (withCapability: ExtractCapabilityType<TCommand>) => ICap[],
   ): IBuilder<TCommand>;
 }
 
@@ -80,7 +77,10 @@ interface IAddKeyset<TCommand> {
   ): IBuilder<TCommand>;
 }
 /**
- * @alpha
+ * The interface of the return value `Pact.builder.execution` or `Pact.builder.continuation`
+ *
+ * @see {@link IPact}
+ * @public
  */
 export interface IBuilder<TCommand> {
   /**
@@ -191,11 +191,14 @@ export interface IBuilder<TCommand> {
   getCommand: () => Partial<IPactCommand>;
 }
 
-interface IExec {
+/**
+ * @internal
+ */
+interface IExecution {
   <
     TCodes extends Array<
       | (string & {
-          capability(name: string, ...args: unknown[]): ICapabilityItem;
+          capability(name: string, ...args: unknown[]): ICap;
         })
       | string
     >,
@@ -204,16 +207,19 @@ interface IExec {
   ): IBuilder<{ payload: IExecPayload & { funs: [...TCodes] } }>;
 }
 
-interface ICont {
+/**
+ * @internal
+ */
+interface IContinuation {
   (options: IContinuationPayloadObject['cont']): IBuilder<{
     payload: IContinuationPayloadObject;
   }>;
 }
 
 /**
- * @alpha
+ * @public
  */
-export interface ICommandBuilder {
+export interface ITransactionBuilder {
   /**
    * create execution command
    *
@@ -223,7 +229,7 @@ export interface ICommandBuilder {
    *   .execution(Pact.modules.coin.transfer("bob","alice", {decimal:"10"}))
    * ```
    */
-  execution: IExec;
+  execution: IExecution;
   /**
    * create continuation command
    * @example
@@ -232,7 +238,7 @@ export interface ICommandBuilder {
    *   .continuation({ pactId:"id", proof:"spv_proof", rollback: false , step:1 , data:{} })
    * ```
    */
-  continuation: ICont;
+  continuation: IContinuation;
 }
 
 interface IStatefulCompose {
@@ -277,7 +283,7 @@ const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
       state.composeWith(
         addSigner(
           pubKey,
-          cap as (withCapability: IGeneralCapability) => ICapabilityItem[],
+          cap as (withCapability: IGeneralCapability) => ICap[],
         ) as (cmd: Partial<IPactCommand>) => Partial<IPactCommand>,
       );
       return builder;
@@ -309,16 +315,16 @@ const getBuilder = <T>(init: Partial<IPactCommand>): IBuilder<T> => {
  * returns a new instance of command builder
  * @param initial - the initial command
  *
- * @alpha
+ * @public
  */
 export const createTransactionBuilder = (
   initial?: Partial<IPactCommand>,
-): ICommandBuilder => {
+): ITransactionBuilder => {
   return {
-    execution: (...codes: string[]) => {
+    execution: (...pactExpressions: string[]) => {
       const init = initial
-        ? patchCommand(initial, execution(...codes))
-        : execution(...codes);
+        ? patchCommand(initial, execution(...pactExpressions))
+        : execution(...pactExpressions);
 
       return getBuilder(init);
     },

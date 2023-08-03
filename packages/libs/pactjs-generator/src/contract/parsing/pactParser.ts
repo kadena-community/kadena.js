@@ -151,7 +151,10 @@ const isNotDuplicatedModule = isNotDuplicated<IModuleLike>(
   (a, b) => a.name === b.name && a.namespace === b.namespace,
 );
 
-function fileParser(
+/**
+ * @alpha
+ */
+export function contractParser(
   contract: string,
   namespace: string = '',
 ): [IModule[], IPointer] {
@@ -188,7 +191,7 @@ const moduleLoader = (
   const storage = new Map<string, IModuleWithPointer>();
 
   const parseModule = (content: string, namespace?: string): void => {
-    const [modules, pointer] = fileParser(content, namespace);
+    const [modules, pointer] = contractParser(content, namespace);
     modules.forEach((mod) => {
       storage.set(getModuleFullName(mod), { ...mod, pointer });
     });

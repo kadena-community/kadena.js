@@ -1,7 +1,7 @@
 import {
   ChainId,
   createTransaction,
-  isSignedCommand,
+  isSignedTransaction,
   Pact,
   signWithChainweaver,
 } from '@kadena/client';
@@ -59,7 +59,7 @@ const doTransfer = asyncPipe(
   inspect('command'),
   createTransaction,
   signWithChainweaver,
-  (tr) => (isSignedCommand(tr) ? tr : Promise.reject('TR_NOT_SIGNED')),
+  (tr) => (isSignedTransaction(tr) ? tr : Promise.reject('TR_NOT_SIGNED')),
   // do preflight first to check if everything is ok without paying gas
   (tr) => preflight(tr).then((res) => [tr, res]),
   ([tr, res]) => (res.result.status === 'success' ? tr : Promise.reject(res)),

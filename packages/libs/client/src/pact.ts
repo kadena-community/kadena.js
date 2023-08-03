@@ -2,23 +2,28 @@ import { createExp } from '@kadena/pactjs';
 
 import {
   createTransactionBuilder,
-  ICommandBuilder,
+  ITransactionBuilder,
 } from './createTransactionBuilder/createTransactionBuilder';
 import { parseAsPactValue } from './utils/parseAsPactValue';
 
 /**
- * @alpha
+ * Interface that represents the generated Pact modules
+ * @public
  */
 export interface IPactModules {}
 
 /**
- * @alpha
+ * Interface that represents the Pact object
+ * @public
  */
 export interface IPact {
   modules: IPactModules;
-  builder: ICommandBuilder;
+  builder: ITransactionBuilder;
 }
 
+/**
+ * @internal
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getModule = (name: string): any => {
   let code = name;
@@ -52,12 +57,19 @@ const pactCreator = (): IPact => {
 };
 
 /**
- * @alpha
+ * The wrapper object that provides the Transaction builder and Contract interface
+ * @public
  */
 export const Pact: IPact = {
+  /**
+   * Generated modules
+   */
   get modules() {
     return pactCreator();
   },
+  /**
+   * Transaction builder
+   */
   get builder() {
     return createTransactionBuilder();
   },
