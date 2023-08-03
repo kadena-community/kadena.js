@@ -12,7 +12,7 @@ import {
 
 import classNames from 'classnames';
 
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import Logo, { LogoVariant, logoVariants } from '@components/Logo';
 import { NavGlow } from './assets/glow';
 import useGlow from './useGlow';
