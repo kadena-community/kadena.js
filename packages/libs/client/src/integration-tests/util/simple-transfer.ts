@@ -37,7 +37,7 @@ export async function fund(
       gasLimit: 1000,
       gasPrice: 1.0e-6,
       senderAccount: senderAccount,
-      ttl: 10 * 60, // 10 minutes
+      //ttl: 10 * 60, // 10 minutes
     })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
