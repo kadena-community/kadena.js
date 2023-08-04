@@ -1,5 +1,4 @@
-import { Button } from '@kadena/react-components';
-import { Heading, Stack, Text } from '@kadena/react-ui';
+import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 
 import Link from 'next/link';
 import React, { FC } from 'react';
