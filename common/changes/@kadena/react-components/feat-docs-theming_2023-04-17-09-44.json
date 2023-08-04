@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "make color optional for iconbutton",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

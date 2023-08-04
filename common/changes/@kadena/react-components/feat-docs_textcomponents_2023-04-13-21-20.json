@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "adding option to texttransform to the typography components",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

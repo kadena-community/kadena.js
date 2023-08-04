@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Added design system defined spacing tokens",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

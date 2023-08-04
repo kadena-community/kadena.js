@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "fix bordercolor",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

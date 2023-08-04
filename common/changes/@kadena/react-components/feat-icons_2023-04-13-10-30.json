@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Update Icons to be exposed under `SystemIcons` and added variants to the Icons.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

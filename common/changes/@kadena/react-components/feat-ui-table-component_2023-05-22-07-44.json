@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "add table component",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Update to typescript 5",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

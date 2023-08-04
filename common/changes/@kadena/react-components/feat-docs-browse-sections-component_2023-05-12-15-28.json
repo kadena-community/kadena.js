@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "add a lineheight to the theme",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Refactoring variants",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

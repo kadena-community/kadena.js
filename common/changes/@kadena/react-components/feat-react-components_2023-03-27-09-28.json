@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Adding initial setup for react-components lib",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

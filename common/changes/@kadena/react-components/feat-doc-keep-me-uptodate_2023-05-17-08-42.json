@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "update the button component to also work with form events",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

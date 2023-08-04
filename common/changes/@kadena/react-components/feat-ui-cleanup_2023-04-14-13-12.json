@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "cleanup in typopgraphy and iconbutton components",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

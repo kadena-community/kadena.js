@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "design fixes to the breadcrumb component",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

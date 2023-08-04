@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Fix for resizing the icons going from large to small icons works but the other way around doesn't",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

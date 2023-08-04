@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "New Code system icon added",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

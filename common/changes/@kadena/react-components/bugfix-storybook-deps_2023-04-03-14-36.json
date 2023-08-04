@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "Added dev dependencies for storybook modules",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}

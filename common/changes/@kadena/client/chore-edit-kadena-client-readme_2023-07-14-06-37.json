@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Edit `@kadena/client` docs (fix links + improve readability)",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

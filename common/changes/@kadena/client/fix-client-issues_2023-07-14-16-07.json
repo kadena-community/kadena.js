@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Rename createPactCommand to composePactCommand.",
+      "type": "none"
+    },
+    {
+      "packageName": "@kadena/client",
+      "comment": "Remove the wrapper payload.execution and payload.continuation.",
+      "type": "none"
+    },
+    {
+      "packageName": "@kadena/client",
+      "comment": "fix typo in `createClient().dirtyReady` to `createClient().dirtyRead`",
+      "type": "none"
+    },
+    {
+      "packageName": "@kadena/client",
+      "comment": "Improve API for ISignFunction where the input matches the output. A single transaction returns a single signed transaction and respectively for an array",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

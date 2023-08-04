@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/react-components",
+      "comment": "make dependencie versions consistent",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/react-components"
+}
