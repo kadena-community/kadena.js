@@ -1,5 +1,7 @@
 import { IPactCommand } from '../../interfaces/IPactCommand';
+import { Pact } from '../../pact';
 import { createTransaction } from '../createTransaction';
+import { literal } from '../pact-helpers';
 
 const pactCommand: IPactCommand = {
   payload: {
@@ -54,5 +56,24 @@ describe('createTransaction', () => {
     const transaction = createTransaction(command);
 
     expect(transaction.sigs).toHaveLength(0);
+  });
+  it('adds Literal values without quote to the output', () => {
+    const command = Pact.builder
+      .execution(
+        (Pact.modules as any).test['test-fun'](
+          'bob',
+          'alice',
+          literal('guard'),
+          { test: { modules: [literal('coin'), literal('free.coin')] } },
+          { decimal: '12.0' },
+        ),
+      )
+      .setNonce('nonce:1')
+      .createTransaction();
+    expect(command).toEqual({
+      cmd: '{"payload":{"exec":{"code":"(test.test-fun \\"bob\\" \\"alice\\" guard {\\"test\\":{\\"modules\\":[coin,free.coin]}} 12.0)","data":{}}},"nonce":"nonce:1","signers":[]}',
+      hash: 'Xm1CjhIcGSO7wUxKiLZxyuFi_DuOexD0eq44QW_BRjI',
+      sigs: [],
+    });
   });
 });
