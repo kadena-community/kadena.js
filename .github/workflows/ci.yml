@@ -48,7 +48,9 @@ jobs:
         with:
           path: |
             common/temp/pnpm-store
-          key: cache-pnpm-${{ runner.os }}-${{ hashFiles('common/config/rush/pnpm-lock.yaml')}}
+          key:
+            cache-pnpm-${{ runner.os }}-${{
+            hashFiles('common/config/rush/pnpm-lock.yaml')}}
           restore-keys: |
             cache-pnpm-${{runner.os}}-
             cache-pnpm-
@@ -80,6 +82,17 @@ jobs:
           key: cache-build-${{ runner.os }}
           restore-keys: |
             cache-build-
+
+      - name: Cache previous test-lint-format runs
+        if: github.ref_name != 'main'
+        uses: actions/cache@v3
+        with:
+          path: |
+            packages/*/*/.rush/temp/package-deps_format.json
+            packages/*/*/.rush/temp/package-deps_format_ci.json
+            packages/*/*/.rush/temp/package-deps_lint.json
+            packages/*/*/.rush/temp/package-deps_test.json
+          key: cache-build-${{ runner.os }}-${{ github.ref }}
 
       - name: Rush build + test (install-run-rush)
         run: |

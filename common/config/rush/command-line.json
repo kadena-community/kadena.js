@@ -118,8 +118,7 @@
       "ignoreMissingScript": true,
       "allowWarningsInSuccessfulBuild": false,
       "incremental": true,
-      "watchForChanges": false,
-      "disableBuildCache": false
+      "watchForChanges": false
     }
 
     // {
