@@ -30,6 +30,9 @@ import {
 } from './utils/utils';
 
 /**
+ * Represents the object type that the `submit` or `send` function returns,
+ * which other helper functions accept as the first input.
+ * This ensures that we always have enough data to fetch the request from the chain.
  * @public
  */
 interface IRequestObject {
@@ -49,7 +52,7 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transaction - The transaction to be submitted.
-   * @returns A promise that resolves the requestObject (including the requestKey, chianId and networkId).
+   * @returns A promise that resolves the requestObject {@link IRequestObject}
    */
   (transaction: ICommand): Promise<IRequestObject>;
 
@@ -60,7 +63,7 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves to an array of transaction hashes.
+   * @returns A promise that resolves the requestObject {@link IRequestObject}
    */
   (transactionList: ICommand[]): Promise<IRequestObject[]>;
 }
@@ -93,13 +96,12 @@ export interface IBaseClient {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves to an array of request objects.
+   * @returns A promise that resolves the requestObject {@link IRequestObject}
    */
   submit: ISubmit;
 
   /**
    * Polls the result of one or more submitted requests.
-   * If requestKeys are not passed, it polls the status of all previously submitted requests.
    * Calls the '/poll' endpoint multiple times to get the status of all requests.
    *
    * @param requestObjects - request objects to status polling.
@@ -113,12 +115,11 @@ export interface IBaseClient {
 
   /**
    * Gets the result of one or more submitted requests.
-   * If requestKeys are not passed, it polls the status of all previously submitted requests.
    * If the result is not ready, it returns an empty object.
    * Calls the '/poll' endpoint only once.
    *
-   * @param requestObjects - request objects to get status.
-   * @returns A promise that resolves to the poll response with the command result.
+   * @param requestObjects - request objects to get the status.
+   * @returns  A promise that resolves to the poll response with the command result.
    */
   getStatus: (
     requestObjects: IRequestObject[] | IRequestObject,
@@ -128,9 +129,8 @@ export interface IBaseClient {
    * Listens for the result of the request. This is a long-polling process that eventually returns the result.
    * Calls the '/listen' endpoint.
    *
-   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestObject - The request object to listen for.
+   * @param requestObjects - request objects to listen for.
    * @returns A promise that resolves to the command result.
    */
   listen: (requestObject: IRequestObject) => Promise<ICommandResult>;
@@ -139,11 +139,10 @@ export interface IBaseClient {
    * Creates an SPV proof for a request. This is required for multi-step tasks.
    * Calls the '/spv' endpoint several times to retrieve the SPV proof.
    *
-   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
    * @param requestObject - The request key for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
-   * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
+   * @param options - options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the generated SPV proof.
    */
   pollCreateSpv: (
@@ -156,11 +155,9 @@ export interface IBaseClient {
    * Creates an SPV proof for a request. This is required for multi-step tasks.
    * Calls the '/spv' endpoint only once.
    *
-   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
    * @param requestObject - The request object for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
-   * @param options - Optional network options for generating the correct host API address.
    * @returns A promise that resolves to the generated SPV proof.
    */
   createSpv: (
