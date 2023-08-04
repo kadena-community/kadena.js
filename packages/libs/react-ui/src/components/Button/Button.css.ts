@@ -1,5 +1,6 @@
+import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
-import { ColorType, vars } from '@theme/vars.css';
+import { ColorType, darkThemeClass, vars } from '@theme/vars.css';
 import {
   createVar,
   keyframes,
@@ -25,6 +26,13 @@ export const container = style([
     paddingY: '$3',
     placeItems: 'center',
     textDecoration: 'none',
+    color: {
+      lightMode: '$white',
+      darkMode: '$gray80',
+    },
+    backgroundColor: {
+      darkMode: '$blue50',
+    },
   }),
   {
     selectors: {
@@ -33,26 +41,29 @@ export const container = style([
       },
       '&:hover': {
         backgroundColor: bgHoverColor,
-        color: 'white',
+        color: colorPalette.$white,
       },
       '&:active': {
         backgroundColor: bgActiveColor,
       },
       '&:focus-visible': {
         outlineOffset: '2px',
-        outlineWidth: '$md',
+        outlineWidth: vars.borderWidths.$md,
         outlineStyle: 'solid',
         outlineColor: focusOutlineColor,
       },
       '&:disabled': {
         opacity: 0.7,
-        backgroundColor: '$neutral3',
-        color: '$neutral1',
+        backgroundColor: colorPalette.$gray60,
+        color: colorPalette.$gray10,
         cursor: 'not-allowed',
         pointerEvents: 'none',
       },
+      [`${darkThemeClass} &:hover`]: {
+        color: colorPalette.$gray100,
+        backgroundColor: colorPalette.$blue30,
+      },
     },
-    color: 'white',
     transition: 'background-color 0.4s ease',
   },
 ]);
