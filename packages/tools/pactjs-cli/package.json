@@ -16,11 +16,11 @@
     "lib"
   ],
   "scripts": {
-    "preinstall": "mkdir -p lib && touch lib/index.js && echo Workaround for pnpm binary race condition",
     "build": "heft build --clean",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
+    "preinstall": "mkdir -p lib && touch lib/index.js && echo Workaround for pnpm binary race condition",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
