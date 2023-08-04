@@ -6,16 +6,21 @@ import {
   Table,
 } from '@kadena/react-ui';
 
-import HelpCenter from './HelpCenter';
-
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import ResourceLinks from '@/components/Global/ResourceLinks';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
-import { homeWrapperClass } from '@/pages/home/styles.css';
+import {
+  helpCenterButtonClass,
+  homeWrapperClass,
+} from '@/pages/home/styles.css';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 
 const Home: FC = () => {
+  const helpCenterRef = useRef<HTMLElement | null>(null);
   const { t } = useTranslation('common');
+
   useToolbar([
     {
       title: t('Faucet'),
@@ -34,9 +39,40 @@ const Home: FC = () => {
     },
   ]);
 
+  const handleOpenHelpCenter = (): void => {
+    // @ts-ignore
+    helpCenterRef.openSection(0);
+  };
+
   return (
     <div className={homeWrapperClass}>
-      <HelpCenter />
+      <DrawerToolbar
+        ref={helpCenterRef}
+        sections={[
+          {
+            icon: SystemIcon.HelpCircle,
+            title: t('Help Center'),
+            children: (
+              <>
+                <p>
+                  Blockchain transactions are irreversible. If you make a
+                  mistake, your coins may not be recoverable. Before you
+                  transfer large sums, it is always best to do a small test
+                  transaction first and then send those coins back to the sender
+                  to verify that the receiver account works as expected.
+                </p>
+                <ResourceLinks
+                  links={[
+                    { title: 'Pact Language Resources', href: '#' },
+                    { title: 'Whitepaper', href: '#' },
+                    { title: 'KadenaJs', href: '#' },
+                  ]}
+                />
+              </>
+            ),
+          },
+        ]}
+      />
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Kadena Tools')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Startpage')}</Breadcrumbs.Item>
@@ -51,6 +87,16 @@ const Home: FC = () => {
       <div style={{ width: '680px' }}>
         <Card fullWidth>
           <Heading variant="h5">Latest Updates</Heading>
+          <p>
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
+            If you're seeking Help click{' '}
+            <span
+              className={helpCenterButtonClass}
+              onClick={handleOpenHelpCenter}
+            >
+              HERE
+            </span>
+          </p>
           <p>
             Changelog with the latest updates to the Kadena Development Tools.
           </p>

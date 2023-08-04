@@ -1,4 +1,4 @@
-import { getClient } from '@kadena/client';
+import { createClient } from '@kadena/client';
 import { ChainId } from '@kadena/types';
 
 // you can edit this function if you want to use different network like dev-net or a private net
@@ -36,4 +36,4 @@ export const {
   pollStatus,
   getStatus,
   createSpv,
-} = getClient(apiHostGenerator);
+} = createClient(apiHostGenerator);

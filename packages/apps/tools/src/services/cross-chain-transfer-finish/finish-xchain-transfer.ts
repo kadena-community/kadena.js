@@ -34,7 +34,8 @@ export async function finishXChainTransfer(
         gasLimit: 850,
       })
       .createTransaction();
-    return await client.submit(continuationTransaction as ICommand);
+    return (await client.submit(continuationTransaction as ICommand))
+      .requestKey;
   } catch (e) {
     debug(e.message);
     return { error: e.message };

@@ -1,5 +1,5 @@
 import { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
-import { getClient } from '@kadena/client';
+import { createClient } from '@kadena/client';
 import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
@@ -65,8 +65,12 @@ export async function getTransferData({
         networkId: chainNetwork[network].network,
         chainId: convertIntToChainId(chainId),
       });
-      const { getStatus } = getClient(host);
-      return getStatus(requestKey);
+      const { getStatus } = createClient(host);
+      return getStatus({
+        requestKey,
+        chainId: convertIntToChainId(chainId),
+        networkId: chainNetwork[network].network,
+      });
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 

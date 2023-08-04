@@ -21,6 +21,28 @@ import fetch from 'cross-fetch';
 describe('signWithChainweaver', () => {
   jest.setTimeout(1000);
 
+  it('throws an error when nothing is to be signed', async () => {
+    try {
+      await (signWithChainweaver as (arg: unknown) => {})(undefined);
+    } catch (e) {
+      expect(e).toBeTruthy();
+    }
+  });
+
+  it('throws when an error is returned', async () => {
+    (fetch as jest.Mock).mockResolvedValue({
+      status: 200,
+      text: () => JSON.stringify({ responses: [] } as IQuicksignResponse),
+      json: () => {},
+    });
+
+    try {
+      await (signWithChainweaver as (arg: unknown) => {})(undefined);
+    } catch (e) {
+      expect(e).toBeTruthy();
+    }
+  });
+
   it('makes a call on 127.0.0.1:9467/v1/quicksign with transaction', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       status: 200,

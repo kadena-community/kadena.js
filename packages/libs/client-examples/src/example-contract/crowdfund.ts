@@ -1,5 +1,5 @@
 import {
-  getClient,
+  createClient,
   isSignedTransaction,
   literal,
   Pact,
@@ -41,10 +41,10 @@ export async function createProject(
   const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
   if (isSignedTransaction(signedTransaction)) {
-    const { submit, listen } = getClient();
-    const requestKey = await submit(signedTransaction);
-    console.log('requestKey', requestKey);
-    const response = await listen(requestKey);
+    const { submit, listen } = createClient();
+    const transactionDescriptor = await submit(signedTransaction);
+    console.log('transactionDescriptor', transactionDescriptor);
+    const response = await listen(transactionDescriptor);
     if (response.result.status === 'success') {
       console.log('success', response);
       return;
