@@ -42,9 +42,9 @@ export async function createProject(
 
   if (isSignedTransaction(signedTransaction)) {
     const { submit, listen } = getClient();
-    const requestKey = await submit(signedTransaction);
-    console.log('requestKey', requestKey);
-    const response = await listen(requestKey);
+    const requestObject = await submit(signedTransaction);
+    console.log('requestObject', requestObject);
+    const response = await listen(requestObject);
     if (response.result.status === 'success') {
       console.log('success', response);
       return;
