@@ -3,7 +3,7 @@
     "name": "@kadena/js-monorepo",
     "version": "1.0.0",
     "private": true,
-    "path": "/Users/lars/p/kadena/kadena.js"
+    "path": "."
   },
   {
     "name": "@kadena/docs",

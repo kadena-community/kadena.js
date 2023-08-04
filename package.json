@@ -13,7 +13,7 @@
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:fix-versions": "syncpack fix-mismatches",
     "test": "turbo run test",
-    "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > workspace.json"
+    "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > packages.json"
   },
   "engines": {
     "node": ">=16",
