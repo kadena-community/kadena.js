@@ -58,21 +58,27 @@
       "commandKind": "bulk",
       "name": "format",
       "summary": "Runs prettier in all projects",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "ignoreDependencyOrder": true,
+      "incremental": true
     },
 
     {
       "commandKind": "bulk",
       "name": "format:ci",
       "summary": "Runs prettier in all projects (CI mode)",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "ignoreDependencyOrder": true,
+      "incremental": true
     },
 
     {
       "commandKind": "bulk",
       "name": "markdown",
       "summary": "Formats markdown with remark plugins in all projects",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "ignoreDependencyOrder": true,
+      "incremental": true
     },
 
     {
@@ -82,11 +88,11 @@
       "safeForSimultaneousRushProcesses": false,
       // default: false. this can be run simultaneousely
       "enableParallelism": true,
-      "ignoreDependencyOrder": false,
+      "ignoreDependencyOrder": true,
       // default: false. this command is just for convenience
       "ignoreMissingScript": true,
       "allowWarningsInSuccessfulBuild": false,
-      "incremental": false,
+      "incremental": true,
       "watchForChanges": false,
       "disableBuildCache": false
     }
