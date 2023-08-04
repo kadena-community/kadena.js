@@ -7,7 +7,7 @@ import {
   transformVariant,
 } from './Text.css';
 
-import className from 'classnames';
+import cn from 'classnames';
 import React, { FC } from 'react';
 
 export interface ITextProps {
@@ -31,7 +31,7 @@ export const Text: FC<ITextProps> = ({
   transform = 'none',
   children,
 }) => {
-  const classList = className(
+  const classList = cn(
     elementVariant[variant],
     fontVariant[font],
     sizeVariant[size],

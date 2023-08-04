@@ -1,4 +1,4 @@
-import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
+import { isSignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
 import { listen, submit } from './util/client';
@@ -25,7 +25,7 @@ async function transfer(
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', sender, receiver, amount),
     ])
-    .setMeta({ chainId: '0', sender })
+    .setMeta({ chainId: '0', senderAccount: sender })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
@@ -34,7 +34,7 @@ async function transfer(
   const signedTr = await signWithChainweaver(transaction);
   console.log('transation.sigs', JSON.stringify(signedTr.sigs, null, 2));
 
-  if (isSignedCommand(signedTr)) {
+  if (isSignedTransaction(signedTr)) {
     const requestKey = await submit(signedTr);
     const response = await listen(requestKey);
     if (response.result.status === 'failure') {

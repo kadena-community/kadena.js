@@ -4,7 +4,8 @@ import { IUnsignedCommand } from '@kadena/types';
 import { IPactCommand } from '../interfaces/IPactCommand';
 
 /**
- * @alpha
+ * Prepare a transaction object. Creates an object with hash, cmd and sigs ({@link @kadena/types#IUnsignedCommand})
+ * @public
  */
 export const createTransaction: (
   pactCommand: Partial<IPactCommand>,

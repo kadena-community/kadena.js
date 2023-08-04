@@ -18,7 +18,7 @@ export const describeModule = async (
   moduleName: string,
   chainId: ChainwebChainId,
   network: Network,
-  sender: string = kadenaConstants.DEFAULT_SENDER,
+  senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
@@ -34,7 +34,7 @@ export const describeModule = async (
 
   const transaction = Pact.builder
     .execution(`(describe-module "${moduleName}")`)
-    .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
+    .setMeta({ gasLimit, gasPrice, ttl, senderAccount, chainId })
     .setNetworkId(networkId)
     .createTransaction();
 

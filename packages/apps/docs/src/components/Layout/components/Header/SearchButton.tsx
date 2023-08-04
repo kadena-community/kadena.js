@@ -1,4 +1,4 @@
-import { SystemIcons } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
 import { StyledSearchButton, StyledSearchButtonSlash } from './styles';
 
@@ -9,9 +9,9 @@ export const SearchButton: FC = () => {
   const { handleOpenSearch } = useOpenSearch();
   return (
     <StyledSearchButton onClick={handleOpenSearch}>
-      <SystemIcons.Magnify />
+      <SystemIcon.Magnify />
       <StyledSearchButtonSlash>
-        <SystemIcons.SlashForward />
+        <SystemIcon.SlashForward />
       </StyledSearchButtonSlash>
     </StyledSearchButton>
   );

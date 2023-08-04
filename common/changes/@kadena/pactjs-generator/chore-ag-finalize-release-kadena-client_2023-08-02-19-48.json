@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "Use ICap from @kadena/types instead of ICapabilityItem",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}

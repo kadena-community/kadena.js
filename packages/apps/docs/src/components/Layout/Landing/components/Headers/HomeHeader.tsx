@@ -1,8 +1,7 @@
-import { Stack } from '@kadena/react-components';
-import { GradientText, Heading } from '@kadena/react-ui';
+import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
 import { mostPopularWrapper } from './style.css';
-import { StyledHeader, StyledStack, SubHeader, Wrapper } from './styles';
+import { StyledHeader, SubHeader, Wrapper } from './styles';
 
 import { MostPopular } from '@/components/MostPopular';
 import { IMostPopularPage } from '@/types/MostPopularData';
@@ -19,8 +18,8 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
         <Heading as="h1" variant="h2">
           Kadena
         </Heading>
-        <StyledStack spacing="2xl" flexWrap="wrap">
-          <Stack direction="column" spacing="2xs">
+        <Stack spacing="$2xl" wrap="wrap">
+          <Stack direction="column" spacing="$2xs">
             <Heading as="h2" variant="h4">
               Build your <GradientText>own</GradientText> Internet
             </Heading>
@@ -33,7 +32,7 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
               <MostPopular pages={popularPages} title="Most viewed docs" />
             </div>
           )}
-        </StyledStack>
+        </Stack>
       </Wrapper>
     </StyledHeader>
   );

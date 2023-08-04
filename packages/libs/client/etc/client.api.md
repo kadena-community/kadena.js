@@ -21,29 +21,34 @@ import { SessionTypes } from '@walletconnect/types';
 
 export { ChainId }
 
-// @alpha (undocumented)
+// @public
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
-// @alpha
-export const createTransactionBuilder: (initial?: Partial<IPactCommand>) => ICommandBuilder;
+// @public
+export const createTransactionBuilder: (initial?: Partial<IPactCommand>) => ITransactionBuilder;
 
-// Warning: (ae-forgotten-export) The symbol "TWalletConnectChainId" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "ISignFunction" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
+// @public
 export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
 
-// Warning: (ae-forgotten-export) The symbol "ISignSingleFunction" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignSingleFunction;
+// @public
+export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
 
-// Warning: (ae-forgotten-export) The symbol "IGetClient" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
+// @public
 export const getClient: IGetClient;
 
-// @alpha (undocumented)
+// @public (undocumented)
+export interface IBaseClient {
+    createSpv: (requestKey: string, targetChainId: ChainId, options?: INetworkOptions) => Promise<string>;
+    getStatus: (requestKeys?: string[] | string, options?: INetworkOptions) => Promise<IPollResponse>;
+    listen: (requestKey: string, options?: INetworkOptions) => Promise<ICommandResult>;
+    local: <T extends ILocalOptions>(transaction: LocalRequestBody, options?: T) => Promise<LocalResponse<T>>;
+    pollCreateSpv: (requestKey: string, targetChainId: ChainId, options?: IOptions) => Promise<string>;
+    // Warning: (ae-forgotten-export) The symbol "IOptions" needs to be exported by the entry point index.d.ts
+    pollStatus: (requestKeys?: string[] | string, options?: IOptions) => IPollRequestPromise<ICommandResult>;
+    submit: ISubmit;
+}
+
+// @public
 export interface IBuilder<TCommand> {
     // Warning: (ae-forgotten-export) The symbol "ValidDataTypes" needs to be exported by the entry point index.d.ts
     addData: (key: string, data: ValidDataTypes) => IBuilder<TCommand>;
@@ -53,9 +58,9 @@ export interface IBuilder<TCommand> {
     addSigner: IAddSigner<TCommand>;
     createTransaction: () => IUnsignedCommand;
     getCommand: () => Partial<IPactCommand>;
-    setMeta: (meta: {
-        chainId: IPactCommand['meta']['chainId'];
-    } & Partial<IPactCommand['meta']>) => IBuilder<TCommand>;
+    setMeta: (meta: Partial<Omit<IPactCommand['meta'], 'sender'>> & {
+        senderAccount?: string;
+    }) => IBuilder<TCommand>;
     setNetworkId: (id: string) => IBuilder<TCommand>;
     // Warning: (ae-forgotten-export) The symbol "ISetNonce" needs to be exported by the entry point index.d.ts
     setNonce: ISetNonce<TCommand>;
@@ -63,31 +68,186 @@ export interface IBuilder<TCommand> {
 
 export { ICap }
 
-// @alpha (undocumented)
+// @beta @deprecated (undocumented)
 export type ICapabilityItem = ICap;
 
-// @alpha (undocumented)
-export interface IChainweaverCap {
-    // (undocumented)
-    args: Array<number | string | Record<string, unknown>>;
-    // (undocumented)
-    name: string;
+// @public
+export interface IClient extends IBaseClient {
+    dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+    // @deprecated
+    getPoll: (requestKeys?: string[] | string, options?: INetworkOptions) => Promise<IPollResponse>;
+    preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
+    runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
+    // @deprecated
+    send: ISubmit;
+    signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
 }
 
-// @alpha (undocumented)
-export interface IChainweaverCapElement {
+export { ICommand }
+
+export { ICommandResult }
+
+// @public
+export interface IContinuationPayloadObject {
     // (undocumented)
-    cap: IChainweaverCap;
-    // (undocumented)
-    description: string;
-    // (undocumented)
-    role: string;
+    cont: {
+        pactId?: string;
+        step?: number;
+        rollback?: boolean;
+        data?: Record<string, unknown>;
+        proof?: string;
+    };
 }
 
-// @alpha (undocumented)
-export interface IChainweaverSignBody {
+// @public
+export interface IExecutionPayloadObject {
     // (undocumented)
-    caps: IChainweaverCapElement[];
+    exec: {
+        code?: string;
+        data?: Record<string, unknown>;
+    };
+}
+
+// @public (undocumented)
+export interface IGetClient {
+    (hostUrl: string): IClient;
+    (hostAddressGenerator?: (options: {
+        chainId: ChainId;
+        networkId: string;
+    }) => string): IClient;
+}
+
+// @public (undocumented)
+export interface INetworkOptions {
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    networkId: string;
+}
+
+// @public
+export interface IPact {
+    // (undocumented)
+    builder: ITransactionBuilder;
+    // (undocumented)
+    modules: IPactModules;
+}
+
+// @public
+export interface IPactCommand {
+    // (undocumented)
+    meta: {
+        chainId: ChainId;
+        sender?: string;
+        gasLimit?: number;
+        gasPrice?: number;
+        ttl?: number;
+        creationTime?: number;
+    };
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    nonce: string;
+    // (undocumented)
+    payload: IExecutionPayloadObject | IContinuationPayloadObject;
+    // (undocumented)
+    signers: Array<{
+        pubKey: string;
+        address?: string;
+        scheme?: 'ED25519' | 'ETH';
+        clist?: ICap[];
+    }>;
+}
+
+// @public
+export interface IPactModules {
+}
+
+// @public
+export interface IPollOptions {
+    // (undocumented)
+    interval?: number;
+    // (undocumented)
+    onPoll?: (id: string) => void;
+    // (undocumented)
+    timeout?: number;
+}
+
+// @public (undocumented)
+export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
+    requests: Record<string, Promise<T>>;
+};
+
+export { IPollResponse }
+
+export { IPreflightResult }
+
+// @public
+export interface IQuickSignRequestBody {
+    // (undocumented)
+    cmdSigDatas: IUnsignedQuicksignTransaction[];
+}
+
+// @public
+export type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
+
+// @public
+export interface IQuicksignResponseCommand {
+    // (undocumented)
+    cmd: string;
+    // (undocumented)
+    sigs: IQuicksignSigner[];
+}
+
+// @public
+export interface IQuicksignResponseError {
+    // (undocumented)
+    error: {
+        type: 'reject';
+    } | {
+        type: 'emptyList';
+    } | {
+        type: 'other';
+        msg: string;
+    };
+}
+
+// @public
+export interface IQuicksignResponseOutcomes {
+    // (undocumented)
+    responses: {
+        commandSigData: IQuicksignResponseCommand;
+        outcome: {
+            hash: string;
+            result: 'success';
+        } | {
+            msg: string;
+            result: 'failure';
+        } | {
+            result: 'noSig';
+        };
+    }[];
+}
+
+// @public
+export type IQuicksignSig = string | null;
+
+// @public
+export interface IQuicksignSigner {
+    // (undocumented)
+    pubKey: string;
+    // (undocumented)
+    sig: IQuicksignSig;
+}
+
+// @public
+export interface ISignBody {
+    // (undocumented)
+    caps: {
+        role: string;
+        description: string;
+        cap: ICap;
+    }[];
     // (undocumented)
     chainId: string;
     // (undocumented)
@@ -108,188 +268,38 @@ export interface IChainweaverSignBody {
     ttl: number;
 }
 
-// Warning: (ae-forgotten-export) The symbol "IClientBasics" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export interface IClient extends IClientBasics {
-    dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
-    // @deprecated (undocumented)
-    getPoll: (requestKeys?: string[] | string, options?: INetworkOptions) => Promise<IPollResponse>;
-    preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
-    runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
-    // @deprecated (undocumented)
-    send: ISubmit;
-    signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+// @public
+export interface ISignFunction extends ISingleSignFunction {
+    // (undocumented)
+    (transactionList: IUnsignedCommand[]): Promise<(ICommand | IUnsignedCommand)[]>;
 }
 
-export { ICommand }
-
-// @alpha (undocumented)
-export interface ICommandBuilder {
-    // Warning: (ae-forgotten-export) The symbol "ICont" needs to be exported by the entry point index.d.ts
-    continuation: ICont;
-    // Warning: (ae-forgotten-export) The symbol "IExec" needs to be exported by the entry point index.d.ts
-    execution: IExec;
+// @public
+export interface ISingleSignFunction {
+    // (undocumented)
+    (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
 }
 
-export { ICommandResult }
+// @public
+export function isSignedTransaction(command: IUnsignedCommand | ICommand): command is ICommand;
 
-// @alpha (undocumented)
-export interface IContinuationPayloadObject {
-    // (undocumented)
-    cont: {
-        pactId?: string;
-        step?: number;
-        rollback?: boolean;
-        data?: Record<string, unknown>;
-        proof?: string;
-    };
-}
-
-// @alpha (undocumented)
-export interface IExecPayloadObject {
-    // (undocumented)
-    exec: {
-        code?: string;
-        data?: Record<string, unknown>;
-    };
-}
-
-// @alpha (undocumented)
-export interface INetworkOptions {
-    // (undocumented)
-    chainId: ChainId;
-    // (undocumented)
-    networkId: string;
-}
-
-// @alpha (undocumented)
-export interface IPact {
-    // (undocumented)
-    builder: ICommandBuilder;
-    // (undocumented)
-    modules: IPactModules;
-}
-
-// @alpha (undocumented)
-export interface IPactCommand {
-    // (undocumented)
-    meta: {
-        chainId: ChainId;
-        sender?: string;
-        gasLimit?: number;
-        gasPrice?: number;
-        ttl?: number;
-        creationTime?: number;
-    };
-    // (undocumented)
-    networkId: string;
-    // (undocumented)
-    nonce: string;
-    // (undocumented)
-    payload: IExecPayloadObject | IContinuationPayloadObject;
-    // (undocumented)
-    signers: Array<{
-        pubKey: string;
-        address?: string;
-        scheme?: 'ED25519' | 'ETH';
-        clist?: ICapabilityItem[];
-    }>;
-}
-
-// @alpha (undocumented)
-export interface IPactModules {
-}
-
-// @alpha (undocumented)
-export interface IPollOptions {
-    // (undocumented)
-    interval?: number;
-    // (undocumented)
-    onPoll?: (id: string) => void;
-    // (undocumented)
-    timeout?: number;
-}
-
-// @alpha (undocumented)
-export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
-    requests: Record<string, Promise<T>>;
-};
-
-export { IPollResponse }
-
-export { IPreflightResult }
-
-// @alpha (undocumented)
-export interface IQuickSignRequestBody {
-    // (undocumented)
-    cmdSigDatas: IUnsignedQuicksignTransaction[];
-}
-
-// @alpha (undocumented)
-export type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
-
-// @alpha (undocumented)
-export interface IQuicksignResponseCommand {
-    // (undocumented)
-    cmd: string;
-    // (undocumented)
-    sigs: IQuicksignSigner[];
-}
-
-// @alpha (undocumented)
-export interface IQuicksignResponseError {
-    // (undocumented)
-    error: {
-        type: 'reject';
-    } | {
-        type: 'emptyList';
-    } | {
-        type: 'other';
-        msg: string;
-    };
-}
-
-// @alpha (undocumented)
-export interface IQuicksignResponseOutcomes {
-    // (undocumented)
-    responses: {
-        commandSigData: IQuicksignResponseCommand;
-        outcome: {
-            hash: string;
-            result: 'success';
-        } | {
-            msg: string;
-            result: 'failure';
-        } | {
-            result: 'noSig';
-        };
-    }[];
-}
-
-// @alpha (undocumented)
-export type IQuicksignSig = string | null;
-
-// @alpha (undocumented)
-export interface IQuicksignSigner {
-    // (undocumented)
-    pubKey: string;
-    // (undocumented)
-    sig: IQuicksignSig;
-}
-
-// @alpha
-export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
-
-// @alpha (undocumented)
+// @public (undocumented)
 export interface ISubmit {
     (transaction: ICommand): Promise<string>;
     (transactionList: ICommand[]): Promise<string[]>;
 }
 
+// @public (undocumented)
+export interface ITransactionBuilder {
+    // Warning: (ae-forgotten-export) The symbol "IContinuation" needs to be exported by the entry point index.d.ts
+    continuation: IContinuation;
+    // Warning: (ae-forgotten-export) The symbol "IExecution" needs to be exported by the entry point index.d.ts
+    execution: IExecution;
+}
+
 export { IUnsignedCommand }
 
-// @alpha (undocumented)
+// @public
 export interface IUnsignedQuicksignTransaction {
     // (undocumented)
     cmd: string;
@@ -297,24 +307,24 @@ export interface IUnsignedQuicksignTransaction {
     sigs: IQuicksignSigner[];
 }
 
-// @alpha (undocumented)
+// @public
 export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
 
-// @alpha (undocumented)
+// @public
 export const Pact: IPact;
 
-// @alpha (undocumented)
-export type ReadKeyset = <TKey extends string>(key: TKey) => () => `(read-keyset "${TKey}")`;
+// @public
+export const readKeyset: (key: string) => () => string;
 
-// @alpha (undocumented)
-export const readKeyset: ReadKeyset;
-
-// @alpha (undocumented)
+// @public
 export const signWithChainweaver: ISignFunction;
+
+// @public
+export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`;
 
 // Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @public
 export type WithCapability<TCode extends string & {
     capability: unknown;
 }> = ExtractCapabilityType<{

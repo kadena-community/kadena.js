@@ -101,7 +101,7 @@ describe('composePactCommand', () => {
       ]),
       setMeta({
         chainId: '1',
-        sender: 'gas-station',
+        senderAccount: 'gas-station',
         gasPrice: 381,
         gasLimit: 400,
         creationTime: 123,
@@ -272,7 +272,10 @@ describe('composePactCommand', () => {
 
   it('adds does not set sender if its not presented', () => {
     const command: Partial<IPactCommand> = composePactCommand(
-      composePactCommand(execution('(test)'), setMeta({ sender: 'test' })),
+      composePactCommand(
+        execution('(test)'),
+        setMeta({ senderAccount: 'test' }),
+      ),
       composePactCommand(execution('(test 2)'), setMeta({ chainId: '1' })),
       setMeta({
         gasLimit: 1,

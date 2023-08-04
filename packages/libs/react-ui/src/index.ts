@@ -8,6 +8,7 @@ export type {
   IBreadcrumbsProps,
   IButtonProps,
   ICardProps,
+  IContentHeaderProps,
   IGradientTextProps,
   IGridContainerProps,
   IGridItemProps,
@@ -55,6 +56,7 @@ export {
   Breadcrumbs,
   Button,
   Card,
+  ContentHeader,
   GradientText,
   Grid,
   Heading,
@@ -83,4 +85,7 @@ export {
   TrackerCard,
   Tree,
   useModal,
+  Divider,
 } from './components';
+
+export { breakpoints } from './styles';

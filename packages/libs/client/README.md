@@ -19,50 +19,53 @@ API Reference can be found here [client.api.md][1]
 `@kadena/client` allows JavaScript/TypeScript users to easily interact with the
 Kadena Blockchain.
 
-### Readme for @kadena/client\@1.0.0.alpha.1
+> **Readme for @kadena/client v1.0.0** This is the README for @kadena/client
+> v1.0.0 that introduces a new API\
+> To read the README for the old API (< 0.6.1) read [client_v0.6.1/packages/libs/client/README.md][2]
 
-This is the README for @kadena/client\@1.0.0.alpha.1 that introduces a new API\
-To read the README for the old API (< 0.6.1) read [client_v0.6.1/packages/libs/client/README.md][2]
+> **[Upgrading from @kadena/client 0.x to 1.0.0][3]**
 
-## Getting started
+# Getting started
 
 ### Transaction building
 
 Interaction with the Kadena Blockchain works in various ways. In
-`@kadena/client` we expose a [ **builder** pattern ][3] and a [ **functional**
-pattern ][4]. They can both be used with or without the use of type-definitions,
+`@kadena/client` we expose a [ **builder** pattern ][4] and a [ **functional**
+pattern ][5]. They can both be used with or without the use of type-definitions,
 but it's recommended to use the type definitions that you can [generate with the
-`@kadena/pactjs-cli`][5]
+`@kadena/pactjs-cli`][6]
 
 ### Signing
 
-There's also information on an [integrated way of signing using Chainweaver][6].
-With `@kadena/client` you can also [send a request to the blockchain][7]. That's
+There's also information on an [integrated way of signing using Chainweaver][7].
+With `@kadena/client` you can also [send a request to the blockchain][8]. That's
 covered in this article. We'll also be exploring the concepts and rationale of
 `@kadena/client`.
 
-- [@kadena/client][8]
-  - [Package @kadena/client][9]
-    - [Readme for @kadena/client@1.0.0.alpha.1][10]
-  - [Getting started][11]
-    - [Transaction building][12]
-    - [Signing][13]
-  - [Prerequisites][14]
-- [Contract-based interaction using @kadena/client][15]
-  - [Generate interfaces from the blockchain][5]
-    - [Generate interfaces locally][16]
-  - [Downloading contracts from the blockchain][17]
-  - [Building a simple transaction from the contract][18]
-    - [Notes][19]
-  - [Signing][20]
-    - [Manually signing the transaction][21]
-    - [Integrated sign request to Chainweaver desktop][6]
-    - [Signing with a WalletConnect compatible wallet][22]
-- [Using the commandBuilder][3]
-- [Using FP approach][4]
-  - [Send a request to the blockchain][7]
-  - [Further development][23]
-  - [Contact the team][24]
+- [@kadena/client](#kadenaclient)
+  - [Package @kadena/client](#package-kadenaclient)
+- [Getting started](#getting-started)
+    - [Transaction building](#transaction-building)
+    - [Signing](#signing)
+  - [Prerequisites](#prerequisites)
+  - [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
+    - [Generate interfaces from the blockchain](#generate-interfaces-from-the-blockchain)
+      - [Generate interfaces locally](#generate-interfaces-locally)
+    - [Downloading contracts from the blockchain](#downloading-contracts-from-the-blockchain)
+  - [Building a simple transaction from the contract](#building-a-simple-transaction-from-the-contract)
+    - [Notes](#notes)
+  - [Signing](#signing-1)
+    - [Manually signing the transaction](#manually-signing-the-transaction)
+    - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
+    - [Signing with a WalletConnect compatible wallet](#signing-with-a-walletconnect-compatible-wallet)
+  - [Using the commandBuilder](#using-the-commandbuilder)
+  - [Using FP approach](#using-fp-approach)
+  - [Send a request to the blockchain](#send-a-request-to-the-blockchain)
+  - [Upgrading from @kadena/client 0.x to 1.0.0](#upgrading-from-kadenaclient-0x-to-100)
+    - [Sending a transaction `transfer`](#sending-a-transaction-transfer)
+    - [Read from the blockchain `getBalance`](#read-from-the-blockchain-getbalance)
+  - [Further development](#further-development)
+  - [Contact the team](#contact-the-team)
 
 ## Prerequisites
 
@@ -78,7 +81,7 @@ npm install --save-dev @kadena/pactjs-cli typescript ts-node
 npx tsc --init
 ```
 
-# Contract-based interaction using @kadena/client
+## Contract-based interaction using @kadena/client
 
 We wanted `@kadena/client` to be independent so this is a tool that can be used
 with arbitrary contracts. That is also why you have to _generate_ the interfaces
@@ -158,7 +161,7 @@ Options:
 ## Building a simple transaction from the contract
 
 Take a look at
-[https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/simple-transfer.ts][25]
+[https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/simple-transfer.ts][27]
 for a complete example.
 
 Now that everything is bootstrapped, we can start building transactions.
@@ -199,7 +202,7 @@ const unsignedTransaction = Pact.builder
   any arguments, but `coin.TRANSFER` does.
 - The `setMeta` argument object has a `sender` property. This is a `public-key`
   and could be gas station address in some scenarios.
-- To add an **Unrestricted Signer** ([Unscoped Signature][26]), call `addSigner`
+- To add an **Unrestricted Signer** ([Unscoped Signature][28]), call `addSigner`
   without extra arguments
 
 ## Signing
@@ -209,7 +212,7 @@ transaction or with a wallet. There's currently two options in `@kadena/client`
 to sign with a wallet:
 
 1.  [WalletConnect (preferred)][22]
-2.  [Chainweaver][6]
+2.  [Chainweaver][7]
 
 ### Manually signing the transaction
 
@@ -223,7 +226,7 @@ calculated and the command will be serialized.
 Using the `transaction` we can send a sign request to Chainweaver.
 
 **Note:** This can only be done using the desktop version, not the web version,
-as it's [exposing port 9467][27].
+as it's [exposing port 9467][29].
 
 ```ts
 import { signWithChainweaver } from '@kadena/client';
@@ -235,18 +238,18 @@ const signedTransaction = signWithChainweaver(unsignedTransaction)
 ```
 
 > To **send** the transaction to the blockchain, continue with [**Send a request
-> to the blockchain**][7]
+> to the blockchain**][8]
 
 ### Signing with a WalletConnect compatible wallet
 
 There's several steps to setup a WalletConnect connections and sign with
 WalletConnect.
 
-1.  Setting up the connection using [`ClientContextProvider.tsx`][28]
+1.  Setting up the connection using [`ClientContextProvider.tsx`][30]
 2.  Use `signWithWalletConnect` to request a signature from the wallet
-    (`Transaction.tsx`)\[[https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104][29]]
+    (`Transaction.tsx`)\[[https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104][31]]
 
-# Using the commandBuilder
+## Using the commandBuilder
 
 You may prefer to not generate JavaScript code for your contracts or use
 templates. In that case, you can use the `commandBuilder` function to build a
@@ -275,7 +278,7 @@ client.local(unsignedTransaction);
 client.submit(unsignedTransaction);
 ```
 
-# Using FP approach
+## Using FP approach
 
 This library uses a couple of utility functions in order to create pactCommand
 you can import those function from `@kadena/client/fp` if you need more
@@ -283,13 +286,13 @@ flexibility on crating command like composing command or lazy loading.
 
 Here are two examples to demonstrate this:
 
-- [example-contract/functional/transfer-fp.ts][30]
-- [example-contract/functional/compose-commands.ts][31]
+- [example-contract/functional/transfer-fp.ts][32]
+- [example-contract/functional/compose-commands.ts][33]
 
 ## Send a request to the blockchain
 
 The `@kadena/client` provides a `getClient` function with some utility
-functions. this helpers calls pact api under the hood [Pactjs API][32].
+functions. this helpers calls pact api under the hood [Pactjs API][34].
 
 - `local`,
 - `submit` and
@@ -317,7 +320,7 @@ const { local, submit, getStatus, pollStatus, getSpv, pollSpv } =
 Probably the simplest call you can make is `describe-module`, but as this is not
 on the `coin` contract, we have to trick Typescript a little:
 
-Also see [example-contract/get-balance.ts][33].
+Also see [example-contract/get-balance.ts][35].
 
 ```ts
 const res = await local({
@@ -331,7 +334,155 @@ console.log(JSON.stringify(res, null, 2));
 ```
 
 A more elaborate example that includes signing, sending **and polling** can be
-found in [example-contract/transfer.ts][34]
+found in [example-contract/transfer.ts][36]
+
+## Upgrading from @kadena/client 0.x to 1.0.0
+
+The highlights of the difference between 0.x and 1.0.0 are:
+
+- the expression generation is separate from transaction building. This allows
+  for multiple statements per transaction
+- the client is it's own separate entity
+- signing is applied on a vanilla JS Object
+
+Here are two examples of old to new rewrites
+
+- [Sending a `coin.transfer` transaction][23]
+- [Reading balance using `coin.get-balance`][24]
+
+### Sending a transaction 'transfer'
+
+Old implementation
+
+```ts
+async function transaction(
+  sender: string,
+  senderPublicKey: string,
+  receiver: string,
+  amount: IPactDecimal,
+): Promise<void> {
+  const unsignedTransaction = Pact.modules.coin
+    .transfer(sender, receiver, amount)
+    .addCap('coin.GAS', senderPublicKey)
+    .addCap('coin.TRANSFER', senderPublicKey, sender, receiver, amount)
+    .setMeta({ sender }, 'testnet04');
+
+  const res = await signWithChainweaver(unsignedTransaction);
+
+  const sendRequests = res.map((tx) => {
+    console.log('sending transaction', tx.code);
+    return tx.send(testnetChain1ApiHost);
+  });
+
+  const sendResponses = await Promise.all(sendRequests);
+  sendResponses.map(async function (sendResponse: SendResponse): Promise<void> {
+    const requestKey = (await sendRequests[0]).requestKeys[0];
+    await pollMain(requestKey);
+    console.log(`Transaction '${requestKey}' finished`);
+  });
+}
+
+async function pollMain(...requestKeys: string[]): Promise<void> {
+  // ... some code to poll the status of the requestKeys
+}
+```
+
+New implementation
+
+```ts
+const NETWORK_ID: string = 'testnet04';
+
+async function transfer(
+  sender: string,
+  senderPublicKey: string,
+  receiver: string,
+  amount: IPactDecimal,
+): Promise<void> {
+  const transaction = Pact.builder
+    .execution(
+      // pact expression
+      Pact.modules.coin.transfer(sender, receiver, amount),
+    )
+    // add signers
+    .addSigner(senderPublicKey, (withCapability) => [
+      // add capabilities
+      withCapability('coin.GAS'),
+      withCapability('coin.TRANSFER', sender, receiver, amount),
+    ])
+    // set chainId and sender
+    .setMeta({ chainId: '0', sender })
+    .setNetworkId(NETWORK_ID)
+    // will create a IUnsignedTransaction { cmd, hash, sigs }
+    .createTransaction();
+
+  const signedTx = await signWithChainweaver(transaction);
+
+  // create generic client
+  const client = getClient(apiHostGenerator);
+
+  // check if all necessary signatures are added
+  if (isSignedTransaction(signedTx)) {
+    const requestKey = await client.submit(signedTx);
+    const response = await client.listen(requestKey, {});
+    if (response.result.status === 'failure') {
+      throw response.result.error;
+    } else {
+      console.log(response.result);
+    }
+  }
+}
+
+transfer(senderAccount, senderPublicKey, receiverAccount, {
+  decimal: '13.37',
+}).catch(console.error);
+```
+
+### Read from the blockchain 'getBalance'
+
+Old implementation
+
+```ts
+async function getBalance(account: string): Promise<void> {
+  // generation of transaction and expression as one, and the client is part of the transaction
+  const res = await Pact.modules.coin['get-balance'](account).local(
+    'http://host.com/chain/0/pact',
+  );
+  console.log(res);
+}
+
+const myAccount: string =
+  'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
+
+getBalance(myAccount).catch(console.error);
+```
+
+New implementation:
+
+```ts
+async function getBalance(account: string): Promise<void> {
+  // `Pact.builder.execution` accepts a number of `Pact.modules.<module>.<fun>` calls
+  const transaction = Pact.builder
+    .execution(Pact.modules.coin['get-balance'](account))
+    .setMeta({ chainId: '1' })
+    .createTransaction();
+
+  // client creation is separate from the transaction builder
+  const staticClient = getClient('http://host.com/chain/0/pact');
+  const genericClient = getClient(
+    ({ networkId, chainId }) =>
+      `http://${networkId}.host.com/chain/${chainId}/pact`,
+  );
+
+  const res = await staticClient.local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
+
+  console.log(res);
+}
+
+getBalance(account).catch(console.error);
+```
 
 ## Further development
 
@@ -344,21 +495,21 @@ isn't sufficient.
 
 We are available via Discord and Github issues:
 
-- [Github Issues][35]
-- Discord in the [#kadena-js channel][36]
+- [Github Issues][37]
+- Discord in the [#kadena-js channel][38]
 
 [1]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client/etc/client.api.md
 [2]:
   https://github.com/kadena-community/kadena.js/blob/%40kadena/client_v0.6.1/packages/libs/client/README.md
-[3]: #using-the-commandbuilder
-[4]: #using-fp-approach
-[5]: #generate-interfaces-from-the-blockchain
-[6]: #integrated-sign-request-to-chainweaver-desktop
-[7]: #send-a-request-to-the-blockchain
-[8]: #kadenaclient
-[9]: #package-kadenaclient
-[10]: #readme-for-kadenaclient100alpha1
+[3]: #upgrading-from-kadenaclient-0x-to-100
+[4]: #using-the-commandbuilder
+[5]: #using-fp-approach
+[6]: #generate-interfaces-from-the-blockchain
+[7]: #integrated-sign-request-to-chainweaver-desktop
+[8]: #send-a-request-to-the-blockchain
+[9]: #kadenaclient
+[10]: #package-kadenaclient
 [11]: #getting-started
 [12]: #transaction-building
 [13]: #signing
@@ -371,25 +522,27 @@ We are available via Discord and Github issues:
 [20]: #signing-1
 [21]: #manually-signing-the-transaction
 [22]: #signing-with-a-walletconnect-compatible-wallet
-[23]: #further-development
-[24]: #contact-the-team
-[25]:
+[23]: #sending-a-transaction-transfer
+[24]: #read-from-the-blockchain-getbalance
+[25]: #further-development
+[26]: #contact-the-team
+[27]:
   https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/simple-transfer.ts
-[26]:
-  https://pact-language.readthedocs.io/en/stable/pact-reference.html?highlight=signer#signature-capabilities
-[27]: https://kadena-io.github.io/signing-api/
 [28]:
-  https://github.com/kadena-io/wallet-connect-example/blob/main/src/providers/ClientContextProvider.tsx#L69C6-L69C6
-[29]:
-  https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104
+  https://pact-language.readthedocs.io/en/stable/pact-reference.html?highlight=signer#signature-capabilities
+[29]: https://kadena-io.github.io/signing-api/
 [30]:
-  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/functional/transfer-fp.ts
+  https://github.com/kadena-io/wallet-connect-example/blob/main/src/providers/ClientContextProvider.tsx#L69C6-L69C6
 [31]:
-  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/functional/compose-commands.ts
-[32]: https://api.chainweb.com/openapi/pact.html
+  https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104
+[32]:
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/functional/transfer-fp.ts
 [33]:
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/functional/compose-commands.ts
+[34]: https://api.chainweb.com/openapi/pact.html
+[35]:
   https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/get-balance.ts
-[34]:
+[36]:
   https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client-examples/src/example-contract/transfer.ts
-[35]: https://github.com/kadena-community/kadena.js/issues
-[36]: https://discord.com/channels/502858632178958377/1001088816859336724
+[37]: https://github.com/kadena-community/kadena.js/issues
+[38]: https://discord.com/channels/502858632178958377/1001088816859336724

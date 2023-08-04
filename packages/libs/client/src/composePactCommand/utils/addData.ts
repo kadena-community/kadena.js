@@ -10,8 +10,9 @@ export type ValidDataTypes =
   | Array<ValidDataTypes>;
 
 /**
+ * Reducer to add `data` to the {@link IPactCommand.payload}
  *
- * @alpha
+ * @public
  */
 export const addData: (
   key: string,
@@ -35,7 +36,7 @@ export const addData: (
     return patchCommand(cmd, patch as Partial<IPactCommand>);
   };
 
-interface IAddKeyset {
+export interface IAddKeyset {
   <TKey extends string, PRED extends 'keys-all' | 'keys-one' | 'keys-two'>(
     key: TKey,
     pred: PRED,
@@ -48,13 +49,3 @@ interface IAddKeyset {
     ...publicKeys: string[]
   ): (cmd: Partial<IPactCommand>) => Partial<IPactCommand>;
 }
-
-/**
- *
- * @alpha
- */
-export const addKeyset: IAddKeyset = (
-  name: string,
-  pred: string,
-  ...publicKeys: string[]
-) => addData(name, { keys: publicKeys, pred });

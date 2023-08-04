@@ -1,14 +1,18 @@
-import { Button, Text } from '@kadena/react-components';
-import { Heading } from '@kadena/react-ui';
-
-import { Section } from './styles';
+import { Button } from '@kadena/react-components';
+import { Heading, Stack, Text } from '@kadena/react-ui';
 
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 export const NotFound: FC = () => {
   return (
-    <Section direction="column" alignItems="center">
+    <Stack
+      spacing="$2"
+      paddingTop="$20"
+      paddingX={0}
+      direction="column"
+      alignItems="center"
+    >
       <Heading as="h5">Not finding the help you need?</Heading>
       <Text>Contact our support desk.</Text>
       <Link href="/help" passHref legacyBehavior>
@@ -16,6 +20,6 @@ export const NotFound: FC = () => {
           Contact us
         </Button>
       </Link>
-    </Section>
+    </Stack>
   );
 };

@@ -8,6 +8,12 @@
 
 import { PathLike } from 'fs';
 
+// Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IPointer" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export function contractParser(contract: string, namespace?: string): [IModule[], IPointer];
+
 // @alpha (undocumented)
 export class FileContractDefinition implements IContractDefinition {
     constructor({ path, namespace, logger, }: {
@@ -33,8 +39,6 @@ export class FileContractDefinition implements IContractDefinition {
     get modulesWithFunctions(): Output;
 }
 
-// Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
-//
 // @alpha (undocumented)
 export function generateDts(moduleFullName: string, modules: Record<string, IModule>): string;
 

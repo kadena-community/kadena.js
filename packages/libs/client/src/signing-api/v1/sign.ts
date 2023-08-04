@@ -1,9 +1,16 @@
+import { ICap } from '@kadena/types';
+
 /**
- * @alpha
+ * Interface for the {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | `sign v1` API}
+ * @public
  */
-export interface IChainweaverSignBody {
+export interface ISignBody {
   code: string;
-  caps: IChainweaverCapElement[];
+  caps: {
+    role: string;
+    description: string;
+    cap: ICap;
+  }[];
   data: Record<string, unknown>;
   sender: string;
   chainId: string;
@@ -12,21 +19,4 @@ export interface IChainweaverSignBody {
   ttl: number;
   signingPubKey: string;
   networkId: string;
-}
-
-/**
- * @alpha
- */
-export interface IChainweaverCapElement {
-  role: string;
-  description: string;
-  cap: IChainweaverCap;
-}
-
-/**
- * @alpha
- */
-export interface IChainweaverCap {
-  name: string;
-  args: Array<number | string | Record<string, unknown>>;
 }

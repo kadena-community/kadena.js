@@ -1,7 +1,7 @@
 import { SystemIcon } from '@components/Icon';
 import { IconType } from '@components/Icon/IconWrapper';
 import { NavFooter } from '@components/NavFooter';
-import { IFooterLinkProps, Target } from '@components/NavFooter/FooterLink';
+import { Target } from '@components/NavFooter/FooterLink';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
