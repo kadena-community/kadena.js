@@ -43,7 +43,6 @@ export interface IBaseClient {
     listen: (requestObject: IRequestObject) => Promise<ICommandResult>;
     local: <T extends ILocalOptions>(transaction: LocalRequestBody, options?: T) => Promise<LocalResponse<T>>;
     pollCreateSpv: (requestObject: IRequestObject, targetChainId: ChainId, options?: IPollOptions) => Promise<string>;
-    // Warning: (ae-forgotten-export) The symbol "IRequestObject" needs to be exported by the entry point index.d.ts
     pollStatus: (requestObjects: IRequestObject[] | IRequestObject, options?: IPollOptions) => IPollRequestPromise<ICommandResult>;
     submit: ISubmit;
 }
@@ -238,6 +237,16 @@ export interface IQuicksignSigner {
     pubKey: string;
     // (undocumented)
     sig: IQuicksignSig;
+}
+
+// @public
+export interface IRequestObject {
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    requestKey: string;
 }
 
 // @public

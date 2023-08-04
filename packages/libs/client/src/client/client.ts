@@ -35,7 +35,7 @@ import {
  * This ensures that we always have enough data to fetch the request from the chain.
  * @public
  */
-interface IRequestObject {
+export interface IRequestObject {
   requestKey: string;
   chainId: ChainId;
   networkId: string;
