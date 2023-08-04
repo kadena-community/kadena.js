@@ -7,7 +7,7 @@ import { signByKeyPair } from './sign';
 
 const NETWORK_ID: string = 'fast-development';
 
-export async function fund(
+export async function fundAccount(
   receiver: string,
   receiverKey: string,
   amount: IPactDecimal,
@@ -46,16 +46,11 @@ export async function fund(
 
   const preflightResult = await preflight(signedTx);
   if (preflightResult.result.status === 'failure') {
+    console.error(preflightResult.result.error);
     return 'Preflight Failed';
   }
 
-  if (isSignedTransaction(signedTx)) {
-    const requestKey = await submit(signedTx);
-    const response = await listen(requestKey);
-
-    if (response.result.status === 'failure') {
-      return 'Transaction failed';
-    }
-    return response.result.status;
-  }
+  const requestKey = await submit(signedTx);
+  const response = await listen(requestKey);
+  return response.result.status;
 }
