@@ -2,6 +2,26 @@
   "name": "@kadena/pactjs-generator",
   "entries": [
     {
+      "version": "1.0.0",
+      "tag": "@kadena/pactjs-generator_v1.0.0",
+      "date": "Fri, 04 Aug 2023 16:10:02 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Use ICap from @kadena/types instead of ICapabilityItem"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.13",
       "tag": "@kadena/pactjs-generator_v0.1.13",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",
