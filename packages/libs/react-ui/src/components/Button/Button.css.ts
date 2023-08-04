@@ -13,44 +13,47 @@ const bgHoverColor = createVar(),
 
 export const container = style([
   sprinkles({
-    display: 'flex',
-    placeItems: 'center',
-    gap: '$2',
+    border: 'none',
     borderRadius: '$sm',
     cursor: 'pointer',
+    display: 'flex',
+    fontSize: '$base',
+    fontWeight: '$semiBold',
+    gap: '$2',
+    lineHeight: '$normal',
     paddingX: '$4',
     paddingY: '$3',
-    border: 'none',
-    fontSize: '$base',
+    placeItems: 'center',
     textDecoration: 'none',
-    lineHeight: '$normal',
   }),
   {
     selectors: {
       '&[href]': {
         display: 'inline-flex',
       },
+      '&:hover': {
+        backgroundColor: bgHoverColor,
+        color: 'white',
+      },
+      '&:active': {
+        backgroundColor: bgActiveColor,
+      },
+      '&:focus-visible': {
+        outlineOffset: '2px',
+        outlineWidth: '$md',
+        outlineStyle: 'solid',
+        outlineColor: focusOutlineColor,
+      },
+      '&:disabled': {
+        opacity: 0.7,
+        backgroundColor: '$neutral3',
+        color: '$neutral1',
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+      },
     },
+    color: 'white',
     transition: 'background-color 0.4s ease',
-    ':hover': {
-      backgroundColor: bgHoverColor,
-    },
-    ':active': {
-      backgroundColor: bgActiveColor,
-    },
-    ':focus-visible': {
-      outlineOffset: '2px',
-      outlineWidth: vars.borderWidths.$md,
-      outlineStyle: 'solid',
-      outlineColor: focusOutlineColor,
-    },
-    ':disabled': {
-      opacity: 0.7,
-      backgroundColor: vars.colors.$neutral3,
-      color: vars.colors.$neutral1,
-      cursor: 'not-allowed',
-      pointerEvents: 'none',
-    },
   },
 ]);
 
