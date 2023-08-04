@@ -46,14 +46,18 @@ export const createSlug = (str) => {
 };
 
 const getTitle = (pageAST) => {
-  // TODO: flatten all children recursively to prevent issue with
+  // flatten all children recursively to prevent issue with
   // E.g. ## some title with `code`
   const node = pageAST.children[0];
   if (node.type !== 'heading' || node.depth !== 2) {
     throw new Error('first node is not a Heading');
   }
 
-  return node.children[0].value;
+  return node.children
+    .filter((child) => child.type === 'text')
+    .map((child) => child.value)
+    .join(' ')
+    .trim();
 };
 
 const createTreeRoot = (page) => ({
