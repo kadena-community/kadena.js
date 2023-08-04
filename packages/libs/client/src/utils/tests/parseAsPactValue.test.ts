@@ -53,4 +53,9 @@ describe('parseType', () => {
   it('returns arg, if its a boolean', () => {
     expect(parseAsPactValue(true)).toEqual(true);
   });
+
+  it("returns input, if it doesn't match with any conditions", () => {
+    const symbol = Symbol('test');
+    expect(parseAsPactValue(symbol as never)).toEqual(symbol);
+  });
 });

@@ -1,5 +1,5 @@
-import { getClient } from '@kadena/client';
+import { createClient } from '@kadena/client';
 
-const client = getClient();
+const client = createClient();
 
 export default client;

@@ -93,6 +93,7 @@ async function doCrossChainTransfer(
   to: IAccount,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
+  const state = {};
   return (
     Promise.resolve(startInTheFirstChain(from, to, amount))
       .then((command) => signWithChainweaver(command))
@@ -113,7 +114,17 @@ async function doCrossChainTransfer(
           : status,
       )
       .then((status) =>
-        Promise.all([status, pollCreateSpv(status.reqKey, to.chainId)]),
+        Promise.all([
+          status,
+          pollCreateSpv(
+            {
+              requestKey: status.reqKey,
+              networkId: NETWORK_ID,
+              chainId: from.chainId,
+            },
+            to.chainId,
+          ),
+        ]),
       )
       .then(inspect('POLL_SPV_RESULT'))
       .then(

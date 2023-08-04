@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "refactore the client's utilities in order to return or accept requestObject { requestKey, chainId, networkId }",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
