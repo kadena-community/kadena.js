@@ -54,6 +54,30 @@ jobs:
         run: |
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
 
+      - name: Cache builds
+        if: github.ref_name != 'main'
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/build-cache
+          key: cache-build-${{ runner.os }}-${{ github.ref }}
+          restore-keys: |
+            cache-build-${{runner.os}}-
+            cache-build-
+
+      # Separate build cache when running on main
+      # This cache will be used when the first build is run on a PR
+      # Hence ${{ github.ref }} is not included in the key
+      - name: Cache builds
+        if: github.ref_name == 'main'
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/build-cache
+          key: cache-build-${{ runner.os }}
+          restore-keys: |
+            cache-build-
+
       - name: Rush build + test (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js build --verbose ${{ env.AFFECTED_OR_ALL }}
