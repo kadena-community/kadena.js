@@ -1,11 +1,6 @@
 # Change Log - @kadena/pactjs-cli
 
-This log was last generated on Fri, 04 Aug 2023 16:01:37 GMT and should not be manually modified.
-
-## 1.0.0
-Fri, 04 Aug 2023 16:01:37 GMT
-
-_Version update only_
+This log was last generated on Mon, 10 Jul 2023 14:25:54 GMT and should not be manually modified.
 
 ## 0.1.5
 Mon, 10 Jul 2023 14:25:54 GMT
@@ -15,32 +10,17 @@ _Version update only_
 ## 0.1.4
 Mon, 10 Jul 2023 14:20:26 GMT
 
-### Updates
-
-- Consistent fenced code block shell language
-- Fix up lint config
-- Remove unused dependencies + fix some lint config
+_Version update only_
 
 ## 0.1.3
 Tue, 04 Jul 2023 08:27:48 GMT
 
-### Updates
-
-- Add repo-wide markdown formatting
-- Complete the formatting trilogy
-- Introduce generic package doc headers
-- Housekeeping npm-published files
-- Replace lint-staged with explicit format script
-- Rename master branch to main
-- apply new lint rules
-- Updated the README.md to have correct example usages
+_Version update only_
 
 ## 0.1.2
 Thu, 22 Jun 2023 09:46:33 GMT
 
-### Updates
-
-- disable codecoverage report
+_Version update only_
 
 ## 0.1.1
 Tue, 13 Jun 2023 13:17:28 GMT
@@ -59,11 +39,6 @@ Thu, 01 Jun 2023 20:18:44 GMT
 ### Patches
 
 - append the export to index.d.ts if it's not already there
-
-### Updates
-
-- Fix usage of `repository` and `npx` in package.json
-- use nodejs path util to make path-like strings for cross OS compability
 
 ## 0.0.12
 Fri, 03 Mar 2023 11:24:59 GMT
@@ -92,10 +67,6 @@ Mon, 16 Jan 2023 16:31:08 GMT
 
 - Adds option to choose custom interface for caps
 
-### Updates
-
-- change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig
-
 ## 0.0.7
 Thu, 15 Dec 2022 14:56:25 GMT
 
@@ -114,9 +85,7 @@ _Version update only_
 ## 0.0.4
 Tue, 01 Nov 2022 11:21:25 GMT
 
-### Updates
-
-- fix published package
+_Version update only_
 
 ## 0.0.2
 Fri, 28 Oct 2022 11:53:11 GMT

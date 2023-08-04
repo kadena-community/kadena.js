@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/types",
+      "comment": "Move sort-package-json to eslint plugin",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/types"
+}

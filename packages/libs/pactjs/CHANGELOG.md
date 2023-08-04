@@ -1,13 +1,6 @@
 # Change Log - @kadena/pactjs
 
-This log was last generated on Fri, 04 Aug 2023 16:01:37 GMT and should not be manually modified.
-
-## 0.3.1
-Fri, 04 Aug 2023 16:01:37 GMT
-
-### Patches
-
-- formatting and linting
+This log was last generated on Fri, 14 Jul 2023 10:02:16 GMT and should not be manually modified.
 
 ## 0.3.0
 Fri, 14 Jul 2023 10:02:16 GMT

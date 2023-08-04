@@ -2,34 +2,6 @@
   "name": "@kadena-dev/rush-fix-versions",
   "entries": [
     {
-      "version": "0.0.7",
-      "tag": "@kadena-dev/rush-fix-versions_v0.0.7",
-      "date": "Fri, 04 Aug 2023 16:01:37 GMT",
-      "comments": {
-        "none": [
-          {
-            "comment": "Move sort-package-json to eslint plugin"
-          },
-          {
-            "comment": "Remove format:pkg everywhere"
-          }
-        ],
-        "patch": [
-          {
-            "comment": "formatting and linting"
-          }
-        ],
-        "dependency": [
-          {
-            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
-          },
-          {
-            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.1.0`"
-          }
-        ]
-      }
-    },
-    {
       "version": "0.0.6",
       "tag": "@kadena-dev/rush-fix-versions_v0.0.6",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena-dev/heft-rig",
+      "comment": "Added \"lax\" profile that does not enforce code coverage rules",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena-dev/heft-rig"
+}
