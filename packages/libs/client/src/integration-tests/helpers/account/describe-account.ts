@@ -1,8 +1,7 @@
 import { ChainId } from '@kadena/types';
 
-import { Pact } from '../../pact';
-
-import { dirtyRead } from './client';
+import { Pact } from '../../../pact';
+import { dirtyRead } from '../client';
 
 const NETWORK_ID: string = 'fast-development';
 

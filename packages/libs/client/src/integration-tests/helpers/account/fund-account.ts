@@ -1,11 +1,14 @@
 import { ChainId, IPactDecimal } from '@kadena/types';
 
-import { isSignedTransaction, Pact, readKeyset } from '../../index';
+import { Pact, readKeyset } from '../../../index';
 
-import { listen, preflight, submit } from './client';
-import { signByKeyPair } from './sign';
+import { listen, preflight, submit } from '../client';
+import { signByKeyPair } from '../transactions/sign-transaction';
 
 const NETWORK_ID: string = 'fast-development';
+const senderAccount: string = 'sender00';
+const signerKey: string =
+  '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca';
 
 export async function fundAccount(
   receiver: string,
@@ -13,10 +16,6 @@ export async function fundAccount(
   amount: IPactDecimal,
   chain: ChainId,
 ): Promise<string | undefined> {
-  const senderAccount = 'sender00';
-  const signerKey =
-    '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca';
-
   const transaction = Pact.builder
     .execution(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +46,7 @@ export async function fundAccount(
   const preflightResult = await preflight(signedTx);
   if (preflightResult.result.status === 'failure') {
     console.error(preflightResult.result.error);
-    return 'Preflight Failed';
+    return 'Preflight failed';
   }
 
   const requestKey = await submit(signedTx);

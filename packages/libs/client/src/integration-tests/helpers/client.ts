@@ -2,7 +2,6 @@ import { ChainId, NetworkId } from '@kadena/types';
 
 import { getClient } from '../../index';
 
-// you can edit this function if you want to use different network like dev-net or a private net
 export const apiHostGenerator = ({
   networkId,
   chainId,
