@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
+import { toString } from 'mdast-util-to-string';
 
 const DOCSROOT = './src/pages/docs/';
 
@@ -53,11 +54,7 @@ const getTitle = (pageAST) => {
     throw new Error('first node is not a Heading');
   }
 
-  return node.children
-    .filter((child) => child.type === 'text')
-    .map((child) => child.value)
-    .join(' ')
-    .trim();
+  return node.children.map((child) => toString(child).trim()).join(' ');
 };
 
 const createTreeRoot = (page) => ({

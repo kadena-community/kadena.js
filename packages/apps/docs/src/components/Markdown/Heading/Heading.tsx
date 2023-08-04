@@ -2,13 +2,13 @@ import { styled, StyledComponent, SystemIcons } from '@kadena/react-components';
 import { Heading } from '@kadena/react-ui';
 
 import { createSlug } from '@/utils';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactElement } from 'react';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
   as: TagType;
   variant?: TagType;
-  children: string | string[] | ReactNode[];
+  children: ReactElement[];
   index?: number;
   parentTitle?: string;
 }
@@ -78,9 +78,17 @@ export const TaggedHeading: FC<IProp> = ({
 
   if (Array.isArray(children)) {
     slugInputStr = children
-      .filter((child) => typeof child === 'string')
-      .map((child) => (child as string)?.replace(/\s+(?=\S*$)/g, ''))
-      .filter((child) => child !== '')
+      .map((child) => {
+        if (typeof child === 'string') {
+          return (child as string).trim();
+        } else if (
+          typeof child === 'object' &&
+          typeof child.props?.children === 'string'
+        ) {
+          return child.props.children.trim();
+        }
+        return '';
+      })
       .join(' ');
   } else {
     slugInputStr = children;
