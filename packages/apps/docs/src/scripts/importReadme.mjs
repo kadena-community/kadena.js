@@ -54,7 +54,7 @@ const getTitle = (pageAST) => {
     throw new Error('first node is not a Heading');
   }
 
-  return node.children.map((child) => toString(child).trim()).join(' ');
+  return node.children.flatMap((child) => toString(child).trim()).join(' ');
 };
 
 const createTreeRoot = (page) => ({
