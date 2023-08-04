@@ -48,7 +48,10 @@ jobs:
         with:
           path: |
             common/temp/pnpm-store
-          key: cache-pnpm-${{ runner.os }}
+          key: cache-pnpm-${{ runner.os }}-${{ hashFiles('common/config/rush/pnpm-lock.yaml')}}
+          restore-keys: |
+            cache-pnpm-${{runner.os}}-
+            cache-pnpm-
 
       - name: Rush install (install-run-rush)
         run: |
