@@ -285,25 +285,18 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       });
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
 
-      return isList
-        ? requestKeys.map((key) => ({
-            requestKey: key,
-            chainId: cmd.meta.chainId,
-            networkId: cmd.networkId,
-          }))
-        : {
-            requestKey: requestKeys[0],
-            chainId: cmd.meta.chainId,
-            networkId: cmd.networkId,
-          };
+      const requestObjects = requestKeys.map((key) => ({
+        requestKey: key,
+        chainId: cmd.meta.chainId,
+        networkId: cmd.networkId,
+      }));
+
+      return isList ? requestObjects : requestObjects[0];
     }) as ISubmit,
     pollStatus(
-      requestObjects?: IRequestObject[] | IRequestObject,
+      requestObjects: IRequestObject[] | IRequestObject,
       options?: IPollOptions,
     ): IPollRequestPromise<ICommandResult> {
-      if (requestObjects === undefined) {
-        throw new Error('NO_REQUEST_KEY');
-      }
       const requestsList = Array.isArray(requestObjects)
         ? requestObjects
         : [requestObjects];
@@ -322,9 +315,6 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return mergedPollRequestPromises;
     },
     async getStatus(requestObjects) {
-      if (requestObjects === undefined) {
-        throw new Error('NO_REQUEST_KEY');
-      }
       const requestsList = Array.isArray(requestObjects)
         ? requestObjects
         : [requestObjects];
