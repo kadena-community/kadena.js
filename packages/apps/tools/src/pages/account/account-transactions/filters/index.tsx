@@ -5,22 +5,32 @@ import {
   Card,
   Grid,
   Heading,
-  Input,
-  InputWrapper,
   SystemIcon,
 } from '@kadena/react-ui';
 
 import { mainContentClass, submitClass } from './styles.css';
 
 import { ChainSelect } from '@/components/Global';
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+const schema = z.object({
+  name: NAME_VALIDATION,
+});
+
+type FormData = z.infer<typeof schema>;
 
 const CheckTransactions: FC = () => {
   const debug = Debug(
@@ -31,7 +41,6 @@ const CheckTransactions: FC = () => {
   const router = useRouter();
   const { network } = useAppContext();
   const [chainID, onChainSelectChange] = usePersistentChainID();
-  const [account, setAccount] = useState<string>('');
 
   useToolbar([
     {
@@ -41,20 +50,16 @@ const CheckTransactions: FC = () => {
     },
   ]);
 
-  async function checkTransactionsEvent(
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> {
+  async function checkTransactionsEvent(data: FormData): Promise<void> {
     debug(checkTransactionsEvent.name);
     try {
-      event.preventDefault();
-
-      if (!chainID || !account) return;
+      if (!chainID || !data.name) return;
 
       router.pathname = Routes.ACCOUNT_TRANSACTIONS_RESULTS;
       router.query = {
         network,
         chain: chainID,
-        account,
+        account: data.name,
       };
 
       await router.push(router);
@@ -62,6 +67,14 @@ const CheckTransactions: FC = () => {
       debug(e);
     }
   }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
   return (
     <div>
@@ -75,7 +88,7 @@ const CheckTransactions: FC = () => {
         {t('Account Transaction Filters')}
       </Heading>
       <section className={mainContentClass}>
-        <form onSubmit={checkTransactionsEvent}>
+        <form onSubmit={handleSubmit(checkTransactionsEvent)}>
           <Card fullWidth>
             <Heading as="h6">Filters</Heading>
             <Box marginBottom="$4" />
@@ -88,13 +101,11 @@ const CheckTransactions: FC = () => {
                 />
               </Grid.Item>
               <Grid.Item>
-                <InputWrapper label="Account" htmlFor="account">
-                  <Input
-                    onChange={(e) => setAccount(e.target.value)}
-                    id="account"
-                    leftIcon={SystemIcon.KIcon}
-                  />
-                </InputWrapper>
+                <AccountNameField
+                  inputProps={register('name')}
+                  error={errors.name}
+                  label={t('Account')}
+                />
               </Grid.Item>
             </Grid.Root>
           </Card>
