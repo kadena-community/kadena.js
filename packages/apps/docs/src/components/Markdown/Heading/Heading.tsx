@@ -8,7 +8,7 @@ type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
   as: TagType;
   variant?: TagType;
-  children: ReactElement[];
+  children: string | ReactElement[];
   index?: number;
   parentTitle?: string;
 }
