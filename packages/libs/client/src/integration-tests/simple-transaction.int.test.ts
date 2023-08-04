@@ -1,5 +1,6 @@
 import { getBalance } from './helpers/describe-account';
 import { fundAccount } from './helpers/fund-account';
+
 import { expect } from '@jest/globals';
 
 const account =
@@ -9,8 +10,8 @@ const accountKey =
 const chainId = '1';
 let balance: number;
 
-
 beforeAll(async () => {
+  // This Creates the account and adds an initial 100 KDA to it.
   const result = await fundAccount(
     account,
     accountKey,
@@ -23,7 +24,7 @@ beforeAll(async () => {
 });
 
 describe('Simple Transaction', () => {
-  it('should perform a simple transfer', async () => {
+  it('Should have balance', async () => {
     const newBalance = await getBalance(account, chainId);
     expect(newBalance).toBe(balance);
   });
