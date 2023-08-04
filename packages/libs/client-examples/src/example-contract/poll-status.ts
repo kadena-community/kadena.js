@@ -9,7 +9,7 @@ export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> 
     networkId: 'testnet04',
     chainId: '1' as ChainId,
   }));
-  // you can await for this promise, but you even can await for the result of each individual request
+  // You can await this promise, but you can also await the result of each individual request
   const results = pollStatus(transactionDescriptors, {
     onPoll: (requestKey) => {
       console.log('polling status of', requestKey);
