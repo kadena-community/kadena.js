@@ -15,6 +15,7 @@ const useGlow = (): IUseGlowReturn => {
 
   const [glowX, setGlowX] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
+
   const prevGlowX = useRef<number>(glowX);
   const glowAnimationSpeed = useRef<number>(0);
 
