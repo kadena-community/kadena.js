@@ -45,8 +45,8 @@ covered in this article. We'll also be exploring the concepts and rationale of
 - [@kadena/client](#kadenaclient)
   - [Package @kadena/client](#package-kadenaclient)
 - [Getting started](#getting-started)
-    - [Transaction building](#transaction-building)
-    - [Signing](#signing)
+  - [Transaction building](#transaction-building)
+  - [Signing](#signing)
   - [Prerequisites](#prerequisites)
   - [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
     - [Generate interfaces from the blockchain](#generate-interfaces-from-the-blockchain)
@@ -258,7 +258,7 @@ command and submit the transaction yourself:
 ```ts
 import { Pact } from '@kadena/client';
 
-const client = getClient(
+const client = createClient(
   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact',
 );
 
@@ -291,30 +291,33 @@ Here are two examples to demonstrate this:
 
 ## Send a request to the blockchain
 
-The `@kadena/client` provides a `getClient` function with some utility
+The `@kadena/client` provides a `createClient` function with some utility
 functions. this helpers calls pact api under the hood [Pactjs API][34].
 
-- `local`,
-- `submit` and
-- `pollStatus`.
+- `submit`
+- `pollStatus`
 - `getStatus`
 - `pollSpv`
 - `getSpv`
+- `local`,
+- `preflight`
+- `dirtyRead`
+- `signatureVerification`
 
-`getClient` accepts the host url or the host url generator function that handel
-url generating as pact is a multi chian network we need to change the url based
-on that.
+`createClient` accepts the host url or the host url generator function that
+handel url generating as pact is a multi chian network we need to change the url
+based on that.
 
 ```ts
 // we only want to send request to the chain 1 one the mainnet
 const hostUrl = 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact';
-const client = getClient(hostUrl);
+const client = createClient(hostUrl);
 // we need more flexibility to call different chains or even networks, then functions
 // extract networkId and chainId from the cmd part of the transaction and use the hostUrlGenerator to generate the url
 const hostUrlGenerator = ({ networkId, chainId }) =>
   `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 const { local, submit, getStatus, pollStatus, getSpv, pollSpv } =
-  getClient(hostUrlGenerator);
+  createClient(hostUrlGenerator);
 ```
 
 Probably the simplest call you can make is `describe-module`, but as this is not
@@ -418,12 +421,12 @@ async function transfer(
   const signedTx = await signWithChainweaver(transaction);
 
   // create generic client
-  const client = getClient(apiHostGenerator);
+  const client = createClient(apiHostGenerator);
 
   // check if all necessary signatures are added
   if (isSignedTransaction(signedTx)) {
-    const requestKey = await client.submit(signedTx);
-    const response = await client.listen(requestKey, {});
+    const transactionDescriptor = await client.submit(signedTx);
+    const response = await client.listen(transactionDescriptor, {});
     if (response.result.status === 'failure') {
       throw response.result.error;
     } else {
@@ -467,8 +470,8 @@ async function getBalance(account: string): Promise<void> {
     .createTransaction();
 
   // client creation is separate from the transaction builder
-  const staticClient = getClient('http://host.com/chain/0/pact');
-  const genericClient = getClient(
+  const staticClient = createClient('http://host.com/chain/0/pact');
+  const genericClient = createClient(
     ({ networkId, chainId }) =>
       `http://${networkId}.host.com/chain/${chainId}/pact`,
   );

@@ -11,7 +11,7 @@ jest.mock('@kadena/chainweb-node-client', () => ({
 import * as chainwebClient from '@kadena/chainweb-node-client';
 import { ChainId } from '@kadena/types';
 
-import { getClient } from '../client';
+import { createClient } from '../client';
 import { kadenaHostGenerator, withCounter } from '../utils/utils';
 
 const hostApiGenerator = ({
@@ -30,7 +30,7 @@ describe('client', () => {
 
     const hostUrl = 'http://test-blockchain-host.com';
 
-    const { local } = getClient(hostUrl);
+    const { local } = createClient(hostUrl);
 
     const body = {
       cmd: JSON.stringify({ networkId: 'mainnet01', meta: { chainId: '1' } }),
@@ -49,7 +49,7 @@ describe('client', () => {
   });
 
   it('uses kadenaHostGenerator if called without argument', async () => {
-    const { local } = getClient();
+    const { local } = createClient();
 
     const response = { reqKey: 'test-key' };
 
@@ -78,7 +78,7 @@ describe('client', () => {
 
       (chainwebClient.local as jest.Mock).mockResolvedValue(response);
 
-      const { local } = getClient(hostApiGenerator);
+      const { local } = createClient(hostApiGenerator);
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -104,7 +104,7 @@ describe('client', () => {
 
       (chainwebClient.send as jest.Mock).mockResolvedValue(response);
 
-      const { submit } = getClient(hostApiGenerator);
+      const { submit } = createClient(hostApiGenerator);
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -128,7 +128,7 @@ describe('client', () => {
         requestKeys: ['test-key'],
       });
 
-      const { submit } = getClient(hostApiGenerator);
+      const { submit } = createClient(hostApiGenerator);
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -139,9 +139,9 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestObject = await submit(body);
+      const transactionDescriptor = await submit(body);
 
-      expect(requestObject).toEqual({
+      expect(transactionDescriptor).toEqual({
         requestKey: 'test-key',
         chainId: '1',
         networkId: 'mainnet01',
@@ -153,7 +153,7 @@ describe('client', () => {
         requestKeys: ['test-key'],
       });
 
-      const { submit } = getClient(hostApiGenerator);
+      const { submit } = createClient(hostApiGenerator);
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -164,15 +164,15 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestObjects = await submit([body]);
+      const transactionDescriptors = await submit([body]);
 
-      expect(requestObjects).toEqual([
+      expect(transactionDescriptors).toEqual([
         { requestKey: 'test-key', chainId: '1', networkId: 'mainnet01' },
       ]);
     });
 
     it('throes an error if the command list is empty', async () => {
-      const { submit } = getClient(() => 'http://test-host.com');
+      const { submit } = createClient(() => 'http://test-host.com');
       await expect(submit([])).rejects.toThrowError(
         new Error('EMPTY_COMMAND_LIST'),
       );
@@ -200,7 +200,7 @@ describe('client', () => {
         }),
       );
 
-      const { submit, pollStatus } = getClient(hostApiGenerator);
+      const { submit, pollStatus } = createClient(hostApiGenerator);
 
       const networkId = 'mainnet01';
       const chainId = '1';
@@ -211,11 +211,11 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      const requestObject = await submit(body);
+      const transactionDescriptor = await submit(body);
 
-      expect(requestObject.requestKey).toEqual('test-key');
+      expect(transactionDescriptor.requestKey).toEqual('test-key');
 
-      const result = await pollStatus(requestObject, {
+      const result = await pollStatus(transactionDescriptor, {
         interval: 10,
       });
 
@@ -232,7 +232,7 @@ describe('client', () => {
 
       (chainwebClient.poll as jest.Mock).mockResolvedValue(response);
 
-      const { getStatus } = getClient();
+      const { getStatus } = createClient();
 
       const result = await getStatus({
         requestKey: 'test-key',
@@ -252,7 +252,7 @@ describe('client', () => {
 
       (chainwebClient.listen as jest.Mock).mockResolvedValue(response);
 
-      const { listen } = getClient();
+      const { listen } = createClient();
 
       const result = await listen({
         requestKey: 'test-key',
@@ -273,7 +273,7 @@ describe('client', () => {
 
       (chainwebClient.spv as jest.Mock).mockResolvedValue(response);
 
-      const { createSpv: getSpv } = getClient();
+      const { createSpv: getSpv } = createClient();
 
       const result = await getSpv(
         {
@@ -304,7 +304,7 @@ describe('client', () => {
         }),
       );
 
-      const { pollCreateSpv: pollSpv } = getClient('http://test-host.com');
+      const { pollCreateSpv: pollSpv } = createClient('http://test-host.com');
 
       const result = await pollSpv(
         {

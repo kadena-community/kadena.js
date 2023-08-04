@@ -4,13 +4,13 @@ import { pollStatus } from './util/client';
 
 export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> {
   const someRequestKeys = ['key1', 'key2'];
-  const requestObjects = someRequestKeys.map((requestKey) => ({
+  const transactionDescriptors = someRequestKeys.map((requestKey) => ({
     requestKey,
     networkId: 'testnet04',
     chainId: '1' as ChainId,
   }));
   // you can await for this promise, but you even can await for the result of each individual request
-  const results = pollStatus(requestObjects, {
+  const results = pollStatus(transactionDescriptors, {
     onPoll: (requestKey) => {
       console.log('polling status of', requestKey);
     },

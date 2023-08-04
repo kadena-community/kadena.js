@@ -35,7 +35,7 @@ import {
  * This ensures that we always have enough data to fetch the request from the chain.
  * @public
  */
-export interface IRequestObject {
+export interface ITransactionDescriptor {
   requestKey: string;
   chainId: ChainId;
   networkId: string;
@@ -52,9 +52,9 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transaction - The transaction to be submitted.
-   * @returns A promise that resolves the requestObject {@link IRequestObject}
+   * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
-  (transaction: ICommand): Promise<IRequestObject>;
+  (transaction: ICommand): Promise<ITransactionDescriptor>;
 
   /**
    * Submits one or more public (unencrypted) signed commands to the blockchain for execution.
@@ -63,9 +63,9 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves the requestObject {@link IRequestObject}
+   * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
-  (transactionList: ICommand[]): Promise<IRequestObject[]>;
+  (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
 }
 
 /**
@@ -96,7 +96,7 @@ export interface IBaseClient {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves the requestObject {@link IRequestObject}
+   * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
   submit: ISubmit;
 
@@ -104,12 +104,12 @@ export interface IBaseClient {
    * Polls the result of one or more submitted requests.
    * Calls the '/poll' endpoint multiple times to get the status of all requests.
    *
-   * @param requestObjects - request objects to status polling.
+   * @param transactionDescriptors - transaction descriptors to status polling.
    * @param options - options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the poll request promise with the command result.
    */
   pollStatus: (
-    requestObjects: IRequestObject[] | IRequestObject,
+    transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
     options?: IPollOptions,
   ) => IPollRequestPromise<ICommandResult>;
 
@@ -118,11 +118,11 @@ export interface IBaseClient {
    * If the result is not ready, it returns an empty object.
    * Calls the '/poll' endpoint only once.
    *
-   * @param requestObjects - request objects to get the status.
+   * @param transactionDescriptors - transaction descriptors to get the status.
    * @returns  A promise that resolves to the poll response with the command result.
    */
   getStatus: (
-    requestObjects: IRequestObject[] | IRequestObject,
+    transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
   ) => Promise<IPollResponse>;
 
   /**
@@ -130,23 +130,25 @@ export interface IBaseClient {
    * Calls the '/listen' endpoint.
    *
    *
-   * @param requestObjects - request objects to listen for.
+   * @param transactionDescriptors - transaction descriptors to listen for.
    * @returns A promise that resolves to the command result.
    */
-  listen: (requestObject: IRequestObject) => Promise<ICommandResult>;
+  listen: (
+    transactionDescriptor: ITransactionDescriptor,
+  ) => Promise<ICommandResult>;
 
   /**
    * Creates an SPV proof for a request. This is required for multi-step tasks.
    * Calls the '/spv' endpoint several times to retrieve the SPV proof.
    *
    *
-   * @param requestObject - The request key for which the SPV proof is generated.
+   * @param transactionDescriptor - The request key for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
    * @param options - options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the generated SPV proof.
    */
   pollCreateSpv: (
-    requestObject: IRequestObject,
+    transactionDescriptor: ITransactionDescriptor,
     targetChainId: ChainId,
     options?: IPollOptions,
   ) => Promise<string>;
@@ -156,18 +158,18 @@ export interface IBaseClient {
    * Calls the '/spv' endpoint only once.
    *
    *
-   * @param requestObject - The request object for which the SPV proof is generated.
+   * @param transactionDescriptor - The transaction descriptor for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
    * @returns A promise that resolves to the generated SPV proof.
    */
   createSpv: (
-    requestObject: IRequestObject,
+    transactionDescriptor: ITransactionDescriptor,
     targetChainId: ChainId,
   ) => Promise<string>;
 }
 
 /**
- * Interface for the {@link getClient | getClient()} return value
+ * Interface for the {@link createClient | createClient()} return value
  * @public
  */
 export interface IClient extends IBaseClient {
@@ -222,14 +224,14 @@ export interface IClient extends IBaseClient {
    * @deprecated Use `getStatus` instead.
    */
   getPoll: (
-    requestObjects: IRequestObject[] | IRequestObject,
+    transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
   ) => Promise<IPollResponse>;
 }
 
 /**
  * @public
  */
-export interface IGetClient {
+export interface ICreateClient {
   /**
    * Generates a client instance by passing the URL of the host.
    *
@@ -256,7 +258,9 @@ export interface IGetClient {
  * Creates Chainweb client
  * @public
  */
-export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
+export const createClient: ICreateClient = (
+  host = kadenaHostGenerator,
+): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
 
   const client: IBaseClient = {
@@ -282,21 +286,21 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       });
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
 
-      const requestObjects = requestKeys.map((key) => ({
+      const transactionDescriptors = requestKeys.map((key) => ({
         requestKey: key,
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       }));
 
-      return isList ? requestObjects : requestObjects[0];
+      return isList ? transactionDescriptors : transactionDescriptors[0];
     }) as ISubmit,
     pollStatus(
-      requestObjects: IRequestObject[] | IRequestObject,
+      transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
       options?: IPollOptions,
     ): IPollRequestPromise<ICommandResult> {
-      const requestsList = Array.isArray(requestObjects)
-        ? requestObjects
-        : [requestObjects];
+      const requestsList = Array.isArray(transactionDescriptors)
+        ? transactionDescriptors
+        : [transactionDescriptors];
       const results = groupByHost(
         requestsList.map(({ requestKey, chainId, networkId }) => ({
           requestKey,
@@ -311,10 +315,10 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
       return mergedPollRequestPromises;
     },
-    async getStatus(requestObjects) {
-      const requestsList = Array.isArray(requestObjects)
-        ? requestObjects
-        : [requestObjects];
+    async getStatus(transactionDescriptors) {
+      const requestsList = Array.isArray(transactionDescriptors)
+        ? transactionDescriptors
+        : [transactionDescriptors];
 
       const results = await Promise.all(
         groupByHost(

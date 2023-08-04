@@ -55,8 +55,8 @@ async function main(): Promise<void> {
   console.log('preflight successful');
 
   if (isSignedTransaction(signedTx)) {
-    const requestObject = await submit(signedTx);
-    const result = await listen(requestObject);
+    const transactionDescriptor = await submit(signedTx);
+    const result = await listen(transactionDescriptor);
     console.log(result);
   }
 }

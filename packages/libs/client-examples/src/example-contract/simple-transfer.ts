@@ -35,8 +35,8 @@ async function transfer(
   console.log('transation.sigs', JSON.stringify(signedTr.sigs, null, 2));
 
   if (isSignedTransaction(signedTr)) {
-    const requestObject = await submit(signedTr);
-    const response = await listen(requestObject);
+    const transactionDescriptor = await submit(signedTr);
+    const response = await listen(transactionDescriptor);
     if (response.result.status === 'failure') {
       throw response.result.error;
     } else {

@@ -1,5 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { getClient, Pact } from '@kadena/client';
+import { createClient, Pact } from '@kadena/client';
 
 import {
   getKadenaConstantByNetwork,
@@ -26,7 +26,7 @@ export const listModules = async (
 ): Promise<IModulesResult> => {
   debug(listModules.name);
   const networkId = chainNetwork[network].network;
-  const { local } = getClient(
+  const { local } = createClient(
     getKadenaConstantByNetwork(network).apiHost({
       networkId,
       chainId,

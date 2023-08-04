@@ -22,6 +22,9 @@ import { SessionTypes } from '@walletconnect/types';
 export { ChainId }
 
 // @public
+export const createClient: ICreateClient;
+
+// @public
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
 // @public
@@ -33,17 +36,14 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 // @public
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
 
-// @public
-export const getClient: IGetClient;
-
 // @public (undocumented)
 export interface IBaseClient {
-    createSpv: (requestObject: IRequestObject, targetChainId: ChainId) => Promise<string>;
-    getStatus: (requestObjects: IRequestObject[] | IRequestObject) => Promise<IPollResponse>;
-    listen: (requestObject: IRequestObject) => Promise<ICommandResult>;
+    createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId) => Promise<string>;
+    getStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
+    listen: (transactionDescriptor: ITransactionDescriptor) => Promise<ICommandResult>;
     local: <T extends ILocalOptions>(transaction: LocalRequestBody, options?: T) => Promise<LocalResponse<T>>;
-    pollCreateSpv: (requestObject: IRequestObject, targetChainId: ChainId, options?: IPollOptions) => Promise<string>;
-    pollStatus: (requestObjects: IRequestObject[] | IRequestObject, options?: IPollOptions) => IPollRequestPromise<ICommandResult>;
+    pollCreateSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId, options?: IPollOptions) => Promise<string>;
+    pollStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: IPollOptions) => IPollRequestPromise<ICommandResult>;
     submit: ISubmit;
 }
 
@@ -74,7 +74,7 @@ export type ICapabilityItem = ICap;
 export interface IClient extends IBaseClient {
     dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
     // @deprecated
-    getPoll: (requestObjects: IRequestObject[] | IRequestObject) => Promise<IPollResponse>;
+    getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
     preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
     runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
     // @deprecated
@@ -98,6 +98,15 @@ export interface IContinuationPayloadObject {
     };
 }
 
+// @public (undocumented)
+export interface ICreateClient {
+    (hostUrl: string): IClient;
+    (hostAddressGenerator?: (options: {
+        chainId: ChainId;
+        networkId: string;
+    }) => string): IClient;
+}
+
 // @public
 export interface IExecutionPayloadObject {
     // (undocumented)
@@ -105,15 +114,6 @@ export interface IExecutionPayloadObject {
         code?: string;
         data?: Record<string, unknown>;
     };
-}
-
-// @public (undocumented)
-export interface IGetClient {
-    (hostUrl: string): IClient;
-    (hostAddressGenerator?: (options: {
-        chainId: ChainId;
-        networkId: string;
-    }) => string): IClient;
 }
 
 // @public (undocumented)
@@ -240,16 +240,6 @@ export interface IQuicksignSigner {
 }
 
 // @public
-export interface IRequestObject {
-    // (undocumented)
-    chainId: ChainId;
-    // (undocumented)
-    networkId: string;
-    // (undocumented)
-    requestKey: string;
-}
-
-// @public
 export interface ISignBody {
     // (undocumented)
     caps: {
@@ -294,8 +284,8 @@ export function isSignedTransaction(command: IUnsignedCommand | ICommand): comma
 
 // @public (undocumented)
 export interface ISubmit {
-    (transaction: ICommand): Promise<IRequestObject>;
-    (transactionList: ICommand[]): Promise<IRequestObject[]>;
+    (transaction: ICommand): Promise<ITransactionDescriptor>;
+    (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
 }
 
 // @public (undocumented)
@@ -304,6 +294,16 @@ export interface ITransactionBuilder {
     continuation: IContinuation;
     // Warning: (ae-forgotten-export) The symbol "IExecution" needs to be exported by the entry point index.d.ts
     execution: IExecution;
+}
+
+// @public
+export interface ITransactionDescriptor {
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    requestKey: string;
 }
 
 export { IUnsignedCommand }
