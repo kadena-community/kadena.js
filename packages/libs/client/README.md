@@ -305,7 +305,7 @@ functions. this helpers calls pact api under the hood [Pactjs API][34].
 - `signatureVerification`
 
 `createClient` accepts the host url or the host url generator function that
-handel url generating as pact is a multi chian network we need to change the url
+handles url generating as pact is a multi chain network we need to change the url
 based on that.
 
 ```ts
