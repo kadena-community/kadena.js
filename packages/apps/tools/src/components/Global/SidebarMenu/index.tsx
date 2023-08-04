@@ -1,10 +1,11 @@
+import { SystemIcon } from '@kadena/react-ui';
+
 import { NavLink } from '@/components/Global/NavLink';
 import { StyledSidebar } from '@/components/Global/SidebarMenu/styles';
 import routes from '@/constants/routes';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
-import { SystemIcon } from '@kadena/react-ui';
 
 export const SidebarMenu: FC = (props) => {
   const { t } = useTranslation('common');

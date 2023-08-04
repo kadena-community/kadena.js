@@ -79,7 +79,7 @@ const CrossChainTransferTracker: FC = () => {
     setData({});
   }, [network]);
 
-  const checkRequestKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const checkRequestKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     e.preventDefault();
     debug(checkRequestKey.name);
 
