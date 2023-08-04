@@ -1,9 +1,9 @@
-import { sign } from '@kadena/cryptography-utils';
-import { ICommand, IPactDecimal, IUnsignedCommand } from '@kadena/types';
+import { ChainId, IPactDecimal } from '@kadena/types';
 
 import { isSignedTransaction, Pact, readKeyset } from '../../index';
 
 import { listen, preflight, submit } from './client';
+import { signByKeyPair } from './sign';
 
 const NETWORK_ID: string = 'fast-development';
 
@@ -11,7 +11,8 @@ export async function fund(
   receiver: string,
   receiverKey: string,
   amount: IPactDecimal,
-): Promise<void> {
+  chain: ChainId,
+): Promise<string | undefined> {
   const senderAccount = 'sender00';
   const signerKey =
     '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca';
@@ -33,11 +34,10 @@ export async function fund(
     ])
     .addKeyset('ks', 'keys-all', receiverKey)
     .setMeta({
-      chainId: '1',
+      chainId: chain,
       gasLimit: 1000,
       gasPrice: 1.0e-6,
       senderAccount: senderAccount,
-      //ttl: 10 * 60, // 10 minutes
     })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
@@ -46,8 +46,7 @@ export async function fund(
 
   const preflightResult = await preflight(signedTx);
   if (preflightResult.result.status === 'failure') {
-    console.error(preflightResult.result.status);
-    throw new Error('failure');
+    return 'Preflight Failed';
   }
 
   if (isSignedTransaction(signedTx)) {
@@ -55,22 +54,8 @@ export async function fund(
     const response = await listen(requestKey);
 
     if (response.result.status === 'failure') {
-      console.error(response);
-      throw new Error('Transaction failed');
+      return 'Transaction failed';
     }
+    return response.result.status;
   }
-}
-
-function signByKeyPair(transaction: IUnsignedCommand): ICommand {
-  const { sig } = sign(transaction.cmd, {
-    secretKey:
-      '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
-    publicKey:
-      '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-  });
-  if (sig === undefined) {
-    throw new Error('SIG_IS_UNDEFINED');
-  }
-  transaction.sigs = [{ sig }];
-  return transaction as ICommand;
 }
