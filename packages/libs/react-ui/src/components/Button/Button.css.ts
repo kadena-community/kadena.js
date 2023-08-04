@@ -39,30 +39,30 @@ export const container = style([
       '&[href]': {
         display: 'inline-flex',
       },
-      '&:hover': {
-        backgroundColor: bgHoverColor,
-        color: colorPalette.$white,
-      },
-      '&:active': {
-        backgroundColor: bgActiveColor,
-      },
-      '&:focus-visible': {
-        outlineOffset: '2px',
-        outlineWidth: vars.borderWidths.$md,
-        outlineStyle: 'solid',
-        outlineColor: focusOutlineColor,
-      },
-      '&:disabled': {
-        opacity: 0.7,
-        backgroundColor: colorPalette.$gray60,
-        color: colorPalette.$gray10,
-        cursor: 'not-allowed',
-        pointerEvents: 'none',
-      },
       [`${darkThemeClass} &:hover`]: {
         color: colorPalette.$gray100,
         backgroundColor: colorPalette.$blue30,
       },
+    },
+    ':hover': {
+      backgroundColor: bgHoverColor,
+      color: colorPalette.$white,
+    },
+    ':active': {
+      backgroundColor: bgActiveColor,
+    },
+    ':focus-visible': {
+      outlineOffset: '2px',
+      outlineWidth: vars.borderWidths.$md,
+      outlineStyle: 'solid',
+      outlineColor: focusOutlineColor,
+    },
+    ':disabled': {
+      opacity: 0.7,
+      backgroundColor: colorPalette.$gray60,
+      color: colorPalette.$gray10,
+      cursor: 'not-allowed',
+      pointerEvents: 'none',
     },
     transition: 'background-color 0.4s ease',
   },
