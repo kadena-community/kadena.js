@@ -16,6 +16,7 @@ export const containerClass = style([
     position: 'relative',
   }),
   {
+    alignItems: 'center',
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -33,7 +34,6 @@ export const logoClass = style([
     marginLeft: '$3',
   }),
   {
-    alignSelf: 'center',
     zIndex: 1,
   },
 ]);
@@ -53,7 +53,6 @@ export const navListClass = style([
     justifyContent: 'center',
   }),
   {
-    alignSelf: 'center',
     listStyle: 'none',
     zIndex: 1,
   },
@@ -72,7 +71,6 @@ export const linkClass = style([
     textDecoration: 'none',
   }),
   {
-    alignSelf: 'center',
     padding: `${vars.sizes.$1} ${vars.sizes.$2}`,
     transition: 'background 0.1s ease, color 0.1s ease',
   },
@@ -115,9 +113,6 @@ export const childrenClass = style([
     marginLeft: 'auto',
     marginRight: '$3',
   }),
-  {
-    alignSelf: 'center',
-  },
 ]);
 
 export const glowClass = style([
