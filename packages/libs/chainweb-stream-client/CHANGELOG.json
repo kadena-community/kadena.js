@@ -2,6 +2,42 @@
   "name": "@kadena/chainweb-stream-client",
   "entries": [
     {
+      "version": "0.1.0",
+      "tag": "@kadena/chainweb-stream-client_v0.1.0",
+      "date": "Fri, 04 Aug 2023 16:01:37 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Move sort-package-json to eslint plugin"
+          },
+          {
+            "comment": "Changed `heights` event implementation to match server (previous implementation was not released or even merged)"
+          },
+          {
+            "comment": "Remove format:pkg everywhere"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Changed reconnection strategy, added handling of `heights` event"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "formatting and linting"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.8",
       "tag": "@kadena/chainweb-stream-client_v0.0.8",
       "date": "Fri, 14 Jul 2023 10:02:16 GMT",

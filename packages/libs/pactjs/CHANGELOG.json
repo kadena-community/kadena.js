@@ -2,6 +2,37 @@
   "name": "@kadena/pactjs",
   "entries": [
     {
+      "version": "0.3.1",
+      "tag": "@kadena/pactjs_v0.3.1",
+      "date": "Fri, 04 Aug 2023 16:01:37 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Move sort-package-json to eslint plugin"
+          },
+          {
+            "comment": "Remove format:pkg everywhere"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "formatting and linting"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.0",
       "tag": "@kadena/pactjs_v0.3.0",
       "date": "Fri, 14 Jul 2023 10:02:16 GMT",

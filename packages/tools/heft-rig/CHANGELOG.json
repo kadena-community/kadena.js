@@ -2,6 +2,36 @@
   "name": "@kadena-dev/heft-rig",
   "entries": [
     {
+      "version": "0.1.0",
+      "tag": "@kadena-dev/heft-rig_v0.1.0",
+      "date": "Fri, 04 Aug 2023 16:01:37 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Move sort-package-json to eslint plugin"
+          },
+          {
+            "comment": "Remove format:pkg everywhere"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Added \"lax\" profile that does not enforce code coverage rules"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "formatting and linting"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.10",
       "tag": "@kadena-dev/heft-rig_v0.0.10",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

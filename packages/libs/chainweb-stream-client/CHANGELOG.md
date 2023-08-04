@@ -1,6 +1,17 @@
 # Change Log - @kadena/chainweb-stream-client
 
-This log was last generated on Fri, 14 Jul 2023 10:02:16 GMT and should not be manually modified.
+This log was last generated on Fri, 04 Aug 2023 16:01:37 GMT and should not be manually modified.
+
+## 0.1.0
+Fri, 04 Aug 2023 16:01:37 GMT
+
+### Minor changes
+
+- Changed reconnection strategy, added handling of `heights` event
+
+### Patches
+
+- formatting and linting
 
 ## 0.0.8
 Fri, 14 Jul 2023 10:02:16 GMT

@@ -1,6 +1,34 @@
 # Change Log - @kadena/client
 
-This log was last generated on Mon, 10 Jul 2023 14:25:54 GMT and should not be manually modified.
+This log was last generated on Fri, 04 Aug 2023 16:01:37 GMT and should not be manually modified.
+
+## 1.0.0
+Fri, 04 Aug 2023 16:01:37 GMT
+
+### Updates
+
+- prepare for final release of 1.0.0
+- Edit `@kadena/client` docs (fix links + improve readability)
+- Move sort-package-json to eslint plugin
+- Fix devDep for client
+- add jsdoc to client methods
+- Upgrade to new API
+- export commandBuilder for configure it with initial data
+- formatting and linting
+- submit returns single requestKey for one single input + export literal and readKeyset utils
+- fixed readKeyset
+- Rename createPactCommand to composePactCommand.
+- Remove the wrapper payload.execution and payload.continuation.
+- fix typo in `createClient().dirtyReady` to `createClient().dirtyRead`
+- Improve API for ISignFunction where the input matches the output. A single transaction returns a single signed transaction and respectively for an array
+- Fix links in client readme
+- Apply formatting
+- Remove format:pkg everywhere
+- update pact parser to parse symbols as string
+- remove ms from the time string
+- refactored composePactCommand to a more functional way and fixed issues with setMeta
+- refactore the client's utilities in order to return or accept requestObject { requestKey, chainId, networkId }
+- renamed getClient to createClient
 
 ## 0.6.1
 Mon, 10 Jul 2023 14:25:54 GMT
@@ -15,6 +43,13 @@ Mon, 10 Jul 2023 14:20:26 GMT
 - Implemented new Chain ID type from @kadena/chainweb-node-client
 - PactCommand's `pollUntil` now rejects with the result of the request instead of the instance of the PactCommand class
 
+### Updates
+
+- small docs changes
+- Consistent fenced code block shell language
+- Improve accessibility of the `@kadena/client` readme
+- Remove unused dependencies + fix some lint config
+
 ## 0.5.0
 Tue, 04 Jul 2023 08:27:48 GMT
 
@@ -26,6 +61,16 @@ Tue, 04 Jul 2023 08:27:48 GMT
 
 - added /spv to the apiHost in cont command
 
+### Updates
+
+- Add repo-wide markdown formatting
+- Complete the formatting trilogy
+- Introduce generic package doc headers
+- Housekeeping npm-published files
+- Replace lint-staged with explicit format script
+- Rename master branch to main
+- apply new lint rules
+
 ## 0.4.0
 Thu, 22 Jun 2023 09:46:33 GMT
 
@@ -36,6 +81,10 @@ Thu, 22 Jun 2023 09:46:33 GMT
 ### Patches
 
 - small fix regarding stringified proof in cont command
+
+### Updates
+
+- Added encoding library to support the cross-fetch library
 
 ## 0.3.1
 Tue, 13 Jun 2023 13:17:28 GMT
@@ -57,6 +106,11 @@ Thu, 01 Jun 2023 20:18:44 GMT
 
 - Fix type for addCap, add requestKey to IPactCommand
 
+### Updates
+
+- Fix usage of `repository` and `npx` in package.json
+- Removed localWithoutSignatureVerification
+
 ## 0.1.10
 Fri, 03 Mar 2023 11:24:59 GMT
 
@@ -76,6 +130,10 @@ Mon, 27 Feb 2023 14:25:39 GMT
 - update /quickSign to /quicksign in client/signWithChainweaver
 - Update with KIP 0015 signing api standard
 
+### Updates
+
+- Updates docs on using PactCommand
+
 ## 0.1.7
 Thu, 02 Feb 2023 16:30:09 GMT
 
@@ -89,6 +147,10 @@ Thu, 02 Feb 2023 11:57:26 GMT
 ### Patches
 
 - Do not convert js typeof 'number' to decimals
+
+### Updates
+
+- change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig
 
 ## 0.1.5
 Wed, 21 Dec 2022 12:17:18 GMT
@@ -122,7 +184,9 @@ Thu, 15 Dec 2022 14:56:25 GMT
 ## 0.1.1
 Fri, 09 Dec 2022 12:07:57 GMT
 
-_Version update only_
+### Updates
+
+- Updated docs
 
 ## 0.1.0
 Tue, 29 Nov 2022 16:14:08 GMT
@@ -155,4 +219,8 @@ Fri, 28 Oct 2022 11:53:11 GMT
 
 - Updated readme
 - use .kadena/pactjs-generated to prevent deletion
+
+### Updates
+
+- Adds launch-post
 
