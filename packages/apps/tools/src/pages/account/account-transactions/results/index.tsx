@@ -97,14 +97,10 @@ const CheckTransactions: FC = () => {
     setResults(result);
   }
 
-  async function refreshResultsEvent(
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> {
+  async function refreshResultsEvent(): Promise<void> {
     debug(refreshResultsEvent.name);
 
     setResults([]);
-
-    event.preventDefault();
 
     getAndSetTransactions(
       router.query.network as Network,
@@ -141,12 +137,12 @@ const CheckTransactions: FC = () => {
         </Grid.Item>
         <Grid.Item>
           <div className={headerButtonGroupClass}>
-            <form onSubmit={resetFiltersEvent}>
-              <Button icon="TrashCan">{t('Reset all filters')}</Button>
-            </form>
-            <form onSubmit={refreshResultsEvent}>
-              <Button icon="Refresh">{t('Reload')}</Button>
-            </form>
+            <Button icon="TrashCan" onClick={resetFiltersEvent}>
+              {t('Reset all filters')}
+            </Button>
+            <Button icon="Refresh" onClick={refreshResultsEvent}>
+              {t('Reload')}
+            </Button>
           </div>
         </Grid.Item>
       </Grid.Root>
