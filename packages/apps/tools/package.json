@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "npm run generate:icons && npm run generate:contracts && next build",
-    "dev": "npm run generate:icons && next dev",
+    "build": "npm run generate:contracts && next build",
+    "dev": "next dev",
     "eject": "react-scripts eject",
     "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier locales src --check",
@@ -13,7 +13,6 @@
     "generate:coin:contract": "npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "npm run generate:coin:contract && npm run generate:faucet:contract",
     "generate:faucet:contract": "npx @kadena/pactjs-cli contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
-    "generate:icons": "npx @svgr/cli --typescript --out-dir src/resources/svg/generated -- src/resources/svg",
     "lint": "eslint package.json src --ext .ts,.tsx, --fix",
     "start": "next start",
     "test": "jest --silent"
@@ -53,7 +52,6 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
-    "@svgr/cli": "~8.0.1",
     "@testing-library/jest-dom": "~5.17.0",
     "@testing-library/react": "~14.0.0",
     "@testing-library/user-event": "~14.4.3",
