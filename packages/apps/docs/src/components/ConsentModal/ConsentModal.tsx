@@ -47,14 +47,14 @@ export const ConsentModal: FC = () => {
             <button
               onClick={handleAccept}
               title="Accept analytics cookies"
-              className={consentButtonColorVariants['positive']}
+              className={consentButtonColorVariants.positive}
             >
               Accept <SystemIcon.Check />
             </button>
             <button
               onClick={handleReject}
               title="Reject analytics cookies"
-              className={consentButtonColorVariants['negative']}
+              className={consentButtonColorVariants.negative}
             >
               Reject <SystemIcon.Close />
             </button>

@@ -7,7 +7,11 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
-import { loadingWrapperClass, scrollBoxClass, scrollBoxEnabledClass } from './../styles.css';
+import {
+  loadingWrapperClass,
+  scrollBoxClass,
+  scrollBoxEnabledClass,
+} from './../styles.css';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 

@@ -5,8 +5,8 @@ import { ILinkList, LinkList } from './LinkList';
 import {
   columnLinkClass,
   columnLinkListItemClass,
-  sectionRowContainerClass,
   directionVariants,
+  sectionRowContainerClass,
 } from './styles.css';
 
 import classnames from 'classnames';
@@ -73,7 +73,9 @@ const BrowseSection: BrowseSectionType = ({
                 className: columnLinkClass,
               });
 
-              return <li className={columnLinkListItemClass}>{childWithProps}</li>;
+              return (
+                <li className={columnLinkListItemClass}>{childWithProps}</li>
+              );
             }
           }
 
