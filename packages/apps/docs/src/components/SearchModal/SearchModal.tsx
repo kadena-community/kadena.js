@@ -1,7 +1,7 @@
 import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 
 import { Search } from '../Search/';
-import { searchForm } from '../Search/styles.css';
+import { searchFormClass } from '../Search/styles.css';
 
 import { Wrapper } from './styles';
 
@@ -39,7 +39,7 @@ export const SearchModal: FC = () => {
       <Wrapper>
         <Text>Search the classic way, or just ask a question</Text>
         <Box marginY="$4">
-          <form onSubmit={handleSubmit} className={searchForm}>
+          <form onSubmit={handleSubmit} className={searchFormClass}>
             <TextField
               inputProps={{
                 id: 'seachinput',

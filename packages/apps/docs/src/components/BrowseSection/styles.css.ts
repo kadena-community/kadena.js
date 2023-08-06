@@ -2,13 +2,13 @@ import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const sectionRowContainer = style([
+export const sectionRowContainerClass = style([
   sprinkles({
     width: '100%',
   }),
 ]);
 
-export const columnLinkList = style([
+export const columnLinkListClass = style([
   sprinkles({
     paddingY: 0,
     paddingX: '$5',
@@ -18,14 +18,14 @@ export const columnLinkList = style([
   },
 ]);
 
-export const columnLinkListItem = style([
+export const columnLinkListItemClass = style([
   sprinkles({
     color: '$primaryContrast',
     lineHeight: '$lg',
   }),
 ]);
 
-export const columnLink = style([
+export const columnLinkClass = style([
   sprinkles({
     color: '$primaryContrast',
     textDecoration: 'none',
@@ -38,7 +38,7 @@ export const columnLink = style([
   },
 ]);
 
-export const rowLinkList = style([
+export const rowLinkListClass = style([
   sprinkles({
     display: 'flex',
     flexWrap: 'wrap',
@@ -51,7 +51,7 @@ export const rowLinkList = style([
   },
 ]);
 
-export const listItem = style([
+export const listItemClass = style([
   sprinkles({
     display: 'flex',
     gap: '$4',
@@ -68,13 +68,13 @@ export const listItem = style([
   },
 ]);
 
-export const itemStack = style([
+export const itemStackClass = style([
   {
     gap: '0 !important',
   },
 ]);
 
-export const listItemLink = style([
+export const listItemLinkClass = style([
   sprinkles({
     display: 'flex',
     textDecoration: 'none',
@@ -86,7 +86,7 @@ export const listItemLink = style([
   },
 ]);
 
-export const iconStyle = style([
+export const iconClass = style([
   sprinkles({
     marginRight: '$2',
   }),

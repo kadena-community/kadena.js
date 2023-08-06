@@ -2,13 +2,13 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const searchForm = style([
+export const searchFormClass = style([
   sprinkles({
     width: '100%',
   }),
 ]);
 
-export const staticResultsList = style([
+export const staticResultsListClass = style([
   sprinkles({
     padding: 0,
   }),
@@ -17,7 +17,7 @@ export const staticResultsList = style([
   },
 ]);
 
-export const scrollBox = style([
+export const scrollBoxClass = style([
   sprinkles({
     position: 'relative',
     marginY: '$2',
@@ -25,14 +25,14 @@ export const scrollBox = style([
   }),
 ]);
 
-export const scrollBoxEnabled = style([
+export const scrollBoxEnabledClass = style([
   {
     overflowY: 'scroll',
     height: '55vh',
   },
 ]);
 
-export const itemLink = style([
+export const itemLinkClass = style([
   sprinkles({
     display: 'block',
     marginBottom: '$4',
@@ -53,31 +53,7 @@ export const itemLink = style([
   },
 ]);
 
-export const itemSpan = style([
-  sprinkles({
-    color: '$neutral4',
-  }),
-]);
-
-export const itemH5 = style([
-  sprinkles({
-    color: '$neutral4',
-  }),
-]);
-
-export const itemP = style([
-  sprinkles({
-    color: '$neutral4',
-  }),
-]);
-
-export const listItem = style([
-  sprinkles({
-    padding: 0,
-  }),
-]);
-
-export const loadingWrapper = style([
+export const loadingWrapperClass = style([
   sprinkles({
     position: 'absolute',
     display: 'flex',

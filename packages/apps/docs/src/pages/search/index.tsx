@@ -3,7 +3,7 @@ import { SystemIcon, TextField } from '@kadena/react-ui';
 import { Search } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
-import { searchForm } from '@/components/Search/styles.css';
+import { searchFormClass } from '@/components/Search/styles.css';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -41,7 +41,7 @@ const SearchPage: FC = () => {
   return (
     <>
       <SearchHeader>
-        <form className={searchForm} onSubmit={handleSubmit}>
+        <form className={searchFormClass} onSubmit={handleSubmit}>
           <TextField
             inputProps={{
               id: 'searchInput',

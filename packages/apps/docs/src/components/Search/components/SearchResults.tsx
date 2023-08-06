@@ -7,7 +7,7 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
-import { loadingWrapper, scrollBox, scrollBoxEnabled } from './../styles.css';
+import { loadingWrapperClass, scrollBoxClass, scrollBoxEnabledClass } from './../styles.css';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
@@ -52,8 +52,8 @@ export const SearchResults: FC<IProps> = ({
   const [selectedTabName, setSelectedTabName] = useState<string>('docs');
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  const scrollBoxClasses = classnames(scrollBox, {
-    [scrollBoxEnabled]: hasScroll,
+  const scrollBoxClasses = classnames(scrollBoxClass, {
+    [scrollBoxEnabledClass]: hasScroll,
   });
 
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
@@ -82,7 +82,7 @@ export const SearchResults: FC<IProps> = ({
         <Tabs.Content value="docs">
           <div className={scrollBoxClasses}>
             {semanticIsLoading && (
-              <div className={loadingWrapper}>
+              <div className={loadingWrapperClass}>
                 <Loading />
               </div>
             )}
@@ -123,7 +123,7 @@ export const SearchResults: FC<IProps> = ({
         <Tabs.Content value="qa">
           <div className={scrollBoxClasses}>
             {isLoading && (
-              <div className={loadingWrapper}>
+              <div className={loadingWrapperClass}>
                 <Loading />
               </div>
             )}

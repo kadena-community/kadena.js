@@ -1,6 +1,6 @@
 import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 
-import { contactLink } from './styles.css';
+import { contactLinkClass } from './styles.css';
 
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -17,7 +17,7 @@ export const NotFound: FC = () => {
       <Heading as="h5">Not finding the help you need?</Heading>
       <Text>Contact our support desk.</Text>
       <Link href="/help" passHref legacyBehavior>
-        <Button as="a" title="Contact us" className={contactLink}>
+        <Button as="a" title="Contact us" className={contactLinkClass}>
           Contact us
         </Button>
       </Link>

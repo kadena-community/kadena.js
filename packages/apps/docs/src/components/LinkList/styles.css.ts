@@ -2,7 +2,7 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const list = style([
+export const listClass = style([
   sprinkles({
     paddingY: 0,
     paddingX: '$5',
@@ -12,14 +12,14 @@ export const list = style([
   },
 ]);
 
-export const listItem = style([
+export const listItemClass = style([
   sprinkles({
     color: '$primaryContrast',
     lineHeight: '$lg',
   }),
 ]);
 
-export const link = style([
+export const linkClass = style([
   sprinkles({
     color: '$primaryContrast',
     textDecoration: 'none',

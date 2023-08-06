@@ -3,11 +3,11 @@ import { Heading, IHeadingProps } from '@kadena/react-ui';
 import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';
 import {
-  columnLink,
-  columnLinkList,
-  columnLinkListItem,
-  rowLinkList,
-  sectionRowContainer,
+  columnLinkClass,
+  columnLinkListClass,
+  columnLinkListItemClass,
+  rowLinkListClass,
+  sectionRowContainerClass,
 } from './styles.css';
 
 import classnames from 'classnames';
@@ -42,16 +42,16 @@ const BrowseSection: BrowseSectionType = ({
   className,
 }) => {
   const containerClass = classnames(className, {
-    [sectionRowContainer]: direction === 'row',
+    [sectionRowContainerClass]: direction === 'row',
   });
 
   const listClassName = classnames({
-    [columnLinkList]: direction === 'column',
-    [rowLinkList]: direction === 'row',
+    [columnLinkListClass]: direction === 'column',
+    [rowLinkListClass]: direction === 'row',
   });
 
   const listItemClassName = classnames({
-    [columnLinkListItem]: direction === 'row',
+    [columnLinkListItemClass]: direction === 'row',
   });
 
   return (
@@ -76,10 +76,10 @@ const BrowseSection: BrowseSectionType = ({
             if (React.isValidElement(child)) {
               const childWithProps = React.cloneElement(child, {
                 // @ts-ignore
-                className: columnLink,
+                className: columnLinkClass,
               });
 
-              return <li className={columnLinkListItem}>{childWithProps}</li>;
+              return <li className={columnLinkListItemClass}>{childWithProps}</li>;
             }
           }
 

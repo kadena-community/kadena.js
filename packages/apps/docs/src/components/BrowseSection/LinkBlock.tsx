@@ -1,6 +1,6 @@
 import { Heading, ProductIcon, Stack, Text } from '@kadena/react-ui';
 
-import { iconStyle, listItem, listItemLink } from './styles.css';
+import { iconClass, listItemClass, listItemLinkClass } from './styles.css';
 
 import { ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
@@ -16,10 +16,10 @@ export interface ILinkBlock {
 export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, icon, href }) => {
   const Icon = ProductIcon[icon];
   return (
-    <li className={listItem}>
-      <Link href={href} className={listItemLink}>
+    <li className={listItemClass}>
+      <Link href={href} className={listItemLinkClass}>
         <Stack direction="row" spacing="$2">
-          <Icon className={iconStyle} />
+          <Icon className={iconClass} />
           <Stack direction="column" spacing={0}>
             <Heading as="h6">{title}</Heading>
             <Text as="span" color="emphasize">
