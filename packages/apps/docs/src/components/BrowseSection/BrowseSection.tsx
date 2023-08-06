@@ -4,10 +4,9 @@ import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';
 import {
   columnLinkClass,
-  columnLinkListClass,
   columnLinkListItemClass,
-  rowLinkListClass,
   sectionRowContainerClass,
+  directionVariants,
 } from './styles.css';
 
 import classnames from 'classnames';
@@ -45,11 +44,6 @@ const BrowseSection: BrowseSectionType = ({
     [sectionRowContainerClass]: direction === 'row',
   });
 
-  const listClassName = classnames({
-    [columnLinkListClass]: direction === 'column',
-    [rowLinkListClass]: direction === 'row',
-  });
-
   const listItemClassName = classnames({
     [columnLinkListItemClass]: direction === 'row',
   });
@@ -57,7 +51,7 @@ const BrowseSection: BrowseSectionType = ({
   return (
     <section className={containerClass}>
       {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
-      <ul className={listClassName}>
+      <ul className={directionVariants[direction]}>
         {React.Children.map(children, (child) => {
           if (
             !React.isValidElement(child) ||

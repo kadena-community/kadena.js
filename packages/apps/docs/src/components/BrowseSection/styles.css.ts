@@ -1,6 +1,6 @@
 import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const sectionRowContainerClass = style([
   sprinkles({
@@ -8,15 +8,29 @@ export const sectionRowContainerClass = style([
   }),
 ]);
 
-export const columnLinkListClass = style([
-  sprinkles({
-    paddingY: 0,
-    paddingX: '$5',
-  }),
-  {
-    listStyle: 'disc',
-  },
-]);
+export const directionVariants = styleVariants({
+  row: [
+    sprinkles({
+      display: 'flex',
+      flexWrap: 'wrap',
+      padding: 0,
+      width: '100%',
+    }),
+    {
+      listStyle: 'none',
+      rowGap: 0,
+    },
+  ],
+  column: [
+    sprinkles({
+      paddingY: 0,
+      paddingX: '$5',
+    }),
+    {
+      listStyle: 'disc',
+    },
+  ],
+});
 
 export const columnLinkListItemClass = style([
   sprinkles({
@@ -35,19 +49,6 @@ export const columnLinkClass = style([
       color: vars.colors.$primaryHighContrast,
       textDecoration: 'underline',
     },
-  },
-]);
-
-export const rowLinkListClass = style([
-  sprinkles({
-    display: 'flex',
-    flexWrap: 'wrap',
-    padding: 0,
-    width: '100%',
-  }),
-  {
-    listStyle: 'none',
-    rowGap: 0,
   },
 ]);
 
