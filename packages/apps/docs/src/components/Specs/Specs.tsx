@@ -1,4 +1,4 @@
-import { Wrapper } from './styles';
+import { specsWrapper } from './styles.css';
 
 import { OpenAPIV3 } from 'openapi-types';
 import React, { FC, useEffect, useState } from 'react';
@@ -20,10 +20,8 @@ export const Specs: FC<IProps> = ({ specs, options }) => {
     return <pre>{JSON.stringify(specs, null, 2)}</pre>;
   }
   return (
-    <>
-      <Wrapper>
-        <RedocStandalone spec={specs} options={options} />
-      </Wrapper>
-    </>
+    <div className={specsWrapper}>
+      <RedocStandalone spec={specs} options={options} />
+    </div>
   );
 };

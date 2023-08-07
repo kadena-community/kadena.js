@@ -1,8 +1,9 @@
-import { Heading, ProductIcon } from '@kadena/react-ui';
+import { Heading, ProductIcon, Stack, Text } from '@kadena/react-ui';
 
-import { ItemStack, ItemSubHeader, StyledLink, StyledListItem } from './styles';
+import { iconClass, listItemClass, listItemLinkClass } from './styles.css';
 
 import { ProductIconNames } from '@/types/Layout';
+import Link from 'next/link';
 import React, { FC } from 'react';
 
 export interface ILinkBlock {
@@ -15,14 +16,18 @@ export interface ILinkBlock {
 export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, icon, href }) => {
   const Icon = ProductIcon[icon];
   return (
-    <StyledListItem>
-      <StyledLink href={href}>
-        <Icon />
-        <ItemStack direction="column">
-          <Heading as="h6">{title}</Heading>
-          <ItemSubHeader color="emphasize">{subtitle}</ItemSubHeader>
-        </ItemStack>
-      </StyledLink>
-    </StyledListItem>
+    <li className={listItemClass}>
+      <Link href={href} className={listItemLinkClass}>
+        <Stack direction="row" spacing="$2">
+          <Icon className={iconClass} />
+          <Stack direction="column" spacing={0}>
+            <Heading as="h6">{title}</Heading>
+            <Text as="span" color="emphasize">
+              {subtitle}
+            </Text>
+          </Stack>
+        </Stack>
+      </Link>
+    </li>
   );
 };

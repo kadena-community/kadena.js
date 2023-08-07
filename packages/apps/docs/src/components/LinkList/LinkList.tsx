@@ -1,6 +1,6 @@
 import { Heading } from '@kadena/react-ui';
 
-import { StyledLinkList } from './styles';
+import { linkClass, listClass, listItemClass } from './styles.css';
 
 import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
@@ -14,17 +14,21 @@ export const LinkList: FC<ILinkList> = ({ children, title }) => {
   return (
     <div>
       {Boolean(title) && <Heading as="h6">{title}</Heading>}
-      <StyledLinkList>
+      <ul className={listClass}>
         {React.Children.map(children, (child) => {
           if (
             !React.isValidElement(child) ||
             (child.type !== Link && child.props.href === undefined)
           ) {
-            throw new Error('not a valid link');
+            throw new Error('not a valid linkClass');
           }
-          return <li>{child}</li>;
+          const childWithProps = React.cloneElement(child, {
+            // @ts-ignore
+            className: linkClass,
+          });
+          return <li className={listItemClass}>{childWithProps}</li>;
         })}
-      </StyledLinkList>
+      </ul>
     </div>
   );
 };
