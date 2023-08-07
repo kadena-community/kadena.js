@@ -101,13 +101,11 @@ export const Dynamic: Story = {
     return (
       <NavHeader.Root brand={brand}>
         <NavHeader.Navigation>
-          {navItems.slice(0, linksCount).map((item, index) => {
-            return (
-              <a href={item.href} target={item.target} key={index}>
-                {item.title}
-              </a>
-            );
-          })}
+          {navItems.slice(0, linksCount).map((item, index) => (
+            <NavHeader.Link key={index} href={item.href}>
+              {item.title}
+            </NavHeader.Link>
+          ))}
         </NavHeader.Navigation>
         {renderSampleContent && (
           <NavHeader.Content>
