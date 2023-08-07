@@ -12,6 +12,7 @@ export interface IBoxProps
       | 'marginBottom'
       | 'marginLeft'
       | 'marginRight'
+      | 'padding'
     >
   > {
   component?: ElementType;
@@ -28,6 +29,7 @@ export const Box = ({
   marginLeft = undefined,
   marginRight = undefined,
   children,
+  padding = undefined,
 }: IBoxProps): React.ReactElement => {
   return createElement(
     component,
@@ -40,6 +42,7 @@ export const Box = ({
         marginBottom,
         marginLeft,
         marginRight,
+        padding,
       }),
       'data-testid': 'kda-box',
     },
