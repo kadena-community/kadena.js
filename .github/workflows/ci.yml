@@ -49,8 +49,8 @@ jobs:
 
       - name: Turbo repo build packages
         run:
-          npx turbo run build --filter='...[${{env.BRANCH}}]' --dry=json >
-          build.json
+          npx turbo run build --filter='...[${{ env.AFFECTED_OR_ALL }}]'
+          --dry=json > build.json
 
       - name: Upload build json file
         uses: actions/upload-artifact@v3
