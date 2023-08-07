@@ -2,9 +2,10 @@ import { Divider, Stack } from '@kadena/react-ui';
 
 import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
-import { BottomWrapper, Wrapper } from './style';
+import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
 
 import { INavigation } from '@/types/Layout';
+import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -19,8 +20,12 @@ export const BottomPageSection: FC<IProps> = ({
   navigation,
   layout = 'default',
 }) => {
+  const classes = classnames(bottomWrapperClass, {
+    [bottomWrapperCodeLayoutClass]: layout === 'code',
+  });
+
   return (
-    <BottomWrapper layout={layout}>
+    <div className={classes}>
       <Stack alignItems="center" justifyContent="space-between">
         <EditPage editLink={editLink} />
         {navigation?.previous !== undefined && (
@@ -39,10 +44,10 @@ export const BottomPageSection: FC<IProps> = ({
         )}
       </Stack>
       <Divider />
-      <Wrapper>
+      <Stack justifyContent="flex-end" width="100%">
         <div />
         <Subscribe />
-      </Wrapper>
-    </BottomWrapper>
+      </Stack>
+    </div>
   );
 };
