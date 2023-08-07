@@ -24,8 +24,8 @@ export function parseAsPactValue(
         const isoTime = `${arg.toISOString().split('.')[0]}Z`;
         return `(time "${isoTime}")`;
       }
-
-      return arg;
+      // to prevent from creating [object Object]
+      return JSON.stringify(arg);
     }
     case 'number':
       throw new Error(

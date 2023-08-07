@@ -128,3 +128,14 @@ export const withCounter = <
 
 export const sleep = (duration: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, duration));
+
+export const groupByHost = (
+  items: Array<{ requestKey: string; hostUrl: string }>,
+): [string, string[]][] => {
+  const byHost = new Map<string, string[]>();
+  items.forEach(({ hostUrl, requestKey }) => {
+    const prev = byHost.get(hostUrl) ?? [];
+    byHost.set(hostUrl, [...prev, requestKey]);
+  });
+  return [...byHost.entries()];
+};

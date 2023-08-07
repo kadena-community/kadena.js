@@ -1,4 +1,4 @@
-import { getClient, isSignedCommand, Pact } from '@kadena/client';
+import { getClient, isSignedTransaction, Pact } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
 
 import { accountKey } from '../utils/account-key';
@@ -61,7 +61,7 @@ async function transferCreate(
 
   const { submit, pollStatus } = getClient(API_HOST);
 
-  if (!isSignedCommand(transaction)) {
+  if (!isSignedTransaction(transaction)) {
     throw new Error('Command was not signed.');
   }
 

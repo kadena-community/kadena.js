@@ -2,10 +2,8 @@ import {
   Breadcrumbs,
   Button,
   Heading,
-  InputWrapperStatus,
   ProductIcon,
   SystemIcon,
-  TextField,
   TrackerCard,
 } from '@kadena/react-ui';
 
@@ -16,10 +14,12 @@ import {
   StyledInfoTitle,
 } from '../cross-chain-transfer-finisher/styles';
 
+import RequestKeyField, {
+  REQUEST_KEY_VALIDATION,
+} from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
 import { useAppContext } from '@/context/app-context';
 import { useToolbar } from '@/context/layout-context';
-import { useDidUpdateEffect } from '@/hooks';
 import {
   StyledAccountForm,
   StyledForm,
@@ -32,17 +32,19 @@ import {
   IStatusData,
   StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
-import { validateRequestKey } from '@/services/utils/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+const schema = z.object({
+  requestKey: REQUEST_KEY_VALIDATION,
+});
+
+type FormData = z.infer<typeof schema>;
 
 const CrossChainTransferTracker: FC = () => {
   const { network } = useAppContext();
@@ -70,63 +72,30 @@ const CrossChainTransferTracker: FC = () => {
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
-  const [requestKey, setRequestKey] = useState<string>(
-    (router.query?.reqKey as string) || '',
-  );
   const [data, setData] = useState<IStatusData>({});
-  const [validRequestKey, setValidRequestKey] = useState<
-    InputWrapperStatus | undefined
-  >();
   const [txError, setTxError] = useState<string>('');
-
-  useDidUpdateEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-    const { reqKey } = router.query;
-    if (reqKey) {
-      setRequestKey(reqKey as string);
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     setData({});
   }, [network]);
 
-  const checkRequestKey = async (
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ): Promise<void> => {
+  const checkRequestKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     e.preventDefault();
     debug(checkRequestKey.name);
 
     //Clear error message when user starts typing
     setTxError('');
-
-    if (!requestKey) {
-      setValidRequestKey(undefined);
-      return;
-    }
-
-    if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey('negative');
-      return;
-    }
-    setValidRequestKey(undefined);
-    return;
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    e.preventDefault();
+  const handleSubmit = async (data: FormData): Promise<void> => {
     debug(handleSubmit);
 
-    router.query.reqKey = requestKey;
+    router.query.reqKey = data.requestKey;
     await router.push(router);
 
     try {
       await getTransferStatus({
-        requestKey,
+        requestKey: data.requestKey,
         network: network,
         t,
         options: {
@@ -144,12 +113,22 @@ const CrossChainTransferTracker: FC = () => {
     }
   };
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setRequestKey(e.target.value);
+  const {
+    register,
+    handleSubmit: validateThenSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    values: { requestKey: router.query.reqKey as string },
+    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
+    resetOptions: {
+      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
     },
-    [],
-  );
+  });
+
+  const showInputError = txError === '' ? undefined : 'negative';
+  // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
+  const showInputHelper = !data.receiverAccount ? txError : undefined;
 
   return (
     <div>
@@ -158,22 +137,17 @@ const CrossChainTransferTracker: FC = () => {
         <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <StyledMainContent>
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={validateThenSubmit(handleSubmit)}>
           <StyledAccountForm>
             <Heading as="h5">Search Request</Heading>
-            <TextField
-              label={t('Request Key')}
-              status={validRequestKey}
-              // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-              helperText={!data.receiverAccount ? txError : undefined}
+            <RequestKeyField
+              helperText={showInputHelper}
+              status={showInputError}
               inputProps={{
-                id: 'request-key-input',
-                placeholder: t('Enter Request Key'),
-                onChange: onRequestKeyChange,
+                ...register('requestKey'),
                 onKeyUp: checkRequestKey,
-                value: requestKey,
-                leftIcon: SystemIcon.KeyIconFilled,
               }}
+              error={errors.requestKey}
             />
           </StyledAccountForm>
           <StyledFormButton>

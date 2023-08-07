@@ -6,7 +6,7 @@ import { composePactCommand, execution } from '../../composePactCommand';
 export function runPact(
   hostUrl: string,
   code: string,
-  data: Record<string, unknown>,
+  data: Record<string, unknown> = {},
 ): Promise<ICommandResult> {
   const pactCommand = composePactCommand(execution(code), {
     payload: { exec: { data } },

@@ -1,7 +1,10 @@
-import { IExecPayloadObject, IPactCommand } from './IPactCommand';
+import { IExecutionPayloadObject, IPactCommand } from './IPactCommand';
 
+/**
+ * @internal
+ */
 export function isExecCommand(
   parsedTransaction: IPactCommand,
-): parsedTransaction is IPactCommand & { payload: IExecPayloadObject } {
+): parsedTransaction is IPactCommand & { payload: IExecutionPayloadObject } {
   return 'exec' in parsedTransaction.payload;
 }

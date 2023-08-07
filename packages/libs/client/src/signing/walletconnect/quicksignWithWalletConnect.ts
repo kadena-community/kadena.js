@@ -11,7 +11,9 @@ import Client from '@walletconnect/sign-client';
 import { SessionTypes } from '@walletconnect/types';
 
 /**
- * @alpha
+ * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}
+ *
+ * @public
  */
 export function createWalletConnectQuicksign(
   client: Client,

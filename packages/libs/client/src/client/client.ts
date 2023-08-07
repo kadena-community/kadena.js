@@ -22,18 +22,27 @@ import {
   IPollOptions,
   IPollRequestPromise,
 } from './interfaces/interfaces';
-import { getRequestStorage } from './utils/request-storege';
 import {
+  groupByHost,
   kadenaHostGenerator,
   mergeAll,
   mergeAllPollRequestPromises,
 } from './utils/utils';
 
-type IOptions = IPollOptions &
-  (INetworkOptions | { networkId?: undefined; chainId?: undefined });
+/**
+ * Represents the object type that the `submit` or `send` function returns,
+ * which other helper functions accept as the first input.
+ * This ensures that we always have enough data to fetch the request from the chain.
+ * @public
+ */
+export interface ITransactionDescriptor {
+  requestKey: string;
+  chainId: ChainId;
+  networkId: string;
+}
 
 /**
- * @alpha
+ * @public
  */
 export interface ISubmit {
   /**
@@ -43,9 +52,9 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transaction - The transaction to be submitted.
-   * @returns A promise that resolves the requestKey (the transaction hash).
+   * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
-  (transaction: ICommand): Promise<string>;
+  (transaction: ICommand): Promise<ITransactionDescriptor>;
 
   /**
    * Submits one or more public (unencrypted) signed commands to the blockchain for execution.
@@ -54,12 +63,15 @@ export interface ISubmit {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves to an array of transaction hashes.
+   * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
-  (transactionList: ICommand[]): Promise<string[]>;
+  (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
 }
 
-interface IClientBasics {
+/**
+ * @public
+ */
+export interface IBaseClient {
   /**
    * Sends a command for non-transactional execution.
    * In a blockchain environment, this would be a node-local "dirty read".
@@ -84,93 +96,83 @@ interface IClientBasics {
    * This is the only function that requires gas payment.
    *
    * @param transactionList - The list of transactions to be submitted.
-   * @returns A promise that resolves to an array of transaction hashes.
+   * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
   submit: ISubmit;
 
   /**
    * Polls the result of one or more submitted requests.
-   * If requestKeys are not passed, it polls the status of all previously submitted requests.
    * Calls the '/poll' endpoint multiple times to get the status of all requests.
    *
-   * @param requestKeys - Optional request keys to filter the status polling.
-   * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
+   * @param transactionDescriptors - transaction descriptors to status polling.
+   * @param options - options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the poll request promise with the command result.
    */
   pollStatus: (
-    requestKeys?: string[] | string,
-    options?: IOptions,
+    transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
+    options?: IPollOptions,
   ) => IPollRequestPromise<ICommandResult>;
 
   /**
    * Gets the result of one or more submitted requests.
-   * If requestKeys are not passed, it polls the status of all previously submitted requests.
    * If the result is not ready, it returns an empty object.
    * Calls the '/poll' endpoint only once.
    *
-   * @param requestKeys - Optional request keys to filter the status polling.
-   * @param options - Optional network options for generating the correct host API address.
-   * @returns A promise that resolves to the poll response with the command result.
+   * @param transactionDescriptors - transaction descriptors to get the status.
+   * @returns  A promise that resolves to the poll response with the command result.
    */
   getStatus: (
-    requestKeys?: string[] | string,
-    options?: INetworkOptions,
+    transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
   ) => Promise<IPollResponse>;
 
   /**
    * Listens for the result of the request. This is a long-polling process that eventually returns the result.
    * Calls the '/listen' endpoint.
    *
-   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestKey - The request key to listen for.
-   * @param options - Optional network options for generating the correct host API address.
+   * @param transactionDescriptors - transaction descriptors to listen for.
    * @returns A promise that resolves to the command result.
    */
   listen: (
-    requestKey: string,
-    options?: INetworkOptions,
+    transactionDescriptor: ITransactionDescriptor,
   ) => Promise<ICommandResult>;
 
   /**
    * Creates an SPV proof for a request. This is required for multi-step tasks.
    * Calls the '/spv' endpoint several times to retrieve the SPV proof.
    *
-   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestKey - The request key for which the SPV proof is generated.
+   * @param transactionDescriptor - The request key for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
-   * @param options - Optional network options for generating the correct host API address and options to adjust polling (onPoll, timeout, and interval).
+   * @param options - options to adjust polling (onPoll, timeout, and interval).
    * @returns A promise that resolves to the generated SPV proof.
    */
   pollCreateSpv: (
-    requestKey: string,
+    transactionDescriptor: ITransactionDescriptor,
     targetChainId: ChainId,
-    options?: IOptions,
+    options?: IPollOptions,
   ) => Promise<string>;
 
   /**
    * Creates an SPV proof for a request. This is required for multi-step tasks.
    * Calls the '/spv' endpoint only once.
    *
-   * Note: If requests were submitted outside the current client context, you may need to provide networkId and chainId as options to generate the correct hostApi address.
    *
-   * @param requestKey - The request key for which the SPV proof is generated.
+   * @param transactionDescriptor - The transaction descriptor for which the SPV proof is generated.
    * @param targetChainId - The target chain ID for the SPV proof.
-   * @param options - Optional network options for generating the correct host API address.
    * @returns A promise that resolves to the generated SPV proof.
    */
   createSpv: (
-    requestKey: string,
+    transactionDescriptor: ITransactionDescriptor,
     targetChainId: ChainId,
-    options?: INetworkOptions,
   ) => Promise<string>;
 }
 
 /**
- * @alpha
+ * Interface for the {@link createClient | createClient()} return value
+ * @public
  */
-export interface IClient extends IClientBasics {
+export interface IClient extends IBaseClient {
   /**
    * An alias for `local` when both preflight and signatureVerification are `true`.
    * @see local
@@ -181,21 +183,25 @@ export interface IClient extends IClientBasics {
 
   /**
    * An alias for `local` when preflight is `false` and signatureVerification is `true`.
-   * @see local
+   *
+   * @remarks
+   * @see {@link IBaseClient.local | local() function}
    */
   signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
 
   /**
    * An alias for `local` when both preflight and signatureVerification are `false`.
    * This call has minimum restrictions and can be used to read data from the node.
-   * @see local
+   *
+   * @remarks
+   * @see {@link IBaseClient.local | local() function}
    */
   dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
 
   /**
    * Generates a command from the code and data, then sends it to the '/local' endpoint.
    *
-   * @see local
+   * @see {@link IBaseClient.local | local() function}
    */
   runPact: (
     code: string,
@@ -204,28 +210,33 @@ export interface IClient extends IClientBasics {
   ) => Promise<ICommandResult>;
 
   /**
-   * @deprecated Use `submit` instead.
-   *
    * Alias for `submit`.
+   * Use {@link IBaseClient.submit | submit() function}
+   *
+   * @deprecated Use `submit` instead.
    */
   send: ISubmit;
 
   /**
-   * @deprecated Use `getStatus` instead.
-   *
+   * Use {@link IBaseClient.getStatus | getStatus() function}
    * Alias for `getStatus`.
+   *
+   * @deprecated Use `getStatus` instead.
    */
   getPoll: (
-    requestKeys?: string[] | string,
-    options?: INetworkOptions,
+    transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
   ) => Promise<IPollResponse>;
 }
 
-interface IGetClient {
+/**
+ * @public
+ */
+export interface ICreateClient {
   /**
    * Generates a client instance by passing the URL of the host.
    *
    * Useful when you are working with a single network and chainId.
+   * @param hostUrl - the URL to use in the client
    */
   (hostUrl: string): IClient;
 
@@ -233,6 +244,7 @@ interface IGetClient {
    * Generates a client instance by passing a hostUrlGenerator function.
    *
    * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
+   * @param hostAddressGenerator - the function that generates the URL based on `chainId` and `networkId` from the transaction
    */
   (
     hostAddressGenerator?: (options: {
@@ -243,43 +255,15 @@ interface IGetClient {
 }
 
 /**
- * @alpha
+ * Creates Chainweb client
+ * @public
  */
-export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
+export const createClient: ICreateClient = (
+  host = kadenaHostGenerator,
+): IClient => {
   const getHost = typeof host === 'string' ? () => host : host;
-  const storage = getRequestStorage();
 
-  const getStoredHost = (
-    requestKey: string,
-    options?: Partial<INetworkOptions>,
-  ): string => {
-    return (
-      storage.get(requestKey) ??
-      getHost({
-        chainId: options?.chainId!,
-        networkId: options?.networkId!,
-      })
-    );
-  };
-
-  function groupByHost(
-    requestKeys?: string[],
-    options?: IOptions,
-  ): [string, string[]][] {
-    let requestStorage = storage;
-    if (requestKeys !== undefined) {
-      const map = new Map<string, string>(
-        requestKeys.map((requestKey) => [
-          requestKey,
-          getStoredHost(requestKey, options),
-        ]),
-      );
-      requestStorage = getRequestStorage(map);
-    }
-    return requestStorage.groupByHost();
-  }
-
-  const client: IClientBasics = {
+  const client: IBaseClient = {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
       const hostUrl = getHost({
@@ -301,17 +285,27 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
         networkId: cmd.networkId,
       });
       const { requestKeys } = await send({ cmds: commands }, hostUrl);
-      storage.add(hostUrl, requestKeys);
 
-      return isList ? requestKeys : requestKeys[0];
+      const transactionDescriptors = requestKeys.map((key) => ({
+        requestKey: key,
+        chainId: cmd.meta.chainId,
+        networkId: cmd.networkId,
+      }));
+
+      return isList ? transactionDescriptors : transactionDescriptors[0];
     }) as ISubmit,
     pollStatus(
-      requestKeys?: string[] | string,
-      options?: IOptions,
+      transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
+      options?: IPollOptions,
     ): IPollRequestPromise<ICommandResult> {
+      const requestsList = Array.isArray(transactionDescriptors)
+        ? transactionDescriptors
+        : [transactionDescriptors];
       const results = groupByHost(
-        typeof requestKeys === 'string' ? [requestKeys] : requestKeys,
-        options,
+        requestsList.map(({ requestKey, chainId, networkId }) => ({
+          requestKey,
+          hostUrl: getHost({ chainId, networkId }),
+        })),
       ).map(([hostUrl, requestKeys]) =>
         pollStatus(hostUrl, requestKeys, options),
       );
@@ -321,14 +315,18 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
 
       return mergedPollRequestPromises;
     },
-    async getStatus(requestKeys, options) {
-      const keys =
-        typeof requestKeys === 'string' ? [requestKeys] : requestKeys;
+    async getStatus(transactionDescriptors) {
+      const requestsList = Array.isArray(transactionDescriptors)
+        ? transactionDescriptors
+        : [transactionDescriptors];
 
       const results = await Promise.all(
-        groupByHost(keys, options).map(([hostUrl, requestKeys]) =>
-          poll({ requestKeys }, hostUrl),
-        ),
+        groupByHost(
+          requestsList.map(({ requestKey, chainId, networkId }) => ({
+            requestKey,
+            hostUrl: getHost({ chainId, networkId }),
+          })),
+        ).map(([hostUrl, requestKeys]) => poll({ requestKeys }, hostUrl)),
       );
 
       // merge all of the result in one object
@@ -337,21 +335,21 @@ export const getClient: IGetClient = (host = kadenaHostGenerator): IClient => {
       return mergedResults;
     },
 
-    async listen(requestKey, options) {
-      const hostUrl = getStoredHost(requestKey, options);
+    async listen({ requestKey, chainId, networkId }) {
+      const hostUrl = getHost({ chainId, networkId });
 
       const result = await listen({ listen: requestKey }, hostUrl);
 
       return result;
     },
 
-    pollCreateSpv(requestKey, targetChainId, options) {
-      const hostUrl = getStoredHost(requestKey, options);
+    pollCreateSpv({ requestKey, chainId, networkId }, targetChainId, options) {
+      const hostUrl = getHost({ chainId, networkId });
       return pollSpv(hostUrl, requestKey, targetChainId, options);
     },
 
-    async createSpv(requestKey, targetChainId, options) {
-      const hostUrl = getStoredHost(requestKey, options);
+    async createSpv({ requestKey, chainId, networkId }, targetChainId) {
+      const hostUrl = getHost({ chainId, networkId });
       return getSpv(hostUrl, requestKey, targetChainId);
     },
   };

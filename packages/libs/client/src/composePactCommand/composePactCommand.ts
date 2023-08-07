@@ -52,7 +52,8 @@ const finalizeCommand = (
 };
 
 /**
- * @alpha
+ * Composer for PactCommand to use with reducers
+ * @public
  */
 export const composePactCommand: IComposePactCommand =
   (

@@ -7,13 +7,13 @@ import {
 } from './styles.css';
 
 import { createSlug } from '@/utils';
-import React, { FC, useState } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {
   as: TagType;
   variant?: TagType;
-  children: string;
+  children: ReactNode;
   index?: number;
   parentTitle?: string;
 }
@@ -29,7 +29,24 @@ export const TaggedHeading: FC<IProp> = ({
   index,
   parentTitle,
 }) => {
-  const slug = createSlug(children, index, parentTitle);
+  let slugInputStr = '';
+
+  if (Array.isArray(children)) {
+    slugInputStr = [children]
+      .flat()
+      .map((child) => {
+        if (typeof child === 'string') return child.trim();
+        if (typeof child.props.children === 'string')
+          return child.props.children.trim();
+        return '';
+      })
+      .filter((child) => child !== '') // remove empty strings to avoid join adding extra spaces
+      .join(' ');
+  } else if (typeof children === 'string') {
+    slugInputStr = children;
+  }
+
+  const slug = createSlug(slugInputStr, index, parentTitle);
 
   // vanilla-extract doesn't support styling subcomponents
   // globalStyle doesn't support simple pseudo selectors

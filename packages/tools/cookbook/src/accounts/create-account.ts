@@ -1,6 +1,6 @@
 import {
   getClient,
-  isSignedCommand,
+  isSignedTransaction,
   Pact,
   signWithChainweaver,
 } from '@kadena/client';
@@ -47,7 +47,7 @@ async function createAccount(
 
   const signedTransaction = await signWithChainweaver(transaction);
 
-  if (!isSignedCommand(signedTransaction)) {
+  if (!isSignedTransaction(signedTransaction)) {
     console.error('Command is not signed.');
     return;
   }

@@ -2,7 +2,6 @@ import { styled, StyledComponent } from '@kadena/react-components';
 import { IconButton } from '@kadena/react-ui';
 
 import { Container, GridRow } from '@/components/Global';
-import { NavBackground } from '@/resources/svg/generated';
 import Link from 'next/link';
 
 export const StyledContainer = styled(Container, {
@@ -48,13 +47,6 @@ export const StyledMenuItem = styled(Link, {
   '&:hover': {
     color: '$white',
   },
-});
-
-export const StyledBackgroundGlow = styled(NavBackground, {
-  position: 'absolute',
-  top: '0',
-  left: '-$4',
-  zIndex: 0,
 });
 
 export const StyledBurgerMenuButton: StyledComponent<typeof IconButton> =
