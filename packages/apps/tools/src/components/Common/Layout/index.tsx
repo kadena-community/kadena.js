@@ -1,7 +1,7 @@
 import { FooterWrapper, Header, Sidebar } from './partials';
 import { footerStyle, gridItemMainStyle, headerStyle } from './styles.css';
 
-import { WalletConnectButton } from '@/components/Global';
+import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import routes from '@/constants/routes';
 import { useLayoutContext } from '@/context';
 import classNames from 'classnames';
