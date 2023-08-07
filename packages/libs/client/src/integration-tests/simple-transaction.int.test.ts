@@ -9,12 +9,13 @@ const sourceAccount: IAccount = {
   account: 'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
   publicKey: '2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
   chainId: '0',
+  guard: '2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
 };
-
 const targetAccount: IAccount = {
-  account: 'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e12',
-  publicKey: '2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e12',
+  account: 'k:128c32eb3b4d99be6619aa421bc3df9ebc91bde7a4acf5e8eb9c27f553fa84f3',
+  publicKey: '128c32eb3b4d99be6619aa421bc3df9ebc91bde7a4acf5e8eb9c27f553fa84f3',
   chainId: '1',
+  guard: '128c32eb3b4d99be6619aa421bc3df9ebc91bde7a4acf5e8eb9c27f553fa84f3',
 };
 
 describe('Cross Chain Transfer', () => {
@@ -47,7 +48,7 @@ describe('Cross Chain Transfer', () => {
     expect(balance).toBeGreaterThanOrEqual(0);
   });
   it('should be able to perform a cross chain transfer', async () => {
-    //await executeCrossChainTransfer(sourceAccount, targetAccount, '5');
+    await executeCrossChainTransfer(sourceAccount, targetAccount, '5');
   });
   it('Should have deducted balance from the source account ', async () => {
     console.log('This one is TODO');

@@ -1,7 +1,6 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
-import { signWithChainweaver } from '../../../../lib';
 import {
   IContinuationPayloadObject,
   isSignedTransaction,
@@ -9,12 +8,10 @@ import {
   readKeyset,
 } from '../../../index';
 import { listen, pollCreateSpv, pollStatus, submit } from '../client';
-import { inspect } from '../fp-helpers';
 import { IAccount } from '../interfaces';
 
 import { signByKeyPair } from './sign-transaction';
-
-const NETWORK_ID: string = 'testnet04';
+import { NetworkId } from '../enums';
 
 function startCrossChainTransfer(
   from: IAccount,
@@ -50,7 +47,7 @@ function startCrossChainTransfer(
       ])
       .addKeyset('receiver-guard', 'keys-all', to.publicKey)
       .setMeta({ chainId: from.chainId, senderAccount: from.account })
-      .setNetworkId(NETWORK_ID)
+      .setNetworkId(NetworkId.fast_development)
       .createTransaction()
   );
 }
@@ -62,11 +59,7 @@ function finishInTheTargetChain(
 ): IUnsignedCommand {
   const builder = Pact.builder
     .continuation(continuation)
-    .setNetworkId(NETWORK_ID)
-    // uncomment this if you want to pay gas yourself
-    // .addSigner(gasPayer.publicKey, (withCapability) => [
-    //   withCapability('coin.GAS'),
-    // ])
+    .setNetworkId(NetworkId.fast_development)
     .setMeta({
       chainId: targetChainId,
       senderAccount: gasPayer,
