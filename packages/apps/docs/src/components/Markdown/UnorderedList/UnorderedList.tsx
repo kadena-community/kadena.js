@@ -1,4 +1,4 @@
-import { StyledList } from './styles';
+import { ulList } from './styles.css';
 
 import React, { FC } from 'react';
 
@@ -7,5 +7,5 @@ interface IProp {
 }
 
 export const UnorderedList: FC<IProp> = ({ children }) => {
-  return <StyledList>{children}</StyledList>;
+  return <ul className={ulList}>{children}</ul>;
 };
