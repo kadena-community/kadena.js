@@ -2,8 +2,7 @@ import { ChainId } from '@kadena/types';
 
 import { Pact } from '../../../pact';
 import { dirtyRead } from '../client';
-
-const NETWORK_ID: string = 'fast-development';
+import { NetworkId } from '../enums';
 
 export async function getBalance(
   account: string,
@@ -13,7 +12,7 @@ export async function getBalance(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .execution((Pact.modules as any).coin['get-balance'](account))
     .setMeta({ chainId: chainId })
-    .setNetworkId(NETWORK_ID)
+    .setNetworkId(NetworkId.fast_development)
     .createTransaction();
 
   const response = await dirtyRead(tr);
