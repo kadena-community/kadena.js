@@ -79,7 +79,7 @@ export const codeLine = style([
   },
 ]);
 
-globalStyle(`${code} span`, {
+globalStyle(`${codeLine} span`, {
   fontFamily: vars.fonts.$mono,
 })
 
