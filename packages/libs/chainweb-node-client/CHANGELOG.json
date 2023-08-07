@@ -2,6 +2,43 @@
   "name": "@kadena/chainweb-node-client",
   "entries": [
     {
+      "version": "0.4.3",
+      "tag": "@kadena/chainweb-node-client_v0.4.3",
+      "date": "Fri, 04 Aug 2023 16:10:02 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Move sort-package-json to eslint plugin"
+          },
+          {
+            "comment": "Remove format:pkg everywhere"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "formatting and linting"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.4.2",
       "tag": "@kadena/chainweb-node-client_v0.4.2",
       "date": "Fri, 14 Jul 2023 10:02:16 GMT",

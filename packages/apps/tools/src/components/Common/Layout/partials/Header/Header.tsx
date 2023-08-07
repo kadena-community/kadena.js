@@ -1,7 +1,6 @@
 import { SystemIcon } from '@kadena/react-ui';
 
 import {
-  StyledBackgroundGlow,
   StyledBurgerMenuButton,
   StyledContainer,
   StyledGridRow,
@@ -46,7 +45,6 @@ const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
   return (
     <div className={headerClass}>
       <StyledContainer type="fixed">
-        <StyledBackgroundGlow />
         <StyledGridRow>
           <GridCol xs={11} lg={2}>
             <StyledLeftPanelWrapper>

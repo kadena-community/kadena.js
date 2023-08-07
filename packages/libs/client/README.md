@@ -42,30 +42,30 @@ With `@kadena/client` you can also [send a request to the blockchain][8]. That's
 covered in this article. We'll also be exploring the concepts and rationale of
 `@kadena/client`.
 
-- [@kadena/client](#kadenaclient)
-  - [Package @kadena/client](#package-kadenaclient)
-- [Getting started](#getting-started)
-    - [Transaction building](#transaction-building)
-    - [Signing](#signing)
-  - [Prerequisites](#prerequisites)
-  - [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
-    - [Generate interfaces from the blockchain](#generate-interfaces-from-the-blockchain)
-      - [Generate interfaces locally](#generate-interfaces-locally)
-    - [Downloading contracts from the blockchain](#downloading-contracts-from-the-blockchain)
-  - [Building a simple transaction from the contract](#building-a-simple-transaction-from-the-contract)
-    - [Notes](#notes)
-  - [Signing](#signing-1)
-    - [Manually signing the transaction](#manually-signing-the-transaction)
-    - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
-    - [Signing with a WalletConnect compatible wallet](#signing-with-a-walletconnect-compatible-wallet)
-  - [Using the commandBuilder](#using-the-commandbuilder)
-  - [Using FP approach](#using-fp-approach)
-  - [Send a request to the blockchain](#send-a-request-to-the-blockchain)
-  - [Upgrading from @kadena/client 0.x to 1.0.0](#upgrading-from-kadenaclient-0x-to-100)
-    - [Sending a transaction `transfer`](#sending-a-transaction-transfer)
-    - [Read from the blockchain `getBalance`](#read-from-the-blockchain-getbalance)
-  - [Further development](#further-development)
-  - [Contact the team](#contact-the-team)
+- [@kadena/client][9]
+  - [Package @kadena/client][10]
+- [Getting started][11]
+  - [Transaction building][12]
+  - [Signing][13]
+  - [Prerequisites][14]
+  - [Contract-based interaction using @kadena/client][15]
+    - [Generate interfaces from the blockchain][6]
+      - [Generate interfaces locally][16]
+    - [Downloading contracts from the blockchain][17]
+  - [Building a simple transaction from the contract][18]
+    - [Notes][19]
+  - [Signing][20]
+    - [Manually signing the transaction][21]
+    - [Integrated sign request to Chainweaver desktop][7]
+    - [Signing with a WalletConnect compatible wallet][22]
+  - [Using the commandBuilder][4]
+  - [Using FP approach][5]
+  - [Send a request to the blockchain][8]
+  - [Upgrading from @kadena/client 0.x to 1.0.0][3]
+    - [Sending a transaction `transfer`][23]
+    - [Read from the blockchain `getBalance`][24]
+  - [Further development][25]
+  - [Contact the team][26]
 
 ## Prerequisites
 
@@ -258,7 +258,7 @@ command and submit the transaction yourself:
 ```ts
 import { Pact } from '@kadena/client';
 
-const client = getClient(
+const client = createClient(
   'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/8/pact',
 );
 
@@ -291,30 +291,33 @@ Here are two examples to demonstrate this:
 
 ## Send a request to the blockchain
 
-The `@kadena/client` provides a `getClient` function with some utility
-functions. this helpers calls pact api under the hood [Pactjs API][34].
+The `@kadena/client` provides a `createClient` function with some utility
+functions. these helpers call the Pact API under the hood [Pactjs API][34].
 
-- `local`,
-- `submit` and
-- `pollStatus`.
+- `submit`
+- `pollStatus`
 - `getStatus`
 - `pollSpv`
 - `getSpv`
+- `local`,
+- `preflight`
+- `dirtyRead`
+- `signatureVerification`
 
-`getClient` accepts the host url or the host url generator function that handel
-url generating as pact is a multi chian network we need to change the url based
-on that.
+`createClient` accepts the host url or the host url generator function that
+handles url generating as pact is a multi chain network we need to change the
+url based on that.
 
 ```ts
 // we only want to send request to the chain 1 one the mainnet
 const hostUrl = 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact';
-const client = getClient(hostUrl);
+const client = createClient(hostUrl);
 // we need more flexibility to call different chains or even networks, then functions
 // extract networkId and chainId from the cmd part of the transaction and use the hostUrlGenerator to generate the url
 const hostUrlGenerator = ({ networkId, chainId }) =>
   `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 const { local, submit, getStatus, pollStatus, getSpv, pollSpv } =
-  getClient(hostUrlGenerator);
+  createClient(hostUrlGenerator);
 ```
 
 Probably the simplest call you can make is `describe-module`, but as this is not
@@ -350,7 +353,7 @@ Here are two examples of old to new rewrites
 - [Sending a `coin.transfer` transaction][23]
 - [Reading balance using `coin.get-balance`][24]
 
-### Sending a transaction `transfer`
+### Sending a transaction 'transfer'
 
 Old implementation
 
@@ -418,12 +421,12 @@ async function transfer(
   const signedTx = await signWithChainweaver(transaction);
 
   // create generic client
-  const client = getClient(apiHostGenerator);
+  const client = createClient(apiHostGenerator);
 
   // check if all necessary signatures are added
   if (isSignedTransaction(signedTx)) {
-    const requestKey = await client.submit(signedTx);
-    const response = await client.listen(requestKey, {});
+    const transactionDescriptor = await client.submit(signedTx);
+    const response = await client.listen(transactionDescriptor, {});
     if (response.result.status === 'failure') {
       throw response.result.error;
     } else {
@@ -437,7 +440,7 @@ transfer(senderAccount, senderPublicKey, receiverAccount, {
 }).catch(console.error);
 ```
 
-### Read from the blockchain `getBalance`
+### Read from the blockchain 'getBalance'
 
 Old implementation
 
@@ -467,8 +470,8 @@ async function getBalance(account: string): Promise<void> {
     .createTransaction();
 
   // client creation is separate from the transaction builder
-  const staticClient = getClient('http://host.com/chain/0/pact');
-  const genericClient = getClient(
+  const staticClient = createClient('http://host.com/chain/0/pact');
+  const genericClient = createClient(
     ({ networkId, chainId }) =>
       `http://${networkId}.host.com/chain/${chainId}/pact`,
   );

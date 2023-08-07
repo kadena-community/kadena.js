@@ -26,6 +26,7 @@ export const signWithChainweaver: ISignFunction = (async (
   if (transactionList === undefined) {
     throw new Error('No transaction(s) to sign');
   }
+
   const isList = Array.isArray(transactionList);
   const transactions = isList ? transactionList : [transactionList];
   const quickSignRequest: IQuickSignRequestBody = {

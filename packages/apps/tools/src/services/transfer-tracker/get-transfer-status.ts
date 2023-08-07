@@ -166,17 +166,14 @@ export async function getXChainTransferInfo({
   try {
     const networkId = chainNetwork[network].network;
 
-    const senderOptions = {
+    const requestObject = {
+      requestKey,
       networkId,
       chainId: senderChain,
     };
 
-    const proof = await client.pollCreateSpv(
-      requestKey,
-      receiverChain,
-      senderOptions,
-    );
-    const status = await client.listen(requestKey, senderOptions);
+    const proof = await client.pollCreateSpv(requestObject, receiverChain);
+    const status = await client.listen(requestObject);
     const pactId = status.continuation?.pactId;
 
     const continuationTransaction = Pact.builder
@@ -268,26 +265,32 @@ export async function checkForProof({
   try {
     let count = 0;
 
-    return client.pollCreateSpv(requestKey, receiverChain, {
-      networkId: chainNetwork[network].network,
-      chainId: senderChain,
-      onPoll: () => {
-        // Avoid status update on first two polls (to avoid flickering)
-        if (count > 1) {
-          onPoll({
-            id: StatusId.Pending,
-            status: t('Pending'),
-            description: t('Transfer pending - waiting for proof'),
-            senderAccount,
-            senderChain,
-            receiverAccount,
-            receiverChain,
-            amount,
-          });
-        }
-        count++;
+    return client.pollCreateSpv(
+      {
+        requestKey,
+        networkId: chainNetwork[network].network,
+        chainId: senderChain,
       },
-    });
+      receiverChain,
+      {
+        onPoll: () => {
+          // Avoid status update on first two polls (to avoid flickering)
+          if (count > 1) {
+            onPoll({
+              id: StatusId.Pending,
+              status: t('Pending'),
+              description: t('Transfer pending - waiting for proof'),
+              senderAccount,
+              senderChain,
+              receiverAccount,
+              receiverChain,
+              amount,
+            });
+          }
+          count++;
+        },
+      },
+    );
   } catch (error) {
     debug(error);
     onPoll({
