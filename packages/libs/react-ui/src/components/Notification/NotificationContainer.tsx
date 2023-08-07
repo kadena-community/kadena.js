@@ -29,7 +29,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
   title,
   children,
   hasCloseButton = false,
-  color = 'primary',
+  color = 'secondary',
   expanded = false,
   onClose,
 }) => {
