@@ -1,7 +1,20 @@
-export type { INavHeaderProps } from './NavHeader';
-export type { INavHeaderNavigationProps } from './NavHeaderNavigation';
-export type { INavHeaderContentProps } from './NavHeaderContent';
+import type { INavHeaderContainerProps } from './NavHeader';
+import { NavHeaderContainer } from './NavHeader';
+import type { INavHeaderContentProps } from './NavHeaderContent';
+import { NavHeaderContent } from './NavHeaderContent';
+import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
+import { NavHeaderNavigation } from './NavHeaderNavigation';
 
-export { NavHeader } from './NavHeader';
-export { NavHeaderNavigation } from './NavHeaderNavigation';
-export { NavHeaderContent } from './NavHeaderContent';
+import { FC } from 'react';
+
+export interface INavHeaderProps {
+  Root: FC<INavHeaderContainerProps>;
+  Navigation: FC<INavHeaderNavigationProps>;
+  Content: FC<INavHeaderContentProps>;
+}
+
+export const NavHeader: INavHeaderProps = {
+  Root: NavHeaderContainer,
+  Navigation: NavHeaderNavigation,
+  Content: NavHeaderContent,
+};

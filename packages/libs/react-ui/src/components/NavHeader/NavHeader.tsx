@@ -13,13 +13,13 @@ export interface INavItem {
 }
 export type INavItems = INavItem[];
 
-export interface INavHeaderProps {
+export interface INavHeaderContainerProps {
   brand?: LogoVariant;
   children?: React.ReactNode;
   items?: INavItems;
 }
 
-export const NavHeader: FC<INavHeaderProps> = ({
+export const NavHeaderContainer: FC<INavHeaderContainerProps> = ({
   brand = logoVariants[0],
   children,
 }) => {

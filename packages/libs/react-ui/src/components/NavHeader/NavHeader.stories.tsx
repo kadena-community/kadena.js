@@ -1,8 +1,8 @@
-import type { INavHeaderProps, INavItems } from './NavHeader';
-import { NavHeaderChildren } from './NavHeader.stories.children';
-import { NavHeader, NavHeaderContent, NavHeaderNavigation } from './';
+import type { INavHeaderContainerProps, INavItems } from './NavHeader';
+import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
+import { Button } from '@components/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -23,18 +23,14 @@ const sampleNavItems: INavItems = [
     title: 'Learn Pact',
     href: '#pact',
   },
-  {
-    title: 'Marmalade',
-    href: '#marmalade',
-  },
 ];
 
 type StoryProps = {
   linksCount: number;
-  renderContent: boolean;
+  renderSampleContent: boolean;
   useCustomNavigation: boolean;
   customNavigation: INavItems;
-} & INavHeaderProps;
+} & INavHeaderContainerProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',
@@ -78,7 +74,7 @@ const meta: Meta<StoryProps> = {
       },
       if: { arg: 'useCustomNavigation', eq: true },
     },
-    renderContent: {
+    renderSampleContent: {
       control: { type: 'boolean' },
       description: 'Populate (right-hand side) children with sample content?',
     },
@@ -99,12 +95,12 @@ export const Dynamic: Story = {
     useCustomNavigation,
     customNavigation,
     linksCount,
-    renderContent = false,
+    renderSampleContent = false,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
     return (
-      <NavHeader brand={brand}>
-        <NavHeaderNavigation>
+      <NavHeader.Root brand={brand}>
+        <NavHeader.Navigation>
           {navItems.slice(0, linksCount).map((item, index) => {
             return (
               <a href={item.href} target={item.target} key={index}>
@@ -112,13 +108,22 @@ export const Dynamic: Story = {
               </a>
             );
           })}
-        </NavHeaderNavigation>
-        {renderContent && (
-          <NavHeaderContent>
-            <NavHeaderChildren />
-          </NavHeaderContent>
+        </NavHeader.Navigation>
+        {renderSampleContent && (
+          <NavHeader.Content>
+            <Button
+              as="button"
+              icon="Link"
+              onClick={() => {}}
+              style={{ marginLeft: '1rem' }}
+              title="Sample button"
+              variant="positive"
+            >
+              Connect your wallet
+            </Button>
+          </NavHeader.Content>
         )}
-      </NavHeader>
+      </NavHeader.Root>
     );
   },
 };
