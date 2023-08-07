@@ -48,9 +48,10 @@ jobs:
         run: pnpm build ${{ env.AFFECTED_OR_ALL }}
 
       - name: Turbo repo build packages
-        run:
-          npx turbo run build --filter='...[${{ env.BRANCH_NAME }}]' --dry=json
-          > build.json
+        run: |
+          npx turbo run build --filter='...[${{ github.base_ref }}]' --dry=json >
+          build.json
+          echo "Build.json created successfully ${{ env.BRANCH_NAME }}"
 
       - name: Upload build json file
         uses: actions/upload-artifact@v3
