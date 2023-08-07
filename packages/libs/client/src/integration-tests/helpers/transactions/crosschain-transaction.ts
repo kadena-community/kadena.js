@@ -80,7 +80,9 @@ export async function executeCrossChainTransfer(
 ): Promise<Record<string, ICommandResult>> {
   return (
     Promise.resolve(startCrossChainTransfer(from, to, amount))
+      .then(inspect('command'))
       .then((command) => signByKeyPair(command))
+      .then(inspect('command'))
       .then((command) =>
         isSignedTransaction(command)
           ? command
