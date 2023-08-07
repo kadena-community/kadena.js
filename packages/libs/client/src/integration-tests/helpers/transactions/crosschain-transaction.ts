@@ -8,16 +8,18 @@ import {
   readKeyset,
 } from '../../../index';
 import { listen, pollCreateSpv, pollStatus, submit } from '../client';
+import { NetworkId } from '../enums';
+import { inspect } from '../fp-helpers';
 import { IAccount } from '../interfaces';
 
 import { signByKeyPair } from './sign-transaction';
-import { NetworkId } from '../enums';
 
 function startCrossChainTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
 ): IUnsignedCommand {
+  console.log('Start Cross Chain Transfer');
   return (
     Pact.builder
       .execution(
@@ -57,6 +59,7 @@ function finishInTheTargetChain(
   targetChainId: ChainId,
   gasPayer: string = 'kadena-xchain-gas',
 ): IUnsignedCommand {
+  console.log('Starting Continuation');
   const builder = Pact.builder
     .continuation(continuation)
     .setNetworkId(NetworkId.fast_development)
@@ -75,53 +78,51 @@ export async function executeCrossChainTransfer(
   to: IAccount,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  return Promise.resolve(startCrossChainTransfer(from, to, amount))
-    .then((command) => signByKeyPair(command))
-    .then((command) =>
-      isSignedTransaction(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
-    )
-    .then((cmd) => submit(cmd))
-    .then(listen)
-    .then((status) =>
-      status.result.status === 'failure'
-        ? Promise.reject(new Error('DEBIT REJECTED'))
-        : status,
-    )
-    .then((status) =>
-      Promise.all([status, pollCreateSpv(status.reqKey, to.chainId)]),
-    )
-    .then(
-      ([status, proof]) =>
-        finishInTheTargetChain(
-          {
-            pactId: status.continuation?.pactId,
-            proof,
-            rollback: false,
-            step: 1,
-          },
-          to.chainId,
-        ) as ICommand,
-    )
-    .then((cmd) => submit(cmd))
-    .then(pollStatus);
+  return (
+    Promise.resolve(startCrossChainTransfer(from, to, amount))
+      .then((command) => signByKeyPair(command))
+      .then((command) =>
+        isSignedTransaction(command)
+          ? command
+          : Promise.reject('CMD_NOT_SIGNED'),
+      )
+      // inspect is only for development you can remove them
+      .then(inspect('EXEC_SIGNED'))
+      .then((cmd) => submit(cmd))
+      .then(inspect('SUBMIT_RESULT'))
+      .then(listen)
+      .then(inspect('LISTEN_RESULT'))
+      .then((status) =>
+        status.result.status === 'failure'
+          ? Promise.reject(new Error('DEBIT REJECTED'))
+          : status,
+      )
+      .then((status) =>
+        Promise.all([
+          status,
+          pollCreateSpv(
+            {
+              requestKey: status.reqKey,
+              networkId: NetworkId.fast_development,
+              chainId: from.chainId,
+            },
+            to.chainId,
+          ),
+        ]),
+      )
+      .then(
+        ([status, proof]) =>
+          finishInTheTargetChain(
+            {
+              pactId: status.continuation?.pactId,
+              proof,
+              rollback: false,
+              step: 1,
+            },
+            to.chainId,
+          ) as ICommand,
+      )
+      .then((cmd) => submit(cmd))
+      .then(pollStatus)
+  );
 }
-
-// const from: IAccount = {
-//   account: senderAccount,
-//   chainId: '1',
-//   publicKey: keyFromAccount(senderAccount),
-//   // use keyset guard
-//   guard: keyFromAccount(senderAccount),
-// };
-//
-// const to: IAccount = {
-//   account: receiverAccount, // k:account of sender
-//   chainId: '0',
-//   publicKey: keyFromAccount(receiverAccount),
-//   // use keyset guard
-//   guard: keyFromAccount(receiverAccount),
-// };
-
-// doCrossChainTransfer(from, to, amount);
-//   .then((result) => console.log('success', result))
-//   .catch((error) => console.error('error', error));
