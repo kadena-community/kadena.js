@@ -49,7 +49,7 @@ jobs:
 
       - name: Turbo repo build packages
         run: |
-          npx turbo run build --filter='...[${{ github.base_ref }}]' --dry=json > build.json
+          npx turbo run build --filter='...[origin/${{ github.base_ref }}]' --dry=json > build.json
           echo "Build.json created successfully ${{ env.BRANCH_NAME }}"
 
       - name: Upload build json file
