@@ -7,7 +7,7 @@ const rotate = keyframes({
   '100%': { transform: 'rotate(360deg)' },
 });
 
-export const loader = style([
+export const loaderClass = style([
   sprinkles({
     width: '$6',
     height: '$6',

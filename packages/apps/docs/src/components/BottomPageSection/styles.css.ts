@@ -2,13 +2,13 @@ import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const bottomWrapper = style([
+export const bottomWrapperClass = style([
   sprinkles({
     width: '100%',
   }),
 ]);
 
-export const bottomWrapperCodeLayout = style([
+export const bottomWrapperCodeLayoutClass = style([
   {
     '@media': {
       [`screen and ${breakpoints.xl}`]: {

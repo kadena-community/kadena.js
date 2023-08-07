@@ -2,7 +2,7 @@ import { Divider, Stack } from '@kadena/react-ui';
 
 import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
-import { bottomWrapper, bottomWrapperCodeLayout } from './styles.css';
+import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
 
 import { INavigation } from '@/types/Layout';
 import classnames from 'classnames';
@@ -20,8 +20,8 @@ export const BottomPageSection: FC<IProps> = ({
   navigation,
   layout = 'default',
 }) => {
-  const classes = classnames(bottomWrapper, {
-    [bottomWrapperCodeLayout]: layout === 'code',
+  const classes = classnames(bottomWrapperClass, {
+    [bottomWrapperCodeLayoutClass]: layout === 'code',
   });
 
   return (
