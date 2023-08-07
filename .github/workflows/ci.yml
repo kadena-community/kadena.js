@@ -52,6 +52,12 @@ jobs:
           npx turbo run build --filter='...[${{env.BRANCH}}]' --dry=json >
           build.json
 
+      - name: Upload build json file
+        uses: actions/upload-artifact@v3
+        with:
+          name: turbo-build
+          path: build.json
+
       - name: Lint packages
         run: pnpm lint ${{ env.AFFECTED_OR_ALL }}
 
