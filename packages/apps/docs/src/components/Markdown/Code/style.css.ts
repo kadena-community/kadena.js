@@ -1,6 +1,6 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const inlineCode = style([
   sprinkles({
@@ -54,6 +54,7 @@ export const code = style([
   },
 ]);
 
+
 export const codeLine = style([
   sprinkles({
     width: '100%',
@@ -77,6 +78,10 @@ export const codeLine = style([
     },
   },
 ]);
+
+globalStyle(`${code} span`, {
+  fontFamily: vars.fonts.$mono,
+})
 
 export const codeWord = style([
   sprinkles({

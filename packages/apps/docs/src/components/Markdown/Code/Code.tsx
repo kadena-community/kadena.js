@@ -30,6 +30,7 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
           return null;
         }
 
+/*
         const grandchildren = React.Children.map(
           child.props.children,
           (grandchild: ReactNode) => {
@@ -43,11 +44,12 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
             });
           },
         );
+*/
 
         return React.cloneElement(child, {
           ...child.props,
           className: codeLine,
-          children: grandchildren,
+          // children: grandchildren,
         });
       })}
     </code>
