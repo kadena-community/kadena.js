@@ -85,12 +85,14 @@ export const codeWord = style([
 ]);
 
 export const codeTitle = style([
-  {
+  sprinkles({
     display: 'flex',
     alignItems: 'center',
-    fontFamily: `${vars.fonts.$main}`,
-    background: `${vars.colors.$neutral3}`,
-    padding: `${vars.sizes.$2}`,
+    fontFamily: '$main',
+    backgroundColor: '$neutral3',
+    padding: '$2',
+  }),
+  {
     selectors: {
       '&[data-active-theme="dark"][data-theme="light"]': {
         display: 'none',
