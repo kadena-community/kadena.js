@@ -30,6 +30,16 @@ export { ChainId }
 // @public
 export const createClient: ICreateClient;
 
+// Warning: (ae-forgotten-export) The symbol "IEckoSignFunction" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function createEckoWalletQuicksign(): IEckoSignFunction;
+
+// Warning: (ae-forgotten-export) The symbol "IEckoSignSingleFunction" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function createEckoWalletSign(): IEckoSignSingleFunction;
+
 // @public
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
