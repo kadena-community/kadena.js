@@ -11,6 +11,7 @@ on:
 env:
   AFFECTED_OR_ALL: |
     ${{ github.ref_name == 'main' && ' ' || format('--filter=[origin/{0}]', github.base_ref)  }}
+  BRANCH_NAME: ${{ github.base_ref }}
 
 jobs:
   build:
@@ -45,6 +46,11 @@ jobs:
 
       - name: Build packages
         run: pnpm build ${{ env.AFFECTED_OR_ALL }}
+
+      - name: Turbo repo build packages
+        run:
+          npx turbo run build --filter='...[${{env.BRANCH}}]' --dry=json >
+          build.json
 
       - name: Lint packages
         run: pnpm lint ${{ env.AFFECTED_OR_ALL }}
