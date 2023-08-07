@@ -1,6 +1,6 @@
 import { ChainId, NetworkId } from '@kadena/types';
 
-import { getClient } from '../../index';
+import { createClient } from '../../index';
 
 export const apiHostGenerator = ({
   networkId,
@@ -31,4 +31,4 @@ export const {
   pollStatus,
   getStatus,
   createSpv,
-} = getClient(apiHostGenerator);
+} = createClient(apiHostGenerator);

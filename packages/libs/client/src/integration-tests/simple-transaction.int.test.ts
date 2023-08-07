@@ -1,7 +1,7 @@
 import { getBalance } from './helpers/account/describe-account';
 import { fundAccount } from './helpers/account/fund-account';
-import { executeCrossChainTransfer } from './helpers/transactions/crosschain-transaction';
 import { IAccount } from './helpers/interfaces';
+import { executeCrossChainTransfer } from './helpers/transactions/crosschain-transaction';
 
 import { expect } from '@jest/globals';
 
@@ -31,7 +31,7 @@ describe('Cross Chain Transfer', () => {
       sourceAccount.account,
       sourceAccount.chainId,
     );
-    expect(balance).toBeGreaterThanOrEqual(0);
+    expect(balance).toBeGreaterThanOrEqual(100);
   });
   it('should have a target account on chain 1', async () => {
     const result = await fundAccount(
@@ -45,7 +45,7 @@ describe('Cross Chain Transfer', () => {
       sourceAccount.account,
       sourceAccount.chainId,
     );
-    expect(balance).toBeGreaterThanOrEqual(0);
+    expect(balance).toBeGreaterThanOrEqual(100);
   });
   it('should be able to perform a cross chain transfer', async () => {
     await executeCrossChainTransfer(sourceAccount, targetAccount, '5');
