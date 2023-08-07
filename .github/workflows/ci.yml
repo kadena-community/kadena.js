@@ -11,7 +11,7 @@ on:
 env:
   AFFECTED_OR_ALL: |
     ${{ github.ref_name == 'main' && ' ' || format('--filter=[origin/{0}]', github.base_ref)  }}
-  BRANCH_NAME: ${{ github.base_ref }}
+  BRANCH_NAME: ${{ github.ref_name  }}
 
 jobs:
   build:
@@ -49,8 +49,8 @@ jobs:
 
       - name: Turbo repo build packages
         run:
-          npx turbo run build --filter='...[${{ env.AFFECTED_OR_ALL }}]'
-          --dry=json > build.json
+          npx turbo run build --filter='...[${{ env.BRANCH_NAME }}]' --dry=json
+          > build.json
 
       - name: Upload build json file
         uses: actions/upload-artifact@v3
