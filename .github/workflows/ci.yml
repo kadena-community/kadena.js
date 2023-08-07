@@ -10,8 +10,7 @@ on:
 
 env:
   AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'main' && ' ' || format('--filter=[origin/{0}]', github.base_ref)  }}
-  BRANCH_NAME: ${{ github.ref_name  }}
+    ${{ github.ref_name == 'main' && ' ' || format('--filter=...[origin/{0}]', github.base_ref)  }}
 
 jobs:
   build:
@@ -51,12 +50,15 @@ jobs:
         run: |
           npx turbo run build --filter='...[origin/${{ github.base_ref }}]' --dry=json > build.json
           echo "Build.json created successfully ${{ env.BRANCH_NAME }}"
+          npx turbo run build ${{ env.AFFECTED_OR_ALL }} --dry=json > affected_or_all.json
 
       - name: Upload build json file
         uses: actions/upload-artifact@v3
         with:
           name: turbo-build
-          path: build.json
+          path: |
+            build.json
+            affected_or_all.json
 
       - name: Lint packages
         run: pnpm lint ${{ env.AFFECTED_OR_ALL }}
