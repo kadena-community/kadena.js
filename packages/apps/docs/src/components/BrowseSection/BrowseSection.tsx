@@ -2,8 +2,14 @@ import { Heading, IHeadingProps } from '@kadena/react-ui';
 
 import { ILinkBlock, LinkBlock } from './LinkBlock';
 import { ILinkList, LinkList } from './LinkList';
-import { StyledLinkList, StyledList, StyledSection } from './styles';
+import {
+  columnLinkClass,
+  columnLinkListItemClass,
+  directionVariants,
+  sectionRowContainerClass,
+} from './styles.css';
 
+import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, FunctionComponentElement } from 'react';
 
@@ -34,12 +40,18 @@ const BrowseSection: BrowseSectionType = ({
   /* eslint-disable-next-line react/prop-types */
   className,
 }) => {
-  const Wrapper = direction === 'column' ? StyledLinkList : StyledList;
+  const containerClass = classnames(className, {
+    [sectionRowContainerClass]: direction === 'row',
+  });
+
+  const listItemClassName = classnames({
+    [columnLinkListItemClass]: direction === 'row',
+  });
 
   return (
-    <StyledSection direction={direction} className={className}>
+    <section className={containerClass}>
       {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
-      <Wrapper>
+      <ul className={directionVariants[direction]}>
         {React.Children.map(children, (child) => {
           if (
             !React.isValidElement(child) ||
@@ -49,14 +61,28 @@ const BrowseSection: BrowseSectionType = ({
           ) {
             throw new Error('not a child for the BrowseSection Component');
           }
+
           if (child.type === LinkBlock) {
             return child;
           }
 
-          return <li>{child}</li>;
+          if (child.type !== LinkBlock) {
+            if (React.isValidElement(child)) {
+              const childWithProps = React.cloneElement(child, {
+                // @ts-ignore
+                className: columnLinkClass,
+              });
+
+              return (
+                <li className={columnLinkListItemClass}>{childWithProps}</li>
+              );
+            }
+          }
+
+          return <li className={listItemClassName}>{child}</li>;
         })}
-      </Wrapper>
-    </StyledSection>
+      </ul>
+    </section>
   );
 };
 
