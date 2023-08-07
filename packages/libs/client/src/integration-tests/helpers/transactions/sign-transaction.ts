@@ -2,6 +2,7 @@ import { sign } from '@kadena/cryptography-utils';
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 export function signByKeyPair(transaction: IUnsignedCommand): ICommand {
+
   const { sig } = sign(transaction.cmd, {
     secretKey:
       '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
