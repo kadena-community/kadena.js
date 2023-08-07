@@ -1,11 +1,10 @@
 import { ChainId, IPactDecimal } from '@kadena/types';
 
 import { Pact, readKeyset } from '../../../index';
-
 import { listen, preflight, submit } from '../client';
+import { NetworkId } from '../enums';
 import { signByKeyPair } from '../transactions/sign-transaction';
 
-const NETWORK_ID: string = 'fast-development';
 const senderAccount: string = 'sender00';
 const signerKey: string =
   '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca';
@@ -38,7 +37,7 @@ export async function fundAccount(
       gasPrice: 1.0e-6,
       senderAccount: senderAccount,
     })
-    .setNetworkId(NETWORK_ID)
+    .setNetworkId(NetworkId.fast_development)
     .createTransaction();
 
   const signedTx = signByKeyPair(transaction);
