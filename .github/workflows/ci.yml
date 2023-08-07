@@ -49,8 +49,9 @@ jobs:
       - name: Turbo repo build packages
         run: |
           npx turbo run build --filter='...[origin/${{ github.base_ref }}]' --dry=json > build.json
-          echo "Build.json created successfully ${{ env.BRANCH_NAME }}"
-          npx turbo run build ${{ env.AFFECTED_OR_ALL }} --dry=json > affected_or_all.json
+          echo "build.json created successfully"
+          npx turbo run build --filter='[origin/${{ github.base_ref }}]' --dry=json > affected_or_all.json
+          echo "affected_or_all.json created successfully"
 
       - name: Upload build json file
         uses: actions/upload-artifact@v3
