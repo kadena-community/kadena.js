@@ -6,7 +6,7 @@ import React from 'react';
 
 describe('NavHeader', () => {
   it('renders correctly', () => {
-    const { getByTestId } = render(<NavHeader />);
+    const { getByTestId } = render(<NavHeader.Root />);
 
     const navHeaderContainer = getByTestId('kda-navheader');
     expect(navHeaderContainer).toBeInTheDocument();
