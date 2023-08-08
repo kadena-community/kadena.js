@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface INavHeaderLinkProps {
-  children: React.ReactNode;
+  children: string;
   href: string;
   active?: boolean;
 }

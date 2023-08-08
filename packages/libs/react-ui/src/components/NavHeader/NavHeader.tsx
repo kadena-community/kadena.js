@@ -1,9 +1,10 @@
 import { containerClass, logoClass } from './NavHeader.css';
+import { INavHeaderProps } from '.';
 
 import type { LogoVariant } from '@components/BrandLogo';
 import Logo, { logoVariants } from '@components/BrandLogo';
 import { Link } from '@components/Link';
-import React, { FC } from 'react';
+import React, { FC, FunctionComponentElement } from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
 export interface INavItem {
@@ -15,7 +16,7 @@ export type INavItems = INavItem[];
 
 export interface INavHeaderContainerProps {
   brand?: LogoVariant;
-  children?: React.ReactNode;
+  children?: FunctionComponentElement<INavHeaderProps>[];
   items?: INavItems;
 }
 
