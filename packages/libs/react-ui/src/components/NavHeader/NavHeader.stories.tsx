@@ -81,9 +81,9 @@ const meta: Meta<StoryProps> = {
   },
 };
 
-type Story = StoryObj<StoryProps>;
+type IStory = StoryObj<StoryProps>;
 
-export const Dynamic: Story = {
+export const Dynamic: IStory = {
   name: 'NavHeader',
   args: {
     brand: logoVariants[0],
@@ -107,8 +107,8 @@ export const Dynamic: Story = {
             </NavHeader.Link>
           ))}
         </NavHeader.Navigation>
-        {renderSampleContent && (
-          <NavHeader.Content>
+        <NavHeader.Content>
+          {renderSampleContent && (
             <Button
               as="button"
               icon="Link"
@@ -119,8 +119,8 @@ export const Dynamic: Story = {
             >
               Connect your wallet
             </Button>
-          </NavHeader.Content>
-        )}
+          )}
+        </NavHeader.Content>
       </NavHeader.Root>
     );
   },

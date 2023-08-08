@@ -3,7 +3,7 @@ import { glowClass, navListClass, navWrapperClass } from './NavHeader.css';
 import { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
-import React, { FC } from 'react';
+import React, { FC, FunctionComponentElement } from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
 export interface INavItem {
@@ -14,7 +14,7 @@ export interface INavItem {
 export type INavItems = INavItem[];
 
 export interface INavHeaderNavigationProps {
-  children: React.ReactNode;
+  children: FunctionComponentElement<INavHeaderLinkProps>[];
 }
 
 export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
@@ -40,7 +40,7 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           <li key={`navItem-${index}`} onClick={() => setActiveNav(index + 1)}>
             {React.cloneElement(
               child as React.ReactElement<
-                HTMLElement & INavHeaderLinkProps,
+                HTMLElement | INavHeaderLinkProps,
                 | string
                 | React.JSXElementConstructor<JSX.Element & INavHeaderLinkProps>
               >,
