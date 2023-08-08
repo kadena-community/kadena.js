@@ -1,18 +1,10 @@
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
-import { ISignFunction } from '../ISignFunction';
-import { addSignatures } from '../utils/addSignature';
+import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
-import {
-  connect,
-  getAccountInfo,
-  isConnected,
-  isInstalled,
-} from './eckoCommon';
-import { ICommonEckoFunctions, IEckoQuicksignResponse } from './eckoTypes';
-
-interface IEckoSignFunction extends ISignFunction, ICommonEckoFunctions {}
+import { connect, isConnected, isInstalled } from './eckoCommon';
+import { IEckoQuicksignResponse, IEckoSignFunction } from './eckoTypes';
 
 /**
  * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}
@@ -63,12 +55,8 @@ export function createEckoWalletQuicksign(): IEckoSignFunction {
       throw new Error('Error signing transaction');
     }
 
-    const response = {
-      responses: eckoResponse.quickSignData,
-    };
-
-    if ('responses' in response) {
-      response.responses.map((signedCommand, i) => {
+    if ('quickSignData' in eckoResponse) {
+      eckoResponse.quickSignData.map((signedCommand, i) => {
         if (signedCommand.outcome.result === 'success') {
           if (signedCommand.outcome.hash !== transactionHashes[i]) {
             throw new Error(
@@ -94,7 +82,6 @@ export function createEckoWalletQuicksign(): IEckoSignFunction {
   quicksignWithEckoWallet.isInstalled = isInstalled;
   quicksignWithEckoWallet.isConnected = isConnected;
   quicksignWithEckoWallet.connect = connect;
-  quicksignWithEckoWallet.getAccountInfo = getAccountInfo;
 
   return quicksignWithEckoWallet;
 }

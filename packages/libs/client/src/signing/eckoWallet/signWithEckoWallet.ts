@@ -1,14 +1,8 @@
-import { ISingleSignFunction } from '../ISignFunction';
 import { pactCommandToSigningRequest } from '../utils/pactCommandToSigningRequest';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
-import {
-  connect,
-  getAccountInfo,
-  isConnected,
-  isInstalled,
-} from './eckoCommon';
-import { ICommonEckoFunctions, IEckoSignResponse } from './eckoTypes';
+import { connect, isConnected, isInstalled } from './eckoCommon';
+import { IEckoSignResponse, IEckoSignSingleFunction } from './eckoTypes';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -19,10 +13,6 @@ declare global {
     };
   }
 }
-
-interface IEckoSignSingleFunction
-  extends ISingleSignFunction,
-    ICommonEckoFunctions {}
 
 /**
  * Creates the signWithEckoWallet function with interface {@link ISingleSignFunction}
@@ -57,7 +47,6 @@ export function createEckoWalletSign(): IEckoSignSingleFunction {
   signWithEckoWallet.isInstalled = isInstalled;
   signWithEckoWallet.isConnected = isConnected;
   signWithEckoWallet.connect = connect;
-  signWithEckoWallet.getAccountInfo = getAccountInfo;
 
   return signWithEckoWallet;
 }
