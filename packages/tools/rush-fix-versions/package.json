@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/rush-fix-versions",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Tool to assist with making consistent versions across rush monorepo",
   "keywords": [
     "rush"

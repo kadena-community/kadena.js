@@ -2,6 +2,14 @@ import { styled, StyledComponent } from '@kadena/react-components';
 
 import { BasePageGrid } from '../components';
 
+export const ArticleMetadataItem: StyledComponent<'span'> = styled('span', {
+  '::before': {
+    content: '"•"',
+    height: '100%',
+    margin: '$3',
+  },
+});
+
 export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
   BasePageGrid,
   {
@@ -9,24 +17,28 @@ export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
     gridTemplateAreas: `
             "header header"
             "pageheader pageheader"
-            "content content"
+            "content"
             "footer footer"
           `,
 
     '@md': {
-      gridTemplateColumns:
-        '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) 1%',
+      gridTemplateColumns: '0% 5% auto 5%',
 
       gridTemplateAreas: `
               "header header header header"
               "pageheader pageheader pageheader pageheader"
-              ". menu content ."
+              ". content . ."
               "footer footer footer footer"
             `,
     },
     '@2xl': {
-      gridTemplateColumns:
-        'minmax(1%, auto) $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth)) minmax(1%, auto)',
+      gridTemplateColumns: '0% minmax(20%, auto) auto minmax(20%, auto)',
+      gridTemplateAreas: `
+              "header header header header"
+              "pageheader pageheader pageheader pageheader"
+              ". content ."
+              "footer footer footer footer"
+            `,
     },
   },
 );

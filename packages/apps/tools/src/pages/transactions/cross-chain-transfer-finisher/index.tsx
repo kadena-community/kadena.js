@@ -54,15 +54,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-interface IPactResultError {
-  status: 'failure';
-  error: {
-    message: string;
-  };
-}
-
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
-const DOMAIN_NAME_REGEX =
+const DOMAIN_NAME_REGEX: RegExp =
   /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
 const schema = z.object({
@@ -139,7 +132,7 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (data: FormData): Promise<void> => {
     debug(handleSubmit.name);
 
     if (!pollResults.tx) {

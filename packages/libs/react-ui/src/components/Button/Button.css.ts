@@ -1,5 +1,6 @@
+import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
-import { ColorType, vars } from '@theme/vars.css';
+import { ColorType, darkThemeClass, vars } from '@theme/vars.css';
 import {
   createVar,
   keyframes,
@@ -13,27 +14,39 @@ const bgHoverColor = createVar(),
 
 export const container = style([
   sprinkles({
-    display: 'flex',
-    placeItems: 'center',
-    gap: '$2',
+    border: 'none',
     borderRadius: '$sm',
     cursor: 'pointer',
+    display: 'flex',
+    fontSize: '$base',
+    fontWeight: '$semiBold',
+    gap: '$2',
+    lineHeight: '$normal',
     paddingX: '$4',
     paddingY: '$3',
-    border: 'none',
-    fontSize: '$base',
+    placeItems: 'center',
     textDecoration: 'none',
-    lineHeight: '$normal',
+    color: {
+      lightMode: '$white',
+      darkMode: '$gray80',
+    },
+    backgroundColor: {
+      darkMode: '$blue50',
+    },
   }),
   {
     selectors: {
       '&[href]': {
         display: 'inline-flex',
       },
+      [`${darkThemeClass} &:hover`]: {
+        color: colorPalette.$gray100,
+        backgroundColor: colorPalette.$blue30,
+      },
     },
-    transition: 'background-color 0.4s ease',
     ':hover': {
       backgroundColor: bgHoverColor,
+      color: colorPalette.$white,
     },
     ':active': {
       backgroundColor: bgActiveColor,
@@ -46,11 +59,12 @@ export const container = style([
     },
     ':disabled': {
       opacity: 0.7,
-      backgroundColor: vars.colors.$neutral3,
-      color: vars.colors.$neutral1,
+      backgroundColor: colorPalette.$gray60,
+      color: colorPalette.$gray10,
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
+    transition: 'background-color 0.4s ease',
   },
 ]);
 

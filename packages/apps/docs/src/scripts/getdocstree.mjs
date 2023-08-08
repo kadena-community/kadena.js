@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+
 import yaml from 'js-yaml';
 import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
@@ -132,6 +133,7 @@ const createTree = (rootDir, parent = []) => {
 
 const result = createTree(INITIALPATH, TREE);
 
+// write menu file
 const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
 export const menuData = ${JSON.stringify(result, null, 2)}`;
 

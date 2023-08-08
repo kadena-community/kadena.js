@@ -1,6 +1,6 @@
 import { LinkList as InnerLinkList } from '../LinkList';
 
-import { StyledListItem } from './styles';
+import { listItemClass } from './styles.css';
 
 import React, { FC, ReactNode } from 'react';
 
@@ -11,8 +11,8 @@ export interface ILinkList {
 
 export const LinkList: FC<ILinkList> = ({ title, children }) => {
   return (
-    <StyledListItem>
+    <li className={listItemClass}>
       <InnerLinkList title={title}>{children}</InnerLinkList>
-    </StyledListItem>
+    </li>
   );
 };
