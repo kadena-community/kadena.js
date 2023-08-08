@@ -1,4 +1,4 @@
-import { wrapper } from './styles.css';
+import { wrapperClass } from '../styles.css';
 
 import { BodyText } from '@/components/Typography';
 import React, { FC } from 'react';
@@ -9,7 +9,7 @@ interface IProp {
 
 export const Paragraph: FC<IProp> = ({ children }) => {
   return (
-    <div className={wrapper}>
+    <div className={wrapperClass}>
       <BodyText as="p">{children}</BodyText>
     </div>
   );
