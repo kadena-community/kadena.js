@@ -23,5 +23,6 @@ export function sign(
     hshBin,
     toTweetNaclSecretKey({ secretKey, publicKey }),
   );
+
   return { hash: hsh, sig: binToHex(sigBin), pubKey: publicKey };
 }
