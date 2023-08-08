@@ -7,7 +7,7 @@ const listCondition = ({ task }: IAnswers): boolean => {
 
 export const listQuestions: IQuestion[] = [
   {
-    message: 'On wich network would you like to search?',
+    message: 'On which network would you like to search?',
     name: 'network',
     type: 'input',
     defaultValue: 'fast-development',

@@ -27,7 +27,7 @@ export const fundQuestions: IQuestion[] = [
     when: fundCondition,
   },
   {
-    message: 'On wich network would you like to fund the account?',
+    message: 'On which network would you like to fund the account?',
     name: 'network',
     type: 'input',
     defaultValue: 'fast-development',
