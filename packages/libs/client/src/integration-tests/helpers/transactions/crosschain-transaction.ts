@@ -19,7 +19,6 @@ function startCrossChainTransfer(
   to: IAccount,
   amount: string,
 ): IUnsignedCommand {
-  console.log('Start Cross Chain Transfer');
   return (
     Pact.builder
       .execution(
@@ -59,12 +58,13 @@ function finishInTheTargetChain(
   targetChainId: ChainId,
   gasPayer: string,
 ): IUnsignedCommand {
-  console.log('Starting Continuation');
   const builder = Pact.builder
     .continuation(continuation)
     .setNetworkId(NetworkId.fast_development)
     // uncomment this if you want to pay gas yourself
-    .addSigner(keyFromAccount(gasPayer), (withCapability) => [withCapability('coin.GAS')])
+    .addSigner(keyFromAccount(gasPayer), (withCapability) => [
+      withCapability('coin.GAS'),
+    ])
     .setMeta({
       chainId: targetChainId,
       senderAccount: gasPayer,
@@ -79,7 +79,7 @@ export async function executeCrossChainTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
-): Promise<string | void | undefined> {
+): Promise<Record<string, ICommandResult>> {
   return (
     Promise.resolve(startCrossChainTransfer(from, to, amount))
       //    .then(inspect('command'))
@@ -134,8 +134,5 @@ export async function executeCrossChainTransfer(
       )
       .then((cmd) => submit(cmd))
       .then(pollStatus)
-      .then((response) => {
-        console.log('RESPONSE ======' + response);
-      })
   );
 }
