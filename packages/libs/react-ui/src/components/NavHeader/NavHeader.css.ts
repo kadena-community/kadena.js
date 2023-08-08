@@ -103,6 +103,11 @@ export const activeLinkClass = style([
         color: vars.colors.$gray90,
         textDecoration: 'none',
       },
+      '&:focus-visible': {
+        background: vars.colors.$blue40,
+        color: vars.colors.$gray90,
+        textDecoration: 'none',
+      },
     },
   },
 ]);
