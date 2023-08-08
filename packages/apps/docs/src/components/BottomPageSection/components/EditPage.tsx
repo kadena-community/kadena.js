@@ -1,5 +1,6 @@
 import { Button } from '@kadena/react-ui';
 
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -8,15 +9,21 @@ interface IProps {
 
 export const EditPage: FC<IProps> = ({ editLink }) => {
   if (!editLink) return null;
+  const registerClick = (): void => {
+    analyticsEvent(EVENT_NAMES['click:edit_page']);
+  };
   return (
-    <Button
-      as="a"
-      href={editLink}
-      target="_blank"
-      rel="noreferrer"
-      title="Edit this page"
-    >
-      Edit this page
-    </Button>
+    <span onClick={registerClick}>
+      <Button
+        as="a"
+        id="bla"
+        href={editLink}
+        target="_blank"
+        rel="noreferrer"
+        title="Edit this page"
+      >
+        Edit this page
+      </Button>
+    </span>
   );
 };
