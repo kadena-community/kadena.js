@@ -33,3 +33,13 @@ Component.Root etc.
 ## Vanilla Extract
 
 ### Classname naming convention
+
+### Using sprinkles as much as possible
+
+### Using recipes when you want to create variants
+
+### Selectors
+
+https://vanilla-extract.style/documentation/styling#complex-selectors
+
+- when to use globalStyle
