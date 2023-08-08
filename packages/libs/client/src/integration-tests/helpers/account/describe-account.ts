@@ -1,8 +1,8 @@
 import { ChainId } from '@kadena/types';
 
 import { Pact } from '../../../pact';
-import { dirtyRead } from '../client';
 import { NetworkId } from '../../support/enums';
+import { dirtyRead } from '../client';
 
 export async function getBalance(
   account: string,

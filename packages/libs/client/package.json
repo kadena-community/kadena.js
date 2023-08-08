@@ -31,7 +31,7 @@
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "heft test",
-    "test:integration": "jest -c ./config/jest.integration.config.js"
+    "test:integration": "jest --silent -c ./config/jest.integration.config.js"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
