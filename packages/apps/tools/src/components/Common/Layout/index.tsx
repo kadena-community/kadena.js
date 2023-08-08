@@ -1,10 +1,9 @@
 import { FooterWrapper, Header, Sidebar } from './partials';
 import { footerStyle, gridItemMainStyle, headerStyle } from './styles.css';
 
-import { WalletConnectButton } from '@/components/Global';
+import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import routes from '@/constants/routes';
 import { useLayoutContext } from '@/context';
-import { KLogoComponent } from '@/resources/svg/generated';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
@@ -28,7 +27,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     },
     {
       title: t('Account'),
-      href: routes.ACCOUNT_TRANSACTIONS,
+      href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ];
 
@@ -36,7 +35,6 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     <div>
       <header className={headerStyle}>
         <Header
-          logo={<KLogoComponent width={32} height={32} />}
           appTitle={t('Developer Tools')}
           menu={menu}
           rightPanel={<WalletConnectButton />}

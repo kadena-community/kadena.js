@@ -1,7 +1,8 @@
+import { SystemIcon } from '@kadena/react-ui';
+
 import { NavLink } from '@/components/Global/NavLink';
 import { StyledSidebar } from '@/components/Global/SidebarMenu/styles';
 import routes from '@/constants/routes';
-import { Account, Chain } from '@/resources/svg/generated';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC } from 'react';
@@ -16,31 +17,31 @@ export const SidebarMenu: FC = (props) => {
   } = {
     faucet: [
       {
-        icon: Account,
+        icon: SystemIcon.Account,
         title: t('Existing account'),
         href: routes.FAUCET_EXISTING,
       },
     ],
     transactions: [
       {
-        icon: Chain,
+        icon: SystemIcon.Link,
         title: t('Cross Chain Transfer Tracker'),
         href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
       },
       {
-        icon: Chain,
+        icon: SystemIcon.Link,
         title: t('Cross Chain Transfer Finisher'),
         href: routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
       {
-        icon: Chain,
+        icon: SystemIcon.Link,
         title: t('Module explorer'),
         href: routes.MODULE_EXPLORER,
       },
     ],
     account: [
       {
-        icon: Account,
+        icon: SystemIcon.Account,
         title: t('Account Transactions'),
         href: routes.ACCOUNT_TRANSACTIONS,
       },

@@ -7,3 +7,10 @@ export const homeWrapperClass = style([
     paddingRight: '$16',
   }),
 ]);
+
+export const helpCenterButtonClass = style([
+  sprinkles({
+    color: '$infoContrast',
+    cursor: 'pointer',
+  }),
+]);

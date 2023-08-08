@@ -1,5 +1,5 @@
-import { Button, SystemIcons } from '@kadena/react-components';
 import {
+  Button,
   Notification,
   Stack,
   SystemIcon,
@@ -7,13 +7,18 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
-import { LoadingWrapper, ScrollBox } from './../styles';
+import {
+  loadingWrapperClass,
+  scrollBoxClass,
+  scrollBoxEnabledClass,
+} from './../styles.css';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
 import { Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { createLinkFromMD } from '@/utils';
+import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -51,6 +56,10 @@ export const SearchResults: FC<IProps> = ({
   const [selectedTabName, setSelectedTabName] = useState<string>('docs');
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
+  const scrollBoxClasses = classnames(scrollBoxClass, {
+    [scrollBoxEnabledClass]: hasScroll,
+  });
+
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
     const buttonName = (e.target as HTMLElement).getAttribute('data-value');
     if (buttonName === null) return;
@@ -75,11 +84,11 @@ export const SearchResults: FC<IProps> = ({
         <Tabs.Tab value="qa">QA Space</Tabs.Tab>
 
         <Tabs.Content value="docs">
-          <ScrollBox disabled={!hasScroll}>
+          <div className={scrollBoxClasses}>
             {semanticIsLoading && (
-              <LoadingWrapper>
+              <div className={loadingWrapperClass}>
                 <Loading />
-              </LoadingWrapper>
+              </div>
             )}
             {semanticError ? (
               <Notification.Root
@@ -100,7 +109,8 @@ export const SearchResults: FC<IProps> = ({
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
-                        icon={SystemIcons.TrailingIcon}
+                        icon={'TrailingIcon'}
+                        iconAlign="right"
                         title="Go to search results"
                         onClick={clearModal}
                       >
@@ -111,15 +121,15 @@ export const SearchResults: FC<IProps> = ({
                 ) : null}
               </>
             )}
-          </ScrollBox>
+          </div>
         </Tabs.Content>
 
         <Tabs.Content value="qa">
-          <ScrollBox disabled={!hasScroll}>
+          <div className={scrollBoxClasses}>
             {isLoading && (
-              <LoadingWrapper>
+              <div className={loadingWrapperClass}>
                 <Loading />
-              </LoadingWrapper>
+              </div>
             )}
             {error && (
               <Notification.Root
@@ -150,7 +160,7 @@ export const SearchResults: FC<IProps> = ({
             ))}
 
             <div>{outputStream}</div>
-          </ScrollBox>
+          </div>
         </Tabs.Content>
       </Tabs.Root>
     </section>

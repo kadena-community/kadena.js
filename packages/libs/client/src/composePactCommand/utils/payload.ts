@@ -1,20 +1,21 @@
+import { ICap } from '@kadena/types';
+
 import {
-  ICapabilityItem,
   IContinuationPayloadObject,
-  IExecPayloadObject,
+  IExecutionPayloadObject,
 } from '../../interfaces/IPactCommand';
 
 interface IExec {
   <
     TCodes extends Array<
       | (string & {
-          capability(name: string, ...args: unknown[]): ICapabilityItem;
+          capability(name: string, ...args: unknown[]): ICap;
         })
       | string
     >,
   >(
     ...codes: [...TCodes]
-  ): { payload: IExecPayloadObject & { funs: [...TCodes] } };
+  ): { payload: IExecutionPayloadObject & { funs: [...TCodes] } };
 }
 
 interface ICont {
@@ -24,10 +25,12 @@ interface ICont {
 }
 
 /**
- * @alpha
+ * Utility function to create payload for execution {@link IPactCommand.payload}
+ *
+ * @public
  */
 export const execution: IExec = (...codes: string[]) => {
-  const pld: IExecPayloadObject = {
+  const pld: IExecutionPayloadObject = {
     exec: { code: codes.join(''), data: {} },
   };
   return {
@@ -38,7 +41,9 @@ export const execution: IExec = (...codes: string[]) => {
 };
 
 /**
- * @alpha
+ * Utility function to create payload for continuation  {@link IPactCommand.payload}
+ *
+ * @public
  */
 export const continuation: ICont = (options) => {
   const clone = { ...options, data: options.data ? options.data : {} };

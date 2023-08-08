@@ -1,5 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { getClient, Pact } from '@kadena/client';
+import { createClient, Pact } from '@kadena/client';
 
 import {
   getKadenaConstantByNetwork,
@@ -19,14 +19,14 @@ export interface IModulesResult {
 export const listModules = async (
   chainId: ChainwebChainId,
   network: Network,
-  sender: string = kadenaConstants.DEFAULT_SENDER,
+  senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModulesResult> => {
   debug(listModules.name);
   const networkId = chainNetwork[network].network;
-  const { local } = getClient(
+  const { local } = createClient(
     getKadenaConstantByNetwork(network).apiHost({
       networkId,
       chainId,
@@ -35,7 +35,7 @@ export const listModules = async (
 
   const transaction = Pact.builder
     .execution('(list-modules)')
-    .setMeta({ gasLimit, gasPrice, ttl, sender, chainId })
+    .setMeta({ gasLimit, gasPrice, ttl, senderAccount, chainId })
     .setNetworkId(networkId)
     .createTransaction();
 

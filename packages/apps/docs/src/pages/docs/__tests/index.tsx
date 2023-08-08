@@ -1,4 +1,4 @@
-import { Stack } from '@kadena/react-components';
+import { Stack } from '@kadena/react-ui';
 
 import {
   checkSubTreeForActive,

@@ -19,6 +19,8 @@ const config = {
     GAS_LIMIT: process.env.GAS_LIMIT,
     FAUCET_PUBLIC_KEY: process.env.FAUCET_PUBLIC_KEY,
     FAUCET_PRIVATE_KEY: process.env.FAUCET_PRIVATE_KEY,
+    WALLET_CONNECT_PROJECT_ID: process.env.WALLET_CONNECT_PROJECT_ID,
+    WALLET_CONNECT_RELAY_URL: process.env.WALLET_CONNECT_RELAY_URL,
   },
   webpack: (config, { isServer }) => {
     config.module.rules.push({

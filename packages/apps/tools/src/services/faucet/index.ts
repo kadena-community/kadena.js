@@ -2,7 +2,7 @@ import {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import { getClient, isSignedCommand, Pact } from '@kadena/client';
+import { createClient, isSignedTransaction, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -39,16 +39,18 @@ export const fundExistingAccount = async (
         new PactNumber(amount).toPactDecimal(),
       ),
     )
-    .addSigner(FAUCET_PUBLIC_KEY, (withCap) => [(withCap as any)('coin.GAS')])
-    .addSigner(keyPair.publicKey, (withCap) => [
-      (withCap as any)(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .addSigner(FAUCET_PUBLIC_KEY, (withCap: any) => [withCap('coin.GAS')])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .addSigner(keyPair.publicKey, (withCap: any) => [
+      withCap(
         'coin.TRANSFER',
         SENDER_ACCOUNT,
         account,
         new PactNumber(amount).toPactDecimal(),
       ),
     ])
-    .setMeta({ sender: SENDER_OPERATION_ACCOUNT, chainId })
+    .setMeta({ senderAccount: SENDER_OPERATION_ACCOUNT, chainId })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
@@ -74,9 +76,9 @@ export const fundExistingAccount = async (
 
   transaction.sigs = [{ sig: signature1.sig }, { sig: signature2.sig }];
 
-  const { submit, pollStatus } = getClient(apiHost);
+  const { submit, pollStatus } = createClient(apiHost);
 
-  if (!isSignedCommand(transaction)) {
+  if (!isSignedTransaction(transaction)) {
     throw new Error('Transaction is not signed');
   }
 

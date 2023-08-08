@@ -9,6 +9,8 @@ export interface IEnvInterface {
   FAUCET_PRIVATE_KEY?: string;
   GAS_PRICE?: number;
   DEFAULT_SENDER?: string;
+  WALLET_CONNECT_PROJECT_ID?: string;
+  WALLET_CONNECT_RELAY_URL?: string;
 }
 
 type RequiredEnv = Required<IEnvInterface>;
@@ -24,6 +26,8 @@ export const dotenv: IEnvInterface = {
   FAUCET_PRIVATE_KEY: process.env.FAUCET_PRIVATE_KEY,
   GAS_PRICE: Number(process.env.GAS_PRICE),
   DEFAULT_SENDER: process.env.DEFAULT_SENDER,
+  WALLET_CONNECT_PROJECT_ID: process.env.WALLET_CONNECT_PROJECT_ID,
+  WALLET_CONNECT_RELAY_URL: process.env.WALLET_CONNECT_RELAY_URL,
 };
 
 export const env = <T extends keyof RequiredEnv, TDefault>(

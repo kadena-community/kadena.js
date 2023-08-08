@@ -29,12 +29,13 @@ export async function finishXChainTransfer(
       .setNetworkId(networkId)
       .setMeta({
         chainId: targetChainId,
-        sender: gasPayer,
+        senderAccount: gasPayer,
         // this needs to be below 850 if you want to use gas-station otherwise the gas-station does
         gasLimit: 850,
       })
       .createTransaction();
-    return await client.submit(continuationTransaction as ICommand);
+    return (await client.submit(continuationTransaction as ICommand))
+      .requestKey;
   } catch (e) {
     debug(e.message);
     return { error: e.message };

@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
+import { toString } from 'mdast-util-to-string';
 
 const DOCSROOT = './src/pages/docs/';
 
@@ -46,12 +47,14 @@ export const createSlug = (str) => {
 };
 
 const getTitle = (pageAST) => {
+  // flatten all children recursively to prevent issue with
+  // E.g. ## some title with `code`
   const node = pageAST.children[0];
   if (node.type !== 'heading' || node.depth !== 2) {
     throw new Error('first node is not a Heading');
   }
 
-  return node.children[0].value;
+  return node.children.flatMap((child) => toString(child).trim()).join(' ');
 };
 
 const createTreeRoot = (page) => ({
@@ -117,6 +120,11 @@ const recreateUrl = (pages, url, root) => {
 
       if (pageSlug !== slug) {
         url = `${url}#${slug}`;
+      }
+
+      // remove double slashes from internal url, if any
+      if (!url.includes('http')) {
+        url = url.replace(/\/\//g, '/');
       }
 
       return url;

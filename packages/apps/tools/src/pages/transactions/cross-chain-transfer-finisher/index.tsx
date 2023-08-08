@@ -7,6 +7,12 @@ import {
   TrackerCard,
 } from '@kadena/react-ui';
 
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
+import RequestKeyField, {
+  REQUEST_KEY_VALIDATION,
+} from '@/components/Global/RequestKeyField';
 import client from '@/constants/client';
 import { chainNetwork } from '@/constants/network';
 import Routes from '@/constants/routes';
@@ -40,16 +46,30 @@ import {
   getTransferData,
   ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
-import { formatNumberAsString } from '@/utils/number';
+import { validateRequestKey } from '@/services/utils/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+// @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
+const DOMAIN_NAME_REGEX: RegExp =
+  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
+
+const schema = z.object({
+  requestKey: REQUEST_KEY_VALIDATION,
+  advancedOptions: z.boolean().optional(),
+  server: z
+    .string()
+    .trim()
+    .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
+    .optional(),
+  gasPayer: NAME_VALIDATION.optional(),
+});
+
+type FormData = z.infer<typeof schema>;
 
 const CrossChainTransferFinisher: FC = () => {
   const debug = Debug(
@@ -58,11 +78,6 @@ const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
   const { network } = useAppContext();
 
-  const [requestKey, setRequestKey] = useState<string>('');
-  const [kadenaXChainGas, setKadenaXChainGas] =
-    useState<string>('kadena-xchain-gas');
-  const [gasPrice, setGasPrice] = useState<number>(0.00000001);
-  const [advancedOptions, setAdvancedOptions] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
@@ -86,20 +101,15 @@ const CrossChainTransferFinisher: FC = () => {
     },
   ]);
 
-  useEffect(() => {
-    setRequestKey('');
-    setPollResults({});
-    setFinalResults({});
-    setTxError('');
-  }, [network]);
-
   const checkRequestKey = async (
     e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
     e.preventDefault();
     debug(checkRequestKey.name);
 
-    if (!requestKey) {
+    const requestKey = e.currentTarget.value;
+
+    if (!validateRequestKey(requestKey)) {
       return;
     }
 
@@ -122,11 +132,7 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    e.preventDefault();
-
+  const handleSubmit = async (data: FormData): Promise<void> => {
     debug(handleSubmit.name);
 
     if (!pollResults.tx) {
@@ -135,18 +141,18 @@ const CrossChainTransferFinisher: FC = () => {
 
     const networkId = chainNetwork[network].network;
 
-    const options = {
+    const requestObject = {
+      requestKey: data.requestKey,
       networkId: networkId,
       chainId: pollResults.tx.sender.chain,
     };
 
     const proof = await client.pollCreateSpv(
-      requestKey,
+      requestObject,
       pollResults.tx.receiver.chain,
-      options,
     );
 
-    const status = await client.listen(requestKey, options);
+    const status = await client.listen(requestObject);
 
     const pactId = status.continuation?.pactId;
 
@@ -159,7 +165,7 @@ const CrossChainTransferFinisher: FC = () => {
       },
       pollResults.tx.receiver.chain,
       networkId,
-      kadenaXChainGas,
+      data.gasPayer,
     );
 
     if (typeof requestKeyOrError !== 'string') {
@@ -167,7 +173,11 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     try {
-      const result = await client.listen(requestKeyOrError as string);
+      const result = await client.listen({
+        requestKey: requestKeyOrError as string,
+        networkId,
+        chainId: pollResults.tx.receiver.chain,
+      });
       setFinalResults({
         requestKey: result.reqKey,
         status: result.result.status,
@@ -178,35 +188,41 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
+  const {
+    register,
+    handleSubmit: validateThenSubmit,
+    watch,
+    formState: { errors },
+    getValues,
+    resetField,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    values: {
+      server: chainNetwork[network].server,
+      requestKey: '',
+      gasPayer: 'kadena-xchain-gas',
+    },
+    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
+    resetOptions: {
+      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
+    },
+  });
+
+  const watchAdvancedOptions = watch('advancedOptions');
+  const watchGasPayer = watch('gasPayer');
+
+  const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const showInputError =
     pollResults.error === undefined ? undefined : 'negative';
-  const showInputInfo = requestKey ? '' : t('(Not a Cross Chain Request Key');
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
-  const isGasStation = kadenaXChainGas === 'kadena-xchain-gas';
-  const formattedGasPrice = gasPrice
-    .toFixed(20)
-    .replace(/(?<=\.\d*[1-9])0+$|\.0*$/, '');
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setRequestKey(e.target.value);
-    },
-    [],
-  );
-
-  const onGasPayerAccountChange = useCallback<
-    ChangeEventHandler<HTMLInputElement>
-  >((e) => {
-    setKadenaXChainGas(e.target.value);
-  }, []);
-
-  const onGasPriceChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setGasPrice(Number(e.target.value));
-    },
-    [],
-  );
+  useEffect(() => {
+    resetField('requestKey');
+    setPollResults({});
+    setFinalResults({});
+    setTxError('');
+  }, [network, resetField]);
 
   return (
     <div>
@@ -215,16 +231,15 @@ const CrossChainTransferFinisher: FC = () => {
         <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <StyledFinisherContent>
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={validateThenSubmit(handleSubmit)}>
           <StyledAccountForm>
             <StyledToggleContainer>
               <StyledFieldCheckbox>
                 <StyledCheckbox
+                  {...register('advancedOptions')}
                   type="checkbox"
-                  id={'advanced-options'}
+                  id="advanced-options"
                   placeholder={t('Enter private key to sign the transaction')}
-                  onChange={() => setAdvancedOptions(!advancedOptions)}
-                  value={advancedOptions.toString()}
                 />
                 <StyledCheckboxLabel htmlFor="advanced-options">
                   {t('Advanced options')}
@@ -232,53 +247,37 @@ const CrossChainTransferFinisher: FC = () => {
               </StyledFieldCheckbox>
             </StyledToggleContainer>
 
-            <TextField
-              label={t('Request Key')}
-              info={showInputInfo}
-              status={showInputError}
+            <RequestKeyField
               helperText={showInputHelper}
+              status={showInputError}
               inputProps={{
-                id: 'request-key-input',
-                placeholder: t('Enter Request Key'),
-                onChange: onRequestKeyChange,
+                ...register('requestKey'),
                 onKeyUp: checkRequestKey,
-                defaultValue: requestKey,
               }}
+              error={errors.requestKey}
             />
 
-            {advancedOptions ? (
+            {watchAdvancedOptions ? (
               <>
                 <TextField
                   label="Chain Server"
+                  status={errors.server ? 'negative' : undefined}
+                  helperText={errors.server?.message ?? ''}
                   inputProps={{
+                    ...register('server', { shouldUnregister: true }),
                     id: 'chain-server-input',
                     placeholder: t('Enter Chain Server'),
-                    defaultValue: chainNetwork[network].server,
                     leadingText: chainNetwork[network].network,
                   }}
                 />
-                <TextField
+                <AccountNameField
                   label={t('Gas Payer')}
-                  helperText={
-                    isGasStation
-                      ? ''
-                      : t('only gas station account is supported')
-                  }
                   inputProps={{
+                    ...register('gasPayer', { shouldUnregister: true }),
                     id: 'gas-payer-account-input',
                     placeholder: t('Enter Your Account'),
-                    onChange: onGasPayerAccountChange,
-                    defaultValue: kadenaXChainGas,
                   }}
-                />
-                <TextField
-                  label={t('Gas Price')}
-                  inputProps={{
-                    id: 'gas-price-input',
-                    placeholder: t('Enter Gas Price'),
-                    onChange: onGasPriceChange,
-                    defaultValue: formattedGasPrice,
-                  }}
+                  error={errors.gasPayer}
                 />
               </>
             ) : null}
@@ -353,12 +352,8 @@ const CrossChainTransferFinisher: FC = () => {
               labelValues={[
                 {
                   label: t('Gas Payer'),
-                  value: kadenaXChainGas,
+                  value: getValues('gasPayer'),
                   isAccount: false,
-                },
-                {
-                  label: t('Price'),
-                  value: formatNumberAsString(gasPrice),
                 },
               ]}
             />

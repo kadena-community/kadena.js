@@ -13,6 +13,14 @@ export interface IStackProps
     | 'marginRight'
     | 'justifyContent'
     | 'alignItems'
+    | 'width'
+    | 'padding'
+    | 'paddingX'
+    | 'paddingY'
+    | 'paddingTop'
+    | 'paddingBottom'
+    | 'paddingLeft'
+    | 'paddingRight'
   > {
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
@@ -35,6 +43,14 @@ export const Stack = ({
   alignItems = undefined,
   wrap = undefined,
   direction = undefined,
+  width = undefined,
+  padding = undefined,
+  paddingX = undefined,
+  paddingY = undefined,
+  paddingTop = undefined,
+  paddingBottom = undefined,
+  paddingLeft = undefined,
+  paddingRight = undefined,
   children,
 }: IStackProps): React.ReactElement => {
   return createElement(
@@ -54,6 +70,14 @@ export const Stack = ({
         alignItems,
         flexWrap: wrap,
         flexDirection: direction,
+        padding,
+        paddingX,
+        paddingY,
+        paddingTop,
+        paddingBottom,
+        paddingLeft,
+        paddingRight,
+        width,
       }),
       'data-testid': 'kda-stack',
     },

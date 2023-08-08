@@ -1,6 +1,13 @@
 # Change Log - @kadena/pactjs-generator
 
-This log was last generated on Mon, 10 Jul 2023 14:25:54 GMT and should not be manually modified.
+This log was last generated on Fri, 04 Aug 2023 16:10:02 GMT and should not be manually modified.
+
+## 1.0.0
+Fri, 04 Aug 2023 16:10:02 GMT
+
+### Updates
+
+- Use ICap from @kadena/types instead of ICapabilityItem
 
 ## 0.1.13
 Mon, 10 Jul 2023 14:25:54 GMT
@@ -10,12 +17,23 @@ _Version update only_
 ## 0.1.12
 Mon, 10 Jul 2023 14:20:26 GMT
 
-_Version update only_
+### Updates
+
+- small changes in readme
+- Remove unused dependencies + fix some lint config
 
 ## 0.1.11
 Tue, 04 Jul 2023 08:27:48 GMT
 
-_Version update only_
+### Updates
+
+- Add repo-wide markdown formatting
+- Complete the formatting trilogy
+- Introduce generic package doc headers
+- Housekeeping npm-published files
+- Replace lint-staged with explicit format script
+- Rename master branch to main
+- apply new lint rules
 
 ## 0.1.10
 Thu, 22 Jun 2023 09:46:33 GMT
@@ -30,6 +48,10 @@ Tue, 13 Jun 2023 13:17:28 GMT
 - Update to typescript 5
 - Use Jest snapshot to assert generated file
 
+### Updates
+
+- Skip create-kadena-app tests in Windows/Git Bash
+
 ## 0.1.8
 Thu, 01 Jun 2023 20:18:44 GMT
 
@@ -37,6 +59,10 @@ Thu, 01 Jun 2023 20:18:44 GMT
 
 - Set the namespace for each module
 - fixing the issue regards "rush install" and "rush build" on windows
+
+### Updates
+
+- Fix usage of `repository` and `npx` in package.json
 
 ## 0.1.7
 Fri, 03 Mar 2023 11:24:59 GMT
@@ -66,6 +92,10 @@ Mon, 16 Jan 2023 16:31:08 GMT
 ### Patches
 
 - Merge generated types for capabilities across modules 
+
+### Updates
+
+- change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig
 
 ## 0.1.2
 Thu, 15 Dec 2022 14:56:25 GMT

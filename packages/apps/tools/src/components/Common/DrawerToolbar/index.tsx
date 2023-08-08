@@ -8,7 +8,14 @@ import {
 } from './styles.css';
 
 import classNames from 'classnames';
-import React, { type ReactNode, FC, useState } from 'react';
+import React, {
+  type ReactNode,
+  forwardRef,
+  ForwardRefExoticComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 export interface IDrawerToolbarSection {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
@@ -19,9 +26,30 @@ interface IProps {
   sections: IDrawerToolbarSection[];
 }
 
-export const DrawerToolbar: FC<IProps> = ({ sections }: IProps) => {
+export const DrawerToolbar: ForwardRefExoticComponent<
+  Omit<IProps, 'ref'> & React.RefAttributes<HTMLElement>
+> = forwardRef<HTMLElement, IProps>(function DrawerToolbar(
+  { sections },
+  ref = null,
+) {
   const [visibleSection, setVisibleSection] = useState<number | null>(null);
   const isOpen = visibleSection !== null;
+
+  const handleOpenSection = useCallback(
+    (index: number): void => {
+      if (sections?.[index]) {
+        setVisibleSection(index);
+      }
+    },
+    [sections],
+  );
+
+  useEffect(() => {
+    if (ref) {
+      // @ts-ignore
+      ref.openSection = handleOpenSection;
+    }
+  }, [handleOpenSection, ref]);
 
   return (
     <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
@@ -58,6 +86,6 @@ export const DrawerToolbar: FC<IProps> = ({ sections }: IProps) => {
       )}
     </aside>
   );
-};
+});
 
 export default DrawerToolbar;

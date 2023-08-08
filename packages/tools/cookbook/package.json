@@ -9,14 +9,13 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "dev:postinstall": "mkdir -p ./contracts; rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
+    "build:local": "npm run pactjs:coin && heft build --clean",
     "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts,.json --fix",
-    "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
-    "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
+    "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
     "test": ""
   },
   "dependencies": {

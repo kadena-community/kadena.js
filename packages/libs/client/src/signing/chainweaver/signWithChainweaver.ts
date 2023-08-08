@@ -16,7 +16,9 @@ import _debug from 'debug';
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
 /**
- * @alpha
+ * Sign with chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
+ *
+ * @public
  */
 export const signWithChainweaver: ISignFunction = (async (
   transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
@@ -24,6 +26,7 @@ export const signWithChainweaver: ISignFunction = (async (
   if (transactionList === undefined) {
     throw new Error('No transaction(s) to sign');
   }
+
   const isList = Array.isArray(transactionList);
   const transactions = isList ? transactionList : [transactionList];
   const quickSignRequest: IQuickSignRequestBody = {

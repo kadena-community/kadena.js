@@ -1,3 +1,7 @@
+jest.mock('@/components/Common/WalletConnectButton', () =>
+  jest.fn(() => <button>connect wallet</button>),
+);
+
 import Layout from './index';
 
 import { render } from '@testing-library/react';

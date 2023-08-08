@@ -1,5 +1,5 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { isSignedCommand, Pact, signWithChainweaver } from '@kadena/client';
+import { isSignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
 import { listen, submit } from './util/client';
@@ -36,14 +36,14 @@ async function doSafeTransfer(
       withCapability('coin.TRANSFER', to.account, from.account, aLowAmount),
     ])
     .setNetworkId(NETWORK_ID)
-    .setMeta({ chainId: '1', sender: from.account })
+    .setMeta({ chainId: '1', senderAccount: from.account })
     .createTransaction();
 
   const signedCommand = await signWithChainweaver(unsignedTr);
 
   // probably in this step you need to send the transaction to another party to sign the tr as well, and then send it to the blockchain
   // but for simplicity lets consider you want to transfer from your accounts that you sign in one go via the wallet
-  if (isSignedCommand(signedCommand)) {
+  if (isSignedTransaction(signedCommand)) {
     console.log(signedCommand);
     const receivedKey = await submit(signedCommand);
     const status = await listen(receivedKey);

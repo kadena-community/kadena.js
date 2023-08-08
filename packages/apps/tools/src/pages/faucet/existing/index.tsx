@@ -1,17 +1,14 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import {
-  Breadcrumbs,
-  Button,
-  Heading,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Breadcrumbs, Button, Heading, SystemIcon } from '@kadena/react-ui';
 
 import {
   ChainSelect,
   FormStatus,
   FormStatusNotification,
 } from '@/components/Global';
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
@@ -23,12 +20,12 @@ import {
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, FormEventHandler, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const schema = z.object({
-  name: z.string().min(3).max(256),
+  name: NAME_VALIDATION,
 });
 
 type FormData = z.infer<typeof schema>;
@@ -57,7 +54,6 @@ interface IFundExistingAccountResponse
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
 
-  const [accountName, setAccountName] = useState('');
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
@@ -79,7 +75,7 @@ const ExistingAccountFaucetPage: FC = () => {
 
       try {
         const result = (await fundExistingAccount(
-          accountName,
+          data.name,
           chainID,
           AMOUNT_OF_COINS_FUNDED,
         )) as IFundExistingAccountResponse;
@@ -115,14 +111,7 @@ const ExistingAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [accountName, chainID],
-  );
-
-  const onAccountNameChange = useCallback<FormEventHandler<HTMLInputElement>>(
-    (e) => {
-      setAccountName(e.currentTarget.value);
-    },
-    [],
+    [chainID, t],
   );
 
   const {
@@ -147,16 +136,10 @@ const ExistingAccountFaucetPage: FC = () => {
         />
         <StyledAccountForm>
           <Heading as="h3">Account</Heading>
-          <TextField
+          <AccountNameField
+            inputProps={register('name')}
+            error={errors.name}
             label={t('The account name you would like to fund coins to')}
-            status={errors.name ? 'negative' : undefined}
-            inputProps={{
-              ...register('name'),
-              id: 'account-name-input',
-              onChange: onAccountNameChange,
-              leftIcon: SystemIcon.KIcon,
-            }}
-            helperText={errors.name?.message ?? ''}
           />
           <ChainSelect
             onChange={onChainSelectChange}

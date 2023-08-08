@@ -1,5 +1,9 @@
 import { IPactCommand } from '../interfaces/IPactCommand';
 
+/**
+ * Typescript utility to verify that the passed object is a {@link IPactCommand}
+ * @internal
+ */
 export const isPactCommand = (
   command: Partial<IPactCommand>,
 ): command is IPactCommand => {
