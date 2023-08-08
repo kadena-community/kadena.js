@@ -6,6 +6,7 @@ export const ulList = style([
   sprinkles({
     marginY: '$5',
     marginX: 0,
+    position: 'relative',
   }),
 ]);
 
@@ -20,8 +21,10 @@ export const ilItem = style([
   },
 ]);
 
-globalStyle(`${ulList} ${ilItem} ul`, {
+// sub-ul, won't work with classNames
+globalStyle('ul ul', {
   paddingLeft: vars.sizes.$4,
   margin: 0,
-  backgroundColor: 'red',
+  top: `calc(-1 * ${vars.sizes.$4})`,
+  position: 'relative',
 });

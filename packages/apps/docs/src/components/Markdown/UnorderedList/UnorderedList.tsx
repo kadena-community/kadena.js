@@ -1,9 +1,9 @@
 import { ulList } from './styles.css';
 
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 interface IProp {
-  children: string;
+  children: ReactNode;
 }
 
 export const UnorderedList: FC<IProp> = ({ children }) => {
