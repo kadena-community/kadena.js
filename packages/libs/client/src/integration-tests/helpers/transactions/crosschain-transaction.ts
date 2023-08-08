@@ -1,5 +1,5 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import { ChainId, IUnsignedCommand } from '@kadena/types';
 
 import {
   IContinuationPayloadObject,
@@ -7,10 +7,10 @@ import {
   Pact,
   readKeyset,
 } from '../../../index';
+import { NetworkId } from '../../support/enums';
+import { IAccount } from '../../support/interfaces';
+import { keyFromAccount } from '../account/keyFromAccount';
 import { listen, pollCreateSpv, pollStatus, submit } from '../client';
-import { NetworkId } from '../enums';
-import { inspect } from '../fp-helpers';
-import { IAccount } from '../interfaces';
 
 import { signByKeyPair } from './sign-transaction';
 
@@ -57,12 +57,14 @@ function startCrossChainTransfer(
 function finishInTheTargetChain(
   continuation: IContinuationPayloadObject['cont'],
   targetChainId: ChainId,
-  gasPayer: string = 'kadena-xchain-gas',
+  gasPayer: string,
 ): IUnsignedCommand {
   console.log('Starting Continuation');
   const builder = Pact.builder
     .continuation(continuation)
     .setNetworkId(NetworkId.fast_development)
+    // uncomment this if you want to pay gas yourself
+    .addSigner(keyFromAccount(gasPayer), (withCapability) => [withCapability('coin.GAS')])
     .setMeta({
       chainId: targetChainId,
       senderAccount: gasPayer,
@@ -77,23 +79,23 @@ export async function executeCrossChainTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
-): Promise<Record<string, ICommandResult>> {
+): Promise<string | void | undefined> {
   return (
     Promise.resolve(startCrossChainTransfer(from, to, amount))
-      .then(inspect('command'))
-      .then((command) => signByKeyPair(command))
-      .then(inspect('command'))
+      //    .then(inspect('command'))
+      .then((command) => signByKeyPair(command, from.publicKey))
+      //     .then(inspect('command'))
       .then((command) =>
         isSignedTransaction(command)
           ? command
           : Promise.reject('CMD_NOT_SIGNED'),
       )
       // inspect is only for development you can remove them
-      .then(inspect('EXEC_SIGNED'))
+      //    .then(inspect('EXEC_SIGNED'))
       .then((cmd) => submit(cmd))
-      .then(inspect('SUBMIT_RESULT'))
+      //  .then(inspect('SUBMIT_RESULT'))
       .then(listen)
-      .then(inspect('LISTEN_RESULT'))
+      //  .then(inspect('LISTEN_RESULT'))
       .then((status) =>
         status.result.status === 'failure'
           ? Promise.reject(new Error('DEBIT REJECTED'))
@@ -112,19 +114,28 @@ export async function executeCrossChainTransfer(
           ),
         ]),
       )
-      .then(
-        ([status, proof]) =>
-          finishInTheTargetChain(
-            {
-              pactId: status.continuation?.pactId,
-              proof,
-              rollback: false,
-              step: 1,
-            },
-            to.chainId,
-          ) as ICommand,
+      .then(([status, proof]) =>
+        finishInTheTargetChain(
+          {
+            pactId: status.continuation?.pactId,
+            proof,
+            rollback: false,
+            step: 1,
+          },
+          to.chainId,
+          to.account,
+        ),
+      )
+      .then((command) => signByKeyPair(command, to.publicKey))
+      .then((command) =>
+        isSignedTransaction(command)
+          ? command
+          : Promise.reject('CMD_NOT_SIGNED'),
       )
       .then((cmd) => submit(cmd))
       .then(pollStatus)
+      .then((response) => {
+        console.log('RESPONSE ======' + response);
+      })
   );
 }

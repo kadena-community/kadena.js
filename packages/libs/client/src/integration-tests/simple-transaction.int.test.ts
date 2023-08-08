@@ -1,22 +1,12 @@
 import { getBalance } from './helpers/account/describe-account';
 import { fundAccount } from './helpers/account/fund-account';
-import { IAccount } from './helpers/interfaces';
 import { executeCrossChainTransfer } from './helpers/transactions/crosschain-transaction';
+import { sourceAccount, targetAccount } from './test-data/accounts';
 
 import { expect } from '@jest/globals';
 
-const sourceAccount: IAccount = {
-  account: 'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
-  publicKey: 'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
-  chainId: '0',
-  guard: 'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
-};
-const targetAccount: IAccount = {
-  account: 'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
-  publicKey: 'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
-  chainId: '1',
-  guard: 'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
-};
+let initialSourceBalance: number;
+let initialTargetBalance: number;
 
 describe('Cross Chain Transfer', () => {
   it('should have a source account on chain 0', async () => {
@@ -27,11 +17,11 @@ describe('Cross Chain Transfer', () => {
       sourceAccount.chainId,
     );
     expect(result).toBe('success');
-    const balance = await getBalance(
+    initialSourceBalance = await getBalance(
       sourceAccount.account,
       sourceAccount.chainId,
     );
-    expect(balance).toBeGreaterThanOrEqual(100);
+    expect(initialSourceBalance).toBeGreaterThanOrEqual(100);
   });
   it('should have a target account on chain 1', async () => {
     const result = await fundAccount(
@@ -41,19 +31,27 @@ describe('Cross Chain Transfer', () => {
       targetAccount.chainId,
     );
     expect(result).toBe('success');
-    const balance = await getBalance(
-      sourceAccount.account,
-      sourceAccount.chainId,
+    initialTargetBalance = await getBalance(
+      targetAccount.account,
+      targetAccount.chainId,
     );
-    expect(balance).toBeGreaterThanOrEqual(100);
+    expect(initialTargetBalance).toBeGreaterThanOrEqual(100);
   });
   it('should be able to perform a cross chain transfer', async () => {
     await executeCrossChainTransfer(sourceAccount, targetAccount, '5');
   });
   it('Should have deducted balance from the source account ', async () => {
-    console.log('This one is TODO');
+    const newBalance = await getBalance(
+      sourceAccount.account,
+      sourceAccount.chainId,
+    );
+    expect(newBalance).toBeLessThan(initialSourceBalance - 5);
   });
   it('Should have added balance to the target account ', async () => {
-    console.log('This one is TODO');
+    initialTargetBalance = await getBalance(
+      targetAccount.account,
+      targetAccount.chainId,
+    );
+    expect(initialTargetBalance).toBeGreaterThanOrEqual(100 + 5);
   });
 });
