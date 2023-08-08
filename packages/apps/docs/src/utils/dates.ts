@@ -29,6 +29,10 @@ export const compareDesc = (dateLeft?: string, dateRight?: string): number => {
 };
 
 export const formatDateDistance = (date: Date): string => {
+  if (!isValid(date)) {
+    throw new Error(`invalid date: ${date}`);
+  }
+
   const today = new Date();
 
   if (isToday(date) || isFuture(date)) {

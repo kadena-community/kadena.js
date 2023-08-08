@@ -5,6 +5,7 @@ import { Code, TitleWrapper } from './Code';
 import { Figure } from './Figure';
 import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
 import { Hr } from './Hr';
+import { Link } from './Link';
 import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
 import { Table } from './Table';
@@ -60,4 +61,5 @@ export const markDownComponents: MDXComponents = {
   'kda-youtube': Youtube as FunctionComponent<
     ExtendedIntrinsicElements['kda-youtube']
   >,
+  a: Link as FunctionComponent<ExtendedIntrinsicElements['a']>,
 };
