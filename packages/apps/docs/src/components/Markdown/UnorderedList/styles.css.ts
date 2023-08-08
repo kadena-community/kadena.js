@@ -2,23 +2,12 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { globalStyle, style } from '@vanilla-extract/css';
 
-export const ulList = style([
+export const ulListClass = style([
   sprinkles({
     marginY: '$5',
     marginX: 0,
     position: 'relative',
   }),
-]);
-
-export const ilItem = style([
-  {
-    selectors: {
-      '&::marker': {
-        color: '$primaryHighContrast',
-        fontWeight: '$bold',
-      },
-    },
-  },
 ]);
 
 // sub-ul, won't work with classNames
