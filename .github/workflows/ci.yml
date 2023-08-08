@@ -60,7 +60,8 @@ jobs:
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
 
       - name: Cache builds
-        if: github.ref_name != 'main'
+        if: ${{ false }}
+        # if: github.ref_name != 'main'
         uses: actions/cache@v3
         with:
           path: |
