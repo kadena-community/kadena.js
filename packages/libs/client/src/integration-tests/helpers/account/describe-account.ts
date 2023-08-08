@@ -2,7 +2,7 @@ import { ChainId } from '@kadena/types';
 
 import { Pact } from '../../../pact';
 import { dirtyRead } from '../client';
-import { NetworkId } from '../enums';
+import { NetworkId } from '../../support/enums';
 
 export async function getBalance(
   account: string,
