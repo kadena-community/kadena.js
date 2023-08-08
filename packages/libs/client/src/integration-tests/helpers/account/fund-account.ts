@@ -1,8 +1,8 @@
 import { ChainId, IPactDecimal } from '@kadena/types';
 
 import { Pact, readKeyset } from '../../../index';
+import { NetworkId } from '../../support/enums';
 import { listen, preflight, submit } from '../client';
-import { NetworkId } from '../enums';
 import { signByKeyPair } from '../transactions/sign-transaction';
 
 const senderAccount: string = 'sender00';
@@ -40,7 +40,7 @@ export async function fundAccount(
     .setNetworkId(NetworkId.fast_development)
     .createTransaction();
 
-  const signedTx = signByKeyPair(transaction);
+  const signedTx = signByKeyPair(transaction, signerKey);
 
   const preflightResult = await preflight(signedTx);
   if (preflightResult.result.status === 'failure') {
