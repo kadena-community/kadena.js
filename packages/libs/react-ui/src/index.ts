@@ -48,6 +48,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   ITrProps,
+  IProfileCardProps,
 } from './components';
 
 export {
@@ -86,6 +87,7 @@ export {
   Tree,
   useModal,
   Divider,
+  ProfileCard,
 } from './components';
 
 export { breakpoints } from './styles';
