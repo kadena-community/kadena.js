@@ -10,8 +10,8 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier locales src --write",
     "generate:contracts": "pnpm run /^generate:.*:contract/",
-    "generate:coin:contract": "pnpm pact contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
-    "generate:faucet:contract": "pnpm pact contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
+    "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
+    "generate:faucet:contract": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "lint": "eslint package.json src --ext .ts,.tsx, --fix",
     "start": "next start",
     "test": "jest --silent"
