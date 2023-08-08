@@ -1,6 +1,7 @@
 import { ICommand } from '@kadena/types';
 
 import { IQuicksignResponseOutcomes } from '../../signing-api/v1/quicksign';
+import { ISignFunction, ISingleSignFunction } from '../ISignFunction';
 
 export type EckoStatus = 'success' | 'fail';
 
@@ -9,6 +10,14 @@ export interface ICommonEckoFunctions {
   isConnected: (networkId: string) => Promise<boolean>;
   connect: (networkId: string) => Promise<boolean>;
 }
+
+export interface IEckoSignSingleFunction
+  extends ISingleSignFunction,
+    ICommonEckoFunctions {}
+
+export interface IEckoSignFunction
+  extends ISignFunction,
+    ICommonEckoFunctions {}
 
 export interface IEckoConnectOrStatusResponse {
   status: EckoStatus;

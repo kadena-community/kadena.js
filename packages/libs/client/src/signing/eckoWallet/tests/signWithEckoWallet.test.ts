@@ -61,6 +61,10 @@ describe('signWithEckoWallet', () => {
     };
   });
 
+  afterAll(() => {
+    mockEckoRequest.mockRestore();
+  });
+
   it('signs a transaction', async () => {
     mockEckoRequest.mockResolvedValue({
       status: 'success',

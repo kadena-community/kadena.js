@@ -1,5 +1,5 @@
 import {
-  IEckoAccountsResponse,
+  ICommonEckoFunctions,
   IEckoConnectOrStatusResponse,
 } from './eckoTypes';
 
@@ -48,13 +48,4 @@ export const connect: ICommonEckoFunctions['connect'] = async (networkId) => {
   }
 
   return true;
-};
-
-export const getAccountInfo = async (
-  networkId: string,
-): Promise<IEckoAccountsResponse | undefined> => {
-  return window.kadena?.request<IEckoAccountsResponse>({
-    method: 'kda_requestAccount',
-    networkId,
-  });
 };
