@@ -1,10 +1,12 @@
+import { SystemIcon } from '../Icon';
+
 import { ILinkProps, Link } from '@components/Link';
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
-  component: Link.Root,
+  component: Link,
   argTypes: {
     href: {
       control: {
@@ -33,17 +35,17 @@ export const Primary: Story = {
   render: ({ href, target }) => {
     return (
       <>
-        <Link.Root href={href} target={target}>
+        <Link href={href} target={target}>
           Link without icon
-        </Link.Root>
-        <Link.Root href={`${href}?${Date.now()}`} target={target}>
-          <Link.Icon />
+        </Link>
+        <Link href={`${href}?${Date.now()}`} target={target}>
+          <SystemIcon.Account />
           Non-visited
-        </Link.Root>
-        <Link.Root href={href} target={target}>
+        </Link>
+        <Link href={href} target={target}>
           Kadena.io
-          <Link.Icon />
-        </Link.Root>
+          <SystemIcon.Link />
+        </Link>
       </>
     );
   },

@@ -21,11 +21,3 @@ export const linkContainerClass = style([
     },
   },
 ]);
-
-export const iconContainerClass = style([
-  sprinkles({
-    display: 'flex',
-    textDecoration: 'none',
-  }),
-  {},
-]);
