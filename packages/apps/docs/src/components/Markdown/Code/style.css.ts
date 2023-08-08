@@ -54,7 +54,6 @@ export const code = style([
   },
 ]);
 
-
 export const codeLine = style([
   sprinkles({
     width: '100%',
@@ -79,15 +78,9 @@ export const codeLine = style([
   },
 ]);
 
-globalStyle(`${codeLine} span`, {
+globalStyle(`code span`, {
   fontFamily: vars.fonts.$mono,
-})
-
-export const codeWord = style([
-  sprinkles({
-    fontFamily: '$mono',
-  }),
-]);
+});
 
 export const codeTitle = style([
   sprinkles({

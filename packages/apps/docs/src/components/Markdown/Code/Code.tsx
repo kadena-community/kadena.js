@@ -1,4 +1,4 @@
-import { code, codeLine, codeWord, inlineCode } from './style.css';
+import { code, codeLine, inlineCode } from './style.css';
 
 import { useTheme } from '@/hooks';
 import React, { FC, ReactNode, useEffect } from 'react';
@@ -30,26 +30,9 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
           return null;
         }
 
-/*
-        const grandchildren = React.Children.map(
-          child.props.children,
-          (grandchild: ReactNode) => {
-            if (!React.isValidElement(grandchild) || !grandchild) {
-              return null;
-            }
-
-            return React.cloneElement(grandchild, {
-              ...grandchild.props,
-              className: codeWord,
-            });
-          },
-        );
-*/
-
         return React.cloneElement(child, {
           ...child.props,
           className: codeLine,
-          // children: grandchildren,
         });
       })}
     </code>
