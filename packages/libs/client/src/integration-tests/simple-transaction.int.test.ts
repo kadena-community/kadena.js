@@ -52,6 +52,7 @@ describe('Cross Chain Transfer', () => {
       targetAccount.account,
       targetAccount.chainId,
     );
-    expect(initialTargetBalance).toBeGreaterThanOrEqual(100 + 5);
+    //Even though we transferred 5 KDA, we have to pay for gas.
+    expect(initialTargetBalance).toBeGreaterThanOrEqual(100 + 4.9);
   });
 });
