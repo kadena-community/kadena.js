@@ -1,9 +1,9 @@
 import { SystemIcon } from '@kadena/react-ui';
 
 import {
-  headerIconLink,
-  headerIconLinkHovered,
-  headerVariants,
+  headerClassVariants,
+  headerIconLinkClass,
+  headerIconLinkHoveredClass,
 } from './styles.css';
 
 import { createSlug } from '@/utils';
@@ -63,7 +63,9 @@ export const TaggedHeading: FC<IProp> = ({
 
   const ArticleLink = (
     <a
-      className={linkHoverVariant ? headerIconLinkHovered : headerIconLink}
+      className={
+        linkHoverVariant ? headerIconLinkHoveredClass : headerIconLinkClass
+      }
       id={slug}
       href={`#${slug}`}
     >
@@ -77,7 +79,7 @@ export const TaggedHeading: FC<IProp> = ({
           onMouseLeave={onMouseLeave}
           onMouseOver={onMouseOver}
           onFocus={() => {}}
-          className={headerVariants[variant ?? as]}
+          className={headerClassVariants[variant ?? as]}
         >
           {children}
           {ArticleLink}
@@ -89,7 +91,7 @@ export const TaggedHeading: FC<IProp> = ({
           onMouseLeave={onMouseLeave}
           onMouseOver={onMouseOver}
           onFocus={() => {}}
-          className={headerVariants[variant ?? as]}
+          className={headerClassVariants[variant ?? as]}
         >
           {children}
           {ArticleLink}
@@ -101,7 +103,7 @@ export const TaggedHeading: FC<IProp> = ({
           onMouseLeave={onMouseLeave}
           onMouseOver={onMouseOver}
           onFocus={() => {}}
-          className={headerVariants[variant ?? as]}
+          className={headerClassVariants[variant ?? as]}
         >
           {children}
           {ArticleLink}
@@ -113,7 +115,7 @@ export const TaggedHeading: FC<IProp> = ({
           onMouseLeave={onMouseLeave}
           onMouseOver={onMouseOver}
           onFocus={() => {}}
-          className={headerVariants[variant ?? as]}
+          className={headerClassVariants[variant ?? as]}
         >
           {children}
           {ArticleLink}
@@ -125,7 +127,7 @@ export const TaggedHeading: FC<IProp> = ({
           onMouseLeave={onMouseLeave}
           onMouseOver={onMouseOver}
           onFocus={() => {}}
-          className={headerVariants[variant ?? as]}
+          className={headerClassVariants[variant ?? as]}
         >
           {children}
           {ArticleLink}
@@ -138,7 +140,7 @@ export const TaggedHeading: FC<IProp> = ({
           onMouseLeave={onMouseLeave}
           onMouseOver={onMouseOver}
           onFocus={() => {}}
-          className={headerVariants[variant ?? as]}
+          className={headerClassVariants[variant ?? as]}
         >
           {children}
           {ArticleLink}
