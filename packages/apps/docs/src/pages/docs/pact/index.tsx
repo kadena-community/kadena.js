@@ -9,6 +9,7 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -70,21 +71,31 @@ const Home: FC<IProps> = ({ popularPages = [] }) => {
         <Heading as="h5">Learn about Pact</Heading>
         <Stack direction="row" spacing="$sm">
           <Stack direction="column" spacing="$sm">
-            <Heading as="h6">Chainweaver Web Pact Editor</Heading>
+            <Heading as="h6">
+              <Link href="/docs/pact/beginner/web-editor">
+                Chainweaver Web Pact Editor
+              </Link>
+            </Heading>
             <Text as="p">
               Chainweb is a braided, parallelized proof-of-work consensus
               mechanism that improves throughput and scalability.
             </Text>
           </Stack>
           <Stack direction="column" spacing="$sm">
-            <Heading as="h6">Language Basics</Heading>
+            <Heading as="h6">
+              <Link href="/docs/pact/beginner/language-basics">
+                Language Basics
+              </Link>
+            </Heading>
             <Text as="p">
               Kadena&apos;s Chainweaver is designed as a one-stop-shop for
               interacting with the blockchain.
             </Text>
           </Stack>
           <Stack direction="column" spacing="$sm">
-            <Heading as="h6">Hello World</Heading>
+            <Heading as="h6">
+              <Link href="/docs/pact/beginner/hello-world">Hello World</Link>
+            </Heading>
             <Text as="p">
               Exclusive resources and support for you to build your best dApp.
             </Text>
