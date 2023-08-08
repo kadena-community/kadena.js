@@ -1,15 +1,8 @@
 import { NavGlow } from './assets/glow';
-import {
-  activeLinkClass,
-  glowClass,
-  linkClass,
-  navListClass,
-  navWrapperClass,
-} from './NavHeader.css';
+import { glowClass, navListClass, navWrapperClass } from './NavHeader.css';
 import { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
-import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
