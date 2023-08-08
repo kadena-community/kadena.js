@@ -51,7 +51,7 @@ const filenameToRoute = (filename: string): string => {
 };
 
 const getData = (file: string): IFrontmatterData => {
-  const tree = menuData as IMenuData[];
+  const tree = menuData as unknown as IMenuData[];
 
   let foundItem: IMenuData;
   const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {

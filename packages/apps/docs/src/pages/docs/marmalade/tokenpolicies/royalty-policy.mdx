@@ -1,0 +1,74 @@
+---
+title: The Royalty Policy
+description: Utilizing the Royalty Policy
+menu: The Royalty Policy
+label: The Royalty Policy
+order: 4
+layout: normal
+---
+
+# The Royalty Policy: Ensuring Enduring Benefits for Artists in the Digital Era
+
+In the dynamic world of digital art, creators are continuously exploring new
+avenues to express their creativity and capitalize on their work. The Royalty
+Policy is a powerful tool ensuring that these artists enjoy benefits from their
+creations far beyond the initial sale.
+
+Imagine being a digital artist. You've poured your heart into creating a unique
+digital asset – a one-of-a-kind piece of art. The relationship with your work,
+however, does not end with its first sale. The Royalty Policy is like an
+invisible tether that connects you with your creation, assuring you a portion of
+the profits every time it is sold.
+
+The beauty of the Royalty Policy lies in its simplicity and fairness. It is
+essentially an agreement that entitles you, the creator, to a cut from any
+future sales of your artwork. This mechanism ensures you reap continuous rewards
+from your creative work, even after it has been sold to a new owner. A
+predetermined fraction of each sale, known as the royalty, is automatically
+transferred to you every time your work is purchased by a new owner.
+
+To put this into context, let's walk through a simplified journey of an artwork
+– from creation to sale – in the digital art space. And let's use a sample
+royalty specification as an example:
+
+    "royalty_spec": {
+    "fungible": "coin",
+    "creator": "k:creator",
+    "creator-guard": {"keys": ["creator"], "pred": "keys-all"},
+    "royalty-rate": 0.05
+    }
+
+**Creation of Artwork**: As an artist, your creative journey commences with the
+creation of a unique piece of digital art, materialising as an NFT (Non-Fungible
+Token). Part of this creative process is defining your royalty terms. To do
+this, you add the Royalty Policy to the `policies` field at token creation and
+provide the royalty specification. The royalty specification should indicate a
+royalty rate of 5% (0.05), ensuring that you, as the creator, will receive 5% of
+all future sales. It also stipulates in what fungible form these royalties will
+be compensated. This ensures that with every resale, a portion of the proceeds
+finds its way back to you, recognising your enduring contribution.
+
+2.  **Listing Artwork for Sale**: Once your artwork has been created, you list
+    it for sale, much like displaying your work in a gallery. You include
+    details of the sale such as price and duration.
+
+3.  **Artwork Purchase**: An interested buyer purchases your artwork, akin to a
+    collector acquiring your piece from a gallery.
+
+4.  **Royalty Application**: After the sale is completed, the royalty kicks in.
+    The smart contract (think of it as the digital contract between the buyer
+    and the seller) automatically calculates your 5% royalty from the sale and
+    transfers it to you.
+
+While the mechanics of this process may sound technical, they are handled
+seamlessly in the background by the digital platform where you create and sell
+your NFT. As an artist, you only need to set your preferred royalty percentage,
+and the platform takes care of the rest.
+
+To sum it up, the Royalty Policy is a game changer in how artists interact with
+their work in the digital realm. It acknowledges the enduring value of your
+artistic endeavour and rewards you with each subsequent sale of your creation.
+Remember, your artwork is not a one-off transaction; it's an enduring asset
+echoing your creativity, continually rewarding you through the Royalty Policy.
+In the world of digital art, your creation keeps reverberating with each
+transaction, continually singing the tune of royalties.

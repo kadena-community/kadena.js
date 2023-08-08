@@ -12,7 +12,11 @@ const search = async (
     offset: number;
   };
 
-  const data = getInitBlogPosts(menuData as IMenuData[], offset, limit);
+  const data = getInitBlogPosts(
+    menuData as unknown as IMenuData[],
+    offset,
+    limit,
+  );
 
   res.json(data);
 };
