@@ -1,4 +1,4 @@
-import { wrapper } from './styles.css';
+import { wrapperClass } from './styles.css';
 
 import React, { FC } from 'react';
 
@@ -9,7 +9,7 @@ interface IProps {
 
 export const Youtube: FC<IProps> = ({ videoId, title }) => {
   return (
-    <div className={wrapper}>
+    <div className={wrapperClass}>
       <iframe
         width="100%"
         height="100%"
