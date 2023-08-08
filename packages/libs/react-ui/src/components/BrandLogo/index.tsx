@@ -5,7 +5,11 @@ import { KadenaDocsLogo } from './variants/KadenaDocs';
 import React, { FC, SVGProps } from 'react';
 
 export type LogoVariant = 'Kadena' | 'DevTools' | 'Docs';
-export const logoVariants = ['Kadena', 'DevTools', 'Docs'] as LogoVariant[];
+export const logoVariants: LogoVariant[] = ['Kadena', 'DevTools', 'Docs'];
+
+export interface IBrandLogoProps {
+  variant?: LogoVariant;
+}
 
 const renderSwitch = (
   logo: LogoVariant = 'Kadena',
@@ -20,7 +24,7 @@ const renderSwitch = (
   }
 };
 
-const BrandLogo: FC<{ variant?: LogoVariant }> = ({ variant }) => {
+const BrandLogo: FC<IBrandLogoProps> = ({ variant }) => {
   const LogoComponent = renderSwitch(variant);
   return <LogoComponent />;
 };
