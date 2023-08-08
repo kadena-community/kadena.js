@@ -3,6 +3,8 @@ export const EVENT_NAMES = {
   'click:asidemenu_deeplink': 'click:asidemenu_deeplink',
   'click:change_theme': 'click:change_theme',
   'click:open_searchmodal': 'click:open_searchmodal',
+  'search:qa': 'search:qa',
+  'search:docs': 'search:docs',
 } as const;
 
 export const COOKIE_CONSENTNAME = 'cookie_consent';
