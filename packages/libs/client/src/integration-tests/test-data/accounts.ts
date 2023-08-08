@@ -1,6 +1,5 @@
 import { IAccount } from '../support/interfaces';
 
-
 export const sourceAccount: IAccount = {
   account: 'k:5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937',
   publicKey: '5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937',
