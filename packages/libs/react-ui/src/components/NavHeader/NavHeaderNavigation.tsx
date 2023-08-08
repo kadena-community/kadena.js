@@ -6,6 +6,7 @@ import {
   navListClass,
   navWrapperClass,
 } from './NavHeader.css';
+import { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
@@ -46,13 +47,12 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           <li key={`navItem-${index}`} onClick={() => setActiveNav(index + 1)}>
             {React.cloneElement(
               child as React.ReactElement<
-                HTMLElement,
-                string | React.JSXElementConstructor<JSX.Element>
+                HTMLElement & INavHeaderLinkProps,
+                | string
+                | React.JSXElementConstructor<JSX.Element & INavHeaderLinkProps>
               >,
               {
-                className: classNames(linkClass, {
-                  [activeLinkClass]: activeNav === index + 1,
-                }),
+                active: activeNav === index + 1,
               },
             )}
           </li>
