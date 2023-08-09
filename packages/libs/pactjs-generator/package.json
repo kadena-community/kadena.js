@@ -33,8 +33,7 @@
   "dependencies": {
     "memfs": "~3.5.1",
     "moo": "~0.5.1",
-    "nearley": "~2.20.1",
-    "yaml": "~2.1.1"
+    "nearley": "~2.20.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -49,7 +48,6 @@
     "chokidar": "^3.5.3",
     "concurrently": "^7.2.2",
     "eslint": "^8.45.0",
-    "npm-run-all": "~4.1.5",
     "prettier": "~3.0.0",
     "ts-node": "~10.8.2",
     "typescript": "5.1.6"

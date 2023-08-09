@@ -56,7 +56,6 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "tweetnacl": "^1.0.3",
     "webpack": "~5.88.2"
   },
   "devDependencies": {
