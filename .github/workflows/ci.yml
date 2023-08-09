@@ -8,10 +8,6 @@ on:
     branches:
       - main
 
-env:
-  AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'main' && ' ' || format('--filter=[origin/{0}]', github.base_ref)  }}
-
 jobs:
   build:
     name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
@@ -44,14 +40,14 @@ jobs:
         run: pnpm install
 
       - name: Build packages
-        run: pnpm build ${{ env.AFFECTED_OR_ALL }}
+        run: pnpm build
 
       - name: Lint packages
-        run: pnpm lint ${{ env.AFFECTED_OR_ALL }}
+        run: pnpm lint
 
       - name: Test packages
-        run: pnpm test ${{ env.AFFECTED_OR_ALL }}
+        run: pnpm test
 
       - name: Verify source code formatting
         if: github.ref_name != 'main'
-        run: pnpm run format:ci ${{ env.AFFECTED_OR_ALL }}
+        run: pnpm run format:ci
