@@ -25,6 +25,8 @@ function getBrokenLinks(filePath, links) {
 
     if (link.startsWith('/assets')) {
       links[index] = path.join('public/', link);
+    } else if (directory.includes('src/pages/docs/blogchain')) {
+      links[index] = path.resolve(directory, link);
     } else {
       links[index] = path.join(__dirname, 'src/pages', link);
     }

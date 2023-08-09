@@ -2,6 +2,7 @@ import { SearchResults } from './components/SearchResults';
 
 import { useSearch } from '@/hooks';
 import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC, useEffect, useState } from 'react';
 
 interface IProps {
@@ -35,6 +36,14 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
       if (tabName === 'docs') {
         handleSemanticSubmit(query);
       }
+
+      analyticsEvent(
+        EVENT_NAMES[tabName === 'qa' ? 'search:qa' : 'search:docs'],
+        {
+          label: query,
+          url: window.location.href,
+        },
+      );
     }
   }, [query, tabName, handleSemanticSubmit, handleSearchSubmit]);
 
