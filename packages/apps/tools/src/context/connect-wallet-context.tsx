@@ -1,4 +1,9 @@
+import { ChainwebChainId } from '@kadena/chainweb-node-client';
+
+import { Network } from '@/constants/kadena';
+import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
+import { getItem, setItem } from '@/utils/persist';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import { PairingTypes, SessionTypes } from '@walletconnect/types';
@@ -10,13 +15,11 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
 
-/**
- * Types
- */
 interface IWalletConnectClientContext {
   client: Client | undefined;
   session: SessionTypes.Struct | undefined;
@@ -25,11 +28,18 @@ interface IWalletConnectClientContext {
   isInitializing: boolean;
   pairings: PairingTypes.Struct[];
   accounts: string[] | undefined;
-  selectedChain?: string;
-  setSelectedChain: (selectedChain?: string) => void;
+  selectedNetwork: Network;
+  setSelectedNetwork: (selectedNetwork: Network) => void;
+  selectedChain: ChainwebChainId;
+  setSelectedChain: (selectedChain: ChainwebChainId) => void;
   selectedAccount?: string;
   setSelectedAccount: (selectedAccount?: string) => void;
 }
+
+const StorageKeys: Record<'NETWORK' | 'CHAIN_ID', string> = {
+  NETWORK: 'network',
+  CHAIN_ID: 'chainID',
+};
 
 /**
  * Context
@@ -59,13 +69,31 @@ export const WalletConnectClientContextProvider: FC<
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>();
-  const [selectedChain, setSelectedChain] = useState<string>();
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>('mainnet01');
+  const [selectedChain, setSelectedChain] = useState<ChainwebChainId>('1');
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
 
+  useLayoutEffect(() => {
+    const initialNetwork = getItem(StorageKeys.NETWORK) as Network;
+    if (initialNetwork) {
+      setSelectedNetwork(initialNetwork);
+    }
+
+    const initialChain = getItem(StorageKeys.CHAIN_ID) as ChainwebChainId;
+    if (initialChain) {
+      setSelectedChain(initialChain);
+    }
+  }, []);
+
+  useDidUpdateEffect(() => {
+    setItem(StorageKeys.NETWORK, selectedNetwork);
+    setItem(StorageKeys.CHAIN_ID, selectedChain);
+  }, [selectedNetwork, selectedChain]);
+
   useEffect(() => {
     setSelectedAccount(undefined as unknown as string);
-  }, [selectedChain]);
+  }, [selectedNetwork]);
 
   const reset = (): void => {
     setSession(undefined as unknown as SessionTypes.Struct);
@@ -228,6 +256,8 @@ export const WalletConnectClientContextProvider: FC<
       session,
       connect,
       disconnect,
+      selectedNetwork,
+      setSelectedNetwork,
       selectedChain,
       setSelectedChain,
       selectedAccount,
@@ -241,6 +271,8 @@ export const WalletConnectClientContextProvider: FC<
       session,
       connect,
       disconnect,
+      selectedNetwork,
+      setSelectedNetwork,
       selectedChain,
       setSelectedChain,
       selectedAccount,

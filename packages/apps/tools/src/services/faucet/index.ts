@@ -69,7 +69,7 @@ export const fundExistingAccount = async (
     throw new Error('Failed to sign transaction');
   }
 
-  const apiHost = getKadenaConstantByNetwork('TESTNET').apiHost({
+  const apiHost = getKadenaConstantByNetwork('testnet04').apiHost({
     networkId: NETWORK_ID,
     chainId,
   });

@@ -18,9 +18,7 @@ const WalletConnectButton: FC = () => {
     await connect();
   };
 
-  const buttonTitle = session
-    ? t('Logout')
-    : t('Connect your wallet');
+  const buttonTitle = session ? t('Logout') : t('Connect your wallet');
 
   return (
     <Button
