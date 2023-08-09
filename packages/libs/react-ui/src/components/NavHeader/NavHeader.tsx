@@ -1,5 +1,6 @@
 import { containerClass, logoClass } from './NavHeader.css';
-import { INavHeaderProps } from '.';
+import { INavHeaderContentProps } from './NavHeaderContent';
+import { INavHeaderNavigationProps } from './NavHeaderNavigation';
 
 import type { LogoVariant } from '@components/BrandLogo';
 import Logo, { logoVariants } from '@components/BrandLogo';
@@ -16,7 +17,9 @@ export type INavItems = INavItem[];
 
 export interface INavHeaderContainerProps {
   brand?: LogoVariant;
-  children?: FunctionComponentElement<INavHeaderProps>[];
+  children?: FunctionComponentElement<
+    INavHeaderNavigationProps | INavHeaderContentProps
+  >[];
   items?: INavItems;
 }
 
