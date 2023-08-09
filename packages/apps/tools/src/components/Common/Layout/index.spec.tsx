@@ -1,5 +1,3 @@
-import Client from '@walletconnect/sign-client';
-
 jest.mock('@/components/Common/WalletConnectButton', () =>
   jest.fn(() => <button>connect wallet</button>),
 );
@@ -21,13 +19,9 @@ jest.mock('@/context/connect-wallet-context', () =>
   })),
 );
 
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
-
 import Layout from './index';
 
-import { Network } from '@/constants/kadena';
 import { render } from '@testing-library/react';
-import { PairingTypes, SessionTypes } from '@walletconnect/types';
 import React from 'react';
 
 describe('Layout', () => {
