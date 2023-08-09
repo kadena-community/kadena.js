@@ -1,4 +1,4 @@
-import { Option, Select } from '@kadena/react-ui';
+import { Option, Select, SystemIcon } from '@kadena/react-ui';
 
 import { FooterWrapper, Header, Sidebar } from './partials';
 import {
@@ -11,13 +11,13 @@ import {
 
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { GridCol, GridRow } from '@/components/Global';
+import { kadenaConstants, Network } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useLayoutContext } from '@/context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
-import { SystemIcons } from '@kadena/react-components';
 
 interface IProps {
   children?: ReactNode;
@@ -29,9 +29,9 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   const {
     accounts,
     selectedAccount,
-    selectedChain,
+    selectedNetwork,
     setSelectedAccount,
-    setSelectedChain,
+    setSelectedNetwork,
     session,
   } = useWalletConnectClient();
 
@@ -50,20 +50,22 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     },
   ];
 
-  const getChains = (): string[] => {
+  const getNetworks = (): Network[] => {
     const result = new Set(
-      accounts?.map((account) => {
-        const [, chain] = account.split(':');
-        return chain;
-      }),
+      accounts
+        ?.map((account) => {
+          const [, network] = account.split(':');
+          return network;
+        })
+        ?.filter((network) => network !== 'development'),
     );
 
-    return Array.from(result) ?? [];
+    return Array.from(result ?? []) as Network[];
   };
 
   const getAccounts = (): string[] => {
     // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
-    const regex = new RegExp(`kadena\:${selectedChain}.*`);
+    const regex = new RegExp(`kadena\:${selectedNetwork}.*`);
     const result = new Set(
       accounts
         ?.filter((account) => {
@@ -90,17 +92,16 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
                 <>
                   <GridCol xs={6} lg={4} className={rightPanelColsStyle}>
                     <Select
-                      ariaLabel={t('Select Chain')}
-                      value={selectedChain}
-                      onChange={(e) => setSelectedChain(e.target.value)}
-                      icon={SystemIcons.Link}
+                      ariaLabel={t('Select Network')}
+                      value={selectedNetwork as string}
+                      onChange={(e) =>
+                        setSelectedNetwork(e.target.value as Network)
+                      }
+                      icon={SystemIcon.Link}
                     >
-                      <Option value={undefined as string}>
-                        {t('Select Chain')}
-                      </Option>
-                      {getChains().map((chain) => (
-                        <Option key={chain} value={chain}>
-                          {chain}
+                      {getNetworks().map((network) => (
+                        <Option key={network} value={network}>
+                          {kadenaConstants?.[network].label}
                         </Option>
                       ))}
                     </Select>
@@ -108,11 +109,11 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
                   <GridCol xs={6} lg={4} className={rightPanelColsStyle}>
                     <Select
                       ariaLabel={t('Select Account')}
-                      value={selectedAccount}
+                      value={selectedAccount as string}
                       onChange={(e) => setSelectedAccount(e.target.value)}
-                      icon={SystemIcons.KIcon}
+                      icon={SystemIcon.KIcon}
                     >
-                      <Option value={undefined as string}>
+                      <Option value={undefined as unknown as string}>
                         {t('Select Account')}
                       </Option>
                       {getAccounts().map((account) => (
@@ -127,7 +128,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
               <GridCol
                 xs={12}
                 md={{ size: session ? 3 : 6, offset: session ? 0 : 6 }}
-                lg={{ size: session ? 3 : 5}}
+                lg={{ size: session ? 3 : 5 }}
                 className={rightPanelColsStyle}
               >
                 <WalletConnectButton />
