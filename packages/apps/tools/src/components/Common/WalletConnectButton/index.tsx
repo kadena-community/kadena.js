@@ -19,7 +19,7 @@ const WalletConnectButton: FC = () => {
   };
 
   const buttonTitle = session
-    ? t('Disconnect your wallet')
+    ? t('Logout')
     : t('Connect your wallet');
 
   return (
