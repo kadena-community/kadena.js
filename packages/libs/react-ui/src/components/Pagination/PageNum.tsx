@@ -15,7 +15,7 @@ export const PageNum: FC<IPageNumProps> = ({ number, current, onClick }) => {
       className={classNames(pageNumButtonClass, { current })}
       onClick={onClick}
     >
-      <span>{number}</span>
+      {number}
     </button>
   );
 };
