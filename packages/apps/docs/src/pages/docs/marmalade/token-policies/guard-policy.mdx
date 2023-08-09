@@ -30,10 +30,12 @@ To get a sense of the Guard Policy, let's navigate through the journey of an
 NFT - from creation to secure transactions. For illustrative purposes, we can
 refer to a sample guard configuration:
 
+```code
     'mint-guard': {"keys": ["mint"], "pred": "keys-all"},
     'burn-guard': {"keys": ["burn"], "pred": "keys-all"},
     'sale-guard': {"keys": ["sale"], "pred": "keys-all"},
     'transfer-guard': {"keys": ["transfer"], "pred": "keys-all"}
+```
 
 **Token Creation and Initialization**: As the owner of a unique digital asset,
 your journey begins with the creation of your NFT. While defining the creation
