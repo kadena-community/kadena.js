@@ -5,6 +5,7 @@ export interface IBoxProps
   extends Partial<
     Pick<
       Sprinkles,
+      | 'display'
       | 'margin'
       | 'marginX'
       | 'marginY'
@@ -14,12 +15,13 @@ export interface IBoxProps
       | 'marginRight'
     >
   > {
-  component?: ElementType;
+  as?: ElementType;
   children?: React.ReactNode;
 }
 
 export const Box = ({
-  component = 'div',
+  as = 'div',
+  display = 'block',
   margin = undefined,
   marginX = undefined,
   marginY = undefined,
@@ -30,9 +32,10 @@ export const Box = ({
   children,
 }: IBoxProps): React.ReactElement => {
   return createElement(
-    component,
+    as,
     {
       className: sprinkles({
+        display,
         margin,
         marginX,
         marginY,
