@@ -25,12 +25,12 @@ export interface IStackProps
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
   spacing?: Sprinkles['gap'];
-  component?: ElementType;
+  as?: ElementType;
   children?: React.ReactNode;
 }
 
 export const Stack = ({
-  component = 'div',
+  as = 'div',
   margin = undefined,
   marginX = undefined,
   marginY = undefined,
@@ -54,7 +54,7 @@ export const Stack = ({
   children,
 }: IStackProps): React.ReactElement => {
   return createElement(
-    component,
+    as,
     {
       className: sprinkles({
         display: 'flex',
