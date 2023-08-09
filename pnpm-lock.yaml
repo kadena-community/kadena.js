@@ -717,7 +717,7 @@ importers:
         version: link:../pactjs
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5(encoding@0.1.13)
+        version: 3.1.5
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -763,7 +763,7 @@ importers:
         version: link:../pactjs
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5(encoding@0.1.13)
+        version: 3.1.5
       node-fetch:
         specifier: ~2.6.2
         version: 2.6.2
@@ -849,7 +849,7 @@ importers:
         version: 3.0.1
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5(encoding@0.1.13)
+        version: 3.1.5
       eventsource:
         specifier: ~2.0.2
         version: 2.0.2
@@ -910,16 +910,10 @@ importers:
         version: 2.8.1
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5(encoding@0.1.13)
+        version: 3.1.5
       debug:
         specifier: ~4.3.4
         version: 4.3.4(supports-color@5.5.0)
-      encoding:
-        specifier: ~0.1.13
-        version: 0.1.13
-      yaml:
-        specifier: ~2.1.1
-        version: 2.1.1
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -972,15 +966,9 @@ importers:
       '@kadena/client':
         specifier: workspace:*
         version: link:../client
-      '@kadena/cryptography-utils':
-        specifier: workspace:*
-        version: link:../cryptography-utils
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../pactjs
-      debug:
-        specifier: ~4.3.4
-        version: 4.3.4(supports-color@5.5.0)
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1003,18 +991,12 @@ importers:
       '@rushstack/heft':
         specifier: ~0.50.6
         version: 0.50.6(@types/node@16.0.0)
-      '@types/heft-jest':
-        specifier: ~1.0.3
-        version: 1.0.3
       '@types/node':
         specifier: ^16.0.0
         version: 16.0.0
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
-      npm-run-all:
-        specifier: ~4.1.5
-        version: 4.1.5
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
@@ -1805,7 +1787,7 @@ importers:
         version: 9.3.0
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5(encoding@0.1.13)
+        version: 3.1.5
       debug:
         specifier: ~4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -13540,10 +13522,10 @@ packages:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
 
-  /cross-fetch@3.1.5(encoding@0.1.13):
+  /cross-fetch@3.1.5:
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
-      node-fetch: 2.6.7(encoding@0.1.13)
+      node-fetch: 2.6.7
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -14577,12 +14559,6 @@ packages:
   /encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
-
-  /encoding@0.1.13:
-    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
-    dependencies:
-      iconv-lite: 0.6.3
-    dev: false
 
   /end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
@@ -21548,7 +21524,7 @@ packages:
     engines: {node: 4.x || >=6.0.0}
     dev: false
 
-  /node-fetch@2.6.7(encoding@0.1.13):
+  /node-fetch@2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -21557,7 +21533,6 @@ packages:
       encoding:
         optional: true
     dependencies:
-      encoding: 0.1.13
       whatwg-url: 5.0.0
     dev: false
 

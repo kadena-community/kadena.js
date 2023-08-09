@@ -26,9 +26,7 @@
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
-    "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "debug": "~4.3.4"
+    "@kadena/pactjs": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -38,10 +36,8 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
-    "npm-run-all": "~4.1.5",
     "prettier": "~3.0.0",
     "ts-node": "~10.8.2",
     "typescript": "5.1.6"
