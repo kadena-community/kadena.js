@@ -5,14 +5,14 @@
   "description": "Kadena JS monorepo",
   "license": "ISC",
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --force",
     "format": "pnpm run /^format:.*/ && pnpm -r run format",
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:fix-versions": "syncpack fix-mismatches",
-    "test": "turbo run test",
+    "test": "turbo run test --force",
     "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > packages.json"
   },
   "engines": {
