@@ -31,12 +31,14 @@ To put this into context, let's walk through a simplified journey of an artwork
 – from creation to sale – in the digital art space. And let's use a sample
 royalty specification as an example:
 
+```json
     "royalty_spec": {
-    "fungible": "coin",
-    "creator": "k:creator",
-    "creator-guard": {"keys": ["creator"], "pred": "keys-all"},
-    "royalty-rate": 0.05
+      "fungible": "coin",
+      "creator": "k:creator",
+      "creator-guard": {"keys": ["creator"], "pred": "keys-all"},
+      "royalty-rate": 0.05
     }
+```
 
 **Creation of Artwork**: As an artist, your creative journey commences with the
 creation of a unique piece of digital art, materialising as an NFT (Non-Fungible
