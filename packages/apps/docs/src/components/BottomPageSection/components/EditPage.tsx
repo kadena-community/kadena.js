@@ -1,6 +1,7 @@
 import { Button } from '@kadena/react-ui';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -8,22 +9,25 @@ interface IProps {
 }
 
 export const EditPage: FC<IProps> = ({ editLink }) => {
+  const router = useRouter();
+
   if (!editLink) return null;
-  const registerClick = (): void => {
+  const onClick = async (
+    event: React.MouseEvent<HTMLElement>,
+  ): Promise<void> => {
+    event.preventDefault();
+    event.stopPropagation();
     analyticsEvent(EVENT_NAMES['click:edit_page']);
+    await router.push(editLink);
   };
   return (
-    <span onClick={registerClick}>
-      <Button
-        as="a"
-        id="bla"
-        href={editLink}
-        target="_blank"
-        rel="noreferrer"
-        title="Edit this page"
-      >
-        Edit this page
-      </Button>
-    </span>
+    <Button
+      as="button"
+      onClick={onClick}
+      rel="noreferrer"
+      title="Edit this page"
+    >
+      Edit this page
+    </Button>
   );
 };
