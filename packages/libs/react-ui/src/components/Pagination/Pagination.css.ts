@@ -31,6 +31,12 @@ export const pageNavButtonClass = style([
   },
 ]);
 
+export const pageNavLabelClass = style([
+  sprinkles({
+    display: { xs: 'none', sm: 'block' },
+  }),
+]);
+
 export const pageNumButtonClass = style([
   sprinkles({
     color: '$primaryContrast',

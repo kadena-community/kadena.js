@@ -1,4 +1,4 @@
-import { pageNavButtonClass } from './Pagination.css';
+import { pageNavButtonClass, pageNavLabelClass } from './Pagination.css';
 
 import { Box } from '@components/Box';
 import { SystemIcon } from '@components/Icon';
@@ -27,9 +27,7 @@ export const PageNav: FC<IPageNavProps> = ({
       onClick={onClick}
     >
       {isPrevious ? <SystemIcon.LeadingIcon /> : null}
-      <Box as="span" display={{ xs: 'none', sm: 'inline' }}>
-        <span>{label}</span>
-      </Box>
+      <span className={pageNavLabelClass}>{label}</span>
       {isNext ? <SystemIcon.TrailingIcon /> : null}
     </button>
   );
