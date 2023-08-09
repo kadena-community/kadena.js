@@ -1,0 +1,54 @@
+{
+  "name": "@kadena/integration-tests",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Albert"
+    },
+    {
+      "name": "Linda"
+    },
+    {
+      "name": "Hee Kyun"
+    },
+    {
+      "name": "Randy"
+    }
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "heft build --clean",
+    "format": "npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:src": "prettier config src --write",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
+    "precommit": "pnpm run test --silent",
+    "start:pact": "rm -Rf ./log && mkdir log && pact --serve src/tests/pact-server.conf",
+    "test": "",
+    "test:integration:devnet": "heft test --test-path-pattern devnet*",
+    "test:integration:pactserver": "concurrently \"npm:start:pact\" \"sleep 5 && heft test --test-path-pattern pact-server* && sleep 5\" --kill-others"
+  },
+  "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "exponential-backoff": "^3.1.0",
+    "kadena.js": "workspace:*"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "concurrently": "^7.2.2",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0"
+  }
+}
