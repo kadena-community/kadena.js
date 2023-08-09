@@ -10,7 +10,7 @@ on:
 
 env:
   AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'main' && ' ' || format('--filter=''...[origin/{0}]''', github.base_ref)  }}
+    ${{ github.ref_name == 'main' && ' ' || format('--filter=''[origin/{0}]''', github.base_ref)  }}
 
 jobs:
   build:
