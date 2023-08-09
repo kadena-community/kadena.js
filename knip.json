@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@2/schema.json",
+  "workspaces": {
+    "packages/libs/client-examples": {
+      "entry": [
+        "src/example-contract/*.ts",
+        "src/example-contract/functional/*.ts"
+      ]
+    }
+  }
+}
