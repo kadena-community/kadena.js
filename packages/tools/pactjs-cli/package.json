@@ -31,7 +31,6 @@
     "debug": "~4.3.4",
     "mkdirp": "~1.0.4",
     "rimraf": "~5.0.1",
-    "yaml": "~2.1.1",
     "zod": "~3.18.0"
   },
   "devDependencies": {
