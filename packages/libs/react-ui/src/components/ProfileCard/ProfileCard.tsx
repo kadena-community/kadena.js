@@ -17,17 +17,17 @@ export default {};
 export interface IProfileCardProps {
   name: string;
   title: string;
-  tags: string[];
   imageSrc: string;
-  links: Record<string, string>;
+  tags?: string[];
+  links?: Record<string, string>;
 }
 
 export const ProfileCard: FC<IProfileCardProps> = ({
   name,
   title,
-  tags,
   imageSrc,
-  links,
+  tags = [],
+  links = {},
 }) => {
   return (
     <div className={profileCardClass}>

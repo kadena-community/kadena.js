@@ -23,26 +23,11 @@ const meta: Meta<IProfileCardProps> = {
         type: 'text',
       },
     },
-
-    // this one is an array of strings
     tags: {
       control: {
         type: 'array',
       },
     },
-
-    /*
-    href: {
-      control: {
-        type: 'text',
-      },
-    },
-    target: {
-      control: {
-        type: 'select',
-        options: ['_blank', '_self', '_parent', '_top'],
-      },
-    },*/
   },
 };
 
