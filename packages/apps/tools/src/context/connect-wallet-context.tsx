@@ -25,6 +25,10 @@ interface IWalletConnectClientContext {
   isInitializing: boolean;
   pairings: PairingTypes.Struct[];
   accounts: string[] | undefined;
+  selectedChain?: string;
+  setSelectedChain: (selectedChain?: string) => void;
+  selectedAccount?: string;
+  setSelectedAccount: (selectedAccount?: string) => void;
 }
 
 /**
@@ -55,8 +59,13 @@ export const WalletConnectClientContextProvider: FC<
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>();
-
+  const [selectedChain, setSelectedChain] = useState<string>();
+  const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
+
+  useEffect(() => {
+    setSelectedAccount(undefined as unknown as string);
+  }, [selectedChain]);
 
   const reset = (): void => {
     setSession(undefined as unknown as SessionTypes.Struct);
@@ -72,14 +81,15 @@ export const WalletConnectClientContextProvider: FC<
   );
 
   const connect = useCallback(
-    async (pairing?: { topic: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (pairing: any) => {
       if (typeof client === 'undefined') {
         throw new Error('WalletConnect is not initialized');
       }
 
       try {
         const { uri, approval } = await client.connect({
-          pairingTopic: pairing?.topic ?? '',
+          pairingTopic: pairing?.topic,
 
           requiredNamespaces: {
             kadena: {
@@ -218,8 +228,24 @@ export const WalletConnectClientContextProvider: FC<
       session,
       connect,
       disconnect,
+      selectedChain,
+      setSelectedChain,
+      selectedAccount,
+      setSelectedAccount,
     }),
-    [pairings, isInitializing, accounts, client, session, connect, disconnect],
+    [
+      pairings,
+      isInitializing,
+      accounts,
+      client,
+      session,
+      connect,
+      disconnect,
+      selectedChain,
+      setSelectedChain,
+      selectedAccount,
+      setSelectedAccount,
+    ],
   );
 
   return (

@@ -55,14 +55,14 @@ const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
             </StyledLeftPanelWrapper>
           </GridCol>
           {hasMenu && (
-            <GridCol xs={{ hidden: true }} lg={{ size: 7, hidden: false }}>
+            <GridCol xs={{ hidden: true }} lg={{ size: 4, hidden: false }}>
               {renderMenu()}
             </GridCol>
           )}
           {Boolean(rightPanel) && (
             <GridCol
               xs={{ hidden: true }}
-              lg={{ size: 3, hidden: false, push: hasMenu ? 0 : 7 }}
+              lg={{ size: 6, hidden: false, push: hasMenu ? 0 : 7 }}
             >
               {rightPanel}
             </GridCol>
