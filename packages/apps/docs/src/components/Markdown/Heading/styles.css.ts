@@ -1,25 +1,25 @@
 import { sprinkles } from '@kadena/react-ui/theme';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
+
+const articleLinkOpacity = createVar();
 
 export const headerIconLinkClass = style([
   sprinkles({
     display: 'inline-block',
     paddingLeft: '$3',
-    opacity: 0,
   }),
   {
     scrollMarginTop: `80px`,
     scrollSnapMarginTop: `80px`,
     transition: 'opacity .3s ease',
+    opacity: fallbackVar(articleLinkOpacity, '0'),
   },
-]);
-
-export const headerIconLinkHoveredClass = style([
-  headerIconLinkClass,
-  sprinkles({
-    opacity: 1,
-  }),
 ]);
 
 export const headerClass = style([
@@ -29,6 +29,15 @@ export const headerClass = style([
     alignItems: 'center',
     fontSize: '$2xl',
   }),
+  {
+    selectors: {
+      '&:hover': {
+        vars: {
+          [articleLinkOpacity]: '1',
+        },
+      },
+    },
+  },
 ]);
 
 export const headerClassVariants = styleVariants({
