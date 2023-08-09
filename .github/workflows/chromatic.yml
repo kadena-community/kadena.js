@@ -25,8 +25,12 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Rush install (install-run-rush)
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build @kadena/react-ui
         run: pnpm build --filter @kadena/react-ui
+
       - name: Publish Storybook
         uses: chromaui/action@v1
         with:
