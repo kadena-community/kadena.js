@@ -26,8 +26,8 @@ export const ProfileCard: FC<IProfileCardProps> = ({
   name,
   title,
   imageSrc,
-  tags = [],
-  links = {},
+  tags = undefined,
+  links = undefined,
 }) => {
   return (
     <div className={profileCardClass}>
@@ -40,23 +40,31 @@ export const ProfileCard: FC<IProfileCardProps> = ({
         <Grid.Item columnSpan={10}>
           <p className={boldTextClass}>{name}</p>
           <p>{title}</p>
-          <ul className={tagContainerClass}>
-            {tags.map((tag, i) => (
-              <li className={tagClass} key={i}>
-                <Tag key={i}>{tag}</Tag>
-              </li>
-            ))}
-          </ul>
-          <p className={boldTextClass}>Links</p>
-          <ul className={linkContainerClass}>
-            {Object.entries(links).map(([text, href]) => (
-              <li key={text}>
-                <a className={linkClass} href={href}>
-                  {text}
-                </a>
-              </li>
-            ))}
-          </ul>
+
+          {tags && (
+            <ul className={tagContainerClass}>
+              {tags.map((tag, i) => (
+                <li className={tagClass} key={i}>
+                  <Tag key={i}>{tag}</Tag>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {links && (
+            <>
+              <p className={boldTextClass}>Links</p>
+              <ul className={linkContainerClass}>
+                {Object.entries(links).map(([text, href]) => (
+                  <li key={text}>
+                    <a className={linkClass} href={href}>
+                      {text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </Grid.Item>
       </Grid.Root>
     </div>

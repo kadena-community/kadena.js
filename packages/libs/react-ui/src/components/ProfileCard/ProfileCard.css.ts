@@ -22,7 +22,7 @@ export const imageClass = style([
 
 export const boldTextClass = style([
   sprinkles({
-    marginTop: '$1',
+    marginY: '$2',
     fontWeight: '$bold',
   }),
 ]);
