@@ -14,9 +14,6 @@ export const container = style([
       lightMode: '$gray100',
       darkMode: '$gray20',
     },
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
     paddingX: '$10',
     paddingY: '$6',
     borderRadius: '$sm',
@@ -50,6 +47,12 @@ export const stackClass = style([
       '&:last-child': {
         borderRadius: `0 0 ${vars.radii.$sm} ${vars.radii.$sm}`,
         borderTop: 'none',
+      },
+      '&:not(:last-child)': {
+        marginBottom: 0,
+      },
+      '&:not(:first-child)': {
+        marginTop: 0,
       },
       '&:not(:last-child):before': {
         content: '',
