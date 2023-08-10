@@ -10,8 +10,9 @@ export const ulListClass = style([
   }),
 ]);
 
-// sub-ul, won't work with classNames
-globalStyle('ul ul', {
+// should work, but doesn't
+// globalStyle(`${ulListClass} li > ul`, {
+globalStyle(`article ul > li >ul`, {
   paddingLeft: vars.sizes.$4,
   margin: 0,
   top: `calc(-1 * ${vars.sizes.$4})`,
