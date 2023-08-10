@@ -1,17 +1,17 @@
 import { SystemIcon } from '..';
 
-import { iconButtonClass, iconTextClass } from './Footer.css';
+import { iconButtonClass, iconTextClass } from './NavFooter.css';
 
 import React, { FC } from 'react';
 
-export interface IFooterIconButtonProps
+export interface INavFooterIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
   onClick?: React.MouseEventHandler;
   text?: string;
 }
 
-export const FooterIconButton: FC<IFooterIconButtonProps> = ({
+export const NavFooterIconButton: FC<INavFooterIconButtonProps> = ({
   icon,
   onClick,
   text,

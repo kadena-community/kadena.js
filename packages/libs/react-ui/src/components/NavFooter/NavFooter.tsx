@@ -1,14 +1,14 @@
-import { containerClass } from './Footer.css';
+import { containerClass } from './NavFooter.css';
 
 import { darkThemeClass } from '@theme/vars.css';
 import React, { FC } from 'react';
 
-export interface IFooterProps {
+export interface INavFooterContainerProps {
   children: React.ReactNode;
   darkMode?: boolean;
 }
 
-export const FooterContainer: FC<IFooterProps> = ({
+export const NavFooterContainer: FC<INavFooterContainerProps> = ({
   children,
   darkMode = false,
 }) => {

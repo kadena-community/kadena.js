@@ -1,7 +1,8 @@
+import { Target } from './NavFooterLink';
+
 import { SystemIcon } from '@components/Icon';
 import { IconType } from '@components/Icon/IconWrapper';
 import { NavFooter } from '@components/NavFooter';
-import { Target } from '@components/NavFooter/FooterLink';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -10,7 +11,7 @@ const meta: Meta<{
   iconsCount: number;
   darkMode: boolean;
 }> = {
-  title: 'Navigation/Footer',
+  title: 'Navigation/NavFooter',
   argTypes: {
     darkMode: {
       control: {
@@ -87,7 +88,7 @@ type Story = StoryObj<{
 }>;
 
 export const Primary: Story = {
-  name: 'Footer',
+  name: 'NavFooter',
   args: {
     linksCount: 4,
     iconsCount: 3,
@@ -102,14 +103,8 @@ export const Primary: Story = {
         <NavFooter.Panel>
           {linkItems.map((item, index) => {
             return (
-              <NavFooter.Link key={index}>
-                {item.href !== undefined ? (
-                  <a href={item.href} target={item.target}>
-                    {item.title}
-                  </a>
-                ) : (
-                  <span>{item.title}</span>
-                )}
+              <NavFooter.Link key={index} href={item.href} target={item.target}>
+                {item.title}
               </NavFooter.Link>
             );
           })}
