@@ -62,7 +62,6 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
                 isDone={isDone}
               />
             </BlogList>
-            <div>sidemenu</div>
           </Stack>
         </Article>
       </Content>
