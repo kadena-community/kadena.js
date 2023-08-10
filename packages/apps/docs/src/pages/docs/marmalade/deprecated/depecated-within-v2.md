@@ -42,6 +42,7 @@ layout: normal
 
   **v1: Policy expected a single module:**
 
+```pact
       (defschema token-schema
       	id:string
       	manifest:object{manifest}
@@ -49,15 +50,18 @@ layout: normal
       	supply:decimal
       	policy:module{kip.token-policy-v1}
       )
+```
 
-  **v2: Policy is replaced with policies supporting a list of policies
-  conforming kip.token-policy-v2:**
+**v2: Policy is replaced with policies supporting a list of policies conforming
+kip.token-policy-v2:**
 
+```pact
       (defschema token-details
       	uri:string
       	precision:integer
       	policies:[module{kip.token-policy-v2}]
       )
+```
 
 ## Direct Enforcement (v1) to Policy Manager (v2)
 

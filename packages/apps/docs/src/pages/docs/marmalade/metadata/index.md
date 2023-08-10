@@ -1,13 +1,13 @@
 ---
-title: Marmalade v2 Metadata Standard
+title: Metadata Standard
 description: What is the Marmalade v2 Metadata Standard
-menu: Marmalade v2 Metadata Standard
-label: Marmalade v2 Metadata Standard
+menu: Metadata Standard
+label: Metadata Standard
 order: 6
 layout: normal
 ---
 
-# Marmalade v2 metadata standard
+# Metadata standard
 
 The Marmalade v2 metadata standard, serves as a crucial component for
 constructing a comprehensive and comprehensible profile for each NFT. Now, it
