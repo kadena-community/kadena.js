@@ -4,9 +4,11 @@ import { ILinkProps, Link } from '@components/Link';
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<{
-  selectIcon: keyof typeof SystemIcon;
-} & ILinkProps> = {
+const meta: Meta<
+  {
+    selectIcon: keyof typeof SystemIcon;
+  } & ILinkProps
+> = {
   title: 'Components/Link',
   component: Link,
   argTypes: {
@@ -43,9 +45,11 @@ const meta: Meta<{
 
 export default meta;
 
-type Story = StoryObj<{
-  selectIcon: keyof typeof SystemIcon;
-} & ILinkProps>;
+type Story = StoryObj<
+  {
+    selectIcon: keyof typeof SystemIcon;
+  } & ILinkProps
+>;
 
 export const Primary: Story = {
   name: 'Link',
@@ -61,7 +65,12 @@ export const Primary: Story = {
         <Link href={href} target={target}>
           Link without icon
         </Link>
-        <Link href={`${href}?${Date.now()}`} target={target} iconAlign={iconAlign} icon={icon}>
+        <Link
+          href={`${href}?${Date.now()}`}
+          target={target}
+          iconAlign={iconAlign}
+          icon={icon}
+        >
           Non-visited
         </Link>
         <Link href={href} target={target} icon={icon}>
