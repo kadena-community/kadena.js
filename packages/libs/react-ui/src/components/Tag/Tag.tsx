@@ -1,16 +1,22 @@
-import { tagClass } from './Tag.css';
+import { closeButtonClass, tagClass, tagLabelClass } from './Tag.css';
 
+import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export interface ITagProps {
-  children: React.ReactNode;
+  children: string;
+  onClose?: () => void;
 }
 
-// TODO: Update to accept a color prop
-export const Tag: FC<ITagProps> = ({ children }) => {
+export const Tag: FC<ITagProps> = ({ children, onClose }) => {
   return (
     <span data-testid="kda-tag" className={tagClass}>
-      {children}
+      <span className={tagLabelClass}>{children}</span>
+      {onClose ? (
+        <button className={closeButtonClass} onClick={onClose}>
+          <SystemIcon.Close size="sm" />
+        </button>
+      ) : null}
     </span>
   );
 };

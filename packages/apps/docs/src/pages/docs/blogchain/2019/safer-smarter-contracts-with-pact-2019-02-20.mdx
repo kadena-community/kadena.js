@@ -64,7 +64,7 @@ primitive computer, and indeed early marketing for Ethereum called it a “World
 Computer.” Contracts coded in Solidity (Ethereum’s smart contract language) are
 compiled into long streams of bytecode that are installed and executed on the
 Ethereum Virtual Machine (EVM). Solidity (and the EVM) is
-[Turing-complete](https://medium.com/kadena-io/turing-completeness-and-smart-contract-security-67e4c41704c),
+[Turing-complete](./turing-completeness-and-smart-contract-security-2019-02-11),
 meaning it has the potential to compute any computer algorithm given
 availability of sufficient time and resources. Thus, Ethereum smart contracts
 opened up greater potential use cases for blockchain technology beyond what
@@ -78,7 +78,7 @@ reliability seen in Bitcoin. Some pressing issues faced by Ethereum’s Turing
 complete smart contracts include:
 
 - An explosion of attack vectors:
-  [the EVM’s general purpose nature and complexity mean that hackers can find malicious openings to attack and capitalize on smart contract bugs and vulnerabilities](https://medium.com/kadena-io/the-evm-is-fundamentally-unsafe-ba486cb17f1f).
+  [the EVM’s general purpose nature and complexity mean that hackers can find malicious openings to attack and capitalize on smart contract bugs and vulnerabilities](../2018/the-evm-is-fundamentally-unsafe-2018-12-13).
   These vulnerabilities have occurred or been exploited in the past resulting in
   the loss of hundreds of millions of dollars, as seen in the
   [DAO hack](https://www.coindesk.com/understanding-dao-hack-journalists/),
@@ -152,7 +152,7 @@ served as inspiration for Pact and they share several similarities, one of which
 is that they are both Turing incomplete, meaning they do not allow recursion or
 infinite loops. In Pact, any recursion that is detected will cause an immediate
 failure and terminate all running code. This feature significantly
-[reduces any potential attack vectors](https://medium.com/kadena-io/turing-completeness-and-smart-contract-security-67e4c41704c)
+[reduces any potential attack vectors](./turing-completeness-and-smart-contract-security-2019-02-11)
 that may be present in smart contracts.
 
 ### Blockchain Governance
@@ -175,7 +175,7 @@ smart contracts can be extracted into external databases via SQL.
 ### Formal Verification
 
 Pact also comes equipped with a powerful validation tool suite in the form of
-[formal verification](https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f).
+[formal verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
 Pact uses Z3, an open source tool developed by Microsoft, to mathematically
 verify and test for bugs present in code.
 

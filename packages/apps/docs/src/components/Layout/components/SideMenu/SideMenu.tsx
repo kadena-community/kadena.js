@@ -16,6 +16,7 @@ import {
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useRouter } from 'next/router';
 import React, { FC, KeyboardEvent } from 'react';
 
@@ -37,6 +38,10 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     e.preventDefault();
     const value = e.currentTarget.value;
     if (e.key === 'Enter') {
+      analyticsEvent(EVENT_NAMES['send:mobile_search'], {
+        label: value,
+        url: window.location.href,
+      });
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/search?q=${value}`);
       closeMenu();

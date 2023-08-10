@@ -60,7 +60,6 @@ export const useSearch = (): IProps => {
   const handleSubmit = useCallback(
     async (value: string): Promise<void> => {
       if (value === undefined || query === value) return;
-
       dispatch({ type: 'reset' });
       setQuery(value);
       await updateQuery(value);
