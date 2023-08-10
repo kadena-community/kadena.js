@@ -138,12 +138,6 @@
     "path": "packages/tools/heft-rig"
   },
   {
-    "name": "@kadena/integration-tests",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/tools/integration-tests"
-  },
-  {
     "name": "@kadena/kda-cli",
     "version": "0.0.1",
     "private": false,

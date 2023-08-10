@@ -1692,52 +1692,6 @@ importers:
         specifier: ~3.0.0
         version: 3.0.0
 
-  packages/tools/integration-tests:
-    dependencies:
-      '@kadena/chainweb-node-client':
-        specifier: workspace:*
-        version: link:../../libs/chainweb-node-client
-      '@kadena/pactjs':
-        specifier: workspace:*
-        version: link:../../libs/pactjs
-      exponential-backoff:
-        specifier: ^3.1.0
-        version: 3.1.0
-      kadena.js:
-        specifier: workspace:*
-        version: link:../../libs/kadena.js
-    devDependencies:
-      '@kadena-dev/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@kadena-dev/heft-rig':
-        specifier: workspace:*
-        version: link:../heft-rig
-      '@kadena/types':
-        specifier: workspace:*
-        version: link:../../libs/types
-      '@rushstack/eslint-config':
-        specifier: ~3.3.0
-        version: 3.3.0(eslint@8.45.0)(typescript@5.1.6)
-      '@rushstack/heft':
-        specifier: ~0.50.6
-        version: 0.50.6(@types/node@16.0.0)
-      '@types/heft-jest':
-        specifier: ~1.0.3
-        version: 1.0.3
-      '@types/node':
-        specifier: ^16.0.0
-        version: 16.0.0
-      concurrently:
-        specifier: ^7.2.2
-        version: 7.2.2
-      eslint:
-        specifier: ^8.45.0
-        version: 8.45.0
-      prettier:
-        specifier: ~3.0.0
-        version: 3.0.0
-
   packages/tools/kda-cli:
     dependencies:
       '@inkjs/ui':
@@ -15640,10 +15594,6 @@ packages:
       jest-matcher-utils: 29.6.2
       jest-message-util: 29.6.2
       jest-util: 29.6.2
-
-  /exponential-backoff@3.1.0:
-    resolution: {integrity: sha512-oBuz5SYz5zzyuHINoe9ooePwSu0xApKWgeNzok4hZ5YKXFh9zrQBEM15CXqoZkJJPuI2ArvqjPQd8UKJA753XA==}
-    dev: false
 
   /express@4.18.2:
     resolution: {integrity: sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==}
