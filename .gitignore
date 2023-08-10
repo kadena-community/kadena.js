@@ -84,3 +84,6 @@ packages/*/*/temp
 # Intelij idea files
 .idea
 .idea/*
+
+# Turborepo
+.turbo

@@ -12,21 +12,22 @@
         ".next",
         "!.next/cache/**"
       ],
-      "outputMode": "new-only"
+      "outputMode": "full"
     },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "new-only"
+      "outputMode": "full"
     },
     "lint": {
-      "outputMode": "new-only"
+      "dependsOn": ["build"],
+      "outputMode": "full"
     },
     "format": {
-      "outputMode": "new-only"
+      "outputMode": "full"
     },
     "format:ci": {
-      "outputMode": "new-only"
+      "outputMode": "full"
     }
   }
 }
