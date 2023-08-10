@@ -1,5 +1,7 @@
 import { SystemIcon } from '@components/Icon';
 import { IPaginationProps, Pagination } from '@components/Pagination';
+import { Stack } from '@components/Stack';
+import { Heading } from '@components/Typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -18,7 +20,7 @@ const meta: Meta<
         type: 'text',
       },
     },
-    total: {
+    totalPages: {
       control: {
         type: 'number',
         min: 0,
@@ -26,7 +28,7 @@ const meta: Meta<
         step: 2,
       },
     },
-    pageLimit: {
+    visiblePageLimit: {
       control: {
         type: 'number',
         min: 3,
@@ -46,22 +48,43 @@ type Story = StoryObj<IPaginationProps>;
  * to learn how to use render functions.
  */
 
-export const Default: Story = {
+export const Controlled: Story = {
   args: {
     label: 'Label',
-    total: 10,
-    pageLimit: 3,
+    totalPages: 10,
+    visiblePageLimit: 3,
   },
-  render: ({ total, label, pageLimit }) => {
+  render: ({ totalPages, label, visiblePageLimit }) => {
     const [page, setPage] = React.useState(1);
 
     return (
+      <Stack direction="column" spacing="$4">
+        <Heading as="h6">Controlled Page State: {page}</Heading>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={page}
+          label={label}
+          visiblePageLimit={visiblePageLimit}
+          onPageChange={setPage}
+        />
+      </Stack>
+    );
+  },
+};
+
+export const Uncontrolled: Story = {
+  args: {
+    label: 'Label',
+    totalPages: 10,
+    visiblePageLimit: 3,
+  },
+  render: ({ totalPages, label, visiblePageLimit }) => {
+    return (
       <Pagination
-        total={total}
-        page={page}
+        totalPages={totalPages}
         label={label}
-        pageLimit={pageLimit}
-        onPageChange={setPage}
+        visiblePageLimit={visiblePageLimit}
+        onPageChange={() => console.log('Updating Page')}
       />
     );
   },

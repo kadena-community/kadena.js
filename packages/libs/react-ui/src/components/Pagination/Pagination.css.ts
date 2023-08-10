@@ -7,6 +7,7 @@ export const listClass = style([
     display: 'flex',
     alignItems: 'center',
     gap: '$2',
+    padding: 0,
   }),
   { listStyleType: 'none' },
 ]);

@@ -3,26 +3,37 @@ import { PageNum } from './PageNum';
 import { paginate } from './paginate';
 import { listClass } from './Pagination.css';
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 export interface IPaginationProps {
-  total: number;
-  page: number;
+  totalPages: number;
+  currentPage?: number;
   label: string;
-  pageLimit?: number;
+  visiblePageLimit?: number;
   onPageChange: (page: number) => void;
 }
 
 export const Pagination: FC<IPaginationProps> = ({
-  total,
-  page,
+  totalPages,
+  currentPage,
   label,
-  pageLimit = 3,
+  visiblePageLimit = 3,
   onPageChange,
 }) => {
-  const pages = paginate({ page, total, maxPages: pageLimit });
+  const [_page, setPage] = useState(1);
+  const page = currentPage || _page;
+  const pages = paginate({
+    page,
+    total: totalPages,
+    maxPages: visiblePageLimit,
+  });
   const enablePrevious = page > 1;
-  const enableNext = page < total;
+  const enableNext = page < totalPages;
+
+  const onClick = (page: number) => {
+    setPage(page);
+    onPageChange(page);
+  };
 
   return (
     <nav aria-label={label}>
@@ -32,7 +43,7 @@ export const Pagination: FC<IPaginationProps> = ({
             label="Previous"
             direction="prev"
             disabled={!enablePrevious}
-            onClick={() => onPageChange(page - 1)}
+            onClick={() => onClick(page - 1)}
           />
         </li>
         {pages.map((pageNum) => (
@@ -40,7 +51,7 @@ export const Pagination: FC<IPaginationProps> = ({
             key={pageNum}
             number={pageNum}
             current={pageNum === page}
-            onClick={() => onPageChange(pageNum)}
+            onClick={() => onClick(pageNum)}
           />
         ))}
         <li>
@@ -48,7 +59,7 @@ export const Pagination: FC<IPaginationProps> = ({
             label="Next"
             direction="next"
             disabled={!enableNext}
-            onClick={() => onPageChange(page + 1)}
+            onClick={() => onClick(page + 1)}
           />
         </li>
       </ul>
