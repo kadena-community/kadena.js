@@ -3,6 +3,7 @@ const ALLOWED_ROOT_DEPENDENCIES = [
   '@kadena-dev/markdown',
   'only-allow',
   'syncpack',
+  'tsx',
   'turbo',
 ];
 

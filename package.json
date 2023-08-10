@@ -16,7 +16,7 @@
     "lint:fix-versions": "syncpack fix-mismatches",
     "test": "turbo run test",
     "publish-packages": "turbo run build lint test && changeset version && changeset publish",
-    "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > packages.json"
+    "publish-set": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts && pnpm publish-packages && git checkout .changeset/config.json"
   },
   "engines": {
     "node": ">=16",
@@ -24,12 +24,10 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
-    "@changesets/types": "^5.2.1",
-    "@changesets/write": "^0.2.3",
     "@kadena-dev/markdown": "workspace:*",
-    "fast-glob": "^3.3.1",
     "only-allow": "^1.1.1",
     "syncpack": "^10.7.3",
+    "tsx": "^3.12.7",
     "turbo": "^1.10.12"
   }
 }
