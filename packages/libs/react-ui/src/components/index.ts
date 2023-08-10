@@ -31,7 +31,6 @@ export type {
 } from './NavFooter';
 export type {
   INotificationProps,
-  INotificationHeaderProps,
   INotificationActionsProps,
 } from './Notification';
 export type {

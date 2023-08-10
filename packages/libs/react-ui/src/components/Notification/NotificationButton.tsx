@@ -1,11 +1,11 @@
-import { colorVariants, iconContainerClass } from './NotificationButton.css';
+import { actionButtonColorVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export interface INotificationButtonProps {
   icon: (typeof SystemIcon)[keyof typeof SystemIcon];
-  color: keyof typeof colorVariants;
+  color: keyof typeof actionButtonColorVariants;
   onClick?: () => void;
   children: React.ReactNode;
 }
@@ -17,11 +17,9 @@ export const NotificationButton: FC<INotificationButtonProps> = ({
 }) => {
   const Icon = icon;
   return (
-    <button onClick={onClick} className={colorVariants[color]}>
+    <button onClick={onClick} className={actionButtonColorVariants[color]}>
       {children}
-      <span className={iconContainerClass}>
-        <Icon size="md" />
-      </span>
+      <Icon size="md" />
     </button>
   );
 };
