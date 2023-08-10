@@ -1,12 +1,12 @@
-import { footerPanel } from './Footer.css';
+import { footerPanel } from './NavFooter.css';
 
 import React, { FC } from 'react';
 
-export interface IFooterPanelProps {
+export interface INavFooterPanelProps {
   children: React.ReactNode;
 }
 
-export const FooterPanel: FC<IFooterPanelProps> = ({ children }) => {
+export const NavFooterPanel: FC<INavFooterPanelProps> = ({ children }) => {
   return (
     <div className={footerPanel} data-testid="kda-footer-panel">
       {children}

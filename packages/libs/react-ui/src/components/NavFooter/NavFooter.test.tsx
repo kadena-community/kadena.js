@@ -3,7 +3,7 @@ import { NavFooter } from '@components/NavFooter';
 import { render } from '@testing-library/react';
 import React from 'react';
 
-describe('Footer', () => {
+describe('NavFooter', () => {
   test('renders correctly', () => {
     const menuLinks = [
       {
@@ -31,8 +31,8 @@ describe('Footer', () => {
         <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <NavFooter.Link key={index}>
-                <a href={item.href}>{item.title}</a>
+              <NavFooter.Link key={index} href={item.href}>
+                {item.title}
               </NavFooter.Link>
             );
           })}
@@ -82,8 +82,8 @@ describe('Footer', () => {
         <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
-              <NavFooter.Link key={index}>
-                <a href={item.href}>{item.title}</a>
+              <NavFooter.Link key={index} href={item.href}>
+                {item.title}
               </NavFooter.Link>
             );
           })}
