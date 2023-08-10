@@ -44,54 +44,29 @@ export const TaggedHeading: FC<IProp> = ({
 
   const slug = createSlug(slugInputStr, index, parentTitle);
 
-  const ArticleLink = (
-    <a className={headerIconLinkClass} id={slug} href={`#${slug}`}>
-      <SystemIcon.Link />
-    </a>
+  const content = (
+    <>
+      {children}
+      <a className={headerIconLinkClass} id={slug} href={`#${slug}`}>
+        <SystemIcon.Link />
+      </a>
+    </>
   );
+
+  const headingVariant = headerClassVariants[variant ?? as];
   switch (as) {
     case 'h2':
-      return (
-        <h2 className={headerClassVariants[variant ?? as]}>
-          {children}
-          {ArticleLink}
-        </h2>
-      );
+      return <h2 className={headingVariant}>{content}</h2>;
     case 'h3':
-      return (
-        <h3 className={headerClassVariants[variant ?? as]}>
-          {children}
-          {ArticleLink}
-        </h3>
-      );
+      return <h3 className={headingVariant}>{content}</h3>;
     case 'h4':
-      return (
-        <h4 className={headerClassVariants[variant ?? as]}>
-          {children}
-          {ArticleLink}
-        </h4>
-      );
+      return <h4 className={headingVariant}>{content}</h4>;
     case 'h5':
-      return (
-        <h5 className={headerClassVariants[variant ?? as]}>
-          {children}
-          {ArticleLink}
-        </h5>
-      );
+      return <h5 className={headingVariant}>{content}</h5>;
     case 'h6':
-      return (
-        <h6 className={headerClassVariants[variant ?? as]}>
-          {children}
-          {ArticleLink}
-        </h6>
-      );
+      return <h6 className={headingVariant}>{content}</h6>;
     case 'h1':
     default:
-      return (
-        <h1 className={headerClassVariants[variant ?? as]}>
-          {children}
-          {ArticleLink}
-        </h1>
-      );
+      return <h1 className={headingVariant}>{content}</h1>;
   }
 };
