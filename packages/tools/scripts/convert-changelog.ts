@@ -6,14 +6,15 @@ import type { Changeset } from '@changesets/types';
 
 // Convert Rush changelog (common/changes/**/*.json) to Changesets (.changesets/*.md) format
 // Script only creates, not deletes files
-// Usage: `npx tsx convert-changelog.ts` or `pnpm dlx tsx convert-changelog.ts`
+// Usage: `npx tsx packages/tools/scripts/convert-changelog.ts`
 
 const types = ['none', 'patch', 'minor', 'major'];
 
-const baseDir = dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const baseDir = join(__dirname, '../../..');
 
 const main = async () => {
-  const files = await fg('common/changes/**/*.json');
+  const files = await fg('common/changes/**/*.json', { cwd: baseDir });
   const filePaths = files.map((file) => join(baseDir, file));
   const changelogs = await Promise.all(filePaths.map((p) => import(p)));
 

@@ -11,24 +11,18 @@ importers:
       '@changesets/cli':
         specifier: ^2.26.2
         version: 2.26.2
-      '@changesets/types':
-        specifier: ^5.2.1
-        version: 5.2.1
-      '@changesets/write':
-        specifier: ^0.2.3
-        version: 0.2.3
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:packages/tools/remark-plugins
-      fast-glob:
-        specifier: ^3.3.1
-        version: 3.3.1
       only-allow:
         specifier: ^1.1.1
         version: 1.1.1
       syncpack:
         specifier: ^10.7.3
         version: 10.7.3
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.7
       turbo:
         specifier: ^1.10.12
         version: 1.10.12
@@ -1983,6 +1977,33 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
+
+  packages/tools/scripts:
+    devDependencies:
+      '@changesets/logger':
+        specifier: ^0.0.5
+        version: 0.0.5
+      '@changesets/types':
+        specifier: ^5.2.1
+        version: 5.2.1
+      '@changesets/write':
+        specifier: ^0.2.3
+        version: 0.2.3
+      '@types/node':
+        specifier: ^16.0.0
+        version: 16.18.39
+      ansi-colors:
+        specifier: ^4.1.3
+        version: 4.1.3
+      chalk:
+        specifier: ^5.2.0
+        version: 5.3.0
+      enquirer:
+        specifier: ^2.4.1
+        version: 2.4.1
+      fast-glob:
+        specifier: ^3.3.1
+        version: 3.3.1
 
 packages:
 
@@ -4075,6 +4096,27 @@ packages:
       tslib: 2.6.1
     dev: false
 
+  /@esbuild-kit/cjs-loader@2.4.2:
+    resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
+    dependencies:
+      '@esbuild-kit/core-utils': 3.1.0
+      get-tsconfig: 4.6.2
+    dev: true
+
+  /@esbuild-kit/core-utils@3.1.0:
+    resolution: {integrity: sha512-Uuk8RpCg/7fdHSceR1M6XbSZFSuMrxcePFuGgyvsBn+u339dk5OeL4jv2EojwTN2st/unJGsVm4qHWjWNmJ/tw==}
+    dependencies:
+      esbuild: 0.17.6
+      source-map-support: 0.5.21
+    dev: true
+
+  /@esbuild-kit/esm-loader@2.5.5:
+    resolution: {integrity: sha512-Qwfvj/qoPbClxCRNuac1Du01r9gvNOT+pMYtJDapfB1eoGN1YlJ1BixLyL9WVENRx5RXgNLdfYdx/CuswlGhMw==}
+    dependencies:
+      '@esbuild-kit/core-utils': 3.1.0
+      get-tsconfig: 4.6.2
+    dev: true
+
   /@esbuild/android-arm64@0.17.6:
     resolution: {integrity: sha512-YnYSCceN/dUzUr5kdtUzB+wZprCafuD89Hs0Aqv9QSdwhYQybhXTaSTcrl6X/aWThn1a/j0eEpUBGOE7269REg==}
     engines: {node: '>=12'}
@@ -5373,7 +5415,7 @@ packages:
     peerDependencies:
       ink: ^4.2.0
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-spinners: 2.9.0
       deepmerge: 4.3.1
       figures: 5.0.0
@@ -5510,14 +5552,14 @@ packages:
       '@jest/test-result': 29.6.2
       '@jest/transform': 29.5.0
       '@jest/types': 29.5.0
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.8.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.5.0
-      jest-config: 29.5.0(@types/node@16.0.0)
+      jest-config: 29.5.0(@types/node@16.18.39)
       jest-haste-map: 29.6.2
       jest-message-util: 29.6.2
       jest-regex-util: 29.4.3
@@ -5711,7 +5753,7 @@ packages:
       '@jest/transform': 29.6.2
       '@jest/types': 29.5.0
       '@jridgewell/trace-mapping': 0.3.18
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -5956,7 +5998,7 @@ packages:
       '@jest/schemas': 29.6.0
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
       '@types/yargs': 17.0.24
       chalk: 4.1.2
 
@@ -9120,7 +9162,7 @@ packages:
       '@storybook/builder-webpack5': 7.1.0(esbuild@0.18.17)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
       '@storybook/preset-react-webpack': 7.1.0(@babel/core@7.22.9)(@swc/core@1.3.80)(esbuild@0.18.17)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
       '@storybook/react': 7.1.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       typescript: 5.1.6
@@ -9160,7 +9202,7 @@ packages:
       '@storybook/types': 7.1.0
       '@types/escodegen': 0.0.6
       '@types/estree': 0.0.51
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
       acorn: 7.4.1
       acorn-jsx: 5.3.2(acorn@7.4.1)
       acorn-walk: 7.2.0
@@ -9798,7 +9840,7 @@ packages:
   /@types/cross-spawn@6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
 
   /@types/debug@4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
@@ -10068,7 +10110,7 @@ packages:
   /@types/mkdirp@1.0.2:
     resolution: {integrity: sha512-o0K1tSO0Dx5X6xlU5F1D6625FawhC3dU3iqr25lluNv/+/QIVH8RLNEiVokgIZo+mz+87w/3Mkg/VvQS+J51fQ==}
     dependencies:
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
     dev: true
 
   /@types/moo@0.5.5:
@@ -10182,7 +10224,7 @@ packages:
     resolution: {integrity: sha512-F3OznnSLAUxFrCEu/L5PY8+ny8DtcFRjx7fZZ9bycvXRi3KPTRS9HOitGZwvPg0juRhXFWIeKX58cnX5YqLohQ==}
     dependencies:
       '@types/glob': 8.1.0
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
@@ -12077,7 +12119,7 @@ packages:
       arrify: 3.0.0
       callsites: 4.0.0
       cbor: 8.1.0
-      chalk: 5.2.0
+      chalk: 5.3.0
       chokidar: 3.5.3
       chunkd: 2.0.1
       ci-info: 3.8.0
@@ -12953,6 +12995,7 @@ packages:
   /chalk@5.2.0:
     resolution: {integrity: sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+    dev: true
 
   /chalk@5.3.0:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
@@ -17656,7 +17699,7 @@ packages:
       '@types/react': 18.2.15
       ansi-escapes: 6.2.0
       auto-bind: 5.0.1
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-boxes: 3.0.0
       cli-cursor: 4.0.0
       cli-truncate: 3.1.0
@@ -18489,6 +18532,45 @@ packages:
       - babel-plugin-macros
       - supports-color
 
+  /jest-config@29.5.0(@types/node@16.18.39):
+    resolution: {integrity: sha512-kvDUKBnNJPNBmFFOhDbm59iu1Fii1Q6SxyhXfvylq3UTHbg6o7j/g8k2dZyXWLvfdKB1vAPxNZnMgtKJcmu3kA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@types/node': '*'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      '@babel/core': 7.22.9
+      '@jest/test-sequencer': 29.6.2
+      '@jest/types': 29.5.0
+      '@types/node': 16.18.39
+      babel-jest: 29.6.2(@babel/core@7.22.9)
+      chalk: 4.1.2
+      ci-info: 3.8.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.6.2
+      jest-environment-node: 29.6.2
+      jest-get-type: 29.4.3
+      jest-regex-util: 29.4.3
+      jest-resolve: 29.5.0
+      jest-runner: 29.6.2
+      jest-util: 29.6.2
+      jest-validate: 29.6.2
+      micromatch: 4.0.5
+      parse-json: 5.2.0
+      pretty-format: 29.6.2
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+
   /jest-config@29.6.2(@types/node@16.0.0):
     resolution: {integrity: sha512-VxwFOC8gkiJbuodG9CPtMRjBUNZEHxwfQXmIudSTzFWxaci3Qub1ddTRbFNQlD/zUeaifLndh/eDccFX4wCMQw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -18653,7 +18735,7 @@ packages:
       '@jest/fake-timers': 29.6.2
       '@jest/types': 29.6.1
       '@types/jsdom': 20.0.1
-      '@types/node': 16.0.0
+      '@types/node': 16.18.39
       jest-mock: 29.6.2
       jest-util: 29.6.2
       jsdom: 20.0.3
@@ -26653,6 +26735,17 @@ packages:
     dependencies:
       tslib: 1.14.1
       typescript: 5.1.6
+
+  /tsx@3.12.7:
+    resolution: {integrity: sha512-C2Ip+jPmqKd1GWVQDvz/Eyc6QJbGfE7NrR3fx5BpEHMZsEHoIxHL1j+lKdGobr8ovEyqeNkPLSKp6SCSOt7gmw==}
+    hasBin: true
+    dependencies:
+      '@esbuild-kit/cjs-loader': 2.4.2
+      '@esbuild-kit/core-utils': 3.1.0
+      '@esbuild-kit/esm-loader': 2.5.5
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
 
   /tty-table@4.2.1:
     resolution: {integrity: sha512-xz0uKo+KakCQ+Dxj1D/tKn2FSyreSYWzdkL/BYhgN6oMW808g8QRMuh1atAV9fjTPbWBjfbkKQpI/5rEcnAc7g==}
