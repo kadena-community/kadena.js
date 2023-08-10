@@ -12,6 +12,7 @@
     "pactjs": "bin/pactjs.js"
   },
   "files": [
+    "bin",
     "dist",
     "lib"
   ],
