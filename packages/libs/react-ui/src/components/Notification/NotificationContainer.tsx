@@ -1,13 +1,10 @@
 import {
-  cardTitleClass,
   closeButtonClass,
-  colorVariants,
+  cardColorVariants,
   containerClass,
-  containerClassRightPadded,
   contentClass,
+  descriptionClass,
   expandVariants,
-  iconContainerClass,
-  iconContainerExpandedClass,
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -19,7 +16,7 @@ export interface INotificationProps {
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
-  color?: keyof typeof colorVariants;
+  color?: keyof typeof cardColorVariants;
   hasCloseButton?: boolean;
   onClose?: () => void;
 }
@@ -29,37 +26,35 @@ export const NotificationContainer: FC<INotificationProps> = ({
   title,
   children,
   hasCloseButton = false,
-  color = 'primary',
+  color = 'info',
   expanded = false,
   onClose,
 }) => {
   const Icon = icon || SystemIcon.HelpCircle;
 
   const classList = classNames(
-    hasCloseButton ? containerClass : containerClassRightPadded,
-    colorVariants[color],
+    containerClass,
+    cardColorVariants[color],
     expandVariants[expanded ? 'true' : 'false'],
   );
 
   return (
     <div className={classList}>
-      <span className={iconContainerClass}>
-        <Icon size={'md'} />
-      </span>
+      <Icon size="md" />
 
       <div className={contentClass}>
-        {title !== undefined && <h4 className={cardTitleClass}>{title}</h4>}
-        <p>{children}</p>
+        {title !== undefined && <h4>{title}</h4>}
+        <p className={descriptionClass}>{children}</p>
       </div>
 
       {hasCloseButton && (
-        <span
-          className={expanded ? iconContainerExpandedClass : iconContainerClass}
+        <button
+          className={closeButtonClass}
+          onClick={onClose}
+          aria-label="Close Notification"
         >
-          <button className={closeButtonClass} onClick={onClose}>
-            <SystemIcon.Close color={color} size={'md'} />
-          </button>
-        </span>
+          <SystemIcon.Close size="md" />
+        </button>
       )}
     </div>
   );
