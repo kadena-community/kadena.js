@@ -9,6 +9,9 @@
   "bin": {
     "remark": "./node_modules/remark-cli/cli.js"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc",
     "format": "pnpm run /^format:.*/",

@@ -3,15 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist",
-        "fp",
-        "lib",
-        "theme",
-        "types",
-        ".next",
-        "!.next/cache/**"
-      ],
+      "outputs": ["dist", "lib"],
       "outputMode": "full"
     },
     "test": {
