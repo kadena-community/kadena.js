@@ -1,5 +1,7 @@
 import './styles/global.css';
 
+// TODO remove comment
+
 export type {
   IAccordionProps,
   IAccordionSectionProps,
