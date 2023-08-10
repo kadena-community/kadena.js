@@ -3,15 +3,22 @@ import {
   Box,
   Breadcrumbs,
   Button,
+  Card,
   ContentHeader,
   Grid,
   Heading,
+  ProductIcon,
   SystemIcon,
   Table,
   Text,
+  TrackerCard,
 } from '@kadena/react-ui';
 
-import { filterItemClass, headerButtonGroupClass } from './styles.css';
+import {
+  filterItemClass,
+  headerButtonGroupClass,
+  mainContentClass,
+} from './styles.css';
 
 import { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
@@ -23,7 +30,8 @@ import {
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(
@@ -35,6 +43,8 @@ const CheckTransactions: FC = () => {
 
   const [results, setResults] = useState<ITransaction[]>([]);
   const [loadingState, setLoadingState] = useState<boolean>(true);
+
+  const transactionDetailsRef = useRef<HTMLElement | null>(null);
 
   function displayAccountName(accountName: string): string {
     if (accountName.length > 20) {
@@ -121,8 +131,38 @@ const CheckTransactions: FC = () => {
     await router.push(Routes.ACCOUNT_TRANSACTIONS_FILTERS);
   }
 
+  const handleOpenTransactionDetails = (result: ITransaction): void => {
+    console.log(result);
+    // @ts-ignore
+    transactionDetailsRef.openSection(0);
+  };
+
   return (
-    <div>
+    <div className={mainContentClass}>
+      <DrawerToolbar
+        ref={transactionDetailsRef}
+        sections={[
+          {
+            icon: SystemIcon.Information,
+            title: t('Transaction Details'),
+            children: (
+              <>
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Transaction Hash',
+                      value: '0x1234567890',
+                      isAccount: true,
+                    },
+                  ]}
+                  variant="vertical"
+                  icon={ProductIcon.QuickStart}
+                />
+              </>
+            ),
+          },
+        ]}
+      />
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
@@ -197,7 +237,10 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} url={''}>
+                  <Table.Tr
+                    key={index}
+                    onClick={(_) => handleOpenTransactionDetails(result)}
+                  >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
@@ -236,7 +279,10 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} url={''}>
+                  <Table.Tr
+                    key={index}
+                    onClick={(_) => handleOpenTransactionDetails(result)}
+                  >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
