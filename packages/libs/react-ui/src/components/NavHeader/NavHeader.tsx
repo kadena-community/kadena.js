@@ -31,9 +31,9 @@ export const NavHeaderContainer: FC<INavHeaderContainerProps> = ({
     <header className={containerClass} data-testid="kda-navheader">
       <div className={logoClass}>
         {logoVariants.includes(brand) && (
-          <Link.Root href="/" target="_self">
+          <Link href="/" target="_self">
             <Logo variant={brand} />
-          </Link.Root>
+          </Link>
         )}
       </div>
       {children}
