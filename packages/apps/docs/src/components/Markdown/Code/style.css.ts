@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { globalStyle, style } from '@vanilla-extract/css';
 
@@ -25,14 +25,6 @@ export const codeWrapper = style([
     borderLeft: `4px solid ${vars.colors.$borderDefault}`,
     borderRadius: `${vars.radii.$sm} 0px 0px ${vars.radii.$sm}`,
     wordBreak: 'break-all',
-    selectors: {
-      '&[data-active-theme="dark"][data-theme="light"]': {
-        display: 'none',
-      },
-      '&[data-active-theme="light"][data-theme="dark"]': {
-        display: 'none',
-      },
-    },
   },
 ]);
 
@@ -40,14 +32,16 @@ export const code = style([
   sprinkles({
     whiteSpace: 'break-spaces',
     fontFamily: '$mono',
+    display: 'none',
   }),
   {
     counterReset: 'line',
     selectors: {
-      '&[data-active-theme="dark"][data-theme="light"]': {
-        display: 'none',
+      [`${darkThemeClass} &[data-theme="dark"], &[data-theme="light"]`]: {
+        display: 'block',
       },
-      '&[data-active-theme="light"][data-theme="dark"]': {
+
+      [`${darkThemeClass} &[data-theme="light"]`]: {
         display: 'none',
       },
     },

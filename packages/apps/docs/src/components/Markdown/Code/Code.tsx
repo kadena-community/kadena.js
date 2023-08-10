@@ -1,30 +1,18 @@
 import { code, codeLine, inlineCode } from './style.css';
 
-import { useTheme } from '@/hooks';
-import React, { FC, ReactNode, useEffect } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 interface IProp {
   children: ReactNode;
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
-  const { theme } = useTheme();
-
-  const [themedProps, setThemedProps] = React.useState(props);
-
-  useEffect(() => {
-    setThemedProps({
-      ...props,
-      'data-active-theme': theme,
-    });
-  }, [props, theme]);
-
   if (typeof children === 'string') {
     return <code className={inlineCode}>{children}</code>;
   }
 
   return (
-    <code className={code} {...themedProps}>
+    <code className={code} {...props}>
       {React.Children.map(children, (child) => {
         if (!React.isValidElement(child) || !child) {
           return null;
