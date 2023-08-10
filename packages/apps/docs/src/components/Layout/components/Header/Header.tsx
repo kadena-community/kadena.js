@@ -67,8 +67,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
 
         <HeaderSocialIconGroup>
           <IconButton
-            as="a"
-            href="https://twitter.com/kadena_io"
+            as="button"
             title="Go to our Twitter"
             icon={SystemIcon.Twitter}
             color="inverted"

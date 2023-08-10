@@ -5,6 +5,7 @@ import { Subscribe } from './components/Subscribe';
 import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
 
 import { INavigation } from '@/types/Layout';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -24,19 +25,38 @@ export const BottomPageSection: FC<IProps> = ({
     [bottomWrapperCodeLayoutClass]: layout === 'code',
   });
 
+  const onClickAction = (page: 'prev' | 'next', href?: string): void => {
+    if (!href) return;
+    analyticsEvent(
+      page === 'next'
+        ? EVENT_NAMES['click:next_page']
+        : EVENT_NAMES['click:previous_page'],
+      {
+        label: `to: ${href}`,
+        url: window.location.href,
+      },
+    );
+  };
+
   return (
     <div className={classes}>
       <Stack alignItems="center" justifyContent="space-between">
         <EditPage editLink={editLink} />
         {navigation?.previous !== undefined && (
-          <Link href={navigation?.previous.root}>
+          <Link
+            onClick={() => onClickAction('prev', navigation?.previous?.root)}
+            href={navigation?.previous.root}
+          >
             previous:
             <br />
             {navigation?.previous.title}
           </Link>
         )}
         {navigation?.next !== undefined && (
-          <Link href={navigation?.next.root}>
+          <Link
+            onClick={() => onClickAction('next', navigation?.next?.root)}
+            href={navigation?.next.root}
+          >
             next:
             <br />
             {navigation?.next.title}
