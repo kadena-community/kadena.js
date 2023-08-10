@@ -43,11 +43,13 @@ export const stackClass = style([
       '&:first-child': {
         borderRadius: `${vars.radii.$sm} ${vars.radii.$sm} 0 0`,
         borderBottom: 'none',
-        marginBottom: 0,
       },
       '&:last-child': {
         borderRadius: `0 0 ${vars.radii.$sm} ${vars.radii.$sm}`,
         borderTop: 'none',
+      },
+      '&:not(:last-child)': {
+        marginBottom: 0,
       },
       '&:not(:first-child)': {
         marginTop: 0,
