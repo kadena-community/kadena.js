@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["mixins", "profile"],
-      "outputMode": "full"
+      "outputMode": "new-only"
     }
   }
 }

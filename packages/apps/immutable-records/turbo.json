@@ -4,8 +4,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next", "!.next/cache/**"],
-      "outputMode": "full"
+      "outputs": [".next/**", "!.next/cache/**"],
+      "outputMode": "new-only"
     }
   }
 }

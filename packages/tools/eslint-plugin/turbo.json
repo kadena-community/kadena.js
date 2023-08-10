@@ -4,8 +4,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["src"],
-      "outputMode": "full"
+      "outputs": ["src/**"],
+      "outputMode": "new-only"
     }
   }
 }

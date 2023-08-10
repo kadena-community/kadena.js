@@ -3,23 +3,23 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist", "lib"],
-      "outputMode": "full"
+      "outputs": ["dist/**", "lib/**"],
+      "outputMode": "new-only"
     },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "full"
+      "outputMode": "new-only"
     },
     "lint": {
       "dependsOn": ["build"],
-      "outputMode": "full"
+      "outputMode": "new-only"
     },
     "format": {
-      "outputMode": "full"
+      "outputMode": "new-only"
     },
     "format:ci": {
-      "outputMode": "full"
+      "outputMode": "new-only"
     }
   }
 }
