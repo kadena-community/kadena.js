@@ -26,14 +26,8 @@ interface IProps {
 export const Layout: FC<IProps> = ({ children }: IProps) => {
   const { t } = useTranslation('common');
   const { isMenuOpen } = useLayoutContext();
-  const {
-    accounts,
-    selectedAccount,
-    selectedNetwork,
-    setSelectedAccount,
-    setSelectedNetwork,
-    session,
-  } = useWalletConnectClient();
+  const { accounts, selectedNetwork, setSelectedNetwork, session } =
+    useWalletConnectClient();
 
   const menu = [
     {
@@ -51,6 +45,8 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   ];
 
   const getNetworks = (): Network[] => {
+    if (!session) return ['mainnet01', 'testnet04'];
+
     const result = new Set(
       accounts
         ?.map((account) => {
@@ -63,23 +59,6 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     return Array.from(result ?? []) as Network[];
   };
 
-  const getAccounts = (): string[] => {
-    // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
-    const regex = new RegExp(`kadena\:${selectedNetwork}.*`);
-    const result = new Set(
-      accounts
-        ?.filter((account) => {
-          if (account.match(regex)) return account;
-        })
-        ?.map((account) => {
-          const [, , accountName] = account.split(':');
-          return accountName;
-        }),
-    );
-
-    return Array.from(result) ?? [];
-  };
-
   return (
     <div>
       <header className={headerStyle}>
@@ -88,47 +67,25 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
           menu={menu}
           rightPanel={
             <GridRow className={rightPanelStyle}>
-              {session && (
-                <>
-                  <GridCol xs={6} lg={4} className={rightPanelColsStyle}>
-                    <Select
-                      ariaLabel={t('Select Network')}
-                      value={selectedNetwork as string}
-                      onChange={(e) =>
-                        setSelectedNetwork(e.target.value as Network)
-                      }
-                      icon={SystemIcon.Link}
-                    >
-                      {getNetworks().map((network) => (
-                        <Option key={network} value={network}>
-                          {kadenaConstants?.[network].label}
-                        </Option>
-                      ))}
-                    </Select>
-                  </GridCol>
-                  <GridCol xs={6} lg={4} className={rightPanelColsStyle}>
-                    <Select
-                      ariaLabel={t('Select Account')}
-                      value={selectedAccount as string}
-                      onChange={(e) => setSelectedAccount(e.target.value)}
-                      icon={SystemIcon.KIcon}
-                    >
-                      <Option value={undefined as unknown as string}>
-                        {t('Select Account')}
-                      </Option>
-                      {getAccounts().map((account) => (
-                        <Option key={account} value={account}>
-                          {account.slice(0, 4)}****{account.slice(-4)}
-                        </Option>
-                      ))}
-                    </Select>
-                  </GridCol>
-                </>
-              )}
+              <GridCol xs={6} lg={4} className={rightPanelColsStyle}>
+                <Select
+                  ariaLabel={t('Select Network')}
+                  value={selectedNetwork as string}
+                  onChange={(e) =>
+                    setSelectedNetwork(e.target.value as Network)
+                  }
+                  icon={SystemIcon.Link}
+                >
+                  {getNetworks().map((network) => (
+                    <Option key={network} value={network}>
+                      {kadenaConstants?.[network].label}
+                    </Option>
+                  ))}
+                </Select>
+              </GridCol>
               <GridCol
                 xs={12}
-                md={{ size: session ? 3 : 6, offset: session ? 0 : 6 }}
-                lg={{ size: session ? 3 : 5 }}
+                md={{ size: session ? 3 : 6 }}
                 className={rightPanelColsStyle}
               >
                 <WalletConnectButton />
