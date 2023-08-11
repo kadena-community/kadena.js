@@ -9,7 +9,7 @@ import React, { FC, FunctionComponentElement } from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
 export interface INavItem {
-  title: string;
+  label: string;
   href: string;
   target?: INavItemTarget;
 }
