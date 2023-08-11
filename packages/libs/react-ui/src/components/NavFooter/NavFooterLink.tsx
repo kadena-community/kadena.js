@@ -1,13 +1,13 @@
 import { linkBoxClass, linkClass } from './NavFooter.css';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, HTMLAttributeAnchorTarget } from 'react';
 
 export type Target = '_self' | '_blank';
 export interface INavFooterLinkProps {
   children: string;
   href?: string;
-  target?: Target;
+  target?: HTMLAttributeAnchorTarget | undefined;
 }
 
 export const NavFooterLink: FC<INavFooterLinkProps> = ({
@@ -17,27 +17,13 @@ export const NavFooterLink: FC<INavFooterLinkProps> = ({
 }) => {
   return (
     <div className={linkBoxClass} data-testid="kda-footer-link-item">
-      <span
-        className={classNames(linkClass, {
-          color: 'inherit',
-          textDecorationColor: 'inherit',
-        })}
-      >
-        {href !== undefined ? (
-          <a
-            style={{
-              color: 'inherit',
-              textDecorationColor: 'inherit',
-            }}
-            href={href}
-            target={target}
-          >
-            {children}
-          </a>
-        ) : (
-          <span>{children}</span>
-        )}
-      </span>
+      {href !== undefined ? (
+        <a className={classNames(linkClass)} href={href} target={target}>
+          {children}
+        </a>
+      ) : (
+        <span>{children}</span>
+      )}
     </div>
   );
 };
