@@ -26,10 +26,10 @@ export type {
   INavFooterPanelProps,
   INavFooterRootProps,
   INotificationActionsProps,
-  INotificationHeaderProps,
   INotificationProps,
   InputWrapperStatus,
   IOptionProps,
+  IPaginationProps,
   IProgressBarProps,
   ISelectProps,
   IStackProps,
@@ -48,6 +48,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   ITrProps,
+  IProfileCardProps,
 } from './components';
 
 export {
@@ -71,6 +72,7 @@ export {
   NavFooter,
   Notification,
   Option,
+  Pagination,
   ProductIcon,
   ProgressBar,
   Select,
@@ -86,6 +88,7 @@ export {
   Tree,
   useModal,
   Divider,
+  ProfileCard,
 } from './components';
 
 export { breakpoints } from './styles';

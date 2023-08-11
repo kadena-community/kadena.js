@@ -11,6 +11,7 @@ export interface IContentHeaderProps {
 }
 
 export const ContentHeader: FC<IContentHeaderProps> = ({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   icon: Icon,
   heading,
   description,

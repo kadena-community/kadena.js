@@ -13,6 +13,7 @@ export type { ILinkProps } from './Link';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
 export type { IModalProps } from './Modal';
 export type { IOptionProps } from './Select/Option';
+export type { IPaginationProps } from './Pagination';
 export type { IProgressBarProps } from './ProgressBar';
 export type { ISelectProps } from './Select/Select';
 export type { IStackProps } from './Stack';
@@ -30,7 +31,6 @@ export type {
 } from './NavFooter';
 export type {
   INotificationProps,
-  INotificationHeaderProps,
   INotificationActionsProps,
 } from './Notification';
 export type {
@@ -47,6 +47,7 @@ export type {
   IGradientTextProps,
   ILabelProps,
 } from './Typography';
+export type { IProfileCardProps } from './ProfileCard';
 
 export { Accordion } from './Accordion';
 export { Box } from './Box';
@@ -64,6 +65,7 @@ export { MaskedValue } from './MaskedValue/MaskedValue';
 export { Modal, ModalProvider, useModal } from './Modal';
 export { Notification } from './Notification';
 export { Option } from './Select/Option';
+export { Pagination } from './Pagination';
 export { ProgressBar } from './ProgressBar';
 export { Select } from './Select/Select';
 export { Stack } from './Stack';
@@ -77,3 +79,4 @@ export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
 export { Divider } from './Divider/Divider';
+export { ProfileCard } from './ProfileCard';

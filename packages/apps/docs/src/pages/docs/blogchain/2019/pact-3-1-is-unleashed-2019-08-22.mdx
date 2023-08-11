@@ -20,7 +20,7 @@ layout: blog
 After a lot of hard work by the team at [Kadena](http://kadena.io), we are
 pleased to announce the release of **Pact 3.1!** This new version of Pact brings
 significant additions to the language, including expanded
-[Formal Verification](https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f)
+[Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 coverage for our interfaces and governance, and our new cross-chain features in
 defpact, which makes it dead simple to write cross-chain multi-step
 transactions.
@@ -38,11 +38,10 @@ expanding our **Formal Verification** coverage.
 
 ### Pact Interfaces
 
-Interfaces were introduced into
-[Pact in 3.0](https://medium.com/kadena-io/announcing-pact-3-0-4b0a8f35e6a0) as
-a way to allow users greater flexibility when layering behaviors in module code.
-These constructs act similarly to the interfaces in Java, or traits in Rust and
-Scala, with one big difference. In Pact 3.1, users can now write Formal
+Interfaces were introduced into [Pact in 3.0](./announcing-pact-3-0-2019-06-06)
+as a way to allow users greater flexibility when layering behaviors in module
+code. These constructs act similarly to the interfaces in Java, or traits in
+Rust and Scala, with one big difference. In Pact 3.1, users can now write Formal
 Verification properties and even define their own custom models in the bodies of
 interfaces and their function signatures!
 
@@ -58,14 +57,13 @@ code
 
 ### Verified Governance
 
-For the
-[Pact 3.0 release](https://medium.com/kadena-io/announcing-pact-3-0-4b0a8f35e6a0),
-we debuted an exciting new set of features in Pact: **guards** and
-**capabilities**. These primitives allow you to create robust and flexible
-security metaphors as a native feature of the language. With Pact 3.1, we are
-proud to announce that we have Formal Verification analysis for guards and
-capabilities, allowing you to not just write secure and flexible code, but
-_prove_ that it is secure and flexible code.
+For the [Pact 3.0 release](./announcing-pact-3-0-2019-06-06), we debuted an
+exciting new set of features in Pact: **guards** and **capabilities**. These
+primitives allow you to create robust and flexible security metaphors as a
+native feature of the language. With Pact 3.1, we are proud to announce that we
+have Formal Verification analysis for guards and capabilities, allowing you to
+not just write secure and flexible code, but _prove_ that it is secure and
+flexible code.
 
 When writing formal verification properties for a function, users can combine a
 security predicate for a guard or capability such as(authorized-by
@@ -89,7 +87,7 @@ transactions.
 
 One of the boldest new features in this version of Pact comes as part of our
 ongoing work on the testnet for
-[our public blockchain](https://medium.com/kadena-io/announcement-kadena-public-blockchain-testnet-live-dbfb8a6477c5).
+[our public blockchain](./announcement-kadena-public-blockchain-testnet-live-2019-03-26).
 
 Blockchains like Bitcoin and Ethereum are traditionally single-chain, so their
 currencies naturally live on one chain. But what happens when you have a whole

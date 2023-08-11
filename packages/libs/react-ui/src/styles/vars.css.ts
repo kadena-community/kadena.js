@@ -39,12 +39,14 @@ export const vars = createGlobalTheme(':root', {
     $bold: '700',
   },
   radii: {
+    $xs: '2px',
     $sm: '4px',
     $md: '6px',
     $lg: '8px',
     $round: '999rem',
   },
   borderWidths: {
+    $sm: '1px',
     $md: '2px',
   },
   shadows: {
