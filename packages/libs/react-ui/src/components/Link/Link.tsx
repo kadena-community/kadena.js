@@ -1,7 +1,6 @@
 import { SystemIcon } from '..';
 
 import { linkContainerClass } from './Link.css';
-import { LinkIcon } from './LinkIcon';
 
 import React, { FC, ReactNode } from 'react';
 
@@ -22,17 +21,17 @@ export const Link: FC<ILinkProps> = ({
 }) => {
   const Icon = icon && SystemIcon[icon];
 
-  const buttonChildren = (
+  const linkChildren = (
     <>
-      {Icon && iconAlign === 'left' && <LinkIcon icon={Icon} />}
+      {Icon && iconAlign === 'left' && <Icon size="md" />}
       {children}
-      {Icon && iconAlign === 'right' && <LinkIcon icon={Icon} />}
+      {Icon && iconAlign === 'right' && <Icon size="md" />}
     </>
   );
 
   return (
     <a href={href} target={target} className={linkContainerClass}>
-      {buttonChildren}
+      {linkChildren}
     </a>
   );
 };
