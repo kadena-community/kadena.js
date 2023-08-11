@@ -25,7 +25,7 @@ export const getAccountsRequest = (
   account: string,
   onlyForCoinContract: boolean = true,
 ) => {
-  return {
+  const request = {
     id: 1,
     jsonrpc: '2.0',
     method: 'kadena_getAccounts_v1',
@@ -39,6 +39,7 @@ export const getAccountsRequest = (
       ],
     },
   };
+  return request;
 };
 
 export function safeJsonParse<T>(str: string): T | null {

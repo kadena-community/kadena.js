@@ -1,20 +1,16 @@
 'use client';
 
-import { createClient } from './connect.client';
-
 import { useEffect, useContext } from 'react';
 import { useEvt } from 'evt/hooks';
 import { WalletConnectContext } from './connect.context';
 import { useRenderhook } from './connect.utils';
 
 export const useWalletConnect = () => {
-  const { client, setClient, projectId, relayUrl } =
-    useContext(WalletConnectContext);
+  const { client, projectId, relayUrl } = useContext(WalletConnectContext);
   const render = useRenderhook();
 
   useEvt(
     (ctx) => {
-      if (!client) return;
       client.onEvent.attach(ctx, ([event, data]) => {
         console.log('onEvent evt', { event, data });
       });
@@ -35,44 +31,38 @@ export const useWalletConnect = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      if (client) {
-        if (process.env.NODE_ENV !== 'development') {
-          console.warn('Client already initialized');
-        }
-        return;
-      }
-
-      console.log('init useWalletConnect');
-      const _client = createClient();
-      setClient(_client);
-      await _client.init({ projectId, relayUrl });
-    })();
-
-    return () => client?.unmount();
+    client.init({ projectId, relayUrl });
+    return () => client.unmount();
   }, []);
 
   const connect = async () => {
-    await client?.connect();
+    await client.connect();
   };
 
   const disconnect = async () => {
-    await client?.disconnect();
+    console.log('calling disconnect from hook');
+    await client.disconnect();
   };
 
-  const getKadenaAccounts = async (account: string) => {
-    await client?.getKadenaAccounts(account);
-    render();
+  const setNetwork = async (network: string) => {
+    client.setNetwork(network);
+  };
+
+  const fetchKadenaAccounts = async (account: string) => {
+    await client.fetchKadenaAccounts(account);
   };
 
   return {
-    initialized: !!client,
-    sessionTopic: client?.sessionTopic() ?? null,
-    likelyInvalidSession: client?.likelyInvalidSession ?? null,
+    initialized: client.state === 'initialized',
+    sessionTopic: client.sessionTopic(),
+    likelyInvalidSession: client.likelyInvalidSession,
     connect,
     disconnect,
-    getKadenaAccounts,
-    accounts: client?.getAccounts() ?? [],
-    kadenaAccounts: client?.kadenaAccounts ?? {},
+    setNetwork,
+    network: client.network,
+    fetchKadenaAccounts,
+    networks: client.getNetworks(),
+    accounts: client.getAccounts(),
+    kadenaAccounts: client.kadenaAccounts,
   };
 };

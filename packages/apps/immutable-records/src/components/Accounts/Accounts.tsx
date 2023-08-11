@@ -5,26 +5,23 @@ import { useWalletConnect } from '@/connect/connect.hook';
 
 import { FC, useEffect, useState } from 'react';
 import { container } from './Accounts.css';
-import { Button } from '@kadena/react-ui';
+import { Button, Select, Option } from '@kadena/react-ui';
 import { BalanceItem, getBalance } from '@/app/services/chainweb';
 
-const KadenaAccountBalance: FC<{ account: KadenaAccount; network: string }> = ({
-  account,
-  network,
-}) => {
+const KadenaAccountBalance: FC<{
+  account: KadenaAccount;
+  network: string;
+  chain: string;
+}> = ({ account, network, chain }) => {
   const [balance, setBalance] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(
-      `fetch balance ${account.name}, ${network}, ${account.chains[0]}`,
+    console.log(`fetch balance ${account.name}, ${network}, ${chain}`);
+    getBalance(account.name, network, chain as BalanceItem['chain']).then(
+      (balance) => {
+        setBalance(balance.balance);
+      },
     );
-    getBalance(
-      account.name,
-      network,
-      account.chains[0] as BalanceItem['chain'],
-    ).then((balance) => {
-      setBalance(balance.balance);
-    });
   }, []);
 
   return <span>{balance ?? 'loading...'}</span>;
@@ -37,11 +34,12 @@ const KadenaAccounts: FC<{
   if (!selected) {
     return <span>No accounts selected</span>;
   }
+  // console.log('test', accounts, selected);
   if (!accounts[selected]) {
     return <span>Loading accounts...</span>;
   }
 
-  const [, network] = selected?.split(':') ?? [];
+  const network = 'testnet04';
 
   return (
     <div className={container}>
@@ -56,9 +54,15 @@ const KadenaAccounts: FC<{
           {accounts[selected]?.map((account) => (
             <tr key={account.name}>
               <td>{account.name}</td>
-              <td>
-                <KadenaAccountBalance account={account} network={network} />
-              </td>
+              {account.chains.map((chain) => (
+                <td key={`account-${account.name}-${chain}`}>
+                  <KadenaAccountBalance
+                    account={account}
+                    network={network}
+                    chain={chain}
+                  />
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
@@ -68,48 +72,63 @@ const KadenaAccounts: FC<{
 };
 
 export const Accounts: FC = () => {
-  const { sessionTopic, accounts, kadenaAccounts, getKadenaAccounts } =
-    useWalletConnect();
-  const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
+  const {
+    sessionTopic,
+    accounts,
+    kadenaAccounts,
+    fetchKadenaAccounts,
+    setNetwork,
+    networks,
+    network,
+  } = useWalletConnect();
+
+  const [selectedAccount, setSelectedAccount] = useState<string>('');
   const hasSession = !!sessionTopic;
 
+  // Select first network and account on load
   useEffect(() => {
-    if (selectedAccount) {
-      getKadenaAccounts(selectedAccount);
+    if (!selectedAccount) {
+      setSelectedAccount(accounts[0]);
     }
-  }, [selectedAccount]);
+  }, [selectedAccount, accounts]);
 
-  console.log({ selectedAccount });
+  useEffect(() => {
+    if (network && selectedAccount) {
+      fetchKadenaAccounts(selectedAccount);
+    }
+  }, [network, selectedAccount]);
 
   return (
     <div>
-      <div className={container}>
-        <h3>Accounts</h3>
-        {!hasSession ? (
-          'Not connected'
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <td>Account</td>
-                <td></td>
-              </tr>
-            </thead>
-            <tbody>
-              {accounts?.map((account) => (
-                <tr key={account}>
-                  <td>{account}</td>
-                  <td>
-                    <Button onClick={() => setSelectedAccount(account)}>
-                      Load accounts
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <h3>Select account</h3>
+      {!hasSession ? (
+        'Not connected to wallet'
+      ) : (
+        <div style={{ display: 'flex' }}>
+          <Select
+            ariaLabel="network"
+            value={network ?? ''}
+            onChange={(e) => setNetwork(e.target.value)}
+          >
+            {networks.map((network) => (
+              <Option key={network} value={network}>
+                {network}
+              </Option>
+            ))}
+          </Select>
+          <Select
+            ariaLabel="account"
+            value={selectedAccount}
+            onChange={(e) => setSelectedAccount(e.target.value)}
+          >
+            {accounts.map((account) => (
+              <Option key={account} value={account}>
+                {account}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      )}
 
       <div className={container}>
         <h3>Selected accounts</h3>

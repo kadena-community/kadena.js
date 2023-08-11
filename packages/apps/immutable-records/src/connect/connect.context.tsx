@@ -1,23 +1,18 @@
 'use client';
 
-import {
-  type FC,
-  type PropsWithChildren,
-  createContext,
-  useState,
-} from 'react';
+import { type FC, type PropsWithChildren, createContext } from 'react';
 import { WalletConnectClient } from './connect.client';
 
 type WalletConnectContext = {
-  client: WalletConnectClient | null;
-  setClient: (client: WalletConnectClient) => void;
+  client: WalletConnectClient;
   projectId: string;
   relayUrl: string;
 };
 
+const client = new WalletConnectClient();
+
 export const WalletConnectContext = createContext<WalletConnectContext>({
-  client: null,
-  setClient: () => {},
+  client,
   projectId: '',
   relayUrl: '',
 });
@@ -25,11 +20,8 @@ export const WalletConnectContext = createContext<WalletConnectContext>({
 export const WalletConnectProvider: FC<
   PropsWithChildren<{ projectId: string; relayUrl: string }>
 > = ({ children, projectId, relayUrl }) => {
-  const [client, setClient] = useState<WalletConnectClient | null>(null);
   return (
-    <WalletConnectContext.Provider
-      value={{ client, setClient, projectId, relayUrl }}
-    >
+    <WalletConnectContext.Provider value={{ client, projectId, relayUrl }}>
       {children}
     </WalletConnectContext.Provider>
   );

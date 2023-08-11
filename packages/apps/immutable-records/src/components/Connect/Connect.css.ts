@@ -1,20 +1,33 @@
 import { sprinkles } from '@kadena/react-ui/theme';
 
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
-export const container = style([
+export const container = style([sprinkles({})]);
+
+export const debugContainerButton = style([
   sprinkles({
-    marginY: '$4',
+    marginTop: '$2',
   }),
 ]);
 
-export const invalidSession = style([
+export const debugContainer = style([
   sprinkles({
-    marginY: '$4',
+    marginY: '$2',
+    backgroundColor: '$gray40',
+    borderColor: '$gray60',
+    borderStyle: 'solid',
+    borderWidth: '$md',
+    padding: '$2',
   }),
   {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
+    display: 'inline-block',
   },
 ]);
+
+export const tooltipContainer = style({});
+
+globalStyle(`${tooltipContainer} div`, {
+  zIndex: 2,
+  backgroundColor: '#e88e00',
+  borderColor: '#e88e00',
+});
