@@ -1,38 +1,38 @@
 import { SystemIcon } from '@components/Icon';
 import { NavFooter } from '@components/NavFooter';
 import { render } from '@testing-library/react';
-import React from 'react';
+import React, { FC } from 'react';
+
+const menuLinks: { label: string; href?: string }[] = [
+  {
+    label: 'Tutorial',
+    href: 'https://kadena.io/',
+  },
+  {
+    label: 'Documentation',
+    href: 'https://kadena.io/',
+  },
+];
+
+const icons: { icon: FC; text?: string }[] = [
+  {
+    icon: SystemIcon.Earth,
+    text: 'English',
+  },
+  {
+    icon: SystemIcon.Account,
+  },
+];
 
 describe('NavFooter', () => {
   test('renders correctly', () => {
-    const menuLinks = [
-      {
-        title: 'Tutorial',
-        href: 'https://kadena.io/',
-      },
-      {
-        title: 'Documentation',
-        href: 'https://kadena.io/',
-      },
-    ];
-
-    const icons = [
-      {
-        icon: SystemIcon.Earth,
-        text: 'English',
-      },
-      {
-        icon: SystemIcon.Account,
-      },
-    ];
-
     const { getByTestId } = render(
       <NavFooter.Root>
         <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
               <NavFooter.Link key={index} href={item.href}>
-                {item.title}
+                {item.label}
               </NavFooter.Link>
             );
           })}
@@ -56,34 +56,13 @@ describe('NavFooter', () => {
   });
 
   test('shows values correctly', () => {
-    const menuLinks = [
-      {
-        title: 'Tutorial',
-        href: 'https://kadena.io/',
-      },
-      {
-        title: 'Documentation',
-        href: 'https://kadena.io/',
-      },
-    ];
-
-    const icons = [
-      {
-        icon: SystemIcon.Earth,
-        text: 'English',
-      },
-      {
-        icon: SystemIcon.Account,
-      },
-    ];
-
     const { getAllByTestId } = render(
       <NavFooter.Root>
         <NavFooter.Panel>
           {menuLinks.map((item, index) => {
             return (
               <NavFooter.Link key={index} href={item.href}>
-                {item.title}
+                {item.label}
               </NavFooter.Link>
             );
           })}
