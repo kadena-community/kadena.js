@@ -12,11 +12,29 @@ interface IProps {
   label?: LabelType;
 }
 
+function getNoficationColor(label?: LabelType) {
+  const color = getColor(label);
+
+  if (color === 'primary') {
+    return 'positive'
+  }
+
+  if (color === 'secondary') {
+    return 'warning'
+  }
+
+  if (color === 'tertiary') {
+    return 'negative'
+  }
+
+  return color;
+}
+
 export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
   return (
     <div className={wrapperClass}>
       <Notification.Root
-        color={getColor(label)}
+        color={getNoficationColor(label)}
         title={title}
         expanded
         icon={getIcon(label)}
