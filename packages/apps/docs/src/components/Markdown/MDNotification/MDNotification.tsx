@@ -1,6 +1,7 @@
 import { Notification } from '@kadena/react-ui';
 
-import { wrapperClass } from './style.css';
+import { wrapperClass } from '../styles.css';
+
 import { getColor, getIcon, LabelType } from './utils';
 
 import React, { FC, ReactNode } from 'react';
