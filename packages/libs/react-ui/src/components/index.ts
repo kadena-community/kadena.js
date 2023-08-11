@@ -24,7 +24,7 @@ export type { ITooltipProps } from './Tooltip';
 export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
-  INavFooterRootProps,
+  INavFooterContainerProps,
   INavFooterPanelProps,
   INavFooterIconButtonProps,
   INavFooterLinkProps,
