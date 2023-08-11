@@ -54,7 +54,7 @@ The token details should be entered as a JSON object with the following fields:
   random URL to ensure uniqueness. For example, you could add a random string to
   the end of a base URL, like "https://example.org/randomstring".
 - `precision`: Set this to 0 for an NFT (Non-Fungible Token).
-- `policies`: This is an object that includes various policy settings for the
+- `policies`: This is an array that includes various policy settings for the
   token. For now, we will only set the `non-fungible-policy` to true, indicating
   that the token is an NFT. The other policy settings are more advanced and will
   be left blank for now.
@@ -65,16 +65,7 @@ Here's an example of what the JSON object might look like:
 {
   "uri": "https://example.org/randomstring",
   "precision": 0,
-  "policies": {
-    "concrete-policies": {
-      "quote-policy": false,
-      "non-fungible-policy": true,
-      "royalty-policy": false,
-      "collection-policy": false
-    },
-    "immutable-policies": [],
-    "adjustable-policies": []
-  }
+  "policies": []
 }
 ```
 
@@ -112,20 +103,8 @@ you'll need to enter the following information:
 2. **Precision**: Enter `0`, just like you did when creating the token ID.
 3. **URL**: Use the same URL you used when creating the token ID. In our
    example, it was `https://example.org/randomstring`.
-4. **Policies**: Paste in the policies document. It should look like this:
-
-```json
-{
-  "concrete-policies": {
-    "quote-policy": false,
-    "non-fungible-policy": true,
-    "royalty-policy": false,
-    "collection-policy": false
-  },
-  "immutable-policies": [],
-  "adjustable-policies": []
-}
-```
+4. **Policies**: In this field you can add some of the default or custom policies
+   that you want to apply to the token. For now, we will leave this with an empty Array.
 
 Next, go to the Configuration tab. Like last time, paste your account name and
 change the gas settings to match the screenshot below.
