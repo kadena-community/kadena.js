@@ -24,7 +24,7 @@ export type {
   INavFooterIconButtonProps,
   INavFooterLinkProps,
   INavFooterPanelProps,
-  INavFooterRootProps,
+  INavFooterContainerProps,
   INotificationActionsProps,
   INotificationProps,
   InputWrapperStatus,
