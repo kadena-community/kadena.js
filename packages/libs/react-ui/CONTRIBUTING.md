@@ -7,14 +7,23 @@ Component.Root etc.
 - avoiding external elements (current exception is Next/Link)
 - Composition vs configuration
 
+### Component Typing
+
+- Be as strict as possible, within the limits of the component's intended use.
+- Never use `any` or `unknown` unless absolutely necessary.
+- Use `unknown` over `any` if you're not sure what type something is.
+- Only type the children prop as `ReactNode` if you don't know what type it will
+  be (e.g. it's up to the consumer to decide what to render).
+- Use `FunctionComponentElement` otherwise with the applicable type.
+
 ### Component Property Naming Convention
 
 ### Standards regarding storybook and when we should write unit tests
 
 ### File structure and naming naming conventions
 
-- always having a barrel file
-- CSS files should be named after the component
+- always having a barrel file (index.ts)
+- CSS files should be named after the component (e.g. `Button.css.ts`)
 
 ### Exports
 
@@ -29,6 +38,9 @@ Component.Root etc.
 - use types for others
 
 ### How to handle components that may use Next/Link
+
+- Use a wrapper component that handles the link (see e.g. `NavHeader`,
+  `Breadcrumbs`)
 
 ## Vanilla Extract
 
