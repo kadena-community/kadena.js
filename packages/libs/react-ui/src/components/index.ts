@@ -31,7 +31,6 @@ export type {
 } from './NavFooter';
 export type {
   INotificationProps,
-  INotificationHeaderProps,
   INotificationActionsProps,
 } from './Notification';
 export type {
@@ -48,6 +47,7 @@ export type {
   IGradientTextProps,
   ILabelProps,
 } from './Typography';
+export type { IProfileCardProps } from './ProfileCard';
 
 export { Accordion } from './Accordion';
 export { Box } from './Box';
@@ -79,3 +79,4 @@ export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
 export { Divider } from './Divider/Divider';
+export { ProfileCard } from './ProfileCard';

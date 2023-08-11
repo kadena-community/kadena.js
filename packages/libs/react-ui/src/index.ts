@@ -26,7 +26,6 @@ export type {
   INavFooterPanelProps,
   INavFooterRootProps,
   INotificationActionsProps,
-  INotificationHeaderProps,
   INotificationProps,
   InputWrapperStatus,
   IOptionProps,
@@ -49,6 +48,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   ITrProps,
+  IProfileCardProps,
 } from './components';
 
 export {
@@ -88,6 +88,7 @@ export {
   Tree,
   useModal,
   Divider,
+  ProfileCard,
 } from './components';
 
 export { breakpoints } from './styles';

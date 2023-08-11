@@ -1,5 +1,5 @@
-import { sprinkles } from '../../styles';
-
+import { sprinkles } from '@theme/sprinkles.css';
+import { darkThemeClass, vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const layoutVariant = styleVariants({
@@ -77,13 +77,24 @@ export const CardContainer = style([
   sprinkles({
     display: 'grid',
     padding: '$3',
-    gap: '$4',
+    gap: '$2',
     marginTop: '$sm',
     borderRadius: '$sm',
     alignItems: 'flex-start',
     fontSize: '$sm',
-    background: '$background',
+    background: {
+      lightMode: '$white',
+      darkMode: '$gray100',
+    },
   }),
+  {
+    border: `1px solid ${vars.colors.$borderDefault}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        border: `1px solid ${vars.colors.$gray60}`,
+      },
+    },
+  },
 ]);
 
 export const ContentContainer = style([
