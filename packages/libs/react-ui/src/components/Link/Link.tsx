@@ -17,7 +17,7 @@ export const Link: FC<ILinkProps> = ({
   target = '_blank',
   children,
   icon,
-  iconAlign,
+  iconAlign = 'left',
 }) => {
   const Icon = icon && SystemIcon[icon];
 
