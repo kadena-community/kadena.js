@@ -27,31 +27,31 @@ const meta: Meta<{
   },
 };
 
-const links: { title: string; href?: string; target?: Target }[] = [
+const links: { label: string; href?: string; target?: Target }[] = [
   {
-    title: 'Tutorial',
+    label: 'Tutorial',
     href: 'https://kadena.io/',
     target: '_self',
   },
   {
-    title: 'Documentation',
+    label: 'Documentation',
     href: 'https://kadena.io/',
     target: '_self',
   },
   {
-    title: 'Privacy & Policy',
+    label: 'Privacy & Policy',
     href: '',
   },
   {
-    title: 'Terms of use',
+    label: 'Terms of use',
     href: '',
   },
   {
-    title: 'Another link',
+    label: 'Another link',
     href: '',
   },
   {
-    title: 'Take me there',
+    label: 'Take me there',
   },
 ];
 
@@ -104,7 +104,7 @@ export const Primary: Story = {
           {linkItems.map((item, index) => {
             return (
               <NavFooter.Link key={index} href={item.href} target={item.target}>
-                {item.title}
+                {item.label}
               </NavFooter.Link>
             );
           })}

@@ -8,19 +8,19 @@ import React from 'react';
 
 const sampleNavItems: INavItems = [
   {
-    title: 'Faucet',
+    label: 'Faucet',
     href: '#faucet',
   },
   {
-    title: 'Transactions',
+    label: 'Transactions',
     href: '#transactions',
   },
   {
-    title: 'Balance',
+    label: 'Balance',
     href: '#balance',
   },
   {
-    title: 'Learn Pact',
+    label: 'Learn Pact',
     href: '#pact',
   },
 ];
@@ -103,7 +103,7 @@ export const Dynamic: IStory = {
         <NavHeader.Navigation>
           {navItems.slice(0, linksCount).map((item, index) => (
             <NavHeader.Link key={index} href={item.href}>
-              {item.title}
+              {item.label}
             </NavHeader.Link>
           ))}
         </NavHeader.Navigation>
