@@ -78,7 +78,7 @@ globalStyle(`code span`, {
 
 export const codeTitle = style([
   sprinkles({
-    display: 'flex',
+    display: 'none',
     alignItems: 'center',
     fontFamily: '$main',
     backgroundColor: '$neutral3',
@@ -86,10 +86,11 @@ export const codeTitle = style([
   }),
   {
     selectors: {
-      '&[data-active-theme="dark"][data-theme="light"]': {
-        display: 'none',
+      [`${darkThemeClass} &[data-theme="dark"], &[data-theme="light"]`]: {
+        display: 'flex',
       },
-      '&[data-active-theme="light"][data-theme="dark"]': {
+
+      [`${darkThemeClass} &[data-theme="light"]`]: {
         display: 'none',
       },
       '&[data-language]::before': {
