@@ -1,4 +1,4 @@
-import type { INavHeaderContainerProps, INavItems } from './NavHeader';
+import type { INavHeaderRootProps, INavItems } from './NavHeader';
 import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
@@ -30,7 +30,7 @@ type StoryProps = {
   renderSampleContent: boolean;
   useCustomNavigation: boolean;
   customNavigation: INavItems;
-} & INavHeaderContainerProps;
+} & INavHeaderRootProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',

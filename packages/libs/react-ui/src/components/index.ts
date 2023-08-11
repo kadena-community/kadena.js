@@ -24,21 +24,27 @@ export type { ITooltipProps } from './Tooltip';
 export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
-  INavFooterContainerProps,
-  INavFooterPanelProps,
   INavFooterIconButtonProps,
   INavFooterLinkProps,
+  INavFooterPanelProps,
+  INavFooterRootProps,
 } from './NavFooter';
 export type {
-  INotificationProps,
+  INavHeaderContentProps,
+  INavHeaderLinkProps,
+  INavHeaderNavigationProps,
+  INavHeaderRootProps,
+} from './NavHeader';
+export type {
   INotificationActionsProps,
+  INotificationProps,
 } from './Notification';
 export type {
   ITableProps,
   ITBodyProps,
   ITdProps,
-  IThProps,
   ITHeadProps,
+  IThProps,
   ITrProps,
 } from './Table';
 export type {

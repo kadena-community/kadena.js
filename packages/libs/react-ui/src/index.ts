@@ -24,12 +24,17 @@ export type {
   INavFooterIconButtonProps,
   INavFooterLinkProps,
   INavFooterPanelProps,
-  INavFooterContainerProps,
+  INavFooterRootProps,
+  INavHeaderContentProps,
+  INavHeaderLinkProps,
+  INavHeaderNavigationProps,
+  INavHeaderRootProps,
   INotificationActionsProps,
   INotificationProps,
   InputWrapperStatus,
   IOptionProps,
   IPaginationProps,
+  IProfileCardProps,
   IProgressBarProps,
   ISelectProps,
   IStackProps,
@@ -48,7 +53,6 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   ITrProps,
-  IProfileCardProps,
 } from './components';
 
 export {
@@ -58,6 +62,7 @@ export {
   Button,
   Card,
   ContentHeader,
+  Divider,
   GradientText,
   Grid,
   Heading,
@@ -74,6 +79,7 @@ export {
   Option,
   Pagination,
   ProductIcon,
+  ProfileCard,
   ProgressBar,
   Select,
   Stack,
@@ -87,8 +93,6 @@ export {
   TrackerCard,
   Tree,
   useModal,
-  Divider,
-  ProfileCard,
 } from './components';
 
 export { breakpoints } from './styles';

@@ -15,7 +15,7 @@ export interface INavItem {
 }
 export type INavItems = INavItem[];
 
-export interface INavHeaderContainerProps {
+export interface INavHeaderRootProps {
   brand?: LogoVariant;
   children?: FunctionComponentElement<
     INavHeaderNavigationProps | INavHeaderContentProps
@@ -23,7 +23,7 @@ export interface INavHeaderContainerProps {
   items?: INavItems;
 }
 
-export const NavHeaderContainer: FC<INavHeaderContainerProps> = ({
+export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
   brand = logoVariants[0],
   children,
 }) => {
