@@ -9,13 +9,13 @@ import React, { FC, FunctionComponentElement } from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
 export interface INavItem {
-  title: string;
+  label: string;
   href: string;
   target?: INavItemTarget;
 }
 export type INavItems = INavItem[];
 
-export interface INavHeaderContainerProps {
+export interface INavHeaderRootProps {
   brand?: LogoVariant;
   children?: FunctionComponentElement<
     INavHeaderNavigationProps | INavHeaderContentProps
@@ -23,7 +23,7 @@ export interface INavHeaderContainerProps {
   items?: INavItems;
 }
 
-export const NavHeaderContainer: FC<INavHeaderContainerProps> = ({
+export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
   brand = logoVariants[0],
   children,
 }) => {

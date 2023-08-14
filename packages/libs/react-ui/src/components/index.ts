@@ -24,22 +24,27 @@ export type { ITooltipProps } from './Tooltip';
 export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
-  INavFooterRootProps,
-  INavFooterPanelProps,
   INavFooterIconButtonProps,
   INavFooterLinkProps,
+  INavFooterPanelProps,
+  INavFooterRootProps,
 } from './NavFooter';
 export type {
-  INotificationProps,
-  INotificationHeaderProps,
+  INavHeaderContentProps,
+  INavHeaderLinkProps,
+  INavHeaderNavigationProps,
+  INavHeaderRootProps,
+} from './NavHeader';
+export type {
   INotificationActionsProps,
+  INotificationProps,
 } from './Notification';
 export type {
   ITableProps,
   ITBodyProps,
   ITdProps,
-  IThProps,
   ITHeadProps,
+  IThProps,
   ITrProps,
 } from './Table';
 export type {
@@ -48,6 +53,7 @@ export type {
   IGradientTextProps,
   ILabelProps,
 } from './Typography';
+export type { IProfileCardProps } from './ProfileCard';
 
 export { Accordion } from './Accordion';
 export { Box } from './Box';
@@ -79,3 +85,4 @@ export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
 export { Divider } from './Divider/Divider';
+export { ProfileCard } from './ProfileCard';

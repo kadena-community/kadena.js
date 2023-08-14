@@ -2,10 +2,9 @@ name: Chromatic
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
-  pull_request:
+  push:
     paths:
       - packages/libs/react-ui/**
-  workflow_dispatch:
 
 jobs:
   chromatic:
@@ -31,3 +30,4 @@ jobs:
           buildScriptName: "build:storybook"
           projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
           workingDir: /packages/libs/react-ui
+          autoAcceptChanges: 'main'

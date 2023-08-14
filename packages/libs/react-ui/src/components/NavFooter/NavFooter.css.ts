@@ -65,7 +65,11 @@ export const linkClass = style([
     fontSize: '$xs',
     marginX: '$1',
     textDecoration: 'underline',
+    color: 'inherit',
   }),
+  {
+    textDecorationColor: 'inherit',
+  },
   {
     selectors: {
       '&:hover': {
