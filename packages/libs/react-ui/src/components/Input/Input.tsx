@@ -23,7 +23,7 @@ export interface IInputProps
   leftIcon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   rightIcon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   disabled?: boolean;
-  type?: string;
+  type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
   id: string;
   outlined?: boolean;
