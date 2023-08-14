@@ -8,6 +8,7 @@ import {
   Grid,
   Heading,
   ProductIcon,
+  ProgressBar,
   SystemIcon,
   Table,
   Text,
@@ -43,6 +44,7 @@ const CheckTransactions: FC = () => {
 
   const [results, setResults] = useState<ITransaction[]>([]);
   const [loadingState, setLoadingState] = useState<boolean>(true);
+  const [transactionDetails, setTransactionDetails] = useState<ITransaction>();
 
   const transactionDetailsRef = useRef<HTMLElement | null>(null);
 
@@ -132,7 +134,7 @@ const CheckTransactions: FC = () => {
   }
 
   const handleOpenTransactionDetails = (result: ITransaction): void => {
-    console.log(result);
+    setTransactionDetails(result);
     // @ts-ignore
     transactionDetailsRef.openSection(0);
   };
@@ -150,13 +152,46 @@ const CheckTransactions: FC = () => {
                 <TrackerCard
                   labelValues={[
                     {
-                      label: 'Transaction Hash',
-                      value: '0x1234567890',
+                      label: 'Sender',
+                      value: transactionDetails?.fromAccount,
                       isAccount: true,
                     },
+                    {
+                      label: 'From chain',
+                      value: transactionDetails?.chain,
+                    },
                   ]}
-                  variant="vertical"
                   icon={ProductIcon.QuickStart}
+                />
+                <Box marginBottom="$5" />
+                <ProgressBar
+                  checkpoints={[
+                    {
+                      title: 'Initiated transaction',
+                      status: 'complete',
+                    },
+                    {
+                      title: 'Transaction complete',
+                      status: 'complete',
+                    },
+                  ]}
+                />
+                <Box marginBottom="$2" />
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Receiver',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'to chain',
+                      value:
+                        transactionDetails?.crossChainId ||
+                        transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={ProductIcon.ReceiverInactive}
                 />
               </>
             ),
