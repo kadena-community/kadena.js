@@ -62,6 +62,7 @@ export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
 export { NavFooter } from './NavFooter';
+export { NavHeader } from './NavHeader';
 export { Grid } from './Grid';
 export { IconButton } from './IconButton';
 export { Input } from './Input/Input';
