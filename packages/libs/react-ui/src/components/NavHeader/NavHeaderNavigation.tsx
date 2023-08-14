@@ -1,8 +1,15 @@
 import { NavGlow } from './assets/glow';
-import { glowClass, navListClass, navWrapperClass } from './NavHeader.css';
+import {
+  activeLinkClass,
+  glowClass,
+  linkClass,
+  navListClass,
+  navWrapperClass,
+} from './NavHeader.css';
 import { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
+import classNames from 'classnames';
 import React, { FC, FunctionComponentElement } from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
@@ -15,13 +22,15 @@ export type INavItems = INavItem[];
 
 export interface INavHeaderNavigationProps {
   children: FunctionComponentElement<INavHeaderLinkProps>[];
+  activeLink?: number;
 }
 
 export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
   children,
+  activeLink,
 }) => {
   const { glowX, animationDuration, glowRef, navRef, activeNav, setActiveNav } =
-    useGlow();
+    useGlow(activeLink);
 
   return (
     <nav className={navWrapperClass} ref={navRef}>
@@ -46,6 +55,9 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
               >,
               {
                 active: activeNav === index + 1,
+                className: classNames(linkClass, {
+                  [activeLinkClass]: activeNav === index + 1,
+                }),
               },
             )}
           </li>
