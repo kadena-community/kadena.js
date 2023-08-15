@@ -21,7 +21,7 @@ const useGlow = (active = 0): IUseGlowReturn => {
 
   useEffect(() => {
     const activeNavElement = navRef.current?.querySelector(
-      `li:nth-child(${activeNav}) a`,
+      `li:nth-child(${activeNav}) .nav-item`,
     );
     const activeNavBounds = activeNavElement?.getBoundingClientRect();
     const glowBounds = glowRef.current?.getBoundingClientRect();
