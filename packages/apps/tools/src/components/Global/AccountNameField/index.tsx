@@ -14,6 +14,7 @@ import { accountInputWrapperStyle } from './styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useDidUpdateEffect } from '@/hooks';
+import { getAccounts } from '@/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import React, { ChangeEvent, FC, useState } from 'react';
 import { FieldError } from 'react-hook-form';
@@ -57,23 +58,6 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
     else setMode('input');
   }, [session, accounts]);
 
-  const getAccounts = (): string[] => {
-    // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
-    const regex = new RegExp(`kadena\:${selectedNetwork}.*`);
-    const result = new Set(
-      accounts
-        ?.filter((account) => {
-          if (account.match(regex)) return account;
-        })
-        ?.map((account) => {
-          const [, , accountName] = account.split(':');
-          return accountName;
-        }),
-    );
-
-    return Array.from(result) ?? [];
-  };
-
   const lookup = {
     select: (
       <Select
@@ -88,7 +72,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
         id={elementId}
       >
         <Option value={''}>{t('Select Account')}</Option>
-        {getAccounts().map((account) => (
+        {getAccounts(accounts, selectedNetwork).map((account) => (
           <Option key={account} value={account}>
             {account.slice(0, 4)}****{account.slice(-4)}
           </Option>
