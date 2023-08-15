@@ -15,6 +15,7 @@ import { kadenaConstants, Network } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useLayoutContext } from '@/context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { getNetworks } from '@/utils/wallet';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import React, { type ReactNode, FC } from 'react';
@@ -44,20 +45,9 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     },
   ];
 
-  const getNetworks = (): Network[] => {
-    if (!session) return ['mainnet01', 'testnet04'];
-
-    const result = new Set(
-      accounts
-        ?.map((account) => {
-          const [, network] = account.split(':');
-          return network;
-        })
-        ?.filter((network) => network !== 'development'),
-    );
-
-    return Array.from(result ?? []) as Network[];
-  };
+  const networks: Network[] = session
+    ? getNetworks(accounts)
+    : ['mainnet01', 'testnet04'];
 
   return (
     <div>
@@ -76,7 +66,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
                   }
                   icon={SystemIcon.Link}
                 >
-                  {getNetworks().map((network) => (
+                  {networks.map((network) => (
                     <Option key={network} value={network}>
                       {kadenaConstants?.[network].label}
                     </Option>
