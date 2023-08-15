@@ -114,7 +114,11 @@ export const Dynamic: IStory = {
       <NavHeader.Root brand={brand}>
         <NavHeader.Navigation activeLink={navHeaderActiveLink}>
           {navItems.slice(0, linksCount).map((item, index) => (
-            <NavHeader.Link key={index} href={item.href}>
+            <NavHeader.Link
+              key={index}
+              href={item.href}
+              onClick={(event) => console.log(item.label, { event })}
+            >
               {item.label}
             </NavHeader.Link>
           ))}

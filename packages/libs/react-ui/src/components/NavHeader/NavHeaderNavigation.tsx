@@ -17,6 +17,7 @@ import React, {
 
 export interface INavItem {
   active?: boolean;
+  children?: string;
   href: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   target?: HTMLAttributeAnchorTarget;
