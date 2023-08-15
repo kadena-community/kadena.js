@@ -4,7 +4,7 @@ import { INavItem } from './NavHeaderNavigation';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export const NavHeaderLink: FC<INavItem & { children?: string }> = ({
+export const NavHeaderLink: FC<INavItem> = ({
   active,
   children,
   href,
