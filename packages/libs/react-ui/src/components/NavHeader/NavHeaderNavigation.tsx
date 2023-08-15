@@ -6,22 +6,25 @@ import {
   navListClass,
   navWrapperClass,
 } from './NavHeader.css';
-import { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
-import React, { FC, FunctionComponentElement } from 'react';
+import React, {
+  FC,
+  FunctionComponentElement,
+  HTMLAttributeAnchorTarget,
+} from 'react';
 
-export type INavItemTarget = '_self' | '_blank';
 export interface INavItem {
+  active?: boolean;
   href: string;
-  target?: INavItemTarget;
-  title: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  target?: HTMLAttributeAnchorTarget;
 }
 export type INavItems = INavItem[];
 
 export interface INavHeaderNavigationProps {
-  children: FunctionComponentElement<INavHeaderLinkProps>[];
+  children: FunctionComponentElement<INavItem>[];
   activeLink?: number;
 }
 
@@ -49,14 +52,14 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           <li key={`navItem-${index}`} onClick={() => setActiveNav(index + 1)}>
             {React.cloneElement(
               child as React.ReactElement<
-                HTMLElement | INavHeaderLinkProps,
-                | string
-                | React.JSXElementConstructor<JSX.Element & INavHeaderLinkProps>
+                HTMLElement | INavItem,
+                string | React.JSXElementConstructor<JSX.Element & INavItem>
               >,
               {
                 active: activeNav === index + 1,
                 className: classNames(linkClass, {
                   [activeLinkClass]: activeNav === index + 1,
+                  'nav-item': true,
                 }),
               },
             )}
