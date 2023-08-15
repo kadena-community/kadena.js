@@ -1,10 +1,10 @@
 import { ulListClass, ulListClassName } from './styles.css';
 
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, FunctionComponentElement } from 'react';
 
 interface IProp {
-  children: ReactNode;
+  children: FunctionComponentElement<HTMLUListElement>[];
 }
 
 export const UnorderedList: FC<IProp> = ({ children }) => {
