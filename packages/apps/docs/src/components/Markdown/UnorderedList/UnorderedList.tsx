@@ -1,5 +1,6 @@
-import { ulListClass } from './styles.css';
+import { ulListClass, ulListClassName } from './styles.css';
 
+import classNames from 'classnames';
 import React, { FC, ReactNode } from 'react';
 
 interface IProp {
@@ -7,5 +8,7 @@ interface IProp {
 }
 
 export const UnorderedList: FC<IProp> = ({ children }) => {
-  return <ul className={ulListClass}>{children}</ul>;
+  return (
+    <ul className={classNames(ulListClass, ulListClassName)}>{children}</ul>
+  );
 };
