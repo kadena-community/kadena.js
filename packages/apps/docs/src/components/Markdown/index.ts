@@ -9,6 +9,7 @@ import { Link } from './Link';
 import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
 import { Table } from './Table';
+import { Tweet } from './Tweet';
 import { UnorderedList } from './UnorderedList';
 import { Youtube } from './Youtube';
 
@@ -18,6 +19,10 @@ export type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
     HTMLDivElement
   >;
   'kda-youtube': React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >;
+  'kda-tweet': React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >;
@@ -60,6 +65,9 @@ export const markDownComponents: MDXComponents = {
   >,
   'kda-youtube': Youtube as FunctionComponent<
     ExtendedIntrinsicElements['kda-youtube']
+  >,
+  'kda-tweet': Tweet as FunctionComponent<
+    ExtendedIntrinsicElements['kda-tweet']
   >,
   a: Link as FunctionComponent<ExtendedIntrinsicElements['a']>,
 };
