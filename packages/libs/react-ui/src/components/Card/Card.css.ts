@@ -1,26 +1,34 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
-import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+import { darkThemeClass, vars } from '@theme/vars.css';
+import { createVar, style } from '@vanilla-extract/css';
 
 const textColor = createVar();
 
 export const container = style([
   sprinkles({
-    backgroundColor: '$neutral1',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    paddingX: '$lg',
-    paddingY: '$md',
+    backgroundColor: {
+      lightMode: '$gray10',
+      darkMode: '$gray90',
+    },
+    color: {
+      lightMode: '$gray100',
+      darkMode: '$gray20',
+    },
+    paddingX: '$10',
+    paddingY: '$6',
     borderRadius: '$sm',
-    marginY: '$md',
+    marginY: '$6',
     border: 'none',
     width: 'max-content',
     position: 'relative',
   }),
   {
-    border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-    color: fallbackVar(textColor, vars.colors.$neutral6),
+    border: `1px solid ${vars.colors.$gray30}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        border: `1px solid ${vars.colors.$gray60}`,
+      },
+    },
   },
 ]);
 
@@ -39,6 +47,12 @@ export const stackClass = style([
       '&:last-child': {
         borderRadius: `0 0 ${vars.radii.$sm} ${vars.radii.$sm}`,
         borderTop: 'none',
+      },
+      '&:not(:last-child)': {
+        marginBottom: 0,
+      },
+      '&:not(:first-child)': {
+        marginTop: 0,
       },
       '&:not(:last-child):before': {
         content: '',

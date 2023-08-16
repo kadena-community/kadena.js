@@ -1,6 +1,6 @@
 import { Box, Stack, SystemIcon, Text, useModal } from '@kadena/react-ui';
 
-import { ConsentButton } from './ConsentButton';
+import { consentButtonColorVariants } from './styles.css';
 
 import { updateConsent } from '@/utils/analytics';
 import React, { FC, useCallback, useEffect, useState } from 'react';
@@ -44,20 +44,20 @@ export const ConsentModal: FC = () => {
         <Text>We are using cookies on this website!</Text>
         <Box marginTop="$10">
           <Stack spacing="$4">
-            <ConsentButton
+            <button
               onClick={handleAccept}
               title="Accept analytics cookies"
-              color="positive"
+              className={consentButtonColorVariants.positive}
             >
               Accept <SystemIcon.Check />
-            </ConsentButton>
-            <ConsentButton
+            </button>
+            <button
               onClick={handleReject}
               title="Reject analytics cookies"
-              color="negative"
+              className={consentButtonColorVariants.negative}
             >
               Reject <SystemIcon.Close />
-            </ConsentButton>
+            </button>
           </Stack>
         </Box>
       </>,

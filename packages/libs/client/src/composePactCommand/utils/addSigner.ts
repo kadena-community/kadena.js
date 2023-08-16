@@ -1,4 +1,10 @@
-import { ICapabilityItem, IPactCommand } from '../../interfaces/IPactCommand';
+import { ICap } from '@kadena/types';
+
+import { IPactCommand } from '../../interfaces/IPactCommand';
+import {
+  ExtractCapabilityType,
+  IGeneralCapability,
+} from '../../interfaces/type-utilities';
 
 import { patchCommand } from './patchCommand';
 
@@ -13,12 +19,14 @@ interface IAddSigner {
     first:
       | string
       | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-    capability: (withCapability: ExtractType<TCommand>) => ICapabilityItem[],
+    capability: (withCapability: ExtractType<TCommand>) => ICap[],
   ): TCommand;
 }
 
 /**
- * @alpha
+ * Reducer to add a signer and capabilities on a {@link IPactCommand}
+ *
+ * @public
  */
 export const addSigner: IAddSigner = ((
   first:
@@ -29,7 +37,7 @@ export const addSigner: IAddSigner = ((
       name: string,
       ...args: unknown[]
     ) => { name: string; args: unknown[] },
-  ) => ICapabilityItem[],
+  ) => ICap[],
 ): unknown => {
   const {
     pubKey,
@@ -59,25 +67,8 @@ export const addSigner: IAddSigner = ((
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
-export type UnionToIntersection<T> = (
-  T extends unknown ? (k: T) => void : never
-) extends (k: infer I) => void
-  ? I
-  : never;
-
-export interface IGeneralCapability {
-  (name: string, ...args: unknown[]): ICapabilityItem;
-  (name: 'coin.GAS'): ICapabilityItem;
-}
-
 type ExtractType<TCmdReducer> = TCmdReducer extends (cmd: {
   payload: infer TPayload;
 }) => unknown
-  ? TPayload extends { funs: infer TFunctions }
-    ? TFunctions extends Array<infer TFunction>
-      ? UnionToIntersection<TFunction> extends { capability: infer TCapability }
-        ? TCapability
-        : IGeneralCapability
-      : IGeneralCapability
-    : IGeneralCapability
+  ? ExtractCapabilityType<{ payload: TPayload }>
   : IGeneralCapability;

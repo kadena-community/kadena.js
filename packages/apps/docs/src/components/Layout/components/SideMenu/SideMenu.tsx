@@ -1,5 +1,4 @@
-import { SystemIcons, TextField } from '@kadena/react-components';
-import { Heading } from '@kadena/react-ui';
+import { Heading, SystemIcon, TextField } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
 import { StyledTreeList } from '../TreeMenu/styles';
@@ -17,6 +16,7 @@ import {
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useRouter } from 'next/router';
 import React, { FC, KeyboardEvent } from 'react';
 
@@ -38,6 +38,10 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     e.preventDefault();
     const value = e.currentTarget.value;
     if (e.key === 'Enter') {
+      analyticsEvent(EVENT_NAMES['send:mobile_search'], {
+        label: value,
+        url: window.location.href,
+      });
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/search?q=${value}`);
       closeMenu();
@@ -63,9 +67,10 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       <ShowOnMobile>
         <TextField
           inputProps={{
+            id: 'search',
             onKeyUp: handleKeyPress,
             placeholder: 'Search',
-            leftPanel: () => <SystemIcons.Magnify />,
+            leftIcon: SystemIcon.Magnify,
             'aria-label': 'Search',
           }}
         ></TextField>
@@ -75,7 +80,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           {menuItems.map((item) => (
             <StyledItem key={item.root}>
               <StyledLink
-                onClick={(e) => clickMenu(e, item)}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
+                  clickMenu(e, item)
+                }
                 href={item.root}
                 data-hassubmenu={!!item.children?.length}
               >

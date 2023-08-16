@@ -44,12 +44,11 @@
   "scripts": {
     "build": "heft build --clean",
     "build:prod": "webpack --mode=production",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "serve-coverage": "python -m SimpleHTTPServer",
     "test": "heft test"
   },
@@ -60,7 +59,7 @@
     "@kadena/types": "workspace:*",
     "node-fetch": "~2.6.2",
     "tweetnacl": "^1.0.3",
-    "webpack": "~5.73.0"
+    "webpack": "~5.88.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -70,10 +69,9 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node-fetch": "~2.6.2",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
     "serve": "^13.0.2",
-    "sort-package-json": "~2.4.1",
     "ts-loader": "^9.3.0",
     "webpack-cli": "^4.9.2"
   },

@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.93.1",
+  "rushVersion": "5.100.2",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -26,7 +26,7 @@
    * Specify one of: "pnpmVersion", "npmVersion", or "yarnVersion".  See the Rush documentation
    * for details about these alternatives.
    */
-  "pnpmVersion": "6.7.1",
+  "pnpmVersion": "8.6.11",
 
   // "npmVersion": "6.14.15",
   // "yarnVersion": "1.9.4",
@@ -428,10 +428,18 @@
     },
 
     {
-      "packageName": "@kadena/transfer",
-      "projectFolder": "packages/apps/transfer",
+      "packageName": "@kadena/immutable-records",
+      "projectFolder": "packages/apps/immutable-records",
       "reviewCategory": "prototypes",
-      "decoupledLocalDependencies": ["@kadena/client", "@kadena/pactjs-cli", "@kadena/chainweb-node-client"],
+      "decoupledLocalDependencies": ["@kadena/pactjs-cli"],
+      "shouldPublish": false
+    },
+
+    {
+      "packageName": "@kadena/tools",
+      "projectFolder": "packages/apps/tools",
+      "reviewCategory": "prototypes",
+      "decoupledLocalDependencies": ["@kadena/chainweb-node-client"],
       "skipRushCheck": false,
       "shouldPublish": false
     },
@@ -557,13 +565,6 @@
     },
 
     {
-      "packageName": "@kadena/create-kadena-app",
-      "projectFolder": "packages/tools/create-kadena-app",
-      "tags": ["tools"],
-      "shouldPublish": false
-    },
-
-    {
       "packageName": "@kadena-dev/eslint-config",
       "projectFolder": "packages/tools/eslint-config",
       "tags": ["tools"],
@@ -583,13 +584,6 @@
       "projectFolder": "packages/tools/heft-rig",
       "tags": ["tools"],
       "shouldPublish": true
-    },
-
-    {
-      "packageName": "@kadena/integration-tests",
-      "projectFolder": "packages/tools/integration-tests",
-      "tags": ["tools"],
-      "shouldPublish": false
     },
 
     {

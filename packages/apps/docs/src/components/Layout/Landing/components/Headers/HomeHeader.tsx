@@ -1,26 +1,25 @@
-import { Stack } from '@kadena/react-components';
-import { GradientText, Heading } from '@kadena/react-ui';
+import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
+import { mostPopularWrapper } from './style.css';
 import { StyledHeader, SubHeader, Wrapper } from './styles';
 
-import { LinkList } from '@/components/LinkList';
-import { ITopDoc } from '@/data/getTopDocs';
-import Link from 'next/link';
+import { MostPopular } from '@/components/MostPopular';
+import { IMostPopularPage } from '@/types/MostPopularData';
 import React, { FC } from 'react';
 
 interface IProps {
-  topDocs: ITopDoc[];
+  popularPages: IMostPopularPage[];
 }
 
-export const HomeHeader: FC<IProps> = ({ topDocs }) => {
+export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   return (
     <StyledHeader>
       <Wrapper>
         <Heading as="h1" variant="h2">
           Kadena
         </Heading>
-        <Stack spacing="2xl">
-          <Stack direction="column" spacing="2xs">
+        <Stack spacing="$2xl" wrap="wrap">
+          <Stack direction="column" spacing="$2xs">
             <Heading as="h2" variant="h4">
               Build your <GradientText>own</GradientText> Internet
             </Heading>
@@ -28,15 +27,10 @@ export const HomeHeader: FC<IProps> = ({ topDocs }) => {
               Explore our guides and examples to build on Kadena
             </SubHeader>
           </Stack>
-          <div style={{ width: '150px' }}></div>
-          {topDocs?.length > 0 && (
-            <LinkList title="Most viewed docs">
-              {topDocs.map((item) => (
-                <Link key={item.url} href={item.url}>
-                  {item.label}
-                </Link>
-              ))}
-            </LinkList>
+          {popularPages.length > 0 && (
+            <div className={mostPopularWrapper}>
+              <MostPopular pages={popularPages} title="Most viewed docs" />
+            </div>
           )}
         </Stack>
       </Wrapper>

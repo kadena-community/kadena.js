@@ -8,11 +8,10 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "format": "npm run format:pkg && npm run format:src",
+    "format": "npm run format:src",
     "format:ci": "prettier config src --check",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
@@ -25,7 +24,7 @@
     "@prisma/client": "^4.7.1",
     "debug": "~4.3.4",
     "dotenv": "~16.0.3",
-    "eslint": "^8.15.0",
+    "eslint": "^8.45.0",
     "graphql": "~16.6.0",
     "graphql-scalars": "~1.20.1",
     "graphql-yoga": "~3.1.1",
@@ -35,14 +34,13 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
-    "@kadena/pactjs-cli": "0.1.5",
+    "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "embedded-postgres": "~15.1.0-beta.6",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1"
+    "prettier": "~3.0.0"
   }
 }

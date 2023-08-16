@@ -2,6 +2,101 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "1.0.0",
+      "tag": "@kadena/client_v1.0.0",
+      "date": "Fri, 04 Aug 2023 16:10:02 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "prepare for final release of 1.0.0"
+          },
+          {
+            "comment": "Edit `@kadena/client` docs (fix links + improve readability)"
+          },
+          {
+            "comment": "Move sort-package-json to eslint plugin"
+          },
+          {
+            "comment": "Fix devDep for client"
+          },
+          {
+            "comment": "add jsdoc to client methods"
+          },
+          {
+            "comment": "Upgrade to new API"
+          },
+          {
+            "comment": "export commandBuilder for configure it with initial data"
+          },
+          {
+            "comment": "formatting and linting"
+          },
+          {
+            "comment": "submit returns single requestKey for one single input + export literal and readKeyset utils"
+          },
+          {
+            "comment": "fixed readKeyset"
+          },
+          {
+            "comment": "Rename createPactCommand to composePactCommand."
+          },
+          {
+            "comment": "Remove the wrapper payload.execution and payload.continuation."
+          },
+          {
+            "comment": "fix typo in `createClient().dirtyReady` to `createClient().dirtyRead`"
+          },
+          {
+            "comment": "Improve API for ISignFunction where the input matches the output. A single transaction returns a single signed transaction and respectively for an array"
+          },
+          {
+            "comment": "Fix links in client readme"
+          },
+          {
+            "comment": "Apply formatting"
+          },
+          {
+            "comment": "Remove format:pkg everywhere"
+          },
+          {
+            "comment": "update pact parser to parse symbols as string"
+          },
+          {
+            "comment": "remove ms from the time string"
+          },
+          {
+            "comment": "refactored composePactCommand to a more functional way and fixed issues with setMeta"
+          },
+          {
+            "comment": "refactore the client's utilities in order to return or accept requestObject { requestKey, chainId, networkId }"
+          },
+          {
+            "comment": "renamed getClient to createClient"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.4.3`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.7`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.3.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.1`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/eslint-config\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena-dev/heft-rig\" to `0.1.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.6.1",
       "tag": "@kadena/client_v0.6.1",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

@@ -1,14 +1,15 @@
-import { ISendResponse } from '@kadena/chainweb-node-client';
-import { Pact, signWithChainweaver } from '@kadena/client';
+import {
+  getClient,
+  isSignedTransaction,
+  Pact,
+  signWithChainweaver,
+} from '@kadena/client';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
-// eslint-disable-next-line import/no-unresolved -- TODO FILE NOT FOUND
-import { pollTransactions } from '../utils/poll-transactions';
 
 const HELP: string = `Usage example: \n\nts-node create-account.js k:{gasProviderPublicKey} k:{receiverPublicKey}`;
-const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' | undefined =
-  'testnet04';
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' = 'testnet04';
 const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 4) {
@@ -30,37 +31,33 @@ async function createAccount(
   receiver: string,
 ): Promise<void> {
   const gasProviderPublicKey = accountKey(gasProvider);
-  const guardData: Record<string, unknown> = {
-    ks: {
+
+  const transaction = Pact.builder
+    .execution(
+      Pact.modules.coin['create-account'](receiver, () => '(read-keyset "ks")'),
+    )
+    .addData('ks', {
       keys: [accountKey(receiver)],
       pred: 'keys-all',
-    },
-  };
+    })
+    .addSigner(gasProviderPublicKey, (withCap: any) => [withCap('coin.GAS')])
+    .setMeta({ chainId: '1', sender: gasProvider })
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
 
-  const transactionBuilder = await Pact.modules.coin['create-account'](
-    receiver,
-    () => '(read-keyset "ks")',
-  )
-    .addData(guardData)
-    .addCap('coin.GAS', gasProviderPublicKey)
-    .setMeta({ sender: gasProvider }, NETWORK_ID);
+  const signedTransaction = await signWithChainweaver(transaction);
 
-  const signedTransactions = await signWithChainweaver(transactionBuilder);
+  if (!isSignedTransaction(signedTransaction)) {
+    console.error('Command is not signed.');
+    return;
+  }
 
-  const sendRequests = signedTransactions.map((tx) => {
-    console.log(`Sending transaction: ${tx.code}`);
-    return tx.send(API_HOST);
-  });
+  const { submit, pollStatus } = getClient(API_HOST);
 
-  const sendResponses = await Promise.all(sendRequests);
-
-  sendResponses.map(async function startPolling(
-    sendResponse: ISendResponse,
-  ): Promise<void> {
-    console.log('Send response: ', sendResponse);
-    const requestKey = (await sendRequests[0]).requestKeys[0];
-    await pollTransactions([requestKey], API_HOST);
-  });
+  const requestKey = await submit(signedTransaction);
+  console.log('request key', requestKey);
+  const result = await pollStatus(requestKey);
+  console.log(result);
 }
 
 createAccount(gasProvider, receiver).catch(console.error);

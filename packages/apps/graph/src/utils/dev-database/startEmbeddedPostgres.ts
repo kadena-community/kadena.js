@@ -31,55 +31,58 @@ export async function startDevelopmentWorker(): Promise<void> {
   const statements: string[] = [];
 
   let i = 0;
-  processLines(async (line) => {
-    const { statement: beginStatement } = parseCsvLine(
-      line,
-      (line) => line.includes('chainweb-data'),
-      REGEX_STATEMENT_BEGIN,
-    );
-
-    if (begin && beginStatement !== undefined) {
-      throw new Error('begin statement found while begin is true');
-    }
-
-    if (beginStatement !== undefined) {
-      begin = true;
-    }
-
-    if (begin) {
-      const { statement: insertStatement } = parseCsvLine(
+  processLines(
+    async (line) => {
+      const { statement: beginStatement } = parseCsvLine(
         line,
         (line) => line.includes('chainweb-data'),
-        REGEX_STATEMENT_INSERT_INTO,
+        REGEX_STATEMENT_BEGIN,
       );
-      if (insertStatement !== undefined) {
-        statements.push(insertStatement);
-      } else {
-        const { statement: commitStatement } = parseCsvLine(
+
+      if (begin && beginStatement !== undefined) {
+        throw new Error('begin statement found while begin is true');
+      }
+
+      if (beginStatement !== undefined) {
+        begin = true;
+      }
+
+      if (begin) {
+        const { statement: insertStatement } = parseCsvLine(
           line,
           (line) => line.includes('chainweb-data'),
-          REGEX_STATEMENT_COMMIT,
+          REGEX_STATEMENT_INSERT_INTO,
         );
-        if (commitStatement !== undefined) {
-          begin = false;
+        if (insertStatement !== undefined) {
+          statements.push(insertStatement);
+        } else {
+          const { statement: commitStatement } = parseCsvLine(
+            line,
+            (line) => line.includes('chainweb-data'),
+            REGEX_STATEMENT_COMMIT,
+          );
+          if (commitStatement !== undefined) {
+            begin = false;
 
-          stdout.write('.');
-          await prismaClient
-            .$transaction(
-              statements.map((statement) =>
-                prismaClient.$executeRawUnsafe(statement),
-              ),
-            )
-            .catch(console.error);
+            stdout.write('.');
+            await prismaClient
+              .$transaction(
+                statements.map((statement) =>
+                  prismaClient.$executeRawUnsafe(statement),
+                ),
+              )
+              .catch(console.error);
 
-          if (i > 38 && statements.length > 0) {
-            await new Promise((resolve) => setTimeout(resolve, 900));
+            if (i > 38 && statements.length > 0) {
+              await new Promise((resolve) => setTimeout(resolve, 900));
+            }
+            i++;
           }
-          i++;
         }
       }
-    }
-  }, join(__dirname, './postgresql-log-clean.csv')).catch(console.error);
+    },
+    join(__dirname, './postgresql-log-clean.csv'),
+  ).catch(console.error);
 }
 
 interface IPostgresLogLine {

@@ -11,6 +11,20 @@
    * "rush my-global-command --help".
    */
   "commands": [
+
+    // custom built-in 'build' command to allowWarningsInSuccessfulBuild=true
+    {
+      "commandKind": "bulk",
+      "name": "build",
+      "summary": "Build all projects that haven't been built, or have changed since they were last built",
+      "description": "This command is similar to \"rush rebuild\", except that \"rush build\" performs an incremental build. In other words, it only builds projects whose source files have changed since the last successful build. The analysis requires a Git working tree, and only considers source files that are tracked by Git and whose path is under the project folder. (For more details about this algorithm, see the documentation for the \"package-deps-hash\" NPM package.) The incremental build state is tracked in a file \"package-deps.json\" which should NOT be added to Git.  The build command is tracked by the 'arguments' field in this JSON file; a full rebuild is forced whenever the command has changed (e.g. '--production' or not).",
+      "safeForSimultaneousRushProcesses": false,
+      "enableParallelism": true,
+      "ignoreDependencyOrder": false,
+      "ignoreMissingScript": false,
+      "allowWarningsInSuccessfulBuild": true
+    },
+
     {
       "commandKind": "bulk",
       "name": "test",
@@ -20,7 +34,7 @@
       "enableParallelism": true,
       "ignoreDependencyOrder": false,
       "ignoreMissingScript": false,
-      "allowWarningsInSuccessfulBuild": false,
+      "allowWarningsInSuccessfulBuild": true,
       // default: false. Changed to true as it should not need to run when nothing has changed
       "incremental": true,
       "watchForChanges": false,
@@ -37,7 +51,7 @@
     //   "enableParallelism": true,
     //   "ignoreDependencyOrder": false,
     //   "ignoreMissingScript": false,
-    //   "allowWarningsInSuccessfulBuild": false,
+    //   "allowWarningsInSuccessfulBuild": true,
     //   // default: false. Changed to true as it should not need to run when nothing has changed
     //   "incremental": true,
     //   "watchForChanges": true,
@@ -58,21 +72,27 @@
       "commandKind": "bulk",
       "name": "format",
       "summary": "Runs prettier in all projects",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "ignoreDependencyOrder": true,
+      "incremental": true
     },
 
     {
       "commandKind": "bulk",
       "name": "format:ci",
       "summary": "Runs prettier in all projects (CI mode)",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "ignoreDependencyOrder": true,
+      "incremental": true
     },
 
     {
       "commandKind": "bulk",
       "name": "markdown",
       "summary": "Formats markdown with remark plugins in all projects",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "ignoreDependencyOrder": true,
+      "incremental": true
     },
 
     {
@@ -82,13 +102,12 @@
       "safeForSimultaneousRushProcesses": false,
       // default: false. this can be run simultaneousely
       "enableParallelism": true,
-      "ignoreDependencyOrder": false,
+      "ignoreDependencyOrder": true,
       // default: false. this command is just for convenience
       "ignoreMissingScript": true,
-      "allowWarningsInSuccessfulBuild": false,
-      "incremental": false,
-      "watchForChanges": false,
-      "disableBuildCache": false
+      "allowWarningsInSuccessfulBuild": true,
+      "incremental": true,
+      "watchForChanges": false
     }
 
     // {
@@ -182,7 +201,7 @@
     //    *
     //    * Note: The default value is false. In Rush 5.7.x and earlier, the default value was true.
     //    */
-    //   "allowWarningsInSuccessfulBuild": false,
+    //   "allowWarningsInSuccessfulBuild": true,
     //
     //   /**
     //    * If true then this command will be incremental like the built-in "build" command

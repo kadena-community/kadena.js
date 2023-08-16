@@ -1,4 +1,4 @@
-import { StyledCodeWrapper } from './styles';
+import { codeTitle, codeWrapper } from './style.css';
 
 import React, { FC, ReactNode } from 'react';
 
@@ -8,8 +8,16 @@ interface IProp {
 
 export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
   if (props.hasOwnProperty('data-rehype-pretty-code-fragment')) {
-    return <StyledCodeWrapper {...props}>{children}</StyledCodeWrapper>;
+    return (
+      <div className={codeWrapper} {...props}>
+        {children}
+      </div>
+    );
   }
 
-  return <div {...props}>{children}</div>;
+  return (
+    <div className={codeTitle} {...props}>
+      {children}
+    </div>
+  );
 };

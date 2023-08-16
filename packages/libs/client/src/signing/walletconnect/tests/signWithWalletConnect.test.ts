@@ -1,9 +1,9 @@
 import {
-  IExecPayloadObject,
+  IExecutionPayloadObject,
   IPactCommand,
 } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import { ISignSingleFunction } from '../../ISignFunction';
+import { ISingleSignFunction } from '../../ISignFunction';
 import { createWalletConnectSign } from '../signWithWalletConnect';
 import { TWalletConnectChainId } from '../walletConnectTypes';
 
@@ -13,10 +13,10 @@ import { SessionTypes } from '@walletconnect/types';
 jest.spyOn(console, 'log').mockImplementation(() => {});
 
 describe('signWithWalletConnect', () => {
-  let transaction: IPactCommand & { payload: IExecPayloadObject };
+  let transaction: IPactCommand & { payload: IExecutionPayloadObject };
   const session = { topic: 'test-topic' } as unknown as SessionTypes.Struct;
   const walletConnectChainId: TWalletConnectChainId = 'kadena:testnet04';
-  let signWithWalletConnect: ISignSingleFunction;
+  let signWithWalletConnect: ISingleSignFunction;
 
   beforeEach(() => {
     transaction = {

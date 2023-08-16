@@ -9,35 +9,32 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "dev:postinstall": "mkdir -p ./contracts; rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "build:local": "npm run pactjs:coin && heft build --clean",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
-    "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
-    "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
+    "lint": "eslint package.json src --ext .js,.ts,.json --fix",
+    "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
     "test": ""
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
-    "@kadena/client": "0.6.1",
+    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
-    "@kadena/pactjs-cli": "0.1.5",
+    "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
     "ts-node": "~10.8.2"
   }
 }

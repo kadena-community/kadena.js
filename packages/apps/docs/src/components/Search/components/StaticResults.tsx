@@ -1,6 +1,6 @@
 import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
-import { StaticResultsList, StyledItem, StyledListItem } from '../styles';
+import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 import { createLinkFromMD } from '@/utils';
 import Link from 'next/link';
@@ -39,18 +39,18 @@ const Item: FC<IResultProps> = ({ item }) => {
   const { clearModal } = useModal();
 
   return (
-    <StyledListItem>
+    <li>
       <Link href={url} passHref legacyBehavior>
-        <StyledItem onClick={clearModal}>
+        <a className={itemLinkClass} onClick={clearModal}>
           <Heading color="primaryContrast" as="h5">
             {item.title}
           </Heading>
           <ItemBreadCrumb url={url} />
 
           <Text as="p">{item.description}</Text>
-        </StyledItem>
+        </a>
       </Link>
-    </StyledListItem>
+    </li>
   );
 };
 
@@ -60,11 +60,11 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
 
   return (
     <Box marginY="$10">
-      <StaticResultsList>
+      <ul className={staticResultsListClass}>
         {limitedResults.map((item) => {
           return <Item item={item} key={item.id} />;
         })}
-      </StaticResultsList>
+      </ul>
     </Box>
   );
 };

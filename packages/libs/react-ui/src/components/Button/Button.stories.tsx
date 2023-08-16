@@ -1,11 +1,9 @@
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
-import { colorVariants, iconLoadingClass } from './Button.css';
-import { ButtonIcon } from './ButtonIcon';
+import { colorVariants } from './Button.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
-import cx from 'classnames';
 import React from 'react';
 
 const meta: Meta<
@@ -138,26 +136,9 @@ export const Dynamic: Story = {
     text,
     title,
   }) => {
-    let Icon = icon && SystemIcon[icon];
     if (loading) {
-      Icon = SystemIcon.Loading;
+      icon = 'Loading';
     }
-
-    const iconClassname = cx({
-      [iconLoadingClass]: loading,
-    });
-
-    const buttonChildren = (
-      <>
-        {Icon && iconAlign === 'left' && (
-          <ButtonIcon icon={Icon} className={iconClassname} />
-        )}
-        {text}
-        {Icon && iconAlign === 'right' && (
-          <ButtonIcon icon={Icon} className={iconClassname} />
-        )}
-      </>
-    );
 
     return (
       <Button
@@ -169,8 +150,10 @@ export const Dynamic: Story = {
         target={target}
         title={title}
         variant={variant}
+        icon={icon}
+        iconAlign={iconAlign}
       >
-        {buttonChildren}
+        {text}
       </Button>
     );
   },

@@ -41,7 +41,10 @@ export interface IPageMeta {
   navigation: INavigation;
   publishDate?: string;
   author?: string;
+  readingTimeInMinutes?: number;
+  wordCount?: number;
 }
+
 export interface IMenuItem extends IPageMeta {
   root: string;
   isActive: boolean; // checks that the actual item is active in the menu
@@ -85,4 +88,6 @@ export interface IMenuData {
   isActive: boolean;
   publishDate?: string;
   author?: string;
+  wordCount?: number;
+  readingTimeInMinutes?: number;
 }

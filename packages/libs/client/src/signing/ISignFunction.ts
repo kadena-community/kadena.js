@@ -1,12 +1,19 @@
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
-export interface ISignFunction {
+/**
+ * Interface to use when writing a singing function that accepts multiple transactions
+ * @public
+ */
+export interface ISingleSignFunction {
   (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
-  (transactionList: IUnsignedCommand[]): Promise<
-    (ICommand | IUnsignedCommand)[]
-  >;
 }
 
-export interface ISignSingleFunction {
-  (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
+/**
+ * Interface to use when writing a singing function that accepts multiple transactions
+ * @public
+ */
+export interface ISignFunction extends ISingleSignFunction {
+  (
+    transactionList: IUnsignedCommand[],
+  ): Promise<(ICommand | IUnsignedCommand)[]>;
 }

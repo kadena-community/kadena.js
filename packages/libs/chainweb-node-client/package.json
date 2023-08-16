@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Typed JavaScript wrapper with fetch to call chainweb-node API endpoints",
   "keywords": [],
   "repository": {
@@ -31,14 +31,13 @@
   ],
   "scripts": {
     "build": "heft build --clean",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config openapi src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config openapi src --write",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
     "postinstall": "npm run generate:openapi-types",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
   "dependencies": {
@@ -57,8 +56,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1"
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0"
   }
 }

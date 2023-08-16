@@ -43,12 +43,19 @@ describe('parseType', () => {
     expect(parseAsPactValue(() => 'test')).toEqual('test');
   });
 
-  it('returns arg, if its an object', () => {
+  it('returns stringified arg, if its an object', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(parseAsPactValue({ test: 'test' } as any)).toEqual({ test: 'test' });
+    expect(parseAsPactValue({ test: 'test' } as any)).toBe(
+      JSON.stringify({ test: 'test' }),
+    );
   });
 
   it('returns arg, if its a boolean', () => {
     expect(parseAsPactValue(true)).toEqual(true);
+  });
+
+  it("returns input, if it doesn't match with any conditions", () => {
+    const symbol = Symbol('test');
+    expect(parseAsPactValue(symbol as never)).toEqual(symbol);
   });
 });

@@ -1,6 +1,11 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
-import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+import { darkThemeClass, vars } from '@theme/vars.css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 export const inputStatusColor = createVar();
 
@@ -9,16 +14,25 @@ export const containerClass = style([
     alignItems: 'stretch',
     display: 'flex',
     overflow: 'hidden',
-    bg: '$background',
+    bg: {
+      lightMode: '$white',
+      darkMode: '$gray100',
+    },
     color: '$foreground',
     borderRadius: '$sm',
   }),
   {
     borderBottom: `1px solid ${fallbackVar(
       inputStatusColor,
-      vars.colors.$neutral3,
+      vars.colors.$gray30,
     )}`,
     selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid ${fallbackVar(
+          inputStatusColor,
+          vars.colors.$gray60,
+        )}`,
+      },
       '.inputGroup &': {
         borderRadius: 0,
       },
@@ -56,19 +70,42 @@ export const inputClass = style([
   }),
   {
     '::placeholder': {
-      color: vars.colors.$neutral3,
+      color: vars.colors.$gray40,
+    },
+    [`${darkThemeClass} &::placeholder`]: {
+      color: vars.colors.$gray50,
     },
   },
 ]);
 
 export const leadingTextClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
-    display: 'flex',
+    overflow: 'hidden',
+    display: 'inline-block',
+    minWidth: 0,
     alignItems: 'center',
     paddingX: '$4',
   }),
+  {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 ]);
+
+export const leadingTextWrapperClass = style([
+  sprinkles({
+    backgroundColor: '$neutral2',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
+]);
+
+export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
+  return {
+    width: size,
+  };
+});
 
 export const outlinedClass = style([
   sprinkles({

@@ -6,6 +6,7 @@ const meta: Meta<
   {
     rowCount: number;
     columnCount: number;
+    striped: boolean;
   } & ITableProps
 > = {
   title: 'Components/Table',
@@ -16,6 +17,9 @@ const meta: Meta<
     columnCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
     },
+    striped: {
+      control: { type: 'boolean' },
+    },
   },
 };
 
@@ -24,6 +28,7 @@ type Story = StoryObj<
   {
     rowCount: number;
     columnCount: number;
+    striped: boolean;
   } & ITableProps
 >;
 
@@ -38,10 +43,11 @@ export const Primary: Story = {
   args: {
     rowCount: 3,
     columnCount: 5,
+    striped: false,
   },
-  render: ({ rowCount, columnCount }) => {
+  render: ({ rowCount, columnCount, striped }) => {
     return (
-      <Table.Root>
+      <Table.Root striped={striped}>
         <Table.Head>
           <Table.Tr>
             {Array.from(Array(columnCount)).map((id, tdIdx) => {
@@ -70,10 +76,11 @@ export const LinkTable: Story = {
   args: {
     rowCount: 3,
     columnCount: 5,
+    striped: false,
   },
-  render: ({ rowCount, columnCount }) => {
+  render: ({ rowCount, columnCount, striped }) => {
     return (
-      <Table.Root>
+      <Table.Root striped={striped}>
         <Table.Head>
           <Table.Tr>
             {Array.from(Array(columnCount + 1)).map((id, tdIdx) => {
@@ -95,6 +102,75 @@ export const LinkTable: Story = {
               </Table.Tr>
             );
           })}
+        </Table.Body>
+      </Table.Root>
+    );
+  },
+};
+
+export const StripedTable: Story = {
+  args: {
+    rowCount: 3,
+    columnCount: 5,
+    striped: true,
+  },
+  render: ({ rowCount, columnCount, striped }) => {
+    return (
+      <Table.Root striped={striped}>
+        <Table.Head>
+          <Table.Tr>
+            {Array.from(Array(columnCount)).map((id, tdIdx) => {
+              return <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>;
+            })}
+          </Table.Tr>
+        </Table.Head>
+        <Table.Body>
+          {Array.from(Array(rowCount)).map((id, idx) => {
+            return (
+              <Table.Tr key={`tr${idx}`}>
+                {Array.from(Array(columnCount)).map((id, tdIdx) => {
+                  return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
+                })}
+              </Table.Tr>
+            );
+          })}
+        </Table.Body>
+      </Table.Root>
+    );
+  },
+};
+
+export const EmptyRowsTable: Story = {
+  name: 'Table with Empty Rows',
+  args: {
+    rowCount: 5,
+    columnCount: 3,
+    striped: false,
+  },
+  render: ({ striped }) => {
+    return (
+      <Table.Root striped={striped}>
+        <Table.Head>
+          <Table.Tr>
+            <Table.Th>Date Time</Table.Th>
+            <Table.Th>Amount</Table.Th>
+            <Table.Th>Sender</Table.Th>
+          </Table.Tr>
+        </Table.Head>
+        <Table.Body>
+          <Table.Tr>
+            <Table.Td>March 28, 2023 - 06:23</Table.Td>
+            <Table.Td>10</Table.Td>
+            <Table.Td>1234</Table.Td>
+          </Table.Tr>
+          <Table.Tr></Table.Tr>
+          <Table.Tr></Table.Tr>
+          <Table.Tr>
+            <Table.Td>March 28, 2023 - 06:23</Table.Td>
+            <Table.Td>10</Table.Td>
+            <Table.Td>1234</Table.Td>
+          </Table.Tr>
+          <Table.Tr></Table.Tr>
         </Table.Body>
       </Table.Root>
     );

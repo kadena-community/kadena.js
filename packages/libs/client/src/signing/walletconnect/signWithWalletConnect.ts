@@ -1,7 +1,7 @@
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { isExecCommand } from '../../interfaces/isExecCommand';
-import { ISignSingleFunction } from '../ISignFunction';
+import { ISingleSignFunction } from '../ISignFunction';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import { ISigningRequest, TWalletConnectChainId } from './walletConnectTypes';
@@ -12,15 +12,21 @@ import { SessionTypes } from '@walletconnect/types';
 interface ISigningResponse {
   body: ICommand | IUnsignedCommand;
 }
+
 /**
- * @alpha
+ * Creates the signWithWalletConnect function with interface {@link ISingleSignFunction}
+ *
+ * @remarks
+ * It is preferred to use the {@link createWalletConnectQuicksign} function
+ *
+ * @public
  */
 export function createWalletConnectSign(
   client: Client,
   session: SessionTypes.Struct,
   walletConnectChainId: TWalletConnectChainId,
-): ISignSingleFunction {
-  const signWithWalletConnect: ISignSingleFunction = async (transaction) => {
+): ISingleSignFunction {
+  const signWithWalletConnect: ISingleSignFunction = async (transaction) => {
     const parsedTransaction = parseTransactionCommand(transaction);
     if (!isExecCommand(parsedTransaction)) {
       throw new Error('`cont` transactions are not supported');

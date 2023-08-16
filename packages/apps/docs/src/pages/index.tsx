@@ -1,10 +1,12 @@
-import { Stack } from '@kadena/react-components';
-import { Box, Heading } from '@kadena/react-ui';
+import { Box, Heading, Stack } from '@kadena/react-ui';
+
+import { browseSectionWrapper } from '../styles/index.css';
 
 import { BrowseSection } from '@/components';
 import { Article, Content } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { getTopDocs, ITopDoc } from '@/data/getTopDocs';
+import { IMostPopularPage } from '@/types/MostPopularData';
+import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -14,32 +16,35 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
-  topDocs: ITopDoc[];
+  popularPages: IMostPopularPage[];
 }
 
-const Home: FC<IProps> = ({ topDocs }) => {
+const Home: FC<IProps> = ({ popularPages }) => {
   return (
     <>
-      <HomeHeader topDocs={topDocs} />
+      <HomeHeader popularPages={popularPages} />
       <Content id="maincontent" layout="home">
         <Article>
           <Box marginBottom="$10">
-            <BrowseSection>
-              <BrowseSection.LinkList title="General">
+            <Stack wrap="wrap" spacing="$2xs">
+              <BrowseSection title="General" className={browseSectionWrapper}>
                 <Link href="/docs/kadena">Overview of Kadena</Link>
                 <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
                 <a href="https://kadena.io" target="_blank" rel="noreferrer">
                   Kadena.io
                 </a>
-              </BrowseSection.LinkList>
-              <BrowseSection.LinkList title="Developers">
+              </BrowseSection>
+              <BrowseSection
+                title="Developers"
+                className={browseSectionWrapper}
+              >
                 <Link href="/docs/build/quickstart">Quick start</Link>
                 <Link href="/docs/pact/beginner/language-basics">
                   Pact Language resources
                 </Link>
                 <Link href="/docs/pact">Pact developer tutorials</Link>
-              </BrowseSection.LinkList>
-              <BrowseSection.LinkList title="Programs">
+              </BrowseSection>
+              <BrowseSection title="Programs" className={browseSectionWrapper}>
                 <Link href="/docs/build/support">Developer program</Link>
                 <Link href="/docs/contribute/ambassadors">
                   Ambassador program
@@ -47,12 +52,12 @@ const Home: FC<IProps> = ({ topDocs }) => {
                 <Link href="/docs/build/support/technical-grants">
                   Technical grants
                 </Link>
-              </BrowseSection.LinkList>
-            </BrowseSection>
+              </BrowseSection>
+            </Stack>
           </Box>
           <Heading as="h4">Browse by Resources</Heading>
-          <Stack direction="column" spacing="2xl">
-            <BrowseSection title="General">
+          <Stack direction="column" spacing="$2xl">
+            <BrowseSection title="General" titleAs="h5" direction="row">
               <BrowseSection.LinkBlock
                 title="Overview of Pact"
                 subtitle="Explore all products"
@@ -72,8 +77,7 @@ const Home: FC<IProps> = ({ topDocs }) => {
                 href="/docs/marmalade"
               />
             </BrowseSection>
-
-            <BrowseSection title="Pact">
+            <BrowseSection title="Pact" titleAs="h5" direction="row">
               <BrowseSection.LinkBlock
                 title="Pact Language"
                 subtitle="Explore all products"
@@ -113,11 +117,11 @@ const Home: FC<IProps> = ({ topDocs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const topDocs = await getTopDocs();
+  const mostPopularPages = await getMostPopularPages();
 
   return {
     props: {
-      topDocs: topDocs,
+      popularPages: mostPopularPages,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Welcome to Kadena docs',

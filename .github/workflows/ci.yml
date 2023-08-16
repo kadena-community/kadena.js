@@ -10,7 +10,7 @@ on:
 
 env:
   AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'main' && ' ' || format('--to git:origin/{0}', github.base_ref)  }}
+    ${{ github.ref_name == 'main' && ' ' || format('--to git:origin/{0} --from git:origin/{0}', github.base_ref)  }}
 
 jobs:
   build:
@@ -48,16 +48,56 @@ jobs:
         with:
           path: |
             common/temp/pnpm-store
-          key: cache-pnpm-${{ runner.os }}
+          key:
+            cache-pnpm-${{ runner.os }}-${{
+            hashFiles('common/config/rush/pnpm-lock.yaml')}}
+          restore-keys: |
+            cache-pnpm-${{runner.os}}-
+            cache-pnpm-
 
       - name: Rush install (install-run-rush)
         run: |
           node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
 
+      - name: Cache builds
+        if: github.ref_name != 'main'
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/build-cache
+          key: cache-build-${{ runner.os }}-${{ github.ref }}
+          restore-keys: |
+            cache-build-${{runner.os}}-
+            cache-build-
+
+      # Separate build cache when running on main
+      # This cache will be used when the first build is run on a PR
+      # Hence ${{ github.ref }} is not included in the key
+      - name: Cache builds
+        if: github.ref_name == 'main'
+        uses: actions/cache@v3
+        with:
+          path: |
+            common/temp/build-cache
+          key: cache-build-${{ runner.os }}
+          restore-keys: |
+            cache-build-
+
+      - name: Cache previous test-lint-format runs
+        if: github.ref_name != 'main'
+        uses: actions/cache@v3
+        with:
+          path: |
+            packages/*/*/.rush/temp/package-deps_format.json
+            packages/*/*/.rush/temp/package-deps_format_ci.json
+            packages/*/*/.rush/temp/package-deps_lint.json
+            packages/*/*/.rush/temp/package-deps_test.json
+          key: cache-build-${{ runner.os }}-${{ github.ref }}
+
       - name: Rush build + test (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js build --verbose ${{ env.AFFECTED_OR_ALL }}
-          node common/scripts/install-run-rush.js test --verbose ${{ env.AFFECTED_OR_ALL }}
+          node common/scripts/install-run-rush.js build --verbose # ${{ env.AFFECTED_OR_ALL }}
+          node common/scripts/install-run-rush.js test --verbose # ${{ env.AFFECTED_OR_ALL }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981

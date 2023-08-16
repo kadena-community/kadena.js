@@ -1,11 +1,16 @@
+import { ChainId } from '@kadena/types';
+
 import { pollStatus } from './util/client';
 
 export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> {
   const someRequestKeys = ['key1', 'key2'];
-  // you can await for this promise, but you even can await for the result of each individual request
-  const results = pollStatus(someRequestKeys, {
+  const transactionDescriptors = someRequestKeys.map((requestKey) => ({
+    requestKey,
     networkId: 'testnet04',
-    chainId: '1',
+    chainId: '1' as ChainId,
+  }));
+  // You can await this promise, but you can also await the result of each individual request
+  const results = pollStatus(transactionDescriptors, {
     onPoll: (requestKey) => {
       console.log('polling status of', requestKey);
     },

@@ -8,6 +8,11 @@ import _debug, { Debugger } from 'debug';
 
 const debug: Debugger = _debug('@kadena/client:signing:addSignature');
 
+/**
+ * adds signatures to an {@link IUnsignedCommand | unsigned command}
+ *
+ * @internal
+ */
 export const addSignatures: (
   transaction: IUnsignedCommand,
   ...signatures: { sig: string; pubKey?: string }[]

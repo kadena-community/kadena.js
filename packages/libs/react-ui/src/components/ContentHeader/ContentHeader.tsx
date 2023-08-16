@@ -1,0 +1,30 @@
+import { containerClass, descriptionClass } from './ContentHeader.css';
+
+import { SystemIcon } from '@components/Icon';
+import { Heading, Text } from '@components/Typography';
+import React, { FC } from 'react';
+
+export interface IContentHeaderProps {
+  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  heading: string;
+  description?: string;
+}
+
+export const ContentHeader: FC<IContentHeaderProps> = ({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  icon: Icon,
+  heading,
+  description,
+}) => {
+  return (
+    <div className={containerClass}>
+      <Icon size="md" />
+      <Heading as="h4">{heading}</Heading>
+      {description ? (
+        <div className={descriptionClass}>
+          <Text as="p">{description}</Text>
+        </div>
+      ) : null}
+    </div>
+  );
+};

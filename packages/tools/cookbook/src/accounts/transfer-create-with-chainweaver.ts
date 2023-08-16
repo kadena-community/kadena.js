@@ -1,12 +1,16 @@
-import { Pact, signWithChainweaver } from '@kadena/client';
+import {
+  getClient,
+  isSignedTransaction,
+  Pact,
+  signWithChainweaver,
+} from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
-const HELP: string = `Usage example: \n\nts-node transfer-create.js k:{senderPublicKey} k:{receiverPublicKey} {amount}`;
-const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' | undefined =
-  'testnet04';
+const HELP: string = `Usage example: \n\nts-node transfer-create-with-chainweaver.ts k:{senderPublicKey} k:{receiverPublicKey} {amount}`;
+const NETWORK_ID: 'testnet04' | 'mainnet01' | 'development' = 'testnet04';
 const API_HOST: string = apiHost('1', 'testnet.', NETWORK_ID);
 
 if (process.argv.length !== 5) {
@@ -30,40 +34,42 @@ async function transferCreate(
   amount: number,
 ): Promise<void> {
   const senderPublicKey = accountKey(sender);
-  const guardData: Record<string, unknown> = {
-    ks: {
-      keys: [accountKey(receiver)],
-      pred: 'keys-all',
-    },
-  };
-
   const pactDecimal: IPactDecimal = { decimal: `${amount}` };
 
-  const transactionBuilder = Pact.modules.coin['transfer-create'](
-    sender,
-    receiver,
-    () => '(read-keyset "ks")',
-    pactDecimal,
-  )
-    .addData(guardData)
-    .addCap('coin.GAS', senderPublicKey)
-    .addCap('coin.TRANSFER', senderPublicKey, sender, receiver, pactDecimal)
-    .setMeta({ sender }, NETWORK_ID);
+  const { submit, pollStatus } = getClient(API_HOST);
 
-  await signWithChainweaver(transactionBuilder);
+  const transaction = Pact.builder
+    .execution(
+      Pact.modules.coin['transfer-create'](
+        sender,
+        receiver,
+        () => '(read-keyset "ks")',
+        pactDecimal,
+      ),
+    )
+    .addData('ks', {
+      keys: [accountKey(receiver)],
+      pred: 'keys-all',
+    })
+    .addSigner(senderPublicKey, (withCap: any) => [
+      withCap('coin.TRANSFER', sender, receiver, pactDecimal),
+      withCap('coin.GAS'),
+    ])
+    .setMeta({ chainId: '1', sender: sender })
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
 
-  await transactionBuilder.send(API_HOST);
-  const pollResult = await transactionBuilder.pollUntil(API_HOST, {
-    onPoll: async (transaction, pollRequest): Promise<void> => {
-      console.log(
-        `Polling ${transaction.requestKey}.\nStatus: ${transaction.status}`,
-      );
-      console.log(await pollRequest);
-    },
-  });
+  const signedTransaction = await signWithChainweaver(transaction);
 
-  console.log('Polling Completed.');
-  console.log(pollResult);
+  if (!isSignedTransaction(signedTransaction)) {
+    console.error('Command is not signed.');
+    return;
+  }
+
+  const requestKey = await submit(signedTransaction);
+  console.log('request key', requestKey);
+  const result = await pollStatus(requestKey);
+  console.log(result);
 }
 
 transferCreate(sender, receiver, Number(transferAmount)).catch(console.error);

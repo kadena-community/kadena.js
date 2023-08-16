@@ -198,9 +198,9 @@ export const NavLink: StyledComponent<
   color: '$neutral100',
   fontFamily: '$main',
   textDecoration: 'none',
-  padding: '$1 $2',
+  padding: '$1 clamp($1, .5vw, $2)',
   borderRadius: '$sm',
-
+  fontSize: 'clamp(14px, 1.4vw, 16px)',
   '&:hover': {
     color: '$neutral100',
     opacity: '.5',

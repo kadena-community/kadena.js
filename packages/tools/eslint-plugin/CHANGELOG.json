@@ -2,6 +2,29 @@
   "name": "@kadena-dev/eslint-plugin",
   "entries": [
     {
+      "version": "0.0.6",
+      "tag": "@kadena-dev/eslint-plugin_v0.0.6",
+      "date": "Fri, 04 Aug 2023 16:10:02 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Move sort-package-json to eslint plugin"
+          },
+          {
+            "comment": "fix test commands"
+          },
+          {
+            "comment": "Remove format:pkg everywhere"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "formatting and linting"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.5",
       "tag": "@kadena-dev/eslint-plugin_v0.0.5",
       "date": "Mon, 10 Jul 2023 14:25:54 GMT",

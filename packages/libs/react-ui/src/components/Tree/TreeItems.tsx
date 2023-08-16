@@ -41,8 +41,8 @@ export const TreeItem: FC<ITreeItemProps> = ({
 
   const handleExpandChildren = (index: number): void => {
     if (linked) {
-      expandedChildren.forEach((childrenIndex) =>
-        items?.[childrenIndex]?.onClose?.(),
+      expandedChildren.forEach(
+        (childrenIndex) => items?.[childrenIndex]?.onClose?.(),
       );
       setExpandedChildren([index]);
     } else setExpandedChildren([...expandedChildren, index]);

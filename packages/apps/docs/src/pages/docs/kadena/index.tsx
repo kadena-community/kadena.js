@@ -1,5 +1,6 @@
-import { Stack } from '@kadena/react-components';
-import { Heading, Text } from '@kadena/react-ui';
+import { Heading, Stack, Text } from '@kadena/react-ui';
+
+import { browseSectionWrapper } from '../../../styles/index.css';
 
 import { BrowseSection } from '@/components';
 import {
@@ -12,7 +13,7 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   return (
-    <Stack direction="column" spacing="2xl">
+    <Stack direction="column" spacing="$2xl">
       <div>
         <Heading as="h2">Welcome to Kadena&apos;s documentation!</Heading>
         <Text>
@@ -38,14 +39,14 @@ const Home: FC = () => {
         </Text>
       </div>
 
-      <BrowseSection>
-        <BrowseSection.LinkList title="General">
+      <Stack wrap="wrap" spacing="$2xs" width="100%">
+        <BrowseSection title="General" className={browseSectionWrapper}>
           <Link href="/docs/kadena/overview">Overview of Kadena</Link>
           <Link href="/docs/kadena/whitepapers">Whitepapers</Link>
           <Link href="/docs/kadena/code-of-conduct">Code of Conduct</Link>
           <a href="https://kadena.io">Kadena.io</a>
-        </BrowseSection.LinkList>
-        <BrowseSection.LinkList title="Support">
+        </BrowseSection>
+        <BrowseSection title="Support" className={browseSectionWrapper}>
           <Link href="/docs/kadena/support">FAQ</Link>
           <Link href="/docs/kadena/support/developer-program">
             Developer Program
@@ -53,16 +54,16 @@ const Home: FC = () => {
           <Link href="/docs/kadena/support/technical-grants">
             Technical Grants
           </Link>
-        </BrowseSection.LinkList>
-        <BrowseSection.LinkList title="Resources">
+        </BrowseSection>
+        <BrowseSection title="Resources" className={browseSectionWrapper}>
           <Link href="/docs/kadena/resources">Overview</Link>
           <Link href="/docs/kadena/resources/press-kit">Press Kit</Link>
           <Link href="/docs/kadena/resources/glossary">Glossary</Link>
           <Link href="/docs/kadena/resources/glossary/kadena-content-repository">
             Content Repo
           </Link>
-        </BrowseSection.LinkList>
-      </BrowseSection>
+        </BrowseSection>
+      </Stack>
     </Stack>
   );
 };

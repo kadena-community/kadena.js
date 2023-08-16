@@ -1,6 +1,6 @@
 import {
-  getClient,
-  isSignedCommand,
+  createClient,
+  isSignedTransaction,
   literal,
   Pact,
   readKeyset,
@@ -35,16 +35,16 @@ export async function createProject(
     .addKeyset('owner-guard', 'keys-all', sender.publicKey)
     .addSigner(sender.publicKey)
     .setNetworkId('testnet04')
-    .setMeta({ chainId: '0', sender: sender.account })
+    .setMeta({ chainId: '0', senderAccount: sender.account })
     .createTransaction();
 
   const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
-  if (isSignedCommand(signedTransaction)) {
-    const { submit, listen } = getClient();
-    const requestKey = await submit(signedTransaction);
-    console.log('requestKey', requestKey);
-    const response = await listen(requestKey);
+  if (isSignedTransaction(signedTransaction)) {
+    const { submit, listen } = createClient();
+    const transactionDescriptor = await submit(signedTransaction);
+    console.log('transactionDescriptor', transactionDescriptor);
+    const response = await listen(transactionDescriptor);
     if (response.result.status === 'success') {
       console.log('success', response);
       return;

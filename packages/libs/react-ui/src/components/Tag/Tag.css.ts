@@ -1,18 +1,33 @@
 import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
 export const tagClass = style([
   sprinkles({
-    backgroundColor: '$foreground',
-    color: '$background',
-    borderRadius: '$sm',
-    paddingX: '$2',
-    fontSize: '$xs',
-    fontWeight: '$semiBold',
-    display: 'inline-block',
+    backgroundColor: '$neutral1',
+    color: '$neutral6',
+    borderRadius: '$xs',
+    paddingY: '$1',
+    paddingRight: '$1',
+    display: 'inline-flex',
+    alignItems: 'center',
   }),
   {
-    paddingTop: '0.05rem',
-    paddingBottom: '0.05rem',
+    border: `1px solid ${vars.colors.$borderSubtle}`,
   },
+]);
+
+export const tagLabelClass = style([
+  sprinkles({
+    paddingX: '$2',
+  }),
+]);
+
+export const closeButtonClass = style([
+  sprinkles({
+    border: 'none',
+    background: 'none',
+    padding: '$1',
+    cursor: 'pointer',
+  }),
 ]);

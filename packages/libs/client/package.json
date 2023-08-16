@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -22,12 +22,11 @@
   "scripts": {
     "build": "heft build --clean",
     "dev:postinstall": "rushx pactjs:retrieve:contract; rushx pactjs:generate:contract",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "start": "ts-node --transpile-only src/index.ts",
@@ -55,9 +54,8 @@
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
-    "eslint": "^8.15.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
     "ts-node": "~10.8.2"
   }
 }

@@ -39,12 +39,14 @@ export const vars = createGlobalTheme(':root', {
     $bold: '700',
   },
   radii: {
+    $xs: '2px',
     $sm: '4px',
     $md: '6px',
     $lg: '8px',
     $round: '999rem',
   },
   borderWidths: {
+    $sm: '1px',
     $md: '2px',
   },
   shadows: {
@@ -96,15 +98,7 @@ export const vars = createGlobalTheme(':root', {
     ...colorPalette,
     ...gradients,
 
-    $background: colorPalette.$gray10,
-    $foreground: colorPalette.$gray100,
-
-    $neutral1: colorPalette.$gray10,
-    $neutral2: colorPalette.$gray20,
-    $neutral3: colorPalette.$gray40,
-    $neutral4: colorPalette.$gray60,
-    $neutral5: colorPalette.$gray90,
-    $neutral6: colorPalette.$gray100,
+    // Global tokens
 
     $primarySurface: colorPalette.$blue40,
     $primaryContrast: colorPalette.$blue80,
@@ -127,8 +121,11 @@ export const vars = createGlobalTheme(':root', {
 
     $layoutSurfaceDefault: colorPalette.$gray10,
     $layoutSurfaceSubtle: colorPalette.$gray20,
+    $layoutSurfaceCard: hexToRgba(colorPalette.$gray20, 0.6),
     $layoutSurfaceContrast: colorPalette.$white,
     $layoutSurfaceOverlay: hexToRgba(colorPalette.$gray90, 0.6),
+
+    // Status
 
     $infoSurface: colorPalette.$blue20,
     $infoContrast: colorPalette.$blue80,
@@ -150,7 +147,21 @@ export const vars = createGlobalTheme(':root', {
     $positiveHighContrast: colorPalette.$green100,
     $positiveAccent: colorPalette.$green60,
 
+    // State
+
     $disabledContrast: hexToRgba(colorPalette.$gray40, 0.6),
+
+    // Legacy (Do not use)
+
+    $background: colorPalette.$gray10,
+    $foreground: colorPalette.$gray100,
+
+    $neutral1: colorPalette.$gray10,
+    $neutral2: colorPalette.$gray20,
+    $neutral3: colorPalette.$gray40,
+    $neutral4: colorPalette.$gray60,
+    $neutral5: colorPalette.$gray90,
+    $neutral6: colorPalette.$gray100,
   },
 });
 
@@ -158,15 +169,7 @@ export const darkThemeClass = createTheme(vars.colors, {
   ...colorPalette,
   ...gradients,
 
-  $background: colorPalette.$gray100,
-  $foreground: colorPalette.$gray10,
-
-  $neutral1: colorPalette.$gray100,
-  $neutral2: colorPalette.$gray90,
-  $neutral3: colorPalette.$gray60,
-  $neutral4: colorPalette.$gray40,
-  $neutral5: colorPalette.$gray20,
-  $neutral6: colorPalette.$gray10,
+  // Global tokens
 
   $primarySurface: colorPalette.$blue80,
   $primaryContrast: colorPalette.$blue40,
@@ -189,8 +192,11 @@ export const darkThemeClass = createTheme(vars.colors, {
 
   $layoutSurfaceDefault: colorPalette.$gray100,
   $layoutSurfaceSubtle: colorPalette.$gray90,
+  $layoutSurfaceCard: hexToRgba(colorPalette.$gray60, 0.4),
   $layoutSurfaceContrast: colorPalette.$black,
   $layoutSurfaceOverlay: hexToRgba(colorPalette.$gray10, 0.8),
+
+  // Status
 
   $infoSurface: hexToRgba(colorPalette.$blue100, 0.8),
   $infoContrast: colorPalette.$blue30,
@@ -212,7 +218,21 @@ export const darkThemeClass = createTheme(vars.colors, {
   $positiveHighContrast: colorPalette.$green20,
   $positiveAccent: colorPalette.$green60,
 
+  // State
+
   $disabledContrast: hexToRgba(colorPalette.$gray40, 0.6),
+
+  // Legacy (Do not use)
+
+  $background: colorPalette.$gray100,
+  $foreground: colorPalette.$gray10,
+
+  $neutral1: colorPalette.$gray100,
+  $neutral2: colorPalette.$gray90,
+  $neutral3: colorPalette.$gray60,
+  $neutral4: colorPalette.$gray40,
+  $neutral5: colorPalette.$gray20,
+  $neutral6: colorPalette.$gray10,
 });
 
 export type ColorType =

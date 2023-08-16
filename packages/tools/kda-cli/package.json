@@ -21,13 +21,12 @@
   "scripts": {
     "build": "heft build",
     "dev": "heft build -w",
-    "format": "npm run format:md && npm run format:pkg && npm run format:src",
+    "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:pkg": "sort-package-json",
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",
-    "lint": "eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",
     "test": "ava"
   },
   "ava": {
@@ -61,15 +60,14 @@
     "@rushstack/heft": "~0.50.6",
     "@types/cross-spawn": "~6.0.2",
     "@types/node": "^16.0.0",
-    "@types/react": "^18.0.30",
+    "@types/react": "^18.2.15",
     "ava": "^5.2.0",
     "chalk": "^5.2.0",
-    "eslint": "^8.15.0",
+    "eslint": "^8.45.0",
     "ink-testing-library": "^3.0.0",
-    "prettier": "~2.8.8",
-    "sort-package-json": "~2.4.1",
+    "prettier": "~3.0.0",
     "ts-node": "~10.8.2",
-    "typescript": "5.0.4"
+    "typescript": "5.1.6"
   },
   "engines": {
     "node": ">=16"

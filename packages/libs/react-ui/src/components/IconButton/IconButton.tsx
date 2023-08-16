@@ -11,6 +11,7 @@ export interface IIconButtonProps
   href?: string;
   title: string;
   color?: keyof typeof colorVariants;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const IconButton: FC<IIconButtonProps> = ({

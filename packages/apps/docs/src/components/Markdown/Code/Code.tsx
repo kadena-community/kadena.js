@@ -1,4 +1,4 @@
-import { StyledCode, StyledInlineCode } from './styles';
+import { code, codeLine, inlineCode } from './style.css';
 
 import React, { FC, ReactNode } from 'react';
 
@@ -8,8 +8,21 @@ interface IProp {
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
   if (typeof children === 'string') {
-    return <StyledInlineCode>{children}</StyledInlineCode>;
+    return <code className={inlineCode}>{children}</code>;
   }
 
-  return <StyledCode {...props}>{children}</StyledCode>;
+  return (
+    <code className={code} {...props}>
+      {React.Children.map(children, (child) => {
+        if (!React.isValidElement(child) || !child) {
+          return null;
+        }
+
+        return React.cloneElement(child, {
+          ...child.props,
+          className: codeLine,
+        });
+      })}
+    </code>
+  );
 };
