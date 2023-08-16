@@ -29,7 +29,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 export const Full: FC<IPageProps> = ({
   children,
   aSideMenuTree = [],
-  frontmatter: formatter,
+  frontmatter,
   leftMenuTree,
 }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -38,7 +38,7 @@ export const Full: FC<IPageProps> = ({
   const [activeItem, setActiveItem] = useState<string>('');
   const contentClassNames = classNames(
     contentClass,
-    contentClassVariants[formatter.layout] ?? '',
+    contentClassVariants[frontmatter.layout] ?? '',
   );
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
@@ -83,11 +83,11 @@ export const Full: FC<IPageProps> = ({
         <div className={contentClassNames} id="maincontent">
           <article className={articleClass} ref={scrollRef}>
             <Breadcrumbs menuItems={leftMenuTree} />
-            <LastModifiedDate date={formatter.lastModifiedDate} />
+            <LastModifiedDate date={frontmatter.lastModifiedDate} />
             {children}
             <BottomPageSection
-              editLink={formatter.editLink}
-              navigation={formatter.navigation}
+              editLink={frontmatter.editLink}
+              navigation={frontmatter.navigation}
             />
           </article>
         </div>
