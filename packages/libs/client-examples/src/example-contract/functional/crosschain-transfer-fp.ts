@@ -3,7 +3,6 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   createTransaction,
-  isSignedCommand,
   Pact,
   readKeyset,
   signWithChainweaver,
@@ -22,6 +21,7 @@ import { ChainId } from '@kadena/types';
 import { listen, pollCreateSpv, pollStatus, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';
+import { isSignedCommand } from '@kadena/pactjs';
 
 interface IAccount {
   account: string;
@@ -69,7 +69,7 @@ function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
       ),
     ]),
     addKeyset('receiver-guard', 'keys-all', to.publicKey),
-    setMeta({ chainId: from.chainId, sender: from.account }),
+    setMeta({ chainId: from.chainId, senderAccount: from.account }),
     setNetworkId(NETWORK_ID),
   );
 }
@@ -87,7 +87,7 @@ const finishInTheTargetChain = (
       // ]),
       setMeta({
         chainId: targetChainId,
-        sender: gasPayer,
+        senderAccount: gasPayer,
         // this need to be less than or equal to 850 if you want to use gas-station, otherwise the gas-station does not pay the gas
         gasLimit: 850,
       }),
@@ -129,7 +129,14 @@ async function doCrossChainTransfer(
     (status: ICommandResult) =>
       Promise.all([
         status.continuation?.pactId,
-        pollCreateSpv(status.reqKey, to.chainId),
+        pollCreateSpv(
+          {
+            requestKey: status.reqKey,
+            chainId: from.chainId,
+            networkId: NETWORK_ID,
+          },
+          to.chainId,
+        ),
       ]),
     inspect('SPV_CREATED'),
     finishInTheTargetChain(to.chainId),
