@@ -1,3 +1,8 @@
+export {
+  ICommonEckoFunctions,
+  IEckoSignSingleFunction,
+  IEckoSignFunction,
+} from './eckoWallet/eckoTypes';
 export { TWalletConnectChainId } from './walletconnect/walletConnectTypes';
 export { ISingleSignFunction, ISignFunction } from './ISignFunction';
 
