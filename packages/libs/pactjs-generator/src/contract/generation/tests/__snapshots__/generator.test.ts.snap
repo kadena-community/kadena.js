@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`generateDts add defpact functions to defpact property 1`] = `
+"
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+
+interface ICapability_Coin_GAS {
+  (name: 'coin.GAS'): ICap;
+}
+
+declare module '@kadena/client' {
+  export interface IPactModules {
+    
+    \\"user.test-module\\": {
+    
+
+      \\"defpact\\":{
+        \\"test\\": () => string & { capability : ICapability_Coin_GAS} 
+      }
+    }
+  }
+}"
+`;
+
 exports[`generateDts adds IPactReference as the arg type if it is a module reference 1`] = `
 "
 import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
@@ -105,6 +127,44 @@ declare module '@kadena/client' {
     \\"user.test-module\\": {
       \\"test\\": () => string & { capability : ICapability_Coin_GAS} 
 
+    }
+  }
+}"
+`;
+
+exports[`generateDts prefixes capabulities for defpact with defpact_ 1`] = `
+"
+import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+
+interface ICapability_Coin_GAS {
+  (name: 'coin.GAS'): ICap;
+}
+
+interface ICapability_defpact_test_func {
+  /**
+  * this is defcap doc
+  */
+  (
+    name: \\"user.test-module.test-cap\\", 
+    name: string): ICap,
+}
+
+declare module '@kadena/client' {
+  export interface IPactModules {
+    /**
+    this is module doc    
+    */
+    \\"user.test-module\\": {
+    
+
+      \\"defpact\\":{
+        /**
+        * this is defpact doc
+        */
+        \\"test-func\\": (
+          parameterone: any,
+          parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICapability_Coin_GAS} 
+      }
     }
   }
 }"
