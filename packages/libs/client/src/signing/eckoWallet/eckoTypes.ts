@@ -5,16 +5,27 @@ import { ISignFunction, ISingleSignFunction } from '../ISignFunction';
 
 export type EckoStatus = 'success' | 'fail';
 
+/**
+ * Interface that describes the common functions to be used with Ecko Wallet
+ * @public
+ */
 export interface ICommonEckoFunctions {
   isInstalled: () => boolean;
   isConnected: (networkId: string) => Promise<boolean>;
   connect: (networkId: string) => Promise<boolean>;
 }
-
+/**
+ * Interface to use when writing a signing function for Ecko Wallet that accepts a single transaction
+ * @public
+ */
 export interface IEckoSignSingleFunction
   extends ISingleSignFunction,
     ICommonEckoFunctions {}
 
+/**
+ * Interface to use when writing a signing function for Ecko Wallet that accepts multiple transactions
+ * @public
+ */
 export interface IEckoSignFunction
   extends ISignFunction,
     ICommonEckoFunctions {}
