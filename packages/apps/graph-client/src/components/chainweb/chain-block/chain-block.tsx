@@ -38,12 +38,12 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
           >
             <TimerIcon />
             <TimeTicker date={new Date(block.creationtime)} />
-            {block.transactions.totalCount > 0 && (
+            {/* {block.transactions.totalCount > 0 && (
               <>
                 <RocketIcon />
                 <Text as="span">{block.transactions.totalCount} txs</Text>
               </>
-            )}
+            )} */}
           </Box>
         </Content>
       ) : null}
