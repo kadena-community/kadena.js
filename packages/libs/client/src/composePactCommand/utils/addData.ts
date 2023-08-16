@@ -31,6 +31,7 @@ const getData = (cmd: Partial<IPactCommand>, key: string): unknown => {
 
 /**
  * Reducer to add `data` to the {@link IPactCommand.payload}
+ * @throws DUPLICATED_KEY: "$\{key\}" is already available in the data
  *
  * @public
  */

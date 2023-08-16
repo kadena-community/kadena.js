@@ -106,7 +106,7 @@ async function generator(
   Object.keys(modules).map((name) => {
     if (['', undefined, null].includes(modules[name].namespace)) {
       console.log(`
-      No namespace found for module "${name}". You can pass --namespace as a fallback.
+      WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
       `);
     }
     moduleDtss.set(name, generateDts(name, modules));
