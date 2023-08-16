@@ -3,7 +3,7 @@ import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
 import { Search } from '../Search/';
 import { searchFormClass } from '../Search/styles.css';
 
-import { Wrapper } from './styles';
+import { wrapperClass } from './styles.css';
 
 import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
@@ -36,7 +36,7 @@ export const SearchModal: FC = () => {
 
   return (
     <>
-      <Wrapper>
+      <div className={wrapperClass}>
         <Text>Search the classic way, or just ask a question</Text>
         <Box marginY="$4">
           <form onSubmit={handleSubmit} className={searchFormClass}>
@@ -55,7 +55,7 @@ export const SearchModal: FC = () => {
         </Box>
 
         <Search query={query} hasScroll={true} limitResults={10} />
-      </Wrapper>
+      </div>
     </>
   );
 };
