@@ -2,7 +2,14 @@ import { Stack } from '@kadena/react-ui';
 
 import { InfiniteScroll } from '@/components';
 import { BlogItem, BlogList } from '@/components/Blog';
-import { Article, Content, TitleHeader } from '@/components/Layout/components';
+import {
+  Article,
+  articleClass,
+  Content,
+  contentClass,
+  contentClassVariants,
+  TitleHeader,
+} from '@/components/Layout/components';
 import { useGetBlogs } from '@/hooks';
 import { getInitBlogPosts } from '@/hooks/useBlog/utils';
 import { IMenuData, IPageProps } from '@/types/Layout';
@@ -11,6 +18,7 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
+import classNames from 'classnames';
 import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
@@ -40,8 +48,11 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
         subTitle={frontmatter.subTitle}
         icon={frontmatter.icon}
       />
-      <Content id="maincontent" layout="home">
-        <Article>
+      <div
+        className={classNames(contentClass, contentClassVariants.home)}
+        id="maincontent"
+      >
+        <article className={articleClass}>
           {firstPost && (
             <BlogList>
               <BlogItem key={firstPost.root} item={firstPost} />
@@ -63,8 +74,8 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
               />
             </BlogList>
           </Stack>
-        </Article>
-      </Content>
+        </article>
+      </div>
     </>
   );
 };
