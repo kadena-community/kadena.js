@@ -18,18 +18,18 @@
     "test": "echo \"no test specified\""
   },
   "dependencies": {
-    "@pothos/core": "~3.24.0",
-    "@pothos/plugin-prisma": "~3.39.0",
-    "@pothos/plugin-relay": "~3.32.0",
-    "@prisma/client": "^4.7.1",
+    "@pothos/core": "~3.33.0",
+    "@pothos/plugin-prisma": "~3.57.0",
+    "@pothos/plugin-relay": "~3.43.1",
+    "@prisma/client": "^5.1.1",
     "debug": "~4.3.4",
     "dotenv": "~16.0.3",
     "eslint": "^8.45.0",
-    "graphql": "~16.6.0",
-    "graphql-scalars": "~1.20.1",
-    "graphql-yoga": "~3.1.1",
+    "graphql": "~16.8.0",
+    "graphql-scalars": "~1.22.2",
+    "graphql-yoga": "~4.0.4",
     "json-bigint-patch": "~0.0.8",
-    "prisma": "^4.7.1"
+    "prisma": "^5.1.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
