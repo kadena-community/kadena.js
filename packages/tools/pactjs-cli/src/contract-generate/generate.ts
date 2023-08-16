@@ -104,6 +104,11 @@ async function generator(
   const moduleDtss = new Map();
 
   Object.keys(modules).map((name) => {
+    if (['', undefined, null].includes(modules[name].namespace)) {
+      console.log(`
+      No namespace found for module "${name}". You can pass --namespace as a fallback.
+      `);
+    }
     moduleDtss.set(name, generateDts(name, modules));
   });
 
