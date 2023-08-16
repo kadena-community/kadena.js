@@ -57,12 +57,13 @@ export const literal = (value: string): Literal => {
   return new Literal(value);
 };
 
+const literalRegex: RegExp = /"Literal\(([^\)]*)\)"/gi;
 /**
  * unpack all of the Literal(string) to string
  * @internal
  */
 export function unpackLiterals(value: string): string {
-  return value.replace(/"Literal\(([^\)]*)\)"/gi, (__, literal) => literal);
+  return value.replace(literalRegex, (__, literal) => literal);
 }
 
 /**
