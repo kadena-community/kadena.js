@@ -24,7 +24,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts adds IPactReference as the arg type if it is a module reference 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -59,7 +62,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts adds module, capability and function docs to the dts file 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -94,7 +100,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts does not generate capability interface if the function uses no capabilities 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -115,7 +124,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts function parameter is empty if the defun has no param 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -172,7 +184,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts return type definition file for a module 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -200,7 +215,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts use any type if function parameters dont have a type 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -228,7 +246,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts use object type if function parameters is object{schema} 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -256,7 +277,10 @@ declare module '@kadena/client' {
 
 exports[`generateDts uses the property type if there is no mapped value for that 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
