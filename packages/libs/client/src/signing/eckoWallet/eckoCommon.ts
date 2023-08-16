@@ -5,7 +5,7 @@ import {
 
 export const isInstalled: ICommonEckoFunctions['isInstalled'] = () => {
   const { kadena } = window;
-  return Boolean(kadena && kadena.isKadena);
+  return Boolean(kadena && kadena.isKadena && kadena.request);
 };
 
 export const isConnected: ICommonEckoFunctions['isConnected'] = async (
@@ -21,11 +21,7 @@ export const isConnected: ICommonEckoFunctions['isConnected'] = async (
       networkId,
     });
 
-  if (checkStatusResponse?.status === 'fail') {
-    return false;
-  }
-
-  return true;
+  return checkStatusResponse?.status === 'success';
 };
 
 export const connect: ICommonEckoFunctions['connect'] = async (networkId) => {
