@@ -1,7 +1,6 @@
 import {
   Breadcrumbs,
   Button,
-  Heading,
   InputWrapperStatus,
   ProductIcon,
   ProgressBar,
@@ -21,18 +20,16 @@ import {
   mainContentStyle,
 } from './styles.css';
 
-import RequestKeyField, {
-  REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
+import { REQUEST_KEY_VALIDATION } from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
-
 import {
   getTransferStatus,
   IStatusData,
   StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
+import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
@@ -46,7 +43,6 @@ import React, {
 } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { validateRequestKey } from '@/services/utils/utils';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -158,10 +154,6 @@ const CrossChainTransferTracker: FC = () => {
     },
     [],
   );
-
-  const showInputError = txError === '' ? undefined : 'negative';
-  // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-  const showInputHelper = !data.receiverAccount ? txError : undefined;
 
   return (
     <div>
