@@ -139,7 +139,10 @@ export function generateDts(
       .join(EOL.repeat(2)) || '';
 
   const dts = `
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+import type { Literal } from '@kadena/client';
+
+type PactReference = Literal | (() => string);
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;

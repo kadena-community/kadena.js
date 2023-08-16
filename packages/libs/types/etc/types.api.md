@@ -259,7 +259,7 @@ export type PactPayload = {
     cont: IContPayload;
 };
 
-// @alpha
+// @alpha @deprecated
 export type PactReference = () => string;
 
 // @alpha (undocumented)

@@ -68,6 +68,7 @@ export type PactValue = PactLiteral | Array<PactValue>;
 /**
  * Add the return value as is to the command, its useful for adding guard and module reference
  * @alpha
+ * @deprecated - in favor of introducing Literal class in the client lib
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PactReference = () => string;

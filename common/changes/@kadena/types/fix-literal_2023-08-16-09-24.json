@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/types",
+      "comment": "depricated the PactReference infavor of Literal class",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/types"
+}
