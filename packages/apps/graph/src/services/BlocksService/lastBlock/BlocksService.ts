@@ -60,7 +60,8 @@ class BlocksService {
       this._lastBlocks = await this._prisma.block.findMany({
         orderBy: { id: 'desc' },
         include: {
-          transactions: true,
+          // TODO: fix transactions
+          // transactions: true,
         },
       });
       this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
@@ -71,7 +72,8 @@ class BlocksService {
         where: { id: { gt: this._lastBlocks[0].id } },
         orderBy: { id: 'desc' },
         include: {
-          transactions: true,
+          // TODO: fix transactions
+          // transactions: true,
         },
       });
 
