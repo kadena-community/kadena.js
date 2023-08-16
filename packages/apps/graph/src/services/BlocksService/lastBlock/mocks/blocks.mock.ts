@@ -1,5 +1,6 @@
-/* eslint-disable-next-line max-lines */
-import { Decimal } from '@prisma/client/runtime';
+/* eslint-disable @kadena-dev/no-eslint-disable */
+/* eslint-disable max-lines */
+import { Decimal } from '@prisma/client/runtime/library';
 
 // eslint-disable-next-line @rushstack/typedef-var
 const blocks = [
