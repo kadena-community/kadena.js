@@ -334,6 +334,9 @@ export const literal: (value: string) => Literal;
 export const Pact: IPact;
 
 // @public
+export type PactReference = Literal | (() => string);
+
+// @public
 export const readKeyset: (key: string) => () => string;
 
 // @public

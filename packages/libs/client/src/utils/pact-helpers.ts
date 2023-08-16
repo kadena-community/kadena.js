@@ -64,3 +64,9 @@ export const literal = (value: string): Literal => {
 export function unpackLiterals(value: string): string {
   return value.replace(/"Literal\(([^\)]*)\)"/gi, (__, literal) => literal);
 }
+
+/**
+ * General type for reference values
+ * @public
+ */
+export type PactReference = Literal | (() => string);

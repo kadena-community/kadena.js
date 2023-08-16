@@ -60,6 +60,7 @@ describe('createTransaction', () => {
   it('adds Literal values without quote to the output', () => {
     const command = Pact.builder
       .execution(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (Pact.modules as any).test['test-fun'](
           'bob',
           'alice',
