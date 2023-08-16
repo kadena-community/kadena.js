@@ -39,10 +39,12 @@ import React, {
   FC,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -85,6 +87,7 @@ const CrossChainTransferTracker: FC = () => {
   const [validRequestKey, setValidRequestKey] = useState<
     InputWrapperStatus | undefined
   >();
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     setData({});
@@ -155,6 +158,11 @@ const CrossChainTransferTracker: FC = () => {
     [],
   );
 
+  const handleOpenDrawerPanel = (): void => {
+    // @ts-ignore
+    drawerPanelRef.openSection(1);
+  };
+
   return (
     <div>
       <Breadcrumbs.Root>
@@ -173,6 +181,7 @@ const CrossChainTransferTracker: FC = () => {
               // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
               helperText={!data.receiverAccount ? txError : undefined}
               inputProps={{
+                ...register('requestKey'),
                 id: 'request-key-input',
                 placeholder: t('Enter Request Key'),
                 onChange: onRequestKeyChange,
@@ -190,65 +199,79 @@ const CrossChainTransferTracker: FC = () => {
         </form>
 
         {data.receiverAccount ? (
-          <div className={infoBoxStyle}>
-            <div className={infoTitleStyle}>{t('Transfer Information')}</div>
-            <TrackerCard
-              variant="vertical"
-              icon={ProductIcon.QuickStart}
-              labelValues={[
-                {
-                  label: t('Sender'),
-                  value: data.senderAccount || '',
-                  isAccount: true,
-                },
-                {
-                  label: t('Chain'),
-                  value: data.senderChain || '',
-                },
-              ]}
-            />
-            {/*  Progress Bar will only show if the transfer is in progress /
-            completed.  If an error occurs, the notification will display the
-            error and no progress bar will show */}
-            <ProgressBar
-              checkpoints={[
-                {
-                  status: 'complete',
-                  title: t('Initiated transaction'),
-                },
-                {
-                  status:
-                    data?.id === StatusId.Success ? 'complete' : 'pending',
-                  title: data.description || 'An error has occurred',
-                },
-                {
-                  status:
-                    data.id === StatusId.Pending ? 'incomplete' : 'complete',
-                  title: t('Transfer complete'),
-                },
-              ]}
-            />
-
-            <TrackerCard
-              variant="vertical"
-              icon={
-                data?.id === StatusId.Success
-                  ? ProductIcon.Receiver
-                  : ProductIcon.ReceiverInactive
-              }
-              labelValues={[
-                {
-                  label: t('Receiver'),
-                  value: data.receiverAccount || '',
-                  isAccount: true,
-                },
-                {
-                  label: t('Chain'),
-                  value: data.receiverChain || '',
-                },
-              ]}
-            />
-          </div>
+          <DrawerToolbar
+            ref={drawerPanelRef}
+            initialOpenItem={true}
+            sections={[
+              {
+                icon: SystemIcon.Information,
+                title: t('Transfer Information'),
+                children: (
+                  <div className={infoBoxStyle}>
+                    <TrackerCard
+                      variant="vertical"
+                      icon={ProductIcon.QuickStart}
+                      labelValues={[
+                        {
+                          label: t('Sender'),
+                          value: data.senderAccount || '',
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: data.senderChain || '',
+                        },
+                      ]}
+                    />
+                    {/*  Progress Bar will only show if the transfer is in progress /
+                    completed.  If an error occurs, the notification will display the
+                    error and no progress bar will show */}
+                    <ProgressBar
+                      checkpoints={[
+                        {
+                          status: 'complete',
+                          title: t('Initiated transaction'),
+                        },
+                        {
+                          status:
+                            data?.id === StatusId.Success
+                              ? 'complete'
+                              : 'pending',
+                          title: data.description || 'An error has occurred',
+                        },
+                        {
+                          status:
+                            data.id === StatusId.Pending
+                              ? 'incomplete'
+                              : 'complete',
+                          title: t('Transfer complete'),
+                        },
+                      ]}
+                    />
+                    <TrackerCard
+                      variant="vertical"
+                      icon={
+                        data?.id === StatusId.Success
+                          ? ProductIcon.Receiver
+                          : ProductIcon.ReceiverInactive
+                      }
+                      labelValues={[
+                        {
+                          label: t('Receiver'),
+                          value: data.receiverAccount || '',
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: data.receiverChain || '',
+                        },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
+            ]}
+          />
         ) : null}
       </div>
     </div>

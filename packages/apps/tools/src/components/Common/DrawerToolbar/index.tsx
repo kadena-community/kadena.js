@@ -23,16 +23,19 @@ export interface IDrawerToolbarSection {
   children: ReactNode;
 }
 interface IProps {
+  initialOpenItem?: boolean;
   sections: IDrawerToolbarSection[];
 }
 
 export const DrawerToolbar: ForwardRefExoticComponent<
   Omit<IProps, 'ref'> & React.RefAttributes<HTMLElement>
 > = forwardRef<HTMLElement, IProps>(function DrawerToolbar(
-  { sections },
+  { sections, initialOpenItem = false },
   ref = null,
 ) {
-  const [visibleSection, setVisibleSection] = useState<number | null>(null);
+  const [visibleSection, setVisibleSection] = useState<number | null>(
+    initialOpenItem ? 0 : null,
+  );
   const isOpen = visibleSection !== null;
 
   const handleOpenSection = useCallback(
@@ -44,24 +47,23 @@ export const DrawerToolbar: ForwardRefExoticComponent<
     [sections],
   );
 
-  useEffect(() => {
-    if (ref) {
-      // @ts-ignore
-      ref.openSection = handleOpenSection;
-    }
-  }, [handleOpenSection, ref]);
+  // useEffect(() => {
+  //   if (ref) {
+  //     // @ts-ignore
+  //     ref.openSection = handleOpenSection;
+  //   }
+  // }, [handleOpenSection, ref]);
 
   return (
     <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
       {!isOpen && (
         <div>
-          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
           {sections.map(({ icon: Icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
               <IconButton
                 icon={Icon}
                 title={title}
-                onClick={() => setVisibleSection(index)}
+                onClick={() => handleOpenSection(index)}
               />
             </div>
           ))}

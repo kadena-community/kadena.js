@@ -88,11 +88,6 @@ export const infoBoxStyle = style([
     flexDirection: 'column',
     gap: '$6',
   }),
-  {
-    background: 'rgba(71, 79, 82, 0.4)',
-    width: '40%',
-    alignSelf: 'stretch',
-  },
 ]);
 
 export const infoTitleStyle = style([
