@@ -5,45 +5,42 @@ import {
   accordionTitleVariants,
   toggleButtonClass,
 } from './Accordion.css';
+import useLinked from './useLinked';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useState } from 'react';
 
 export interface IAccordionSectionProps {
   title: React.ReactNode;
   children: React.ReactNode;
-  isOpen: boolean;
-  onToggle: () => void;
+  onToggle?: () => void;
   onOpen?: () => void;
   onClose?: () => void;
 }
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
-  isOpen = false,
   title,
   children,
-  onToggle,
   onOpen,
   onClose,
 }) => {
-  const didMountRef = useRef(false);
+  const { usingLinked, activeSection, setActiveSection } = useLinked();
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      return;
-    }
-
-    if (isOpen) onOpen?.();
-    else onClose?.();
-  }, [isOpen]);
+  const onToggle = (): void => (isOpen ? onClose?.() : onOpen?.());
+  const handleClick = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <div className={accordionSectionClass}>
+    <div className={accordionSectionClass} data-testid="kda-accordion-section">
       <div
-        data-testid="kda-accordion-title"
-        onClick={onToggle}
+        data-testid="kda-accordion-section-title"
+        onClick={() => {
+          handleClick();
+          onToggle();
+        }}
         className={classNames(
           accordionTitleClass,
           accordionTitleVariants[isOpen ? 'opened' : 'closed'],

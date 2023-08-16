@@ -1,5 +1,5 @@
 import type { INavHeaderRootProps } from './NavHeader';
-import { NavHeaderContainer } from './NavHeader';
+import { NavHeaderRoot } from './NavHeader';
 import type { INavHeaderContentProps } from './NavHeaderContent';
 import { NavHeaderContent } from './NavHeaderContent';
 import { NavHeaderLink } from './NavHeaderLink';
@@ -26,7 +26,7 @@ export interface INavHeaderProps {
 }
 
 export const NavHeader: INavHeaderProps = {
-  Root: NavHeaderContainer,
+  Root: NavHeaderRoot,
   Navigation: NavHeaderNavigation,
   Link: NavHeaderLink,
   Content: NavHeaderContent,

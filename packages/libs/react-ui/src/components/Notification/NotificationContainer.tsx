@@ -39,7 +39,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
   );
 
   return (
-    <div className={classList}>
+    <aside className={classList}>
       <Icon size="md" />
 
       <div className={contentClass}>
@@ -56,6 +56,6 @@ export const NotificationContainer: FC<INotificationProps> = ({
           <SystemIcon.Close size="md" />
         </button>
       )}
-    </div>
+    </aside>
   );
 };

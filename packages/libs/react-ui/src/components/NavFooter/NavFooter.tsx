@@ -9,7 +9,7 @@ export interface INavFooterRootProps {
   darkMode?: boolean;
 }
 
-export const NavFooterContainer: FC<INavFooterRootProps> = ({
+export const NavFooterRoot: FC<INavFooterRootProps> = ({
   children,
   darkMode = false,
 }) => {

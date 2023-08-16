@@ -1,5 +1,5 @@
 import type { INavFooterRootProps } from './NavFooter';
-import { NavFooterContainer } from './NavFooter';
+import { NavFooterRoot } from './NavFooter';
 import type { INavFooterIconButtonProps } from './NavFooterIconButton';
 import { NavFooterIconButton } from './NavFooterIconButton';
 import type { INavFooterLinkProps } from './NavFooterLink';
@@ -24,7 +24,7 @@ export interface INavFooterProps {
 }
 
 export const NavFooter: INavFooterProps = {
-  Root: NavFooterContainer,
+  Root: NavFooterRoot,
   Panel: NavFooterPanel,
   Link: NavFooterLink,
   IconButton: NavFooterIconButton,

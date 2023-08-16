@@ -22,7 +22,7 @@ export interface INavHeaderRootProps {
   >[];
 }
 
-export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
+export const NavHeaderRoot: FC<INavHeaderRootProps> = ({
   brand = logoVariants[0],
   children,
 }) => {
