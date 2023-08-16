@@ -1,6 +1,6 @@
 import {
-  closeButtonClass,
   cardColorVariants,
+  closeButtonClass,
   containerClass,
   contentClass,
   descriptionClass,
@@ -44,7 +44,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
 
       <div className={contentClass}>
         {title !== undefined && <h4>{title}</h4>}
-        <p className={descriptionClass}>{children}</p>
+        <div className={descriptionClass}>{children}</div>
       </div>
 
       {hasCloseButton && (
