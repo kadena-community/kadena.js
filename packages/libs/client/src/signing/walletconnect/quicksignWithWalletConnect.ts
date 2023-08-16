@@ -2,7 +2,7 @@ import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { IQuicksignResponse } from '../../signing-api/v1/quicksign';
 import { ISignFunction } from '../ISignFunction';
-import { addSignatures } from '../utils/addSignature';
+import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import { TWalletConnectChainId } from './walletConnectTypes';
