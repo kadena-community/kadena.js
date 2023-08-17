@@ -107,8 +107,7 @@ Guidlines for defining types:
 
 - Be as strict as possible, within the limits of the component's intended use.
 - Never use `any` or `unknown` unless absolutely necessary.
-- Use `unknown` over `any` if you're not sure what type something is. <<<<<<<
-  Updated upstream
+- Use `unknown` over `any` if you're not sure what type something is.
 - Only type the children prop as `ReactNode` if you don't know what type it will
   be or you wish to explicitly allow any children (e.g. it's up to the consumer
   to decide what to render).
