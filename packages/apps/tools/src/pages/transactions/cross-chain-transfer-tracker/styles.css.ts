@@ -5,9 +5,47 @@ import { style } from '@vanilla-extract/css';
 export const mainContentStyle = style([
   sprinkles({
     display: 'flex',
-    justifyContent: 'flex-start',
-    gap: '$16',
+    flexDirection: 'column',
+    gap: '$6',
+    paddingTop: '$2',
+    paddingBottom: '$10',
   }),
+  {
+    alignSelf: 'stretch',
+  },
+]);
+
+export const topContainerStyle = style([
+  sprinkles({
+    display: 'flex',
+    gap: '$2',
+    flexDirection: 'column',
+  }),
+]);
+
+export const headerContainerStyle = style([
+  sprinkles({
+    display: 'flex',
+    gap: '$6',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  }),
+  {
+    alignSelf: 'stretch',
+  },
+]);
+
+export const headerTextStyle = style([
+  sprinkles({
+    fontSize: '$3xl',
+    fontWeight: '$normal',
+    fontFamily: '$main',
+    display: 'flex',
+    lineHeight: '$normal',
+  }),
+  {
+    alignSelf: 'stretch',
+  },
 ]);
 
 export const formStyle = style([
