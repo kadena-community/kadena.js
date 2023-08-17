@@ -12,6 +12,7 @@ export const mainContentStyle = style([
   }),
   {
     alignSelf: 'stretch',
+    width: '60%',
   },
 ]);
 
@@ -55,7 +56,7 @@ export const formStyle = style([
     alignItems: 'flex-end',
   }),
   {
-    width: '75%',
+    // width: '60%',
   },
 ]);
 

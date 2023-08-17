@@ -46,7 +46,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { useDidUpdateEffect } from '@/hooks';
@@ -114,7 +114,7 @@ const CrossChainTransferTracker: FC = () => {
     debug(checkRequestKey.name);
 
     //Clear error message when user starts typing
-    setTxError('');
+    setInputError('');
     if (!requestKey) {
       setValidRequestKey(undefined);
       return;
@@ -133,6 +133,8 @@ const CrossChainTransferTracker: FC = () => {
 
     router.query.reqKey = data.requestKey;
     await router.push(router);
+
+    setTxError('');
 
     try {
       await getTransferStatus({
@@ -177,6 +179,7 @@ const CrossChainTransferTracker: FC = () => {
   useEffect(() => {
     if (errors.requestKey?.message) {
       setInputError(errors.requestKey.message);
+      setTxError('');
     }
   }, [errors.requestKey?.message]);
 
@@ -191,27 +194,43 @@ const CrossChainTransferTracker: FC = () => {
           <div className={headerTextStyle}>
             {t('Track & trace transactions')}
           </div>
-          <Button title={t('Search')} icon="Magnify" iconAlign="right">
-            {t('Search')}
-          </Button>
+          {data.id === StatusId.Pending ? (
+            <Button
+              title={t('Finish Transaction')}
+              as="a"
+              href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+              icon="Link"
+              iconAlign="right"
+              variant="positive"
+            >
+              {t('Finish Transaction')}
+            </Button>
+          ) : null}
         </div>
       </div>
 
-      <Notification.Root
-        hasCloseButton
-        onClose={() => {}}
-        title="Notification title"
-      >
-        Notification text to inform users about the event that occurred!
-        <Notification.Actions>
-          <Notification.Button color="positive" icon={SystemIcon.Account}>
-            Accept
-          </Notification.Button>
-          <Notification.Button color="negative" icon={SystemIcon.Account}>
-            Reject
-          </Notification.Button>
-        </Notification.Actions>
-      </Notification.Root>
+      {txError ? (
+        <Notification.Root
+          hasCloseButton
+          color="negative"
+          onClose={() => {
+            setTxError('');
+          }}
+          title="Warning"
+          icon={SystemIcon.AlertBox}
+        >
+          {txError}
+          <Notification.Actions>
+            <Notification.Button
+              color="negative"
+              icon={SystemIcon.Refresh}
+              onClick={validateThenSubmit(handleSubmit)}
+            >
+              Retry
+            </Notification.Button>
+          </Notification.Actions>
+        </Notification.Root>
+      ) : null}
 
       <form className={formStyle} onSubmit={validateThenSubmit(handleSubmit)}>
         <div className={formHeaderStyle}>
@@ -222,7 +241,6 @@ const CrossChainTransferTracker: FC = () => {
             label={t('Request Key')}
             status={validRequestKey}
             // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-            // helperText={!data.receiverAccount ? txError : undefined}
             helperText={inputError || undefined}
             inputProps={{
               ...register('requestKey'),
@@ -245,7 +263,7 @@ const CrossChainTransferTracker: FC = () => {
       {data.receiverAccount ? (
         <DrawerToolbar
           ref={drawerPanelRef}
-          initialOpenItem={true}
+          initialOpenItem={0}
           sections={[
             {
               icon: SystemIcon.Information,
