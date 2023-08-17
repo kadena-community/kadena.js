@@ -20,7 +20,6 @@ export interface INavHeaderRootProps {
   children?: FunctionComponentElement<
     INavHeaderNavigationProps | INavHeaderContentProps
   >[];
-  items?: INavItems;
 }
 
 export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
