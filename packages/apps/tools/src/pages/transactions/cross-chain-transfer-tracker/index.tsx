@@ -1,7 +1,6 @@
 import {
   Breadcrumbs,
   Button,
-  IconButton,
   InputWrapperStatus,
   Notification,
   ProductIcon,
@@ -24,10 +23,12 @@ import {
   topContainerStyle,
 } from './styles.css';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { REQUEST_KEY_VALIDATION } from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
+import { useDidUpdateEffect } from '@/hooks';
 import {
   getTransferStatus,
   IStatusData,
@@ -46,10 +47,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { useDidUpdateEffect } from '@/hooks';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,

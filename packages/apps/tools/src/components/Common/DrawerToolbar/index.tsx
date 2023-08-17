@@ -23,18 +23,18 @@ export interface IDrawerToolbarSection {
   children: ReactNode;
 }
 interface IProps {
-  initialOpenItem?: number | null;
+  initialOpenItem?: number | undefined;
   sections: IDrawerToolbarSection[];
 }
 
 export const DrawerToolbar: ForwardRefExoticComponent<
   Omit<IProps, 'ref'> & React.RefAttributes<HTMLElement>
 > = forwardRef<HTMLElement, IProps>(function DrawerToolbar(
-  { sections, initialOpenItem = null },
+  { sections, initialOpenItem = undefined },
   ref = null,
 ) {
   const [visibleSection, setVisibleSection] = useState<number | null>(
-    initialOpenItem === null ? null : initialOpenItem,
+    initialOpenItem !== undefined ? initialOpenItem : null,
   );
   const isOpen = visibleSection !== null;
 
@@ -58,6 +58,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
     <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
       {!isOpen && (
         <div>
+          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
           {sections.map(({ icon: Icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
               <IconButton
