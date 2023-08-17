@@ -1,10 +1,17 @@
+# Contributing to @kadena/react-ui
+
+This is an aggregation of the conventions that we have picked up while
+developing this component library. This library is still in its early stages
+development so please make any suggestions if you see ways it can be improved!
+
 ## Component Conventions
 
 ### Component Structure
 
 We have had discussions around whether we want to use composition or
-configuration as the pattern for developing components and have decided that it
-differs on a case by case basis. [Composition over Configuration][1]
+configuration as the pattern for developing components and have decided that
+**in most cases we want to use composition, but it differs on a case by case
+basis**. [Composition over Configuration][1]
 
 #### Composition - Subcomponent structure
 
@@ -79,8 +86,8 @@ Kadena easier, but they will often be used in conjunction with native html
 elements or components that are unique to the consuming project. In cases when
 using layout components we offer full flexiblity in what can be passed as child
 components, however, with most other components we try to provide all
-subcomponents necessary to compose an entire `organism` and avoid using external
-elements in our component compositions.
+subcomponents necessary to compose an entire `organism` and **avoid using
+external elements in our component compositions**.
 
 For example, the `NavHeader` component exports all of the subcomponents
 necessary to create the whole Navigation Header. This includes elements like
@@ -123,10 +130,23 @@ Guidlines for defining types:
 ### Controlled - Components with state
 
 Some components will require state to be able to function, in these cases we
-should offer a controlled and uncontrolled version. For example, the
+should **offer a controlled and uncontrolled version**. For example, the
 `Pagination` component can be uncontrolled in the sense that it handles it's own
 state (which page you are on) when clicking arrows, but it also accepts an
 optional `currentPage` prop which allows the user to control it's state.
+
+### Custom Styling
+
+Since this component library was created for usage within Kadena, the components
+are very opinionated in terms of functionality and style. For this reason, we
+wanted to be very strict with props and styling so **components currently do not
+accept a classname prop to alter styles**. Layout components (Box, Stack, Grid)
+should be used when positioning the components and any additional style changes
+cannot be applied for the sake of visual consistency. If a new style/iteration
+is needed, we can discuss adding this with a designer.
+
+> NOTE: We are starting off strict, but if necessary, we can reaccess whether or
+> not we want to start accepting additional styles
 
 ### Storybook, Chromatic, & Testing
 
