@@ -23,7 +23,7 @@ export interface ITrackerCardProps {
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
   icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
-  variant: keyof typeof layoutVariant;
+  variant?: keyof typeof layoutVariant;
 }
 
 export interface ILabelValue {
@@ -40,7 +40,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
   icon,
   helperText,
   helperTextType = 'mild',
-  variant,
+  variant = 'vertical',
 }): JSX.Element => {
   const classCardContainer = classNames(
     CardContainer,
@@ -64,7 +64,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
 
   return (
     <div className={classCardContainer} data-testid="kda-tracker-card">
-      {Icon ? <Icon data-testid="kda-icon" /> : <div />}
+      {Icon ? <Icon data-testid="kda-icon" size="xl" /> : null}
       <div className={ContentContainer}>
         <div className={DataContainer} data-testid="kda-data-container">
           {labelValues?.map((item, index) => {

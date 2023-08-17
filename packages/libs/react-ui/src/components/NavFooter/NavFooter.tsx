@@ -1,14 +1,15 @@
-import { containerClass } from './Footer.css';
+import { containerClass } from './NavFooter.css';
+import { INavFooterPanelProps } from './NavFooterPanel';
 
 import { darkThemeClass } from '@theme/vars.css';
-import React, { FC } from 'react';
+import React, { FC, FunctionComponentElement } from 'react';
 
-export interface IFooterProps {
-  children: React.ReactNode;
+export interface INavFooterRootProps {
+  children: FunctionComponentElement<INavFooterPanelProps>[];
   darkMode?: boolean;
 }
 
-export const FooterContainer: FC<IFooterProps> = ({
+export const NavFooterContainer: FC<INavFooterRootProps> = ({
   children,
   darkMode = false,
 }) => {

@@ -109,7 +109,6 @@ export const LinkTable: Story = {
 };
 
 export const StripedTable: Story = {
-  name: 'Striped Table',
   args: {
     rowCount: 3,
     columnCount: 5,

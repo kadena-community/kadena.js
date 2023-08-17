@@ -18,7 +18,7 @@ import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
-import { useAppContext } from '@/context/app-context';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import {
   StyledAccountForm,
@@ -47,7 +47,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const CrossChainTransferTracker: FC = () => {
-  const { network } = useAppContext();
+  const { selectedNetwork: network } = useWalletConnectClient();
   const router = useRouter();
   const { t } = useTranslation('common');
 

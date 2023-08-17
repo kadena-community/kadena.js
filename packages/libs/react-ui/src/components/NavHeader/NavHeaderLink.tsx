@@ -1,25 +1,25 @@
 import { activeLinkClass, linkClass } from './NavHeader.css';
+import { INavItem } from './NavHeaderNavigation';
 
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export interface INavHeaderLinkProps {
-  children: string;
-  href: string;
-  active?: boolean;
-}
-
-export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
+export const NavHeaderLink: FC<INavItem> = ({
+  active,
   children,
   href,
-  active,
+  target,
+  onClick,
 }) => {
   return (
     <a
       className={classNames(linkClass, {
         [activeLinkClass]: active,
+        'nav-item': true,
       })}
       href={href}
+      target={target}
+      onClick={onClick}
     >
       {children}
     </a>

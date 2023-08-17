@@ -46,6 +46,7 @@ export const vars = createGlobalTheme(':root', {
     $round: '999rem',
   },
   borderWidths: {
+    $sm: '1px',
     $md: '2px',
   },
   shadows: {

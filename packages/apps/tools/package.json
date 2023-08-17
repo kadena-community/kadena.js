@@ -27,6 +27,11 @@
     "@kadena/react-ui": "workspace:*",
     "@radix-ui/colors": "~0.1.8",
     "@stitches/react": "1.3.1-1",
+    "@walletconnect/encoding": "~1.0.2",
+    "@walletconnect/modal": "~2.6.1",
+    "@walletconnect/sign-client": "~2.8.1",
+    "@walletconnect/types": "~2.8.1",
+    "@walletconnect/utils": "~2.9.2",
     "ace-builds": "~1.22.1",
     "classnames": "^2.3.1",
     "jest-standard-reporter": "~2.0.0",
@@ -39,12 +44,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "~7.45.0",
     "react-scripts": "5.0.1",
-    "zod": "~3.18.0",
-    "@walletconnect/encoding": "~1.0.2",
-    "@walletconnect/modal": "~2.6.1",
-    "@walletconnect/sign-client": "~2.8.1",
-    "@walletconnect/types": "~2.8.1",
-    "@walletconnect/utils": "~2.9.2"
+    "zod": "~3.18.0"
   },
   "devDependencies": {
     "@jest/reporters": "~29.5.0",

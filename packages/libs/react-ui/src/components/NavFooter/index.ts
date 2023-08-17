@@ -1,31 +1,31 @@
-import type { IFooterProps } from './Footer';
-import { FooterContainer } from './Footer';
-import type { IFooterIconButtonProps } from './FooterIconButton';
-import { FooterIconButton } from './FooterIconButton';
-import type { IFooterLinkProps } from './FooterLink';
-import { FooterLink } from './FooterLink';
-import type { IFooterPanelProps } from './FooterPanel';
-import { FooterPanel } from './FooterPanel';
+import type { INavFooterRootProps } from './NavFooter';
+import { NavFooterContainer } from './NavFooter';
+import type { INavFooterIconButtonProps } from './NavFooterIconButton';
+import { NavFooterIconButton } from './NavFooterIconButton';
+import type { INavFooterLinkProps } from './NavFooterLink';
+import { NavFooterLink } from './NavFooterLink';
+import type { INavFooterPanelProps } from './NavFooterPanel';
+import { NavFooterPanel } from './NavFooterPanel';
 
 import { FC } from 'react';
 
 export {
-  IFooterProps as INavFooterRootProps,
-  IFooterIconButtonProps as INavFooterIconButtonProps,
-  IFooterLinkProps as INavFooterLinkProps,
-  IFooterPanelProps as INavFooterPanelProps,
+  INavFooterRootProps,
+  INavFooterIconButtonProps,
+  INavFooterLinkProps,
+  INavFooterPanelProps,
 };
 
 export interface INavFooterProps {
-  Root: FC<IFooterProps>;
-  Panel: FC<IFooterPanelProps>;
-  Link: FC<IFooterLinkProps>;
-  IconButton: FC<IFooterIconButtonProps>;
+  Root: FC<INavFooterRootProps>;
+  Panel: FC<INavFooterPanelProps>;
+  Link: FC<INavFooterLinkProps>;
+  IconButton: FC<INavFooterIconButtonProps>;
 }
 
 export const NavFooter: INavFooterProps = {
-  Root: FooterContainer,
-  Panel: FooterPanel,
-  Link: FooterLink,
-  IconButton: FooterIconButton,
+  Root: NavFooterContainer,
+  Panel: NavFooterPanel,
+  Link: NavFooterLink,
+  IconButton: NavFooterIconButton,
 };

@@ -1,4 +1,4 @@
-import type { INavHeaderContainerProps, INavItems } from './NavHeader';
+import type { INavHeaderRootProps, INavItems } from './NavHeader';
 import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
@@ -8,29 +8,30 @@ import React from 'react';
 
 const sampleNavItems: INavItems = [
   {
-    title: 'Faucet',
+    label: 'Faucet',
     href: '#faucet',
   },
   {
-    title: 'Transactions',
+    label: 'Transactions',
     href: '#transactions',
   },
   {
-    title: 'Balance',
+    label: 'Balance',
     href: '#balance',
   },
   {
-    title: 'Learn Pact',
+    label: 'Learn Pact',
     href: '#pact',
   },
 ];
 
 type StoryProps = {
   linksCount: number;
+  navHeaderActiveLink: number;
   renderSampleContent: boolean;
   useCustomNavigation: boolean;
   customNavigation: INavItems;
-} & INavHeaderContainerProps;
+} & INavHeaderRootProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',
@@ -42,7 +43,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'Note: maximum navigation items is currently limited (not technically enforced).\n\nPending design update to support more items.',
+          '<i>Note: maximum navigation items is currently limited (not technically enforced).<br>Pending design update to support more items.</i><br><br><strong>NavHeader.Link usage is optional</strong><br>You set your own children of NavHeader.Navigation (e.g. when using NextJS <Link> component).<br>You can set the initial active link with the <i>activeLink</i> prop on the Navigation component.',
       },
     },
   },
@@ -66,6 +67,14 @@ const meta: Meta<StoryProps> = {
       description: 'Adjust sample navigation items count',
       if: { arg: 'useCustomNavigation', neq: true },
     },
+    navHeaderActiveLink: {
+      control: { disable: true },
+      description:
+        'Which link should be active at start? Set as NavHeader.Navigation prop to change from default',
+      table: {
+        defaultValue: { summary: 0 },
+      },
+    },
     customNavigation: {
       defaultValue: [],
       description: 'Custom navigation items',
@@ -88,6 +97,7 @@ export const Dynamic: IStory = {
   args: {
     brand: logoVariants[0],
     linksCount: 3,
+    navHeaderActiveLink: 0,
     customNavigation: sampleNavItems,
   },
   render: ({
@@ -95,15 +105,21 @@ export const Dynamic: IStory = {
     useCustomNavigation,
     customNavigation,
     linksCount,
+    navHeaderActiveLink,
     renderSampleContent = false,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
+
     return (
       <NavHeader.Root brand={brand}>
-        <NavHeader.Navigation>
+        <NavHeader.Navigation activeLink={navHeaderActiveLink}>
           {navItems.slice(0, linksCount).map((item, index) => (
-            <NavHeader.Link key={index} href={item.href}>
-              {item.title}
+            <NavHeader.Link
+              key={index}
+              href={item.href}
+              onClick={(event) => console.log(item.label, { event })}
+            >
+              {item.label}
             </NavHeader.Link>
           ))}
         </NavHeader.Navigation>

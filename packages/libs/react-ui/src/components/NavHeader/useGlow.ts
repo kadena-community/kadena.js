@@ -9,19 +9,19 @@ interface IUseGlowReturn {
   setActiveNav: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const useGlow = (): IUseGlowReturn => {
+const useGlow = (active = 0): IUseGlowReturn => {
   const glowRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const [glowX, setGlowX] = useState(0);
-  const [activeNav, setActiveNav] = useState(0);
+  const [glowX, setGlowX] = useState(active);
+  const [activeNav, setActiveNav] = useState(active);
 
   const prevGlowX = useRef<number>(glowX);
   const glowAnimationSpeed = useRef<number>(0);
 
   useEffect(() => {
     const activeNavElement = navRef.current?.querySelector(
-      `li:nth-child(${activeNav}) a`,
+      `li:nth-child(${activeNav}) .nav-item`,
     );
     const activeNavBounds = activeNavElement?.getBoundingClientRect();
     const glowBounds = glowRef.current?.getBoundingClientRect();

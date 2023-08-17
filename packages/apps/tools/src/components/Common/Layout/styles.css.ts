@@ -36,3 +36,17 @@ export const footerStyle = style([
     height: '$10',
   }),
 ]);
+
+export const rightPanelStyle = style([
+  sprinkles({
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  }),
+]);
+
+export const rightPanelColsStyle = style([
+  sprinkles({
+    paddingRight: '$2',
+    paddingLeft: '$2',
+  }),
+]);
