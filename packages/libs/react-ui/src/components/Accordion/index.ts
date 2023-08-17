@@ -5,7 +5,7 @@ import { AccordionSection } from './AccordionSection';
 import type { IAccordionSectionsProps } from './AccordionSections';
 import { AccordionSections } from './AccordionSections';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 export { IAccordionRootProps, IAccordionSectionProps, IAccordionSectionsProps };
 

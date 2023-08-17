@@ -6,7 +6,8 @@ import {
 
 import { elementVariants, heading } from './Heading.css';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IHeadingProps {
   as?: keyof typeof elementVariants;

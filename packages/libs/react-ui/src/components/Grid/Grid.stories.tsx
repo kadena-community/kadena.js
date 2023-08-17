@@ -1,5 +1,6 @@
-import { gapVariants, ResponsiveInputType } from './Grid.css';
-import { IGridRootProps } from './GridRoot';
+import type { ResponsiveInputType } from './Grid.css';
+import { gapVariants } from './Grid.css';
+import type { IGridRootProps } from './GridRoot';
 import { ContentClass } from './stories.css';
 
 import { Grid } from '@components/Grid';

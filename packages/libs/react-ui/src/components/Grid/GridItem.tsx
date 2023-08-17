@@ -7,7 +7,8 @@ import {
 } from './Grid.css';
 
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IGridItemProps {
   children?: ReactNode;

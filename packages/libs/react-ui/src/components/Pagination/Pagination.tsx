@@ -3,7 +3,8 @@ import { PageNum } from './PageNum';
 import { paginate } from './paginate';
 import { listClass } from './Pagination.css';
 
-import React, { FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 export interface IPaginationProps {
   totalPages: number;
@@ -30,7 +31,7 @@ export const Pagination: FC<IPaginationProps> = ({
   const enablePrevious = page > 1;
   const enableNext = page < totalPages;
 
-  const onClick = (page: number) => {
+  const onClick = (page: number): void => {
     setPage(page);
     onPageChange(page);
   };

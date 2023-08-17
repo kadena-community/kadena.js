@@ -9,11 +9,12 @@ import {
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
-import React, {
+import type {
   FC,
   FunctionComponentElement,
   HTMLAttributeAnchorTarget,
 } from 'react';
+import React from 'react';
 
 export interface INavItem {
   active?: boolean;

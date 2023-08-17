@@ -1,6 +1,7 @@
 import { IAccordionSectionsProps } from '.';
 
-import React, { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface IAccordionRootProps {
   children?: FunctionComponentElement<IAccordionSectionsProps>;

@@ -2,7 +2,8 @@ import { toggleButtonClass } from './Accordion.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IAccordionSectionProps {
   children: React.ReactNode;

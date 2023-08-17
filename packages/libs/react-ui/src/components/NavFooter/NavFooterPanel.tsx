@@ -2,7 +2,8 @@ import { footerPanel } from './NavFooter.css';
 import { INavFooterIconButtonProps } from './NavFooterIconButton';
 import { INavFooterLinkProps } from './NavFooterLink';
 
-import React, { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface INavFooterPanelProps {
   children: FunctionComponentElement<

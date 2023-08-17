@@ -3,7 +3,7 @@ import GridItem from './GridItem';
 import type { IGridRootProps } from './GridRoot';
 import GridRoot from './GridRoot';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 export type { IGridRootProps as IGridContainerProps, IGridItemProps };
 

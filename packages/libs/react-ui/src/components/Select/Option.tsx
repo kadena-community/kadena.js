@@ -1,6 +1,7 @@
 import { optionClass } from './Select.css';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IOptionProps
   extends Omit<React.HTMLAttributes<HTMLOptionElement>, 'as'> {

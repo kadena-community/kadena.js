@@ -8,12 +8,8 @@ import useLinked from './useLinked';
 import { IAccordionSectionProps } from '.';
 
 import classNames from 'classnames';
-import React, {
-  FC,
-  FunctionComponentElement,
-  useCallback,
-  useEffect,
-} from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 export interface IAccordionSectionsProps {
   children?: FunctionComponentElement<IAccordionSectionProps>[];

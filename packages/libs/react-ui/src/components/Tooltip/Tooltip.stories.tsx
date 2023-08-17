@@ -1,5 +1,6 @@
+import type { ITooltipProps } from './';
 import { container } from './stories.css';
-import { ITooltipProps, Tooltip } from './';
+import { Tooltip } from './';
 
 import { SystemIcon } from '@components/Icon';
 import { IconButton } from '@components/IconButton';

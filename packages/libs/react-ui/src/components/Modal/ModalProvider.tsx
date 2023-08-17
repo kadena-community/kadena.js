@@ -1,10 +1,9 @@
 import { Modal } from './Modal';
 import { openModal } from './Modal.css';
 
+import type { FC, ReactNode } from 'react';
 import React, {
   createContext,
-  FC,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,

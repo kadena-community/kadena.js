@@ -1,5 +1,7 @@
-import { Sprinkles, sprinkles } from '@theme/sprinkles.css';
-import React, { createElement, ElementType } from 'react';
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import type { ElementType } from 'react';
+import React, { createElement } from 'react';
 
 export interface IBoxProps
   extends Partial<

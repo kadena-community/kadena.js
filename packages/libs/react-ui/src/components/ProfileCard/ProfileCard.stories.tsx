@@ -1,5 +1,6 @@
 import { Grid } from '@components/Grid';
-import { IProfileCardProps, ProfileCard } from '@components/ProfileCard';
+import type { IProfileCardProps } from '@components/ProfileCard';
+import { ProfileCard } from '@components/ProfileCard';
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
