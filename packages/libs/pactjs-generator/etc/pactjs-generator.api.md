@@ -4,40 +4,11 @@
 
 ```ts
 
-/// <reference types="node" />
-
-import { PathLike } from 'fs';
-
 // Warning: (ae-forgotten-export) The symbol "IModule" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "IPointer" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
 export function contractParser(contract: string, namespace?: string): [IModule[], IPointer];
-
-// @alpha (undocumented)
-export class FileContractDefinition implements IContractDefinition {
-    constructor({ path, namespace, logger, }: {
-        path: PathLike;
-        namespace?: string;
-        logger?: ILogger;
-    });
-    // Warning: (ae-forgotten-export) The symbol "Defcap" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
-    // Warning: (ae-forgotten-export) The symbol "Defun" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    getMethods(moduleName: string): Record<string, Defun> | undefined;
-    // (undocumented)
-    getNamespace(moduleName: string): string;
-    // (undocumented)
-    get modules(): string[] | undefined;
-    // Warning: (ae-forgotten-export) The symbol "Output" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    get modulesWithFunctions(): Output;
-}
 
 // @alpha (undocumented)
 export function generateDts(moduleFullName: string, modules: Record<string, IModule>): string;
@@ -47,20 +18,6 @@ export function generateTemplates(templates: {
     name: string;
     template: ITemplate;
 }[], version: string): string;
-
-// @alpha (undocumented)
-export interface IContractDefinition {
-    // (undocumented)
-    getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
-    // (undocumented)
-    getMethods(moduleName: string): Record<string, Defun> | undefined;
-    // (undocumented)
-    getNamespace(moduleName: string): string;
-    // (undocumented)
-    get modules(): string[] | undefined;
-    // (undocumented)
-    get modulesWithFunctions(): Output;
-}
 
 // @alpha (undocumented)
 export interface ITemplate {
@@ -84,33 +41,10 @@ export function pactParser({ contractNames, files, getContract, namespace, }: {
 export function parseTemplate(template: string): ITemplate;
 
 // @alpha (undocumented)
-export class StringContractDefinition implements IContractDefinition {
-    constructor({ contract, namespace, logger, }: {
-        contract: string;
-        namespace?: string;
-        logger?: ILogger;
-    });
-    // (undocumented)
-    getCapabilities(moduleName: string): Record<string, Defcap> | undefined;
-    // (undocumented)
-    getMethods(moduleName: string): Record<string, Defun> | undefined;
-    // (undocumented)
-    getNamespace(moduleName: string): string;
-    // (undocumented)
-    get modules(): string[] | undefined;
-    // (undocumented)
-    get modulesWithFunctions(): Output;
-}
-
-// @alpha (undocumented)
 export type TemplateHoles = string[];
 
 // @alpha (undocumented)
 export type TemplateParts = string[];
-
-// Warnings were encountered during analysis:
-//
-// src/contract/generation/FileContractDefinition.ts:23:5 - (ae-forgotten-export) The symbol "ILogger" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

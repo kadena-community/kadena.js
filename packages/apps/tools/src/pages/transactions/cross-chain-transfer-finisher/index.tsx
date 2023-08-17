@@ -30,7 +30,7 @@ import client from '@/constants/client';
 import { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Routes from '@/constants/routes';
-import { useAppContext } from '@/context/app-context';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
@@ -79,7 +79,7 @@ const CrossChainTransferFinisher: FC = () => {
     'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
   );
   const { t } = useTranslation('common');
-  const { network } = useAppContext();
+  // const { network } = useAppContext();
   const router = useRouter();
 
   const helpCenterRef = useRef<HTMLElement | null>(null);
@@ -92,6 +92,7 @@ const CrossChainTransferFinisher: FC = () => {
   const [validRequestKey, setValidRequestKey] = useState<
     InputWrapperStatus | undefined
   >();
+  const { selectedNetwork: network } = useWalletConnectClient();
 
   const [showMore, setShowMore] = useState<boolean>(false);
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
@@ -148,7 +149,7 @@ const CrossChainTransferFinisher: FC = () => {
 
     const pollResult: ITransferDataResult | undefined = await getTransferData({
       requestKey,
-      network: 'TESTNET',
+      network,
       t,
     });
 

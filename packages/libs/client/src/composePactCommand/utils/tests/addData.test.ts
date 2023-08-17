@@ -22,4 +22,11 @@ describe('addData', () => {
       payload: { exec: { data: { test: 'value' } } },
     });
   });
+
+  it('throws exception is data already has the same key', () => {
+    const cmd = addData('test', 'value')({});
+    expect(() => addData('test', 'value')(cmd)).toThrowError(
+      Error(`DUPLICATED_KEY: "test" is already available in the data`),
+    );
+  });
 });

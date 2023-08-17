@@ -15,7 +15,7 @@ import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
-import { useAppContext } from '@/context';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -39,7 +39,7 @@ const CheckTransactions: FC = () => {
 
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { network } = useAppContext();
+  const { selectedNetwork: network } = useWalletConnectClient();
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   useToolbar([

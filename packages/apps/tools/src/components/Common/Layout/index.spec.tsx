@@ -1,6 +1,23 @@
 jest.mock('@/components/Common/WalletConnectButton', () =>
   jest.fn(() => <button>connect wallet</button>),
 );
+jest.mock('@/context/connect-wallet-context', () =>
+  jest.fn(() => ({
+    client: jest.fn(),
+    session: undefined,
+    connect: jest.fn(),
+    disconnect: jest.fn(),
+    isInitializing: false,
+    pairings: undefined,
+    accounts: undefined,
+    selectedNetwork: '',
+    setSelectedNetwork: jest.fn(),
+    selectedChain: '',
+    setSelectedChain: jest.fn(),
+    selectedAccount: '',
+    setSelectedAccount: jest.fn(),
+  })),
+);
 
 import Layout from './index';
 
