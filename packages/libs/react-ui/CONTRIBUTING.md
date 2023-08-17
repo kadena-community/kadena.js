@@ -1,49 +1,160 @@
-## Conventions
+## Component Conventions
 
 ### Component Structure
 
-Component.Root etc.
+We have had discussions around whether we want to use composition or
+configuration as the pattern for developing components and have decided that it
+differs on a case by case basis. [Composition over Configuration][1]
 
-- avoiding external elements (current exception is Next/Link)
-- [Composition over configuration](https://dev.to/anuradha9712/configuration-vs-composition-design-reusable-components-5h1f):
-  aim for composition over configuration, but support configuration where it
-  makes (more) sense
+#### Composition - Subcomponent structure
 
-### Component Typing
+Composition makes sense if the component is more complex and needs a bit more
+flexibility in regards to data, children, or layout. Components using this this
+pattern will export one object of subcomponents that will make up the building
+blocks for the entire component. These subcomponents will always export one
+`Root` component as the containing component. This is inspired by [Radix
+Primitives][2].
+
+A simple example of a component that should use this pattern is the Grid
+component.
+
+```jsonc
+<Grid.Root>
+    <Grid.Item>{item1}</Grid.Item>
+    <Grid.Item>{item2}</Grid.Item>
+    <Grid.Item>{item3}</Grid.Item>
+</Grid.Root>
+```
+
+The reason we opted for this approach when it comes to more complex components
+is becuase this allows keep our components more flexible by providing styled
+building blocks that users can freely position based on their own unique logic.
+It allows us to keep complexity outside of our component logic so we don't need
+to make exceptions or combinations based on prop configuration.
+
+#### Configuration - Configuring via props
+
+This approach makes sense when developing simpler components. So in cases of any
+`atom` or `molecule` sized components (ex. Box, Text, Button), often times using
+the subcomponent approach isn't necessary becuase the different iterations of
+how that component will look are limited and introducing more subcomponents
+reduces DX.
+
+One example of a component that we updated from the Composition to Configuration
+approach was the `Button` component.
+
+Previously when the `Button` was used with an icon, it needed to be composed
+like this:
+
+```jsonc
+<Button.Root>Label<Button.Icon /></Button.Root>
+```
+
+The reason we went for this approach originally was because it matched the
+pattern of the other components, however in usage it caused confusion becuase:
+
+- It often didn't have an icon, but we still needed to use the `Root` export
+- Users didn't realize the `Button` component exported it's own `Button.Icon` so
+  they would use other Icon components
+- It also allows for too much flexibility in terms of what can be placed within
+  the button when it should only ever have text and optionally, an icon or
+  loading state.
+
+Now, it has been updated with the configuration approach and can be used in the
+following way:
+
+```jsonc
+<Button icon="someIcon" iconAlign="right" loading={false}>Label</Button>
+```
+
+This keeps the `Button` API cleaner, especially when it only houses a label, and
+allows us to maintain control of the layout of items within the button while not
+introducing too much complexity that is hard to maintain becuase there are a
+fixed number of variations.
+
+### External Elements/Components
+
+This library exports prestyled components that are meant to make building UIs at
+Kadena easier, but they will often be used in conjunction with native html
+elements or components that are unique to the consuming project. In cases when
+using layout components we offer full flexiblity in what can be passed as child
+components, however, with most other components we try to provide all
+subcomponents necessary to compose an entire `organism` and avoid using external
+elements in our component compositions.
+
+For example, the `NavHeader` component exports all of the subcomponents
+necessary to create the whole Navigation Header. This includes elements like
+links and buttons becuase we want to provide a styled version of these elements
+that is specific to the `organism` it is composing. This also helps to improve
+maintainibility of component styling which is enforced via
+[vanilla-extract/css][3] and will be explained in more detail in the Styling
+section.
+
+> NOTE: One exception to this is the usage of Next/Link. We are looking into
+> finding a consitent way to handle links that need to use the Next/Link
+> component
+
+### Typing
+
+Guidlines for defining types:
 
 - Be as strict as possible, within the limits of the component's intended use.
 - Never use `any` or `unknown` unless absolutely necessary.
-- Use `unknown` over `any` if you're not sure what type something is.
+- Use `unknown` over `any` if you're not sure what type something is. <<<<<<<
+  Updated upstream
 - Only type the children prop as `ReactNode` if you don't know what type it will
   be or you wish to explicitly allow any children (e.g. it's up to the consumer
   to decide what to render).
-- Use `FunctionComponentElement` otherwise with the applicable type.
+- Use `FunctionComponentElement` or whatever type is applicable when you want to
+  restrict what children can be passed to component.
+- In most cases you should use interfaces to type component props and objects
+  and all interfaces should be previed with I - `IObject`
+- In other cases you can use type which should be suffexed with `Type` -
+  `SomethingType`
+- All component proptypes should be implemented as interfaces and be prefixed
+  with `I` and suffixed with `Props` - `IComponentProps`.
 
-### Component Property Naming Convention
+### Property Naming Convention
 
-### Standards regarding storybook and when we should write unit tests
+- Actions should be prefixed with `on` - `onClick` or `onHover`
+- All boolean props should be named like an adjective to describe the
+  Component - `disabled`, `stacked`, `fullWidth` Card
+
+### Controlled - Components with state
+
+Some components will require state to be able to function, in these cases we
+should offer a controlled and uncontrolled version. For example, the
+`Pagination` component can be uncontrolled in the sense that it handles it's own
+state (which page you are on) when clicking arrows, but it also accepts an
+optional `currentPage` prop which allows the user to control it's state.
+
+### Storybook, Chromatic, & Testing
+
+We are required to create a story in storybook that showcases all functionality
+for each component. This automatically gets synced with chromatic so that we
+have also have regression testing. For visual related testing, this is going to
+be sufficient for most components.
+
+> TIP: Import component from @components/... in stories to check that you are
+> adding new components to the components barrel file
+
+#### Unit Tests
+
+In some cases, there will be utility functions or additional complex logic that
+you may want to test without chromatic. In these cases you can use unit tests
+with Jest.
 
 ### File structure and naming naming conventions
 
-- always having a barrel file (index.ts)
-- CSS files should be named after the component (e.g. `Button.css.ts`)
+- Always have a barrel file for every directory (every component should have an
+  index.ts file)
+- CSS files should be named after the component that consumes them (e.g.
+  `Button.css.ts`)
 
 ### Exports
 
-- we always export component props
-- never export default
-
-### Type naming convention
-
-- use interface for props and any objects (there are exceptions) - naming
-  convention is to always prefix with I (for interface) and props always have a
-  prop suffix
-- use types for others
-
-### How to handle components that may use Next/Link
-
-- Use a wrapper component that handles the link (see e.g. `NavHeader`,
-  `Breadcrumbs`)
+- Never export default from a file
+- Always export component props with every component
 
 ## Vanilla Extract
 
@@ -58,3 +169,8 @@ Component.Root etc.
 https://vanilla-extract.style/documentation/styling#complex-selectors
 
 - when to use globalStyle
+
+[1]:
+  https://dev.to/anuradha9712/configuration-vs-composition-design-reusable-components-5h1f
+[2]: https://www.radix-ui.com/primitives
+[3]: https://vanilla-extract.style/
