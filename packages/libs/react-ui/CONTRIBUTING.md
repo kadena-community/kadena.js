@@ -176,21 +176,34 @@ with Jest.
 - Never export default from a file
 - Always export component props with every component
 
-## Vanilla Extract
+## Styling with Vanilla Extract
 
-### Classname naming convention
+Guidlines when styling with VE:
 
-### Using sprinkles as much as possible
-
-### Using recipes when you want to create variants
+- Classnames should use camel-casing and always have `Class` suffix -
+  `containerClass`
+- You should use sprinkles whenever possible since these are predefined utility
+  class. If a style value that you think is commonly used is not available as a
+  sprinkle, feel free to add it.
+- If you want to create multiple variations of a components style, use variants.
+  Variants should be have a `Variant` suffix - `colorVariant`
 
 ### Selectors
 
-https://vanilla-extract.style/documentation/styling#complex-selectors
+Simple Pseudo Selectors and complex selectors can be used on components, but
+**styles can only be applied to the current element that the class is applied
+to**. This is a deliberate restriction set by VE to help with maintainability.
+If you need to apply a style to a child element depending on the state of a
+parent element, you can target a class on the parent element from the child and
+apply styles via a [complex selector][4]
 
-- when to use globalStyle
+It should be avoided when possible, but if you need to target child nodes within
+the current element, you can use `globalStyle`. In some cases it isn't
+necessary, but it does improve code quality/maintainability, so use your
+discretion when deciding what methods to use.
 
 [1]:
   https://dev.to/anuradha9712/configuration-vs-composition-design-reusable-components-5h1f
 [2]: https://www.radix-ui.com/primitives
 [3]: https://vanilla-extract.style/
+[4]: https://vanilla-extract.style/documentation/styling#complex-selectors
