@@ -1,22 +1,11 @@
-import useLinked from './useLinked';
 import { IAccordionSectionsProps } from '.';
 
 import React, { FC, FunctionComponentElement } from 'react';
 
 export interface IAccordionRootProps {
-  children?: React.ReactNode;
-  linked?: boolean;
-  openSection?: number;
+  children?: FunctionComponentElement<IAccordionSectionsProps>;
 }
 
-export const AccordionRoot: FC<IAccordionRootProps> = ({
-  children,
-  linked,
-  openSection,
-}) => {
-  if (linked) {
-    const { setUsingLinked } = useLinked(openSection);
-    setUsingLinked(true);
-  }
+export const AccordionRoot: FC<IAccordionRootProps> = ({ children }) => {
   return <div data-testid="kda-accordion-wrapper">{children}</div>;
 };
