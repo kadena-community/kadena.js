@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "throw error for duplicated keys while using addData",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/client"
+}

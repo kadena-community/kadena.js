@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "remove the files using the old client api",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}
