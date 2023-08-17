@@ -20,7 +20,6 @@ export interface INavHeaderRootProps {
   children?: FunctionComponentElement<
     INavHeaderNavigationProps | INavHeaderContentProps
   >[];
-  items?: INavItems;
 }
 
 export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
@@ -31,9 +30,9 @@ export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
     <header className={containerClass} data-testid="kda-navheader">
       <div className={logoClass}>
         {logoVariants.includes(brand) && (
-          <Link.Root href="/" target="_self">
+          <Link href="/" target="_self">
             <Logo variant={brand} />
-          </Link.Root>
+          </Link>
         )}
       </div>
       {children}
