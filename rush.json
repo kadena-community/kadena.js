@@ -549,6 +549,13 @@
       "versionPolicyName": "alpha"
     },
 
+    {
+      "packageName": "@kadena/vscode-extension",
+      "projectFolder": "packages/libs/vscode-extension",
+      "tags": ["libs"],
+      "shouldPublish": false
+    },
+
     // #########################
     // ##  Tools
     // #########################
