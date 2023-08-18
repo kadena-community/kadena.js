@@ -5,6 +5,7 @@ import {
   Grid,
   Heading,
   InputWrapperStatus,
+  Notification,
   ProductIcon,
   Stack,
   SystemIcon,
@@ -15,21 +16,25 @@ import {
 import {
   formButtonStyle,
   formContentStyle,
-  gasInputsStyle,
+  notificationContainerStyle,
   sidebarLinksStyle,
 } from './styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
+import {
+  AccountNameField,
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import { FormItemCard } from '@/components/Global/FormItemCard';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
-import { Network } from '@/constants/kadena';
+import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Routes from '@/constants/routes';
+import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
@@ -70,6 +75,8 @@ const schema = z.object({
     .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
     .optional(),
   gasPayer: NAME_VALIDATION.optional(),
+  gasLimit: z.number().optional(),
+  gasPrice: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -79,8 +86,8 @@ const CrossChainTransferFinisher: FC = () => {
     'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
   );
   const { t } = useTranslation('common');
-  // const { network } = useAppContext();
   const router = useRouter();
+  const { devOption } = useAppContext();
 
   const helpCenterRef = useRef<HTMLElement | null>(null);
 
@@ -94,12 +101,11 @@ const CrossChainTransferFinisher: FC = () => {
   >();
   const { selectedNetwork: network } = useWalletConnectClient();
 
-  const [showMore, setShowMore] = useState<boolean>(false);
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
 
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [gasLimit, setGasLimit] = useState<number>(kadenaConstants.GAS_LIMIT);
 
   useToolbar([
     {
@@ -131,14 +137,17 @@ const CrossChainTransferFinisher: FC = () => {
   //   }
   // }, [router.isReady]);
 
+  const handleOpenHelpCenter = (): void => {
+    // @ts-ignore
+    helpCenterRef.openSection(0);
+  };
+
   const checkRequestKey = async (
     e: React.KeyboardEvent<HTMLInputElement>,
   ): Promise<void> => {
     console.log('Getting here!');
     e.preventDefault();
     debug(checkRequestKey.name);
-
-    console.log('REQ KEY:', requestKey);
 
     if (!validateRequestKey(requestKey)) {
       return;
@@ -153,20 +162,19 @@ const CrossChainTransferFinisher: FC = () => {
       t,
     });
 
-    console.log("got here, but poll is: ", pollResult);
-
     if (pollResult === undefined) {
       return;
     }
 
     setPollResults(pollResult);
+    handleOpenHelpCenter();
     if (pollResults.tx === undefined) {
       return;
     }
   };
 
-  const handleSubmit = async (data: FormData): Promise<void> => {
-    debug(handleSubmit.name);
+  const handleValidateSubmit = async (data: FormData): Promise<void> => {
+    debug(handleValidateSubmit.name);
 
     if (!pollResults.tx) {
       return;
@@ -211,12 +219,16 @@ const CrossChainTransferFinisher: FC = () => {
         networkId,
         chainId: pollResults.tx.receiver.chain,
       });
+      if (result.result.error) {
+        setTxError(result.result.error.message);
+      }
       setFinalResults({
         requestKey: result.reqKey,
         status: result.result.status,
       });
     } catch (tx) {
       debug(tx);
+
       setFinalResults({ ...tx });
     }
   };
@@ -230,7 +242,7 @@ const CrossChainTransferFinisher: FC = () => {
 
   const {
     register,
-    handleSubmit: validateThenSubmit,
+    handleSubmit,
     watch,
     formState: { errors },
     getValues,
@@ -241,6 +253,8 @@ const CrossChainTransferFinisher: FC = () => {
       server: chainNetwork[network].server,
       requestKey: '',
       gasPayer: 'kadena-xchain-gas',
+      gasLimit: kadenaConstants.GAS_LIMIT,
+      gasPrice: kadenaConstants.GAS_PRICE.toFixed(8),
     },
     // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {
@@ -248,19 +262,39 @@ const CrossChainTransferFinisher: FC = () => {
     },
   });
 
-  const watchAdvancedOptions = watch('advancedOptions');
   const watchGasPayer = watch('gasPayer');
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
+  const isAdvancedOptions = devOption !== 'BASIC';
   const showInputError =
     pollResults.error === undefined ? undefined : 'negative';
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
+  const showNotification = Object.keys(finalResults).length > 0;
 
-  const handleOpenHelpCenter = (): void => {
-    // @ts-ignore
-    helpCenterRef.openSection(0);
-  };
+  const renderNotification =
+    txError.toString() === '' ? (
+      <Notification.Root
+        expanded
+        hasCloseButton
+        icon={SystemIcon.CheckDecagram}
+        onClose={() => {}}
+        title="Notification title"
+        color="positive"
+      >
+        XChain transfer has been successfully finalized!
+      </Notification.Root>
+    ) : (
+      <Notification.Root
+        hasCloseButton
+        icon={SystemIcon.AlertBox}
+        onClose={() => {}}
+        title="Transaction error"
+        color="negative"
+      >
+        {txError.toString()}
+      </Notification.Root>
+    );
 
   useEffect(() => {
     resetField('requestKey');
@@ -292,7 +326,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-
                 <TrackerCard
                   variant="vertical"
                   icon={ProductIcon.QuickStart}
@@ -308,7 +341,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-
                 <TrackerCard
                   variant="vertical"
                   icon={ProductIcon.Gas}
@@ -320,7 +352,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-
                 <TrackerCard
                   variant="vertical"
                   icon={ProductIcon.Receiver}
@@ -336,7 +367,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-                {/*<Box marginTop="$64">*/}
                 <div className={sidebarLinksStyle}>
                   <ResourceLinks
                     links={[{ title: 'Transactions link', href: '#' }]}
@@ -354,22 +384,19 @@ const CrossChainTransferFinisher: FC = () => {
       </Breadcrumbs.Root>
 
       <Heading as="h3" transform="capitalize" bold={false}>
-        Finish transaction
+        {t('Finish transaction')}
       </Heading>
 
       <section className={formContentStyle}>
-        <form onSubmit={validateThenSubmit(handleSubmit)}>
-          {/*<div className={formHeaderStyle}>*/}
-          {/*  <div className={formHeaderTitleStyle}>Search Request</div>*/}
-          {/*</div>*/}
+        <form onSubmit={handleSubmit(handleValidateSubmit)}>
 
-          {/*<div className={accountFormStyle}>*/}
+          {showNotification ? (
+            <div className={notificationContainerStyle}>
+              {renderNotification}
+            </div>
+          ) : null}
 
-
-
-
-
-          <Stack direction="column">
+         <Stack direction="column">
             <FormItemCard
               heading="Search Request"
               helper="Where can I find the request key?"
@@ -402,16 +429,14 @@ const CrossChainTransferFinisher: FC = () => {
               <Box marginBottom="$4" />
               <Grid.Root columns={1}>
                 <Grid.Item>
-                  <TextField
-                    helperText={'Only single pubkey accounts are supported'}
-                    status="warning"
+                  <AccountNameField
                     label={t('Gas Payer')}
                     inputProps={{
                       ...register('gasPayer', { shouldUnregister: true }),
                       id: 'gas-payer-account-input',
                       placeholder: t('Enter Your Account'),
-                      leftIcon: SystemIcon.KIcon,
                     }}
+                    error={errors.gasPayer}
                   />
                 </Grid.Item>
               </Grid.Root>
@@ -420,13 +445,11 @@ const CrossChainTransferFinisher: FC = () => {
               <Grid.Root columns={2}>
                 <Grid.Item>
                   <TextField
-                    // disabled={true}
-                    // helperText={'Only single pubkey accounts are supported'}
-                    // status="warning"
+                    disabled={true}
                     label={t('Gas Price')}
                     info={"approx. USD 000.1 ¢"}
                     inputProps={{
-                      // ...register('gasPrice', { shouldUnregister: true }),
+                      ...register('gasPrice', { shouldUnregister: true }),
                       id: 'gas-price-input',
                       placeholder: t('Enter Gas Price'),
                       leadingText: 'KDA',
@@ -436,12 +459,11 @@ const CrossChainTransferFinisher: FC = () => {
                 </Grid.Item>
                 <Grid.Item>
                   <TextField
-                    // disabled={true}
-                    helperText={'This input field will only be visible if the user is in expert mode'}
-                    // status="default"
+                    disabled={!isAdvancedOptions}
+                    helperText={'This input field will only be enabled if the user is in expert mode'}
                     label={t('Gas Limit')}
                     inputProps={{
-                      // ...register('gasPrice', { shouldUnregister: true }),
+                      ...register('gasLimit', { shouldUnregister: true }),
                       id: 'gas-limit-input',
                       placeholder: t('Enter Gas Limit'),
                     }}
@@ -474,41 +496,11 @@ const CrossChainTransferFinisher: FC = () => {
             </FormItemCard>
           </Stack>
 
-          {/*</div>*/}
-
-          {/*<div className={formButtonStyle}></div>*/}
           <section className={formButtonStyle}>
-            <Button icon="TrailingIcon">{t('Finish Transaction')}</Button>
+            <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">{t('Finish Transaction')}</Button>
           </section>
         </form>
       </section>
-
-      {/*<StyledFinisherContent>*/}
-      {/*  <StyledForm onSubmit={validateThenSubmit(handleSubmit)}>*/}
-      {/*    <StyledAccountForm>*/}
-      {/*      <StyledToggleContainer>*/}
-      {/*        <StyledFieldCheckbox>*/}
-      {/*          <StyledCheckbox*/}
-      {/*            {...register('advancedOptions')}*/}
-      {/*            type="checkbox"*/}
-      {/*            id="advanced-options"*/}
-      {/*            placeholder={t('Enter private key to sign the transaction')}*/}
-      {/*          />*/}
-      {/*          <StyledCheckboxLabel htmlFor="advanced-options">*/}
-      {/*            {t('Advanced options')}*/}
-      {/*          </StyledCheckboxLabel>*/}
-      {/*        </StyledFieldCheckbox>*/}
-      {/*      </StyledToggleContainer>*/}
-
-      {/*      <RequestKeyField*/}
-      {/*        helperText={showInputHelper}*/}
-      {/*        status={showInputError}*/}
-      {/*        inputProps={{*/}
-      {/*          ...register('requestKey'),*/}
-      {/*          onKeyUp: checkRequestKey,*/}
-      {/*        }}*/}
-      {/*        error={errors.requestKey}*/}
-      {/*      />*/}
 
       {/*      {watchAdvancedOptions ? (*/}
       {/*        <>*/}
@@ -566,36 +558,9 @@ const CrossChainTransferFinisher: FC = () => {
       {/*    ) : null}*/}
       {/*  </StyledForm>*/}
 
-      {/*  {pollResults.tx ? (*/}
-      {/*    <StyledInfoBox>*/}
-      {/*      <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>*/}
 
 
-      {/*      {showMore ? (*/}
-      {/*        <StyledInfoItem>*/}
-      {/*          <StyledInfoItemTitle>{t('Receiver guard')}</StyledInfoItemTitle>*/}
-      {/*          <StyledInfoItemLine>{`${t('Pred')}: ${*/}
-      {/*            pollResults.tx.receiverGuard.pred*/}
-      {/*          }`}</StyledInfoItemLine>*/}
-      {/*          <StyledInfoItemLine>*/}
-      {/*            {t('Keys')}:*/}
-      {/*            {pollResults.tx.receiverGuard.keys.map((key, index) => (*/}
-      {/*              <StyledInfoItemLine key={index}>{key}</StyledInfoItemLine>*/}
-      {/*            ))}*/}
-      {/*          </StyledInfoItemLine>*/}
-      {/*        </StyledInfoItem>*/}
-      {/*      ) : null}*/}
-
-      {/*      <StyledShowMore onClick={() => setShowMore(!showMore)}>*/}
-      {/*        {!showMore ? t('Show more') : t('Show less')}*/}
-      {/*      </StyledShowMore>*/}
-      {/*    </StyledInfoBox>*/}
-      {/*  ) : null}*/}
       {/*</StyledFinisherContent>*/}
-
-
-
-
     </div>
   );
 };
