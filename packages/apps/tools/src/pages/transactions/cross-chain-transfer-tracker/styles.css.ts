@@ -40,10 +40,10 @@ export const accountFormStyle = style([
     paddingTop: '$10',
     paddingRight: '$10',
     paddingLeft: '$10',
+    background: '$gray40',
   }),
   {
     alignSelf: 'stretch',
-    background: 'rgba(71, 79, 82, 0.4)',
   },
 ]);
 
@@ -63,10 +63,10 @@ export const formHeaderStyle = style([
     paddingLeft: '$10',
     alignItems: 'flex-start',
     gap: '$2',
+    background: '$gray40',
   }),
   {
     alignSelf: 'stretch',
-    background: 'rgba(71, 79, 82, 0.4)',
   },
 ]);
 
