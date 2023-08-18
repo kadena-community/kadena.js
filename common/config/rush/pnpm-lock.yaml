@@ -76,6 +76,9 @@ importers:
       react-markdown:
         specifier: ~8.0.7
         version: 8.0.7(@types/react@18.2.17)(react@18.2.0)
+      react-tweet:
+        specifier: ~3.1.1
+        version: 3.1.1(react-dom@18.2.0)(react@18.2.0)
       redoc:
         specifier: ~2.0.0
         version: 2.0.0(core-js@3.32.0)(mobx@6.9.1)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)(webpack@5.88.2)
@@ -22513,6 +22516,20 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-tweet@3.1.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-8GQLa5y0G56kvGQkN7OiaKkjFAhWYVdyFq62ioY2qVtpMrjchVU+3KnqneCyp0+BemOQZkg6WWp/qoCNeEMH6A==}
+    peerDependencies:
+      react: '>= 18.0.0'
+      react-dom: '>= 18.0.0'
+    dependencies:
+      '@swc/helpers': 0.5.1
+      clsx: 1.2.1
+      date-fns: 2.30.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      swr: 2.2.1(react@18.2.0)
+    dev: false
+
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -24386,6 +24403,16 @@ packages:
       '@swc/core': 1.3.71
       webpack: 5.88.2(@swc/core@1.3.71)(esbuild@0.18.17)
     dev: true
+
+  /swr@2.2.1(react@18.2.0):
+    resolution: {integrity: sha512-KJVA7dGtOBeZ+2sycEuzUfVIP5lZ/cd0xjevv85n2YG0x1uHJQicjAtahVZL6xG3+TjqhbBqimwYzVo3saeVXQ==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      client-only: 0.0.1
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
 
   /symbol-observable@4.0.0:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
