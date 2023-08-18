@@ -1,0 +1,83 @@
+{
+  "name": "@kadena/vs-code",
+  "displayName": "Kadena Visual Studio Code Extension",
+  "description": "Enhance your blockchain development experience on the Kadena platform with the Kadena Visual Studio Code Extension",
+  "version": "0.0.1",
+  "publisher": "kadena",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/vscode-extension"
+  },
+  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Albert"
+    },
+    {
+      "name": "Jesse"
+    }
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "kadena.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "types": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "scripts": {
+    "build": "heft build --clean",
+    "format": "npm run format:md && npm run format:src",
+    "format:ci": "prettier config src --check",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier config src --write",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
+    "test": "heft test",
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint"
+  },
+  "dependencies": {
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@types/isomorphic-fetch": "~0.0.36",
+    "cross-fetch": "~3.1.5",
+    "node-fetch": "~2.6.2"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/vscode": "^1.81.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "@vscode/test-electron": "^2.3.2",
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
+    "@types/heft-jest": "~1.0.3",
+    "@types/node": "^16.0.0",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.3"
+  }
+}
