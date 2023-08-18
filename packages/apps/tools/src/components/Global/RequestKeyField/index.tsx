@@ -37,15 +37,8 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
   ...rest
 }) => {
   const { t } = useTranslation('common');
-  console.log('ERROR: ', error);
-
-  console.log('THIS IS HELPER TEXT: ', helperText);
-  console.log('THIS IS ERROR TEXT: ', error?.message);
 
   const helper = helperText || error?.message;
-  console.log('HEEEELPEEEEEEEEER: ', helper);
-
-  console.log('THIS IS HELPER TEXT: ', helperText);
 
   return (
     <TextField

@@ -5,38 +5,23 @@ import { style } from '@vanilla-extract/css';
 export const formContentStyle = style([
   sprinkles({
     position: 'relative',
-    // zIndex: -1,
+    height: '100%',
+    zIndex: 0,
   }),
   {
     width: '680px',
+    overflow: 'overflow'
   },
 ]);
 
-export const formStyle = style([
+export const notificationContainerStyle = style([
   sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
+    // position: 'absolute',
+    top: 0,
+    zIndex: 1,
   }),
   {
-    width: '75%',
-  },
-]);
-
-export const accountFormStyle = style([
-  sprinkles({
-    padding: '$4',
-    borderRadius: '$sm',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingBottom: '$10',
-    paddingTop: '$10',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-  }),
-  {
-    alignSelf: 'stretch',
-    background: 'rgba(71, 79, 82, 0.4)',
+    width: '680px',
   },
 ]);
 
@@ -70,46 +55,6 @@ export const formHeaderStyle = style([
     alignSelf: 'stretch',
     background: 'rgba(71, 79, 82, 0.4)',
   },
-]);
-
-export const formHeaderTitleStyle = style([
-  sprinkles({
-    fontSize: '$xl',
-    fontFamily: '$main',
-    fontWeight: '$semiBold',
-    lineHeight: '$normal',
-    color: '$neutral6',
-  }),
-]);
-
-export const infoBoxStyle = style([
-  sprinkles({
-    fontSize: '$base',
-    padding: '$2',
-    borderRadius: '$sm',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '$6',
-  }),
-  {
-    background: 'rgba(71, 79, 82, 0.4)',
-    width: '40%',
-    alignSelf: 'stretch',
-  },
-]);
-
-export const infoTitleStyle = style([
-  sprinkles({
-    fontSize: '$base',
-    marginBottom: '$2',
-    textAlign: 'center',
-  }),
-]);
-
-export const gasInputsStyle = style([
-  sprinkles({
-    gap: '$sm',
-  }),
 ]);
 
 export const sidebarLinksStyle = style([

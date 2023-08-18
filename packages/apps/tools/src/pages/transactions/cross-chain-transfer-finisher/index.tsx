@@ -5,6 +5,7 @@ import {
   Grid,
   Heading,
   InputWrapperStatus,
+  Notification,
   ProductIcon,
   Stack,
   SystemIcon,
@@ -15,6 +16,7 @@ import {
 import {
   formButtonStyle,
   formContentStyle,
+  notificationContainerStyle,
   sidebarLinksStyle,
 } from './styles.css';
 
@@ -147,8 +149,6 @@ const CrossChainTransferFinisher: FC = () => {
     e.preventDefault();
     debug(checkRequestKey.name);
 
-    console.log('REQ KEY:', requestKey);
-
     if (!validateRequestKey(requestKey)) {
       return;
     }
@@ -161,8 +161,6 @@ const CrossChainTransferFinisher: FC = () => {
       network,
       t,
     });
-
-    console.log("got here, but poll is: ", pollResult);
 
     if (pollResult === undefined) {
       return;
@@ -178,10 +176,7 @@ const CrossChainTransferFinisher: FC = () => {
   const handleValidateSubmit = async (data: FormData): Promise<void> => {
     debug(handleValidateSubmit.name);
 
-    console.log('HHHHEEEEEEEYYYYYYYYYYYYYYYY');
-
     if (!pollResults.tx) {
-      console.log('woohoooooo');
       return;
     }
 
@@ -224,12 +219,16 @@ const CrossChainTransferFinisher: FC = () => {
         networkId,
         chainId: pollResults.tx.receiver.chain,
       });
+      if (result.result.error) {
+        setTxError(result.result.error.message);
+      }
       setFinalResults({
         requestKey: result.reqKey,
         status: result.result.status,
       });
     } catch (tx) {
       debug(tx);
+
       setFinalResults({ ...tx });
     }
   };
@@ -271,6 +270,31 @@ const CrossChainTransferFinisher: FC = () => {
     pollResults.error === undefined ? undefined : 'negative';
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
+  const showNotification = Object.keys(finalResults).length > 0;
+
+  const renderNotification =
+    txError.toString() === '' ? (
+      <Notification.Root
+        expanded
+        hasCloseButton
+        icon={SystemIcon.CheckDecagram}
+        onClose={() => {}}
+        title="Notification title"
+        color="positive"
+      >
+        XChain transfer has been successfully finalized!
+      </Notification.Root>
+    ) : (
+      <Notification.Root
+        hasCloseButton
+        icon={SystemIcon.AlertBox}
+        onClose={() => {}}
+        title="Transaction error"
+        color="negative"
+      >
+        {txError.toString()}
+      </Notification.Root>
+    );
 
   useEffect(() => {
     resetField('requestKey');
@@ -302,7 +326,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-
                 <TrackerCard
                   variant="vertical"
                   icon={ProductIcon.QuickStart}
@@ -318,7 +341,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-
                 <TrackerCard
                   variant="vertical"
                   icon={ProductIcon.Gas}
@@ -330,7 +352,6 @@ const CrossChainTransferFinisher: FC = () => {
                     },
                   ]}
                 />
-
                 <TrackerCard
                   variant="vertical"
                   icon={ProductIcon.Receiver}
@@ -368,6 +389,13 @@ const CrossChainTransferFinisher: FC = () => {
 
       <section className={formContentStyle}>
         <form onSubmit={handleSubmit(handleValidateSubmit)}>
+
+          {showNotification ? (
+            <div className={notificationContainerStyle}>
+              {renderNotification}
+            </div>
+          ) : null}
+
          <Stack direction="column">
             <FormItemCard
               heading="Search Request"
@@ -433,7 +461,6 @@ const CrossChainTransferFinisher: FC = () => {
                   <TextField
                     disabled={!isAdvancedOptions}
                     helperText={'This input field will only be enabled if the user is in expert mode'}
-                    // status="default"
                     label={t('Gas Limit')}
                     inputProps={{
                       ...register('gasLimit', { shouldUnregister: true }),
@@ -469,16 +496,11 @@ const CrossChainTransferFinisher: FC = () => {
             </FormItemCard>
           </Stack>
 
-          {/*</div>*/}
-
           <section className={formButtonStyle}>
             <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">{t('Finish Transaction')}</Button>
           </section>
         </form>
       </section>
-
-
-
 
       {/*      {watchAdvancedOptions ? (*/}
       {/*        <>*/}
@@ -536,9 +558,7 @@ const CrossChainTransferFinisher: FC = () => {
       {/*    ) : null}*/}
       {/*  </StyledForm>*/}
 
-      {/*  {pollResults.tx ? (*/}
-      {/*    <StyledInfoBox>*/}
-      {/*      <StyledInfoTitle>{t('Pact Information')}</StyledInfoTitle>*/}
+
 
       {/*</StyledFinisherContent>*/}
     </div>
