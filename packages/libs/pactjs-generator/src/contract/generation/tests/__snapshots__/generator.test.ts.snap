@@ -2,7 +2,8 @@
 
 exports[`generateDts add defpact functions to defpact property 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { PactReference } from '@kadena/client';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
@@ -138,7 +139,8 @@ declare module '@kadena/client' {
 
 exports[`generateDts prefixes capabulities for defpact with defpact_ 1`] = `
 "
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { PactReference } from '@kadena/client';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;
