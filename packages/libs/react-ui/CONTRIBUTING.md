@@ -1,7 +1,7 @@
 # Contributing to @kadena/react-ui
 
 This is an aggregation of the conventions that we have picked up while
-developing this component library. This library is still in its early stages
+developing this component library. This library is still in its early stages of
 development so please make any suggestions if you see ways it can be improved!
 
 ## Component Conventions
@@ -34,16 +34,16 @@ component.
 ```
 
 The reason we opted for this approach when it comes to more complex components
-is becuase this allows keep our components more flexible by providing styled
-building blocks that users can freely position based on their own unique logic.
-It allows us to keep complexity outside of our component logic so we don't need
-to make exceptions or combinations based on prop configuration.
+is because this allows us to keep our components more flexible by providing
+styled building blocks that users can freely position based on their own unique
+logic. It allows us to keep complexity outside of our component logic so we
+don't need to make exceptions or combinations based on prop configuration.
 
 #### Configuration - Configuring via props
 
 This approach makes sense when developing simpler components. So in cases of any
 `atom` or `molecule` sized components (ex. Box, Text, Button), often times using
-the subcomponent approach isn't necessary becuase the different iterations of
+the subcomponent approach isn't necessary because the different iterations of
 how that component will look are limited and introducing more subcomponents
 reduces DX.
 
@@ -74,9 +74,9 @@ following way:
 <Button icon="someIcon" iconAlign="right" loading={false}>Label</Button>
 ```
 
-This keeps the `Button` API cleaner, especially when it only houses a label, and
-allows us to maintain control of the layout of items within the button while not
-introducing too much complexity that is hard to maintain becuase there are a
+This keeps the `Button` API cleaner, especially when only a label is provided,
+and allows us to maintain control of the layout of items within the button while
+not introducing too much complexity that is hard to maintain becuase there are a
 fixed number of variations.
 
 ### External Elements/Components
@@ -114,8 +114,8 @@ Guidlines for defining types:
 - Use `FunctionComponentElement` or whatever type is applicable when you want to
   restrict what children can be passed to component.
 - In most cases you should use interfaces to type component props and objects
-  and all interfaces should be previed with I - `IObject`
-- In other cases you can use type which should be suffexed with `Type` -
+  and all interfaces should be prefixed with I - `IObject`
+- In other cases you can use type which should be suffixed with `Type` -
   `SomethingType`
 - All component proptypes should be implemented as interfaces and be prefixed
   with `I` and suffixed with `Props` - `IComponentProps`.
@@ -185,7 +185,7 @@ Guidlines when styling with VE:
   class. If a style value that you think is commonly used is not available as a
   sprinkle, feel free to add it.
 - If you want to create multiple variations of a components style, use variants.
-  Variants should be have a `Variant` suffix - `colorVariant`
+  Variants should have a `Variant` suffix - `colorVariant`
 
 ### Selectors
 
