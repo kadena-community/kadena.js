@@ -3,36 +3,9 @@ import { sprinkles } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const mainContentStyle = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '$6',
-    paddingTop: '$2',
-    paddingBottom: '$10',
-  }),
   {
     alignSelf: 'stretch',
     width: '60%',
-  },
-]);
-
-export const topContainerStyle = style([
-  sprinkles({
-    display: 'flex',
-    gap: '$2',
-    flexDirection: 'column',
-  }),
-]);
-
-export const headerContainerStyle = style([
-  sprinkles({
-    display: 'flex',
-    gap: '$6',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-  }),
-  {
-    alignSelf: 'stretch',
   },
 ]);
 
@@ -55,9 +28,6 @@ export const formStyle = style([
     flexDirection: 'column',
     alignItems: 'flex-end',
   }),
-  {
-    // width: '60%',
-  },
 ]);
 
 export const accountFormStyle = style([
@@ -66,7 +36,6 @@ export const accountFormStyle = style([
     borderRadius: '$sm',
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'flex-start',
     paddingBottom: '$10',
     paddingTop: '$10',
     paddingRight: '$10',
@@ -83,13 +52,6 @@ export const formButtonStyle = style([
     alignItems: 'center',
     marginTop: '$4',
     gap: '$8',
-  }),
-]);
-
-export const sideContentStyle = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
   }),
 ]);
 
@@ -126,13 +88,5 @@ export const infoBoxStyle = style([
     display: 'flex',
     flexDirection: 'column',
     gap: '$6',
-  }),
-]);
-
-export const infoTitleStyle = style([
-  sprinkles({
-    fontSize: '$base',
-    marginBottom: '$2',
-    textAlign: 'center',
   }),
 ]);

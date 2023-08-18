@@ -5,6 +5,7 @@ import {
   Notification,
   ProductIcon,
   ProgressBar,
+  Stack,
   SystemIcon,
   TextField,
   TrackerCard,
@@ -16,11 +17,11 @@ import {
   formHeaderStyle,
   formHeaderTitleStyle,
   formStyle,
-  headerContainerStyle,
+  // headerContainerStyle,
   headerTextStyle,
   infoBoxStyle,
   mainContentStyle,
-  topContainerStyle,
+  // topContainerStyle,
 } from './styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
@@ -184,156 +185,168 @@ const CrossChainTransferTracker: FC = () => {
 
   return (
     <div className={mainContentStyle}>
-      <div className={topContainerStyle}>
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-          <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
-        <div className={headerContainerStyle}>
-          <div className={headerTextStyle}>
-            {t('Track & trace transactions')}
-          </div>
-          {data.id === StatusId.Pending ? (
-            <Button
-              title={t('Finish Transaction')}
-              as="a"
-              href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
-              icon="Link"
-              iconAlign="right"
-              variant="positive"
-            >
-              {t('Finish Transaction')}
-            </Button>
-          ) : null}
-        </div>
-      </div>
+      <Stack
+        direction="column"
+        paddingTop={'$2'}
+        paddingBottom={'$10'}
+        spacing={'$6'}
+      >
+        <Stack direction="column" spacing={'$2'}>
+          {' '}
+          <Breadcrumbs.Root>
+            <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
+          </Breadcrumbs.Root>
+          <Stack
+            spacing={'$6'}
+            justifyContent={'space-between'}
+            alignItems={'flex-end'}
+          >
+            <div className={headerTextStyle}>
+              {t('Track & trace transactions')}
+            </div>
+            {data.id === StatusId.Pending ? (
+              <Button
+                title={t('Finish Transaction')}
+                as="a"
+                href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+                icon="Link"
+                iconAlign="right"
+                variant="positive"
+              >
+                {t('Finish Transaction')}
+              </Button>
+            ) : null}
+          </Stack>
+        </Stack>
 
-      {txError ? (
-        <Notification.Root
-          hasCloseButton
-          color="negative"
-          onClose={() => {
-            setTxError('');
-          }}
-          title="Warning"
-          icon={SystemIcon.AlertBox}
-        >
-          {txError}
-          <Notification.Actions>
-            <Notification.Button
-              color="negative"
-              icon={SystemIcon.Refresh}
-              onClick={validateThenSubmit(handleSubmit)}
-            >
-              Retry
-            </Notification.Button>
-          </Notification.Actions>
-        </Notification.Root>
-      ) : null}
-
-      <form className={formStyle} onSubmit={validateThenSubmit(handleSubmit)}>
-        <div className={formHeaderStyle}>
-          <div className={formHeaderTitleStyle}>Search Request</div>
-        </div>
-        <div className={accountFormStyle}>
-          <TextField
-            label={t('Request Key')}
-            status={validRequestKey}
-            // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-            helperText={inputError || undefined}
-            inputProps={{
-              ...register('requestKey'),
-              id: 'request-key-input',
-              placeholder: t('Enter Request Key'),
-              onChange: onRequestKeyChange,
-              onKeyUp: checkRequestKey,
-              value: requestKey,
-              leftIcon: SystemIcon.KeyIconFilled,
+        {txError ? (
+          <Notification.Root
+            hasCloseButton
+            color="negative"
+            onClose={() => {
+              setTxError('');
             }}
-          />
-        </div>
-        <div className={formButtonStyle}>
-          <Button title={t('Search')} icon="Magnify" iconAlign="right">
-            {t('Search')}
-          </Button>
-        </div>
-      </form>
+            title="Warning"
+            icon={SystemIcon.AlertBox}
+          >
+            {txError}
+            <Notification.Actions>
+              <Notification.Button
+                color="negative"
+                icon={SystemIcon.Refresh}
+                onClick={validateThenSubmit(handleSubmit)}
+              >
+                Retry
+              </Notification.Button>
+            </Notification.Actions>
+          </Notification.Root>
+        ) : null}
 
-      {data.receiverAccount ? (
-        <DrawerToolbar
-          ref={drawerPanelRef}
-          initialOpenItem={0}
-          sections={[
-            {
-              icon: SystemIcon.Information,
-              title: t('Transfer Information'),
-              children: (
-                <div className={infoBoxStyle}>
-                  <TrackerCard
-                    variant="vertical"
-                    icon={ProductIcon.QuickStart}
-                    labelValues={[
-                      {
-                        label: t('Sender'),
-                        value: data.senderAccount || '',
-                        isAccount: true,
-                      },
-                      {
-                        label: t('Chain'),
-                        value: data.senderChain || '',
-                      },
-                    ]}
-                  />
-                  {/*  Progress Bar will only show if the transfer is in progress /
+        <form className={formStyle} onSubmit={validateThenSubmit(handleSubmit)}>
+          <div className={formHeaderStyle}>
+            <div className={formHeaderTitleStyle}>Search Request</div>
+          </div>
+          <div className={accountFormStyle}>
+            <TextField
+              label={t('Request Key')}
+              status={validRequestKey}
+              // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
+              helperText={inputError || undefined}
+              inputProps={{
+                ...register('requestKey'),
+                id: 'request-key-input',
+                placeholder: t('Enter Request Key'),
+                onChange: onRequestKeyChange,
+                onKeyUp: checkRequestKey,
+                value: requestKey,
+                leftIcon: SystemIcon.KeyIconFilled,
+              }}
+            />
+          </div>
+          <div className={formButtonStyle}>
+            <Button title={t('Search')} icon="Magnify" iconAlign="right">
+              {t('Search')}
+            </Button>
+          </div>
+        </form>
+
+        {data.receiverAccount ? (
+          <DrawerToolbar
+            ref={drawerPanelRef}
+            initialOpenItem={0}
+            sections={[
+              {
+                icon: SystemIcon.Information,
+                title: t('Transfer Information'),
+                children: (
+                  <div className={infoBoxStyle}>
+                    <TrackerCard
+                      variant="vertical"
+                      icon={ProductIcon.QuickStart}
+                      labelValues={[
+                        {
+                          label: t('Sender'),
+                          value: data.senderAccount || '',
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: data.senderChain || '',
+                        },
+                      ]}
+                    />
+                    {/*  Progress Bar will only show if the transfer is in progress /
                     completed.  If an error occurs, the notification will display the
                     error and no progress bar will show */}
-                  <ProgressBar
-                    checkpoints={[
-                      {
-                        status: 'complete',
-                        title: t('Initiated transaction'),
-                      },
-                      {
-                        status:
-                          data?.id === StatusId.Success
-                            ? 'complete'
-                            : 'pending',
-                        title: data.description || 'An error has occurred',
-                      },
-                      {
-                        status:
-                          data.id === StatusId.Pending
-                            ? 'incomplete'
-                            : 'complete',
-                        title: t('Transfer complete'),
-                      },
-                    ]}
-                  />
-                  <TrackerCard
-                    variant="vertical"
-                    icon={
-                      data?.id === StatusId.Success
-                        ? ProductIcon.Receiver
-                        : ProductIcon.ReceiverInactive
-                    }
-                    labelValues={[
-                      {
-                        label: t('Receiver'),
-                        value: data.receiverAccount || '',
-                        isAccount: true,
-                      },
-                      {
-                        label: t('Chain'),
-                        value: data.receiverChain || '',
-                      },
-                    ]}
-                  />
-                </div>
-              ),
-            },
-          ]}
-        />
-      ) : null}
+                    <ProgressBar
+                      checkpoints={[
+                        {
+                          status: 'complete',
+                          title: t('Initiated transaction'),
+                        },
+                        {
+                          status:
+                            data?.id === StatusId.Success
+                              ? 'complete'
+                              : 'pending',
+                          title: data.description || 'An error has occurred',
+                        },
+                        {
+                          status:
+                            data.id === StatusId.Pending
+                              ? 'incomplete'
+                              : 'complete',
+                          title: t('Transfer complete'),
+                        },
+                      ]}
+                    />
+                    <TrackerCard
+                      variant="vertical"
+                      icon={
+                        data?.id === StatusId.Success
+                          ? ProductIcon.Receiver
+                          : ProductIcon.ReceiverInactive
+                      }
+                      labelValues={[
+                        {
+                          label: t('Receiver'),
+                          value: data.receiverAccount || '',
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: data.receiverChain || '',
+                        },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
+            ]}
+          />
+        ) : null}
+      </Stack>
     </div>
   );
 };
