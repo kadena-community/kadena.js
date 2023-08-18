@@ -3,7 +3,11 @@ import { Box, Heading, Stack } from '@kadena/react-ui';
 import { browseSectionWrapper } from '../styles/index.css';
 
 import { BrowseSection } from '@/components';
-import { Article, Content } from '@/components/Layout/components';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+} from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
 import { IMostPopularPage } from '@/types/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
@@ -11,6 +15,7 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import classNames from 'classnames';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -23,8 +28,11 @@ const Home: FC<IProps> = ({ popularPages }) => {
   return (
     <>
       <HomeHeader popularPages={popularPages} />
-      <Content id="maincontent" layout="home">
-        <Article>
+      <div
+        className={classNames(contentClass, contentClassVariants.home)}
+        id="maincontent"
+      >
+        <article className={articleClass}>
           <Box marginBottom="$10">
             <Stack wrap="wrap" spacing="$2xs">
               <BrowseSection title="General" className={browseSectionWrapper}>
@@ -110,8 +118,8 @@ const Home: FC<IProps> = ({ popularPages }) => {
               />
             </BrowseSection>
           </Stack>
-        </Article>
-      </Content>
+        </article>
+      </div>
     </>
   );
 };
