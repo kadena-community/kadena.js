@@ -37,12 +37,15 @@ tutorials" such as:
 
 ### Switch branches
 
-Depending on the changes, you may need to invoke the following commands when
-switching branches to keep everything in check:
+When switching branches external- (npm) and monorepo-dependencies might have
+changed. Run the following command to update both:
 
-```bash
-rush update
-rush build -t <package name>
+```sh
+rush install
+rush build
+# or to install and build for a specific package
+rush install -t <package>
+rush build -t <package>
 ```
 
 ## Tests
@@ -62,6 +65,51 @@ Make sure to update the changelog before it gets merged:
 ```bash
 rush change
 ```
+
+## Fixing monorepo issues
+
+### Package or type not found
+
+When compiling, either locally or in Github CI, an issue with `type not found`
+could occur. To make sure it's not an issue with your code check the following.
+
+- is the dependency present in the packages' `package.json`
+- did you run `rush install`
+- did you run `rush build -t <package-to-work-on>`, or `rush build` to build all
+  packages
+- try `rush rebuild`, this will build regardless of any caching mechanisms
+- remove all non-tracked files and folders, and rebuild. Make sure to backup
+  `.env` and other files that you want to preserve
+  ```sh
+  cd packages && git clean -dfx .
+  rush install && rush rebuild
+  # or only specifically for a package
+  rush install -t <package> && rush rebuild -t <package>
+  ```
+
+### PR has conflicts with main
+
+1. run `git fetch && git rebase origin/master`. This will update the status of
+   the remote branches and then rebase your current branch on `master`
+   1. you get conflicts in either `repo-state.yaml` or `pnpm-lock.json`.  
+      run `rush update` to update those two files according to the packages'
+      dependencies
+   2. fix your other conflicts manually
+
+### Github Actions CI build is red, locally it works
+
+This could be an issue where you're depending on local caches or locally built
+projects that aren't up-to-date with master
+
+1. go into the `packages` directory and clear all non-committed files
+   ```sh
+   cd packages && git clean -dfx .
+   ```
+2. install packages and build and test the project. Use `rush rebuild` to bypass
+   caches
+   ```sh
+   rush install && rush rebuild && rush test
+   ```
 
 ## Conventions
 

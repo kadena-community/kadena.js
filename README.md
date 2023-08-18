@@ -18,6 +18,43 @@ This monorepo contains libraries and tooling for frontend development.
 New contributors are welcome! If you're interested, please see [our guide to
 contributing][4].
 
+## Getting started
+
+First, you need to have `rush` (the monorepo manager tool) installed. You can
+use your preferred package manager to do so.
+
+```sh
+npm install --global @microsoft/rush
+# or
+pnpm install --global @microsoft/rush
+# or
+yarn install --global @microsoft/rush
+```
+
+To run a specific package in the monorepo, install its relevant packages, and
+build itself and its dependencies. You can omit `-t <package-name>` if you want
+to `install` and `build` all packages.
+
+```sh
+rush install -t <package-name>
+rush build -t <package-name>
+```
+
+Navigate to the relevant package and read the `README.md` on how to "Getting
+Started" for that packages.
+
+You can read all commands for that package by opening the `package.json`. In
+order to get the right dependencies and references, use `rushx` to start the
+`package.json#scripts`-commands.
+
+```sh
+# for example
+cd packages/apps/docs && rushx dev
+```
+
+If you experience issues with the monorepo, please take a look at
+[contribution guide > Fixing monorepo issues](./CONTRIBUTING.md#fixing-monorepo-issues)
+
 ## Packages
 
 Overview of the main packages maintained in this repository:
