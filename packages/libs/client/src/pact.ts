@@ -4,6 +4,7 @@ import {
   createTransactionBuilder,
   ITransactionBuilder,
 } from './createTransactionBuilder/createTransactionBuilder';
+import { unpackLiterals } from './utils/pact-helpers';
 import { parseAsPactValue } from './utils/parseAsPactValue';
 
 /**
@@ -36,7 +37,9 @@ export const getModule = (name: string): any => {
       return pr;
     },
     apply(target, thisArg, args) {
-      const exp = createExp(code, ...args.map(parseAsPactValue));
+      const exp = unpackLiterals(
+        createExp(code, ...args.map(parseAsPactValue)),
+      );
       code = name;
       return exp;
     },
