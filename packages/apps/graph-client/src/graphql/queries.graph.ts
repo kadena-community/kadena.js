@@ -17,15 +17,15 @@ export const CORE_BLOCK_FIELDS: DocumentNode = gql`
     # predicate
     # target
     # weight
-    transactions {
-      totalCount
-      edges {
-        node {
-          id
-          reqKey
-        }
-      }
-    }
+    # transactions {
+    #   totalCount
+    #   edges {
+    #     node {
+    #       id
+    #       reqKey
+    #     }
+    #   }
+    # }
   }
 `;
 
