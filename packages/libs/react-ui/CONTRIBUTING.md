@@ -42,10 +42,15 @@ don't need to make exceptions or combinations based on prop configuration.
 #### Configuration - Configuring via props
 
 This approach makes sense when developing simpler components. So in cases of any
-`atom` or `molecule` sized components (ex. Box, Text, Button), often times using
-the subcomponent approach isn't necessary because the different iterations of
-how that component will look are limited and introducing more subcomponents
-reduces DX.
+`atom` or `molecule`<sup>\*</sup> sized components (ex. Box, Text, Button),
+often times using the subcomponent approach isn't necessary because the
+different iterations of how that component will look are limited and introducing
+more subcomponents would negatively affect DX.
+
+> <sup>\*</sup> These terms come from the Atomic Design methodology. If you're
+> unfamiliar with this, you can read more about it
+> [here](https://bradfrost.com/blog/post/atomic-web-design/) and
+> [here](https://atomicdesign.bradfrost.com/chapter-2/).
 
 One example of a component that we updated from the Composition to Configuration
 approach was the `Button` component.
@@ -91,7 +96,7 @@ external elements in our component compositions**.
 
 For example, the `NavHeader` component exports all of the subcomponents
 necessary to create the whole Navigation Header. This includes elements like
-links and buttons becuase we want to provide a styled version of these elements
+links and buttons because we want to provide a styled version of these elements
 that is specific to the `organism` it is composing. This also helps to improve
 maintainibility of component styling which is enforced via
 [vanilla-extract/css][3] and will be explained in more detail in the Styling
@@ -99,7 +104,7 @@ section.
 
 > NOTE: One exception to this is the usage of Next/Link. We are looking into
 > finding a consitent way to handle links that need to use the Next/Link
-> component
+> component and other such cases.
 
 ### Typing
 
@@ -113,16 +118,16 @@ Guidlines for defining types:
   to decide what to render).
 - Use `FunctionComponentElement` or whatever type is applicable when you want to
   restrict what children can be passed to component.
-- In most cases you should use interfaces to type component props and objects
-  and all interfaces should be prefixed with I - `IObject`
-- In other cases you can use type which should be suffixed with `Type` -
+- In most cases you should use interfaces to type component props and objects.
+- All interfaces should be prefixed with I - e.g. `IObject`
+- In other cases you can use type which should be suffixed with `Type` - e.g.
   `SomethingType`
 - All component proptypes should be implemented as interfaces and be prefixed
-  with `I` and suffixed with `Props` - `IComponentProps`.
+  with `I` and suffixed with `Props` - e.g. `IComponentProps`.
 
 ### Property Naming Convention
 
-- Actions should be prefixed with `on` - `onClick` or `onHover`
+- Actions should be prefixed with `on` - e.g. `onClick` or `onHover`
 - All boolean props should be named like an adjective to describe the
   Component - `disabled`, `stacked`, `fullWidth` Card
 
@@ -144,7 +149,7 @@ should be used when positioning the components and any additional style changes
 cannot be applied for the sake of visual consistency. If a new style/iteration
 is needed, we can discuss adding this with a designer.
 
-> NOTE: We are starting off strict, but if necessary, we can reaccess whether or
+> NOTE: We are starting off strict, but if necessary, we can reassess whether or
 > not we want to start accepting additional styles
 
 ### Storybook, Chromatic, & Testing
@@ -154,7 +159,7 @@ for each component. This automatically gets synced with chromatic so that we
 have also have regression testing. For visual related testing, this is going to
 be sufficient for most components.
 
-> TIP: Import component from @components/... in stories to check that you are
+> TIP: import component from @components/... in stories to check that you are
 > adding new components to the components barrel file
 
 #### Unit Tests
