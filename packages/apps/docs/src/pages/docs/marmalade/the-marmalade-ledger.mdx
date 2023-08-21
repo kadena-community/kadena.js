@@ -4,18 +4,19 @@ description: What is the Marmalade Ledger
 menu: The Marmalade Ledger
 label: The Marmalade Ledger
 order: 2
-layout: normal
+layout: full
 ---
 
 # The Marmalade Ledger Explained
 
-## What is the Marmalade Ledger?
+**What is the Marmalade Ledger?**
 
-What is it and what is it used for. Think of a ledger as your personal bank
-statement, only in this case its not just for you, it's for everybody
-participating in the system. It's this big ol' record that keeps track of the
-things within marmalade that happen. You can look at the ledger as the heart of
-marmalade, the place where most of the action happens.
+What is it and what is it used for. Think of a
+[Ledger](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact) as
+your personal bank statement, only in this case its not just for you, it's for
+everybody participating in the system. It's this big ol' record that keeps track
+of the things within marmalade that happen. You can look at the ledger as the
+heart of marmalade, the place where most of the action happens.
 
 In the context of NFTs, the Marmalade Ledger plays a crucial role in managing
 the lifecycle of these unique digital assets. It provides the underlying
@@ -33,12 +34,12 @@ manner. The ledger enforces policies and guards to ensure compliance with
 predefined rules and constraints, promoting secure and trustworthy NFT
 transactions.
 
-## Diving Deeper into the Marmalade Ledger
+**Diving Deeper into the Marmalade Ledger**
 
 When delving further into the ledger's workings, we find each function and
 capability playing a unique role in its operation and management.
 
-### Capabilities
+**Capabilities**
 
 There are capabilities like `TRANSFER` and `XTRANSFER`, which work similarly to
 the transfer feature on your online banking application. They help move tokens
@@ -55,12 +56,12 @@ Capabilities like `MINT` and `BURN` enable creation and removal of tokens
 respectively. Lastly, `LEDGER` provides a security check, ensuring executed
 policies have correct permissions.
 
-### Marketplace related capabilities
+**Marketplace related capabilities**
 
 Special marketplace-related capabilities like `SALE`, `OFFER`, `WITHDRAW`, and
 `BUY` facilitate the trading of tokens within the marketplace.
 
-### Core functions
+**Core functions**
 
 Core functions such as `create-token`, `create-account`, `mint`, `burn`,
 `offer`, `withdraw`, `buy`, `transfer`, `get-balance`, `details`, `rotate`,
@@ -68,7 +69,7 @@ Core functions such as `create-token`, `create-account`, `mint`, `burn`,
 from creating new tokens and accounts to managing token trading in the
 marketplace.
 
-### Internal / Helper functions
+**Internal / Helper functions**
 
 Helper functions like `precision`, `enforce-unit`, `debit`, `credit`,
 `get-token-info`, `TRANSFER-mgr`, `account-guard`, `ledger-guard`,

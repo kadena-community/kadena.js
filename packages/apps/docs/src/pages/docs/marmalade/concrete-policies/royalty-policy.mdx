@@ -4,15 +4,16 @@ description: Utilizing the Royalty Policy
 menu: The Royalty Policy
 label: The Royalty Policy
 order: 4
-layout: normal
+layout: full
 ---
 
 # The Royalty Policy: Ensuring Enduring Benefits for Artists in the Digital Era
 
 In the dynamic world of digital art, creators are continuously exploring new
-avenues to express their creativity and capitalize on their work. The Royalty
-Policy is a powerful policy ensuring that these artists enjoy benefits from
-their creations far beyond the initial sale.
+avenues to express their creativity and capitalize on their work.
+[The Royalty Policy](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/royalty-policy/royalty-policy-v1.pact)
+is a powerful policy ensuring that these artists enjoy benefits from their
+creations far beyond the initial sale.
 
 Imagine being a digital artist. You've poured your heart into creating a unique
 digital asset – a one-of-a-kind piece of art. The relationship with your work,
@@ -43,12 +44,14 @@ royalty specification as an example:
 **Creation of Artwork**: As an artist, your creative journey commences with the
 creation of a unique piece of digital art, materialising as an NFT (Non-Fungible
 Token). Part of this creative process is defining your royalty terms. To do
-this, you add the Royalty Policy to the `policies` field at token creation and
-provide the royalty specification. The royalty specification should indicate a
-royalty rate of 5% (0.05), ensuring that you, as the creator, will receive 5% of
-all future sales. It also stipulates in what fungible form these royalties will
-be compensated. This ensures that with every resale, a portion of the proceeds
-finds its way back to you, recognising your enduring contribution.
+this, you add the Royalty Policy to the
+**[policies](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact#L201C20-L201C20)**
+field at token creation and provide the royalty specification. The royalty
+specification should indicate a royalty rate of 5% (0.05), ensuring that you, as
+the creator, will receive 5% of all future sales. It also stipulates in what
+fungible form these royalties will be compensated. This ensures that with every
+resale, a portion of the proceeds finds its way back to you, recognising your
+enduring contribution.
 
 2.  **Listing Artwork for Sale**: Once your artwork has been created, you list
     it for sale, much like displaying your work in a gallery. You include

@@ -4,7 +4,7 @@ description: What are concrete-policies
 menu: Concrete Policies
 label: Overview
 order: 4
-layout: normal
+layout: full
 ---
 
 # What are concrete-policies
@@ -16,29 +16,30 @@ policies, Marmalade aims to provide a rich set of features that can be easily
 added to tokens without the need for extensive custom development.
 
 When using a concrete policy, token creators can simply activate a policy by
-adding the policy to the respective `policies` fields at token creation. This
-goes for concrete-policies and custom-policies. The concrete policies available
-in Marmalade V2 are the Guard Policy, Collection Policy, Non-fungible Policy,
-and Royalty Policy.
+adding the policy to the respective
+**[policies](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact#L201C20-L201C20)**
+fields at token creation. This goes for concrete-policies and custom-policies.
+The concrete policies available in Marmalade V2 are the Guard Policy, Collection
+Policy, Non-fungible Policy, and Royalty Policy.
 
-## The Guard Policy
+**[Guard Policy](/docs/marmalade/concrete-policies/guard-policy)**
 
 This policy ensures the initiation of a guard with each Marmalade activity.
 Guards are optional but recommended, as they help prevent unauthorised entities
 from minting tokens without permission.
 
-## The Collection Policy
+**[The Collection Policy](/docs/marmalade/concrete-policies/collection-policy)**
 
 This policy allows the creation of collections with pre-defined token lists,
 enabling easier organisation and categorisation of NFTs.
 
-## The Non-fungible Policy
+**[The Non-fungible Policy](/docs/marmalade/concrete-policies/non-fungible-policy)**
 
 This policy sets the token supply to 1 and precision to 0, effectively making
 the token non-fungible. This is useful when creating unique, one-of-a-kind
 digital assets.
 
-## The Royalty Policy
+**[The Royalty Policy](/docs/marmalade/concrete-policies/royalty-policy)**
 
 This policy allows creators to define an account that receives royalties
 whenever an NFT is sold. This provides a mechanism for creators to earn ongoing

@@ -4,25 +4,27 @@ description: The Power of the Policy Manager in Marmalade V2
 menu: The Policy Manager
 label: The Policy Manager
 order: 3
-layout: normal
+layout: full
 ---
 
 # The Power of the Policy Manager in Marmalade V2
 
-Marmalade V2 introduces the Policy Manager, a powerful tool that revolutionizes
-how policies are managed, but also enabling stacking of policies for
-non-fungible tokens (NFTs). The Policy Manager empowers creators and operators
-to design and enforce specific rules for their NFTs, making the Marmalade
-ecosystem more secure, flexible, and beneficial for all stakeholders involved.
+Marmalade V2 introduces the
+[Policy manager](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact),
+a powerful tool that revolutionizes how policies are managed, but also enabling
+stacking of policies for non-fungible tokens (NFTs). The Policy Manager empowers
+creators and operators to design and enforce specific rules for their NFTs,
+making the Marmalade ecosystem more secure, flexible, and beneficial for all
+stakeholders involved.
 
-## Key Features of the Policy Manager
+**Key Features of the Policy Manager**
 
-### 1. Policies Tailored to Your Needs
+**1. Policies Tailored to You**
 
 With the Policy Manager, you can add (manage) policies that match your unique
 use cases. These policies define the behavior and attributes of your NFTs.
 
-### 2. Dynamic Implementation with Concrete Policies and Custom Policies
+**2. Dynamic Implementation with Concrete Policies and Custom Policies**
 
 **Concrete Policies**: These are the default policies provided by Marmalade's
 creators, representing the most commonly used functionalities in token creation.
@@ -36,14 +38,16 @@ With the Policy Manager, you can stack multiple policies and associate them with
 tokens. This unprecedented flexibility allows NFTs to accommodate N number of
 policies, enabling you to create dynamic and sophisticated tokens.
 
-### 3. Type Checking for Policy Validation
+**3. Type Checking for Policy Validation**
 
 To ensure the correctness of your policies, the Policy Manager provides
 type-checking functionality. This feature identifies any inconsistencies or
 discrepancies between abstract policies and their concrete implementations,
 safeguarding the integrity of your NFT ecosystem.
 
-### 4. Policy Enforcement via `kip.token-policy-v2` Interface
+**4. Policy Enforcement via
+[kip.token-policy-v2](https://github.com/kadena-io/marmalade/blob/v2/pact/kip/token-policy-v2.pact)
+Interface**
 
 Each policy is enforced by the Policy Manager following the
 `kip.token-policy-v2` interface. This standardized interface ensures consistent

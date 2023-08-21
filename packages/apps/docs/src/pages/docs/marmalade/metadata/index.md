@@ -4,7 +4,7 @@ description: What is the Marmalade v2 Metadata Standard
 menu: Metadata Standard
 label: Metadata Standard
 order: 6
-layout: normal
+layout: full
 ---
 
 # Metadata standard
@@ -47,71 +47,70 @@ stored off-chain in a JSON format. The schema includes the following fields:
 
 ### JSON Schema
 
-     {
-      "title": "Token Metadata",
-      "description": "Schema for non-fungible token (NFT) metadata.",
+```json
+{
+  "title": "Token Metadata",
+  "description": "Schema for non-fungible token (NFT) metadata.",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Identifies the asset to which this NFT represents."
+    },
+    "description": {
+      "type": "string",
+      "description": "Describes the asset to which this NFT represents."
+    },
+    "image": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URI pointing to a resource with mime type image/* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive."
+    },
+    "properties": {
       "type": "object",
-      "required": [
-        "name",
-        "description",
-      ],
+      "description": "Arbitrary properties. Values may be strings, numbers, objects or arrays."
+    },
+    "external_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to an external application or website where users can also view the asset."
+    },
+    "animation_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to a multimedia attachment of the asset. The supported file formats are MP4 and MOV for video, MP3, FLAC and WAV for audio, GLB for AR/3D assets, and HTML for HTML pages. You may use the ?ext={file_extension} query to provide information on the file type."
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The author's name."
+          }
+        }
+      },
+      "description": "An array of authors who created or contributed to the asset."
+    },
+    "collection": {
+      "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "description": "Identifies the asset to which this NFT represents."
+          "description": "The name of the collection."
         },
-        "description": {
+        "family": {
           "type": "string",
-          "description": "Describes the asset to which this NFT represents."
-        },
-        "image": {
-          "type": "string",
-          "format": "uri",
-          "description": "A URI pointing to a resource with mime type image/* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive."
-        },
-        "properties": {
-          "type": "object",
-          "description": "Arbitrary properties. Values may be strings, numbers, objects or arrays."
-        },
-        "external_url": {
-          "type": "string",
-          "format": "uri",
-          "description": "URL to an external application or website where users can also view the asset."
-        },
-        "animation_url": {
-          "type": "string",
-          "format": "uri",
-          "description": "URL to a multimedia attachment of the asset. The supported file formats are MP4 and MOV for video, MP3, FLAC and WAV for audio, GLB for AR/3D assets, and HTML for HTML pages. You may use the ?ext={file_extension} query to provide information on the file type."
-        },
-        "authors": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "The author's name."
-              }
-            }
-          },
-          "description": "An array of authors who created or contributed to the asset."
-        },
-        "collection": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "The name of the collection."
-            },
-            "family": {
-              "type": "string",
-              "description": "The larger category or group to which the collection belongs."
-            }
-          },
-          "description": "An object specifying the name and family of the collection to which this NFT belongs."
+          "description": "The larger category or group to which the collection belongs."
         }
-      }
+      },
+      "description": "An object specifying the name and family of the collection to which this NFT belongs."
     }
+  }
+}
+```
 
 ---
 
@@ -144,8 +143,8 @@ compatibility, and ease of migration for NFTs. This commitment enables a broader
 range of users to participate in the vibrant world of digital collectibles while
 fostering interoperability between different blockchain ecosystems.
 
----
-
 A more extensive metadata guide with some JSON examples can be found on our
 github
 [here](https://github.com/kadena-io/marmalade/blob/v2/README.md#marmalade-v2-metadata-standard)
+
+---

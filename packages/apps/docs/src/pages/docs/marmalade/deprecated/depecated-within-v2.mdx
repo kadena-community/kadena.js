@@ -4,7 +4,7 @@ description: What has been deprecated
 menu: Deprecated in v2
 label: Deprecated in v2
 order: 1
-layout: normal
+layout: full
 ---
 
 # Deprecated in v2
@@ -20,14 +20,19 @@ layout: normal
   metadata. This shift enhances scalability and offers flexibility in data
   storage while aligning with a more decentralised approach.
 
-**v1:**  
- (defschema token-schema manifest:object{manifest} )
+**v1:**
+
+```pact
+    (defschema token-schema manifest:object{manifest} )
+```
 
 **v2:**
 
-    	(defschema token-schema
-    		uri:string
-    	)
+```pact
+    (defschema token-schema
+      uri:string
+    )
+```
 
 ## Single Policy Implementation (v1) to Multiple Policy Implementation (v2)
 
@@ -56,11 +61,13 @@ layout: normal
 kip.token-policy-v2:**
 
 ```pact
-      (defschema token-details
-      	uri:string
-      	precision:integer
-      	policies:[module{kip.token-policy-v2}]
-      )
+	  (defschema token-schema
+	    id:string
+	    uri:string
+	    precision:integer
+	    supply:decimal
+	    policies:[module{kip.token-policy-v2}]
+	  )
 ```
 
 ## Direct Enforcement (v1) to Policy Manager (v2)
@@ -75,6 +82,14 @@ kip.token-policy-v2:**
   `policy-manager`. This streamlined approach facilitates more efficient policy
   management and enforcement.
 
-  **v1:** (policy::enforce-init)
+  **v1:**
 
-  **v2:** (marmalade.policy-manager.enforce-init)
+  ```pact
+  (policy::enforce-init)
+  ```
+
+  **v2:**
+
+  ```pact
+  (marmalade.policy-manager.enforce-init)
+  ```
