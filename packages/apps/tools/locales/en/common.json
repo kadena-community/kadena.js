@@ -138,5 +138,20 @@
   "Startpage": "Startpage",
   "Help Center": "Help Center",
   "Resource Links": "Resource Links",
-  "Type Account Name": "Type Account Name"
+  "Type Account Name": "Type Account Name",
+  "Transactions link": "Transactions link",
+  "Cross Chain Finisher": "Cross Chain Finisher",
+  "Finish transaction": "Finish transaction",
+  "SigData": "SigData",
+  "How do I use the Signature data": "How do I use the Signature data",
+  "copySigData": "copySigData",
+  "This input field will only be enabled if the user is in expert mode": "This input field will only be enabled if the user is in expert mode",
+  "approx. USD 000.1 ¢": "approx. USD 000.1 ¢",
+  "What is a gas payer?": "What is a gas payer?",
+  "Gas Settings": "Gas Settings",
+  "Where can I find the request key?": "Where can I find the request key?",
+  "Search Request": "Search Request",
+  "Transaction error": "Transaction error",
+  "Notification title": "Notification title",
+  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!"
 }

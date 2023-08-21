@@ -84,7 +84,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-interface ErrorObject {
+interface IErrorObject {
   message: string;
 }
 
@@ -140,8 +140,6 @@ const CrossChainTransferFinisher: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
     debug(onCheckRequestKey.name);
-    console.log('req key', requestKey);
-    console.log(validateRequestKey(requestKey));
 
     await checkRequestKey();
   };
@@ -193,7 +191,7 @@ const CrossChainTransferFinisher: FC = () => {
         chainId: pollResults.tx.receiver.chain,
       });
       if (data.result.status === 'failure') {
-        const error: ErrorObject = data.result.error as ErrorObject;
+        const error: IErrorObject = data.result.error as IErrorObject;
         setTxError(error.message);
       }
       setFinalResults({
@@ -288,17 +286,17 @@ const CrossChainTransferFinisher: FC = () => {
         hasCloseButton
         icon={SystemIcon.CheckDecagram}
         onClose={() => {}}
-        title="Notification title"
+        title={t('Notification title')}
         color="positive"
       >
-        XChain transfer has been successfully finalized!
+        {t('XChain transfer has been successfully finalized!')}
       </Notification.Root>
     ) : (
       <Notification.Root
         hasCloseButton
         icon={SystemIcon.AlertBox}
         onClose={() => {}}
-        title="Transaction error"
+        title={t('Transaction error')}
         color="negative"
       >
         {txError.toString()}
@@ -378,7 +376,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <div className={sidebarLinksStyle}>
                   <ResourceLinks
-                    links={[{ title: 'Transactions link', href: '#' }]}
+                    links={[{ title: t('Transactions link'), href: '#' }]}
                   />
                 </div>
               </>
@@ -406,8 +404,8 @@ const CrossChainTransferFinisher: FC = () => {
 
           <Stack direction="column">
             <FormItemCard
-              heading="Search Request"
-              helper="Where can I find the request key?"
+              heading={t('Search Request')}
+              helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
             >
@@ -430,8 +428,8 @@ const CrossChainTransferFinisher: FC = () => {
             </FormItemCard>
 
             <FormItemCard
-              heading="Gas Settings"
-              helper="What is a gas payer?"
+              heading={t('Gas Settings')}
+              helper={t('What is a gas payer?')}
               helperHref="#"
               disabled={false}
             >
@@ -456,12 +454,12 @@ const CrossChainTransferFinisher: FC = () => {
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
-                    info={'approx. USD 000.1 ¢'}
+                    info={t('approx. USD 000.1 ¢')}
                     inputProps={{
                       ...register('gasPrice', { shouldUnregister: true }),
                       id: 'gas-price-input',
                       placeholder: t('Enter Gas Price'),
-                      leadingText: 'KDA',
+                      leadingText: t('KDA'),
                       leadingTextWidth: '$16',
                     }}
                   />
@@ -469,9 +467,9 @@ const CrossChainTransferFinisher: FC = () => {
                 <Grid.Item>
                   <TextField
                     disabled={!isAdvancedOptions}
-                    helperText={
-                      'This input field will only be enabled if the user is in expert mode'
-                    }
+                    helperText={t(
+                      'This input field will only be enabled if the user is in expert mode',
+                    )}
                     label={t('Gas Limit')}
                     inputProps={{
                       ...register('gasLimit', { shouldUnregister: true }),
@@ -485,9 +483,9 @@ const CrossChainTransferFinisher: FC = () => {
 
             {pollResults.tx !== undefined ? (
               <FormItemCard
-                heading="SigData"
-                helper="How do I use the Signature data"
-                helperHref="eafa"
+                heading={t('SigData')}
+                helper={t('How do I use the Signature data')}
+                helperHref="#"
               >
                 <Box marginBottom="$4" />
                 <Grid.Root columns={1}>
@@ -502,7 +500,7 @@ const CrossChainTransferFinisher: FC = () => {
                         onClick={async () => {
                           await navigator.clipboard.writeText(formattedSigData);
                         }}
-                        title="copySigData"
+                        title={t('copySigData')}
                       />
                     </div>
                   </Grid.Item>
