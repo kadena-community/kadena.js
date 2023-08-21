@@ -55,7 +55,6 @@ import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
   ChangeEventHandler,
-  ClipboardEventHandler,
   FC,
   useCallback,
   useEffect,
@@ -67,7 +66,7 @@ import * as z from 'zod';
 
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
 const DOMAIN_NAME_REGEX: RegExp =
-  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
+  /^(?!-)[A-Za-z0-9-]+([a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
