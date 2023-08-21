@@ -10,7 +10,7 @@ export const formContentStyle = style([
   }),
   {
     width: '680px',
-    overflow: 'overflow'
+    overflow: 'overflow',
   },
 ]);
 
@@ -63,5 +63,23 @@ export const sidebarLinksStyle = style([
     marginBottom: '$md',
     position: 'absolute',
     bottom: 0,
+  }),
+]);
+
+export const textAreaStyle = style([
+  sprinkles({
+    // width: '100%',
+    // marginBottom: '$md',
+    outline: 'none',
+  }),
+  {
+    width: '-webkit-fill-available',
+  },
+]);
+
+export const textareaContainerStyle = style([
+  sprinkles({
+    display: 'flex',
+    gap: '$sm',
   }),
 ]);

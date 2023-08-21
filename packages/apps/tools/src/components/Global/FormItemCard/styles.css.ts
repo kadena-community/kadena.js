@@ -17,7 +17,7 @@ export const helperStyle = style([
     // textAlign: 'right',
     gap: '$1',
     cursor: 'pointer',
-    color: '$neutral5'
+    color: '$neutral5',
   }),
 ]);
 
@@ -27,7 +27,7 @@ export const helperTextIconStyle = style([
     alignItems: 'center',
     gap: '$1',
     cursor: 'pointer',
-    color: '$neutral5'
+    color: '$neutral5',
   }),
 ]);
 
@@ -36,5 +36,3 @@ export const helperTextIconStyle = style([
 //
 //   }),
 // ]);
-
-
