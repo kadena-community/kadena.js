@@ -7,28 +7,14 @@ Fri, 04 Aug 2023 16:10:02 GMT
 
 ### Updates
 
-- prepare for final release of 1.0.0
-- Edit `@kadena/client` docs (fix links + improve readability)
-- Move sort-package-json to eslint plugin
-- Fix devDep for client
-- add jsdoc to client methods
-- Upgrade to new API
-- export commandBuilder for configure it with initial data
-- formatting and linting
-- submit returns single requestKey for one single input + export literal and readKeyset utils
-- fixed readKeyset
-- Rename createPactCommand to composePactCommand.
-- Remove the wrapper payload.execution and payload.continuation.
-- fix typo in `createClient().dirtyReady` to `createClient().dirtyRead`
-- Improve API for ISignFunction where the input matches the output. A single transaction returns a single signed transaction and respectively for an array
-- Fix links in client readme
-- Apply formatting
-- Remove format:pkg everywhere
-- update pact parser to parse symbols as string
-- remove ms from the time string
-- refactored composePactCommand to a more functional way and fixed issues with setMeta
-- refactore the client's utilities in order to return or accept requestObject { requestKey, chainId, networkId }
-- renamed getClient to createClient
+- Make the API more flexible by splitting it into three steps - build
+  transactions | signing and | submitting
+- Accepts multiple code in one transactions
+- Refactoring types and suggest all related capabilities of the functions
+- exposing sighWithChainWeaver and SignWithWalletConnect
+- deprecating `poll` and `send`
+- introducing `submit` `pollStatus` `dirtyRead` `preflight`
+  `signatureVerification` `runPact`
 
 ## 0.6.1
 Mon, 10 Jul 2023 14:25:54 GMT
