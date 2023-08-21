@@ -1,6 +1,13 @@
 # Change Log - @kadena/types
 
-This log was last generated on Fri, 04 Aug 2023 16:10:02 GMT and should not be manually modified.
+This log was last generated on Mon, 21 Aug 2023 10:25:28 GMT and should not be manually modified.
+
+## 0.4.2
+Mon, 21 Aug 2023 10:25:28 GMT
+
+### Patches
+
+- removed the PactReference in favor of Literal class
 
 ## 0.4.1
 Fri, 04 Aug 2023 16:10:02 GMT

@@ -2,6 +2,46 @@
   "name": "@kadena/client",
   "entries": [
     {
+      "version": "1.1.0",
+      "tag": "@kadena/client_v1.1.0",
+      "date": "Mon, 21 Aug 2023 10:25:28 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Make addSignatures public",
+            "author": "Ashwin van Dijk <contact@ashwinvandijk.nl>",
+            "commit": "2b90f05a2074071035aaa8ab401136012c0e43fa"
+          }
+        ],
+        "none": [
+          {
+            "comment": "throw error for duplicated keys while using addData",
+            "author": "Javad Khalilian <khalilian.javad@gmail.com>",
+            "commit": "be743d1c60a046aa16c532f997d85dcfc2ba2686"
+          },
+          {
+            "comment": "Literal class for handeling literal values during pact expression creation",
+            "author": "Javad Khalilian <khalilian.javad@gmail.com>",
+            "commit": "30d8fa06e87835a254388e069748842befdc5eaf"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/chainweb-node-client\" to `0.4.4`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.8`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.3.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.0",
       "tag": "@kadena/client_v1.0.0",
       "date": "Fri, 04 Aug 2023 16:10:02 GMT",

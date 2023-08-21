@@ -2,6 +2,24 @@
   "name": "@kadena/chainweb-node-client",
   "entries": [
     {
+      "version": "0.4.4",
+      "tag": "@kadena/chainweb-node-client_v0.4.4",
+      "date": "Mon, 21 Aug 2023 10:25:28 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@kadena/cryptography-utils\" to `0.3.8`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/pactjs\" to `0.3.2`"
+          },
+          {
+            "comment": "Updating dependency \"@kadena/types\" to `0.4.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.4.3",
       "tag": "@kadena/chainweb-node-client_v0.4.3",
       "date": "Fri, 04 Aug 2023 16:10:02 GMT",

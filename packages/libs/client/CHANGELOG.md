@@ -1,6 +1,18 @@
 # Change Log - @kadena/client
 
-This log was last generated on Fri, 04 Aug 2023 16:10:02 GMT and should not be manually modified.
+This log was last generated on Mon, 21 Aug 2023 10:25:28 GMT and should not be manually modified.
+
+## 1.1.0
+Mon, 21 Aug 2023 10:25:28 GMT
+
+### Minor changes
+
+- Make addSignatures public
+
+### Updates
+
+- throw error for duplicated keys while using addData
+- Literal class for handeling literal values during pact expression creation
 
 ## 1.0.0
 Fri, 04 Aug 2023 16:10:02 GMT

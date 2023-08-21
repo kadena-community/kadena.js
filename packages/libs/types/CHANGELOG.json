@@ -2,6 +2,20 @@
   "name": "@kadena/types",
   "entries": [
     {
+      "version": "0.4.2",
+      "tag": "@kadena/types_v0.4.2",
+      "date": "Mon, 21 Aug 2023 10:25:28 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "removed the PactReference in favor of Literal class",
+            "author": "Javad Khalilian <khalilian.javad@gmail.com>",
+            "commit": "c2e6967a06068c69a63f79574d2eda17ac0ce8b2"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.4.1",
       "tag": "@kadena/types_v0.4.1",
       "date": "Fri, 04 Aug 2023 16:10:02 GMT",
