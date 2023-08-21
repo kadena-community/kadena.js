@@ -39,7 +39,7 @@ const Home: FC = () => {
         </Text>
       </div>
 
-      <Stack wrap="wrap" spacing="$2xs" width="100%">
+      <Stack wrap="wrap" width="100%">
         <BrowseSection title="General" className={browseSectionWrapper}>
           <Link href="/docs/kadena/overview">Overview of Kadena</Link>
           <Link href="/docs/kadena/whitepapers">Whitepapers</Link>

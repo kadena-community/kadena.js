@@ -34,7 +34,7 @@ const Home: FC<IProps> = ({ popularPages }) => {
       >
         <article className={articleClass}>
           <Box marginBottom="$10">
-            <Stack wrap="wrap" spacing="$2xs">
+            <Stack wrap="wrap">
               <BrowseSection title="General" className={browseSectionWrapper}>
                 <Link href="/docs/kadena">Overview of Kadena</Link>
                 <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
