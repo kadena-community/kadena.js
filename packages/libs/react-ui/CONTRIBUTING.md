@@ -177,8 +177,9 @@ with Jest.
 
 ### Exports
 
-- Never export default from a file
+- Never export default from a file (storybook files are an exception)
 - Always export component props with every component
+- Always have a barrel file to export the component and props
 
 ## Styling with Vanilla Extract
 
