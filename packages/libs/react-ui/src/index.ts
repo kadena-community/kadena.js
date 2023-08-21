@@ -75,6 +75,7 @@ export {
   Modal,
   ModalProvider,
   NavFooter,
+  NavHeader,
   Notification,
   Option,
   Pagination,

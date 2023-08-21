@@ -34,7 +34,7 @@
       "enableParallelism": true,
       "ignoreDependencyOrder": false,
       "ignoreMissingScript": false,
-      "allowWarningsInSuccessfulBuild": false,
+      "allowWarningsInSuccessfulBuild": true,
       // default: false. Changed to true as it should not need to run when nothing has changed
       "incremental": true,
       "watchForChanges": false,
@@ -51,7 +51,7 @@
     //   "enableParallelism": true,
     //   "ignoreDependencyOrder": false,
     //   "ignoreMissingScript": false,
-    //   "allowWarningsInSuccessfulBuild": false,
+    //   "allowWarningsInSuccessfulBuild": true,
     //   // default: false. Changed to true as it should not need to run when nothing has changed
     //   "incremental": true,
     //   "watchForChanges": true,
@@ -105,7 +105,7 @@
       "ignoreDependencyOrder": true,
       // default: false. this command is just for convenience
       "ignoreMissingScript": true,
-      "allowWarningsInSuccessfulBuild": false,
+      "allowWarningsInSuccessfulBuild": true,
       "incremental": true,
       "watchForChanges": false
     }
@@ -201,7 +201,7 @@
     //    *
     //    * Note: The default value is false. In Rush 5.7.x and earlier, the default value was true.
     //    */
-    //   "allowWarningsInSuccessfulBuild": false,
+    //   "allowWarningsInSuccessfulBuild": true,
     //
     //   /**
     //    * If true then this command will be incremental like the built-in "build" command

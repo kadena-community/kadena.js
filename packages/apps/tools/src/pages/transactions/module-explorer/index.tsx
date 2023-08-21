@@ -10,7 +10,7 @@ import {
 import { ChainSelect } from '@/components/Global';
 import { kadenaConstants } from '@/constants/kadena';
 import Routes from '@/constants/routes';
-import { useAppContext } from '@/context/app-context';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import {
@@ -34,7 +34,7 @@ const ModuleExplorer: FC = () => {
   const [moduleSearch, setModuleSearch] = useState<string>('');
   const [modules, setModules] = useState<IModulesResult>({});
 
-  const { network } = useAppContext();
+  const { selectedNetwork: network } = useWalletConnectClient();
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   useToolbar([

@@ -1,14 +1,14 @@
+import { ChainwebNetworkId } from '@kadena/chainweb-node-client';
+
 import { env } from '@/utils/env';
 
-export type Network = 'MAINNET' | 'TESTNET';
+export type Network = Exclude<ChainwebNetworkId, 'development'>;
 export type DevOption = 'BASIC' | 'BACKEND' | 'DAPP';
 
 type KadenaConstants = {
   [K in Network]: {
+    label: string;
     API: string;
-    NETWORKS: {
-      [key: string]: string;
-    };
     apiHost: (params: { networkId: string; chainId: string }) => string;
     estatsHost: () => string;
   };
@@ -20,22 +20,18 @@ type KadenaConstants = {
 };
 
 export const kadenaConstants: KadenaConstants = {
-  MAINNET: {
+  mainnet01: {
+    label: 'Mainnet',
     API: env('KADENA_MAINNET_API', 'api.chainweb.com'),
-    NETWORKS: {
-      MAINNET01: 'mainnet01',
-    },
     apiHost: ({ networkId, chainId }) =>
-      `https://${kadenaConstants.MAINNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `https://${kadenaConstants.mainnet01.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () => env('KADENA_MAINNET_ESTATS', 'estats.chainweb.com'),
   },
-  TESTNET: {
+  testnet04: {
+    label: 'Testnet',
     API: env('KADENA_TESTNET_API', 'api.testnet.chainweb.com'),
-    NETWORKS: {
-      TESTNET04: 'testnet04',
-    },
     apiHost: ({ networkId, chainId }) =>
-      `https://${kadenaConstants.TESTNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `https://${kadenaConstants.testnet04.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () =>
       env('KADENA_TESTNET_ESTATS', 'estats.testnet.chainweb.com'),
   },
