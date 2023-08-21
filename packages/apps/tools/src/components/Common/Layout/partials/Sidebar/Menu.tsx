@@ -20,13 +20,11 @@ export const Menu: FC = () => {
         />
       </div>
       <Accordion.Root>
-        <Accordion.Sections>
-          {activeMenu.items?.map((item, index) => (
-            <Accordion.Section title="" key={index}>
-              <Tree isOpen={true} items={item.items} />
-            </Accordion.Section>
-          ))}
-        </Accordion.Sections>
+        {activeMenu.items?.map((item, index) => (
+          <Accordion.Section title="" key={index}>
+            <Tree isOpen={true} items={item.items} />
+          </Accordion.Section>
+        ))}
       </Accordion.Root>
     </div>
   );
