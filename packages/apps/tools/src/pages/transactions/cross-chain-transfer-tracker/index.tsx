@@ -234,15 +234,15 @@ const CrossChainTransferTracker: FC = () => {
                 icon={SystemIcon.Refresh}
                 onClick={validateThenSubmit(handleSubmit)}
               >
-                Retry
+                {t('Retry')}
               </Notification.Button>
             </Notification.Actions>
           </Notification.Root>
         ) : null}
         <form onSubmit={validateThenSubmit(handleSubmit)}>
           <FormItemCard
-            heading="Search Request"
-            helper="Where can I find the request key?"
+            heading={t('Search Request')}
+            helper={t('Where can I find the request key?')}
             helperHref="#"
             disabled={false}
           >

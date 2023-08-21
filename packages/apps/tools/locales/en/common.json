@@ -155,5 +155,9 @@
   "Search Request": "Search Request",
   "Transaction error": "Transaction error",
   "Notification title": "Notification title",
-  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!"
+  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
+  "Cross Chain Tracker": "Cross Chain Tracker",
+  "Track & trace transactions": "Track & trace transactions",
+  "Retry": "Retry",
+  "Search": "Search"
 }
