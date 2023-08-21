@@ -3,7 +3,6 @@ import {
   Box,
   Breadcrumbs,
   Button,
-  Card,
   ContentHeader,
   Grid,
   Heading,
@@ -21,6 +20,7 @@ import {
   mainContentClass,
 } from './styles.css';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
@@ -32,7 +32,6 @@ import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import DrawerToolbar from '@/components/Common/DrawerToolbar';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(
@@ -274,7 +273,7 @@ const CheckTransactions: FC = () => {
                 return (
                   <Table.Tr
                     key={index}
-                    onClick={(_) => handleOpenTransactionDetails(result)}
+                    onClick={() => handleOpenTransactionDetails(result)}
                   >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
@@ -316,7 +315,7 @@ const CheckTransactions: FC = () => {
                 return (
                   <Table.Tr
                     key={index}
-                    onClick={(_) => handleOpenTransactionDetails(result)}
+                    onClick={() => handleOpenTransactionDetails(result)}
                   >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
