@@ -39,7 +39,7 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
   home: {
     '@media': {
       [`screen and ${breakpoints.md}`]: {
-        flexBasis: '33%',
+        gridColumn: '2 / span 3',
       },
     },
   },
