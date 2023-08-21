@@ -25,11 +25,11 @@ Primitives][2].
 A simple example of a component that should use this pattern is the Grid
 component.
 
-```jsonc
+```jsx
 <Grid.Root>
-    <Grid.Item>{item1}</Grid.Item>
-    <Grid.Item>{item2}</Grid.Item>
-    <Grid.Item>{item3}</Grid.Item>
+  <Grid.Item>{item1}</Grid.Item>
+  <Grid.Item>{item2}</Grid.Item>
+  <Grid.Item>{item3}</Grid.Item>
 </Grid.Root>
 ```
 
@@ -58,8 +58,11 @@ approach was the `Button` component.
 Previously when the `Button` was used with an icon, it needed to be composed
 like this:
 
-```jsonc
-<Button.Root>Label<Button.Icon /></Button.Root>
+```jsx
+<Button.Root>
+  Label
+  <Button.Icon />
+</Button.Root>
 ```
 
 The reason we went for this approach originally was because it matched the
@@ -137,12 +140,13 @@ Some components will require state to be able to function, in these cases we
 should **offer a controlled and uncontrolled version**. For example, the
 `Pagination` component can be uncontrolled in the sense that it handles it's own
 state (which page you are on) when clicking arrows, but it also accepts an
-optional `currentPage` prop which allows the user to control it's state. This
-means it should always have two optional props:
+optional `currentPage` prop which allows the user to control it's state.
+
+This means these components should always have two optional props:
 
 - Value that is being controlled
 - Initial value (for when it is not controlled). This prop should always be
-  prefixed with `initial` - e.g. `initialPage`
+  prefixed with `default` - e.g. `initialPage`
 
 ### Custom Styling
 
