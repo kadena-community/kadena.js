@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const generateSection = (i: number): IAccordionSectionProps => ({
-  title: <span>Section {i}</span>,
+  title: `Section ${i}`,
   children: <p>This is the content for section {i}</p>,
   onOpen: () => console.log(`open section ${i}`),
   onClose: () => console.log(`close section ${i}`),

@@ -10,7 +10,7 @@ export interface IAccordionSectionProps {
   isOpen?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
-  title: React.ReactNode;
+  title: string;
 }
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
