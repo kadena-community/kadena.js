@@ -19,6 +19,12 @@ import { LocalRequestBody } from '@kadena/chainweb-node-client';
 import { LocalResponse } from '@kadena/chainweb-node-client';
 import { SessionTypes } from '@walletconnect/types';
 
+// @public
+export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
+    sig: string;
+    pubKey?: string;
+}[]) => IUnsignedCommand | ICommand;
+
 export { ChainId }
 
 // @public
@@ -317,10 +323,24 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @public
-export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
+export class Literal {
+    constructor(value: string);
+    // (undocumented)
+    getValue(): string;
+    // (undocumented)
+    toJSON(): string;
+    // (undocumented)
+    toString(): string;
+}
+
+// @public
+export const literal: (value: string) => Literal;
 
 // @public
 export const Pact: IPact;
+
+// @public
+export type PactReference = Literal | (() => string);
 
 // @public
 export const readKeyset: (key: string) => () => string;
@@ -330,6 +350,11 @@ export const signWithChainweaver: ISignFunction;
 
 // @public
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`;
+
+// Warning: (ae-internal-missing-underscore) The name "unpackLiterals" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function unpackLiterals(value: string): string;
 
 // Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
 //

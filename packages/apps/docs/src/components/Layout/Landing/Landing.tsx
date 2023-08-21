@@ -1,10 +1,17 @@
-import { Article, Content, TitleHeader } from '../components';
+import {
+  Article,
+  articleClass,
+  contentClass,
+  contentClassVariants,
+  TitleHeader,
+} from '../components';
 import { Template } from '../components/Template';
 
 import { PageGrid } from './styles';
 
 import { NotFound } from '@/components/NotFound';
 import { IPageProps } from '@/types/Layout';
+import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export const Landing: FC<IPageProps> = ({
@@ -21,13 +28,16 @@ export const Landing: FC<IPageProps> = ({
           icon={frontmatter.icon}
         />
 
-        <Content id="maincontent" layout="code">
-          <Article>
+        <div
+          id="maincontent"
+          className={classNames(contentClass, contentClassVariants.code)}
+        >
+          <article className={articleClass}>
             {children}
 
             <NotFound />
-          </Article>
-        </Content>
+          </article>
+        </div>
       </Template>
     </PageGrid>
   );

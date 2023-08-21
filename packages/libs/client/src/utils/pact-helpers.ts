@@ -6,9 +6,68 @@
 export const readKeyset = (key: string) => () => `(read-keyset "${key}")`;
 
 /**
- * Will create a literal value without surrounding quotes `"`
+ * the class for adding values to the final pact object without adding quotes to strings
  * @public
  */
-export const literal: <T extends string | Record<string, unknown>>(
-  value: T,
-) => () => T = (value) => () => value;
+export class Literal {
+  private _value: string;
+
+  public constructor(value: string) {
+    this._value = value;
+  }
+
+  public getValue(): string {
+    return this._value;
+  }
+
+  public toJSON(): string {
+    return `Literal(${this._value})`;
+  }
+
+  public toString(): string {
+    return this.getValue();
+  }
+}
+
+/**
+ * Will create a literal pact expression without surrounding quotes `"`
+ * @example
+ * ```
+ * // use literal as function input
+ * Pact.module.["free.crowdfund"]["create-project"](
+ *   "project_id",
+ *   "project_name",
+ *   // this is a reference to another module and should not have quotes in the created expression
+ *   literal("coin"),
+ *   ...
+ * )
+ *
+ * // use literal as a property of a json in the input
+ * Pact.module.["my-contract"]["set-details"](
+ *   "name",
+ *   "data" : {
+ *      age : 35,
+ *      tokens : [literal("coin"), literal("kdx")]
+ *   }
+ * )
+ * ```
+ * @public
+ */
+export const literal = (value: string): Literal => {
+  return new Literal(value);
+};
+
+const literalRegex: RegExp = /"Literal\(([^\)]*)\)"/gi;
+/**
+ * unpack all of the Literal(string) to string
+ * @internal
+ */
+export function unpackLiterals(value: string): string {
+  return value.replace(literalRegex, (__, literal) => literal);
+}
+
+/**
+ * General type for reference values
+ * @public
+ */
+export type PactReference = Literal | (() => string);

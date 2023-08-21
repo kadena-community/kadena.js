@@ -1,6 +1,10 @@
 import { Heading } from '@kadena/react-ui';
 
-import { Article, Content } from '../components';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+} from '../components';
 import { Template } from '../components/Template';
 
 import {
@@ -18,6 +22,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
 import { IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
@@ -31,6 +36,10 @@ export const Full: FC<IPageProps> = ({
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const [activeItem, setActiveItem] = useState<string>('');
+  const contentClassNames = classNames(
+    contentClass,
+    contentClassVariants[frontmatter.layout] ?? '',
+  );
 
   const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
     const { isIntersecting } = entry;
@@ -71,8 +80,8 @@ export const Full: FC<IPageProps> = ({
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree}>
-        <Content id="maincontent">
-          <Article ref={scrollRef}>
+        <div className={contentClassNames} id="maincontent">
+          <article className={articleClass} ref={scrollRef}>
             <Breadcrumbs menuItems={leftMenuTree} />
             <LastModifiedDate date={frontmatter.lastModifiedDate} />
             {children}
@@ -80,8 +89,8 @@ export const Full: FC<IPageProps> = ({
               editLink={frontmatter.editLink}
               navigation={frontmatter.navigation}
             />
-          </Article>
-        </Content>
+          </article>
+        </div>
         <AsideBackground />
         <Aside data-cy="aside">
           {showSideMenu && (

@@ -1,13 +1,18 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 
 import { Search } from '@/components';
-import { Article, Content } from '@/components/Layout/components';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+} from '@/components/Layout/components';
 import { SearchHeader } from '@/components/Layout/Landing/components';
 import { searchFormClass } from '@/components/Search/styles.css';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import classNames from 'classnames';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
@@ -55,11 +60,14 @@ const SearchPage: FC = () => {
           />
         </form>
       </SearchHeader>
-      <Content id="maincontent" layout="home">
-        <Article>
+      <div
+        className={classNames(contentClass, contentClassVariants.home)}
+        id="maincontent"
+      >
+        <article className={articleClass}>
           <Search query={query} />
-        </Article>
-      </Content>
+        </article>
+      </div>
     </>
   );
 };

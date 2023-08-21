@@ -13,6 +13,7 @@ import React, {
   FC,
   FunctionComponentElement,
   HTMLAttributeAnchorTarget,
+  useEffect,
 } from 'react';
 
 export interface INavItem {
@@ -35,6 +36,10 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
 }) => {
   const { glowX, animationDuration, glowRef, navRef, activeNav, setActiveNav } =
     useGlow(activeLink);
+
+  useEffect(() => {
+    if (activeLink) setActiveNav(activeLink);
+  }, [activeLink]);
 
   return (
     <nav className={navWrapperClass} ref={navRef}>

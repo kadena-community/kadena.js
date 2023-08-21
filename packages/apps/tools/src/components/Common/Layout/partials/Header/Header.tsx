@@ -58,7 +58,6 @@ const Header: FC<IHeaderProps> = () => {
       >
         {navItems.map((item, index) => (
           <NavHeader.Link
-            active={pathname === item.href}
             key={index}
             href={item.href}
             onClick={handleMenuItemClick}
