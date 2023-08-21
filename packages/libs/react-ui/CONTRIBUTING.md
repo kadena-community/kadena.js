@@ -137,7 +137,12 @@ Some components will require state to be able to function, in these cases we
 should **offer a controlled and uncontrolled version**. For example, the
 `Pagination` component can be uncontrolled in the sense that it handles it's own
 state (which page you are on) when clicking arrows, but it also accepts an
-optional `currentPage` prop which allows the user to control it's state.
+optional `currentPage` prop which allows the user to control it's state. This
+means it should always have two optional props:
+
+- Value that is being controlled
+- Initial value (for when it is not controlled). This prop should always be
+  prefixed with `initial` - e.g. `initialPage`
 
 ### Custom Styling
 
