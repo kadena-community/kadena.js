@@ -10,10 +10,7 @@ export interface IBreadcrumbsProps {
   icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
 }
 
-export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
-  children,
-  icon,
-}) => {
+export const BreadcrumbsRoot: FC<IBreadcrumbsProps> = ({ children, icon }) => {
   const Icon = icon;
   return (
     <nav className={navClass} data-testid="kda-breadcrumbs">
