@@ -39,9 +39,6 @@ const Options = z
     if (file === undefined && contract === undefined) {
       return false;
     }
-    if (file !== undefined && contract !== undefined) {
-      return false;
-    }
     return true;
   }, 'Error: either file or contract must be specified')
   .refine(({ contract, api: host }) => {
