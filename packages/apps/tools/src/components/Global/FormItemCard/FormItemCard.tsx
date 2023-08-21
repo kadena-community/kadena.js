@@ -1,7 +1,6 @@
 import { Card, Grid, Heading, SystemIcon, Text } from '@kadena/react-ui';
 
 import {
-  cardContainerStyle,
   helperStyle,
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
@@ -33,7 +32,7 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
   ...rest
 }) => {
   return (
-    <div className={cardContainerStyle}>
+    <div>
       <Card fullWidth disabled={disabled}>
         <Grid.Root columns={2} spacing="$3xl">
           <Grid.Item>

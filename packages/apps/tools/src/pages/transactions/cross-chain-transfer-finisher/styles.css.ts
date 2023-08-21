@@ -6,19 +6,17 @@ export const formContentStyle = style([
   sprinkles({
     position: 'relative',
     height: '100%',
-    zIndex: 0,
   }),
   {
     width: '680px',
-    overflow: 'overflow',
+    height: '65vh',
+    overflow: 'scroll',
   },
 ]);
 
 export const notificationContainerStyle = style([
   sprinkles({
-    // position: 'absolute',
-    top: 0,
-    zIndex: 1,
+    marginY: '$sm',
   }),
   {
     width: '680px',
@@ -27,12 +25,14 @@ export const notificationContainerStyle = style([
 
 export const formButtonStyle = style([
   sprinkles({
-    // alignItems: '',
     display: 'flex',
     flexDirection: 'row-reverse',
     marginTop: '$4',
     gap: '$8',
   }),
+  {
+    width: '680px',
+  },
 ]);
 
 export const sideContentStyle = style([
@@ -68,8 +68,6 @@ export const sidebarLinksStyle = style([
 
 export const textAreaStyle = style([
   sprinkles({
-    // width: '100%',
-    // marginBottom: '$md',
     outline: 'none',
   }),
   {
