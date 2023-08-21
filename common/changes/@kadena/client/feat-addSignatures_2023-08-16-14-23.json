@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/client",
+      "comment": "Make addSignatures public",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@kadena/client"
+}
