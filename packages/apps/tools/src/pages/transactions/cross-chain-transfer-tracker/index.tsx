@@ -1,31 +1,27 @@
 import {
   Breadcrumbs,
   Button,
+  Grid,
   InputWrapperStatus,
   Notification,
   ProductIcon,
   ProgressBar,
   Stack,
   SystemIcon,
-  TextField,
   TrackerCard,
 } from '@kadena/react-ui';
 
 import {
-  accountFormStyle,
   formButtonStyle,
-  formHeaderStyle,
-  formHeaderTitleStyle,
-  formStyle,
-  // headerContainerStyle,
   headerTextStyle,
   infoBoxStyle,
   mainContentStyle,
-  // topContainerStyle,
 } from './styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { REQUEST_KEY_VALIDATION } from '@/components/Global/RequestKeyField';
+import RequestKeyField, {
+  REQUEST_KEY_VALIDATION,
+} from '@/components/Global/RequestKeyField';
 import Routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -50,6 +46,7 @@ import React, {
 } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { FormItemCard } from '@/components/Global/FormItemCard';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -242,30 +239,35 @@ const CrossChainTransferTracker: FC = () => {
             </Notification.Actions>
           </Notification.Root>
         ) : null}
-
-        <form className={formStyle} onSubmit={validateThenSubmit(handleSubmit)}>
-          <div className={formHeaderStyle}>
-            <div className={formHeaderTitleStyle}>Search Request</div>
-          </div>
-          <div className={accountFormStyle}>
-            <TextField
-              label={t('Request Key')}
-              status={validRequestKey}
-              // Only set helper text if there is no receiver account otherwise message will be displayed on side bar
-              helperText={inputError || undefined}
-              inputProps={{
-                ...register('requestKey'),
-                id: 'request-key-input',
-                placeholder: t('Enter Request Key'),
-                onChange: onRequestKeyChange,
-                onKeyUp: checkRequestKey,
-                value: requestKey,
-                leftIcon: SystemIcon.KeyIconFilled,
-              }}
-            />
-          </div>
+        <form onSubmit={validateThenSubmit(handleSubmit)}>
+          <FormItemCard
+            heading="Search Request"
+            helper="Where can I find the request key?"
+            helperHref="#"
+            disabled={false}
+          >
+            <Grid.Root>
+              <Grid.Item>
+                <RequestKeyField
+                  helperText={inputError || undefined}
+                  status={validRequestKey}
+                  inputProps={{
+                    ...register('requestKey'),
+                    onKeyUp: checkRequestKey,
+                    onChange: onRequestKeyChange,
+                  }}
+                  error={errors.requestKey}
+                />
+              </Grid.Item>
+            </Grid.Root>
+          </FormItemCard>
           <div className={formButtonStyle}>
-            <Button title={t('Search')} icon="Magnify" iconAlign="right">
+            <Button
+              type="submit"
+              title={t('Search')}
+              icon="Magnify"
+              iconAlign="right"
+            >
               {t('Search')}
             </Button>
           </div>

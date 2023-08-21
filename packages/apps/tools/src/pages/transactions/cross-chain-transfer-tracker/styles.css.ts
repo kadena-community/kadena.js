@@ -22,14 +22,6 @@ export const headerTextStyle = style([
   },
 ]);
 
-export const formStyle = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  }),
-]);
-
 export const accountFormStyle = style([
   sprinkles({
     padding: '$4',
@@ -51,7 +43,8 @@ export const formButtonStyle = style([
   sprinkles({
     alignItems: 'center',
     marginTop: '$4',
-    gap: '$8',
+    display: 'flex',
+    flexDirection: 'row-reverse',
   }),
 ]);
 
