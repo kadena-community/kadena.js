@@ -16,7 +16,7 @@ basis**. [Composition over Configuration][1]
 #### Composition - Subcomponent structure
 
 Composition makes sense if the component is more complex and needs a bit more
-flexibility in regards to data, children, or layout. Components using this this
+flexibility in regards to data, children, or layout. Components using this
 pattern will export one object of subcomponents that will make up the building
 blocks for the entire component. These subcomponents will always export one
 `Root` component as the containing component. This is inspired by [Radix
@@ -164,9 +164,10 @@ is needed, we can discuss adding this with a designer.
 ### Storybook, Chromatic, & Testing
 
 We are required to create a story in storybook that showcases all functionality
-for each component. This automatically gets synced with chromatic so that we
-have also have regression testing. For visual related testing, this is going to
-be sufficient for most components.
+for each component. We would also like to include a description for the
+component and it's props. This automatically gets synced with chromatic so that
+we have also have regression testing. For visual related testing, this is going
+to be sufficient for most components.
 
 > TIP: import component from @components/... in stories to check that you are
 > adding new components to the components barrel file
@@ -205,11 +206,11 @@ Guidlines when styling with VE:
 ### Selectors
 
 Simple Pseudo Selectors and complex selectors can be used on components, but
-**styles can only be applied to the current element that the class is applied
-to**. This is a deliberate restriction set by VE to help with maintainability.
-If you need to apply a style to a child element depending on the state of a
-parent element, you can target a class on the parent element from the child and
-apply styles via a [complex selector][4]
+**styles can only be applied to the element that the class is applied to**. This
+is a deliberate restriction set by VE to help with maintainability. If you need
+to apply a style to a child element depending on the state of a parent element,
+you can target a class on the parent element from the child and apply styles via
+a [complex selector][4]
 
 It should be avoided when possible, but if you need to target child nodes within
 the current element, you can use `globalStyle`. In some cases it isn't
