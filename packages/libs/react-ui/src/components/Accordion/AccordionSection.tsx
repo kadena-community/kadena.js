@@ -18,7 +18,7 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
   isOpen,
 }) => {
   return (
-    <div>
+    <>
       <span>{title}</span>
 
       <button
@@ -29,6 +29,6 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
       >
         <SystemIcon.Close size="sm" />
       </button>
-    </div>
+    </>
   );
 };
