@@ -53,26 +53,24 @@ export const Dynamic: IStory = {
   },
   render: ({ linked, sectionCount }) => {
     return (
-      <Accordion.Root>
-        <Accordion.Sections linked={linked}>
-          {sampleSections
-            .slice(0, sectionCount)
-            .map(
-              (
-                { title, children, onOpen, onClose }: IAccordionSectionProps,
-                index,
-              ) => (
-                <Accordion.Section
-                  onOpen={onOpen}
-                  onClose={onClose}
-                  title={title}
-                  key={index}
-                >
-                  {children}
-                </Accordion.Section>
-              ),
-            )}
-        </Accordion.Sections>
+      <Accordion.Root linked={linked}>
+        {sampleSections
+          .slice(0, sectionCount)
+          .map(
+            (
+              { title, children, onOpen, onClose }: IAccordionSectionProps,
+              index,
+            ) => (
+              <Accordion.Section
+                onOpen={onOpen}
+                onClose={onClose}
+                title={title}
+                key={index}
+              >
+                {children}
+              </Accordion.Section>
+            ),
+          )}
       </Accordion.Root>
     );
   },
