@@ -1,4 +1,5 @@
 import { styled } from '@kadena/react-components';
+
 export const StyledFinisherContent = styled('div', {
   display: 'flex',
   flexDirection: 'row',
