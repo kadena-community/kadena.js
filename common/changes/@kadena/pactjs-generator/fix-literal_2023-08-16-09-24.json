@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-generator",
+      "comment": "Update the generator to use Literal type",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-generator"
+}

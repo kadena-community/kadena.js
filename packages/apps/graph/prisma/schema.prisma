@@ -32,6 +32,7 @@ model Block {
   transactions Transaction[]
   transfers    Transfer[]
 
+  @@index([height(sort: Desc), chainid])
   @@map("blocks")
 }
 

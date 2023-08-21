@@ -11,7 +11,7 @@ const debug: Debugger = _debug('@kadena/client:signing:addSignature');
 /**
  * adds signatures to an {@link IUnsignedCommand | unsigned command}
  *
- * @internal
+ * @public
  */
 export const addSignatures: (
   transaction: IUnsignedCommand,

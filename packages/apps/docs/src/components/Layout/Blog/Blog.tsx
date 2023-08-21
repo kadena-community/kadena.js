@@ -1,6 +1,11 @@
 import { Grid, Stack } from '@kadena/react-ui';
 
-import { Article, Content, TitleHeader } from '../components';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+  TitleHeader,
+} from '../components';
 import { Template } from '../components/Template';
 
 import { articleTopMetadataClass, bottomWrapperClass } from './Blog.css';
@@ -8,6 +13,7 @@ import { ArticleMetadataItem, PageGrid } from './styles';
 
 import { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
+import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
@@ -19,6 +25,11 @@ export const Blog: FC<IPageProps> = ({
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
+  const contentClassNames = classNames(
+    contentClass,
+    contentClassVariants[frontmatter.layout] ?? '',
+  );
+
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
@@ -28,8 +39,8 @@ export const Blog: FC<IPageProps> = ({
           icon="BlogChain"
         />
 
-        <Content id="maincontent">
-          <Article>
+        <div id="maincontent" className={contentClassNames}>
+          <article className={articleClass}>
             <div className={articleTopMetadataClass}>
               <ArticleMetadataItem>
                 {readingTimeInMinutes} {readingTimeLabel} read
@@ -59,8 +70,8 @@ export const Blog: FC<IPageProps> = ({
                 </Grid.Item>
               </Grid.Root>
             </div>
-          </Article>
-        </Content>
+          </article>
+        </div>
       </Template>
     </PageGrid>
   );

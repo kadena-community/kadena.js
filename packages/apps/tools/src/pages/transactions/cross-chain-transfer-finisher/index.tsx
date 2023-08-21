@@ -4,7 +4,7 @@ import {
   Button,
   Grid,
   Heading,
-  InputWrapperStatus,
+  IconButton,
   Notification,
   ProductIcon,
   Stack,
@@ -18,6 +18,8 @@ import {
   formContentStyle,
   notificationContainerStyle,
   sidebarLinksStyle,
+  textareaContainerStyle,
+  textAreaStyle,
 } from './styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
@@ -81,6 +83,10 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+interface IErrorObject {
+  message: string;
+}
+
 const CrossChainTransferFinisher: FC = () => {
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
@@ -88,68 +94,23 @@ const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { devOption } = useAppContext();
-
+  const { selectedNetwork: network } = useWalletConnectClient();
   const helpCenterRef = useRef<HTMLElement | null>(null);
 
-
-  //new new
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
-  const [validRequestKey, setValidRequestKey] = useState<
-    InputWrapperStatus | undefined
-  >();
-  const { selectedNetwork: network } = useWalletConnectClient();
-
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
-
-  const [gasLimit, setGasLimit] = useState<number>(kadenaConstants.GAS_LIMIT);
-
-  useToolbar([
-    {
-      title: t('Cross Chain'),
-      icon: SystemIcon.Transition,
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Finalize Cross Chain'),
-      icon: SystemIcon.TransitionMasked,
-      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
-    },
-    {
-      title: t('Module Explorer'),
-      icon: SystemIcon.Earth,
-      href: Routes.MODULE_EXPLORER,
-    },
-  ]);
-
-  // useDidUpdateEffect(() => {
-  //   if (!router.isReady) {
-  //     console.log('ovede 1');
-  //     return;
-  //   }
-  //   const { reqKey } = router.query;
-  //   if (reqKey) {
-  //     console.log('ovede 2');
-  //     setRequestKey(reqKey as string);
-  //   }
-  // }, [router.isReady]);
 
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore
     helpCenterRef.openSection(0);
   };
 
-  const checkRequestKey = async (
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ): Promise<void> => {
-    console.log('Getting here!');
-    e.preventDefault();
-    debug(checkRequestKey.name);
-
-    if (!validateRequestKey(requestKey)) {
+  const checkRequestKey = async (reqKey = requestKey): Promise<void> => {
+    if (!validateRequestKey(reqKey)) {
       return;
     }
 
@@ -157,7 +118,7 @@ const CrossChainTransferFinisher: FC = () => {
     setFinalResults({});
 
     const pollResult: ITransferDataResult | undefined = await getTransferData({
-      requestKey,
+      requestKey: reqKey,
       network,
       t,
     });
@@ -171,6 +132,15 @@ const CrossChainTransferFinisher: FC = () => {
     if (pollResults.tx === undefined) {
       return;
     }
+  };
+
+  const onCheckRequestKey = async (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    e.preventDefault();
+    debug(onCheckRequestKey.name);
+
+    await checkRequestKey();
   };
 
   const handleValidateSubmit = async (data: FormData): Promise<void> => {
@@ -214,17 +184,18 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     try {
-      const result = await client.listen({
+      const data = await client.listen({
         requestKey: requestKeyOrError as string,
         networkId,
         chainId: pollResults.tx.receiver.chain,
       });
-      if (result.result.error) {
-        setTxError(result.result.error.message);
+      if (data.result.status === 'failure') {
+        const error: IErrorObject = data.result.error as IErrorObject;
+        setTxError(error.message);
       }
       setFinalResults({
-        requestKey: result.reqKey,
-        status: result.result.status,
+        requestKey: data.reqKey,
+        status: data.result.status,
       });
     } catch (tx) {
       debug(tx);
@@ -240,6 +211,36 @@ const CrossChainTransferFinisher: FC = () => {
     [],
   );
 
+  useToolbar([
+    {
+      title: t('Cross Chain'),
+      icon: SystemIcon.Transition,
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      title: t('Finalize Cross Chain'),
+      icon: SystemIcon.TransitionMasked,
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+    },
+    {
+      title: t('Module Explorer'),
+      icon: SystemIcon.Earth,
+      href: Routes.MODULE_EXPLORER,
+    },
+  ]);
+
+  useDidUpdateEffect(async () => {
+    if (!router.isReady) {
+      return;
+    }
+    const { reqKey } = router.query;
+    if (reqKey) {
+      setRequestKey(reqKey as string);
+      await checkRequestKey(reqKey as string);
+      handleOpenHelpCenter();
+    }
+  }, [router.isReady]);
+
   const {
     register,
     handleSubmit,
@@ -251,7 +252,7 @@ const CrossChainTransferFinisher: FC = () => {
     resolver: zodResolver(schema),
     values: {
       server: chainNetwork[network].server,
-      requestKey: '',
+      requestKey: requestKey,
       gasPayer: 'kadena-xchain-gas',
       gasLimit: kadenaConstants.GAS_LIMIT,
       gasPrice: kadenaConstants.GAS_PRICE.toFixed(8),
@@ -272,6 +273,11 @@ const CrossChainTransferFinisher: FC = () => {
     pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
 
+  const formattedSigData = `{
+    "pred": "${pollResults.tx?.receiverGuard.pred}",
+    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}"
+  }`;
+
   const renderNotification =
     txError.toString() === '' ? (
       <Notification.Root
@@ -279,17 +285,17 @@ const CrossChainTransferFinisher: FC = () => {
         hasCloseButton
         icon={SystemIcon.CheckDecagram}
         onClose={() => {}}
-        title="Notification title"
+        title={t('Notification title')}
         color="positive"
       >
-        XChain transfer has been successfully finalized!
+        {t('XChain transfer has been successfully finalized!')}
       </Notification.Root>
     ) : (
       <Notification.Root
         hasCloseButton
         icon={SystemIcon.AlertBox}
         onClose={() => {}}
-        title="Transaction error"
+        title={t('Transaction error')}
         color="negative"
       >
         {txError.toString()}
@@ -369,7 +375,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <div className={sidebarLinksStyle}>
                   <ResourceLinks
-                    links={[{ title: 'Transactions link', href: '#' }]}
+                    links={[{ title: t('Transactions link'), href: '#' }]}
                   />
                 </div>
               </>
@@ -389,17 +395,16 @@ const CrossChainTransferFinisher: FC = () => {
 
       <section className={formContentStyle}>
         <form onSubmit={handleSubmit(handleValidateSubmit)}>
-
           {showNotification ? (
             <div className={notificationContainerStyle}>
               {renderNotification}
             </div>
           ) : null}
 
-         <Stack direction="column">
+          <Stack direction="column">
             <FormItemCard
-              heading="Search Request"
-              helper="Where can I find the request key?"
+              heading={t('Search Request')}
+              helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
             >
@@ -411,8 +416,9 @@ const CrossChainTransferFinisher: FC = () => {
                     status={showInputError}
                     inputProps={{
                       ...register('requestKey'),
-                      onKeyUp: checkRequestKey,
+                      onKeyUp: onCheckRequestKey,
                       onChange: onRequestKeyChange,
+                      value: requestKey,
                     }}
                     error={errors.requestKey}
                   />
@@ -421,8 +427,8 @@ const CrossChainTransferFinisher: FC = () => {
             </FormItemCard>
 
             <FormItemCard
-              heading="Gas Settings"
-              helper="What is a gas payer?"
+              heading={t('Gas Settings')}
+              helper={t('What is a gas payer?')}
               helperHref="#"
               disabled={false}
             >
@@ -447,12 +453,12 @@ const CrossChainTransferFinisher: FC = () => {
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
-                    info={"approx. USD 000.1 ¢"}
+                    info={t('approx. USD 000.1 ¢')}
                     inputProps={{
                       ...register('gasPrice', { shouldUnregister: true }),
                       id: 'gas-price-input',
                       placeholder: t('Enter Gas Price'),
-                      leadingText: 'KDA',
+                      leadingText: t('KDA'),
                       leadingTextWidth: '$16',
                     }}
                   />
@@ -460,7 +466,9 @@ const CrossChainTransferFinisher: FC = () => {
                 <Grid.Item>
                   <TextField
                     disabled={!isAdvancedOptions}
-                    helperText={'This input field will only be enabled if the user is in expert mode'}
+                    helperText={t(
+                      'This input field will only be enabled if the user is in expert mode',
+                    )}
                     label={t('Gas Limit')}
                     inputProps={{
                       ...register('gasLimit', { shouldUnregister: true }),
@@ -472,95 +480,41 @@ const CrossChainTransferFinisher: FC = () => {
               </Grid.Root>
             </FormItemCard>
 
-            <FormItemCard
-              heading="SigData"
-              helper="How do I use the Signature data"
-              helperHref="eafa"
-            >
-              <Box marginBottom="$4" />
-              <Grid.Root columns={1}>
-                <Grid.Item>
-                  <TextField
-                    helperText={showInputHelper}
-                    status={showInputError}
-                    inputProps={{
-                      id: 'sig-data-input',
-                      // ...register('sigData'),
-                      onKeyUp: checkRequestKey,
-                      onChange: onRequestKeyChange,
-                      rightIcon: SystemIcon.ContentCopy,
-                    }}
-                  />
-                </Grid.Item>
-              </Grid.Root>
-            </FormItemCard>
+            {pollResults.tx !== undefined ? (
+              <FormItemCard
+                heading={t('SigData')}
+                helper={t('How do I use the Signature data')}
+                helperHref="#"
+              >
+                <Box marginBottom="$4" />
+                <Grid.Root columns={1}>
+                  <Grid.Item>
+                    <div className={textareaContainerStyle}>
+                      <textarea rows={4} className={textAreaStyle}>
+                        {formattedSigData}
+                      </textarea>
+                      <IconButton
+                        color="default"
+                        icon={SystemIcon.ContentCopy}
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(formattedSigData);
+                        }}
+                        title={t('copySigData')}
+                      />
+                    </div>
+                  </Grid.Item>
+                </Grid.Root>
+              </FormItemCard>
+            ) : null}
           </Stack>
 
           <section className={formButtonStyle}>
-            <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">{t('Finish Transaction')}</Button>
+            <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
+              {t('Finish Transaction')}
+            </Button>
           </section>
         </form>
       </section>
-
-      {/*      {watchAdvancedOptions ? (*/}
-      {/*        <>*/}
-      {/*          <TextField*/}
-      {/*            label="Chain Server"*/}
-      {/*            status={errors.server ? 'negative' : undefined}*/}
-      {/*            helperText={errors.server?.message ?? ''}*/}
-      {/*            inputProps={{*/}
-      {/*              ...register('server', { shouldUnregister: true }),*/}
-      {/*              id: 'chain-server-input',*/}
-      {/*              placeholder: t('Enter Chain Server'),*/}
-      {/*              leadingText: chainNetwork[network].network,*/}
-      {/*            }}*/}
-      {/*          />*/}
-      {/*          <AccountNameField*/}
-      {/*            label={t('Gas Payer')}*/}
-      {/*            inputProps={{*/}
-      {/*              ...register('gasPayer', { shouldUnregister: true }),*/}
-      {/*              id: 'gas-payer-account-input',*/}
-      {/*              placeholder: t('Enter Your Account'),*/}
-      {/*            }}*/}
-      {/*            error={errors.gasPayer}*/}
-      {/*          />*/}
-      {/*        </>*/}
-      {/*      ) : null}*/}
-      {/*    </StyledAccountForm>*/}
-      {/*    <StyledFormButton>*/}
-      {/*      <Button*/}
-      {/*        title={t('Finish Cross Chain Transfer')}*/}
-      {/*        disabled={!isGasStation}*/}
-      {/*      >*/}
-      {/*        {t('Finish Cross Chain Transfer')}*/}
-      {/*      </Button>*/}
-      {/*    </StyledFormButton>*/}
-
-      {/*    {txError.toString() !== '' ? (*/}
-      {/*      <StyledErrorMessage>*/}
-      {/*        {t('Error')}: {txError.toString()}*/}
-      {/*      </StyledErrorMessage>*/}
-      {/*    ) : null}*/}
-
-      {/*    {Object.keys(finalResults).length > 0 ? (*/}
-      {/*      <StyledResultContainer>*/}
-      {/*        <StyledTotalContainer>*/}
-      {/*          <StyledTotalChunk>*/}
-      {/*            <p>{t('Request Key')}</p>*/}
-      {/*            <p>{finalResults.requestKey}</p>*/}
-      {/*          </StyledTotalChunk>*/}
-      {/*          <StyledTotalChunk>*/}
-      {/*            <p>{t('Status')}</p>*/}
-      {/*            <p>{finalResults.status}</p>*/}
-      {/*          </StyledTotalChunk>*/}
-      {/*        </StyledTotalContainer>*/}
-      {/*      </StyledResultContainer>*/}
-      {/*    ) : null}*/}
-      {/*  </StyledForm>*/}
-
-
-
-      {/*</StyledFinisherContent>*/}
     </div>
   );
 };

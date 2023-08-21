@@ -20,7 +20,7 @@ const StyledMain = styled('main', {
   my: '5rem',
 });
 
-export default function Home(): JSX.Element {
+const Home: React.FC = () => {
   const { loading: loadingNewBlocks, data: newBlocks } =
     useGetBlocksSubscription();
   const { loading: loadingRecentBlocks, data: recentBlocks } =
@@ -75,4 +75,6 @@ export default function Home(): JSX.Element {
       </StyledMain>
     </div>
   );
-}
+};
+
+export default Home;

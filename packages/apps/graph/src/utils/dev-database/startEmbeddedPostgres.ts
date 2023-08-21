@@ -74,7 +74,7 @@ export async function startDevelopmentWorker(): Promise<void> {
               .catch(console.error);
 
             if (i > 38 && statements.length > 0) {
-              await new Promise((resolve) => setTimeout(resolve, 900));
+              await new Promise((resolve) => setTimeout(resolve, 5000));
             }
             i++;
           }
