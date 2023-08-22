@@ -10,6 +10,7 @@ export const EVENT_NAMES = {
   'click:next_page': 'click:next_page',
   'click:newsletter': 'click:newsletter',
   'click:search': 'click:search',
+  'click:subscribe': 'click:subscribe',
 } as const;
 
 export const COOKIE_CONSENTNAME = 'cookie_consent';
