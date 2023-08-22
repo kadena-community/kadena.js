@@ -1,5 +1,4 @@
 import {
-  Article,
   articleClass,
   contentClass,
   contentClassVariants,
@@ -34,7 +33,6 @@ export const Landing: FC<IPageProps> = ({
         >
           <article className={articleClass}>
             {children}
-
             <NotFound />
           </article>
         </div>
