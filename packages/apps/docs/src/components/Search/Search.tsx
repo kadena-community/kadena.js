@@ -37,15 +37,13 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
         handleSemanticSubmit(query);
       }
 
-      analyticsEvent(
-        EVENT_NAMES[tabName === 'qa' ? 'search:qa' : 'search:docs'],
-        {
-          label: query,
-          url: window.location.href,
-        },
-      );
+      analyticsEvent(EVENT_NAMES['click:search'], {
+        query,
+        tabName,
+      });
     }
-  }, [query, tabName, handleSemanticSubmit, handleSearchSubmit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, tabName]);
 
   const onTabSelect = (tabName: string): void => {
     setTabName(tabName);

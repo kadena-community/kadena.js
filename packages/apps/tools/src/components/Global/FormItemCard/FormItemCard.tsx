@@ -33,7 +33,7 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
   ...rest
 }) => {
   return (
-    <div className={cardContainerStyle}>
+    <div>
       <Card fullWidth disabled={disabled}>
         <Grid.Root columns={2} spacing="$3xl">
           <Grid.Item>

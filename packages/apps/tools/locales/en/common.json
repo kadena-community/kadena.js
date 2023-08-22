@@ -94,6 +94,7 @@
   "Search for transactions": "Search for transactions",
   "Filters": "Filters",
   "Filtered by": "Filtered by",
+  "Transaction Details": "Transaction Details",
   "Reset all filters": "Reset all filters",
   "Reload": "Reload",
   "Finisher": "Finisher",
@@ -155,9 +156,9 @@
   "Search Request": "Search Request",
   "Transaction error": "Transaction error",
   "Notification title": "Notification title",
-  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
   "Cross Chain Tracker": "Cross Chain Tracker",
   "Track & trace transactions": "Track & trace transactions",
   "Retry": "Retry",
-  "Search": "Search"
+  "Search": "Search",
+  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!"
 }

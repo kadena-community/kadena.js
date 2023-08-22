@@ -5,7 +5,6 @@ import {
   Grid,
   Heading,
   IconButton,
-  Notification,
   ProductIcon,
   Stack,
   SystemIcon,
@@ -23,6 +22,7 @@ import {
 } from './styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { FormStatusNotification } from '@/components/Global';
 import {
   AccountNameField,
   NAME_VALIDATION,
@@ -280,26 +280,16 @@ const CrossChainTransferFinisher: FC = () => {
 
   const renderNotification =
     txError.toString() === '' ? (
-      <Notification.Root
-        expanded
-        hasCloseButton
-        icon={SystemIcon.CheckDecagram}
-        onClose={() => {}}
+      <FormStatusNotification
+        status="successful"
         title={t('Notification title')}
-        color="positive"
       >
         {t('XChain transfer has been successfully finalized!')}
-      </Notification.Root>
+      </FormStatusNotification>
     ) : (
-      <Notification.Root
-        hasCloseButton
-        icon={SystemIcon.AlertBox}
-        onClose={() => {}}
-        title={t('Transaction error')}
-        color="negative"
-      >
+      <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
-      </Notification.Root>
+      </FormStatusNotification>
     );
 
   useEffect(() => {
@@ -393,14 +383,12 @@ const CrossChainTransferFinisher: FC = () => {
         {t('Finish transaction')}
       </Heading>
 
-      <section className={formContentStyle}>
-        <form onSubmit={handleSubmit(handleValidateSubmit)}>
-          {showNotification ? (
-            <div className={notificationContainerStyle}>
-              {renderNotification}
-            </div>
-          ) : null}
+      {showNotification ? (
+        <div className={notificationContainerStyle}>{renderNotification}</div>
+      ) : null}
 
+      <form onSubmit={handleSubmit(handleValidateSubmit)}>
+        <section className={formContentStyle}>
           <Stack direction="column">
             <FormItemCard
               heading={t('Search Request')}
@@ -507,14 +495,13 @@ const CrossChainTransferFinisher: FC = () => {
               </FormItemCard>
             ) : null}
           </Stack>
-
-          <section className={formButtonStyle}>
-            <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
-              {t('Finish Transaction')}
-            </Button>
-          </section>
-        </form>
-      </section>
+        </section>
+        <section className={formButtonStyle}>
+          <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
+            {t('Finish Transaction')}
+          </Button>
+        </section>
+      </form>
     </div>
   );
 };
