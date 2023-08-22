@@ -38,13 +38,10 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
       }
 
       console.log(111, 'anayltics');
-      analyticsEvent(
-        EVENT_NAMES[tabName === 'qa' ? 'search:qa' : 'search:docs'],
-        {
-          label: query,
-          url: window.location.href,
-        },
-      );
+      analyticsEvent(EVENT_NAMES['click:search'], {
+        query,
+        tabName,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, tabName]);
