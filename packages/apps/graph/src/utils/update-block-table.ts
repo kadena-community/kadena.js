@@ -9,6 +9,13 @@
 import { prismaClient } from '../db/prismaClient';
 
 async function main(): Promise<void> {
+  const services = ['chainweb-mining-client', 'chainweb-node', 'chainweb-data'];
+
+  await Promise.all(services.map(devnetStop)).catch((err) => {
+    console.log('error: could not stop devnet');
+    return console.error(err);
+  });
+
   const results = await prismaClient.$transaction([
     prismaClient.$executeRawUnsafe(`
       ALTER TABLE public.blocks
@@ -56,7 +63,12 @@ async function main(): Promise<void> {
     `),
   ]);
 
-  results.forEach((r) => console.log('affected rows', r));
+  results.forEach((r: unknown) => console.log('affected rows', r));
+
+  await Promise.all(services.map(devnetStart)).catch((err) => {
+    console.log("error: couldn't stop devnet");
+    return console.error(err);
+  });
 }
 
 main()
@@ -67,3 +79,15 @@ main()
     ),
   )
   .finally(() => prismaClient.$disconnect());
+
+function devnetStop(value: string): Promise<Response> {
+  return fetch(`http://localhost:9999/stop/${value}`, {
+    method: 'PATCH',
+  });
+}
+
+function devnetStart(value: string): Promise<Response> {
+  return fetch(`http://localhost:9999/start/${value}`, {
+    method: 'POST',
+  });
+}

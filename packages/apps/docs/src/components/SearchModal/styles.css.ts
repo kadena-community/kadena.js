@@ -2,8 +2,11 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const walletConnectWrapperStyle = style([
+export const wrapperClass = style([
   sprinkles({
-    marginLeft: '$4',
+    width: '100%',
   }),
+  {
+    minHeight: '60vh',
+  },
 ]);

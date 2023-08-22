@@ -1,4 +1,8 @@
-import { Article, Content } from '../components';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+} from '../components';
 import { Template } from '../components/Template';
 
 import { CodeBackground, PageGrid } from './styles';
@@ -7,6 +11,7 @@ import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
 import { IPageProps } from '@/types/Layout';
+import classNames from 'classnames';
 import React, { FC } from 'react';
 import { RedocRawOptions } from 'redoc';
 
@@ -50,8 +55,11 @@ export const Redocly: FC<IPageProps> = ({
   return (
     <PageGrid>
       <Template menuItems={leftMenuTree}>
-        <Content id="maincontent" layout="code">
-          <Article>
+        <div
+          className={classNames(contentClass, contentClassVariants.code)}
+          id="maincontent"
+        >
+          <article className={articleClass}>
             <Breadcrumbs menuItems={leftMenuTree} />
             <LastModifiedDate date={frontmatter.lastModifiedDate} />
             {children}
@@ -60,8 +68,8 @@ export const Redocly: FC<IPageProps> = ({
               navigation={frontmatter.navigation}
               layout="code"
             />
-          </Article>
-        </Content>
+          </article>
+        </div>
         <CodeBackground />
       </Template>
     </PageGrid>

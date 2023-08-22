@@ -259,9 +259,6 @@ export type PactPayload = {
     cont: IContPayload;
 };
 
-// @alpha
-export type PactReference = () => string;
-
 // @alpha (undocumented)
 export type PactTransactionHash = IBase64Url;
 

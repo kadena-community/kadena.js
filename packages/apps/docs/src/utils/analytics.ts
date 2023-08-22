@@ -12,16 +12,13 @@ export const EVENT_NAMES = {
   'click:previous_page': 'click:previous_page',
   'click:next_page': 'click:next_page',
   'click:newsletter': 'click:newsletter',
-  'search:qa': 'search:qa',
-  'search:docs': 'search:docs',
+  'click:search': 'click:search',
 } as const;
 
 export const COOKIE_CONSENTNAME = 'cookie_consent';
 
-interface IOptionsType {
-  label?: string;
-  url?: string;
-}
+type IOptionsType = Record<string, string | undefined>;
+
 interface IOptionsPageViewType {
   page_path?: string;
   send_to?: string;

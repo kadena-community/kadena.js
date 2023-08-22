@@ -1,23 +1,15 @@
-import { SystemIcon } from '@kadena/react-ui';
+import { NavHeader, Option, Select, SystemIcon } from '@kadena/react-ui';
 
-import {
-  StyledBurgerMenuButton,
-  StyledContainer,
-  StyledGridRow,
-  StyledLeftPanelWrapper,
-  StyledLogoWrapper,
-  StyledMenuItem,
-  StyledMobileMenu,
-  StyledNav,
-  StyledTitle,
-} from './styles';
-import { headerClass } from './styles.css';
-
-import { GridCol } from '@/components/Global';
-import Routes from '@/constants/routes';
+import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
+import WalletConnectButton from '@/components/Common/WalletConnectButton';
+import { kadenaConstants, Network } from '@/constants/kadena';
+import routes from '@/constants/routes';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { IMenuItem } from '@/types/Layout';
+import { getNetworks } from '@/utils/wallet';
+import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -26,61 +18,72 @@ export interface IHeaderProps {
   rightPanel?: ReactNode;
 }
 
-const Header: FC<IHeaderProps> = ({ logo, appTitle, rightPanel, menu }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const Header: FC<IHeaderProps> = () => {
   const { t } = useTranslation('common');
-  const hasMenu: boolean = Boolean(menu?.length);
+  const { accounts, selectedNetwork, setSelectedNetwork, session } =
+    useWalletConnectClient();
+  const { pathname, push } = useRouter();
 
-  const renderMenu = (type: 'desktop' | 'mobile' = 'desktop'): ReactNode => (
-    <StyledNav type={type}>
-      {menu?.map((item) => (
-        <StyledMenuItem href={item.href} key={item.title}>
-          {item.title}
-        </StyledMenuItem>
-      ))}
-    </StyledNav>
-  );
+  const navItems = [
+    {
+      label: t('Faucet'),
+      href: routes.FAUCET_EXISTING,
+    },
+    {
+      label: t('Transactions'),
+      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      label: t('Account'),
+      href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
+    },
+  ];
+
+  const networks: Network[] = session
+    ? getNetworks(accounts)
+    : ['mainnet01', 'testnet04'];
+
+  const handleMenuItemClick = async (
+    e: React.MouseEvent<HTMLAnchorElement>,
+  ): Promise<void> => {
+    e.preventDefault();
+
+    await push(e.currentTarget.href);
+  };
 
   return (
-    <div className={headerClass}>
-      <StyledContainer type="fixed">
-        <StyledGridRow>
-          <GridCol xs={11} lg={2}>
-            <StyledLeftPanelWrapper>
-              {Boolean(logo) && <StyledLogoWrapper>{logo}</StyledLogoWrapper>}
-              {Boolean(appTitle) && (
-                <StyledTitle href={Routes.HOME}>{appTitle}</StyledTitle>
-              )}
-            </StyledLeftPanelWrapper>
-          </GridCol>
-          {hasMenu && (
-            <GridCol xs={{ hidden: true }} lg={{ size: 4, hidden: false }}>
-              {renderMenu()}
-            </GridCol>
-          )}
-          {Boolean(rightPanel) && (
-            <GridCol
-              xs={{ hidden: true }}
-              lg={{ size: 6, hidden: false, push: hasMenu ? 0 : 7 }}
-            >
-              {rightPanel}
-            </GridCol>
-          )}
-          <GridCol xs={{ size: 1, hidden: false }} lg={{ hidden: true }}>
-            <StyledBurgerMenuButton
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              title={t('Menu')}
-              icon={isMenuOpen ? SystemIcon.Close : SystemIcon.MenuOpen}
-            />
-          </GridCol>
-        </StyledGridRow>
-      </StyledContainer>
-      <StyledMobileMenu status={isMenuOpen ? 'open' : 'close'}>
-        {renderMenu('mobile')}
-        {rightPanel}
-      </StyledMobileMenu>
-    </div>
+    <NavHeader.Root brand="DevTools">
+      <NavHeader.Navigation
+        activeLink={navItems.findIndex((item) => item.href === pathname) + 1}
+      >
+        {navItems.map((item, index) => (
+          <NavHeader.Link
+            key={index}
+            href={item.href}
+            onClick={handleMenuItemClick}
+          >
+            {item.label}
+          </NavHeader.Link>
+        ))}
+      </NavHeader.Navigation>
+      <NavHeader.Content>
+        <Select
+          ariaLabel={t('Select Network')}
+          value={selectedNetwork as string}
+          onChange={(e) => setSelectedNetwork(e.target.value as Network)}
+          icon={SystemIcon.Link}
+        >
+          {networks.map((network) => (
+            <Option key={network} value={network}>
+              {kadenaConstants?.[network].label}
+            </Option>
+          ))}
+        </Select>
+        <div className={walletConnectWrapperStyle}>
+          <WalletConnectButton />
+        </div>
+      </NavHeader.Content>
+    </NavHeader.Root>
   );
 };
 
