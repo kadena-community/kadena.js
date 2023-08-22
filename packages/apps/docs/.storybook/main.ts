@@ -14,6 +14,16 @@ const config: StorybookConfig = {
     '@storybook/addon-mdx-gfm',
     'storybook-dark-mode',
     'storybook-addon-next-router',
+    {
+      name: 'storybook-addon-swc',
+      options: {
+        enable: true,
+        enableSwcLoader: true,
+        enableSwcMinify: true,
+        swcLoaderOptions: {},
+        swcMinifyOptions: {},
+      },
+    },
   ],
   framework: {
     name: '@storybook/react-webpack5',
