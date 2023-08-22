@@ -16,7 +16,7 @@ export const ThemeToggle: FC = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     analyticsEvent(EVENT_NAMES['click:change_theme'], {
-      label: `toggle theme to ${newTheme}`,
+      theme: newTheme,
     });
   };
 
