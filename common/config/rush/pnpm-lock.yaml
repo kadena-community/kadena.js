@@ -203,6 +203,9 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: 2.1.2
         version: 2.1.2(@types/node@16.18.39)(next@13.4.5)(webpack@5.88.2)
+      '@vanilla-extract/webpack-plugin':
+        specifier: 2.2.0
+        version: 2.2.0(@types/node@16.18.39)(webpack@5.88.2)
       cypress:
         specifier: ~12.12.0
         version: 12.12.0
@@ -233,6 +236,9 @@ importers:
       micromark-extension-frontmatter:
         specifier: ~1.1.0
         version: 1.1.1
+      mini-css-extract-plugin:
+        specifier: 2.7.6
+        version: 2.7.6(webpack@5.88.2)
       openapi-types:
         specifier: ~12.1.3
         version: 12.1.3
@@ -10103,7 +10109,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.71)(esbuild@0.18.17)
+      webpack: 5.88.2(webpack-cli@4.10.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -24287,7 +24293,7 @@ packages:
     peerDependencies:
       webpack: ^5.0.0
     dependencies:
-      webpack: 5.88.2(@swc/core@1.3.71)(esbuild@0.18.17)
+      webpack: 5.88.2(webpack-cli@4.10.0)
 
   /style-to-object@0.4.1:
     resolution: {integrity: sha512-HFpbb5gr2ypci7Qw+IOhnP2zOU7e77b+rzM+wTzXzfi1PrtBCX0E7Pk4wL4iTLnhzZ+JgEGAhX81ebTg/aYjQw==}
