@@ -18,15 +18,18 @@ export const Footer: FC = () => {
           <IconButton
             title="Go to our Github"
             icon={SystemIcon.Github}
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://github.com/kadena-community"
           />
           <IconButton
             title="Go to our Twitter"
             icon={SystemIcon.Twitter}
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://twitter.com/kadena_io"
           />
           <IconButton
-            onClick={() => alert('todo, make an href')}
+            as="a"
+            href="https://www.linkedin.com/company/kadena-llc"
             title="Go to our Linkedin"
             icon={SystemIcon.Linkedin}
           />
