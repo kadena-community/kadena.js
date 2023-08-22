@@ -140,7 +140,13 @@ importers:
       '@rushstack/heft-jest-plugin':
         specifier: ~0.5.12
         version: 0.5.13(@rushstack/heft@0.50.7)(@types/node@16.18.39)
+      '@storybook/addon-a11y':
+        specifier: 7.1.0
+        version: 7.1.0(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-actions':
+        specifier: ^7.1.0
+        version: 7.1.1(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-controls':
         specifier: ^7.1.0
         version: 7.1.1(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-essentials':
@@ -155,6 +161,15 @@ importers:
       '@storybook/addon-mdx-gfm':
         specifier: ^7.1.0
         version: 7.1.1
+      '@storybook/blocks':
+        specifier: ^7.1.0
+        version: 7.1.1(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/csf':
+        specifier: ~0.1.1
+        version: 0.1.1
+      '@storybook/docs-mdx':
+        specifier: ~0.1.0
+        version: 0.1.0
       '@storybook/react':
         specifier: ^7.1.0
         version: 7.1.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
@@ -164,6 +179,9 @@ importers:
       '@storybook/testing-library':
         specifier: ^0.2.0
         version: 0.2.0
+      '@storybook/theming':
+        specifier: ~7.1.0
+        version: 7.1.0(react-dom@18.2.0)(react@18.2.0)
       '@types/gtag.js':
         specifier: ~0.0.12
         version: 0.0.12
@@ -197,6 +215,9 @@ importers:
       eslint-config-next:
         specifier: 13.4.5
         version: 13.4.5(eslint@8.45.0)(typescript@5.1.6)
+      eslint-plugin-storybook:
+        specifier: ~0.6.13
+        version: 0.6.13(eslint@8.45.0)(typescript@5.1.6)
       jest:
         specifier: ~29.6.1
         version: 29.6.2(@types/node@16.18.39)
