@@ -37,7 +37,6 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
         handleSemanticSubmit(query);
       }
 
-      console.log(111, 'anayltics');
       analyticsEvent(EVENT_NAMES['click:search'], {
         query,
         tabName,
