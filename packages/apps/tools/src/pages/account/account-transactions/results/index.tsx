@@ -6,13 +6,21 @@ import {
   ContentHeader,
   Grid,
   Heading,
+  ProductIcon,
+  ProgressBar,
   SystemIcon,
   Table,
   Text,
+  TrackerCard,
 } from '@kadena/react-ui';
 
-import { filterItemClass, headerButtonGroupClass } from './styles.css';
+import {
+  filterItemClass,
+  headerButtonGroupClass,
+  mainContentClass,
+} from './styles.css';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
@@ -23,7 +31,7 @@ import {
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(
@@ -35,6 +43,9 @@ const CheckTransactions: FC = () => {
 
   const [results, setResults] = useState<ITransaction[]>([]);
   const [loadingState, setLoadingState] = useState<boolean>(true);
+  const [transactionDetails, setTransactionDetails] = useState<ITransaction>();
+
+  const transactionDetailsRef = useRef<HTMLElement | null>(null);
 
   function displayAccountName(accountName: string): string {
     if (accountName.length > 20) {
@@ -121,8 +132,71 @@ const CheckTransactions: FC = () => {
     await router.push(Routes.ACCOUNT_TRANSACTIONS_FILTERS);
   }
 
+  const handleOpenTransactionDetails = (result: ITransaction): void => {
+    setTransactionDetails(result);
+    // @ts-ignore
+    transactionDetailsRef.openSection(0);
+  };
+
   return (
-    <div>
+    <div className={mainContentClass}>
+      <DrawerToolbar
+        ref={transactionDetailsRef}
+        sections={[
+          {
+            icon: SystemIcon.Information,
+            title: t('Transaction Details'),
+            children: (
+              <>
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Sender',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'From chain',
+                      value: transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={ProductIcon.QuickStart}
+                />
+                <Box marginBottom="$5" />
+                <ProgressBar
+                  checkpoints={[
+                    {
+                      title: 'Initiated transaction',
+                      status: 'complete',
+                    },
+                    {
+                      title: 'Transaction complete',
+                      status: 'complete',
+                    },
+                  ]}
+                />
+                <Box marginBottom="$2" />
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Receiver',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'to chain',
+                      value:
+                        transactionDetails?.crossChainId ||
+                        transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={ProductIcon.ReceiverInactive}
+                />
+              </>
+            ),
+          },
+        ]}
+      />
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
@@ -197,7 +271,10 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} url={''}>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
@@ -236,7 +313,10 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} url={''}>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
