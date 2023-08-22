@@ -40,16 +40,12 @@ export const footerClass = style([
   },
 ]);
 
-export const spacerClass = style({
-  flex: 1,
-});
-
-export const textClass = style(
+export const textClass = style([
   sprinkles({
     color: '$neutral4',
     paddingX: '$3',
   }),
-);
+]);
 
 export const linkClass = style([
   sprinkles({

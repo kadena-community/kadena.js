@@ -1,10 +1,11 @@
 import { IconButton, Stack, SystemIcon } from '@kadena/react-ui';
 
+import { spacerClass } from '../styles.css';
 import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
-import { footerClass, footerWrapperClass, spacerClass } from './styles.css';
+import { footerClass, footerWrapperClass } from './styles.css';
 
 import Link from 'next/link';
 import React, { FC } from 'react';

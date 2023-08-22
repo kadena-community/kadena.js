@@ -1,6 +1,7 @@
 import { Footer } from '../Footer';
+import { Menu } from '../Menu';
 import { SideMenu } from '../SideMenu';
-import { Menu, MenuBack } from '../styles';
+import { MenuBack } from '../styles';
 
 import { useMenu } from '@/hooks';
 import { IMenuItem } from '@/types/Layout';
@@ -25,7 +26,7 @@ export const Template: FC<IProps> = ({
     <>
       <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
       <Menu
-        data-cy="menu"
+        dataCy="menu"
         isOpen={isMenuOpen}
         inLayout={!hideSideMenu}
         layout={layout}
