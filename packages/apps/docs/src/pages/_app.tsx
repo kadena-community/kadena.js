@@ -54,10 +54,7 @@ export const MyApp = ({
 
   const handleBeforeUnload = (event: BeforeUnloadEvent): void => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { href } = (event as any).originalTarget?.activeElement || {};
-
-    if (!href) return;
-
+    const { href } = (event as any).originalTarget.activeElement;
     onExternalButtonClick(href);
   };
 
