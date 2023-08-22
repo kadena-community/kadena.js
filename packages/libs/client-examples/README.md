@@ -2,7 +2,7 @@
 
 # @kadena/client-examples
 
-This project demonstrates the use of the `@kadena/pact-cli` together with
+This project demonstrates the use of the `@kadena/pactjs-cli` together with
 `@kadena/client` for _smart contracts_.
 
 <picture>
@@ -141,11 +141,11 @@ async function transfer(
     throw new Error('TX_IS_NOT_SIGNED');
   }
 
-  // Now it's time to submit the transaction; this function returns the requestDecelerator {requestKey, networkId, chainId}.
+  // Now it's time to submit the transaction; this function returns the requestDescriptor {requestKey, networkId, chainId}.
   // by storing this object in a permanent storage you always can fetch the result of the transaction from the blockchain
-  const requestDecelerator = await submit(signedTr);
+  const requestDescriptor = await submit(signedTr);
   // We listen for the result of the request.
-  const response = await listen(requestDecelerator);
+  const response = await listen(requestDescriptor);
   // Now we need to check the status.
   if (response.result.status === 'failure') {
     throw response.result.error;
