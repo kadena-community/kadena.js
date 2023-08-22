@@ -1,5 +1,4 @@
 import {
-  darkTheme,
   globalCss,
   baseGlobalStyles,
 } from '@kadena-ui/react-components';
@@ -28,7 +27,7 @@ export const parameters = {
   darkMode: {
     classTarget: 'body',
     stylePreview: true,
-    darkClass: `${darkThemeClass} ${darkTheme.className}`,
+    darkClass: darkThemeClass,
     lightClass: 'theme',
     current: 'light',
     // Override the default dark theme
