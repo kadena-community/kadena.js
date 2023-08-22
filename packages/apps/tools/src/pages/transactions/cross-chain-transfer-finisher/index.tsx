@@ -271,7 +271,7 @@ const CrossChainTransferFinisher: FC = () => {
     pollResults.error === undefined ? undefined : 'negative';
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
-  const showNotification = Object.keys(finalResults).length === 0;
+  const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard.pred}",
