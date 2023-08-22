@@ -5,6 +5,9 @@ const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
 
 const config = {
+  eslint: {
+    ignoreDuringBuilds: true, // lint is a different task/phase
+  },
   reactStrictMode: true,
   pageExtensions:
     process.env.NODE_ENV === 'production' ? ['(?<!(spec|test).)tsx'] : ['tsx'],
