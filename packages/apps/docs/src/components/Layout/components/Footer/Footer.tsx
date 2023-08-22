@@ -40,7 +40,9 @@ export const Footer: FC = () => {
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
           <FooterLink href="https://kadena.io">Terms of Service</FooterLink>
           <Link href="/docs/kadena/code-of-conduct" passHref legacyBehavior>
-            <FooterLink>Code of Conduct</FooterLink>
+            <FooterLink href="/docs/kadena/code-of-conduct">
+              Code of Conduct
+            </FooterLink>
           </Link>
         </Stack>
         <Stack justifyContent="space-around" alignItems="center" marginY="$2">

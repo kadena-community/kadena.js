@@ -1,14 +1,8 @@
-import {
-  breakpoints,
-  darkThemeClass,
-  sprinkles,
-  vars,
-} from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { $$navMenu, $$pageWidth } from '../../global.css';
 
-import { LayoutType } from '@/types/Layout';
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const footerWrapperClass = style([
   sprinkles({
@@ -49,3 +43,26 @@ export const footerClass = style([
 export const spacerClass = style({
   flex: 1,
 });
+
+export const textClass = style(
+  sprinkles({
+    color: '$neutral4',
+    paddingX: '$3',
+  }),
+);
+
+export const linkClass = style([
+  sprinkles({
+    textDecoration: 'none',
+    color: '$neutral4',
+    paddingX: '$3',
+  }),
+  {
+    selectors: {
+      '&:hover': {
+        textDecoration: 'underline',
+        color: vars.colors.$neutral5,
+      },
+    },
+  },
+]);
