@@ -1,7 +1,6 @@
 import { Footer } from '../Footer';
-import { Menu } from '../Menu';
+import { Menu, MenuBack } from '../Menu';
 import { SideMenu } from '../SideMenu';
-import { MenuBack } from '../styles';
 
 import { useMenu } from '@/hooks';
 import { IMenuItem } from '@/types/Layout';
