@@ -1,7 +1,6 @@
 import { Card, Grid, Heading, SystemIcon, Text } from '@kadena/react-ui';
 
 import {
-  cardContainerStyle,
   helperStyle,
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
