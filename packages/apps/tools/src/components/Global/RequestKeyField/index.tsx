@@ -38,11 +38,13 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
 }) => {
   const { t } = useTranslation('common');
 
+  const helper = helperText || error?.message;
+
   return (
     <TextField
       label={t('Request Key')}
       status={error ? 'negative' : status}
-      helperText={error?.message ?? helperText}
+      helperText={helper}
       {...rest}
       inputProps={{
         id: 'request-key-input',
