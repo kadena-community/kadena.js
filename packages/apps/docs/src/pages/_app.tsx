@@ -13,11 +13,10 @@ import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider, ThemeProvider } from '@/hooks';
 import { IPageMeta, IPageProps } from '@/types/Layout';
 import { getLayout } from '@/utils';
-import onExternalButtonClick from '@/utils/onExternalButtonClick';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 
 const GlobalStyles = globalCss({
   ...baseGlobalStyles,
@@ -51,24 +50,6 @@ export const MyApp = ({
   const props = deserializePageProps(pageProps);
 
   const Layout = getLayout(props.frontmatter.layout);
-
-  const handleBeforeUnload = (event: BeforeUnloadEvent): void => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { href } = (event as any).originalTarget.activeElement;
-    onExternalButtonClick(href);
-  };
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', handleBeforeUnload, {
-      capture: true,
-    });
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload, {
-        capture: true,
-      });
-    };
-  }, []);
 
   return (
     <>
