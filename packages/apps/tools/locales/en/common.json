@@ -135,6 +135,8 @@
   "form-status-body-processing": "Please have some patience while the transaction is being processed.",
   "form-status-body-successful": "The transaction has completed successfully.",
   "form-status-body-idle": "Nothing to see here.",
+  "Initiated transaction": "Initiated transaction",
+  "Transfer complete": "Transfer complete",
   "Kadena Tools": "Kadena Tools",
   "Startpage": "Startpage",
   "Help Center": "Help Center",
@@ -154,5 +156,9 @@
   "Search Request": "Search Request",
   "Transaction error": "Transaction error",
   "Notification title": "Notification title",
+  "Cross Chain Tracker": "Cross Chain Tracker",
+  "Track & trace transactions": "Track & trace transactions",
+  "Retry": "Retry",
+  "Search": "Search",
   "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!"
 }
