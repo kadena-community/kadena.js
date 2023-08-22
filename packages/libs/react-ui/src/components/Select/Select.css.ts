@@ -1,3 +1,5 @@
+import { vars } from '../../styles';
+
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';
 
@@ -9,8 +11,8 @@ export const containerClass = style([
     borderRadius: '$sm',
   }),
   {
+    boxShadow: `0 1px 1px 0 ${vars.colors.$gray30}`,
     position: 'relative',
-    border: 'solid 1px',
   },
 ]);
 export const containerClassDisabled = style([
