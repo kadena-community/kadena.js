@@ -1,3 +1,5 @@
+'use client';
+
 import { NavGlow } from './assets/glow';
 import {
   activeLinkClass,

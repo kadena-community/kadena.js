@@ -1,6 +1,5 @@
 import { pageNavButtonClass, pageNavLabelClass } from './Pagination.css';
 
-import { Box } from '@components/Box';
 import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
