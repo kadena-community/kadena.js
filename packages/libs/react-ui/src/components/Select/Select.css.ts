@@ -5,19 +5,44 @@ import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    backgroundColor: '$neutral1',
-    color: '$neutral5',
     padding: '$2',
     borderRadius: '$sm',
   }),
   {
-    boxShadow: `0 1px 1px 0 ${vars.colors.$gray30}`,
     position: 'relative',
   },
 ]);
-export const containerClassDisabled = style([
-  sprinkles({ pointerEvents: 'none' }),
-  { opacity: 0.5 },
+
+export const containerClassForm = style([
+  sprinkles({
+    backgroundColor: '$white',
+  }),
+  {
+    boxShadow: `0 1px 1px 0 ${vars.colors.$gray30}`,
+  },
+]);
+
+export const containerClassFormDisabled = style([
+  sprinkles({
+    backgroundColor: '$gray20',
+  }),
+  {
+    boxShadow: 'none',
+  },
+]);
+
+export const containerClassDefault = style([
+  sprinkles({
+    backgroundColor: '$black',
+    color: '$gray40',
+  }),
+  {
+    border: `1px solid ${vars.colors.$gray60}`,
+    ':disabled': {
+      pointerEvents: 'none',
+      backgroundColor: vars.colors.$gray20,
+    },
+  },
 ]);
 
 export const selectContainerClass = style([
