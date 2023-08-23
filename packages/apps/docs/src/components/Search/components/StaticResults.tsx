@@ -1,7 +1,7 @@
 import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
-import { itemLinkClass, staticResultsListClass } from '../styles.css';
 import type { IQueryResult } from '../../../types';
+import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';

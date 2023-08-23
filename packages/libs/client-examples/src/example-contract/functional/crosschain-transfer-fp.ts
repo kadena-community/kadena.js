@@ -16,12 +16,12 @@ import {
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
+import { isSignedCommand } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
 import { listen, pollCreateSpv, pollStatus, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';
-import { isSignedCommand } from '@kadena/pactjs';
 
 interface IAccount {
   account: string;

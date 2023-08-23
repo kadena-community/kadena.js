@@ -1,8 +1,8 @@
 import { SearchResults } from './components/SearchResults';
 
 import { useSearch } from '@/hooks';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { mapMatches } from '@/pages/api/semanticsearch';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC, useEffect, useState } from 'react';
 
 interface IProps {
