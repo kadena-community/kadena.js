@@ -13,7 +13,7 @@ export interface IGridContainerProps {
 
 const GridContainer: FC<IGridContainerProps> = ({
   children,
-                                                  gap,
+  gap,
   templateAreas,
   templateRows,
   templateColumns,
