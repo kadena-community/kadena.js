@@ -66,10 +66,3 @@ export const selectClass = style([
     flex: '1',
   },
 ]);
-
-export const optionClass = style([
-  sprinkles({
-    backgroundColor: '$neutral1',
-    color: '$neutral5',
-  }),
-]);

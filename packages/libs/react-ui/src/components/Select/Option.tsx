@@ -1,5 +1,3 @@
-import { optionClass } from './Select.css';
-
 import React, { FC } from 'react';
 
 export interface IOptionProps
@@ -9,7 +7,5 @@ export interface IOptionProps
 }
 
 export const Option: FC<IOptionProps> = ({ children, ...rest }) => (
-  <option className={optionClass} {...rest}>
-    {children}
-  </option>
+  <option {...rest}>{children}</option>
 );
