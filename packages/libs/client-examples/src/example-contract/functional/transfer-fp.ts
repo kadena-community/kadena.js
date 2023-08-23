@@ -16,7 +16,7 @@ import {
 import { pollStatus, preflight, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getTransferCommand = ({
   sender,
   receiver,
