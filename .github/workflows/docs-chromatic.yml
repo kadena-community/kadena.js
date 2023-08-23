@@ -1,0 +1,33 @@
+name: Chromatic for Docs
+# All pull requests, and
+# Workflow dispatch allows you to run this workflow manually from the Actions tab
+on:
+  push:
+    paths:
+      - packages/apps/docs/**
+
+jobs:
+  chromatic:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 👈 Required to retrieve git history, needed to determine diffs.
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Rush install (install-run-rush)
+        run: |
+          node common/scripts/install-run-rush.js install -t @kadena/docs
+      - name: Publish Storybook
+        uses: chromaui/action@v1
+        with:
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          exitOnceUploaded: true
+          buildScriptName: 'build:storybook'
+          projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
+          workingDir: /packages/apps/docs
+          autoAcceptChanges: 'main'
