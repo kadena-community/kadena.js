@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "rushx postinstall && next build",
-    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"sleep 3; rushx generate:sdk -w\"",
+    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
     "format": "npm run format:md && npm run format:src",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",

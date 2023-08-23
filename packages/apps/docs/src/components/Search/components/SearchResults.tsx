@@ -7,20 +7,20 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
+import type { IQueryResult } from '../../../types';
+
 import {
   loadingWrapperClass,
   scrollBoxClass,
   scrollBoxEnabledClass,
 } from './../styles.css';
-import type { IQueryResult } from '../../../types';
-
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
 import { Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
-import classnames from 'classnames';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
+import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
