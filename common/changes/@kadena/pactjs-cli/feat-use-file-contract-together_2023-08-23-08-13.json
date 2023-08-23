@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/pactjs-cli",
+      "comment": "let users use --file and --contract together",
+      "type": "none"
+    }
+  ],
+  "packageName": "@kadena/pactjs-cli"
+}
