@@ -22,13 +22,13 @@ export const Subscribe: FC = () => {
 
   return (
     <section data-cy="subscribe">
-      <Stack direction="column" spacing="$sm">
+      <Stack direction="column" gap="$sm">
         <Heading as="h6">Receive important developer updates</Heading>
 
         {!hasSuccess ? (
           <>
             <form>
-              <Stack spacing="$sm">
+              <Stack gap="$sm">
                 <TextField
                   inputProps={{
                     id: 'email',

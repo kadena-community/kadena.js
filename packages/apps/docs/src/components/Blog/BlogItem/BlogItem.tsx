@@ -17,8 +17,8 @@ export const BlogItem: FC<IProps> = ({ item }) => {
   return (
     <li className={blogitem}>
       <Link className={link} href={item.root}>
-        <Stack direction="column" spacing="$3">
-          <Stack alignItems="center" spacing="$2">
+        <Stack direction="column" gap="$3">
+          <Stack alignItems="center" gap="$2">
             <Avatar name={item.author} />
             <Heading as="h4" variant="h6">
               {item.author}

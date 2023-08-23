@@ -64,7 +64,7 @@ const Home: FC<IProps> = ({ popularPages }) => {
             </Stack>
           </Box>
           <Heading as="h4">Browse by Resources</Heading>
-          <Stack direction="column" spacing="$2xl">
+          <Stack direction="column" gap="$2xl">
             <BrowseSection title="General" titleAs="h5" direction="row">
               <BrowseSection.LinkBlock
                 title="Overview of Pact"

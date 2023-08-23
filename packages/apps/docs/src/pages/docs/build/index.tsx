@@ -8,7 +8,7 @@ import { GetStaticProps } from 'next';
 import React, { FC } from 'react';
 
 const Home: FC = () => {
-  return <Stack direction="column" spacing="$2xl"></Stack>;
+  return <Stack direction="column" gap="$2xl"></Stack>;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
