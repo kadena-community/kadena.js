@@ -1,6 +1,8 @@
 import {
   containerClass,
-  containerClassDisabled,
+  containerClassDefault,
+  containerClassForm,
+  containerClassFormDisabled,
   iconClass,
   selectClass,
   selectContainerClass,
@@ -22,6 +24,7 @@ export interface ISelectProps
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   ariaLabel: string;
+  variant?: 'default' | 'form';
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
@@ -34,6 +37,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     disabled = false,
     children,
     ariaLabel,
+    variant = 'default',
     ...rest
   },
   ref,
@@ -42,7 +46,8 @@ export const Select: FC<ISelectProps> = forwardRef<
     <div
       className={classNames(
         containerClass,
-        disabled ? containerClassDisabled : '',
+        variant === 'form' ? containerClassForm : containerClassDefault,
+        disabled && variant === 'form' && containerClassFormDisabled,
       )}
       data-testid="kda-select"
     >
