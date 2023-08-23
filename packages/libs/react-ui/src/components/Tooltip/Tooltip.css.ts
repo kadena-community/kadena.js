@@ -19,6 +19,7 @@ export const container = style([
     pointerEvents: 'none',
   }),
   {
+    zIndex: 10,
     top: '50%',
     marginRight: '-50%',
     border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
