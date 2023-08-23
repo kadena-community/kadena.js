@@ -21,7 +21,8 @@ jobs:
 
       - name: Rush install (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js install -t @kadena/docs
+          node common/scripts/install-run-rush.js install -t @kadena/react-ui
+          node common/scripts/install-run-rush.js install -t @kadena/react-components
       - name: Publish Storybook
         uses: chromaui/action@v1
         with:
