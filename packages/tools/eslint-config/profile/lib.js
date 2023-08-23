@@ -34,6 +34,7 @@ module.exports = {
   ],
   rules: {
     '@kadena-dev/no-eslint-disable': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
     'prettier/prettier': ['warn', prettierOptions],
     'prefer-template': 'warn',
     'import/newline-after-import': 'error',
