@@ -1,11 +1,10 @@
 import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { Box } from '../../box';
-import { Text } from '../../text';
 
 import { TimeTicker } from './../time-ticker';
 import { Container, Content } from './styles';
 
-import { RocketIcon, TimerIcon } from '@radix-ui/react-icons';
+import { TimerIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
 interface IChainBlockProps {

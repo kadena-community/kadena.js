@@ -175,7 +175,7 @@ const relinkLinkReferences = (refs, definitions, pages, root) => {
   });
 };
 
-const relinkImageReferences = (refs, definitions, pages, root) => {
+const relinkImageReferences = (refs, definitions) => {
   refs.map((ref) => {
     const definition = definitions.find((def) => def.label === ref.label);
     if (!definition) {
