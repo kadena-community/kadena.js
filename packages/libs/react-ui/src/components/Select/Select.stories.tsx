@@ -1,5 +1,5 @@
 import { Option } from './Option';
-import { ISelectProps, Select } from './Select';
+import { ISelectProps, Select, variants } from './Select';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -32,7 +32,7 @@ const meta: Meta<
         type: { summary: 'select' },
         defaultValue: { summary: 'default' },
       },
-      options: ['default', 'form'],
+      options: variants,
     },
     icon: {
       options: [
