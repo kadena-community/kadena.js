@@ -33,11 +33,7 @@ const assembleColumnVariants = (
   ];
 };
 
-const GridRoot: FC<IGridRootProps> = ({
-  children,
-  columns,
-  gap = '$md',
-}) => {
+const GridRoot: FC<IGridRootProps> = ({ children, columns, gap = '$md' }) => {
   const classList = classNames(
     gapVariants[gap],
     gridContainerClass,
