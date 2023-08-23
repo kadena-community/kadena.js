@@ -64,7 +64,11 @@ export const Controlled: Story = {
     initialSelectedPage: 2,
   },
   render: ({ totalPages, label, visiblePageLimit, initialSelectedPage }) => {
-    const [page, setPage] = React.useState(initialSelectedPage ?? 1);
+    const validInitialSelectedPage =
+      initialSelectedPage && initialSelectedPage <= totalPages;
+    const [page, setPage] = React.useState(
+      validInitialSelectedPage ? initialSelectedPage : 1,
+    );
 
     return (
       <Stack direction="column" gap="$4">
