@@ -5,7 +5,6 @@ import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    padding: '$2',
     borderRadius: '$sm',
   }),
   {
@@ -55,17 +54,18 @@ export const iconClass = style([
   sprinkles({
     marginRight: '$2',
     marginLeft: '$2',
-    display: 'block',
+    display: 'flex',
+    alignItems: 'center',
   }),
 ]);
 
 export const selectClass = style([
   sprinkles({
+    padding: '$2',
     border: 'none',
     fontSize: '$base',
   }),
   {
-    padding: '0',
     backgroundColor: 'inherit',
     color: 'inherit',
     flex: '1',
