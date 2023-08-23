@@ -36,7 +36,7 @@ const meta: Meta<
         step: 1,
       },
     },
-    initialSetPage: {
+    initialPage: {
       control: {
         type: 'number',
         min: 1,
@@ -61,10 +61,10 @@ export const Controlled: Story = {
     label: 'Label',
     totalPages: 10,
     visiblePageLimit: 3,
-    initialSetPage: 2,
+    initialPage: 2,
   },
-  render: ({ totalPages, label, visiblePageLimit, initialSetPage }) => {
-    const [page, setPage] = React.useState(initialSetPage ?? 1);
+  render: ({ totalPages, label, visiblePageLimit, initialPage }) => {
+    const [page, setPage] = React.useState(initialPage ?? 1);
 
     return (
       <Stack direction="column" gap="$4">
@@ -74,7 +74,7 @@ export const Controlled: Story = {
           currentPage={page}
           label={label}
           visiblePageLimit={visiblePageLimit}
-          initialSetPage={initialSetPage}
+          initialPage={initialPage}
           onPageChange={setPage}
         />
       </Stack>
@@ -87,15 +87,15 @@ export const Uncontrolled: Story = {
     label: 'Label',
     totalPages: 10,
     visiblePageLimit: 3,
-    initialSetPage: 2,
+    initialPage: 2,
   },
-  render: ({ totalPages, label, visiblePageLimit, initialSetPage }) => {
+  render: ({ totalPages, label, visiblePageLimit, initialPage }) => {
     return (
       <Pagination
         totalPages={totalPages}
         label={label}
         visiblePageLimit={visiblePageLimit}
-        initialSetPage={initialSetPage}
+        initialPage={initialPage}
         onPageChange={() => console.log('Updating Page')}
       />
     );

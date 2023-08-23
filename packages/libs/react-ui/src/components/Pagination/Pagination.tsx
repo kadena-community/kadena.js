@@ -12,7 +12,7 @@ export interface IPaginationProps {
   currentPage?: number;
   label: string;
   visiblePageLimit?: number;
-  initialSetPage?: number;
+  initialPage?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -21,10 +21,10 @@ export const Pagination: FC<IPaginationProps> = ({
   currentPage,
   label,
   visiblePageLimit = 3,
-  initialSetPage,
+  initialPage,
   onPageChange,
 }) => {
-  const [_page, setPage] = useState(initialSetPage ?? 1);
+  const [_page, setPage] = useState(initialPage ?? 1);
   const page = currentPage || _page;
   const pages = paginate({
     page,
