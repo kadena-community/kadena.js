@@ -26,7 +26,7 @@ const meta: Meta<typeof Stack> = {
   title: 'Layout/Stack',
   component: Stack,
   argTypes: {
-    spacing: {
+    gap: {
       options: Object.keys(spacingVariant) as (keyof typeof spacingVariant)[],
       control: { type: 'select' },
     },
@@ -61,12 +61,12 @@ type Story = StoryObj<typeof Stack>;
 export const Horizontal: Story = {
   name: 'Horizontal Stack',
   args: {
-    spacing: 'md',
+    gap: 'md',
     direction: 'row',
   },
-  render: ({ spacing, direction }) => (
+  render: ({ gap, direction }) => (
     <>
-      <Stack spacing={spacing} direction={direction}>
+      <Stack gap={gap} direction={direction}>
         <Item>Item 1</Item>
         <Item>Item 2</Item>
         <Item>Item 3</Item>
@@ -81,12 +81,12 @@ export const Horizontal: Story = {
 export const Vertical: Story = {
   name: 'Vertical Stack',
   args: {
-    spacing: 'md',
+    gap: 'md',
     direction: 'column',
   },
-  render: ({ spacing, direction }) => (
+  render: ({ gap, direction }) => (
     <>
-      <Stack spacing={spacing} direction={direction}>
+      <Stack gap={gap} direction={direction}>
         <Item>Item 1</Item>
         <Item>Item 2</Item>
         <Item>Item 3</Item>
@@ -101,15 +101,15 @@ export const Vertical: Story = {
 export const Centered: Story = {
   name: 'Align Items Center Stack',
   args: {
-    spacing: 'md',
+    gap: 'md',
     direction: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  render: ({ spacing, direction, alignItems, justifyContent }) => (
+  render: ({ gap, direction, alignItems, justifyContent }) => (
     <>
       <Stack
-        spacing={spacing}
+        gap={gap}
         direction={direction}
         alignItems={alignItems}
         justifyContent={justifyContent}
@@ -128,15 +128,15 @@ export const Centered: Story = {
 export const SpaceBetween: Story = {
   name: 'Space Between Stack',
   args: {
-    spacing: 'md',
+    gap: 'md',
     direction: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  render: ({ spacing, direction, alignItems, justifyContent }) => (
+  render: ({ gap, direction, alignItems, justifyContent }) => (
     <>
       <Stack
-        spacing={spacing}
+        gap={gap}
         direction={direction}
         alignItems={alignItems}
         justifyContent={justifyContent}
@@ -155,16 +155,16 @@ export const SpaceBetween: Story = {
 export const Wrapped: Story = {
   name: 'Wrapped Stack',
   args: {
-    spacing: 'md',
+    gap: 'md',
     direction: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
   },
-  render: ({ spacing, direction, alignItems, justifyContent, flexWrap }) => (
+  render: ({ gap, direction, alignItems, justifyContent, flexWrap }) => (
     <>
       <Stack
-        spacing={spacing}
+        gap={gap}
         direction={direction}
         alignItems={alignItems}
         justifyContent={justifyContent}

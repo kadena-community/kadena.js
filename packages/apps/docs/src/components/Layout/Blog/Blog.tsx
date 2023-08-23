@@ -56,7 +56,7 @@ export const Blog: FC<IPageProps> = ({
             {children}
 
             <div className={bottomWrapperClass}>
-              <Grid.Root spacing="$xl" columns={12}>
+              <Grid.Root gap="$xl" columns={12}>
                 <Grid.Item columnSpan={4}>
                   <Stack
                     alignItems="flex-start"

@@ -105,7 +105,7 @@ export const InlineWithButton: Story = {
     leftIcon: undefined,
   },
   render: ({ leftIcon, onChange }) => (
-    <Stack spacing="$xs" alignItems="stretch">
+    <Stack gap="$xs" alignItems="stretch">
       <Input
         id="inlineInputStory"
         leftIcon={SystemIcon[leftIcon]}

@@ -40,7 +40,7 @@ export const InfiniteScroll: FC<IProps> = ({
 
   return (
     <div ref={loadRef}>
-      <Stack justifyContent="center" alignItems="center" spacing="$10">
+      <Stack justifyContent="center" alignItems="center" gap="$10">
         {isLoading && <Loading />}
         {error && (
           <>
