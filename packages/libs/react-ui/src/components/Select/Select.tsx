@@ -1,11 +1,9 @@
 import {
   containerClass,
-  containerClassDefault,
-  containerClassForm,
-  containerClassFormDisabled,
   iconClass,
   selectClass,
   selectContainerClass,
+  selectVariants,
 } from './Select.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -44,11 +42,7 @@ export const Select: FC<ISelectProps> = forwardRef<
 ) {
   return (
     <div
-      className={classNames(
-        containerClass,
-        variant === 'form' ? containerClassForm : containerClassDefault,
-        disabled && variant === 'form' && containerClassFormDisabled,
-      )}
+      className={classNames(containerClass, selectVariants[variant])}
       data-testid="kda-select"
     >
       <label>

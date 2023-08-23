@@ -1,48 +1,43 @@
 import { vars } from '../../styles';
 
 import { sprinkles } from '@theme/sprinkles.css';
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
     borderRadius: '$sm',
+    paddingRight: '$4',
+    backgroundColor: {
+      lightMode: '$white',
+      darkMode: '$gray100',
+    },
+    color: {
+      lightMode: '$gray60',
+      darkMode: '$gray40',
+    },
+    borderColor: {
+      lightMode: '$white',
+      darkMode: '$gray60',
+    },
   }),
   {
+    // border: `1px solid`,
     position: 'relative',
   },
 ]);
 
-export const containerClassForm = style([
-  sprinkles({
-    backgroundColor: '$white',
-  }),
-  {
-    boxShadow: `0 1px 1px 0 ${vars.colors.$gray30}`,
-  },
-]);
-
-export const containerClassFormDisabled = style([
-  sprinkles({
-    backgroundColor: '$gray20',
-  }),
-  {
-    boxShadow: 'none',
-  },
-]);
-
-export const containerClassDefault = style([
-  sprinkles({
-    backgroundColor: '$black',
-    color: '$gray40',
-  }),
-  {
-    border: `1px solid ${vars.colors.$gray60}`,
-    ':disabled': {
-      pointerEvents: 'none',
-      backgroundColor: vars.colors.$gray20,
+export const selectVariants = styleVariants({
+  default: [
+    {
+      borderBottom: `1px solid ${vars.colors.$gray30}`,
     },
-  },
-]);
+  ],
+  form: [
+    {
+      borderBottom: `1px solid ${vars.colors.$gray30}`,
+    },
+  ],
+});
 
 export const selectContainerClass = style([
   sprinkles({
