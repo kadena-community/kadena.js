@@ -21,9 +21,21 @@ export const containerClass = style([
     },
   }),
   {
-    // border: `1px solid`,
     position: 'relative',
   },
+]);
+
+export const containerClassDisabled = style([
+  sprinkles({
+    backgroundColor: {
+      lightMode: '$gray30',
+      // darkMode: '$gray100',
+    },
+    color: {
+      lightMode: '$gray100',
+      // darkMode: '$gray40',
+    },
+  }),
 ]);
 
 export const selectVariants = styleVariants({
@@ -32,9 +44,9 @@ export const selectVariants = styleVariants({
       borderBottom: `1px solid ${vars.colors.$gray30}`,
     },
   ],
-  form: [
+  solid: [
     {
-      borderBottom: `1px solid ${vars.colors.$gray30}`,
+      border: `1px solid ${vars.colors.$gray30}`,
     },
   ],
 });
