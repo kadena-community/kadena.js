@@ -50,7 +50,7 @@ export const Select: FC<ISelectProps> = forwardRef<
       })}
       data-testid="kda-select"
     >
-      <label className={selectContainerClass}>
+      <div className={selectContainerClass}>
         {Icon && (
           <span className={iconClass}>
             <Icon size="md" />
@@ -65,7 +65,7 @@ export const Select: FC<ISelectProps> = forwardRef<
         >
           {children}
         </select>
-      </label>
+      </div>
     </div>
   );
 });
