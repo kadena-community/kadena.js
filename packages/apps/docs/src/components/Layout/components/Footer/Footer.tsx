@@ -1,20 +1,20 @@
-import { IconButton, SystemIcon } from '@kadena/react-ui';
+import { IconButton, Stack, SystemIcon } from '@kadena/react-ui';
 
-import { Spacer } from '../styles';
+import { spacerClass } from '../styles.css';
 import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
-import { Box, InnerFooterWrapper, StyledFooter } from './styles';
+import { footerClass, footerWrapperClass } from './styles.css';
 
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 export const Footer: FC = () => {
   return (
-    <StyledFooter>
-      <InnerFooterWrapper>
-        <Box justifyContent="space-around" alignItems="center">
+    <footer className={footerWrapperClass}>
+      <div className={footerClass}>
+        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
           <DocsLogo />
           <IconButton
             title="Go to our Github"
@@ -34,20 +34,22 @@ export const Footer: FC = () => {
             title="Go to our Linkedin"
             icon={SystemIcon.Linkedin}
           />
-        </Box>
-        <Spacer />
-        <Box justifyContent="space-around" alignItems="center">
+        </Stack>
+        <div className={spacerClass} />
+        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
           <FooterLink href="https://kadena.io">Terms of Service</FooterLink>
           <Link href="/docs/kadena/code-of-conduct" passHref legacyBehavior>
-            <FooterLink>Code of Conduct</FooterLink>
+            <FooterLink href="/docs/kadena/code-of-conduct">
+              Code of Conduct
+            </FooterLink>
           </Link>
-        </Box>
-        <Box justifyContent="space-around" alignItems="center">
+        </Stack>
+        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
           <FooterText>Copyrights 2023 © Kadena LLC</FooterText>
-        </Box>
-      </InnerFooterWrapper>
-    </StyledFooter>
+        </Stack>
+      </div>
+    </footer>
   );
 };
