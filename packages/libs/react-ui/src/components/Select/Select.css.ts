@@ -35,7 +35,7 @@ export const containerClassDisabled = style([
 ]);
 
 export const selectVariants = styleVariants({
-  default: [
+  form: [
     {
       borderBottom: `1px solid ${vars.colors.$gray30}`,
     },
