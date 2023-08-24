@@ -27,7 +27,8 @@ const meta: Meta<
       control: {
         type: 'text',
       },
-      description: 'Text that is passed to the Nav element as an aria-label for accessibility.',
+      description:
+        'Text that is passed to the Nav element as an aria-label for accessibility.',
     },
     totalPages: {
       control: {
@@ -45,7 +46,8 @@ const meta: Meta<
         max: 7,
         step: 1,
       },
-      description: 'Number of pages that are visible and can be directly selected.',
+      description:
+        'Number of pages that are visible and can be directly selected.',
     },
     initialSelectedPage: {
       control: {
