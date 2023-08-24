@@ -29,11 +29,9 @@ export const containerClassDisabled = style([
   sprinkles({
     backgroundColor: {
       lightMode: '$gray30',
-      // darkMode: '$gray100',
     },
     color: {
       lightMode: '$gray100',
-      // darkMode: '$gray40',
     },
   }),
 ]);
