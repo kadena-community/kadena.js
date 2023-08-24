@@ -25,7 +25,9 @@ export const Pagination: FC<IPaginationProps> = ({
   onPageChange,
 }) => {
   const validInitialSelectedPage =
-    initialSelectedPage && initialSelectedPage <= totalPages;
+    initialSelectedPage &&
+    initialSelectedPage <= totalPages &&
+    initialSelectedPage > 0;
 
   const [_page, setPage] = useState(
     validInitialSelectedPage ? initialSelectedPage : 1,

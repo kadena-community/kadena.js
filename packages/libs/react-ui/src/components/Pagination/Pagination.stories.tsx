@@ -14,11 +14,21 @@ const meta: Meta<
   } & IPaginationProps
 > = {
   title: 'Components/Pagination',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          '<i>Note: maximum navigation items is currently limited (not technically enforced).</i><br><br><strong>Label </strong><br> is used to allow screen readers to notify user that there is a pagination here.',
+      },
+    },
+  },
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
+      description:
+        'We use this to give info to screen readers',
     },
     totalPages: {
       control: {
@@ -27,6 +37,7 @@ const meta: Meta<
         max: 20,
         step: 2,
       },
+      description: 'Total number of pages',
     },
     visiblePageLimit: {
       control: {
@@ -35,6 +46,7 @@ const meta: Meta<
         max: 7,
         step: 1,
       },
+      description: 'Number of pages that would be visible',
     },
     initialSelectedPage: {
       control: {
@@ -43,6 +55,7 @@ const meta: Meta<
         max: 20,
         step: 1,
       },
+      description: 'Which page should be selected at start?',
     },
   },
 };
@@ -58,14 +71,16 @@ type Story = StoryObj<IPaginationProps>;
 
 export const Controlled: Story = {
   args: {
-    label: 'Label',
+    label: 'Pagination',
     totalPages: 10,
     visiblePageLimit: 3,
     initialSelectedPage: 2,
   },
   render: ({ totalPages, label, visiblePageLimit, initialSelectedPage }) => {
     const validInitialSelectedPage =
-      initialSelectedPage && initialSelectedPage <= totalPages;
+      initialSelectedPage &&
+      initialSelectedPage <= totalPages &&
+      initialSelectedPage > 0;
     const [page, setPage] = React.useState(
       validInitialSelectedPage ? initialSelectedPage : 1,
     );
