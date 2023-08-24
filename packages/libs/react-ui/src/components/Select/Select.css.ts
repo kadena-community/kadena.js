@@ -12,10 +12,6 @@ export const containerClass = style([
     lineHeight: '$lg',
     borderRadius: '$sm',
     flexDirection: 'column',
-    backgroundColor: {
-      lightMode: '$white',
-      darkMode: '$background',
-    },
     borderColor: {
       lightMode: '$white',
       darkMode: '$gray60',
@@ -36,14 +32,22 @@ export const containerClassDisabled = style([
 
 export const selectVariants = styleVariants({
   form: [
+    sprinkles({
+      backgroundColor: {
+        lightMode: '$white',
+        darkMode: '$background',
+      },
+    }),
     {
       borderBottom: `1px solid ${vars.colors.$gray30}`,
     },
   ],
-  flat: [
+  transparent: [
+    sprinkles({
+      backgroundColor: 'transparent',
+    }),
     {
       border: `1px solid ${vars.colors.$gray30}`,
-      background: 'transparent !important',
     },
   ],
 });
