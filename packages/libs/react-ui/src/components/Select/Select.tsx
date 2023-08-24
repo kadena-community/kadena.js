@@ -11,7 +11,8 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
-export const variants: ['default', 'flat'] = ['default', 'flat'];
+export type SelectVariants = 'form' | 'flat';
+export const variants: SelectVariants[] = ['form', 'flat'];
 
 export interface ISelectProps
   extends Omit<
@@ -38,7 +39,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     disabled = false,
     children,
     ariaLabel,
-    variant = 'default',
+    variant = variants[0],
     ...rest
   },
   ref,
