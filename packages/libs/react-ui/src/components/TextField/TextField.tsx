@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 
 export interface ITextFieldProps
   extends Omit<IInputWrapperProps, 'children' | 'htmlFor'> {
-  inputProps: Omit<IInputProps, 'disabled' | 'children'>;
+  inputProps: Omit<IInputProps, 'disabled' | 'children' | 'leadingTextWidth'>;
 }
 
 export const TextField: FC<ITextFieldProps> = ({
