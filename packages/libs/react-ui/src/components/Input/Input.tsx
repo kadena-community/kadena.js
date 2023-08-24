@@ -45,21 +45,20 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     const RightIcon = rightIcon;
     const LeftIcon = leftIcon;
 
+    console.log({ leadingTextWidth });
     return (
       <div
         className={classNames(containerClass, { [outlinedClass]: outlined })}
         data-testid="kda-input"
       >
         {Boolean(leadingText) && (
-          <div className={leadingTextWrapperClass}>
-            <span
-              className={classNames(
-                leadingTextClass,
-                leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
-              )}
-            >
-              {leadingText}
-            </span>
+          <div
+            className={classNames(
+              leadingTextWrapperClass,
+              leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
+            )}
+          >
+            <span className={leadingTextClass}>{leadingText}</span>
           </div>
         )}
         <div className={inputContainerClass}>

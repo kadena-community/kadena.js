@@ -1,28 +1,39 @@
 import { statusVariant } from './InputWrapper.css';
 
 import { SystemIcon } from '@components/Icon';
-import { IInputProps, Input } from '@components/Input';
+import { Input } from '@components/Input';
 import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
 
-const meta: Meta<
-  {
-    helperText: string;
-    leadingText: string;
-    leftIcon: keyof typeof SystemIcon;
-    rightIcon: keyof typeof SystemIcon;
-  } & IInputWrapperProps
-> = {
+type StoryProps = {
+  helperText: string;
+  leadingText: string;
+  leftIcon: keyof typeof SystemIcon;
+  rightIcon: keyof typeof SystemIcon;
+} & IInputWrapperProps;
+
+const meta: Meta<StoryProps> = {
   title: 'Components/InputWrapper',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The InputWrapper component is intended to be used to wrap one or more form input components to provide them with a shared and optional label, tag, info, helper text and status colors.',
+      },
+    },
+  },
   argTypes: {
     label: {
+      description: 'Label for the input.',
       control: {
         type: 'text',
       },
     },
     leadingTextWidth: {
+      description:
+        'Width of the leading text of all inputs inside. Each of the inputs will default to the length of their leading text when this is not set.',
       control: {
         type: 'select',
       },
@@ -32,21 +43,27 @@ const meta: Meta<
       ],
     },
     tag: {
+      description: 'Tag that is rendered next to the label',
       control: {
         type: 'text',
       },
     },
     info: {
+      description: 'Text that is rendered on the top right with an info icon',
       control: {
         type: 'text',
       },
     },
     helperText: {
+      description:
+        'Text that is rendered below the input to give the user additional information. Often will be used for validation messages.',
       control: {
         type: 'text',
       },
     },
     status: {
+      description:
+        'This determines the color of the helper text and input border. It can be used to indicate an error.',
       options: [
         undefined,
         ...(Object.keys(statusVariant) as (keyof typeof statusVariant)[]),
@@ -56,6 +73,8 @@ const meta: Meta<
       },
     },
     disabled: {
+      description:
+        "Disables the input and applies visual styling. Defaults to 'false'.",
       control: {
         type: 'boolean',
       },
@@ -63,14 +82,7 @@ const meta: Meta<
   },
 };
 
-export default meta;
-type Story = StoryObj<
-  {
-    helperText: string;
-    leadingText: string;
-  } & IInputWrapperProps &
-    Omit<IInputProps, 'leftIcon' | 'rightIcon'>
->;
+type Story = StoryObj<StoryProps>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -125,3 +137,5 @@ export const Group: Story = {
     );
   },
 };
+
+export default meta;

@@ -22,7 +22,7 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
   disabled,
   children,
   label,
-  leadingTextWidth = '$32',
+  leadingTextWidth = undefined,
   htmlFor,
   tag,
   info,
