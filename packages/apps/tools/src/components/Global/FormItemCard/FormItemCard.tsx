@@ -34,7 +34,7 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
   return (
     <div>
       <Card fullWidth disabled={disabled}>
-        <Grid.Root columns={2} spacing="$3xl">
+        <Grid.Root columns={2} gap="$3xl">
           <Grid.Item>
             <Heading as="h5">{heading}</Heading>
           </Grid.Item>

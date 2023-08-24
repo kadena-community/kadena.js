@@ -96,3 +96,6 @@ packages/*/*/temp
 # Intelij idea files
 .idea
 .idea/*
+
+# Storybook static build
+storybook-static

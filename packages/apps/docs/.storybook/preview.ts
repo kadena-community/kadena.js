@@ -1,8 +1,8 @@
 import {
-  darkTheme,
   globalCss,
   baseGlobalStyles,
 } from '@kadena-ui/react-components';
+import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { themes } from '@storybook/theming';
 import { RouterContext } from 'next/dist/shared/lib/router-context'; // next 12
@@ -27,7 +27,7 @@ export const parameters = {
   darkMode: {
     classTarget: 'body',
     stylePreview: true,
-    darkClass: darkTheme.className,
+    darkClass: darkThemeClass,
     lightClass: 'theme',
     current: 'light',
     // Override the default dark theme

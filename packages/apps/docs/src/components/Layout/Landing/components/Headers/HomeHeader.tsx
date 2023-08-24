@@ -18,8 +18,8 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
         <Heading as="h1" variant="h2">
           Kadena
         </Heading>
-        <Stack spacing="$2xl" wrap="wrap">
-          <Stack direction="column" spacing="$2xs">
+        <Stack gap="$2xl" wrap="wrap">
+          <Stack direction="column" gap="$2xs">
             <Heading as="h2" variant="h4">
               Build your <GradientText>own</GradientText> Internet
             </Heading>

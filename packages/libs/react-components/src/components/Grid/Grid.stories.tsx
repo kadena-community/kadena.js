@@ -20,7 +20,7 @@ const meta: Meta<typeof Grid.Container> = {
   title: 'Layout/Grid',
   component: Grid.Container,
   argTypes: {
-    spacing: {
+    gap: {
       options: Object.keys(spacingVariant) as (keyof typeof spacingVariant)[],
       control: { type: 'select' },
     },
@@ -39,11 +39,11 @@ type Story = StoryObj<typeof Grid.Container>;
 export const Primary: Story = {
   name: 'Grid',
   args: {
-    spacing: 'xl',
+    gap: 'xl',
   },
-  render: ({ spacing }) => (
+  render: ({ gap }) => (
     <>
-      <Grid.Container spacing={spacing}>
+      <Grid.Container gap={gap}>
         <Grid.Item>
           <Content>1</Content>
         </Grid.Item>
@@ -109,16 +109,16 @@ export const Primary: Story = {
 export const GridAreas: Story = {
   name: 'GridTemplate areas',
   args: {
-    spacing: 'md',
+    gap: 'md',
     templateRows: '50px 1fr 30px',
     templateColumns: `150px 1fr`,
     templateAreas: `"header header"
                   "nav main"
                   "nav footer"`,
   },
-  render: ({ spacing, templateColumns, templateRows, templateAreas }) => (
+  render: ({ gap, templateColumns, templateRows, templateAreas }) => (
     <Grid.Container
-      spacing={spacing}
+      gap={gap}
       templateAreas={templateAreas}
       templateRows={templateRows}
       templateColumns={templateColumns}

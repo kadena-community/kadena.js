@@ -186,16 +186,16 @@ const CrossChainTransferTracker: FC = () => {
         direction="column"
         paddingTop={'$2'}
         paddingBottom={'$10'}
-        spacing={'$6'}
+        gap={'$6'}
       >
-        <Stack direction="column" spacing={'$2'}>
+        <Stack direction="column" gap={'$2'}>
           {' '}
           <Breadcrumbs.Root>
             <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
             <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
           </Breadcrumbs.Root>
           <Stack
-            spacing={'$6'}
+            gap={'$6'}
             justifyContent={'space-between'}
             alignItems={'flex-end'}
           >

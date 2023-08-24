@@ -442,12 +442,12 @@ const CrossChainTransferFinisher: FC = () => {
                     disabled={true}
                     label={t('Gas Price')}
                     info={t('approx. USD 000.1 ¢')}
+                    leadingTextWidth="$16"
                     inputProps={{
                       ...register('gasPrice', { shouldUnregister: true }),
                       id: 'gas-price-input',
                       placeholder: t('Enter Gas Price'),
                       leadingText: t('KDA'),
-                      leadingTextWidth: '$16',
                     }}
                   />
                 </Grid.Item>
