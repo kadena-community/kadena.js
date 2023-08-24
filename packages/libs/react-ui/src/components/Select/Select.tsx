@@ -25,7 +25,7 @@ export interface ISelectProps
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   ariaLabel: string;
-    variant?: keyof typeof selectVariants;
+  variant?: keyof typeof selectVariants;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
@@ -45,11 +45,9 @@ export const Select: FC<ISelectProps> = forwardRef<
 ) {
   return (
     <div
-      className={classNames(
-        containerClass,
-        selectVariants[variant],
-        { containerClassDisabled: disabled }
-      )}
+      className={classNames(containerClass, selectVariants[variant], {
+        [containerClassDisabled]: disabled,
+      })}
       data-testid="kda-select"
     >
       <label>
