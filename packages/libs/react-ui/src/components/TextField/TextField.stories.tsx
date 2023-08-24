@@ -77,10 +77,13 @@ const meta: Meta<StoryProps> = {
       },
     },
     disabled: {
-      description:
-        "Disables the input and applies visual styling. Defaults to 'false'.",
+      description: 'Disables the input and applies visual styling.',
       control: {
         type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     leftIcon: {

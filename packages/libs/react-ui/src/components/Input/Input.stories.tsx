@@ -22,10 +22,13 @@ const meta: Meta<
   },
   argTypes: {
     disabled: {
-      description:
-        "Disables the input and applies visual styling. Defaults to 'false'.",
+      description: 'Disables the input and applies visual styling.',
       control: {
         type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     leftIcon: {
@@ -68,10 +71,13 @@ const meta: Meta<
       ],
     },
     outlined: {
-      description:
-        "Option to render the input with an outline. Defaults to 'false'.",
+      description: 'Option to render the input with an outline.',
       control: {
         type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
   },
