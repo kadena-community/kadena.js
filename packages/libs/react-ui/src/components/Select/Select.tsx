@@ -11,7 +11,7 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
-export const variants: ['default', 'solid'] = ['default', 'solid'];
+export const variants: ['default', 'flat'] = ['default', 'flat'];
 
 export interface ISelectProps
   extends Omit<
@@ -45,7 +45,7 @@ export const Select: FC<ISelectProps> = forwardRef<
 ) {
   return (
     <div
-      className={classNames(containerClass, selectVariants[variant], {
+      className={classNames(selectVariants[variant], containerClass, {
         [containerClassDisabled]: disabled,
       })}
       data-testid="kda-select"

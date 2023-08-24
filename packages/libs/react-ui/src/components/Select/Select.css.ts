@@ -13,7 +13,7 @@ export const containerClass = style([
     flexDirection: 'column',
     backgroundColor: {
       lightMode: '$white',
-      darkMode: '$gray100',
+      darkMode: '$background',
     },
     color: '$foreground',
     borderColor: {
@@ -43,9 +43,10 @@ export const selectVariants = styleVariants({
       borderBottom: `1px solid ${vars.colors.$gray30}`,
     },
   ],
-  solid: [
+  flat: [
     {
       border: `1px solid ${vars.colors.$gray30}`,
+      background: 'transparent !important',
     },
   ],
 });
