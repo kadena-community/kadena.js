@@ -6,6 +6,7 @@ import { style, styleVariants } from '@vanilla-extract/css';
 export const containerClass = style([
   sprinkles({
     alignItems: 'stretch',
+    color: '$foreground',
     display: 'flex',
     overflow: 'hidden',
     lineHeight: '$lg',
@@ -15,15 +16,11 @@ export const containerClass = style([
       lightMode: '$white',
       darkMode: '$background',
     },
-    color: '$foreground',
     borderColor: {
       lightMode: '$white',
       darkMode: '$gray60',
     },
   }),
-  {
-    position: 'relative',
-  },
 ]);
 
 export const containerClassDisabled = style([
@@ -54,12 +51,12 @@ export const selectVariants = styleVariants({
 export const selectContainerClass = style([
   sprinkles({
     alignItems: 'center',
-    lineHeight: '$lg',
-    flexGrow: 1,
     display: 'flex',
-    paddingRight: '$2',
-    paddingLeft: '$4',
+    flexGrow: 1,
     gap: '$2',
+    lineHeight: '$lg',
+    paddingLeft: '$4',
+    paddingRight: '$2',
   }),
 ]);
 
