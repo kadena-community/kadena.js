@@ -45,7 +45,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     const RightIcon = rightIcon;
     const LeftIcon = leftIcon;
 
-    console.log({ leadingTextWidth });
     return (
       <div
         className={classNames(containerClass, { [outlinedClass]: outlined })}
