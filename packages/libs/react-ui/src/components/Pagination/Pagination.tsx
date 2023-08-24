@@ -39,7 +39,7 @@ export const Pagination: FC<IPaginationProps> = ({
   const enablePrevious = page > 1;
   const enableNext = page < totalPages;
 
-  const onClick = (page: number) => {
+  const onClick = (page: number): void => {
     setPage(page);
     onPageChange(page);
   };
