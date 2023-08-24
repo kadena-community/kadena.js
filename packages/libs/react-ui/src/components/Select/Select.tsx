@@ -48,7 +48,7 @@ export const Select: FC<ISelectProps> = forwardRef<
       className={classNames(
         containerClass,
         selectVariants[variant],
-        disabled && containerClassDisabled,
+        { containerClassDisabled: disabled }
       )}
       data-testid="kda-select"
     >
