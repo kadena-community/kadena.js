@@ -2,7 +2,7 @@ import { ITextProps, Text } from '@kadena/react-ui';
 
 import React, { FC, ReactNode } from 'react';
 
-interface IProps {
+export interface IProps {
   children?: ReactNode;
   as?: ITextProps['as'];
   bold?: ITextProps['bold'];
