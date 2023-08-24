@@ -7,7 +7,7 @@ import {
   TitleHeader,
 } from '../components';
 import { Template } from '../components/Template';
-import { globalsClass } from '../global.css';
+import { globalClass } from '../global.css';
 
 import { articleTopMetadataClass, bottomWrapperClass } from './Blog.css';
 import { ArticleMetadataItem, PageGrid } from './styles';
@@ -32,7 +32,7 @@ export const Blog: FC<IPageProps> = ({
   );
 
   return (
-    <PageGrid className={globalsClass}>
+    <PageGrid className={globalClass}>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
         <TitleHeader
           title="BlogChain"

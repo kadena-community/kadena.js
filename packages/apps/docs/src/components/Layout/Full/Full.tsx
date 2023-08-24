@@ -6,7 +6,7 @@ import {
   contentClassVariants,
 } from '../components';
 import { Template } from '../components/Template';
-import { globalsClass } from '../global.css';
+import { globalClass } from '../global.css';
 
 import {
   Aside,
@@ -79,7 +79,7 @@ export const Full: FC<IPageProps> = ({
     aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
 
   return (
-    <PageGrid className={globalsClass}>
+    <PageGrid className={globalClass}>
       <Template menuItems={leftMenuTree}>
         <div className={contentClassNames} id="maincontent">
           <article className={articleClass} ref={scrollRef}>

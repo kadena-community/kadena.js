@@ -1,6 +1,6 @@
 import { IconButton, SystemIcon } from '@kadena/react-ui';
 
-import { globalsClass } from '../../global.css';
+import { globalClass } from '../../global.css';
 import {
   InnerWrapper,
   NavLink,
@@ -41,7 +41,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { toggleMenu, isMenuOpen, toggleAside, isAsideOpen } = useMenu();
 
   return (
-    <StyledHeader className={globalsClass}>
+    <StyledHeader className={globalClass}>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
         <StyledLogoWrapper>

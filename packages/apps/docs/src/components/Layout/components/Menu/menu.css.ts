@@ -1,4 +1,4 @@
-import { breakpoints, darkThemeClass, sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
 import { $$leftSideWidth, $$sideMenu } from '../../global.css';
 
@@ -15,7 +15,7 @@ export const menuClass = style([
   }),
   {
     gridArea: 'menu',
-    gridRow: '2 / span 2',
+    gridRow: '2 / span 3',
     zIndex: $$sideMenu,
     borderRight: '1px solid $borderColor',
     transform: 'translateX(-100%)',

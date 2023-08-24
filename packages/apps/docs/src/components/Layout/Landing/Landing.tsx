@@ -5,7 +5,7 @@ import {
   TitleHeader,
 } from '../components';
 import { Template } from '../components/Template';
-import { globalsClass } from '../global.css';
+import { globalClass } from '../global.css';
 
 import { PageGrid } from './styles';
 
@@ -20,7 +20,7 @@ export const Landing: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   return (
-    <PageGrid className={globalsClass}>
+    <PageGrid className={globalClass}>
       <Template menuItems={leftMenuTree} layout="landing">
         <TitleHeader
           title={frontmatter.title}
