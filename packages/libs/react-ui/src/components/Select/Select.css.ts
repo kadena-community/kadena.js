@@ -5,16 +5,17 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
+    alignItems: 'stretch',
+    display: 'flex',
+    overflow: 'hidden',
+    lineHeight: '$lg',
     borderRadius: '$sm',
-    paddingRight: '$4',
+    flexDirection: 'column',
     backgroundColor: {
       lightMode: '$white',
       darkMode: '$gray100',
     },
-    color: {
-      lightMode: '$gray60',
-      darkMode: '$gray40',
-    },
+    color: '$foreground',
     borderColor: {
       lightMode: '$white',
       darkMode: '$gray60',
@@ -28,10 +29,10 @@ export const containerClass = style([
 export const containerClassDisabled = style([
   sprinkles({
     backgroundColor: {
-      lightMode: '$gray30',
+      lightMode: '$gray20',
     },
     color: {
-      lightMode: '$gray100',
+      lightMode: '$foreground',
     },
   }),
 ]);
@@ -51,14 +52,17 @@ export const selectVariants = styleVariants({
 
 export const selectContainerClass = style([
   sprinkles({
+    alignItems: 'center',
+    lineHeight: '$lg',
+    flexGrow: 1,
     display: 'flex',
+    paddingX: '$2',
+    gap: '$2',
   }),
 ]);
 
 export const iconClass = style([
   sprinkles({
-    marginRight: '$2',
-    marginLeft: '$2',
     display: 'flex',
     alignItems: 'center',
   }),
@@ -66,13 +70,16 @@ export const iconClass = style([
 
 export const selectClass = style([
   sprinkles({
-    padding: '$2',
+    background: 'none',
     border: 'none',
-    fontSize: '$base',
+    color: '$foreground',
+    outline: 'none',
+    paddingRight: '$2',
+    paddingY: '$2',
+    flexGrow: 1,
   }),
   {
     backgroundColor: 'inherit',
     color: 'inherit',
-    flex: '1',
   },
 ]);

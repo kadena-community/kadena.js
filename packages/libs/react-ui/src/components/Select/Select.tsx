@@ -50,23 +50,21 @@ export const Select: FC<ISelectProps> = forwardRef<
       })}
       data-testid="kda-select"
     >
-      <label>
-        <div className={selectContainerClass}>
-          {Icon && (
-            <span className={iconClass}>
-              <Icon size="md" />
-            </span>
-          )}
-          <select
-            aria-label={ariaLabel}
-            ref={ref}
-            className={selectClass}
-            disabled={Boolean(disabled)}
-            {...rest}
-          >
-            {children}
-          </select>
-        </div>
+      <label className={selectContainerClass}>
+        {Icon && (
+          <span className={iconClass}>
+            <Icon size="md" />
+          </span>
+        )}
+        <select
+          aria-label={ariaLabel}
+          ref={ref}
+          className={selectClass}
+          disabled={Boolean(disabled)}
+          {...rest}
+        >
+          {children}
+        </select>
       </label>
     </div>
   );
