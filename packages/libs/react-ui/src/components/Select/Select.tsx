@@ -25,7 +25,7 @@ export interface ISelectProps
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   ariaLabel: string;
-  variant?: (typeof variants)[number];
+    variant?: keyof typeof selectVariants;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
