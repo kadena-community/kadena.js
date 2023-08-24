@@ -11,8 +11,6 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
-export type SelectVariants = 'form' | 'transparent';
-
 export interface ISelectProps
   extends Omit<
     React.HTMLAttributes<HTMLSelectElement>,
@@ -25,7 +23,7 @@ export interface ISelectProps
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   ariaLabel: string;
-  variant?: SelectVariants;
+  variant?: keyof typeof selectVariants;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<

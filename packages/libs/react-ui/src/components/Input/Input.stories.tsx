@@ -178,7 +178,6 @@ export const InlineWithButton: Story = {
       <Button title="Submit" onClick={() => {}}>
         Submit
       </Button>
-      <input type="" placeholder="This is a placeholder" />
     </Stack>
   ),
 };
