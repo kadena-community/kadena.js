@@ -1,5 +1,6 @@
 import { Option } from './Option';
-import { ISelectProps, Select, SelectVariants } from './Select';
+import { ISelectProps, Select } from './Select';
+import { selectVariants } from './Select.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -33,7 +34,7 @@ const meta: Meta<
         type: { summary: 'select' },
         defaultValue: { summary: 'form' },
       },
-      options: ['form', 'transparent'] as SelectVariants[],
+      options: ['form', 'transparent'],
     },
     icon: {
       options: [
@@ -51,7 +52,7 @@ export default meta;
 type Story = StoryObj<
   {
     icon: keyof typeof SystemIcon;
-    variant: SelectVariants;
+    variant: keyof typeof selectVariants;
   } & Omit<ISelectProps, 'icon'>
 >;
 
