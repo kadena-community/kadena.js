@@ -11,8 +11,7 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import React, { FC, forwardRef } from 'react';
 
-export type SelectVariants = 'form' | 'flat';
-export const variants: SelectVariants[] = ['form', 'flat'];
+export type SelectVariants = 'form' | 'transparent';
 
 export interface ISelectProps
   extends Omit<
@@ -26,7 +25,7 @@ export interface ISelectProps
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   ariaLabel: string;
-  variant?: keyof typeof selectVariants;
+  variant?: SelectVariants;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
@@ -39,7 +38,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     disabled = false,
     children,
     ariaLabel,
-    variant = variants[0],
+    variant = 'form',
     ...rest
   },
   ref,

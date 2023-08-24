@@ -1,5 +1,5 @@
 import { Option } from './Option';
-import { ISelectProps, Select, SelectVariants, variants } from './Select';
+import { ISelectProps, Select, SelectVariants } from './Select';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -31,9 +31,9 @@ const meta: Meta<
       },
       table: {
         type: { summary: 'select' },
-        defaultValue: { summary: variants[0] },
+        defaultValue: { summary: 'form' },
       },
-      options: variants,
+      options: ['form', 'transparent'] as SelectVariants[],
     },
     icon: {
       options: [
@@ -60,7 +60,7 @@ export const Dynamic: Story = {
   args: {
     icon: undefined,
   },
-  render: ({ icon, disabled, variant = variants[0] }) => {
+  render: ({ icon, disabled, variant = 'form' }) => {
     const [value, setValue] = useState<string>('1');
     return (
       <Select
