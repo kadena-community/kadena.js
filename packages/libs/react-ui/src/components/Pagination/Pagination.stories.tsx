@@ -27,7 +27,7 @@ const meta: Meta<
       control: {
         type: 'text',
       },
-      description: 'We use this to give info to screen readers',
+      description: 'Text that is passed to the Nav element as an aria-label for accessibility.',
     },
     totalPages: {
       control: {
@@ -36,7 +36,7 @@ const meta: Meta<
         max: 20,
         step: 2,
       },
-      description: 'Total number of pages',
+      description: 'Total number of pages.',
     },
     visiblePageLimit: {
       control: {
@@ -45,7 +45,7 @@ const meta: Meta<
         max: 7,
         step: 1,
       },
-      description: 'Number of pages that would be visible',
+      description: 'Number of pages that are visible and can be directly selected.',
     },
     initialSelectedPage: {
       control: {
@@ -54,7 +54,7 @@ const meta: Meta<
         max: 20,
         step: 1,
       },
-      description: 'Which page should be selected at start?',
+      description: 'The default selected page before any interaction.',
     },
   },
 };
@@ -76,13 +76,7 @@ export const Controlled: Story = {
     initialSelectedPage: 2,
   },
   render: ({ totalPages, label, visiblePageLimit, initialSelectedPage }) => {
-    const validInitialSelectedPage =
-      initialSelectedPage &&
-      initialSelectedPage <= totalPages &&
-      initialSelectedPage > 0;
-    const [page, setPage] = React.useState(
-      validInitialSelectedPage ? initialSelectedPage : 1,
-    );
+    const [page, setPage] = React.useState(initialSelectedPage ?? 1);
 
     return (
       <Stack direction="column" gap="$4">
