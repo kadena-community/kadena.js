@@ -27,8 +27,7 @@ const meta: Meta<
       control: {
         type: 'text',
       },
-      description:
-        'We use this to give info to screen readers',
+      description: 'We use this to give info to screen readers',
     },
     totalPages: {
       control: {
