@@ -56,7 +56,8 @@ export const selectContainerClass = style([
     lineHeight: '$lg',
     flexGrow: 1,
     display: 'flex',
-    paddingX: '$2',
+    paddingRight: '$2',
+    paddingLeft: '$4',
     gap: '$2',
   }),
 ]);
