@@ -17,7 +17,6 @@ export const containerClass = style([
     color: '$foreground',
     overflow: 'hidden',
     lineHeight: '$lg',
-    flexDirection: 'column',
     bg: {
       lightMode: '$white',
       darkMode: '$gray100',

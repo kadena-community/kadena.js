@@ -11,7 +11,6 @@ export const containerClass = style([
     overflow: 'hidden',
     lineHeight: '$lg',
     borderRadius: '$sm',
-    flexDirection: 'column',
     borderColor: {
       lightMode: '$white',
       darkMode: '$gray60',
