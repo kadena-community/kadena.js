@@ -17,8 +17,7 @@ const meta: Meta<
   parameters: {
     docs: {
       description: {
-        component:
-          'A component used for pagination.',
+        component: 'A component used for pagination.',
       },
     },
   },
