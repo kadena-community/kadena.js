@@ -9,9 +9,9 @@ import {
   listClass,
   listItemClass,
   sideMenuClass,
-  sidemenuTitleButtonClass,
-  sidemenuTitleClass,
-} from './sidemenu.css';
+  sideMenuTitleButtonClass,
+  sideMenuTitleClass,
+} from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
@@ -51,7 +51,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   return (
     <div className={sideMenuClass}>
       {active === 0 && (
-        <div className={sidemenuTitleClass}>
+        <div className={sideMenuTitleClass}>
           <Heading as="h5">Kadena Docs</Heading>
         </div>
       )}
@@ -59,7 +59,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         <button
           type="button"
           onClick={() => setActive(0)}
-          className={classNames(sidemenuTitleClass, sidemenuTitleButtonClass)}
+          className={classNames(sideMenuTitleClass, sideMenuTitleButtonClass)}
         >
           <Heading as="h5">{activeItem?.menu}</Heading>
         </button>

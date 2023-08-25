@@ -30,7 +30,7 @@ export const listItemClass = style([
   },
 ]);
 
-export const sidemenuTitleClass = style([
+export const sideMenuTitleClass = style([
   sprinkles({
     display: 'block',
     padding: 0,
@@ -43,7 +43,7 @@ export const sidemenuTitleClass = style([
   },
 ]);
 
-export const sidemenuTitleButtonClass = style([
+export const sideMenuTitleButtonClass = style([
   sprinkles({
     display: {
       sm: 'flex',
@@ -76,5 +76,3 @@ export const sidemenuTitleButtonClass = style([
     },
   },
 ]);
-
-export const linkClass = style([sprinkles({}), {}]);

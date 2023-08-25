@@ -2,7 +2,7 @@ import {
   menuCardActiveVariant,
   menuCardAnimateL2RVariant,
   menuCardClass,
-} from './menucard.css';
+} from './menuCard.css';
 
 import classNames from 'classnames';
 import React, { FC, MouseEventHandler, ReactNode } from 'react';
