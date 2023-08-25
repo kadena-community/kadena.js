@@ -88,7 +88,6 @@ const meta: Meta<
       control: {
         type: 'text',
       },
-      description: 'Text to display before the input',
     },
     leadingTextWidth: {
       description:
