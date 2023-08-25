@@ -34,7 +34,7 @@ const meta: Meta<
         type: { summary: 'select' },
         defaultValue: { summary: 'form' },
       },
-      options: ['form', 'transparent'],
+      options: Object.keys(selectVariants) as (keyof typeof selectVariants)[],
     },
     icon: {
       options: [
