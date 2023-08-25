@@ -3,20 +3,20 @@ import { Heading, SystemIcon, TextField } from '@kadena/react-ui';
 import { MainTreeItem } from '../TreeMenu';
 import { StyledTreeList } from '../TreeMenu/styles';
 
+import { ListLink, ShowOnMobile } from './components';
 import { MenuCard } from './MenuCard';
 import {
-  ShowOnMobile,
-  SideMenuTitle,
-  SideMenuTitleBackButton,
-  StyledItem,
-  StyledLink,
-  StyledSideMenu,
-  StyledUl,
-} from './styles';
+  listClass,
+  listItemClass,
+  sideMenuClass,
+  sidemenuTitleButtonClass,
+  sidemenuTitleClass,
+} from './sidemenu.css';
 import { useSideMenu } from './useSideMenu';
 
 import { IMenuItem } from '@/types/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, KeyboardEvent } from 'react';
 
@@ -49,18 +49,20 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   };
 
   return (
-    <StyledSideMenu>
+    <div className={sideMenuClass}>
       {active === 0 && (
-        <SideMenuTitle>
+        <div className={sidemenuTitleClass}>
           <Heading as="h5">Kadena Docs</Heading>
-        </SideMenuTitle>
+        </div>
       )}
       {active === 1 && (
-        <>
-          <SideMenuTitleBackButton onClick={() => setActive(0)}>
-            <Heading as="h5">{activeItem?.menu}</Heading>
-          </SideMenuTitleBackButton>
-        </>
+        <button
+          type="button"
+          onClick={() => setActive(0)}
+          className={classNames(sidemenuTitleClass, sidemenuTitleButtonClass)}
+        >
+          <Heading as="h5">{activeItem?.menu}</Heading>
+        </button>
       )}
 
       <ShowOnMobile>
@@ -75,21 +77,21 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         ></TextField>
       </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
-        <StyledUl>
+        <ul className={listClass}>
           {menuItems.map((item) => (
-            <StyledItem key={item.root}>
-              <StyledLink
+            <li key={item.root} className={listItemClass}>
+              <ListLink
                 onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
                   clickMenu(e, item)
                 }
                 href={item.root}
-                data-hassubmenu={!!item.children?.length}
+                hasSubMenu={!!item.children?.length}
               >
                 {item.menu}
-              </StyledLink>
-            </StyledItem>
+              </ListLink>
+            </li>
           ))}
-        </StyledUl>
+        </ul>
       </MenuCard>
       {activeItem && (
         <MenuCard
@@ -103,6 +105,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           </StyledTreeList>
         </MenuCard>
       )}
-    </StyledSideMenu>
+    </div>
   );
 };
