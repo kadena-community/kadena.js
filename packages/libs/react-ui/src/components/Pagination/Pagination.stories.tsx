@@ -18,7 +18,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          '<i>Note: maximum navigation items is currently limited (not technically enforced).</i><br><br><strong>Label </strong><br> is used to allow screen readers to notify user that there is a pagination here.',
+          'A component used for pagination.',
       },
     },
   },
