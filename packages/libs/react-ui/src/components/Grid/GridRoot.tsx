@@ -68,7 +68,8 @@ const GridRoot: FC<IGridRootProps> = ({
   paddingTop = undefined,
   paddingBottom = undefined,
   paddingLeft = undefined,
-  paddingRight = undefined, }) => {
+  paddingRight = undefined,
+}) => {
   const classList = classNames(
     gapVariants[gap],
     gridContainerClass,

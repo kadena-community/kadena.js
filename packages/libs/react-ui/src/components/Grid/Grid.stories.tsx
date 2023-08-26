@@ -187,7 +187,8 @@ export const GridRoot: Story = {
     paddingTop,
     paddingBottom,
     paddingLeft,
-    paddingRight, }) => (
+    paddingRight,
+  }) => (
     <>
       <Grid.Root
         gap={gap}

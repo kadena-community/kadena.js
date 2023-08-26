@@ -24,4 +24,3 @@ export const contentClass = style([
     justifyContent: 'center',
   }),
 ]);
-
