@@ -1,4 +1,4 @@
-import { containerClass, contentClass } from './stories.css';
+import { containerClass, contentClass, boxClas } from './stories.css';
 
 import { Box, IBoxProps } from '@components/Box';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -56,6 +56,48 @@ const meta: Meta<IBoxProps> = {
         type: 'select',
       },
     },
+    padding: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingX: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingY: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingTop: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingBottom: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingLeft: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingRight: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 
@@ -78,6 +120,13 @@ export const Primary: Story = {
     marginBottom: undefined,
     marginLeft: undefined,
     marginRight: undefined,
+    padding: undefined,
+    paddingX: undefined,
+    paddingY: undefined,
+    paddingTop: undefined,
+    paddingBottom: undefined,
+    paddingLeft: undefined,
+    paddingRight: undefined,
   },
   render: ({
     margin,
@@ -87,6 +136,13 @@ export const Primary: Story = {
     marginBottom,
     marginLeft,
     marginRight,
+    padding,
+    paddingX,
+    paddingY,
+    paddingTop,
+    paddingBottom,
+    paddingLeft,
+    paddingRight,
   }) => (
     <div className={containerClass}>
       <Box
@@ -97,8 +153,15 @@ export const Primary: Story = {
         marginBottom={marginBottom}
         marginLeft={marginLeft}
         marginRight={marginRight}
+        padding={padding}
+        paddingX={paddingX}
+        paddingY={paddingY}
+        paddingTop={paddingTop}
+        paddingBottom={paddingBottom}
+        paddingLeft={paddingLeft}
+        paddingRight={paddingRight}
       >
-        <div className={contentClass}>Box</div>
+        <div className={contentClass}>Box Content</div>
       </Box>
     </div>
   ),

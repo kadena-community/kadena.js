@@ -17,10 +17,11 @@ export const contentClass = style([
     backgroundColor: '$primarySurface',
     borderRadius: '$sm',
     padding: '$2',
-    color: '$neutral6',
+    color: '$neutral3',
     display: 'flex',
     size: '$16',
     alignItems: 'center',
     justifyContent: 'center',
   }),
 ]);
+

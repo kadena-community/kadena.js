@@ -1,3 +1,4 @@
+import { Sprinkles, sprinkles } from '@theme/sprinkles.css';
 import {
   containerColumnVariants,
   explicitColumnVariant,
@@ -9,7 +10,24 @@ import {
 import classNames from 'classnames';
 import React, { FC, ReactNode } from 'react';
 
-export interface IGridRootProps {
+export interface IGridRootProps
+  extends Pick<
+    Sprinkles,
+    | 'margin'
+    | 'marginX'
+    | 'marginY'
+    | 'marginTop'
+    | 'marginBottom'
+    | 'marginLeft'
+    | 'marginRight'
+    | 'padding'
+    | 'paddingX'
+    | 'paddingY'
+    | 'paddingTop'
+    | 'paddingBottom'
+    | 'paddingLeft'
+    | 'paddingRight'
+  > {
   children?: ReactNode;
   columns?: ResponsiveInputType;
   gap?: keyof typeof gapVariants;
@@ -33,11 +51,44 @@ const assembleColumnVariants = (
   ];
 };
 
-const GridRoot: FC<IGridRootProps> = ({ children, columns, gap = '$md' }) => {
+const GridRoot: FC<IGridRootProps> = ({
+  children,
+  columns,
+  margin = undefined,
+  marginX = undefined,
+  marginY = undefined,
+  marginTop = undefined,
+  marginBottom = undefined,
+  marginLeft = undefined,
+  marginRight = undefined,
+  gap = '$md',
+  padding = undefined,
+  paddingX = undefined,
+  paddingY = undefined,
+  paddingTop = undefined,
+  paddingBottom = undefined,
+  paddingLeft = undefined,
+  paddingRight = undefined, }) => {
   const classList = classNames(
     gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
+    sprinkles({
+      margin,
+      marginX,
+      marginY,
+      marginTop,
+      marginBottom,
+      marginLeft,
+      marginRight,
+      padding,
+      paddingX,
+      paddingY,
+      paddingTop,
+      paddingBottom,
+      paddingLeft,
+      paddingRight,
+    }),
   );
   return (
     <div className={classList} data-testid="kda-grid-root">

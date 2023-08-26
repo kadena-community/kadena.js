@@ -5,6 +5,12 @@ import { ContentClass } from './stories.css';
 import { Grid } from '@components/Grid';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { vars } from '@theme/vars.css';
+
+const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
+  undefined,
+  ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
+];
 
 const meta: Meta<
   {
@@ -38,6 +44,91 @@ const meta: Meta<
         xxl: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       },
     },
+    margin: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginX: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginY: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginTop: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginBottom: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+
+    marginLeft: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    marginRight: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    padding: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingX: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingY: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingTop: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingBottom: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingLeft: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingRight: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 
@@ -65,10 +156,57 @@ export const GridRoot: Story = {
       xl: 10,
       xxl: 12,
     },
+    margin: undefined,
+    marginX: undefined,
+    marginY: undefined,
+    marginTop: undefined,
+    marginBottom: undefined,
+    marginLeft: undefined,
+    marginRight: undefined,
+    padding: undefined,
+    paddingX: undefined,
+    paddingY: undefined,
+    paddingTop: undefined,
+    paddingBottom: undefined,
+    paddingLeft: undefined,
+    paddingRight: undefined,
   },
-  render: ({ gap, columns }) => (
+  render: ({
+    gap,
+    columns,
+    margin,
+    marginX,
+    marginY,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+    padding,
+    paddingX,
+    paddingY,
+    paddingTop,
+    paddingBottom,
+    paddingLeft,
+    paddingRight, }) => (
     <>
-      <Grid.Root gap={gap} columns={columns}>
+      <Grid.Root
+        gap={gap}
+        columns={columns}
+        margin={margin}
+        marginX={marginX}
+        marginY={marginY}
+        marginTop={marginTop}
+        marginBottom={marginBottom}
+        marginLeft={marginLeft}
+        marginRight={marginRight}
+        padding={padding}
+        paddingX={paddingX}
+        paddingY={paddingY}
+        paddingTop={paddingTop}
+        paddingBottom={paddingBottom}
+        paddingLeft={paddingLeft}
+        paddingRight={paddingRight}
+      >
         {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i}>
             <div className={ContentClass}>{i}</div>
