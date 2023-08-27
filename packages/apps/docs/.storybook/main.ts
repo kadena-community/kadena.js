@@ -34,7 +34,7 @@ const config: StorybookConfig = {
   },
   webpackFinal: async (config) => {
     config.plugins = config?.plugins || [];
-    (config.plugins)?.push(
+    config.plugins?.push(
       new VanillaExtractPlugin(),
       new MiniCssExtractPlugin(),
     );
@@ -72,13 +72,17 @@ const config: StorybookConfig = {
       '@/components': path.resolve(__dirname, '../src/components'),
       '@/utils': path.resolve(__dirname, '../src/utils'),
       '@/types': path.resolve(__dirname, '../src/types'),
-      '@kadena-ui/react-components': path.resolve(__dirname, '../../../libs/react-components'),
+      '@/hooks': path.resolve(__dirname, '../src/hooks'),
+      '@kadena-ui/react-components': path.resolve(
+        __dirname,
+        '../../../libs/react-components',
+      ),
     };
 
     config.resolve.fallback = {
       ...config.resolve?.fallback,
       zlib: false,
-    }
+    };
 
     return config;
   },
