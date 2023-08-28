@@ -51,7 +51,7 @@ const getTitle = (pageAST) => {
   // flatten all children recursively to prevent issue with
   // E.g. ## some title with `code`
   const node = pageAST.children[0];
-  if (node.type !== 'heading' || node.depth !== 2) {
+  if (node.type !== 'heading' || node.depth !== 1) {
     throw new Error('first node is not a Heading');
   }
 
@@ -70,6 +70,7 @@ const createDir = (dir) => {
 const divideIntoPages = (md) => {
   const pages = md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
+      val.depth = 1;
       acc.push([val]);
     } else {
       if (acc.length) {
@@ -135,6 +136,30 @@ const recreateUrl = (pages, url, root) => {
   }, '');
 };
 
+const cleanUp = (content, filename) => {
+  let hasFirstHeader = false;
+  const innerCleanUp = (content, filename) => {
+    if (content.type === 'heading' && content.depth === 1) {
+      if (hasFirstHeader) {
+        console.log(1111, filename);
+        content.depth = 2;
+      }
+
+      hasFirstHeader = true;
+    }
+
+    if (content.children) {
+      content.children.forEach((item) => {
+        return innerCleanUp(item, filename);
+      });
+    }
+
+    return content;
+  };
+
+  return innerCleanUp(content, filename);
+};
+
 const relinkLinkReferences = (refs, definitions, pages, root) => {
   refs.map((ref) => {
     const definition = definitions.find((def) => def.label === ref.label);
@@ -191,7 +216,11 @@ const importDocs = (filename, destination, parentTitle, options) => {
     const menuTitle = idx === 0 ? parentTitle : title;
     const order = idx === 0 ? options.RootOrder : idx;
 
-    const doc = toMarkdown(page);
+    // check that there is just 1 h1.
+    // if more, keep only 1 and replace the next with an h2
+    const pageContent = cleanUp(page, `/docs/${destination}/${slug}`);
+
+    const doc = toMarkdown(pageContent);
 
     createDir(`${DOCSROOT}${destination}`);
 

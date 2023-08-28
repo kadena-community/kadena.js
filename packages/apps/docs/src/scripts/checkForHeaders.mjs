@@ -33,9 +33,9 @@ const checkForHeaders = async (filePath, links) => {
     const file = fs.readFileSync(item, 'utf8');
 
     //check if the item is generated;
-    if (checkifImported(item)) {
-      return;
-    }
+    // if (checkifImported(item)) {
+    //   return;
+    // }
 
     const cleanContent = removeCodeBlocks(file);
 

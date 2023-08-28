@@ -13,7 +13,7 @@
     "build:createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/data/menu.mjs --write",
     "build:importReadMe": "node ./src/scripts/importReadme.mjs && prettier ./src/pages/docs --write",
     "build:next": "npm run build:scripts && next build",
-    "build:scripts": "npm run build:importReadMe && npm run build:createtree && npm run build:createSpecJson  && npm run build:brokenLinks ",
+    "build:scripts": "npm run build:importReadMe && npm run build:createtree && npm run build:createSpecJson  && npm run build:brokenLinks && npm run build:checkForHeaders",
     "build:storybook": "storybook build",
     "chromatic": "chromatic -b build:storybook",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
