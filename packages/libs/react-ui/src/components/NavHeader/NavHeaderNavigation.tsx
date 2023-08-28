@@ -15,9 +15,8 @@ import type {
   FC,
   FunctionComponentElement,
   HTMLAttributeAnchorTarget,
-  useEffect,
 } from 'react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export interface INavItem {
   active?: boolean;
