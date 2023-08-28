@@ -4,7 +4,7 @@ import { globby } from 'globby';
 
 /**
  * This script will check that all MD or MDX files
- * that they have an H1 tag
+ * that they have an H1 tag.
  */
 
 const filesMissingHeaders = [];
