@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { globby } from 'globby';
-import { importReadMes } from './utils.mjs';
 
 /**
  * This script will check that all MD or MDX files
@@ -31,11 +30,6 @@ const checkForHeaders = async (filePath, links) => {
 
   paths.forEach((item) => {
     const file = fs.readFileSync(item, 'utf8');
-
-    //check if the item is generated;
-    // if (checkifImported(item)) {
-    //   return;
-    // }
 
     const cleanContent = removeCodeBlocks(file);
 

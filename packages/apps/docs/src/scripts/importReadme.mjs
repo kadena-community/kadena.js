@@ -141,7 +141,6 @@ const cleanUp = (content, filename) => {
   const innerCleanUp = (content, filename) => {
     if (content.type === 'heading' && content.depth === 1) {
       if (hasFirstHeader) {
-        console.log(1111, filename);
         content.depth = 2;
       }
 
