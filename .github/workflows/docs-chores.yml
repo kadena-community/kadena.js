@@ -20,17 +20,14 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install -t @kadena/docs
+      - name: pnpm install
+        run: pnpm install
 
-      - name: Rush Build
-        run: |
-          node common/scripts/install-run-rush.js build -t @kadena/docs
+      - name: pnpm build
+        run: pnpm --filter @kadena/docs build
 
       - name: Create page tree JSON
-        run: |
-          node ./../../../common/scripts/install-run-rushx.js build:scripts
+        run: pnpm run build:scripts
         working-directory: packages/apps/docs
 
       - name: Cypress tests
