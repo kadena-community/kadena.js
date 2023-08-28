@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { globby } from 'globby';
+import { importReadMes } from './utils.mjs';
 
 const filesMissingHeaders = [];
 
@@ -14,11 +15,22 @@ const removeCodeBlocks = (content) => {
   return content.replace(codeBlockRegex, '');
 };
 
+const checkifImported = (file) => {
+  return importReadMes.find((item) => {
+    return file.includes(item.destination);
+  });
+};
+
 const checkForHeaders = async (filePath, links) => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {
     const file = fs.readFileSync(item, 'utf8');
+
+    //check if the item is generated;
+    if (checkifImported(item)) {
+      return;
+    }
 
     const cleanContent = removeCodeBlocks(file);
 
