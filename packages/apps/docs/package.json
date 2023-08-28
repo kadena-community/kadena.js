@@ -57,7 +57,8 @@
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
     "shiki": "~0.14.2",
-    "styled-components": "~5.3.10"
+    "styled-components": "~5.3.10",
+    "globby": "~13.2.2"
   },
   "devDependencies": {
     "@7-docs/cli": "~0.3.1",
