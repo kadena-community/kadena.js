@@ -45,7 +45,7 @@
        * will restore these folders from the cache.  The strings are folder names under the project root folder.
        * These folders should not be tracked by Git.  They must not contain symlinks.
        */
-      "outputFolderNames": ["dist", "fp", "lib"]
+      "outputFolderNames": ["dist", "lib"]
 
       /**
        * Disable caching for this operation.  The operation will never be restored from cache.

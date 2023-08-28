@@ -48,9 +48,8 @@ jobs:
         with:
           path: |
             common/temp/pnpm-store
-          key:
-            cache-pnpm-${{ runner.os }}-${{
-            hashFiles('common/config/rush/pnpm-lock.yaml')}}
+          key: |
+            cache-pnpm-${{ runner.os }}-${{hashFiles('common/config/rush/pnpm-lock.yaml')}}
           restore-keys: |
             cache-pnpm-${{runner.os}}-
             cache-pnpm-
@@ -96,8 +95,8 @@ jobs:
 
       - name: Rush build + test (install-run-rush)
         run: |
-          node common/scripts/install-run-rush.js build --verbose # ${{ env.AFFECTED_OR_ALL }}
-          node common/scripts/install-run-rush.js test --verbose # ${{ env.AFFECTED_OR_ALL }}
+          node common/scripts/install-run-rush.js build --verbose ${{ env.AFFECTED_OR_ALL }}
+          node common/scripts/install-run-rush.js test --verbose ${{ env.AFFECTED_OR_ALL }}
         env:
           # Prevent time-based browserslist update warning
           # See https://github.com/microsoft/rushstack/issues/2981
