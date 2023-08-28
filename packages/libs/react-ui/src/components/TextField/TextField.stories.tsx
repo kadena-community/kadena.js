@@ -1,5 +1,4 @@
 import { SystemIcon } from '@components/Icon';
-import type { IInputProps } from '@components/Input';
 import { statusVariant } from '@components/InputWrapper/InputWrapper.css';
 import type { ITextFieldProps } from '@components/TextField';
 import { TextField } from '@components/TextField';
