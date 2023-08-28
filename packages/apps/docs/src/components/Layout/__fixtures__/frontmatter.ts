@@ -9,7 +9,7 @@ export const blogFrontMatter: IPageMeta = {
   navigation: {
     previous: {
       root: '/docs/blogchain/2018/security-kadena-chainweb-blockchain-2018-11-01',
-      title: 'Security in Kadena&apos;s Public Blockchain',
+      title: "Security in Kadena's Public Blockchain",
     },
     next: {
       root: '/docs/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13',
@@ -18,7 +18,7 @@ export const blogFrontMatter: IPageMeta = {
   },
   title: 'Kadena The Next Generation Blockchain',
   description:
-    'Kadena has a lot of exciting news and updates about our company, its technology, and what&apos;s on the horizon. We want to thank you all so much for your incredible enthusiasm and support! Here&apos;s what&apos;s gone down in the past few months',
+    "Kadena has a lot of exciting news and updates about our company, its technology, and what's on the horizon. We want to thank you all so much for your incredible enthusiasm and support! Here&apos;s what's gone down in the past few months",
   menu: 'Kadena The Next Generation Blockchain',
   label: 'Kadena The Next Generation Blockchain',
   publishDate: '2018-02-07T00:00:00.000Z',
@@ -26,26 +26,25 @@ export const blogFrontMatter: IPageMeta = {
   layout: 'blog',
 };
 
-export const fullLayoutType: IPageMeta = {
-  wordCount: 1053,
-  readingTimeInMinutes: 6,
-  editLink: 'XXXX/packages/apps/docs/src/pages/docs/build/quickstart.mdx',
-  lastModifiedDate: new Date('2023-08-22T15:00:04.452Z'),
+export const fullLayoutFrontMatter: IPageMeta = {
+  wordCount: 809,
+  readingTimeInMinutes: 5,
+  editLink: 'XXXX/packages/apps/docs/src/pages/docs/kadena/overview.mdx',
+  lastModifiedDate: new Date('2023-08-22T15:00:04.405Z'),
   navigation: {
     previous: {
-      root: '/docs/build',
-      title: 'Build on Kadena',
+      root: '/docs/kadena',
+      title: 'Intro to Kadena',
     },
     next: {
-      root: '/docs/build/tools',
-      title: 'Useful Tools',
+      root: '/docs/kadena/kda',
+      title: 'What is KDA?',
     },
   },
-  title: 'Kadena Quickstart',
-  description:
-    "Learn Kadena's core concepts & tools for development in 15 minutes",
-  menu: 'Build',
-  label: 'Quickstart',
+  title: 'Overview of Kadena',
+  description: 'Kadena makes blockchain work for everyone.',
+  menu: 'Kadena',
+  label: 'Overview',
   order: 1,
   layout: 'full',
 };
