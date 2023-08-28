@@ -27,7 +27,7 @@ Kadena monorepo Remark plugins
 
 ## Format Markdown file
 
-Make sure the package is built (`rush build`).
+Make sure the package is built (`pnpm build`).
 
 Format a single Markdown file and output the result to `stdout`:
 

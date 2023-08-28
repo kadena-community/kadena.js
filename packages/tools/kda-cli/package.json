@@ -21,8 +21,7 @@
   "scripts": {
     "build": "heft build",
     "dev": "heft build -w",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",

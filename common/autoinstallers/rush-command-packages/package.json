@@ -1,9 +1,0 @@
-{
-  "name": "rush-command-packages",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "prettier": "^2.7.1",
-    "prettier-quick": "^0.0.5"
-  }
-}

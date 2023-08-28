@@ -12,13 +12,12 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:contract:crowdfund",
-    "build": "npm run prebuild && tsc --noEmit",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "prebuild": "pnpm run pactjs:generate:contract:file && pnpm run pactjs:generate:contract:crowdfund",
+    "build": "pnpm run prebuild && tsc --noEmit",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
-    "lint": "eslint package.json src --ext .js,.ts,.json --fix",
+    "lint": "eslint package.json src --ext .js,.ts --fix",
     "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:crowdfund": "pactjs contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
@@ -29,7 +28,6 @@
     "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
     "debug": "~4.3.4"
   },
   "devDependencies": {
@@ -37,6 +35,7 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",

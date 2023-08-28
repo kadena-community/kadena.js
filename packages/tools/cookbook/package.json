@@ -9,9 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "build:local": "npm run pactjs:coin && heft build --clean",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "build:local": "pnpm run pactjs:coin && heft build --clean",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts,.json --fix",
