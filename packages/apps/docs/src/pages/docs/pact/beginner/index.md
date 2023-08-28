@@ -175,12 +175,9 @@ inspection.
 
 Pact comes equipped with a powerful validation tool suite in the form of
 
-<a
-href="https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f"
-target="\_blank"
-
-> formal verification </a> . Pact uses Z3, an open-source tool developed by
-> Microsoft, to mathematically verify and test for bugs present in the code.
+> [formal verification](https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f).
+> Pact uses Z3, an open-source tool developed by Microsoft, to mathematically
+> verify and test for bugs present in the code.
 
 This means that Pact allows smart contract authors to express, automatically
 check, and formally verify that their code does not contain any bugs. Formal
