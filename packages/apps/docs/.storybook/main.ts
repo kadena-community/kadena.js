@@ -69,10 +69,12 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
 
+      '@': path.resolve(__dirname, '../src'),
       '@/components': path.resolve(__dirname, '../src/components'),
       '@/utils': path.resolve(__dirname, '../src/utils'),
       '@/types': path.resolve(__dirname, '../src/types'),
       '@/hooks': path.resolve(__dirname, '../src/hooks'),
+      '@/pages': path.resolve(__dirname, '../src/pages'),
       '@kadena-ui/react-components': path.resolve(
         __dirname,
         '../../../libs/react-components',
