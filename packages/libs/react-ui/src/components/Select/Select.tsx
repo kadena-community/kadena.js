@@ -43,7 +43,7 @@ export const Select: FC<ISelectProps> = forwardRef<
 ) {
   return (
     <div
-      className={classNames(selectVariants[variant], containerClass, {
+      className={classNames(containerClass, selectVariants[variant], {
         [containerClassDisabled]: disabled,
       })}
       data-testid="kda-select"
