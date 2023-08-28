@@ -15,8 +15,9 @@
     "lint:versions": "syncpack list-mismatches",
     "lint:fix-versions": "syncpack fix-mismatches",
     "test": "turbo run test",
-    "publish-packages": "turbo run build lint test && changeset version && changeset publish",
-    "publish-set": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts && pnpm publish-packages && git checkout .changeset/config.json"
+    "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
+    "version": "changeset version",
+    "publish": "changeset publish"
   },
   "engines": {
     "node": ">=16",
