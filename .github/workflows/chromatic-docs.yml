@@ -19,13 +19,16 @@ jobs:
         with:
           node-version: 18
 
-      - name: PNPM install (install-run-rush)
-        run: |
-          pnpm install
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
-      - name: Rush Build (internal dependencies)
+      - name: pnpm install
+        run: pnpm install
+
+      - name: pnpm build (internal dependencies)
         run: |
-          pnpm --filter @kadena/react-ui... build
+          pnpm --filter @kadena/react-ui... build 
           pnpm --filter @kadena/react-components... build
 
       - name: Publish Storybook

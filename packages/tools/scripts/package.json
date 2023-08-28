@@ -1,0 +1,22 @@
+{
+  "name": "@kadena-dev/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Changesets tools",
+  "license": "ISC",
+  "scripts": {},
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=8"
+  },
+  "devDependencies": {
+    "@changesets/logger": "^0.0.5",
+    "@changesets/types": "^5.2.1",
+    "@changesets/write": "^0.2.3",
+    "@types/node": "^16.0.0",
+    "ansi-colors": "^4.1.3",
+    "chalk": "^5.2.0",
+    "enquirer": "^2.4.1",
+    "fast-glob": "^3.3.1"
+  }
+}

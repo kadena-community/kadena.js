@@ -15,16 +15,20 @@
     "lint:versions": "syncpack list-mismatches",
     "lint:fix-versions": "syncpack fix-mismatches",
     "test": "turbo run test",
-    "_list": "pnpm recursive list --json | jq --arg cwd \"$PWD\" '[ .[] | { name, version, private, path: (.path | sub(\"^\" + $cwd + \"/\"; \"\")) } ]' > packages.json"
+    "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
+    "version": "changeset version",
+    "publish": "changeset publish"
   },
   "engines": {
     "node": ">=16",
     "pnpm": ">=8"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
     "only-allow": "^1.1.1",
     "syncpack": "^10.7.3",
+    "tsx": "^3.12.7",
     "turbo": "^1.10.12"
   }
 }

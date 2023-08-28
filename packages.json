@@ -8,26 +8,26 @@
   {
     "name": "@kadena/docs",
     "version": "0.2.1",
-    "private": false,
+    "private": true,
     "path": "packages/apps/docs"
   },
   {
     "name": "@kadena/graph",
     "version": "1.0.0",
-    "private": false,
-    "path": "packages/apps/graph"
-  },
-  {
-    "name": "@kadena/graph-client",
-    "version": "0.1.0",
     "private": true,
-    "path": "packages/apps/graph-client"
+    "path": "packages/apps/graph"
   },
   {
     "name": "@kadena/immutable-records",
     "version": "0.1.0",
     "private": true,
     "path": "packages/apps/immutable-records"
+  },
+  {
+    "name": "@kadena/graph-client",
+    "version": "0.1.0",
+    "private": true,
+    "path": "packages/apps/graph-client"
   },
   {
     "name": "@kadena/tools",
@@ -38,18 +38,18 @@
   {
     "name": "@kadena/bootstrap-lib",
     "version": "0.0.1",
-    "private": false,
+    "private": true,
     "path": "packages/libs/bootstrap-lib"
   },
   {
     "name": "@kadena/chainweb-node-client",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "private": false,
     "path": "packages/libs/chainweb-node-client"
   },
   {
     "name": "@kadena/chainweb-stream-client",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "private": false,
     "path": "packages/libs/chainweb-stream-client"
   },
@@ -61,7 +61,7 @@
   },
   {
     "name": "@kadena/client",
-    "version": "1.0.0-alpha.8",
+    "version": "1.0.0",
     "private": false,
     "path": "packages/libs/client"
   },
@@ -73,25 +73,25 @@
   },
   {
     "name": "@kadena/cryptography-utils",
-    "version": "0.3.6",
+    "version": "0.3.7",
     "private": false,
     "path": "packages/libs/cryptography-utils"
   },
   {
     "name": "kadena.js",
     "version": "0.0.1",
-    "private": false,
+    "private": true,
     "path": "packages/libs/kadena.js"
   },
   {
     "name": "@kadena/pactjs",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "private": false,
     "path": "packages/libs/pactjs"
   },
   {
     "name": "@kadena/pactjs-generator",
-    "version": "1.0.0-alpha.7",
+    "version": "1.0.0",
     "private": false,
     "path": "packages/libs/pactjs-generator"
   },
@@ -109,7 +109,7 @@
   },
   {
     "name": "@kadena/types",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "private": false,
     "path": "packages/libs/types"
   },
@@ -121,31 +121,31 @@
   },
   {
     "name": "@kadena-dev/eslint-config",
-    "version": "0.0.10",
+    "version": "0.1.0",
     "private": false,
     "path": "packages/tools/eslint-config"
   },
   {
     "name": "@kadena-dev/eslint-plugin",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "private": false,
     "path": "packages/tools/eslint-plugin"
   },
   {
     "name": "@kadena-dev/heft-rig",
-    "version": "0.0.10",
+    "version": "0.1.0",
     "private": false,
     "path": "packages/tools/heft-rig"
   },
   {
     "name": "@kadena/kda-cli",
     "version": "0.0.1",
-    "private": false,
+    "private": true,
     "path": "packages/tools/kda-cli"
   },
   {
     "name": "@kadena/pactjs-cli",
-    "version": "1.0.0-alpha.7",
+    "version": "1.0.0",
     "private": false,
     "path": "packages/tools/pactjs-cli"
   },
@@ -157,8 +157,14 @@
   },
   {
     "name": "@kadena-dev/rush-fix-versions",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "private": false,
     "path": "packages/tools/rush-fix-versions"
+  },
+  {
+    "name": "@kadena-dev/scripts",
+    "version": "0.0.0",
+    "private": true,
+    "path": "packages/tools/scripts"
   }
 ]

@@ -1,6 +1,7 @@
 {
   "name": "@kadena/docs",
   "version": "0.2.1",
+  "private": true,
   "scripts": {
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
     "7d:clear": "npx 7d pinecone-clear-namespace --namespace kda-docs",
