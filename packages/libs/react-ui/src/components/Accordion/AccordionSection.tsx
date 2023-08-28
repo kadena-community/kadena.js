@@ -21,7 +21,7 @@ export interface IAccordionSectionProps {
   onOpen?: () => void;
   title: string;
   onClick?: () => void;
-  openSections?: number[];
+  isOpen?: boolean;
 }
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
@@ -29,9 +29,8 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
   index = 0,
   title,
   onClick,
-  openSections,
+  isOpen,
 }) => {
-  const isOpen = openSections?.includes(index);
   return (
     <section
       className={accordionSectionClass}

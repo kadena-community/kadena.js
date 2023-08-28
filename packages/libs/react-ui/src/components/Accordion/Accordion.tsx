@@ -12,13 +12,13 @@ export interface IAccordionRootProps {
 export const AccordionRoot: FC<IAccordionRootProps> = ({
   children,
   linked = false,
-  openSection = -1,
+  openSection = undefined,
 }) => {
   const [openSections, setOpenSections] = useState([openSection]);
 
   useEffect(() => {
     if (linked && openSections.length > 1) {
-      const lastOpen = openSections.pop() || -1;
+      const lastOpen = openSections.pop() || undefined;
       setOpenSections([lastOpen]);
     }
   }, [linked]);
@@ -34,7 +34,7 @@ export const AccordionRoot: FC<IAccordionRootProps> = ({
           >,
           {
             index: sectionIndex,
-            openSections,
+            isOpen: openSections.includes(sectionIndex),
             onClick: () => {
               if (openSections.includes(sectionIndex)) {
                 setOpenSections(openSections.filter((i) => i !== sectionIndex));
