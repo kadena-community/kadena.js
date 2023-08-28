@@ -32,17 +32,20 @@ export interface INavigationMenuItem {
   root: string;
 }
 
-export interface IPageMeta {
-  title: string; // title of the HEAD info
-  subTitle?: string;
+export interface IBasePageMeta {
+  title: string;
   menu: string; // name in the main menu
   order: number;
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
+  subTitle?: string;
+  icon?: ProductIconNames;
+}
+
+export interface IPageMeta extends IBasePageMeta {
   editLink: string;
   lastModifiedDate?: Date;
-  icon?: ProductIconNames;
   navigation: INavigation;
   publishDate?: string;
   author?: string;
@@ -79,7 +82,7 @@ export interface IPageProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];
-  frontmatter: IPageMeta;
+  frontmatter: IPageMeta | IHomePageMeta;
   leftMenuTree: IMenuItem[];
   topDocs: ITopDoc[];
 }

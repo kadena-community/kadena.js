@@ -1,4 +1,4 @@
-import { IPageMeta } from '@/types/Layout';
+import { IBasePageMeta, IPageMeta } from '@/types/Layout';
 
 export const blogFrontMatter: IPageMeta = {
   wordCount: 779,
@@ -47,4 +47,36 @@ export const fullLayoutFrontMatter: IPageMeta = {
   label: 'Overview',
   order: 1,
   layout: 'full',
+};
+
+export const landingFrontMatter: IBasePageMeta = {
+  title: 'Intro to Kadena',
+  menu: 'Kadena',
+  subTitle: 'Build the future on Kadena',
+  label: 'Introduction',
+  order: 0,
+  description: 'Welcome to Kadena&apos;s documentation!',
+  layout: 'landing',
+  icon: 'KadenaOverview',
+};
+
+export const homeFrontMatter: IBasePageMeta = {
+  title: 'Welcome to Kadena docs',
+  menu: 'Pact',
+  label: 'Pact Test',
+  order: 1,
+  description:
+    "Welcome to Kadena's documentation! All our Documentation in 1 place. Pact, ChainWeb, KDA, Marmalade etc",
+  layout: 'home',
+};
+
+export const redoclyFrontMatter: IBasePageMeta = {
+  title: 'Chainweb',
+  menu: 'Chainweb',
+  subTitle: 'Be a part of our ecosystem',
+  label: 'Chainweb',
+  order: 5,
+  description: 'Be a part of our ecosystem',
+  layout: 'redocly',
+  icon: 'Chainweb',
 };
