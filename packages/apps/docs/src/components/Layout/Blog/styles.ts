@@ -1,6 +1,6 @@
 import { styled, StyledComponent } from '@kadena/react-components';
 
-import { BasePageGrid } from '../components';
+import { BasePageGrid } from '../components/styles';
 
 export const ArticleMetadataItem: StyledComponent<'span'> = styled('span', {
   '::before': {
