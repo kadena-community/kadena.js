@@ -41,10 +41,10 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
           accordionSectionHeadingClass,
           accordionTitleVariants[isOpen ? 'opened' : 'closed'],
         )}
+        onClick={onClick}
       >
         <span
           data-testid="kda-accordion-section-title"
-          onClick={onClick}
           className={accordionTitleClass}
         >
           {title}

@@ -18,6 +18,7 @@ export const accordionSectionClass = style([
 
 export const accordionSectionHeadingClass = style([
   sprinkles({
+    cursor: 'pointer',
     display: 'flex',
   }),
   {
@@ -29,7 +30,6 @@ export const accordionSectionHeadingClass = style([
 export const accordionTitleClass = style([
   sprinkles({
     alignItems: 'center',
-    cursor: 'pointer',
     display: 'flex',
     fontSize: '$base',
     fontWeight: '$medium',
