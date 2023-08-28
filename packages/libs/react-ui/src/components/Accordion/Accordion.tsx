@@ -35,8 +35,6 @@ export const AccordionRoot: FC<IAccordionRootProps> = ({
           {
             index: sectionIndex,
             isOpen: openSections.includes(sectionIndex),
-            onOpen: () => section?.props.onOpen?.(),
-            onClose: () => section?.props.onClose?.(),
             onClick: () =>
               openSections.includes(sectionIndex)
                 ? setOpenSections(
