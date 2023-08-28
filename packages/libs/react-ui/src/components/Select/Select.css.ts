@@ -10,7 +10,7 @@ export const containerClass = style([
     display: 'flex',
     overflow: 'hidden',
     lineHeight: '$lg',
-    borderRadius: '$xs',
+    borderRadius: '$sm',
     borderColor: {
       lightMode: '$white',
       darkMode: '$gray60',
@@ -47,6 +47,7 @@ export const selectVariants = styleVariants({
     }),
     {
       border: `1px solid ${vars.colors.$gray40}`,
+      borderRadius: '$xs',
     },
   ],
 });
