@@ -19,14 +19,13 @@ jobs:
         with:
           node-version: 18
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install -t @kadena/docs
+      - name: pnpm install
+        run: pnpm install --filter @kadena/docs
 
-      - name: Rush Build (internal dependencies)
+      - name: pnpm build (internal dependencies)
         run: |
-          node common/scripts/install-run-rush.js build -t @kadena/react-ui
-          node common/scripts/install-run-rush.js build -t @kadena/react-components
+          pnpm build --filter @kadena/react-ui
+          pnpm build --filter @kadena/react-components
 
       - name: Publish Storybook
         uses: chromaui/action@v1
