@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
-  const [, setTabName] = useState<string | undefined>();
+  const [tabName, setTabName] = useState<string | undefined>();
   const {
     metadata = [],
     outputStream,
@@ -27,13 +27,18 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     .map(mapMatches);
 
   useEffect(() => {
-    if (query !== undefined && query.trim() !== '') {
+    if (
+      query !== undefined &&
+      query.trim() !== '' &&
+      tabName !== undefined &&
+      tabName.trim() !== ''
+    ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       handleSubmit(query);
-      analyticsEvent(EVENT_NAMES['click:search'], { query });
+      analyticsEvent(EVENT_NAMES['click:search'], { query, tabName });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, handleSubmit]);
+  }, [query, tabName]);
 
   const onTabSelect = (tabName: string): void => {
     setTabName(tabName);

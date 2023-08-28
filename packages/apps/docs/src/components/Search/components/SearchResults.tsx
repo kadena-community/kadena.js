@@ -70,13 +70,16 @@ export const SearchResults: FC<IProps> = ({
   };
 
   useEffect(() => {
-    const value = localStorage.getItem(TABNAME);
     setIsMounted(true);
-    if (value === null) return;
+  }, [setIsMounted]);
 
+  useEffect(() => {
+    const value = localStorage.getItem(TABNAME);
+    if (value === null) return;
     setSelectedTabName(value);
     onTabSelect(value);
-  }, [setSelectedTabName, setIsMounted, onTabSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   if (!isMounted) return null;
   return (
