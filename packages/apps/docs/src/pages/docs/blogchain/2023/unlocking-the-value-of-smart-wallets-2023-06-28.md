@@ -13,7 +13,7 @@ author: Ryan Levy
 layout: blog
 ---
 
-## Unlocking the Value of Smart Wallets
+# Unlocking the Value of Smart Wallets
 
 ![](/assets/blog/1_eMeCKlWBLwPy-CvT6iLujw.webp)
 

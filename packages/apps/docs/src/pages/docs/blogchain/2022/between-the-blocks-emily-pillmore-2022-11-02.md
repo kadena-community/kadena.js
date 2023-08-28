@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Between the Blocks: Emily Pillmore
+# Between the Blocks: Emily Pillmore
 
 ![Kadena’s Personnel Series: It’s time to take a deep dive with Emily Pillmore, Kadena Pact Lead, about her experience, passions, and her journey with Kadena.](/assets/blog/1_E0pjo9TdWL-oq_XvbjC4xA.webp)
 

@@ -13,7 +13,7 @@ layout: blog
 
 ![(left to right): Jon Victor, Tarun Chitra, Eli Polanco, Stuart Popejoy, Arianna Simpson](/assets/blog/1_J6rVl7ZgtDyl2rBnXwebcw.webp)
 
-## Kadena Presents “Blockchain Summer: The Road to Mainstream Adoption”
+# Kadena Presents “Blockchain Summer: The Road to Mainstream Adoption”
 
 ### Highlights from our panel discussion on what it will take for blockchain to go mainstream.
 

@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_NXyEgTYElevRugKNoB7z2A.webp)
 
-## Kadena Roadmap for Q1 2021
+# Kadena Roadmap for Q1 2021
 
 Moving forward in 2021, the team is tracking dramatic shifts in the crypto
 markets, providing us with helpful data for (re)focusing. We believe that

@@ -17,7 +17,7 @@ author: Kadena
 layout: blog
 ---
 
-## Catching Up with Cryptographer, Computer Scientist and Kadena Advisor: Stuart Haber
+# Catching Up with Cryptographer, Computer Scientist and Kadena Advisor: Stuart Haber
 
 ![Catch up with Stuart Haber, renowned cryptographer, computer scientist and co-inventor of the blockchain!](/assets/blog/1_leri5BWOzbsXmxjuycUX8w.webp)
 

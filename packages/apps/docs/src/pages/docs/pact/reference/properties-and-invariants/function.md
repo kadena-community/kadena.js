@@ -9,7 +9,7 @@ order: 13
 layout: full
 ---
 
-## Function operators
+# Function operators
 
 ### identity
 

@@ -8,6 +8,8 @@ order: 3
 layout: full
 ---
 
+# What is KDA?
+
 ## What does the KDA token do?
 
 KDA is a digital currency that is used to pay for compute on the Kadena public

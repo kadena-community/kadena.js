@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_q5vogZ5itWngvqAHv9_Zbg.webp)
 
-## How Kadena is Reimagining Blockchain Developer UX
+# How Kadena is Reimagining Blockchain Developer UX
 
 _By Randy Daal, Developer Experience Lead_
 

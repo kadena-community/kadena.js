@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Pact Local API queries
+
 Chainweb supports the use of the Pact smart contract language, including the
 `local` API endpoints defined in
 [the documentation](https://pact-language.readthedocs.io/en/stable/pact-reference.html#rest-api).

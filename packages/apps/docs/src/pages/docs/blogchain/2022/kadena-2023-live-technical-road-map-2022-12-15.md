@@ -16,7 +16,7 @@ layout: blog
 
 ![](/assets/blog/1_eguMp-5U0vl9Za5LkYNiCw.webp)
 
-## Kadena 2023 Live Technical Roadmap
+# Kadena 2023 Live Technical Roadmap
 
 Since Kadena’s mainnet launch in January 2020, our team and community have grown
 tremendously. Our ecosystem experienced exponential growth with several hundred

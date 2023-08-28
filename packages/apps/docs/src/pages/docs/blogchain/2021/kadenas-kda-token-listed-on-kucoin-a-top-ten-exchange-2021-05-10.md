@@ -10,7 +10,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena’s KDA Token Listed on Kucoin, a Top Ten Exchange
+# Kadena’s KDA Token Listed on Kucoin, a Top Ten Exchange
 
 **NEW YORK, UNITED STATES, May 10, 2021** — We are proud to announce that
 Kadena, the safest and most scalable Proof of Work blockchain, will have its

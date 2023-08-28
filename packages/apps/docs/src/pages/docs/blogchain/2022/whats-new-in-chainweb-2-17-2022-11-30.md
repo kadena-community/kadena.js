@@ -14,7 +14,7 @@ author: Emily Pillmore
 layout: blog
 ---
 
-## What’s new in Chainweb 2.17
+# What’s new in Chainweb 2.17
 
 ![](/assets/blog/1_ZKcQU0DnPml7EiRCvMoxGg.webp)
 

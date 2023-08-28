@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/1_Pcj9Zf_irC35TwEGJlpz1Q.webp)
 
-## Pact 3.1 is Unleashed!
+# Pact 3.1 is Unleashed!
 
 After a lot of hard work by the team at [Kadena](http://kadena.io), we are
 pleased to announce the release of **Pact 3.1!** This new version of Pact brings

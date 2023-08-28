@@ -12,7 +12,7 @@ author: Kadena
 layout: blog
 ---
 
-## Spotlight On: Hypercent
+# Spotlight On: Hypercent
 
 Welcome to Kadena Eco’s Project Spotlight Series, where we highlight the
 groundbreaking work of organizations currently building on Kadena!

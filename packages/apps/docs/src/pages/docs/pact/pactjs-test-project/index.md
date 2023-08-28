@@ -8,7 +8,7 @@ editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/libs/
 layout: full
 ---
 
-## PactJS Test Project
+# PactJS Test Project
 
 This project demonstrates the use of the `@kadena/pact-cli` together with
 `@kadena/client` for _smart contracts_ and _transaction templates_.

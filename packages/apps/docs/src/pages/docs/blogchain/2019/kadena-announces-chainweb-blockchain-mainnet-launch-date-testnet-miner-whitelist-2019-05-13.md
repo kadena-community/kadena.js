@@ -20,7 +20,7 @@ layout: blog
 
 ![](/assets/blog/1_xxQ-iEPWZDrWwSpvKpOm2w.webp)
 
-## Kadena Announces Public Blockchain Mainnet Launch Date & Testnet Miner Whitelist
+# Kadena Announces Public Blockchain Mainnet Launch Date & Testnet Miner Whitelist
 
 _UPDATE 6/3/2019: **Our Miner Whitelist is now LIVE! Apply by
 [filling out our 10-question application](https://forms.gle/Sj3oCEmPDhsyAzok8).**

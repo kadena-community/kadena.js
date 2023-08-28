@@ -7,6 +7,8 @@ order: 4
 layout: full
 ---
 
+# Chainweaver Terms of Service
+
 Last Updated: November 14, 2019
 
 Welcome! Kadena Public LLC (“Kadena”, “we,” “our,” or “us”) provides its

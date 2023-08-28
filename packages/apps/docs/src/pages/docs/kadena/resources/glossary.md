@@ -7,6 +7,8 @@ order: 3
 layout: full
 ---
 
+# Glossary
+
 ## Bitcoin
 
 Bitcoin is the world’s very first cryptocurrency, postulated by ‘Satoshi

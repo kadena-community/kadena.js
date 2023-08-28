@@ -8,6 +8,8 @@ order: 4
 layout: full
 ---
 
+# Content Repo
+
 #### Articles
 
 - [The Story of Kadena's Proof of Work Blockchain](https://medium.com/kadena-io/the-story-of-kadenas-proof-of-work-blockchain-f747b89db3db)

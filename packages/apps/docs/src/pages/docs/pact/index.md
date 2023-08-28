@@ -9,6 +9,8 @@ layout: landing
 icon: PactDeveloper
 ---
 
+# Learn Pact
+
 ## What is Pact?
 
 Pact is a human-readable smart contract language. It allows anyone to write

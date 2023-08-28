@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Guide to Building a Lending Protocol on Kadena — Charkha
+# Guide to Building a Lending Protocol on Kadena — Charkha
 
 Decentralized finance (**DeFi**) emerged as a standout application of blockchain
 technology in late 2017 and broke into the mainstream in 2020. Decentralized

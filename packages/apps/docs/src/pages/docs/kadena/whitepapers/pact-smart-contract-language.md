@@ -13,6 +13,8 @@ order: 3
 layout: full
 ---
 
+# Pact Smart Contract Language
+
 Pact makes designing safer smart contracts effortless, whether you’re writing
 your first contract or launching your fiftieth dApp. It’s fundamentally
 different from other contract languages. It’s readable by non-developers. It

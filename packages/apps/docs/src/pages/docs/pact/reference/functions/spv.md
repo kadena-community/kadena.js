@@ -9,7 +9,7 @@ order: 7
 layout: full
 ---
 
-## SPV
+# SPV
 
 ### verify-spv
 

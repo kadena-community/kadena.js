@@ -7,6 +7,8 @@ order: 4
 layout: full
 ---
 
+# A Step-By-Step Guide to Writing Pact Smart Contract
+
 This is a Pact developer tutorial series titled “Real World Pact”, which
 contains tutorials on:
 

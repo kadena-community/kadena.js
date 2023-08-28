@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/1_XhGJM7IRmpSerlCjrnIKoQ.webp)
 
-## Meet The Kadena Team: Founder & CEO, Will Martino
+# Meet The Kadena Team: Founder & CEO, Will Martino
 
 ### Learn about his love for audiobooks, the amazing team he has assembled, and the “dark side” of blockchain.
 

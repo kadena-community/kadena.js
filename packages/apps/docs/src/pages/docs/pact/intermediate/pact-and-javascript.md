@@ -9,6 +9,8 @@ order: 2
 layout: full
 ---
 
+# Pact and JavaScript
+
 Welcome to this tutorial introducing Pact and JavaScript! The goal of this
 tutorial is to help you connect your Pact development environment to a front end
 application.

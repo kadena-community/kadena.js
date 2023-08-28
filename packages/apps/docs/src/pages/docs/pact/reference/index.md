@@ -9,6 +9,8 @@ order: 4
 layout: full
 ---
 
+# Language Reference
+
 This document is a reference for the Pact smart-contract language, designed for
 correct, transactional execution on a
 [high-performance blockchain](http://kadena.io). For more background, please see

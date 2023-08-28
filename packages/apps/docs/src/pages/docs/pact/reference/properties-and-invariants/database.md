@@ -9,7 +9,7 @@ order: 11
 layout: full
 ---
 
-## Database operators
+# Database operators
 
 ### table-written
 

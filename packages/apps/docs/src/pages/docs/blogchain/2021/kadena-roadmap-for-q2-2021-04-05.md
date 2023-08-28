@@ -12,7 +12,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Roadmap for Q2 2021
+# Kadena Roadmap for Q2 2021
 
 As we progress through 2021, the Kadena team is all-in to execute major
 initiatives and amplify brand awareness in the crypto markets. Working closely

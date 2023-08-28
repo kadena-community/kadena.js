@@ -5,7 +5,7 @@ label: Code of Conduct
 layout: normal
 ---
 
-## Kadena Code of Conduct
+# Kadena Code of Conduct
 
 Kadena is committed to fostering a friendly, safe, and inclusive environment for
 all, regardless of sex, gender identity and expression, sexual orientation,

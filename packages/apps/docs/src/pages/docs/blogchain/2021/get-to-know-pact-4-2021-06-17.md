@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_qYmdUAxT3iqFnIlJSQ_YYw.webp)
 
-## Get to know Pact 4!
+# Get to know Pact 4!
 
 _Learn all the ways Pact 4 accelerates safe smart contract development_
 

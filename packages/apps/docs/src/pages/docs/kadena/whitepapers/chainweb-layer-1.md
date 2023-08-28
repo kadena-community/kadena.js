@@ -9,6 +9,8 @@ order: 2
 layout: full
 ---
 
+# Chainweb Layer 1
+
 Kadena's public blockchain, Chainweb, is the only sharded and scalable layer-1
 PoW network in production today. It utilizes a PoW (Proof of Work) consensus
 mechanism that improves throughput and scalability without sacrificing security.

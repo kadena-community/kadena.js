@@ -20,7 +20,7 @@ layout: blog
 
 ![Kadena Eco is bringing a new developer experience with Kadena.JS](/assets/blog/1_IlvgBc3Vwf6D4tc631_h2A.webp)
 
-## Kadena Eco is excited to present a new developer experience with Kadena.JS.
+# Kadena Eco is excited to present a new developer experience with Kadena.JS.
 
 > _“Coming together is a beginning, staying together is progress, and working
 > together is success.”  

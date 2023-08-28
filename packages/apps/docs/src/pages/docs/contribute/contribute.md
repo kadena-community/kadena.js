@@ -9,6 +9,8 @@ order: 5
 layout: full
 ---
 
+# Contribute to Kadena Docs
+
 The Kadena documentation is open source and hosted on GitHub. Using our
 public-facing [Docs](https://github.com/kadena-community/docs) repo in the
 [Kadena Community GitHub](https://github.com/kadena-community), you can make

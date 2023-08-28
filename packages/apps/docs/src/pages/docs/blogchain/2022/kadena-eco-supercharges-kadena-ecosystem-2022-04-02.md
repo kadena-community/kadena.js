@@ -16,7 +16,7 @@ layout: blog
 
 ![](/assets/blog/1_XNTbZovY5Di-8JIN2a5W3g.webp)
 
-## Kadena Eco Supercharges Kadena Ecosystem
+# Kadena Eco Supercharges Kadena Ecosystem
 
 By Doug Beardsley, Technical Advisor to Kadena Eco and Director of Engineering,
 Kadena

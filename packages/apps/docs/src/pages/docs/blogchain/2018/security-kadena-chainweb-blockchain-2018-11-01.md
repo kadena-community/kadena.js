@@ -14,7 +14,7 @@ author: Monica Quaintance
 layout: blog
 ---
 
-## Security in Kadena’s Public Blockchain
+# Security in Kadena’s Public Blockchain
 
 ![Example of simple blockchain vs. two-chain configuration from Chainweb 2018 whitepaper (Martino, Quaintance)](/assets/blog/1_Cm0blm2TztfEkRFW1fkbGA.webp)
 

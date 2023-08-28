@@ -13,7 +13,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Why We Open-Sourced Our Blockchain’s Smart Contract Language
+# Why We Open-Sourced Our Blockchain’s Smart Contract Language
 
 Back in November 2016, [Kadena](http://kadena.io) open-sourced our smart
 contract language, Pact™. Open-sourcing is all about empowering users, and

@@ -12,7 +12,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Kadena Raises $12M For Public Blockchain
+# Kadena Raises $12M For Public Blockchain
 
 _Blockchain platform provider offers the first truly scalable public protocol._
 

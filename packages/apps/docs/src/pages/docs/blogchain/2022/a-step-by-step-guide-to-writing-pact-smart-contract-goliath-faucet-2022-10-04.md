@@ -15,7 +15,7 @@ author: Heekyun
 layout: blog
 ---
 
-## A Step-By-Step Guide to Writing Pact Smart Contract — Goliath Faucet
+# A Step-By-Step Guide to Writing Pact Smart Contract — Goliath Faucet
 
 ![](/assets/blog/1_wmsX0LzHjaR7HVMUTjLqjw.webp)
 

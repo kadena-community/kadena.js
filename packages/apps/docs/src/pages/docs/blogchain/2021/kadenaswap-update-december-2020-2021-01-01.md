@@ -13,7 +13,7 @@ layout: blog
 
 ![](/assets/blog/1_Wjb7k98TA-dHCeuMnHdz0g.webp)
 
-## Kadenaswap Update December 2020
+# Kadenaswap Update December 2020
 
 Rounding out the year with another quarter of roadmap milestones delivered on
 time, Kadena has deployed a live version of the Kadenaswap decentralized

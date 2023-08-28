@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Spotlight On: Kalend
+# Spotlight On: Kalend
 
 Welcome to Kadena Eco’s Project Spotlight Series, where we’ll highlight the
 groundbreaking work of organizations currently building on Kadena!

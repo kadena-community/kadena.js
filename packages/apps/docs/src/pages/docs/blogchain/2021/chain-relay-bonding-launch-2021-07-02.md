@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/1_-YDXCeAfa2h-FyBY4xzE3A.webp)
 
-## Chain Relay Bonding Launch
+# Chain Relay Bonding Launch
 
 Learn how you can help secure the Kadena Chain Relay by bonding KDA!
 

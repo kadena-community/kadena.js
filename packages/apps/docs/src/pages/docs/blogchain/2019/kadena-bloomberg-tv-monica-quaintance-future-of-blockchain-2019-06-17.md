@@ -15,7 +15,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Kadena on Bloomberg TV: Monica Quaintance shares expert opinion on the future of blockchain
+# Kadena on Bloomberg TV: Monica Quaintance shares expert opinion on the future of blockchain
 
 _Kadena’s Head of Research & Networks dives deeper into the latest headlines in
 cryptocurrency with Bloomberg Technology’s Emily Chang._

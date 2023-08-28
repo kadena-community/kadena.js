@@ -18,7 +18,7 @@ layout: blog
 
 ![](/assets/blog/1_sv7Bttb-Wg98ZiJm6gC1rg.webp)
 
-## Kadena: New Look, Same Mission
+# Kadena: New Look, Same Mission
 
 ### A review of our rebranded look
 

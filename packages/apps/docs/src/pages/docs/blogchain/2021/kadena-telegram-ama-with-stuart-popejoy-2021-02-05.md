@@ -10,6 +10,8 @@ author: Kadena
 layout: blog
 ---
 
+# Kadena Telegram AMA with Stuart Popejoy, Feb 5 2021 Transcript
+
 ## Opening remarks:
 
 **STUART:** Hi everyone! I’m Stuart, I’m a co-founder of Kadena along with Will

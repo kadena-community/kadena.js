@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Between the Blocks: Randy Daal
+# Between the Blocks: Randy Daal
 
 ![It’s time to take a deep dive with Randy Daal, Kadena’s Developer Experience Lead, about his past, present, and time at Kadena!](/assets/blog/1_bwSQxDBogmkeytcc8tmMQw.webp)
 

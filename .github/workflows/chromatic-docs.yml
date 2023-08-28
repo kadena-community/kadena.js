@@ -28,8 +28,8 @@ jobs:
 
       - name: pnpm build (internal dependencies)
         run: |
-          pnpm build --filter @kadena/react-ui
-          pnpm build --filter @kadena/react-components
+          pnpm --filter @kadena/react-ui... build 
+          pnpm --filter @kadena/react-components... build
 
       - name: Publish Storybook
         uses: chromaui/action@v1

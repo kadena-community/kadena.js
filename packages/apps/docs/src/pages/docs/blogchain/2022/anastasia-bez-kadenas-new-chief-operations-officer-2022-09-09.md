@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Anastasia Bez: Kadena’s New Chief Operating Officer
+# Anastasia Bez: Kadena’s New Chief Operating Officer
 
 Kadena is extremely pleased to announce that Anastasia Bez has been promoted to
 **Chief Operating Officer** of Kadena. Anastasia was previously the Director of

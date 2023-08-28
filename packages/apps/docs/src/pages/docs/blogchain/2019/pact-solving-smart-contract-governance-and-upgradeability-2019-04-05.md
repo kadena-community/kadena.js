@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_NOwRG03NfMqyaqGrmdPfKg.webp)
 
-## Pact: Solving Smart Contract Governance and Upgradeability
+# Pact: Solving Smart Contract Governance and Upgradeability
 
 The blockchain industry undeniably spends a great deal of energy discussing
 _governance_, but sometimes the focus of governance gets confused. Usually, the

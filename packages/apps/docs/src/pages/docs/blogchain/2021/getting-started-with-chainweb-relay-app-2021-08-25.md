@@ -13,7 +13,7 @@ layout: blog
 
 ![](/assets/blog/1_bmXFrJ6AX3NxWty7Au7sVg.webp)
 
-## Getting Started with Kadena Relay App in Testnet
+# Getting Started with Kadena Relay App in Testnet
 
 Part 1: Create and fund a testnet KDA account
 

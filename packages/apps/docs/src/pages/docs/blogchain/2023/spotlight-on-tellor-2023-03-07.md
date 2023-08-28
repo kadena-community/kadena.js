@@ -12,6 +12,8 @@ author: Kadena
 layout: blog
 ---
 
+# Spotlight on Tellor
+
 ## Project Spotlight: Tellor
 
 Welcome to Kadena Eco’s Project Spotlight Series, where we highlight the

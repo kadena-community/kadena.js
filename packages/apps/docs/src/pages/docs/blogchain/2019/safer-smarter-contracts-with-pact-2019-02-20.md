@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_F3EjRcDtfBjShCP0qszVLg.webp)
 
-## Safer, Smarter Contracts with Pact
+# Safer, Smarter Contracts with Pact
 
 ### How Kadena’s smart contract language supports blockchain adoption
 

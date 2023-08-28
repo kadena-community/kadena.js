@@ -10,6 +10,8 @@ order: 7
 layout: full
 ---
 
+# Schemas and Tables
+
 Welcome to this introduction to Pact Schemas and Tables!
 
 **Topics covered in this tutorial**

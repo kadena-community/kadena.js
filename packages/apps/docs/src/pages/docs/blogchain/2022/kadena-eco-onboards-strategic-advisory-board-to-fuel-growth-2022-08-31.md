@@ -15,7 +15,7 @@ layout: blog
 
 ![Kadena Eco is proud to announce Brooke Ricketts as a Strategic Advisor](/assets/blog/1_GKYqAg6WO1MEc4z5l7Kx2A.webp)
 
-## Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
+# Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
 
 From Day 1, Kadena and Kadena Eco have been the leading forces in Blockchain
 focused on builders. Today, we announce the formation of a Strategic Advisory

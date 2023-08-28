@@ -9,6 +9,8 @@ order: 4
 layout: full
 ---
 
+# Interfaces with Pact
+
 Welcome to this introduction to **Interfaces with Pact**!
 
 Throughout this tutorial you’ll learn why interfaces are valuable and how to

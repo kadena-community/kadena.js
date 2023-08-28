@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Proof of Work vs Proof of Stake, Kadena’s Advantages, Explained
+# Proof of Work vs Proof of Stake, Kadena’s Advantages, Explained
 
 ![](/assets/blog/1_JzSicHPhcWHotlKMuXQTlA.webp)
 

@@ -12,7 +12,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Kadena: The Next Generation Blockchain
+# Kadena: The Next Generation Blockchain
 
 JANUARY 2018 ROUND UP — Kadena has a lot of exciting news and updates about our
 company, its technology, and what’s on the horizon. We want to thank you all so

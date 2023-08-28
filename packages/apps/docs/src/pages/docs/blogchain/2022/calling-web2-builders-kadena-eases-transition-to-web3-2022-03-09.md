@@ -16,7 +16,7 @@ layout: blog
 
 ![](/assets/blog/1_jYzwXoAJq18vJgaOfl9rgA.webp)
 
-## Calling Web2 Builders: Kadena Eases Transition to Web3
+# Calling Web2 Builders: Kadena Eases Transition to Web3
 
 _by Tyler Benster, Technology Adoption Lead, Kadena Eco_
 

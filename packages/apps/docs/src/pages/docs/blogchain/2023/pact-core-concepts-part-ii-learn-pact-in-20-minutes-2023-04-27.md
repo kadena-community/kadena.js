@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Pact Core Concepts Part II— Learn Pact in 20 Minutes
+# Pact Core Concepts Part II— Learn Pact in 20 Minutes
 
 ![](/assets/blog/1_IOeDK7eWYyl_w4yFdEF5vA.webp)
 

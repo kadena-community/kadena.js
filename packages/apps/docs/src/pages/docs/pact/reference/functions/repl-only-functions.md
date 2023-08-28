@@ -9,7 +9,7 @@ order: 11
 layout: full
 ---
 
-## REPL-only functions
+# REPL-only functions
 
 The following functions are loaded automatically into the interactive REPL, or
 within script files with a `.repl` extension. They are not available for

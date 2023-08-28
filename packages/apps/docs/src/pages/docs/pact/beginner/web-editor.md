@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Web Editor
+
 Welcome to this tutorial on the Chainweaver Web Pact Editor!
 
 In this tutorial, you’ll learn about the Chainweaver Web Pact Editor, a powerful

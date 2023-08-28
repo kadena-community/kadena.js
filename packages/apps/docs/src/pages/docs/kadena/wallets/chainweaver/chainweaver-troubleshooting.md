@@ -7,6 +7,8 @@ order: 3
 layout: full
 ---
 
+# Troubleshooting Chainweaver
+
 ### Debian Installation Issues
 
 If you think that the install didn't update your Chainweaver, jump into a

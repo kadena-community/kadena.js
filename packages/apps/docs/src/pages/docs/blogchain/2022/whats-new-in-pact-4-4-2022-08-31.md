@@ -18,7 +18,7 @@ layout: blog
 
 ![Check out the newest changes to Pact 4.4](/assets/blog/1_IW4RipwJLD_0U4n4O6_MlA.webp)
 
-## What’s New in Pact 4.4
+# What’s New in Pact 4.4
 
 Every growing decentralized community needs builders. With the new cohorts of
 grantees selected by Kadena Eco being announced every week, the Pact engineering

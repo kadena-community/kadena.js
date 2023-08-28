@@ -9,7 +9,7 @@ order: 8
 layout: full
 ---
 
-## Commitments
+# Commitments
 
 ### decrypt-cc20p1305
 

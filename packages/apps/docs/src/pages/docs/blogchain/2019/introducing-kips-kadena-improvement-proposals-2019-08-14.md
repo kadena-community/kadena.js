@@ -13,7 +13,7 @@ layout: blog
 
 ![](/assets/blog/1_CkkM7zCahsGSNluuOQ0w3w.webp)
 
-## Introducing KIPs: Kadena Improvement Proposals
+# Introducing KIPs: Kadena Improvement Proposals
 
 _Learn more about the process for submitting suggestions for Kadena’s public
 blockchain, Chainweb._

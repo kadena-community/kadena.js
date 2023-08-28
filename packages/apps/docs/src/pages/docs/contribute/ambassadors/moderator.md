@@ -10,6 +10,8 @@ order: 3
 layout: full
 ---
 
+# Moderator
+
 Moderators are essential to keeping our official online social media channels up
 to date as well as providing a welcoming environment for community members to
 come together and monitoring those discussions.

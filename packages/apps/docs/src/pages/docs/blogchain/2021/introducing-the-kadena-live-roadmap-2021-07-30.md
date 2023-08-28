@@ -12,7 +12,7 @@ author: Kadena
 layout: blog
 ---
 
-## Introducing the Kadena Live Roadmap
+# Introducing the Kadena Live Roadmap
 
 At Kadena, we’re continually responding to the fast-moving crypto space.
 Starting as an enterprise blockchain company in 2016, we introduced the world to

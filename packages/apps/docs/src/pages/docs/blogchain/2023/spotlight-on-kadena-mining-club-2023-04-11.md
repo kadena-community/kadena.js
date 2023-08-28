@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Project Spotlight: Kadena Mining Club
+# Project Spotlight: Kadena Mining Club
 
 ![Kadena Eco’s Project Spotlight: Illuminating Kadena builders bringing blockchain to the mainstream](/assets/blog/1_uvrDltNpWnMpAt3ptGnk8A.webp)
 

@@ -7,6 +7,8 @@ order: 5
 layout: full
 ---
 
+# Safe Transfer
+
 Many cryptocurrencies are plagued by the problem of users losing coins by making
 a mistake with the public key they are transferring to and discovering that the
 private key they thought would control the money doesn't work. Pact allows you

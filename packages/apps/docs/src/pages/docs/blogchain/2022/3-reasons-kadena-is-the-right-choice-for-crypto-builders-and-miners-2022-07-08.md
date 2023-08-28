@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## 3 Reasons Kadena Is The Right Choice For Crypto Builders And Miners
+# 3 Reasons Kadena Is The Right Choice For Crypto Builders And Miners
 
 _An Open-Source, Public Blockchain Built with Proof of Work_
 

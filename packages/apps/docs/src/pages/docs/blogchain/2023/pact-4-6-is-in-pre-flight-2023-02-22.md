@@ -16,7 +16,7 @@ author: Emily Pillmore
 layout: blog
 ---
 
-## Pact 4.6 is In (pre)Flight
+# Pact 4.6 is In (pre)Flight
 
 ![Announcing the release of new smart contract features with Pact 4.6!](/assets/blog/1_BkKdH9y8UNpl4U5agsOesg.webp)
 

@@ -15,7 +15,7 @@ author: Kadena
 layout: blog
 ---
 
-## Bringing the Internet to the Physical World with IoT Devices
+# Bringing the Internet to the Physical World with IoT Devices
 
 ![](/assets/blog/1_-sZboC_fQJg1hXLc1uPAgQ.webp)
 

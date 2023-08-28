@@ -9,6 +9,8 @@ order: 3
 layout: full
 ---
 
+# Safety Using Control Flow
+
 Welcome to this tutorial on **Safety Using Control Flow** with Pact.
 
 While Pact is already a simple and safe language for smart contracts, there are

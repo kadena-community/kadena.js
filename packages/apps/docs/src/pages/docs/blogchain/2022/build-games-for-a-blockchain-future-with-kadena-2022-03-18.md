@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_OKw9Caus7pvqToPXwLIG1g.webp)
 
-## Build Games For a Blockchain Future With Kadena
+# Build Games For a Blockchain Future With Kadena
 
 By Dan Wiggins, Head of Gaming, Kadena Eco
 

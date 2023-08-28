@@ -15,7 +15,7 @@ author: Kadena
 layout: blog
 ---
 
-## Pact Core Concepts Part III — Testing and Formal Verification in the Pact REPL
+# Pact Core Concepts Part III — Testing and Formal Verification in the Pact REPL
 
 ![](/assets/blog/1_ZsQEhEAHC5wr3oj_kODDng.webp)
 

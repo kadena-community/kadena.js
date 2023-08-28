@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/0_QgOv9OHFdAY2-9Mk.png)
 
-## Kadena Launches Blockchain-as-a-Service (BaaS) on Azure Marketplace
+# Kadena Launches Blockchain-as-a-Service (BaaS) on Azure Marketplace
 
 _Learn more about our easy provisioning and formally verified smart contracts on
 Microsoft’s cloud platform._

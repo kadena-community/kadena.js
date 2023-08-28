@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Hello World
+
 Welcome to this Hello World with Pact Tutorial!
 
 In this tutorial, you'll learn how to create, deploy, and run functions on a

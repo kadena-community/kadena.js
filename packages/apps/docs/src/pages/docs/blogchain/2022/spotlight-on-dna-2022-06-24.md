@@ -15,7 +15,7 @@ author: Kadena
 layout: blog
 ---
 
-## Spotlight On: DNA
+# Spotlight On: DNA
 
 Welcome to Kadena Eco’s Project Spotlight Series, where we’ll highlight the
 groundbreaking work of organizations currently building on Kadena!

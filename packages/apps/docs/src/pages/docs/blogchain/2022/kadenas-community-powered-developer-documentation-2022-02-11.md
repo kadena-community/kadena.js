@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena’s Community-Powered Developer Documentation
+# Kadena’s Community-Powered Developer Documentation
 
 Entering 2022, the Kadena ecosystem is going into overdrive, so it’s critical
 that our developer documentation keep up. We’re thrilled to announce a major

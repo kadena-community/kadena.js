@@ -8,7 +8,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## #Consensus2018: 5 Lessons from Your First Crypto Conference (Day 1)
+# #Consensus2018: 5 Lessons from Your First Crypto Conference (Day 1)
 
 ### What to do when they bring the lambos to your doorstep
 

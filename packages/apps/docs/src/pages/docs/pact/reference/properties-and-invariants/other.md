@@ -9,7 +9,7 @@ order: 14
 layout: full
 ---
 
-## Other operators
+# Other operators
 
 ### where
 

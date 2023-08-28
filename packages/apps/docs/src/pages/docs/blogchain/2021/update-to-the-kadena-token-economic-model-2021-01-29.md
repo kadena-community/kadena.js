@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_8VJm1-4VH7yGxvZRSl8zjA.webp)
 
-## Update to the Kadena Token Economic Model
+# Update to the Kadena Token Economic Model
 
 On January 15 2021, Kadena celebrated its one-year anniversary of the public
 launch of the Kadena Public blockchain platform, the only sharded, scalable

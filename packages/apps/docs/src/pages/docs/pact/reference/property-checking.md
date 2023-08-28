@@ -9,6 +9,8 @@ order: 7
 layout: full
 ---
 
+# Pact Property Checking System
+
 ## What is it?
 
 Pact comes equipped with the ability for smart contract authors to express and

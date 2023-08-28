@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/1_G4ggggsptLXt7z0Rry7UJA.webp)
 
-## Announcement: Kadena Public Blockchain Testnet LIVE
+# Announcement: Kadena Public Blockchain Testnet LIVE
 
 Kadena is excited to announce that Chainweb–Kadena’s public proof-of-work
 blockchain–is now LIVE in testnet!

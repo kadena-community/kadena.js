@@ -16,7 +16,7 @@ layout: blog
 
 ![](/assets/blog/1_BEuMAVlJ32_pP984cFKAwQ.webp)
 
-## Mint a Marketplace: NFTs on Kadena Marmalade (Part 2)
+# Mint a Marketplace: NFTs on Kadena Marmalade (Part 2)
 
 ## Part 2: Technical Details of the new NFT Standard and Smart Contracts
 

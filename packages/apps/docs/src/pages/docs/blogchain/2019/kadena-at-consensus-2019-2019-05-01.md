@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_r_A9MY_7i_J8cFdgZAMUMg.webp)
 
-## Kadena at Consensus 2019
+# Kadena at Consensus 2019
 
 ### Kadena is excited to be a part of New York Blockchain Week 2019!
 

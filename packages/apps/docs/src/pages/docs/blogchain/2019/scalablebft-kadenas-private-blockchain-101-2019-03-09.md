@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/1_D5NZGx0CsixlX0CnLgCRLA.wepb)
 
-## Kadena’s Private Blockchain 101
+# Kadena’s Private Blockchain 101
 
 _Evaluating how our private blockchain solution sets us apart from the
 competition_

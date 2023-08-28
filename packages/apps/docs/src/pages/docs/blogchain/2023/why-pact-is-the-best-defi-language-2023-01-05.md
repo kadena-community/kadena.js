@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Why Pact is the Best DeFi Language
+# Why Pact is the Best DeFi Language
 
 ![](/assets/blog/1_LodIVJU_PvliNLDGsRZShQ.webp)
 

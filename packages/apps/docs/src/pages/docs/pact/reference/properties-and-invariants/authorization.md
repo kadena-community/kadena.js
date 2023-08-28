@@ -9,7 +9,7 @@ order: 12
 layout: full
 ---
 
-## Authorization operators
+# Authorization operators
 
 ### authorized-by
 

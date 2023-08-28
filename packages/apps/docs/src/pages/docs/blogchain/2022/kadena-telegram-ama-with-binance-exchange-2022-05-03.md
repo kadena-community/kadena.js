@@ -11,7 +11,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Telegram AMA with Binance Exchange, May 3 2022 Transcript
+# Kadena Telegram AMA with Binance Exchange, May 3 2022 Transcript
 
 ### Opening Remarks
 

@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/0_egllSaAanOmAOb8_.png)
 
-## Kadena Commitment To Builders
+# Kadena Commitment To Builders
 
 _10% of $100 million grant program earmarked for affected builders_
 

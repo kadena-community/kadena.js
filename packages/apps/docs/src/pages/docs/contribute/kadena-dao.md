@@ -7,6 +7,8 @@ order: 4
 layout: full
 ---
 
+# Kadena DAO
+
 Kadena has built the framework for the first DAO, Decentralized Autonomous
 Organization, on its public blockchain called **dao.init**. As Kadena’s
 ecosystem continues to grow, the creation of a DAO will allow for the broader

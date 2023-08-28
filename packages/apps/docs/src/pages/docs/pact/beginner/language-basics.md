@@ -7,6 +7,8 @@ order: 4
 layout: full
 ---
 
+# Language Basics
+
 Welcome to this tutorial on the Pact Language Basics!
 
 In this tutorial you'll learn some fundamental concepts you need to get started

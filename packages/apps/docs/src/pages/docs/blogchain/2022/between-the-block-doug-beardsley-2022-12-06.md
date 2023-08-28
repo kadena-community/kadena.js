@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Between the Blocks: Doug Beardsley
+# Between the Blocks: Doug Beardsley
 
 ![Doug Beardsley](/assets/blog/1_c74yuQndgzdEYUcinKrTEA.webp)
 

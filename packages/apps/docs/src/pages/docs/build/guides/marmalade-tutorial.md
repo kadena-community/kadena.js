@@ -7,6 +7,8 @@ order: 1
 layout: full
 ---
 
+# Marmalade Tutorial
+
 ## What is Marmalade
 
 [Marmalade](https://marmalade.art/) is the new Kadena standard for NFTs,
