@@ -164,10 +164,16 @@ is needed, we can discuss adding this with a designer.
 ### Storybook, Chromatic, & Testing
 
 We are required to create a story in storybook that showcases all functionality
-for each component. We would also like to include a description for the
-component and it's props. This automatically gets synced with chromatic so that
-we have also have regression testing. For visual related testing, this is going
-to be sufficient for most components.
+for each component. Informative text should include:
+
+- Description of the purpose and usage of the component
+- Description of the purpose and usage of component props
+  - Prop type
+  - Default prop value (when applicable)
+
+The storybook stories automatically get synced with chromatic so that we have
+also have regression testing. For visual related testing, this is going to be
+sufficient for most components.
 
 > TIP: import component from @components/... in stories to check that you are
 > adding new components to the components barrel file
