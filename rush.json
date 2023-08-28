@@ -462,8 +462,7 @@
       "packageName": "@kadena/client",
       "projectFolder": "packages/libs/client",
       "tags": ["libs"],
-      "shouldPublish": true,
-      "versionPolicyName": "client"
+      "shouldPublish": true
     },
 
     {
@@ -516,8 +515,7 @@
       "packageName": "@kadena/pactjs-generator",
       "projectFolder": "packages/libs/pactjs-generator",
       "tags": ["libs"],
-      "shouldPublish": true,
-      "versionPolicyName": "client"
+      "shouldPublish": true
     },
 
     {
@@ -590,8 +588,7 @@
       "packageName": "@kadena/pactjs-cli",
       "projectFolder": "packages/tools/pactjs-cli",
       "tags": ["tools"],
-      "shouldPublish": true,
-      "versionPolicyName": "client"
+      "shouldPublish": true
     },
 
     {
