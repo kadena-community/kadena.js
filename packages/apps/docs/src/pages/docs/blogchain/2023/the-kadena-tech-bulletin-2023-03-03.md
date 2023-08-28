@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## The Kadena Tech Bulletin #1 — March 3, 2023
+# The Kadena Tech Bulletin #1 — March 3, 2023
 
 Welcome to Kadena’s very first inaugural issue of The Kadena Tech Bulletin!
 

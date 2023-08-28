@@ -13,7 +13,7 @@ author: Will Martino
 layout: blog
 ---
 
-## The Future of Blockchain is the Smart Contract Sharing Economy
+# The Future of Blockchain is the Smart Contract Sharing Economy
 
 ### How Kadena’s stack turns cost centers into revenue generators
 

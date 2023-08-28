@@ -10,7 +10,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Blockchain is finally becoming the next-gen database of choice
+# Blockchain is finally becoming the next-gen database of choice
 
 _Kadena Founder & CEO Will Martino explains to VentureBeat how blockchain solves
 problems traditional databases can’t handle._

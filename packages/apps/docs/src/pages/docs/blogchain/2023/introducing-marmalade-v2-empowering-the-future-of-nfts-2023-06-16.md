@@ -14,7 +14,7 @@ author: Heekyun
 layout: blog
 ---
 
-## Introducing Marmalade V2: Empowering the Future of NFTs
+# Introducing Marmalade V2: Empowering the Future of NFTs
 
 ![](/assets/blog/1_zGdTSmjV4Q0BQWJ6ulpMIA.webp)
 

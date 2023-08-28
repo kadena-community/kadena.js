@@ -14,7 +14,7 @@ author: Robert Soeldner
 layout: blog
 ---
 
-## Language Server Support for Pact
+# Language Server Support for Pact
 
 ![](/assets/blog/1_NzViJSe3eJ45qJfeqLh1Lw.webp)
 

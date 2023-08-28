@@ -7,6 +7,8 @@ order: 1
 layout: full
 ---
 
+# Kadena Quickstart
+
 ## Welcome to the developer-friendly blockchain.
 
 Building useful applications on a blockchain doesn’t have to be hard or

@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_0s4RpYfueV_4QldpVe3a2A.webp)
 
-## USCF Collaborates with Kadena on Use of Blockchain in Investment Space
+# USCF Collaborates with Kadena on Use of Blockchain in Investment Space
 
 _New York, NY — May 13, 2019_
 

@@ -13,7 +13,7 @@ layout: blog
 
 ![](/assets/blog/1_cOLN33RfWbp9ukaBegGcpA.webp)
 
-## Meet The Kadena Team: Founder & President, Stuart Popejoy
+# Meet The Kadena Team: Founder & President, Stuart Popejoy
 
 _Learn about his love for Algorithmic Music Compositions, why we’re still in the
 dark age of software development, and where blockchain will be in 10–20 years._

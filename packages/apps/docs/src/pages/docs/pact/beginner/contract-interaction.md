@@ -11,6 +11,8 @@ order: 10
 layout: full
 ---
 
+# Contract Interaction
+
 Welcome to this tutorial on Pact Contract Interaction!
 
 **Topics covered in this tutorial**

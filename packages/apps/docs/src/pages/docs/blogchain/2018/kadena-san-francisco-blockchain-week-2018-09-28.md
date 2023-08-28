@@ -15,6 +15,8 @@ layout: blog
 
 ![](/assets/blog/1_ecJ400MzdFVrsqfd-EucJg.webp)
 
+# San Francisco Blockchain Week
+
 ## Kadena @ San Francisco Blockchain Week
 
 [Kadena](http://kadena.io) is excited to be a part of

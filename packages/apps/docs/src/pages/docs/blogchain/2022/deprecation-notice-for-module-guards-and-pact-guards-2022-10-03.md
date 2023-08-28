@@ -14,7 +14,7 @@ author: Emily Pillmore
 layout: blog
 ---
 
-## Deprecation Notice for Module Guards and Pact Guards
+# Deprecation Notice for Module Guards and Pact Guards
 
 ![](/assets/blog/1_8sbZuCncPEgill19IVOSYQ.webp)
 

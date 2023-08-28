@@ -10,6 +10,8 @@ author: Kadena
 layout: blog
 ---
 
+# Kadena Telegram AMA with Stuart Popejoy, March 29, 2021 Transcript
+
 ## Opening Remarks:
 
 **JEFF:** Hi Stuart, glad to have you back for your second AMA! We’ve had a lot

@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_sWZGaZatGNQgUoioo9_B0w.webp)
 
-## The Current State of Marmalade
+# The Current State of Marmalade
 
 [Marmalade](https://marmalade.art/) is the new Kadena standard for NFTs,
 addressing long-standing concerns plaguing NFT markets today, like the inability

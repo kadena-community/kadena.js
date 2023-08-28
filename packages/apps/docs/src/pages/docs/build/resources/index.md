@@ -7,6 +7,8 @@ order: 6
 layout: full
 ---
 
+# Pact Resources
+
 - [Kadena developer quickstart](/docs/build/quickstart): learn Kadena’s core
   concepts & tools for development in 15 minutes.&#x20;
 - [Pact developer tutorials](/docs/pact): Learn Pact's fundamental concepts

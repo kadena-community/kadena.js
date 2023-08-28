@@ -15,7 +15,7 @@ layout: blog
 
 ![Background image originally from [https://www.setzeus.com/](https://www.setzeus.com/)](/assets/blog/1_3eyrU5ECYCprl5r08ilvlg.webp)
 
-## How to Scale a Proof of Work Blockchain
+# How to Scale a Proof of Work Blockchain
 
 This post is a compilation of
 [tweets](https://twitter.com/KadenaDirEng/status/1361075151912247298) from my

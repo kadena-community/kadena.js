@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/docs/1_ioGNdm7WNixtlNPLKwo9eQ.webp)
 
-## Introducing Kadenamint and Public Blockchain Testnet v2
+# Introducing Kadenamint and Public Blockchain Testnet v2
 
 _Kadena receives grant to deploy Pact smart contract language to Cosmos
 ecosystem, updates testnet (v2) with a public binary and dashboard._

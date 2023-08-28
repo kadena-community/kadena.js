@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Introducing Kadena Eco’s Inaugural Grant Cohort
+# Introducing Kadena Eco’s Inaugural Grant Cohort
 
 By Dan Wiggins, Head of Gaming, Kadena Eco
 

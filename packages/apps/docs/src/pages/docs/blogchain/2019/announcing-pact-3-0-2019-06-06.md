@@ -15,7 +15,7 @@ layout: blog
 
 ![Kadena Founder and President Stuart Popejoy first created the Pact smart contract language in 2016.](/assets/blog/1_jD9StZRQL8Gxw-J4z1Lc9Q.webp)
 
-## Announcing Pact 3.0
+# Announcing Pact 3.0
 
 > _UPDATE: Pact 3.1 is now released! Read more on the
 > [latest updates here](./pact-3-1-is-unleashed-2019-08-22)._

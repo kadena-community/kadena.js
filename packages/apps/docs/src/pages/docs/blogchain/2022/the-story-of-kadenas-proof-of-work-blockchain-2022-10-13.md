@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## The Story of Kadena’s Proof of Work Blockchain
+# The Story of Kadena’s Proof of Work Blockchain
 
 ![](/assets/blog/0_slJi3XAk5a2usmEu.png)
 

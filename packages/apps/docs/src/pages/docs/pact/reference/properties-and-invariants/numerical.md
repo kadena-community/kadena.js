@@ -9,7 +9,7 @@ order: 2
 layout: full
 ---
 
-## Numerical operators
+# Numerical operators
 
 ### \+
 

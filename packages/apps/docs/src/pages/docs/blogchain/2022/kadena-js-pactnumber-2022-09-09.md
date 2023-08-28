@@ -13,7 +13,7 @@ author: Heekyun
 layout: blog
 ---
 
-## Kadena.js — actNumber has been Released
+# Kadena.js — actNumber has been Released
 
 We are thrilled to announce that PactNumber is now released in Kadena.js.
 

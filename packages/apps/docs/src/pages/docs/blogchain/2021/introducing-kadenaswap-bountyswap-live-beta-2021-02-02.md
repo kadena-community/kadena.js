@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_KbYZmw4TE6ZQEIszK0gqkA.webp)
 
-## Introducing Kadenaswap “Bountyswap” Live Beta
+# Introducing Kadenaswap “Bountyswap” Live Beta
 
 UPDATE Feb 20 2021:
 **[Bountyswap is live](https://kadenaswap.chainweb.com/bountyswap)** — start

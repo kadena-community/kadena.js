@@ -9,7 +9,7 @@ order: 4
 layout: full
 ---
 
-## Operators
+# Operators
 
 ### !=
 

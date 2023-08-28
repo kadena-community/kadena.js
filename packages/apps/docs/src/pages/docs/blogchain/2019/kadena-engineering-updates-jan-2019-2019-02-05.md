@@ -9,7 +9,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Kadena Engineering Updates Feb 2019
+# Kadena Engineering Updates Feb 2019
 
 ### A recap of recent features and upcoming milestones on our technical roadmap.
 

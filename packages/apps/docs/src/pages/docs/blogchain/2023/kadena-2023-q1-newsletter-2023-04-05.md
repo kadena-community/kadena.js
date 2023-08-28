@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena 2023 Q1 Newsletter
+# Kadena 2023 Q1 Newsletter
 
 ![](/assets/blog/1_vA09z1Z28bu459OOK2H5iA.webp)
 

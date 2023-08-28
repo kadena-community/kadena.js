@@ -9,6 +9,8 @@ order: 2
 layout: full
 ---
 
+# Press Kit
+
 ## Kadena 'K' Logos
 
 ![Kadena Logo Black](/assets/docs/KadenaKLogoBlack.png)

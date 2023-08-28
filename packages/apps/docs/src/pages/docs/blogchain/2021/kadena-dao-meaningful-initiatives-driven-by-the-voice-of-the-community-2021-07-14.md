@@ -18,7 +18,7 @@ layout: blog
 
 ![](/assets/blog/1_2K75Ibcik7gE_uvL0JM2eA.webp)
 
-## Kadena DAO: Meaningful Initiatives Driven by the Voice of the Community
+# Kadena DAO: Meaningful Initiatives Driven by the Voice of the Community
 
 Kadena has built the framework for the first DAO, Decentralized Autonomous
 Organization, on its public blockchain called **dao.init**. As Kadena’s

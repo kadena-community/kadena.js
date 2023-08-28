@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_DPNo47Y2B1zwEMGSA_E-gA.webp)
 
-## The Future of Multichain
+# The Future of Multichain
 
 ## Building on a Multi-Chain Protocol
 

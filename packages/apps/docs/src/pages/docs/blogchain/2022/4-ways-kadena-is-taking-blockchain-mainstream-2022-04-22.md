@@ -11,7 +11,7 @@ author: Kadena
 layout: blog
 ---
 
-## 4 Ways Kadena Is Taking Blockchain Mainstream
+# 4 Ways Kadena Is Taking Blockchain Mainstream
 
 _Kadena founder Stuart Popejoy recently joined Okcoin for a Twitter Spaces chat
 in which he discussed numerous topics, including Kadena’s big plans to appeal to

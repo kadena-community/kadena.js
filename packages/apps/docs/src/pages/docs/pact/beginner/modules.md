@@ -10,6 +10,8 @@ order: 5
 layout: full
 ---
 
+# Modules
+
 This tutorial introduces an essential feature in Pact known as modules. We’ll
 discuss what modules are, why they’re important, and how they relate to smart
 contracts.

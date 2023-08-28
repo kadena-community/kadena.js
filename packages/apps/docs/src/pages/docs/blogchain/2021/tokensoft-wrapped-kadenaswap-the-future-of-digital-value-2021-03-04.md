@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_eUsRzyRMkkGIFdAg6gBP2A.webp)
 
-## Tokensoft Wrapped & Kadenaswap: the Future of Digital Value
+# Tokensoft Wrapped & Kadenaswap: the Future of Digital Value
 
 Tokensoft Wrapped and Kadena have announced a partnership to bring Wrapped
 tokens for BTC and ETH to the Kadenaswap DEX in early Q2 2021, following the

@@ -14,7 +14,7 @@ layout: blog
 
 ![Chainweaver 2.2.3 is taking user experience to the next level with our new Quicksign API!](/assets/blog/1_eQ0aqLVMW21bLxOF1PB8yQ.webp)
 
-## Chainweaver 2.2.3: Improving User Experience with Quicksign Support
+# Chainweaver 2.2.3: Improving User Experience with Quicksign Support
 
 In our latest Chainweaver wallet version 2.2.3, we’re excited to highlight an
 amazing new addition that will take the user experience to the next level:

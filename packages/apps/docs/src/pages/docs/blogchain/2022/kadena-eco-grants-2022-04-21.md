@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/0_32R3zmCL7LfiYyED.png)
 
-## Kadena Eco Grants: What You Need To Know
+# Kadena Eco Grants: What You Need To Know
 
 _Create something new — for yourself and the world_
 

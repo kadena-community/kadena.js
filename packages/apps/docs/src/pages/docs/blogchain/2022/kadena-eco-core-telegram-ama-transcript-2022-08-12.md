@@ -12,7 +12,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Eco & Core Telegram AMA, August 11, 2022 Transcript
+# Kadena Eco & Core Telegram AMA, August 11, 2022 Transcript
 
 ## Introduction
 

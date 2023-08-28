@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_j-19orafTNN7mVB6M4V3Qg.webp)
 
-## Kadena Public Blockchain Releases Fully Public Testnet (v3), Hashing Algorithm, and Mining API
+# Kadena Public Blockchain Releases Fully Public Testnet (v3), Hashing Algorithm, and Mining API
 
 **September 18, 2019 —** Kadena’s public blockchain testnet is now fully open to
 the public! The latest version of our

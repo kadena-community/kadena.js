@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_TaVjEcnJO4qg0ywu08p_qw.webp)
 
-## Turbocharging mainstream adoption with Kadena Eco
+# Turbocharging mainstream adoption with Kadena Eco
 
 We can all look back at [2021](../2021/2021-year-in-review-2021-12-31) as the
 year that put Kadena on the map as a compelling alternative for truly

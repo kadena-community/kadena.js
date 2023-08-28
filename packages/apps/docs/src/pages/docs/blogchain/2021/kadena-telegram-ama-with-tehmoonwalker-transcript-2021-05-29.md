@@ -11,7 +11,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Telegram AMA with TehMoonWalker, May 27 2021 Transcript
+# Kadena Telegram AMA with TehMoonWalker, May 27 2021 Transcript
 
 ## Opening Remarks
 

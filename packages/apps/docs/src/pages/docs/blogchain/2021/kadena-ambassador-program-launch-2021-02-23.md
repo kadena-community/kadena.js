@@ -11,6 +11,8 @@ author: Kadena
 layout: blog
 ---
 
+# Kadena Ambassador Program Launch
+
 Kadena is establishing its first-ever Ambassador Program to empower the
 community to spread awareness and educate a wider audience about the potential
 of Kadena’s blockchain technology. In order to drive the adoption of Kadena’s

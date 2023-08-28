@@ -14,7 +14,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
+# Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
 
 ### Scalable enterprise smart-contract solution now available to AWS users for free
 

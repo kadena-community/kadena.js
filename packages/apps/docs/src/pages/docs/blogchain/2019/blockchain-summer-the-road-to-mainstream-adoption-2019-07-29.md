@@ -15,6 +15,8 @@ layout: blog
 
 ![](/assets/blog/kl314KSDD7wK0hd2pbA.webp)
 
+# Blockchain summer - the road to mainstream adoption
+
 The Kadena Team is excited to present **Blockchain Summer!**
 
 Please join us as we host a live panel on **The Road to Mainstream Adoption**

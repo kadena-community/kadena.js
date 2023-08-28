@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/1_zrqFVN1maTCedbz_OSl04Q.webp)
 
-## The EVM Is Fundamentally Unsafe
+# The EVM Is Fundamentally Unsafe
 
 _An in-depth examination of the Ethereum Virtual Machine vs. Kadena’s Pact smart
 contract language_

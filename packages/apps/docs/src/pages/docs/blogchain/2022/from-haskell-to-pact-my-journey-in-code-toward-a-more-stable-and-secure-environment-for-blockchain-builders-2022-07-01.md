@@ -22,7 +22,7 @@ layout: blog
 
 ![From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders](/assets/blog/1_VuAQP0wMbSn4odUtYSg97w.webp)
 
-## From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders
+# From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders
 
 _The blockchain cannot be described just as a revolution. It is a tsunami-like
 phenomenon, slowly advancing and gradually enveloping everything along its way

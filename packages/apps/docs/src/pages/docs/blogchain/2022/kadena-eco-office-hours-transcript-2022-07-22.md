@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Eco Office Hours Transcript
+# Kadena Eco Office Hours Transcript
 
 If you are interested in specific sections, you can select the following
 options:

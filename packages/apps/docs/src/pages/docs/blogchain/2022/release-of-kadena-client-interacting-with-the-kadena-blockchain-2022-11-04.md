@@ -12,7 +12,7 @@ author: Albert G
 layout: blog
 ---
 
-## Release of @kadena/client Interacting with the Kadena Blockchain
+# Release of @kadena/client Interacting with the Kadena Blockchain
 
 ![The Kadena.js team has created a library that allows Javascript/Typescript users to easily interact with the Kadena Blockchain by generating types based on your smart contract.](/assets/blog/1_dAoWAzGntfMI0pKJbVSEhw.webp)
 

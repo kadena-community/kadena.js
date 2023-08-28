@@ -16,7 +16,7 @@ author: Kadena
 layout: blog
 ---
 
-## Randy Daal: Chief Experience Officer
+# Randy Daal: Chief Experience Officer
 
 ![](/assets/blog/1_I2xj4MFRpqxcHxy1QXuRIw.webp)
 

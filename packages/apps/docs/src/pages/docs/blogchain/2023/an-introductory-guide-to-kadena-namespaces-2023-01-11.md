@@ -14,7 +14,7 @@ author: Emily Pillmore
 layout: blog
 ---
 
-## An Introductory Guide to Kadena Namespaces
+# An Introductory Guide to Kadena Namespaces
 
 ![](/assets/blog/0_FfPIMjWvXsk0NFOP.webp)
 

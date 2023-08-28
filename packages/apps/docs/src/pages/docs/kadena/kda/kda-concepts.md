@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# KDA Concepts
+
 ## 1. Account name & keys can be different
 
 With most blockchains, accounts are modeled as simply public/private keypairs

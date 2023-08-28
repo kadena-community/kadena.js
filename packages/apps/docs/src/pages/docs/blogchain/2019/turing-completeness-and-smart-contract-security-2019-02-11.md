@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_c2IEMI9RU0GCsulsUkl-8w.webp)
 
-## Turing Completeness and Smart Contract Security
+# Turing Completeness and Smart Contract Security
 
 At Kadena, we talk a lot about blockchain design decisions. One particularly
 profound design decision that I’ve come across recently revolves around the

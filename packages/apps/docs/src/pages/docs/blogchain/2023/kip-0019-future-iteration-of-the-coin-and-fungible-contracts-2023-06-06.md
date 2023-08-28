@@ -13,7 +13,7 @@ author: Robert Soeldner
 layout: blog
 ---
 
-## KIP-0019: Future Iteration of the Coin and Fungible Contracts
+# KIP-0019: Future Iteration of the Coin and Fungible Contracts
 
 ![](/assets/blog/1_dDdOhCBy_d7PrAe-xm8E2w.webp)
 

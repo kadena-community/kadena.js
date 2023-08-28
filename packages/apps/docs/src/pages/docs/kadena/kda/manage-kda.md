@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Manage KDA
+
 ## Wallets
 
 - [Wallets](/docs/kadena/wallets): You can find a number of official &

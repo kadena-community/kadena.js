@@ -12,6 +12,8 @@ order: 9
 layout: full
 ---
 
+# Accounts and Transfers
+
 Welcome to this tutorial on Accounts and Transfers with Pact!
 
 **This tutorial covers the following topics**

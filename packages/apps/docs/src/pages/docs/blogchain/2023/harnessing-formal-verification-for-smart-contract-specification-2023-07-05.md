@@ -15,7 +15,7 @@ author: Andy
 layout: blog
 ---
 
-## Harnessing Formal Verification for Smart Contract Specification
+# Harnessing Formal Verification for Smart Contract Specification
 
 ![](/assets/blog/1_I5E__mD5RA-gfneIBQgKag.webp)
 

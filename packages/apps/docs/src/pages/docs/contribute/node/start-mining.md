@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Start Mining
+
 **Resources**
 
 - [Discord chat](https://discord.io/kadena): Connect with a mining pool or get

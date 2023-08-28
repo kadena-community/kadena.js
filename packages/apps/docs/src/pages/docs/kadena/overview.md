@@ -7,6 +7,8 @@ order: 1
 layout: full
 ---
 
+# Overview of Kadena
+
 ## Why Kadena Matters
 
 ### Vision

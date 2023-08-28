@@ -7,6 +7,8 @@ order: 3
 layout: full
 ---
 
+# Technical Grants
+
 ### View Technical Grants
 
 [Technical Grants Program](https://kadena.io/grants/)

@@ -12,7 +12,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Kadena AMA with Kyle Samani
+# Kadena AMA with Kyle Samani
 
 ### Debate: Proof of Work or Proof of Stake?
 

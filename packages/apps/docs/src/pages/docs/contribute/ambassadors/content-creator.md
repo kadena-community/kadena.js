@@ -9,6 +9,8 @@ order: 2
 layout: full
 ---
 
+# Content Creator
+
 Content Creators amplify Kadena’s brand by educating the wider community about
 Kadena through informative collateral whether visual or audio. Anyone who has
 been an active member of Kadena’s general community channel on Telegram or

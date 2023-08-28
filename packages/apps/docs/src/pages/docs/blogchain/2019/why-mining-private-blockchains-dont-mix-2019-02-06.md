@@ -13,7 +13,7 @@ author: Will Martino
 layout: blog
 ---
 
-## Why Mining & Private Blockchains Don’t Mix
+# Why Mining & Private Blockchains Don’t Mix
 
 ### On the difference between public and private blockchains
 

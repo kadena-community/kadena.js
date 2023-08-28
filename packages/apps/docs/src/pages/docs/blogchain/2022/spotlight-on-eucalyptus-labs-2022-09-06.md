@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Spotlight On: Eucalyptus Labs
+# Spotlight On: Eucalyptus Labs
 
 Today, we’re shining the spotlight on
 [Eucalyptus Labs](https://eucalyptuslabs.com/), a software development company

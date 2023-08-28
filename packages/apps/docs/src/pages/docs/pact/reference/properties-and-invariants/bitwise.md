@@ -9,7 +9,7 @@ order: 3
 layout: full
 ---
 
-## Bitwise operators
+# Bitwise operators
 
 ### &
 

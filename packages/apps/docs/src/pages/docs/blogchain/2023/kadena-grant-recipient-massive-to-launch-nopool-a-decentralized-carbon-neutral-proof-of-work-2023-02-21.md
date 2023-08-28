@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/1_dON9Q1uWxLdnxbVglCoGQw.webp)
 
-## Kadena Grant Recipient Massive to Launch NoPool, a Decentralized Carbon Neutral Proof-of-Work Mining Pool
+# Kadena Grant Recipient Massive to Launch NoPool, a Decentralized Carbon Neutral Proof-of-Work Mining Pool
 
 _NoPool will provide incentives for proof-of-work miners to work towards carbon
 neutral emissions goals with support from BITMAIN in the form of computing

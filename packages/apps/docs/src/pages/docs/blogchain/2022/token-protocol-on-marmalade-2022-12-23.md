@@ -13,7 +13,7 @@ author: Heekyun
 layout: blog
 ---
 
-## Token Protocol on Marmalade
+# Token Protocol on Marmalade
 
 ![](/assets/blog/1_PMdTOo8SNitmuC9rU75ahg.webp)
 

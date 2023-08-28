@@ -7,6 +7,8 @@ order: 3
 layout: full
 ---
 
+# Interact with Nodes
+
 **Resources**
 
 - [REST API Examples with curl](https://kadena-io.github.io/kadena-docs/rest-api-examples):

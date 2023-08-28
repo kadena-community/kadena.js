@@ -10,7 +10,7 @@ author: Will Martino
 layout: blog
 ---
 
-## The Kadena Token Economic Model
+# The Kadena Token Economic Model
 
 Authors: Anastasia Bez, Will Martino, Monica Quaintance
 

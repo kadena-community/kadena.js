@@ -16,7 +16,7 @@ layout: blog
 
 ![](/assets/blog/1_QEGOGwBeXw78S3eV4V-IDA.webp)
 
-## Pact 4.2.0 Blazes to Mainnet!
+# Pact 4.2.0 Blazes to Mainnet!
 
 At [Kadena](https://kadena.io/), we strive for delivering continued improvements
 to better our user experience in building on our platform. With Pact at the

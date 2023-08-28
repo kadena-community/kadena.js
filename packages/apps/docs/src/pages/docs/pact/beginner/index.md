@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Welcome to Pact
+
 Welcome to the Pact smart contract programming language!
 
 In this tutorial, you’ll learn about Pact, get introduced to its core features,

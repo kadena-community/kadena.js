@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/1_BEuMAVlJ32_pP984cFKAwQ.webp)
 
-## Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)
+# Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)
 
 ## Part 1: A Better Standard for NFTs
 

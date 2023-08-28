@@ -9,6 +9,8 @@ order: 4
 layout: full
 ---
 
+# Troubleshooting Chainweb
+
 ### Running a Node
 
 #### Peer Sync Errors

@@ -16,7 +16,7 @@ layout: blog
 
 ![](/assets/blog/1_u3HlSK6n4qUw9frTiGjq_g.webp)
 
-## Kadena 2022: Year In Review
+# Kadena 2022: Year In Review
 
 What a year it has been for Kadena!
 

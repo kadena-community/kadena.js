@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Kuro layer 2 - guides
+
 ## Run a Cluster
 
 ### AWS

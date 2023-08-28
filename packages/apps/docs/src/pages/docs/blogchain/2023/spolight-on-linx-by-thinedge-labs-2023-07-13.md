@@ -17,7 +17,7 @@ author: Kadena
 layout: blog
 ---
 
-## Project Spotlight: Linx by ThinEdge Labs
+# Project Spotlight: Linx by ThinEdge Labs
 
 ![](/assets/blog/1_QXVZB4M1sQ9vOtgcwisIlg.webp)
 

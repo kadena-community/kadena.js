@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_I827oIhMvsisbOvfMiO2Rw.webp)
 
-## Kadena AMA with Certik Co-founder Ronghui Gu
+# Kadena AMA with Certik Co-founder Ronghui Gu
 
 ### Formal Verification: What, Where, and Why
 

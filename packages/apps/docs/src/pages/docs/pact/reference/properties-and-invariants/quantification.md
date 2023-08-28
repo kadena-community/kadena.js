@@ -9,7 +9,7 @@ order: 9
 layout: full
 ---
 
-## Quantification operators
+# Quantification operators
 
 ### forall
 

@@ -7,6 +7,8 @@ order: 5
 layout: full
 ---
 
+# FAQ
+
 ### What consensus mechanism does Kadena use?
 
 Proof-of-Work

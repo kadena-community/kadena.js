@@ -15,7 +15,7 @@ layout: blog
 
 ![](/assets/blog/1_40Badddk5S15Yw1X3WOSLg.webp)
 
-## Introducing Kadena Account Protocols (KIP-0012)
+# Introducing Kadena Account Protocols (KIP-0012)
 
 Learn how new account protocols on the Kadena blockchain make multi-chain
 operation safer and easier!

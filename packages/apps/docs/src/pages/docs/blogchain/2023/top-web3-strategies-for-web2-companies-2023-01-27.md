@@ -15,7 +15,7 @@ author: Kadena
 layout: blog
 ---
 
-## Top Web3 Strategies for Web2 Companies
+# Top Web3 Strategies for Web2 Companies
 
 ![](/assets/blog/1_AUUFCecs0s7MaKmMfKwPHQ.webp)
 

@@ -9,7 +9,7 @@ order: 10
 layout: full
 ---
 
-## Transactional operators
+# Transactional operators
 
 ### abort
 

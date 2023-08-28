@@ -12,6 +12,8 @@ order: 4
 layout: full
 ---
 
+# Communnity Channel Leader
+
 Community channels serve as a home for community members to discuss niche topics
 about Kadena or share news about Kadena not otherwise discussed in the main
 channel. To foster community growth on a more organic level, Kadena plans to

@@ -9,7 +9,7 @@ order: 8
 layout: full
 ---
 
-## Temporal operators
+# Temporal operators
 
 ### add-time
 

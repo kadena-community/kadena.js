@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Run a node
+
 **Resources**
 
 - [chainweb-node](https://github.com/kadena-io/chainweb-node): The complete

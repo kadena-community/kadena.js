@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Chainweaver User Guide
+
 ## Getting Started
 
 ### Installing the Chainweaver software

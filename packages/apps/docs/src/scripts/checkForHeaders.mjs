@@ -3,6 +3,11 @@ import path from 'path';
 import { globby } from 'globby';
 import { importReadMes } from './utils.mjs';
 
+/**
+ * This script will check that all MD or MDX files
+ * that they have an H1 tag
+ */
+
 const filesMissingHeaders = [];
 
 const ROOT = `${path.resolve()}/src/pages/docs`;

@@ -14,7 +14,7 @@ author: Kadena
 layout: blog
 ---
 
-## Chain Relay App: Testnet Tournament
+# Chain Relay App: Testnet Tournament
 
 With the testnet launch of Kadena’s Chain Relay App, we’re kicking off a Testnet
 Tournament to see who can redeem the most testnet KDA (tKDA) from running the

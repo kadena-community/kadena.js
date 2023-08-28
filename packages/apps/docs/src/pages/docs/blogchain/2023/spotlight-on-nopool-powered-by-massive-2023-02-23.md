@@ -16,7 +16,7 @@ author: Kadena
 layout: blog
 ---
 
-## Project Spotlight: NoPool, Powered by Massive
+# Project Spotlight: NoPool, Powered by Massive
 
 Welcome to Kadena Eco’s Project Spotlight Series, where we highlight the
 groundbreaking work of organizations currently innovating and building on

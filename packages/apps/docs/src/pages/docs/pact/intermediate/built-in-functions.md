@@ -9,6 +9,8 @@ order: 5
 layout: full
 ---
 
+# Built in Functions
+
 Welcome to this introduction to some more advanced Pact built-in functions.
 
 In this guide, we will go through and explain specific built-in functions that

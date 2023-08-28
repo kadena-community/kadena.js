@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Decentralized Oracles: How Kadena is Redefining Data Reliability
+# Decentralized Oracles: How Kadena is Redefining Data Reliability
 
 ![](/assets/blog/1_xwHa6WkMdrc7q43KhHDdJQ.webp)
 

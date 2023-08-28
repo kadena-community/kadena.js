@@ -9,6 +9,8 @@ order: 7
 layout: full
 ---
 
+# Kadena Resources
+
 ## Official Links
 
 |                                                                    |                                                                          |

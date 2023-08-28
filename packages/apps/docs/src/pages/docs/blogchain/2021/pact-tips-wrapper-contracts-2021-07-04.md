@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_ErnEQbK35VB7wxDgqoMy9A.webp)
 
-## Pact Tips: Wrapper Contracts
+# Pact Tips: Wrapper Contracts
 
 In this article, learn about the use of “wrapper contracts” — smart contracts
 that call other smart contracts — in order to offer new features.

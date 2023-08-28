@@ -9,6 +9,8 @@ order: 11
 layout: full
 ---
 
+# Rotatable Wallet
+
 Welcome to this **Rotatable Wallet** project tutorial!
 
 Here you’ll create a smart contract named **Rotatable Wallets** that

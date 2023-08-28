@@ -10,7 +10,7 @@ layout: blog
 
 ![](/assets/blog/1_cXMen2j6k5hcvXVgyEqqzw.webp)
 
-## Hybrid Blockchain 101
+# Hybrid Blockchain 101
 
 ### What a public-private hybrid blockchain makes possible.
 

@@ -16,7 +16,7 @@ author: Kadena
 layout: blog
 ---
 
-## Pact Core Concepts Part I — Introduction to Blockchain Development with Kadena
+# Pact Core Concepts Part I — Introduction to Blockchain Development with Kadena
 
 ![](/assets/blog/1_HTwgnXLGl8yViDoeTNcGAQ.webp)
 

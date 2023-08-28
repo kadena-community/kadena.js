@@ -11,6 +11,8 @@ order: 4
 layout: full
 ---
 
+# Kuro Layer 2
+
 Kuro has been proven to support up to 8,000 transactions per second across 500
 nodes, and is available for evaluation on AWS and Azure. Lightning+BTC powers El
 Salvador, but Chainweb's layer 1 scalability and Kuro's near instant finality

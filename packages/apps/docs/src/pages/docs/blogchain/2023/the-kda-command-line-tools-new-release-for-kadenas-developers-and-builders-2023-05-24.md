@@ -12,7 +12,7 @@ author: Kadena
 layout: blog
 ---
 
-## The KDA Command Line Tools: New Release for Kadena’s Developers and Builders
+# The KDA Command Line Tools: New Release for Kadena’s Developers and Builders
 
 ![](/assets/blog/1_rLMz_SpxPnaSj6t8vKSYiQ.wepb)
 

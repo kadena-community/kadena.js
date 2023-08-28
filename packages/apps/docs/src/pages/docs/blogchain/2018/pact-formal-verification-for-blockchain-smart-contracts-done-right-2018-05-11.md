@@ -12,7 +12,7 @@ author: Vivienne Chen
 layout: blog
 ---
 
-## Pact Formal Verification: Making Blockchain Smart Contracts Safer
+# Pact Formal Verification: Making Blockchain Smart Contracts Safer
 
 ### Today, Kadena has open-sourced its formal verification tools for our smart contract language, Pact. Here’s what that means.
 

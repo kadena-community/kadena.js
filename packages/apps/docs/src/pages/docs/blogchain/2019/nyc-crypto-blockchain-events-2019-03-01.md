@@ -8,6 +8,8 @@ author: Leah Bingham
 layout: blog
 ---
 
+# NYC Crypto blockchain events
+
 ![](/assets/blog/1_Y4t6fTY50F49I4Bm-4SomA.webp)
 
 _[Update]: 12/5/2019_

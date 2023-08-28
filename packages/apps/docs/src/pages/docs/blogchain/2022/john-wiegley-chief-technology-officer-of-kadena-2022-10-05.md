@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## John Wiegley: Chief Technology Officer of Kadena
+# John Wiegley: Chief Technology Officer of Kadena
 
 Kadena is extremely thrilled to announce that John Wiegley has been promoted to
 Chief Technology Officer! John was previously Kadena’s Lead Architect/Engineer

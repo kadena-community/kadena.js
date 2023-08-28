@@ -13,7 +13,7 @@ author: Jermaine Jong
 layout: blog
 ---
 
-## Kadena’s WalletConnect Specification
+# Kadena’s WalletConnect Specification
 
 ![](/assets/blog/1_qFkL2D2XFLbmCr3a-MI0_g.webp)
 

@@ -14,7 +14,7 @@ author: Heekyun
 layout: blog
 ---
 
-## The NFT Collection Tutorial on Marmalade
+# The NFT Collection Tutorial on Marmalade
 
 ![](/assets/blog/1_0RpXuD_h3i9crcT6pRulPg.webp)
 

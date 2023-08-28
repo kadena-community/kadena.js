@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/1_7spjR-a_pYCJmQLt2qEamg.webp)
 
-## Kadena’s Public Blockchain: 101 and FAQs
+# Kadena’s Public Blockchain: 101 and FAQs
 
 ### Learn more about Kadena’s public, proof-of-work blockchain protocol designed for scalability and security.
 

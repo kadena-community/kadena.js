@@ -15,7 +15,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Tech Bulletin #4
+# Kadena Tech Bulletin #4
 
 ![](/assets/blog/1_2SE_f06Kj-A0xvlHr0XKIg.webp)
 

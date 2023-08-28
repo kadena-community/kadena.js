@@ -13,7 +13,7 @@ layout: blog
 
 ![](/assets/blog/1_e-sOQIuA2mE-9eft3OQXOQ.webp)
 
-## Kadena Conference & Community Events Schedule
+# Kadena Conference & Community Events Schedule
 
 Check Kadena out at the following events as we strengthen our platform, continue
 to push the limits of blockchain innovation, and drive even more adoption.

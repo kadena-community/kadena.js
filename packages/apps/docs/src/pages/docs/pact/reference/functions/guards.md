@@ -9,7 +9,7 @@ order: 9
 layout: full
 ---
 
-## Guards
+# Guards
 
 ### create-capability-guard
 

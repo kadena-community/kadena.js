@@ -12,6 +12,8 @@ author: Kadena
 layout: blog
 ---
 
+# The Advantages of Kadena’s Proof-of-Work Mining
+
 ## The Advantages of Kadena’s Proof-of-Work Mining
 
 ![](/assets/blog/1_P58JAVT4RuGQg7ozeEtdKg.webp)

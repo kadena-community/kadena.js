@@ -8,6 +8,8 @@ order: 4
 layout: full
 ---
 
+# Kadena Exchanges
+
 A summary of the key features supported by the exchanges trading KDA.
 
 Blockchain transactions are irreversible and if you make a mistake, your coins

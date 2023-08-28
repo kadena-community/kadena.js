@@ -9,7 +9,7 @@ order: 6
 layout: full
 ---
 
-## Capabilities
+# Capabilities
 
 ### compose-capability
 

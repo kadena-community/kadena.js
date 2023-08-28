@@ -13,7 +13,7 @@ author: Randy Daal
 layout: blog
 ---
 
-## Curating the Kadena.js Dev Experience: 2022–2023
+# Curating the Kadena.js Dev Experience: 2022–2023
 
 ![](/assets/blog/1_gg9ye2dLsWtNjIbG_DfFlA.webp)
 

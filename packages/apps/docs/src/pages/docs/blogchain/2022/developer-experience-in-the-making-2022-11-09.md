@@ -15,7 +15,7 @@ author: Randy Daal
 layout: blog
 ---
 
-## Kadena.js: Developer Experience Update
+# Kadena.js: Developer Experience Update
 
 ![Kadena.js: A developer experience update on all the new and exciting features coming soon!](/assets/blog/1_RYwfKuTY3PCXtd8wvbV6DQ.webp)
 

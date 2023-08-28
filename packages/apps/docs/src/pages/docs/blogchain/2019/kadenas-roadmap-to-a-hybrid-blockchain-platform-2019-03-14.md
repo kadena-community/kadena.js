@@ -17,7 +17,7 @@ layout: blog
 
 ![](/assets/blog/1_Z8h2VlFBFLCxN62TkY6wrQ.webp)
 
-## Kadena’s Roadmap to a Hybrid Blockchain Platform
+# Kadena’s Roadmap to a Hybrid Blockchain Platform
 
 ### Learnings as we look ahead in 2019
 

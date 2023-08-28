@@ -7,6 +7,8 @@ order: 2
 layout: full
 ---
 
+# Useful Tools
+
 - [Chainweaver (Wallet & Workbench)](/docs/kadena/wallets/chainweaver)
 - [Atom IDE](/docs/pact/beginner/atom-sdk)
 - [Block Explorer](https://explorer.chainweb.com/mainnet)

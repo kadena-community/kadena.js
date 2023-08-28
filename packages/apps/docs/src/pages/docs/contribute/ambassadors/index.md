@@ -9,6 +9,8 @@ order: 3
 layout: full
 ---
 
+# Ambassador Overview
+
 ## Kadena Ambassador program
 
 Since the launch of Kadena's public blockchain, we have had active individuals

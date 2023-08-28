@@ -10,7 +10,7 @@ author: Rebecca Rodriguez
 layout: blog
 ---
 
-## Kadena’s Stuart Popejoy and Will Martino Speak at World Blockchain Forum
+# Kadena’s Stuart Popejoy and Will Martino Speak at World Blockchain Forum
 
 _Highlights from World Blockchain Forum on blockchain application in financial
 services_

@@ -9,6 +9,8 @@ order: 12
 layout: full
 ---
 
+# Loans
+
 Welcome to the **Loans** app project tutorial!
 
 In this tutorial, you will build an example loans application using many of the

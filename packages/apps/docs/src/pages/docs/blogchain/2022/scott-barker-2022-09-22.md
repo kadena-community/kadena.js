@@ -13,7 +13,7 @@ author: Kadena
 layout: blog
 ---
 
-## Kadena Eco Welcomes New Strategic Advisor
+# Kadena Eco Welcomes New Strategic Advisor
 
 We are excited to announce that Scott Barker, partner and co-founder of
 [GTMfund](https://www.gtmfund.com/), has recently been inaugurated to the Kadena

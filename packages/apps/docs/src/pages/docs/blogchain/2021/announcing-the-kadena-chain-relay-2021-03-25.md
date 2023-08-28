@@ -14,7 +14,7 @@ layout: blog
 
 ![](/assets/blog/1_hFmZHqA2HYLgPUAQgVxlog.webp)
 
-## Announcing the Kadena Chain Relay
+# Announcing the Kadena Chain Relay
 
 Today, we deployed the beta smart contract of the Kadena Chain Relay into
 testnet. The chain relay provides economic security through bonded KDA for our
