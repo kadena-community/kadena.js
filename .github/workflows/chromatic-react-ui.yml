@@ -1,4 +1,4 @@
-name: Chromatic
+name: Chromatic for react ui
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:

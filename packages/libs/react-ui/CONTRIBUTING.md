@@ -191,6 +191,28 @@ with Jest.
 - Always export component props with every component
 - Always have a barrel file to export the component and props
 
+### React Client/Server components
+
+React has the concept of [client and server components][4] which give you the
+ability to chose where to render components based on their purpose. In essence,
+server components allow you to move server related tasks like data fetching and
+large dependencies into components that are only rendered on the server. Client
+components can then be used to add interactivity to the client. This reduces the
+client-side bundle size and improves overall performance.
+
+In [Next.js][5], which is the framework most commonly used at Kadena, components
+are considered server components by default. This means that **we have to
+indicate when components need to be rendered client-side and should be treated
+as client components**. To do this we need to add the following to the top of
+any client component files:
+
+```jsx
+'use client';
+```
+
+> NOTE: Next.js provides a [table that summarizes the use cases for server and
+> client components.][6]
+
 ## Styling with Vanilla Extract
 
 Guidlines when styling with VE:
@@ -210,7 +232,7 @@ Simple Pseudo Selectors and complex selectors can be used on components, but
 is a deliberate restriction set by VE to help with maintainability. If you need
 to apply a style to a child element depending on the state of a parent element,
 you can target a class on the parent element from the child and apply styles via
-a [complex selector][4]
+a [complex selector][7]
 
 It should be avoided when possible, but if you need to target child nodes within
 the current element, you can use `globalStyle`. In some cases it isn't
@@ -221,4 +243,8 @@ discretion when deciding what methods to use.
   https://dev.to/anuradha9712/configuration-vs-composition-design-reusable-components-5h1f
 [2]: https://www.radix-ui.com/primitives
 [3]: https://vanilla-extract.style/
-[4]: https://vanilla-extract.style/documentation/styling#complex-selectors
+[4]: https://nextjs.org/docs/getting-started/react-essentials#server-components
+[5]: https://nextjs.org/
+[6]:
+  https://nextjs.org/docs/getting-started/react-essentials#when-to-use-server-and-client-components
+[7]: https://vanilla-extract.style/documentation/styling#complex-selectors

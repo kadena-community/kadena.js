@@ -12,7 +12,7 @@ import React, { FC, ReactNode } from 'react';
 export interface IGridRootProps {
   children?: ReactNode;
   columns?: ResponsiveInputType;
-  spacing?: keyof typeof gapVariants;
+  gap?: keyof typeof gapVariants;
 }
 
 const assembleColumnVariants = (
@@ -33,13 +33,9 @@ const assembleColumnVariants = (
   ];
 };
 
-const GridRoot: FC<IGridRootProps> = ({
-  children,
-  columns,
-  spacing = '$md',
-}) => {
+const GridRoot: FC<IGridRootProps> = ({ children, columns, gap = '$md' }) => {
   const classList = classNames(
-    gapVariants[spacing],
+    gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
   );

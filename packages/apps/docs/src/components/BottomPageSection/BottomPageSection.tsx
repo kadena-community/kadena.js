@@ -27,13 +27,14 @@ export const BottomPageSection: FC<IProps> = ({
 
   const onClickAction = (page: 'prev' | 'next', href?: string): void => {
     if (!href) return;
+
     analyticsEvent(
       page === 'next'
         ? EVENT_NAMES['click:next_page']
         : EVENT_NAMES['click:previous_page'],
       {
-        label: `to: ${href}`,
-        url: window.location.href,
+        to: href,
+        from: window.location.pathname,
       },
     );
   };

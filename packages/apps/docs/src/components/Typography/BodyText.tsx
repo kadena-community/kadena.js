@@ -2,13 +2,13 @@ import { ITextProps, Text } from '@kadena/react-ui';
 
 import React, { FC, ReactNode } from 'react';
 
-interface IProps {
+export interface IBodyTextProps {
   children?: ReactNode;
   as?: ITextProps['as'];
   bold?: ITextProps['bold'];
 }
 
-export const BodyText: FC<IProps> = ({ children, as, bold }) => {
+export const BodyText: FC<IBodyTextProps> = ({ children, as, bold }) => {
   return (
     <Text as={as} bold={bold}>
       {children}

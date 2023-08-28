@@ -97,7 +97,6 @@ export const leadingTextWrapperClass = style([
     backgroundColor: '$neutral2',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
   }),
 ]);
 

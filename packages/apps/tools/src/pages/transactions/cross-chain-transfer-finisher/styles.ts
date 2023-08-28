@@ -12,7 +12,6 @@ export const StyledForm = styled('form', {
   flexDirection: 'column',
   alignItems: 'flex-end',
 });
-
 export const StyledAccountForm = styled('div', {
   width: '100%',
   padding: '$4',
@@ -23,16 +22,13 @@ export const StyledAccountForm = styled('div', {
     mb: '$8',
   },
 });
-
 export const StyledFormButton = styled('div', {
   mt: '$4',
 });
-
 export const StyledToggleContainer = styled('div', {
   display: 'flex',
   flexDirection: 'row-reverse',
 });
-
 export const StyledFieldCheckbox = styled('div', {
   display: 'flex',
   flexDirection: 'row',
@@ -40,7 +36,6 @@ export const StyledFieldCheckbox = styled('div', {
 export const StyledCheckbox = styled('input', {
   width: '$4',
 });
-
 export const StyledCheckboxLabel = styled('label', {
   fontSize: '$base',
   ml: '$3',
@@ -48,7 +43,6 @@ export const StyledCheckboxLabel = styled('label', {
   fontWeight: '$medium',
   lineHeight: '$base',
 });
-
 export const StyledInfoBox = styled('div', {
   fontSize: '$base',
   padding: '$sm',
@@ -58,13 +52,11 @@ export const StyledInfoBox = styled('div', {
   alignSelf: 'stretch',
   width: '40%',
 });
-
 export const StyledInfoTitle = styled('h3', {
   fontSize: '$base',
   marginBottom: '2%',
   textAlign: 'center',
 });
-
 export const StyledInfoItem = styled('div', {
   marginTop: '4%',
   fontSize: '$xs',
@@ -73,24 +65,20 @@ export const StyledInfoItem = styled('div', {
   borderRadius: '$xs',
   boxSizing: 'borderBox',
 });
-
 export const StyledInfoItemTitle = styled('div', {
   textTransform: 'uppercase',
   textAlign: 'center',
 });
-
 export const StyledInfoItemLine = styled('div', {
   display: 'inline-block',
   wordBreak: 'break-word',
 });
-
 export const StyledShowMore = styled('div', {
   fontSize: '$xs',
   padding: '$sm',
   textAlign: 'right',
   cursor: 'pointer',
 });
-
 export const StyledResultContainer = styled('div', {
   fontSize: '$base',
 });
@@ -107,7 +95,6 @@ export const StyledTotalContainer = styled('div', {
 export const StyledTotalChunk = styled('div', {
   width: 'auto',
 });
-
 export const StyledErrorMessage = styled('div', {
   fontSize: '$sm',
   padding: '$xl',

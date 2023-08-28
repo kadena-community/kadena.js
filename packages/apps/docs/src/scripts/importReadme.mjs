@@ -195,7 +195,7 @@ const importDocs = (filename, destination, parentTitle, options) => {
     createDir(`${DOCSROOT}${destination}`);
 
     fs.writeFileSync(
-      `${DOCSROOT}${destination}/${slug}.mdx`,
+      `${DOCSROOT}${destination}/${slug}.md`,
       createFrontMatter(
         title,
         menuTitle,

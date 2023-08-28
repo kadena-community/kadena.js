@@ -1,4 +1,5 @@
 import { isEmailValid } from '@/utils';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 
 interface IReturn {
@@ -22,6 +23,8 @@ export const useSubscribe = (): IReturn => {
     event: MouseEvent<HTMLButtonElement, SubmitEvent>,
   ): Promise<void> => {
     event.preventDefault();
+
+    analyticsEvent(EVENT_NAMES['click:subscribe']);
 
     try {
       if (!canSubmit) return;

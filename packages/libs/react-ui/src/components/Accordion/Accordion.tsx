@@ -1,3 +1,5 @@
+'use client';
+
 import { AccordionSection, IAccordionSectionProps } from './AccordionSection';
 
 import React, { FC, useState } from 'react';

@@ -36,10 +36,10 @@ export const GridContainer = styled('div', {
   display: 'grid',
   gridTemplateColumns: 'repeat(12, 1fr)',
   defaultVariants: {
-    spacing: '$md',
+    gap: '$md',
   },
   variants: {
-    spacing: spacingVariant,
+    gap: spacingVariant,
   },
 });
 

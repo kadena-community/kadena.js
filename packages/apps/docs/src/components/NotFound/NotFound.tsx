@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 export const NotFound: FC = () => {
   return (
     <Stack
-      spacing="$2"
+      gap="$2"
       paddingTop="$20"
       paddingX={0}
       direction="column"

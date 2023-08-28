@@ -3,9 +3,7 @@ import { Stack } from '@kadena/react-ui';
 import { InfiniteScroll } from '@/components';
 import { BlogItem, BlogList } from '@/components/Blog';
 import {
-  Article,
   articleClass,
-  Content,
   contentClass,
   contentClassVariants,
   TitleHeader,

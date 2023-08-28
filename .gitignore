@@ -87,3 +87,6 @@ packages/*/*/temp
 
 # Turborepo
 .turbo
+
+# Storybook static build
+storybook-static

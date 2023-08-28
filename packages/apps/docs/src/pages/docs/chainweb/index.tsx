@@ -9,7 +9,7 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   return (
-    <Stack direction="column" spacing="$2xl">
+    <Stack direction="column" gap="$2xl">
       <div>
         <Heading as="h2">Chainweb</Heading>
       </div>

@@ -214,7 +214,7 @@ export async function getXChainTransferInfo({
       return {
         id: StatusId.Pending,
         status: t('Pending'),
-        description: t('Transfer pending - waiting for continuation command'),
+        description: t('Transfer pending - waiting for continuation'),
         senderAccount: senderAccount,
         receiverChain: receiverChain,
       };

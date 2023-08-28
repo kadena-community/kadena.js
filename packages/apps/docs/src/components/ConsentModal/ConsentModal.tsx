@@ -43,7 +43,7 @@ export const ConsentModal: FC = () => {
       <>
         <Text>We are using cookies on this website!</Text>
         <Box marginTop="$10">
-          <Stack spacing="$4">
+          <Stack gap="$4">
             <button
               onClick={handleAccept}
               title="Accept analytics cookies"

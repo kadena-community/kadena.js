@@ -1,3 +1,5 @@
+'use client';
+
 import { PageNav } from './PageNav';
 import { PageNum } from './PageNum';
 import { paginate } from './paginate';

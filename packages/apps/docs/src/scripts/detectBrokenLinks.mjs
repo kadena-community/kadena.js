@@ -32,20 +32,20 @@ function getBrokenLinks(filePath, links) {
     }
 
     // places where the link could live
-    const fileMDX = `${links[index]}.mdx`;
+    const fileMD = `${links[index]}.md`;
     const fileTSX = `${links[index]}.tsx`;
     const fileIndex = `${links[index]
       .split('/')
       .slice(0, links[index].split('/').length - 1)
       .join('/')}/index`;
-    const fileIndexMDX = `${fileIndex}.mdx`;
+    const fileIndexMD = `${fileIndex}.md`;
     const fileIndexTSX = `${fileIndex}.tsx`;
 
     if (
       !fs.existsSync(links[index]) &&
-      !fs.existsSync(fileMDX) &&
+      !fs.existsSync(fileMD) &&
       !fs.existsSync(fileTSX) &&
-      !fs.existsSync(fileIndexMDX) &&
+      !fs.existsSync(fileIndexMD) &&
       !fs.existsSync(fileIndexTSX)
     ) {
       // remove __dirname from links[index]
@@ -99,7 +99,7 @@ function processFiles(directory) {
       const fileExtension = path.extname(filePath);
       const localFilePath = filePath.replace(__dirname, '');
 
-      if (fileExtension === '.md' || fileExtension === '.mdx') {
+      if (fileExtension === '.md') {
         const brokenLinks = extractBrokenLinksFromMdFile(filePath);
         if (brokenLinks.length > 0) {
           filesWithBrokenLinks[localFilePath] = brokenLinks;

@@ -1,11 +1,11 @@
 import {
-  Article,
   articleClass,
   contentClass,
   contentClassVariants,
   TitleHeader,
 } from '../components';
 import { Template } from '../components/Template';
+import { globalClass } from '../global.css';
 
 import { PageGrid } from './styles';
 
@@ -20,7 +20,7 @@ export const Landing: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   return (
-    <PageGrid>
+    <PageGrid className={globalClass}>
       <Template menuItems={leftMenuTree} layout="landing">
         <TitleHeader
           title={frontmatter.title}
@@ -34,7 +34,6 @@ export const Landing: FC<IPageProps> = ({
         >
           <article className={articleClass}>
             {children}
-
             <NotFound />
           </article>
         </div>

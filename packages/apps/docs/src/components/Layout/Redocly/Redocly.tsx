@@ -4,6 +4,7 @@ import {
   contentClassVariants,
 } from '../components';
 import { Template } from '../components/Template';
+import { globalClass } from '../global.css';
 
 import { CodeBackground, PageGrid } from './styles';
 
@@ -53,7 +54,7 @@ export const Redocly: FC<IPageProps> = ({
   leftMenuTree,
 }) => {
   return (
-    <PageGrid>
+    <PageGrid className={globalClass}>
       <Template menuItems={leftMenuTree}>
         <div
           className={classNames(contentClass, contentClassVariants.code)}
