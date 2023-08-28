@@ -23,8 +23,13 @@ export interface ISubHeaderElement {
 }
 
 export interface INavigation {
-  previous?: IMenuItem;
-  next?: IMenuItem;
+  previous?: INavigationMenuItem;
+  next?: INavigationMenuItem;
+}
+
+export interface INavigationMenuItem {
+  title: string;
+  root: string;
 }
 
 export interface IPageMeta {
@@ -45,10 +50,14 @@ export interface IPageMeta {
   wordCount?: number;
 }
 
-export interface IMenuItem extends IPageMeta {
+export interface IMenuItem {
   root: string;
+  title: string;
+  menu: string;
+  label: string;
   isActive: boolean; // checks that the actual item is active in the menu
   isMenuOpen: boolean; // makes sure that the parent slide menu is open
+  icon?: ProductIconNames;
   children: IMenuItem[];
 }
 
