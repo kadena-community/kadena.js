@@ -3,6 +3,8 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 export const accordionSectionClass = style([
   sprinkles({
+    display: 'block',
+    flexGrow: 1,
     marginBottom: '$6',
   }),
   {
@@ -13,21 +15,30 @@ export const accordionSectionClass = style([
     },
   },
 ]);
-export const accordionTitleClass = style([
+
+export const accordionSectionHeadingClass = style([
   sprinkles({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    cursor: 'pointer',
-    fontSize: '$base',
-    fontWeight: '$medium',
-    paddingBottom: '$2',
   }),
   {
     transition: 'color 0.2s ease 0s',
     borderBottom: '1px solid',
   },
 ]);
+
+export const accordionTitleClass = style([
+  sprinkles({
+    alignItems: 'center',
+    cursor: 'pointer',
+    display: 'flex',
+    fontSize: '$base',
+    fontWeight: '$medium',
+    justifyContent: 'space-between',
+    paddingBottom: '$2',
+    width: '100%',
+  }),
+]);
+
 export const accordionTitleVariants = styleVariants({
   closed: [sprinkles({ color: '$negativeContrast' })],
   opened: [sprinkles({ color: '$foreground' })],
@@ -35,8 +46,8 @@ export const accordionTitleVariants = styleVariants({
 
 export const toggleButtonClass = style([
   sprinkles({
-    border: 'none',
     background: 'none',
+    border: 'none',
     color: 'inherit',
   }),
   {
@@ -49,6 +60,7 @@ export const toggleButtonClass = style([
     },
   },
 ]);
+
 export const accordionContentWrapperClass = style([
   sprinkles({
     paddingTop: '$2',

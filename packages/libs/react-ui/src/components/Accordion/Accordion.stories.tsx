@@ -26,7 +26,8 @@ const meta: Meta<StoryProps> = {
     },
     docs: {
       description: {
-        component: '',
+        component:
+          'Note: optional property of `openSection` may be set to the Root component to set the initially opened section. This defaults to -1 and has only been explcitly set in the story code for demonstration purposes.',
       },
     },
   },
@@ -53,7 +54,7 @@ export const Dynamic: IStory = {
   },
   render: ({ linked, sectionCount }) => {
     return (
-      <Accordion.Root linked={linked}>
+      <Accordion.Root linked={linked} openSection={-1}>
         {sampleSections
           .slice(0, sectionCount)
           .map(
