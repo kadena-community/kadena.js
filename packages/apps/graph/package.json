@@ -7,16 +7,15 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "build": "rushx prisma:generate && heft build --clean",
-    "format": "npm run format:src",
-    "format:ci": "prettier config src --check",
+    "build": "pnpm prisma:generate && heft build --clean",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "migrate-database": "ts-node -T src/utils/update-block-table.ts",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "start": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
   },
   "dependencies": {

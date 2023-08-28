@@ -31,21 +31,20 @@
   ],
   "scripts": {
     "build": "heft build --clean",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
   "dependencies": {
-    "@kadena/types": "workspace:*",
     "bignumber.js": "^9.0.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",

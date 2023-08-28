@@ -16,13 +16,12 @@
     "build": "tsc -p ./tsconfig.esm.json & tsc -p ./tsconfig.cjs.json",
     "build:storybook": "storybook build",
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
-    "test": "rushx build:test && heft test"
+    "test": "pnpm run build:test && heft test"
   },
   "dependencies": {
     "@radix-ui/react-switch": "^1.0.2",

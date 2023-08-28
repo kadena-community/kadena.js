@@ -15,13 +15,21 @@ jobs:
         with:
           fetch-depth: 0 # 👈 Required to retrieve git history, needed to determine diffs.
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'pnpm'
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install -t @kadena/react-ui
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build @kadena/react-ui
+        run: pnpm build --filter @kadena/react-ui
+
       - name: Publish Storybook
         uses: chromaui/action@v1
         with:

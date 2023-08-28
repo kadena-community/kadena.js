@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   createTransaction,
@@ -19,7 +17,7 @@ import {
 import { isSignedCommand } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 
-import { listen, pollCreateSpv, pollStatus, submit } from '../util/client';
+import { listen, pollCreateSpv, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';
 
@@ -74,6 +72,7 @@ function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const finishInTheTargetChain = (
   targetChainId: ChainId,
   gasPayer: string = 'kadena-xchain-gas',

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "lib/**"],
+      "outputMode": "new-only"
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.ts", "src/**/*.tsx"],
+      "outputMode": "new-only"
+    },
+    "lint": {
+      "dependsOn": ["build"],
+      "outputMode": "new-only"
+    },
+    "format": {
+      "outputMode": "new-only"
+    },
+    "format:ci": {
+      "outputMode": "new-only"
+    }
+  }
+}
