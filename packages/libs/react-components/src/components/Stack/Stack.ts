@@ -5,7 +5,7 @@ import { styled } from '../../styles/stitches.config';
 import type { VariantProps } from '@stitches/react';
 
 export interface IStackProps {
-  spacing?: VariantProps<typeof Stack>['spacing'];
+  gap?: VariantProps<typeof Stack>['gap'];
   direction?: VariantProps<typeof Stack>['direction'];
   flexWrap?: VariantProps<typeof Stack>['flexWrap'];
   alignItems?: VariantProps<typeof Stack>['alignItems'];
@@ -102,11 +102,11 @@ export const Stack = styled('div', {
     justifyContent: justifyContentVariant,
     alignItems: alignItemsVariant,
     flexWrap: flexWrapVariant,
-    spacing: spacingVariant,
+    gap: spacingVariant,
   },
 
   defaultVariants: {
-    spacing: 'md',
+    gap: 'md',
     direction: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',

@@ -1,5 +1,6 @@
 import { IconButton, SystemIcon } from '@kadena/react-ui';
 
+import { globalClass } from '../../global.css';
 import {
   InnerWrapper,
   NavLink,
@@ -40,7 +41,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { toggleMenu, isMenuOpen, toggleAside, isAsideOpen } = useMenu();
 
   return (
-    <StyledHeader>
+    <StyledHeader className={globalClass}>
       <SkipNav href="#maincontent">Skip to main content</SkipNav>
       <InnerWrapper>
         <StyledLogoWrapper>
@@ -67,7 +68,8 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
 
         <HeaderSocialIconGroup>
           <IconButton
-            as="button"
+            as="a"
+            href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
             icon={SystemIcon.Twitter}
             color="inverted"

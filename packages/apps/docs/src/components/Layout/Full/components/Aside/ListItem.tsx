@@ -30,7 +30,7 @@ export const ListItem: FC<IProps> = ({
 
     analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
       label: item.title,
-      url: slug,
+      hash: slug,
     });
 
     scrollArea?.querySelector(slug)?.scrollIntoView({

@@ -26,7 +26,7 @@ export interface IStackProps
   > {
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
-  spacing?: Sprinkles['gap'];
+  gap?: Sprinkles['gap'];
   as?: ElementType;
   children?: React.ReactNode;
 }
@@ -40,7 +40,7 @@ export const Stack = ({
   marginBottom = undefined,
   marginLeft = undefined,
   marginRight = undefined,
-  spacing = undefined,
+  gap = undefined,
   justifyContent = undefined,
   alignItems = undefined,
   wrap = undefined,
@@ -67,7 +67,7 @@ export const Stack = ({
         marginBottom,
         marginLeft,
         marginRight,
-        gap: spacing,
+        gap,
         justifyContent,
         alignItems,
         flexWrap: wrap,

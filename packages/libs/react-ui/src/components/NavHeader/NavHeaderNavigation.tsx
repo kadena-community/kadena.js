@@ -1,3 +1,5 @@
+'use client';
+
 import { NavGlow } from './assets/glow';
 import {
   activeLinkClass,
@@ -13,6 +15,7 @@ import type {
   FC,
   FunctionComponentElement,
   HTMLAttributeAnchorTarget,
+  useEffect,
 } from 'react';
 import React from 'react';
 
@@ -36,6 +39,10 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
 }) => {
   const { glowX, animationDuration, glowRef, navRef, activeNav, setActiveNav } =
     useGlow(activeLink);
+
+  useEffect(() => {
+    if (activeLink) setActiveNav(activeLink);
+  }, [activeLink]);
 
   return (
     <nav className={navWrapperClass} ref={navRef}>

@@ -19,6 +19,12 @@ import { LocalRequestBody } from '@kadena/chainweb-node-client';
 import { LocalResponse } from '@kadena/chainweb-node-client';
 import { SessionTypes } from '@walletconnect/types';
 
+// @public
+export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
+    sig: string;
+    pubKey?: string;
+}[]) => IUnsignedCommand | ICommand;
+
 export { ChainId }
 
 // @public

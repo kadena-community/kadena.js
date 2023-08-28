@@ -38,9 +38,8 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     e.preventDefault();
     const value = e.currentTarget.value;
     if (e.key === 'Enter') {
-      analyticsEvent(EVENT_NAMES['send:mobile_search'], {
-        label: value,
-        url: window.location.href,
+      analyticsEvent(EVENT_NAMES['click:mobile_search'], {
+        query: value,
       });
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/search?q=${value}`);

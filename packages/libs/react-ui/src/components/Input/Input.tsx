@@ -52,15 +52,13 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
         data-testid="kda-input"
       >
         {Boolean(leadingText) && (
-          <div className={leadingTextWrapperClass}>
-            <span
-              className={classNames(
-                leadingTextClass,
-                leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
-              )}
-            >
-              {leadingText}
-            </span>
+          <div
+            className={classNames(
+              leadingTextWrapperClass,
+              leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
+            )}
+          >
+            <span className={leadingTextClass}>{leadingText}</span>
           </div>
         )}
         <div className={inputContainerClass}>

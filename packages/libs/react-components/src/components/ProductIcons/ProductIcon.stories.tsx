@@ -44,13 +44,13 @@ export const Primary: Story = {
     const searchRegexp = new RegExp(icon, 'i');
     return (
       <>
-        <Grid.Container spacing="xl" templateColumns="repeat(6, 1fr)">
+        <Grid.Container gap="xl" templateColumns="repeat(6, 1fr)">
           {Object.entries(ProductIcons)
             .filter(([k]) => searchRegexp.test(k))
             // eslint-disable-next-line @typescript-eslint/naming-convention
             .map(([k, Icon]) => (
               <Grid.Item key={k}>
-                <Stack direction="column" alignItems="center" spacing="xs">
+                <Stack direction="column" alignItems="center" gap="xs">
                   <Icon size={size} />
                   <Text size="sm">ProductIcons.{k}</Text>
                 </Stack>

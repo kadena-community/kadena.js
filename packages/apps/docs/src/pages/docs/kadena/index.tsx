@@ -13,7 +13,7 @@ import React, { FC } from 'react';
 
 const Home: FC = () => {
   return (
-    <Stack direction="column" spacing="$2xl">
+    <Stack direction="column" gap="$2xl">
       <div>
         <Heading as="h2">Welcome to Kadena&apos;s documentation!</Heading>
         <Text>
@@ -39,7 +39,7 @@ const Home: FC = () => {
         </Text>
       </div>
 
-      <Stack wrap="wrap" spacing="$2xs" width="100%">
+      <Stack wrap="wrap" width="100%">
         <BrowseSection title="General" className={browseSectionWrapper}>
           <Link href="/docs/kadena/overview">Overview of Kadena</Link>
           <Link href="/docs/kadena/whitepapers">Whitepapers</Link>

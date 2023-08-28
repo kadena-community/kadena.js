@@ -13,13 +13,28 @@ const meta: Meta<
   } & IInputProps
 > = {
   title: 'Components/Input',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Input component is a wrapper around the native input element that provides the ability to add additional information.',
+      },
+    },
+  },
   argTypes: {
     disabled: {
+      description: 'Disables the input and applies visual styling.',
       control: {
         type: 'boolean',
       },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     leftIcon: {
+      description:
+        'Icon rendered inside the input to the left of the input text.',
       options: [
         undefined,
         ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
@@ -29,6 +44,8 @@ const meta: Meta<
       },
     },
     rightIcon: {
+      description:
+        'Icon rendered inside the input to the right of the input text.',
       options: [
         undefined,
         ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
@@ -38,11 +55,14 @@ const meta: Meta<
       },
     },
     leadingText: {
+      description: 'Leading text that is rendered to the left of the input.',
       control: {
         type: 'text',
       },
     },
     leadingTextWidth: {
+      description:
+        'Width of the leading text. Defaults to the size of the text itself.',
       control: {
         type: 'select',
       },
@@ -52,8 +72,13 @@ const meta: Meta<
       ],
     },
     outlined: {
+      description: 'Option to render the input with an outline.',
       control: {
         type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -106,7 +131,7 @@ export const InlineWithButton: Story = {
     leftIcon: undefined,
   },
   render: ({ leftIcon, onChange }) => (
-    <Stack spacing="$xs" alignItems="stretch">
+    <Stack gap="$xs" alignItems="stretch">
       <Input
         id="inlineInputStory"
         leftIcon={SystemIcon[leftIcon]}

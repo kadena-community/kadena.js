@@ -15,7 +15,7 @@ const meta: Meta<
   title: 'Layout/Grid',
   component: Grid.Root,
   argTypes: {
-    spacing: {
+    gap: {
       options: Object.keys(gapVariants) as (keyof typeof gapVariants)[],
       control: { type: 'select' },
     },
@@ -58,7 +58,7 @@ type Story = StoryObj<
 export const GridRoot: Story = {
   name: 'Grid',
   args: {
-    spacing: '$xl',
+    gap: '$xl',
     columns: {
       sm: 2,
       md: 4,
@@ -67,9 +67,9 @@ export const GridRoot: Story = {
       xxl: 12,
     },
   },
-  render: ({ spacing, columns }) => (
+  render: ({ gap, columns }) => (
     <>
-      <Grid.Root spacing={spacing} columns={columns}>
+      <Grid.Root gap={gap} columns={columns}>
         {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i}>
             <div className={ContentClass}>{i}</div>
@@ -105,7 +105,7 @@ export const GridRoot: Story = {
 
 export const GridItem: Story = {
   args: {
-    spacing: '$xl',
+    gap: '$xl',
     columns: 12,
     columnSpan: {
       sm: 2,
@@ -115,9 +115,9 @@ export const GridItem: Story = {
       xxl: 12,
     },
   },
-  render: ({ spacing, columns, columnSpan }) => (
+  render: ({ gap, columns, columnSpan }) => (
     <>
-      <Grid.Root spacing={spacing} columns={columns}>
+      <Grid.Root gap={gap} columns={columns}>
         {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i} columnSpan={columnSpan}>
             <div className={ContentClass}>{i}</div>

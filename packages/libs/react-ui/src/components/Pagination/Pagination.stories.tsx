@@ -59,7 +59,7 @@ export const Controlled: Story = {
     const [page, setPage] = React.useState(1);
 
     return (
-      <Stack direction="column" spacing="$4">
+      <Stack direction="column" gap="$4">
         <Heading as="h6">Controlled Page State: {page}</Heading>
         <Pagination
           totalPages={totalPages}

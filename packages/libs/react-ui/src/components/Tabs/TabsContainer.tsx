@@ -1,3 +1,5 @@
+'use client';
+
 import { Tab } from './Tab';
 import { TabContent } from './TabContent';
 import { selectorLine, tabsContainer, tabsContainerWrapper } from './Tabs.css';

@@ -23,18 +23,18 @@ export interface IDrawerToolbarSection {
   children: ReactNode;
 }
 interface IProps {
-  initialOpenItem?: boolean;
+  initialOpenItem?: number | undefined;
   sections: IDrawerToolbarSection[];
 }
 
 export const DrawerToolbar: ForwardRefExoticComponent<
   Omit<IProps, 'ref'> & React.RefAttributes<HTMLElement>
 > = forwardRef<HTMLElement, IProps>(function DrawerToolbar(
-  { sections, initialOpenItem = false },
+  { sections, initialOpenItem = undefined },
   ref = null,
 ) {
   const [visibleSection, setVisibleSection] = useState<number | null>(
-    initialOpenItem ? 0 : null,
+    initialOpenItem !== undefined ? initialOpenItem : null,
   );
   const isOpen = visibleSection !== null;
 
