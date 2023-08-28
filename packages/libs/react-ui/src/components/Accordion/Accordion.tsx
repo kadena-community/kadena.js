@@ -6,15 +6,15 @@ import React, { useEffect, useState } from 'react';
 export interface IAccordionRootProps {
   children?: FunctionComponentElement<IAccordionSectionProps>[];
   linked?: boolean;
-  openSection?: number;
+  initialOpenSection?: number;
 }
 
 export const AccordionRoot: FC<IAccordionRootProps> = ({
   children,
   linked = false,
-  openSection = undefined,
+  initialOpenSection = undefined,
 }) => {
-  const [openSections, setOpenSections] = useState([openSection]);
+  const [openSections, setOpenSections] = useState([initialOpenSection]);
 
   useEffect(() => {
     if (linked && openSections.length > 1) {
