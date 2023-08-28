@@ -17,20 +17,29 @@ import React from 'react';
 export interface IAccordionSectionProps {
   children?: React.ReactNode;
   index?: number;
+  isOpen?: boolean;
+  onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
   title: string;
-  onClick?: () => void;
-  isOpen?: boolean;
 }
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
   children,
-  index = 0,
-  title,
-  onClick,
   isOpen,
+  onClick,
+  onClose,
+  onOpen,
+  title,
 }) => {
+  const handleClick = (): void => {
+    if (isOpen) {
+      onClose?.();
+    } else {
+      onOpen?.();
+    }
+    onClick?.();
+  };
   return (
     <section
       className={accordionSectionClass}
@@ -41,7 +50,7 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
           accordionSectionHeadingClass,
           accordionTitleVariants[isOpen ? 'opened' : 'closed'],
         )}
-        onClick={onClick}
+        onClick={handleClick}
       >
         <span
           data-testid="kda-accordion-section-title"
