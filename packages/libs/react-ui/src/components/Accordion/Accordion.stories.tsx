@@ -27,7 +27,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'Note: optional property of `openSection` may be set to the Root component to set the initially opened section. This defaults to `undefined` and has only been explcitly set to -1 in the story code for demonstration purposes.',
+          'Note: optional property of `initialOpenSection` may be set to the Root component to set the initially opened section. This defaults to `undefined` and has only been explcitly set to -1 in the story code for demonstration purposes.',
       },
     },
   },
