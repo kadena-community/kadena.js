@@ -44,10 +44,10 @@ export const selectVariants = styleVariants({
   transparent: [
     sprinkles({
       backgroundColor: 'transparent',
+      borderRadius: '$xs',
     }),
     {
       border: `1px solid ${vars.colors.$gray40}`,
-      borderRadius: '$xs',
     },
   ],
 });
