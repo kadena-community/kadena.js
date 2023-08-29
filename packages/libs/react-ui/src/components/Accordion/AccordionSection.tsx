@@ -5,7 +5,6 @@ import {
   accordionSectionClass,
   accordionSectionHeadingClass,
   accordionTitleClass,
-  accordionTitleVariants,
   toggleButtonClass,
   toggleIconClass,
 } from './Accordion.css';
