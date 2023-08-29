@@ -23,8 +23,8 @@ const sampleSections: IAccordionSectionProps[] = generateSections(5);
 type StoryProps = {
   sectionCount: number;
   linked: boolean;
-  useCustomContent: boolean;
-  customContent: IAccordionSectionProps[];
+  useCustomSections: boolean;
+  customSections: IAccordionSectionProps[];
 } & IAccordionProps;
 
 const meta: Meta<StoryProps> = {
@@ -60,21 +60,21 @@ const meta: Meta<StoryProps> = {
         type: { summary: 'number' },
       },
     },
-    useCustomContent: {
+    useCustomSections: {
       control: { type: 'boolean' },
-      description: 'Set your own content instead of the sample ones?',
+      description: 'Define your own sections instead of the sample ones?',
       table: {
         defaultValue: { summary: 'false' },
         type: { summary: 'boolean' },
       },
     },
-    customContent: {
+    customSections: {
       defaultValue: [],
-      description: 'Custom content',
+      description: 'Custom sections',
       control: {
         type: 'array',
       },
-      if: { arg: 'useCustomContent', eq: true },
+      if: { arg: 'useCustomSections', eq: true },
     },
   },
 };
@@ -86,10 +86,10 @@ export const Dynamic: IStory = {
   args: {
     linked: false,
     sectionCount: 3,
-    customContent: sampleSections,
+    customSections: sampleSections,
   },
-  render: ({ linked, sectionCount, useCustomContent, customContent }) => {
-    const sections = useCustomContent ? customContent : sampleSections;
+  render: ({ linked, sectionCount, useCustomSections, customSections }) => {
+    const sections = useCustomSections ? customSections : sampleSections;
     return (
       <Accordion.Root linked={linked} initialOpenSection={-1}>
         {sections
