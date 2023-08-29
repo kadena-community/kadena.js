@@ -13,7 +13,7 @@ export const filePathToRoute = (filename: string): string => {
   let route = filename.replace(/^src\/pages/, '');
 
   // Remove file extension from the filename
-  route = route.replace(/\.(mdx|tsx)$/, '');
+  route = route.replace(/\.(md|mdx|tsx)$/, '');
 
   // If the filename ends with "index.*", remove that from the URL
   route = route.replace(/\/index$/, '');

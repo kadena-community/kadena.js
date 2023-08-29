@@ -44,115 +44,12 @@ renowned 2008 Bitcoin white paper.
       Bellcore Research Laboratory in Morristown, 20 years before Bitcoin was
       born.](/assets/docs/stornetta-haber.png)
 
-<table data-card-size="large" data-view="cards">
-  <tbody>
-    <tr>
-      <td>
-          🏗
-        <strong>Complete decentralized infrastructure for builders</strong>
-      </td>
-      <td>
-        Kadena is the only platform offering a complete decentralized
-        infrastructure for builders. Combining a revolutionary chain
-        architecture with the tools needed for widespread adoption, your teams
-        get the full capabilities of blockchain with the ability to go from
-        concept to launch in days vs. months by not having to build from
-        scratch.
-      </td>
-    </tr>
-    <tr>
-      <td>
-            ✅
-          <strong>Safer smart contracts</strong>
-      </td>
-      <td>
-        Pact makes designing safer smart contracts effortless, whether you’re
-        writing your first contract or launching your fiftieth dApp. It’s
-        fundamentally different from other contract languages. It’s readable by
-        non-developers. It automatically detects bugs, freeing you from the
-        exploits you’ll face on Ethereum and other less safe platforms. And it
-        has been battle-tested in production applications for over two years.
-      </td>
-    </tr>
-    <tr>
-      <td>
-
-            ✍<strong>Write the future on Pact</strong>
-
-      </td>
-      <td>
-        Pact is the first truly human readable smart contract language. It lets
-        anyone write clearly, directly and safely onto a blockchain—a true
-        advance for automated contracts. Pact automatically detects bugs and
-        keeps the purpose of code clear. With other contract languages, finding
-        bugs and making sense of fine print can be nearly impossible. Pact’s
-        Formal Verification lets you test your contracts to make sure they do
-        what’s intended. Additionally, when you reference code from other
-        contracts, you stay in control of what happens with your transactions,
-        even if they change their code.
-      </td>
-    </tr>
-    <tr>
-      <td>
-
-            ⚖
-          <strong>Industrial scalability</strong>
-
-      </td>
-      <td>
-        Unlike other platforms, Kadena is designed to power global financial
-        systems. Our protocol continually scales to higher TPS (Transactions Per
-        Second) as more chains are added to the network. With its revolutionary
-        multi-chain architecture, Kadena is the only scalable layer-1 Proof of
-        Work (PoW) platform capable of scaling to settle the 9+ million trades
-        executed on the NYSE each day.
-      </td>
-    </tr>
-    <tr>
-      <td>
-
-            🔐 <strong>Proven security</strong>
-
-      </td>
-      <td>
-        Our founders' experience at JPMorgan revealed the potential for – and
-        limitations of – existing blockchain solutions. In order to solve for
-        the security and throughput demands of financial services clients,
-        Kadena’s protocol runs on the Proof of Work (PoW) consensus mechanism
-        found in Bitcoin, rather than Proof of Stake (PoS). To achieve Kadena’s
-        breakthrough scalability, we braid together multiple Bitcoin-like
-        chains, improving both throughput and scalability while maintaining the
-        security and integrity found in Bitcoin.
-      </td>
-    </tr>
-
-<tr>
-  <td>  
-  ⛔ <strong>No-cost transactions</strong> 
-  </td>
-  <td>
-
-    While we offer marginal transaction fees for consumers, we’ve gone a step further
-    in introducing the first Crypto Gas Stations to allow businesses to eliminate
-    all transaction fees for their customers, thus removing a key barrier to mass
-    adoption of dApps.
-
-  </td>
-</tr>
-
-<tr>
-  <td>
-    🌐 <strong>The ideal ecosystem</strong>
-  </td>
-  <td>
-    {' '}
-    Kadena works with your preferred services, so you can build how you want and
-    where you want. Empowered with our ecosystem of product and service integrations
-    across enterprises, mining, DeFi, oracles, interoperability, smart contracts,
-    wallets and exchanges, our passionate community of builders, miners, and partners
-    is changing how the world interacts and transacts.
-  </td>
-</tr>
-
-  </tbody>
-</table>
+|                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🏗 **Complete decentralized infrastructure for builders** | Kadena is the only platform offering a complete decentralized infrastructure for builders. Combining a revolutionary chain architecture with the tools needed for widespread adoption, your teams get the full capabilities of blockchain with the ability to go from concept to launch in days vs. months by not having to build from scratch.                                                                                                                                                                                                                                                             |
+| ✅ **Safer smart contracts**                              | Pact makes designing safer smart contracts effortless, whether you’re writing your first contract or launching your fiftieth dApp. It’s fundamentally different from other contract languages. It’s readable by non-developers. It automatically detects bugs, freeing you from the exploits you’ll face on Ethereum and other less safe platforms. And it has been battle-tested in production applications for over two years.                                                                                                                                                                            |
+| ✍**Write the future on Pact**                            | Pact is the first truly human readable smart contract language. It lets anyone write clearly, directly and safely onto a blockchain—a true advance for automated contracts. Pact automatically detects bugs and keeps the purpose of code clear. With other contract languages, finding bugs and making sense of fine print can be nearly impossible. Pact’s Formal Verification lets you test your contracts to make sure they do what’s intended. Additionally, when you reference code from other contracts, you stay in control of what happens with your transactions, even if they change their code. |
+| ⚖ **Industrial scalability**                             | Unlike other platforms, Kadena is designed to power global financial systems. Our protocol continually scales to higher TPS (Transactions Per Second) as more chains are added to the network. With its revolutionary multi-chain architecture, Kadena is the only scalable layer-1 Proof of Work (PoW) platform capable of scaling to settle the 9+ million trades executed on the NYSE each day.                                                                                                                                                                                                          |
+| 🔐 **Proven security**                                    | Our founders' experience at JPMorgan revealed the potential for – and limitations of – existing blockchain solutions. In order to solve for the security and throughput demands of financial services clients, Kadena’s protocol runs on the Proof of Work (PoW) consensus mechanism found in Bitcoin, rather than Proof of Stake (PoS). To achieve Kadena’s breakthrough scalability, we braid together multiple Bitcoin-like chains, improving both throughput and scalability while maintaining the security and integrity found in Bitcoin.                                                             |
+| ⛔ **No-cost transactions**                               | While we offer marginal transaction fees for consumers, we’ve gone a step further in introducing the first Crypto Gas Stations to allow businesses to eliminate all transaction fees for their customers, thus removing a key barrier to mass adoption of dApps.                                                                                                                                                                                                                                                                                                                                            |
+| 🌐 **The ideal ecosystem**                                | Kadena works with your preferred services, so you can build how you want and where you want. Empowered with our ecosystem of product and service integrations across enterprises, mining, DeFi, oracles, interoperability, smart contracts, wallets and exchanges, our passionate community of builders, miners, and partners is changing how the world interacts and transacts.                                                                                                                                                                                                                            |

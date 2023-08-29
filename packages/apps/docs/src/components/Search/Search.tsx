@@ -23,7 +23,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   } = useSearch(limitResults);
 
   const semanticResults = metadata
-    .map((metadata) => ({ ...metadata, filePath: metadata.title })) // TODO delete this line
+    .map((metadata) => ({ ...metadata, filePath: metadata.filePath })) // TODO delete this line
     .map(mapMatches);
 
   useEffect(() => {

@@ -13,13 +13,13 @@ layout: full
 
 ## Official Links
 
-|                                                                    |                                                                          |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| [Twitter](https://twitter.com/kadena_io)                           | <img img width="100px" src="/assets/docs/twitter.png" alt="Twitter" />   |
-| [Website](https://kadena.io/)                                      | <img img width="100px" src="/assets/docs/website.png" alt="Website" />   |
-| [Discord](https://discord.gg/jRn8GwcFCj)                           | <img img width="100px" src="/assets/docs/discord.png" alt="Discord" />   |
-| [Medium](https://medium.com/kadena-io)                             | <img img width="100px" src="/assets/docs/medium.png" alt="Medium" />     |
-| [Youtube](https://www.youtube.com/kadenablockchain)                | <img img width="100px" src="/assets/docs/youtube.png" alt="Youtube" />   |
-| [LinkedIn](https://www.linkedin.com/company/kadena-llc/mycompany/) | <img img width="100px" src="/assets/docs/linkedin.png" alt="LinkedIn" /> |
-| [Reddit](https://www.reddit.com/r/kadena/)                         | <img img width="100px" src="/assets/docs/reddit.png" alt="Reddit" />     |
-| [Github](https://github.com/kadena-community)                      | <img img width="100px" src="/assets/docs/github.png" alt="Github" />     |
+|                                                                    |                                        |
+| ------------------------------------------------------------------ | -------------------------------------- |
+| [Twitter](https://twitter.com/kadena_io)                           | ![twitter](/assets/docs/twitter.png)   |
+| [Website](https://kadena.io/)                                      | ![Website](/assets/docs/website.png)   |
+| [Discord](https://discord.gg/jRn8GwcFCj)                           | ![Discord](/assets/docs/discord.png)   |
+| [Medium](https://medium.com/kadena-io)                             | ![Medium](/assets/docs/medium.png)     |
+| [Youtube](https://www.youtube.com/kadenablockchain)                | ![Youtube](/assets/docs/youtube.png)   |
+| [LinkedIn](https://www.linkedin.com/company/kadena-llc/mycompany/) | ![LinkedIn](/assets/docs/linkedin.png) |
+| [Reddit](https://www.reddit.com/r/kadena/)                         | ![Reddit](/assets/docs/reddit.png)     |
+| [Github](https://github.com/kadena-community)                      | ![Github](/assets/docs/github.png)     |

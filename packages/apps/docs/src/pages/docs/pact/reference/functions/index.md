@@ -314,7 +314,7 @@ pact> (fold (+) 0 [100 10 5])
 
 _template_&nbsp;`string` _vars_&nbsp;`[*]` _&rarr;_&nbsp;`string`
 
-Interpolate VARS into TEMPLATE using {}.
+Interpolate VARS into TEMPLATE using `{}`.
 
 ```lisp
 pact> (format "My {} has {}" ["dog" "fleas"])

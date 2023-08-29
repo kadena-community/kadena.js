@@ -2,7 +2,7 @@ import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
 import type { IQueryResult } from '../../../types';
 import { itemLinkClass, staticResultsListClass } from '../styles.css';
-
+import ReactMarkdown from 'react-markdown';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -43,6 +43,8 @@ const Item: FC<IResultProps> = ({ item }) => {
 
   const url = filePathToRoute(item.filePath);
 
+  const content = item.content ?? '';
+
   return (
     <li>
       <Link href={url} passHref legacyBehavior>
@@ -52,7 +54,9 @@ const Item: FC<IResultProps> = ({ item }) => {
           </Heading>
           <ItemBreadCrumb url={url} />
 
-          <Text as="p">{item.description}</Text>
+          <Text as="p">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </Text>
         </a>
       </Link>
     </li>

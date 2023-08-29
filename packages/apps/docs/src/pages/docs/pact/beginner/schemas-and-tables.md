@@ -134,7 +134,8 @@ shown below.
 :::info Notes on Syntax
 
 _ Notice that the table and schema are represented as a pair, separated by a
-“:”. _ The { } around the schema-name are there because the schema is an object.
+“:”. _ The `{ }` around the schema-name are there because the schema is an
+object.
 
 :::
 
@@ -178,12 +179,12 @@ the module.
 When working with tables, there are many built-in functions available for you to
 work with table data.
 
-| function type                                                                                                  | purpose                       |
-| -------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| <a href="https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert" target="_blank">Insert</a> | Insert new rows into a table. |
-| <a href="https://pact-language.readthedocs.io/en/latest/pact-functions.html#read" target="_blank">Read</a>     | Read values from a table.     |
-| <a href="https://pact-language.readthedocs.io/en/latest/pact-functions.html#update" target="_blank">Update</a> | Update values within a table. |
-| Delete                                                                                                         | Not possible in Pact.         |
+| function type                                                                       | purpose                       |
+| ----------------------------------------------------------------------------------- | ----------------------------- |
+| [Insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert) | Insert new rows into a table. |
+| [Read](https://pact-language.readthedocs.io/en/latest/pact-functions.html#read)     | Read values from a table.     |
+| [Update](https://pact-language.readthedocs.io/en/latest/pact-functions.html#update) | Update values within a table. |
+| Delete                                                                              | Not possible in Pact.         |
 
 Notice that these functions are similar to common options available in other
 databases (CRUD - create, read, update, delete).

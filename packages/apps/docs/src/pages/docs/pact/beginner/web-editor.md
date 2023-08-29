@@ -40,7 +40,7 @@ either your private chain or
 https://www.youtube.com/watch?v=lA6lGmlAhmw
 
 Subscribe to our
-[ YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
+[YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
 access the latest Pact tutorials.
 
 ## Introduction to the Editor
@@ -122,11 +122,11 @@ continue to improve.
 Links to the Pact tutorials, developer documentation and Kadena homepage can
 also be found on the navigation bar.
 
-|                                                                                             |                                                                                            |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| <a href="https://pact-language.readthedocs.io/en/latest/" target="_blank">Documentation</a> | Provides an in-depth look at the Pact programming language.                                |
-| <a href="/docs/pact" target="_blank">Tutorials</a>                                          | Learn more about Pact by completing tutorials like this.                                   |
-| <a href="https://kadena.io/" target="_blank">Kadena</a>                                     | Explore the Kadena blockchain, which is the enterprise-grade blockchain that Pact runs on. |
+|                                                                  |                                                                                            |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [Documentation](https://pact-language.readthedocs.io/en/latest/) | Provides an in-depth look at the Pact programming language.                                |
+| [Tutorials](/docs/pact)                                          | Learn more about Pact by completing tutorials like this.                                   |
+| [Kadena](https://kadena.io/)                                     | Explore the Kadena blockchain, which is the enterprise-grade blockchain that Pact runs on. |
 
 :::info Join the Newsletter
 
