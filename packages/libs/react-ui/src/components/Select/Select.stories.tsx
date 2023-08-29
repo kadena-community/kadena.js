@@ -1,6 +1,5 @@
 import { Option } from './Option';
 import { ISelectProps, Select } from './Select';
-import { selectVariants } from './Select.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -24,18 +23,6 @@ const meta: Meta<
         defaultValue: { summary: 'false' },
       },
     },
-    variant: {
-      description:
-        'switch between style variants. The default is `form` which is the standard select that matches our other form inputs. `flat` is a variant with a full border and transparent background.',
-      control: {
-        type: 'select',
-      },
-      table: {
-        type: { summary: 'select' },
-        defaultValue: { summary: 'form' },
-      },
-      options: Object.keys(selectVariants) as (keyof typeof selectVariants)[],
-    },
     icon: {
       options: [
         ...['-'],
@@ -52,7 +39,6 @@ export default meta;
 type Story = StoryObj<
   {
     icon: keyof typeof SystemIcon;
-    variant: keyof typeof selectVariants;
   } & Omit<ISelectProps, 'icon'>
 >;
 
@@ -61,7 +47,7 @@ export const Dynamic: Story = {
   args: {
     icon: undefined,
   },
-  render: ({ icon, disabled, variant = 'form' }) => {
+  render: ({ icon, disabled }) => {
     const [value, setValue] = useState<string>('1');
     return (
       <Select
@@ -73,7 +59,6 @@ export const Dynamic: Story = {
         }}
         disabled={Boolean(disabled)}
         value={value}
-        variant={variant}
       >
         <Option value={'1'}>option 1</Option>
         <Option value={'2'}>option 2</Option>
