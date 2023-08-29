@@ -4,21 +4,21 @@ import { Landing } from '../Landing';
 
 import { Heading2 } from '@/components/Markdown/Heading';
 import { Paragraph } from '@/components/Markdown/Paragraph';
-import { IPageProps } from '@/types/Layout';
+import { IBasePageProps } from '@/types/Layout';
 import { Meta, StoryObj } from '@storybook/react';
 import Link from 'next/link';
 import React from 'react';
 
-const meta: Meta<IPageProps> = {
+const meta: Meta<IBasePageProps> = {
   title: 'Layout/Landing',
   component: Landing,
 };
 
 export default meta;
 
-type Story = StoryObj<IPageProps>;
+type Story = StoryObj<IBasePageProps>;
 
-const props: IPageProps = {
+const props: IBasePageProps = {
   frontmatter: landingFrontMatter,
   leftMenuTree: leftMenuTree,
   menuItems: [],

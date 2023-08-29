@@ -70,7 +70,7 @@ export const homeFrontMatter: IBasePageMeta = {
   layout: 'home',
 };
 
-export const redoclyFrontMatter: IBasePageMeta = {
+export const redoclyFrontMatter: IPageMeta = {
   title: 'Chainweb',
   menu: 'Chainweb',
   subTitle: 'Be a part of our ecosystem',
@@ -79,4 +79,15 @@ export const redoclyFrontMatter: IBasePageMeta = {
   description: 'Be a part of our ecosystem',
   layout: 'redocly',
   icon: 'Chainweb',
+  editLink: 'XXXX/packages/apps/docs/src/pages/docs/kadena/overview.mdx',
+  navigation: {
+    previous: {
+      root: '/docs/kadena',
+      title: 'Intro to Kadena',
+    },
+    next: {
+      root: '/docs/kadena/kda',
+      title: 'What is KDA?',
+    },
+  },
 };

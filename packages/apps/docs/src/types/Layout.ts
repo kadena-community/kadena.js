@@ -41,11 +41,11 @@ export interface IBasePageMeta {
   description: string;
   subTitle?: string;
   icon?: ProductIconNames;
+  lastModifiedDate?: Date;
 }
 
 export interface IPageMeta extends IBasePageMeta {
   editLink: string;
-  lastModifiedDate?: Date;
   navigation: INavigation;
   publishDate?: string;
   author?: string;
@@ -82,9 +82,13 @@ export interface IPageProps {
   children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];
-  frontmatter: IPageMeta | IHomePageMeta;
+  frontmatter: IPageMeta;
   leftMenuTree: IMenuItem[];
   topDocs: ITopDoc[];
+}
+
+export interface IBasePageProps extends Omit<IPageProps, 'frontmatter'> {
+  frontmatter: IBasePageMeta;
 }
 
 export interface IMenuData {
