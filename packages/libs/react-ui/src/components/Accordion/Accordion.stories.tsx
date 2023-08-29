@@ -5,8 +5,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const generateSection = (i: number): IAccordionSectionProps => ({
-  title: `Section ${i}`,
-  children: <p>This is the content for section {i}</p>,
+  title: `Section title ${i}`,
+  children: (
+    <p>
+      This is the content for section {i}. The type of this content is not
+      restricted: any valid HTML content is allowed.
+    </p>
+  ),
   onOpen: () => console.log(`open section ${i}`),
   onClose: () => console.log(`close section ${i}`),
 });
@@ -15,7 +20,12 @@ const generateSections = (n: number): IAccordionSectionProps[] =>
 
 const sampleSections: IAccordionSectionProps[] = generateSections(5);
 
-type StoryProps = { sectionCount: number; linked: boolean } & IAccordionProps;
+type StoryProps = {
+  sectionCount: number;
+  linked: boolean;
+  useCustomContent: boolean;
+  customContent: IAccordionSectionProps[];
+} & IAccordionProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Components/Accordion',
@@ -44,6 +54,27 @@ const meta: Meta<StoryProps> = {
     sectionCount: {
       control: { type: 'range', min: 1, max: sampleSections.length, step: 1 },
       description: 'Adjust sample section items count',
+      if: { arg: 'useCustomContent', neq: true },
+      table: {
+        defaultValue: { summary: 3 },
+        type: { summary: 'number' },
+      },
+    },
+    useCustomContent: {
+      control: { type: 'boolean' },
+      description: 'Set your own content instead of the sample ones?',
+      table: {
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    customContent: {
+      defaultValue: [],
+      description: 'Custom content',
+      control: {
+        type: 'array',
+      },
+      if: { arg: 'useCustomContent', eq: true },
     },
   },
 };
@@ -55,11 +86,13 @@ export const Dynamic: IStory = {
   args: {
     linked: false,
     sectionCount: 3,
+    customContent: sampleSections,
   },
-  render: ({ linked, sectionCount }) => {
+  render: ({ linked, sectionCount, useCustomContent, customContent }) => {
+    const sections = useCustomContent ? customContent : sampleSections;
     return (
       <Accordion.Root linked={linked} initialOpenSection={-1}>
-        {sampleSections
+        {sections
           .slice(0, sectionCount)
           .map(
             (
