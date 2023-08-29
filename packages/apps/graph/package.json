@@ -12,10 +12,11 @@
     "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
-    "migrate-database": "ts-node -T src/utils/update-block-table.ts",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
+    "devnet": "docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.kda-devnet/data:/data -v ./cwd-extra-migrations:/cwd-extra-migrations enof/devnet:l2-latest-arm64",
+    "devnet:update": "docker pull enof/devnet:l2-latest",
     "start": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
   },
