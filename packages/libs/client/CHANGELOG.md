@@ -1,8 +1,18 @@
 # Change Log - @kadena/client
 
-This log was last generated on Mon, 21 Aug 2023 10:31:32 GMT and should not be manually modified.
+## 1.2.0
+
+### Minor Changes
+
+- b8b866145: Add `createEckoWalletSign()` and `createEckoWalletQuicksign()`.
+  This creates a wrapper for the
+  [eckoWALLET API](https://docs.ecko.finance/eckodex/getting-started/eckowallet/eckowallet-api)
+
+This log was last generated on Mon, 21 Aug 2023 10:31:32 GMT and should not be
+manually modified.
 
 ## 1.1.0
+
 Mon, 21 Aug 2023 10:31:32 GMT
 
 ### Minor changes
@@ -15,6 +25,7 @@ Mon, 21 Aug 2023 10:31:32 GMT
 - Literal class for handeling literal values during pact expression creation
 
 ## 1.0.0
+
 Fri, 04 Aug 2023 16:10:02 GMT
 
 ### Updates
@@ -29,17 +40,20 @@ Fri, 04 Aug 2023 16:10:02 GMT
   `signatureVerification` `runPact`
 
 ## 0.6.1
+
 Mon, 10 Jul 2023 14:25:54 GMT
 
 _Version update only_
 
 ## 0.6.0
+
 Mon, 10 Jul 2023 14:20:26 GMT
 
 ### Minor changes
 
 - Implemented new Chain ID type from @kadena/chainweb-node-client
-- PactCommand's `pollUntil` now rejects with the result of the request instead of the instance of the PactCommand class
+- PactCommand's `pollUntil` now rejects with the result of the request instead
+  of the instance of the PactCommand class
 
 ### Updates
 
@@ -49,6 +63,7 @@ Mon, 10 Jul 2023 14:20:26 GMT
 - Remove unused dependencies + fix some lint config
 
 ## 0.5.0
+
 Tue, 04 Jul 2023 08:27:48 GMT
 
 ### Minor changes
@@ -70,6 +85,7 @@ Tue, 04 Jul 2023 08:27:48 GMT
 - apply new lint rules
 
 ## 0.4.0
+
 Thu, 22 Jun 2023 09:46:33 GMT
 
 ### Minor changes
@@ -85,6 +101,7 @@ Thu, 22 Jun 2023 09:46:33 GMT
 - Added encoding library to support the cross-fetch library
 
 ## 0.3.1
+
 Tue, 13 Jun 2023 13:17:28 GMT
 
 ### Patches
@@ -93,6 +110,7 @@ Tue, 13 Jun 2023 13:17:28 GMT
 - Update to typescript 5
 
 ## 0.3.0
+
 Thu, 01 Jun 2023 20:18:44 GMT
 
 ### Minor changes
@@ -110,16 +128,19 @@ Thu, 01 Jun 2023 20:18:44 GMT
 - Removed localWithoutSignatureVerification
 
 ## 0.1.10
+
 Fri, 03 Mar 2023 11:24:59 GMT
 
 _Version update only_
 
 ## 0.1.9
+
 Mon, 27 Feb 2023 15:39:44 GMT
 
 _Version update only_
 
 ## 0.1.8
+
 Mon, 27 Feb 2023 14:25:39 GMT
 
 ### Patches
@@ -133,13 +154,16 @@ Mon, 27 Feb 2023 14:25:39 GMT
 - Updates docs on using PactCommand
 
 ## 0.1.7
+
 Thu, 02 Feb 2023 16:30:09 GMT
 
 ### Patches
 
-- BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or IPactInteger
+- BREAKING: Pact.modules functions will accept for numbers only IPactDecimal or
+  IPactInteger
 
 ## 0.1.6
+
 Thu, 02 Feb 2023 11:57:26 GMT
 
 ### Patches
@@ -151,35 +175,46 @@ Thu, 02 Feb 2023 11:57:26 GMT
 - change dependency @kadena-dev/eslint-config and @kadena-dev/heft-rig
 
 ## 0.1.5
+
 Wed, 21 Dec 2022 12:17:18 GMT
 
 ### Patches
 
-- Renames `callPollUntilTimeout` to `pollUntil`. Adds an onCall callback to `pollUntil` which gets called after each poll
+- Renames `callPollUntilTimeout` to `pollUntil`. Adds an onCall callback to
+  `pollUntil` which gets called after each poll
 
 ## 0.1.4
+
 Mon, 19 Dec 2022 13:39:19 GMT
 
 ### Patches
 
-- Fix callPollUntilTimeout to not catch when an empty object is returned from /poll
+- Fix callPollUntilTimeout to not catch when an empty object is returned from
+  /poll
 
 ## 0.1.3
+
 Mon, 19 Dec 2022 12:54:50 GMT
 
 ### Patches
 
-- Added (postinstall) helpers to make retrieving and generating contracts easier.
-- Added a `callPollUntilTimeout` function which calls the /poll endpoint until the transaction is successful or the request times out
+- Added (postinstall) helpers to make retrieving and generating contracts
+  easier.
+- Added a `callPollUntilTimeout` function which calls the /poll endpoint until
+  the transaction is successful or the request times out
 
 ## 0.1.2
+
 Thu, 15 Dec 2022 14:56:25 GMT
 
 ### Patches
 
-- When proprerties of a non-malleable transaction change, remove `cmd`, `hash` and `signatures` from the transaction to issue a recalculation of the `cmd` and `hash`.
+- When proprerties of a non-malleable transaction change, remove `cmd`, `hash`
+  and `signatures` from the transaction to issue a recalculation of the `cmd`
+  and `hash`.
 
 ## 0.1.1
+
 Fri, 09 Dec 2022 12:07:57 GMT
 
 ### Updates
@@ -187,6 +222,7 @@ Fri, 09 Dec 2022 12:07:57 GMT
 - Updated docs
 
 ## 0.1.0
+
 Tue, 29 Nov 2022 16:14:08 GMT
 
 ### Minor changes
@@ -196,6 +232,7 @@ Tue, 29 Nov 2022 16:14:08 GMT
 - Adds `local` and `poll` to CommandBuilder.
 
 ## 0.0.5
+
 Wed, 02 Nov 2022 12:29:53 GMT
 
 ### Patches
@@ -204,6 +241,7 @@ Wed, 02 Nov 2022 12:29:53 GMT
 - use ChainwebNetworkId for networkId
 
 ## 0.0.4
+
 Tue, 01 Nov 2022 11:21:25 GMT
 
 ### Patches
@@ -211,6 +249,7 @@ Tue, 01 Nov 2022 11:21:25 GMT
 - fix wrong response type signWithChainweaver
 
 ## 0.0.3
+
 Fri, 28 Oct 2022 11:53:11 GMT
 
 ### Patches
@@ -221,4 +260,3 @@ Fri, 28 Oct 2022 11:53:11 GMT
 ### Updates
 
 - Adds launch-post
-
