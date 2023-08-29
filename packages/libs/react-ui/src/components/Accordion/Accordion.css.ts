@@ -39,6 +39,7 @@ export const accordionSectionHeadingClass = style([
 
 export const accordionTitleClass = style([
   sprinkles({
+    color: '$neutral5',
     display: 'block',
     fontSize: '$base',
     fontWeight: '$medium',
@@ -51,7 +52,7 @@ export const toggleButtonClass = style([
   sprinkles({
     background: 'none',
     border: 'none',
-    color: 'inherit',
+    color: '$neutral5',
     cursor: 'pointer',
     paddingBottom: '$2',
   }),
@@ -71,6 +72,7 @@ export const toggleIconClass = style([
 
 export const accordionContentWrapperClass = style([
   sprinkles({
+    color: '$neutral5',
     paddingTop: 0,
     paddingBottom: '$2',
   }),
