@@ -1,4 +1,4 @@
-import { menuData } from '@/data/menu.mjs';
+import { menuData } from '@/_generated/menu.mjs';
 import { getInitBlogPosts } from '@/hooks/useBlog/utils';
 import type { IResponseError } from '@/types';
 import type { IMenuData } from '@/types/Layout';
