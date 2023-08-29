@@ -7,6 +7,7 @@ import {
   accordionTitleClass,
   accordionTitleVariants,
   toggleButtonClass,
+  toggleIconClass,
 } from './Accordion.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -59,13 +60,13 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
           {title}
         </span>
 
-        <button
-          role="button"
-          className={classNames(toggleButtonClass, {
-            isOpen,
-          })}
-        >
-          <SystemIcon.Close size="sm" />
+        <button role="button" className={toggleButtonClass}>
+          <SystemIcon.Close
+            className={classNames(toggleIconClass, {
+              isOpen,
+            })}
+            size="sm"
+          />
         </button>
       </header>
 

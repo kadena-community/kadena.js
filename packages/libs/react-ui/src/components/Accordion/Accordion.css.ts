@@ -51,6 +51,9 @@ export const toggleButtonClass = style([
     color: 'inherit',
     cursor: 'pointer',
   }),
+]);
+
+export const toggleIconClass = style([
   {
     transition: 'transform 0.2s ease 0s',
     transform: 'rotate(45deg)',
