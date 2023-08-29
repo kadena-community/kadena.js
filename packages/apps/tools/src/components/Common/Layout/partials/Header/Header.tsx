@@ -68,6 +68,7 @@ const Header: FC<IHeaderProps> = () => {
       </NavHeader.Navigation>
       <NavHeader.Content>
         <Select
+          id="network-select"
           ariaLabel={t('Select Network')}
           value={selectedNetwork as string}
           onChange={(e) => setSelectedNetwork(e.target.value as Network)}

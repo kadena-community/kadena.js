@@ -7,7 +7,7 @@ describe('Select', () => {
   it('renders without errors', () => {
     const { getByTestId } = render(
       <Select
-        id="selectWithoutErrors"
+        id="select-without-errors"
         value="1"
         onChange={() => {}}
         ariaLabel="select"
@@ -24,7 +24,7 @@ describe('Select', () => {
   it('renders the provided children options', () => {
     const { getByTestId } = render(
       <Select
-        id="rendersChildrenOptions"
+        id="renders-child-options"
         value="1"
         onChange={() => {}}
         ariaLabel="select"
@@ -48,7 +48,7 @@ describe('Select', () => {
     const handleChange = jest.fn();
     const { getByTestId } = render(
       <Select
-        id="onChangeSelect"
+        id="on-change-select"
         value="1"
         onChange={handleChange}
         ariaLabel="select"
@@ -70,7 +70,7 @@ describe('Select', () => {
   it('disables the select element when disabled prop is true', () => {
     const { getByTestId } = render(
       <Select
-        id="disables"
+        id="disabled-select"
         value="1"
         onChange={() => {}}
         disabled
@@ -93,7 +93,7 @@ describe('Select', () => {
     const IconMock = jest.fn(() => <span className="icon">User</span>);
     const { getByTestId, getByText } = render(
       <Select
-        id="rendersIcon"
+        id="renders-icon"
         value="1"
         onChange={() => {}}
         icon={IconMock}
