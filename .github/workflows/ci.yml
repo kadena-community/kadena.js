@@ -42,14 +42,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build packages
-        run: pnpm build
+      - name: Optimized build, lint, test all packages
+        run: pnpm turbo build lint test
 
-      - name: Lint packages
-        run: pnpm lint:ci
-
-      - name: Test packages
-        run: pnpm test
+      - name: List mismatched dependencies
+        run: pnpm run lint:versions
 
       - name: Verify source code formatting
         if: github.ref_name != 'main'
