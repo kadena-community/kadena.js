@@ -1,7 +1,6 @@
 import { Target } from './NavFooterLink';
 
 import { SystemIcon } from '@components/Icon';
-import { IconType } from '@components/Icon/IconWrapper';
 import { NavFooter } from '@components/NavFooter';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -55,28 +54,25 @@ const links: { label: string; href?: string; target?: Target }[] = [
   },
 ];
 
-const icons: (
-  | { icon: React.FC<IconType>; text: string }
-  | { icon: React.FC<IconType>; text?: undefined }
-)[] = [
+const icons: { icon: keyof typeof SystemIcon; text?: string }[] = [
   {
-    icon: SystemIcon.Earth,
+    icon: 'Earth',
     text: 'English',
   },
   {
-    icon: SystemIcon.Account,
+    icon: 'Account',
   },
   {
-    icon: SystemIcon.ApplicationBrackets,
+    icon: 'ApplicationBrackets',
   },
   {
-    icon: SystemIcon.Information,
+    icon: 'Information',
   },
   {
-    icon: SystemIcon.HelpCircle,
+    icon: 'HelpCircle',
   },
   {
-    icon: SystemIcon.MenuOpen,
+    icon: 'MenuOpen',
   },
 ];
 

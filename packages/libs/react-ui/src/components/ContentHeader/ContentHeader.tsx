@@ -5,17 +5,18 @@ import { Heading, Text } from '@components/Typography';
 import React, { FC } from 'react';
 
 export interface IContentHeaderProps {
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   heading: string;
   description?: string;
 }
 
 export const ContentHeader: FC<IContentHeaderProps> = ({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  icon: Icon,
+  icon,
   heading,
   description,
 }) => {
+  const Icon = icon && SystemIcon[icon];
+
   return (
     <div className={containerClass}>
       <Icon size="md" />

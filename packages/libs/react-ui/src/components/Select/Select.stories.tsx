@@ -53,7 +53,7 @@ export const Dynamic: Story = {
       <Select
         id="select-story"
         ariaLabel={'select'}
-        icon={SystemIcon[icon]}
+        icon={icon}
         onChange={(e) => {
           console.log('clicked on', e.target.value);
           setValue(e.target.value);

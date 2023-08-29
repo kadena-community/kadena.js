@@ -4,7 +4,7 @@ import { SystemIcon } from '@components/Icon';
 import React, { FC } from 'react';
 
 export interface INotificationButtonProps {
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   color: keyof typeof actionButtonColorVariants;
   onClick?: () => void;
   children: React.ReactNode;
@@ -15,7 +15,8 @@ export const NotificationButton: FC<INotificationButtonProps> = ({
   onClick,
   children,
 }) => {
-  const Icon = icon;
+  const Icon = icon && SystemIcon[icon];
+
   return (
     <button onClick={onClick} className={actionButtonColorVariants[color]}>
       {children}

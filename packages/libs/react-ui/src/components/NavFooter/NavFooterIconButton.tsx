@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 
 export interface INavFooterIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   onClick?: React.MouseEventHandler;
   text?: string;
 }
@@ -16,7 +16,7 @@ export const NavFooterIconButton: FC<INavFooterIconButtonProps> = ({
   onClick,
   text,
 }) => {
-  const Icon = icon;
+  const Icon = icon && SystemIcon[icon];
 
   return (
     <button
