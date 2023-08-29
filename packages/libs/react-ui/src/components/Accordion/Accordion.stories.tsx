@@ -27,7 +27,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'The Accordion component allows the user to show and hide sections of content on a page.<br />These sections can be expanded and collapsed by clicking the section headers.<br /><br /><strong>initialOpenSection</strong><br />This optional prop can be used on the Root element to set the initially opened section<br /><em>It defaults to `undefined` and has only been explcitly set to - 1 in the story code for demonstration purposes.</em>',
+          'The Accordion component allows the user to show and hide sections of content on a page.<br />These sections can be expanded and collapsed by clicking the section headers.<br /><br /><strong>initialOpenSection</strong><br />This optional prop can be used on the Root element to set the initially opened section<br /><em>It defaults to `undefined` and has only been explcitly set to - 1 in the story code for demonstration purposes.</em><br /><br /><em>Note: this variant of the Accordion component is meant to be used to display content. For Navigation purposes, please check the other variant within the Navigation subgroup.</em>',
       },
     },
   },
