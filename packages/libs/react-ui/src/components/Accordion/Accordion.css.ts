@@ -47,11 +47,6 @@ export const accordionTitleClass = style([
   }),
 ]);
 
-export const accordionTitleVariants = styleVariants({
-  closed: [sprinkles({ color: '$negativeContrast' })],
-  opened: [sprinkles({ color: '$foreground' })],
-});
-
 export const toggleButtonClass = style([
   sprinkles({
     background: 'none',
