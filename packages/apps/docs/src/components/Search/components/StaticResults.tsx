@@ -1,19 +1,21 @@
 import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
+import type { IQueryResult } from '../../../types';
 import { itemLinkClass, staticResultsListClass } from '../styles.css';
-
-import { createLinkFromMD } from '@/utils';
+import ReactMarkdown from 'react-markdown';
+import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface IProps {
-  results: ISearchResult[];
+  results: IQueryResult[];
   limitResults?: number;
 }
 
 interface IResultProps {
-  item: ISearchResult;
+  item: IQueryResult;
 }
+
 interface IBreadCrumbProps {
   url: string;
 }
@@ -35,8 +37,13 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 };
 
 const Item: FC<IResultProps> = ({ item }) => {
-  const url = createLinkFromMD(item.filePath);
   const { clearModal } = useModal();
+
+  if (!item.filePath) return;
+
+  const url = filePathToRoute(item.filePath);
+
+  const content = item.content ?? '';
 
   return (
     <li>
@@ -47,7 +54,9 @@ const Item: FC<IResultProps> = ({ item }) => {
           </Heading>
           <ItemBreadCrumb url={url} />
 
-          <Text as="p">{item.description}</Text>
+          <Text as="p">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </Text>
         </a>
       </Link>
     </li>
@@ -62,7 +71,7 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
     <Box marginY="$10">
       <ul className={staticResultsListClass}>
         {limitedResults.map((item) => {
-          return <Item item={item} key={item.id} />;
+          return <Item item={item} key={item.filePath} />;
         })}
       </ul>
     </Box>

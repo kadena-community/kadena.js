@@ -31,15 +31,13 @@
   ],
   "scripts": {
     "build": "heft build --clean",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
   "dependencies": {
-    "@kadena/types": "workspace:*",
     "blakejs": "^1.2.1",
     "buffer": "^6.0.3",
     "tweetnacl": "^1.0.3"

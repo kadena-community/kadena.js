@@ -19,7 +19,6 @@ tsdoc-metadata.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-**/rush-logs
 
 # Runtime data
 *.pid
@@ -63,10 +62,6 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
-# Optional config for 'rush publish'
-.npmrc
-.npmrc-publish
-
 # Yarn Integrity file
 .yarn-integrity
 
@@ -79,14 +74,7 @@ jspm_packages/
 # OS X temporary files
 .DS_Store
 
-# Rush temporary files
-common/deploy/
-common/temp/
-common/autoinstallers/*/.npmrc
-**/.rush/temp/
-**/.rush
 packages/*/*/temp
-
 # Heft
 .heft
 
@@ -96,6 +84,9 @@ packages/*/*/temp
 # Intelij idea files
 .idea
 .idea/*
+
+# Turborepo
+.turbo
 
 # Storybook static build
 storybook-static

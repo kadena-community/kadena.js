@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
+import { importReadMes } from './utils.mjs';
 
 const DOCSROOT = './src/pages/docs/';
 
@@ -50,7 +51,7 @@ const getTitle = (pageAST) => {
   // flatten all children recursively to prevent issue with
   // E.g. ## some title with `code`
   const node = pageAST.children[0];
-  if (node.type !== 'heading' || node.depth !== 2) {
+  if (node.type !== 'heading' || node.depth !== 1) {
     throw new Error('first node is not a Heading');
   }
 
@@ -69,6 +70,7 @@ const createDir = (dir) => {
 const divideIntoPages = (md) => {
   const pages = md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
+      val.depth = 1;
       acc.push([val]);
     } else {
       if (acc.length) {
@@ -134,6 +136,29 @@ const recreateUrl = (pages, url, root) => {
   }, '');
 };
 
+const cleanUp = (content, filename) => {
+  let hasFirstHeader = false;
+  const innerCleanUp = (content, filename) => {
+    if (content.type === 'heading' && content.depth === 1) {
+      if (hasFirstHeader) {
+        content.depth = 2;
+      }
+
+      hasFirstHeader = true;
+    }
+
+    if (content.children) {
+      content.children.forEach((item) => {
+        return innerCleanUp(item, filename);
+      });
+    }
+
+    return content;
+  };
+
+  return innerCleanUp(content, filename);
+};
+
 const relinkLinkReferences = (refs, definitions, pages, root) => {
   refs.map((ref) => {
     const definition = definitions.find((def) => def.label === ref.label);
@@ -190,12 +215,16 @@ const importDocs = (filename, destination, parentTitle, options) => {
     const menuTitle = idx === 0 ? parentTitle : title;
     const order = idx === 0 ? options.RootOrder : idx;
 
-    const doc = toMarkdown(page);
+    // check that there is just 1 h1.
+    // if more, keep only 1 and replace the next with an h2
+    const pageContent = cleanUp(page, `/docs/${destination}/${slug}`);
+
+    const doc = toMarkdown(pageContent);
 
     createDir(`${DOCSROOT}${destination}`);
 
     fs.writeFileSync(
-      `${DOCSROOT}${destination}/${slug}.mdx`,
+      `${DOCSROOT}${destination}/${slug}.md`,
       createFrontMatter(
         title,
         menuTitle,
@@ -215,218 +244,4 @@ const importAll = (imports) => {
   });
 };
 
-/**
- * Files to be imported
- */
-const imports = [
-  /** /libs/chainweb-node-client */
-  {
-    file: 'libs/chainweb-node-client/README.md',
-    destination: 'chainweb/node-client',
-    title: 'Node Client',
-    options: {
-      RootOrder: 1,
-    },
-  },
-  {
-    file: 'libs/chainweb-node-client/etc/chainweb-node-client.api.md',
-    destination: 'chainweb/node-client/api',
-    title: 'Client Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /libs/chainweb-stream-client */
-  {
-    file: 'libs/chainweb-stream-client/README.md',
-    destination: 'chainweb/stream-client',
-    title: 'Stream Client',
-    options: {
-      RootOrder: 2,
-    },
-  },
-  {
-    file: 'libs/chainweb-stream-client/etc/chainweb-stream-client.api.md',
-    destination: 'chainweb/stream-client/api',
-    title: 'Stream Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /libs/chainwebjs */
-  {
-    file: 'libs/chainwebjs/README.md',
-    destination: 'chainweb/js-bindings',
-    title: 'JS bindings',
-    options: {
-      RootOrder: 3,
-    },
-  },
-  {
-    file: 'libs/chainwebjs/etc/chainwebjs.api.md',
-    destination: 'chainweb/js-bindings/api',
-    title: 'JS bindings API',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /libs/client */
-  {
-    file: 'libs/client/README.md',
-    destination: 'kadena/client',
-    title: 'Client',
-    options: {
-      RootOrder: 7,
-    },
-  },
-  {
-    file: 'libs/client/etc/client.api.md',
-    destination: 'kadena/client/api',
-    title: 'Client Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-
-  {
-    file: 'libs/client-examples/README.md',
-    destination: 'kadena/client-examples',
-    title: 'Client examples',
-    options: {
-      RootOrder: 8,
-    },
-  },
-
-  /** /libs/cryptography-utils */
-  {
-    file: 'libs/cryptography-utils/README.md',
-    destination: 'build/tools/cryptography-utils',
-    title: 'Cryptography-Utils',
-    options: {
-      RootOrder: 3,
-    },
-  },
-  {
-    file: 'libs/cryptography-utils/etc/cryptography-utils.api.md',
-    destination: 'build/tools/cryptography-utils/api',
-    title: 'Cryptography-Utils Api',
-    options: {
-      RootOrder: 98,
-      hideEditLink: true,
-    },
-  },
-  {
-    file: 'libs/cryptography-utils/etc/crypto.api.md',
-    destination: 'build/tools/cryptography-utils/crypto-api',
-    title: 'Crypto Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /libs/kadena.js */
-  {
-    file: 'libs/kadena.js/README.md',
-    destination: 'kadena/kadenajs',
-    title: 'KadenaJS',
-    options: {
-      RootOrder: 6,
-    },
-  },
-  /** /libs/pactjs */
-  {
-    file: 'libs/pactjs/README.md',
-    destination: 'pact/pactjs',
-    title: 'PactJS',
-    options: {
-      RootOrder: 6,
-    },
-  },
-  {
-    file: 'libs/pactjs/etc/pactjs.api.md',
-    destination: 'pact/pactjs/api',
-    title: 'PactJS Api',
-    options: {
-      RootOrder: 98,
-      hideEditLink: true,
-    },
-  },
-  {
-    file: 'libs/pactjs/etc/pactjs-utils.api.md',
-    destination: 'pact/pactjs/utils',
-    title: 'PactJS Utils',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /libs/pactjs-generator */
-  {
-    file: 'libs/pactjs-generator/README.md',
-    destination: 'pact/pactjs-generator',
-    title: 'PactJS Generator',
-    options: {
-      RootOrder: 7,
-    },
-  },
-  {
-    file: 'libs/pactjs-generator/etc/pactjs-generator.api.md',
-    destination: 'pact/pactjs-generator/api',
-    title: 'PactJS Generator Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /tools/cookbook */
-  {
-    file: 'tools/cookbook/README.md',
-    destination: 'build/cookbook/cookbook',
-    title: 'JS Cookbook',
-    options: {
-      RootOrder: 2,
-    },
-  },
-  /** /tools/kda-cli */
-  {
-    file: 'tools/kda-cli/README.md',
-    destination: 'build/tools/kda-cli',
-    title: 'KDA CLI',
-    options: {
-      RootOrder: 3,
-    },
-  },
-  {
-    file: 'tools/kda-cli/etc/kda-cli.api.md',
-    destination: 'build/tools/kda-cli/api',
-    title: 'KDA CLI Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-  /** /tools/pactjs-cli */
-  {
-    file: 'tools/pactjs-cli/README.md',
-    destination: 'pact/cli',
-    title: 'CLI tool',
-    options: {
-      RootOrder: 6,
-    },
-  },
-  {
-    file: 'tools/pactjs-cli/etc/pactjs-cli.api.md',
-    destination: 'pact/cli/api',
-    title: 'CLI tool Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-    },
-  },
-];
-
-importAll(imports);
+importAll(importReadMes);

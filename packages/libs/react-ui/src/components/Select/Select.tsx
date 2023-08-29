@@ -3,7 +3,6 @@ import {
   containerClassDisabled,
   iconClass,
   selectClass,
-  selectContainerClass,
 } from './Select.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -15,13 +14,13 @@ export interface ISelectProps
     React.HTMLAttributes<HTMLSelectElement>,
     'aria-label' | 'as' | 'className'
   > {
+  ariaLabel: string;
   children: React.ReactNode;
-  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   disabled?: boolean;
-  value: string[] | string | number;
+  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   ref?: React.ForwardedRef<HTMLSelectElement>;
-  ariaLabel: string;
+  value: string[] | string | number;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
@@ -29,39 +28,36 @@ export const Select: FC<ISelectProps> = forwardRef<
   ISelectProps
 >(function Select(
   {
+    ariaLabel,
+    children,
+    disabled = false,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     icon: Icon,
-    disabled = false,
-    children,
-    ariaLabel,
     ...rest
   },
   ref,
 ) {
   return (
     <div
-      className={classNames(
-        containerClass,
-        disabled ? containerClassDisabled : '',
-      )}
+      className={classNames(containerClass, {
+        [containerClassDisabled]: disabled,
+      })}
       data-testid="kda-select"
     >
-      <div className={selectContainerClass}>
-        {Icon && (
-          <span className={iconClass}>
-            <Icon size="md" />
-          </span>
-        )}
-        <select
-          aria-label={ariaLabel}
-          ref={ref}
-          className={selectClass}
-          disabled={Boolean(disabled)}
-          {...rest}
-        >
-          {children}
-        </select>
-      </div>
+      {Icon && (
+        <span className={iconClass}>
+          <Icon size="md" />
+        </span>
+      )}
+      <select
+        aria-label={ariaLabel}
+        className={selectClass}
+        disabled={Boolean(disabled)}
+        ref={ref}
+        {...rest}
+      >
+        {children}
+      </select>
     </div>
   );
 });

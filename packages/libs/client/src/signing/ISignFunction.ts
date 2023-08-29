@@ -1,7 +1,7 @@
 import { ICommand, IUnsignedCommand } from '@kadena/types';
 
 /**
- * Interface to use when writing a singing function that accepts multiple transactions
+ * Interface to use when writing a signing function that accepts a single transaction
  * @public
  */
 export interface ISingleSignFunction {
@@ -9,7 +9,7 @@ export interface ISingleSignFunction {
 }
 
 /**
- * Interface to use when writing a singing function that accepts multiple transactions
+ * Interface to use when writing a signing function that accepts multiple transactions
  * @public
  */
 export interface ISignFunction extends ISingleSignFunction {

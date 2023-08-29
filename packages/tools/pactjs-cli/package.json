@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-cli",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate TypeScript definitions and Pact client",
   "repository": {
     "type": "git",
@@ -9,16 +9,16 @@
   },
   "license": "MIT",
   "bin": {
-    "pactjs": "lib/index.js"
+    "pactjs": "bin/pactjs.js"
   },
   "files": [
+    "bin",
     "dist",
     "lib"
   ],
   "scripts": {
     "build": "heft build --clean",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",

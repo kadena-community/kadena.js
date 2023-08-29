@@ -31,6 +31,12 @@ export { ChainId }
 export const createClient: ICreateClient;
 
 // @public
+export function createEckoWalletQuicksign(): IEckoSignFunction;
+
+// @public
+export function createEckoWalletSign(): IEckoSignSingleFunction;
+
+// @public
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
 // @public
@@ -93,6 +99,16 @@ export { ICommand }
 export { ICommandResult }
 
 // @public
+export interface ICommonEckoFunctions {
+    // (undocumented)
+    connect: (networkId: string) => Promise<boolean>;
+    // (undocumented)
+    isConnected: (networkId: string) => Promise<boolean>;
+    // (undocumented)
+    isInstalled: () => boolean;
+}
+
+// @public
 export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
@@ -111,6 +127,14 @@ export interface ICreateClient {
         chainId: ChainId;
         networkId: string;
     }) => string): IClient;
+}
+
+// @public
+export interface IEckoSignFunction extends ISignFunction, ICommonEckoFunctions {
+}
+
+// @public
+export interface IEckoSignSingleFunction extends ISingleSignFunction, ICommonEckoFunctions {
 }
 
 // @public
