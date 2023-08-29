@@ -49,6 +49,7 @@ export const toggleButtonClass = style([
     background: 'none',
     border: 'none',
     color: 'inherit',
+    cursor: 'pointer',
   }),
   {
     transition: 'transform 0.2s ease 0s',

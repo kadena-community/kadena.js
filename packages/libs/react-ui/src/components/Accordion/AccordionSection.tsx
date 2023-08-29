@@ -41,11 +41,11 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
     onClick?.();
   };
   return (
-    <section
+    <article
       className={accordionSectionClass}
       data-testid="kda-accordion-section"
     >
-      <div
+      <header
         className={classNames(
           accordionSectionHeadingClass,
           accordionTitleVariants[isOpen ? 'opened' : 'closed'],
@@ -67,11 +67,11 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
         >
           <SystemIcon.Close size="sm" />
         </button>
-      </div>
+      </header>
 
       {isOpen && children && (
         <div className={accordionContentWrapperClass}>{children}</div>
       )}
-    </section>
+    </article>
   );
 };
