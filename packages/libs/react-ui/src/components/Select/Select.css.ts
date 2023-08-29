@@ -17,8 +17,12 @@ export const containerClass = style([
     borderRadius: '$sm',
     color: '$foreground',
     display: 'flex',
+    flexGrow: 1,
+    gap: '$2',
     lineHeight: '$lg',
     overflow: 'hidden',
+    paddingLeft: '$4',
+    paddingRight: '$2',
   }),
   {
     borderBottom: `1px solid ${vars.colors.$gray30}`,
@@ -33,18 +37,6 @@ export const containerClassDisabled = style([
     color: {
       lightMode: '$foreground',
     },
-  }),
-]);
-
-export const selectContainerClass = style([
-  sprinkles({
-    alignItems: 'center',
-    display: 'flex',
-    flexGrow: 1,
-    gap: '$2',
-    lineHeight: '$lg',
-    paddingLeft: '$4',
-    paddingRight: '$2',
   }),
 ]);
 
