@@ -90,7 +90,33 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-TODO
+Steps:
+
+1. checkout and pull `main`
+2. bump versions
+3. create a new branch and create new "version-bump"-PR
+4. merge PR to `main`
+5. build and publish from `main`
+
+```sh
+git checkout main
+git pull
+git checkout -b chore/release-packages
+pnpm changeset version
+git commit -m # "... relevant message"
+git push
+```
+
+Create PR, get approval, and merge PR
+
+```sh
+git checkout main
+git pull
+pnpm turbo build lint test --force
+pnpm changeset publish
+# fill your otp token from npm
+git push --tags
+```
 
 [1]: https://github.com/kadena-community/kadena.js/issues/new/choose
 [2]: https://nodejs.org/en/download/package-manager
