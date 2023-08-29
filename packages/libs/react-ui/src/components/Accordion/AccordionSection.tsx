@@ -42,15 +42,14 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
     onClick?.();
   };
   return (
-    <article
+    <section
       className={accordionSectionClass}
       data-testid="kda-accordion-section"
     >
-      <header
-        className={classNames(
-          accordionSectionHeadingClass,
-          accordionTitleVariants[isOpen ? 'opened' : 'closed'],
-        )}
+      <button
+        className={classNames(accordionSectionHeadingClass, {
+          isOpen,
+        })}
         onClick={handleClick}
       >
         <span
@@ -60,19 +59,19 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
           {title}
         </span>
 
-        <button role="button" className={toggleButtonClass}>
+        <span className={toggleButtonClass}>
           <SystemIcon.Close
             className={classNames(toggleIconClass, {
               isOpen,
             })}
             size="sm"
           />
-        </button>
-      </header>
+        </span>
+      </button>
 
       {isOpen && children && (
         <div className={accordionContentWrapperClass}>{children}</div>
       )}
-    </article>
+    </section>
   );
 };

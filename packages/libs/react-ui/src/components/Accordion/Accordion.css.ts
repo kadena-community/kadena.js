@@ -1,4 +1,5 @@
 import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const accordionSectionClass = style([
@@ -17,23 +18,30 @@ export const accordionSectionClass = style([
 ]);
 
 export const accordionSectionHeadingClass = style([
-  sprinkles({
+  {
+    alignItems: 'center',
+    background: 'none',
+    border: 'none',
+    borderBottom: `1px solid ${vars.colors.$gray20}`,
     cursor: 'pointer',
     display: 'flex',
-  }),
-  {
+    padding: 0,
+    textAlign: 'left',
     transition: 'color 0.2s ease 0s',
-    borderBottom: '1px solid',
+    width: '100%',
+    selectors: {
+      '&.isOpen': {
+        border: 'none',
+      },
+    },
   },
 ]);
 
 export const accordionTitleClass = style([
   sprinkles({
-    alignItems: 'center',
-    display: 'flex',
+    display: 'block',
     fontSize: '$base',
     fontWeight: '$medium',
-    justifyContent: 'space-between',
     paddingBottom: '$2',
     width: '100%',
   }),
@@ -50,6 +58,7 @@ export const toggleButtonClass = style([
     border: 'none',
     color: 'inherit',
     cursor: 'pointer',
+    paddingBottom: '$2',
   }),
 ]);
 
@@ -67,7 +76,7 @@ export const toggleIconClass = style([
 
 export const accordionContentWrapperClass = style([
   sprinkles({
-    paddingTop: '$2',
+    paddingTop: 0,
     paddingBottom: '$2',
   }),
 ]);
