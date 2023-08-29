@@ -27,7 +27,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'Note: optional property of `initialOpenSection` may be set to the Root component to set the initially opened section. This defaults to `undefined` and has only been explcitly set to -1 in the story code for demonstration purposes.',
+          'The Accordion component allows the user to show and hide sections of content on a page.<br />These sections can be expanded and collapsed by clicking the section headers.<br /><br /><strong>initialOpenSection</strong><br />This optional prop can be used on the Root element to set the initially opened section<br /><em>It defaults to `undefined` and has only been explcitly set to - 1 in the story code for demonstration purposes.</em>',
       },
     },
   },
@@ -36,6 +36,10 @@ const meta: Meta<StoryProps> = {
       control: { type: 'boolean' },
       description:
         'When linked, only one section can be open at a time. If a section is opened, the previously opened section will be closed.',
+      table: {
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
     },
     sectionCount: {
       control: { type: 'range', min: 1, max: sampleSections.length, step: 1 },
