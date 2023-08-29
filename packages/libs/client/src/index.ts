@@ -17,3 +17,5 @@ export { ICommandResult } from '@kadena/chainweb-node-client';
 export { IPollResponse } from '@kadena/chainweb-node-client';
 export { IPreflightResult } from '@kadena/chainweb-node-client';
 export { IUnsignedCommand, ChainId, ICap, ICommand } from '@kadena/types';
+
+export const hallo = (): string => 'world';
