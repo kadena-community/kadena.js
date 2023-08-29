@@ -1,20 +1,28 @@
 import { vars } from '../../styles';
 
 import { sprinkles } from '@theme/sprinkles.css';
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
     alignItems: 'stretch',
-    color: '$foreground',
-    display: 'flex',
-    overflow: 'hidden',
-    lineHeight: '$lg',
+    backgroundColor: {
+      lightMode: '$white',
+      darkMode: '$background',
+    },
     borderColor: {
       lightMode: '$white',
       darkMode: '$gray60',
     },
+    borderRadius: '$sm',
+    color: '$foreground',
+    display: 'flex',
+    lineHeight: '$lg',
+    overflow: 'hidden',
   }),
+  {
+    borderBottom: `1px solid ${vars.colors.$gray30}`,
+  },
 ]);
 
 export const containerClassDisabled = style([
@@ -27,30 +35,6 @@ export const containerClassDisabled = style([
     },
   }),
 ]);
-
-export const selectVariants = styleVariants({
-  form: [
-    sprinkles({
-      backgroundColor: {
-        lightMode: '$white',
-        darkMode: '$background',
-      },
-      borderRadius: '$sm',
-    }),
-    {
-      borderBottom: `1px solid ${vars.colors.$gray30}`,
-    },
-  ],
-  transparent: [
-    sprinkles({
-      backgroundColor: 'transparent',
-      borderRadius: '$xs',
-    }),
-    {
-      border: `1px solid ${vars.colors.$gray40}`,
-    },
-  ],
-});
 
 export const selectContainerClass = style([
   sprinkles({
@@ -66,8 +50,8 @@ export const selectContainerClass = style([
 
 export const iconClass = style([
   sprinkles({
-    display: 'flex',
     alignItems: 'center',
+    display: 'flex',
   }),
 ]);
 
@@ -76,10 +60,10 @@ export const selectClass = style([
     background: 'none',
     border: 'none',
     color: '$foreground',
+    flexGrow: 1,
     outline: 'none',
     paddingRight: '$2',
     paddingY: '$2',
-    flexGrow: 1,
   }),
   {
     backgroundColor: 'inherit',
