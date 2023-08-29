@@ -1,12 +1,7 @@
 name: CI (contains changelog update?)
 
 on:
-  pull_request_target:
-    branches:
-      - main
-  push:
-    branches-ignore:
-      - main
+  pull_request:
 
 jobs:
   changelog:
@@ -14,10 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2
-
-      - name: Fetch base branch
-        run: git fetch origin main:main
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v2
         with:
@@ -29,4 +21,4 @@ jobs:
           cache: 'pnpm'
 
       - name: Contains changelog update?
-        run: pnpx @changesets/cli status
+        run: pnpx @changesets/cli status --since origin/main
