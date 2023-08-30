@@ -26,7 +26,7 @@ import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { StreamMetaData } from '@7-docs/edge';
-import { removeDuplicateSearchRecords } from '../utils';
+import { removeUnnecessarySearchRecords } from '../utils';
 
 interface IProps {
   semanticResults: IQueryResult[];
@@ -151,7 +151,7 @@ export const SearchResults: FC<IProps> = ({
             )}
 
             {conversation?.history.map((interaction, idx) => {
-              const metadata = removeDuplicateSearchRecords(
+              const metadata = removeUnnecessarySearchRecords(
                 interaction?.metadata,
               );
 
