@@ -92,39 +92,20 @@ async function getTransactionsRequestkeyByEvent(
   ).map((r) => r.requestkey);
 }
 
-async function getConfirmationDepth(blockHash: string): Promise<number> {
-  const results = await prismaClient.$queryRaw`
-      SELECT b.payload
-      FROM blocks b
-      INNER JOIN blocks b1 ON (b.chainid = b1.chainid AND b.hash = b1.parent)
-      INNER JOIN blocks b2 ON (b1.chainid = b2.chainid AND b1.hash = b2.parent)
-      INNER JOIN blocks b3 ON (b2.chainid = b3.chainid AND b2.hash = b3.parent)
-      INNER JOIN blocks b4 ON (b3.chainid = b4.chainid AND b3.hash = b4.parent)
-      INNER JOIN blocks b5 ON (b4.chainid = b5.chainid AND b4.hash = b5.parent)
-      `;
-
-  const table = await prismaClient.block.findMany();
-  console.log(results);
-
-  // return results.length;
-
-  return 1;
-}
-
 async function getConfirmationDepth1(blockHash: string): Promise<number> {
   let depth = 0;
   let currentHash = blockHash;
 
   while (currentHash) {
-    const result = await prismaClient.$queryRaw<{ parent: string }[]>`
-      SELECT parent
+    const result = await prismaClient.$queryRaw<{ hash: string }[]>`
+      SELECT hash
       FROM blocks
-      WHERE hash = ${currentHash}
+      WHERE parent = ${currentHash}
     `;
 
-    if (result && result[0] && result[0].parent) {
+    if (result && result[0] && result[0].hash) {
       depth++;
-      currentHash = result[0].parent;
+      currentHash = result[0].hash;
     } else {
       break;
     }
@@ -134,17 +115,17 @@ async function getConfirmationDepth1(blockHash: string): Promise<number> {
 }
 async function getConfirmationDepth2(blockHash: string): Promise<number> {
   const result = await prismaClient.$queryRaw<{ depth: number }[]>`
-    WITH RECURSIVE BlockAncestors AS (
+    WITH RECURSIVE BlockDescendants AS (
       SELECT hash, parent, 0 AS depth
       FROM blocks
       WHERE hash = ${blockHash}
       UNION ALL
-      SELECT b.hash, b.parent, a.depth + 1 AS depth
-      FROM BlockAncestors a
-      JOIN blocks b ON a.parent = b.hash
+      SELECT b.hash, b.parent, d.depth + 1 AS depth
+      FROM BlockDescendants d
+      JOIN blocks b ON d.hash = b.parent
     )
     SELECT MAX(depth) AS depth
-    FROM BlockAncestors;
+    FROM BlockDescendants;
   `;
 
   if (result && result[0] && result[0].depth) {
@@ -164,17 +145,17 @@ async function getConfirmationDepth3(blockHash: string): Promise<number> {
     return 0;
   }
 
-  let parent = block.parent;
+  let parent = block.hash;
   let depth = 0;
 
   while (parent) {
-    const parentBlock = blocksTable.find((b) => b.hash === parent);
+    const childBlock = blocksTable.find((b) => b.parent === block.hash);
 
-    if (!parentBlock) {
+    if (!childBlock) {
       break;
     }
 
-    parent = parentBlock.parent;
+    parent = childBlock.hash;
     depth++;
   }
 
