@@ -25,6 +25,8 @@ import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { StreamMetaData } from '@7-docs/edge';
+import { removeDuplicateSearchRecords } from '../utils';
 
 interface IProps {
   semanticResults: IQueryResult[];
@@ -149,8 +151,9 @@ export const SearchResults: FC<IProps> = ({
             )}
 
             {conversation?.history.map((interaction, idx) => {
-              const metadata =
-                interaction?.metadata?.filter((item) => item.filePath) ?? [];
+              const metadata = removeDuplicateSearchRecords(
+                interaction?.metadata,
+              );
 
               return (
                 <div key={`${interaction.input}-${idx}`}>
@@ -159,7 +162,7 @@ export const SearchResults: FC<IProps> = ({
                     <Heading variant="h4">Sources:</Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>
-                        {interaction?.metadata?.map((item, innerIdx) => {
+                        {metadata.map((item, innerIdx) => {
                           const url = filePathToRoute(item.filePath);
                           return (
                             <Link key={`${url}-${innerIdx}`} href={url}>

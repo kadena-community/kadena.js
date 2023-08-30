@@ -67,6 +67,7 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
   const limitedResults =
     limitResults !== undefined ? results.slice(0, limitResults) : results;
 
+  console.log(results);
   return (
     <Box marginY="$10">
       <ul className={staticResultsListClass}>

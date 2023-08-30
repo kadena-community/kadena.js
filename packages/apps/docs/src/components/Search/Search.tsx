@@ -4,6 +4,7 @@ import { useSearch } from '@/hooks';
 import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC, useEffect, useState } from 'react';
+import { removeDuplicateSearchRecords } from './utils';
 
 interface IProps {
   query?: string;
@@ -22,9 +23,11 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     isLoading,
   } = useSearch(limitResults);
 
-  const semanticResults = metadata
-    .map((metadata) => ({ ...metadata, filePath: metadata.filePath })) // TODO delete this line
-    .map(mapMatches);
+  const semanticResults = removeDuplicateSearchRecords(
+    metadata
+      .map((metadata) => ({ ...metadata, filePath: metadata.filePath })) // TODO delete this line
+      .map(mapMatches),
+  );
 
   useEffect(() => {
     if (
