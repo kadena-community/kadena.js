@@ -21,9 +21,9 @@ Run the following commands to install dependencies and build the library:
 ```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
+pnpm install
 cd packages/libs/react-ui
-rush install
-rushx build
+pnpm build
 ```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
@@ -48,14 +48,14 @@ Then run the following commands to install the package and update the monorepo's
 state:
 
 ```sh
-rush update
+pnpm install
 ```
 
 VE requires bundler configuration to handle CSS. To set this up in Next.js you
 will need to install the following plugin:
 
 ```sh
-rush add -p @vanilla-extract/next-plugin --dev
+pnpm add @vanilla-extract/next-plugin --dev
 ```
 
 If you don’t have a next.config.js file in the root of your project, create one.
@@ -156,7 +156,7 @@ After installing dependencies, you can start Storybook with the following
 command:
 
 ```sh
-rushx storybook
+pnpm storybook
 ```
 
 ### Installation outside of the Kadena.js monorepo
@@ -168,9 +168,9 @@ app.
 ```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
+pnpm install
 cd packages/libs/react-ui
-rush install
-rushx build
+pnpm build
 cd ~/your-app-root
 ```
 

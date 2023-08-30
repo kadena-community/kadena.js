@@ -1,6 +1,7 @@
 import { IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
 
+import { StreamMetaData } from '@7-docs/edge';
 import { useRouter } from 'next/router';
 import {
   MutableRefObject,
@@ -11,6 +12,7 @@ import {
 } from 'react';
 
 interface IProps {
+  metadata?: StreamMetaData[];
   //eslint-disable-next-line @rushstack/no-new-null
   searchInputRef: MutableRefObject<HTMLInputElement | null>;
   handleSubmit: (value: string) => Promise<void>;
@@ -20,7 +22,7 @@ interface IProps {
   isLoading: boolean;
 }
 
-export const useSearch = (): IProps => {
+export const useSearch = (limitResults: number = 50): IProps => {
   const [query, setQuery] = useState<string | undefined>();
   const [conversation, dispatch] = useConversation();
   const [startStream, isStreaming, outputStream, metadata, error, isLoading] =
@@ -71,6 +73,7 @@ export const useSearch = (): IProps => {
   );
 
   return {
+    metadata,
     searchInputRef,
     handleSubmit,
     outputStream,

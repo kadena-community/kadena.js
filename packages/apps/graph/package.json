@@ -1,22 +1,22 @@
 {
   "name": "@kadena/graph",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "keywords": [],
   "license": "ISC",
   "author": "",
   "main": "index.js",
   "scripts": {
-    "build": "rushx prisma:generate && heft build --clean",
-    "format": "npm run format:src",
-    "format:ci": "prettier config src --check",
+    "build": "pnpm prisma:generate && heft build --clean",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
     "lint": "eslint package.json src --ext .js,.ts --fix",
+    "migrate-database": "ts-node -T src/utils/update-block-table.ts",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "migrate-database": "ts-node -T src/utils/update-block-table.ts",
-    "start": "npm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "start": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
   },
   "dependencies": {
@@ -42,8 +42,8 @@
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
+    "@types/pg": "~8.10.2",
     "embedded-postgres": "~15.1.0-beta.6",
-    "prettier": "~3.0.0",
-    "@types/pg": "~8.10.2"
+    "prettier": "~3.0.0"
   }
 }

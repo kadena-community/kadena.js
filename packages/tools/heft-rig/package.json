@@ -8,9 +8,8 @@
   ],
   "scripts": {
     "build": "",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier profiles --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier profiles --write",
     "test": ""
   },
@@ -30,6 +29,6 @@
     "prettier": "~3.0.0"
   },
   "peerDependencies": {
-    "@rushstack/heft": "^0.46.1"
+    "@rushstack/heft": "~0.50.6"
   }
 }

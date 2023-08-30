@@ -19,6 +19,7 @@ export interface IButtonProps
   title: string;
   disabled?: boolean;
   target?: string;
+  rel?: string;
 }
 
 export const Button: FC<IButtonProps> = ({

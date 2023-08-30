@@ -13,6 +13,7 @@ export interface IPaginationProps {
   currentPage?: number;
   label: string;
   visiblePageLimit?: number;
+  initialSelectedPage?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -21,9 +22,17 @@ export const Pagination: FC<IPaginationProps> = ({
   currentPage,
   label,
   visiblePageLimit = 3,
+  initialSelectedPage,
   onPageChange,
 }) => {
-  const [_page, setPage] = useState(1);
+  const validInitialSelectedPage =
+    initialSelectedPage &&
+    initialSelectedPage <= totalPages &&
+    initialSelectedPage > 0;
+
+  const [_page, setPage] = useState(
+    validInitialSelectedPage ? initialSelectedPage : 1,
+  );
   const page = currentPage || _page;
   const pages = paginate({
     page,
@@ -50,12 +59,14 @@ export const Pagination: FC<IPaginationProps> = ({
           />
         </li>
         {pages.map((pageNum) => (
-          <PageNum
-            key={pageNum}
-            number={pageNum}
-            current={pageNum === page}
-            onClick={() => onClick(pageNum)}
-          />
+          <li key={pageNum}>
+            <PageNum
+              key={pageNum}
+              number={pageNum}
+              current={pageNum === page}
+              onClick={() => onClick(pageNum)}
+            />
+          </li>
         ))}
         <li>
           <PageNav

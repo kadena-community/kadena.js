@@ -1,6 +1,7 @@
 {
   "name": "@kadena/kda-cli",
   "version": "0.0.1",
+  "private": true,
   "description": "CLI tool to assist development on the kadena blockchain",
   "keywords": [
     "kadena",
@@ -21,8 +22,7 @@
   "scripts": {
     "build": "heft build",
     "dev": "heft build -w",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",

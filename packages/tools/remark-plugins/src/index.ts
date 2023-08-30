@@ -14,7 +14,6 @@ const remarkPresetKadena: Preset = {
   settings: {},
   plugins: [
     remarkFrontMatter,
-    // @ts-ignore
     remarkParse,
     [handleCommentMarkers, commentMarkers],
     unifiedPrettier,

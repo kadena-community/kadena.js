@@ -7,6 +7,8 @@ import {
   useModal,
 } from '@kadena/react-ui';
 
+import type { IQueryResult } from '../../../types';
+
 import {
   loadingWrapperClass,
   scrollBoxClass,
@@ -17,14 +19,14 @@ import { StaticResults } from './StaticResults';
 
 import { Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
-import { createLinkFromMD } from '@/utils';
+import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  semanticResults: ISearchResult[];
+  semanticResults: IQueryResult[];
   semanticError?: string;
   semanticIsLoading: boolean;
   outputStream: string;
@@ -68,13 +70,16 @@ export const SearchResults: FC<IProps> = ({
   };
 
   useEffect(() => {
-    const value = localStorage.getItem(TABNAME);
     setIsMounted(true);
-    if (value === null) return;
+  }, [setIsMounted]);
 
+  useEffect(() => {
+    const value = localStorage.getItem(TABNAME);
+    if (value === null) return;
     setSelectedTabName(value);
     onTabSelect(value);
-  }, [setSelectedTabName, setIsMounted, onTabSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   if (!isMounted) return null;
   return (
@@ -146,13 +151,12 @@ export const SearchResults: FC<IProps> = ({
                 <ReactMarkdown>{interaction?.output}</ReactMarkdown>
                 <div>
                   {interaction?.metadata?.map((item, innerIdx) => {
-                    const url = createLinkFromMD(item.title);
+                    if (!item.filePath) return;
+                    const url = filePathToRoute(item.filePath);
                     return (
-                      <>
-                        <Link key={`${url}-${innerIdx}`} href={url}>
-                          {url}
-                        </Link>
-                      </>
+                      <Link key={`${url}-${innerIdx}`} href={url}>
+                        {url}
+                      </Link>
                     );
                   })}
                 </div>

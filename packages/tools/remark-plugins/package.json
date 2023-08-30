@@ -9,10 +9,12 @@
   "bin": {
     "remark": "./node_modules/remark-cli/cli.js"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier src --check",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use ./lib/index.js",
     "format:src": "prettier src --write",
     "lint": "eslint package.json src --ext .ts --fix",
@@ -28,7 +30,6 @@
     "remark-order-reference-links": "^0.0.3",
     "remark-parse": "^10.0.2",
     "remark-reference-links": "^6.0.1",
-    "strip-json-comments": "^5.0.0",
     "unified-prettier": "^1.0.1",
     "unist-util-visit": "^4.1.2"
   },

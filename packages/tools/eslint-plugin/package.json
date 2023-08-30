@@ -7,8 +7,7 @@
   ],
   "scripts": {
     "build": "heft build --clean",
-    "format": "npm run format:src",
-    "format:ci": "prettier src --check",
+    "format": "pnpm run /^format:.*/",
     "format:src": "prettier src --write",
     "test": "heft test"
   },

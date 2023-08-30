@@ -12,16 +12,18 @@ export const inputStatusColor = createVar();
 export const containerClass = style([
   sprinkles({
     alignItems: 'stretch',
+    borderRadius: '$sm',
     display: 'flex',
+    color: '$foreground',
     overflow: 'hidden',
+    lineHeight: '$lg',
     bg: {
       lightMode: '$white',
       darkMode: '$gray100',
     },
-    color: '$foreground',
-    borderRadius: '$sm',
   }),
   {
+    position: 'relative',
     borderBottom: `1px solid ${fallbackVar(
       inputStatusColor,
       vars.colors.$gray30,
@@ -51,22 +53,23 @@ export const containerClass = style([
 export const inputContainerClass = style([
   sprinkles({
     alignItems: 'center',
-    lineHeight: '$lg',
     display: 'flex',
-    paddingX: '$4',
-    paddingY: '$2',
-    gap: '$2',
     flexGrow: 1,
+    gap: '$2',
+    lineHeight: '$lg',
+    paddingX: '$4',
   }),
 ]);
 
 export const inputClass = style([
   sprinkles({
+    alignItems: 'center',
     background: 'none',
     border: 'none',
     color: '$foreground',
     outline: 'none',
     flexGrow: 1,
+    paddingY: '$2',
   }),
   {
     '::placeholder': {

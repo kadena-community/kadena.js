@@ -10,7 +10,5 @@ export interface IOptionProps
 }
 
 export const Option: FC<IOptionProps> = ({ children, ...rest }) => (
-  <option className={optionClass} {...rest}>
-    {children}
-  </option>
+  <option {...rest}>{children}</option>
 );

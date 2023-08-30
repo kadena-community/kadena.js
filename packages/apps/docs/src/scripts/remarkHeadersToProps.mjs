@@ -42,6 +42,11 @@ const remarkHeadersToProps = () => {
       const parent = lastHeading(startArray[0], item);
       const parentTitle = parent.title ?? '';
 
+      // we dont want h1 tags in the aside menu
+      if (item.depth === 1) {
+        return;
+      }
+
       // Heading3 component needs index and parent title as a props
       // to generate the unique anchor link to match with the sidebar menu
       // for any special characters

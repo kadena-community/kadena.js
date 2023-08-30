@@ -14,15 +14,21 @@ const meta: Meta<
   title: 'Components/Select',
   argTypes: {
     disabled: {
+      description: 'toggle disabled state of component',
       control: {
         type: 'boolean',
+        defaultValue: false,
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     icon: {
       options: [
-        undefined,
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
+        ...['-'],
+        ...Object.keys(SystemIcon),
+      ] as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
       },
@@ -46,6 +52,7 @@ export const Dynamic: Story = {
     const [value, setValue] = useState<string>('1');
     return (
       <Select
+        id="select-story"
         ariaLabel={'select'}
         icon={SystemIcon[icon]}
         onChange={(e) => {

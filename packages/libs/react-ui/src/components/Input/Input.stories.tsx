@@ -5,11 +5,37 @@ import { Input } from '@components/Input';
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
-import React from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
+
+const HTMLInputTypes: HTMLInputTypeAttribute[] = [
+  'button',
+  'checkbox',
+  'color',
+  'date',
+  'datetime-local',
+  'email',
+  'file',
+  'hidden',
+  'image',
+  'month',
+  'number',
+  'password',
+  'radio',
+  'range',
+  'reset',
+  'search',
+  'submit',
+  'tel',
+  'text',
+  'time',
+  'url',
+  'week',
+];
 
 const meta: Meta<
   {
     leftIcon: keyof typeof SystemIcon;
+    type?: React.HTMLInputTypeAttribute;
   } & IInputProps
 > = {
   title: 'Components/Input',
@@ -22,6 +48,10 @@ const meta: Meta<
     },
   },
   argTypes: {
+    type: {
+      control: { type: 'select' },
+      options: HTMLInputTypes,
+    },
     disabled: {
       description: 'Disables the input and applies visual styling.',
       control: {
@@ -36,7 +66,7 @@ const meta: Meta<
       description:
         'Icon rendered inside the input to the left of the input text.',
       options: [
-        undefined,
+        '-',
         ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
       ],
       control: {
@@ -47,7 +77,7 @@ const meta: Meta<
       description:
         'Icon rendered inside the input to the right of the input text.',
       options: [
-        undefined,
+        '-',
         ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
       ],
       control: {
@@ -67,7 +97,7 @@ const meta: Meta<
         type: 'select',
       },
       options: [
-        undefined,
+        '- Omit this property to auto-size the leading text',
         ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
       ],
     },
@@ -90,6 +120,7 @@ type Story = StoryObj<
     leadingText: string;
     leftIcon: keyof typeof SystemIcon;
     rightIcon: keyof typeof SystemIcon;
+    type: React.HTMLInputTypeAttribute;
   } & Omit<IInputProps, 'leftIcon' | 'rightIcon'>
 >;
 
@@ -97,8 +128,9 @@ export const Dynamic: Story = {
   name: 'Input',
   args: {
     leftIcon: undefined,
+    type: 'text',
     rightIcon: undefined,
-    leadingText: 'Leading',
+    leadingText: '',
     leadingTextWidth: undefined,
     outlined: false,
   },
@@ -110,6 +142,7 @@ export const Dynamic: Story = {
     leadingTextWidth,
     onChange,
     disabled,
+    type,
   }) => (
     <Input
       id="inlineInputStory"
@@ -121,6 +154,7 @@ export const Dynamic: Story = {
       leadingTextWidth={leadingTextWidth}
       outlined={outlined}
       disabled={disabled}
+      type={type}
     />
   ),
 };
@@ -129,8 +163,9 @@ export const InlineWithButton: Story = {
   name: 'Inline with button',
   args: {
     leftIcon: undefined,
+    type: 'text',
   },
-  render: ({ leftIcon, onChange }) => (
+  render: ({ leftIcon, onChange, type }) => (
     <Stack gap="$xs" alignItems="stretch">
       <Input
         id="inlineInputStory"
@@ -138,6 +173,7 @@ export const InlineWithButton: Story = {
         onChange={onChange}
         placeholder="This is a placeholder"
         outlined
+        type={type}
       />
       <Button title="Submit" onClick={() => {}}>
         Submit

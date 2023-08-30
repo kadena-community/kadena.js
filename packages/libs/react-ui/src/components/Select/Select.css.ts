@@ -1,53 +1,64 @@
+import { vars } from '../../styles';
+
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    backgroundColor: '$neutral1',
-    color: '$neutral5',
-    padding: '$2',
+    alignItems: 'stretch',
+    backgroundColor: {
+      lightMode: '$white',
+      darkMode: '$background',
+    },
+    borderColor: {
+      lightMode: '$white',
+      darkMode: '$gray60',
+    },
     borderRadius: '$sm',
+    color: '$foreground',
+    display: 'flex',
+    flexGrow: 1,
+    gap: '$2',
+    lineHeight: '$lg',
+    overflow: 'hidden',
+    paddingLeft: '$4',
+    paddingRight: '$2',
   }),
   {
-    position: 'relative',
-    border: 'solid 1px',
+    borderBottom: `1px solid ${vars.colors.$gray30}`,
   },
 ]);
-export const containerClassDisabled = style([
-  sprinkles({ pointerEvents: 'none' }),
-  { opacity: 0.5 },
-]);
 
-export const selectContainerClass = style([
+export const containerClassDisabled = style([
   sprinkles({
-    display: 'flex',
+    backgroundColor: {
+      lightMode: '$gray20',
+    },
+    color: {
+      lightMode: '$foreground',
+    },
   }),
 ]);
 
 export const iconClass = style([
   sprinkles({
-    marginRight: '$2',
-    marginLeft: '$2',
-    display: 'block',
+    alignItems: 'center',
+    display: 'flex',
   }),
 ]);
 
 export const selectClass = style([
   sprinkles({
+    background: 'none',
     border: 'none',
-    fontSize: '$base',
+    color: '$foreground',
+    flexGrow: 1,
+    outline: 'none',
+    paddingRight: '$2',
+    paddingY: '$2',
   }),
   {
-    padding: '0',
     backgroundColor: 'inherit',
     color: 'inherit',
-    flex: '1',
   },
-]);
-
-export const optionClass = style([
-  sprinkles({
-    backgroundColor: '$neutral1',
-    color: '$neutral5',
-  }),
 ]);
