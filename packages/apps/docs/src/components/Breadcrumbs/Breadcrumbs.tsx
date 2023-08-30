@@ -48,15 +48,17 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
   return (
     <Box data-cy="breadcrumbs" marginTop="$10" marginBottom="$4">
       <StyledBreadcrumbs.Root icon={Icon}>
-        {items.map((item, idx) => (
-          <StyledBreadcrumbs.Item key={item.root}>
-            {idx < items.length - 1 ? (
+        {items.map((item, idx) =>
+          idx < items.length - 1 ? (
+            <StyledBreadcrumbs.Item key={item.root} asChild>
               <Link href={item.root}>{item.title}</Link>
-            ) : (
-              item.title
-            )}
-          </StyledBreadcrumbs.Item>
-        ))}
+            </StyledBreadcrumbs.Item>
+          ) : (
+            <StyledBreadcrumbs.Item key={item.root}>
+              {item.title}
+            </StyledBreadcrumbs.Item>
+          ),
+        )}
       </StyledBreadcrumbs.Root>
     </Box>
   );
