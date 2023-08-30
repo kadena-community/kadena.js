@@ -8,7 +8,8 @@ interface IQueryResult extends StreamMetaData {
   description?: string;
 }
 
-export const filePathToRoute = (filename: string): string => {
+export const filePathToRoute = (filename?: string): string => {
+  if (!filename) return '';
   // Remove "src/pages" from the start of the filename
   let route = filename.replace(/^src\/pages/, '');
 
