@@ -31,9 +31,12 @@ const meta: Meta<
     gap: {
       options: Object.keys(gapVariants) as (keyof typeof gapVariants)[],
       control: { type: 'select' },
+      description:
+        'Defines the gaps (gutters) between rows and columns with pre-defined size values.',
     },
     columns: {
       control: { type: 'object' },
+      description: 'Defines the number of columns.',
       options: {
         sm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         md: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -44,6 +47,7 @@ const meta: Meta<
     },
     columnSpan: {
       control: { type: 'object' },
+      description: 'Defines the column span.',
       options: {
         sm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         md: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
