@@ -5,12 +5,26 @@ import React, { FC, ReactNode } from 'react';
 export interface IBreadcrumbItemProps {
   children?: ReactNode;
   href?: string;
+  asChild?: boolean;
 }
 
 export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
   children,
   href,
+  asChild = false,
 }) => {
+  if (asChild && React.isValidElement(children)) {
+    return (
+      <li className={itemClass}>
+        {React.cloneElement(children, {
+          href: `#${href}`,
+          className: linkClass,
+          ...children.props,
+        })}
+      </li>
+    );
+  }
+
   return (
     <li className={itemClass}>
       {href !== undefined ? (
