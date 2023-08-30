@@ -15,12 +15,22 @@ const ItemArray: string[] = [
 const meta: Meta<
   {
     itemsCount: number;
-    selectIcon: keyof typeof ProductIcon;
+    icon: keyof typeof ProductIcon;
   } & IBreadcrumbsProps
 > = {
   title: 'Components/Breadcrumbs',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Breadcrumb component displays the position of the current page within the site hierarchy, allowing page visitors to navigate the page hierarchy from their current location. It uses a composition of the `Root` and `Item` subcomponents to define the paths and structure of the entire breadcrumb component.<br><br><i>Note: In times when you need to use an external `Link` component (like next/link in Next.js), you can wrap the external component in `Breadcrumb.Item` and set the `asChild` prop to pass on styles and props to the child component.</i>',
+      },
+    },
+  },
   argTypes: {
-    selectIcon: {
+    icon: {
+      description:
+        'The base icon for the breadcrumb component displayed to the left of the breadcrumb items.',
       options: Object.keys(ProductIcon) as (keyof typeof ProductIcon)[],
       control: {
         type: 'select',
@@ -36,7 +46,6 @@ export default meta;
 type Story = StoryObj<
   {
     itemsCount: number;
-    selectIcon: keyof typeof ProductIcon;
   } & IBreadcrumbsProps
 >;
 
@@ -49,14 +58,13 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Breadcrumbs',
   args: {
-    selectIcon: 'KadenaOverview',
+    icon: 'KadenaOverview',
     itemsCount: 3,
   },
-  render: ({ itemsCount, selectIcon }) => {
+  render: ({ itemsCount, icon }) => {
     const items = ItemArray.slice(0, itemsCount);
-    const Icon = ProductIcon[selectIcon];
     return (
-      <Breadcrumbs.Root icon={Icon}>
+      <Breadcrumbs.Root icon={icon}>
         {items.map((item, idx) => {
           return (
             <Breadcrumbs.Item

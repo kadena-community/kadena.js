@@ -17,7 +17,7 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
     return (
       <li className={itemClass}>
         {React.cloneElement(children, {
-          href: `#${href}`,
+          href,
           className: linkClass,
           ...children.props,
         })}
@@ -28,7 +28,7 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
   return (
     <li className={itemClass}>
       {href !== undefined ? (
-        <a className={linkClass} href={`#${href}`}>
+        <a className={linkClass} href={href}>
           {children}
         </a>
       ) : (
