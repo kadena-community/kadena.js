@@ -1,7 +1,7 @@
 import { SystemIcon } from '@components/Icon';
 import { NavFooter } from '@components/NavFooter';
 import { render } from '@testing-library/react';
-import React, { FC } from 'react';
+import React from 'react';
 
 const menuLinks: { label: string; href?: string }[] = [
   {
@@ -14,13 +14,13 @@ const menuLinks: { label: string; href?: string }[] = [
   },
 ];
 
-const icons: { icon: FC; text?: string }[] = [
+const icons: { icon: keyof typeof SystemIcon; text?: string }[] = [
   {
-    icon: SystemIcon.Earth,
+    icon: 'Earth',
     text: 'English',
   },
   {
-    icon: SystemIcon.Account,
+    icon: 'Account',
   },
 ];
 
