@@ -19,13 +19,7 @@ const removeCodeBlocks = (content) => {
   return content.replace(codeBlockRegex, '');
 };
 
-const checkifImported = (file) => {
-  return importReadMes.find((item) => {
-    return file.includes(item.destination);
-  });
-};
-
-const checkForHeaders = async (filePath, links) => {
+const checkForHeaders = async () => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {
