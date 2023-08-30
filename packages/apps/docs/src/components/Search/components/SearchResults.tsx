@@ -1,11 +1,4 @@
-import {
-  Button,
-  Notification,
-  Stack,
-  SystemIcon,
-  Tabs,
-  useModal,
-} from '@kadena/react-ui';
+import { Button, Notification, Stack, Tabs, useModal } from '@kadena/react-ui';
 
 import type { IQueryResult } from '../../../types';
 
@@ -99,7 +92,7 @@ export const SearchResults: FC<IProps> = ({
               <Notification.Root
                 color={'negative'}
                 expanded={true}
-                icon={SystemIcon.AlertBox}
+                icon="AlertBox"
               >
                 {semanticError}
               </Notification.Root>
@@ -140,7 +133,7 @@ export const SearchResults: FC<IProps> = ({
               <Notification.Root
                 color={'negative'}
                 expanded={true}
-                icon={SystemIcon.AlertBox}
+                icon="AlertBox"
               >
                 {error}
               </Notification.Root>

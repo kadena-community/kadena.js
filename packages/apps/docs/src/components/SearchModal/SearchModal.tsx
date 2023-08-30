@@ -1,11 +1,11 @@
-import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
+import { Box, Text, TextField } from '@kadena/react-ui';
 
 import { Search } from '../Search/';
 import { searchFormClass } from '../Search/styles.css';
 
 import { wrapperClass } from './styles.css';
 
-import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 export const SearchModal: FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -47,7 +47,7 @@ export const SearchModal: FC = () => {
                 ref: searchInputRef,
                 defaultValue: query,
                 placeholder: 'Search',
-                rightIcon: SystemIcon.Magnify,
+                rightIcon: 'Magnify',
                 'aria-label': 'Search',
               }}
             />

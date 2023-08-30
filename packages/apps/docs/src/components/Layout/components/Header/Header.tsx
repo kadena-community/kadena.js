@@ -1,5 +1,6 @@
-import { IconButton, SystemIcon } from '@kadena/react-ui';
+import { IconButton } from '@kadena/react-ui';
 
+import { DocsLogo } from '..';
 import { globalClass } from '../../global.css';
 import {
   InnerWrapper,
@@ -10,7 +11,6 @@ import {
   StyledNav,
   StyledUl,
 } from '../styles';
-import { DocsLogo } from '..';
 
 import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
@@ -29,7 +29,7 @@ import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];
@@ -71,14 +71,14 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             as="a"
             href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
-            icon={SystemIcon.Twitter}
+            icon="Twitter"
             color="inverted"
           />
           <IconButton
             as="a"
             href="https://github.com/kadena-community"
             title="Go to our Github"
-            icon={SystemIcon.Github}
+            icon="Github"
             color="inverted"
           />
         </HeaderSocialIconGroup>

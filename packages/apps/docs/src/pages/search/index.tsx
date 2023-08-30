@@ -1,4 +1,4 @@
-import { SystemIcon, TextField } from '@kadena/react-ui';
+import { TextField } from '@kadena/react-ui';
 
 import { Search } from '@/components';
 import {
@@ -15,7 +15,7 @@ import {
 import classNames from 'classnames';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 interface IQuery {
   q?: string;
@@ -54,7 +54,7 @@ const SearchPage: FC = () => {
               ref: searchInputRef,
               defaultValue: query,
               placeholder: 'Search',
-              rightIcon: SystemIcon.Magnify,
+              rightIcon: 'Magnify',
               'aria-label': 'Search',
             }}
           />

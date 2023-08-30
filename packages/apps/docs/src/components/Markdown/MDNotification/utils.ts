@@ -1,4 +1,4 @@
-import { INotificationProps, SystemIcon } from '@kadena/react-ui';
+import { INotificationProps } from '@kadena/react-ui';
 
 export type LabelType =
   | 'info'
@@ -7,10 +7,7 @@ export type LabelType =
   | 'caution'
   | 'danger'
   | 'warning';
-export type IconType =
-  | (typeof SystemIcon)['Information']
-  | (typeof SystemIcon)['Bell']
-  | undefined;
+export type IconType = 'Information' | 'Bell' | undefined;
 
 export const getColor = (label?: LabelType): INotificationProps['color'] => {
   if (!label) return;
@@ -36,11 +33,11 @@ export const getIcon = (label?: LabelType): IconType => {
     case 'note':
     case 'info':
     case 'tip':
-      return SystemIcon.Information;
+      return 'Information';
     case 'caution':
     case 'warning':
     case 'danger':
-      return SystemIcon.Bell;
+      return 'Bell';
 
     default:
       return undefined;
