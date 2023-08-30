@@ -139,23 +139,22 @@ async function getConfirmationDepth2(blockHash: string): Promise<number> {
 async function getConfirmationDepth3(blockHash: string): Promise<number> {
   const blocksTable = await prismaClient.block.findMany();
 
-  const block = blocksTable.find((b) => b.hash === blockHash);
+  let block = blocksTable.find((b) => b.hash === blockHash);
 
   if (!block) {
     return 0;
   }
 
-  let parent = block.hash;
   let depth = 0;
 
-  while (parent) {
-    const childBlock = blocksTable.find((b) => b.parent === block.hash);
+  while (block) {
+    const childBlock = blocksTable.find((b) => b.parent === block?.hash);
 
     if (!childBlock) {
       break;
     }
 
-    parent = childBlock.hash;
+    block = childBlock;
     depth++;
   }
 
