@@ -7,7 +7,6 @@ import {
   ISelectProps,
   Option,
   Select,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import { accountInputWrapperStyle } from './styles.css';
@@ -16,7 +15,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useDidUpdateEffect } from '@/hooks';
 import { getAccounts } from '@/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
-import React, { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -68,7 +67,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e as unknown as ChangeEvent<HTMLInputElement>);
         }}
-        icon={SystemIcon.KIcon}
+        icon={'KIcon'}
         id={elementId}
       >
         <Option value={''}>{t('Select Account')}</Option>
@@ -89,7 +88,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e);
         }}
-        leftIcon={SystemIcon.KIcon}
+        leftIcon={'KIcon'}
       />
     ),
   };
@@ -107,7 +106,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
       </InputWrapper>
       {accounts?.length && (
         <IconButton
-          icon={mode === 'input' ? SystemIcon.Close : SystemIcon.Edit}
+          icon={mode === 'input' ? 'Close' : 'Edit'}
           title={t('')}
           onClick={() => setMode(mode === 'input' ? 'select' : 'input')}
           type="button"

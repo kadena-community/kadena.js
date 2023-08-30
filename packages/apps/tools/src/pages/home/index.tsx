@@ -1,10 +1,4 @@
-import {
-  Breadcrumbs,
-  Card,
-  Heading,
-  SystemIcon,
-  Table,
-} from '@kadena/react-ui';
+import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
@@ -15,7 +9,7 @@ import {
   homeWrapperClass,
 } from '@/pages/home/styles.css';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useRef } from 'react';
+import { FC, useRef } from 'react';
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
@@ -24,17 +18,17 @@ const Home: FC = () => {
   useToolbar([
     {
       title: t('Faucet'),
-      icon: SystemIcon.Earth,
+      icon: 'Earth',
       href: Routes.FAUCET_EXISTING,
     },
     {
       title: t('Transactions'),
-      icon: SystemIcon.Transition,
+      icon: 'Transition',
       href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
       title: t('Account'),
-      icon: SystemIcon.Account,
+      icon: 'Account',
       href: Routes.ACCOUNT_TRANSACTIONS,
     },
   ]);
@@ -50,7 +44,7 @@ const Home: FC = () => {
         ref={helpCenterRef}
         sections={[
           {
-            icon: SystemIcon.HelpCircle,
+            icon: 'HelpCircle',
             title: t('Help Center'),
             children: (
               <>

@@ -5,7 +5,6 @@ import {
   Card,
   Grid,
   Heading,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import { mainContentClass, submitClass } from './styles.css';
@@ -20,9 +19,9 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -45,7 +44,7 @@ const CheckTransactions: FC = () => {
   useToolbar([
     {
       title: t('Account Transactions'),
-      icon: SystemIcon.Account,
+      icon: 'Account',
       href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ]);

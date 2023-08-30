@@ -1,4 +1,4 @@
-import { NavHeader, Option, Select, SystemIcon } from '@kadena/react-ui';
+import { NavHeader, Option, Select } from '@kadena/react-ui';
 
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
@@ -7,8 +7,8 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { IMenuItem } from '@/types/Layout';
 import { getNetworks } from '@/utils/wallet';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 
 export interface IHeaderProps {
@@ -72,7 +72,7 @@ const Header: FC<IHeaderProps> = () => {
           ariaLabel={t('Select Network')}
           value={selectedNetwork as string}
           onChange={(e) => setSelectedNetwork(e.target.value as Network)}
-          icon={SystemIcon.Link}
+          icon={'Link'}
         >
           {networks.map((network) => (
             <Option key={network} value={network}>

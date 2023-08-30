@@ -11,17 +11,17 @@ export interface IMenuButtonProps
   title?: string;
   href?: string;
   active?: boolean;
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
 }
 
 export const MenuButton: FC<IMenuButtonProps> = ({
   active,
   title,
   href,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  icon: Icon,
+  icon,
   ...rest
 }) => {
+  const Icon = SystemIcon[icon];
   // eslint-disable-next-line
   // @ts-ignore
   const tooltipRef = useRef<HTMLDivElement>(null);

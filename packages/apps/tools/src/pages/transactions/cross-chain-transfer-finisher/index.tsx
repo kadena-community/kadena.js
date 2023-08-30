@@ -5,7 +5,6 @@ import {
   Grid,
   Heading,
   IconButton,
-  ProductIcon,
   Stack,
   SystemIcon,
   TextField,
@@ -51,8 +50,8 @@ import {
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import React, {
   ChangeEventHandler,
   FC,
@@ -214,17 +213,17 @@ const CrossChainTransferFinisher: FC = () => {
   useToolbar([
     {
       title: t('Cross Chain'),
-      icon: SystemIcon.Transition,
+      icon: 'Transition',
       href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
       title: t('Finalize Cross Chain'),
-      icon: SystemIcon.TransitionMasked,
+      icon: 'TransitionMasked',
       href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
     },
     {
       title: t('Module Explorer'),
-      icon: SystemIcon.Earth,
+      icon: 'Earth',
       href: Routes.MODULE_EXPLORER,
     },
   ]);
@@ -305,7 +304,7 @@ const CrossChainTransferFinisher: FC = () => {
         ref={helpCenterRef}
         sections={[
           {
-            icon: SystemIcon.HelpCircle,
+            icon: 'HelpCircle',
             title: t('Pact Information'),
             children: (
               <>
@@ -324,7 +323,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TrackerCard
                   variant="vertical"
-                  icon={ProductIcon.QuickStart}
+                  icon="QuickStart"
                   labelValues={[
                     {
                       label: t('Sender'),
@@ -339,7 +338,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TrackerCard
                   variant="vertical"
-                  icon={ProductIcon.Gas}
+                  icon="Gas"
                   labelValues={[
                     {
                       label: t('Gas Payer'),
@@ -350,7 +349,7 @@ const CrossChainTransferFinisher: FC = () => {
                 />
                 <TrackerCard
                   variant="vertical"
-                  icon={ProductIcon.Receiver}
+                  icon="Receiver"
                   labelValues={[
                     {
                       label: t('Receiver'),
@@ -483,7 +482,7 @@ const CrossChainTransferFinisher: FC = () => {
                       </textarea>
                       <IconButton
                         color="default"
-                        icon={SystemIcon.ContentCopy}
+                        icon={'ContentCopy'}
                         onClick={async () => {
                           await navigator.clipboard.writeText(formattedSigData);
                         }}

@@ -1,13 +1,12 @@
 import { CHAINS, ChainwebChainId } from '@kadena/chainweb-node-client';
-import { SystemIcons } from '@kadena/react-components';
 import {
-  type ISelectProps,
   InputWrapper,
   Option,
   Select,
+  type ISelectProps,
 } from '@kadena/react-ui';
 
-import React, { type FC, type FormEventHandler, useCallback } from 'react';
+import { useCallback, type FC, type FormEventHandler } from 'react';
 
 export type OnChainSelectChange = (value: ChainwebChainId) => void;
 
@@ -42,7 +41,7 @@ const ChainSelect: FC<
         id={ELEMENT_ID}
         onChange={onSelectChange}
         value={value}
-        icon={() => <SystemIcons.Link />}
+        icon={'Link'}
         ariaLabel="Select Chain ID"
       >
         {options}

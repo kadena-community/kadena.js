@@ -1,5 +1,5 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Heading, SystemIcon } from '@kadena/react-ui';
+import { Breadcrumbs, Button, Heading } from '@kadena/react-ui';
 
 import {
   ChainSelect,
@@ -20,7 +20,7 @@ import {
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -64,7 +64,7 @@ const ExistingAccountFaucetPage: FC = () => {
   useToolbar([
     {
       title: t('Existing'),
-      icon: SystemIcon.History,
+      icon: 'History',
       href: Routes.FAUCET_EXISTING,
     },
   ]);
