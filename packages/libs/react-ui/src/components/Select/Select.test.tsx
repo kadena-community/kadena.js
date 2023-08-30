@@ -6,7 +6,12 @@ import React from 'react';
 describe('Select', () => {
   it('renders without errors', () => {
     const { getByTestId } = render(
-      <Select value="1" onChange={() => {}} ariaLabel="select">
+      <Select
+        id="select-without-errors"
+        value="1"
+        onChange={() => {}}
+        ariaLabel="select"
+      >
         <Option value="1">Option 1</Option>
         <Option value="2">Option 2</Option>
       </Select>,
@@ -18,7 +23,12 @@ describe('Select', () => {
 
   it('renders the provided children options', () => {
     const { getByTestId } = render(
-      <Select value="1" onChange={() => {}} ariaLabel="select">
+      <Select
+        id="renders-child-options"
+        value="1"
+        onChange={() => {}}
+        ariaLabel="select"
+      >
         <Option value="1">Option 1</Option>
         <Option value="2">Option 2</Option>
       </Select>,
@@ -37,7 +47,12 @@ describe('Select', () => {
   it('invokes the onChange event handler when an option is selected', () => {
     const handleChange = jest.fn();
     const { getByTestId } = render(
-      <Select value="1" onChange={handleChange} ariaLabel="select">
+      <Select
+        id="on-change-select"
+        value="1"
+        onChange={handleChange}
+        ariaLabel="select"
+      >
         <Option value="1">Option 1</Option>
         <Option value="2">Option 2</Option>
       </Select>,
@@ -54,7 +69,13 @@ describe('Select', () => {
 
   it('disables the select element when disabled prop is true', () => {
     const { getByTestId } = render(
-      <Select value="1" onChange={() => {}} disabled ariaLabel="select">
+      <Select
+        id="disabled-select"
+        value="1"
+        onChange={() => {}}
+        disabled
+        ariaLabel="select"
+      >
         <Option value="1">Option 1</Option>
         <Option value="2">Option 2</Option>
       </Select>,
@@ -71,7 +92,13 @@ describe('Select', () => {
   it('renders an icon when the "icon" prop is provided', () => {
     const IconMock = jest.fn(() => <span className="icon">User</span>);
     const { getByTestId, getByText } = render(
-      <Select value="1" onChange={() => {}} icon={IconMock} ariaLabel="select">
+      <Select
+        id="renders-icon"
+        value="1"
+        onChange={() => {}}
+        icon={IconMock}
+        ariaLabel="select"
+      >
         <Option value="1">Option 1</Option>
         <Option value="2">Option 2</Option>
       </Select>,
