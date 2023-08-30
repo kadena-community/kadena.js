@@ -282,8 +282,10 @@ blockchain technology safer and easier to use than ever before.
 Kadena had solved the trilemma, bringing something truly unique — a scalable,
 safe and fast POW blockchain platform for builders — **2022 is the year of the
 Kadena ecosystem which has kicked off with a bang with the Kadena Eco fund and
-the
-[$100MM builder grant program](https://twitter.com/kadena_io/status/1517096122182942720?s=20&t=F03RzqN2LB6n-agbjLWqVQ)**.
+the $100MM builder grant program**.
+
+[$100MM builder grant program](https://twitter.com/kadena_io/status/1517096122182942720?s=20&t=F03RzqN2LB6n-agbjLWqVQ)
+
 This year will see the launch of the first truly scalable DeFi and Lending
 platforms as builders leverage Pact’s features to scale their dapps to new
 heights of usability and performance, while our upcoming bridge to innovative

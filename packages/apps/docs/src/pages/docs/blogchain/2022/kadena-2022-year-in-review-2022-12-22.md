@@ -211,12 +211,16 @@ recruits over the course of the year, representing a staggering 50% increase in
 the number of team members! The hiring has been centered on experienced and
 motivated individuals in marketing, business development, and engineering.
 
-[Anastasia Bez](https://twitter.com/kadena_io/status/1568237806673170432) and
+Anastasia Bez and
 [John Wiegley](./john-wiegley-chief-technology-officer-of-kadena-2022-10-05)
 were both promoted to Chief Operations Officer and Chief Technology Officer,
-respectively. With their operational capabilities, technical expertise, and
-strategic direction, both visionary leaders have the capability and experience
-to push the boundaries of Kadena’s technical edge.
+respectively.
+
+[tweet](https://twitter.com/kadena_io/status/1568237806673170432)
+
+With their operational capabilities, technical expertise, and strategic
+direction, both visionary leaders have the capability and experience to push the
+boundaries of Kadena’s technical edge.
 
 Despite unstable market trends and uncertainties, Kadena continues to grow at an
 exponential pace and will continue to employ well into 2023. If you or someone

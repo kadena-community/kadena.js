@@ -29,15 +29,16 @@ smart contracts and push their applications into production by deploying their
 contracts to multiple chains with less effort. For end users, this update will
 facilitate a smoother user experience like chain-agnostic transfers, which allow
 the end user to simply set the number of coins to be transferred from one chain
-to another with just a single signing request as shown in this
-[demo](https://twitter.com/BlockchainDoug/status/1539733933801316361).
+to another with just a single signing request as shown in this demo.
+
+[demo](https://twitter.com/BlockchainDoug/status/1539733933801316361)
 
 ![Quicksign API works by sending multiple transactions to Kadena’s blockchain simultaneously](/assets/blog/0_AiU-isvNBfs5RpkP.png)
 
 We’ve already begun seeing builders and projects capitalizing on this update and
 improving their project’s UX. [**X-Wallet**](https://xwallet.kaddex.com/), a
 robust and user-friendly web-extension wallet that is native to Kadena, has
-implemented
+implemented **TODO: this tweet not working**
 [quicksign](https://twitter.com/XWalletOfficial/status/1622624077683871746)
 which allows the execution of multiple transactions simultaneously with just one
 signature approval. [**Koala Wallet**](https://koalawallet.io/) by Kadena Eco
