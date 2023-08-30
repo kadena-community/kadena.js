@@ -73,7 +73,7 @@ pnpm format  # Format (using Prettier)
 Run from root to apply to all packages, use `--filter` for a selection, and run
 from any package folder to apply it only there.
 
-See [Filters](./docs/filters.md) for more details.
+See [Filters][6] for more details.
 
 For everything else, please discuss.
 
@@ -91,8 +91,8 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-We're using [Changesets][6] for our release process. The manual process in [How
-do I run the version and publish commands?][7] is what we use and repeat here:
+We're using [Changesets][7] for our release process. The manual process in [How
+do I run the version and publish commands?][8] is what we use and repeat here:
 
 1.  Check out and pull `main`
 2.  Update changelogs and bump versions
@@ -126,6 +126,7 @@ git push --tags
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch
 [5]:
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
-[6]: https://github.com/changesets/changesets
-[7]:
+[6]: ./docs/pnpm-turbo-filter.md
+[7]: https://github.com/changesets/changesets
+[8]:
   https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#how-do-i-run-the-version-and-publish-commands

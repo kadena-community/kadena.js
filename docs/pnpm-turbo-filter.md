@@ -26,8 +26,8 @@ pnpm run --filter @kadena/client test
 ```
 
 There are also ways to include dependencies, select up to and/or including a
-certain package, packages changed since the `main` branch, etc. Refer to the
-pnpm docs for all the goodies.
+certain package, packages changed since the `main` branch, etc. You can use
+multiple filters. Refer to the pnpm docs for all the goodies.
 
 ## Turborepo
 
