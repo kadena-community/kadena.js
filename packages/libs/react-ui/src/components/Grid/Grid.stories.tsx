@@ -18,6 +18,14 @@ const meta: Meta<
   } & IGridRootProps
 > = {
   title: 'Layout/Grid',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Grid is one of the advanced building blocks of application layout. It is an abstraction over flexbox, which manages layout of its immediate children along the vertical or horizontal axis.',
+      },
+    },
+  },
   component: Grid.Root,
   argTypes: {
     gap: {
@@ -49,30 +57,40 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      description:
+        'Set value for margin property with pre-defined size values.',
     },
     marginX: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for margin property on X axis with pre-defined size values.',
     },
     marginY: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for margin property on Y axis with pre-defined size values.',
     },
     marginTop: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for top margin property with pre-defined size values.',
     },
     marginBottom: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for top margin property with pre-defined size values.',
     },
 
     marginLeft: {
@@ -80,54 +98,72 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      description:
+        'Set value for left margin property with pre-defined size values.',
     },
     marginRight: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for right margin property with pre-defined size values.',
     },
     padding: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for padding property with pre-defined size values.',
     },
     paddingX: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for padding property on X axis with pre-defined size values.',
     },
     paddingY: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for padding property on Y axis with pre-defined size values.',
     },
     paddingTop: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for top padding property with pre-defined size values.',
     },
     paddingBottom: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for bottom padding property with pre-defined size values.',
     },
     paddingLeft: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for left padding property with pre-defined size values.',
     },
     paddingRight: {
       options: selectOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Set value for right padding property with pre-defined size values.',
     },
   },
 };

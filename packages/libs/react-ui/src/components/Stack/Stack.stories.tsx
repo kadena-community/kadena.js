@@ -14,6 +14,14 @@ const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
 
 const meta: Meta<typeof Stack> = {
   title: 'Layout/Stack',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Stack is one of the basic building blocks of application layout. It manages layout of its immediate children along the vertical or horizontal axis.',
+      },
+    },
+  },
   component: Stack,
   argTypes: {
     margin: {
@@ -21,48 +29,64 @@ const meta: Meta<typeof Stack> = {
       control: {
         type: 'select',
       },
+      description: 'Value for margin property with pre-defined size values.',
     },
     marginX: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for margin property on X axis with pre-defined size values.',
     },
     marginY: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for margin property on Y axis with pre-defined size values.',
     },
     marginTop: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for top margin property with pre-defined size values.',
     },
     marginBottom: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for top margin property with pre-defined size values.',
     },
+
     marginLeft: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for left margin property with pre-defined size values.',
     },
     marginRight: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for right margin property with pre-defined size values.',
     },
     gap: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Defines the gaps (gutters) between rows and columns with pre-defined size values.',
     },
     justifyContent: {
       options: [
@@ -73,6 +97,8 @@ const meta: Meta<typeof Stack> = {
         'space-between',
       ] as Sprinkles['justifyContent'][],
       control: { type: 'select' },
+      description:
+        'Defines how the browser distributes space between and around content items along the main-axis of a flex container',
     },
     alignItems: {
       options: [
@@ -82,6 +108,7 @@ const meta: Meta<typeof Stack> = {
         'stretch',
       ] as Sprinkles['alignItems'][],
       control: { type: 'select' },
+      description: 'Controls the alignment of items on the cross Axis',
     },
     direction: {
       options: [
@@ -91,52 +118,69 @@ const meta: Meta<typeof Stack> = {
         'column-reverse',
       ] as Sprinkles['flexDirection'][],
       control: { type: 'select' },
+      description:
+        'Controls the flex direction of text, table columns, and horizontal overflow.',
     },
     wrap: {
       options: ['wrap', 'nowrap'] as Sprinkles['flexWrap'][],
       control: { type: 'select' },
+      description:
+        'Sets whether flex items are forced onto one line or can wrap onto multiple lines.',
     },
     padding: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description: 'Value for padding property with pre-defined size values.',
     },
     paddingX: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for padding property on X axis with pre-defined size values.',
     },
     paddingY: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for padding property on Y axis with pre-defined size values.',
     },
     paddingTop: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for top padding property with pre-defined size values.',
     },
     paddingBottom: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for bottom padding property with pre-defined size values.',
     },
     paddingLeft: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for left padding property with pre-defined size values.',
     },
     paddingRight: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
+      description:
+        'Value for right padding property with pre-defined size values.',
     },
   },
 };
