@@ -15,7 +15,7 @@ import {
 import classNames from 'classnames';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { FC, FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 interface IQuery {
   q?: string;

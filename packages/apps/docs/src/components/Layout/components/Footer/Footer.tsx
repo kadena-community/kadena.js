@@ -1,14 +1,14 @@
 import { IconButton, Stack } from '@kadena/react-ui';
 
-import { DocsLogo } from '..';
 import { spacerClass } from '../styles.css';
+import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
 import { footerClass, footerWrapperClass } from './styles.css';
 
 import Link from 'next/link';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 export const Footer: FC = () => {
   return (

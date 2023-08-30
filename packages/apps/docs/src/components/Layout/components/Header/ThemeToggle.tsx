@@ -2,7 +2,7 @@ import { IconButton } from '@kadena/react-ui';
 
 import { useTheme } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 export const ThemeToggle: FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);

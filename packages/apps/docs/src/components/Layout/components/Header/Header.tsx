@@ -1,6 +1,5 @@
 import { IconButton } from '@kadena/react-ui';
 
-import { DocsLogo } from '..';
 import { globalClass } from '../../global.css';
 import {
   InnerWrapper,
@@ -11,6 +10,7 @@ import {
   StyledNav,
   StyledUl,
 } from '../styles';
+import { DocsLogo } from '..';
 
 import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
@@ -29,7 +29,7 @@ import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
 import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];
