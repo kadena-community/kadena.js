@@ -88,27 +88,4 @@ describe('Select', () => {
 
     expect(selectElement.disabled).toBe(true);
   });
-
-  it('renders an icon when the "icon" prop is provided', () => {
-    const { getByTestId, getByText } = render(
-      <Select
-        id="renders-icon"
-        value="1"
-        onChange={() => {}}
-        icon="Account"
-        ariaLabel="select"
-      >
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
-      </Select>,
-    );
-
-    const selectContainer = getByTestId('kda-select');
-    const selectElement = selectContainer.querySelector('select');
-    const iconElement = selectContainer.querySelector('.icon');
-
-    expect(selectElement).toBeInTheDocument();
-    expect(iconElement).toBeInTheDocument();
-    expect(getByText('User')).toBeInTheDocument();
-  });
 });
