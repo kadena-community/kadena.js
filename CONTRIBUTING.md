@@ -43,9 +43,8 @@ pnpm run test --watch   # Keep running tests during development
 
 ## Making a Pull Request
 
-Before making a pull request, please discuss your ideas first.
-
-TODO
+Before making a pull request, please discuss your ideas first. This will
+optimize your time and the review process.
 
 ## Conventions
 
@@ -74,6 +73,8 @@ pnpm format  # Format (using Prettier)
 Run from root to apply to all packages, use `--filter` for a selection, and run
 from any package folder to apply it only there.
 
+See [Filters](./docs/filters.md) for more details.
+
 For everything else, please discuss.
 
 ## Workflow
@@ -90,31 +91,31 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-Steps:
+We're using [Changesets][6] for our release process. The manual process in [How
+do I run the version and publish commands?][7] is what we use and repeat here:
 
-1. checkout and pull `main`
-2. bump versions
-3. create a new branch and create new "version-bump"-PR
-4. merge PR to `main`
-5. build and publish from `main`
+1.  Check out and pull `main`
+2.  Update changelogs and bump versions
+3.  Create a new branch and open a "version bump" PR
+4.  Merge PR to `main`
+5.  Build and publish from `main`
 
 ```sh
 git checkout main
 git pull
 git checkout -b chore/release-packages
 pnpm changeset version
-git commit -m # "... relevant message"
+git commit -m "Update changelogs and bump versions"
 git push
 ```
 
-Create PR, get approval, and merge PR
+Create a pull request and get it merged to `main`. Then we can publish:
 
 ```sh
 git checkout main
 git pull
 pnpm turbo build lint test --force
-pnpm changeset publish
-# fill your otp token from npm
+pnpm changeset publish # Use your npm OTP token
 git push --tags
 ```
 
@@ -125,3 +126,6 @@ git push --tags
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch
 [5]:
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
+[6]: https://github.com/changesets/changesets
+[7]:
+  https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#how-do-i-run-the-version-and-publish-commands
