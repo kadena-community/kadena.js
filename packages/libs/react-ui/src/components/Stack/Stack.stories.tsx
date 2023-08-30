@@ -86,7 +86,7 @@ const meta: Meta<typeof Stack> = {
         type: 'select',
       },
       description:
-        'Defines the gaps (gutters) between rows and columns with pre-defined size values.',
+        'Defines the gaps between rows and columns with pre-defined size values.',
     },
     justifyContent: {
       options: [
