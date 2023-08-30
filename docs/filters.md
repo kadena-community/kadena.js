@@ -25,9 +25,14 @@ pnpm test --filter @kadena/client
 pnpm run --filter @kadena/client test
 ```
 
+There are also ways to include dependencies, select up to and/or including a
+certain package, packages changed since the `main` branch, etc. Refer to the
+pnpm docs for all the goodies.
+
 ## Turborepo
 
-To use Turborepo, include dependencies of the target package and enjoy caching:
+To use Turborepo, automatically include dependencies of the target package and
+enjoy caching:
 
 ```sh
 pnpm run test --filter @kadena/client
@@ -40,6 +45,9 @@ are used. You can also execute the `turbo` executable directly to do the same:
 pnpm turbo test --filter @kadena/client
 pnpm turbo --filter @kadena/client test
 ```
+
+The filter syntax is inspired by pnpm's, but it's not the same thing. See the
+Turborepo docs for details.
 
 ## Bypass Turborepo cache
 
