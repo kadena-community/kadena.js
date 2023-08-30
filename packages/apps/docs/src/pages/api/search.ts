@@ -3,8 +3,8 @@ import { getCompletionHandler, pinecone } from '@7-docs/edge';
 
 let namespace = 'kda-docs-dev';
 if (process.env.NODE_ENV === 'production') {
+  namespace = 'kda-docs';
 }
-namespace = 'kda-docs';
 
 export const prompt = `Context: {CONTEXT}
 
