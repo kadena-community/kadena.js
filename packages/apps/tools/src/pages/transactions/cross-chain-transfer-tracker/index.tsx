@@ -33,8 +33,8 @@ import {
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
-import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 import React, {
   ChangeEventHandler,
   FC,

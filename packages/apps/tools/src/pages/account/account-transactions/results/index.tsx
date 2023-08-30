@@ -28,9 +28,9 @@ import {
   ITransaction,
 } from '@/services/accounts/get-transactions';
 import Debug from 'debug';
-import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useRef, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(

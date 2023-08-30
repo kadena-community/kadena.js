@@ -15,7 +15,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useDidUpdateEffect } from '@/hooks';
 import { getAccounts } from '@/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
-import { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 

@@ -20,7 +20,7 @@ import {
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 

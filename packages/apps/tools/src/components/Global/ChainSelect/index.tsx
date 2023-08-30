@@ -1,12 +1,12 @@
 import { CHAINS, ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
+  type ISelectProps,
   InputWrapper,
   Option,
   Select,
-  type ISelectProps,
 } from '@kadena/react-ui';
 
-import { useCallback, type FC, type FormEventHandler } from 'react';
+import React, { type FC, type FormEventHandler, useCallback } from 'react';
 
 export type OnChainSelectChange = (value: ChainwebChainId) => void;
 

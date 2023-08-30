@@ -7,8 +7,8 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { IMenuItem } from '@/types/Layout';
 import { getNetworks } from '@/utils/wallet';
-import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 import React, { FC, ReactNode } from 'react';
 
 export interface IHeaderProps {

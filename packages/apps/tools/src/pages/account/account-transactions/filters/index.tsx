@@ -19,9 +19,9 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
-import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 

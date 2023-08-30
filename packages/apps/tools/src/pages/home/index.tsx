@@ -9,7 +9,7 @@ import {
   homeWrapperClass,
 } from '@/pages/home/styles.css';
 import useTranslation from 'next-translate/useTranslation';
-import { FC, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
