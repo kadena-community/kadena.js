@@ -6,7 +6,9 @@ const createSlugHash = (str: string): string => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   str.split('').forEach((_char, idx) => {
     const ch = str.charCodeAt(idx);
-    hash += ch;
+    hash = (hash << 5) - hash + ch;
+    // eslint-disable-next-line no-bitwise
+    hash = hash & hash;
   });
   return `h${hash}`;
 };
@@ -14,7 +16,7 @@ const createSlugHash = (str: string): string => {
 export const createSlug = (str?: string): string => {
   if (str === undefined) return '';
 
-  let normalizedSlug = str
+  const normalizedSlug = str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^\w\-\s]+/g, '')
@@ -23,9 +25,5 @@ export const createSlug = (str?: string): string => {
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 
-  if (normalizedSlug === '') {
-    normalizedSlug = createSlugHash(str);
-  }
-
-  return normalizedSlug;
+  return `${normalizedSlug}${createSlugHash(str)}`;
 };
