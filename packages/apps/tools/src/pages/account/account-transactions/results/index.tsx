@@ -6,7 +6,6 @@ import {
   ContentHeader,
   Grid,
   Heading,
-  ProductIcon,
   ProgressBar,
   Table,
   Text,
