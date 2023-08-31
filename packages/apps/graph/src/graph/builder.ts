@@ -10,6 +10,7 @@ import {
   DateTimeResolver,
   PositiveFloatResolver,
 } from 'graphql-scalars';
+import { IncomingMessage } from 'http';
 
 interface IDefaultTypesExtension {
   Scalars: {
@@ -28,10 +29,15 @@ interface IDefaultTypesExtension {
   };
 }
 
+export interface Context {
+  req: IncomingMessage;
+}
+
 // eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
+    Context: Context;
   }
 >({
   plugins: [RelayPlugin, PrismaPlugin],

@@ -1,5 +1,5 @@
 import { prismaClient } from '../../db/prismaClient';
-import { builder } from '../builder';
+import { builder, Context } from '../builder';
 
 import { Transaction } from '@prisma/client';
 import _debug, { Debugger } from 'debug';
@@ -13,17 +13,17 @@ builder.subscriptionField('transaction', (t) => {
     },
     type: 'Transaction',
     nullable: true,
-    subscribe: (parent, args, context, info) => iteratorFn(args.requestKey),
+    subscribe: (parent, args, context, info) =>
+      iteratorFn(args.requestKey, context),
     resolve: (__, transaction) => transaction,
   });
 });
 
 async function* iteratorFn(
   requestKey: string,
-): AsyncGenerator<Transaction, void, unknown> {
-  console.log('iteratorFn', requestKey);
-  log('iteratorFn', requestKey);
-  while (true) {
+  context: Context,
+): AsyncGenerator<Transaction | null, void, unknown> {
+  while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
         requestkey: requestKey,
@@ -31,14 +31,12 @@ async function* iteratorFn(
     });
 
     if (transaction) {
-      console.log('transaction found', transaction);
       log('transaction found', transaction);
       yield transaction;
       return;
     }
 
-    console.log('waiting for transaction ' + requestKey);
-    log('waiting for transaction ' + requestKey);
+    log(`waiting for transaction ${requestKey}`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
