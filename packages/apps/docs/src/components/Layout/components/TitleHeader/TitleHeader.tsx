@@ -29,7 +29,7 @@ export const TitleHeader: FC<IProps> = ({ title, subTitle, icon }) => {
           </Stack>
           {subTitle !== undefined && (
             <span className={subheaderClass}>
-              <Heading as="h5" variant="h6" bold={false}>
+              <Heading as="h6" bold={false}>
                 {subTitle}
               </Heading>
             </span>
