@@ -1,6 +1,6 @@
 import { type ITreeProps, Tree } from './';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<{} & ITreeProps> = {

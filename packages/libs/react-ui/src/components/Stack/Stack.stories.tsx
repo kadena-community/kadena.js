@@ -1,7 +1,7 @@
 import { itemClass, itemSizeClass } from './stories.css';
 
 import { Stack } from '@components/Stack';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { type Sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import className from 'classnames';

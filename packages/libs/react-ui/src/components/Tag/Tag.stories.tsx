@@ -1,6 +1,6 @@
 import { Button } from '@components/Button';
 import { type ITagProps, Tag } from '@components/Tag';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 const meta: Meta<
