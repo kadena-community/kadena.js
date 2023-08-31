@@ -3,67 +3,74 @@
 import {
   accordionContentWrapperClass,
   accordionSectionClass,
+  accordionSectionHeadingClass,
   accordionTitleClass,
-  accordionTitleVariants,
   toggleButtonClass,
+  toggleIconClass,
 } from './Accordion.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, useEffect, useRef } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IAccordionSectionProps {
-  title: React.ReactNode;
-  children: React.ReactNode;
-  isOpen: boolean;
-  onToggle: () => void;
-  onOpen?: () => void;
+  children?: React.ReactNode;
+  index?: number;
+  isOpen?: boolean;
+  onClick?: () => void;
   onClose?: () => void;
+  onOpen?: () => void;
+  title: string;
 }
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
-  isOpen = false,
-  title,
   children,
-  onToggle,
-  onOpen,
+  isOpen,
+  onClick,
   onClose,
+  onOpen,
+  title,
 }) => {
-  const didMountRef = useRef(false);
-
-  useEffect(() => {
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      return;
+  const handleClick = (): void => {
+    if (isOpen) {
+      onClose?.();
+    } else {
+      onOpen?.();
     }
-
-    if (isOpen) onOpen?.();
-    else onClose?.();
-  }, [isOpen]);
-
+    onClick?.();
+  };
   return (
-    <div className={accordionSectionClass}>
-      <div
-        data-testid="kda-accordion-title"
-        onClick={onToggle}
-        className={classNames(
-          accordionTitleClass,
-          accordionTitleVariants[isOpen ? 'opened' : 'closed'],
-        )}
+    <section
+      className={accordionSectionClass}
+      data-testid="kda-accordion-section"
+    >
+      <button
+        className={classNames(accordionSectionHeadingClass, {
+          isOpen,
+        })}
+        onClick={handleClick}
       >
-        <span>{title}</span>
-
-        <button
-          role="button"
-          className={classNames(toggleButtonClass, {
-            isOpen,
-          })}
+        <span
+          data-testid="kda-accordion-section-title"
+          className={accordionTitleClass}
         >
-          <SystemIcon.Close size="sm" />
-        </button>
-      </div>
+          {title}
+        </span>
 
-      {isOpen && <div className={accordionContentWrapperClass}>{children}</div>}
-    </div>
+        <span className={toggleButtonClass}>
+          <SystemIcon.Close
+            className={classNames(toggleIconClass, {
+              isOpen,
+            })}
+            size="sm"
+          />
+        </span>
+      </button>
+
+      {isOpen && children && (
+        <div className={accordionContentWrapperClass}>{children}</div>
+      )}
+    </section>
   );
 };
