@@ -1,5 +1,6 @@
 ---
-"@kadena/react-ui": patch
+'@kadena/react-ui': none
 ---
 
-Feat/explicit imports
+Implement the rule consistent-type-imports into React-UI and update the
+currently existing imports/exports.
