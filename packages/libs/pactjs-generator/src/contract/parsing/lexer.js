@@ -271,16 +271,6 @@ function getModuleAndMethods(contract, logger) {
   return output;
 }
 exports.getModuleAndMethods = getModuleAndMethods;
-var TYPED_TOKEN_MATCH = 'atom,colon,atom';
-function lastThreeTokenTypedAtomMatch(tokens) {
-  return (
-    tokens
-      .map(function (t) {
-        return t === null || t === void 0 ? void 0 : t.type;
-      })
-      .join() === TYPED_TOKEN_MATCH
-  );
-}
 var getLexerOutput = function (contract, logger) {
   if (logger === void 0) {
     logger = function () {};

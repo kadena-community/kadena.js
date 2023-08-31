@@ -54,9 +54,13 @@ export const Primary: Story = {
     color: 'default',
   },
   render: ({ selectIcon, onClick, title, color }) => {
-    const Icon = SystemIcon[selectIcon];
     return (
-      <IconButton title={title} onClick={onClick} icon={Icon} color={color} />
+      <IconButton
+        title={title}
+        onClick={onClick}
+        icon={selectIcon}
+        color={color}
+      />
     );
   },
 };

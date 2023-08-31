@@ -10,7 +10,7 @@ const meta: Meta<
 > = {
   title: 'Components/ContentHeader',
   argTypes: {
-    selectIcon: {
+    icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
@@ -45,15 +45,14 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'ContentHeader',
   args: {
-    selectIcon: 'Account',
+    icon: 'Account',
     heading: 'Incoming Transactions',
     description:
       'This table is listing all the incoming transaction sorted by date descending descriptive text.',
   },
-  render: ({ selectIcon, heading, description }) => {
-    const Icon = SystemIcon[selectIcon];
+  render: ({ icon, heading, description }) => {
     return (
-      <ContentHeader heading={heading} icon={Icon} description={description} />
+      <ContentHeader heading={heading} icon={icon} description={description} />
     );
   },
 };

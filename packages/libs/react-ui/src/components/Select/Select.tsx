@@ -12,31 +12,27 @@ import React, { FC, forwardRef } from 'react';
 export interface ISelectProps
   extends Omit<
     React.HTMLAttributes<HTMLSelectElement>,
-    'aria-label' | 'as' | 'className'
+    'aria-label' | 'as' | 'className' | 'children' | 'id'
   > {
   ariaLabel: string;
   children: React.ReactNode;
   disabled?: boolean;
-  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
-  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  icon?: keyof typeof SystemIcon;
   ref?: React.ForwardedRef<HTMLSelectElement>;
-  value: string[] | string | number;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  id: string;
+  value?: string;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
   HTMLSelectElement,
   ISelectProps
 >(function Select(
-  {
-    ariaLabel,
-    children,
-    disabled = false,
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    icon: Icon,
-    ...rest
-  },
+  { ariaLabel, children, disabled = false, icon, ...rest },
   ref,
 ) {
+  const Icon = icon && SystemIcon[icon];
+
   return (
     <div
       className={classNames(containerClass, {

@@ -4,10 +4,8 @@ import {
   Grid,
   InputWrapperStatus,
   Notification,
-  ProductIcon,
   ProgressBar,
   Stack,
-  SystemIcon,
   TrackerCard,
 } from '@kadena/react-ui';
 
@@ -62,17 +60,17 @@ const CrossChainTransferTracker: FC = () => {
   useToolbar([
     {
       title: t('Cross Chain'),
-      icon: SystemIcon.Transition,
+      icon: 'Transition',
       href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
     },
     {
       title: t('Finalize Cross Chain'),
-      icon: SystemIcon.TransitionMasked,
+      icon: 'TransitionMasked',
       href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
     },
     {
       title: t('Module Explorer'),
-      icon: SystemIcon.Earth,
+      icon: 'Earth',
       href: Routes.MODULE_EXPLORER,
     },
   ]);
@@ -189,7 +187,6 @@ const CrossChainTransferTracker: FC = () => {
         gap={'$6'}
       >
         <Stack direction="column" gap={'$2'}>
-          {' '}
           <Breadcrumbs.Root>
             <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
             <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
@@ -225,13 +222,13 @@ const CrossChainTransferTracker: FC = () => {
               setTxError('');
             }}
             title="Warning"
-            icon={SystemIcon.AlertBox}
+            icon={'AlertBox'}
           >
             {txError}
             <Notification.Actions>
               <Notification.Button
                 color="negative"
-                icon={SystemIcon.Refresh}
+                icon={'Refresh'}
                 onClick={validateThenSubmit(handleSubmit)}
               >
                 {t('Retry')}
@@ -279,13 +276,13 @@ const CrossChainTransferTracker: FC = () => {
             initialOpenItem={0}
             sections={[
               {
-                icon: SystemIcon.Information,
+                icon: 'Information',
                 title: t('Transfer Information'),
                 children: (
                   <div className={infoBoxStyle}>
                     <TrackerCard
                       variant="vertical"
-                      icon={ProductIcon.QuickStart}
+                      icon={'QuickStart'}
                       labelValues={[
                         {
                           label: t('Sender'),
@@ -327,8 +324,8 @@ const CrossChainTransferTracker: FC = () => {
                       variant="vertical"
                       icon={
                         data?.id === StatusId.Success
-                          ? ProductIcon.Receiver
-                          : ProductIcon.ReceiverInactive
+                          ? 'Receiver'
+                          : 'ReceiverInactive'
                       }
                       labelValues={[
                         {

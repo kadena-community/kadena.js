@@ -11,7 +11,7 @@
     "build:brokenLinks": "node src/scripts/detectBrokenLinks.mjs",
     "build:checkForHeaders": "node src/scripts/checkForHeaders.mjs && prettier ./src/pages/docs --write",
     "build:createSpecJson": "node ./src/scripts/createSpec.mjs && prettier ./src/specs/**/*.json --write",
-    "build:createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/data/menu.mjs --write",
+    "build:createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/_generated/menu.mjs --write",
     "build:importReadMe": "node ./src/scripts/importReadme.mjs && prettier ./src/pages/docs --write",
     "build:next": "pnpm run build:scripts && next build",
     "build:scripts": "pnpm run build:importReadMe && pnpm run build:createtree && pnpm run build:createSpecJson && pnpm run build:brokenLinks && pnpm run build:checkForHeaders",
@@ -42,6 +42,7 @@
     "acorn": "~8.8.2",
     "classnames": "^2.3.1",
     "date-fns": "~2.30.0",
+    "globby": "~13.2.2",
     "js-yaml": "~4.1.0",
     "mdast-util-to-markdown": "~1.5.0",
     "mdast-util-to-string": "~3.2.0",
@@ -58,8 +59,7 @@
     "remark-frontmatter": "~4.0.1",
     "remark-gfm": "~3.0.1",
     "shiki": "~0.14.2",
-    "styled-components": "~5.3.10",
-    "globby": "~13.2.2"
+    "styled-components": "~5.3.10"
   },
   "devDependencies": {
     "@7-docs/cli": "~0.3.1",

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "pnpm run postinstall && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"sleep 3; pnpm run generate:sdk -w\"",
-    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; rushx generate:sdk -w\"",
+    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
     "format": "pnpm run /^format:.*/",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",

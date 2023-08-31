@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 export interface IIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
   as?: 'button' | 'a';
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   title: string;
@@ -23,7 +23,7 @@ export const IconButton: FC<IIconButtonProps> = ({
   title,
   ...props
 }) => {
-  const Icon = icon;
+  const Icon = icon && SystemIcon[icon];
   const ariaLabel = props['aria-label'] ?? title;
 
   if (as === 'a' && href !== undefined && href !== '') {

@@ -1,4 +1,4 @@
-import { menuData } from '@/data/menu.mjs';
+import { menuData } from '@/_generated/menu.mjs';
 import { IFrontmatterData } from '@/types';
 import { IMenuData } from '@/types/Layout';
 import type { StreamMetaData } from '@7-docs/edge';

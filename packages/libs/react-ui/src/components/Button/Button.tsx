@@ -3,10 +3,9 @@ import {
   colorVariants,
   iconLoadingClass,
 } from './Button.css';
-import { ButtonIcon } from './ButtonIcon';
 
 import { SystemIcon } from '@components/Icon';
-import cx from 'classnames';
+import cn from 'classnames';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 
 export interface IButtonProps
@@ -46,22 +45,22 @@ export const Button: FC<IButtonProps> = ({
     Icon = SystemIcon.Loading;
   }
 
-  const buttonClassname = cx(colorVariants[variant], {
+  const buttonClassname = cn(colorVariants[variant], {
     [buttonLoadingClass]: loading,
   });
 
-  const iconClassname = cx({
+  const iconClassname = cn({
     [iconLoadingClass]: loading,
   });
 
   const buttonChildren = (
     <>
       {Icon && iconAlign === 'left' && (
-        <ButtonIcon icon={Icon} className={iconClassname} />
+        <Icon size="md" className={iconClassname} />
       )}
       {children}
       {Icon && iconAlign === 'right' && (
-        <ButtonIcon icon={Icon} className={iconClassname} />
+        <Icon size="md" className={iconClassname} />
       )}
     </>
   );

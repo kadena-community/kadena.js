@@ -14,6 +14,6 @@ export interface ISidebarToolbarItem {
   title: string;
   href?: string;
   active?: boolean;
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   items?: ISidebarSubMenuItem[];
 }

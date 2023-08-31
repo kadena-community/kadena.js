@@ -2,8 +2,7 @@
 
 # @kadena/client-examples
 
-This project demonstrates the use of the `@kadena/pactjs-cli` together with
-`@kadena/client` for _smart contracts_.
+Test project to verify pactjs-cli and pactjs-generator
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -21,7 +20,7 @@ the contract using `@kadena/pactjs-cli`.
 To install `@kadena/pactjs-cli` as a dev dependency for your project, run the
 following command in the terminal:
 
-```shell
+```sh
 npm install @kadena/pactjs-cli --save-dev
 ```
 
@@ -30,13 +29,13 @@ chain.
 
 ### Creating a type definition from a contract deployed on the chain
 
-```shell
+```sh
 npx pactjs contract-generate --contract="coin" --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact
 ```
 
 ### Creating a type definition from a pact file
 
-```shell
+```sh
 npx pactjs contract-generate --file=./coin.pact --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact
 ```
 
@@ -46,7 +45,7 @@ modules with `--file` or if they are already deployed on the chain you can use
 can alternatively use the following command if you have all of the files
 locally.
 
-```shell
+```sh
 npx pactjs contract-generate --file=./coin.pact --file=./fungible-v2.pact --file=./fungible-xchain-v1.pact
 ```
 

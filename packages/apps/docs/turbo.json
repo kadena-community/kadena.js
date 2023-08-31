@@ -4,12 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "./src/data/menu.mjs",
-        "./src/data/searchIndex.json"
-      ],
+      "outputs": [".next/**", "!.next/cache/**"],
       "outputMode": "new-only"
     }
   }
