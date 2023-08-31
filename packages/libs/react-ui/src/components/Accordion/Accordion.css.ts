@@ -48,7 +48,7 @@ export const accordionTitleClass = style([
   }),
 ]);
 
-export const toggleButtonClass = style([
+export const toggleIconWrapperClass = style([
   sprinkles({
     background: 'none',
     border: 'none',
