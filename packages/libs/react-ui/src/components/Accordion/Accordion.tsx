@@ -1,3 +1,5 @@
+'use client';
+
 import { IAccordionSectionProps } from '.';
 
 import type { FC, FunctionComponentElement } from 'react';
