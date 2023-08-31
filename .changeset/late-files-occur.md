@@ -1,6 +1,5 @@
 ---
-"@kadena/tools": patch
-"@kadena/react-ui": patch
+'@kadena/react-ui': none
 ---
 
 Refactor Accordion component
