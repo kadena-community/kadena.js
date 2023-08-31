@@ -21,13 +21,6 @@ module.exports = {
       },
     ],
     'import/no-unresolved': ['error', { ignore: ['^@stitches/react'] }],
-    '@typescript-eslint/consistent-type-imports': [
-      'error',
-      {
-        fixStyle: 'inline-type-imports',
-        prefer: 'type-imports',
-      },
-    ],
   },
   settings: {
     react: {
