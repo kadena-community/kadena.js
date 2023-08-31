@@ -1,4 +1,4 @@
-import { ITextFieldProps, SystemIcon, TextField } from '@kadena/react-ui';
+import { ITextFieldProps, TextField } from '@kadena/react-ui';
 
 import useTranslation from 'next-translate/useTranslation';
 import React, { type FC } from 'react';
@@ -49,7 +49,7 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
       inputProps={{
         id: 'request-key-input',
         placeholder: t('Enter Request Key'),
-        leftIcon: SystemIcon.KeyIconFilled,
+        leftIcon: 'KeyIconFilled',
         ...inputProps,
       }}
     />

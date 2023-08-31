@@ -1,4 +1,4 @@
-import { INotificationProps, Notification, SystemIcon } from '@kadena/react-ui';
+import { INotificationProps, Notification } from '@kadena/react-ui';
 
 import { containerStyle } from './styles.css';
 
@@ -18,10 +18,10 @@ const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
 };
 
 const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
-  erroneous: SystemIcon.AlertBox,
-  idle: SystemIcon.AlertCircleOutline,
-  processing: SystemIcon.Information,
-  successful: SystemIcon.Check,
+  erroneous: 'AlertBox',
+  idle: 'AlertCircleOutline',
+  processing: 'Information',
+  successful: 'Check',
 };
 
 export interface IFormStatusNotificationProps {

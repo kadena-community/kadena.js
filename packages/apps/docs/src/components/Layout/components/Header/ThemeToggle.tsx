@@ -1,4 +1,4 @@
-import { IconButton, SystemIcon } from '@kadena/react-ui';
+import { IconButton } from '@kadena/react-ui';
 
 import { useTheme } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
@@ -26,7 +26,7 @@ export const ThemeToggle: FC = () => {
     <IconButton
       title="Toggle theme"
       onClick={toggleTheme}
-      icon={SystemIcon.ThemeLightDark}
+      icon="ThemeLightDark"
       color="inverted"
     />
   );

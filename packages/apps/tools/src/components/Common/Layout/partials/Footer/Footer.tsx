@@ -1,4 +1,4 @@
-import { NavFooter, SystemIcon, useModal } from '@kadena/react-ui';
+import { NavFooter, useModal } from '@kadena/react-ui';
 
 import { OptionsModal } from '@/components/Global/OptionsModal';
 import { useTheme } from 'next-themes';
@@ -55,17 +55,14 @@ const FooterWrapper: FC = () => {
       </NavFooter.Panel>
       <NavFooter.Panel>
         <NavFooter.IconButton
-          icon={SystemIcon.ApplicationBrackets}
+          icon={'ApplicationBrackets'}
           onClick={() => openModal()}
         />
         <NavFooter.IconButton
-          icon={SystemIcon.ThemeLightDark}
+          icon={'ThemeLightDark'}
           onClick={() => toggleTheme()}
         />
-        <NavFooter.IconButton
-          icon={SystemIcon.ApplicationBrackets}
-          text="English"
-        />
+        <NavFooter.IconButton icon={'ApplicationBrackets'} text="English" />
       </NavFooter.Panel>
     </NavFooter.Root>
   );

@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import React, { FC } from 'react';
 
 export interface INotificationProps {
-  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon?: keyof typeof SystemIcon;
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
@@ -30,7 +30,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
   expanded = false,
   onClose,
 }) => {
-  const Icon = icon || SystemIcon.HelpCircle;
+  const Icon = icon ? SystemIcon[icon] : SystemIcon.HelpCircle;
 
   const classList = classNames(
     containerClass,

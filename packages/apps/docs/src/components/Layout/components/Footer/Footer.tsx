@@ -1,4 +1,4 @@
-import { IconButton, Stack, SystemIcon } from '@kadena/react-ui';
+import { IconButton, Stack } from '@kadena/react-ui';
 
 import { spacerClass } from '../styles.css';
 import { DocsLogo } from '..';
@@ -18,13 +18,13 @@ export const Footer: FC = () => {
           <DocsLogo />
           <IconButton
             title="Go to our Github"
-            icon={SystemIcon.Github}
+            icon="Github"
             as="a"
             href="https://github.com/kadena-community"
           />
           <IconButton
             title="Go to our Twitter"
-            icon={SystemIcon.Twitter}
+            icon="Twitter"
             as="a"
             href="https://twitter.com/kadena_io"
           />
@@ -32,7 +32,7 @@ export const Footer: FC = () => {
             as="a"
             href="https://www.linkedin.com/company/kadena-llc"
             title="Go to our Linkedin"
-            icon={SystemIcon.Linkedin}
+            icon="Linkedin"
           />
         </Stack>
         <div className={spacerClass} />

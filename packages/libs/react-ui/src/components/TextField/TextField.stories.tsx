@@ -151,8 +151,8 @@ export const Group: Story = {
         inputProps={{
           id: 'inputStory',
           leadingText,
-          leftIcon: SystemIcon[leftIcon],
-          rightIcon: SystemIcon[rightIcon],
+          leftIcon,
+          rightIcon,
           placeholder: 'This is a placeholder',
         }}
       />

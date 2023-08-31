@@ -1,4 +1,4 @@
-import { Heading, SystemIcon, TextField } from '@kadena/react-ui';
+import { Heading, TextField } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
 import { StyledTreeList } from '../TreeMenu/styles';
@@ -71,7 +71,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             id: 'search',
             onKeyUp: handleKeyPress,
             placeholder: 'Search',
-            leftIcon: SystemIcon.Magnify,
+            leftIcon: 'Magnify',
             'aria-label': 'Search',
           }}
         ></TextField>

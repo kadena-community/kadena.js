@@ -3,7 +3,6 @@ import {
   Heading,
   Notification,
   Stack,
-  SystemIcon,
   Tabs,
   useModal,
 } from '@kadena/react-ui';
@@ -102,7 +101,7 @@ export const SearchResults: FC<IProps> = ({
               <Notification.Root
                 color={'negative'}
                 expanded={true}
-                icon={SystemIcon.AlertBox}
+                icon="AlertBox"
               >
                 {semanticError}
               </Notification.Root>
@@ -145,7 +144,7 @@ export const SearchResults: FC<IProps> = ({
               <Notification.Root
                 color={'negative'}
                 expanded={true}
-                icon={SystemIcon.AlertBox}
+                icon="AlertBox"
               >
                 {error}
               </Notification.Root>

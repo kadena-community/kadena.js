@@ -25,7 +25,7 @@ import React, { FC, useState } from 'react';
 export interface IDevOption {
   title: string;
   text: string;
-  icon: React.FC;
+  icon: keyof typeof SystemIcon;
   tag?: string;
 }
 
@@ -44,7 +44,7 @@ export const OptionsModal: FC = () => {
       text: t(
         'This view can be used for basic operations and handling things within the user interface.',
       ),
-      icon: SystemIcon.Application,
+      icon: 'Application',
     },
     BACKEND: {
       title: t('Backend Developers'),
@@ -52,7 +52,7 @@ export const OptionsModal: FC = () => {
       text: t(
         'This option is meant for developers who need more sophisticated options within the user interface.',
       ),
-      icon: SystemIcon.ApplicationBrackets,
+      icon: 'ApplicationBrackets',
     },
     DAPP: {
       title: t('dApp Developers'),
@@ -60,7 +60,7 @@ export const OptionsModal: FC = () => {
       text: t(
         'This option is meant for developers who need more sophisticated options within the user interface.',
       ),
-      icon: SystemIcon.ApplicationBrackets,
+      icon: 'ApplicationBrackets',
     },
   };
 
@@ -83,13 +83,13 @@ export const OptionsModal: FC = () => {
                   {selected === key ? (
                     <IconButton
                       title="Radio"
-                      icon={SystemIcon.RadioboxMarked}
+                      icon={'RadioboxMarked'}
                       color="default"
                     />
                   ) : (
                     <IconButton
                       title="Radio"
-                      icon={SystemIcon.RadioboxBlank}
+                      icon={'RadioboxBlank'}
                       color="default"
                     />
                   )}

@@ -105,7 +105,6 @@ const meta: Meta<
 type Story = StoryObj<
   {
     text: string;
-    selectIcon: keyof typeof SystemIcon;
   } & IButtonProps
 >;
 

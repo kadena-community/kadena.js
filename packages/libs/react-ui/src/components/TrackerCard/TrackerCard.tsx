@@ -22,7 +22,7 @@ export interface ITrackerCardProps {
   labelValues: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
+  icon?: keyof typeof ProductIcon;
   variant?: keyof typeof layoutVariant;
 }
 
@@ -60,7 +60,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     warningVariant[helperTextType],
   );
 
-  const Icon = icon;
+  const Icon = icon && ProductIcon[icon];
 
   return (
     <div className={classCardContainer} data-testid="kda-tracker-card">

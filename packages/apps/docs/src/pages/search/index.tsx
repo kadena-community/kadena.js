@@ -1,4 +1,4 @@
-import { SystemIcon, TextField } from '@kadena/react-ui';
+import { TextField } from '@kadena/react-ui';
 
 import { Search } from '@/components';
 import {
@@ -54,7 +54,7 @@ const SearchPage: FC = () => {
               ref: searchInputRef,
               defaultValue: query,
               placeholder: 'Search',
-              rightIcon: SystemIcon.Magnify,
+              rightIcon: 'Magnify',
               'aria-label': 'Search',
             }}
           />

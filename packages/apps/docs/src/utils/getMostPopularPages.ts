@@ -108,7 +108,10 @@ export default async function getMostPopularPages(
   slug = '/',
   limit = 5,
 ): Promise<IMostPopularPage[]> {
-  const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
+  const dataFilePath = path.join(
+    process.cwd(),
+    'src/_generated/mostPopular.json',
+  );
 
   const GOOGLE_ANALYTICS_PROPERTY_ID = process.env.GOOGLE_ANALYTICS_PROPERTY_ID;
   const GOOGLE_APPLICATION_CREDENTIALS =

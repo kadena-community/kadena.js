@@ -5,7 +5,6 @@ import {
   Card,
   Grid,
   Heading,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import { mainContentClass, submitClass } from './styles.css';
@@ -45,7 +44,7 @@ const CheckTransactions: FC = () => {
   useToolbar([
     {
       title: t('Account Transactions'),
-      icon: SystemIcon.Account,
+      icon: 'Account',
       href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ]);
