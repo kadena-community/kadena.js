@@ -77,13 +77,15 @@ the init command ask for context / devnet/testnet/mainnet/local/custom | if alre
 
 example from aptos:
 
+```yaml
 profiles:
-default:
-private_key: "0x2833c40ce6253b20921405e4bb5b66211162f9eb467a01e92a284f73ad0f4213"
-public_key: "0x807dddb1f05138dba6958f73c988111c62be24b946811622fb2cad029ac36c64"
-account: fde8bacb9c6d3b7c114d7df251a3c0a6193b52f658536a94e64dd0f898ede1c2
-rest_url: "https://fullnode.devnet.aptoslabs.com"
-faucet_url: "https://faucet.devnet.aptoslabs.com"
+  default:
+    private_key: "efbadbadxx"
+    public_key: "badbadbadxx"
+    account: "k:xx"
+    rest_url: "https://devnet"
+    faucet_url: "https://devnet"
+```
 
 ## kda keys (kda tool)
 
