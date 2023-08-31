@@ -30,8 +30,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-// TODO: This needs to be changed to 100, when the contract is redeployed
-const AMOUNT_OF_COINS_FUNDED: number = 20;
+const AMOUNT_OF_COINS_FUNDED: number = 100;
 
 const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;

@@ -11,6 +11,7 @@ const meta: Meta<{ title?: string } & IModalProps> = {
       control: {
         type: 'text',
       },
+      description: 'Title of the modal.',
     },
   },
 };

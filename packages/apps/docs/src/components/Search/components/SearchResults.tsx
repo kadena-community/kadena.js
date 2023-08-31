@@ -1,6 +1,14 @@
-import { Button, Notification, Stack, Tabs, useModal } from '@kadena/react-ui';
+import {
+  Button,
+  Heading,
+  Notification,
+  Stack,
+  Tabs,
+  useModal,
+} from '@kadena/react-ui';
 
 import type { IQueryResult } from '../../../types';
+import { removeUnnecessarySearchRecords } from '../utils';
 
 import {
   loadingWrapperClass,
@@ -10,7 +18,7 @@ import {
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
-import { Loading } from '@/components';
+import { BrowseSection, Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
@@ -75,6 +83,7 @@ export const SearchResults: FC<IProps> = ({
   }, [isMounted]);
 
   if (!isMounted) return null;
+
   return (
     <section onClick={rememberTab}>
       <Tabs.Root defaultSelected={selectedTabName}>
@@ -103,7 +112,9 @@ export const SearchResults: FC<IProps> = ({
                   limitResults={limitResults}
                   results={semanticResults}
                 />
-                {limitResults !== undefined && query !== undefined ? (
+                {limitResults !== undefined &&
+                limitResults < semanticResults.length &&
+                query !== undefined ? (
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
@@ -139,22 +150,35 @@ export const SearchResults: FC<IProps> = ({
               </Notification.Root>
             )}
 
-            {conversation?.history.map((interaction, idx) => (
-              <div key={`${interaction.input}-${idx}`}>
-                <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                <div>
-                  {interaction?.metadata?.map((item, innerIdx) => {
-                    if (!item.filePath) return;
-                    const url = filePathToRoute(item.filePath);
-                    return (
-                      <Link key={`${url}-${innerIdx}`} href={url}>
-                        {url}
-                      </Link>
-                    );
-                  })}
+            {conversation?.history.map((interaction, idx) => {
+              const metadata = removeUnnecessarySearchRecords(
+                interaction?.metadata,
+              );
+
+              return (
+                <div key={`${interaction.input}-${idx}`}>
+                  <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                  <div>
+                    <Heading variant="h4">Sources:</Heading>
+                    {metadata.length > 1 && (
+                      <BrowseSection>
+                        {metadata.map((item, innerIdx) => {
+                          const url = filePathToRoute(
+                            item.filePath,
+                            item.header,
+                          );
+                          return (
+                            <Link key={`${url}-${innerIdx}`} href={url}>
+                              {item.title}
+                            </Link>
+                          );
+                        })}
+                      </BrowseSection>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             <div>{outputStream}</div>
           </div>

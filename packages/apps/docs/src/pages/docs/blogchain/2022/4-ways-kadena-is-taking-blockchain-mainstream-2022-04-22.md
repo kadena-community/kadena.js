@@ -82,5 +82,6 @@ The fact is, Proof Of Work-based Layer 1 technology can handle industrial use
 cases along the lines of clearing the entire US stock market on Kadena. “We
 could do it today,” said Stuart. “That’s the scale we’re talking about.”
 
-_Be sure to check out the whole discussion by clicking
-[here](https://twitter.com/kadena_io/status/1506740712255205385)._
+_Be sure to check out the whole discussion below._
+
+[here](https://twitter.com/kadena_io/status/1506740712255205385)

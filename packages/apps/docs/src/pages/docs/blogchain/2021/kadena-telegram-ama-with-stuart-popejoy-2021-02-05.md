@@ -116,9 +116,11 @@ for themselves?**
 sharing more about later, which include multi-chain incentives, interaction with
 KDAX, etc.
 
-You saw our
-[NFT announcement](https://twitter.com/kadena_io/status/1356717907447865362) I
-hope, so there is where we’re looking to aggressively partner and innovate, so
+You saw our NFT announcement
+
+[NFT announcement](https://twitter.com/kadena_io/status/1356717907447865362)
+
+I hope, so there is where we’re looking to aggressively partner and innovate, so
 that’s both for Kadena and for devs. But we’ll also be launching new initiatives
 surrounding economic development — think Consensys for Ethereum, but powered by
 a DAO.
