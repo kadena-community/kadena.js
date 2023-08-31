@@ -288,7 +288,7 @@ enum KeysetPredicate {
 type Subscription {
   newBlocks(filter: NewBlocksFilterInput): [Block!]!
   events(filter: EventsFilterInput): [TransactionEvent!]!
-  poll(requestKey: String!): String!
+  transaction(requestKey: String!): Transaction
   # todo
   # send(sendBody: SendBody): SendResponse
 }
