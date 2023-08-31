@@ -71,7 +71,9 @@ export const toggleIconClass = style([
 export const accordionContentWrapperClass = style([
   sprinkles({
     color: '$neutral5',
-    paddingTop: 0,
+    fontSize: '$base',
+    overflow: 'hidden',
     paddingBottom: '$2',
+    paddingTop: 0,
   }),
 ]);
