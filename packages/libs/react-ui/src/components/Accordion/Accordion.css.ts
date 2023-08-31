@@ -5,7 +5,6 @@ import { style } from '@vanilla-extract/css';
 export const accordionSectionClass = style([
   sprinkles({
     display: 'block',
-    flexGrow: 1,
     marginBottom: '$6',
   }),
   {
