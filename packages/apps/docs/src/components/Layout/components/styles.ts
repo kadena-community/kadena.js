@@ -1,5 +1,7 @@
 import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 
+import { $$backgroundOverlayColor } from '../global.css';
+
 import { HeaderIconGroup } from './Header/styles';
 
 import Link from 'next/link';
@@ -106,6 +108,7 @@ export const NavLink: StyledComponent<
     active: {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
+
         color: '$neutral000',
 
         '&:hover': {

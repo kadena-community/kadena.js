@@ -1,5 +1,6 @@
 import { Heading } from '@kadena/react-ui';
 
+import { basebackgroundClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -10,13 +11,13 @@ import { globalClass } from '../global.css';
 
 import {
   Aside,
-  AsideBackground,
   AsideList,
   ListItem,
   StickyAside,
   StickyAsideWrapper,
 } from './components/Aside';
 import { PageGrid } from './styles';
+import { asidebackgroundClass } from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -24,6 +25,7 @@ import { LastModifiedDate } from '@/components/LastModifiedDate';
 import { IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import classNames from 'classnames';
+import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
@@ -78,6 +80,11 @@ export const Full: FC<IPageProps> = ({
   const showSideMenu: boolean =
     aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
 
+  const backgroundClassnames = classnames(
+    basebackgroundClass,
+    asidebackgroundClass,
+  );
+
   return (
     <PageGrid className={globalClass}>
       <Template menuItems={leftMenuTree}>
@@ -92,7 +99,7 @@ export const Full: FC<IPageProps> = ({
             />
           </article>
         </div>
-        <AsideBackground />
+        <div className={backgroundClassnames} />
         <Aside data-cy="aside">
           {showSideMenu && (
             <StickyAsideWrapper>

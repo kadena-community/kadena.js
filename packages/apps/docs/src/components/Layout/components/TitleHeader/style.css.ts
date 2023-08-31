@@ -1,6 +1,6 @@
 import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$pageWidth } from '../../global.css';
+import { $$backgroundOverlayColor, $$pageWidth } from '../../global.css';
 
 import { style } from '@vanilla-extract/css';
 
@@ -62,7 +62,7 @@ export const headerClass = style([
   {
     gridArea: 'main',
     zIndex: 3,
-    backgroundColor: 'rgba(250,250,250, .8)',
+    backgroundColor: $$backgroundOverlayColor,
   },
 ]);
 
