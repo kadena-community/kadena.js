@@ -1,6 +1,11 @@
 import { Heading, ProductIcon, Stack } from '@kadena/react-ui';
 
-import { HeaderWrapper, StyledHeader, SubHeader, Wrapper } from './style';
+import {
+  headerClass,
+  headerWrapperClass,
+  subheaderClass,
+  wrapperClass,
+} from './style.css';
 
 import { ProductIconNames } from '@/types/Layout';
 import React, { FC } from 'react';
@@ -15,22 +20,22 @@ export const TitleHeader: FC<IProps> = ({ title, subTitle, icon }) => {
   const Icon = icon ? ProductIcon[icon] : null;
 
   return (
-    <HeaderWrapper data-cy="titleheader">
-      <StyledHeader>
-        <Wrapper>
+    <div data-cy="titleheader" className={headerWrapperClass}>
+      <header className={headerClass}>
+        <div className={wrapperClass}>
           <Stack alignItems="center">
             {Icon && <Icon size="heroHeader" />}
             <Heading as="h1">{title}</Heading>
           </Stack>
           {subTitle !== undefined && (
-            <SubHeader>
-              <Heading as="h5" bold={false}>
+            <span className={subheaderClass}>
+              <Heading as="h5" variant="h6" bold={false}>
                 {subTitle}
               </Heading>
-            </SubHeader>
+            </span>
           )}
-        </Wrapper>
-      </StyledHeader>
-    </HeaderWrapper>
+        </div>
+      </header>
+    </div>
   );
 };
