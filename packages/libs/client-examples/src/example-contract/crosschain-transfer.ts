@@ -93,7 +93,6 @@ async function doCrossChainTransfer(
   to: IAccount,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  const state = {};
   return (
     Promise.resolve(startInTheFirstChain(from, to, amount))
       .then((command) => signWithChainweaver(command))

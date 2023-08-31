@@ -6,33 +6,43 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ILinkProps {
-  href: string;
+  href?: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
   children: ReactNode;
   icon?: keyof typeof SystemIcon;
   iconAlign?: 'left' | 'right';
+  asChild?: boolean;
 }
 
 export const Link: FC<ILinkProps> = ({
-  href,
-  target = '_blank',
   children,
   icon,
   iconAlign = 'left',
+  asChild = false,
+  ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
 
-  const linkChildren = (
+  const getContents = (linkContents: ReactNode): ReactNode => (
     <>
       {Icon && iconAlign === 'left' && <Icon size="md" />}
-      {children}
+      {linkContents}
       {Icon && iconAlign === 'right' && <Icon size="md" />}
     </>
   );
 
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      ...children.props,
+      className: linkContainerClass,
+      children: getContents(children.props.children),
+    });
+  }
+
   return (
-    <a href={href} target={target} className={linkContainerClass}>
-      {linkChildren}
+    <a className={linkContainerClass} {...restProps}>
+      {getContents(children)}
     </a>
   );
 };

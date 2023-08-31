@@ -7,11 +7,15 @@ import React from 'react';
 
 export interface IBreadcrumbsProps {
   children?: FunctionComponentElement<IBreadcrumbItemProps>[];
-  icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
+  icon?: keyof typeof ProductIcon;
 }
 
-export const BreadcrumbsRoot: FC<IBreadcrumbsProps> = ({ children, icon }) => {
-  const Icon = icon;
+export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
+  children,
+  icon,
+}) => {
+  const Icon = icon && ProductIcon[icon];
+
   return (
     <nav className={navClass} data-testid="kda-breadcrumbs">
       {Icon && (

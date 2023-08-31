@@ -105,9 +105,14 @@ maintainibility of component styling which is enforced via
 [vanilla-extract/css][3] and will be explained in more detail in the Styling
 section.
 
-> NOTE: One exception to this is the usage of Next/Link. We are looking into
-> finding a consitent way to handle links that need to use the Next/Link
-> component and other such cases.
+#### Next.js next/link
+
+One exception to the general approach to avoid external elements in our component compositions is the use of next/link or similar components. Since next/link provides additional feature on top of the native anchor element, we want to be able to utilize it while still maintaining the integrity of our compositions. In this case, our approach to using external links is by doing the following: 
+- Adding an `asChild` prop to any link components
+- Use `React.cloneElement` to forward props to the child component - effectively allowing us to apply styles and any additional logic from our component to the external component
+- Ensure that the child component's props override the UI component which keeps behavior more predictable
+
+This is the current solution for external links, but the same underlying approach can be applied to other circumstances as well. 
 
 ### Typing
 

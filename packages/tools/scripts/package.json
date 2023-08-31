@@ -4,7 +4,6 @@
   "private": true,
   "description": "Changesets tools",
   "license": "ISC",
-  "scripts": {},
   "engines": {
     "node": ">=16",
     "pnpm": ">=8"
