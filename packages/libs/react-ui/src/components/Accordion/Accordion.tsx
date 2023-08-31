@@ -1,5 +1,6 @@
 'use client';
 
+import { accordionContentWrapperClass } from './Accordion.css';
 import { IAccordionSectionProps } from '.';
 
 import type { FC, FunctionComponentElement } from 'react';
@@ -30,12 +31,13 @@ export const AccordionRoot: FC<IAccordionRootProps> = ({
       {React.Children.map(children, (section, sectionIndex) =>
         React.cloneElement(
           section as React.ReactElement<
-            IAccordionSectionProps,
-            React.JSXElementConstructor<IAccordionSectionProps>
+            HTMLElement | IAccordionSectionProps,
+            React.JSXElementConstructor<JSX.Element & IAccordionSectionProps>
           >,
           {
             index: sectionIndex,
             isOpen: openSections.includes(sectionIndex),
+            className: accordionContentWrapperClass,
             onClick: () =>
               openSections.includes(sectionIndex)
                 ? setOpenSections(
