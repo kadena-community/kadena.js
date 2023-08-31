@@ -1,7 +1,9 @@
 import {
   checkpointContainerStyle,
   circleColorVariant,
+  circleLineContainerStyle,
   circleStyle,
+  gapLineContainerStyle,
   lineColorVariant,
   lineContainerStyle,
   lineStyle,
@@ -29,19 +31,7 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
         return (
           <>
             {index !== 0 ? (
-              <div className={lineContainerStyle}>
-                <div
-                  className={classNames(
-                    lineStyle,
-                    lineColorVariant[checkpoint.status],
-                  )}
-                />
-                <div
-                  className={classNames(
-                    lineStyle,
-                    lineColorVariant[checkpoint.status],
-                  )}
-                />
+              <div className={gapLineContainerStyle}>
                 <div
                   className={classNames(
                     lineStyle,
@@ -55,12 +45,38 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
               key={index}
               data-testid={`kda-checkpoint-container-${index}`}
             >
-              <div
-                className={classNames(
-                  circleStyle,
-                  circleColorVariant[checkpoint.status],
+              <div className={circleLineContainerStyle}>
+                {index !== 0 ? (
+                  <div className={lineContainerStyle}>
+                    <div
+                      className={classNames(
+                        lineStyle,
+                        lineColorVariant[checkpoint.status],
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <div className={lineContainerStyle} />
                 )}
-              />
+                <div
+                  className={classNames(
+                    circleStyle,
+                    circleColorVariant[checkpoint.status],
+                  )}
+                />
+                {index !== checkpoints.length - 1 ? (
+                  <div className={lineContainerStyle}>
+                    <div
+                      className={classNames(
+                        lineStyle,
+                        lineColorVariant[checkpoint.status],
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <div className={lineContainerStyle} />
+                )}
+              </div>
               <div
                 className={classNames(
                   textContainerStyle,

@@ -24,17 +24,17 @@ export const circleColorVariant = styleVariants({
 export const lineColorVariant = styleVariants({
   complete: [
     sprinkles({
-      backgroundColor: '$infoAccent',
+      borderColor: '$infoAccent',
     }),
   ],
   pending: [
     sprinkles({
-      backgroundColor: '$negativeAccent',
+      borderColor: '$negativeAccent',
     }),
   ],
   incomplete: [
     sprinkles({
-      backgroundColor: '$borderContrast',
+      borderColor: '$borderContrast',
     }),
   ],
 });
@@ -64,6 +64,9 @@ export const progressBarStyle = style([
     flexDirection: 'column',
     marginLeft: '$6',
   }),
+  {
+    gap: '2px',
+  },
 ]);
 
 export const checkpointContainerStyle = style([
@@ -84,6 +87,9 @@ export const textContainerStyle = style([
     fontWeight: '$normal',
     lineHeight: '$base',
   }),
+  {
+    flex: 1,
+  },
 ]);
 
 export const circleStyle = style([
@@ -97,10 +103,12 @@ export const circleStyle = style([
 export const lineStyle = style([
   sprinkles({
     borderRadius: '$sm',
-    height: '$2',
+    borderWidth: '$sm',
+    borderStyle: 'dashed',
   }),
   {
     width: '2px',
+    flex: 1,
   },
 ]);
 
@@ -109,11 +117,38 @@ export const lineContainerStyle = style([
     display: 'flex',
     alignItems: 'flex-start',
     flexDirection: 'column',
-    gap: '$1',
-    height: '$6',
+    gap: '$2',
+    height: '$sm',
   }),
   {
     marginLeft: '5px',
+    alignSelf: 'stretch',
+  },
+]);
+
+export const gapLineContainerStyle = style([
+  sprinkles({
+    display: 'flex',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    gap: '$2',
+    height: '$sm',
+  }),
+  {
+    marginLeft: '5px',
+    alignSelf: 'stretch',
+  },
+]);
+
+export const circleLineContainerStyle = style([
+  sprinkles({
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    gap: '$1',
+  }),
+  {
     alignSelf: 'stretch',
   },
 ]);

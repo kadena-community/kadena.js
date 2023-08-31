@@ -17,7 +17,7 @@ const systemProperties = defineProperties({
     borderRadius: vars.radii,
     boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
-    borderStyle: ['solid', 'none'],
+    borderStyle: ['solid', 'dashed', 'none'],
     cursor: ['pointer', 'not-allowed'],
     flexWrap: ['wrap', 'nowrap'],
     top: vars.sizes,
