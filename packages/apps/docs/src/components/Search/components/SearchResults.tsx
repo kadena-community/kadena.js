@@ -22,7 +22,6 @@ import { StaticResults } from './StaticResults';
 import { BrowseSection, Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
-import { StreamMetaData } from '@7-docs/edge';
 import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';

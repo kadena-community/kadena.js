@@ -2,10 +2,11 @@ import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
 import type { IQueryResult } from '../../../types';
 import { itemLinkClass, staticResultsListClass } from '../styles.css';
-import ReactMarkdown from 'react-markdown';
+
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
 import React, { FC } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface IProps {
   results: IQueryResult[];
