@@ -2,7 +2,7 @@ import { KadenaLogo } from './variants/Kadena';
 import { KadenaDevToolsLogo } from './variants/KadenaDevTools';
 import { KadenaDocsLogo } from './variants/KadenaDocs';
 
-import React, { FC, SVGProps } from 'react';
+import React, { type FC, type SVGProps } from 'react';
 
 export type LogoVariant = 'Kadena' | 'DevTools' | 'Docs';
 export const logoVariants: LogoVariant[] = ['Kadena', 'DevTools', 'Docs'];

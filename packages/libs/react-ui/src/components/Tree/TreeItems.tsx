@@ -12,7 +12,7 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 export interface ITreeItemProps {
   title?: React.ReactNode;

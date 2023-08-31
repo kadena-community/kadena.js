@@ -1,7 +1,7 @@
 import { colorVariants } from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface IIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {

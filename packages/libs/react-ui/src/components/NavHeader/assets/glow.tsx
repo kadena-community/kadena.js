@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
 export const NavGlow: React.FC<SVGProps<SVGSVGElement>> = () => (
   <svg

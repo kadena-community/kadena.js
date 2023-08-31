@@ -1,6 +1,6 @@
 import { gradientTextClass } from './GradientText.css';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface IGradientTextProps {
   children: React.ReactNode;

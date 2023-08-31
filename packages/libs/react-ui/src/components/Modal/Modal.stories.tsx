@@ -1,7 +1,7 @@
 import { Content } from './StoryComponents';
 
-import { IModalProps, ModalProvider } from '@components/Modal';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type IModalProps, ModalProvider } from '@components/Modal';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<{ title?: string } & IModalProps> = {

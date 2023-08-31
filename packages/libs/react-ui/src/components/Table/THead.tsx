@@ -1,7 +1,7 @@
 import { Tr } from './Tr';
-import { CompoundType } from './types';
+import { type CompoundType } from './types';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface ITHeadProps {
   children?: CompoundType<typeof Tr>;

@@ -12,9 +12,9 @@ import useGlow from './useGlow';
 
 import classNames from 'classnames';
 import React, {
-  FC,
-  FunctionComponentElement,
-  HTMLAttributeAnchorTarget,
+  type FC,
+  type FunctionComponentElement,
+  type HTMLAttributeAnchorTarget,
   useEffect,
 } from 'react';
 

@@ -1,9 +1,9 @@
-import { gapVariants, ResponsiveInputType } from './Grid.css';
-import { IGridRootProps } from './GridRoot';
+import { type ResponsiveInputType, gapVariants } from './Grid.css';
+import { type IGridRootProps } from './GridRoot';
 import { ContentClass } from './stories.css';
 
 import { Grid } from '@components/Grid';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
 

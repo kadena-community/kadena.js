@@ -5,7 +5,7 @@ import { PageNum } from './PageNum';
 import { paginate } from './paginate';
 import { listClass } from './Pagination.css';
 
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 export interface IPaginationProps {
   totalPages: number;

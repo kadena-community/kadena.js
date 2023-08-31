@@ -1,9 +1,7 @@
-import type { IGridItemProps } from './GridItem';
-import GridItem from './GridItem';
-import type { IGridRootProps } from './GridRoot';
-import GridRoot from './GridRoot';
+import { type IGridItemProps, GridItem } from './GridItem';
+import { type IGridRootProps, GridRoot } from './GridRoot';
 
-import { FC } from 'react';
+import { type FC } from 'react';
 
 export type { IGridRootProps as IGridContainerProps, IGridItemProps };
 

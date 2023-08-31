@@ -11,7 +11,7 @@ import {
 } from './ProgressBar.css';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface IProgressBarProps {
   checkpoints: ICheckpoint[];

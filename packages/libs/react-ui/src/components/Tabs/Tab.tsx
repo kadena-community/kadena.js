@@ -1,7 +1,7 @@
 import { selectedClass, tabClass } from './Tabs.css';
 
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 export interface ITabProps {
   children: ReactNode;

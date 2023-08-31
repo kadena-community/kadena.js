@@ -1,7 +1,7 @@
 'use client';
 
 import { accordionContentClass } from './Accordion.css';
-import { IAccordionSectionProps } from '.';
+import { type IAccordionSectionProps } from '.';
 
 import type { FC, FunctionComponentElement } from 'react';
 import React, { useEffect, useState } from 'react';

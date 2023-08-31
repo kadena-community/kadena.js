@@ -1,7 +1,7 @@
 import { actionButtonColorVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface INotificationButtonProps {
   icon: keyof typeof SystemIcon;

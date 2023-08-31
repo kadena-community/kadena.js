@@ -6,7 +6,7 @@ import {
 } from './Card.css';
 
 import className from 'classnames';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface ICardChildComponentProps {
   children: React.ReactNode;

@@ -10,8 +10,8 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, forwardRef, InputHTMLAttributes } from 'react';
-import { vars } from 'src/styles';
+import React, { type FC, type InputHTMLAttributes, forwardRef } from 'react';
+import { type vars } from 'src/styles';
 
 export interface IInputProps
   extends Omit<

@@ -1,5 +1,5 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { ColorType, vars } from '@theme/vars.css';
+import { type ColorType, vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 const colors: Record<ColorType, ColorType> = {

@@ -1,11 +1,8 @@
-import type { ITabProps } from './Tab';
-import { Tab } from './Tab';
-import type { ITabContentProps } from './TabContent';
-import { TabContent } from './TabContent';
-import type { ITabsContainerProps } from './TabsContainer';
-import { TabsContainer } from './TabsContainer';
+import { type ITabProps, Tab } from './Tab';
+import { type ITabContentProps, TabContent } from './TabContent';
+import { type ITabsContainerProps, TabsContainer } from './TabsContainer';
 
-import { FC } from 'react';
+import { type FC } from 'react';
 
 interface ITabs {
   Root: FC<ITabsContainerProps>;

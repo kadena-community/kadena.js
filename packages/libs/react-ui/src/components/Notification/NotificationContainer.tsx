@@ -9,7 +9,7 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface INotificationProps {
   icon?: keyof typeof SystemIcon;

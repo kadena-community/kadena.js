@@ -7,7 +7,7 @@ import {
 } from '../typography.css';
 
 import { sprinkles } from '@theme/sprinkles.css';
-import { recipe, RecipeVariants } from '@vanilla-extract/recipes';
+import { type RecipeVariants, recipe } from '@vanilla-extract/recipes';
 
 export const elementVariants = {
   h1: [

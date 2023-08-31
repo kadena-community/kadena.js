@@ -1,4 +1,4 @@
-import { ITabsContainerProps, Tabs } from '@components/Tabs';
+import { type ITabsContainerProps, Tabs } from '@components/Tabs';
 import { Text } from '@components/Typography/Text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
