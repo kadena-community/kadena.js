@@ -1,7 +1,5 @@
 import { darkTheme, styled, StyledComponent } from '@kadena/react-components';
 
-import { $$backgroundOverlayColor } from '../global.css';
-
 import { HeaderIconGroup } from './Header/styles';
 
 import Link from 'next/link';

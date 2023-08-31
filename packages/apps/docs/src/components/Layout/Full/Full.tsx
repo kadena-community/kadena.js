@@ -24,7 +24,6 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
 import { IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
-import classNames from 'classnames';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useRef, useState } from 'react';
@@ -39,7 +38,7 @@ export const Full: FC<IPageProps> = ({
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const [activeItem, setActiveItem] = useState<string>('');
-  const contentClassNames = classNames(
+  const contentClassNames = classnames(
     contentClass,
     contentClassVariants[frontmatter.layout] ?? '',
   );

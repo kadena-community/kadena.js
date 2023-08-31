@@ -1,7 +1,6 @@
 import { styled, StyledComponent } from '@kadena/react-components';
 
 import { BasePageGrid } from '../components';
-import { BaseBackground } from '../Full/components/Aside/AsideStyles';
 
 export const PageGrid: StyledComponent<typeof BasePageGrid> = styled(
   BasePageGrid,

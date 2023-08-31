@@ -7,7 +7,7 @@ import {
 import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
-import { CodeBackground, PageGrid } from './styles';
+import { PageGrid } from './styles';
 import { codebackgroundClass } from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
