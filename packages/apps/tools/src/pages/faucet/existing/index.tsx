@@ -1,5 +1,5 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Heading, SystemIcon } from '@kadena/react-ui';
+import { Breadcrumbs, Button, Heading } from '@kadena/react-ui';
 
 import {
   ChainSelect,
@@ -64,7 +64,7 @@ const ExistingAccountFaucetPage: FC = () => {
   useToolbar([
     {
       title: t('Existing'),
-      icon: SystemIcon.History,
+      icon: 'History',
       href: Routes.FAUCET_EXISTING,
     },
   ]);

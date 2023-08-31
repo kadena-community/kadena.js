@@ -7,13 +7,12 @@ import React from 'react';
 
 const meta: Meta<
   {
-    selectIcon: keyof typeof SystemIcon;
     text: string;
   } & INotificationProps
 > = {
   title: 'Components/Notification',
   argTypes: {
-    selectIcon: {
+    icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
@@ -48,7 +47,6 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    selectIcon: keyof typeof SystemIcon;
     text: string;
   } & INotificationProps
 >;
@@ -62,15 +60,14 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Notification',
   args: {
-    selectIcon: 'Information',
+    icon: 'Information',
     title: 'Notification title',
     hasCloseButton: true,
     expanded: false,
     color: undefined,
     text: 'Notification text to inform users about the event that occurred!',
   },
-  render: ({ selectIcon, title, hasCloseButton, expanded, color, text }) => {
-    const icon = SystemIcon[selectIcon];
+  render: ({ icon, title, hasCloseButton, expanded, color, text }) => {
     return (
       <Notification.Root
         icon={icon}
@@ -84,10 +81,10 @@ export const Primary: Story = {
       >
         {text}
         <Notification.Actions>
-          <Notification.Button icon={SystemIcon.Check} color={'positive'}>
+          <Notification.Button icon="Check" color={'positive'}>
             Accept
           </Notification.Button>
-          <Notification.Button icon={SystemIcon.Close} color={'negative'}>
+          <Notification.Button icon="Close" color={'negative'}>
             Reject
           </Notification.Button>
         </Notification.Actions>

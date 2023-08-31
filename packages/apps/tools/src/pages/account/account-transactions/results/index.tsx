@@ -6,9 +6,7 @@ import {
   ContentHeader,
   Grid,
   Heading,
-  ProductIcon,
   ProgressBar,
-  SystemIcon,
   Table,
   Text,
   TrackerCard,
@@ -58,7 +56,7 @@ const CheckTransactions: FC = () => {
   useToolbar([
     {
       title: t('Account Transactions'),
-      icon: SystemIcon.Account,
+      icon: 'Account',
       href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ]);
@@ -144,7 +142,7 @@ const CheckTransactions: FC = () => {
         ref={transactionDetailsRef}
         sections={[
           {
-            icon: SystemIcon.Information,
+            icon: 'Information',
             title: t('Transaction Details'),
             children: (
               <>
@@ -160,7 +158,7 @@ const CheckTransactions: FC = () => {
                       value: transactionDetails?.chain,
                     },
                   ]}
-                  icon={ProductIcon.QuickStart}
+                  icon={'QuickStart'}
                 />
                 <Box marginBottom="$5" />
                 <ProgressBar
@@ -190,7 +188,7 @@ const CheckTransactions: FC = () => {
                         transactionDetails?.chain,
                     },
                   ]}
-                  icon={ProductIcon.ReceiverInactive}
+                  icon={'ReceiverInactive'}
                 />
               </>
             ),
@@ -249,7 +247,7 @@ const CheckTransactions: FC = () => {
         <Grid.Item>
           <ContentHeader
             heading={t('Incoming transactions')}
-            icon={SystemIcon.ArrowCollapseDown}
+            icon={'ArrowCollapseDown'}
             description="This table is listing all the incoming transaction sorted by date."
           />
           <Box marginBottom="$10" />
@@ -291,7 +289,7 @@ const CheckTransactions: FC = () => {
         <Grid.Item>
           <ContentHeader
             heading={t('Outgoing transactions')}
-            icon={SystemIcon.ArrowExpandUp}
+            icon={'ArrowExpandUp'}
             description="This table is listing all the outgoing transaction sorted by date."
           />
           <Box marginBottom="$10" />

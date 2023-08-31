@@ -18,7 +18,7 @@ import React, {
 } from 'react';
 
 export interface IDrawerToolbarSection {
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   title: string;
   children: ReactNode;
 }
@@ -59,10 +59,10 @@ export const DrawerToolbar: ForwardRefExoticComponent<
       {!isOpen && (
         <div>
           {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
-          {sections.map(({ icon: Icon, title }, index) => (
+          {sections.map(({ icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
               <IconButton
-                icon={Icon}
+                icon={icon}
                 title={title}
                 onClick={() => handleOpenSection(index)}
               />
@@ -78,7 +78,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
             </Text>
             <IconButton
               onClick={() => setVisibleSection(null)}
-              icon={SystemIcon.Close}
+              icon="Close"
               title="close"
             />
           </div>

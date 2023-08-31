@@ -7,7 +7,6 @@ import {
   ISelectProps,
   Option,
   Select,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import { accountInputWrapperStyle } from './styles.css';
@@ -68,7 +67,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e as unknown as ChangeEvent<HTMLInputElement>);
         }}
-        icon={SystemIcon.KIcon}
+        icon={'KIcon'}
         id={elementId}
       >
         <Option value={''}>{t('Select Account')}</Option>
@@ -89,7 +88,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e);
         }}
-        leftIcon={SystemIcon.KIcon}
+        leftIcon={'KIcon'}
       />
     ),
   };
@@ -107,7 +106,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
       </InputWrapper>
       {accounts?.length && (
         <IconButton
-          icon={mode === 'input' ? SystemIcon.Close : SystemIcon.Edit}
+          icon={mode === 'input' ? 'Close' : 'Edit'}
           title={t('')}
           onClick={() => setMode(mode === 'input' ? 'select' : 'input')}
           type="button"

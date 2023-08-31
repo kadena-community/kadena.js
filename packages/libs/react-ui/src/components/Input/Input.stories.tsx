@@ -145,8 +145,8 @@ export const Dynamic: Story = {
   }) => (
     <Input
       id="inlineInputStory"
-      leftIcon={SystemIcon[leftIcon]}
-      rightIcon={SystemIcon[rightIcon]}
+      leftIcon={leftIcon}
+      rightIcon={rightIcon}
       onChange={onChange}
       placeholder="This is a placeholder"
       leadingText={leadingText}
@@ -168,7 +168,7 @@ export const InlineWithButton: Story = {
     <Stack gap="$xs" alignItems="stretch">
       <Input
         id="inlineInputStory"
-        leftIcon={SystemIcon[leftIcon]}
+        leftIcon={leftIcon}
         onChange={onChange}
         placeholder="This is a placeholder"
         outlined

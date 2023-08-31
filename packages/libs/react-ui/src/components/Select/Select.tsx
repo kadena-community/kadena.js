@@ -17,7 +17,7 @@ export interface ISelectProps
   ariaLabel: string;
   children: React.ReactNode;
   disabled?: boolean;
-  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon?: keyof typeof SystemIcon;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   id: string;
@@ -31,7 +31,7 @@ export const Select: FC<ISelectProps> = forwardRef<
   { ariaLabel, children, disabled = false, icon, ...rest },
   ref,
 ) {
-  const Icon = icon;
+  const Icon = icon && SystemIcon[icon];
 
   return (
     <div

@@ -3,7 +3,6 @@ import {
   Heading,
   Notification,
   Stack,
-  SystemIcon,
   TextField,
 } from '@kadena/react-ui';
 
@@ -36,7 +35,7 @@ export const Subscribe: FC = () => {
                     placeholder: 'Email address',
                     onChange: handleFormState,
                     'aria-label': 'Fill in email address',
-                    leftIcon: SystemIcon.At,
+                    leftIcon: 'At',
                   }}
                 />
                 <Button

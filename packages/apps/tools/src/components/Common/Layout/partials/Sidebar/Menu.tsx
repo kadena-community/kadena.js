@@ -1,4 +1,4 @@
-import { Accordion, IconButton, SystemIcon, Tree } from '@kadena/react-ui';
+import { Accordion, IconButton, Tree } from '@kadena/react-ui';
 
 import { gridItemMenuStyle, subMenuTitleClass } from './styles.css';
 
@@ -14,7 +14,7 @@ export const Menu: FC = () => {
       <div className={subMenuTitleClass}>
         <span>{activeMenu.title}</span>
         <IconButton
-          icon={SystemIcon.Close}
+          icon={'Close'}
           onClick={() => setActiveMenuIndex(undefined)}
           title={activeMenu.title}
         />
