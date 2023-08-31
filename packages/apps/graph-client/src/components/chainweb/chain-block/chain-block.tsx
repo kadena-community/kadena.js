@@ -1,3 +1,4 @@
+import { env } from '../../../utils/env';
 import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { Box } from '../../box';
 import { Text } from '../../text';
@@ -43,7 +44,8 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
             <TimerIcon />
             <TimeTicker date={new Date(block.creationtime)} />
 
-            {block.confirmationDepth >= 6 ? (
+            {block.confirmationDepth >=
+            env('CONFIRMED_CONFIRMATION_DEPTH', 6) ? (
               <CheckCircledIcon />
             ) : (
               <InfoCircledIcon />
