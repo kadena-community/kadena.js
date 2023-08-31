@@ -49,27 +49,9 @@ export default builder.prismaNode('Block', {
       },
     }),
 
-    // Add the confirmationDepth field
-    confirmationDepth1: t.int({
+    confirmationDepth: t.int({
       resolve: async (parent, args, context, info) => {
-        // Implement the logic to calculate confirmation depth here
-        return getConfirmationDepth1(parent.hash);
-      },
-    }),
-
-    // Add the confirmationDepth field
-    confirmationDepth2: t.int({
-      resolve: async (parent, args, context, info) => {
-        // Implement the logic to calculate confirmation depth here
-        return getConfirmationDepth2(parent.hash);
-      },
-    }),
-
-    // Add the confirmationDepth field
-    confirmationDepth3: t.int({
-      resolve: async (parent, args, context, info) => {
-        // Implement the logic to calculate confirmation depth here
-        return getConfirmationDepth3(parent.hash);
+        return getConfirmationDepth(parent.hash);
       },
     }),
   }),
@@ -92,28 +74,7 @@ async function getTransactionsRequestkeyByEvent(
   ).map((r) => r.requestkey);
 }
 
-async function getConfirmationDepth1(blockHash: string): Promise<number> {
-  let depth = 0;
-  let currentHash = blockHash;
-
-  while (currentHash) {
-    const result = await prismaClient.$queryRaw<{ hash: string }[]>`
-      SELECT hash
-      FROM blocks
-      WHERE parent = ${currentHash}
-    `;
-
-    if (result && result[0] && result[0].hash) {
-      depth++;
-      currentHash = result[0].hash;
-    } else {
-      break;
-    }
-  }
-
-  return depth;
-}
-async function getConfirmationDepth2(blockHash: string): Promise<number> {
+async function getConfirmationDepth(blockHash: string): Promise<number> {
   const result = await prismaClient.$queryRaw<{ depth: number }[]>`
     WITH RECURSIVE BlockDescendants AS (
       SELECT hash, parent, 0 AS depth
@@ -129,34 +90,8 @@ async function getConfirmationDepth2(blockHash: string): Promise<number> {
   `;
 
   if (result && result[0] && result[0].depth) {
-    console.log(result[0].depth);
     return Number(result[0].depth);
   } else {
     return 0;
   }
-}
-
-async function getConfirmationDepth3(blockHash: string): Promise<number> {
-  const blocksTable = await prismaClient.block.findMany();
-
-  let block = blocksTable.find((b) => b.hash === blockHash);
-
-  if (!block) {
-    return 0;
-  }
-
-  let depth = 0;
-
-  while (block) {
-    const childBlock = blocksTable.find((b) => b.parent === block?.hash);
-
-    if (!childBlock) {
-      break;
-    }
-
-    block = childBlock;
-    depth++;
-  }
-
-  return depth;
 }

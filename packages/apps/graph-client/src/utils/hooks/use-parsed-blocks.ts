@@ -7,7 +7,13 @@ export interface IBlock
     NonNullable<GetBlocksSubscription['newBlocks']>[number],
     // TODO: fix transactions from graphql
     // 'transactions' |
-    'creationtime' | 'height' | 'chainid'
+    | 'creationtime'
+    | 'height'
+    | 'chainid'
+    | 'hash'
+    | 'powhash'
+    | 'epoch'
+    | 'confirmationDepth'
   > {}
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;

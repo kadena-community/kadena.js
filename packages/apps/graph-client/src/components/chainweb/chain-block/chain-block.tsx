@@ -5,7 +5,11 @@ import { Text } from '../../text';
 import { TimeTicker } from './../time-ticker';
 import { Container, Content } from './styles';
 
-import { RocketIcon, TimerIcon } from '@radix-ui/react-icons';
+import {
+  CheckCircledIcon,
+  InfoCircledIcon,
+  TimerIcon,
+} from '@radix-ui/react-icons';
 import React from 'react';
 
 interface IChainBlockProps {
@@ -38,6 +42,15 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
           >
             <TimerIcon />
             <TimeTicker date={new Date(block.creationtime)} />
+
+            {block.confirmationDepth >= 6 ? (
+              <CheckCircledIcon />
+            ) : (
+              <InfoCircledIcon />
+            )}
+
+            <Text as="span">{block.confirmationDepth}</Text>
+
             {/* {block.transactions.totalCount > 0 && (
               <>
                 <RocketIcon />

@@ -5,9 +5,7 @@ scalar BigInt
 
 type Block implements Node {
   chainid: BigInt!
-  confirmationDepth1: Int!
-  confirmationDepth2: Int!
-  confirmationDepth3: Int!
+  confirmationDepth: Int!
   creationtime: DateTime!
   epoch: DateTime!
   hash: ID!
