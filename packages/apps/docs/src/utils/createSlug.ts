@@ -1,11 +1,20 @@
-export const createSlug = (
-  str?: string,
-  index?: number,
-  parentTitle = 'menu',
-): string => {
+const createSlugHash = (str: string): string => {
+  let hash = 0;
+  // if the length of the string is 0, return 0
+  if (str.length === 0) return `${hash}`;
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  str.split('').forEach((_char, idx) => {
+    const ch = str.charCodeAt(idx);
+    hash += ch;
+  });
+  return `h${hash}`;
+};
+
+export const createSlug = (str?: string): string => {
   if (str === undefined) return '';
 
-  const normalizedSlug = str
+  let normalizedSlug = str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^\w\-\s]+/g, '')
@@ -14,17 +23,9 @@ export const createSlug = (
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 
-  const normalizedParentTitle = parentTitle.toLowerCase().replace(/ /g, '-');
-
-  if (normalizedSlug === '' && index !== undefined)
-    return `${normalizedParentTitle}-${index}`;
-
-  if (normalizedSlug === '') return normalizedParentTitle;
-
-  // To check any special character at the end of the string
-  const regex = /^.*[!@#$%^&*?]{1}$/;
-
-  if (str.match(regex)) return `${normalizedSlug}-${index}`;
+  if (normalizedSlug === '') {
+    normalizedSlug = createSlugHash(str);
+  }
 
   return normalizedSlug;
 };

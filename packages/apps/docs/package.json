@@ -30,7 +30,7 @@
     "test": "echo 'No tests, until there is time to debug the build'"
   },
   "dependencies": {
-    "@7-docs/edge": "~0.3.1",
+    "@7-docs/edge": "~0.3.2",
     "@google-analytics/data": "~3.2.2",
     "@kadena/react-components": "workspace:*",
     "@kadena/react-ui": "workspace:*",
@@ -62,7 +62,7 @@
     "globby": "~13.2.2"
   },
   "devDependencies": {
-    "@7-docs/cli": "~0.3.1",
+    "@7-docs/cli": "~0.3.2",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",

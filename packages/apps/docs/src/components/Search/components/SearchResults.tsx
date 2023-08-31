@@ -9,6 +9,7 @@ import {
 } from '@kadena/react-ui';
 
 import type { IQueryResult } from '../../../types';
+import { removeUnnecessarySearchRecords } from '../utils';
 
 import {
   loadingWrapperClass,
@@ -21,12 +22,11 @@ import { StaticResults } from './StaticResults';
 import { BrowseSection, Loading } from '@/components';
 import { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
+import { StreamMetaData } from '@7-docs/edge';
 import classnames from 'classnames';
 import Link from 'next/link';
 import React, { FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { StreamMetaData } from '@7-docs/edge';
-import { removeUnnecessarySearchRecords } from '../utils';
 
 interface IProps {
   semanticResults: IQueryResult[];
@@ -114,7 +114,9 @@ export const SearchResults: FC<IProps> = ({
                   limitResults={limitResults}
                   results={semanticResults}
                 />
-                {limitResults !== undefined && query !== undefined ? (
+                {limitResults !== undefined &&
+                limitResults < semanticResults.length &&
+                query !== undefined ? (
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
@@ -163,7 +165,10 @@ export const SearchResults: FC<IProps> = ({
                     {metadata.length > 1 && (
                       <BrowseSection>
                         {metadata.map((item, innerIdx) => {
-                          const url = filePathToRoute(item.filePath);
+                          const url = filePathToRoute(
+                            item.filePath,
+                            item.header,
+                          );
                           return (
                             <Link key={`${url}-${innerIdx}`} href={url}>
                               {item.title}

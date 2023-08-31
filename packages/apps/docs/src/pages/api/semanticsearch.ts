@@ -1,6 +1,7 @@
 import { menuData } from '@/data/menu.mjs';
 import { IFrontmatterData } from '@/types';
 import { IMenuData } from '@/types/Layout';
+import { createSlug } from '@/utils';
 import type { StreamMetaData } from '@7-docs/edge';
 
 interface IQueryResult extends StreamMetaData {
@@ -8,7 +9,8 @@ interface IQueryResult extends StreamMetaData {
   description?: string;
 }
 
-export const filePathToRoute = (filename?: string): string => {
+export const filePathToRoute = (filename?: string, header?: string): string => {
+  console.log(1111);
   if (!filename) return '';
   // Remove "src/pages" from the start of the filename
   let route = filename.replace(/^src\/pages/, '');
@@ -22,6 +24,10 @@ export const filePathToRoute = (filename?: string): string => {
   // Add a leading "/" if it's missing
   if (!route.startsWith('/')) {
     route = `/${route}`;
+  }
+
+  if (header) {
+    route = `${route}#${createSlug(header)}`;
   }
 
   return route;
@@ -77,7 +83,7 @@ export const mapMatches = (metadata: StreamMetaData): IQueryResult => {
       : undefined;
   const data =
     typeof metadata.filePath !== 'undefined'
-      ? getData(filePathToRoute(metadata.filePath))
+      ? getData(filePathToRoute(metadata.filePath, metadata.header))
       : {};
 
   return {
