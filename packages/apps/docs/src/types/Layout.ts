@@ -31,7 +31,7 @@ export interface IPageMeta {
   title: string; // title of the HEAD info
   subTitle?: string;
   menu: string; // name in the main menu
-  order?: number;
+  order: number;
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
