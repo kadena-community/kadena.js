@@ -17,19 +17,21 @@ export const accordionSectionClass = style([
 ]);
 
 export const accordionSectionHeadingClass = style([
-  {
+  sprinkles({
     alignItems: 'center',
     background: 'none',
     border: 'none',
-    borderBottom: `1px solid ${vars.colors.$gray20}`,
     cursor: 'pointer',
     display: 'flex',
     fontSize: '$base',
     fontWeight: '$medium',
     padding: 0,
     textAlign: 'left',
-    transition: 'color 0.2s ease',
     width: '100%',
+  }),
+  {
+    borderBottom: `1px solid ${vars.colors.$gray20}`,
+    transition: 'color 0.2s ease',
     selectors: {
       '&.isOpen': {
         border: 'none',
