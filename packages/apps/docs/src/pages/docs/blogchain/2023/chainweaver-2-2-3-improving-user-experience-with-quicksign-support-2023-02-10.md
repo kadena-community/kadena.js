@@ -38,11 +38,10 @@ to another with just a single signing request as shown in this demo.
 We’ve already begun seeing builders and projects capitalizing on this update and
 improving their project’s UX. [**X-Wallet**](https://xwallet.kaddex.com/), a
 robust and user-friendly web-extension wallet that is native to Kadena, has
-implemented **TODO: this tweet not working**
-[quicksign](https://twitter.com/XWalletOfficial/status/1622624077683871746)
-which allows the execution of multiple transactions simultaneously with just one
-signature approval. [**Koala Wallet**](https://koalawallet.io/) by Kadena Eco
-Grantee, [**Eucalyptus Lab**](https://eucalyptuslabs.com/), is also implementing
+implemented quicksign which allows the execution of multiple transactions
+simultaneously with just one signature approval.
+[**Koala Wallet**](https://koalawallet.io/) by Kadena Eco Grantee,
+[**Eucalyptus Lab**](https://eucalyptuslabs.com/), is also implementing
 quicksign and WalletConnect to their wallet as a step towards making Kadena
 easier to use and advancing the chainless experience. See
 [https://kadena-io.github.io/signing-api/](https://kadena-io.github.io/signing-api/)

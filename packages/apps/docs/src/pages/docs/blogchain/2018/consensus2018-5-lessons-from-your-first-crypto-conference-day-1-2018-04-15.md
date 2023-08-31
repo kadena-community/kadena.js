@@ -15,9 +15,6 @@ layout: blog
 Lesson #1: Prepare for a line to registration that represents the fundamental
 problems of throughput and congestion for blockchain as a whole.
 
-TODO: not working
-[line to registration](https://x.com/mdudas/status/996070779434528769)
-
 [consensus 2018 - hangout](https://x.com/dickerson_des/status/996041484007886848)
 
 [important notice](https://x.com/brucefenton/status/996082156794466304)
