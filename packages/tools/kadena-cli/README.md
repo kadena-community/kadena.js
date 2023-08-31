@@ -124,9 +124,7 @@ Deploy / upgrade a smart contract to chain x
 
 ## kda tx
 
-### generate
-
-Generate client based on a contract
+Sign and send
 
 | **Parameter**    | **Description**                                       | **Required**           | **Default value** |
 | ---------------- | ----------------------------------------------------- | ---------------------- | ----------------- |
