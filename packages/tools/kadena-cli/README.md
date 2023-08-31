@@ -75,7 +75,7 @@ the init command ask for context / devnet/testnet/mainnet/local/custom | if alre
 
 ---
 
-example from aptos:
+example:
 
 ```yaml
 profiles:
@@ -84,7 +84,6 @@ profiles:
     public_key: "badbadbadxx"
     account: "k:xx"
     rest_url: "https://devnet"
-    faucet_url: "https://devnet"
 ```
 
 ## kda keys (kda tool)
