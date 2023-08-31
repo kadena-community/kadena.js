@@ -2,7 +2,7 @@ import { headerClass, infoClass, tagClass } from './InputHeader.css';
 
 import { SystemIcon } from '@components/Icon';
 import { Label } from '@components/Typography/Label/Label';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface IInputHeaderProps {
   label: string;

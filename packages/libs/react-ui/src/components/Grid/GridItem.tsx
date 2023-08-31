@@ -1,13 +1,13 @@
 import {
+  type ResponsiveInputType,
   explicitItemColumnVariant,
   gridItemClass,
   itemColumnVariants,
-  ResponsiveInputType,
   rowSpanVariants,
 } from './Grid.css';
 
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 export interface IGridItemProps {
   children?: ReactNode;
@@ -33,7 +33,7 @@ const assembleColumnSpanVariants = (
   ];
 };
 
-const GridItem: FC<IGridItemProps> = ({
+export const GridItem: FC<IGridItemProps> = ({
   children,
   columnSpan,
   rowSpan = 1,
@@ -49,5 +49,3 @@ const GridItem: FC<IGridItemProps> = ({
     </div>
   );
 };
-
-export default GridItem;

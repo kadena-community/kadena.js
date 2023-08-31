@@ -1,5 +1,5 @@
 import { Button } from '@components/Button';
-import { ITagProps, Tag } from '@components/Tag';
+import { type ITagProps, Tag } from '@components/Tag';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 

@@ -1,9 +1,8 @@
-import type { IButtonProps } from './Button';
-import { Button } from './Button';
+import { type IButtonProps, Button } from './Button';
 import { colorVariants } from './Button.css';
 
 import { SystemIcon } from '@components/Icon';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<

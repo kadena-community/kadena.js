@@ -6,7 +6,7 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import cn from 'classnames';
-import React, { ButtonHTMLAttributes, FC } from 'react';
+import React, { type ButtonHTMLAttributes, type FC } from 'react';
 
 export interface IButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {

@@ -1,6 +1,9 @@
-import { IInputProps, Input } from '@components/Input';
-import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
-import React, { FC } from 'react';
+import { type IInputProps, Input } from '@components/Input';
+import {
+  type IInputWrapperProps,
+  InputWrapper,
+} from '@components/InputWrapper';
+import React, { type FC } from 'react';
 
 export interface ITextFieldProps
   extends Omit<IInputWrapperProps, 'children' | 'htmlFor'> {

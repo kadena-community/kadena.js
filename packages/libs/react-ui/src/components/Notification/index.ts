@@ -5,7 +5,7 @@ import { NotificationButton } from './NotificationButton';
 import type { INotificationProps } from './NotificationContainer';
 import { NotificationContainer } from './NotificationContainer';
 
-import { FC } from 'react';
+import { type FC } from 'react';
 
 export type {
   INotificationProps,

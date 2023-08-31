@@ -9,7 +9,7 @@ import type {
 } from './NavHeaderNavigation';
 import { NavHeaderNavigation } from './NavHeaderNavigation';
 
-import { FC } from 'react';
+import { type FC } from 'react';
 
 export {
   INavHeaderRootProps,

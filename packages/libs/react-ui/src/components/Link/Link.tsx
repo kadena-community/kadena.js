@@ -2,7 +2,7 @@ import { SystemIcon } from '..';
 
 import { linkContainerClass } from './Link.css';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 export interface ILinkProps {
   href?: string;

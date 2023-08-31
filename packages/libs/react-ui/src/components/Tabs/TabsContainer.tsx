@@ -4,7 +4,13 @@ import { Tab } from './Tab';
 import { TabContent } from './TabContent';
 import { selectorLine, tabsContainer, tabsContainerWrapper } from './Tabs.css';
 
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  type FC,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export interface ITabsContainerProps {
   children?: ReactNode;

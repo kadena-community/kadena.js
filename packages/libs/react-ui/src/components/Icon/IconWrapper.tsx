@@ -1,7 +1,7 @@
 import { iconContainer, sizeVariants } from './IconWrapper.css';
 
 import classNames from 'classnames';
-import React, { SVGProps } from 'react';
+import React, { type SVGProps } from 'react';
 
 export interface IIconProps {
   size?: keyof typeof sizeVariants;

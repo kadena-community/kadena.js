@@ -5,8 +5,8 @@ import { openModal } from './Modal.css';
 import { ModalContext } from './useModal';
 
 import React, {
-  FC,
-  ReactNode,
+  type FC,
+  type ReactNode,
   useCallback,
   useEffect,
   useRef,

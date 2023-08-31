@@ -8,7 +8,7 @@ import {
 } from './MaskedValue.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 export interface IMaskedValueProps {
   title?: string;

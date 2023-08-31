@@ -1,6 +1,6 @@
 import { itemClass, linkClass, spanClass } from './Breadcrumbs.css';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 export interface IBreadcrumbItemProps {
   children?: ReactNode;

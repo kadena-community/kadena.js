@@ -1,7 +1,7 @@
 'use client';
 
 import { TreeItem } from '@components/Tree/TreeItems';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 export interface ITreeProps {
   title?: React.ReactNode;

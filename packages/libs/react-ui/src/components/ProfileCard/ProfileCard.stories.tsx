@@ -1,6 +1,6 @@
 import { Grid } from '@components/Grid';
-import { IProfileCardProps, ProfileCard } from '@components/ProfileCard';
-import { Meta, StoryObj } from '@storybook/react';
+import { type IProfileCardProps, ProfileCard } from '@components/ProfileCard';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IProfileCardProps> = {

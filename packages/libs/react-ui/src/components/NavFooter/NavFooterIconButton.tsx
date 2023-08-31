@@ -2,7 +2,7 @@ import { SystemIcon } from '..';
 
 import { iconButtonClass, iconTextClass } from './NavFooter.css';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface INavFooterIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {

@@ -1,6 +1,6 @@
 import { tdClass } from './Table.css';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface ITdProps {
   children?: React.ReactNode;

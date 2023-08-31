@@ -1,2 +1,1 @@
-export { ContentHeader } from './ContentHeader';
-export type { IContentHeaderProps } from './ContentHeader';
+export { type IContentHeaderProps, ContentHeader } from './ContentHeader';
