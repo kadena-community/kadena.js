@@ -13,7 +13,9 @@
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
-    "lint": "eslint package.json src --ext .js,.ts,.json --fix",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint package.json src --ext .js,.ts,.json --fix",
     "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
     "test": ""
   },
@@ -25,6 +27,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
