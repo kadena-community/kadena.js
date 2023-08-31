@@ -18,7 +18,7 @@ const meta: Meta<typeof Stack> = {
     docs: {
       description: {
         component:
-          'Stack is one of the basic building blocks of application layout. It manages layout of its immediate children along the vertical or horizontal axis.',
+          'This layout component is just a simplified abstraction on flexbox. It allows you to use basic flex properties, but does not offer the full flexibility of flexbox.',
       },
     },
   },
@@ -108,7 +108,7 @@ const meta: Meta<typeof Stack> = {
         'stretch',
       ] as Sprinkles['alignItems'][],
       control: { type: 'select' },
-      description: 'Controls the alignment of items on the cross Axis',
+      description: 'Controls the alignment of items on the cross axis',
     },
     direction: {
       options: [

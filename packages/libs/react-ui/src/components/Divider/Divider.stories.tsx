@@ -10,7 +10,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Component which helps to separate one logical group or element from others.',
+          'Component which helps to separate one logical group of element from others.',
       },
     },
   },

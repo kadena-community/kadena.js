@@ -8,9 +8,7 @@ const meta: Meta<ICardProps> = {
   parameters: {
     docs: {
       description: {
-        component:
-          'A component used for grouping se of items in a card.\n' +
-          '\nThis component allows for passing the <i>stack</i>, <i>fullWidth</i>,  and <i>disabled</i> properties.',
+        component: 'A component used for grouping items in a card.',
       },
     },
   },
@@ -21,7 +19,7 @@ const meta: Meta<ICardProps> = {
         type: 'boolean',
       },
       description:
-        'If true, the component stacks the child elements vertically.',
+        'If true, the component vertically stacks multiple card together and applies styles that combine them into a single card with separators.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -32,7 +30,7 @@ const meta: Meta<ICardProps> = {
         type: 'boolean',
       },
       description:
-        'If true, the component has the full width of its container.',
+        'An option to make the card span the full width of its container.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },

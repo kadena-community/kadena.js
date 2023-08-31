@@ -22,7 +22,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'Grid is one of the advanced building blocks of application layout. It is an abstraction over flexbox, which manages layout of its immediate children along the vertical or horizontal axis.',
+          'The Grid component is an abstraction over css grid that provides `Root` and `Item` subcomponents to compose a grid of equally sized columns.<br><br><i>Note: This component does not support grid templates or columns of varying sizes.</i>',
       },
     },
   },

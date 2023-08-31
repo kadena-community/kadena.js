@@ -13,7 +13,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The tabs functionality is divided into three components: The <i>Tabs.Root</i> for parent, then <i>Tabs.Tab</i> for each tab item and the <i>Tabs.Content</i> for the tab content. The value of defaultSelected must be handled explicitly by the component that uses tabs.',
+          'The tabs functionality is divided into three sub components: The <i>Tabs.Root</i> for parent, then <i>Tabs.Tab</i> for each tab item and the <i>Tabs.Content</i> for the tab content.',
       },
     },
   },

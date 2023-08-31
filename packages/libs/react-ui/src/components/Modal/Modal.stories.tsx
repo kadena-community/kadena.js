@@ -6,14 +6,6 @@ import React from 'react';
 
 const meta: Meta<{ title?: string } & IModalProps> = {
   title: 'Layout/Modal',
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'Component which informs user about a task and it may sometimes contain important information, require decision making, or involve tasks for the user.',
-      },
-    },
-  },
   argTypes: {
     title: {
       control: {
