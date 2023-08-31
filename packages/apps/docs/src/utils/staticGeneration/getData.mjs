@@ -1,4 +1,4 @@
-import { menuData } from './../../data/menu.mjs';
+import { menuData } from './../../_generated/menu.mjs';
 
 export const getData = () => {
   const data = JSON.parse(JSON.stringify(menuData));

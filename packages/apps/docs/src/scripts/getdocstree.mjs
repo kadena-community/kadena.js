@@ -86,7 +86,7 @@ const findPath = (dir) => {
 };
 
 const INITIALPATH = './src/pages/docs';
-const MENUFILE = './src/data/menu.mjs';
+const MENUFILE = './src/_generated/menu.mjs';
 const TREE = [];
 
 const createTree = (rootDir, parent = []) => {
