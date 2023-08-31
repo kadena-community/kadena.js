@@ -11,7 +11,8 @@
     "build": "",
     "format": "pnpm run /^format:.*/",
     "format:src": "prettier mixins profile --write",
-    "lint": "eslint ./mixins ./profile --ext .js,.ts --fix",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:src": "eslint ./mixins ./profile --ext .js,.ts --fix",
     "test": ""
   },
   "dependencies": {
