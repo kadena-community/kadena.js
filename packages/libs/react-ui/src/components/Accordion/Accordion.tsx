@@ -30,9 +30,8 @@ export const AccordionRoot: FC<IAccordionRootProps> = ({
       {React.Children.map(children, (section, sectionIndex) =>
         React.cloneElement(
           section as React.ReactElement<
-            HTMLElement | IAccordionSectionProps,
-            | string
-            | React.JSXElementConstructor<JSX.Element & IAccordionSectionProps>
+            IAccordionSectionProps,
+            React.JSXElementConstructor<IAccordionSectionProps>
           >,
           {
             index: sectionIndex,
