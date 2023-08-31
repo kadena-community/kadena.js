@@ -1,8 +1,4 @@
-import {
-  Box,
-  Breadcrumbs as StyledBreadcrumbs,
-  ProductIcon,
-} from '@kadena/react-ui';
+import { Box, Breadcrumbs as StyledBreadcrumbs } from '@kadena/react-ui';
 
 import { IMenuItem, ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
