@@ -89,7 +89,7 @@ async function getConfirmationDepth(blockHash: string): Promise<number> {
     FROM BlockDescendants;
   `;
 
-  if (result && result[0] && result[0].depth) {
+  if (result.length && result[0].depth) {
     return Number(result[0].depth);
   } else {
     return 0;
