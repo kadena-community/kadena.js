@@ -31,7 +31,8 @@ const meta: Meta<ICardProps> = {
       control: {
         type: 'boolean',
       },
-      description: 'If true, the component has the full width of its parent.',
+      description:
+        'If true, the component has the full width of its container.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
