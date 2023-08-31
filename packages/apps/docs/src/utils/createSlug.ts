@@ -1,8 +1,19 @@
-export const createSlug = (
-  str?: string,
-  index?: number,
-  parentTitle = 'menu',
-): string => {
+const createSlugHash = (str: string): string => {
+  let hash = 0;
+  // if the length of the string is 0, return 0
+  if (str.length === 0) return `${hash}`;
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  str.split('').forEach((_char, idx) => {
+    const ch = str.charCodeAt(idx);
+    hash = (hash << 5) - hash + ch;
+    // eslint-disable-next-line no-bitwise
+    hash = hash & hash;
+  });
+  return `h${hash}`;
+};
+
+export const createSlug = (str?: string): string => {
   if (str === undefined) return '';
 
   const normalizedSlug = str
@@ -14,17 +25,5 @@ export const createSlug = (
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 
-  const normalizedParentTitle = parentTitle.toLowerCase().replace(/ /g, '-');
-
-  if (normalizedSlug === '' && index !== undefined)
-    return `${normalizedParentTitle}-${index}`;
-
-  if (normalizedSlug === '') return normalizedParentTitle;
-
-  // To check any special character at the end of the string
-  const regex = /^.*[!@#$%^&*?]{1}$/;
-
-  if (str.match(regex)) return `${normalizedSlug}-${index}`;
-
-  return normalizedSlug;
+  return `${normalizedSlug}${createSlugHash(str)}`;
 };
