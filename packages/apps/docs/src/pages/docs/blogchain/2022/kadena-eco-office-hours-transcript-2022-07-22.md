@@ -831,8 +831,11 @@ Let us know how we can help cheer.
 That concludes Kadena Eco’s first office hours! If you are interested in
 listening to the office hours directly from Twitter, you can listen to the
 discussion starting
-[here](https://twitter.com/kadena_io/status/1546975728188669953). To get the
-latest announcements about Kadena’s progress follow us on
+[here](https://twitter.com/kadena_io/status/1546975728188669953).
+
+[here](https://twitter.com/kadena_io/status/1546975728188669953)
+
+To get the latest announcements about Kadena’s progress follow us on
 [Twitter](https://twitter.com/kadena_io),
 [Discord](https://t.co/VK1m2oyh2L?amp=1),
 [Reddit](https://www.reddit.com/r/kadena/),

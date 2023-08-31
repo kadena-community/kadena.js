@@ -208,8 +208,10 @@ destroyed.
 
 **Want to learn more about other properties of Pact? [**Check out the full
 docs](https://github.com/kadena-io/pact/blob/ac759c0882d97b60473cfbb5853b1c25259e1213/docs/pact-properties.md)
-or visit
-[Kadena at Consensus ’18](https://twitter.com/kadena_io/status/994605341332602880)
+or visit Kadena at Consensus '18
+
+[Kadena at Consensus '18](https://twitter.com/kadena_io/status/994605341332602880)
+
 (May 14–16) for Blockchain Week NYC where we’ll be doing exclusive demos of
 various aspects of Pact’s Formal Verification!
 

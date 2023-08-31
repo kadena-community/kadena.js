@@ -156,21 +156,27 @@ help our builders take their projects to the next level. Apply
 part of the next call!
 
 The Kadena team has also been making appearances outside of the digital realm.
-At [JSWorld](https://twitter.com/Randynamic_4/status/1623260270100463620) in
-Amsterdam, the Kadena.js team wowed attendees with their presentation on the
-Pact smart contract language.
+
+[JSWorld](https://twitter.com/Randynamic_4/status/1623260270100463620)
+
+At JSWorld in Amsterdam, the Kadena.js team wowed attendees with their
+presentation on the Pact smart contract language.
 
 Our COO, Anastasia Bez, and Kadena ECO CEO, Francesco Melpignano, joined our
-business development team in attending
-[EthDenver](https://twitter.com/kadena_io/status/1638906216293474304) where they
-forged valuable connections and collaborated with local Denver hotspot, the
-Banshee House, to host an unforgettable night.
+business development team in attending EthDenver,
 
-Topping off a hectic week, Anastasia’s presence in a
-[Bloomberg interview](https://www.youtube.com/watch?v=fmndhqyh7gw) with Ed
-Ludlow and Caroline Hyde was a major accomplishment for our team. Discussion was
-focused on the critical need for crypto firms to build effective infrastructure
-and technical support systems.
+[EthDenver](https://twitter.com/kadena_io/status/1638906216293474304)
+
+where they forged valuable connections and collaborated with local Denver
+hotspot, the Banshee House, to host an unforgettable night.
+
+Topping off a hectic week, Anastasia’s presence in a Bloomberg interview with Ed
+Ludlow and Caroline Hyde was a major accomplishment for our team.
+
+[Bloomberg interview](https://www.youtube.com/watch?v=fmndhqyh7gw)
+
+Discussion was focused on the critical need for crypto firms to build effective
+infrastructure and technical support systems.
 
 We are thrilled to share that the Kadena team will be participating in Consensus
 this coming April in Austin. Keep an eye out for us; we look forward to meeting

@@ -38,9 +38,10 @@ control, sophisticated multi-signature authorization, on-chain data storage,
 cross-chain state transfers, and formal code verification are a natural part of
 Pact programming. Other design decisions — like non-Turing-completeness, which
 disallows loops and recursion, or fixed-precision decimals, which don’t overflow
-when doing math — help eliminate
-[entire classes](https://twitter.com/SirLensALot/status/1445886740044996608) of
-bugs present in other smart contract languages.
+when doing math — help eliminate entire classes of bugs present in other smart
+contract languages.
+
+[entire classes](https://twitter.com/SirLensALot/status/1445886740044996608)
 
 This makes Pact an ideal language for smart contract development. It also means
 that Pact will look unfamiliar to developers who use languages like JavaScript,
