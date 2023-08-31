@@ -8,7 +8,7 @@ const getTwitterStatusId = (url) => {
   if (!url) return;
 
   const twitterRegExp =
-    /^(https?:\/\/)?(www\.)?(twitter\.com)\/(.*\/status\/)?([0-9]*)/;
+    /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/(.*\/status\/)?([0-9]*)/;
 
   const match = url.match(twitterRegExp);
 

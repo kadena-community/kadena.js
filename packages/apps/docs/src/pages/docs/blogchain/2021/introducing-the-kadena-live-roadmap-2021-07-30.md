@@ -34,8 +34,9 @@ a broader scope than unsafe single-sig default of Ethereum compatibility, with
 sharded chains, multi-sig and greater security. We’re happy to announce that
 **KuCoin will support deposits on all 20 chains **in the near future.
 
-**Success of the Kadenaswap “Bountyswap” program **which nabbed a
-[major exploit](https://twitter.com/kadena_io/status/1415106767630000131).
+**Success of the Kadenaswap “Bountyswap” program **which nabbed a major exploit
+
+[Bountyswap](https://twitter.com/kadena_io/status/1415106767630000131).
 
 **First use-case of Kadenaswap AMM smart contract** with the launch of
 [Kaddex](https://kaddex.com). Read more below about this important development

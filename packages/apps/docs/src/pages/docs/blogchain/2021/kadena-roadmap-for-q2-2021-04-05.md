@@ -25,7 +25,10 @@ announced in our Q1 Roadmap:
 
 - [Announced a major update to our Token Economic Model with reduced inflation, and improved total circulation reporting in the Block Explorer](./update-to-the-kadena-token-economic-model-2021-01-29)
 
-- [Full integration of the Kadena Signing API with Kadenaswap and ZelCore, and fully integrated ZelCore into the DEX](https://twitter.com/kadena_io/status/1357107070839980039)
+- Full integration of the Kadena Signing API with Kadenaswap and ZelCore, and
+  fully integrated ZelCore into the DEX
+
+[Full integration of the Kadena Signing API with Kadenaswap and ZelCore, and fully integrated ZelCore into the DEX](https://twitter.com/kadena_io/status/1357107070839980039)
 
 - [Launched the Bridge Relay program with bonding in KDA](./announcing-the-kadena-chain-relay-2021-03-25)
 

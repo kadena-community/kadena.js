@@ -17,9 +17,9 @@ layout: blog
 
 # How to Scale a Proof of Work Blockchain
 
-This post is a compilation of
-[tweets](https://twitter.com/KadenaDirEng/status/1361075151912247298) from my
-Twitter account @KadenaDirEng
+The below post is a compilation of tweets from my Twitter account @KadenaDirEng
+
+[tweets](https://twitter.com/KadenaDirEng/status/1361075151912247298)
 
 //TODO: twitter https://medium.com/media/408ce840eee4f9b095ec6537e9fc1e67
 

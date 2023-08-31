@@ -80,8 +80,11 @@ token with overall funding up to 100,000 KDA. This provides a bounty for
 “white-hat hacking” to find vulnerabilities in the new DEX, as any funds
 received through an exploit can be kept at the end of the Bountyswap program.
 
-Economic infrastructure development has already begun with
+Economic infrastructure development has already begun with support for Ethereum
+bridge proofs
+
 [support for Ethereum bridge proofs](https://twitter.com/SirLensALot/status/1348435372565549056/photo/1)
+
 included in Chainweb 2.4. Upcoming milestones for the first quarter include
 launching an Ethereum bridge relay program, integrating a ZelCore DEX with
 Kadenaswap, and releasing an Ethereum bridge. An Ethereum bridge allows for

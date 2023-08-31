@@ -53,9 +53,9 @@ pointed to the dampening effect of high fees on adoption. “[T]he only solution
 to high tx fees is scaling,” tweeted Buterin. “Tether, Gitcoin and other apps
 are doing the right thing by migrating to ZK rollups today. I’m excited about
 the soon-upcoming optimistic rollups that will generalize rollup scaling to full
-EVM contracts.”
-[Scaling](https://twitter.com/VitalikButerin/status/1300990520831877120) is seen
-as the accepted solution.
+EVM contracts.” Scaling is seen as the accepted solution.
+
+[Scaling](https://twitter.com/VitalikButerin/status/1300990520831877120)
 
 In 2021, Kadena became recognized as having solved the high fee problem, opening
 up a huge addressable market.

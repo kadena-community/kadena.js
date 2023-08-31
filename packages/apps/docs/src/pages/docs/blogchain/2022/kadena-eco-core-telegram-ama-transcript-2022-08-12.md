@@ -205,6 +205,7 @@ many more dAPPs and wallets. I dropped a teaser video of something I’ve been
 working on that I’m tentatively calling IntelliSend that shows how this kind of
 signing infrastructure can be used to make chains completely disappear. You can
 see it at:
+
 [https://twitter.com/BlockchainDoug/status/1539733933801316361](https://twitter.com/BlockchainDoug/status/1539733933801316361)
 
 There are a couple of significant things about that video. First, the signing is

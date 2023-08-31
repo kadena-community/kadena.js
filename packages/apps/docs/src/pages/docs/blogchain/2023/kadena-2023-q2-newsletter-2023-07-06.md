@@ -213,8 +213,9 @@ to anyone interested in getting started with our tools. Our new doc site is also
 progressing smoothly, with an alpha version already in the making.
 
 Finally, keep your eyes peeled in Q3 for our Kadena web3 workshop in
-collaboration with
-[Vue Schoo](https://twitter.com/Randynamic_4/status/1666031457083506688)l.
+collaboration with Vue School.
+
+[Vue School](https://twitter.com/Randynamic_4/status/1666031457083506688)
 
 ### Going Forward
 
