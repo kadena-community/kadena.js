@@ -59,9 +59,13 @@ export const toggleIconWrapperClass = style([
 ]);
 
 export const toggleIconClass = style([
+  sprinkles({
+    color: '$neutral5',
+  }),
   {
     transition: 'transform 0.2s ease',
     transform: 'rotate(45deg)',
+    width: '12px',
     selectors: {
       '&.isOpen': {
         transform: 'rotate(0deg)',
