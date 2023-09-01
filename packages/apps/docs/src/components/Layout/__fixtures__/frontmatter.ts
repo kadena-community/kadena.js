@@ -24,6 +24,7 @@ export const blogFrontMatter: IPageMeta = {
   publishDate: '2018-02-07T00:00:00.000Z',
   author: 'Vivienne Chen',
   layout: 'blog',
+  order: 6,
 };
 
 export const fullLayoutFrontMatter: IPageMeta = {
