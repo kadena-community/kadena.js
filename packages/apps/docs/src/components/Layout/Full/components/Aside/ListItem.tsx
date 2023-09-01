@@ -1,10 +1,10 @@
 import { AsideLink, AsideList } from './';
 
-import { ISubHeaderElement } from '@/types/Layout';
+import { type ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useRouter } from 'next/router';
-import React, { FC, MouseEvent } from 'react';
+import React, { type FC, type MouseEvent } from 'react';
 
 interface IProps {
   // eslint-disable-next-line @rushstack/no-new-null

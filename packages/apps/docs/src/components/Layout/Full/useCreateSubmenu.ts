@@ -1,4 +1,4 @@
-import { ISubHeaderElement, TagNameType } from '@/types/Layout';
+import { type ISubHeaderElement, type TagNameType } from '@/types/Layout';
 import { createSlug, getParentHeading } from '@/utils';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';

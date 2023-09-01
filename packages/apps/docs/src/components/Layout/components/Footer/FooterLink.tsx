@@ -3,7 +3,7 @@ import { Text } from '@kadena/react-ui';
 import { linkClass } from './styles.css';
 
 import Link from 'next/link';
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;

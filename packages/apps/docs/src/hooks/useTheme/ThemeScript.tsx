@@ -1,4 +1,4 @@
-import { IThemeProviderProps } from './types';
+import { type IThemeProviderProps } from './types';
 import { colorSchemes, MEDIA } from './utils';
 
 import React, { memo } from 'react';

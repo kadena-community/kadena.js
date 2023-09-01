@@ -14,9 +14,9 @@ layout: blog
 
 _[Update]: 12/5/2019_
 
-**[CryptoAsia — A Fireside Chat with Amber Chook, CEO of Zebra Global](https://www.meetup.com/cryptomondaysnyc/events/wrvglryzqbmb/)**  
-**When**: Monday, December 9th 6:30pm — 9:00pm  
-**Where**: The Ainsworth — 64 3rd Avenue, New York, NY
+**[CryptoAsia — A Fireside Chat with Amber Chook, CEO of Zebra Global](https://www.meetup.com/cryptomondaysnyc/events/wrvglryzqbmb/)**
+**When**: Monday, December 9th 6:30pm — 9:00pm **Where**: The Ainsworth — 64 3rd
+Avenue, New York, NY
 
 CryptoMondays is hosting [Amber Chook](https://www.linkedin.com/in/amberchook/),
 CEO of[ Zebra Global](https://www.zebra-global.co/), a leading Crypto PR &
@@ -29,9 +29,9 @@ Director of the Cryptoeconomics Research Lab at
 [Vienna University of Economics](https://wu.ac.at/), will make an appearance as
 a bonus speaker.
 
-**[Whitepaper Wednesday VPNO](https://www.meetup.com/Crypto-NYC/events/266874791/)**  
-**When**: Wednesday, December 11th 12:00pm — 1:00pm  
-**Where**: Rent24–25 West 39th Street, Floor 14, New York
+**[Whitepaper Wednesday VPNO](https://www.meetup.com/Crypto-NYC/events/266874791/)**
+**When**: Wednesday, December 11th 12:00pm — 1:00pm **Where**: Rent24–25 West
+39th Street, Floor 14, New York
 
 This week Whitepaper Wednesday is talking about
 [VPNO](https://brave.com/vpn0-a-privacy-preserving-distributed-virtual-private-network/)
@@ -40,9 +40,9 @@ whitepaper. This is a proposal for an incentivized peer-to-peer VPN from the
 [paper](https://brave.com/vpn0-a-privacy-preserving-distributed-virtual-private-network/)
 before attending and bring a lunch.
 
-**[The Failures of Silicon Valley and the Rise of the Alt-Right](https://andrewmarantzcompany.splashthat.com/)**  
-**When**: Wednesday, December 11th 6:00pm — 8:00pm  
-**Where**: Company — 335 Madison Avenue, Floor 3, New York
+**[The Failures of Silicon Valley and the Rise of the Alt-Right](https://andrewmarantzcompany.splashthat.com/)**
+**When**: Wednesday, December 11th 6:00pm — 8:00pm **Where**: Company — 335
+Madison Avenue, Floor 3, New York
 
 [The New Yorker’s](https://www.newyorker.com/)
 [Andrew Marantz](https://www.newyorker.com/contributors/andrew-marantz) will
@@ -51,9 +51,9 @@ create a free democratic environment, yet has turned into an unintended negative
 place. Andrew will cover questions like: Are big tech companies and their
 investors at fault? Is there any turning back? Tickets are $10.
 
-**[Healthcare Lecture Series: Impact of Artificial Intelligence & Blockchain](https://www.eventbrite.com/e/healthcare-lecture-series-impact-of-artificial-intelligence-blockchain-tickets-77503267359?aff=ebdssbdestsearch)**  
-**When**: Friday, December 13th 9:00am — 5:00pm  
-**Where**: Rise New York — 43 West 23rd Street, New York
+**[Healthcare Lecture Series: Impact of Artificial Intelligence & Blockchain](https://www.eventbrite.com/e/healthcare-lecture-series-impact-of-artificial-intelligence-blockchain-tickets-77503267359?aff=ebdssbdestsearch)**
+**When**: Friday, December 13th 9:00am — 5:00pm **Where**: Rise New York — 43
+West 23rd Street, New York
 
 This is a full-day educational opportunity to hear from industry luminaries on
 the impact of AI and blockchain in the healthcare space! You will hear from an

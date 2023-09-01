@@ -1,6 +1,6 @@
 import { code, codeLine, inlineCode } from './style.css';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProp {
   children: ReactNode;

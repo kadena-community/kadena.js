@@ -1,6 +1,6 @@
 import { wrapperClass } from './styles.css';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { Tweet as ReactTweet } from 'react-tweet';
 
 interface IProps {

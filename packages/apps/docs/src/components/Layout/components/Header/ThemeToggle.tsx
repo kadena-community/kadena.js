@@ -5,7 +5,8 @@ import { headerButtonClass, iconButtonClass } from './styles.css';
 import { useTheme } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
-import React, { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const ThemeToggle: FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);

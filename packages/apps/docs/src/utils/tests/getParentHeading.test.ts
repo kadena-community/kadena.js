@@ -1,6 +1,6 @@
 import { getParentHeading } from '..';
 
-import { ISubHeaderElement } from '@/types/Layout';
+import { type ISubHeaderElement } from '@/types/Layout';
 
 describe('utils getParentHeading', () => {
   test('should return the parent H1 if the tag is H2"', () => {

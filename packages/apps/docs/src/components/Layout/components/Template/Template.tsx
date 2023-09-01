@@ -3,8 +3,8 @@ import { Menu, MenuBack } from '../Menu';
 import { SideMenu } from '../SideMenu';
 
 import { useMenu } from '@/hooks';
-import { IMenuItem } from '@/types/Layout';
-import React, { FC, ReactNode } from 'react';
+import { type IMenuItem } from '@/types/Layout';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;

@@ -1,5 +1,5 @@
 import { formatDateDistance } from '@/utils/dates';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 interface IProps {
   date?: string;

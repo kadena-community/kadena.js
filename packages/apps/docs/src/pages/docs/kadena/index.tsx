@@ -7,9 +7,9 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { GetStaticProps } from 'next';
+import { type GetStaticProps } from 'next';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 const Home: FC = () => {
   return (

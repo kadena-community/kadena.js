@@ -1,6 +1,6 @@
 import { ThemeContext } from './ThemeProvider';
 import { ThemeScript } from './ThemeScript';
-import { IThemeProviderProps } from './types';
+import { type IThemeProviderProps } from './types';
 import {
   colorSchemes,
   disableAnimation,

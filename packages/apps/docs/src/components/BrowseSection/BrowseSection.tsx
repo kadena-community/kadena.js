@@ -1,7 +1,7 @@
-import { Heading, IHeadingProps } from '@kadena/react-ui';
+import { type IHeadingProps, Heading } from '@kadena/react-ui';
 
-import { ILinkBlock, LinkBlock } from './LinkBlock';
-import { ILinkList, LinkList } from './LinkList';
+import { type ILinkBlock, LinkBlock } from './LinkBlock';
+import { type ILinkList, LinkList } from './LinkList';
 import {
   columnLinkClass,
   columnLinkListItemClass,
@@ -11,7 +11,7 @@ import {
 
 import classnames from 'classnames';
 import Link from 'next/link';
-import React, { FC, FunctionComponentElement } from 'react';
+import React, { type FC, type FunctionComponentElement } from 'react';
 
 export interface IBrowseSectionProps {
   title?: string;

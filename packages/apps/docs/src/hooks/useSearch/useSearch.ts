@@ -1,10 +1,10 @@
-import { IConversation, useConversation } from './useConversation';
+import { type IConversation, useConversation } from './useConversation';
 import { useStream } from './useStream';
 
-import { StreamMetaData } from '@7-docs/edge';
+import { type StreamMetaData } from '@7-docs/edge';
 import { useRouter } from 'next/router';
 import {
-  MutableRefObject,
+  type MutableRefObject,
   useCallback,
   useEffect,
   useRef,

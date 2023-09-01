@@ -1,7 +1,7 @@
 import { wrapperClass } from '../styles.css';
 
 import { BodyText } from '@/components/Typography';
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProp {
   children: ReactNode;

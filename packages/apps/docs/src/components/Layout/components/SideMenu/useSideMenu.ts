@@ -1,7 +1,7 @@
-import { IMenuItem } from '@/types/Layout';
+import { type IMenuItem } from '@/types/Layout';
 import { hasSameBasePath } from '@/utils';
 import { useRouter } from 'next/router';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { type MouseEventHandler, useEffect, useState } from 'react';
 
 interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;

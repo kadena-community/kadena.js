@@ -2,7 +2,7 @@ import { LinkList as InnerLinkList } from '../LinkList';
 
 import { listItemClass } from './styles.css';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 export interface ILinkList {
   title: string;

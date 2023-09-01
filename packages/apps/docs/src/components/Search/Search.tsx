@@ -4,7 +4,7 @@ import { removeUnnecessarySearchRecords } from './utils';
 import { useSearch } from '@/hooks';
 import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 
 interface IProps {
   query?: string;

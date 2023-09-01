@@ -1,6 +1,6 @@
 import { hr } from './style.css';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export const Hr: FC = () => {
   return <hr className={hr} />;

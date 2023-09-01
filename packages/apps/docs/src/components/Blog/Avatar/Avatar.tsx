@@ -1,7 +1,7 @@
 import { avatar } from './styles.css';
 
 import { getInitials } from '@/utils';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 interface IProps {
   name?: string;

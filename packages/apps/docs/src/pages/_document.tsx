@@ -1,7 +1,7 @@
 import { getCssText } from '@kadena/react-components';
 
 import { Head, Html, Main, NextScript } from 'next/document';
-import React, { ComponentType, FC, ReactNode } from 'react';
+import React, { type ComponentType, type FC, type ReactNode } from 'react';
 
 const Document = (): JSX.Element => {
   const TypedHead = Head as unknown as FC<{ children?: ReactNode }>;

@@ -17,10 +17,10 @@ import {
   pageGridClass,
 } from './styles.css';
 
-import { IPageProps } from '@/types/Layout';
+import { type IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
-import classnames from 'classnames';
-import React, { FC } from 'react';
+import classNames from 'classnames';
+import React, { type FC } from 'react';
 
 export const Blog: FC<IPageProps> = ({
   children,
@@ -31,12 +31,12 @@ export const Blog: FC<IPageProps> = ({
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
-  const contentClassNames = classnames(
+  const contentClassNames = classNames(
     contentClass,
     contentClassVariants[frontmatter.layout] ?? '',
   );
 
-  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+  const gridClassNames = classNames(globalClass, baseGridClass, pageGridClass);
 
   return (
     <div className={gridClassNames}>

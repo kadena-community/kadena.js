@@ -6,7 +6,7 @@ import {
 } from './menu.css';
 
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;

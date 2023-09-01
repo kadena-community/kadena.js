@@ -1,6 +1,6 @@
 import { Text } from '@kadena/react-ui';
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 interface IProps {
   count: number;

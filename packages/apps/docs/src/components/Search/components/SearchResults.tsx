@@ -19,11 +19,11 @@ import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
 import { BrowseSection, Loading } from '@/components';
-import { IConversation } from '@/hooks/useSearch/useConversation';
+import { type IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
 import Link from 'next/link';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {

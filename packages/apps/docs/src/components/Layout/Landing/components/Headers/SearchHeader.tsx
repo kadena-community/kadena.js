@@ -2,7 +2,7 @@ import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
 import { headerClass, subheaderClass, wrapperClass } from './style.css';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProps {
   children: ReactNode;
