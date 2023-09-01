@@ -10,7 +10,7 @@
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",
-    "knip": "knip",
+    "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:ci": "pnpm run lint:versions && turbo run lint",
     "lint:versions": "syncpack list-mismatches",

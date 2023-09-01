@@ -1,6 +1,9 @@
 {
   "$schema": "https://unpkg.com/knip@2/schema.json",
   "workspaces": {
+    "packages/tools/eslint-config": {
+      "eslint": ["profile/*.js"]
+    },
     "packages/libs/client-examples": {
       "entry": [
         "src/example-contract/*.ts",
