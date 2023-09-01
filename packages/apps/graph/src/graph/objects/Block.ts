@@ -1,7 +1,7 @@
 import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
-import { prismaModelName } from '@pothos/plugin-prisma';
+import { type prismaModelName } from '@pothos/plugin-prisma';
 import { Prisma } from '@prisma/client';
 
 export default builder.prismaNode('Block', {
