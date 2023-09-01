@@ -4,8 +4,8 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import { type GetStaticProps } from 'next';
+import React, { type FC } from 'react';
 
 const Home: FC = () => {
   return <Stack>Error</Stack>;

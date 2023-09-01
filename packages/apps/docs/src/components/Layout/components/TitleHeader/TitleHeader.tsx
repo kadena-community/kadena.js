@@ -7,8 +7,8 @@ import {
   wrapperClass,
 } from './style.css';
 
-import { ProductIconNames } from '@/types/Layout';
-import React, { FC } from 'react';
+import { type ProductIconNames } from '@/types/Layout';
+import React, { type FC } from 'react';
 
 interface IProps {
   title: string;

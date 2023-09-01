@@ -21,11 +21,11 @@ import {
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
-import { IPageProps } from '@/types/Layout';
+import { type IPageProps } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { type FC, useEffect, useRef, useState } from 'react';
 
 export const Full: FC<IPageProps> = ({
   children,

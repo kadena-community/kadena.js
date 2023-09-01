@@ -5,7 +5,7 @@ import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {

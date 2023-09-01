@@ -1,7 +1,7 @@
 import { analyticsPageView } from '@/utils/analytics';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import React, { FC, useEffect } from 'react';
+import React, { type FC, useEffect } from 'react';
 
 const TRACKING_ID: string = process.env.NEXT_PUBLIC_TRACKING_ID ?? '';
 

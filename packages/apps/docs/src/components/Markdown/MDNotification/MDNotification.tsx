@@ -2,9 +2,9 @@ import { Notification } from '@kadena/react-ui';
 
 import { wrapperClass } from '../styles.css';
 
-import { getColor, getIcon, LabelType } from './utils';
+import { type LabelType, getColor, getIcon } from './utils';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProps {
   children: ReactNode;

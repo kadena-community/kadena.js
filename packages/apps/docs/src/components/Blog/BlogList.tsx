@@ -1,6 +1,6 @@
 import { bloglist } from './styles.css';
 
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;

@@ -10,15 +10,15 @@ import {
 } from '@/components/Layout/components';
 import { useGetBlogs } from '@/hooks';
 import { getInitBlogPosts } from '@/hooks/useBlog/utils';
-import { IMenuData, IPageProps } from '@/types/Layout';
+import { type IMenuData, type IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import classNames from 'classnames';
-import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import { type GetStaticProps } from 'next';
+import React, { type FC } from 'react';
 
 interface IProps extends IPageProps {
   posts: IMenuData[];
