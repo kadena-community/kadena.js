@@ -68,8 +68,9 @@ const config: StorybookConfig = {
 
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@/components': path.resolve(__dirname, '../src/components'),
+      '@': path.resolve(__dirname, '../src'),
       '@/data': path.resolve(__dirname, '../src/data'),
+      '@/_generated': path.resolve(__dirname, '../src/_generated'),
       '@/hooks': path.resolve(__dirname, '../src/hooks'),
       '@/pages': path.resolve(__dirname, '../src/pages'),
       '@/types': path.resolve(__dirname, '../src/types'),
