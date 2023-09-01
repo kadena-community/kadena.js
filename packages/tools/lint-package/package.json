@@ -11,7 +11,7 @@
   "license": "ISC",
   "type": "module",
   "bin": {
-    "lint-package": "lib/index.js"
+    "lint-package": "bin/lint-package.js"
   },
   "files": [
     "lib"
