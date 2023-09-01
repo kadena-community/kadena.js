@@ -120,6 +120,7 @@ const ExistingAccountFaucetPage: FC = () => {
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
+      <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
