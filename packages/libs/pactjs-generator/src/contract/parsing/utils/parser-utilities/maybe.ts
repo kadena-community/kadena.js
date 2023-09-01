@@ -1,4 +1,4 @@
-import { FAILED, IParser, rule } from './rule';
+import { type IParser, FAILED, rule } from './rule';
 
 interface IMaybe {
   <T>(parser: IParser<T>): IParser<T, never>;

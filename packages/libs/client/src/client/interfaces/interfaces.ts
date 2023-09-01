@@ -1,4 +1,4 @@
-import { ChainId } from '@kadena/types';
+import { type ChainId } from '@kadena/types';
 
 /**
  * @public

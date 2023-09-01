@@ -1,6 +1,6 @@
 import { SystemIcons } from './../../';
-import { StyledButtonVariants } from './styles';
-import { Button, IButtonProps } from '.';
+import { type StyledButtonVariants } from './styles';
+import { type IButtonProps, Button } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

@@ -1,11 +1,11 @@
-import { OnAnswer, QuestionWrapper } from './components/question.js';
+import { type OnAnswer, QuestionWrapper } from './components/question.js';
 import { Summary } from './components/summary.js';
 import { useHistory } from './hooks/use-history.js';
 import { questions } from './questions/init.js';
 import {
+  type IAnswers,
+  type IQuestionAnswer,
   getNextQuestion,
-  IAnswers,
-  IQuestionAnswer,
 } from './questions/questions.js';
 
 import React, { useCallback, useEffect, useState } from 'react';

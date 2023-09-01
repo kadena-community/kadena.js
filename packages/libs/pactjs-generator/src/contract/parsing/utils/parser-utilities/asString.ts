@@ -1,4 +1,4 @@
-import { FAILED, IParser, rule } from './rule';
+import { type IParser, FAILED, rule } from './rule';
 
 export const asString = (parser: IParser, join = ''): IParser<string> =>
   rule((pointer) => {

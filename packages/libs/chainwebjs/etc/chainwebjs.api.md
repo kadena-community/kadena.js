@@ -4,7 +4,7 @@
 
 ```ts
 
-import { default as EventSource_2 } from 'eventsource';
+import type { default as EventSource_2 } from 'eventsource';
 
 // @public (undocumented)
 const _default: {

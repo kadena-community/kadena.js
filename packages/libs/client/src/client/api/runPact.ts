@@ -1,4 +1,4 @@
-import { ICommandResult, local } from '@kadena/chainweb-node-client';
+import { type ICommandResult, local } from '@kadena/chainweb-node-client';
 import { hash as blackHash } from '@kadena/cryptography-utils';
 
 import { composePactCommand, execution } from '../../composePactCommand';

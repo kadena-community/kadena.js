@@ -3,7 +3,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
 
 import { sizeVariant } from './styles';
-import { IProductIconProps, ProductIcons } from './';
+import { type IProductIconProps, ProductIcons } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

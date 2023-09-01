@@ -1,4 +1,4 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import { type ICommand, type IUnsignedCommand } from '@kadena/types';
 
 /**
  * Determines if a command is fully signed.

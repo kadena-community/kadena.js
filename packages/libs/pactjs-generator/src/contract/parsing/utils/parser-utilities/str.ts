@@ -1,6 +1,6 @@
 import { trim } from '../utils';
 
-import { FAILED, IParser, rule } from './rule';
+import { type IParser, FAILED, rule } from './rule';
 
 export const str: IParser<string> = rule((pointer) => {
   const token = pointer.next();

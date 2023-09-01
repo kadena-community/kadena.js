@@ -1,7 +1,7 @@
 import { Button, SystemIcons } from './../../';
 import { colorVariant } from './styles';
 import {
-  INotificationProps,
+  type INotificationProps,
   Notification,
   NotificationBody,
   NotificationFooter,

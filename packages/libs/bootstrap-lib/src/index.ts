@@ -1,4 +1,4 @@
-import { fetch, Response } from 'cross-fetch';
+import { type Response, fetch } from 'cross-fetch';
 
 /**
  * @internal

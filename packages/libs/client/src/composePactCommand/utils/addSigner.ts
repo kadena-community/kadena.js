@@ -1,9 +1,9 @@
-import { ICap } from '@kadena/types';
+import { type ICap } from '@kadena/types';
 
-import { IPactCommand } from '../../interfaces/IPactCommand';
+import { type IPactCommand } from '../../interfaces/IPactCommand';
 import {
-  ExtractCapabilityType,
-  IGeneralCapability,
+  type ExtractCapabilityType,
+  type IGeneralCapability,
 } from '../../interfaces/type-utilities';
 
 import { patchCommand } from './patchCommand';

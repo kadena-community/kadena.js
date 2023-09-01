@@ -6,7 +6,7 @@ jest.mock('cross-fetch', () => {
 });
 
 import { filterTxs } from '../transactions';
-import { IBlockPayloads, ITransactionElement } from '../types';
+import { type IBlockPayloads, type ITransactionElement } from '../types';
 
 import { header } from './mocks/header';
 import {

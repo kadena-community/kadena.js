@@ -1,7 +1,7 @@
-import { spv, SPVResponse } from '@kadena/chainweb-node-client';
-import { ChainId } from '@kadena/types';
+import { type SPVResponse, spv } from '@kadena/chainweb-node-client';
+import { type ChainId } from '@kadena/types';
 
-import { IPollOptions } from '../interfaces/interfaces';
+import { type IPollOptions } from '../interfaces/interfaces';
 import { retry } from '../utils/retry';
 
 export async function getSpv(

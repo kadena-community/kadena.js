@@ -5,7 +5,7 @@
 ```ts
 
 import { ChainId } from '@kadena/types';
-import Client from '@walletconnect/sign-client';
+import type Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';

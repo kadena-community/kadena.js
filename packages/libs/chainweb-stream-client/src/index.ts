@@ -6,14 +6,14 @@ import {
 import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
 import SlidingCache from './sliding-cache';
 import {
-  ChainwebStreamType,
+  type ChainwebStreamType,
+  type IChainwebStreamConfig,
+  type IChainwebStreamConstructorArgs,
+  type IDebugMsgObject,
+  type IHeightsEvent,
+  type IInitialEvent,
+  type ITransaction,
   ConnectionState,
-  IChainwebStreamConfig,
-  IChainwebStreamConstructorArgs,
-  IDebugMsgObject,
-  IHeightsEvent,
-  IInitialEvent,
-  ITransaction,
 } from './types';
 import { isNotUndefined } from './util';
 

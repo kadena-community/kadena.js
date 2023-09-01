@@ -6,14 +6,14 @@ import {
   setNetworkId,
   setNonce,
 } from '../../fp';
-import { IPactCommand } from '../../interfaces/IPactCommand';
+import { type IPactCommand } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
 import { composePactCommand } from '../composePactCommand';
 import { addData } from '../utils/addData';
 import { mergePayload } from '../utils/patchCommand';
 
-import { ICoin } from './coin-contract';
+import { type ICoin } from './coin-contract';
 
 const coin: ICoin = getModule('coin');
 

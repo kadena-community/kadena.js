@@ -1,14 +1,14 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import { type ICommand, type IUnsignedCommand } from '@kadena/types';
 
-import { IQuicksignResponse } from '../../signing-api/v1/quicksign';
-import { ISignFunction } from '../ISignFunction';
+import { type IQuicksignResponse } from '../../signing-api/v1/quicksign';
+import { type ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
-import { TWalletConnectChainId } from './walletConnectTypes';
+import { type TWalletConnectChainId } from './walletConnectTypes';
 
-import Client from '@walletconnect/sign-client';
-import { SessionTypes } from '@walletconnect/types';
+import type Client from '@walletconnect/sign-client';
+import { type SessionTypes } from '@walletconnect/types';
 
 /**
  * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}

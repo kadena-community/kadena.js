@@ -1,6 +1,6 @@
 import {
+  type ICommand,
   createClient,
-  ICommand,
   isSignedTransaction,
   Pact,
   signWithChainweaver,

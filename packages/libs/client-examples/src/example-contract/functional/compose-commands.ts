@@ -1,4 +1,4 @@
-import { IPactCommand, Pact } from '@kadena/client';
+import { type IPactCommand, Pact } from '@kadena/client';
 import {
   addSigner,
   composePactCommand,

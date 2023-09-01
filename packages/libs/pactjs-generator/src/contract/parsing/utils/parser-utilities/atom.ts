@@ -1,4 +1,4 @@
-import { FAILED, IParser, rule } from './rule';
+import { type IParser, FAILED, rule } from './rule';
 
 export const atom: IParser<string> = rule((pointer) => {
   const token = pointer.next();

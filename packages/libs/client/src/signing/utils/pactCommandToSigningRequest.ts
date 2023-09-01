@@ -1,6 +1,6 @@
-import { IPactCommand } from '../../interfaces/IPactCommand';
+import { type IPactCommand } from '../../interfaces/IPactCommand';
 import { isExecCommand } from '../../interfaces/isExecCommand';
-import { ISigningRequest } from '../../interfaces/ISigningRequest';
+import { type ISigningRequest } from '../../interfaces/ISigningRequest';
 
 export const pactCommandToSigningRequest = (
   parsedTransaction: IPactCommand,

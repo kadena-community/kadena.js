@@ -1,4 +1,4 @@
-import { ChainId, ICap } from '@kadena/types';
+import { type ChainId, type ICap } from '@kadena/types';
 
 /**
  * The payload of a Execution transaction

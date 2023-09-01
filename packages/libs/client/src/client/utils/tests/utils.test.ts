@@ -1,4 +1,4 @@
-import { IPollRequestPromise } from '../../interfaces/interfaces';
+import { type IPollRequestPromise } from '../../interfaces/interfaces';
 import {
   getPromise,
   getUrl,

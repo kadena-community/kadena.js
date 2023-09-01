@@ -1,6 +1,6 @@
-import { ChainId } from '@kadena/types';
+import { type ChainId } from '@kadena/types';
 
-import { IPollRequestPromise } from '../interfaces/interfaces';
+import { type IPollRequestPromise } from '../interfaces/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const jsonRequest = (body: object) => ({

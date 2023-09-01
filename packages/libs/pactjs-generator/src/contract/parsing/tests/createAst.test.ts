@@ -1,4 +1,4 @@
-import { createAst, IAst, IAstNode } from '../createAst';
+import { type IAst, type IAstNode, createAst } from '../createAst';
 
 describe('createAst', () => {
   it('returns an ast with only root elements', () => {

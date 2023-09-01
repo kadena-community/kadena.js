@@ -1,4 +1,4 @@
-import { IParser, rule } from './rule';
+import { type IParser, rule } from './rule';
 
 /**
  * This function returns a snapshot of the pointer. It can be helpful when you need to reference the pointer index at a later time.

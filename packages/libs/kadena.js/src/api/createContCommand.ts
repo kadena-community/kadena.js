@@ -1,6 +1,6 @@
 import {
+  type ISendRequestBody,
   createSendRequest,
-  ISendRequestBody,
 } from '@kadena/chainweb-node-client';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type {

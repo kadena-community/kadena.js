@@ -1,8 +1,8 @@
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { TOptions } from '.';
+import { type TOptions } from '.';
 
-import { Command } from 'commander';
+import { type Command } from 'commander';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 

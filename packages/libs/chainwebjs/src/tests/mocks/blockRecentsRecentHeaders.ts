@@ -6,10 +6,11 @@ interface mockBlocks {
   [key: number]: {};
 }
 
-import { bigloadStart } from './730-360-pageNext-inclusive-xz5JDTRLwqSC2T861tTGIovEcklBUbXxDw6VS7yYay4';
-import { bigloadMiddle } from './730-360-pageNext-inclusive-76kklGQO0cKSxtSSrhP_iD07J94VG3PHIxTDl7kQUhk';
+import { type IBlockHeader, type IPagedResponse } from '../../types';
+
 import { bigloadEnd } from './730-10';
-import { IPagedResponse, IBlockHeader } from '../../types';
+import { bigloadMiddle } from './730-360-pageNext-inclusive-76kklGQO0cKSxtSSrhP_iD07J94VG3PHIxTDl7kQUhk';
+import { bigloadStart } from './730-360-pageNext-inclusive-xz5JDTRLwqSC2T861tTGIovEcklBUbXxDw6VS7yYay4';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getItemsFromArrByAmount = (

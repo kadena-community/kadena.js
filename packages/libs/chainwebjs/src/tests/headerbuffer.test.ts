@@ -1,5 +1,5 @@
 import { HeaderBuffer } from '../HeaderBuffer';
-import { IBufferHeader } from '../types';
+import { type IBufferHeader } from '../types';
 /* ************************************************************************** */
 /* HeaderBuffer */
 

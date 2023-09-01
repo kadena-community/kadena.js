@@ -2,10 +2,10 @@ import { currentCut } from './cut';
 import { HeaderBuffer } from './HeaderBuffer';
 import { branch, currentBranch } from './internal';
 import { baseUrl } from './request';
-import { IBlockHeader, IBufferHeader } from './types';
+import { type IBlockHeader, type IBufferHeader } from './types';
 import { buildEventSource } from './utils';
 
-import EventSource from 'eventsource';
+import type EventSource from 'eventsource';
 
 /**
  * Headers from a range of block heights

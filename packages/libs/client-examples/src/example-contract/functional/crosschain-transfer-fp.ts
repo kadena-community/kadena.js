@@ -1,4 +1,4 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
+import { type ICommandResult } from '@kadena/chainweb-node-client';
 import {
   createTransaction,
   Pact,
@@ -15,7 +15,7 @@ import {
   setNetworkId,
 } from '@kadena/client/fp';
 import { isSignedCommand } from '@kadena/pactjs';
-import { ChainId } from '@kadena/types';
+import { type ChainId } from '@kadena/types';
 
 import { listen, pollCreateSpv, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
