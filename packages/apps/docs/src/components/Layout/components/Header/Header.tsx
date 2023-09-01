@@ -36,7 +36,7 @@ interface IProps {
 
 export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
-  const { toggleMenu, isMenuOpen, toggleAside, isAsideOpen } = useMenu();
+  const { toggleMenu, isMenuOpen } = useMenu();
 
   return (
     <StyledHeader className={globalClass}>

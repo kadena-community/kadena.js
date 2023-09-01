@@ -1,5 +1,11 @@
-import { AsideItem, AsideItemLink } from './AsideStyles';
+import {
+  asideItemClass,
+  asideItemLinkActiveVariants,
+  asideItemLinkClass,
+} from './styles.css';
 
+import classNames from 'classnames';
+import Link from 'next/link';
 import React, { FC, MouseEventHandler, ReactNode } from 'react';
 
 interface IProps {
@@ -17,12 +23,17 @@ export const AsideLink: FC<IProps> = ({
   isActive,
   onClick,
 }) => {
+  const linkClass = classNames(
+    asideItemLinkClass,
+    asideItemLinkActiveVariants[isActive ? 'true' : 'false'],
+  );
+
   return (
-    <AsideItem>
-      <AsideItemLink href={href} onClick={onClick} isActive={isActive}>
+    <li className={asideItemClass}>
+      <Link href={href} onClick={onClick} className={linkClass}>
         {label}
-      </AsideItemLink>
+      </Link>
       {children}
-    </AsideItem>
+    </li>
   );
 };

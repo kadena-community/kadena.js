@@ -1,13 +1,8 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { breakpoints } from '@kadena/react-ui/theme';
 
-import { $$asideMenuWidthCode } from '../basestyles.css';
-import {
-  $$backgroundOverlayColor,
-  $$leftSideWidth,
-  $$pageWidth,
-} from '../global.css';
+import { $$leftSideWidth, $$pageWidth } from '../global.css';
 
-import { createVar, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const pageGridClass = style({
   gridTemplateColumns: 'auto auto',
