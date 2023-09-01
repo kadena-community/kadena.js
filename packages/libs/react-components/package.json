@@ -24,7 +24,6 @@
     "test": "pnpm run build:test && heft test"
   },
   "dependencies": {
-    "@radix-ui/react-switch": "^1.0.2",
     "@stitches/react": "1.3.1-1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
