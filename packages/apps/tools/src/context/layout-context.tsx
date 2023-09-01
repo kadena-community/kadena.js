@@ -1,7 +1,7 @@
-import { ISidebarToolbarItem } from '@/types/Layout';
+import { type ISidebarToolbarItem } from '@/types/Layout';
 import React, {
+  type PropsWithChildren,
   createContext,
-  PropsWithChildren,
   useContext,
   useEffect,
   useState,

@@ -1,7 +1,7 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { type ChainwebChainId } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
 
-import { kadenaConstants, Network } from '@/constants/kadena';
+import { type Network, kadenaConstants } from '@/constants/kadena';
 import { convertIntToChainId } from '@/services/utils/utils';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import { Container, Details, EditorGrid, StyledListItem } from './styles';
 
 import { describeModule } from '@/services/modules/describe-module';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 
 const ModulePage: FC = () => {
   const { t } = useTranslation('common');

@@ -39,12 +39,12 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
+  type ITransferResult,
   finishXChainTransfer,
-  ITransferResult,
 } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import {
+  type ITransferDataResult,
   getTransferData,
-  ITransferDataResult,
 } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,8 +52,8 @@ import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
-  ChangeEventHandler,
-  FC,
+  type ChangeEventHandler,
+  type FC,
   useCallback,
   useEffect,
   useRef,

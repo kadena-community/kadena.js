@@ -1,8 +1,8 @@
 import {
+  type InputWrapperStatus,
   Breadcrumbs,
   Button,
   Grid,
-  InputWrapperStatus,
   Notification,
   ProgressBar,
   Stack,
@@ -26,8 +26,8 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
+  type IStatusData,
   getTransferStatus,
-  IStatusData,
   StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
@@ -36,8 +36,8 @@ import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, {
-  ChangeEventHandler,
-  FC,
+  type ChangeEventHandler,
+  type FC,
   useCallback,
   useEffect,
   useRef,

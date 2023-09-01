@@ -1,4 +1,4 @@
-import { CHAINS, ChainwebChainId } from '@kadena/chainweb-node-client';
+import { type ChainwebChainId, CHAINS } from '@kadena/chainweb-node-client';
 import {
   type ISelectProps,
   InputWrapper,
