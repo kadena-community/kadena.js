@@ -1,4 +1,4 @@
-import { Network } from '@/constants/kadena';
+import { type Network } from '@/constants/kadena';
 
 export const getNetworks = (accounts: string[] = []): Network[] =>
   Array.from(

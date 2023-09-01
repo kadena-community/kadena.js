@@ -1,4 +1,4 @@
-import { INotificationProps, Notification } from '@kadena/react-ui';
+import { type INotificationProps, Notification } from '@kadena/react-ui';
 
 import { containerStyle } from './styles.css';
 

@@ -1,4 +1,8 @@
-import { IAccordionProps, ITreeProps, SystemIcon } from '@kadena/react-ui';
+import {
+  type IAccordionProps,
+  type ITreeProps,
+  type SystemIcon,
+} from '@kadena/react-ui';
 
 export interface IMenuItem {
   title: string;

@@ -1,9 +1,9 @@
 import {
+  type SystemIcon,
   Button,
   Card,
   IconButton,
   Stack,
-  SystemIcon,
   Tag,
   Text,
   useModal,
@@ -16,10 +16,10 @@ import {
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
-import { DevOption } from '@/constants/kadena';
+import { type DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 export interface IDevOption {
   title: string;

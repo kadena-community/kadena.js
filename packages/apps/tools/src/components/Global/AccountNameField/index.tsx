@@ -1,10 +1,10 @@
 import {
+  type IInputProps,
+  type IInputWrapperProps,
+  type ISelectProps,
   IconButton,
-  IInputProps,
-  IInputWrapperProps,
   Input,
   InputWrapper,
-  ISelectProps,
   Option,
   Select,
 } from '@kadena/react-ui';
@@ -15,8 +15,8 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useDidUpdateEffect } from '@/hooks';
 import { getAccounts } from '@/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
-import React, { ChangeEvent, FC, useState } from 'react';
-import { FieldError } from 'react-hook-form';
+import React, { type ChangeEvent, type FC, useState } from 'react';
+import { type FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
 interface IAccountNameFieldProps

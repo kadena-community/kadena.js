@@ -1,5 +1,5 @@
 // eslint-disable-next-line simple-import-sort/imports
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-clojure';

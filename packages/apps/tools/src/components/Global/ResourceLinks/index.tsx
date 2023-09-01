@@ -10,7 +10,7 @@ import {
 
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 interface ILinkProps {
   title: string;
