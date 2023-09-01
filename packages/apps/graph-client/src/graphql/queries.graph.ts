@@ -1,4 +1,4 @@
-import { DocumentNode, gql } from '@apollo/client';
+import { type DocumentNode, gql } from '@apollo/client';
 
 export const CORE_BLOCK_FIELDS: DocumentNode = gql`
   fragment CoreBlockFields on Block {
