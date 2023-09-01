@@ -59,9 +59,10 @@ export const loadingWrapperClass = style([
     display: 'flex',
     justifyContent: 'center',
     paddingY: '$10',
-    background: '$layoutSurfaceOverlay',
+    backgroundColor: '$background',
   }),
   {
+    opacity: '.8',
     inset: 0,
   },
 ]);

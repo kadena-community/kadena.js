@@ -16,7 +16,8 @@ import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, useEffect } from 'react';
 
 const GlobalStyles = globalCss({
   ...baseGlobalStyles,
@@ -48,8 +49,20 @@ export const MyApp = ({
   Component: FC<IPageProps>;
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
-
   const Layout = getLayout(props.frontmatter.layout);
+
+  // check for a router query
+  const router = useRouter();
+  useEffect(() => {
+    if (router.isReady) {
+      const { q } = router.query;
+      if (q && router.pathname !== '/search') {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.replace(`/search?q=${q}`);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
   return (
     <>

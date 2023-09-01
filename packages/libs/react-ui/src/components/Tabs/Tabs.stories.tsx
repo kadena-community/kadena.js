@@ -9,10 +9,22 @@ const meta: Meta<
   }
 > = {
   title: 'Layout/Tabs',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The tabs functionality is divided into three sub components: The <i>Tabs.Root</i> for parent, then <i>Tabs.Tab</i> for each tab item and the <i>Tabs.Content</i> for the tab content.',
+      },
+    },
+  },
   component: Tabs.Root,
   argTypes: {
     itemsCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
+      description: 'Total number of tabs.',
+      table: {
+        type: { summary: 'number' },
+      },
     },
   },
 };

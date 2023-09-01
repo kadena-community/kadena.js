@@ -12,7 +12,7 @@ const FooterWrapper: FC = () => {
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const { t } = useTranslation('common');
-  const openModal = (): void => renderModal(<OptionsModal />);
+  const openModal = (): void => renderModal(<OptionsModal />, 'Settings');
 
   const toggleTheme = (): void => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';

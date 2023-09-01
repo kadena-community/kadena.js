@@ -1,4 +1,4 @@
-import { useModal } from './ModalProvider';
+import { useModal } from '@components/Modal';
 
 import { Button } from '@components/Button';
 import { Text } from '@components/Typography/Text/Text';

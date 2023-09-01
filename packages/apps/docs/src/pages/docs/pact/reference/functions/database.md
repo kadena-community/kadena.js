@@ -11,7 +11,7 @@ layout: full
 
 # Database
 
-### create-table
+## create-table
 
 _table_&nbsp;`table:<{row}>` _&rarr;_&nbsp;`string`
 
@@ -23,7 +23,7 @@ Create table TABLE.
 
 Top level only: this function will fail if used in module code.
 
-### describe-keyset
+## describe-keyset
 
 _keyset_&nbsp;`string` _&rarr;_&nbsp;`object:*`
 
@@ -31,7 +31,7 @@ Get metadata for KEYSET.
 
 Top level only: this function will fail if used in module code.
 
-### describe-module
+## describe-module
 
 _module_&nbsp;`string` _&rarr;_&nbsp;`object:*`
 
@@ -44,7 +44,7 @@ Get metadata for MODULE. Returns an object with 'name', 'hash', 'blessed',
 
 Top level only: this function will fail if used in module code.
 
-### describe-table
+## describe-table
 
 _table_&nbsp;`table:<{row}>` _&rarr;_&nbsp;`object:*`
 
@@ -57,7 +57,7 @@ Get metadata for TABLE. Returns an object with 'name', 'hash', 'blessed',
 
 Top level only: this function will fail if used in module code.
 
-### fold-db
+## fold-db
 
 _table_&nbsp;`table:<{row}>` _qry_&nbsp;`a:string b:object:<{row}> -> bool`
 _consumer_&nbsp;`a:string b:object:<{row}> -> <b>` _&rarr;_&nbsp;`[<b>]`
@@ -75,7 +75,7 @@ ordering of keys.
 )
 ```
 
-### insert
+## insert
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string` _object_&nbsp;`object:<{row}>`
 _&rarr;_&nbsp;`string`
@@ -87,7 +87,7 @@ exists for KEY.
 (insert accounts id { "balance": 0.0, "note": "Created account." })
 ```
 
-### keylog
+## keylog
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string` _txid_&nbsp;`integer`
 _&rarr;_&nbsp;`[object:*]`
@@ -99,7 +99,7 @@ objects indexed by txid.
 (keylog accounts "Alice" 123485945)
 ```
 
-### keys
+## keys
 
 _table_&nbsp;`table:<{row}>` _&rarr;_&nbsp;`[string]`
 
@@ -109,7 +109,7 @@ Return all keys in TABLE.
 (keys accounts)
 ```
 
-### read
+## read
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string` _&rarr;_&nbsp;`object:<{row}>`
 
@@ -123,7 +123,7 @@ if specified.
 (read accounts id ['balance 'ccy])
 ```
 
-### select
+## select
 
 _table_&nbsp;`table:<{row}>` _where_&nbsp;`row:object:<{row}> -> bool`
 _&rarr;_&nbsp;`[object:<{row}>]`
@@ -139,7 +139,7 @@ boolean determining inclusion.
 (select people (where 'age (> 30)))?
 ```
 
-### txids
+## txids
 
 _table_&nbsp;`table:<{row}>` _txid_&nbsp;`integer` _&rarr;_&nbsp;`[integer]`
 
@@ -149,7 +149,7 @@ Return all txid values greater than or equal to TXID in TABLE.
 (txids accounts 123849535)
 ```
 
-### txlog
+## txlog
 
 _table_&nbsp;`table:<{row}>` _txid_&nbsp;`integer` _&rarr;_&nbsp;`[object:*]`
 
@@ -159,7 +159,7 @@ Return all updates to TABLE performed in transaction TXID.
 (txlog accounts 123485945)
 ```
 
-### update
+## update
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string` _object_&nbsp;`object:~<{row}>`
 _&rarr;_&nbsp;`string`
@@ -171,7 +171,7 @@ exist for KEY.
 (update accounts id { "balance": (+ bal amount), "change": amount, "note": "credit" })
 ```
 
-### with-default-read
+## with-default-read
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string`
 _defaults_&nbsp;`object:~<{row}>` _bindings_&nbsp;`binding:~<{row}>`
@@ -186,7 +186,7 @@ object with matching key names.
   (format "Balance for {} is {} {}" [id bal ccy]))
 ```
 
-### with-read
+## with-read
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string`
 _bindings_&nbsp;`binding:<{row}>` _&rarr;_&nbsp;`<a>`
@@ -199,7 +199,7 @@ subsequent body statements.
   (format "Balance for {} is {} {}" [id bal ccy]))
 ```
 
-### write
+## write
 
 _table_&nbsp;`table:<{row}>` _key_&nbsp;`string` _object_&nbsp;`object:<{row}>`
 _&rarr;_&nbsp;`string`

@@ -178,9 +178,10 @@ you are at it, what other partners do you have helping Kadena achieve what it
 set out to do?
 
 **Stuart Popejoy (Kadena):** All of our recent partnerships are about making the
-user experience on Kadena shine, whether that’s
-[Torus wallet](https://twitter.com/TorusLabs/status/1397946742453149696) for
-in-browser,
+user experience on Kadena shine, whether that’s Torus wallet for in-browser,
+
+[Torus wallet](https://twitter.com/TorusLabs/status/1397946742453149696)
+
 [ZelCore for wallet app](https://zel.network/zelcore-adds-kadena-assets-store-kda-across-multiple-chains),
 and — this is new — Ledger integration!
 [Tokensoft/Anchorage](./tokensoft-wrapped-kadenaswap-the-future-of-digital-value-2021-03-04)
@@ -232,7 +233,7 @@ denying it but wow what a dumb driver. Fees don’t really drive BTC.
 we’ve got that 🙂. But hey, don’t take it from me. This is widely agreed upon by
 the industry.
 
-@TODO: twitterfeed https://twitter.com/VitalikButerin/status/1300990520831877120
+[twitter feed](https://twitter.com/VitalikButerin/status/1300990520831877120)
 
 **Stuart Popejoy (Kadena)**: Also, managing gas risk will become a mature
 commodity infrastructure, as ideally gas should be transacted in a stablecoin.
@@ -281,9 +282,12 @@ thought of yet.
 **Blaze (TMW):** I would like to invite the community in now but before we do,
 anything you would like to cover before we bring in the frothing community?
 
-**Doug Beardsley (Kadena):** We’re building a platform. And like
-[Steve Ballmer said](https://www.youtube.com/watch?v=EMldOiiG1Ko)…developers
-developers developers…developers developers…
+**Doug Beardsley (Kadena):** We’re building a platform. And like Steve Ballmer
+said
+
+[Steve Ballmer said](https://www.youtube.com/watch?v=EMldOiiG1Ko)
+
+…developers developers developers…developers developers…
 
 **Blaze (TMW):** and Forrest Gump said, then I developed some more. An old adage
 to his running scene
@@ -294,10 +298,11 @@ about our token standards. \*\*\*\*Our new [NFT standard](http://bit.ly/kip0011)
 is actually a “poly fungible” token, where you can even do fractional ownership
 of assets alongside series, etc.
 
-We are launching an
+We are launching an NFT marketplace for a truly decentralized ecosystem. Users
+will be able to both launch new NFT schemes and benefit from existing NFT
+ledgers in the same place.
+
 [NFT marketplace](https://twitter.com/kadena_io/status/1356717907447865362?lang=en)
-for a truly decentralized ecosystem. Users will be able to both launch new NFT
-schemes and benefit from existing NFT ledgers in the same place.
 
 ## Community Questions
 
@@ -330,7 +335,8 @@ perhaps the very first time. Pact is already very readable on its own. It’s no
 Turing-complete so that adds another dimension of safety. And formal
 verification comes in and adds value on top of these things.
 
-Here’s an example of our
+Here’s an example of our formal verification happening live
+
 [formal verification happening live](https://twitter.com/i/status/1365129147983536134).
 
 A bug like this would be very difficult to find in practice. Even more so if

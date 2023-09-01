@@ -1,7 +1,7 @@
 import {
   globalCss,
   baseGlobalStyles,
-} from '@kadena-ui/react-components';
+} from '@kadena/react-components';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { themes } from '@storybook/theming';
@@ -35,4 +35,34 @@ export const parameters = {
     // Override the default light theme
     light: { ...themes.normal, appBg: 'white' },
   },
+  viewport: {
+    viewports: {
+      mobile: {
+        name: 'Mobile',
+        styles: {
+          width: '640px',
+          height: '1366px'
+        }
+      },
+      tablet: {
+        name: 'Tablet',
+        styles: {
+          width: '768px',
+          height: '1024px'
+        }
+      },
+      laptop: {
+        name: 'Laptop',
+        styles: {
+          width: '1280px',
+          height: '768px'
+        }
+      },
+      largeScreen: {
+        name: 'Large Screen',
+        width: '1536px',
+        height: '864px'
+      }
+    }
+  }
 };

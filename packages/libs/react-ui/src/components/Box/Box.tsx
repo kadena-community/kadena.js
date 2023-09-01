@@ -13,6 +13,13 @@ export interface IBoxProps
       | 'marginBottom'
       | 'marginLeft'
       | 'marginRight'
+      | 'padding'
+      | 'paddingX'
+      | 'paddingY'
+      | 'paddingTop'
+      | 'paddingBottom'
+      | 'paddingLeft'
+      | 'paddingRight'
     >
   > {
   as?: ElementType;
@@ -29,6 +36,13 @@ export const Box = ({
   marginBottom = undefined,
   marginLeft = undefined,
   marginRight = undefined,
+  padding = undefined,
+  paddingX = undefined,
+  paddingY = undefined,
+  paddingTop = undefined,
+  paddingBottom = undefined,
+  paddingLeft = undefined,
+  paddingRight = undefined,
   children,
 }: IBoxProps): React.ReactElement => {
   return createElement(
@@ -43,6 +57,13 @@ export const Box = ({
         marginBottom,
         marginLeft,
         marginRight,
+        padding,
+        paddingX,
+        paddingY,
+        paddingTop,
+        paddingBottom,
+        paddingLeft,
+        paddingRight,
       }),
       'data-testid': 'kda-box',
     },
