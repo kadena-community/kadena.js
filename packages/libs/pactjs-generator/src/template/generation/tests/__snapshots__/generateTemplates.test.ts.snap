@@ -5,15 +5,15 @@ exports[`generateDts generates a ts for \`Hello, \${name}!\` 1`] = `
 import { buildUnsignedTransaction, ICommandBuilder } from '@kadena/client';
 
 export default {
-  \\"hello-name\\": (args: {
-    \\"name\\": string,
+  "hello-name": (args: {
+    "name": string,
   }): ICommandBuilder<{}> => {
     const parts = [
-      \\"Hello, \\",
-      \\"!\\"
+      "Hello, ",
+      "!"
     ];
     const holes = [
-      \\"name\\"
+      "name"
     ];
 
     return buildUnsignedTransaction(parts, holes, args);
@@ -26,75 +26,75 @@ exports[`generateDts generates a ts for a full template 1`] = `
 import { buildUnsignedTransaction, ICommandBuilder } from '@kadena/client';
 
 export default {
-  \\"simple-transfer\\": (args: {
-    \\"from-acct\\": string,
-    \\"to-acct\\": string,
-    \\"amount\\": string,
-    \\"chain\\": string,
-    \\"network\\": string,
-    \\"from-key\\": string,
+  "simple-transfer": (args: {
+    "from-acct": string,
+    "to-acct": string,
+    "amount": string,
+    "chain": string,
+    "network": string,
+    "from-key": string,
   }): ICommandBuilder<{}> => {
     const parts = [
-      \\"{\\\\n  \\\\\\"code\\\\\\": \\\\\\"(coin.transfer \\\\\\\\\\\\\\"\\",
-      \\"\\\\\\\\\\\\\\" \\\\\\\\\\\\\\"\\",
-      \\"\\\\\\\\\\\\\\" \\",
-      \\")\\\\\\",\\\\n  \\\\\\"data\\\\\\": null,\\\\n  \\\\\\"publicMeta\\\\\\": {\\\\n    \\\\\\"chainId\\\\\\": \\\\\\"\\",
-      \\"\\\\\\",\\\\n    \\\\\\"sender\\\\\\": \\\\\\"\\",
-      \\"\\\\\\",\\\\n    \\\\\\"gasLimit\\\\\\": 2500,\\\\n    \\\\\\"gasPrice\\\\\\": 1e-8,\\\\n    \\\\\\"ttl\\\\\\": 600\\\\n  },\\\\n  \\\\\\"networkId\\\\\\": \\\\\\"\\",
-      \\"\\\\\\",\\\\n  \\\\\\"signers\\\\\\": [\\\\n    {\\\\n      \\\\\\"public\\\\\\": \\\\\\"\\",
-      \\"\\\\\\",\\\\n      \\\\\\"caps\\\\\\": [\\\\n        { \\\\\\"name\\\\\\": \\\\\\"coin.GAS\\\\\\", \\\\\\"args\\\\\\": [] },\\\\n        {\\\\n          \\\\\\"name\\\\\\": \\\\\\"coin.TRANSFER\\\\\\",\\\\n          \\\\\\"args\\\\\\": [\\\\\\"\\",
-      \\"\\\\\\", \\\\\\"\\",
-      \\"\\\\\\", \\\\\\"\\",
-      \\"\\\\\\"]\\\\n        }\\\\n      ]\\\\n    }\\\\n  ],\\\\n  \\\\\\"type\\\\\\": \\\\\\"exec\\\\\\"\\\\n}\\\\n\\"
+      "{\\n  \\"code\\": \\"(coin.transfer \\\\\\"",
+      "\\\\\\" \\\\\\"",
+      "\\\\\\" ",
+      ")\\",\\n  \\"data\\": null,\\n  \\"publicMeta\\": {\\n    \\"chainId\\": \\"",
+      "\\",\\n    \\"sender\\": \\"",
+      "\\",\\n    \\"gasLimit\\": 2500,\\n    \\"gasPrice\\": 1e-8,\\n    \\"ttl\\": 600\\n  },\\n  \\"networkId\\": \\"",
+      "\\",\\n  \\"signers\\": [\\n    {\\n      \\"public\\": \\"",
+      "\\",\\n      \\"caps\\": [\\n        { \\"name\\": \\"coin.GAS\\", \\"args\\": [] },\\n        {\\n          \\"name\\": \\"coin.TRANSFER\\",\\n          \\"args\\": [\\"",
+      "\\", \\"",
+      "\\", \\"",
+      "\\"]\\n        }\\n      ]\\n    }\\n  ],\\n  \\"type\\": \\"exec\\"\\n}\\n"
     ];
     const holes = [
-      \\"from-acct\\",
-      \\"to-acct\\",
-      \\"amount\\",
-      \\"chain\\",
-      \\"from-acct\\",
-      \\"network\\",
-      \\"from-key\\",
-      \\"from-acct\\",
-      \\"to-acct\\",
-      \\"amount\\"
+      "from-acct",
+      "to-acct",
+      "amount",
+      "chain",
+      "from-acct",
+      "network",
+      "from-key",
+      "from-acct",
+      "to-acct",
+      "amount"
     ];
 
     return buildUnsignedTransaction(parts, holes, args);
   },
-
-  \\"safe-transaction\\": (args: {
-    \\"{from-acct\\": string,
-    \\"{to-acct\\": string,
-    \\"amount\\": string,
-    \\"chain\\": string,
-    \\"network\\": string,
-    \\"from-key\\": string,
+  
+  "safe-transaction": (args: {
+    "{from-acct": string,
+    "{to-acct": string,
+    "amount": string,
+    "chain": string,
+    "network": string,
+    "from-key": string,
   }): ICommandBuilder<{}> => {
     const parts = [
-      \\"code: |-\\\\n  (coin.transfer \\\\\\"\\",
-      \\"}\\\\\\" \\\\\\"\\",
-      \\"}\\\\\\" \\",
-      \\")\\\\ndata:\\\\npublicMeta:\\\\n  chainId: '\\",
-      \\"'\\\\n  sender: '\\",
-      \\"}'\\\\n  gasLimit: 600\\\\n  gasPrice: 0.00000001\\\\n  ttl: 7200\\\\nnetworkId: '\\",
-      \\"'\\\\nsigners:\\\\n  - public: '\\",
-      \\"'\\\\n    caps:\\\\n      - name: 'coin.TRANSFER'\\\\n        args:\\\\n          - '\\",
-      \\"}'\\\\n          - '\\",
-      \\"}'\\\\n          - '\\",
-      \\"'\\\\n      - name: 'coin.GAS'\\\\n        args: []\\\\ntype: exec\\\\n\\"
+      "code: |-\\n  (coin.transfer \\"",
+      "}\\" \\"",
+      "}\\" ",
+      ")\\ndata:\\npublicMeta:\\n  chainId: '",
+      "'\\n  sender: '",
+      "}'\\n  gasLimit: 600\\n  gasPrice: 0.00000001\\n  ttl: 7200\\nnetworkId: '",
+      "'\\nsigners:\\n  - public: '",
+      "'\\n    caps:\\n      - name: 'coin.TRANSFER'\\n        args:\\n          - '",
+      "}'\\n          - '",
+      "}'\\n          - '",
+      "'\\n      - name: 'coin.GAS'\\n        args: []\\ntype: exec\\n"
     ];
     const holes = [
-      \\"{from-acct\\",
-      \\"{to-acct\\",
-      \\"amount\\",
-      \\"chain\\",
-      \\"{from-acct\\",
-      \\"network\\",
-      \\"from-key\\",
-      \\"{from-acct\\",
-      \\"{to-acct\\",
-      \\"amount\\"
+      "{from-acct",
+      "{to-acct",
+      "amount",
+      "chain",
+      "{from-acct",
+      "network",
+      "from-key",
+      "{from-acct",
+      "{to-acct",
+      "amount"
     ];
 
     return buildUnsignedTransaction(parts, holes, args);
