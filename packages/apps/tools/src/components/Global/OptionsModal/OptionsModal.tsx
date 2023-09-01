@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   IconButton,
-  Modal,
   Stack,
   SystemIcon,
   Tag,
@@ -123,20 +122,18 @@ export const OptionsModal: FC = () => {
   };
 
   return (
-    <Modal title="Settings">
-      <div className={modalOptionsContentStyle}>
-        {renderOptions()}
+    <div className={modalOptionsContentStyle}>
+      {renderOptions()}
 
-        <div className={modalButtonStyle}>
-          <Button
-            title={`${t('Save')}`}
-            onClick={() => handleSave()}
-            color="primary"
-          >
-            {`${t('Save')}`}
-          </Button>
-        </div>
+      <div className={modalButtonStyle}>
+        <Button
+          title={`${t('Save')}`}
+          onClick={() => handleSave()}
+          color="primary"
+        >
+          {`${t('Save')}`}
+        </Button>
       </div>
-    </Modal>
+    </div>
   );
 };
