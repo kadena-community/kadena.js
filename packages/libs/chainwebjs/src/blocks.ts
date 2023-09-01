@@ -6,14 +6,14 @@ import {
 } from './headers';
 import { payloads } from './internal';
 import {
-  IBlockHeader,
-  IBlockPayloadMap,
-  IBlockPayloads,
-  IRetryOptions,
-  ITransactionElement,
+  type IBlockHeader,
+  type IBlockPayloadMap,
+  type IBlockPayloads,
+  type IRetryOptions,
+  type ITransactionElement,
 } from './types';
 
-import EventSource from 'eventsource';
+import type EventSource from 'eventsource';
 
 /* ************************************************************************** */
 /* Blocks */

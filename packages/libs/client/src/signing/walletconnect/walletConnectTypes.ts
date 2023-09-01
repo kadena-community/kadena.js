@@ -1,6 +1,6 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { type ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { IPactCommand } from '../../interfaces/IPactCommand';
+import { type IPactCommand } from '../../interfaces/IPactCommand';
 
 /**
  * @internal

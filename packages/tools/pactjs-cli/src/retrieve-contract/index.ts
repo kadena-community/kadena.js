@@ -1,6 +1,6 @@
 import { retrieveContract } from './retrieve-contract';
 
-import { Command, Option } from 'commander';
+import { type Command, Option } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
 

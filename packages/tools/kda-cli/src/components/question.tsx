@@ -1,5 +1,5 @@
 import { useHistory } from '../hooks/use-history.js';
-import { IAnswers, IQuestion } from '../questions/questions.js';
+import { type IAnswers, type IQuestion } from '../questions/questions.js';
 
 import { Execute } from './execute.js';
 import { MultiInput } from './multi-input.js';

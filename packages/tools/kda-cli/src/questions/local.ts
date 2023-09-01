@@ -1,4 +1,5 @@
 import {
+  type SignedPayload,
   addCapabilities,
   addCapability,
   buildCommand,
@@ -7,12 +8,11 @@ import {
   setDomain,
   setMeta,
   setNetworkId,
-  SignedPayload,
   signWithChainweaver,
 } from '../pact/pact.js';
 import { isTruthy } from '../utils/bool.js';
 
-import { IAnswers, IQuestion } from './questions.js';
+import { type IAnswers, type IQuestion } from './questions.js';
 
 type ValidSigningAnswers = IAnswers & {
   command: string;

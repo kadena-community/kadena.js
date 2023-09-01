@@ -4,8 +4,8 @@ import { Heading } from '../Typography';
 
 import { StyledCard, StyledCardBody, StyledCardFooter } from './styles';
 
-import { VariantProps } from '@stitches/react';
-import React, { FC } from 'react';
+import { type VariantProps } from '@stitches/react';
+import React, { type FC } from 'react';
 
 export interface ICardProps {
   children: React.ReactNode;

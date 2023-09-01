@@ -1,9 +1,9 @@
-import { SystemIcons } from '../Icons';
+import { type SystemIcons } from '../Icons';
 
 import { StyledButton } from './styles';
 
-import { VariantProps } from '@stitches/react';
-import React, { FC } from 'react';
+import { type VariantProps } from '@stitches/react';
+import React, { type FC } from 'react';
 
 export interface IIconButtonProps
   extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {

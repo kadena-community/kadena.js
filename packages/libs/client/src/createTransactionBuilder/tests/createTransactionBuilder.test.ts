@@ -1,5 +1,5 @@
-import { ICoin } from '../../composePactCommand/test/coin-contract';
-import { IExecutionPayloadObject } from '../../interfaces/IPactCommand';
+import { type ICoin } from '../../composePactCommand/test/coin-contract';
+import { type IExecutionPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransactionBuilder } from '../createTransactionBuilder';
 

@@ -1,7 +1,7 @@
 import { BaseText } from './styles';
 
 import type { VariantProps } from '@stitches/react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface IHeadingProps {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

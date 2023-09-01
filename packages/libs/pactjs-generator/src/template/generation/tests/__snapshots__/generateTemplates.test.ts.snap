@@ -62,7 +62,7 @@ export default {
 
     return buildUnsignedTransaction(parts, holes, args);
   },
-  
+
   \\"safe-transaction\\": (args: {
     \\"{from-acct\\": string,
     \\"{to-acct\\": string,

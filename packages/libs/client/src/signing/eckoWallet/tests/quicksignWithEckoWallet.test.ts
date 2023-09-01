@@ -1,8 +1,8 @@
 /** @jest-environment jsdom */
 
-import { IPactCommand } from '../../../interfaces/IPactCommand';
+import { type IPactCommand } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import { ISignFunction } from '../../ISignFunction';
+import { type ISignFunction } from '../../ISignFunction';
 import { createEckoWalletQuicksign } from '../quicksignWithEckoWallet';
 
 import { TextDecoder, TextEncoder } from 'util';

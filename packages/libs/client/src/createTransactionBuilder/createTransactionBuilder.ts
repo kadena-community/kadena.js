@@ -1,4 +1,8 @@
-import { ICap, IExecPayload, IUnsignedCommand } from '@kadena/types';
+import {
+  type ICap,
+  type IExecPayload,
+  type IUnsignedCommand,
+} from '@kadena/types';
 
 import {
   addData,
@@ -11,15 +15,15 @@ import {
   setNetworkId,
   setNonce,
 } from '../composePactCommand';
-import { ValidDataTypes } from '../composePactCommand/utils/addData';
+import { type ValidDataTypes } from '../composePactCommand/utils/addData';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import {
-  IContinuationPayloadObject,
-  IPactCommand,
+  type IContinuationPayloadObject,
+  type IPactCommand,
 } from '../interfaces/IPactCommand';
 import {
-  ExtractCapabilityType,
-  IGeneralCapability,
+  type ExtractCapabilityType,
+  type IGeneralCapability,
 } from '../interfaces/type-utilities';
 import { createTransaction } from '../utils/createTransaction';
 

@@ -18,7 +18,7 @@ import { local } from '../local';
 import { mockFetch } from './mockdata/mockFetch';
 import { pactTestCommand, testURL } from './mockdata/Pact';
 
-import fetch, { Response } from 'cross-fetch';
+import fetch, { type Response } from 'cross-fetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

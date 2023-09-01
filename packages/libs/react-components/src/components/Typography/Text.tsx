@@ -1,7 +1,7 @@
-import { BaseText, Text as StyledText } from './styles';
+import { type BaseText, Text as StyledText } from './styles';
 
 import type { VariantProps } from '@stitches/react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 export interface ITextProps {
   as?: 'span' | 'p' | 'code' | 'label';

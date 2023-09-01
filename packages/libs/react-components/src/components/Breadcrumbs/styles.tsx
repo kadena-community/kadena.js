@@ -1,6 +1,6 @@
 import { styled } from '../../styles';
 
-import { StyledComponent } from '@stitches/react/types/styled-component';
+import { type StyledComponent } from '@stitches/react/types/styled-component';
 
 export const StyledBreadcrumbs: StyledComponent<'ul'> = styled('ul', {
   display: 'flex',

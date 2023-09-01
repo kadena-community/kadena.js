@@ -6,13 +6,13 @@ import {
 } from './blocks';
 import { chainUpdates } from './headers';
 import {
-  IBlockHeader,
-  IBlockPayloads,
-  IEventData,
-  ITransactionElement,
+  type IBlockHeader,
+  type IBlockPayloads,
+  type IEventData,
+  type ITransactionElement,
 } from './types';
 
-import EventSource from 'eventsource';
+import type EventSource from 'eventsource';
 
 /**
  * Utility function to filter the events from an array of blocks

@@ -69,7 +69,7 @@ import { UsbFlashDrive } from './svgs/UsbFlashDrive';
 import { IconContainer } from './styles';
 
 import type { VariantProps } from '@stitches/react';
-import React, { SVGProps } from 'react';
+import React, { type SVGProps } from 'react';
 
 export interface IIconProps {
   size?: VariantProps<typeof IconContainer>['size'];

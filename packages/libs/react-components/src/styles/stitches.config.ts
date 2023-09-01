@@ -2,9 +2,9 @@
 
 import { colors, colorsDark } from './colors';
 
-import type { CSS as StitchesCSS } from '@stitches/react';
-import { createStitches, PropertyValue } from '@stitches/react';
-import { ConfigType } from '@stitches/react/types/config';
+import { type CSS as StitchesCSS, type PropertyValue } from '@stitches/react';
+import { createStitches } from '@stitches/react';
+import { type ConfigType } from '@stitches/react/types/config';
 
 const sizes: Record<string, string> = {
   1: '0.25rem', // 4px

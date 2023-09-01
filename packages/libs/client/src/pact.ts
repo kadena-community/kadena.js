@@ -1,8 +1,8 @@
 import { createExp } from '@kadena/pactjs';
 
 import {
+  type ITransactionBuilder,
   createTransactionBuilder,
-  ITransactionBuilder,
 } from './createTransactionBuilder/createTransactionBuilder';
 import { unpackLiterals } from './utils/pact-helpers';
 import { parseAsPactValue } from './utils/parseAsPactValue';

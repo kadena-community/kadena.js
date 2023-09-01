@@ -1,11 +1,11 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import { type ICommand, type IUnsignedCommand } from '@kadena/types';
 
 import {
-  IQuickSignRequestBody,
-  IQuicksignResponse,
-  IQuicksignSigner,
+  type IQuickSignRequestBody,
+  type IQuicksignResponse,
+  type IQuicksignSigner,
 } from '../../signing-api/v1/quicksign';
-import { ISignFunction } from '../ISignFunction';
+import { type ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 

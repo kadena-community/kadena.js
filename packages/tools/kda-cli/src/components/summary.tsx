@@ -1,5 +1,5 @@
-import { HistoryValue } from '../hooks/use-history.js';
-import { IQuestionAnswer } from '../questions/questions.js';
+import { type HistoryValue } from '../hooks/use-history.js';
+import { type IQuestionAnswer } from '../questions/questions.js';
 
 import { Box, Text } from 'ink';
 import React from 'react';

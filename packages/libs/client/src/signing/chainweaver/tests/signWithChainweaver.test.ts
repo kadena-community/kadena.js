@@ -5,10 +5,10 @@ jest.mock('cross-fetch', () => {
   };
 });
 
-import { ICoin } from '../../../composePactCommand/test/coin-contract';
+import { type ICoin } from '../../../composePactCommand/test/coin-contract';
 import {
-  IQuicksignResponse,
-  IQuicksignResponseOutcomes,
+  type IQuicksignResponse,
+  type IQuicksignResponseOutcomes,
   Pact,
 } from '../../../index';
 import { getModule } from '../../../pact';

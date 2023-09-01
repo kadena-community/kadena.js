@@ -1,10 +1,10 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import { type ICommand, type IUnsignedCommand } from '@kadena/types';
 
-import { IPactCommand } from '../../interfaces/IPactCommand';
+import { type IPactCommand } from '../../interfaces/IPactCommand';
 
 import { parseTransactionCommand } from './parseTransactionCommand';
 
-import _debug, { Debugger } from 'debug';
+import _debug, { type Debugger } from 'debug';
 
 const debug: Debugger = _debug('@kadena/client:signing:addSignature');
 

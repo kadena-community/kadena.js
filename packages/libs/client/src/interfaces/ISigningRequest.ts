@@ -1,6 +1,6 @@
-import { ISigningCap } from '@kadena/types';
+import { type ISigningCap } from '@kadena/types';
 
-import { IPactCommand } from './IPactCommand';
+import { type IPactCommand } from './IPactCommand';
 
 export interface ISigningRequest {
   code: string;
