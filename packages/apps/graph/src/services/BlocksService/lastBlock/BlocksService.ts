@@ -1,6 +1,6 @@
-import { Block, Prisma, PrismaClient } from '@prisma/client';
+import { type Block, type Prisma, PrismaClient } from '@prisma/client';
 import debug from 'debug';
-import { PubSub } from 'graphql-yoga';
+import { type PubSub } from 'graphql-yoga';
 
 const log: debug.Debugger = debug('graph:blocks');
 const performanceLog: debug.Debugger = debug('performance');

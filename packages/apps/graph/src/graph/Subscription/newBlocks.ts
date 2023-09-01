@@ -2,8 +2,8 @@ import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 
-import { Block } from '@prisma/client';
-import _debug, { Debugger } from 'debug';
+import { type Block } from '@prisma/client';
+import _debug, { type Debugger } from 'debug';
 
 const log: Debugger = _debug('graph:Subscription:newBlocks');
 
