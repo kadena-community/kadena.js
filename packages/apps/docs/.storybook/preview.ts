@@ -1,7 +1,7 @@
 import {
   globalCss,
   baseGlobalStyles,
-} from '@kadena-ui/react-components';
+} from '@kadena/react-components';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { themes } from '@storybook/theming';
