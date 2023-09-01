@@ -12,7 +12,6 @@ import {
 } from '../styles';
 import { DocsLogo } from '..';
 
-import { AsideToggle } from './AsideToggle';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
@@ -27,7 +26,6 @@ import { useHeaderAnimation } from './useHeaderAnimation';
 
 import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
-import { isOneOfLayoutType } from '@/utils';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -91,9 +89,6 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
           />
-          {isOneOfLayoutType(layout, 'code') && (
-            <AsideToggle toggleAside={toggleAside} isAsideOpen={isAsideOpen} />
-          )}
         </HeaderIconGroup>
       </InnerWrapper>
     </StyledHeader>
