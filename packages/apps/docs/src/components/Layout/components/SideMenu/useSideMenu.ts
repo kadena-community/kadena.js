@@ -25,7 +25,7 @@ export const useSideMenu = (
       hasSameBasePath(item.root, router.pathname),
     );
 
-    const hasSubMenu = matchingItem?.children.length ?? 0;
+    const hasSubMenu = matchingItem?.children?.length ?? 0;
 
     if (hasSubMenu) {
       setActive(1);
@@ -46,10 +46,8 @@ export const useSideMenu = (
     e: React.MouseEvent<HTMLAnchorElement>,
     item: IMenuItem,
   ): void => {
-    if (
-      hasSameBasePath(router.pathname, item.root ?? '') &&
-      item.children.length
-    ) {
+    const hasChildren = item.children?.length ?? 0;
+    if (hasSameBasePath(router.pathname, item.root ?? '') && hasChildren) {
       e.preventDefault();
       setActive(1);
     } else {

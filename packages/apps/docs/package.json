@@ -15,7 +15,7 @@
     "build:importReadMe": "node ./src/scripts/importReadme.mjs && prettier ./src/pages/docs --write",
     "build:next": "pnpm run build:scripts && next build",
     "build:scripts": "pnpm run build:importReadMe && pnpm run build:createtree && pnpm run build:createSpecJson && pnpm run build:brokenLinks && pnpm run build:checkForHeaders",
-    "build:storybook": "storybook build",
+    "build:storybook": "pnpm run build:createtree && storybook build",
     "chromatic": "chromatic -b build:storybook",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",

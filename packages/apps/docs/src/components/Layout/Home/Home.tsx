@@ -1,4 +1,4 @@
-import { BasePageGrid } from '../components';
+import { BasePageGrid } from '../components/styles';
 import { Template } from '../components/Template';
 
 import { globalClass } from './../global.css';
