@@ -1788,6 +1788,9 @@ importers:
       '@types/cross-spawn':
         specifier: ~6.0.2
         version: 6.0.2
+      '@types/heft-jest':
+        specifier: ~1.0.3
+        version: 1.0.3
       '@types/node':
         specifier: ^16.0.0
         version: 16.0.0
