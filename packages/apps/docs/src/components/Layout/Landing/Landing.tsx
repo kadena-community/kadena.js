@@ -10,11 +10,11 @@ import { globalClass } from '../global.css';
 import { PageGrid } from './styles';
 
 import { NotFound } from '@/components/NotFound';
-import { IPageProps } from '@/types/Layout';
+import { IBasePageProps } from '@/types/Layout';
 import classNames from 'classnames';
 import React, { FC } from 'react';
 
-export const Landing: FC<IPageProps> = ({
+export const Landing: FC<IBasePageProps> = ({
   children,
   frontmatter,
   leftMenuTree,

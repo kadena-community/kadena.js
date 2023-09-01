@@ -69,7 +69,7 @@ export { Input } from './Input/Input';
 export { InputWrapper } from './InputWrapper';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
-export { Modal, ModalProvider, useModal } from './Modal';
+export { ModalProvider, useModal } from './Modal';
 export { Notification } from './Notification';
 export { Option } from './Select/Option';
 export { Pagination } from './Pagination';

@@ -42,8 +42,7 @@ const Item: FC<IResultProps> = ({ item }) => {
 
   if (!item.filePath) return;
 
-  const url = filePathToRoute(item.filePath);
-
+  const url = filePathToRoute(item.filePath, item.header);
   const content = item.content ?? '';
 
   return (

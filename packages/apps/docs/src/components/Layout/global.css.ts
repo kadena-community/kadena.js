@@ -4,6 +4,7 @@ export const $$navMenu = createVar();
 export const $$pageWidth = createVar();
 export const $$leftSideWidth = createVar();
 export const $$sideMenu = createVar();
+export const $$backgroundOverlayColor = createVar();
 
 export const globalClass = style({
   vars: {
@@ -11,5 +12,6 @@ export const globalClass = style({
     [$$sideMenu]: '500', //zIndex
     [$$pageWidth]: '1440px', //sizes
     [$$leftSideWidth]: '265px', //sizes
+    [$$backgroundOverlayColor]: 'rgba(250,250,250, .8)', //colors
   },
 });

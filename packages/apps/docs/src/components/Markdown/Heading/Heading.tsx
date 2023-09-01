@@ -10,21 +10,13 @@ interface IProp {
   as: TagType;
   variant?: TagType;
   children: ReactNode;
-  index?: number;
-  parentTitle?: string;
 }
 
 export interface IHeader {
   children: string;
 }
 
-export const TaggedHeading: FC<IProp> = ({
-  children,
-  as,
-  variant,
-  index,
-  parentTitle,
-}) => {
+export const TaggedHeading: FC<IProp> = ({ children, as, variant }) => {
   let slugInputStr = '';
 
   if (Array.isArray(children)) {
@@ -42,7 +34,7 @@ export const TaggedHeading: FC<IProp> = ({
     slugInputStr = children;
   }
 
-  const slug = createSlug(slugInputStr, index, parentTitle);
+  const slug = createSlug(slugInputStr);
 
   const content = (
     <>

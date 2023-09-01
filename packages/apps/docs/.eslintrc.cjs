@@ -5,6 +5,7 @@ module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/next'],
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
+    '@typescript-eslint/strict-boolean-expressions': 'off',
     '@kadena-dev/typedef-var': 'off',
   },
 };
