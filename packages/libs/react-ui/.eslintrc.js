@@ -6,15 +6,6 @@ module.exports = {
     '@kadena-dev/eslint-config/profile/react',
     'plugin:storybook/recommended',
   ],
-  rules: {
-    '@typescript-eslint/consistent-type-imports': [
-      'error',
-      {
-        fixStyle: 'inline-type-imports',
-        prefer: 'type-imports',
-      },
-    ],
-  },
   parserOptions: {
     tsconfigRootDir: __dirname,
     ecmaVersion: 'latest',
