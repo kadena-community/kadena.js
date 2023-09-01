@@ -1,16 +1,16 @@
 ---
-'@kadena/pactjs-generator': patch
-'@kadena/react-components': patch
-'@kadena/client-examples': patch
-'@kadena-dev/eslint-config': patch
-'@kadena/graph-client': patch
-'@kadena/pactjs-cli': patch
-'kadena.js': patch
-'@kadena-dev/heft-rig': patch
-'@kadena/client': patch
-'@kadena/graph': patch
-'@kadena/tools': patch
-'@kadena/docs': patch
+'@kadena/pactjs-generator': none
+'@kadena/react-components': none
+'@kadena/client-examples': none
+'@kadena-dev/eslint-config': none
+'@kadena/graph-client': none
+'@kadena/pactjs-cli': none
+'kadena.js': none
+'@kadena-dev/heft-rig': none
+'@kadena/client': none
+'@kadena/graph': none
+'@kadena/tools': none
+'@kadena/docs': none
 ---
 
 Remove unused dependencies
