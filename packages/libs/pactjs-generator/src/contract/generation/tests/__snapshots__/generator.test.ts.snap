@@ -11,12 +11,12 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
+    
+    "user.test-module": {
+    
 
-    \\"user.test-module\\": {
-
-
-      \\"defpact\\":{
-        \\"test\\": () => string & { capability : ICapability_Coin_GAS}
+      "defpact":{
+        "test": () => string & { capability : ICapability_Coin_GAS} 
       }
     }
   }
@@ -37,22 +37,22 @@ interface ICapability_test_func {
   * this is defcap doc
   */
   (
-    name: \\"user.test-module.test-cap\\",
+    name: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
     /**
-    this is module doc
+    this is module doc    
     */
-    \\"user.test-module\\": {
+    "user.test-module": {
       /**
       * this is defun doc
       */
-      \\"test-func\\": (
+      "test-func": (
         parameterone: PactReference,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -73,22 +73,22 @@ interface ICapability_test_func {
   * this is defcap doc
   */
   (
-    name: \\"user.test-module.test-cap\\",
+    name: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
     /**
-    this is module doc
+    this is module doc    
     */
-    \\"user.test-module\\": {
+    "user.test-module": {
       /**
       * this is defun doc
       */
-      \\"test-func\\": (
+      "test-func": (
         parameterone: object,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -106,11 +106,11 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
-    \\"user.test-module\\": {
-      \\"test-func\\": (
+    
+    "user.test-module": {
+      "test-func": (
         parameterone: IPactDecimal,
-        parametertwo: boolean) => string & { capability : ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_Coin_GAS} 
 
     }
   }
@@ -128,9 +128,9 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
-    \\"user.test-module\\": {
-      \\"test\\": () => string & { capability : ICapability_Coin_GAS}
+    
+    "user.test-module": {
+      "test": () => string & { capability : ICapability_Coin_GAS} 
 
     }
   }
@@ -151,25 +151,25 @@ interface ICapability_defpact_test_func {
   * this is defcap doc
   */
   (
-    name: \\"user.test-module.test-cap\\",
+    name: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
     /**
-    this is module doc
+    this is module doc    
     */
-    \\"user.test-module\\": {
+    "user.test-module": {
+    
 
-
-      \\"defpact\\":{
+      "defpact":{
         /**
         * this is defpact doc
         */
-        \\"test-func\\": (
+        "test-func": (
           parameterone: any,
-          parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICapability_Coin_GAS}
+          parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICapability_Coin_GAS} 
       }
     }
   }
@@ -186,19 +186,19 @@ interface ICapability_Coin_GAS {
 }
 
 interface ICapability_test_func {
-
+  
   (
-    name: \\"user.test-module.test-cap\\",
+    name: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
-    \\"user.test-module\\": {
-      \\"test-func\\": (
+    
+    "user.test-module": {
+      "test-func": (
         parameterone: string,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -215,19 +215,19 @@ interface ICapability_Coin_GAS {
 }
 
 interface ICapability_test_func {
-
+  
   (
-    name: \\"user.test-module.test-cap\\",
+    name: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
-    \\"user.test-module\\": {
-      \\"test-func\\": (
+    
+    "user.test-module": {
+      "test-func": (
         parameterone: any,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -244,19 +244,19 @@ interface ICapability_Coin_GAS {
 }
 
 interface ICapability_test_func {
-
+  
   (
-    name: \\"user.test-module.test-cap\\",
+    name: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
-    \\"user.test-module\\": {
-      \\"test-func\\": (
+    
+    "user.test-module": {
+      "test-func": (
         parameterone: object,
-        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS}
+        parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
     }
   }
@@ -274,9 +274,9 @@ interface ICapability_Coin_GAS {
 
 declare module '@kadena/client' {
   export interface IPactModules {
-
-    \\"user.test-module\\": {
-      \\"test\\": (param: any) => string & { capability : ICapability_Coin_GAS}
+    
+    "user.test-module": {
+      "test": (param: any) => string & { capability : ICapability_Coin_GAS} 
 
     }
   }
