@@ -1,5 +1,5 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Heading } from '@kadena/react-ui';
+import { Breadcrumbs, Button, Card, Heading } from '@kadena/react-ui';
 
 import {
   ChainSelect,
@@ -12,11 +12,6 @@ import AccountNameField, {
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import {
-  StyledAccountForm,
-  StyledForm,
-  StyledFormButton,
-} from '@/pages/transactions/cross-chain-transfer-finisher/styles';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
@@ -125,7 +120,7 @@ const ExistingAccountFaucetPage: FC = () => {
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <StyledForm onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
@@ -133,8 +128,8 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <StyledAccountForm>
-          <Heading as="h3">Account</Heading>
+        <Card>
+          <Heading as="h5">Account</Heading>
           <AccountNameField
             inputProps={register('name')}
             error={errors.name}
@@ -145,8 +140,8 @@ const ExistingAccountFaucetPage: FC = () => {
             value={chainID}
             ariaLabel="Select Chain ID"
           />
-        </StyledAccountForm>
-        <StyledFormButton>
+        </Card>
+        <div>
           <Button
             loading={requestStatus.status === 'processing'}
             icon="TrailingIcon"
@@ -156,8 +151,8 @@ const ExistingAccountFaucetPage: FC = () => {
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
           </Button>
-        </StyledFormButton>
-      </StyledForm>
+        </div>
+      </form>
     </div>
   );
 };
