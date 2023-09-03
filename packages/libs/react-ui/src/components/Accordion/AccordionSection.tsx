@@ -1,12 +1,10 @@
 'use client';
 
 import {
-  accordionContentWrapperClass,
-  accordionSectionClass,
-  accordionSectionHeadingClass,
-  accordionTitleClass,
-  toggleIconClass,
-  toggleIconWrapperClass,
+  accordionButtonClass,
+  accordionContentClass,
+  accordionSectionWrapperClass,
+  accordionToggleIconClass,
 } from './Accordion.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -42,34 +40,21 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
   };
   return (
     <section
-      className={accordionSectionClass}
+      className={accordionSectionWrapperClass}
       data-testid="kda-accordion-section"
     >
-      <button
-        className={classNames(accordionSectionHeadingClass, {
-          isOpen,
-        })}
-        onClick={handleClick}
-      >
-        <span
-          data-testid="kda-accordion-section-title"
-          className={accordionTitleClass}
-        >
-          {title}
-        </span>
-
-        <span className={toggleIconWrapperClass}>
-          <SystemIcon.Close
-            className={classNames(toggleIconClass, {
-              isOpen,
-            })}
-            size="sm"
-          />
-        </span>
+      <button className={accordionButtonClass} onClick={handleClick}>
+        {title}
+        <SystemIcon.Close
+          className={classNames(accordionToggleIconClass, {
+            isOpen,
+          })}
+          size="xs"
+        />
       </button>
 
       {isOpen && children && (
-        <div className={accordionContentWrapperClass}>{children}</div>
+        <div className={accordionContentClass}>{children}</div>
       )}
     </section>
   );
