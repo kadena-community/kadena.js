@@ -21,8 +21,8 @@ A GraphQL endpoint that interacts with chainweb-data.
 First, install dependencies and build up to and including @kadena/graph
 
 ```sh
-pnpm install --filter @kadena/graph
-pnpm build --filter @kadena/graph
+pnpm install --filter @kadena/graph...
+pnpm build --filter @kadena/graph...
 ```
 
 > **NOTE** you need Docker (or an alternative, e.g.
