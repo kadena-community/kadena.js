@@ -1,4 +1,4 @@
-import { basebackgroundClass } from '../basestyles.css';
+import { basebackgroundClass, baseGridClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -7,8 +7,7 @@ import {
 import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
-import { PageGrid } from './styles';
-import { codebackgroundClass } from './styles.css';
+import { codebackgroundClass, pageGridClass } from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -59,8 +58,11 @@ export const Redocly: FC<IPageProps> = ({
     basebackgroundClass,
     codebackgroundClass,
   );
+
+  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+
   return (
-    <PageGrid className={globalClass}>
+    <div className={gridClassNames}>
       <Template menuItems={leftMenuTree}>
         <div
           className={classnames(contentClass, contentClassVariants.code)}
@@ -79,7 +81,7 @@ export const Redocly: FC<IPageProps> = ({
         </div>
         <div className={backgroundClassnames} />
       </Template>
-    </PageGrid>
+    </div>
   );
 };
 

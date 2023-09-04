@@ -1,3 +1,4 @@
+import { baseGridClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -7,11 +8,11 @@ import {
 import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
-import { PageGrid } from './styles';
+import { pageGridClass } from './styles.css';
 
 import { NotFound } from '@/components/NotFound';
 import { IBasePageProps } from '@/types/Layout';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import React, { FC } from 'react';
 
 export const Landing: FC<IBasePageProps> = ({
@@ -19,8 +20,10 @@ export const Landing: FC<IBasePageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
+  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+
   return (
-    <PageGrid className={globalClass}>
+    <div className={gridClassNames}>
       <Template menuItems={leftMenuTree} layout="landing">
         <TitleHeader
           title={frontmatter.title}
@@ -30,7 +33,7 @@ export const Landing: FC<IBasePageProps> = ({
 
         <div
           id="maincontent"
-          className={classNames(contentClass, contentClassVariants.code)}
+          className={classnames(contentClass, contentClassVariants.code)}
         >
           <article className={articleClass}>
             {children}
@@ -38,7 +41,7 @@ export const Landing: FC<IBasePageProps> = ({
           </article>
         </div>
       </Template>
-    </PageGrid>
+    </div>
   );
 };
 
