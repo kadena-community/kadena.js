@@ -1,5 +1,7 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Card, Heading } from '@kadena/react-ui';
+import { Breadcrumbs, Button, Card, Grid, Heading } from '@kadena/react-ui';
+
+import { buttonContainerClass, containerClass } from './styles.css';
 
 import {
   ChainSelect,
@@ -115,7 +117,7 @@ const ExistingAccountFaucetPage: FC = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   return (
-    <div>
+    <section className={containerClass}>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
@@ -129,20 +131,24 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Card>
+        <Card fullWidth>
           <Heading as="h5">Account</Heading>
           <AccountNameField
             inputProps={register('name')}
             error={errors.name}
             label={t('The account name you would like to fund coins to')}
           />
-          <ChainSelect
-            onChange={onChainSelectChange}
-            value={chainID}
-            ariaLabel="Select Chain ID"
-          />
+          <Grid.Root columns={2}>
+            <Grid.Item>
+              <ChainSelect
+                onChange={onChainSelectChange}
+                value={chainID}
+                ariaLabel="Select Chain ID"
+              />
+            </Grid.Item>
+          </Grid.Root>
         </Card>
-        <div>
+        <div className={buttonContainerClass}>
           <Button
             loading={requestStatus.status === 'processing'}
             icon="TrailingIcon"
@@ -154,7 +160,7 @@ const ExistingAccountFaucetPage: FC = () => {
           </Button>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 
