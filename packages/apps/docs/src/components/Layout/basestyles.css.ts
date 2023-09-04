@@ -1,8 +1,12 @@
 import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
-import { $$backgroundOverlayColor } from './global.css';
+import {
+  $$backgroundOverlayColor,
+  $$leftSideWidth,
+  $$pageWidth,
+} from './global.css';
 
-import { style } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 
 export const basebackgroundClass = style([
   sprinkles({
@@ -29,6 +33,52 @@ export const basebackgroundClass = style([
       [`screen and ${breakpoints.md}`]: {
         position: 'fixed',
         transform: 'translateX(0)',
+      },
+    },
+  },
+]);
+
+export const $$asideMenuWidthCode = createVar();
+export const $$asideMenuWidthMDDefault = createVar();
+export const $$asideMenuWidthLGDefault = createVar();
+
+export const baseGridClass = style([
+  sprinkles({
+    display: 'grid',
+    position: 'relative',
+    marginY: 0,
+    marginX: 'auto',
+  }),
+  {
+    vars: {
+      [$$asideMenuWidthMDDefault]: '200px',
+      [$$asideMenuWidthLGDefault]: '300px',
+      [$$asideMenuWidthCode]: '400px',
+    },
+
+    gridTemplateRows: '0 auto 1fr auto',
+    gridTemplateColumns: 'auto auto',
+    gridTemplateAreas: `
+      "header header"
+      "pageheader pageheader"
+      "content content"
+      "footer footer"
+    `,
+
+    minHeight: '100vh',
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
+        gridTemplateAreas: `
+          "header header header header header"
+          "pageheader pageheader pageheader pageheader pageheader"
+          ". menu content aside ."
+          "footer footer footer footer footer"
+        `,
+      },
+      [`screen and ${breakpoints.xxl}`]: {
+        gridTemplateColumns: `auto ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthLGDefault})) ${$$asideMenuWidthLGDefault} auto`,
       },
     },
   },

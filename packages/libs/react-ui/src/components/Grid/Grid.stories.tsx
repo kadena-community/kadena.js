@@ -4,8 +4,8 @@ import { ContentClass } from './stories.css';
 
 import { Grid } from '@components/Grid';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { vars } from '@theme/vars.css';
+import React from 'react';
 
 const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,

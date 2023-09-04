@@ -1,6 +1,6 @@
 import { Heading } from '@kadena/react-ui';
 
-import { basebackgroundClass } from '../basestyles.css';
+import { basebackgroundClass, baseGridClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -9,15 +9,14 @@ import {
 import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
+import { AsideList, ListItem } from './components/Aside';
 import {
-  Aside,
-  AsideList,
-  ListItem,
-  StickyAside,
-  StickyAsideWrapper,
-} from './components/Aside';
-import { PageGrid } from './styles';
-import { asidebackgroundClass } from './styles.css';
+  asidebackgroundClass,
+  asideClass,
+  pageGridClass,
+  stickyAsideClass,
+  stickyAsideWrapperClass,
+} from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -84,8 +83,10 @@ export const Full: FC<IPageProps> = ({
     asidebackgroundClass,
   );
 
+  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+
   return (
-    <PageGrid className={globalClass}>
+    <div className={gridClassNames}>
       <Template menuItems={leftMenuTree}>
         <div className={contentClassNames} id="maincontent">
           <article className={articleClass} ref={scrollRef}>
@@ -99,10 +100,10 @@ export const Full: FC<IPageProps> = ({
           </article>
         </div>
         <div className={backgroundClassnames} />
-        <Aside data-cy="aside">
+        <aside className={asideClass} data-cy="aside">
           {showSideMenu && (
-            <StickyAsideWrapper>
-              <StickyAside>
+            <div className={stickyAsideWrapperClass}>
+              <div className={stickyAsideClass}>
                 <Heading as="h6" transform="uppercase">
                   On this page
                 </Heading>
@@ -120,12 +121,12 @@ export const Full: FC<IPageProps> = ({
                     );
                   })}
                 </AsideList>
-              </StickyAside>
-            </StickyAsideWrapper>
+              </div>
+            </div>
           )}
-        </Aside>
+        </aside>
       </Template>
-    </PageGrid>
+    </div>
   );
 };
 

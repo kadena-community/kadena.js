@@ -1,13 +1,14 @@
 import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$pageWidth } from '../global.css';
+import {
+  $$asideMenuWidthLGDefault,
+  $$asideMenuWidthMDDefault,
+} from '../basestyles.css';
+import { $$leftSideWidth, $$pageWidth, $$sideMenu } from '../global.css';
 
 import { createVar, style } from '@vanilla-extract/css';
 
 export const $$shadowWidth = createVar();
-export const $$asideMenuWidthCode = createVar();
-export const $$asideMenuWidthMDDefault = createVar();
-export const $$asideMenuWidthLGDefault = createVar();
 
 export const asidebackgroundClass = style([
   sprinkles({
@@ -17,9 +18,6 @@ export const asidebackgroundClass = style([
   {
     vars: {
       [$$shadowWidth]: vars.sizes.$25,
-      [$$asideMenuWidthCode]: '400px',
-      [$$asideMenuWidthMDDefault]: '200px',
-      [$$asideMenuWidthLGDefault]: '300px',
     },
 
     selectors: {
@@ -55,6 +53,61 @@ export const asidebackgroundClass = style([
     '@media': {
       [`screen and ${breakpoints.md}`]: {
         display: 'block',
+      },
+    },
+  },
+]);
+
+export const pageGridClass = style({
+  '@media': {
+    [`screen and ${breakpoints.md}`]: {
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
+    },
+    [`screen and ${breakpoints.xxl}`]: {
+      gridTemplateColumns: `auto ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthLGDefault})) ${$$asideMenuWidthLGDefault} auto`,
+    },
+  },
+});
+
+export const stickyAsideWrapperClass = style([
+  sprinkles({
+    position: 'sticky',
+    display: 'flex',
+    top: '$10',
+    paddingLeft: '$4',
+  }),
+]);
+
+export const stickyAsideClass = style([
+  sprinkles({
+    paddingTop: '$10',
+  }),
+  {
+    overflowY: 'scroll',
+    height: 'calc(100vh - $20)',
+  },
+]);
+
+export const asideClass = style([
+  sprinkles({
+    display: 'none',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    paddingY: 0,
+    paddingX: '$4',
+  }),
+  {
+    gridArea: 'aside',
+    gridColumn: '4 / span 2',
+    gridRow: '2 / span 2',
+    zIndex: $$sideMenu,
+    transform: 'translateX(100vw)',
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        display: 'block',
+        transform: 'translateX(0)',
       },
     },
   },
