@@ -1,3 +1,4 @@
+import { processZodErrors } from '../../utils/process-zod-errors';
 import { networkMap } from '../utils/networkMap';
 
 import { generate } from './generate';
@@ -99,19 +100,7 @@ export function generateCommand(program: Command, version: string): void {
         // TODO: use @inquirer/prompts to interactively get missing flags
         Options.parse(args);
       } catch (e) {
-        program.error(
-          `${(e as z.ZodError).errors
-            .map((err) => {
-              if (err.code === 'invalid_type') {
-                return `${err.message} (${err.expected} was ${err.received})`;
-              }
-              return err.message;
-            })
-            .reduce(
-              (a, b) => `${a}\n${b}`,
-            )}\nReceived arguments ${JSON.stringify(args)}` +
-            `\n${program.helpInformation(e)}`,
-        );
+        processZodErrors(program, e, args);
       }
 
       generate(program, version)(args);
