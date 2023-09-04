@@ -35,7 +35,7 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config openapi src --write",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
-    "postinstall": "pnpm run generate:openapi-types",
+    "_postinstall": "pnpm run generate:openapi-types",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
