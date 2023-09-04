@@ -15,12 +15,13 @@
 
 Initial setup for Kadena CLI
 
-This document is a representation of the features of kadena CLI, each feature is linked to a scenario that fully displays each step that will be transformed into commander steps
-This document is WIP.
+This document is a representation of the features of kadena CLI, each feature is
+linked to a scenario that fully displays each step that will be transformed into
+commander steps This document is WIP.
 
 Example code:
 
-```code
+```ts
 const { Command } = require('commander');
 const program = new Command();
 
@@ -29,7 +30,8 @@ program
   .description('CLI to some JavaScript string utilities')
   .version('0.8.0');
 
-program.command('split')
+program
+  .command('split')
   .description('Split a string into substrings and display as an array')
   .argument('<string>', 'string to split')
   .option('--first', 'display just the first substring')
@@ -56,6 +58,24 @@ brew update kda-cli
 
 ## list of commands
 
+Each command is structured as
+`kda <subject> [...<subject>] <verb> [--flags] [args]` apart from some root
+level defaults.
+
+Available subjects
+
+| subject    | description                                                                     |
+| ---------- | ------------------------------------------------------------------------------- |
+| config     | specific to the configuration of the cli: network, config directory             |
+| keys       | working with keys: generating, listing, disabling, removing                     |
+| deploy     | **_NOTE Albert: deze past beter bij `contract`?_**                              |
+| tx         | working with transactions: creating and filling templates, sending transactions |
+| typescript | generation of type-definitions for client side projects                         |
+| contract   | working with contracts: generate, retrieving from chain, deployment             |
+| account    | working with any fungible account. Defaults to coin                             |
+| devnet     | starting, stopping, restarting and configuring local devnet                     |
+| marmalade  | working with NFTs                                                               |
+
 ## kda help
 
 - displays help instructions
@@ -66,12 +86,13 @@ brew update kda-cli
 
 ## kda config
 
-init creates a .kadena/ folder with a config.yaml containing
-the init command ask for context / devnet/testnet/mainnet/local/custom | if already exists | overwrite
+init creates a .kadena/ folder with a config.yaml containing the init command
+ask for context / devnet/testnet/mainnet/local/custom | if already exists |
+overwrite
 
 | **Parameter** | **Description**            | **Required** | **Default value** |
 | ------------- | -------------------------- | ------------ | ----------------- |
-| -init         | initialise default project | No           |                   |
+| init          | initialize default project | No           |                   |
 
 ---
 
@@ -80,17 +101,19 @@ example:
 ```yaml
 profiles:
   default:
-    private_key: "efbadbadxx"
-    public_key: "badbadbadxx"
-    account: "k:xx"
-    rest_url: "https://devnet"
+    private_key: 'efbadbadxx'
+    public_key: 'badbadbadxx'
+    account: 'k:xx'
+    rest_url: 'https://devnet'
 ```
 
 ## kda keys (kda tool)
 
+### kda keys create
+
 | **Parameter** | **Description**                             | **Required** | **Default value** |
 | ------------- | ------------------------------------------- | ------------ | ----------------- |
-| -hd           | HD Key Format                               | No           |                   |
+| hd            | HD Key Format                               | No           |                   |
 |               | The second format is a 12-word recovery     |              |                   |
 |               | phrase compatible with Chainweaver HD key   |              |                   |
 |               | generation. This format consists of all 12  |              |                   |
@@ -99,41 +122,43 @@ profiles:
 |               | [acid baby cage dad earn face gain hair ice |              |                   |
 |               | jar keen lab]                               |              |                   |
 |               |                                             |              |                   |
-| -plain        | plain The first is a plain ED25519 key      | No           |                   |
+| plain         | plain The first is a plain ED25519 key      | No           |                   |
 |               | format compatible with Pact which is a YAML |              |                   |
 |               | file with two fields: public and secret.    |              |                   |
 |               | public: 40c1e2e86cc3974cc29b8953e....       |              |                   |
 |               | secret: badbadbadbadbadbadbadbadba...       |              |                   |
-| -list-keys    | List available keys                         | No           |                   |
+| list-keys     | List available keys                         | No           |                   |
 
-**Generate from file**
+**Generate to file**
 
 ```bash
 kda keys plain > filename.kda
 ```
 
+### kda keys list
+
 ## kda deploy
 
 Deploy / upgrade a smart contract to chain x
 
-| **Parameter** | **Description**                              | **Required**             | **Default value** |
-| ------------- | -------------------------------------------- | ------------------------ | ----------------- |
-| -deploy       | deploy / upgrade a smart contract to chain x | Yes                      |                   |
-| --chain       | select chain for deployment                  | When -deploy is provided |                   |
-| --env         | select chain for deployment                  | No                       | defaults to conf  |
+| **Parameter** | **Description**                              | **Required**            | **Default value** |
+| ------------- | -------------------------------------------- | ----------------------- | ----------------- |
+| deploy        | deploy / upgrade a smart contract to chain x | Yes                     |                   |
+| --chain       | select chain for deployment                  | When deploy is provided |                   |
+| --env         | select chain for deployment                  | No                      | defaults to conf  |
 
 ## kda tx
 
 Sign and send
 
-| **Parameter**    | **Description**                                       | **Required**           | **Default value** |
-| ---------------- | ----------------------------------------------------- | ---------------------- | ----------------- |
-| -transfer        | Transfer                                              | No                     |                   |
-| -transfer-create | Transfer and create account when account non existent | No                     |                   |
-| -sign            | Generate d.ts from Pact contract file                 | Yes                    |                   |
-| --combine-signs  | Signatures from multiple wallets                      | When -sign is provided |                   |
-| --sign           | Sign transactions                                     | When -sign is provided |                   |
-| --wallet-sign    | Send transactions to a wallet for signing             | When -sign is provided |                   |
+| **Parameter**   | **Description**                                       | **Required**          | **Default value** |
+| --------------- | ----------------------------------------------------- | --------------------- | ----------------- |
+| transfer        | Transfer                                              | No                    |                   |
+| transfer-create | Transfer and create account when account non existent | No                    |                   |
+| sign            |                                                       | Yes                   |                   |
+| --combine-signs | Signatures from multiple wallets                      | When sign is provided |                   |
+| --sign          | Sign transactions                                     | When sign is provided |                   |
+| --wallet-sign   | Send transactions to a wallet for signing             | When sign is provided |                   |
 
 ## kda typescript
 
@@ -163,7 +188,7 @@ kda typescript generate --file ./myContract.pact
 kda typescript generate --contract free.coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact --chain 0 --network testnet04
 ```
 
-### retrieve-contract
+## kda contract
 
 Retrieve a contract from an API using a /local call
 
@@ -177,27 +202,36 @@ Retrieve a contract from an API using a /local call
 Retrieve a contract from chain
 
 ```bash
-kda typescript retrieve-contract --out ./myContract.pact
+kda contract --out ./myContract.pact
 ```
 
-## kda localdev
+## kda account
 
-These tasks are from the kda-cli from kadena.js they need to be adjusted to the new localdev interface
+Tasks to do with an account in a `fungible` smart contract. Defaults to `coin`
+smart contract
 
-| **Parameter** | **Description** | **Required** | **Default value** |
-| ------------- | --------------- | ------------ | ----------------- |
-| -rerun        | Rerun devnet    | No           |                   |
-| -start        | Start devnet    | No           |                   |
-| -stop         | Stop devnet     | No           |                   |
-| -fund         | Fund devnet     | No           |                   |
-| -deploy       | Deploy devnet   | No           |                   |
+| **Parameter** | **Description**                                              | **Required** | **Default value** |
+| ------------- | ------------------------------------------------------------ | ------------ | ----------------- |
+| fund          | Fund devnet **_NOTE Albert: deze past beter bij `account`_** | No           |                   |
+
+## kda devnet
+
+These tasks are from the kda-cli from kadena.js they need to be adjusted to the
+new devnet interface
+
+| **Parameter** | **Description**                                              | **Required** | **Default value** |
+| ------------- | ------------------------------------------------------------ | ------------ | ----------------- |
+| rerun         | Rerun devnet                                                 | No           |                   |
+| start         | Start devnet                                                 | No           |                   |
+| stop          | Stop devnet                                                  | No           |                   |
+| fund          | Fund devnet **_NOTE Albert: deze past beter bij `account`_** | No           |                   |
 
 ## kda marmalade
 
-| **Parameter** | **Description**            | **Required**             | **Default value** |
-| ------------- | -------------------------- | ------------------------ | ----------------- |
-| -mint         |                            | No                       |                   |
-| --single      | Mint a single NFT          | When -mint is provided   |                   |
-| --collection  | Mint a collection of NFT's | When -mint is provided   |                   |
-| -deploy       |                            | No                       |                   |
-| --nftstorage  | Deploy to NFT storage      | When -deploy is provided |                   |
+| **Parameter** | **Description**            | **Required**            | **Default value** |
+| ------------- | -------------------------- | ----------------------- | ----------------- |
+| mint          |                            | No                      |                   |
+| --single      | Mint a single NFT          | When mint is provided   |                   |
+| --collection  | Mint a collection of NFT's | When mint is provided   |                   |
+| deploy        |                            | No                      |                   |
+| --nftstorage  | Deploy to NFT storage      | When deploy is provided |                   |
