@@ -1,10 +1,10 @@
 import { wrapperClass } from '../styles.css';
 
 import { BodyText } from '@/components/Typography';
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 interface IProp {
-  children: string;
+  children: ReactNode;
 }
 
 export const Paragraph: FC<IProp> = ({ children }) => {

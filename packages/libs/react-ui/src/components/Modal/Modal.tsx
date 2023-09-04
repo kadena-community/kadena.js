@@ -7,7 +7,7 @@ import {
   titleWrapper,
   wrapper,
 } from './Modal.css';
-import { useModal } from './ModalProvider';
+import { useModal } from './useModal';
 
 import { Card } from '@components/Card';
 import { SystemIcon } from '@components/Icon';

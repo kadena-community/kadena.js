@@ -53,17 +53,19 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
     return (level + 1) as LevelType;
   };
 
+  const hasSubmenu = (item.children?.length ?? 0) > 0;
+
   return (
     <>
       {root && (
         <>
           <Item item={item} level={level} />
-          {item.children.map((v) => (
+          {item.children?.map((v) => (
             <MainTreeItem key={v.root} level={nextLevel()} item={v} />
           ))}
         </>
       )}
-      {!root && item.children.length > 0 ? (
+      {!root && hasSubmenu ? (
         <li key={item.root} ref={ref}>
           <StyledButton
             data-active={menuOpen}
@@ -80,7 +82,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
             level={`l${nextLevel()}`}
           >
             {!root && <Item item={item} level={nextLevel()} />}
-            {item.children.map((v) => {
+            {item.children?.map((v) => {
               return <MainTreeItem key={v.root} level={nextLevel()} item={v} />;
             })}
           </StyledTreeList>
