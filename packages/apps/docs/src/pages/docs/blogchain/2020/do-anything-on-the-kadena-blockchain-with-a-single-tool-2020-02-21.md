@@ -12,7 +12,7 @@ layout: blog
 
 ![](/assets/blog/2020/1_DPaqrSYvWQpdKUexyUcgTw.webp)
 
-## Do Anything on the Kadena Blockchain with a Single Tool
+# Do Anything on the Kadena Blockchain with a Single Tool
 
 ### Chainweaver is more than a crypto wallet, it is a full blockchain interface providing its users with unmatched control over their network activity.
 
