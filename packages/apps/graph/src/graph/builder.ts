@@ -29,7 +29,7 @@ interface IDefaultTypesExtension {
   };
 }
 
-export interface Context {
+export interface IContext {
   req: IncomingMessage;
 }
 
@@ -37,7 +37,7 @@ export interface Context {
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
-    Context: Context;
+    Context: IContext;
   }
 >({
   plugins: [RelayPlugin, PrismaPlugin],
