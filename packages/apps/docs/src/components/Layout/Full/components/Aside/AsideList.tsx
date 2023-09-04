@@ -6,6 +6,7 @@ import React, { FC, ReactNode } from 'react';
 interface IProps {
   children: ReactNode;
   inner?: boolean;
+  // eslint-disable-next-line @rushstack/no-new-null
   ref?: React.MutableRefObject<HTMLUListElement | null>;
 }
 

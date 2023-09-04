@@ -12,14 +12,12 @@ export const ulListClass = style([
   }),
 ]);
 
-globalStyle(`.${ulListClassName} > li ul`, {
-  paddingLeft: vars.sizes.$4,
-  margin: 0,
-  top: `calc(-1 * ${vars.sizes.$4})`,
-  position: 'relative',
+globalStyle(`.${ulListClassName}  ul`, {
+  marginTop: 0,
+  marginBottom: 0,
 });
 
-globalStyle(`.${ulListClassName} > li::marker`, {
+globalStyle(`.${ulListClassName}  li::marker`, {
   color: vars.colors.$primaryHighContrast,
   fontWeight: vars.fontWeights.$bold,
 });
