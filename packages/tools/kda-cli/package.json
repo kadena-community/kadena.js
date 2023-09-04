@@ -32,9 +32,9 @@
     "test": "heft test"
   },
   "dependencies": {
-    "ava": "5.3.1",
     "@inkjs/ui": "^1.0.0",
     "@kadena/cryptography-utils": "workspace:*",
+    "ava": "5.3.1",
     "cross-spawn": "~7.0.3",
     "dotenv": "~16.0.3",
     "ink": "^4.1.0",
