@@ -11,7 +11,9 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
-  parent: String!
+  parent: Block
+  parentHash: String
+  parent_old: String!
   powhash: String!
   transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
 }

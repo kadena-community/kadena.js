@@ -15,9 +15,28 @@ export default builder.prismaNode('Block', {
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
     powhash: t.exposeString('powhash'),
-    parent: t.exposeString('parent'),
+    parent_old: t.exposeString('parent'),
 
     // computed fields
+    parent: t.prismaField({
+      type: 'Block',
+      nullable: true,
+      resolve(query, parent, args, context, info) {
+        return prismaClient.block.findUnique({
+          where: {
+            hash: parent.parent,
+          },
+        });
+      },
+    }),
+
+    parentHash: t.string({
+      nullable: true,
+      resolve: (parent, args, context, info) => {
+        // Access the parent block's hash from the parent object
+        return parent.parent;
+      },
+    }),
 
     // relations
     transactions: t.prismaConnection({
