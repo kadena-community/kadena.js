@@ -260,7 +260,7 @@ type: exec
 Once I have this YAML file all figured out, I generate the following JSON
 request using `pact -a` and passing in the YAML file as a parameter:
 
-![Nick Cage waits impatiently…](/assets/blog/2019/0_vAXxFno45PhS68NR/webp)
+![Nick Cage waits impatiently…](/assets/blog/2019/0_vAXxFno45PhS68NR.webp)
 
 Now, I have a JSON object that I can post to the /send endpoint of the Pact
 Service API for the Kadena blockchain. In practice, this will be a POST request
