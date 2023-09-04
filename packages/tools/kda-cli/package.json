@@ -27,20 +27,7 @@
     "format:src": "prettier config src --write",
     "kda": "node lib/index.js",
     "lint": "eslint package.json src --ext .js,.ts,.tsx --fix",
-    "test": "ava"
-  },
-  "ava": {
-    "extensions": {
-      "ts": "module",
-      "tsx": "module"
-    },
-    "files": [
-      "!lib/**"
-    ],
-    "nodeArguments": [
-      "--loader=ts-node/esm",
-      "--no-warnings"
-    ]
+    "test": "heft test"
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
@@ -59,9 +46,9 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/cross-spawn": "~6.0.2",
+    "@types/heft-jest": "~1.0.3",
     "@types/node": "^16.0.0",
     "@types/react": "^18.2.15",
-    "ava": "^5.2.0",
     "chalk": "^5.2.0",
     "eslint": "^8.45.0",
     "ink-testing-library": "^3.0.0",

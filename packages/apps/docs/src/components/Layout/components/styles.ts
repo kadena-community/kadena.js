@@ -106,6 +106,7 @@ export const NavLink: StyledComponent<
     active: {
       true: {
         backgroundColor: 'rgba(255,255,255,0.8)',
+
         color: '$neutral000',
 
         '&:hover': {
