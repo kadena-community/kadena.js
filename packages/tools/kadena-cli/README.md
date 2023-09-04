@@ -9,6 +9,28 @@
 
 <!-- genericHeader end -->
 
+- [@kadena/kadena-cli](#kadenakadena-cli)
+- [KADENA CLI](#kadena-cli)
+  - [installation from brew](#installation-from-brew)
+  - [update from brew](#update-from-brew)
+  - [list of commands](#list-of-commands)
+    - [list of root commands and flags](#list-of-root-commands-and-flags)
+    - [Command specific help](#command-specific-help)
+  - [Subjects](#subjects)
+  - [kda config](#kda-config)
+  - [kda keys (kda tool)](#kda-keys-kda-tool)
+    - [kda keys create](#kda-keys-create)
+    - [kda keys list](#kda-keys-list)
+  - [kda tx](#kda-tx)
+  - [kda typescript](#kda-typescript)
+    - [generate](#generate)
+  - [kda contract](#kda-contract)
+    - [retrieve](#retrieve)
+    - [deploy](#deploy)
+  - [kda account](#kda-account)
+  - [kda devnet](#kda-devnet)
+  - [kda marmalade](#kda-marmalade)
+
 <hr>
 
 # KADENA CLI
@@ -58,6 +80,25 @@ brew update kda-cli
 
 ## list of commands
 
+Each command can be made interactive by not filling in the flags. You can
+prefill a question by filling the flag
+
+### list of root commands and flags
+
+|           | description                                                              |
+| --------- | ------------------------------------------------------------------------ |
+| config    | configuration of the cli. E.g. network, config directory                 |
+| update    | update the kda-cli itself                                                |
+| --help    | display help information                                                 |
+| --version | display version information                                              |
+| --[no-]ci | disable all interactive questions (for use in CI) (KDA_CLI_CI_MODE=true) |
+
+### Command specific help
+
+To get help on a `subject` use `kda <subject> --help`
+
+## Subjects
+
 Each command is structured as
 `kda <subject> [...<subject>] <verb> [--flags] [args]` apart from some root
 level defaults.
@@ -66,23 +107,13 @@ Available subjects
 
 | subject    | description                                                                     |
 | ---------- | ------------------------------------------------------------------------------- |
-| config     | specific to the configuration of the cli: network, config directory             |
 | keys       | working with keys: generating, listing, disabling, removing                     |
-| deploy     | **_NOTE Albert: deze past beter bij `contract`?_**                              |
 | tx         | working with transactions: creating and filling templates, sending transactions |
 | typescript | generation of type-definitions for client side projects                         |
 | contract   | working with contracts: generate, retrieving from chain, deployment             |
 | account    | working with any fungible account. Defaults to coin                             |
 | devnet     | starting, stopping, restarting and configuring local devnet                     |
 | marmalade  | working with NFTs                                                               |
-
-## kda help
-
-- displays help instructions
-
-## kda version
-
-- displays cli version information
 
 ## kda config
 
@@ -137,16 +168,6 @@ kda keys plain > filename.kda
 
 ### kda keys list
 
-## kda deploy
-
-Deploy / upgrade a smart contract to chain x
-
-| **Parameter** | **Description**                              | **Required**            | **Default value** |
-| ------------- | -------------------------------------------- | ----------------------- | ----------------- |
-| deploy        | deploy / upgrade a smart contract to chain x | Yes                     |                   |
-| --chain       | select chain for deployment                  | When deploy is provided |                   |
-| --env         | select chain for deployment                  | No                      | defaults to conf  |
-
 ## kda tx
 
 Sign and send
@@ -159,22 +180,29 @@ Sign and send
 | --combine-signs | Signatures from multiple wallets                      | When sign is provided |                   |
 | --sign          | Sign transactions                                     | When sign is provided |                   |
 | --wallet-sign   | Send transactions to a wallet for signing             | When sign is provided |                   |
+| local           | Send transaction to /local                            |                       |                   |
+| --preflight     | (true/false) run gas calculations                     |                       |                   |
+| --verifySig     | (true/false) verify signatures                        |                       |                   |
+| preflight       | (true/false) preflight and verifySig false            |                       |                   |
+| send            | Send transactions the network /send                   |                       |                   |
 
 ## kda typescript
 
 ### generate
 
-Generate client based on a contract
+Generate Typescript definitions based on a contract
 
-| **Parameter**        | **Description**                                                                                                        | **Required**                | **Default value** |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------- | ----------------- |
-| -c, --clean          | Clean existing generated files                                                                                         | No                          |                   |
-| -i, --caps-interface | Custom name for the interface of the caps. Can be used to create a type definition with a limited set of capabilities. | No                          |                   |
-| -f, --file           | Generate d.ts from Pact contract file                                                                                  | If --contract is ommitted   |                   |
-| --contract           | Generate d.ts from Pact contract from the blockchain                                                                   | If --file is ommitted       |                   |
-| --api                | The API to use for retrieving the contract (e.g. [https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact][1])    | When --contract is provided |                   |
-| --chain              | The chainId to retrieve the contract from                                                                              | When --contract is provided | 0                 |
-| --network            | The networkId to retrieve the contract from (e.g. testnet)                                                             | When --contract is provided | mainnet           |
+| **Parameter**        | **Description**                                                          | **Required**                | **Default value** |
+| -------------------- | ------------------------------------------------------------------------ | --------------------------- | ----------------- |
+| -c, --clean          | Clean existing generated files                                           | No                          |                   |
+| -i, --caps-interface | Custom name for the interface of the caps. Can be used                   | No                          |                   |
+|                      | to create a type definition with a limited set of capabilities.          |                             |                   |
+| -f, --file           | Generate d.ts from Pact contract file                                    | If --contract is ommitted   |                   |
+| --contract           | Generate d.ts from Pact contract from the blockchain                     | If --file is ommitted       |                   |
+| --api                | The API to use for retrieving the contract                               | When --contract is provided |                   |
+|                      | (e.g. [https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact][1]) |                             |                   |
+| --chain              | The chainId to retrieve the contract from                                | When --contract is provided | 0                 |
+| --network            | The networkId to retrieve the contract from (e.g. testnet)               | When --contract is provided | mainnet           |
 
 **Generate from file**
 
@@ -190,14 +218,33 @@ kda typescript generate --contract free.coin --api https://api.chainweb.com/chai
 
 ## kda contract
 
+Commands to work with smart-contracts
+
+### retrieve
+
 Retrieve a contract from an API using a /local call
 
-| **Parameter** | **Description**                                                                                         | **Required** | **Default value**             |
-| ------------- | ------------------------------------------------------------------------------------------------------- | ------------ | ----------------------------- |
-| -m --module   | The module you want to retrieve (e.g. "coin")                                                           | Yes          |                               |
-| -o, --out     | File to write the contract to (e.g. ./myContract.pact)                                                  | Yes          |                               |
-| -a, --api     | API to fetch the contract from (e.g. [https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact][1]) | Yes          | [https://api.chainweb.com][2] |
-| -n, --network | Network to retrieve from (e.g. testnet)                                                                 | No           | mainnet                       |
+| **Parameter** | **Description**                                                          | **Required** | **Default value**             |
+| ------------- | ------------------------------------------------------------------------ | ------------ | ----------------------------- |
+| retrieve      |                                                                          |              |
+| -m --module   | The module you want to retrieve (e.g. "coin")                            | Yes          |                               |
+| -o, --out     | File to write the contract to (e.g. ./myContract.pact)                   | Yes          |                               |
+| -a, --api     | API to fetch the contract from                                           | Yes          | [https://api.chainweb.com][2] |
+|               | (e.g. [https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact][1]) |              |                               |
+| -n, --network | Network to retrieve from (e.g. testnet)                                  | No           | mainnet                       |
+| create        |                                                                          |              |                               |
+| --principled  | create a smart contract on a principled namespace                        |              |                               |
+| --keys        |                                                                          |              |
+
+### deploy
+
+Deploy / upgrade a smart contract to chain x
+
+| **Parameter** | **Description**                              | **Required**            | **Default value** |
+| ------------- | -------------------------------------------- | ----------------------- | ----------------- |
+| deploy        | deploy / upgrade a smart contract to chain x | Yes                     |                   |
+| --chain       | select chain for deployment                  | When deploy is provided |                   |
+| --env         | select chain for deployment                  | No                      | defaults to conf  |
 
 Retrieve a contract from chain
 
@@ -210,21 +257,20 @@ kda contract --out ./myContract.pact
 Tasks to do with an account in a `fungible` smart contract. Defaults to `coin`
 smart contract
 
-| **Parameter** | **Description**                                              | **Required** | **Default value** |
-| ------------- | ------------------------------------------------------------ | ------------ | ----------------- |
-| fund          | Fund devnet **_NOTE Albert: deze past beter bij `account`_** | No           |                   |
+| **Parameter** | **Description**                      | **Required** | **Default value** |
+| ------------- | ------------------------------------ | ------------ | ----------------- |
+| fund          | Fund an account in devnet or testnet | No           |                   |
 
 ## kda devnet
 
 These tasks are from the kda-cli from kadena.js they need to be adjusted to the
 new devnet interface
 
-| **Parameter** | **Description**                                              | **Required** | **Default value** |
-| ------------- | ------------------------------------------------------------ | ------------ | ----------------- |
-| rerun         | Rerun devnet                                                 | No           |                   |
-| start         | Start devnet                                                 | No           |                   |
-| stop          | Stop devnet                                                  | No           |                   |
-| fund          | Fund devnet **_NOTE Albert: deze past beter bij `account`_** | No           |                   |
+| **Parameter** | **Description** | **Required** | **Default value** |
+| ------------- | --------------- | ------------ | ----------------- |
+| rerun         | Rerun devnet    | No           |                   |
+| start         | Start devnet    | No           |                   |
+| stop          | Stop devnet     | No           |                   |
 
 ## kda marmalade
 
