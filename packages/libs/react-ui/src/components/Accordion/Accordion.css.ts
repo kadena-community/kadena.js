@@ -1,17 +1,14 @@
 import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
 export const accordionSectionWrapperClass = style([
   sprinkles({
     display: 'block',
     marginBottom: '$6',
-    borderColor: {
-      lightMode: '$gray20',
-      darkMode: '$gray40',
-    },
   }),
   {
-    borderBottom: `1px solid`,
+    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
     selectors: {
       '&:last-child': {
         marginBottom: 0,
