@@ -2,13 +2,13 @@ import { processZodErrors } from '../utils/process-zod-errors';
 
 import { Command } from 'commander';
 
-export interface IConfigInitOptions {}
+export interface IContractRetrieveOptions {}
 
-export function initCommand(program: Command, version: string): void {
+export function retrieveCommand(program: Command, version: string): void {
   program
-    .command('init')
-    .description('create `.kadena/` directory with `config.yaml`')
-    .action((args: IConfigInitOptions) => {
+    .command('retrieve')
+    .description('download a smart-contract using the /local call')
+    .action((args: IContractRetrieveOptions) => {
       try {
         // TODO: use @inquirer/prompts to interactively get missing flags
         // TODO: create zod validator
@@ -17,7 +17,7 @@ export function initCommand(program: Command, version: string): void {
         processZodErrors(program, e, args);
       }
 
-      // TODO: implement `kda config init`
+      // TODO: implement `kda contract retrieve`
       throw new Error('Not Implemented Yet');
     });
 }

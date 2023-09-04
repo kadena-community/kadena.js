@@ -6,7 +6,7 @@ import { generate } from './generate';
 import { Command, Option } from 'commander';
 import { z } from 'zod';
 
-export interface IContractGenerateOptions {
+export interface ITypescriptGenerateOptions {
   clean?: boolean;
   capsInterface?: string;
   file?: string[];
@@ -95,7 +95,7 @@ export function generateCommand(program: Command, version: string): void {
       'The networkId to retrieve the contract from, e.g. "testnet". Defaults to mainnet',
       'mainnet',
     )
-    .action((args: IContractGenerateOptions) => {
+    .action((args: ITypescriptGenerateOptions) => {
       try {
         // TODO: use @inquirer/prompts to interactively get missing flags
         Options.parse(args);
