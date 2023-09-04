@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import config from './config';
 import typescript from './typescript';
 
 import { program } from 'commander';
@@ -10,7 +11,10 @@ const packageJson: { version: string } = JSON.parse(
   readFileSync(join(__dirname, '../package.json'), 'utf8'),
 );
 
-typescript.forEach((fn) => {
+// TODO: introduce root flag --no-interactive
+// TODO: introduce root flag --ci
+
+[typescript, config].flat().forEach((fn) => {
   fn(program, packageJson.version);
 });
 

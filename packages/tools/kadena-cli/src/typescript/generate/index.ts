@@ -53,10 +53,7 @@ const Options = z
 
 export type TOptions = z.infer<typeof Options>;
 
-export function contractGenerateCommand(
-  program: Command,
-  version: string,
-): void {
+export function generateCommand(program: Command, version: string): void {
   program
     .command('contract-generate')
     .description('Generate client based on a contract')
@@ -99,6 +96,7 @@ export function contractGenerateCommand(
     )
     .action((args: IContractGenerateOptions) => {
       try {
+        // TODO: use @inquirer/prompts to interactively get missing flags
         Options.parse(args);
       } catch (e) {
         program.error(
