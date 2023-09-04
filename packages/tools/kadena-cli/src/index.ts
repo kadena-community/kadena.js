@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 
+import account from './account';
 import config from './config';
 import contract from './contract';
+import devnet from './devnet';
 import key from './key';
+import marmalade from './marmalade';
 import tx from './tx';
 import typescript from './typescript';
 
@@ -17,9 +20,11 @@ const packageJson: { version: string } = JSON.parse(
 // TODO: introduce root flag --no-interactive
 // TODO: introduce root flag --ci
 
-[typescript, config, contract, tx, key].flat().forEach((fn) => {
-  fn(program, packageJson.version);
-});
+[config, devnet, key, account, tx, contract, marmalade, typescript]
+  .flat()
+  .forEach((fn) => {
+    fn(program, packageJson.version);
+  });
 
 program
   .description('CLI to interact with Kadena and its ecosystem')
