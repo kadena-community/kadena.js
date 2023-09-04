@@ -57,7 +57,6 @@ export const useSideMenu = (
 
   const clickSubMenu: MouseEventHandler<HTMLUListElement> = (e) => {
     const clickedItem = e.target as HTMLAnchorElement;
-    console.log(clickedItem.tagName);
     if (clickedItem.tagName.toLowerCase() !== 'a') return;
 
     if (clickedItem.hasAttribute('href')) {

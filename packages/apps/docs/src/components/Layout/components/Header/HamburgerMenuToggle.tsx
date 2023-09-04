@@ -1,6 +1,6 @@
-import { SystemIcons } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
-import { HamburgerButton } from './styles';
+import { hamburgerButtonClass } from './styles.css';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import React, { FC } from 'react';
@@ -18,12 +18,13 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
     toggleMenu();
   };
   return (
-    <HamburgerButton
+    <button
+      className={hamburgerButtonClass}
       data-cy="hamburgermenu"
       title="Open the sidemenu"
       onClick={onToggleMenu}
-      icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
-      color="inverted"
-    />
+    >
+      {isMenuOpen ? <SystemIcon.Close /> : <SystemIcon.MenuOpen />}
+    </button>
   );
 };
