@@ -17,6 +17,6 @@ export function processZodErrors<T>(
       .reduce((a, b) => `${a}\n${b}`)}\nReceived arguments ${JSON.stringify(
       args,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    )}` + `\n${program.helpInformation(e as any)}`,
+    )}\n${program.helpInformation(e as any)}`,
   );
 }

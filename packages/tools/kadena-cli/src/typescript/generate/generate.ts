@@ -116,7 +116,10 @@ async function generator(
 }
 
 interface IGenerate {
-  (program: Command, version: string): (args: ITypescriptGenerateOptions) => void;
+  (
+    program: Command,
+    version: string,
+  ): (args: ITypescriptGenerateOptions) => void;
 }
 export const generate: IGenerate = (program, version) => async (args) => {
   // walk up in file tree from process.cwd() to get the package.json
