@@ -6,8 +6,13 @@ export const accordionSectionWrapperClass = style([
   sprinkles({
     display: 'block',
     marginBottom: '$6',
+    borderColor: {
+      lightMode: '$gray20',
+      darkMode: '$gray40',
+    },
   }),
   {
+    borderBottom: `1px solid`,
     selectors: {
       '&:last-child': {
         marginBottom: 0,
@@ -31,9 +36,6 @@ export const accordionButtonClass = style([
     textAlign: 'left',
     width: '100%',
   }),
-  {
-    borderBottom: `1px solid ${vars.colors.$gray20}`,
-  },
 ]);
 
 export const accordionToggleIconClass = style([
