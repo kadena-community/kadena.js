@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm prisma:generate && heft build --clean",
-    "devnet": "docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.kda-devnet/data:/data -v ./cwd-extra-migrations:/cwd-extra-migrations enof/devnet:l2-latest-arm64",
+    "devnet": "(docker start -ai devnet && docker exec -it devnet /bin/bash) || docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.kda-devnet/data:/data -v ./cwd-extra-migrations:/cwd-extra-migrations --name devnet enof/devnet:l2-latest",
     "devnet:update": "docker pull enof/devnet:l2-latest",
     "format": "pnpm run /^format:.*/",
     "format:src": "prettier config src --write",
