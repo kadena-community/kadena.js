@@ -34,17 +34,18 @@
     "test": "heft test"
   },
   "dependencies": {
+    "@inquirer/prompts": "^3.0.4",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
     "commander": "^9.3.0",
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
     "mkdirp": "~1.0.4",
+    "node-fetch": "~2.6.2",
     "rimraf": "~5.0.1",
     "yaml": "~2.1.1",
-    "zod": "~3.18.0",
-    "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "node-fetch": "~2.6.2"
+    "zod": "~3.18.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -53,13 +54,13 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
+    "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
     "@types/isomorphic-fetch": "~0.0.36",
-    "@types/node": "^16.0.0",
-    "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "@types/debug": "~4.1.7",
     "@types/mkdirp": "~1.0.2",
-    "@types/rimraf": "~3.0.2"
+    "@types/node": "^16.0.0",
+    "@types/rimraf": "~3.0.2",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.0"
   }
 }
