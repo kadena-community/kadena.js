@@ -1,6 +1,5 @@
-import { useModal } from '@components/Modal';
-
 import { Button } from '@components/Button';
+import { useModal } from '@components/Modal';
 import { Text } from '@components/Typography/Text/Text';
 import React, { FC } from 'react';
 
