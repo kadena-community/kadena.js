@@ -19,7 +19,7 @@
     }
   ],
   "bin": {
-    "kda": "./bin/kadena-cli.js"
+    "kadena": "./bin/kadena-cli.js"
   },
   "files": [
     "dist",

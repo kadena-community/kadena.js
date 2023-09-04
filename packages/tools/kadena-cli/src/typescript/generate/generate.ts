@@ -2,7 +2,7 @@ import { generateDts, pactParser } from '@kadena/pactjs-generator';
 
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { IContractGenerateOptions } from './';
+import { ITypescriptGenerateOptions } from './';
 
 import { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
@@ -43,7 +43,7 @@ function verifyTsconfigTypings(
 }
 
 async function generator(
-  args: IContractGenerateOptions,
+  args: ITypescriptGenerateOptions,
 ): Promise<Map<string, string>> {
   if (args.contract !== undefined) {
     console.log(
@@ -116,7 +116,7 @@ async function generator(
 }
 
 interface IGenerate {
-  (program: Command, version: string): (args: IContractGenerateOptions) => void;
+  (program: Command, version: string): (args: ITypescriptGenerateOptions) => void;
 }
 export const generate: IGenerate = (program, version) => async (args) => {
   // walk up in file tree from process.cwd() to get the package.json
