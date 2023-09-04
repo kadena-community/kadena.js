@@ -1,5 +1,12 @@
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Card, Grid, Heading } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Grid,
+  Heading,
+} from '@kadena/react-ui';
 
 import { buttonContainerClass, containerClass } from './styles.css';
 
@@ -133,12 +140,13 @@ const ExistingAccountFaucetPage: FC = () => {
         />
         <Card fullWidth>
           <Heading as="h5">Account</Heading>
+          <Box marginBottom="$4" />
           <AccountNameField
             inputProps={register('name')}
             error={errors.name}
             label={t('The account name you would like to fund coins to')}
           />
-          <Grid.Root columns={2}>
+          <Grid.Root columns={2} marginTop="$4">
             <Grid.Item>
               <ChainSelect
                 onChange={onChainSelectChange}
