@@ -1,6 +1,6 @@
 ---
-'@kadena/react-ui': none
+'kadena/eslint-config': minor
 ---
 
-Implement the rule consistent-type-imports into React-UI and update the
-currently existing imports/exports.
+Implements the ESLint rule consistent-type-imports into our codebase and updates
+the currently existing imports/exports.
