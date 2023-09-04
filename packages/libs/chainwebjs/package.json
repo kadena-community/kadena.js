@@ -52,7 +52,6 @@
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
-    "preinstall": "npx only-allow pnpm",
     "lint": "eslint package.json src --ext .js,.ts --fix",
     "test": "heft test"
   },
