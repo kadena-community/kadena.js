@@ -2,6 +2,7 @@
 
 import config from './config';
 import contract from './contract';
+import key from './key';
 import tx from './tx';
 import typescript from './typescript';
 
@@ -16,7 +17,7 @@ const packageJson: { version: string } = JSON.parse(
 // TODO: introduce root flag --no-interactive
 // TODO: introduce root flag --ci
 
-[typescript, config, contract, tx].flat().forEach((fn) => {
+[typescript, config, contract, tx, key].flat().forEach((fn) => {
   fn(program, packageJson.version);
 });
 
