@@ -18,8 +18,9 @@
       "name": "Danillo"
     }
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "bin": {
+    "kda": "./bin/kadena-cli.js"
+  },
   "files": [
     "dist",
     "lib"
@@ -33,9 +34,16 @@
     "test": "heft test"
   },
   "dependencies": {
+    "@kadena/pactjs-generator": "workspace:*",
+    "commander": "^9.3.0",
+    "cross-fetch": "~3.1.5",
+    "debug": "~4.3.4",
+    "mkdirp": "~1.0.4",
+    "rimraf": "~5.0.1",
+    "yaml": "~2.1.1",
+    "zod": "~3.18.0",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "cross-fetch": "~3.1.5",
     "node-fetch": "~2.6.2"
   },
   "devDependencies": {
@@ -49,6 +57,9 @@
     "@types/isomorphic-fetch": "~0.0.36",
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0"
+    "prettier": "~3.0.0",
+    "@types/debug": "~4.1.7",
+    "@types/mkdirp": "~1.0.2",
+    "@types/rimraf": "~3.0.2"
   }
 }

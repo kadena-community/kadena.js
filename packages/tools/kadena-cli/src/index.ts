@@ -1,10 +1,20 @@
-import { fetch, Response } from 'cross-fetch';
+#!/usr/bin/env node
 
-/**
- * @internal
- */
-export const x = (): (() => Promise<Response>) => (): Promise<Response> =>
-  fetch('http://somethod.com', {
-    method: 'POST',
-    body: JSON.stringify({ test: 'hahaha' }),
-  });
+import typescript from './typescript';
+
+import { program } from 'commander';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const packageJson: { version: string } = JSON.parse(
+  readFileSync(join(__dirname, '../package.json'), 'utf8'),
+);
+
+typescript.forEach((fn) => {
+  fn(program, packageJson.version);
+});
+
+program
+  .description('CLI to interact with Kadena and its ecosystem')
+  .version(packageJson.version)
+  .parse();
