@@ -1,3 +1,5 @@
+import { darkThemeClass } from '@kadena/react-ui/theme';
+
 import { createVar, style } from '@vanilla-extract/css';
 
 export const $$navMenu = createVar();
@@ -13,5 +15,12 @@ export const globalClass = style({
     [$$pageWidth]: '1440px', //sizes
     [$$leftSideWidth]: '265px', //sizes
     [$$backgroundOverlayColor]: 'rgba(250,250,250, .8)', //colors
+  },
+  selectors: {
+    [`${darkThemeClass} &`]: {
+      vars: {
+        [$$backgroundOverlayColor]: 'rgba(5,5,5, .8)', //colors
+      },
+    },
   },
 });
