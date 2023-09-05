@@ -21,5 +21,3 @@ export function contractCommandFactory(
   retrieveCommand(contractProgram, version);
   deployCommand(contractProgram, version);
 }
-
-

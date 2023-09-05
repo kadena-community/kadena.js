@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-import account from './account';
-import config from './config';
+import { accountCommandFactory } from './account';
+import { configCommandFactory } from './config';
 import { contractCommandFactory } from './contract';
-import devnet from './devnet';
-import key from './key';
-import marmalade from './marmalade';
-import tx from './tx';
-import typescript from './typescript';
+import { devnetCommandFactory } from './devnet';
+import { keyCommandFactory } from './key';
+import { marmaladeCommandFactory } from './marmalade';
+import { txCommandFactory } from './tx';
+import { typescriptCommandFactory } from './typescript';
 
 import { program } from 'commander';
 import { readFileSync } from 'fs';
@@ -21,14 +21,14 @@ const packageJson: { version: string } = JSON.parse(
 // TODO: introduce root flag --ci
 
 [
-  config,
-  devnet,
-  key,
-  account,
-  tx,
+  configCommandFactory,
+  devnetCommandFactory,
+  keyCommandFactory,
+  accountCommandFactory,
+  txCommandFactory,
   contractCommandFactory,
-  marmalade,
-  typescript,
+  marmaladeCommandFactory,
+  typescriptCommandFactory,
 ]
   .flat()
   .forEach((fn) => {
