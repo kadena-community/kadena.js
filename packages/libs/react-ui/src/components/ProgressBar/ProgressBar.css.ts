@@ -1,3 +1,4 @@
+import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -23,19 +24,19 @@ export const circleColorVariant = styleVariants({
 
 export const lineColorVariant = styleVariants({
   complete: [
-    sprinkles({
-      borderColor: '$infoAccent',
-    }),
+    {
+      backgroundImage: `linear-gradient(${colorPalette.$blue60} 33%, rgba(255,255,255,0) 0%)`,
+    },
   ],
   pending: [
-    sprinkles({
-      borderColor: '$negativeAccent',
-    }),
+    {
+      backgroundImage: `linear-gradient(${colorPalette.$red60} 33%, rgba(255,255,255,0) 0%)`,
+    },
   ],
   incomplete: [
-    sprinkles({
-      borderColor: '$borderContrast',
-    }),
+    {
+      backgroundImage: `linear-gradient(${colorPalette.$gray40} 33%, rgba(255,255,255,0) 0%)`,
+    },
   ],
 });
 
@@ -60,13 +61,17 @@ export const textColorVariant = styleVariants({
 export const progressBarStyle = style([
   sprinkles({
     display: 'flex',
+    height: '100%',
+  }),
+]);
+
+export const progressBarContentStyle = style([
+  sprinkles({
+    display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
     marginLeft: '$6',
   }),
-  {
-    gap: '2px',
-  },
 ]);
 
 export const checkpointContainerStyle = style([
@@ -86,6 +91,8 @@ export const textContainerStyle = style([
     fontFamily: '$main',
     fontWeight: '$normal',
     lineHeight: '$base',
+    paddingTop: '$1',
+    marginBottom: '$lg',
   }),
   {
     flex: 1,
@@ -100,48 +107,21 @@ export const circleStyle = style([
   }),
 ]);
 
-export const lineStyle = style([
+export const firstCircleStyle = style([
   sprinkles({
-    borderRadius: '$sm',
-    borderWidth: '$sm',
-    borderStyle: 'dashed',
+    paddingTop: '$1',
   }),
-  {
-    width: '2px',
-    flex: 1,
-  },
 ]);
 
-export const lineContainerStyle = style([
+export const lastCircleStyle = style([
   sprinkles({
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-    gap: '$2',
-    height: '$sm',
+    paddingBottom: '$1',
   }),
-  {
-    marginLeft: '5px',
-    alignSelf: 'stretch',
-  },
-]);
-
-export const gapLineContainerStyle = style([
-  sprinkles({
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-    gap: '$2',
-    height: '$sm',
-  }),
-  {
-    marginLeft: '5px',
-    alignSelf: 'stretch',
-  },
 ]);
 
 export const circleLineContainerStyle = style([
   sprinkles({
+    width: '$2',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -150,5 +130,24 @@ export const circleLineContainerStyle = style([
   }),
   {
     alignSelf: 'stretch',
+    paddingTop: '6px',
+  },
+]);
+
+export const lineStyle = style([
+  sprinkles({
+    width: '$1',
+    position: 'relative',
+  }),
+  {
+    top: 0,
+    bottom: 0,
+    left: '5px',
+    flex: 1,
+
+    /*Vertical*/
+    backgroundPosition: 'left',
+    backgroundSize: '1px 10px',
+    backgroundRepeat: 'repeat-y',
   },
 ]);

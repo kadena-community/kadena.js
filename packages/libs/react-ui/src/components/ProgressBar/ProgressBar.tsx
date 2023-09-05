@@ -3,10 +3,11 @@ import {
   circleColorVariant,
   circleLineContainerStyle,
   circleStyle,
-  gapLineContainerStyle,
+  firstCircleStyle,
+  lastCircleStyle,
   lineColorVariant,
-  lineContainerStyle,
   lineStyle,
+  progressBarContentStyle,
   progressBarStyle,
   textColorVariant,
   textContainerStyle,
@@ -27,68 +28,50 @@ export interface ICheckpoint {
 export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
   return (
     <div className={progressBarStyle} data-testid="kda-progress-bar">
-      {checkpoints.map((checkpoint, index) => {
-        return (
-          <>
-            {index !== 0 ? (
-              <div className={gapLineContainerStyle}>
-                <div
-                  className={classNames(
-                    lineStyle,
-                    lineColorVariant[checkpoint.status],
-                  )}
-                />
-              </div>
-            ) : null}
-            <div
-              className={checkpointContainerStyle}
-              key={index}
-              data-testid={`kda-checkpoint-container-${index}`}
-            >
-              <div className={circleLineContainerStyle}>
-                {index !== 0 ? (
-                  <div className={lineContainerStyle}>
-                    <div
-                      className={classNames(
-                        lineStyle,
-                        lineColorVariant[checkpoint.status],
-                      )}
-                    />
-                  </div>
-                ) : (
-                  <div className={lineContainerStyle} />
-                )}
-                <div
-                  className={classNames(
-                    circleStyle,
-                    circleColorVariant[checkpoint.status],
-                  )}
-                />
-                {index !== checkpoints.length - 1 ? (
-                  <div className={lineContainerStyle}>
-                    <div
-                      className={classNames(
-                        lineStyle,
-                        lineColorVariant[checkpoint.status],
-                      )}
-                    />
-                  </div>
-                ) : (
-                  <div className={lineContainerStyle} />
-                )}
-              </div>
+      <div className={progressBarContentStyle}>
+        {checkpoints.map((checkpoint, index) => {
+          return (
+            <>
               <div
-                className={classNames(
-                  textContainerStyle,
-                  textColorVariant[checkpoint.status],
-                )}
+                className={checkpointContainerStyle}
+                key={index}
+                data-testid={`kda-checkpoint-container-${index}`}
               >
-                {checkpoint.title}
+                <div
+                  className={classNames(
+                    circleLineContainerStyle,
+                    index === 0 ? firstCircleStyle : '',
+                    index === checkpoints.length - 1 ? lastCircleStyle : '',
+                  )}
+                >
+                  <div
+                    className={classNames(
+                      circleStyle,
+                      circleColorVariant[checkpoint.status],
+                    )}
+                  />
+                  {index !== checkpoints.length - 1 ? (
+                    <div
+                      className={classNames(
+                        lineStyle,
+                        lineColorVariant[checkpoints[index + 1].status],
+                      )}
+                    />
+                  ) : null}
+                </div>
+                <div
+                  className={classNames(
+                    textContainerStyle,
+                    textColorVariant[checkpoint.status],
+                  )}
+                >
+                  {checkpoint.title}
+                </div>
               </div>
-            </div>
-          </>
-        );
-      })}
+            </>
+          );
+        })}
+      </div>
     </div>
   );
 };
