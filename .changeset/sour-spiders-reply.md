@@ -1,5 +1,5 @@
 ---
-'kadena/eslint-config': minor
+'@kadena/eslint-config': minor
 ---
 
 Implements the ESLint rule consistent-type-imports into our codebase and updates
