@@ -4,6 +4,8 @@ import { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'devnet' = 'devnet';
 
+export function devnetCommandFactory(program: Command, version: string) {}
+
 export default [
   (program: Command, version: string) =>
     startCommand(

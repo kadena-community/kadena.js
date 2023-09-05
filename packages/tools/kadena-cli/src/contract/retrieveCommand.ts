@@ -1,4 +1,6 @@
-import { retrieveContract } from './retrieve-contract';
+import { processZodErrors } from '../utils/process-zod-errors';
+
+import { retrieveContract } from './retrieveContract';
 
 import { Command, Option } from 'commander';
 import debug from 'debug';
@@ -66,19 +68,7 @@ export function retrieveCommand(program: Command, version: string): void {
       try {
         Options.parse(args);
       } catch (e) {
-        program.error(
-          `${(e as z.ZodError).errors
-            .map((err) => {
-              if (err.code === 'invalid_type') {
-                return `${err.message} (${err.expected} was ${err.received})`;
-              }
-              return err.message;
-            })
-            .reduce(
-              (a, b) => `${a}\n${b}`,
-            )}\nReceived arguments ${JSON.stringify(args)}` +
-            `\n${program.helpInformation(e)}`,
-        );
+        processZodErrors(program, e, args);
       }
       await retrieveContract(program, version)(args).catch(console.error);
     });

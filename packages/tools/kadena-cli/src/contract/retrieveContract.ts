@@ -1,6 +1,6 @@
 import { retrieveContractFromChain } from '../typescript/utils/retrieveContractFromChain';
 
-import { TOptions } from './retrieve';
+import { TOptions } from './retrieveCommand';
 
 import { Command } from 'commander';
 import { writeFileSync } from 'fs';

@@ -2,7 +2,7 @@
 
 import account from './account';
 import config from './config';
-import contract from './contract';
+import { contractCommandFactory } from './contract';
 import devnet from './devnet';
 import key from './key';
 import marmalade from './marmalade';
@@ -20,7 +20,16 @@ const packageJson: { version: string } = JSON.parse(
 // TODO: introduce root flag --no-interactive
 // TODO: introduce root flag --ci
 
-[config, devnet, key, account, tx, contract, marmalade, typescript]
+[
+  config,
+  devnet,
+  key,
+  account,
+  tx,
+  contractCommandFactory,
+  marmalade,
+  typescript,
+]
   .flat()
   .forEach((fn) => {
     fn(program, packageJson.version);
