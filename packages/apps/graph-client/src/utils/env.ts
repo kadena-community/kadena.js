@@ -8,9 +8,5 @@ export const env: {
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {
-  console.log(process.env);
-
-  console.log('value', value);
-  console.log('otherwise', otherwise);
   return value === undefined ? otherwise : value;
 }

@@ -26,8 +26,6 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
     confirmationDepth = chainTree[block.chainid][block.hash].confirmationDepth;
   }
 
-  console.log('max', process.env.REACT_APP_MAX_CALCULATED_CONFIRMATION_DEPTH);
-
   return (
     <Container>
       {block ? (
