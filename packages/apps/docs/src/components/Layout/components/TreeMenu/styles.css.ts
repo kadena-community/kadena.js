@@ -62,7 +62,7 @@ export const levelItemVariantClass = styleVariants({
   l2: {
     display: 'block',
     cursor: 'pointer',
-    padding: `${vars.sizes.$2} 0`,
+    padding: `${vars.sizes.$2} ${vars.sizes.$4}`,
     border: 0,
   },
   l3: {
@@ -70,6 +70,7 @@ export const levelItemVariantClass = styleVariants({
     cursor: 'pointer',
     padding: `0 ${vars.sizes.$3}`,
     border: 0,
+    fontSize: vars.fontSizes.$sm,
   },
 });
 
@@ -151,9 +152,6 @@ export const treeItemPseudoVariantClass = styleVariants({
     },
   },
   l2: {
-    paddingLeft: vars.sizes.$4,
-    paddingRight: vars.sizes.$4,
-
     selectors: {
       '&::before': {
         position: 'absolute',
@@ -168,7 +166,5 @@ export const treeItemPseudoVariantClass = styleVariants({
       },
     },
   },
-  l3: {
-    fontSize: `${vars.fontSizes.$sm}`,
-  },
+  l3: {},
 });
