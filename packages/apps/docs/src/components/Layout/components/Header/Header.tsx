@@ -1,26 +1,26 @@
-import { IconButton, SystemIcon } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 
 import { globalClass } from '../../global.css';
-import {
-  InnerWrapper,
-  NavLink,
-  StyledLogoWrapper,
-  StyledNav,
-  StyledUl,
-} from '../styles';
 import { DocsLogo } from '..';
 
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
-import { HeaderIconGroup, HideOnMobile } from './styles';
+import { HeaderIconGroup } from './styles';
 import {
   headerButtonClass,
   headerClass,
+  headerIconGroupClass,
+  hideOnMobileClass,
   innerWrapperClass,
+  logoClass,
+  navClass,
+  navLinkActiveVariant,
+  navLinkClass,
   skipNavClass,
   socialGroupClass,
   spacerClass,
+  ulClass,
 } from './styles.css';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
@@ -46,29 +46,35 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
         Skip to main content
       </a>
       <div className={innerWrapperClass}>
-        <StyledLogoWrapper>
+        <div className={logoClass}>
           <Link href="/" passHref>
             <DocsLogo overwriteTheme="dark" />
           </Link>
-        </StyledLogoWrapper>
+        </div>
 
-        <HideOnMobile>
+        <div className={hideOnMobileClass}>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
-          <StyledNav>
-            <StyledUl ref={listRef}>
+          <nav className={navClass}>
+            <ul className={ulClass} ref={listRef}>
               {menuItems.map((item) => (
                 <li key={item.root}>
-                  <NavLink href={item.root} active={item.isMenuOpen}>
+                  <Link
+                    href={item.root}
+                    className={classNames(
+                      navLinkClass,
+                      navLinkActiveVariant[item.isMenuOpen ? 'true' : 'false'],
+                    )}
+                  >
                     {item.menu}
-                  </NavLink>
+                  </Link>
                 </li>
               ))}
-            </StyledUl>
-          </StyledNav>
-        </HideOnMobile>
+            </ul>
+          </nav>
+        </div>
         <div className={spacerClass} />
 
-        <section className={socialGroupClass}>
+        <section className={classNames(headerIconGroupClass, socialGroupClass)}>
           <a
             href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
@@ -84,16 +90,16 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             <SystemIcon.Github />
           </a>
         </section>
-        <HeaderIconGroup>
+        <section className={headerIconGroupClass}>
           <ThemeToggle />
-          <HideOnMobile>
+          <div className={hideOnMobileClass}>
             <SearchButton />
-          </HideOnMobile>
+          </div>
           <HamburgerMenuToggle
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
           />
-        </HeaderIconGroup>
+        </section>
       </div>
     </header>
   );

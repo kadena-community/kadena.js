@@ -5,9 +5,18 @@ import {
   vars,
 } from '@kadena/react-ui/theme';
 
-import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
+import {
+  $$backgroundOverlayColor,
+  $$modalZIndex,
+  $$navMenu,
+  $$pageWidth,
+} from '../../global.css';
 
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
+
+export const logoClass = style({
+  zIndex: $$navMenu,
+});
 
 export const headerButtonClass = style([
   sprinkles({
@@ -155,16 +164,118 @@ export const spacerClass = style({
   flex: 1,
 });
 
-export const socialGroupClass = style([
+export const headerIconGroupClass = style([
   sprinkles({
     display: 'flex',
     gap: '$1',
     marginLeft: '$6',
   }),
-  {
+]);
+
+export const socialGroupClass = style({
+  display: 'none',
+  '@media': {
+    [`screen and ${breakpoints.lg}`]: {
+      display: 'flex',
+    },
+  },
+});
+
+export const animationBackgroundClass = style([
+  sprinkles({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 0,
+    opacity: 0,
+  }),
+]);
+
+export const animationBackgroundShowVariant = styleVariants({
+  show: {
+    opacity: 1,
+  },
+  hide: {
+    opacity: 0,
+  },
+});
+
+export const navClass = style([
+  sprinkles({
     display: 'none',
+    alignItems: 'center',
+    zIndex: 1,
+  }),
+  {
     '@media': {
-      [`screen and ${breakpoints.lg}`]: {
+      [`screen and ${breakpoints.md}`]: {
+        display: 'flex',
+      },
+    },
+  },
+]);
+
+export const ulClass = style([
+  sprinkles({
+    display: 'flex',
+    gap: '$4',
+    padding: 0,
+    width: '100%',
+  }),
+  {
+    listStyle: 'none',
+  },
+]);
+
+export const navLinkClass = style([
+  sprinkles({
+    color: '$neutral2',
+    fontFamily: '$main',
+    textDecoration: 'none',
+    borderRadius: '$sm',
+  }),
+  {
+    padding: `${vars.sizes.$1} clamp(${vars.sizes.$1}, .5vw, ${vars.sizes.$12})`,
+    fontSize: `clamp(${vars.sizes.$3}, 1.4vw, ${vars.sizes.$4})`,
+    selectors: {
+      '&:hover': {
+        color: vars.colors.$neutral2,
+        opacity: '.5',
+      },
+      [`${darkThemeClass} &`]: {
+        color: vars.colors.$neutral6,
+      },
+    },
+  },
+]);
+
+export const navLinkActiveVariant = styleVariants({
+  true: {
+    backgroundColor: vars.colors.$neutral2,
+    color: vars.colors.$neutral5,
+
+    selectors: {
+      '&:hover': {
+        color: vars.colors.$neutral1,
+        opacity: '.8',
+      },
+
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$neutral5,
+        color: vars.colors.$neutral1,
+      },
+    },
+  },
+  false: {},
+});
+
+export const hideOnMobileClass = style([
+  sprinkles({
+    display: 'none',
+  }),
+  {
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
         display: 'flex',
       },
     },
