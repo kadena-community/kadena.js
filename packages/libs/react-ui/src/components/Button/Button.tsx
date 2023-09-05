@@ -7,10 +7,13 @@ import {
 import { SystemIcon } from '@components/Icon';
 import cn from 'classnames';
 import type { ButtonHTMLAttributes, FC } from 'react';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
 export interface IButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
+  extends Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    'as' | 'disabled' | 'className'
+  > {
   as?: 'button' | 'a';
   variant?: keyof typeof colorVariants;
   children: React.ReactNode;
@@ -24,6 +27,7 @@ export interface IButtonProps
     | React.FormEventHandler<HTMLButtonElement>;
   target?: '_blank' | '_self';
   title?: string;
+  asChild?: boolean;
 }
 
 export const Button: FC<IButtonProps> = ({
@@ -34,11 +38,11 @@ export const Button: FC<IButtonProps> = ({
   icon,
   iconAlign = 'right',
   loading,
-  onClick,
   target,
-  ...props
+  asChild = false,
+  ...restProps
 }) => {
-  const ariaLabel = props['aria-label'] ?? props.title;
+  const ariaLabel = restProps['aria-label'] ?? restProps.title;
   const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 
   let Icon = icon && SystemIcon[icon];
@@ -54,17 +58,29 @@ export const Button: FC<IButtonProps> = ({
     [iconLoadingClass]: loading,
   });
 
-  const buttonChildren = (
+  const getContents = (linkContents: ReactNode): ReactNode => (
     <>
       {Icon && iconAlign === 'left' && (
         <Icon size="md" className={iconClassname} />
       )}
-      {children}
+      {linkContents}
       {Icon && iconAlign === 'right' && (
         <Icon size="md" className={iconClassname} />
       )}
     </>
   );
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      href,
+      ariaLabel,
+      target,
+      ...children.props,
+      className: buttonClassname,
+      children: getContents(children.props.children),
+    });
+  }
 
   if (renderAsAnchor) {
     return (
@@ -75,20 +91,19 @@ export const Button: FC<IButtonProps> = ({
         href={href}
         target={target}
       >
-        {buttonChildren}
+        {getContents(children)}
       </a>
     );
   }
 
   return (
     <button
-      {...props}
+      {...restProps}
       aria-label={ariaLabel}
       className={buttonClassname}
       data-testid="kda-button"
-      onClick={onClick}
     >
-      {buttonChildren}
+      {getContents(children)}
     </button>
   );
 };
