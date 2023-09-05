@@ -1,3 +1,4 @@
+import { useChainTree } from '../../../context/chain-tree-context';
 import { env } from '../../../utils/env';
 import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { Box } from '../../box';
@@ -6,11 +7,7 @@ import { Text } from '../../text';
 import { TimeTicker } from './../time-ticker';
 import { Container, Content } from './styles';
 
-import {
-  CheckCircledIcon,
-  InfoCircledIcon,
-  TimerIcon,
-} from '@radix-ui/react-icons';
+import { InfoCircledIcon, TimerIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
 interface IChainBlockProps {
@@ -21,6 +18,15 @@ interface IChainBlockProps {
 
 export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
   const { color, textColor, block } = props;
+
+  const { chainTree } = useChainTree();
+  let confirmationDepth = 0;
+
+  if (block) {
+    confirmationDepth = chainTree[block.chainid][block.hash].confirmationDepth;
+  }
+
+  console.log('max', process.env.REACT_APP_MAX_CALCULATED_CONFIRMATION_DEPTH);
 
   return (
     <Container>
@@ -44,14 +50,13 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
             <TimerIcon />
             <TimeTicker date={new Date(block.creationtime)} />
 
-            {block.confirmationDepth >=
-            env('CONFIRMED_CONFIRMATION_DEPTH', 6) ? (
-              <CheckCircledIcon />
-            ) : (
-              <InfoCircledIcon />
-            )}
+            <InfoCircledIcon />
 
-            <Text as="span">{block.confirmationDepth}</Text>
+            <Text as="span">
+              {confirmationDepth >= env.MAX_CALCULATED_CONFIRMATION_DEPTH
+                ? `>${chainTree[block.chainid][block.hash].confirmationDepth}`
+                : chainTree[block.chainid][block.hash].confirmationDepth}
+            </Text>
 
             {/* {block.transactions.totalCount > 0 && (
               <>

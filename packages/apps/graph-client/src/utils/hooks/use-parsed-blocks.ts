@@ -14,6 +14,7 @@ export interface IBlock
     | 'powhash'
     | 'epoch'
     | 'confirmationDepth'
+    | 'parentHash'
   > {}
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;
@@ -29,14 +30,14 @@ export function useParsedBlocks(): IUseParseBlocksReturn {
   const addBlocks = useCallback(
     (newBlocks: IBlock[]) => {
       const groupedNewBlocks: Record<number, IBlock[]> = {};
-      newBlocks.forEach((block) =>
+      newBlocks.forEach((block) => {
         groupedNewBlocks[block.height as number]?.length
           ? (groupedNewBlocks[block.height] = [
               ...groupedNewBlocks[block.height],
               block,
             ])
-          : (groupedNewBlocks[block.height] = [block]),
-      );
+          : (groupedNewBlocks[block.height] = [block]);
+      });
 
       setAllBlocks((prevBlocks) => {
         const updatedBlocks = { ...prevBlocks };

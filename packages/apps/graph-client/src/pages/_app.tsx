@@ -1,5 +1,7 @@
 import '../styles/globals.css';
 
+import { ChainTreeContextProvider } from '../context/chain-tree-context';
+
 import {
   ApolloClient,
   ApolloProvider,
@@ -26,7 +28,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   return (
     <ApolloProvider client={client}>
-      <ReactComponent {...pageProps} />
+      <ChainTreeContextProvider>
+        <ReactComponent {...pageProps} />
+      </ChainTreeContextProvider>
     </ApolloProvider>
   );
 }

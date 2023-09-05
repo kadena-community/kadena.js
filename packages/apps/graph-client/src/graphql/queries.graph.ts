@@ -27,6 +27,7 @@ export const CORE_BLOCK_FIELDS: DocumentNode = gql`
     #   }
     # }
     confirmationDepth
+    parentHash
   }
 `;
 
