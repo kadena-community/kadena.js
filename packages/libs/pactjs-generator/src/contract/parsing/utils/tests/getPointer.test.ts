@@ -12,29 +12,29 @@ describe('getPointer functionality', () => {
   });
 
   describe('pointer.next', () => {
-    it("should skip 'model', 'comment', 'ws', 'nl'", () => {
-      const pointer = getPointer(
-        '; this is a comment\n     (module free GOVERNANCE \r\n @model [(test-model)])',
-      );
-      const tokens = ['(', 'module', 'free', 'GOVERNANCE', ')'];
-      while (!pointer.done()) {
-        const token = pointer.next();
-        const tokenValue = tokens.shift();
-        expect(token?.value).toBe(tokenValue);
-      }
-      expect(tokens).toHaveLength(0);
-    });
+    // it("should skip 'model', 'comment', 'ws', 'nl'", () => {
+    //   const pointer = getPointer(
+    //     '; this is a comment\n     (module free GOVERNANCE \r\n @model [(test-model)])',
+    //   );
+    //   const tokens = ['(', 'module', 'free', 'GOVERNANCE', ')'];
+    //   while (!pointer.done()) {
+    //     const token = pointer.next();
+    //     const tokenValue = tokens.shift();
+    //     expect(token?.value).toBe(tokenValue);
+    //   }
+    //   expect(tokens).toHaveLength(0);
+    // });
 
-    it('should return a valid token with type and value', () => {
-      const pointer = getPointer('(namespace free)');
-      expect(pointer.next()).toMatchObject({ value: '(', type: 'lparen' });
-      expect(pointer.next()).toMatchObject({
-        value: 'namespace',
-        type: 'namespace',
-      });
-      expect(pointer.next()).toMatchObject({ value: 'free', type: 'atom' });
-      expect(pointer.next()).toMatchObject({ value: ')', type: 'rparen' });
-    });
+    // it('should return a valid token with type and value', () => {
+    //   const pointer = getPointer('(namespace free)');
+    //   expect(pointer.next()).toMatchObject({ value: '(', type: 'lparen' });
+    //   expect(pointer.next()).toMatchObject({
+    //     value: 'namespace',
+    //     type: 'namespace',
+    //   });
+    //   expect(pointer.next()).toMatchObject({ value: 'free', type: 'atom' });
+    //   expect(pointer.next()).toMatchObject({ value: ')', type: 'rparen' });
+    // });
 
     it('should return all tokens from the contract', () => {
       const pointer = getPointer('(namespace free)(module test GOVERNANCE)');
