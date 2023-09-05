@@ -10,7 +10,6 @@ import {
 } from '@kadena/react-ui';
 
 import {
-  largeIconStyle,
   modalButtonStyle,
   modalOptionsContentStyle,
   radioItemWrapperStyle,
@@ -93,12 +92,7 @@ export const OptionsModal: FC = () => {
                       color="default"
                     />
                   )}
-                  <IconButton
-                    title="Radio"
-                    icon={value.icon}
-                    color="default"
-                    className={largeIconStyle}
-                  />
+                  <IconButton title="Radio" icon={value.icon} color="default" />
                   <Stack direction="column" marginX="$md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
