@@ -2,12 +2,9 @@ import { ChainId, IPactDecimal } from '@kadena/types';
 
 import { Pact, readKeyset } from '../../../index';
 import { NetworkId } from '../../support/enums';
+import { sender00Account } from '../../test-data/accounts';
 import { listen, preflight, submit } from '../client';
 import { signByKeyPair } from '../transactions/sign-transaction';
-
-const senderAccount: string = 'sender00';
-const signerKey: string =
-  '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca';
 
 export async function fundAccount(
   receiver: string,
@@ -19,28 +16,33 @@ export async function fundAccount(
     .execution(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (Pact.modules as any).coin['transfer-create'](
-        senderAccount,
+        sender00Account.account,
         receiver,
         readKeyset('ks'),
         amount,
       ),
     )
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .addSigner(signerKey, (withCapability: any) => [
+    .addSigner(sender00Account.publicKey, (withCapability: any) => [
       withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', senderAccount, receiver, amount),
+      withCapability(
+        'coin.TRANSFER',
+        sender00Account.account,
+        receiver,
+        amount,
+      ),
     ])
     .addKeyset('ks', 'keys-all', receiverKey)
     .setMeta({
       chainId: chain,
       gasLimit: 1000,
       gasPrice: 1.0e-6,
-      senderAccount: senderAccount,
+      senderAccount: sender00Account.account,
     })
     .setNetworkId(NetworkId.fast_development)
     .createTransaction();
 
-  const signedTx = signByKeyPair(transaction, signerKey);
+  const signedTx = signByKeyPair(transaction, sender00Account);
 
   const preflightResult = await preflight(signedTx);
   if (preflightResult.result.status === 'failure') {

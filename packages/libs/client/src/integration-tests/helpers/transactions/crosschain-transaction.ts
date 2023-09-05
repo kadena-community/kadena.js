@@ -8,14 +8,14 @@ import {
   readKeyset,
 } from '../../../index';
 import { NetworkId } from '../../support/enums';
-import { IAccount } from '../../support/interfaces';
+import { IAccount, IAccountWithSecretKey } from '../../support/interfaces';
 import { keyFromAccount } from '../account/keyFromAccount';
 import { listen, pollCreateSpv, pollStatus, submit } from '../client';
 
 import { signByKeyPair } from './sign-transaction';
 
 function startCrossChainTransfer(
-  from: IAccount,
+  from: IAccountWithSecretKey,
   to: IAccount,
   amount: string,
 ): IUnsignedCommand {
@@ -76,14 +76,14 @@ function finishInTheTargetChain(
 }
 
 export async function executeCrossChainTransfer(
-  from: IAccount,
+  from: IAccount & { secretKey: string },
   to: IAccount,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
   return (
     Promise.resolve(startCrossChainTransfer(from, to, amount))
       //    .then(inspect('command'))
-      .then((command) => signByKeyPair(command, from.publicKey))
+      .then((command) => signByKeyPair(command, from))
       //     .then(inspect('command'))
       .then((command) =>
         isSignedTransaction(command)
@@ -126,7 +126,7 @@ export async function executeCrossChainTransfer(
           to.account,
         ),
       )
-      .then((command) => signByKeyPair(command, to.publicKey))
+      .then((command) => signByKeyPair(command, from))
       .then((command) =>
         isSignedTransaction(command)
           ? command
