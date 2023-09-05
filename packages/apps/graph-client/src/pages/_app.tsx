@@ -20,7 +20,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// eslint-disable-next-line @typescript-eslint/naming-convention, react/function-component-definition
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;

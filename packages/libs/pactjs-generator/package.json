@@ -17,20 +17,20 @@
   "scripts": {
     "prebuild": "pnpm run build:lexer && pnpm run build:grammar",
     "build": "heft build --clean",
-    "build:lexer": "tsc src/lexer.ts",
-    "build:lexer:watch": "chokidar src/lexer.ts -c \"pnpm run build:lexer\"",
     "build:grammar": "nearleyc src/grammar.ne -o src/grammar.js",
     "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"pnpm run build:grammar\"",
-    "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
-    "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch",
-    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "build:lexer": "tsc src/lexer.ts",
+    "build:lexer:watch": "chokidar src/lexer.ts -c \"pnpm run build:lexer\"",
     "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
     "lint:src": "eslint package.json src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test"
+    "test": "heft test",
+    "test:grammar:watch": "heft test -w -t grammar --disable-code-coverage",
+    "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch"
   },
   "dependencies": {
     "memfs": "~3.5.1",
@@ -52,8 +52,8 @@
     "concurrently": "^7.2.2",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
-    "ts-node": "~10.8.2",
     "ts-jest": "~29.1.0",
+    "ts-node": "~10.8.2",
     "typescript": "5.1.6"
   }
 }

@@ -1,9 +1,9 @@
-import {
+import type {
   ChainId,
   ICommand,
   IContinuationPayloadObject,
-  Pact,
 } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
 import client from '@/constants/client';
 import Debug from 'debug';

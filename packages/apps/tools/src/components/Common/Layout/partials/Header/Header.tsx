@@ -2,14 +2,16 @@ import { NavHeader, Option, Select } from '@kadena/react-ui';
 
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
-import { kadenaConstants, Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
+import { kadenaConstants } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
 import { getNetworks } from '@/utils/wallet';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IHeaderProps {
   logo?: ReactNode;
