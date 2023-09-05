@@ -1,6 +1,5 @@
-import { type IAnswers, type IQuestion, getNextQuestion } from '../questions';
-
 import questionsTest, { type TestFn } from 'ava';
+import { type IAnswers, type IQuestion, getNextQuestion } from '../questions';
 
 interface IContext {
   questions: IQuestion[];
