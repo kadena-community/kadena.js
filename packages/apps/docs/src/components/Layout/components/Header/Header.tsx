@@ -1,31 +1,32 @@
-import { IconButton } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 
 import { globalClass } from '../../global.css';
-import {
-  InnerWrapper,
-  NavLink,
-  Spacer,
-  StyledHeader,
-  StyledLogoWrapper,
-  StyledNav,
-  StyledUl,
-} from '../styles';
 import { DocsLogo } from '..';
 
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
 import {
-  HeaderIconGroup,
-  HeaderSocialIconGroup,
-  HideOnMobile,
-  SkipNav,
-} from './styles';
+  headerButtonClass,
+  headerClass,
+  headerIconGroupClass,
+  hideOnMobileClass,
+  innerWrapperClass,
+  logoClass,
+  navClass,
+  navLinkActiveVariant,
+  navLinkClass,
+  skipNavClass,
+  socialGroupClass,
+  spacerClass,
+  ulClass,
+} from './styles.css';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
 import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
+import classNames from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -39,58 +40,66 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { toggleMenu, isMenuOpen } = useMenu();
 
   return (
-    <StyledHeader className={globalClass}>
-      <SkipNav href="#maincontent">Skip to main content</SkipNav>
-      <InnerWrapper>
-        <StyledLogoWrapper>
+    <header className={classNames(globalClass, headerClass)}>
+      <a className={skipNavClass} href="#maincontent">
+        Skip to main content
+      </a>
+      <div className={innerWrapperClass}>
+        <div className={logoClass}>
           <Link href="/" passHref>
             <DocsLogo overwriteTheme="dark" />
           </Link>
-        </StyledLogoWrapper>
+        </div>
 
-        <HideOnMobile>
+        <div className={hideOnMobileClass}>
           <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
-          <StyledNav>
-            <StyledUl ref={listRef}>
+          <nav className={navClass}>
+            <ul className={ulClass} ref={listRef}>
               {menuItems.map((item) => (
                 <li key={item.root}>
-                  <NavLink href={item.root} active={item.isMenuOpen}>
+                  <Link
+                    href={item.root}
+                    className={classNames(
+                      navLinkClass,
+                      navLinkActiveVariant[item.isMenuOpen ? 'true' : 'false'],
+                    )}
+                  >
                     {item.menu}
-                  </NavLink>
+                  </Link>
                 </li>
               ))}
-            </StyledUl>
-          </StyledNav>
-        </HideOnMobile>
-        <Spacer />
+            </ul>
+          </nav>
+        </div>
+        <div className={spacerClass} />
 
-        <HeaderSocialIconGroup>
-          <IconButton
-            as="a"
+        <section className={classNames(headerIconGroupClass, socialGroupClass)}>
+          <a
             href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
-            icon="Twitter"
-            color="inverted"
-          />
-          <IconButton
-            as="a"
+            className={classNames(headerButtonClass)}
+          >
+            <SystemIcon.Twitter />
+          </a>
+          <a
             href="https://github.com/kadena-community"
             title="Go to our Github"
-            icon="Github"
-            color="inverted"
-          />
-        </HeaderSocialIconGroup>
-        <HeaderIconGroup>
+            className={classNames(headerButtonClass)}
+          >
+            <SystemIcon.Github />
+          </a>
+        </section>
+        <section className={headerIconGroupClass}>
           <ThemeToggle />
-          <HideOnMobile>
+          <div className={hideOnMobileClass}>
             <SearchButton />
-          </HideOnMobile>
+          </div>
           <HamburgerMenuToggle
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
           />
-        </HeaderIconGroup>
-      </InnerWrapper>
-    </StyledHeader>
+        </section>
+      </div>
+    </header>
   );
 };
