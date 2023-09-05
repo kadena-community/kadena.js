@@ -114,7 +114,7 @@ const ModuleExplorer: FC = () => {
         {filteredModules?.map((module) => (
           <StyledListItem key={module} data-module-name={module}>
             <a
-              href={`/transfer/module-explorer/networks/${network}/chains/${chainID}/modules/${module}`}
+              href={`/transactions/module-explorer/networks/${network}/chains/${chainID}/modules/${module}`}
             >
               {module}
             </a>
