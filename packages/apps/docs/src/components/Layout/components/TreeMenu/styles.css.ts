@@ -62,7 +62,7 @@ export const levelItemVariantClass = styleVariants({
   l2: {
     display: 'block',
     cursor: 'pointer',
-    padding: `${vars.sizes.$2} ${vars.sizes.$4}`,
+    padding: `${vars.sizes.$2} 0`,
     border: 0,
   },
   l3: {
@@ -105,13 +105,16 @@ export const treeItemPseudoMenuVariantClass = styleVariants({
   },
   'l1-false': {},
   'l2-true': {
+    padding: `${vars.sizes.$2} ${vars.sizes.$4}`,
     selectors: {
       '&::before': {
         transform: `translate(${vars.sizes.$2}, ${vars.sizes.$1}) rotate(135deg)!important`,
       },
     },
   },
-  'l2-false': {},
+  'l2-false': {
+    padding: `${vars.sizes.$2} ${vars.sizes.$4}`,
+  },
   'l3-true': {},
   'l3-false': {},
 });

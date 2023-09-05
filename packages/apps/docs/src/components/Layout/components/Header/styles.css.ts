@@ -1,20 +1,22 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import {
+  breakpoints,
+  darkThemeClass,
+  sprinkles,
+  vars,
+} from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const hamburgerButtonClass = style([
+export const headerButtonClass = style([
   sprinkles({
     backgroundColor: '$neutral4',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '$lg',
-    width: '$11',
-    height: '$11',
     cursor: 'pointer',
     color: '$neutral2',
   }),
-
   {
     border: 0,
     transition: `opacity 0.2s ease`,
@@ -24,9 +26,45 @@ export const hamburgerButtonClass = style([
         opacity: '.6',
       },
     },
+  },
+]);
+
+export const hamburgerButtonClass = style([
+  sprinkles({
+    width: '$11',
+    height: '$11',
+  }),
+  {
     '@media': {
       [`screen and ${breakpoints.md}`]: {
         display: 'none',
+      },
+    },
+  },
+]);
+
+export const searchButtonClass = style([
+  sprinkles({
+    backgroundColor: '$neutral4',
+  }),
+  {
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$neutral3,
+      },
+    },
+  },
+]);
+
+export const searchButtonSlashClass = style([
+  sprinkles({
+    borderRadius: '$lg',
+    backgroundColor: '$neutral3',
+  }),
+  {
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$neutral4,
       },
     },
   },
