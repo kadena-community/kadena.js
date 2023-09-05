@@ -1,8 +1,4 @@
-import {
-  type IAnswers,
-  type IQuestion,
-  getNextQuestion,
-} from '../questions.js';
+import { type IAnswers, type IQuestion, getNextQuestion } from '../questions';
 
 import questionsTest, { type TestFn } from 'ava';
 
