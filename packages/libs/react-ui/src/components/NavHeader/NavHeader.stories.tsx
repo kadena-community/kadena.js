@@ -44,7 +44,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          '<i>Note: maximum navigation items is currently limited (not technically enforced).<br>Pending design update to support more items.</i><br><br><strong>NavHeader.Link usage is optional</strong><br>You set your own children of NavHeader.Navigation (e.g. when using NextJS <Link> component).<br>You can set the initial active link with the <i>activeLink</i> prop on the Navigation component.',
+          'The NavHeader component provides styled top bar navigation that be configured with main nav links on the left side and any additional custom items on the right side.<br><br><i>Note: In times when you need to use a different `Link` component (like next/link in Next.js), you can wrap it in the `NavHeader.Link` component and set the `asChild` prop to pass on styles and additional props.</i><br><br><i>In progress: maximum navigation items is currently limited (not technically enforced).<br>Pending design update to support more items.</i>',
       },
     },
   },
