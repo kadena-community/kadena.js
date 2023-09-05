@@ -1,6 +1,7 @@
 import { containerClass, contentClass } from './stories.css';
 
-import { Box, IBoxProps } from '@components/Box';
+import type { IBoxProps } from '@components/Box';
+import { Box } from '@components/Box';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';

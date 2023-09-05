@@ -1,6 +1,7 @@
 import { ProductIcons } from '../ProductIcons';
 
-import { BreadcrumbItem, Breadcrumbs, IBreadcrumbs } from '.';
+import type { IBreadcrumbs } from '.';
+import { BreadcrumbItem, Breadcrumbs } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

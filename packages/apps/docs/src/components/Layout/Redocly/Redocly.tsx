@@ -12,10 +12,11 @@ import { codebackgroundClass, pageGridClass } from './styles.css';
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
-import { IPageProps } from '@/types/Layout';
-import classnames from 'classnames';
-import React, { FC } from 'react';
-import { RedocRawOptions } from 'redoc';
+import type { IPageProps } from '@/types/Layout';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
+import type { RedocRawOptions } from 'redoc';
 
 export const options: RedocRawOptions = {
   pathInMiddlePanel: true,
@@ -54,18 +55,18 @@ export const Redocly: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const backgroundClassnames = classnames(
+  const backgroundClassnames = classNames(
     basebackgroundClass,
     codebackgroundClass,
   );
 
-  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+  const gridClassNames = classNames(globalClass, baseGridClass, pageGridClass);
 
   return (
     <div className={gridClassNames}>
       <Template menuItems={leftMenuTree}>
         <div
-          className={classnames(contentClass, contentClassVariants.code)}
+          className={classNames(contentClass, contentClassVariants.code)}
           id="maincontent"
         >
           <article className={articleClass}>

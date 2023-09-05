@@ -7,7 +7,8 @@ import {
 
 import { useLayoutContext } from '@/context';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IMiniMenuProps {}
 

@@ -29,11 +29,12 @@
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
     "lint:src": "eslint package.json src --ext .js,.ts,.tsx --fix",
-    "test": "heft test"
+    "test": "jest --silent"
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
     "@kadena/cryptography-utils": "workspace:*",
+    "ava": "5.3.1",
     "cross-spawn": "~7.0.3",
     "dotenv": "~16.0.3",
     "ink": "^4.1.0",
@@ -50,12 +51,15 @@
     "@rushstack/heft": "~0.50.6",
     "@types/cross-spawn": "~6.0.2",
     "@types/heft-jest": "~1.0.3",
+    "@types/jest": "^29.5.3",
     "@types/node": "^16.0.0",
     "@types/react": "^18.2.15",
     "chalk": "^5.2.0",
     "eslint": "^8.45.0",
     "ink-testing-library": "^3.0.0",
+    "jest": "~29.6.1",
     "prettier": "~3.0.0",
+    "ts-jest": "~29.1.0",
     "ts-node": "~10.8.2",
     "typescript": "5.1.6"
   },

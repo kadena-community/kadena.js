@@ -1,8 +1,9 @@
 import { StyledGridCol } from './styles';
 
-import { IGridColMediaStyles, IGridColMediaType } from '@/types/Grid';
+import type { IGridColMediaStyles, IGridColMediaType } from '@/types/Grid';
 import { getColumnStyles } from '@/utils/styles';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IGridRowProps {
   xs?: IGridColMediaType;

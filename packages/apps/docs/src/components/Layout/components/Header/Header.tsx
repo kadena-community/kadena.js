@@ -25,10 +25,11 @@ import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
 import { useMenu } from '@/hooks';
-import { IMenuItem, LayoutType } from '@/types/Layout';
+import type { IMenuItem, LayoutType } from '@/types/Layout';
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];

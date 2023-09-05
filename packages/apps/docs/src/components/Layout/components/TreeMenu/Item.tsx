@@ -5,17 +5,18 @@ import {
   linkClass,
 } from './styles.css';
 
-import { IMenuItem, LevelType } from '@/types/Layout';
-import classnames from 'classnames';
+import type { IMenuItem, LevelType } from '@/types/Layout';
+import classNames from 'classnames';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IItem {
   item: IMenuItem;
   level: LevelType;
 }
 export const Item: FC<IItem> = ({ item, level }) => {
-  const classes = classnames(
+  const classes = classNames(
     linkClass,
     levelItemVariantClass[`l${level}`],
     levelItemLinkPseudoVariantClass[`l${level}`],

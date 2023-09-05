@@ -1,4 +1,4 @@
-import { PactCode, PactValue } from '@kadena/types';
+import type { PactCode, PactValue } from '@kadena/types';
 /**
  * Variadic function to form a lisp s-expression application.
  * Encases arguments in parens and intercalates with a space.

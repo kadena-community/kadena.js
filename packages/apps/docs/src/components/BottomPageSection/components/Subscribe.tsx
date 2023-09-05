@@ -8,7 +8,8 @@ import {
 
 import { useSubscribe } from './useSubscribe';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 /**
  * @TODO: when the loading state story is implemented in the UI lib,

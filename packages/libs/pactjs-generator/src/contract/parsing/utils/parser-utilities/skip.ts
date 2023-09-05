@@ -1,4 +1,5 @@
-import { IParser, rule } from './rule';
+import type { IParser } from './rule';
+import { rule } from './rule';
 
 export const skipTheRest: IParser<boolean> = rule((pointer) => {
   while (!pointer.done()) pointer.next();

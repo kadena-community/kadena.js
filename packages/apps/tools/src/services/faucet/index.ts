@@ -1,4 +1,4 @@
-import {
+import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';

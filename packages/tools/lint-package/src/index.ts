@@ -1,6 +1,6 @@
 import { loadContents, loadJSON, loadJSONC, loadRules } from './helpers.js';
 import { logger } from './logger.js';
-import { Rules, TSConfig } from './types.js';
+import type { Rules, TSConfig } from './types.js';
 
 import type { PackageJson } from '@npmcli/package-json';
 import fg from 'fast-glob';

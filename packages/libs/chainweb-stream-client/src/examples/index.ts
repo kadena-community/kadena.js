@@ -1,4 +1,5 @@
-import ChainwebStreamClient, { ITransaction } from '../';
+import type { ITransaction } from '../';
+import ChainwebStreamClient from '../';
 
 const client: ChainwebStreamClient = new ChainwebStreamClient({
   // required

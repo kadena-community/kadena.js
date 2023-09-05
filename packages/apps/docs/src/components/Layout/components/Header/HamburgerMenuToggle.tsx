@@ -4,7 +4,8 @@ import { hamburgerButtonClass, headerButtonClass } from './styles.css';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   toggleMenu: () => void;

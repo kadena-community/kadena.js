@@ -1,5 +1,6 @@
-import { SystemIcon } from '@components/Icon';
-import { IPaginationProps, Pagination } from '@components/Pagination';
+import type { SystemIcon } from '@components/Icon';
+import type { IPaginationProps } from '@components/Pagination';
+import { Pagination } from '@components/Pagination';
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

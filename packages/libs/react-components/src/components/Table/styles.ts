@@ -1,6 +1,6 @@
 import { darkTheme, styled } from '../../styles';
 
-import { StyledComponent } from '@stitches/react/types/styled-component';
+import type { StyledComponent } from '@stitches/react/types/styled-component';
 
 export const StyledTr: StyledComponent<'tr'> = styled('tr', {
   '&:nth-child(even)': {

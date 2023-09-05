@@ -5,8 +5,8 @@ import { Blog } from './Blog';
 
 import { Heading2 } from '@/components/Markdown/Heading';
 import { Paragraph } from '@/components/Markdown/Paragraph';
-import { IPageProps } from '@/types/Layout';
-import { Meta, StoryObj } from '@storybook/react';
+import type { IPageProps } from '@/types/Layout';
+import type { Meta, StoryObj } from '@storybook/react';
 import Link from 'next/link';
 import React from 'react';
 

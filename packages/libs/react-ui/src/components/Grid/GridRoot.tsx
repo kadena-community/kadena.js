@@ -1,14 +1,16 @@
+import type { ResponsiveInputType } from './Grid.css';
 import {
   containerColumnVariants,
   explicitColumnVariant,
   gapVariants,
   gridContainerClass,
-  ResponsiveInputType,
 } from './Grid.css';
 
-import { Sprinkles, sprinkles } from '@theme/sprinkles.css';
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IGridRootProps
   extends Pick<
@@ -51,7 +53,7 @@ const assembleColumnVariants = (
   ];
 };
 
-const GridRoot: FC<IGridRootProps> = ({
+export const GridRoot: FC<IGridRootProps> = ({
   children,
   columns,
   margin = undefined,
@@ -97,5 +99,3 @@ const GridRoot: FC<IGridRootProps> = ({
     </div>
   );
 };
-
-export default GridRoot;

@@ -1,4 +1,4 @@
-import { Issues } from './types.js';
+import type { Issues } from './types.js';
 
 import chalk from 'chalk';
 

@@ -2,8 +2,9 @@ import { Item } from './Item';
 import { TreeButton } from './TreeButton';
 import { TreeList } from './TreeList';
 
-import { IMenuItem, LevelType } from '@/types/Layout';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import type { IMenuItem, LevelType } from '@/types/Layout';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface IProps {
   item: IMenuItem;

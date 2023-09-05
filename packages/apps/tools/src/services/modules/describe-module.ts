@@ -1,13 +1,13 @@
-import {
+import type {
   ChainwebChainId,
   ILocalCommandResult,
 } from '@kadena/chainweb-node-client';
 import { createClient, Pact } from '@kadena/client';
 
+import type { Network } from '@/constants/kadena';
 import {
   getKadenaConstantByNetwork,
   kadenaConstants,
-  Network,
 } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import Debug from 'debug';

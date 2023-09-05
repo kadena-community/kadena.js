@@ -1,4 +1,4 @@
-import { IPactCommand } from '../interfaces/IPactCommand';
+import type { IPactCommand } from '../interfaces/IPactCommand';
 
 /**
  * Typescript utility to verify that the passed object is a {@link IPactCommand}

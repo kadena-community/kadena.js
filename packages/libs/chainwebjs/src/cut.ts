@@ -1,6 +1,6 @@
 import { cutPeerPage, parseResponse } from './internal';
 import { baseUrl, retryFetch, transFormUrl } from './request';
-import { ICutPeerItem, ICutResponse, IRetryOptions } from './types';
+import type { ICutPeerItem, ICutResponse, IRetryOptions } from './types';
 
 import fetch from 'cross-fetch';
 

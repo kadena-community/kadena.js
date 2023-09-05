@@ -11,9 +11,10 @@ import { globalClass } from '../global.css';
 import { pageGridClass } from './styles.css';
 
 import { NotFound } from '@/components/NotFound';
-import { IBasePageProps } from '@/types/Layout';
+import type { IBasePageProps } from '@/types/Layout';
 import classnames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Landing: FC<IBasePageProps> = ({
   children,

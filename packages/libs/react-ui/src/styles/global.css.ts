@@ -91,7 +91,7 @@ globalStyle('#root, #__next', {
 });
 
 /*
-    10. Kadena Design System 
+    10. Kadena Design System
 */
 globalStyle(':root', {
   vars: {

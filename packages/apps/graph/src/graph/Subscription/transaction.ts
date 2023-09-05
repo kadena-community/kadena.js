@@ -1,8 +1,10 @@
 import { prismaClient } from '../../db/prismaClient';
-import { builder, IContext } from '../builder';
+import type { IContext } from '../builder';
+import { builder } from '../builder';
 
-import { Transaction } from '@prisma/client';
-import _debug, { Debugger } from 'debug';
+import type { Transaction } from '@prisma/client';
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 
 const log: Debugger = _debug('graph:Subscription:transaction');
 

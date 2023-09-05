@@ -1,10 +1,13 @@
-import { IInputHeaderProps, InputHeader } from './InputHeader/InputHeader';
+import type { IInputHeaderProps } from './InputHeader/InputHeader';
+import { InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';
-import { Status, statusVariant } from './InputWrapper.css';
+import type { Status } from './InputWrapper.css';
+import { statusVariant } from './InputWrapper.css';
 
-import { IInputProps } from '@components/Input';
-import React, { FC, FunctionComponentElement } from 'react';
-import { vars } from 'src/styles';
+import type { IInputProps } from '@components/Input';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
+import type { vars } from 'src/styles';
 
 export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   children:

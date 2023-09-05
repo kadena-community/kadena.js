@@ -1,6 +1,7 @@
-import { ICheckpoint, IProgressBarProps, ProgressBar } from './ProgressBar';
+import type { ICheckpoint, IProgressBarProps } from './ProgressBar';
+import { ProgressBar } from './ProgressBar';
 
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IProgressBarProps> = {
