@@ -1,26 +1,27 @@
-import type { INavHeaderRootProps, INavItems } from './NavHeader';
+import type { INavHeaderRootProps } from './NavHeader';
 import { NavHeader } from './';
 
+import { type INavHeaderLinkProps } from './NavHeaderLink';
 import { logoVariants } from '@components/BrandLogo';
 import { Button } from '@components/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const sampleNavItems: INavItems = [
+const sampleNavItems: INavHeaderLinkProps[] = [
   {
-    label: 'Faucet',
+    children: 'Faucet',
     href: '#faucet',
   },
   {
-    label: 'Transactions',
+    children: 'Transactions',
     href: '#transactions',
   },
   {
-    label: 'Balance',
+    children: 'Balance',
     href: '#balance',
   },
   {
-    label: 'Learn Pact',
+    children: 'Learn Pact',
     href: '#pact',
   },
 ];
@@ -30,7 +31,7 @@ type StoryProps = {
   navHeaderActiveLink: number;
   renderSampleContent: boolean;
   useCustomNavigation: boolean;
-  customNavigation: INavItems;
+  customNavigation: INavHeaderLinkProps[];
 } & INavHeaderRootProps;
 
 const meta: Meta<StoryProps> = {
@@ -117,9 +118,9 @@ export const Dynamic: IStory = {
             <NavHeader.Link
               key={index}
               href={item.href}
-              onClick={(event) => console.log(item.label, { event })}
+              onClick={(event) => console.log(item.children, { event })}
             >
-              {item.label}
+              {item.children}
             </NavHeader.Link>
           ))}
         </NavHeader.Navigation>
