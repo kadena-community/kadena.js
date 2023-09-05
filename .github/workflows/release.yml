@@ -1,12 +1,11 @@
 name: Release
 
 # Taken from: https://github.com/changesets/action#with-publishing
-# TODO: get/set GITHUB_TOKEN and NPM_TOKEN
 
 on:
   push:
     branches:
-      - DISABLED_main
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -14,6 +13,10 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -22,22 +25,39 @@ jobs:
 
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
+
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: 18
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          # Node.js v18 gives error in changesets/action@v1 (can't find dist/index.js)
+          node-version: 16
+          cache: 'pnpm'
 
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Build, lint, test all packages
+        run: pnpm turbo build lint test
+
+      - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm publish-packages
+          # Note: pnpm install after versioning is necessary to refresh lockfile
+          version: pnpm run version
+          publish: pnpm run publish
+          commit: '[ci] release'
+          title: '[ci] release'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Needs "Contents" r+w and "Pull requests" r+w access to open/update PRs and push to main
+          GITHUB_TOKEN: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
+          # Needs r+w access for packages of both orgs to publish to npm
+          NPM_TOKEN: ${{ secrets.RELEASE_ACTION_NPM_TOKEN }}
 
-      # - name: Send a Slack notification if a publish happens
-      # if: steps.changesets.outputs.published == 'true'
-      # You can do something when a publish happens.
-      # run: my-slack-bot send-notification --message "A new version of ${GITHUB_REPOSITORY} was published!"
+      - name: Output (debug)
+        if: steps.changesets.outputs.published == 'true'
+        # Do something more interesting when a publish happens.
+        run: echo ${{ steps.changesets.outputs.publishedPackages }}
