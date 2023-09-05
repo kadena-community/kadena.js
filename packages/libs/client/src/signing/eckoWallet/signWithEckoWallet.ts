@@ -2,10 +2,7 @@ import { pactCommandToSigningRequest } from '../utils/pactCommandToSigningReques
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import { connect, isConnected, isInstalled } from './eckoCommon';
-import {
-  type IEckoSignResponse,
-  type IEckoSignSingleFunction,
-} from './eckoTypes';
+import type { IEckoSignResponse, IEckoSignSingleFunction } from './eckoTypes';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/naming-convention

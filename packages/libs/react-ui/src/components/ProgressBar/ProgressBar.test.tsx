@@ -1,4 +1,5 @@
-import { type ICheckpoint, ProgressBar } from './ProgressBar';
+import type { ICheckpoint } from './ProgressBar';
+import { ProgressBar } from './ProgressBar';
 
 import { render, screen } from '@testing-library/react';
 import React from 'react';

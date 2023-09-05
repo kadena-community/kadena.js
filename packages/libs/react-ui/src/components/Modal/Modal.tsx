@@ -13,7 +13,8 @@ import { Card } from '@components/Card';
 import { SystemIcon } from '@components/Icon';
 import { Heading } from '@components/Typography/Heading/Heading';
 import FocusTrap from 'focus-trap-react';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IModalProps {
   children: React.ReactNode;

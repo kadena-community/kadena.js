@@ -7,7 +7,8 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { type FC, forwardRef } from 'react';
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 export interface ISelectProps
   extends Omit<

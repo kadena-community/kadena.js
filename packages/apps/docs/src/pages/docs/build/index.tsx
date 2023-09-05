@@ -4,8 +4,9 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { type GetStaticProps } from 'next';
-import React, { type FC } from 'react';
+import type { GetStaticProps } from 'next';
+import type { FC } from 'react';
+import React from 'react';
 
 const Home: FC = () => {
   return <Stack direction="column" gap="$2xl"></Stack>;

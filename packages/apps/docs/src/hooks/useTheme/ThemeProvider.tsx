@@ -1,5 +1,5 @@
 import { Theme } from './Theme';
-import { type IThemeProviderProps, type IUseThemeProps } from './types';
+import type { IThemeProviderProps, IUseThemeProps } from './types';
 
 import React, { createContext, useContext } from 'react';
 

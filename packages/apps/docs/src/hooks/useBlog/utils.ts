@@ -1,4 +1,4 @@
-import { type IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/types/Layout';
 import { compareDesc } from '@/utils/dates';
 
 export const getInitBlogPosts = (

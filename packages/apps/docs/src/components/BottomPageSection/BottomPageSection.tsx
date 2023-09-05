@@ -4,11 +4,12 @@ import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
 import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
 
-import { type INavigation } from '@/types/Layout';
+import type { INavigation } from '@/types/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classnames from 'classnames';
 import Link from 'next/link';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   editLink?: string;

@@ -1,7 +1,8 @@
 import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 
 import { Loading } from '@/components';
-import React, { type FC, useEffect, useRef } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface IProps {
   handleLoad: (isRetry: boolean) => void;

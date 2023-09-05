@@ -1,4 +1,4 @@
-import { type IGridColMediaStyles, type IGridColMediaType } from '@/types/Grid';
+import type { IGridColMediaStyles, IGridColMediaType } from '@/types/Grid';
 
 const getPropInPercentage = (prop: number | string): string => {
   const value = typeof prop === 'string' ? parseInt(prop) : prop;

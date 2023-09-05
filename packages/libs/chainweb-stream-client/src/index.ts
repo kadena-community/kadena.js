@@ -5,16 +5,16 @@ import {
 } from './errors';
 import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
 import SlidingCache from './sliding-cache';
-import {
-  type ChainwebStreamType,
-  type IChainwebStreamConfig,
-  type IChainwebStreamConstructorArgs,
-  type IDebugMsgObject,
-  type IHeightsEvent,
-  type IInitialEvent,
-  type ITransaction,
-  ConnectionState,
+import type {
+  ChainwebStreamType,
+  IChainwebStreamConfig,
+  IChainwebStreamConstructorArgs,
+  IDebugMsgObject,
+  IHeightsEvent,
+  IInitialEvent,
+  ITransaction,
 } from './types';
+import { ConnectionState } from './types';
 import { isNotUndefined } from './util';
 
 import EventEmitter from 'eventemitter2';

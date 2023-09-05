@@ -1,7 +1,4 @@
-import {
-  type IExecutionPayloadObject,
-  type IPactCommand,
-} from './IPactCommand';
+import type { IExecutionPayloadObject, IPactCommand } from './IPactCommand';
 
 /**
  * @internal

@@ -1,6 +1,7 @@
-import { type Sprinkles, sprinkles } from '@theme/sprinkles.css';
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
 import type React from 'react';
-import { type ElementType } from 'react';
+import type { ElementType } from 'react';
 import { createElement } from 'react';
 
 export interface IStackProps

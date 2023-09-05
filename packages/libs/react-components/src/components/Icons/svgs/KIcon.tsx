@@ -1,5 +1,5 @@
+import type { SVGProps } from 'react';
 import * as React from 'react';
-import { type SVGProps } from 'react';
 
 const KIcon: React.FC<SVGProps<SVGSVGElement>> = (
   props: SVGProps<SVGSVGElement>,

@@ -1,10 +1,10 @@
 import analyticsDataClient from './analyticsDataClient';
 import storeAnalyticsData from './storeAnalyticsData';
 
-import {
-  type IMostPopularPage,
-  type IRow,
-  type IRunReportResponse,
+import type {
+  IMostPopularPage,
+  IRow,
+  IRunReportResponse,
 } from '@/types/MostPopularData';
 import fs from 'fs';
 import path from 'path';

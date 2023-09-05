@@ -1,8 +1,10 @@
-import { type ITableProps, Table as StyledTable } from '@kadena/react-ui';
+import type { ITableProps } from '@kadena/react-ui';
+import { Table as StyledTable } from '@kadena/react-ui';
 
 import { wrapperClass } from '../styles.css';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Table: FC<ITableProps> = ({ children }) => {
   return (

@@ -1,4 +1,4 @@
-import { type IPactCommand } from '../../interfaces/IPactCommand';
+import type { IPactCommand } from '../../interfaces/IPactCommand';
 import { Pact } from '../../pact';
 import { createTransaction } from '../createTransaction';
 import { literal } from '../pact-helpers';

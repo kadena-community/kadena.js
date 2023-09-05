@@ -1,7 +1,7 @@
 import { heading, html, paragraph, root, text } from 'mdast-builder';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { type VFile } from 'vfile';
+import type { VFile } from 'vfile';
 
 interface PackageJSON {
   name: string;

@@ -1,16 +1,12 @@
-import { type ICommandResult } from '@kadena/chainweb-node-client';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import type { IContinuationPayloadObject } from '@kadena/client';
 import {
-  type IContinuationPayloadObject,
   isSignedTransaction,
   Pact,
   readKeyset,
   signWithChainweaver,
 } from '@kadena/client';
-import {
-  type ChainId,
-  type ICommand,
-  type IUnsignedCommand,
-} from '@kadena/types';
+import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { listen, pollCreateSpv, pollStatus, submit } from './util/client';
 import { inspect } from './util/fp-helpers';

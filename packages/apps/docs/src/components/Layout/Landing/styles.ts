@@ -1,4 +1,5 @@
-import { type StyledComponent, styled } from '@kadena/react-components';
+import type { StyledComponent } from '@kadena/react-components';
+import { styled } from '@kadena/react-components';
 
 import { BasePageGrid } from '../components/styles';
 

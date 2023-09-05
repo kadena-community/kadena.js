@@ -1,6 +1,7 @@
-import { type IMaskedValueProps, MaskedValue } from './MaskedValue';
+import type { IMaskedValueProps } from './MaskedValue';
+import { MaskedValue } from './MaskedValue';
 
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IMaskedValueProps> = {

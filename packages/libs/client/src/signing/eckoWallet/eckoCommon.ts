@@ -1,6 +1,6 @@
-import {
-  type ICommonEckoFunctions,
-  type IEckoConnectOrStatusResponse,
+import type {
+  ICommonEckoFunctions,
+  IEckoConnectOrStatusResponse,
 } from './eckoTypes';
 
 export const isInstalled: ICommonEckoFunctions['isInstalled'] = () => {

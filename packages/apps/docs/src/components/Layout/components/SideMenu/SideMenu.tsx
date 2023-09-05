@@ -14,11 +14,12 @@ import {
 } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
-import { type IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { type FC, type KeyboardEvent } from 'react';
+import type { FC, KeyboardEvent } from 'react';
+import React from 'react';
 
 interface IProps {
   closeMenu: () => void;

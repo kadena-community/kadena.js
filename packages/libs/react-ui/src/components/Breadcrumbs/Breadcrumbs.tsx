@@ -1,8 +1,9 @@
 import { containerClass, iconContainer, navClass } from './Breadcrumbs.css';
-import { type IBreadcrumbItemProps } from './BreadcrumbsItem';
+import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
 
 import { ProductIcon } from '@components/Icon';
-import React, { type FC, type FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface IBreadcrumbsProps {
   children?: FunctionComponentElement<IBreadcrumbItemProps>[];

@@ -1,16 +1,15 @@
-import { type INavHeaderRootProps, NavHeaderContainer } from './NavHeader';
-import {
-  type INavHeaderContentProps,
-  NavHeaderContent,
-} from './NavHeaderContent';
+import type { INavHeaderRootProps } from './NavHeader';
+import { NavHeaderContainer } from './NavHeader';
+import type { INavHeaderContentProps } from './NavHeaderContent';
+import { NavHeaderContent } from './NavHeaderContent';
 import { NavHeaderLink } from './NavHeaderLink';
-import {
-  type INavHeaderNavigationProps,
-  type INavItem,
-  NavHeaderNavigation,
+import type {
+  INavHeaderNavigationProps,
+  INavItem,
 } from './NavHeaderNavigation';
+import { NavHeaderNavigation } from './NavHeaderNavigation';
 
-import { type FC } from 'react';
+import type { FC } from 'react';
 
 export {
   INavHeaderRootProps,

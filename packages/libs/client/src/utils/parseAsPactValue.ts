@@ -1,5 +1,5 @@
 import { PactNumber } from '@kadena/pactjs';
-import { type PactValue } from '@kadena/types';
+import type { PactValue } from '@kadena/types';
 
 import { Literal } from './pact-helpers';
 

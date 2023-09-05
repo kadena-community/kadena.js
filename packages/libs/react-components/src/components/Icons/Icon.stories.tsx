@@ -2,8 +2,9 @@ import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
 
+import type { IIconProps } from './';
 import { sizeVariant } from './styles';
-import { type IIconProps, SystemIcons } from './';
+import { SystemIcons } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

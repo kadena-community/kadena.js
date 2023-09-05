@@ -2,9 +2,9 @@ import { generateDts, pactParser } from '@kadena/pactjs-generator';
 
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { type IContractGenerateOptions } from './';
+import type { IContractGenerateOptions } from './';
 
-import { type Command } from 'commander';
+import type { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';

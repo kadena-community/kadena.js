@@ -13,7 +13,8 @@ import {
   StyledTag,
   StyledText,
 } from '@/components/Global/Select/styles';
-import React, { type ChangeEvent, type FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import React from 'react';
 
 export interface ISelectProps {
   label?: string;

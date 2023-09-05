@@ -11,7 +11,8 @@ import {
   StyledText,
 } from './styles';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IInputGroupProps {
   label?: string;

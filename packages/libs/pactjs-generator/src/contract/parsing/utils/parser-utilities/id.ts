@@ -1,4 +1,5 @@
-import { type IParser, FAILED, rule } from './rule';
+import type { IParser } from './rule';
+import { FAILED, rule } from './rule';
 
 interface IId {
   /**

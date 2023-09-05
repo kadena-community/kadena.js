@@ -2,7 +2,7 @@ import { asString } from './asString';
 import { atom } from './atom';
 import { id } from './id';
 import { repeat } from './repeat';
-import { type IParser } from './rule';
+import type { IParser } from './rule';
 import { seq } from './seq';
 
 /**

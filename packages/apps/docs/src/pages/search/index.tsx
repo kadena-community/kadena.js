@@ -13,15 +13,10 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
-import { type GetStaticProps } from 'next';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React, {
-  type FC,
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { FC, FormEvent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface IQuery {
   q?: string;

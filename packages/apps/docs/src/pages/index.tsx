@@ -9,16 +9,17 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { type IMostPopularPage } from '@/types/MostPopularData';
+import type { IMostPopularPage } from '@/types/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
-import { type GetStaticProps } from 'next';
+import type { GetStaticProps } from 'next';
 import Link from 'next/link';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];

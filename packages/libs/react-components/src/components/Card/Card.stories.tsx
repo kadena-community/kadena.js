@@ -1,6 +1,7 @@
 import { Button, SystemIcons } from './../../';
+import type { ICardProps } from '.';
 import { fullWidthVariant, stackVariant } from './styles';
-import { type ICardProps, Card } from '.';
+import { Card } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

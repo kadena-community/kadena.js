@@ -1,5 +1,5 @@
+import type { SVGProps } from 'react';
 import * as React from 'react';
-import { type SVGProps } from 'react';
 
 const ArrowCollapseDown: React.FC<SVGProps<SVGSVGElement>> = (
   props: SVGProps<SVGSVGElement>,

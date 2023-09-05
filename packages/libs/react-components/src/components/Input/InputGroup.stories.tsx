@@ -1,5 +1,6 @@
-import { type SystemIcons } from './../../';
-import { type IInputGroupProps, InputGroup } from './InputGroup';
+import type { SystemIcons } from './../../';
+import type { IInputGroupProps } from './InputGroup';
+import { InputGroup } from './InputGroup';
 import { Input } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';

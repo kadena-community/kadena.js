@@ -5,7 +5,8 @@ import { StyledSidebar } from '@/components/Global/SidebarMenu/styles';
 import routes from '@/constants/routes';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const SidebarMenu: FC = (props) => {
   const { t } = useTranslation('common');

@@ -5,11 +5,11 @@ import {
   recentBlocks,
 } from './blocks';
 import { chainUpdates } from './headers';
-import {
-  type IBlockHeader,
-  type IBlockPayloads,
-  type IEventData,
-  type ITransactionElement,
+import type {
+  IBlockHeader,
+  IBlockPayloads,
+  IEventData,
+  ITransactionElement,
 } from './types';
 
 import type EventSource from 'eventsource';

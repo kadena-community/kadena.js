@@ -1,16 +1,13 @@
-import { type ICommandResult, poll } from '@kadena/chainweb-node-client';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import { poll } from '@kadena/chainweb-node-client';
 
-import {
-  type IPollOptions,
-  type IPollRequestPromise,
+import type {
+  IPollOptions,
+  IPollRequestPromise,
 } from '../interfaces/interfaces';
 import { retry } from '../utils/retry';
-import {
-  type IExtPromise,
-  getPromise,
-  mapRecord,
-  mergeAll,
-} from '../utils/utils';
+import type { IExtPromise } from '../utils/utils';
+import { getPromise, mapRecord, mergeAll } from '../utils/utils';
 
 export interface IPollStatus {
   (

@@ -3,7 +3,8 @@ import { Accordion, IconButton, Tree } from '@kadena/react-ui';
 import { gridItemMenuStyle, subMenuTitleClass } from './styles.css';
 
 import { useLayoutContext } from '@/context';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Menu: FC = () => {
   const { activeMenu, setActiveMenuIndex } = useLayoutContext();

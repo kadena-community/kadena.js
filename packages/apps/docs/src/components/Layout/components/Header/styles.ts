@@ -1,9 +1,5 @@
-import {
-  type StyledComponent,
-  darkTheme,
-  IconButton,
-  styled,
-} from '@kadena/react-components';
+import type { StyledComponent } from '@kadena/react-components';
+import { darkTheme, IconButton, styled } from '@kadena/react-components';
 
 export const HamburgerButton: StyledComponent<typeof IconButton> = styled(
   IconButton,

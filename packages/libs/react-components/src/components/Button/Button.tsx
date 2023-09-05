@@ -1,8 +1,9 @@
-import { type SystemIcons } from '../Icons';
+import type { SystemIcons } from '../Icons';
 
 import { StyledButton } from './styles';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IButtonProps
   extends Omit<

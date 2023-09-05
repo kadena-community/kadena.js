@@ -1,10 +1,12 @@
 import { Button } from '@components/Button';
 import { SystemIcon } from '@components/Icon';
-import { type IInputProps, Input } from '@components/Input';
+import type { IInputProps } from '@components/Input';
+import { Input } from '@components/Input';
 import { Stack } from '@components/Stack';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
-import React, { type HTMLInputTypeAttribute } from 'react';
+import type { HTMLInputTypeAttribute } from 'react';
+import React from 'react';
 
 const HTMLInputTypes: HTMLInputTypeAttribute[] = [
   'button',

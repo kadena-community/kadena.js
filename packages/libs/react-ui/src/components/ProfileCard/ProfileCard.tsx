@@ -11,7 +11,8 @@ import {
 
 import { Grid } from '@components/Grid';
 import { Tag } from '@components/Tag';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export default {};
 export interface IProfileCardProps {

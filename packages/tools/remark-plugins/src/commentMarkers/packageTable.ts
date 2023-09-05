@@ -4,7 +4,7 @@ import type { Link, Table, TableRow } from 'mdast';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { type VFile } from 'vfile';
+import type { VFile } from 'vfile';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

@@ -1,5 +1,5 @@
-import { type ExWrappedData } from '../dataWrapper';
-import { type IPointer } from '../getPointer';
+import type { ExWrappedData } from '../dataWrapper';
+import type { IPointer } from '../getPointer';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const FAILED = Symbol('FAILED');

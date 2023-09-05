@@ -1,4 +1,5 @@
-import { type ITable, Table } from '.';
+import type { ITable } from '.';
+import { Table } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

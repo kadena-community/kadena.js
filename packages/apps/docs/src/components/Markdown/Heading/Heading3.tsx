@@ -1,6 +1,8 @@
-import { type IHeader, TaggedHeading } from './Heading';
+import type { IHeader } from './Heading';
+import { TaggedHeading } from './Heading';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Heading3: FC<IHeader> = ({ children, ...rest }) => {
   return (

@@ -1,6 +1,6 @@
 import { useHistory } from '../hooks/use-history.js';
 import { questions } from '../questions/init.js';
-import { type IAnswers, type IQuestion } from '../questions/questions.js';
+import type { IAnswers, IQuestion } from '../questions/questions.js';
 
 import { QuestionWrapper } from './question.js';
 import { SummaryView } from './summary.js';

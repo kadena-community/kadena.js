@@ -1,4 +1,4 @@
-import { type ICap } from '@kadena/types';
+import type { ICap } from '@kadena/types';
 
 /**
  * @internal

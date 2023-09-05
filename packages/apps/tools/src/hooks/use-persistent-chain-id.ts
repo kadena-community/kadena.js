@@ -1,6 +1,6 @@
-import { type ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { type OnChainSelectChange } from '@/components/Global';
+import type { OnChainSelectChange } from '@/components/Global';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useCallback } from 'react';
 

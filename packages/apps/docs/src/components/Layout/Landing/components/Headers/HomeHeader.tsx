@@ -8,8 +8,9 @@ import {
 } from './style.css';
 
 import { MostPopular } from '@/components/MostPopular';
-import { type IMostPopularPage } from '@/types/MostPopularData';
-import React, { type FC } from 'react';
+import type { IMostPopularPage } from '@/types/MostPopularData';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];

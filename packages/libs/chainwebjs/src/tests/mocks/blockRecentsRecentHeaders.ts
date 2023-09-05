@@ -6,7 +6,7 @@ interface mockBlocks {
   [key: number]: {};
 }
 
-import { type IBlockHeader, type IPagedResponse } from '../../types';
+import type { IBlockHeader, IPagedResponse } from '../../types';
 
 import { bigloadEnd } from './730-10';
 import { bigloadMiddle } from './730-360-pageNext-inclusive-76kklGQO0cKSxtSSrhP_iD07J94VG3PHIxTDl7kQUhk';

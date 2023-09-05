@@ -2,7 +2,8 @@ import { SystemIcons } from '@kadena/react-components';
 
 import { HamburgerButton } from './styles';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   toggleAside: () => void;

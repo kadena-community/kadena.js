@@ -1,7 +1,9 @@
-import { type IBreadcrumbsProps, BreadcrumbsContainer } from './Breadcrumbs';
-import { type IBreadcrumbItemProps, BreadcrumbsItem } from './BreadcrumbsItem';
+import type { IBreadcrumbsProps } from './Breadcrumbs';
+import { BreadcrumbsContainer } from './Breadcrumbs';
+import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
+import { BreadcrumbsItem } from './BreadcrumbsItem';
 
-import { type FC } from 'react';
+import type { FC } from 'react';
 
 interface IBreadcrumbs {
   Root: FC<IBreadcrumbsProps>;

@@ -1,3 +1,4 @@
-import { type IProfileCardProps, ProfileCard } from './ProfileCard';
+import type { IProfileCardProps } from './ProfileCard';
+import { ProfileCard } from './ProfileCard';
 
 export { type IProfileCardProps, ProfileCard };

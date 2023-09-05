@@ -1,7 +1,8 @@
 import { pageNavButtonClass, pageNavLabelClass } from './Pagination.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IPageNavProps {
   label: string;

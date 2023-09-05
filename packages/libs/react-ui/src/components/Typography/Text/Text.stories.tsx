@@ -7,7 +7,7 @@ import {
 } from './Text.css';
 
 import { Text } from '@components/Typography/Text/Text';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<typeof Text> = {

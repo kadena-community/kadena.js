@@ -11,12 +11,12 @@ import {
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
-import React, {
-  type FC,
-  type FunctionComponentElement,
-  type HTMLAttributeAnchorTarget,
-  useEffect,
+import type {
+  FC,
+  FunctionComponentElement,
+  HTMLAttributeAnchorTarget,
 } from 'react';
+import React, { useEffect } from 'react';
 
 export interface INavItem {
   active?: boolean;
