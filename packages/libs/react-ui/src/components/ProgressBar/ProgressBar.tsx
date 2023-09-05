@@ -3,8 +3,6 @@ import {
   circleColorVariant,
   circleLineContainerStyle,
   circleStyle,
-  firstCircleStyle,
-  lastCircleStyle,
   lineColorVariant,
   lineStyle,
   progressBarContentStyle,
@@ -37,13 +35,7 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
                 key={index}
                 data-testid={`kda-checkpoint-container-${index}`}
               >
-                <div
-                  className={classNames(
-                    circleLineContainerStyle,
-                    index === 0 ? firstCircleStyle : '',
-                    index === checkpoints.length - 1 ? lastCircleStyle : '',
-                  )}
-                >
+                <div className={classNames(circleLineContainerStyle)}>
                   <div
                     className={classNames(
                       circleStyle,

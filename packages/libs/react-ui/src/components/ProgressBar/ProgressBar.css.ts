@@ -107,18 +107,6 @@ export const circleStyle = style([
   }),
 ]);
 
-export const firstCircleStyle = style([
-  sprinkles({
-    paddingTop: '$1',
-  }),
-]);
-
-export const lastCircleStyle = style([
-  sprinkles({
-    paddingBottom: '$1',
-  }),
-]);
-
 export const circleLineContainerStyle = style([
   sprinkles({
     width: '$2',
@@ -131,6 +119,16 @@ export const circleLineContainerStyle = style([
   {
     alignSelf: 'stretch',
     paddingTop: '6px',
+  },
+  {
+    selectors: {
+      '&:first-child': {
+        paddingTop: '$1',
+      },
+      '&:last-child': {
+        paddingBottom: '$1',
+      },
+    },
   },
 ]);
 
