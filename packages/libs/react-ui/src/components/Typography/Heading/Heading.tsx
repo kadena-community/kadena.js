@@ -1,12 +1,14 @@
-import {
+import type {
   colorVariants,
   fontVariants,
   transformVariants,
 } from '../typography.css';
 
-import { elementVariants, heading } from './Heading.css';
+import type { elementVariants } from './Heading.css';
+import { heading } from './Heading.css';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IHeadingProps {
   as?: keyof typeof elementVariants;

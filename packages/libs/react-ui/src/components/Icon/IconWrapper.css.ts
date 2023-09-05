@@ -14,6 +14,7 @@ export const iconContainer = style([
 ]);
 
 export const sizeVariants = styleVariants({
+  xs: [sprinkles({ size: '$3' })],
   sm: [sprinkles({ size: '$4' })],
   md: [sprinkles({ size: '$6' })],
   lg: [sprinkles({ size: '$8' })],

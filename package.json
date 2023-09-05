@@ -10,6 +10,7 @@
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "preinstall": "npx --no-install only-allow pnpm",
+    "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:ci": "pnpm run lint:versions && turbo run lint",
     "lint:versions": "syncpack list-mismatches",
@@ -26,9 +27,10 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
+    "knip": "^2.21.2",
     "only-allow": "^1.1.1",
-    "syncpack": "^10.7.3",
-    "tsx": "^3.12.7",
-    "turbo": "^1.10.12"
+    "syncpack": "^10.9.3",
+    "tsx": "^3.12.8",
+    "turbo": "^1.10.13"
   }
 }

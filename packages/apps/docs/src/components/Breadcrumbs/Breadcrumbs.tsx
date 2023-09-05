@@ -1,8 +1,9 @@
 import { Box, Breadcrumbs as StyledBreadcrumbs } from '@kadena/react-ui';
 
-import { IMenuItem, ProductIconNames } from '@/types/Layout';
+import type { IMenuItem, ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
-import React, { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useMemo } from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];

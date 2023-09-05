@@ -1,9 +1,11 @@
-import { SystemIcons } from '@kadena/react-components';
+import { SystemIcon } from '@kadena/react-ui';
 
-import { HamburgerButton } from './styles';
+import { hamburgerButtonClass, headerButtonClass } from './styles.css';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import React, { FC } from 'react';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   toggleMenu: () => void;
@@ -18,12 +20,13 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
     toggleMenu();
   };
   return (
-    <HamburgerButton
+    <button
+      className={classNames(hamburgerButtonClass, headerButtonClass)}
       data-cy="hamburgermenu"
       title="Open the sidemenu"
       onClick={onToggleMenu}
-      icon={isMenuOpen ? SystemIcons.Close : SystemIcons.MenuOpen}
-      color="inverted"
-    />
+    >
+      {isMenuOpen ? <SystemIcon.Close /> : <SystemIcon.MenuOpen />}
+    </button>
   );
 };

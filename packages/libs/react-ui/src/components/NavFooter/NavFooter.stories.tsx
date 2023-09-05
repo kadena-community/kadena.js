@@ -1,6 +1,6 @@
-import { Target } from './NavFooterLink';
+import type { Target } from './NavFooterLink';
 
-import { SystemIcon } from '@components/Icon';
+import type { SystemIcon } from '@components/Icon';
 import { NavFooter } from '@components/NavFooter';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

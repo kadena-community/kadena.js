@@ -1,4 +1,4 @@
-import { IPollOptions } from '../interfaces/interfaces';
+import type { IPollOptions } from '../interfaces/interfaces';
 
 import { sleep } from './utils';
 

@@ -1,8 +1,9 @@
 import { activeLinkClass, linkClass } from './NavHeader.css';
-import { INavItem } from './NavHeaderNavigation';
+import type { INavItem } from './NavHeaderNavigation';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const NavHeaderLink: FC<INavItem> = ({
   active,

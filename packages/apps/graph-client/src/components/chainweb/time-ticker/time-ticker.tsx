@@ -24,7 +24,7 @@ export const TimeTicker = ({ date }: ITimeTickerProps): JSX.Element => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [date]);
 
   return (
     <Text

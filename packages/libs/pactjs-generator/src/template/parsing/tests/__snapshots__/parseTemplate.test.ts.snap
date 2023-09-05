@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parseTemplate parses a YAML template 1`] = `
-Object {
-  "holes": Array [
+{
+  "holes": [
     "from-acct",
     "to-acct",
     "amount",
@@ -14,11 +14,11 @@ Object {
     "to-acct",
     "amount",
   ],
-  "parts": Array [
+  "parts": [
     "code: |-
-  (coin.transfer \\"",
-    "\\" \\"",
-    "\\" ",
+  (coin.transfer "",
+    "" "",
+    "" ",
     ")
 data:
 publicMeta:
@@ -51,7 +51,7 @@ docs:
   to-acct: Account that you want to send to
   amount: The amount of KDA that you want to transfer
   chain: The chain that you want to execute the transaction on
-  network: The network that you want to use (\\"testnet04\\", \\"mainnet\\")
+  network: The network that you want to use ("testnet04", "mainnet")
   from-key: The key (without k:) that signs the caps
 ",
   ],

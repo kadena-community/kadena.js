@@ -1,6 +1,7 @@
 const ALLOWED_ROOT_DEPENDENCIES = [
   '@changesets/cli',
   '@kadena-dev/markdown',
+  'knip',
   'only-allow',
   'syncpack',
   'tsx',

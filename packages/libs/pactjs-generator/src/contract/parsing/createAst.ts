@@ -1,4 +1,5 @@
-import { ILogger, lexer } from './lexer';
+import type { ILogger } from './lexer';
+import { lexer } from './lexer';
 
 export type IAst = IAstNode[];
 export type IAstNode = moo.Token & {

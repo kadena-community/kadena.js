@@ -4,8 +4,8 @@ import { Landing } from '../Landing';
 
 import { Heading2 } from '@/components/Markdown/Heading';
 import { Paragraph } from '@/components/Markdown/Paragraph';
-import { IBasePageProps } from '@/types/Layout';
-import { Meta, StoryObj } from '@storybook/react';
+import type { IBasePageProps } from '@/types/Layout';
+import type { Meta, StoryObj } from '@storybook/react';
 import Link from 'next/link';
 import React from 'react';
 

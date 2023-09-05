@@ -5,6 +5,7 @@ import './Query/completedBlockHeights';
 import './Query/blocksFromHeight';
 import './Query/lastBlockHeight';
 import './Subscription/newBlocks';
+import './Subscription/transaction';
 
 import { builder } from './builder';
 

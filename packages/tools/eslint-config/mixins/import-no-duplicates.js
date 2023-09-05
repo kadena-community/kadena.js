@@ -7,7 +7,7 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
 
       rules: {
-        'import/no-duplicates': 'warn',
+        'import/no-duplicates': ['error', { 'prefer-inline': false }],
       },
     },
   ],

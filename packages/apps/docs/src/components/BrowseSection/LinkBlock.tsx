@@ -2,9 +2,10 @@ import { Heading, ProductIcon, Stack, Text } from '@kadena/react-ui';
 
 import { iconClass, listItemClass, listItemLinkClass } from './styles.css';
 
-import { ProductIconNames } from '@/types/Layout';
+import type { ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ILinkBlock {
   title: string;

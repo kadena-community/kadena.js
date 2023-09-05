@@ -1,9 +1,11 @@
-import { ProductIcons } from '../ProductIcons';
+import type { ProductIcons } from '../ProductIcons';
 
+import type { IBreadcrumbItem } from '.';
 import { StyledBreadcrumbs } from './styles';
-import { BreadcrumbItem, IBreadcrumbItem } from '.';
+import { BreadcrumbItem } from '.';
 
-import React, { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface IBreadcrumbs {
   children?: FunctionComponentElement<IBreadcrumbItem>[];

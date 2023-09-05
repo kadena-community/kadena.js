@@ -1,4 +1,4 @@
-import { INotificationProps } from '@kadena/react-ui';
+import type { INotificationProps } from '@kadena/react-ui';
 
 export type LabelType =
   | 'info'

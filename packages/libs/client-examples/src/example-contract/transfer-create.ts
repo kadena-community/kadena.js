@@ -4,7 +4,7 @@ import {
   readKeyset,
   signWithChainweaver,
 } from '@kadena/client';
-import { IPactDecimal } from '@kadena/types';
+import type { IPactDecimal } from '@kadena/types';
 
 import { listen, preflight, submit } from './util/client';
 

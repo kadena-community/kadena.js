@@ -1,6 +1,6 @@
-import { ICap } from '@kadena/types';
+import type { ICap } from '@kadena/types';
 
-import {
+import type {
   IContinuationPayloadObject,
   IExecutionPayloadObject,
 } from '../../interfaces/IPactCommand';

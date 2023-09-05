@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, ReactNode, useContext } from 'react';
+import type { ReactNode } from 'react';
+import { createContext, useContext } from 'react';
 
 interface IModalContext {
   renderModal: (v: ReactNode, title?: string) => void;

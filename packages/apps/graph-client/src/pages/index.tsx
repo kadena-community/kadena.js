@@ -44,7 +44,7 @@ const Home: React.FC = () => {
       });
       addBlocks(newBlocks?.newBlocks);
     }
-  }, [newBlocks]);
+  }, [newBlocks, addBlocks, previousNewBlocks]);
 
   useEffect(() => {
     if (
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
 
       addBlocks(recentBlocks?.completedBlockHeights);
     }
-  }, [recentBlocks]);
+  }, [recentBlocks, addBlocks, previousRecentBlocks]);
 
   return (
     <div>

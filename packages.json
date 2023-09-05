@@ -6,10 +6,10 @@
     "path": "."
   },
   {
-    "name": "@kadena/graph-client",
-    "version": "0.1.0",
+    "name": "@kadena/docs",
+    "version": "0.2.1",
     "private": true,
-    "path": "packages/apps/graph-client"
+    "path": "packages/apps/docs"
   },
   {
     "name": "@kadena/graph",
@@ -18,10 +18,10 @@
     "path": "packages/apps/graph"
   },
   {
-    "name": "@kadena/docs",
-    "version": "0.2.1",
+    "name": "@kadena/graph-client",
+    "version": "0.1.0",
     "private": true,
-    "path": "packages/apps/docs"
+    "path": "packages/apps/graph-client"
   },
   {
     "name": "@kadena/immutable-records",
@@ -31,57 +31,9 @@
   },
   {
     "name": "@kadena/tools",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "path": "packages/apps/tools"
-  },
-  {
-    "name": "@kadena/cookbook",
-    "version": "1.0.0",
-    "private": true,
-    "path": "packages/tools/cookbook"
-  },
-  {
-    "name": "@kadena-dev/eslint-config",
-    "version": "0.1.0",
-    "private": false,
-    "path": "packages/tools/eslint-config"
-  },
-  {
-    "name": "@kadena-dev/eslint-plugin",
-    "version": "0.0.6",
-    "private": false,
-    "path": "packages/tools/eslint-plugin"
-  },
-  {
-    "name": "@kadena-dev/heft-rig",
-    "version": "0.1.0",
-    "private": false,
-    "path": "packages/tools/heft-rig"
-  },
-  {
-    "name": "@kadena/kda-cli",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/tools/kda-cli"
-  },
-  {
-    "name": "@kadena/pactjs-cli",
-    "version": "1.0.0",
-    "private": false,
-    "path": "packages/tools/pactjs-cli"
-  },
-  {
-    "name": "@kadena-dev/markdown",
-    "version": "1.0.0",
-    "private": true,
-    "path": "packages/tools/remark-plugins"
-  },
-  {
-    "name": "@kadena-dev/scripts",
-    "version": "0.0.0",
-    "private": true,
-    "path": "packages/tools/scripts"
   },
   {
     "name": "@kadena/bootstrap-lib",
@@ -108,16 +60,16 @@
     "path": "packages/libs/chainwebjs"
   },
   {
-    "name": "@kadena/client",
-    "version": "1.1.0",
-    "private": false,
-    "path": "packages/libs/client"
-  },
-  {
     "name": "@kadena/client-examples",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "path": "packages/libs/client-examples"
+  },
+  {
+    "name": "@kadena/client",
+    "version": "1.2.0",
+    "private": false,
+    "path": "packages/libs/client"
   },
   {
     "name": "@kadena/cryptography-utils",
@@ -139,7 +91,7 @@
   },
   {
     "name": "@kadena/pactjs-generator",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "private": false,
     "path": "packages/libs/pactjs-generator"
   },
@@ -150,15 +102,69 @@
     "path": "packages/libs/react-components"
   },
   {
+    "name": "@kadena/types",
+    "version": "0.4.2",
+    "private": false,
+    "path": "packages/libs/types"
+  },
+  {
+    "name": "@kadena/cookbook",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/cookbook"
+  },
+  {
+    "name": "@kadena-dev/eslint-config",
+    "version": "0.1.0",
+    "private": false,
+    "path": "packages/tools/eslint-config"
+  },
+  {
     "name": "@kadena/react-ui",
     "version": "0.0.1",
     "private": true,
     "path": "packages/libs/react-ui"
   },
   {
-    "name": "@kadena/types",
-    "version": "0.4.2",
+    "name": "@kadena-dev/eslint-plugin",
+    "version": "0.0.6",
     "private": false,
-    "path": "packages/libs/types"
+    "path": "packages/tools/eslint-plugin"
+  },
+  {
+    "name": "@kadena-dev/heft-rig",
+    "version": "0.1.0",
+    "private": false,
+    "path": "packages/tools/heft-rig"
+  },
+  {
+    "name": "@kadena/kda-cli",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/kda-cli"
+  },
+  {
+    "name": "@kadena-dev/lint-package",
+    "version": "0.0.0",
+    "private": true,
+    "path": "packages/tools/lint-package"
+  },
+  {
+    "name": "@kadena/pactjs-cli",
+    "version": "1.2.0",
+    "private": false,
+    "path": "packages/tools/pactjs-cli"
+  },
+  {
+    "name": "@kadena-dev/markdown",
+    "version": "1.0.0",
+    "private": true,
+    "path": "packages/tools/remark-plugins"
+  },
+  {
+    "name": "@kadena-dev/scripts",
+    "version": "0.0.0",
+    "private": true,
+    "path": "packages/tools/scripts"
   }
 ]

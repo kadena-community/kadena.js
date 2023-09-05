@@ -25,7 +25,6 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/heft-jest": "~1.0.3",
-    "eslint": "^8.45.0",
     "prettier": "~3.0.0"
   },
   "peerDependencies": {

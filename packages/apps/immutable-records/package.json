@@ -8,7 +8,9 @@
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier src --write",
-    "lint": "eslint package.json src --ext .ts,.tsx, --fix",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint package.json src --ext .ts,.tsx, --fix",
     "next_build": "next build",
     "start": "next start",
     "test": "echo 'boilerplate'"
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/gtag.js": "~0.0.12",

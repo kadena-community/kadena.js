@@ -11,7 +11,7 @@ import { THead } from './THead';
 import type { ITrProps } from './Tr';
 import { Tr } from './Tr';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 export type {
   ITableProps,

@@ -2,7 +2,7 @@ import { deployQuestions } from './deploy.js';
 import { devnetQuestions } from './devnet.js';
 import { fundQuestions } from './fund.js';
 import { localQuestions } from './local.js';
-import { IAnswers, IQuestion } from './questions.js';
+import type { IAnswers, IQuestion } from './questions.js';
 
 export const questions: IQuestion[] = [
   {

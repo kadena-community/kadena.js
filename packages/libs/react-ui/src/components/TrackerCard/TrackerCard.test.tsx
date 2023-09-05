@@ -1,4 +1,5 @@
-import { ILabelValue, TrackerCard } from './TrackerCard';
+import type { ILabelValue } from './TrackerCard';
+import { TrackerCard } from './TrackerCard';
 
 import { render, screen } from '@testing-library/react';
 import React from 'react';

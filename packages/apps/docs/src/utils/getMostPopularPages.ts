@@ -1,7 +1,7 @@
 import analyticsDataClient from './analyticsDataClient';
 import storeAnalyticsData from './storeAnalyticsData';
 
-import {
+import type {
   IMostPopularPage,
   IRow,
   IRunReportResponse,

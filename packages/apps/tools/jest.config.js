@@ -1,6 +1,10 @@
+const path = require('path');
 const nextJest = require('next/jest');
+
+const dir = path.join(__dirname);
+
 const createJestConfig = nextJest({
-  dir: './',
+  dir,
 });
 const customJestConfig = {
   moduleNameMapper: {

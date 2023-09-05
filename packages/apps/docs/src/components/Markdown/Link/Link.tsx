@@ -1,5 +1,6 @@
 import { default as NextLink } from 'next/link';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProp {
   children: ReactNode;

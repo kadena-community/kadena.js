@@ -8,6 +8,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+
 import type { AppProps } from 'next/app';
 import type { ComponentType } from 'react';
 import React from 'react';
@@ -22,7 +23,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// eslint-disable-next-line @typescript-eslint/naming-convention, react/function-component-definition
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
