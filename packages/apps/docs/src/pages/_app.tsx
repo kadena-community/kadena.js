@@ -1,8 +1,3 @@
-import {
-  baseGlobalStyles,
-  darkTheme as stitchesDarkTheme,
-  globalCss,
-} from '@kadena/react-components';
 import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
 import { darkThemeClass } from '@kadena/react-ui/theme';
@@ -10,23 +5,16 @@ import { darkThemeClass } from '@kadena/react-ui/theme';
 import { Analytics, ConsentModal } from '@/components';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
-import { MenuProvider, ThemeProvider } from '@/hooks';
+import { MenuProvider } from '@/hooks';
 import type { IPageMeta, IPageProps } from '@/types/Layout';
 import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { ThemeProvider } from 'next-themes';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
-
-const GlobalStyles = globalCss({
-  ...baseGlobalStyles,
-  body: {
-    background: '$background',
-  },
-});
-GlobalStyles();
 
 type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
   frontmatter: Omit<IPageMeta, 'lastModifiedDate'> & {
@@ -79,7 +67,7 @@ export const MyApp = ({
           defaultTheme="light"
           value={{
             light: 'light',
-            dark: `${darkThemeClass} ${stitchesDarkTheme.className}`,
+            dark: darkThemeClass,
           }}
         >
           <ModalProvider>

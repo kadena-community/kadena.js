@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks';
+import { useTheme } from 'next-themes';
 import type { FC } from 'react';
 import React from 'react';
 
