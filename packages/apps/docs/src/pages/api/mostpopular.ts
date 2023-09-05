@@ -1,5 +1,5 @@
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface IMostPopularQuery {
   slug?: string;

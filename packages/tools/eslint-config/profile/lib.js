@@ -47,6 +47,7 @@ module.exports = {
         prefer: 'type-imports',
       },
     ],
+    'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
   },
   settings: {
     'import/parsers': {

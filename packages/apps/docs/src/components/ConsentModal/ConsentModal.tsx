@@ -3,7 +3,8 @@ import { Box, Stack, SystemIcon, Text, useModal } from '@kadena/react-ui';
 import { consentButtonColorVariants } from './styles.css';
 
 import { updateConsent } from '@/utils/analytics';
-import React, { type FC, useCallback, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export const ConsentModal: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);

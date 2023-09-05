@@ -1,6 +1,6 @@
 import * as Layouts from '@/components/Layout';
-import { type IBasePageProps, type IPageProps } from '@/types/Layout';
-import { type FC } from 'react';
+import type { IBasePageProps, IPageProps } from '@/types/Layout';
+import type { FC } from 'react';
 
 type IProps = IBasePageProps | IPageProps;
 

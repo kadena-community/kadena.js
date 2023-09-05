@@ -1,8 +1,9 @@
+import type { ITooltipProps } from './';
 import { container } from './stories.css';
-import { type ITooltipProps, Tooltip } from './';
+import { Tooltip } from './';
 
 import { IconButton } from '@components/IconButton';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useRef } from 'react';
 
 const meta: Meta<

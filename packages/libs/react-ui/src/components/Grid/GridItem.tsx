@@ -1,5 +1,5 @@
+import type { ResponsiveInputType } from './Grid.css';
 import {
-  type ResponsiveInputType,
   explicitItemColumnVariant,
   gridItemClass,
   itemColumnVariants,
@@ -7,7 +7,8 @@ import {
 } from './Grid.css';
 
 import classNames from 'classnames';
-import React, { type FC, type ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IGridItemProps {
   children?: ReactNode;

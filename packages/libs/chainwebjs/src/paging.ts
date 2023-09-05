@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /* Paging Tools */
 
-import { type IPagedResponse } from './types';
+import type { IPagedResponse } from './types';
 
 /** Yields full pages, i.e. arrarys of page items.
  *

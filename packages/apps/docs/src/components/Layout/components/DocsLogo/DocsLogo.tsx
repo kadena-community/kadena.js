@@ -1,5 +1,6 @@
 import { useTheme } from '@/hooks';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   overwriteTheme?: 'light' | 'dark';

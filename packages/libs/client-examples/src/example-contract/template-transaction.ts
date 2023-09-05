@@ -1,5 +1,5 @@
+import type { ICommand } from '@kadena/client';
 import {
-  type ICommand,
   createClient,
   isSignedTransaction,
   Pact,

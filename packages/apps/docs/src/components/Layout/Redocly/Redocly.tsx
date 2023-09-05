@@ -12,10 +12,11 @@ import { codebackgroundClass, pageGridClass } from './styles.css';
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
-import { type IPageProps } from '@/types/Layout';
+import type { IPageProps } from '@/types/Layout';
 import classNames from 'classnames';
-import React, { type FC } from 'react';
-import { type RedocRawOptions } from 'redoc';
+import type { FC } from 'react';
+import React from 'react';
+import type { RedocRawOptions } from 'redoc';
 
 export const options: RedocRawOptions = {
   pathInMiddlePanel: true,

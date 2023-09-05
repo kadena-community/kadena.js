@@ -1,5 +1,5 @@
+import type { SystemIcon } from '@kadena/react-ui';
 import {
-  type SystemIcon,
   Button,
   Card,
   IconButton,
@@ -16,10 +16,11 @@ import {
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
-import { type DevOption } from '@/constants/kadena';
+import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import useTranslation from 'next-translate/useTranslation';
-import React, { type FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 export interface IDevOption {
   title: string;

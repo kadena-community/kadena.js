@@ -1,6 +1,7 @@
 import { actionsContainerClass } from './Notification.css';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface INotificationActionsProps {
   children: React.ReactNode;

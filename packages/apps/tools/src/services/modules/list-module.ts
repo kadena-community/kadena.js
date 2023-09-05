@@ -1,8 +1,8 @@
-import { type ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createClient, Pact } from '@kadena/client';
 
+import type { Network } from '@/constants/kadena';
 import {
-  type Network,
   getKadenaConstantByNetwork,
   kadenaConstants,
 } from '@/constants/kadena';

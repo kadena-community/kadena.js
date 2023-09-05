@@ -8,7 +8,8 @@ import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (

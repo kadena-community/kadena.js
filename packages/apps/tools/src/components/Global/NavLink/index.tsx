@@ -4,7 +4,8 @@ import {
   StyledNavItemText,
 } from '@/components/Global/NavLink/styles';
 import { useRouter } from 'next/router';
-import React, { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 
 export const NavLink = ({
   href,

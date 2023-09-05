@@ -1,6 +1,7 @@
 import { thClass } from './Table.css';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IThProps {
   children?: React.ReactNode;

@@ -1,13 +1,10 @@
 import { ProductIcon } from '../Icon';
 
-import {
-  type ILabelValue,
-  type ITrackerCardProps,
-  TrackerCard,
-} from './TrackerCard';
+import type { ILabelValue, ITrackerCardProps } from './TrackerCard';
+import { TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
 
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {

@@ -1,7 +1,7 @@
-import {
-  type IContinuationPayloadObject,
-  type IExecutionPayloadObject,
-  type IPactCommand,
+import type {
+  IContinuationPayloadObject,
+  IExecutionPayloadObject,
+  IPactCommand,
 } from '../../interfaces/IPactCommand';
 
 /**

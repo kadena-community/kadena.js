@@ -1,11 +1,7 @@
 import '../styles/globals.css';
 
-import {
-  type NormalizedCacheObject,
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-} from '@apollo/client';
+import type { NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import type { ComponentType } from 'react';
 import React from 'react';

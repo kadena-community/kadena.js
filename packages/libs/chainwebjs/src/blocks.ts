@@ -5,12 +5,12 @@ import {
   recentHeaders,
 } from './headers';
 import { payloads } from './internal';
-import {
-  type IBlockHeader,
-  type IBlockPayloadMap,
-  type IBlockPayloads,
-  type IRetryOptions,
-  type ITransactionElement,
+import type {
+  IBlockHeader,
+  IBlockPayloadMap,
+  IBlockPayloads,
+  IRetryOptions,
+  ITransactionElement,
 } from './types';
 
 import type EventSource from 'eventsource';

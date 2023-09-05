@@ -1,6 +1,7 @@
-import { type IBodyTextProps, BodyText } from './BodyText';
+import type { IBodyTextProps } from './BodyText';
+import { BodyText } from './BodyText';
 
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const selectOptions: string[] = ['p', 'span'];

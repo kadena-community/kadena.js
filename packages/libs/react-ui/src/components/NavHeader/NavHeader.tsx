@@ -1,10 +1,12 @@
 import { containerClass, logoClass } from './NavHeader.css';
-import { type INavHeaderContentProps } from './NavHeaderContent';
-import { type INavHeaderNavigationProps } from './NavHeaderNavigation';
+import type { INavHeaderContentProps } from './NavHeaderContent';
+import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
 
-import Logo, { type LogoVariant, logoVariants } from '@components/BrandLogo';
+import type { LogoVariant } from '@components/BrandLogo';
+import Logo, { logoVariants } from '@components/BrandLogo';
 import { Link } from '@components/Link';
-import React, { type FC, type FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export type INavItemTarget = '_self' | '_blank';
 export interface INavItem {

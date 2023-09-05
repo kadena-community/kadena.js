@@ -1,4 +1,4 @@
-import { type IBlock } from '../../../utils/hooks/use-parsed-blocks';
+import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { Box } from '../../box';
 
 import { TimeTicker } from './../time-ticker';

@@ -1,14 +1,15 @@
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs';
 import apiSpecs from '@/specs/chainweb/chainweb.openapi.json';
-import { type ILayout } from '@/types/Layout';
+import type { ILayout } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { type GetStaticProps } from 'next';
-import { type OpenAPIV3 } from 'openapi-types';
-import React, { type FC } from 'react';
+import type { GetStaticProps } from 'next';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { FC } from 'react';
+import React from 'react';
 
 const Home: FC<ILayout> = () => {
   const specs = apiSpecs as unknown as OpenAPIV3.Document;

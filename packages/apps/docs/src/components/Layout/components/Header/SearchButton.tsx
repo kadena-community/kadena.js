@@ -8,7 +8,8 @@ import {
 
 import { useOpenSearch } from '@/hooks';
 import classNames from 'classnames';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const SearchButton: FC = () => {
   const { handleOpenSearch } = useOpenSearch();

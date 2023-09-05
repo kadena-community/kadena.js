@@ -1,6 +1,7 @@
 import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
-import { type ColorType, darkThemeClass, vars } from '@theme/vars.css';
+import type { ColorType } from '@theme/vars.css';
+import { darkThemeClass, vars } from '@theme/vars.css';
 import {
   createVar,
   keyframes,

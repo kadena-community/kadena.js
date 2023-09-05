@@ -1,4 +1,4 @@
-import { type ICommand, type IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 /**
  * Interface to use when writing a signing function that accepts a single transaction

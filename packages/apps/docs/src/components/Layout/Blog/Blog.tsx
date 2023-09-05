@@ -17,10 +17,11 @@ import {
   pageGridClass,
 } from './styles.css';
 
-import { type IPageProps } from '@/types/Layout';
+import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Blog: FC<IPageProps> = ({
   children,

@@ -1,4 +1,4 @@
-import { type ITransaction } from './types';
+import type { ITransaction } from './types';
 import { isUndefinedOrNull } from './util';
 
 /*

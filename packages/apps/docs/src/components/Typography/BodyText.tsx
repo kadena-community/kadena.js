@@ -1,6 +1,8 @@
-import { type ITextProps, Text } from '@kadena/react-ui';
+import type { ITextProps } from '@kadena/react-ui';
+import { Text } from '@kadena/react-ui';
 
-import React, { type FC, type ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IBodyTextProps {
   children?: ReactNode;

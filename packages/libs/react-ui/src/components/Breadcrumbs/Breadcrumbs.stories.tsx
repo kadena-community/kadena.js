@@ -1,6 +1,7 @@
-import { type IBreadcrumbsProps, Breadcrumbs } from '@components/Breadcrumbs';
+import type { IBreadcrumbsProps } from '@components/Breadcrumbs';
+import { Breadcrumbs } from '@components/Breadcrumbs';
 import { ProductIcon } from '@components/Icon';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const ItemArray: string[] = [

@@ -5,10 +5,11 @@ import {
   linkClass,
 } from './styles.css';
 
-import { type IMenuItem, type LevelType } from '@/types/Layout';
+import type { IMenuItem, LevelType } from '@/types/Layout';
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IItem {
   item: IMenuItem;

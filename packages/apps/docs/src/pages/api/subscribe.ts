@@ -1,6 +1,6 @@
 import { isEmailValid } from '@/utils';
 import mailchimp from '@mailchimp/mailchimp_marketing';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface IResponse<T> {
   status: number;

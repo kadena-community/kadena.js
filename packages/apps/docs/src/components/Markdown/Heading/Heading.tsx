@@ -3,7 +3,8 @@ import { SystemIcon } from '@kadena/react-ui';
 import { headerClassVariants, headerIconLinkClass } from './styles.css';
 
 import { createSlug } from '@/utils';
-import React, { type FC, type ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {

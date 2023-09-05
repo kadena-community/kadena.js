@@ -1,11 +1,11 @@
 /** @jest-environment jsdom */
 
-import {
-  type IExecutionPayloadObject,
-  type IPactCommand,
+import type {
+  IExecutionPayloadObject,
+  IPactCommand,
 } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import { type ISingleSignFunction } from '../../ISignFunction';
+import type { ISingleSignFunction } from '../../ISignFunction';
 import { createEckoWalletSign } from '../signWithEckoWallet';
 
 import { TextDecoder, TextEncoder } from 'util';

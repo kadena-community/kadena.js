@@ -4,9 +4,9 @@
 // In this module, we generate new functions by composing other functions. In order to allow TypeScript to automatically infer the types,
 // I had to disable these rules.
 
-import { type IWrappedData } from './dataWrapper';
+import type { IWrappedData } from './dataWrapper';
+import type { IParser } from './parser-utilities';
 import {
-  type IParser,
   $,
   asString,
   atom,

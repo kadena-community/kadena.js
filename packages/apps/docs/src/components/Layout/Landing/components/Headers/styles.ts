@@ -1,9 +1,5 @@
-import {
-  type StyledComponent,
-  darkTheme,
-  Stack,
-  styled,
-} from '@kadena/react-components';
+import type { StyledComponent } from '@kadena/react-components';
+import { darkTheme, Stack, styled } from '@kadena/react-components';
 
 import { InnerWrapper } from '@/components/Layout/components/styles';
 

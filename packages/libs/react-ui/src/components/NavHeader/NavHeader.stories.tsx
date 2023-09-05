@@ -1,9 +1,9 @@
-import { type INavHeaderRootProps, type INavItems } from './NavHeader';
+import type { INavHeaderRootProps, INavItems } from './NavHeader';
 import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
 import { Button } from '@components/Button';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const sampleNavItems: INavItems = [

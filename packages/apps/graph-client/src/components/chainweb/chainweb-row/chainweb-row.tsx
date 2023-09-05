@@ -1,4 +1,4 @@
-import { type IBlock } from '../../../utils/hooks/use-parsed-blocks';
+import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { selectColor } from '../../../utils/selectColor';
 import { Box } from '../../box';
 import { Text } from '../../text';

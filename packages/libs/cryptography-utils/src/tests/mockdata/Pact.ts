@@ -1,4 +1,4 @@
-import { type IUnsignedCommand } from '@kadena/types';
+import type { IUnsignedCommand } from '@kadena/types';
 
 /**
  * @alpha

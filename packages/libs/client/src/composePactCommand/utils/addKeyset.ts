@@ -1,4 +1,5 @@
-import { type IAddKeyset, addData } from './addData';
+import type { IAddKeyset } from './addData';
+import { addData } from './addData';
 
 /**
  * Helper to add keyset to the data property for {@link IPactCommand.payload}

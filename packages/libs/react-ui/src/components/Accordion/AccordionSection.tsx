@@ -9,7 +9,7 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import { type FC } from 'react';
+import type { FC } from 'react';
 import React from 'react';
 
 export interface IAccordionSectionProps {

@@ -1,7 +1,8 @@
 import { BrowseSection } from '@/components/BrowseSection';
-import { type IMostPopularPage } from '@/types/MostPopularData';
+import type { IMostPopularPage } from '@/types/MostPopularData';
 import Link from 'next/link';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   pages: IMostPopularPage[];

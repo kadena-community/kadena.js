@@ -1,7 +1,8 @@
 import { closeButtonClass, tagClass, tagLabelClass } from './Tag.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITagProps {
   children: string;

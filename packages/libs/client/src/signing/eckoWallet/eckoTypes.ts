@@ -1,7 +1,7 @@
-import { type ICommand } from '@kadena/types';
+import type { ICommand } from '@kadena/types';
 
-import { type IQuicksignResponseOutcomes } from '../../signing-api/v1/quicksign';
-import { type ISignFunction, type ISingleSignFunction } from '../ISignFunction';
+import type { IQuicksignResponseOutcomes } from '../../signing-api/v1/quicksign';
+import type { ISignFunction, ISingleSignFunction } from '../ISignFunction';
 
 export type EckoStatus = 'success' | 'fail';
 

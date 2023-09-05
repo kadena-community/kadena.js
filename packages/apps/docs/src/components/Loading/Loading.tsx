@@ -1,6 +1,7 @@
 import { loaderClass } from './styles.css';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Loading: FC = () => (
   <div className={loaderClass}>

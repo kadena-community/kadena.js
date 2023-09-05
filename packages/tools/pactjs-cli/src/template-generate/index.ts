@@ -1,6 +1,6 @@
 import { templateGenerate } from './template-generate';
 
-import { type Command } from 'commander';
+import type { Command } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
 

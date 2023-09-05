@@ -1,7 +1,8 @@
 import { StyledTr, Td, Th } from './styles';
-import { type CompoundType } from './types';
+import type { CompoundType } from './types';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITr {
   children?: CompoundType<typeof Td> | CompoundType<typeof Th>;

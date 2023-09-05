@@ -1,11 +1,9 @@
 import { cardColorVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
-import {
-  type INotificationProps,
-  Notification,
-} from '@components/Notification';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { INotificationProps } from '@components/Notification';
+import { Notification } from '@components/Notification';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<

@@ -1,16 +1,15 @@
-import { type ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { type Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
 import { getItem, setItem } from '@/utils/persist';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
-import { type PairingTypes, type SessionTypes } from '@walletconnect/types';
+import type { PairingTypes, SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
+import type { FC, ReactNode } from 'react';
 import React, {
-  type FC,
-  type ReactNode,
   createContext,
   useCallback,
   useContext,

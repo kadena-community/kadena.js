@@ -9,7 +9,7 @@ jest.mock('@kadena/chainweb-node-client', () => ({
 }));
 
 import * as chainwebClient from '@kadena/chainweb-node-client';
-import { type ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 
 import { createClient } from '../client';
 import { kadenaHostGenerator, withCounter } from '../utils/utils';

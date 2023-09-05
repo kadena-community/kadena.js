@@ -1,8 +1,8 @@
-import { type Target } from './NavFooterLink';
+import type { Target } from './NavFooterLink';
 
-import { type SystemIcon } from '@components/Icon';
+import type { SystemIcon } from '@components/Icon';
 import { NavFooter } from '@components/NavFooter';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<{

@@ -10,12 +10,12 @@
  *
  */
 
-import {
-  type IBlockHeader,
-  type IBlockPayload,
-  type ICutPeerItem,
-  type ICutResponse,
-  type IPagedResponse,
+import type {
+  IBlockHeader,
+  IBlockPayload,
+  ICutPeerItem,
+  ICutResponse,
+  IPagedResponse,
 } from '../types';
 
 import { blockByHeightBranchPageMock } from './mocks/blockByHeightBranchPageMock';

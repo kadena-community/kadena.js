@@ -1,4 +1,4 @@
-import { type IPactCommand } from '../../../interfaces/IPactCommand';
+import type { IPactCommand } from '../../../interfaces/IPactCommand';
 import { addSignatures } from '../addSignatures';
 
 describe('addSignature', () => {

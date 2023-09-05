@@ -1,6 +1,7 @@
 import { Button } from '@components/Button';
-import { type ICardProps, Card } from '@components/Card';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { ICardProps } from '@components/Card';
+import { Card } from '@components/Card';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<ICardProps> = {

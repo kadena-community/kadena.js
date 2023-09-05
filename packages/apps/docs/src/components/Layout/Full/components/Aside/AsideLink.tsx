@@ -6,7 +6,8 @@ import {
 
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { type FC, type MouseEventHandler, type ReactNode } from 'react';
+import type { FC, MouseEventHandler, ReactNode } from 'react';
+import React from 'react';
 
 interface IProps {
   children?: ReactNode;

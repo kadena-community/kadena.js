@@ -1,15 +1,15 @@
 import { currentCut } from './cut';
 import { pageIterator } from './paging';
 import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
-import {
-  type IBlockHeader,
-  type IBlockPayload,
-  type ICoinbase,
-  type ICutPeerItem,
-  type IPagedResponse,
-  type IRetryOptions,
-  type ITransactionElement,
-  type ITransactionPayload,
+import type {
+  IBlockHeader,
+  IBlockPayload,
+  ICoinbase,
+  ICutPeerItem,
+  IPagedResponse,
+  IRetryOptions,
+  ITransactionElement,
+  ITransactionPayload,
 } from './types';
 
 import base64url from 'base64url';

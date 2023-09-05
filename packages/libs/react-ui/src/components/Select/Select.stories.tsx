@@ -1,8 +1,9 @@
 import { Option } from './Option';
-import { type ISelectProps, Select } from './Select';
+import type { ISelectProps } from './Select';
+import { Select } from './Select';
 
 import { SystemIcon } from '@components/Icon';
-import { type Meta, type StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 const meta: Meta<

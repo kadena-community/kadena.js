@@ -1,6 +1,6 @@
 import { Button, Stack, SystemIcons } from './../../';
+import type { IInputGroupProps, IInputProps } from '.';
 import { TextField } from './TextField';
-import { type IInputGroupProps, type IInputProps } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

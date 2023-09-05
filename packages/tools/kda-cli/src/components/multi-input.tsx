@@ -1,4 +1,4 @@
-import { type IQuestion } from '../questions/questions.js';
+import type { IQuestion } from '../questions/questions.js';
 
 import { IntermediateAnswers } from './intermediate-answers.js';
 

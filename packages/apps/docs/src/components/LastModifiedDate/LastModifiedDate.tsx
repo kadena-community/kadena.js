@@ -3,7 +3,7 @@
 //import { Stack, Text } from '@kadena/react-ui';
 //import { formatISODate } from '@/utils/dates';
 //import React, { FC } from 'react';
-import { type FC } from 'react';
+import type { FC } from 'react';
 
 interface IProps {
   date?: Date;

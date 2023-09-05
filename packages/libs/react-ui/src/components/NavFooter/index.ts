@@ -1,12 +1,13 @@
-import { type INavFooterRootProps, NavFooterContainer } from './NavFooter';
-import {
-  type INavFooterIconButtonProps,
-  NavFooterIconButton,
-} from './NavFooterIconButton';
-import { type INavFooterLinkProps, NavFooterLink } from './NavFooterLink';
-import { type INavFooterPanelProps, NavFooterPanel } from './NavFooterPanel';
+import type { INavFooterRootProps } from './NavFooter';
+import { NavFooterContainer } from './NavFooter';
+import type { INavFooterIconButtonProps } from './NavFooterIconButton';
+import { NavFooterIconButton } from './NavFooterIconButton';
+import type { INavFooterLinkProps } from './NavFooterLink';
+import { NavFooterLink } from './NavFooterLink';
+import type { INavFooterPanelProps } from './NavFooterPanel';
+import { NavFooterPanel } from './NavFooterPanel';
 
-import { type FC } from 'react';
+import type { FC } from 'react';
 
 export {
   INavFooterRootProps,

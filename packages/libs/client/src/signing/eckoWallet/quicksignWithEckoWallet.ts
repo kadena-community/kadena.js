@@ -1,13 +1,10 @@
-import { type ICommand, type IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import { connect, isConnected, isInstalled } from './eckoCommon';
-import {
-  type IEckoQuicksignResponse,
-  type IEckoSignFunction,
-} from './eckoTypes';
+import type { IEckoQuicksignResponse, IEckoSignFunction } from './eckoTypes';
 
 /**
  * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}

@@ -1,4 +1,4 @@
-import { type FunctionComponentElement } from 'react';
+import type { FunctionComponentElement } from 'react';
 
 export type CompoundType<T> =
   | FunctionComponentElement<T>

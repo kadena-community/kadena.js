@@ -1,5 +1,5 @@
+import type { SignedPayload } from '../pact/pact.js';
 import {
-  type SignedPayload,
   addCapabilities,
   addCapability,
   buildCommand,
@@ -12,7 +12,7 @@ import {
 } from '../pact/pact.js';
 import { isTruthy } from '../utils/bool.js';
 
-import { type IAnswers, type IQuestion } from './questions.js';
+import type { IAnswers, IQuestion } from './questions.js';
 
 type ValidSigningAnswers = IAnswers & {
   command: string;

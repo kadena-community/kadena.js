@@ -2,11 +2,7 @@ import { hash, sign } from '@kadena/cryptography-utils';
 
 import { isFalsy } from '../utils/bool.js';
 
-import {
-  type Decimal,
-  type ICapabilities,
-  type ITransactionPayload,
-} from './coin.js';
+import type { Decimal, ICapabilities, ITransactionPayload } from './coin.js';
 import type * as L2 from './l2.js';
 
 type CapabilityArg = string | number | Decimal;

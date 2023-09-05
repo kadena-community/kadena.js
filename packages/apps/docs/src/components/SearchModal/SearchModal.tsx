@@ -5,13 +5,8 @@ import { searchFormClass } from '../Search/styles.css';
 
 import { wrapperClass } from './styles.css';
 
-import React, {
-  type FC,
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { FC, FormEvent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export const SearchModal: FC = () => {
   const [isMounted, setIsMounted] = useState(false);

@@ -1,6 +1,7 @@
 import { childrenClass } from './NavHeader.css';
 
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface INavHeaderContentProps {
   children: React.ReactNode;

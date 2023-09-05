@@ -9,15 +9,15 @@ import type Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { IExecPayload } from '@kadena/types';
-import { ILocalCommandResult } from '@kadena/chainweb-node-client';
-import { ILocalOptions } from '@kadena/chainweb-node-client';
+import type { IExecPayload } from '@kadena/types';
+import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
+import type { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
-import { LocalRequestBody } from '@kadena/chainweb-node-client';
-import { LocalResponse } from '@kadena/chainweb-node-client';
-import { SessionTypes } from '@walletconnect/types';
+import type { LocalRequestBody } from '@kadena/chainweb-node-client';
+import type { LocalResponse } from '@kadena/chainweb-node-client';
+import type { SessionTypes } from '@walletconnect/types';
 
 // @public
 export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {

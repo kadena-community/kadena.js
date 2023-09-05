@@ -2,7 +2,8 @@ import type { ITextFieldProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
 
 import useTranslation from 'next-translate/useTranslation';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 

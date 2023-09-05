@@ -1,5 +1,5 @@
 import type * as coin from './coin.js';
-import { type Reducer } from './pact.js';
+import type { Reducer } from './pact.js';
 
 type Decimal = `${number}.${number}`;
 interface IGasCapability {

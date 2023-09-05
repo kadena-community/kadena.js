@@ -1,6 +1,6 @@
-import {
-  type ChainwebChainId,
-  type ChainwebNetworkId,
+import type {
+  ChainwebChainId,
+  ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { createClient, isSignedTransaction, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';

@@ -10,8 +10,9 @@ import {
   StyledText,
 } from './styles';
 
-import { type VariantProps } from '@stitches/react';
-import React, { type FC } from 'react';
+import type { VariantProps } from '@stitches/react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface INotificationProps {
   icon?: (typeof SystemIcons)[keyof typeof SystemIcons];
