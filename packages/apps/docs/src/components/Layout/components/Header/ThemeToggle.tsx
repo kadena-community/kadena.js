@@ -2,9 +2,9 @@ import { SystemIcon } from '@kadena/react-ui';
 
 import { headerButtonClass, iconButtonClass } from './styles.css';
 
-import { useTheme } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
+import { useTheme } from 'next-themes';
 import React, { FC, useEffect, useState } from 'react';
 
 export const ThemeToggle: FC = () => {

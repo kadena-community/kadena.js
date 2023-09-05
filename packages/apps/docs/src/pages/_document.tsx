@@ -1,5 +1,3 @@
-import { getCssText } from '@kadena/react-components';
-
 import { Head, Html, Main, NextScript } from 'next/document';
 import React, { ComponentType, FC, ReactNode } from 'react';
 
@@ -8,12 +6,7 @@ const Document = (): JSX.Element => {
   const TypedNextScript = NextScript as ComponentType;
   return (
     <Html lang="en">
-      <TypedHead>
-        <style
-          id="stitches"
-          dangerouslySetInnerHTML={{ __html: getCssText() }}
-        ></style>
-      </TypedHead>
+      <TypedHead></TypedHead>
       <body>
         <Main />
         <div id="modalportal" />
