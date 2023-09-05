@@ -31,7 +31,7 @@ export const treeListRootVariantClass = styleVariants({
   isNotRoot: {},
 });
 
-export const styledLinkClass = style([
+export const linkClass = style([
   sprinkles({
     textDecoration: 'none',
     color: '$foreground',
@@ -46,7 +46,7 @@ export const styledLinkClass = style([
   },
 ]);
 
-export const styledLinkActiveClass = styleVariants({
+export const linkActiveClass = styleVariants({
   false: {},
   true: { color: vars.colors.$primaryContrast },
 });
@@ -146,7 +146,7 @@ export const treeItemPseudoVariantClass = styleVariants({
         content: '+',
         fontWeight: vars.fontWeights.$light,
         transform: 'translate(0, 0) rotate(0)',
-        transition: 'transform .2s ease ',
+        transition: 'transform .2s ease',
       },
     },
   },
@@ -164,7 +164,7 @@ export const treeItemPseudoVariantClass = styleVariants({
         borderRight: `2px solid ${$$borderColor}`,
         borderTop: `2px solid ${$$borderColor}`,
         transform: `translate(${vars.sizes.$2}, ${vars.sizes.$1}) rotate(45deg)`,
-        transition: 'transform .2s ease ',
+        transition: 'transform .2s ease',
       },
     },
   },

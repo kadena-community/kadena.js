@@ -17,7 +17,7 @@ export const hamburgerButtonClass = style([
 
   {
     border: 0,
-    transition: `opacity 0.2s ease 0s`,
+    transition: `opacity 0.2s ease`,
     selectors: {
       '&:hover': {
         backgroundColor: vars.colors.$neutral4,

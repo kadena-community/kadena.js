@@ -1,8 +1,8 @@
 import {
   levelItemLinkPseudoVariantClass,
   levelItemVariantClass,
-  styledLinkActiveClass,
-  styledLinkClass,
+  linkActiveClass,
+  linkClass,
 } from './styles.css';
 
 import { IMenuItem, LevelType } from '@/types/Layout';
@@ -16,10 +16,10 @@ interface IItem {
 }
 export const Item: FC<IItem> = ({ item, level }) => {
   const classes = classnames(
-    styledLinkClass,
+    linkClass,
     levelItemVariantClass[`l${level}`],
     levelItemLinkPseudoVariantClass[`l${level}`],
-    styledLinkActiveClass[item.isActive ? 'true' : 'false'],
+    linkActiveClass[item.isActive ? 'true' : 'false'],
   );
 
   return (
