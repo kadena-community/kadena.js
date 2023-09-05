@@ -1,3 +1,4 @@
+import { Button, Grid, Input, InputWrapper, Option, Select } from '@kadena/react-ui';
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
@@ -10,7 +11,8 @@ import { usePrevious } from '../utils/hooks/use-previous';
 
 import isEqual from 'lodash.isequal';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const StyledMain = styled('main', {
   display: 'flex',
@@ -21,6 +23,7 @@ const StyledMain = styled('main', {
 });
 
 const Home: React.FC = () => {
+  const router = useRouter();
   const { loading: loadingNewBlocks, data: newBlocks } =
     useGetBlocksSubscription();
   const { loading: loadingRecentBlocks, data: recentBlocks } =
@@ -29,6 +32,15 @@ const Home: React.FC = () => {
   const previousRecentBlocks = usePrevious(recentBlocks);
 
   const { allBlocks, addBlocks } = useParsedBlocks();
+
+  const [searchType, setSearchType] = useState<string>('request-key');
+  const [searchField, setSearchField] = useState<string>('');
+
+  const search = () => {
+    if (searchType === 'request-key') {
+      router.push(`/request-key/${searchField}`);
+    }
+  };
 
   useEffect(() => {
     if (
@@ -64,6 +76,31 @@ const Home: React.FC = () => {
         >
           Kadena Graph Client
         </Text>
+
+        <Grid.Root columns={3}>
+          <Grid.Item>
+            <Select
+              style={{ marginTop: '9px' }}
+              ariaLabel="search-type"
+              id="search-type"
+              onChange={(event) => setSearchType(event.target.value)}
+            >
+              <Option value="request-key">Request Key</Option>
+            </Select>
+          </Grid.Item>
+          <Grid.Item>
+            <InputWrapper htmlFor="search-field">
+              <Input
+                id="seacrh-field"
+                value={searchField}
+                onChange={(event) => setSearchField(event.target.value)}
+              />
+            </InputWrapper>
+          </Grid.Item>
+          <Grid.Item>
+            <Button onClick={search}>Search</Button>
+          </Grid.Item>
+        </Grid.Root>
 
         <div>
           {loadingRecentBlocks || loadingNewBlocks ? (

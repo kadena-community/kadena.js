@@ -29,6 +29,18 @@ export const CORE_BLOCK_FIELDS: DocumentNode = gql`
   }
 `;
 
+export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
+  fragment CoreTransactionFields on Transaction {
+    # block
+    # code
+    # data
+    gas
+    id
+    nonce
+    reqKey
+  }
+`;
+
 export const getLastBlock: DocumentNode = gql`
   query getLastBlock {
     lastBlockHeight
@@ -54,6 +66,17 @@ export const getBlocksSubscription: DocumentNode = gql`
   subscription getBlocks {
     newBlocks {
       ...CoreBlockFields
+    }
+  }
+`;
+
+
+export const getTransactionByRequestKey: DocumentNode = gql`
+  ${CORE_TRANSACTION_FIELDS}
+
+  subscription getTransaction($requestKey: String!) {
+    transaction (requestKey: $requestKey) {
+      ...CoreTransactionFields
     }
   }
 `;
