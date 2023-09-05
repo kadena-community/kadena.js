@@ -1,11 +1,9 @@
-import { IconButton } from '@kadena/react-ui';
+import { IconButton, SystemIcon } from '@kadena/react-ui';
 
 import { globalClass } from '../../global.css';
 import {
   InnerWrapper,
   NavLink,
-  Spacer,
-  StyledHeader,
   StyledLogoWrapper,
   StyledNav,
   StyledUl,
@@ -15,17 +13,21 @@ import { DocsLogo } from '..';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
+import { HeaderIconGroup, HideOnMobile } from './styles';
 import {
-  HeaderIconGroup,
-  HeaderSocialIconGroup,
-  HideOnMobile,
-  SkipNav,
-} from './styles';
+  headerButtonClass,
+  headerClass,
+  innerWrapperClass,
+  skipNavClass,
+  socialGroupClass,
+  spacerClass,
+} from './styles.css';
 import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
 
 import { useMenu } from '@/hooks';
 import { IMenuItem, LayoutType } from '@/types/Layout';
+import classNames from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -39,9 +41,11 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { toggleMenu, isMenuOpen } = useMenu();
 
   return (
-    <StyledHeader className={globalClass}>
-      <SkipNav href="#maincontent">Skip to main content</SkipNav>
-      <InnerWrapper>
+    <header className={classNames(globalClass, headerClass)}>
+      <a className={skipNavClass} href="#maincontent">
+        Skip to main content
+      </a>
+      <div className={innerWrapperClass}>
         <StyledLogoWrapper>
           <Link href="/" passHref>
             <DocsLogo overwriteTheme="dark" />
@@ -62,24 +66,24 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             </StyledUl>
           </StyledNav>
         </HideOnMobile>
-        <Spacer />
+        <div className={spacerClass} />
 
-        <HeaderSocialIconGroup>
-          <IconButton
-            as="a"
+        <section className={socialGroupClass}>
+          <a
             href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
-            icon="Twitter"
-            color="inverted"
-          />
-          <IconButton
-            as="a"
+            className={classNames(headerButtonClass)}
+          >
+            <SystemIcon.Twitter />
+          </a>
+          <a
             href="https://github.com/kadena-community"
             title="Go to our Github"
-            icon="Github"
-            color="inverted"
-          />
-        </HeaderSocialIconGroup>
+            className={classNames(headerButtonClass)}
+          >
+            <SystemIcon.Github />
+          </a>
+        </section>
         <HeaderIconGroup>
           <ThemeToggle />
           <HideOnMobile>
@@ -90,7 +94,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             isMenuOpen={isMenuOpen}
           />
         </HeaderIconGroup>
-      </InnerWrapper>
-    </StyledHeader>
+      </div>
+    </header>
   );
 };

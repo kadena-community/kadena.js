@@ -20,7 +20,7 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
   };
   return (
     <button
-      className={classNames(headerButtonClass, hamburgerButtonClass)}
+      className={classNames(hamburgerButtonClass, headerButtonClass)}
       data-cy="hamburgermenu"
       title="Open the sidemenu"
       onClick={onToggleMenu}

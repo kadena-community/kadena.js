@@ -1,7 +1,10 @@
-import { IconButton } from '@kadena/react-ui';
+import { IconButton, SystemIcon } from '@kadena/react-ui';
+
+import { headerButtonClass, iconButtonClass } from './styles.css';
 
 import { useTheme } from '@/hooks';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import classNames from 'classnames';
 import React, { FC, useEffect, useState } from 'react';
 
 export const ThemeToggle: FC = () => {
@@ -23,11 +26,12 @@ export const ThemeToggle: FC = () => {
   if (!isMounted) return null;
 
   return (
-    <IconButton
-      title="Toggle theme"
+    <button
       onClick={toggleTheme}
-      icon="ThemeLightDark"
-      color="inverted"
-    />
+      title="Go to our Twitter"
+      className={classNames(headerButtonClass, iconButtonClass)}
+    >
+      <SystemIcon.ThemeLightDark />
+    </button>
   );
 };

@@ -4,69 +4,6 @@ import { HeaderIconGroup } from './Header/styles';
 
 import Link from 'next/link';
 
-export const Wrapper: StyledComponent<'div'> = styled('div', {
-  maxWidth: '$pageWidth',
-  margin: '0 auto',
-});
-
-export const BasePageGrid: StyledComponent<'div'> = styled('div', {
-  $$asideMenuWidthMDDefault: '200px',
-  $$asideMenuWidthLGDefault: '300px',
-  $$asideMenuWidthCode: '400px',
-
-  display: 'grid',
-  gridTemplateRows: '0 auto 1fr auto',
-  gridTemplateColumns: 'auto auto',
-  gridTemplateAreas: `
-      "header header"
-      "pageheader pageheader"
-      "content content"
-      "footer footer"
-    `,
-  position: 'relative',
-  margin: '0 auto',
-  minHeight: '100vh',
-  '@md': {
-    gridTemplateColumns:
-      '1% $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthMDDefault)) $$asideMenuWidthMDDefault 1%',
-    gridTemplateAreas: `
-        "header header header header header"
-        "pageheader pageheader pageheader pageheader pageheader"
-        ". menu content aside ."
-        "footer footer footer footer footer"
-      `,
-  },
-
-  '@2xl': {
-    gridTemplateColumns:
-      'auto $leftSideWidth minmax(auto, calc($pageWidth - $leftSideWidth - $$asideMenuWidthLGDefault)) $$asideMenuWidthLGDefault auto',
-  },
-});
-
-export const StyledHeader: StyledComponent<'header'> = styled('header', {
-  position: 'sticky',
-  top: 0,
-  gridArea: 'header',
-  backgroundColor: '$neutral5',
-  color: 'white',
-  zIndex: '$navMenu',
-
-  [`.${darkTheme} &`]: {
-    background: '$neutral2',
-
-    [`& ${HeaderIconGroup} svg`]: {
-      color: '$neutral5',
-    },
-  },
-});
-
-export const InnerWrapper: StyledComponent<typeof Wrapper> = styled(Wrapper, {
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  padding: '$3 $4',
-});
-
 export const StyledNav: StyledComponent<'nav'> = styled('nav', {
   display: 'none',
   alignItems: 'center',
@@ -143,10 +80,6 @@ export const AnimationBackgroundWrapper: StyledComponent<
       },
     },
   },
-});
-
-export const Spacer: StyledComponent<'div'> = styled('div', {
-  flex: 1,
 });
 
 export const StyledLogoWrapper: StyledComponent<'div'> = styled('div', {
