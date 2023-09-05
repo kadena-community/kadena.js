@@ -11,13 +11,14 @@ import { Analytics, ConsentModal } from '@/components';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider, ThemeProvider } from '@/hooks';
-import { IPageMeta, IPageProps } from '@/types/Layout';
+import type { IPageMeta, IPageProps } from '@/types/Layout';
 import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect } from 'react';
+import type { FC } from 'react';
+import React, { useEffect } from 'react';
 
 const GlobalStyles = globalCss({
   ...baseGlobalStyles,

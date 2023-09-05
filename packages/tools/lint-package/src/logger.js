@@ -1,11 +1,8 @@
-import type { Issues } from './types.js';
-
 import chalk from 'chalk';
 
 const SEPARATOR_WARN = `        ${chalk.yellow('warning')}  `; // Emulate eslint-like output
 const SEPARATOR_ERROR = `        ${chalk.red('error')}    `; // Emulate eslint-like output
-
-export const logger = (filePath: string) => (issues: Issues) => {
+export const logger = (filePath) => (issues) => {
   if (issues.length > 0) {
     console.log(chalk.underline(filePath));
     issues.forEach((issue) => {

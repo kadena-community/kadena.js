@@ -59,7 +59,7 @@ export const Redocly: FC<IPageProps> = ({
     codebackgroundClass,
   );
 
-  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+  const gridClassNames = classNames(globalClass, baseGridClass, pageGridClass);
 
   return (
     <div className={gridClassNames}>

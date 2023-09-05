@@ -1,4 +1,4 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
@@ -10,11 +10,8 @@ import {
 
 import { buttonContainerClass, containerClass } from './styles.css';
 
-import {
-  ChainSelect,
-  FormStatus,
-  FormStatusNotification,
-} from '@/components/Global';
+import type { FormStatus } from '@/components/Global';
+import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
@@ -24,7 +21,8 @@ import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useCallback, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
