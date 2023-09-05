@@ -1,4 +1,4 @@
-import { IconButton, SystemIcon } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 
 import { headerButtonClass, iconButtonClass } from './styles.css';
 

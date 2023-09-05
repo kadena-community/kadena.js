@@ -5,12 +5,7 @@ import {
   vars,
 } from '@kadena/react-ui/theme';
 
-import {
-  $$backgroundOverlayColor,
-  $$modalZIndex,
-  $$navMenu,
-  $$pageWidth,
-} from '../../global.css';
+import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -123,7 +118,7 @@ export const headerClass = style([
 export const skipNavClass = style([
   sprinkles({
     position: 'absolute',
-    top: '0',
+    top: 0,
     left: 0,
     paddingY: '$2',
     paddingX: '$4',

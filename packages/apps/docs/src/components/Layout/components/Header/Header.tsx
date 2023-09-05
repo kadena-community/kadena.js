@@ -6,7 +6,6 @@ import { DocsLogo } from '..';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
-import { HeaderIconGroup } from './styles';
 import {
   headerButtonClass,
   headerClass,
