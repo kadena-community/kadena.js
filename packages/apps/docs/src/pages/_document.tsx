@@ -7,7 +7,7 @@ const Document = (): JSX.Element => {
   const TypedHead = Head as unknown as FC<{ children?: ReactNode }>;
   const TypedNextScript = NextScript as ComponentType;
   return (
-    <Html>
+    <Html lang="en">
       <TypedHead>
         <style
           id="stitches"

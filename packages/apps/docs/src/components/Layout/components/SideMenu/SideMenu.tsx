@@ -1,7 +1,7 @@
 import { Heading, TextField } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
-import { StyledTreeList } from '../TreeMenu/styles';
+import { TreeList } from '../TreeMenu/TreeList';
 
 import { ListLink, ShowOnMobile } from './components';
 import { MenuCard } from './MenuCard';
@@ -100,9 +100,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <StyledTreeList role="list" root={true}>
+          <TreeList root={true}>
             <MainTreeItem item={activeItem} root={true} />
-          </StyledTreeList>
+          </TreeList>
         </MenuCard>
       )}
     </div>
