@@ -4,12 +4,13 @@ import { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'marmalade' = 'marmalade';
 
-export default [
-  (program: Command, version: string) =>
-    mintCommand(
-      program
-        .command(SUBCOMMAND_ROOT)
-        .description(`Tool for minting and managing NFTs with Marmalade`),
-      version,
-    ),
-];
+export function marmaladeCommandFactory(
+  program: Command,
+  version: string,
+): void {
+  const marmaladeProgram = program
+    .command(SUBCOMMAND_ROOT)
+    .description(`Tool for minting and managing NFTs with Marmalade`);
+
+  mintCommand(marmaladeProgram, version);
+}

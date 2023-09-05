@@ -4,16 +4,10 @@ import { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'devnet' = 'devnet';
 
-export function devnetCommandFactory(program: Command, version: string) {}
+export function devnetCommandFactory(program: Command, version: string): void {
+  const devnetProgram = program
+    .command(SUBCOMMAND_ROOT)
+    .description(`Tool for starting, stopping and managing the local devnet`);
 
-export default [
-  (program: Command, version: string) =>
-    startCommand(
-      program
-        .command(SUBCOMMAND_ROOT)
-        .description(
-          `Tool for starting, stopping and managing the local devnet`,
-        ),
-      version,
-    ),
-];
+  startCommand(devnetProgram, version);
+}
