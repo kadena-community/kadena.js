@@ -15,6 +15,7 @@ label:
   Kadena Eco is excited to present a new developer experience with Kadena.JS.
 publishDate: 2022-07-15
 author: Randy Daal
+authorId: randy.daal
 layout: blog
 ---
 

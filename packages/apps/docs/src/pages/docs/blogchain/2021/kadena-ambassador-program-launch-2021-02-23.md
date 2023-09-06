@@ -8,6 +8,7 @@ menu: Kadena Ambassador Program Launch
 label: Kadena Ambassador Program Launch
 publishDate: 2021-02-23
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

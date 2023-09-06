@@ -10,6 +10,7 @@ menu: San Francisco Blockchain Week
 label: San Francisco Blockchain Week
 publishDate: 2018-09-28
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

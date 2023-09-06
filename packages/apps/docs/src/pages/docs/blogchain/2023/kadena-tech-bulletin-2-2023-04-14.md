@@ -11,6 +11,7 @@ menu: Kadena Tech Bulletin #2
 label: Kadena Tech Bulletin #2
 publishDate: 2023-04-14
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

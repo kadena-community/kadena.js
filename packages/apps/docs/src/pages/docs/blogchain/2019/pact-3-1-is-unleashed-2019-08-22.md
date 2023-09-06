@@ -10,6 +10,7 @@ menu: Pact 3.1 is Unleashed!
 label: Pact 3.1 is Unleashed!
 publishDate: 2019-08-22
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

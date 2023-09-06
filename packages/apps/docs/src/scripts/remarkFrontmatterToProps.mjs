@@ -3,6 +3,7 @@ import fs from 'fs';
 import { getReadTime } from './utils.mjs';
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
+import authors from './../data/authors.json' assert { type: 'json' };
 
 const getFrontMatter = (node) => {
   const { type, value } = node;
@@ -10,6 +11,13 @@ const getFrontMatter = (node) => {
   if (type === 'yaml') {
     return yaml.load(value);
   }
+};
+
+const getBlogAuthorInfo = (data) => {
+  const authorId = data.authorId;
+  if (!authorId) return;
+
+  return authors.find((author) => author.id === authorId);
 };
 
 const getModifiedDate = (file) => {
@@ -82,6 +90,7 @@ const remarkFrontmatterToProps = () => {
             lastModifiedDate: getModifiedDate(getFileName(file)),
             navigation: createNavigation(file),
             ...data,
+            authorInfo: getBlogAuthorInfo(data),
           },
         },
       };

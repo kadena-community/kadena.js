@@ -13,6 +13,7 @@ menu: Kadena DAO - Meaningful Initiatives Driven by the Voice of the Community
 label: Kadena DAO - Meaningful Initiatives Driven by the Voice of the Community
 publishDate: 2021-07-14
 author: Will Martino
+authorId: will.martino
 layout: blog
 ---
 

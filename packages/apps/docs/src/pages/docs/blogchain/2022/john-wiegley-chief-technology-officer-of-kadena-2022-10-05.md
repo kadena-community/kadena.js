@@ -10,6 +10,7 @@ menu: John Wiegley
 label: John Wiegley
 publishDate: 2022-10-05
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

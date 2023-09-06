@@ -9,6 +9,7 @@ menu: Tokensoft Wrapped & Kadenaswap - the Future of Digital Value
 label: Tokensoft Wrapped & Kadenaswap - the Future of Digital Value
 publishDate: 2021-03-04
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

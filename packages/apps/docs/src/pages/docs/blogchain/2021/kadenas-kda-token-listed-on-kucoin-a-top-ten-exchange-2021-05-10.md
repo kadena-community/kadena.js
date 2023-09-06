@@ -7,6 +7,7 @@ menu: KDA Token Listed on Kucoin
 label: KDA Token Listed on Kucoin
 publishDate: 2021-5-10
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

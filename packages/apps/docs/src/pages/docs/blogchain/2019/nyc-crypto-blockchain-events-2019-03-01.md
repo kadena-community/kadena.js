@@ -5,6 +5,7 @@ menu: NYC Crypto blockchain events
 label: NYC Crypto blockchain events
 publishDate: 2019-03-01
 author: Leah Bingham
+authorId: leah.bingham
 layout: blog
 ---
 

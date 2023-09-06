@@ -17,6 +17,7 @@ label:
   Kadena’s KDA Token Has First Listing on Bittrex Global, a Top Ten Exchange
 publishDate: 2020-06-25
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

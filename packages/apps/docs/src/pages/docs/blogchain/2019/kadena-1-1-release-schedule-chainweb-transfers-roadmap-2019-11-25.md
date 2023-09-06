@@ -10,6 +10,7 @@ menu: Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap
 label: Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap
 publishDate: 2019-11-25
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

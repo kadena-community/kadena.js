@@ -8,6 +8,7 @@ menu: Introducing Chainweb-stream - poll less, do more
 label: Introducing Chainweb-stream - poll less, do more
 publishDate: 2023-07-19
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

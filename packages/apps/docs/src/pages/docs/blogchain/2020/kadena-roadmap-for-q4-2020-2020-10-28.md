@@ -12,6 +12,7 @@ menu: Kadena Roadmap for Q4 2020
 label: Kadena Roadmap for Q4 2020
 publishDate: 2020-10-28
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

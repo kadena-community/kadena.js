@@ -19,6 +19,7 @@ label:
   Expand DeFi Ecosystem
 publishDate: 2020-11-10
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

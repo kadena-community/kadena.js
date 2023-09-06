@@ -7,6 +7,7 @@ menu: Do Anything on the Kadena Blockchain with a Single Tool
 label: Do Anything on the Kadena Blockchain with a Single Tool
 publishDate: 2020-02-21
 author: Taylor Rolfe
+authorId: taylor.rolfe
 layout: blog
 ---
 

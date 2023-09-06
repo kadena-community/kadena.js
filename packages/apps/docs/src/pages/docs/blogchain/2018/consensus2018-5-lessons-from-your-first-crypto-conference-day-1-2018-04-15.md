@@ -5,6 +5,7 @@ menu: Consensus2018
 label: Consensus2018
 publishDate: 2018-05-04
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

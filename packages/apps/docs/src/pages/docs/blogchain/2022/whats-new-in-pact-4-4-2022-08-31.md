@@ -13,6 +13,7 @@ menu: What’s New in Pact 4.4
 label: What’s New in Pact 4.4
 publishDate: 2022-08-31
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

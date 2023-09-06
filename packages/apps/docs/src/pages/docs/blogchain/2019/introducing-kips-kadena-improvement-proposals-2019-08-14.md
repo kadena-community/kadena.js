@@ -8,6 +8,7 @@ menu: Introducing KIPs
 label: Introducing KIPs
 publishDate: 2019-08-14
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

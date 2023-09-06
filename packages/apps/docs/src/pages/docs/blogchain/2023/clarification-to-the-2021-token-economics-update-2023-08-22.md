@@ -10,6 +10,7 @@ menu: Clarification to the 2021 Token Economics Update
 label: Clarification to the 2021 Token Economics Update
 publishDate: 2023-08-22
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

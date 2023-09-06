@@ -9,6 +9,7 @@ menu: The Current State of Marmalade
 label: The Current State of Marmalade
 publishDate: 2022-06-29
 author: Randy Daal
+authorId: randy.daal
 layout: blog
 ---
 

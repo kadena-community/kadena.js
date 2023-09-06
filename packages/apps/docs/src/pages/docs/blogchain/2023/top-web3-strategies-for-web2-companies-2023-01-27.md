@@ -12,6 +12,7 @@ menu: Top Web3 Strategies for Web2 Companies
 label: Top Web3 Strategies for Web2 Companies
 publishDate: 2023-01-27
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

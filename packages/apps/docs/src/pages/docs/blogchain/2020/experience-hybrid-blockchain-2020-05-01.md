@@ -8,7 +8,8 @@ description:
 menu: Experience Hybrid Blockchain
 label: Experience Hybrid Blockchain
 publishDate: 2020-05-01
-author: TTaylor Rolfe
+author: Taylor Rolfe
+authorId: taylor.rolfe
 layout: blog
 ---
 

@@ -8,6 +8,7 @@ menu: AMA with The Gem Hunters, May 13 2021 Transcript
 label: AMA with The Gem Hunters, May 13 2021 Transcript
 publishDate: 2021-05-13
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

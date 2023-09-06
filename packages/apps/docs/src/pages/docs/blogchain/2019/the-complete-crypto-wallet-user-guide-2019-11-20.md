@@ -10,6 +10,7 @@ menu: The Complete Crypto Wallet User Guide
 label: The Complete Crypto Wallet User Guide
 publishDate: 2019-11-20
 author: Taylor Rolfe
+authorId: taylor.rolfe
 layout: blog
 ---
 

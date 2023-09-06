@@ -12,6 +12,7 @@ menu: Kadena Tech Bulletin #4
 label: Kadena Tech Bulletin #4
 publishDate: 2023-06-20
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

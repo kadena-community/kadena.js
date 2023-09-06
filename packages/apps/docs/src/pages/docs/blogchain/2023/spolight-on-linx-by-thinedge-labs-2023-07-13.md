@@ -14,6 +14,7 @@ menu: Spotlight on Linx by ThinEdge Labs
 label: Spotlight on Linx by ThinEdge Labs
 publishDate: 2023-07-13
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

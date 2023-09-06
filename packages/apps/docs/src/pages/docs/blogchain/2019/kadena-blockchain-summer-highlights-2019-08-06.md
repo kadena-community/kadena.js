@@ -8,6 +8,7 @@ menu: Kadena Presents Blockchain Summer
 label: Kadena Presents Blockchain Summer
 publishDate: 2019-08-06
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

@@ -9,6 +9,7 @@ menu: Safer, Smarter Contracts with Pact
 label: Safer, Smarter Contracts with Pact
 publishDate: 2019-02-20
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

@@ -11,6 +11,7 @@ menu: Language Server Support for Pact
 label: Language Server Support for Pact
 publishDate: 2023-04-18
 author: Robert Soeldner
+authorId: robert.soeldner
 layout: blog
 ---
 
