@@ -4,11 +4,15 @@ import usePageHelpful from './usePageHelpful';
 
 import React, { FC } from 'react';
 
-export const PageHelpful: FC = () => {
-  const { handlePageHelpful, handlePageNotHelpful } = usePageHelpful();
+interface IProps {
+  editLink?: string;
+}
+
+export const PageHelpful: FC<IProps> = ({ editLink }) => {
+  const { handlePageHelpful, handlePageNotHelpful } = usePageHelpful(editLink);
 
   return (
-    <div>
+    <Stack direction="column" gap="$xs">
       <Text bold>Was this page helpful?</Text>
       <Stack gap="$xs">
         <IconButton
@@ -24,6 +28,6 @@ export const PageHelpful: FC = () => {
           title="Not useful"
         />
       </Stack>
-    </div>
+    </Stack>
   );
 };
