@@ -1,5 +1,5 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { darkThemeClass, vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
 export const tabsContainer = style([
@@ -11,7 +11,12 @@ export const tabsContainer = style([
     marginBottom: '$4',
   }),
   {
-    borderBottom: `${vars.sizes.$1} solid ${vars.colors.$neutral2}`,
+    borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral2}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral3}`,
+      },
+    },
   },
 ]);
 
@@ -22,7 +27,7 @@ export const tabClass = style([
     paddingY: '$2',
     fontSize: '$md',
     backgroundColor: 'transparent',
-    color: '$foreground',
+    color: '$neutral4',
   }),
   {
     whiteSpace: 'nowrap',
@@ -31,7 +36,10 @@ export const tabClass = style([
 
 export const selectedClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: {
+      darkMode: '$primaryAccent',
+      lightMode: '$primarySurface',
+    },
     fontWeight: '$bold',
   }),
 ]);
@@ -40,13 +48,16 @@ export const selectorLine = style([
   sprinkles({
     position: 'absolute',
     display: 'block',
-    backgroundColor: '$primaryAccent',
+    backgroundColor: {
+      darkMode: '$neutral6',
+      lightMode: '$primaryAccent',
+    },
     width: 0,
-    height: '$1',
+    height: '$0',
   }),
   {
-    bottom: '-4px', // for some reason a negative cant be done with vars
-    transition: 'all .4s ease',
+    bottom: '-2px', // for some reason a negative cant be done with vars
+    transition: 'transform .4s ease',
     transform: `translateX(0)`,
   },
 ]);
