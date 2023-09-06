@@ -143,7 +143,6 @@ export const lineStyle = style([
     left: '5px',
     flex: 1,
 
-    /*Vertical*/
     backgroundPosition: 'left',
     backgroundSize: '1px 10px',
     backgroundRepeat: 'repeat-y',
