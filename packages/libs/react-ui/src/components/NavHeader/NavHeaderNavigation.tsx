@@ -13,7 +13,7 @@ import useGlow from './useGlow';
 
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export interface INavHeaderNavigationProps {
   children: FunctionComponentElement<INavHeaderLinkProps>[];
