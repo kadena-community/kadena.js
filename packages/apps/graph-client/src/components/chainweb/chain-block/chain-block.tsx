@@ -1,6 +1,6 @@
 import { useChainTree } from '../../../context/chain-tree-context';
 import { env } from '../../../utils/env';
-import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
+import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 import { Box } from '../../box';
 import { Text } from '../../text';
 

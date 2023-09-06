@@ -1,4 +1,4 @@
-import { IBlock } from '../utils/hooks/use-parsed-blocks';
+import type { IBlock } from '../utils/hooks/use-parsed-blocks';
 
 import React, { createContext, useContext, useState } from 'react';
 
