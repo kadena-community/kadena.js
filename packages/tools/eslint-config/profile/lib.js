@@ -1,18 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-const findUp = (filename, dir = process.cwd()) => {
-  const filePath = path.join(dir, filename);
-  if (fs.existsSync(filePath)) return filePath;
-  const parentDir = path.dirname(dir);
-  if (parentDir === dir) return;
-  return findUp(filename, parentDir);
-};
-
-const prettierOptions = JSON.parse(
-  fs.readFileSync(findUp('.prettierrc'), 'utf8'),
-);
-
+/** @type {import("@types/eslint").Linter.Config} */
 module.exports = {
   root: true,
   extends: [
@@ -24,17 +10,12 @@ module.exports = {
     '../mixins/import-no-duplicates.js',
     '../mixins/simple-import-sort.js',
     '../mixins/typedef-allow-implicitly-typed-parameters.js',
-  ],
-  plugins: [
-    '@kadena-dev/eslint-plugin',
-    'import',
-    'simple-import-sort',
     'prettier',
   ],
+  plugins: ['@kadena-dev/eslint-plugin', 'import', 'simple-import-sort'],
   rules: {
     '@kadena-dev/no-eslint-disable': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
-    'prettier/prettier': ['warn', prettierOptions],
     'prefer-template': 'warn',
     'import/newline-after-import': 'error',
     'import/no-unresolved': 'error',
@@ -53,9 +34,7 @@ module.exports = {
     },
     'import/resolver': {
       typescript: {
-        // Rush uses `path.resolve('tsconfig.json')` to resolve each TS config separately, but in VS Code ESLint we
-        // want to the next glob to resolve them all. So we use this in `.vscode/settings.json` instead:
-        // project: 'packages/*/*/tsconfig.json',
+        project: 'packages/*/*/tsconfig.json',
       },
     },
   },
