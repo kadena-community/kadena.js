@@ -17,8 +17,14 @@ import React from 'react';
  *
  */
 export const Subscribe: FC = () => {
-  const { handleFormState, handleSubscribe, message, canSubmit, hasSuccess } =
-    useSubscribe();
+  const {
+    handleFormState,
+    handleSubscribe,
+    message,
+    canSubmit,
+    hasSuccess,
+    isLoading,
+  } = useSubscribe();
 
   return (
     <section data-cy="subscribe">
@@ -43,6 +49,7 @@ export const Subscribe: FC = () => {
                   disabled={!canSubmit}
                   onClick={handleSubscribe}
                   title="Subscribe"
+                  loading={isLoading}
                 >
                   Subscribe
                 </Button>

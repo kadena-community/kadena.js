@@ -18,15 +18,7 @@ when the question is about pact, typescript or javascript try to provide a  code
 Information, with a filePath that includes 'blogchain', has the lowest importance in the context.
 Within those information with a publishDate more that is older than 300 days having even less importance in the context.
 
-
 Try to find a term in the reference sections with a precise or in the api jsons first.
-
-When the search term is in the context of Pact, every file with 'pact' in the filePath gets priority.
-When the search term is in the context of Kadena, every file with 'kadena' in the filePath gets priority.
-When the search term is in the context of Chainweb, every file with 'chainweb' in the filePath gets priority.
-When the search term is in the context of Marmalade, every file with 'marmalade' in the filePath gets priority.
-
-
 If the answer is not provided in the context, say "Sorry, I don\'t have that information.".`;
 
 type QueryFn = (vector: number[]) => Promise<MetaData[]>;
