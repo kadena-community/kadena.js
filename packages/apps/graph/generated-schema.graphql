@@ -30,6 +30,20 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+type Event implements Node {
+  block: Block
+  chainId: BigInt!
+  height: BigInt!
+  id: ID!
+  index: BigInt!
+  module: String!
+  name: String!
+  paramText: String!
+  parameters: String!
+  qualName: String!
+  requestKey: String!
+}
+
 interface Node {
   id: ID!
 }
@@ -54,6 +68,7 @@ type Query {
 }
 
 type Subscription {
+  event(chainIds: [Int!], name: String!): Event
   newBlocks(chainIds: [Int!]): [Block!]
   transaction(requestKey: String!): Transaction
 }
