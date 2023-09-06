@@ -1,6 +1,5 @@
 'use client';
 
-import { NavGlow } from './assets/glow';
 import {
   activeLinkClass,
   glowClass,
@@ -8,27 +7,16 @@ import {
   navListClass,
   navWrapperClass,
 } from './NavHeader.css';
+import { type INavHeaderLinkProps } from './NavHeaderLink';
+import { NavGlow } from './assets/glow';
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
-import type {
-  FC,
-  FunctionComponentElement,
-  HTMLAttributeAnchorTarget,
-} from 'react';
+import type { FC, FunctionComponentElement } from 'react';
 import React, { useEffect } from 'react';
 
-export interface INavItem {
-  active?: boolean;
-  children?: string;
-  href: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-  target?: HTMLAttributeAnchorTarget;
-}
-export type INavItems = INavItem[];
-
 export interface INavHeaderNavigationProps {
-  children: FunctionComponentElement<INavItem>[];
+  children: FunctionComponentElement<INavHeaderLinkProps>[];
   activeLink?: number;
 }
 
@@ -60,8 +48,9 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           <li key={`navItem-${index}`} onClick={() => setActiveNav(index + 1)}>
             {React.cloneElement(
               child as React.ReactElement<
-                HTMLElement | INavItem,
-                string | React.JSXElementConstructor<JSX.Element & INavItem>
+                HTMLElement | INavHeaderLinkProps,
+                | string
+                | React.JSXElementConstructor<JSX.Element & INavHeaderLinkProps>
               >,
               {
                 active: activeNav === index + 1,
