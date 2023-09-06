@@ -12,6 +12,7 @@ menu: Fully Public Testnet (v3), Hashing Algorithm, and Mining API
 label: Fully Public Testnet (v3), Hashing Algorithm, and Mining API
 publishDate: 2019-09-18
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

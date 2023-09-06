@@ -9,6 +9,7 @@ menu: FAQ for Kadena’s Public Blockchain
 label: FAQ for Kadena’s Public Blockchain
 publishDate: 2019-12-02
 author: Rebecca Rodriguez
+authorId: rebecca.rodriguez
 layout: blog
 ---
 

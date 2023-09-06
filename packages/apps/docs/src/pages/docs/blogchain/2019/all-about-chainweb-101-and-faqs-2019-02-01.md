@@ -7,6 +7,7 @@ menu: Kadena’s Public Blockchain 101 and FAQs
 label: Kadena’s Public Blockchain 101 and FAQs
 publishDate: 2019-02-01
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

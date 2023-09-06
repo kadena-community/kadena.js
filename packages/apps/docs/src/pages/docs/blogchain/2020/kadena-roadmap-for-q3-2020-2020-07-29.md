@@ -11,6 +11,7 @@ menu: Kadena Roadmap for Q3 2020
 label: Kadena Roadmap for Q3 2020
 publishDate: 2020-07-29
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

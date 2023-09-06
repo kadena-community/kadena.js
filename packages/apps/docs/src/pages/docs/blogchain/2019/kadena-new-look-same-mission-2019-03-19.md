@@ -13,6 +13,7 @@ menu: Kadena New Look, Same Mission
 label: Kadena New Look, Same Mission
 publishDate: 2019-03-19
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

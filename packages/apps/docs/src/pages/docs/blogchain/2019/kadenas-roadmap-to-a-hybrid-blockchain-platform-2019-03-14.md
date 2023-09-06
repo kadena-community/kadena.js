@@ -12,6 +12,7 @@ menu: Kadena’s Roadmap to a Hybrid Blockchain Platform
 label: Kadena’s Roadmap to a Hybrid Blockchain Platform
 publishDate: 2019-03-14
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

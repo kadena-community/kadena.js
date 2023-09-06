@@ -12,6 +12,7 @@ menu: Turing Completeness and Smart Contract Security
 label: Turing Completeness and Smart Contract Security
 publishDate: 2019-02-11
 author: Taylor Rolfe
+authorId: taylor.rolfe
 layout: blog
 ---
 

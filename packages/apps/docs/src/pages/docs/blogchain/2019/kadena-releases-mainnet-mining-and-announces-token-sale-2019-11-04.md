@@ -9,6 +9,7 @@ menu: Kadena Releases Mainnet Mining and Announces Token Sale
 label: Kadena Releases Mainnet Mining and Announces Token Sale
 publishDate: 2019-11-04
 author: Rebecca Rodriguez
+authorId: rebecca.rodriguez
 layout: blog
 ---
 

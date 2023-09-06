@@ -10,6 +10,7 @@ menu: Kadena Introduces Chainweaver to the Cosmos Ecosystem
 label: Kadena Introduces Chainweaver to the Cosmos Ecosystem
 publishDate: 2020-01-17
 author: Rebecca Rodriguez
+authorId: rebecca.rodriguez
 layout: blog
 ---
 

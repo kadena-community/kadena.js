@@ -12,6 +12,7 @@ menu: Build Games For a Blockchain Future With Kadena
 label: Build Games For a Blockchain Future With Kadena
 publishDate: 2022-03-18
 author: Dan Wiggins
+authorId: dan.wiggins
 layout: blog
 ---
 

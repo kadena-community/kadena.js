@@ -8,6 +8,7 @@ menu: Announcing Kadena Technical Grants
 label: Announcing Kadena Technical Grants
 publishDate: 2020-11-25
 author: Taylor Rolfe
+authorId: taylor.rolfe
 layout: blog
 ---
 

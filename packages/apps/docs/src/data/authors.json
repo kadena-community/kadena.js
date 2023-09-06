@@ -7,11 +7,102 @@
     "twitter": "SirLensALot"
   },
   {
+    "id": "will.martino",
+    "name": "Will Martino",
+    "avatar": "/assets/blog/author/1_cQhMaz6jUvttVCXsZ5sCvA.jpg",
+    "description": "Founder & President",
+    "twitter": "_wjmartino_"
+  },
+  {
     "id": "doug.beardsley",
     "name": "Doug Beardsley",
     "avatar": "/assets/blog/author/2_Dzejz1S-maHLOsv5cCUwag.jpg",
     "description": "Director of Engineering",
     "twitter": "BlockchainDoug"
+  },
+  {
+    "id": "albert.g",
+    "name": "Albert G",
+    "avatar": "/assets/blog/author/pPSkZ_U7_400x400.jpg",
+    "twitter": "alber70g"
+  },
+  {
+    "id": "vivienne.chen",
+    "name": "Vivienne Chen",
+    "avatar": "/assets/blog/author/1_tO1_tn1eDfjkiD4scQn9aQ.jpg"
+  },
+  {
+    "id": "john.wiegley",
+    "name": "John Wiegley",
+    "avatar": "/assets/blog/author/9x9w3KVN_400x400.jpg",
+    "twitter": "jwiegley"
+  },
+  {
+    "id": "leah.bingham",
+    "name": "Leah Bingham",
+    "avatar": "/assets/blog/author/1_jj52unTlT29DdsTIKF7JvA.jpg"
+  },
+  {
+    "id": "linda.ortega",
+    "name": "Linda Ortega",
+    "avatar": "/assets/blog/author/1_Gd-rt6UiTqwU64bNOu7rsA.jpg",
+    "twitter": "linda_ioc"
+  },
+  {
+    "id": "dan.wiggins",
+    "name": "Dan Wiggins",
+    "avatar": "/assets/blog/author/0_em5ddJ6lD1jYkSzn.jpg"
+  },
+  {
+    "id": "monica.quaintance",
+    "name": "Monica Quaintance",
+    "avatar": "/assets/blog/author/1_af43FuDaIs8fsbLrkrtxfQ.jpg",
+    "twitter": "QuaintM"
+  },
+  {
+    "id": "tyler.benster",
+    "name": "Tyler Benster",
+    "avatar": "/assets/blog/author/1_xVOzsfD2nugFHm8UUWYk7A.jpg"
+  },
+  {
+    "id": "ben.jessel",
+    "name": "Ben Jessel",
+    "avatar": "/assets/blog/author/1_TC2lAelZOib31jHxrLksMg.jpg"
+  },
+  {
+    "id": "marie.leaf",
+    "name": "Marie Leaf",
+    "avatar": "/assets/blog/author/1_uzrq3yWfWrxEQBkFZG5QiQ.jpg"
+  },
+  {
+    "id": "anagha.mercado",
+    "name": "Anagha Mercado",
+    "avatar": "/assets/blog/author/22_oJk23buI_ZG0l217ZVVttw.jpg"
+  },
+  {
+    "id": "taylor.rolfe",
+    "name": "Taylor Rolfe",
+    "avatar": "/assets/blog/author/0_bY8B6BAIg_HdLWTO.jpg"
+  },
+  {
+    "id": "miguel.angel",
+    "name": "Miguel Angel Romero Jr.",
+    "avatar": "/assets/blog/author/1_a6zSjHPxnkFoQ90aFSGNiA.png"
+  },
+  {
+    "id": "rebecca.rodriguez",
+    "name": "Rebecca Rodriguez",
+    "avatar": "/assets/blog/author/2_3qlDR87y3bf3jWSd7QHyZA.jpg"
+  },
+  {
+    "id": "tony.pham",
+    "name": "Tony Pham",
+    "avatar": "/assets/blog/author/1_NBduUW55xbh1JNlG5ZelIA.jpg"
+  },
+  {
+    "id": "taylor.rolfe",
+    "name": "Taylor Rolfe",
+    "avatar": "/assets/blog/author/0_bY8B6BAIg_HdLWTO.jpg"
   },
   {
     "id": "francesco.melpignano",

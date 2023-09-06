@@ -11,6 +11,7 @@ menu: A First Look on Integrating With Rosetta, Launched by Coinbase
 label: A First Look on Integrating With Rosetta, Launched by Coinbase
 publishDate: 2020-06-17
 author: Linda Ortega
+authorId: linda.ortega
 layout: blog
 ---
 

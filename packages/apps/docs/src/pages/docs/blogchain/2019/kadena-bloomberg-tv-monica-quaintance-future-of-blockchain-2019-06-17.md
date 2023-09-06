@@ -12,6 +12,7 @@ menu: Kadena on Bloomberg TV
 label: Kadena on Bloomberg TV
 publishDate: 2019-06-17
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

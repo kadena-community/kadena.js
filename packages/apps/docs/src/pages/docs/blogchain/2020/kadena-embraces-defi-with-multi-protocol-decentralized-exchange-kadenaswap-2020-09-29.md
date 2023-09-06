@@ -15,6 +15,7 @@ label:
   Kadena Embraces DeFi with Multi-protocol Decentralized Exchange Kadenaswap
 publishDate: 2020-09-29
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 
