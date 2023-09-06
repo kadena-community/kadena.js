@@ -8,7 +8,7 @@
     "eject": "react-scripts eject",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
+    "format:src": "prettier . --cache --write",
     "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "pnpm run /^generate:.*:contract/",
     "generate:faucet:contract": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",

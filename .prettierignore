@@ -1,8 +1,4 @@
 .github/CODEOWNERS
-.next
-dist
-etc
-lib
+.changeset
+packages
 pnpm-lock.yaml
-**/*.md
-**/*.graphql

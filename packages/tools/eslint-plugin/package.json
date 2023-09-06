@@ -8,7 +8,7 @@
   "scripts": {
     "build": "heft build --clean",
     "format": "pnpm run /^format:.*/",
-    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
+    "format:src": "prettier . --cache --write",
     "test": "heft test"
   },
   "dependencies": {

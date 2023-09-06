@@ -16,7 +16,7 @@
     "build": "tsc",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use ./lib/index.js",
-    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
+    "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:src": "eslint src --ext .ts --fix",
     "test": ""

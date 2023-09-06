@@ -10,7 +10,7 @@
   "scripts": {
     "build": "",
     "format": "pnpm run /^format:.*/",
-    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
+    "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:src": "eslint ./mixins ./profile --ext .js,.ts --fix",
     "test": ""

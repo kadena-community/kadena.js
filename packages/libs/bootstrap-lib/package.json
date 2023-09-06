@@ -34,7 +34,7 @@
     "build": "heft build --clean",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
+    "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts --fix",

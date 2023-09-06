@@ -10,7 +10,7 @@
     "build": "",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
+    "format:src": "prettier . --cache --write",
     "test": ""
   },
   "dependencies": {

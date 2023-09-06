@@ -9,7 +9,7 @@
     "format": "pnpm run format:md && pnpm -r run format",
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier . --write",
+    "format:src": "prettier . --cache --write",
     "preinstall": "npx --no-install only-allow pnpm",
     "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",

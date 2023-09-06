@@ -1,6 +1,6 @@
-.kda-history.json
 dist
 etc
 lib
 temp
+**/*.graphql
 **/*.md
