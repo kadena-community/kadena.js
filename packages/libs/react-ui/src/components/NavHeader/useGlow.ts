@@ -42,6 +42,10 @@ const useGlow = (active = 0): IUseGlowReturn => {
   }, [glowX, activeNav]);
 
   useEffect(() => {
+    if (activeNav !== active) setActiveNav(active);
+  }, [active]);
+
+  useEffect(() => {
     prevGlowX.current = glowX;
   }, [glowX]);
 
