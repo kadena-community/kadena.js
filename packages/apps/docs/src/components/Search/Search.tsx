@@ -24,7 +24,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     isLoading,
   } = useSearch(limitResults);
 
-  const semanticResults = removeUnnecessarySearchRecords(
+  const semanticResults = (
     metadata.map(mapMatches),
   );
 
