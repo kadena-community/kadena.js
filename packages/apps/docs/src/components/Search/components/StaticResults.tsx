@@ -72,7 +72,7 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
     <Box marginY="$10">
       <ul className={staticResultsListClass}>
         {limitedResults.map((item) => {
-          return <Item item={item} key={item.filePath} />;
+          return <Item item={item} key={`${item.filePath} + ${item.header}`} />;
         })}
       </ul>
     </Box>

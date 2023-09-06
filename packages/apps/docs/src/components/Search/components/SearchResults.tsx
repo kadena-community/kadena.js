@@ -169,7 +169,7 @@ export const SearchResults: FC<IProps> = ({
                             item.header,
                           );
                           return (
-                            <Link key={`${url}-${innerIdx}`} href={url}>
+                            <Link key={`${url}`} href={url}>
                               {item.title}
                             </Link>
                           );

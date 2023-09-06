@@ -92,8 +92,10 @@ You can also test if public nodes are minable by pointing your miner at any of
 the available nodes and see if it starts mining. This is easiest if you set the
 default log level to debug. For example:
 
+```shell
 _./chainweb-miner cpu — cores 2 — node us-w2.chainweb.com:443 — miner-account
 <some account> — miner-key <some key> — log-level debug_
+```
 
 **How come my balance doesn’t exist on all chains?**
 

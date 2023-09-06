@@ -1,5 +1,4 @@
 import { SearchResults } from './components/SearchResults';
-import { removeUnnecessarySearchRecords } from './utils';
 
 import { useSearch } from '@/hooks';
 import { mapMatches } from '@/pages/api/semanticsearch';
@@ -24,9 +23,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     isLoading,
   } = useSearch(limitResults);
 
-  const semanticResults = removeUnnecessarySearchRecords(
-    metadata.map(mapMatches),
-  );
+  const semanticResults = metadata.map(mapMatches);
 
   useEffect(() => {
     if (
