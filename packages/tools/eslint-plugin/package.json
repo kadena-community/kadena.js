@@ -8,7 +8,7 @@
   "scripts": {
     "build": "heft build --clean",
     "format": "pnpm run /^format:.*/",
-    "format:src": "prettier src --write",
+    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
     "test": "heft test"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@rushstack/heft": "~0.50.6",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "typescript": "5.1.6"
   }
 }

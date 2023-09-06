@@ -12,10 +12,10 @@
     "build:local": "pnpm run pactjs:coin && heft build --clean",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config src --write",
+    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint package.json src --ext .js,.ts,.json --fix",
+    "lint:src": "eslint src --ext .js,.ts,.json --fix",
     "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
     "test": ""
   },
@@ -37,6 +37,7 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "ts-node": "~10.8.2"
   }
 }

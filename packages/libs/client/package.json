@@ -24,10 +24,10 @@
     "dev:postinstall": "pnpm run pactjs:retrieve:contract; pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config src --write",
+    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint package.json src --ext .js,.ts --fix",
+    "lint:src": "eslint src --ext .js,.ts --fix",
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "start": "ts-node --transpile-only src/index.ts",
@@ -56,6 +56,7 @@
     "@walletconnect/types": "~2.8.1",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "ts-node": "~10.8.2"
   }
 }

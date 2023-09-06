@@ -10,7 +10,7 @@
   "scripts": {
     "build": "",
     "format": "pnpm run /^format:.*/",
-    "format:src": "prettier mixins profile --write",
+    "format:src": "prettier . --ignore-path ../../../.prettierignore --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:src": "eslint ./mixins ./profile --ext .js,.ts --fix",
     "test": ""
@@ -30,6 +30,7 @@
     "eslint-plugin-simple-import-sort": "~7.0.0",
     "prettier": "~3.0.0",
     "prettier-eslint": "~12.0.0",
+    "prettier-plugin-packagejson": "^2.4.5"
   },
   "devDependencies": {
     "typescript": "5.1.6"
