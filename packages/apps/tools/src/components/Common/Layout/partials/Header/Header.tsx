@@ -8,9 +8,9 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import { getNetworks } from '@/utils/wallet';
-import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 

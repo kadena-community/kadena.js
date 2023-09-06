@@ -1,5 +1,6 @@
 'use client';
 
+import { NavGlow } from './assets/glow';
 import {
   activeLinkClass,
   glowClass,
@@ -7,8 +8,7 @@ import {
   navListClass,
   navWrapperClass,
 } from './NavHeader.css';
-import { type INavHeaderLinkProps } from './NavHeaderLink';
-import { NavGlow } from './assets/glow';
+import type { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
