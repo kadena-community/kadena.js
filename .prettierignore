@@ -1,1 +1,8 @@
 .github/CODEOWNERS
+.next
+dist
+etc
+lib
+pnpm-lock.yaml
+**/*.md
+**/*.graphql
