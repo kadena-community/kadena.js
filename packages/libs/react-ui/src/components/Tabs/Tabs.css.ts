@@ -57,7 +57,7 @@ export const selectorLine = style([
   }),
   {
     bottom: '-2px', // for some reason a negative cant be done with vars
-    transition: 'transform .4s ease',
+    transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
   },
 ]);
