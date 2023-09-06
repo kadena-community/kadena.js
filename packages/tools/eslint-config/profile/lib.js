@@ -1,3 +1,5 @@
+const { join } = require('node:path');
+
 /** @type {import("@types/eslint").Linter.Config} */
 module.exports = {
   root: true,
@@ -34,7 +36,7 @@ module.exports = {
     },
     'import/resolver': {
       typescript: {
-        project: 'packages/*/*/tsconfig.json',
+        project: [join(process.cwd(), 'tsconfig.json')],
       },
     },
   },
