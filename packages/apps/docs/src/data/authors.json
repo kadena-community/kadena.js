@@ -22,19 +22,22 @@
   },
   {
     "id": "albert.g",
-    "name": "Albert G",
+    "name": "Albert Groothedde",
     "avatar": "/assets/blog/author/pPSkZ_U7_400x400.jpg",
+    "description": "Architect DevEx at Kadena",
     "twitter": "alber70g"
   },
   {
     "id": "vivienne.chen",
     "name": "Vivienne Chen",
-    "avatar": "/assets/blog/author/1_tO1_tn1eDfjkiD4scQn9aQ.jpg"
+    "avatar": "/assets/blog/author/1_tO1_tn1eDfjkiD4scQn9aQ.jpg",
+    "twitter": "ViviennexChen"
   },
   {
     "id": "john.wiegley",
     "name": "John Wiegley",
     "avatar": "/assets/blog/author/9x9w3KVN_400x400.jpg",
+    "description": "Chief Technology Officer",
     "twitter": "jwiegley"
   },
   {
