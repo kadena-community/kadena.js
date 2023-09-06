@@ -1,8 +1,9 @@
 import { containerClass } from './NavFooter.css';
-import { INavFooterPanelProps } from './NavFooterPanel';
+import type { INavFooterPanelProps } from './NavFooterPanel';
 
 import { darkThemeClass } from '@theme/vars.css';
-import React, { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface INavFooterRootProps {
   children: FunctionComponentElement<INavFooterPanelProps>[];

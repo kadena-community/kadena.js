@@ -1,4 +1,8 @@
-import { getNextQuestion, IAnswers, IQuestion } from '../questions.ts';
+import {
+  type IAnswers,
+  type IQuestion,
+  getNextQuestion,
+} from '../questions.ts';
 
 const questions: IQuestion[] = [
   {

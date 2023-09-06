@@ -1,5 +1,6 @@
 import { Grid, Stack } from '@kadena/react-ui';
 
+import { baseGridClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -9,13 +10,18 @@ import {
 import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
-import { articleTopMetadataClass, bottomWrapperClass } from './Blog.css';
-import { ArticleMetadataItem, PageGrid } from './styles';
+import { ArticleMetadataItem } from './ArticleMetadataItem';
+import {
+  articleTopMetadataClass,
+  bottomWrapperClass,
+  pageGridClass,
+} from './styles.css';
 
-import { IPageProps } from '@/types/Layout';
+import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Blog: FC<IPageProps> = ({
   children,
@@ -31,15 +37,16 @@ export const Blog: FC<IPageProps> = ({
     contentClassVariants[frontmatter.layout] ?? '',
   );
 
+  const gridClassNames = classNames(globalClass, baseGridClass, pageGridClass);
+
   return (
-    <PageGrid className={globalClass}>
+    <div className={gridClassNames}>
       <Template menuItems={leftMenuTree} hideSideMenu layout="landing">
         <TitleHeader
           title="BlogChain"
           subTitle="The place where the blog meets the chain"
           icon="BlogChain"
         />
-
         <div id="maincontent" className={contentClassNames}>
           <article className={articleClass}>
             <div className={articleTopMetadataClass}>
@@ -74,7 +81,7 @@ export const Blog: FC<IPageProps> = ({
           </article>
         </div>
       </Template>
-    </PageGrid>
+    </div>
   );
 };
 

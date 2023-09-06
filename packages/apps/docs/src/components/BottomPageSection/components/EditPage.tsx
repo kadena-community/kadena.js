@@ -1,7 +1,8 @@
 import { Button } from '@kadena/react-ui';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   editLink?: string;

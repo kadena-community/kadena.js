@@ -1,7 +1,10 @@
-import { IInputProps, Input } from './Input';
-import { IInputGroupProps, InputGroup } from './InputGroup';
+import type { IInputProps } from './Input';
+import { Input } from './Input';
+import type { IInputGroupProps } from './InputGroup';
+import { InputGroup } from './InputGroup';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITextFieldProps
   extends Omit<IInputGroupProps, 'as' | 'children' | 'className'> {

@@ -7,7 +7,7 @@ import { NavFooterLink } from './NavFooterLink';
 import type { INavFooterPanelProps } from './NavFooterPanel';
 import { NavFooterPanel } from './NavFooterPanel';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 export {
   INavFooterRootProps,

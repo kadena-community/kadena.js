@@ -1,8 +1,9 @@
-import { ProductIcons } from '../ProductIcons';
+import type { ProductIcons } from '../ProductIcons';
 
 import { StyledBreadcrumbItem } from './styles';
 
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IBreadcrumbItem {
   children?: ReactNode;

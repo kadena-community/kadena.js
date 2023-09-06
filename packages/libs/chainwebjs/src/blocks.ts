@@ -5,7 +5,7 @@ import {
   recentHeaders,
 } from './headers';
 import { payloads } from './internal';
-import {
+import type {
   IBlockHeader,
   IBlockPayloadMap,
   IBlockPayloads,
@@ -13,7 +13,7 @@ import {
   ITransactionElement,
 } from './types';
 
-import EventSource from 'eventsource';
+import type EventSource from 'eventsource';
 
 /* ************************************************************************** */
 /* Blocks */

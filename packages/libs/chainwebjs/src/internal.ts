@@ -1,7 +1,7 @@
 import { currentCut } from './cut';
 import { pageIterator } from './paging';
 import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
-import {
+import type {
   IBlockHeader,
   IBlockPayload,
   ICoinbase,

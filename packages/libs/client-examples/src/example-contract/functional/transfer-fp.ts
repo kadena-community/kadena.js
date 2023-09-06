@@ -1,5 +1,5 @@
+import type { ChainId } from '@kadena/client';
 import {
-  ChainId,
   createTransaction,
   isSignedTransaction,
   Pact,

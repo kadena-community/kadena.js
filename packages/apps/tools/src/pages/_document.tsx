@@ -1,7 +1,8 @@
 import { bodyStyle } from './styles.css';
 
 import { Head, Html, Main, NextScript } from 'next/document';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 const Document: FC = () => {
   const TypedHead = Head as unknown as FC<{ children?: ReactNode }>;

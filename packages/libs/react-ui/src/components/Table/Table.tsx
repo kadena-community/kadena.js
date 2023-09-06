@@ -1,10 +1,11 @@
 import { tableClass } from './Table.css';
 import { TBody } from './TBody';
 import { THead } from './THead';
-import { CompoundType } from './types';
+import type { CompoundType } from './types';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITableProps {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;

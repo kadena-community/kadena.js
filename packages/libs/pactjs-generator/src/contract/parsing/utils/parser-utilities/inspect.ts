@@ -1,8 +1,9 @@
 import { wrapData } from '../dataWrapper';
-import { IPointer } from '../getPointer';
-import { ExceptKeywords } from '../typeUtilities';
+import type { IPointer } from '../getPointer';
+import type { ExceptKeywords } from '../typeUtilities';
 
-import { FAILED, IParser, rule, RuleReturn, RuleReturnType } from './rule';
+import type { IParser, RuleReturn, RuleReturnType } from './rule';
+import { FAILED, rule } from './rule';
 
 interface IInspector {
   /**

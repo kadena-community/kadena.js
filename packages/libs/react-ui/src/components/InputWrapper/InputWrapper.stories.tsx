@@ -1,8 +1,9 @@
 import { statusVariant } from './InputWrapper.css';
 
-import { SystemIcon } from '@components/Icon';
+import type { SystemIcon } from '@components/Icon';
 import { Input } from '@components/Input';
-import { IInputWrapperProps, InputWrapper } from '@components/InputWrapper';
+import type { IInputWrapperProps } from '@components/InputWrapper';
+import { InputWrapper } from '@components/InputWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';

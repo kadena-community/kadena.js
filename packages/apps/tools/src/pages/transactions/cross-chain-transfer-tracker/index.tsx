@@ -1,8 +1,8 @@
+import type { InputWrapperStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
   Button,
   Grid,
-  InputWrapperStatus,
   Notification,
   ProgressBar,
   Stack,
@@ -25,9 +25,9 @@ import Routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
+import type { IStatusData } from '@/services/transfer-tracker/get-transfer-status';
 import {
   getTransferStatus,
-  IStatusData,
   StatusId,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
@@ -35,14 +35,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { ChangeEventHandler, FC } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 

@@ -1,7 +1,7 @@
 import { dotenv } from '../utils/env.js';
 import { spawned } from '../utils/spawn.js';
 
-import { IAnswers, IQuestion } from './questions.js';
+import type { IAnswers, IQuestion } from './questions.js';
 
 import { readFileSync, writeFileSync } from 'fs';
 import { parse, stringify } from 'yaml';

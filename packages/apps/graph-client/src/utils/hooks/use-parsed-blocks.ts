@@ -1,4 +1,4 @@
-import { GetBlocksSubscription } from '../../__generated__/sdk';
+import type { GetBlocksSubscription } from '../../__generated__/sdk';
 
 import { useCallback, useState } from 'react';
 

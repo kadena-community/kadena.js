@@ -1,4 +1,4 @@
-import { IBlock } from '../../../utils/hooks/use-parsed-blocks';
+import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
 
 import { ChainwebHeader } from './../chainweb-header';
 import { ChainwebRow } from './../chainweb-row';

@@ -1,15 +1,19 @@
-import { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
 import { createClient } from '@kadena/client';
-import { IPactEvent, IPactExec, PactValue } from '@kadena/types';
+import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
-import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
+import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
 import Debug from 'debug';
-import { Translate } from 'next-translate';
+import type { Translate } from 'next-translate';
 
 interface ITransactionData {
   sender: { chain: ChainwebChainId; account: string };

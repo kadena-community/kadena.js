@@ -1,4 +1,4 @@
-import { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/types/Layout';
 import { useEffect, useState } from 'react';
 
 interface IReturn {

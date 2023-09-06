@@ -40,6 +40,14 @@ module.exports = {
     'import/newline-after-import': 'error',
     'import/no-unresolved': 'error',
     'json-files/sort-package-json': 'error',
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        fixStyle: 'separate-type-imports',
+        prefer: 'type-imports',
+      },
+    ],
+    'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
   },
   settings: {
     'import/parsers': {

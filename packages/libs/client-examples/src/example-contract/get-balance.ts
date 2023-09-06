@@ -1,7 +1,7 @@
 import { Pact } from '@kadena/client';
 
 import { dirtyRead } from './util/client';
-import { Account } from './util/keyFromAccount';
+import type { Account } from './util/keyFromAccount';
 
 const NETWORK_ID: string = 'testnet04';
 

@@ -5,9 +5,10 @@ import { FormatDate } from '../FormatDate';
 
 import { blogitem, footer, link, metaItem } from './styles.css';
 
-import { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/types/Layout';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   item: IMenuData;

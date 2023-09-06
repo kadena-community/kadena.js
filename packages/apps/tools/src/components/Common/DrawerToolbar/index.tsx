@@ -1,4 +1,5 @@
-import { IconButton, SystemIcon, Text } from '@kadena/react-ui';
+import type { SystemIcon } from '@kadena/react-ui';
+import { IconButton, Text } from '@kadena/react-ui';
 
 import {
   buttonWrapperClass,
@@ -8,14 +9,8 @@ import {
 } from './styles.css';
 
 import classNames from 'classnames';
-import React, {
-  type ReactNode,
-  forwardRef,
-  ForwardRefExoticComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import type { ForwardRefExoticComponent, ReactNode } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 
 export interface IDrawerToolbarSection {
   icon: keyof typeof SystemIcon;

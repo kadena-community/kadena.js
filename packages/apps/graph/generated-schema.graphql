@@ -55,6 +55,7 @@ type Query {
 
 type Subscription {
   newBlocks(chainIds: [Int!]): [Block!]
+  transaction(requestKey: String!): Transaction
 }
 
 type Transaction implements Node {

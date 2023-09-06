@@ -5,9 +5,8 @@ import {
 } from './errors';
 import { isClientAhead, isMajorCompatible, isMinorCompatible } from './semver';
 import SlidingCache from './sliding-cache';
-import {
+import type {
   ChainwebStreamType,
-  ConnectionState,
   IChainwebStreamConfig,
   IChainwebStreamConstructorArgs,
   IDebugMsgObject,
@@ -15,6 +14,7 @@ import {
   IInitialEvent,
   ITransaction,
 } from './types';
+import { ConnectionState } from './types';
 import { isNotUndefined } from './util';
 
 import EventEmitter from 'eventemitter2';

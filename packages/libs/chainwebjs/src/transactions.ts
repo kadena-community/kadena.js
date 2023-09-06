@@ -5,14 +5,14 @@ import {
   recentBlocks,
 } from './blocks';
 import { chainUpdates } from './headers';
-import {
+import type {
   IBlockHeader,
   IBlockPayloads,
   IRetryOptions,
   ITransactionElement,
 } from './types';
 
-import EventSource from 'eventsource';
+import type EventSource from 'eventsource';
 
 /**
  * Utility function to filter the transactions from an array of blocks

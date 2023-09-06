@@ -3,7 +3,8 @@ import { NavFooter, useModal } from '@kadena/react-ui';
 import { OptionsModal } from '@/components/Global/OptionsModal';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 const FooterWrapper: FC = () => {
   const { systemTheme, theme, setTheme } = useTheme();

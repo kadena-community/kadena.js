@@ -3,7 +3,8 @@ import { Text } from '@kadena/react-ui';
 import { figCaption, figure, figureImg } from './styles.css';
 
 import Image from 'next/image';
-import React, { FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 interface IProps {
   alt: string;

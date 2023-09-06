@@ -1,6 +1,7 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
+import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import Debug from 'debug';
 
 export interface ITransaction {

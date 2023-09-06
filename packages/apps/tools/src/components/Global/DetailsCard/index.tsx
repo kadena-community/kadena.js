@@ -9,7 +9,8 @@ import {
   StyledWarningContainer,
 } from './styles';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IDetailCardProps {
   firstTitle: string;

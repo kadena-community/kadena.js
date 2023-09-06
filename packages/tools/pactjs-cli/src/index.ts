@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { contractGenerateCommand } from './contract-generate';
 import { retrieveContractCommand } from './retrieve-contract';
 import { templateGenerateCommand } from './template-generate';

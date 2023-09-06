@@ -1,4 +1,4 @@
-import { Reducer } from './pact.js';
+import type { Reducer } from './pact.js';
 
 export type KAccount = string;
 export type Decimal = `${number}.${number}`;

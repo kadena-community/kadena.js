@@ -1,7 +1,7 @@
 import { Heading, TextField } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
-import { StyledTreeList } from '../TreeMenu/styles';
+import { TreeList } from '../TreeMenu/TreeList';
 
 import { ListLink, ShowOnMobile } from './components';
 import { MenuCard } from './MenuCard';
@@ -14,11 +14,12 @@ import {
 } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
-import { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { FC, KeyboardEvent } from 'react';
+import type { FC, KeyboardEvent } from 'react';
+import React from 'react';
 
 interface IProps {
   closeMenu: () => void;
@@ -100,9 +101,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <StyledTreeList role="list" root={true}>
+          <TreeList root={true}>
             <MainTreeItem item={activeItem} root={true} />
-          </StyledTreeList>
+          </TreeList>
         </MenuCard>
       )}
     </div>

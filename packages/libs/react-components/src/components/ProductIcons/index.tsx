@@ -17,7 +17,8 @@ import { Whitepapers } from './svgs/Whitepapers';
 import { ProductIconContainer } from './styles';
 
 import type { VariantProps } from '@stitches/react';
-import React, { SVGProps } from 'react';
+import type { SVGProps } from 'react';
+import React from 'react';
 
 export interface IProductIconProps {
   size?: VariantProps<typeof ProductIconContainer>['size'];

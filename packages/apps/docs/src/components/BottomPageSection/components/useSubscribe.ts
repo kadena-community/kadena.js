@@ -1,6 +1,7 @@
 import { isEmailValid } from '@/utils';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import type { ChangeEvent, MouseEvent } from 'react';
+import { useState } from 'react';
 
 interface IReturn {
   hasError: boolean;

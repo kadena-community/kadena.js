@@ -3,7 +3,8 @@ import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 import { contactLinkClass } from './styles.css';
 
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const NotFound: FC = () => {
   return (

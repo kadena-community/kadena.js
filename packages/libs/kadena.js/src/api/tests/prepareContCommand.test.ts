@@ -1,4 +1,4 @@
-import { ICommand } from '@kadena/types';
+import type { ICommand } from '@kadena/types';
 
 import { prepareContCommand } from '../prepareContCommand';
 

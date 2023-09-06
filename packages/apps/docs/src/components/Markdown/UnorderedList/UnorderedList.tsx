@@ -1,7 +1,8 @@
 import { ulListClass, ulListClassName } from './styles.css';
 
 import classNames from 'classnames';
-import React, { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 interface IProp {
   children: FunctionComponentElement<HTMLUListElement>[];

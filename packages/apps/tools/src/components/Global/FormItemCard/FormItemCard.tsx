@@ -5,7 +5,8 @@ import {
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
 import Link from 'next/link';
-import React, { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import React from 'react';
 
 export interface IFormItemCardProps {
   heading?: string;

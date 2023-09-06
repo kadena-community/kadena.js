@@ -1,4 +1,4 @@
-import { StreamMetaData } from '@7-docs/edge';
+import type { StreamMetaData } from '@7-docs/edge';
 
 export const removeUnnecessarySearchRecords = (
   arr: Partial<StreamMetaData>[] = [],

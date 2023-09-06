@@ -1,26 +1,28 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Heading } from '@kadena/react-ui';
-
+import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
-  ChainSelect,
-  FormStatus,
-  FormStatusNotification,
-} from '@/components/Global';
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Grid,
+  Heading,
+} from '@kadena/react-ui';
+
+import { buttonContainerClass, containerClass } from './styles.css';
+
+import type { FormStatus } from '@/components/Global';
+import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import {
-  StyledAccountForm,
-  StyledForm,
-  StyledFormButton,
-} from '@/pages/transactions/cross-chain-transfer-finisher/styles';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useCallback, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -120,12 +122,13 @@ const ExistingAccountFaucetPage: FC = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   return (
-    <div>
+    <section className={containerClass}>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <StyledForm onSubmit={handleSubmit(onFormSubmit)}>
+      <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
+      <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
@@ -133,20 +136,25 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <StyledAccountForm>
-          <Heading as="h3">Account</Heading>
+        <Card fullWidth>
+          <Heading as="h5">Account</Heading>
+          <Box marginBottom="$4" />
           <AccountNameField
             inputProps={register('name')}
             error={errors.name}
             label={t('The account name you would like to fund coins to')}
           />
-          <ChainSelect
-            onChange={onChainSelectChange}
-            value={chainID}
-            ariaLabel="Select Chain ID"
-          />
-        </StyledAccountForm>
-        <StyledFormButton>
+          <Grid.Root columns={2} marginTop="$4">
+            <Grid.Item>
+              <ChainSelect
+                onChange={onChainSelectChange}
+                value={chainID}
+                ariaLabel="Select Chain ID"
+              />
+            </Grid.Item>
+          </Grid.Root>
+        </Card>
+        <div className={buttonContainerClass}>
           <Button
             loading={requestStatus.status === 'processing'}
             icon="TrailingIcon"
@@ -156,9 +164,9 @@ const ExistingAccountFaucetPage: FC = () => {
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
           </Button>
-        </StyledFormButton>
-      </StyledForm>
-    </div>
+        </div>
+      </form>
+    </section>
   );
 };
 

@@ -8,8 +8,8 @@ const nextConfig = {
         source: '/graph',
         destination: 'http://localhost:4000/graphql',
       },
-    ]
+    ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

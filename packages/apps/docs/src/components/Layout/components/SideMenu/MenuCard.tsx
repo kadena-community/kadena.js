@@ -5,7 +5,8 @@ import {
 } from './menuCard.css';
 
 import classNames from 'classnames';
-import React, { FC, MouseEventHandler, ReactNode } from 'react';
+import type { FC, MouseEventHandler, ReactNode } from 'react';
+import React from 'react';
 
 export interface IMenuCardProps {
   children?: ReactNode;

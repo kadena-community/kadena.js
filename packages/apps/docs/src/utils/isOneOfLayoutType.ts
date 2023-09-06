@@ -1,5 +1,5 @@
-import { ILayout, LayoutType } from '@/types/Layout';
-import { FC } from 'react';
+import type { ILayout, LayoutType } from '@/types/Layout';
+import type { FC } from 'react';
 
 export const isOneOfLayoutType = (
   layout?: FC<ILayout> | LayoutType,
