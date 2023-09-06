@@ -14,16 +14,12 @@
     "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:ci": "pnpm run lint:versions && turbo run lint",
-    "lint:versions": "syncpack list-mismatches",
     "lint:fix-versions": "syncpack fix-mismatches",
-    "test": "turbo run test",
+    "lint:versions": "syncpack list-mismatches",
+    "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
-    "version": "changeset version",
-    "publish": "changeset publish"
-  },
-  "engines": {
-    "node": ">=16",
-    "pnpm": ">=8"
+    "test": "turbo run test",
+    "version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
@@ -33,5 +29,9 @@
     "syncpack": "^10.9.3",
     "tsx": "^3.12.8",
     "turbo": "^1.10.13"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=8"
   }
 }
