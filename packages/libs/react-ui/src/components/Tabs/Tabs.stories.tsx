@@ -23,7 +23,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          "The Tab component consists of three sub components:<br /><strong><Tabs.Root></strong> as the parent container<br /><strong><Tabs.Tab></strong> for each tab item<br /><strong><Tabs.Content></strong> for the tab content<br /><br /><strong>initialSelectedTab</strong><br />This optional prop can be used on the Root element to set the initially selected tab<br /><em>It defaults to `undefined` and has only been explcitly set to 'Skeletor' in the story code for demonstration purposes.</em>",
+          'The Tab component consists of three sub components:<br /><strong><Tabs.Root></strong> as the parent container<br /><strong><Tabs.Tab></strong> for each tab item<br /><strong><Tabs.Content></strong> for the tab content<br /><br /><em>This component has a controlled and uncontrolled state. When a currentTab is not provided, the component will track state internally.</em>',
       },
     },
   },
@@ -36,7 +36,7 @@ const meta: Meta<
         type: { summary: 'number' },
       },
     },
-    initialSelected: {
+    initialTab: {
       options: [
         ...['-'],
         ...Object.values(ExampleTabs),
@@ -44,6 +44,23 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      description:
+        'The default selected page <em>before</em> any interaction.<br /><small>Changing value will not trigger story re-render.</small>',
+      table: {
+        defaultValue: { summary: 'undefined' },
+        type: { summary: 'string | undefined' },
+      },
+    },
+    currentTab: {
+      options: [
+        ...[undefined],
+        ...Object.values(ExampleTabs),
+      ] as (keyof typeof ExampleTabs)[],
+      control: {
+        type: 'select',
+      },
+      description:
+        'Current active tab. Used when component is controlled.<br /><small>Set to make component controlled.</small>',
       table: {
         defaultValue: { summary: 'undefined' },
         type: { summary: 'string | undefined' },
@@ -58,15 +75,16 @@ type Story = StoryObj<ITabsContainerProps & { itemsCount: number }>;
 export const Primary: Story = {
   name: 'Tabs',
   args: {
-    itemsCount: 3,
-    initialSelected: 'Skeletor',
+    itemsCount: 6,
+    initialTab: 'Skeletor',
+    currentTab: undefined,
   },
-  render: ({ itemsCount, initialSelected }) => {
+  render: ({ itemsCount, initialTab, currentTab }) => {
     const tabs = ExampleTabs.slice(0, itemsCount);
 
     return (
       <>
-        <Tabs.Root initialSelected={initialSelected}>
+        <Tabs.Root initialTab={initialTab} currentTab={currentTab}>
           {tabs.map((tab) => {
             return (
               <Tabs.Tab key={tab} id={tab}>

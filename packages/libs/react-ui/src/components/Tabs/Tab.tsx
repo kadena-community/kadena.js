@@ -22,7 +22,7 @@ export const Tab: FC<ITabProps> = ({
     <button
       className={classNames(tabClass, { [selectedClass]: selected })}
       data-selected={selected}
-      data-tabId={id}
+      data-tab={id}
       onClick={() => handleClick(id)}
     >
       {children}
