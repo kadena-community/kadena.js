@@ -49,7 +49,7 @@ export const Select: FC<ISelectProps> = forwardRef<
       <select
         aria-label={ariaLabel}
         className={selectClass}
-        disabled={Boolean(disabled)}
+        disabled={disabled}
         ref={ref}
         {...rest}
       >
