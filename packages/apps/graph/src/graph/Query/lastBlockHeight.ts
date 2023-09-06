@@ -10,6 +10,11 @@ import { builder } from '../builder';
 
 import { PrismaClient } from '@prisma/client';
 
+import type { Debugger } from 'debug';
+import _debug from 'debug';
+
+const log: Debugger = _debug('graph:Query:lastBlockHeight');
+
 //   resolvers: {
 //     Query: {
 //       hello: (_, args) => {
@@ -52,6 +57,8 @@ builder.queryField('lastBlockHeight', (t) => {
           height: 'desc',
         },
       });
+
+      log('lastBlock found:', lastBlock?.height);
 
       return lastBlock?.height;
     },

@@ -3,6 +3,11 @@ import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
+import type { Debugger } from 'debug';
+import _debug from 'debug';
+
+const log: Debugger = _debug('graph:Query:completedBlockHeights');
+
 builder.queryField('completedBlockHeights', (t) => {
   return t.prismaField({
     args: {
@@ -28,6 +33,8 @@ builder.queryField('completedBlockHeights', (t) => {
         ORDER BY height DESC
         LIMIT ${heightCount}
       `) as { height: number }[];
+
+        log("found '%s' blocks", completedHeights.length);
 
         if (completedHeights.length > 0) {
           return prismaClient.block.findMany({
