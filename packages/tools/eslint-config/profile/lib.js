@@ -30,7 +30,6 @@ module.exports = {
     'import',
     'simple-import-sort',
     'prettier',
-    'json-files',
   ],
   rules: {
     '@kadena-dev/no-eslint-disable': 'error',
@@ -39,7 +38,6 @@ module.exports = {
     'prefer-template': 'warn',
     'import/newline-after-import': 'error',
     'import/no-unresolved': 'error',
-    'json-files/sort-package-json': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       {
