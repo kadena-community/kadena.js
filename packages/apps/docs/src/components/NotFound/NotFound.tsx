@@ -1,7 +1,5 @@
 import { Box, Button, Heading, Stack, Text } from '@kadena/react-ui';
 
-import { contactLinkClass } from './styles.css';
-
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
