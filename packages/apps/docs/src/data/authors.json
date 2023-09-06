@@ -1,0 +1,79 @@
+[
+  {
+    "id": "stuart.popejoy",
+    "name": "Stuart Popejoy",
+    "avatar": "/assets/blog/author/0*7v3eBBdJMUhXZOS5.jpg",
+    "description": "Founder & CEO",
+    "twitter": "SirLensALot"
+  },
+  {
+    "id": "doug.beardsley",
+    "name": "Doug Beardsley",
+    "avatar": "/assets/blog/author/2_Dzejz1S-maHLOsv5cCUwag.jpg",
+    "description": "Director of Engineering",
+    "twitter": "BlockchainDoug"
+  },
+  {
+    "id": "francesco.melpignano",
+    "name": "Francesco Melpignano",
+    "avatar": "/assets/blog/author/1_hNd0r9BoSeol3KIMwf-xMA.jpg",
+    "twitter": "fmelp"
+  },
+  {
+    "id": "andy",
+    "name": "Andy",
+    "avatar": "/assets/blog/author/1_Teql7zGu3DM2mC6AUllPKA.jpg",
+    "twitter": "andortang"
+  },
+  {
+    "id": "jermaine.jong",
+    "name": "Jermaine Jong",
+    "avatar": "/assets/blog/author/1__HBhgqdnPjVjeHbTyyPyqw.png"
+  },
+  {
+    "id": "randy.daal",
+    "name": "Randy Daal",
+    "avatar": "/assets/blog/author/0_2_kBwb7rVQJllQNc.jpg",
+    "description": "Chief Experience Officer @kadena_io",
+    "twitter": "Randynamic_4"
+  },
+  {
+    "id": "jose.cardona",
+    "name": "Jose Cardona",
+    "avatar": "/assets/blog/author/1_ALiUk3raSEw1gtztm3m5CA.jpg",
+    "twitter": "JM0x5C"
+  },
+  {
+    "id": "kadena",
+    "name": "Kadena",
+    "avatar": "/assets/blog/author/1_zsWMNRMN_q89DFsNndIlQg.png",
+    "description": "The only layer 1 PoW blockchain that scales.",
+    "twitter": "kadena_io"
+  },
+  {
+    "id": "heekyun",
+    "name": "Heekyun",
+    "avatar": "/assets/blog/author/nVQPAyBM_400x400.jpg",
+    "description": "Dev Experience @kadena_io PactJS and Pact Smart Contract Lead",
+    "twitter": "HeeKyunYun1"
+  },
+  {
+    "id": "robert.soeldner",
+    "name": "Robert Soeldner",
+    "avatar": "/assets/blog/author/1539106927599.jpeg",
+    "description": "Software Engineer"
+  },
+  {
+    "id": "emily.pillmore",
+    "name": "Emily Pillmore",
+    "avatar": "/assets/blog/author/1_jXvVh7IxTMUKYu9SJ41t5w.jpg",
+    "description": "M L E that's me",
+    "twitter": "yandereidiot"
+  },
+  {
+    "id": "ryan.levy",
+    "name": "Ryan Levy",
+    "avatar": "/assets/blog/author/1_7fvT3N8Q4CGJ72oIpd-s0Q.png",
+    "description": "Business Development | Partnerships | Go-To-Market | Blockchain | Web3 | Advisor | Mentor | Connecting the Dots"
+  }
+]

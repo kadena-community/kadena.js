@@ -11,6 +11,7 @@ menu: Project Spotlight - Swarms.Finance
 label: Project Spotlight - Swarms.Finance
 publishDate: 2023-08-11
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

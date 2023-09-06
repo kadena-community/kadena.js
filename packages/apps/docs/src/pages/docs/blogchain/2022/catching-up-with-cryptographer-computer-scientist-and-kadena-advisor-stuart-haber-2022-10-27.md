@@ -14,6 +14,7 @@ menu: Stuart Haber
 label: Stuart Haber
 publishDate: 2022-10-27
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

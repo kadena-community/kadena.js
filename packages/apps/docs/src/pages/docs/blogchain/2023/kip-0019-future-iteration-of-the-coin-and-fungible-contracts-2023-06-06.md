@@ -10,6 +10,7 @@ menu: KIP-0019 - Future Iteration of the Coin and Fungible Contracts
 label: KIP-0019 - Future Iteration of the Coin and Fungible Contracts
 publishDate: 2023-06-06
 author: Robert Soeldner
+authorId: robert.soeldner
 layout: blog
 ---
 

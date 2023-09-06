@@ -7,6 +7,7 @@ menu: The EVM Is Fundamentally Unsafe
 label: The EVM Is Fundamentally Unsafe
 publishDate: 2018-12-14
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

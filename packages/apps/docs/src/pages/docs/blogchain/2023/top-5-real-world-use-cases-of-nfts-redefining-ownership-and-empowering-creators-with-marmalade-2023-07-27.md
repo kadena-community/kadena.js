@@ -18,6 +18,7 @@ label:
   Creators with Marmalade
 publishDate: 2023-07-27
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

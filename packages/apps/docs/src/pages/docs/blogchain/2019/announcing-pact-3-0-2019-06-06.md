@@ -10,6 +10,7 @@ menu: Announcing Pact 3.0
 label: Announcing Pact 3.0
 publishDate: 2019-06-06
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

@@ -11,6 +11,7 @@ menu: What’s new in Chainweb 2.17
 label: What’s new in Chainweb 2.17
 publishDate: 2022-11-30
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

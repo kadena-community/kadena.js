@@ -10,6 +10,7 @@ menu: Curating the Kadena.js Dev Experience - 2022–2023
 label: Curating the Kadena.js Dev Experience - 2022–2023
 publishDate: 2023-01-13
 author: Randy Daal
+authorId: randy.daal
 layout: blog
 ---
 

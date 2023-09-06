@@ -11,6 +11,7 @@ menu: Introducing Kadena Eco
 label: Introducing Kadena Eco
 publishDate: 2022-07-26
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

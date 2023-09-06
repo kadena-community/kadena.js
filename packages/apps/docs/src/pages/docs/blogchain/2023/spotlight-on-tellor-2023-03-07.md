@@ -9,6 +9,7 @@ menu: Spotlight on Tellor
 label: Spotlight on Tellor
 publishDate: 2023-03-07
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

@@ -8,6 +8,7 @@ menu: AMA with The Goodfellas, May 13 2021 Transcript
 label: AMA with The Goodfellas, May 13 2021 Transcript
 publishDate: 2021-06-17
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

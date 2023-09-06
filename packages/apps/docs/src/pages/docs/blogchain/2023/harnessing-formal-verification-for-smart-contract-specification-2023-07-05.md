@@ -12,6 +12,7 @@ menu: Harnessing Formal Verification for Smart Contract Specification
 label: Harnessing Formal Verification for Smart Contract Specification
 publishDate: 2023-07-05
 author: Andy
+authorId: andy
 layout: blog
 ---
 

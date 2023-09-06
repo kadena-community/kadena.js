@@ -12,6 +12,7 @@ menu: Get to know Pact 4!
 label: Get to know Pact 4!
 publishDate: 2021-06-17
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 
