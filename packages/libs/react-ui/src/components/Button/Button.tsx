@@ -6,8 +6,8 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import cn from 'classnames';
-import type { ButtonHTMLAttributes, FC } from 'react';
-import React, { type ReactNode } from 'react';
+import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IButtonProps
   extends Omit<
