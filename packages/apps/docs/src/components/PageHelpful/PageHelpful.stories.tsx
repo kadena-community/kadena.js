@@ -2,7 +2,7 @@ import { ModalProvider } from '@kadena/react-ui';
 
 import { PageHelpful } from './PageHelpful';
 
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const selectOptions: string[] = ['p', 'span'];
@@ -31,7 +31,7 @@ export const Default: StoryObj = {
   render: () => (
     <ModalProvider>
       <div id="modalportal"></div>
-      <PageHelpful />
+      <PageHelpful editLink="/hello/world" />
     </ModalProvider>
   ),
 };
