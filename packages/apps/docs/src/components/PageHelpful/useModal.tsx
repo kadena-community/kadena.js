@@ -11,24 +11,29 @@ import { EditPage } from '../BottomPageSection/components/EditPage';
 
 import { modalWrapperClass, textAreaClass } from './styles.css';
 
-import React, { useCallback, useState } from 'react';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { usePathname } from 'next/navigation';
+import React, { useCallback, useRef } from 'react';
 
 interface IUseModalHookResult {
-  renderModalComponent(): void;
-  comment: string;
+  renderModalComponent: () => void;
+  comment?: string;
 }
 
 export default function useModal(editLink?: string): IUseModalHookResult {
   const { renderModal, clearModal } = useUIModal();
-  const [comment, setComment] = useState('');
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const pathname = usePathname();
 
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
-    setComment(e.target.value);
-  }
-
-  function handleSendFeedback(): void {
+  const closeModal = (): void => {
+    console.log('comment', inputRef?.current?.value);
+    analyticsEvent(EVENT_NAMES['click:page_helpful'], {
+      pagePath: pathname,
+      isPageHelpful: 'no',
+      comment: inputRef?.current?.value,
+    });
     clearModal();
-  }
+  };
 
   const renderModalComponent = useCallback((): void => {
     renderModal(
@@ -42,7 +47,7 @@ export default function useModal(editLink?: string): IUseModalHookResult {
               <Text>
                 Would you like to contribute to this page by editing it?
               </Text>
-              <EditPage editLink="hello/world" />
+              <EditPage editLink={editLink} />
             </Box>
           )}
           <Text>
@@ -52,19 +57,20 @@ export default function useModal(editLink?: string): IUseModalHookResult {
           <textarea
             name="feedback"
             className={textAreaClass}
-            onChange={handleChange}
+            ref={inputRef}
           ></textarea>
-          <Button variant="primary" onClick={handleSendFeedback}>
+          <Button variant="primary" onClick={closeModal}>
             Send Feedback
           </Button>
         </Stack>
       </div>,
+      undefined,
+      closeModal,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editLink]);
 
   return {
     renderModalComponent,
-    comment,
   };
 }

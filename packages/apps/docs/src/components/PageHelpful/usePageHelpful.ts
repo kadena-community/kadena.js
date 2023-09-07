@@ -1,29 +1,41 @@
 import useModal from './useModal';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface IPageHelpfulHookResult {
   handlePageHelpful(): void;
   handlePageNotHelpful(): void;
-  isPageHelpful: boolean | undefined;
+  isPageHelpful?: string | undefined;
 }
 
 export default function usePageHelpful(
   editLink?: string,
 ): IPageHelpfulHookResult {
   const { renderModalComponent } = useModal(editLink);
-  const [isPageHelpful, setIsPageHelpful] = useState<boolean | undefined>();
+  const pathname = usePathname();
+  const localStorageKey = `pageHelpfulVote${pathname}`;
+  const [isPageHelpful, setIsPageHelpful] = useState<string | undefined>();
+
+  useEffect(() => {
+    const isPageHelpful = localStorage.getItem(localStorageKey) ?? undefined;
+    setIsPageHelpful(isPageHelpful);
+    console.log('isPageHelpful', isPageHelpful);
+  }, [localStorageKey]);
+
   function handlePageHelpful(): void {
-    setIsPageHelpful(true);
+    setIsPageHelpful('up');
+    localStorage.setItem(localStorageKey, 'up');
     analyticsEvent(EVENT_NAMES['click:page_helpful'], {
-      pagePath: window.location.pathname,
-      isPageHelpful: 'true',
+      pagePath: pathname,
+      isPageHelpful: 'no',
     });
   }
 
   function handlePageNotHelpful(): void {
-    setIsPageHelpful(false);
+    localStorage.setItem(localStorageKey, 'down');
+    setIsPageHelpful('down');
     renderModalComponent();
   }
 
