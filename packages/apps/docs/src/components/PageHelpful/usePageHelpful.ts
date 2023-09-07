@@ -21,7 +21,6 @@ export default function usePageHelpful(
   useEffect(() => {
     const isPageHelpful = localStorage.getItem(localStorageKey) ?? undefined;
     setIsPageHelpful(isPageHelpful);
-    console.log('isPageHelpful', isPageHelpful);
   }, [localStorageKey]);
 
   function handlePageHelpful(): void {

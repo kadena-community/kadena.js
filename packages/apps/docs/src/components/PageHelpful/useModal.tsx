@@ -26,7 +26,6 @@ export default function useModal(editLink?: string): IUseModalHookResult {
   const pathname = usePathname();
 
   const closeModal = (): void => {
-    console.log('comment', inputRef?.current?.value);
     analyticsEvent(EVENT_NAMES['click:page_helpful'], {
       pagePath: pathname,
       isPageHelpful: 'no',
