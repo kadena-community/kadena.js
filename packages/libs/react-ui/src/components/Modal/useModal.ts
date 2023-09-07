@@ -4,12 +4,20 @@ import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
 interface IModalContext {
-  renderModal: (v: ReactNode, title?: string) => void;
+  renderModal: (
+    v: ReactNode,
+    title?: string,
+    onCloseCallback?: () => void,
+  ) => void;
   clearModal: () => void;
 }
 
 export const ModalContext = createContext<IModalContext>({
-  renderModal: (v: ReactNode, title?: string) => {},
+  renderModal: (
+    v: ReactNode,
+    title?: string,
+    onCloseCallback?: () => void,
+  ) => {},
   clearModal: () => {},
 });
 
