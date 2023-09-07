@@ -2,14 +2,21 @@ import type { ITableProps } from '@components/Table';
 import { Table } from '@components/Table';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { vars } from '@theme/vars.css';
 
-const meta: Meta<
-  {
-    rowCount: number;
-    columnCount: number;
-    striped: boolean;
-  } & ITableProps
-> = {
+const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
+  undefined,
+  ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
+];
+
+type StoryProps = {
+  rowCount: number;
+  columnCount: number;
+  striped: boolean;
+  columnWidth: keyof typeof vars.sizes | undefined;
+} & ITableProps;
+
+const meta: Meta<StoryProps> = {
   title: 'Components/Table',
   argTypes: {
     rowCount: {
@@ -21,17 +28,19 @@ const meta: Meta<
     striped: {
       control: { type: 'boolean' },
     },
+    columnWidth: {
+      options: selectOptions,
+      control: {
+        type: 'select',
+      },
+      description:
+        'Set value for padding property with pre-defined size values.',
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    rowCount: number;
-    columnCount: number;
-    striped: boolean;
-  } & ITableProps
->;
+type Story = StoryObj<StoryProps>;
 
 export const Primary: Story = {
   name: 'Table',
@@ -166,6 +175,42 @@ export const EmptyRowsTable: Story = {
             <Table.Td>1234</Table.Td>
           </Table.Tr>
           <Table.Tr></Table.Tr>
+        </Table.Body>
+      </Table.Root>
+    );
+  },
+};
+
+export const FixedColumnWidth: Story = {
+  name: 'Table with Fixed Column Width',
+  args: {
+    columnWidth: '$32',
+  },
+  render: ({ columnWidth }) => {
+    return (
+      <Table.Root wordBreak="break-word">
+        <Table.Head>
+          <Table.Tr>
+            <Table.Th width={columnWidth}>Fixed Width</Table.Th>
+            <Table.Th>Other Content</Table.Th>
+          </Table.Tr>
+        </Table.Head>
+        <Table.Body>
+          <Table.Tr>
+            <Table.Td>Fixed with content</Table.Td>
+            <Table.Td>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
+            </Table.Td>
+          </Table.Tr>
         </Table.Body>
       </Table.Root>
     );
