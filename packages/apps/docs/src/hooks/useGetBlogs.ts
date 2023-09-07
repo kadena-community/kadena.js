@@ -1,3 +1,5 @@
+import type { IIBlogLoadOptions } from './useBlog/utils';
+
 import type { IMenuData } from '@/types/Layout';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +11,7 @@ interface IReturn {
   data: IMenuData[];
 }
 
-export const useGetBlogs = (): IReturn => {
+export const useGetBlogs = ({ authorId }: IIBlogLoadOptions = {}): IReturn => {
   const limit = 10;
   const [offset, setOffset] = useState<number>(limit);
   const [isDone, setIsDone] = useState<boolean>(false);
@@ -22,7 +24,9 @@ export const useGetBlogs = (): IReturn => {
 
     if (isDone) return;
     try {
-      const result = await fetch(`/api/blog?offset=${offset}&limit=${limit}`);
+      const result = await fetch(
+        `/api/blog?offset=${offset}&limit=${limit}&authorId=${authorId}`,
+      );
       const items = (await result.json()) as IMenuData[];
       getData((v) => [...v, ...items]);
       setOffset((v) => v + limit);
