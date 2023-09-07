@@ -1,8 +1,8 @@
 import { thClass } from './Table.css';
+
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
-
 import type { FC } from 'react';
 import React from 'react';
 
