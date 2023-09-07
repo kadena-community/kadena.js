@@ -6,6 +6,7 @@ export const linkContainerClass = style([
   sprinkles({
     display: 'flex',
     gap: '$2',
+    color: '$primaryContrast',
   }),
   {
     selectors: {

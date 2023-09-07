@@ -57,21 +57,6 @@ export const linkContainerClass = style([
   {},
 ]);
 
-export const linkClass = style([
-  sprinkles({
-    color: '$blue80',
-
-    textDecoration: 'none',
-  }),
-  {
-    selectors: {
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-    },
-  },
-]);
-
 export const tagClass = style([
   sprinkles({
     margin: '$1',
