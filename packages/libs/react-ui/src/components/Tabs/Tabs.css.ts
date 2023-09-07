@@ -36,12 +36,11 @@ export const tabClass = style([
 
 export const selectedClass = style([
   sprinkles({
-    color: {
-      darkMode: '$primaryAccent',
-      lightMode: '$primarySurface',
-    },
     fontWeight: '$bold',
   }),
+  {
+    color: vars.colors.$primaryContrast,
+  },
 ]);
 
 export const selectorLine = style([
