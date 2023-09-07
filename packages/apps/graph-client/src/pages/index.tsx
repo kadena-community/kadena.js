@@ -38,7 +38,7 @@ const Home: React.FC = () => {
 
   const search = () => {
     if (searchType === 'request-key') {
-      router.push(`/request-key/${searchField}`);
+      router.push(`/transaction/${searchField}`);
     }
   };
 

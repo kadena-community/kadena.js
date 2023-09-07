@@ -59,11 +59,29 @@ type Subscription {
 }
 
 type Transaction implements Node {
+  badResult: String
   block: Block
+  chainId: BigInt!
   code: String
+  continuation: String
+  creationTime: DateTime!
   data: String
   gas: BigInt!
+  gasLimit: BigInt!
+  gasPrice: Float!
+  goodResult: String
+  height: BigInt!
   id: ID!
-  nonce: String!
-  reqKey: String! @deprecated(reason: "Use requestkey instead")
+  logs: String
+  metadata: String
+  nonce: String
+  numEvents: BigInt
+  pactId: String
+  proof: String
+  requestKey: String!
+  rollback: Boolean
+  sender: String
+  step: BigInt
+  ttl: BigInt!
+  txId: BigInt
 }

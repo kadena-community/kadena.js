@@ -31,13 +31,31 @@ export const CORE_BLOCK_FIELDS: DocumentNode = gql`
 
 export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   fragment CoreTransactionFields on Transaction {
+    id
+    # badResult
     # block
+    chainId
     # code
+    # continuation
+    creationTime
     # data
     gas
-    id
-    nonce
-    reqKey
+    gasLimit
+    gasPrice
+    # goodResult
+    height
+    # logs
+    # metadata
+    # nonce
+    # numEvents
+    # pactId
+    # proof
+    requestKey
+    # rollback
+    # sender
+    # step
+    ttl
+    # txId
   }
 `;
 
@@ -70,13 +88,36 @@ export const getBlocksSubscription: DocumentNode = gql`
   }
 `;
 
-
 export const getTransactionByRequestKey: DocumentNode = gql`
-  ${CORE_TRANSACTION_FIELDS}
-
-  subscription getTransaction($requestKey: String!) {
-    transaction (requestKey: $requestKey) {
-      ...CoreTransactionFields
+  subscription getTransactionByRequestKey($requestKey: String!) {
+    transaction(requestKey: $requestKey) {
+      id
+      badResult
+      block {
+        id
+      }
+      chainId
+      code
+      continuation
+      creationTime
+      data
+      gas
+      gasLimit
+      gasPrice
+      goodResult
+      height
+      logs
+      metadata
+      nonce
+      numEvents
+      pactId
+      proof
+      requestKey
+      rollback
+      sender
+      step
+      ttl
+      txId
     }
   }
 `;
