@@ -1,4 +1,5 @@
-import { mintCommand } from './mint';
+import { mintCommand } from './mintCommand';
+import { storeCommand } from './storeCommand';
 
 import { Command } from 'commander';
 
@@ -13,4 +14,5 @@ export function marmaladeCommandFactory(
     .description(`Tool for minting and managing NFTs with Marmalade`);
 
   mintCommand(marmaladeProgram, version);
+  storeCommand(marmaladeProgram, version);
 }
