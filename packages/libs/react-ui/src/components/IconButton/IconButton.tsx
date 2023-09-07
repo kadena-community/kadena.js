@@ -5,7 +5,10 @@ import type { FC } from 'react';
 import React from 'react';
 
 export interface IIconButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color' | 'className'> {
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'color' | 'className'
+  > {
   as?: 'button' | 'a';
   icon: keyof typeof SystemIcon;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;

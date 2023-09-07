@@ -1,3 +1,4 @@
+import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
 import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
@@ -22,6 +23,13 @@ export const container = style([
       '&:focus-visible': {
         outlineOffset: '2px',
         outline: `2px solid ${vars.colors.$neutral5}`,
+      },
+      '&:disabled': {
+        opacity: 0.7,
+        backgroundColor: colorPalette.$gray60,
+        color: colorPalette.$gray40,
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
       },
     },
   },
