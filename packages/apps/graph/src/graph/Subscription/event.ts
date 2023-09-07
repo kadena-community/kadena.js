@@ -24,7 +24,7 @@ builder.subscriptionField('event', (t) => {
 });
 
 async function* iteratorFn(
-  name: string,
+  eventName: string,
   chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(
     (__, i) => i,
   ),
@@ -33,7 +33,7 @@ async function* iteratorFn(
   while (true) {
     const event = await prismaClient.event.findMany({
       where: {
-        name: name,
+        qualname: eventName,
         chainid: {
           in: chainIds,
         },
