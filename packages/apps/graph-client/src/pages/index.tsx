@@ -1,4 +1,11 @@
-import { Button, Grid, Input, InputWrapper, Option, Select } from '@kadena/react-ui';
+import {
+  Button,
+  Grid,
+  Input,
+  InputWrapper,
+  Option,
+  Select,
+} from '@kadena/react-ui';
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
@@ -37,9 +44,7 @@ const Home: React.FC = () => {
   const [searchField, setSearchField] = useState<string>('');
 
   const search = () => {
-    if (searchType === 'request-key') {
-      router.push(`/request-key/${searchField}`);
-    }
+    router.push(`/${searchType}/${searchField}`);
   };
 
   useEffect(() => {
@@ -85,7 +90,8 @@ const Home: React.FC = () => {
               id="search-type"
               onChange={(event) => setSearchType(event.target.value)}
             >
-              <Option value="request-key">Request Key</Option>
+              <Option value={['request-key']}>Request Key</Option>
+              <Option value={['event']}>Event</Option>
             </Select>
           </Grid.Item>
           <Grid.Item>
