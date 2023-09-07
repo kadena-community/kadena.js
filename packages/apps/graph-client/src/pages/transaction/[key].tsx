@@ -1,18 +1,13 @@
+import { Notification, Table } from '@kadena/react-ui';
+
 import { useGetTransactionByRequestKeySubscription } from '../../__generated__/sdk';
+import Loader from '../../components/loader/loader';
 import { Text } from '../../components/text';
 import { styled } from '../../styles/stitches.config';
 
 import Head from 'next/head';
-import React from 'react';
 import { useRouter } from 'next/router';
-import Loader from '../../components/loader/loader';
-import {
-  Button,
-  Heading,
-  Notification,
-  SystemIcon,
-  Table,
-} from '@kadena/react-ui';
+import React from 'react';
 
 const StyledMain = styled('main', {
   display: 'flex',

@@ -1,4 +1,12 @@
-import { Button, Grid, Input, InputWrapper, Option, Select } from '@kadena/react-ui';
+import {
+  Button,
+  Grid,
+  Input,
+  InputWrapper,
+  Option,
+  Select,
+} from '@kadena/react-ui';
+
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
@@ -11,8 +19,8 @@ import { usePrevious } from '../utils/hooks/use-previous';
 
 import isEqual from 'lodash.isequal';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 const StyledMain = styled('main', {
   display: 'flex',
@@ -36,8 +44,9 @@ const Home: React.FC = () => {
   const [searchType, setSearchType] = useState<string>('request-key');
   const [searchField, setSearchField] = useState<string>('');
 
-  const search = () => {
+  const search = (): void => {
     if (searchType === 'request-key') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/transaction/${searchField}`);
     }
   };
