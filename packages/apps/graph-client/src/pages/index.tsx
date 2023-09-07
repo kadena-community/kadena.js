@@ -13,6 +13,7 @@ import {
 } from '../__generated__/sdk';
 import { ChainwebGraph } from '../components/chainweb';
 import { Text } from '../components/text';
+import { useChainTree } from '../context/chain-tree-context';
 import { styled } from '../styles/stitches.config';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
 import { usePrevious } from '../utils/hooks/use-previous';
@@ -50,6 +51,8 @@ const Home: React.FC = () => {
       router.push(`/transaction/${searchField}`);
     }
   };
+  
+  const { addBlockToChain } = useChainTree();
 
   useEffect(() => {
     if (
@@ -57,6 +60,9 @@ const Home: React.FC = () => {
       newBlocks?.newBlocks &&
       newBlocks?.newBlocks?.length > 0
     ) {
+      newBlocks.newBlocks.forEach(async (block) => {
+        addBlockToChain(block);
+      });
       addBlocks(newBlocks?.newBlocks);
     }
   }, [newBlocks, addBlocks, previousNewBlocks]);
@@ -67,6 +73,10 @@ const Home: React.FC = () => {
       recentBlocks?.completedBlockHeights &&
       recentBlocks?.completedBlockHeights?.length > 0
     ) {
+      recentBlocks.completedBlockHeights.forEach(async (block) => {
+        addBlockToChain(block);
+      });
+
       addBlocks(recentBlocks?.completedBlockHeights);
     }
   }, [recentBlocks, addBlocks, previousRecentBlocks]);
