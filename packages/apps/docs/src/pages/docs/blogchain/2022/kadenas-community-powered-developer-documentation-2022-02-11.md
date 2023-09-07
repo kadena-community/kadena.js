@@ -11,6 +11,7 @@ menu: Kadena’s Community-Powered Developer Documentation
 label: Kadena’s Community-Powered Developer Documentation
 publishDate: 2022-02-11
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

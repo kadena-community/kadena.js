@@ -8,7 +8,6 @@ import React from 'react';
 
 const meta: Meta<
   {
-    selectIcon: keyof typeof SystemIcon;
     text: string;
   } & IButtonProps
 > = {
@@ -44,7 +43,7 @@ const meta: Meta<
       control: {
         type: 'radio',
       },
-      if: { arg: 'selectIcon', neq: '-' },
+      if: { arg: 'icon', neq: '-' },
     },
     variant: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
@@ -98,6 +97,10 @@ const meta: Meta<
         type: 'boolean',
       },
       if: { arg: 'as', eq: 'button' },
+    },
+    asChild: {
+      description:
+        'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
     },
   },
 };

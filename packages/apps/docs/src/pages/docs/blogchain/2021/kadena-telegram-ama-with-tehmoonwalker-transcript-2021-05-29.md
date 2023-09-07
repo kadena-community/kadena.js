@@ -8,6 +8,7 @@ menu: AMA with TehMoonWalker, May 29 2021 Transcript
 label: AMA with TehMoonWalker, May 29 2021 Transcript
 publishDate: 2021-05-29
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

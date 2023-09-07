@@ -18,6 +18,7 @@ label:
   Announcing Bounty Program for Kadenaswap DEX
 publishDate: 2020-12-15
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

@@ -10,6 +10,7 @@ menu: Project Spotlight - KadenAI
 label: Project Spotlight - KadenAI
 publishDate: 2023-08-15
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

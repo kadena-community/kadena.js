@@ -11,6 +11,7 @@ menu: Security in Kadena’s Public Blockchain
 label: Security in Kadena’s Public Blockchain
 publishDate: 2018-11-01
 author: Monica Quaintance
+authorId: monica.quaintance
 layout: blog
 ---
 

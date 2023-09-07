@@ -7,6 +7,7 @@ menu: Blockchain is finally becoming the next-gen database of choice
 label: Blockchain is finally becoming the next-gen database of choice
 publishDate: 2019-07-30
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

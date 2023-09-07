@@ -11,6 +11,7 @@ menu: Kadena 2022 Year In Review
 label: Kadena 2022 Year In Review
 publishDate: 2022-12-22
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

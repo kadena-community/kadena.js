@@ -10,6 +10,7 @@ menu: Blockchain summer
 label: Blockchain summer
 publishDate: 2019-07-29
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

@@ -87,11 +87,11 @@ export const SearchResults: FC<IProps> = ({
 
   return (
     <section onClick={rememberTab}>
-      <Tabs.Root defaultSelected={selectedTabName}>
-        <Tabs.Tab value="docs">Docs Space </Tabs.Tab>
-        <Tabs.Tab value="qa">QA Space</Tabs.Tab>
+      <Tabs.Root initialTab={selectedTabName}>
+        <Tabs.Tab id="docs">Docs Space </Tabs.Tab>
+        <Tabs.Tab id="qa">QA Space</Tabs.Tab>
 
-        <Tabs.Content value="docs">
+        <Tabs.Content id="docs">
           <div className={scrollBoxClasses}>
             {semanticIsLoading && (
               <div className={loadingWrapperClass}>
@@ -134,7 +134,7 @@ export const SearchResults: FC<IProps> = ({
           </div>
         </Tabs.Content>
 
-        <Tabs.Content value="qa">
+        <Tabs.Content id="qa">
           <div className={scrollBoxClasses}>
             {isLoading && (
               <div className={loadingWrapperClass}>

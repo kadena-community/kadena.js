@@ -11,6 +11,7 @@ menu: Tech Bulletin #1 — March 3, 2023
 label: Tech Bulletin #1 — March 3, 2023
 publishDate: 2023-03-03
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

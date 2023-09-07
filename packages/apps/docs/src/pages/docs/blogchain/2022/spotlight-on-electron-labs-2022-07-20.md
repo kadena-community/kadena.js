@@ -9,6 +9,7 @@ menu: Spotlight On Electron Labs
 label: Spotlight On Electron Labs
 publishDate: 2022-07-20
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

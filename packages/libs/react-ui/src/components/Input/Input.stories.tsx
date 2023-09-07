@@ -33,13 +33,9 @@ const HTMLInputTypes: HTMLInputTypeAttribute[] = [
   'week',
 ];
 
-const meta: Meta<
-  {
-    leftIcon: keyof typeof SystemIcon;
-    type?: React.HTMLInputTypeAttribute;
-  } & IInputProps
-> = {
+const meta: Meta<IInputProps> = {
   title: 'Components/Input',
+  component: Input,
   parameters: {
     docs: {
       description: {

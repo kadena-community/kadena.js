@@ -6,20 +6,22 @@ import {
   Option,
   Select,
 } from '@kadena/react-ui';
+
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
 } from '../__generated__/sdk';
 import { ChainwebGraph } from '../components/chainweb';
 import { Text } from '../components/text';
+import { useChainTree } from '../context/chain-tree-context';
 import { styled } from '../styles/stitches.config';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
 import { usePrevious } from '../utils/hooks/use-previous';
 
 import isEqual from 'lodash.isequal';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 const StyledMain = styled('main', {
   display: 'flex',
@@ -43,9 +45,14 @@ const Home: React.FC = () => {
   const [searchType, setSearchType] = useState<string>('request-key');
   const [searchField, setSearchField] = useState<string>('');
 
-  const search = () => {
-    router.push(`/${searchType}/${searchField}`);
+  const search = (): void => {
+    if (searchType === 'request-key') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`/transaction/${searchField}`);
+    }
   };
+
+  const { addBlockToChain } = useChainTree();
 
   useEffect(() => {
     if (
@@ -53,6 +60,9 @@ const Home: React.FC = () => {
       newBlocks?.newBlocks &&
       newBlocks?.newBlocks?.length > 0
     ) {
+      newBlocks.newBlocks.forEach(async (block) => {
+        addBlockToChain(block);
+      });
       addBlocks(newBlocks?.newBlocks);
     }
   }, [newBlocks, addBlocks, previousNewBlocks]);
@@ -63,6 +73,10 @@ const Home: React.FC = () => {
       recentBlocks?.completedBlockHeights &&
       recentBlocks?.completedBlockHeights?.length > 0
     ) {
+      recentBlocks.completedBlockHeights.forEach(async (block) => {
+        addBlockToChain(block);
+      });
+
       addBlocks(recentBlocks?.completedBlockHeights);
     }
   }, [recentBlocks, addBlocks, previousRecentBlocks]);

@@ -12,6 +12,7 @@ menu: The Future of Multichain
 label: The Future of Multichain
 publishDate: 2022-04-19
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

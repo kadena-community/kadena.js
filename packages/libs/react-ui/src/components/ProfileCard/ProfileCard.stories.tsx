@@ -1,4 +1,3 @@
-import { Grid } from '@components/Grid';
 import type { IProfileCardProps } from '@components/ProfileCard';
 import { ProfileCard } from '@components/ProfileCard';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -51,30 +50,17 @@ export const Primary: Story = {
   },
   render: ({ name, title, tags, imageSrc, links }) => {
     return (
-      <Grid.Root columns={12}>
-        <Grid.Item columnSpan={6}>
-          <ProfileCard
-            name={'Tasos Bitsios'}
-            title={'Developer Experience Developer (DED)'}
-            tags={['Chainweb-stream', 'SSE']}
-            imageSrc={'https://avatars.githubusercontent.com/u/115649719?v=4'}
-            links={{
-              'Personal website': 'https://tasosbitsios.com',
-              Twitter: 'https://twitter.com/tasosbitsios',
-              'Custom link': 'https://kadena.io',
-            }}
-          />
-        </Grid.Item>
-        <Grid.Item columnSpan={6}>
-          <ProfileCard
-            name={name}
-            title={title}
-            tags={tags}
-            imageSrc={imageSrc}
-            links={links}
-          />
-        </Grid.Item>
-      </Grid.Root>
+      <ProfileCard
+        name={'Tasos Bitsios'}
+        title={'Developer Experience Developer (DED)'}
+        tags={['Chainweb-stream', 'SSE']}
+        imageSrc={'https://avatars.githubusercontent.com/u/115649719?v=4'}
+        links={{
+          'Personal website': 'https://tasosbitsios.com',
+          Twitter: 'https://twitter.com/tasosbitsios',
+          'Custom link': 'https://kadena.io',
+        }}
+      />
     );
   },
 };

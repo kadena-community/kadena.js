@@ -10,6 +10,7 @@ menu: Kadena Grant Recipient Massive to Launch NoPool
 label: Kadena Grant Recipient Massive to Launch NoPool
 publishDate: 2023-02-21
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

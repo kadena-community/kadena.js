@@ -17,6 +17,7 @@ label:
   Environment for Blockchain Builders
 publishDate: 2022-07-01
 author: John Wiegley
+authorId: john.wiegley
 layout: blog
 ---
 

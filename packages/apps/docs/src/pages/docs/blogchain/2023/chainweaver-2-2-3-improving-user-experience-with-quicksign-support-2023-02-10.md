@@ -9,6 +9,7 @@ menu: Chainweaver 2.2.3
 label: Chainweaver 2.2.3
 publishDate: 2023-02-10
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

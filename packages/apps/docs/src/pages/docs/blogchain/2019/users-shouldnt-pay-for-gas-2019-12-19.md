@@ -14,6 +14,7 @@ menu: Users Shouldn’t Pay for Gas
 label: Users Shouldn’t Pay for Gas
 publishDate: 2019-12-19
 author: Will Martino
+authorId: will.martino
 layout: blog
 ---
 

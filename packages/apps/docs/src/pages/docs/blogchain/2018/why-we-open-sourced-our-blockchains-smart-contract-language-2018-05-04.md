@@ -10,6 +10,7 @@ menu: Why We Open-Sourced Our Blockchain’s Smart Contract Language
 label: Why We Open-Sourced Our Blockchain’s Smart Contract Language
 publishDate: 2018-05-04
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

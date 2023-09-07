@@ -9,6 +9,7 @@ menu: USCF Collaborates with Kadena on Use of Blockchain in Investment Space
 label: USCF Collaborates with Kadena on Use of Blockchain in Investment Space
 publishDate: 2019-05-13
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

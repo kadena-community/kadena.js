@@ -6,6 +6,7 @@ menu: Gauntlet Study Finds Kadena Public Blockchain is Secure and Scalable
 label: Gauntlet Study Finds Kadena Public Blockchain is Secure and Scalable
 publishDate: 2019-09-06
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

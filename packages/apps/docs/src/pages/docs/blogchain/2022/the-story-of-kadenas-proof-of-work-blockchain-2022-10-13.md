@@ -10,6 +10,7 @@ menu: The Story of Kadena’s Proof of Work Blockchain
 label: The Story of Kadena’s Proof of Work Blockchain
 publishDate: 2022-10-13
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

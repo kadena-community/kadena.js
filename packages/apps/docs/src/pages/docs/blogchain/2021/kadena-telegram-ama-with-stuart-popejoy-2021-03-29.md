@@ -7,6 +7,7 @@ menu: Kadena Telegram AMA, March 29 2021
 label: Kadena Telegram AMA, March 29 2021
 publishDate: 2021-03-29
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
