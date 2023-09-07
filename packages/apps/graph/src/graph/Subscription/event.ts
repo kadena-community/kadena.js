@@ -15,11 +15,11 @@ builder.subscriptionField('event', (t) => {
       name: t.arg.string({ required: true }),
       chainIds: t.arg.intList({ required: false }),
     },
-    type: 'Event',
+    type: ['Event'],
     nullable: true,
     subscribe: (parent, args, context, info) =>
       iteratorFn(args.name, args.chainIds as number[] | undefined, context),
-    resolve: (__, event) => event,
+    resolve: (__, event) => event as Event[],
   });
 });
 
@@ -29,9 +29,9 @@ async function* iteratorFn(
     (__, i) => i,
   ),
   context: IContext,
-): AsyncGenerator<Event | undefined, void, unknown> {
+): AsyncGenerator<Event[] | undefined, void, unknown> {
   while (true) {
-    const event = await prismaClient.event.findFirst({
+    const event = await prismaClient.event.findMany({
       where: {
         name: name,
         chainid: {
@@ -43,7 +43,6 @@ async function* iteratorFn(
     if (event) {
       log('event found', event);
       yield event;
-      return;
     }
 
     log(`waiting for event ${name}`);

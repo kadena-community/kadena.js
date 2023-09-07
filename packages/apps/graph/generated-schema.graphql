@@ -68,7 +68,7 @@ type Query {
 }
 
 type Subscription {
-  event(chainIds: [Int!], name: String!): Event
+  event(chainIds: [Int!], name: String!): [Event!]
   newBlocks(chainIds: [Int!]): [Block!]
   transaction(requestKey: String!): Transaction
 }
