@@ -9,6 +9,7 @@ menu: Pact Tips Wrapper Contracts
 label: Pact Tips Wrapper Contracts
 publishDate: 2021-07-04
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

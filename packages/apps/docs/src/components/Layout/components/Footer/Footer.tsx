@@ -8,7 +8,8 @@ import { FooterText } from './FooterText';
 import { footerClass, footerWrapperClass } from './styles.css';
 
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Footer: FC = () => {
   return (

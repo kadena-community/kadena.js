@@ -15,6 +15,7 @@ label:
   Whitelist
 publishDate: 2019-05-13
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

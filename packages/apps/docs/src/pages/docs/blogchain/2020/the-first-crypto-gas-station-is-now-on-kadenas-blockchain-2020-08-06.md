@@ -11,6 +11,7 @@ menu: The First Crypto Gas Station is Now on Kadena’s Blockchain
 label: The First Crypto Gas Station is Now on Kadena’s Blockchain
 publishDate: 2020-08-06
 author: Taylor Rolfe
+authorId: taylor.rolfe
 layout: blog
 ---
 

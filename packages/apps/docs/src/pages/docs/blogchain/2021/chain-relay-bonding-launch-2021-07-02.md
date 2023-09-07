@@ -10,6 +10,7 @@ menu: Chain Relay Bonding Launch
 label: Chain Relay Bonding Launch
 publishDate: 2021-07-02
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

@@ -1,11 +1,13 @@
 import { asideListClass, asideListInnerVariants } from './styles.css';
 
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProps {
   children: ReactNode;
   inner?: boolean;
+  // eslint-disable-next-line @rushstack/no-new-null
   ref?: React.MutableRefObject<HTMLUListElement | null>;
 }
 

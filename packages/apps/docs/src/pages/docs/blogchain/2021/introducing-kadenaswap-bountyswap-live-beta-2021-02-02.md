@@ -9,6 +9,7 @@ menu: Introducing Kadenaswap “Bountyswap” Live Beta
 label: Introducing Kadenaswap “Bountyswap” Live Beta
 publishDate: 2021-02-02
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

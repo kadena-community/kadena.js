@@ -11,6 +11,7 @@ menu: Introducing Marmalade V2 - Empowering the Future of NFTs
 label: Introducing Marmalade V2 - Empowering the Future of NFTs
 publishDate: 2023-06-16
 author: Heekyun
+authorId: heekyun
 layout: blog
 ---
 

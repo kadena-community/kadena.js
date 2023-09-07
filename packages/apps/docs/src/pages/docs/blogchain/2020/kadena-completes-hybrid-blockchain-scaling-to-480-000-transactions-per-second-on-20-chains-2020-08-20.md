@@ -20,6 +20,7 @@ label:
   on 20 Chains
 publishDate: 2020-08-20
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

@@ -1,4 +1,4 @@
-import { IPactDecimal, IPactInt } from '@kadena/types';
+import type { IPactDecimal, IPactInt } from '@kadena/types';
 
 // in order to extends BigNumber methods correctly I had to add the PactNumber methods to the prototype of BigNumber
 // here we add those methods to the interface as well, then typescript also works

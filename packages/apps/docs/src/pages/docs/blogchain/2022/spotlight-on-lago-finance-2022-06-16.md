@@ -10,6 +10,7 @@ menu: Spotlight On Lago Finance
 label: Spotlight On Lago Finance
 publishDate: 2022-06-16
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

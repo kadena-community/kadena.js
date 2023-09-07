@@ -1,4 +1,4 @@
-import { vars } from '../../styles';
+import { vars, darkThemeClass } from '../../styles';
 
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';
@@ -31,13 +31,26 @@ export const containerClass = style([
 
 export const containerClassDisabled = style([
   sprinkles({
+    pointerEvents: 'none',
     backgroundColor: {
       lightMode: '$gray20',
+      darkMode: '$gray60',
     },
     color: {
       lightMode: '$foreground',
     },
   }),
+  {
+    opacity: 0.4,
+    selectors: {
+      '.inputGroup &': {
+        opacity: 1,
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
+      },
+    },
+  },
 ]);
 
 export const iconClass = style([

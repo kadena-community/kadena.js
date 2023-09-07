@@ -10,6 +10,7 @@ menu: Introducing Kadena Account Protocols (KIP-0012)
 label: Introducing Kadena Account Protocols (KIP-0012)
 publishDate: 2021-09-27
 author: Doug Beardsley
+authorId: doug.beardsley
 layout: blog
 ---
 

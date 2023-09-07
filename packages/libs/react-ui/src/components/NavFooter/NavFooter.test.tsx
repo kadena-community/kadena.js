@@ -1,4 +1,4 @@
-import { SystemIcon } from '@components/Icon';
+import type { SystemIcon } from '@components/Icon';
 import { NavFooter } from '@components/NavFooter';
 import { render } from '@testing-library/react';
 import React from 'react';

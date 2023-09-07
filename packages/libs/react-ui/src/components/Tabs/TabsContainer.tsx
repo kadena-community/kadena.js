@@ -4,18 +4,22 @@ import { Tab } from './Tab';
 import { TabContent } from './TabContent';
 import { selectorLine, tabsContainer, tabsContainerWrapper } from './Tabs.css';
 
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface ITabsContainerProps {
   children?: ReactNode;
-  defaultSelected?: string;
+  initialTab?: string;
+  currentTab?: string;
 }
 
 export const TabsContainer: FC<ITabsContainerProps> = ({
   children,
-  defaultSelected = '',
+  initialTab = undefined,
+  currentTab = undefined,
 }) => {
-  const [selectedTab, setSelectedTab] = useState<string>(defaultSelected);
+  const [_activeTab, setActiveTab] = useState(initialTab);
+  const activeTab = currentTab || _activeTab;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
 
@@ -41,24 +45,24 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
       'width',
       `${selected.offsetWidth}px`,
     );
-  }, [containerRef, selectedTab, selectedUnderlineRef]);
+  }, [containerRef, activeTab, selectedUnderlineRef]);
 
-  const handleClick = (value: string): void => {
-    setSelectedTab(value);
+  const handleClick = (tabId: string): void => {
+    setActiveTab(tabId);
   };
 
   return (
     <section>
       <div className={tabsContainerWrapper}>
         <div ref={containerRef} className={tabsContainer}>
-          {React.Children.map(children, (child, idx) => {
+          {React.Children.map(children, (child) => {
             if (!React.isValidElement(child)) return null;
 
             if (child.type === Tab) {
               const props = {
                 ...child.props,
-                key: child.props.value,
-                selected: selectedTab === child.props.value,
+                key: child.props.id,
+                selected: activeTab === child.props.id,
                 handleClick,
               };
               return React.cloneElement(child, props);
@@ -70,12 +74,12 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
         </div>
       </div>
 
-      {React.Children.map(children, (child, idx) => {
+      {React.Children.map(children, (child) => {
         if (!React.isValidElement(child)) return null;
 
         if (child.type === TabContent) {
           const props = {
-            selected: selectedTab === child.props.value,
+            selected: activeTab === child.props.id,
           };
           return React.cloneElement(child, props);
         }

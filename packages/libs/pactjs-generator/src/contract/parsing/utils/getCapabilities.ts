@@ -1,4 +1,4 @@
-import { ICapability, IModule } from '../pactParser';
+import type { ICapability, IModule } from '../pactParser';
 
 export const getCapabilityDetails = (
   module: IModule,

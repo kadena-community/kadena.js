@@ -11,6 +11,7 @@ menu: Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
 label: Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
 publishDate: 2019-01-23
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

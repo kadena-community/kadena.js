@@ -10,6 +10,7 @@ menu: Kadena’s WalletConnect Specification
 label: Kadena’s WalletConnect Specification
 publishDate: 2023-03-28
 author: Jermaine Jong
+authorId: jermaine.jong
 layout: blog
 ---
 

@@ -10,6 +10,7 @@ menu: Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)
 label: Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)
 publishDate: 2021-12-02
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

@@ -1,29 +1,33 @@
-import { linkBoxClass, linkClass } from './NavFooter.css';
+import { linkClass } from './NavFooter.css';
 
-import classNames from 'classnames';
-import React, { FC, HTMLAttributeAnchorTarget } from 'react';
+import type { FC, HTMLAttributeAnchorTarget } from 'react';
+import React, { ReactNode } from 'react';
 
 export type Target = '_self' | '_blank';
 export interface INavFooterLinkProps {
-  children: string;
+  children: ReactNode;
   href?: string;
   target?: HTMLAttributeAnchorTarget | undefined;
+  asChild?: boolean;
 }
 
 export const NavFooterLink: FC<INavFooterLinkProps> = ({
   children,
-  href,
-  target,
+  asChild = false,
+  ...restProps
 }) => {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      ...children.props,
+      className: linkClass,
+      children: children.props.children,
+    });
+  }
+
   return (
-    <div className={linkBoxClass} data-testid="kda-footer-link-item">
-      {href !== undefined ? (
-        <a className={classNames(linkClass)} href={href} target={target}>
-          {children}
-        </a>
-      ) : (
-        <span>{children}</span>
-      )}
-    </div>
+    <a className={linkClass} {...restProps} data-testid="kda-footer-link-item">
+      {children}
+    </a>
   );
 };

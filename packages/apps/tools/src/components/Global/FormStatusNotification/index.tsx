@@ -1,9 +1,11 @@
-import { INotificationProps, Notification } from '@kadena/react-ui';
+import type { INotificationProps } from '@kadena/react-ui';
+import { Notification } from '@kadena/react-ui';
 
 import { containerStyle } from './styles.css';
 
 import useTranslation from 'next-translate/useTranslation';
-import React, { type FC, useCallback, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 

@@ -11,6 +11,7 @@ menu: Intro to Kadena Namespaces
 label: Intro to Kadena Namespaces
 publishDate: 2023-01-11
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

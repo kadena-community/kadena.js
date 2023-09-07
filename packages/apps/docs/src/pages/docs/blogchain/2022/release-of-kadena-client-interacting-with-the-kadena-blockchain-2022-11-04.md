@@ -8,7 +8,8 @@ description:
 menu: Release of @kadena/client - Interacting with the Kadena Blockchain
 label: Release of @kadena/client - Interacting with the Kadena Blockchain
 publishDate: 2022-11-04
-author: Albert G
+author: Albert Groothedde
+authorId: albert.g
 layout: blog
 ---
 

@@ -1,8 +1,10 @@
-import { ITextFieldProps, TextField } from '@kadena/react-ui';
+import type { ITextFieldProps } from '@kadena/react-ui';
+import { TextField } from '@kadena/react-ui';
 
 import useTranslation from 'next-translate/useTranslation';
-import React, { type FC } from 'react';
-import { FieldError } from 'react-hook-form';
+import type { FC } from 'react';
+import React from 'react';
+import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
 export const RequestLength: { MIN: number; MAX: number } = { MIN: 43, MAX: 44 };

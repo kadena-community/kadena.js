@@ -10,6 +10,7 @@ menu: Why Mining & Private Blockchains Don’t Mix
 label: Why Mining & Private Blockchains Don’t Mix
 publishDate: 2019-02-06
 author: Will Martino
+authorId: will.martino
 layout: blog
 ---
 

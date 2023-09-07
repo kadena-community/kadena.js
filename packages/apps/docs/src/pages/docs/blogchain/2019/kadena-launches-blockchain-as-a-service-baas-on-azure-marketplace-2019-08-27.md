@@ -7,6 +7,7 @@ menu: Kadena Launches Blockchain-as-a-Service
 label: Kadena Launches Blockchain-as-a-Service
 publishDate: 2019-08-27
 author: Ben Jessel
+authorId: ben.jessel
 layout: blog
 ---
 

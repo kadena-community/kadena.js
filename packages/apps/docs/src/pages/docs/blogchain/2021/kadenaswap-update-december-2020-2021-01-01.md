@@ -8,6 +8,7 @@ menu: Kadenaswap Update December 2020
 label: Kadenaswap Update December 2020
 publishDate: 2021-01-01
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

@@ -7,6 +7,7 @@ menu: Announcement Kadena Public Blockchain Testnet LIVE
 label: Announcement Kadena Public Blockchain Testnet LIVE
 publishDate: 2019-03-26
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

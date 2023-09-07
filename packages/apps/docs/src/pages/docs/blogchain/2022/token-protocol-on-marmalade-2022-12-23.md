@@ -10,6 +10,7 @@ menu: Token Protocol on Marmalade
 label: Token Protocol on Marmalade
 publishDate: 2022-12-23
 author: Heekyun
+authorId: heekyun
 layout: blog
 ---
 

@@ -9,6 +9,7 @@ menu: Kadena Roadmap for Q2 2021
 label: Kadena Roadmap for Q2 2021
 publishDate: 2021-04-05
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

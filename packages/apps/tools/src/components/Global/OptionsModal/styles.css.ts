@@ -32,9 +32,3 @@ export const radioItemWrapperStyle = style([
     cursor: 'pointer',
   }),
 ]);
-
-export const largeIconStyle = style([
-  sprinkles({
-    size: '$lg',
-  }),
-]);

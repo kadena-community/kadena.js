@@ -12,6 +12,7 @@ menu: IoT Devices
 label: IoT Devices
 publishDate: 2023-06-08
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

@@ -1,6 +1,9 @@
 import { darkThemeClass, sprinkles } from '@kadena/react-ui/theme';
 
-import { $$pageWidth } from '@/components/Layout/global.css';
+import {
+  $$backgroundOverlayColor,
+  $$pageWidth,
+} from '@/components/Layout/global.css';
 import { style } from '@vanilla-extract/css';
 
 export const mostPopularWrapper = style([
@@ -61,7 +64,7 @@ export const wrapperClass = style([
   }),
   {
     maxWidth: $$pageWidth,
-    backgroundColor: 'rgba(250,250,250, .8)',
+    backgroundColor: $$backgroundOverlayColor,
   },
 ]);
 

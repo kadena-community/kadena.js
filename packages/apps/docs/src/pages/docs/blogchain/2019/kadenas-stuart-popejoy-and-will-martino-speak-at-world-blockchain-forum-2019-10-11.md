@@ -7,6 +7,7 @@ menu: Kadena’s Stuart Popejoy and Will Martino Speak at World Blockchain Forum
 label: Kadena’s Stuart Popejoy and Will Martino Speak at World Blockchain Forum
 publishDate: 2019-10-11
 author: Rebecca Rodriguez
+authorId: rebecca.rodriguez
 layout: blog
 ---
 

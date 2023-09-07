@@ -7,8 +7,8 @@
 import BigNumber from 'bignumber.js';
 import type { ICommand } from '@kadena/types';
 import type { IUnsignedCommand } from '@kadena/types';
-import { PactCode } from '@kadena/types';
-import { PactValue } from '@kadena/types';
+import type { PactCode } from '@kadena/types';
+import type { PactValue } from '@kadena/types';
 
 // @alpha
 export function createExp(firstArg: string, ...args: PactValue[]): PactCode;

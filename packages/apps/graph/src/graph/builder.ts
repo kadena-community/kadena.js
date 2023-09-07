@@ -10,7 +10,7 @@ import {
   DateTimeResolver,
   PositiveFloatResolver,
 } from 'graphql-scalars';
-import { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'http';
 
 interface IDefaultTypesExtension {
   Scalars: {

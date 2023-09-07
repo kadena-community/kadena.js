@@ -9,6 +9,7 @@ menu: Introducing the Kadena Live Roadmap
 label: Introducing the Kadena Live Roadmap
 publishDate: 2021-07-30
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

@@ -15,6 +15,7 @@ label:
   Kadena Eco is excited to present a new developer experience with Kadena.JS.
 publishDate: 2022-07-15
 author: Randy Daal
+authorId: randy.daal
 layout: blog
 ---
 
@@ -23,8 +24,7 @@ layout: blog
 # Kadena Eco is excited to present a new developer experience with Kadena.JS.
 
 > _“Coming together is a beginning, staying together is progress, and working
-> together is success.”  
-> Henry Ford_
+> together is success.” Henry Ford_
 
 We’re on the verge of a new and improved front-end experience at Kadena! It’s
 time to let the community in on how our innovation network, Kadena Eco, is

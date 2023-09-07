@@ -5,7 +5,8 @@ import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
@@ -71,7 +72,7 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
     <Box marginY="$10">
       <ul className={staticResultsListClass}>
         {limitedResults.map((item) => {
-          return <Item item={item} key={item.filePath} />;
+          return <Item item={item} key={`${item.filePath} + ${item.header}`} />;
         })}
       </ul>
     </Box>

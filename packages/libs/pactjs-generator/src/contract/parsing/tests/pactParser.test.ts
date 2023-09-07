@@ -7,7 +7,7 @@ describe('pactParser', () => {
         (defun transfer:string (sender:string receiver:string amount:number))
       )`;
 
-    const getContract = (name: string): Promise<string> => Promise.resolve('');
+    const getContract = (): Promise<string> => Promise.resolve('');
     const modules = await pactParser({ files: [contract], getContract });
     expect(Object.keys(modules)).toHaveLength(1);
     const coin = modules.coin;
@@ -19,7 +19,7 @@ describe('pactParser', () => {
   it('should throw an exception if the content is not parsable as a contract', async () => {
     const contract = `this is an invalid syntax`;
 
-    const getContract = (name: string): Promise<string> => Promise.resolve('');
+    const getContract = (): Promise<string> => Promise.resolve('');
     await expect(() =>
       pactParser({ files: [contract], getContract }),
     ).rejects.toEqual(Error('NO_MODULE_LOADED'));
@@ -89,7 +89,7 @@ describe('pactParser', () => {
       (use test_namespace.another_contract)
       `;
 
-    const getContract = (name: string): Promise<string> => Promise.resolve('');
+    const getContract = (): Promise<string> => Promise.resolve('');
     const modules = await pactParser({ files: [contract], getContract });
     expect(Object.keys(modules)).toHaveLength(1);
     const testModule = modules.test_module;
@@ -112,7 +112,7 @@ describe('pactParser', () => {
       )
       `;
 
-    const getContract = (name: string): Promise<string> => Promise.resolve('');
+    const getContract = (): Promise<string> => Promise.resolve('');
     const modules = await pactParser({ files: [contract], getContract });
     expect(Object.keys(modules)).toHaveLength(1);
     const testModule = modules.test_module;
@@ -136,7 +136,7 @@ describe('pactParser', () => {
       )
       `;
 
-    const getContract = (name: string): Promise<string> => Promise.resolve('');
+    const getContract = (): Promise<string> => Promise.resolve('');
     const modules = await pactParser({ files: [contract], getContract });
     expect(Object.keys(modules)).toHaveLength(3);
     const testModule = modules.test_module;

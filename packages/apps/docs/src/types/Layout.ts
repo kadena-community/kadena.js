@@ -1,7 +1,7 @@
-import { ProductIcon } from '@kadena/react-ui';
+import type { ProductIcon } from '@kadena/react-ui';
 
-import { ITopDoc } from '@/data/getTopDocs';
-import { ReactNode } from 'react';
+import type { ITopDoc } from '@/data/getTopDocs';
+import type { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -44,11 +44,20 @@ export interface IBasePageMeta {
   lastModifiedDate?: Date;
 }
 
+export interface IAuthorInfo {
+  id: string;
+  name: string;
+  avatar: string;
+  description?: string;
+  twitter?: string;
+}
 export interface IPageMeta extends IBasePageMeta {
   editLink: string;
   navigation: INavigation;
   publishDate?: string;
   author?: string;
+  authorId?: string;
+  authorInfo?: IAuthorInfo;
   readingTimeInMinutes?: number;
   wordCount?: number;
 }

@@ -9,6 +9,7 @@ menu: The Advantages of Kadena’s Proof-of-Work Mining
 label: The Advantages of Kadena’s Proof-of-Work Mining
 publishDate: 2023-02-03
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

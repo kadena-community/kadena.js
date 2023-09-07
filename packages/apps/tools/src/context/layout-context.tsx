@@ -1,11 +1,6 @@
-import { ISidebarToolbarItem } from '@/types/Layout';
-import React, {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import type { ISidebarToolbarItem } from '@/types/Layout';
+import type { PropsWithChildren } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface ILayoutContext {
   toolbar: ISidebarToolbarItem[];

@@ -11,6 +11,7 @@ menu: Kadena Roadmap for Q1-Q2 2020
 label: Kadena Roadmap for Q1-Q2 2020
 publishDate: 2020-04-08
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

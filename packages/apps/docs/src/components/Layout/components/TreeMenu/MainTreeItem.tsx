@@ -1,8 +1,10 @@
 import { Item } from './Item';
-import { StyledButton, StyledTreeList } from './styles';
+import { TreeButton } from './TreeButton';
+import { TreeList } from './TreeList';
 
-import { IMenuItem, LevelType } from '@/types/Layout';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import type { IMenuItem, LevelType } from '@/types/Layout';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface IProps {
   item: IMenuItem;
@@ -67,25 +69,20 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
       )}
       {!root && hasSubmenu ? (
         <li key={item.root} ref={ref}>
-          <StyledButton
-            data-active={menuOpen}
+          <TreeButton
             onClick={() => setMenuOpen((v) => !v)}
             level={`l${level}`}
             menuOpen={menuOpen}
           >
             {item.menu}
-          </StyledButton>
+          </TreeButton>
 
-          <StyledTreeList
-            role="list"
-            menuOpen={menuOpen}
-            level={`l${nextLevel()}`}
-          >
+          <TreeList menuOpen={menuOpen} level={`l${nextLevel()}`}>
             {!root && <Item item={item} level={nextLevel()} />}
             {item.children?.map((v) => {
               return <MainTreeItem key={v.root} level={nextLevel()} item={v} />;
             })}
-          </StyledTreeList>
+          </TreeList>
         </li>
       ) : (
         <>{!root && <Item item={item} level={level} />}</>

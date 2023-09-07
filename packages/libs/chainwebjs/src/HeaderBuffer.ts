@@ -1,4 +1,4 @@
-import { IBufferHeader } from './types';
+import type { IBufferHeader } from './types';
 
 export class HeaderBuffer {
   public depth: number;

@@ -1,23 +1,20 @@
-import {
+import type {
   ICommandResult,
   ILocalCommandResult,
   ILocalOptions,
   IPollResponse,
-  listen,
-  local,
   LocalRequestBody,
   LocalResponse,
-  poll,
-  send,
 } from '@kadena/chainweb-node-client';
-import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import { listen, local, poll, send } from '@kadena/chainweb-node-client';
+import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
-import { IPactCommand } from '../interfaces/IPactCommand';
+import type { IPactCommand } from '../interfaces/IPactCommand';
 
 import { runPact } from './api/runPact';
 import { getSpv, pollSpv } from './api/spv';
 import { pollStatus } from './api/status';
-import {
+import type {
   INetworkOptions,
   IPollOptions,
   IPollRequestPromise,

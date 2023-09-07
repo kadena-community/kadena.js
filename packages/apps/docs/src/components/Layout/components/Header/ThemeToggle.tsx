@@ -1,8 +1,12 @@
-import { IconButton } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 
-import { useTheme } from '@/hooks';
+import { headerButtonClass, iconButtonClass } from './styles.css';
+
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import React, { FC, useEffect, useState } from 'react';
+import classNames from 'classnames';
+import { useTheme } from 'next-themes';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const ThemeToggle: FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -23,11 +27,12 @@ export const ThemeToggle: FC = () => {
   if (!isMounted) return null;
 
   return (
-    <IconButton
-      title="Toggle theme"
+    <button
       onClick={toggleTheme}
-      icon="ThemeLightDark"
-      color="inverted"
-    />
+      title="Go to our Twitter"
+      className={classNames(headerButtonClass, iconButtonClass)}
+    >
+      <SystemIcon.ThemeLightDark />
+    </button>
   );
 };

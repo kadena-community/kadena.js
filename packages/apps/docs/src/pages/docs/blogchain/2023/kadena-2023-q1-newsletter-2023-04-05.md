@@ -10,6 +10,7 @@ menu: Kadena 2023 Q1 Newsletter
 label: Kadena 2023 Q1 Newsletter
 publishDate: 2023-04-05
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

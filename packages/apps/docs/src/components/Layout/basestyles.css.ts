@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import {
   $$backgroundOverlayColor,
@@ -6,7 +6,18 @@ import {
   $$pageWidth,
 } from './global.css';
 
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
+
+globalStyle('html, body', {
+  backgroundColor: vars.colors.$background,
+});
+
+globalStyle('a', {
+  color: vars.colors.$primaryContrast,
+});
+globalStyle('a:hover', {
+  color: vars.colors.$primaryHighContrast,
+});
 
 export const basebackgroundClass = style([
   sprinkles({

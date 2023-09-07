@@ -1,8 +1,10 @@
 import { unwrapData } from './utils/dataWrapper';
 import { getCapabilities } from './utils/getCapabilities';
-import { getBlockPointer, getPointer, IPointer } from './utils/getPointer';
+import type { IPointer } from './utils/getPointer';
+import { getBlockPointer, getPointer } from './utils/getPointer';
 import { functionCalls, parser } from './utils/pactGrammar';
-import { getModuleFullName, IModuleLike } from './utils/utils';
+import type { IModuleLike } from './utils/utils';
+import { getModuleFullName } from './utils/utils';
 
 interface ISchema {
   name: string;

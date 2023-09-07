@@ -1,9 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface ITabContentProps {
   children: ReactNode;
   selected?: boolean;
-  value: string;
+  id: string;
 }
 
 export const TabContent: FC<ITabContentProps> = ({

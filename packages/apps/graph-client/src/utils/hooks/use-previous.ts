@@ -1,4 +1,5 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
+import type { MutableRefObject } from 'react';
+import { useEffect, useRef } from 'react';
 
 // REF: https://usehooks.com/usePrevious/
 export function usePrevious<T>(value: T): T {
