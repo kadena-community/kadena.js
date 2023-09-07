@@ -3,6 +3,11 @@ import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
+import type { Debugger } from 'debug';
+import _debug from 'debug';
+
+const log: Debugger = _debug('graph:Query:blocksFromHeight');
+
 builder.queryField('blocksFromHeight', (t) => {
   return t.prismaField({
     args: {
@@ -20,7 +25,7 @@ builder.queryField('blocksFromHeight', (t) => {
         chainIds = Array.from(new Array(dotenv.CHAIN_COUNT)).map((__, i) => i),
       },
     ) => {
-      return prismaClient.block.findMany({
+      const blocksFromHeight = await prismaClient.block.findMany({
         where: {
           AND: [
             {
@@ -36,6 +41,9 @@ builder.queryField('blocksFromHeight', (t) => {
           ],
         },
       });
+
+      log("found '%s' blocks", blocksFromHeight.length);
+      return blocksFromHeight;
     },
   });
 });

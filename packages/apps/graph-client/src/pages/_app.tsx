@@ -1,13 +1,16 @@
-import '../styles/globals.css';
+import { ChainTreeContextProvider } from '../context/chain-tree-context';
 
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import type { ComponentType } from 'react';
 import React from 'react';
+
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
+
+import '../styles/globals.css';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   link: new YogaLink({
@@ -22,7 +25,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   return (
     <ApolloProvider client={client}>
-      <ReactComponent {...pageProps} />
+      <ChainTreeContextProvider>
+        <ReactComponent {...pageProps} />
+      </ChainTreeContextProvider>
     </ApolloProvider>
   );
 }
