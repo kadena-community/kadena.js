@@ -144,4 +144,23 @@ describe('pactParser', () => {
     expect(testModule.usedModules).toHaveLength(1);
     expect(testModule.usedModules).toEqual([{ name: 'first_module' }]);
   });
+  it('should parse a contract with power symbol "^"', async () => {
+    const contract = `
+      (module test_module GOVERNANCE
+        (defun test_fun:string (a:integer p:integer)
+           (^ a p)
+        )
+      )
+      `;
+
+    const getContract = (): Promise<string> => Promise.resolve('');
+    const modules = await pactParser({ files: [contract], getContract });
+    expect(Object.keys(modules)).toHaveLength(1);
+    const testModule = modules.test_module;
+    expect(testModule).toBeDefined();
+    expect(testModule.name).toBe('test_module');
+    expect(testModule.kind).toBe('module');
+    expect(testModule.functions).toHaveLength(1);
+    expect(testModule.functions![0].name).toBe('test_fun');
+  });
 });
