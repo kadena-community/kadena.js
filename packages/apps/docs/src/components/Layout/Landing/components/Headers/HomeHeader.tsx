@@ -24,13 +24,11 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
     e.preventDefault();
-    console.log(232342434);
     const value = e.currentTarget.value;
     if (e.key === 'Enter') {
       analyticsEvent(EVENT_NAMES['click:mobile_search'], {
         query: value,
       });
-      console.log(323444444);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/search?q=${value}`);
       e.currentTarget.value = '';
