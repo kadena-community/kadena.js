@@ -5,7 +5,8 @@
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"sleep 3; pnpm run generate:sdk -w\"",
-    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
+    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\"",
+    "dev:all:generate": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
     "format": "pnpm run /^format:.*/",
     "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -17,6 +18,7 @@
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && pnpm run start",
+    "start:graph:generate": "cd ../graph && pnpm run start:generate",
     "test": "echo \"No tests yet.\""
   },
   "dependencies": {

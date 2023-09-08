@@ -1,8 +1,8 @@
 import { activeLinkClass, linkClass } from './NavHeader.css';
 
 import classNames from 'classnames';
-import React from 'react';
 import type { FC, HTMLAttributeAnchorTarget, ReactNode } from 'react';
+import React from 'react';
 
 export interface INavHeaderLinkProps {
   active?: boolean;

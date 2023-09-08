@@ -1,4 +1,4 @@
-import { vars, darkThemeClass } from '../../styles';
+import { darkThemeClass, vars } from '../../styles';
 
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';

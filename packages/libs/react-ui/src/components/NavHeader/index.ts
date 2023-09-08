@@ -2,7 +2,8 @@ import type { INavHeaderRootProps } from './NavHeader';
 import { NavHeaderContainer } from './NavHeader';
 import type { INavHeaderContentProps } from './NavHeaderContent';
 import { NavHeaderContent } from './NavHeaderContent';
-import { NavHeaderLink, type INavHeaderLinkProps } from './NavHeaderLink';
+import type { INavHeaderLinkProps } from './NavHeaderLink';
+import { NavHeaderLink } from './NavHeaderLink';
 import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
 import { NavHeaderNavigation } from './NavHeaderNavigation';
 
