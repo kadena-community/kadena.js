@@ -1,4 +1,9 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import {
+  breakpoints,
+  darkThemeClass,
+  sprinkles,
+  vars,
+} from '@kadena/react-ui/theme';
 
 import {
   $$backgroundOverlayColor,
@@ -11,16 +16,17 @@ export const mostPopularWrapper = style([
     display: 'flex',
   }),
   {
-    paddingLeft: 0,
+    paddingLeft: vars.sizes.$1,
     '@media': {
-      [`screen and (min-width: ${768 / 16}rem)`]: {
-        paddingLeft: '60px',
+      [`screen and ${breakpoints.lg}`]: {
+        paddingLeft: vars.sizes.$15,
       },
-      [`screen and (min-width: ${1024 / 16}rem)`]: {
-        paddingLeft: '120px',
+
+      [`screen and ${breakpoints.xl}`]: {
+        paddingLeft: vars.sizes.$48,
       },
-      [`screen and (min-width: ${1280 / 16}rem)`]: {
-        paddingLeft: '160px',
+      [`screen and ${breakpoints.xxl}`]: {
+        paddingLeft: vars.sizes.$64,
       },
     },
   },
