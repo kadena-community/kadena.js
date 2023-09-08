@@ -1,5 +1,5 @@
 import { menuData } from '@/_generated/menu.mjs';
-import { getInitBlogPosts } from '@/hooks/useBlog/utils';
+import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import type { IResponseError } from '@/types';
 import type { IMenuData } from '@/types/Layout';
 import type { NextApiRequest, NextApiResponse } from 'next';

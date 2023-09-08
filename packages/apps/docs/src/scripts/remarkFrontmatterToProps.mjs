@@ -20,14 +20,6 @@ const getBlogAuthorInfo = (data) => {
   return authors.find((author) => author.id === authorId);
 };
 
-const getModifiedDate = (file) => {
-  const stats = fs.statSync(file);
-  if (!stats.isFile() || !stats.mtimeMs) return;
-
-  const date = new Date(stats.mtimeMs);
-  return date.toISOString();
-};
-
 const getFileName = (file) => {
   if (file.history.length === 0) return '';
   return file.history[0];
@@ -65,7 +57,9 @@ const createNavigation = (file) => {
   const path = getPathName(getFileName(file));
   const flatData = getData().reduce(flat, []).flat();
 
-  const itemIdx = flatData.findIndex((i) => i.root === path);
+  const itemIdx = flatData.findIndex((i) => {
+    return i && i.root === path;
+  });
 
   return {
     previous: flatData[itemIdx - 1] ?? undefined,
@@ -87,7 +81,6 @@ const remarkFrontmatterToProps = () => {
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),
-            lastModifiedDate: getModifiedDate(getFileName(file)),
             navigation: createNavigation(file),
             ...data,
             authorInfo: getBlogAuthorInfo(data),

@@ -1,4 +1,4 @@
-import { Grid, Stack } from '@kadena/react-ui';
+import { Grid, ProfileCard, Stack } from '@kadena/react-ui';
 
 import { baseGridClass } from '../basestyles.css';
 import {
@@ -20,6 +20,7 @@ import {
 import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -28,7 +29,7 @@ export const Blog: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const { readingTimeInMinutes, publishDate, author } = frontmatter;
+  const { readingTimeInMinutes, publishDate, authorInfo } = frontmatter;
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
@@ -71,9 +72,15 @@ export const Blog: FC<IPageProps> = ({
                     justifyContent="space-between"
                     direction={'column'}
                   >
-                    <span>
-                      By <b>{author}</b>
-                    </span>
+                    {authorInfo && (
+                      <Link href={`/docs/blogchain/authors/${authorInfo.id}`}>
+                        <ProfileCard
+                          name={authorInfo?.name}
+                          title={authorInfo?.description ?? ''}
+                          imageSrc={authorInfo?.avatar ?? ''}
+                        />
+                      </Link>
+                    )}
                   </Stack>
                 </Grid.Item>
               </Grid.Root>

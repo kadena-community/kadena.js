@@ -9,7 +9,7 @@ import {
   TitleHeader,
 } from '@/components/Layout/components';
 import { useGetBlogs } from '@/hooks';
-import { getInitBlogPosts } from '@/hooks/useBlog/utils';
+import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import type { IMenuData, IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
@@ -37,8 +37,6 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
   const startRetry = (isRetry: boolean = false): void => {
     handleLoad(isRetry);
   };
-
-  console.log(posts);
 
   const [firstPost, ...allPosts] = posts;
 
@@ -82,7 +80,7 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData(), 0, 10);
+  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10);
 
   return {
     props: {

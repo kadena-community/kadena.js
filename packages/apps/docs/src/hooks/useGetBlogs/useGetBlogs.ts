@@ -1,5 +1,4 @@
-import type { IIBlogLoadOptions } from './useBlog/utils';
-
+import type { IIBlogLoadOptions } from '@/hooks/useGetBlogs/utils';
 import type { IMenuData } from '@/types/Layout';
 import { useEffect, useState } from 'react';
 
@@ -25,7 +24,9 @@ export const useGetBlogs = ({ authorId }: IIBlogLoadOptions = {}): IReturn => {
     if (isDone) return;
     try {
       const result = await fetch(
-        `/api/blog?offset=${offset}&limit=${limit}&authorId=${authorId}`,
+        `/api/blog?offset=${offset}&limit=${limit}${
+          authorId ? `&authorId=${authorId}` : ``
+        }`,
       );
       const items = (await result.json()) as IMenuData[];
       getData((v) => [...v, ...items]);

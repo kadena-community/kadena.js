@@ -20,9 +20,9 @@ export const BlogItem: FC<IProps> = ({ item }) => {
       <Link className={link} href={item.root}>
         <Stack direction="column" gap="$3">
           <Stack alignItems="center" gap="$2">
-            <Avatar name={item.author} />
+            <Avatar name={item.author} avatar={item.authorInfo?.avatar} />
             <Heading as="h4" variant="h6">
-              {item.author}
+              {item.authorInfo?.name}
             </Heading>
           </Stack>
           <Heading as="h3" variant="h5">

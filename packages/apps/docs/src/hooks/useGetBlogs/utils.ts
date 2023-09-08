@@ -1,9 +1,15 @@
-import type { IMenuData } from '@/types/Layout';
+import type { IAuthorInfo, IMenuData } from '@/types/Layout';
 import { compareDesc } from '@/utils/dates';
+import { getAuthorData } from '@/utils/staticGeneration/getData.mjs';
 
 export interface IIBlogLoadOptions {
   authorId?: string;
 }
+
+export const getAuthorInfo = (authorId?: string): IAuthorInfo | undefined => {
+  if (!authorId) return;
+  return getAuthorData().find((author) => author.id === authorId);
+};
 
 export const getInitBlogPosts = (
   menuData: IMenuData[],
@@ -31,6 +37,7 @@ export const getInitBlogPosts = (
     .sort((a, b) => compareDesc(a.publishDate, b.publishDate))
     .splice(offset, limit);
 
-  console.log(authorId, posts.length);
-  return posts;
+  return posts.map((post) => {
+    return { ...post, authorInfo: getAuthorInfo(post.authorId) };
+  });
 };
