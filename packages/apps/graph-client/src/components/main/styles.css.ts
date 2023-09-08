@@ -5,5 +5,5 @@ export const mainStyle = style({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
-  marginBottom: '5rem',
+  paddingBottom: '5rem',
 });
