@@ -14,9 +14,11 @@ globalStyle('html, body', {
 
 globalStyle('a', {
   color: vars.colors.$primaryContrast,
+  textDecoration: 'underline',
 });
 globalStyle('a:hover', {
   color: vars.colors.$primaryHighContrast,
+  textDecoration: 'none',
 });
 
 export const basebackgroundClass = style([

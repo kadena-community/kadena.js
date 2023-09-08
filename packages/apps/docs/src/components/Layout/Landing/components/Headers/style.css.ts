@@ -1,4 +1,4 @@
-import { darkThemeClass, sprinkles } from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import {
   $$backgroundOverlayColor,
@@ -38,6 +38,7 @@ export const headerClass = style([
         content: '',
         position: 'absolute',
         inset: 0,
+        bottom: `calc(0px - ${vars.sizes.$5})`,
         background: 'url("/assets/bg-horizontal.png")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
@@ -70,13 +71,13 @@ export const wrapperClass = style([
 
 export const subheaderClass = style([
   sprinkles({
-    color: '$neutral3',
+    color: '$neutral4',
     fontSize: '$xl',
   }),
   {
     selectors: {
       [`${darkThemeClass} &`]: {
-        color: '$neutral4',
+        color: vars.colors.$neutral4,
       },
     },
   },
