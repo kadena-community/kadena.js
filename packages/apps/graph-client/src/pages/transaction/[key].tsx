@@ -1,4 +1,4 @@
-import { Notification, Table } from '@kadena/react-ui';
+import { Link, Notification, Table } from '@kadena/react-ui';
 
 import { useGetTransactionByRequestKeySubscription } from '../../__generated__/sdk';
 import Loader from '../../components/loader/loader';
@@ -20,10 +20,13 @@ const StyledMain = styled('main', {
 const RequestKey: React.FC = () => {
   const router = useRouter();
 
-  const { loading: loadingTransaction, data: transactionSubscription } =
-    useGetTransactionByRequestKeySubscription({
-      variables: { requestKey: router.query.key as string },
-    });
+  const {
+    loading: loadingTransaction,
+    data: transactionSubscription,
+    error,
+  } = useGetTransactionByRequestKeySubscription({
+    variables: { requestKey: router.query.key as string },
+  });
 
   return (
     <div>
@@ -41,33 +44,52 @@ const RequestKey: React.FC = () => {
         </Text>
 
         <div>
-          {loadingTransaction ? (
+          {loadingTransaction && (
             // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Waiting for request key...</span>
             </div>
-          ) : (
+          )}
+          {error && (
+            <Notification.Root color="negative" icon="Close">
+              Unknown error:<br/>
+              <br/>
+              "<code>{error.message}</code>"<br/>
+              <br/>
+              Check if the Graph server is running.
+            </Notification.Root>
+          )}
+          {transactionSubscription?.transaction && (
             <div style={{ maxWidth: '1000px' }}>
-              {transactionSubscription?.transaction?.badResult && (
-                <Notification.Root color="negative" icon="Close">
-                  Transaction failed with status:{' '}
-                  {typeof transactionSubscription?.transaction?.badResult}
-                </Notification.Root>
-              )}
-              {transactionSubscription?.transaction?.goodResult && (
-                <Notification.Root color="positive" icon="Check">
-                  Transaction succeeded with status:{' '}
-                  {transactionSubscription?.transaction?.goodResult}
-                </Notification.Root>
-              )}
-              {!transactionSubscription?.transaction?.goodResult &&
-                !transactionSubscription?.transaction?.badResult && (
-                  <Notification.Root color="warning">
-                    Unknown transaction status
+              {/* center content inside the div */}
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {transactionSubscription?.transaction?.badResult && (
+                  <Notification.Root color="negative" icon="Close">
+                    Transaction failed with status:{' '}
+                    {typeof transactionSubscription?.transaction?.badResult}
                   </Notification.Root>
                 )}
+                {transactionSubscription?.transaction?.goodResult && (
+                  <Notification.Root color="positive" icon="Check">
+                    Transaction succeeded with status:{' '}
+                    {transactionSubscription?.transaction?.goodResult}
+                  </Notification.Root>
+                )}
+                {!transactionSubscription?.transaction?.goodResult &&
+                  !transactionSubscription?.transaction?.badResult && (
+                    <Notification.Root color="warning">
+                      Unknown transaction status
+                    </Notification.Root>
+                  )}
+              </div>
               <br />
-              <Table.Root striped>
+              <Table.Root striped wordBreak="break-word">
+                <Table.Head>
+                  <Table.Tr>
+                    <Table.Th width="$40">Key</Table.Th>
+                    <Table.Th>Value</Table.Th>
+                  </Table.Tr>
+                </Table.Head>
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
@@ -90,7 +112,11 @@ const RequestKey: React.FC = () => {
                       <strong>Block</strong>
                     </Table.Td>
                     <Table.Td>
-                      {transactionSubscription?.transaction?.block?.id}
+                      <Link
+                        href={`/block/${transactionSubscription?.transaction?.block?.id}`}
+                      >
+                        {transactionSubscription?.transaction?.block?.id}
+                      </Link>
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
@@ -252,6 +278,46 @@ const RequestKey: React.FC = () => {
                                 transactionSubscription?.transaction
                                   ?.creationTime
                               }
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td>
+                              <strong>Height</strong>
+                            </Table.Td>
+                            <Table.Td>
+                              {transactionSubscription?.transaction?.height}
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td>
+                              <strong>Pact ID</strong>
+                            </Table.Td>
+                            <Table.Td>
+                              {transactionSubscription?.transaction?.pactId}
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td>
+                              <strong>Proof</strong>
+                            </Table.Td>
+                            <Table.Td>
+                              {transactionSubscription?.transaction?.proof}
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td>
+                              <strong>Rollback</strong>
+                            </Table.Td>
+                            <Table.Td>
+                              {transactionSubscription?.transaction?.rollback}
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td>
+                              <strong>Step</strong>
+                            </Table.Td>
+                            <Table.Td>
+                              {transactionSubscription?.transaction?.step}
                             </Table.Td>
                           </Table.Tr>
                         </Table.Body>
