@@ -1,7 +1,7 @@
 import { linkClass } from './NavFooter.css';
 
-import type { FC, HTMLAttributeAnchorTarget } from 'react';
-import React, { ReactNode } from 'react';
+import type { FC, HTMLAttributeAnchorTarget, ReactNode } from 'react';
+import React from 'react';
 
 export type Target = '_self' | '_blank';
 export interface INavFooterLinkProps {
