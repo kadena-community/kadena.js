@@ -176,7 +176,16 @@ const RequestKey: React.FC = () => {
                       <strong>Data</strong>
                     </Table.Td>
                     <Table.Td>
-                      <pre>{transactionSubscription?.transaction?.data && JSON.stringify(JSON.parse(transactionSubscription.transaction.data), null, 4)}</pre>
+                      <pre>
+                        {transactionSubscription?.transaction?.data &&
+                          JSON.stringify(
+                            JSON.parse(
+                              transactionSubscription.transaction.data,
+                            ),
+                            null,
+                            4,
+                          )}
+                      </pre>
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>

@@ -15,7 +15,7 @@ const ChainTreeContext = createContext<IChainTreeContext | undefined>(
   undefined,
 );
 
-export function addBlockToChainTree(block: IBlock, chainTree: IChainTree) {
+export function addBlockToChainTree(block: IBlock, chainTree: IChainTree): IChainTree {
   let currentBlock = block;
 
   //Check if chain index exists, if not create it
