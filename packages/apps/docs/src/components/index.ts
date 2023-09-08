@@ -8,6 +8,7 @@ export * from './Analytics';
 export * from './ConsentModal';
 export * from './LastModifiedDate';
 export * from './Search';
+export * from './SearchBar';
 export * from './SearchModal';
 export * from './MostPopular';
 export * from './InfiniteScroll';

@@ -84,7 +84,7 @@ export const stickyAsideClass = style([
   }),
   {
     overflowY: 'scroll',
-    height: 'calc(100vh - $20)',
+    height: `calc(100vh - ${vars.sizes.$20})`,
   },
 ]);
 
