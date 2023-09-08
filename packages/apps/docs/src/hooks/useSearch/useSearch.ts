@@ -37,6 +37,7 @@ export const useSearch = (limitResults: number = 50): IProps => {
 
   const updateQuery = useCallback(
     (value: string): void => {
+      console.log(111111);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       startSearch(value);
     },
@@ -57,6 +58,7 @@ export const useSearch = (limitResults: number = 50): IProps => {
 
   const handleSubmit = useCallback(
     async (value: string): Promise<void> => {
+      console.log({ value });
       if (value === undefined || query === value) return;
       dispatch({ type: 'reset' });
       setQuery(value);

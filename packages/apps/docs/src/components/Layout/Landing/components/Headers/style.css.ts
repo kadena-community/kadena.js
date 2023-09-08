@@ -58,7 +58,7 @@ export const wrapperClass = style([
     width: '100%',
     paddingTop: '$20',
     paddingRight: '$12',
-    paddingBottom: '$10',
+    paddingBottom: '$20',
     paddingLeft: '$4',
     marginX: 'auto',
     marginBottom: '$16',
