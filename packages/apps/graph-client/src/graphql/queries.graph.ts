@@ -62,6 +62,22 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   }
 `;
 
+export const CORE_EVENT_FIELDS: DocumentNode = gql`
+  fragment CoreEventFields on Event {
+    id
+    #block{}
+    requestKey
+    chainId
+    height
+    #index
+    #module
+    #name
+    paramText
+    #parameters
+    qualName
+  }
+`;
+
 export const getLastBlock: DocumentNode = gql`
   query getLastBlock {
     lastBlockHeight
