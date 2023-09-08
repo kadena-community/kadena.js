@@ -12,6 +12,7 @@ import {
   useGetRecentHeightsQuery,
 } from '../__generated__/sdk';
 import { ChainwebGraph } from '../components/chainweb';
+import { mainStyle } from '../components/main/styles.css';
 import { Text } from '../components/text';
 import { useChainTree } from '../context/chain-tree-context';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
@@ -21,7 +22,6 @@ import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { mainStyle } from '../components/main/styles.css';
 
 const Home: React.FC = () => {
   const router = useRouter();
