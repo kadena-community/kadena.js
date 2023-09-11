@@ -20,7 +20,9 @@ interface IUseModalHookResult {
   comment?: string;
 }
 
-export default function useModal(editLink?: string): IUseModalHookResult {
+export default function usePageHelpfulModal(
+  editLink?: string,
+): IUseModalHookResult {
   const { renderModal, clearModal } = useUIModal();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const pathname = usePathname();
@@ -42,12 +44,15 @@ export default function useModal(editLink?: string): IUseModalHookResult {
             Thank you for your feedback!
           </Heading>
           {editLink && (
-            <Box>
+            <Stack gap="$2" direction="column">
               <Text>
-                Would you like to contribute to this page by editing it?
+                Would you like to contribute to this page by editing it? If so
+                please click the edit button below.
               </Text>
-              <EditPage editLink={editLink} />
-            </Box>
+              <Box>
+                <EditPage editLink={editLink} />
+              </Box>
+            </Stack>
           )}
           <Text>
             If you have any specific feedback about this page. <br />

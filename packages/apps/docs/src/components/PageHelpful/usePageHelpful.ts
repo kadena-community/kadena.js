@@ -1,4 +1,4 @@
-import useModal from './useModal';
+import usePageHelpfulModal from './usePageHelpfulModal';
 
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { usePathname } from 'next/navigation';
@@ -13,7 +13,7 @@ interface IPageHelpfulHookResult {
 export default function usePageHelpful(
   editLink?: string,
 ): IPageHelpfulHookResult {
-  const { renderModalComponent } = useModal(editLink);
+  const { renderModalComponent } = usePageHelpfulModal(editLink);
   const pathname = usePathname();
   const localStorageKey = `pageHelpfulVote${pathname}`;
   const [isPageHelpful, setIsPageHelpful] = useState<string | undefined>();
