@@ -39,13 +39,6 @@ function getBrokenLinks(filePath, links) {
     const fileIndexMD = `${fileIndex}.md`;
     const fileIndexTSX = `${fileIndex}.tsx`;
 
-    // if (
-    //   filePath.includes(
-    //     'docs/blogchain/2023/the-kadena-tech-bulletin-2023-03-03',
-    //   )
-    // ) {
-    console.log(333, fileIndexTSX);
-    //}
     if (
       !fs.existsSync(links[index]) &&
       !fs.existsSync(fileMD) &&
