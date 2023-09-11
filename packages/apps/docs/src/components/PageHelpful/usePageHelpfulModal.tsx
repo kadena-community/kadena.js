@@ -1,13 +1,11 @@
 import {
-  Box,
   Button,
   Heading,
+  Link,
   Stack,
   Text,
   useModal as useUIModal,
 } from '@kadena/react-ui';
-
-import { EditPage } from '../BottomPageSection/components/EditPage';
 
 import { modalWrapperClass, textAreaClass } from './styles.css';
 
@@ -44,14 +42,14 @@ export default function usePageHelpfulModal(
             Thank you for your feedback!
           </Heading>
           {editLink && (
-            <Stack gap="$2" direction="column">
+            <Stack gap="$2" direction="row">
               <Text>
-                Would you like to contribute to this page by editing it? If so
-                please click the edit button below.
+                Would you like to contribute to this page by{' '}
+                <Link href={editLink} target="_blank" inline>
+                  editing
+                </Link>{' '}
+                it
               </Text>
-              <Box>
-                <EditPage editLink={editLink} />
-              </Box>
             </Stack>
           )}
           <Text>
