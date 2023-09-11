@@ -30,7 +30,7 @@ export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
   HTMLSelectElement,
   INavHeaderSelectProps
 >(function Select(
-  { ariaLabel, children, disabled = false, icon, ...rest },
+  { ariaLabel, children, disabled = false, onChange, icon, ...rest },
   ref,
 ) {
   const Icon = icon && SystemIcon[icon];
