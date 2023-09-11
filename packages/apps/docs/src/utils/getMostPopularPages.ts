@@ -113,6 +113,7 @@ export default async function getMostPopularPages(
     'src/_generated/mostPopular.json',
   );
 
+
   const GOOGLE_ANALYTICS_PROPERTY_ID = process.env.GOOGLE_ANALYTICS_PROPERTY_ID;
   const GOOGLE_APPLICATION_CREDENTIALS =
     process.env.GOOGLE_APPLICATION_CREDENTIALS;
@@ -126,6 +127,8 @@ export default async function getMostPopularPages(
   if (!validateCache(dataFilePath)) {
     const data: string = fs.readFileSync(dataFilePath, 'utf8');
     const mostPopularPages = getTopPages(JSON.parse(data), slug, limit);
+
+
     return mostPopularPages;
   }
 
@@ -158,6 +161,8 @@ export default async function getMostPopularPages(
     })) as unknown as [IRunReportResponse];
 
     const mostPopularPages = getTopPages(response, slug, limit);
+
+   
 
     // Store complete data in a file to avoid hitting the API limit
     await storeAnalyticsData(dataFilePath, JSON.stringify(response));

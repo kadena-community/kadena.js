@@ -1,7 +1,5 @@
 import { Box, Heading, Stack } from '@kadena/react-ui';
 
-import { browseSectionWrapper } from '../styles/index.css';
-
 import { BrowseSection } from '@/components';
 import {
   articleClass,
@@ -9,6 +7,7 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
+import { browseSectionWrapper } from '@/styles/index.css';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
@@ -34,6 +33,47 @@ const Home: FC<IProps> = ({ popularPages }) => {
         id="maincontent"
       >
         <article className={articleClass}>
+          <Box marginBottom="$10">
+            <Heading as="h4">Getting started</Heading>
+            <Stack wrap="wrap">
+              <BrowseSection
+                title="Core concepts"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/kadena/overview">
+                  What is the Kadena Blockchain?
+                </Link>
+                <Link href="/docs/kadena/kda">What is KDA token?</Link>
+                <Link href="/docs/pact">What are Pact smart contracts?</Link>
+              </BrowseSection>
+              <BrowseSection
+                title="Developers"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/build/quickstart">
+                  Learn through tutorials
+                </Link>
+                <Link href="/docs/pact/beginner/language-basics">
+                  Pact Language resources
+                </Link>
+                <Link href="/docs/pact">Pact developer tutorials</Link>
+              </BrowseSection>
+              <BrowseSection
+                title="Setup local environment"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/build/support">Developer program</Link>
+                <Link href="/docs/contribute/ambassadors">
+                  Ambassador program
+                </Link>
+                <Link href="/docs/build/support/technical-grants">
+                  Technical grants
+                </Link>
+              </BrowseSection>
+            </Stack>
+          </Box>
+
+          <Heading as="h4">Browse by Resources</Heading>
           <Box marginBottom="$10">
             <Stack wrap="wrap">
               <BrowseSection title="General" className={browseSectionWrapper}>
@@ -64,7 +104,7 @@ const Home: FC<IProps> = ({ popularPages }) => {
               </BrowseSection>
             </Stack>
           </Box>
-          <Heading as="h4">Browse by Resources</Heading>
+
           <Stack direction="column" gap="$2xl">
             <BrowseSection title="General" titleAs="h5" direction="row">
               <BrowseSection.LinkBlock
