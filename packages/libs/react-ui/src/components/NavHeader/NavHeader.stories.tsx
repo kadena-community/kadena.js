@@ -26,10 +26,7 @@ const sampleNavItems: INavHeaderLinkProps[] = [
   },
 ];
 
-const sampleNetworkItems: string[] = [
-  'Mainnet',
-  'Testnet'
-];
+const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 
 type StoryProps = {
   linksCount: number;

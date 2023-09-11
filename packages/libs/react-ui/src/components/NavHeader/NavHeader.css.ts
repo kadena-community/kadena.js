@@ -146,7 +146,6 @@ export const selectContainerClass = style([
     overflow: 'hidden',
     paddingLeft: '$4',
     paddingRight: '$2',
-
   }),
   {
     border: `1px solid ${vars.colors.$gray40}`,
