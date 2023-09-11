@@ -32,9 +32,8 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          # Node.js v18 gives error in changesets/action@v1 (can't find dist/index.js)
-          node-version: 16
-          cache: 'pnpm'
+          node-version: 18
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install
