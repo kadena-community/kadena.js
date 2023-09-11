@@ -14,7 +14,7 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "kda": "lib/index.js"
+    "kda": "bin/kda.js"
   },
   "files": [
     "lib"
