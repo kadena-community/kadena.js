@@ -1,9 +1,8 @@
+import { NavHeader } from './';
 import type { INavHeaderRootProps } from './NavHeader';
 import type { INavHeaderLinkProps } from './NavHeaderLink';
-import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
-import { Button } from '@components/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
