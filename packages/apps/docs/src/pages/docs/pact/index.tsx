@@ -1,11 +1,12 @@
 import { Box, Button, Card, Heading, Stack, Text } from '@kadena/react-ui';
 
-import { MostPopular } from '@/components';
+import { BrowseSection, MostPopular } from '@/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components';
+import { browseSectionWrapper } from '@/styles/index.css';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
@@ -50,6 +51,27 @@ const Home: FC<IProps> = ({ popularPages }) => {
             <MostPopular pages={popularPages} title="Most viewed docs" />
           </Box>
         </Stack>
+
+        <Box marginTop="$4">
+          <BrowseSection title="Learn about Pact" titleAs="h5" direction="row">
+            <BrowseSection.LinkBlock
+              title="Language reference"
+              subtitle="Reference for the Pact smart-contract language, designed for correct, transactional execution on a high-performance blockchain"
+              href="/docs/pact/reference"
+            />
+            <BrowseSection.LinkBlock
+              title="Pact CLI"
+              subtitle="Generate client based on a contract with our Cli"
+              href="/docs/pact/cli"
+            />
+            <BrowseSection.LinkBlock
+              title="White paper"
+              subtitle="Pact is the programming language for writing smart contracts to be executed
+              by the Kadena blockchain"
+              href="/docs/kadena/whitepapers/pact-smart-contract-language"
+            />
+          </BrowseSection>
+        </Box>
       </article>
     </div>
   );
