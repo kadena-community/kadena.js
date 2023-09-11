@@ -79,7 +79,7 @@ other blockchains cannot? Consider:
   benefits of a blockchain.
 
 - The opportunity to
-  [hybridize your private blockchain with a scalable, public chain](../2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)
+  [hybridize your private blockchain with a scalable, public chain](/docs/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)
   to unlock trapped liquidity.
 
 Wondering what blockchain can do for your industry? Ben Jessel explains how

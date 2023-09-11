@@ -25,8 +25,6 @@ function getBrokenLinks(filePath, links) {
 
     if (link.startsWith('/assets')) {
       links[index] = path.join('public/', link);
-    } else if (directory.includes('src/pages/docs/blogchain')) {
-      links[index] = path.resolve(directory, link);
     } else {
       links[index] = path.join(__dirname, 'src/pages', link);
     }
@@ -41,6 +39,13 @@ function getBrokenLinks(filePath, links) {
     const fileIndexMD = `${fileIndex}.md`;
     const fileIndexTSX = `${fileIndex}.tsx`;
 
+    // if (
+    //   filePath.includes(
+    //     'docs/blogchain/2023/the-kadena-tech-bulletin-2023-03-03',
+    //   )
+    // ) {
+    console.log(333, fileIndexTSX);
+    //}
     if (
       !fs.existsSync(links[index]) &&
       !fs.existsSync(fileMD) &&

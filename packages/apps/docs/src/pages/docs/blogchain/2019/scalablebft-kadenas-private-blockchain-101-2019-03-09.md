@@ -65,7 +65,7 @@ data.
 
 Our private blockchain can also be used effectively as a “side-chain” to a
 public blockchain to speed up transaction processes and
-[create new marketplaces for data](../2018/blockchain-future-smart-contract-sharing-economy-2018-12-17).
+[create new marketplaces for data](/docs/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17).
 
 ### What is an example of a private blockchain use case?
 

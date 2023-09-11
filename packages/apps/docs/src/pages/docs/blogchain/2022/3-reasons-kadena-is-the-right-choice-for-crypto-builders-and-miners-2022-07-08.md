@@ -84,8 +84,6 @@ Pact, Chainweb, and easier mining are just the tip of the iceberg as to what’s
 ahead for the future of blockchain, thanks to Kadena. Follow us and you’ll learn
 why!
 
-Learn more about **Pact**
-[here](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact), **Chainweb
-**[here](https://docs.kadena.io/basics/whitepapers/chainweb-layer-1), and
-**mining** on Kadena
+Learn more about **Pact** [here](/docs/pact/beginner), **Chainweb
+**[here](/docs/kadena/whitepapers/chainweb-layer-1), and **mining** on Kadena
 [here](https://github.com/kadena-io/chainweb-miner#what-is-mining).

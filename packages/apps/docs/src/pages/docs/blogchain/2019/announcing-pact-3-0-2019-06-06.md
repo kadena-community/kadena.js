@@ -31,7 +31,7 @@ in both public and private blockchains.
 In this post, we’re going to focus on three new and related features we’ve
 shipped with Pact 3.0: **Capabilities**, **Module Governance**, and **Guards**,
 and how our
-**[Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)**
+**[Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)**
 system can help you eliminate bugs. Other major enhancements, like _integrated
 SPV support_ and \*namespaces\*, will be covered in future posts.
 
@@ -98,7 +98,7 @@ Another new feature in Pact turns something that was already awesome —
 upgradeable smart contracts controlled by keysets —into a game changer:
 **generalized module governance**. Now you can implement any governance scheme
 imaginable, right in your smart contract code, and leverage
-[Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
+[Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 to ensure it does what you want.
 
 Before Pact 3.0, defining a module required the definition of a keyset, which is
