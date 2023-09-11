@@ -35,6 +35,10 @@ export const container = style([
   },
 ]);
 
+export const selectedIconClass = style({
+  opacity: 0.4,
+});
+
 export type ColorOptions = ColorType | 'default' | 'inverted';
 
 const colors: Record<ColorOptions, ColorOptions> = {
