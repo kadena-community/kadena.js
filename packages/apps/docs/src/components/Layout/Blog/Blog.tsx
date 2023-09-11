@@ -1,4 +1,4 @@
-import { Grid, ProfileCard, Stack } from '@kadena/react-ui';
+import { Grid, Stack } from '@kadena/react-ui';
 
 import { baseGridClass } from '../basestyles.css';
 import {
@@ -20,6 +20,7 @@ import {
 import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
@@ -49,7 +50,14 @@ export const Blog: FC<IPageProps> = ({
           icon="BlogChain"
         />
         <div id="maincontent" className={contentClassNames}>
-          <article className={articleClass}>
+          <article
+            className={articleClass}
+            itemScope
+            itemType="http://schema.org/BlogPosting"
+          >
+            <meta itemProp="datePublished" content={publishDate} />
+            <meta itemProp="description" content={frontmatter.description} />
+            <meta itemProp="headline" content={frontmatter.title} />
             <div className={articleTopMetadataClass}>
               <ArticleMetadataItem>
                 {readingTimeInMinutes} {readingTimeLabel} read
@@ -62,7 +70,7 @@ export const Blog: FC<IPageProps> = ({
                 )}
               </ArticleMetadataItem>
             </div>
-            {children}
+            <div itemProp="articleBody">{children}</div>
 
             <div className={bottomWrapperClass}>
               <Grid.Root gap="$xl" columns={12}>
@@ -73,13 +81,25 @@ export const Blog: FC<IPageProps> = ({
                     direction={'column'}
                   >
                     {authorInfo && (
-                      <Link href={`/docs/blogchain/authors/${authorInfo.id}`}>
-                        <ProfileCard
-                          name={authorInfo?.name}
-                          title={authorInfo?.description ?? ''}
-                          imageSrc={authorInfo?.avatar ?? ''}
-                        />
-                      </Link>
+                      <span
+                        itemProp="author"
+                        itemScope
+                        itemType="https://schema.org/Person"
+                      >
+                        <Link
+                          itemProp="url"
+                          href={`/docs/blogchain/authors/${authorInfo.id}`}
+                        >
+                          <Image
+                            itemProp="image"
+                            src={authorInfo.avatar}
+                            width={48}
+                            height={48}
+                            alt={`avatar for: ${authorInfo.name}`}
+                          />
+                          <span itemProp="name">{authorInfo.name}</span>
+                        </Link>
+                      </span>
                     )}
                   </Stack>
                 </Grid.Item>
