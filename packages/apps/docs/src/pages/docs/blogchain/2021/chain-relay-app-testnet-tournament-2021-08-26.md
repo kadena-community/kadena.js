@@ -11,6 +11,7 @@ menu: Testnet Tournament
 label: Testnet Tournament
 publishDate: 2021-08-26
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

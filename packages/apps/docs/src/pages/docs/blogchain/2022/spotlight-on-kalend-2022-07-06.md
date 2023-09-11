@@ -10,6 +10,7 @@ menu: Spotlight On Kalend
 label: Spotlight On Kalend
 publishDate: 2022-07-06
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

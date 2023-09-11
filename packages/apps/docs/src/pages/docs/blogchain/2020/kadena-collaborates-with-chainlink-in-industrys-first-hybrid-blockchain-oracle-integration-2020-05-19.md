@@ -17,6 +17,7 @@ label:
   Oracle Integration
 publishDate: 2020-05-19
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

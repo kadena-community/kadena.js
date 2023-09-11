@@ -8,6 +8,7 @@ menu: Meet The Kadena Team - Founder & President, Stuart Popejoy
 label: Meet The Kadena Team - Founder & President, Stuart Popejoy
 publishDate: 2019-10-17
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

@@ -21,7 +21,7 @@
     "publish": "changeset publish"
   },
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "pnpm": ">=8"
   },
   "devDependencies": {

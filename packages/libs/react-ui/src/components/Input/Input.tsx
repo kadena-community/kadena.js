@@ -1,5 +1,6 @@
 import {
   containerClass,
+  disabledClass,
   inputClass,
   inputContainerClass,
   leadingTextClass,
@@ -48,7 +49,10 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
 
     return (
       <div
-        className={classNames(containerClass, { [outlinedClass]: outlined })}
+        className={classNames(containerClass, {
+          [outlinedClass]: outlined,
+          [disabledClass]: disabled,
+        })}
         data-testid="kda-input"
       >
         {Boolean(leadingText) && (

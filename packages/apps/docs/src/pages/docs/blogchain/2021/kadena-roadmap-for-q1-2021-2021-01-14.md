@@ -12,6 +12,7 @@ menu: Kadena Roadmap for Q1 2021
 label: Kadena Roadmap for Q1 2021
 publishDate: 2021-01-14
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
 

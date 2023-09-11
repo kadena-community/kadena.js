@@ -11,6 +11,7 @@ menu: The NFT Collection Tutorial on Marmalade
 label: The NFT Collection Tutorial on Marmalade
 publishDate: 2023-01-25
 author: Heekyun
+authorId: heekyun
 layout: blog
 ---
 

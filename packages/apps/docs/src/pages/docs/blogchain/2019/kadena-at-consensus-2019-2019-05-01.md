@@ -9,6 +9,7 @@ menu: Kadena at Consensus 2019
 label: Kadena at Consensus 2019
 publishDate: 2019-05-01
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

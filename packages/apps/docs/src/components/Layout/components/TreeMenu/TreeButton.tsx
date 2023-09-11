@@ -29,7 +29,7 @@ export const TreeButton: FC<IProps> = ({
     treeItemPseudoMenuVariantClass[`${level}-${menuOpen}`],
   );
   return (
-    <button className={classes} onClick={onClick} data-Active={menuOpen}>
+    <button className={classes} onClick={onClick} data-active={menuOpen}>
       {children}
     </button>
   );

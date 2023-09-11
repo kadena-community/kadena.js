@@ -50,6 +50,27 @@ export const containerClass = style([
   },
 ]);
 
+export const disabledClass = style([
+  sprinkles({
+    pointerEvents: 'none',
+    bg: {
+      darkMode: '$gray60',
+      lightMode: '$gray20',
+    },
+  }),
+  {
+    opacity: 0.4,
+    selectors: {
+      '.inputGroup &': {
+        opacity: 1,
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
+      },
+    },
+  },
+]);
+
 export const inputContainerClass = style([
   sprinkles({
     alignItems: 'center',
@@ -97,7 +118,10 @@ export const leadingTextClass = style([
 
 export const leadingTextWrapperClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
+    backgroundColor: {
+      lightMode: '$gray20',
+      darkMode: '$gray60',
+    },
     display: 'flex',
     alignItems: 'center',
   }),

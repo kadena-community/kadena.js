@@ -4,10 +4,8 @@ import type { INavHeaderContentProps } from './NavHeaderContent';
 import { NavHeaderContent } from './NavHeaderContent';
 import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeaderLink } from './NavHeaderLink';
-import {
-  INavHeaderNavigationProps,
-  NavHeaderNavigation,
-} from './NavHeaderNavigation';
+import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
+import { NavHeaderNavigation } from './NavHeaderNavigation';
 import { INavHeaderSelectProps, NavHeaderSelect } from './NavHeaderSelect';
 import type { INavHeaderSelectOptionProps } from './NavHeaderSelectOption';
 import { NavHeaderSelectOption } from './NavHeaderSelectOption';

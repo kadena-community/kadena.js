@@ -11,6 +11,7 @@ menu: Doug Beardsley
 label: Doug Beardsley
 publishDate: 2022-12-06
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

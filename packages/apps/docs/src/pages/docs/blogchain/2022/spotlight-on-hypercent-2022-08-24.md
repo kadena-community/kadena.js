@@ -9,6 +9,7 @@ menu: Spotlight On Hypercent
 label: Spotlight On Hypercent
 publishDate: 2022-08-24
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

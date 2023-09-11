@@ -9,6 +9,7 @@ menu: Announcing the Kadena Chain Relay
 label: Announcing the Kadena Chain Relay
 publishDate: 2021-03-25
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

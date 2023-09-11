@@ -8,6 +8,7 @@ menu: Getting Started with Kadena Relay App in Testnet
 label: Getting Started with Kadena Relay App in Testnet
 publishDate: 2021-08-25
 author: Heekyun
+authorId: heekyun
 layout: blog
 ---
 

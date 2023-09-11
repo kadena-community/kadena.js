@@ -10,6 +10,7 @@ menu: Kadena Commitment To Builders
 label: Kadena Commitment To Builders
 publishDate: 2022-05-27
 author: Francesco Melpignano
+authorId: francesco.melpignano
 layout: blog
 ---
 

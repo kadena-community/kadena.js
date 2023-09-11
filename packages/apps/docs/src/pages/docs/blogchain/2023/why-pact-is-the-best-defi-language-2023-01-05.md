@@ -11,6 +11,7 @@ menu: Why Pact is the Best DeFi Language
 label: Why Pact is the Best DeFi Language
 publishDate: 2023-01-05
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

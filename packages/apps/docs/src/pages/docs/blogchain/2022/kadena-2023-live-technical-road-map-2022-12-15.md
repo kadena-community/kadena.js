@@ -11,6 +11,7 @@ menu: Kadena 2023 Live Technical Roadmap
 label: Kadena 2023 Live Technical Roadmap
 publishDate: 2022-12-15
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

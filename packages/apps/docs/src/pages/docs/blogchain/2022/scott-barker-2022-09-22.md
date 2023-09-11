@@ -10,6 +10,7 @@ menu: Kadena Eco Welcomes New Strategic Advisor
 label: Kadena Eco Welcomes New Strategic Advisor
 publishDate: 2022-09-22
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

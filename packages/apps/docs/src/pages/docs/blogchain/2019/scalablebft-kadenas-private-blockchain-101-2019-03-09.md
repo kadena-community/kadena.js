@@ -7,6 +7,7 @@ menu: Kadena’s Private Blockchain 101
 label: Kadena’s Private Blockchain 101
 publishDate: 2019-03-09
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

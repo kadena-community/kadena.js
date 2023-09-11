@@ -44,11 +44,20 @@ export interface IBasePageMeta {
   lastModifiedDate?: Date;
 }
 
+export interface IAuthorInfo {
+  id: string;
+  name: string;
+  avatar: string;
+  description?: string;
+  twitter?: string;
+}
 export interface IPageMeta extends IBasePageMeta {
   editLink: string;
   navigation: INavigation;
   publishDate?: string;
   author?: string;
+  authorId?: string;
+  authorInfo?: IAuthorInfo;
   readingTimeInMinutes?: number;
   wordCount?: number;
 }
@@ -104,6 +113,8 @@ export interface IMenuData {
   isActive: boolean;
   publishDate?: string;
   author?: string;
+  authorId?: string;
+  authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
 }

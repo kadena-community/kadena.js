@@ -12,6 +12,7 @@ menu: Kadena Launches Public Chain with Smart Contract Transactions
 label: Kadena Launches Public Chain with Smart Contract Transactions
 publishDate: 2020-01-15
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

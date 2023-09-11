@@ -12,6 +12,7 @@ menu: Kadena.js - Developer Experience Update
 label: Kadena.js - Developer Experience Update
 publishDate: 2022-11-09
 author: Randy Daal
+authorId: randy.daal
 layout: blog
 ---
 

@@ -4,6 +4,15 @@ import { Text } from '@components/Typography/Text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
+const ExampleTabs: string[] = [
+  'He-man',
+  'Skeletor',
+  'Orko',
+  'Teela-Na',
+  'Cringer',
+  'King Randor',
+];
+
 const meta: Meta<
   ITabsContainerProps & {
     itemsCount: number;
@@ -14,7 +23,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The tabs functionality is divided into three sub components: The <i>Tabs.Root</i> for parent, then <i>Tabs.Tab</i> for each tab item and the <i>Tabs.Content</i> for the tab content.',
+          'The Tab component consists of three sub components:<br /><strong><Tabs.Root></strong> as the parent container<br /><strong><Tabs.Tab></strong> for each tab item<br /><strong><Tabs.Content></strong> for the tab content<br /><br /><em>This component has a controlled and uncontrolled state. When a currentTab is not provided, the component will track state internally.</em>',
       },
     },
   },
@@ -27,17 +36,38 @@ const meta: Meta<
         type: { summary: 'number' },
       },
     },
+    initialTab: {
+      options: [
+        ...['-'],
+        ...Object.values(ExampleTabs),
+      ] as (keyof typeof ExampleTabs)[],
+      control: {
+        type: 'select',
+      },
+      description:
+        'The default selected page <em>before</em> any interaction.<br /><small>Changing value will not trigger story re-render.</small>',
+      table: {
+        defaultValue: { summary: 'undefined' },
+        type: { summary: 'string | undefined' },
+      },
+    },
+    currentTab: {
+      options: [
+        ...[undefined],
+        ...Object.values(ExampleTabs),
+      ] as (keyof typeof ExampleTabs)[],
+      control: {
+        type: 'select',
+      },
+      description:
+        'Current active tab. Used when component is controlled.<br /><small>Set to make component controlled.</small>',
+      table: {
+        defaultValue: { summary: 'undefined' },
+        type: { summary: 'string | undefined' },
+      },
+    },
   },
 };
-
-const ItemArray: string[] = [
-  'He-man',
-  'Skeletor',
-  'Orko',
-  'Teela-Na',
-  'Cringer',
-  'King Randor',
-];
 
 export default meta;
 type Story = StoryObj<ITabsContainerProps & { itemsCount: number }>;
@@ -45,27 +75,28 @@ type Story = StoryObj<ITabsContainerProps & { itemsCount: number }>;
 export const Primary: Story = {
   name: 'Tabs',
   args: {
-    itemsCount: 3,
-    defaultSelected: 'He-man',
+    itemsCount: 6,
+    initialTab: 'Skeletor',
+    currentTab: undefined,
   },
-  render: ({ itemsCount, defaultSelected }) => {
-    const items = ItemArray.slice(0, itemsCount);
+  render: ({ itemsCount, initialTab, currentTab }) => {
+    const tabs = ExampleTabs.slice(0, itemsCount);
 
     return (
       <>
-        <Tabs.Root defaultSelected={defaultSelected}>
-          {items.map((item) => {
+        <Tabs.Root initialTab={initialTab} currentTab={currentTab}>
+          {tabs.map((tab) => {
             return (
-              <Tabs.Tab key={item} value={item}>
-                {item}
+              <Tabs.Tab key={tab} id={tab}>
+                {tab}
               </Tabs.Tab>
             );
           })}
 
-          {items.map((item) => {
+          {tabs.map((tab) => {
             return (
-              <Tabs.Content key={item} value={item}>
-                <Text>content {item}</Text>
+              <Tabs.Content key={tab} id={tab}>
+                <Text>Content for Tab &apos;{tab}&apos;</Text>
               </Tabs.Content>
             );
           })}

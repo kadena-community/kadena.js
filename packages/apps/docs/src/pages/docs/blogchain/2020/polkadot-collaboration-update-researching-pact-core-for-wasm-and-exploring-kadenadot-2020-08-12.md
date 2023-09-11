@@ -17,6 +17,7 @@ label:
   KadenaDOT
 publishDate: 2020-08-12
 author: Will Martino
+authorId: will.martino
 layout: blog
 ---
 

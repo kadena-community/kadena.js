@@ -12,6 +12,7 @@ menu: Pact Core Concepts Part III
 label: Pact Core Concepts Part III
 publishDate: 2023-05-04
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

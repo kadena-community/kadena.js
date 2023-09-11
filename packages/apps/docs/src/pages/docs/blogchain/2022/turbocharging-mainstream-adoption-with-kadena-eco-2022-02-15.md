@@ -12,6 +12,7 @@ menu: Turbocharging mainstream adoption with Kadena Eco
 label: Turbocharging mainstream adoption with Kadena Eco
 publishDate: 2022-02-15
 author: Francesco Melpignano
+authorId: francesco.melpignano
 layout: blog
 ---
 

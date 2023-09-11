@@ -10,6 +10,7 @@ menu: Beginner’s Guide to Kadena Accounts + Keysets
 label: Beginner’s Guide to Kadena Accounts + Keysets
 publishDate: 2020-01-14
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

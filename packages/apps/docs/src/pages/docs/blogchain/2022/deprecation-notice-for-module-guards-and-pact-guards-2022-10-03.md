@@ -11,6 +11,7 @@ menu: Deprecation Notice for Module Guards and Pact Guards
 label: Deprecation Notice for Module Guards and Pact Guards
 publishDate: 2022-10-03
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 

@@ -10,6 +10,7 @@ menu: Spotlight on Kadena Mining Club
 label: Spotlight on Kadena Mining Club
 publishDate: 2023-04-11
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

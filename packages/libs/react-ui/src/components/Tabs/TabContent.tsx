@@ -4,7 +4,7 @@ import React from 'react';
 export interface ITabContentProps {
   children: ReactNode;
   selected?: boolean;
-  value: string;
+  id: string;
 }
 
 export const TabContent: FC<ITabContentProps> = ({

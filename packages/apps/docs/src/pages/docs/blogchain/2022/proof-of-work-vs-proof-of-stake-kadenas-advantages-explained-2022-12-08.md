@@ -10,6 +10,7 @@ menu: Proof of Work vs Proof of Stake, Kadena’s Advantages Explained
 label: Proof of Work vs Proof of Stake, Kadena’s Advantages Explained
 publishDate: 2022-12-08
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

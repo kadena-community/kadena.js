@@ -11,6 +11,7 @@ menu: Kadena Eco Office Hours Transcript
 label: Kadena Eco Office Hours Transcript
 publishDate: 2022-07-22
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

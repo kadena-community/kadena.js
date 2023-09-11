@@ -10,6 +10,7 @@ menu: Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
 label: Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
 publishDate: 2022-08-31
 author: Francesco Melpignano
+authorId: francesco.melpignano
 layout: blog
 ---
 

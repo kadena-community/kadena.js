@@ -5,6 +5,7 @@ menu: Hybrid Blockchain 101
 label: Hybrid Blockchain 101
 publishDate: 2019-10-23
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

@@ -11,6 +11,7 @@ menu: Kadena Eco Supercharges Kadena Ecosystem
 label: Kadena Eco Supercharges Kadena Ecosystem
 publishDate: 2022-04-02
 author: Doug Beardsley
+authorId: doug.beardsley
 layout: blog
 ---
 

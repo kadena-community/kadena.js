@@ -42,12 +42,12 @@ export const columnLinkListItemClass = style([
 export const columnLinkClass = style([
   sprinkles({
     color: '$primaryContrast',
-    textDecoration: 'none',
+    textDecoration: 'underline',
   }),
   {
     ':hover': {
       color: vars.colors.$primaryHighContrast,
-      textDecoration: 'underline',
+      textDecoration: 'none',
     },
   },
 ]);

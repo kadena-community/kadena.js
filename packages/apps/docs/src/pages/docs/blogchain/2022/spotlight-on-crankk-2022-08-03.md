@@ -11,6 +11,7 @@ menu: Spotlight On Crankk
 label: Spotlight On Crankk
 publishDate: 2022-08-03
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

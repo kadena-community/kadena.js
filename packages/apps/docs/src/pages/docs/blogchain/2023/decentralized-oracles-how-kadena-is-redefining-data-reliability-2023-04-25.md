@@ -10,6 +10,7 @@ menu: Decentralized Oracles
 label: Decentralized Oracles
 publishDate: 2023-04-25
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

@@ -5,11 +5,15 @@ scalar BigInt
 
 type Block implements Node {
   chainid: BigInt!
+  confirmationDepth: Int!
   creationtime: DateTime!
   epoch: DateTime!
   hash: ID!
   height: BigInt!
   id: ID!
+  parent: Block
+  parentHash: String
+  parent_old: String!
   powhash: String!
   transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
 }

@@ -13,6 +13,7 @@ menu: Kadena Token Transfers Go Live
 label: Kadena Token Transfers Go Live
 publishDate: 2019-12-17
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
 

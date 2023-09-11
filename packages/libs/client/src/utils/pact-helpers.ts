@@ -1,5 +1,5 @@
 /**
- * Helper function that returns `(read-keyset "<key")` Pact expression
+ * Helper function that returns `(read-keyset "key")` Pact expression
  * @public
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

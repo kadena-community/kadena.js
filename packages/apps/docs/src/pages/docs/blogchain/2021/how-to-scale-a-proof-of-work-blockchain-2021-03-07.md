@@ -10,6 +10,7 @@ menu: How to Scale a Proof of Work Blockchain
 label: How to Scale a Proof of Work Blockchain
 publishDate: 2021-03-07
 author: Doug Beardsley
+authorId: doug.beardsley
 layout: blog
 ---
 

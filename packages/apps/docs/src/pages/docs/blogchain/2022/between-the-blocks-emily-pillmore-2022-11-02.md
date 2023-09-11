@@ -11,6 +11,7 @@ menu: Emily Pillmore
 label: Emily Pillmore
 publishDate: 2022-11-02
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

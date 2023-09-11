@@ -10,6 +10,7 @@ menu: Unlocking the Value of Smart Wallets
 label: Unlocking the Value of Smart Wallets
 publishDate: 2023-06-28
 author: Ryan Levy
+authorId: ryan.levy
 layout: blog
 ---
 
