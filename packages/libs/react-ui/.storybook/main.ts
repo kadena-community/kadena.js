@@ -3,7 +3,11 @@ import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: [
+    '../src/Intro.mdx', // set as the first story
+    '../src/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
   addons: [
     '@storybook/addon-a11y',
     '@storybook/addon-links',
@@ -28,12 +32,14 @@ const config: StorybookConfig = {
     );
     // Exclude vanilla extract's "*.vanilla.css" files from other "*.css" processing
     config.module?.rules?.forEach((rule) => {
-      if (
-        typeof rule !== 'string' &&
-        rule.test instanceof RegExp &&
-        rule.test.test('test.css')
-      ) {
-        rule.exclude = /\.vanilla\.css$/i;
+      if (rule) {
+        if (
+          typeof rule !== 'string' &&
+          rule.test instanceof RegExp &&
+          rule.test.test('test.css')
+        ) {
+          rule.exclude = /\.vanilla\.css$/i;
+        }
       }
     });
     config.module?.rules?.push({
