@@ -18,10 +18,10 @@
     "build:test": "tsc & tsc -p ./tsconfig.esm.json",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config src --write",
+    "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint package.json src --ext .js,.ts,.tsx --fix",
+    "lint:src": "eslint src --ext .js,.ts,.tsx --fix",
     "storybook": "storybook dev -p 6006",
     "test": "pnpm run build:test && heft test"
   },
@@ -57,6 +57,7 @@
     "@types/react": "^18.2.15",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "storybook": "^7.4.0",
     "storybook-dark-mode": "^3.0.0",
     "typescript": "5.1.6"

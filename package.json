@@ -6,19 +6,20 @@
   "license": "ISC",
   "scripts": {
     "build": "turbo run build",
-    "format": "pnpm run /^format:.*/ && pnpm -r run format",
+    "format": "pnpm run format:md && pnpm -r run format",
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier . \"!packages\" --cache --write",
     "preinstall": "npx --no-install only-allow pnpm",
     "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:ci": "pnpm run lint:versions && turbo run lint",
-    "lint:versions": "syncpack list-mismatches",
     "lint:fix-versions": "syncpack fix-mismatches",
-    "test": "turbo run test",
+    "lint:versions": "syncpack list-mismatches",
+    "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
-    "version": "changeset version",
-    "publish": "changeset publish"
+    "test": "turbo run test",
+    "version": "changeset version"
   },
   "engines": {
     "node": ">=18",

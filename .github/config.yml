@@ -1,9 +1,11 @@
+# Based on https://github.com/github/docs/blob/main/.github/config.yml
+
 newIssueWelcomeComment: >
-  Thanks for opening this issue.
-  A Kadena team member should be by to give feedback soon. In the meantime, please check out the [contributing guidelines](https://github.com/kadena-community/kadena.js/blob/main/CONTRIBUTING.md).
+  Thanks for opening this issue. A Kadena team member should be by to give
+  feedback soon. In the meantime, please check out the [contributing
+  guidelines](https://github.com/kadena-community/kadena.js/blob/main/CONTRIBUTING.md).
 
 newPRWelcomeComment: >
-  Thanks for opening this pull request! A GitHub docs team member should be by to give feedback soon. In the meantime, please check out the [contributing guidelines](https://github.com/kadena-community/kadena.js/blob/main/CONTRIBUTING.md).
-
-
-<!-- Based on https://github.com/github/docs/blob/main/.github/config.yml -->
+  Thanks for opening this pull request! A GitHub docs team member should be by
+  to give feedback soon. In the meantime, please check out the [contributing
+  guidelines](https://github.com/kadena-community/kadena.js/blob/main/CONTRIBUTING.md).
