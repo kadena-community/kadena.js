@@ -21,7 +21,7 @@ layout: blog
 After a lot of hard work by the team at [Kadena](http://kadena.io), we are
 pleased to announce the release of **Pact 3.1!** This new version of Pact brings
 significant additions to the language, including expanded
-[Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
+[Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 coverage for our interfaces and governance, and our new cross-chain features in
 defpact, which makes it dead simple to write cross-chain multi-step
 transactions.

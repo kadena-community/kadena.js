@@ -20,14 +20,14 @@ layout: blog
 
 # Turbocharging mainstream adoption with Kadena Eco
 
-We can all look back at [2021](../2021/2021-year-in-review-2021-12-31) as the
-year that put Kadena on the map as a compelling alternative for truly
-decentralized, scalable and secure layer-1 blockchain technology. As 2022
-unfolds we want to give you, our bustling community, a preview of what’s next.
-Following the development and release of more groundbreaking innovations than
-any other competing platform in the market, Kadena is poised to make major
-investments to grow and empower our ecosystem of builders leveraging these
-paradigm-shifting technologies.
+We can all look back at
+[2021](/docs/blogchain/2021/2021-year-in-review-2021-12-31) as the year that put
+Kadena on the map as a compelling alternative for truly decentralized, scalable
+and secure layer-1 blockchain technology. As 2022 unfolds we want to give you,
+our bustling community, a preview of what’s next. Following the development and
+release of more groundbreaking innovations than any other competing platform in
+the market, Kadena is poised to make major investments to grow and empower our
+ecosystem of builders leveraging these paradigm-shifting technologies.
 
 ## The blockchain for builders: Web3 innovation with Web2 usability
 
