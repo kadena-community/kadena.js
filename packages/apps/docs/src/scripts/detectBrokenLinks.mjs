@@ -7,7 +7,7 @@ const externalLinks = {};
 
 function getBrokenLinks(filePath, links) {
   const brokenLinks = [];
-  const directory = path.dirname(filePath);
+  //const directory = path.dirname(filePath);
   links.forEach((link, index) => {
     // clean the link of hash fragments
     link = link.split('#')[0];
