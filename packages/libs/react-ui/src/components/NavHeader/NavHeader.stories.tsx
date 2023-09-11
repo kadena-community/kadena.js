@@ -31,7 +31,6 @@ const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 type StoryProps = {
   linksCount: number;
   navHeaderActiveLink: number;
-  renderSampleContent: boolean;
   useCustomNavigation: boolean;
   customNavigation: INavHeaderLinkProps[];
 } & INavHeaderRootProps;
@@ -86,10 +85,6 @@ const meta: Meta<StoryProps> = {
       },
       if: { arg: 'useCustomNavigation', eq: true },
     },
-    renderSampleContent: {
-      control: { type: 'boolean' },
-      description: 'Populate (right-hand side) children with sample content?',
-    },
   },
 };
 
@@ -109,7 +104,6 @@ export const Dynamic: IStory = {
     customNavigation,
     linksCount,
     navHeaderActiveLink,
-    renderSampleContent = false,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
     const selectedNetwork = 'Mainnet';
@@ -128,34 +122,19 @@ export const Dynamic: IStory = {
           ))}
         </NavHeader.Navigation>
         <NavHeader.Content>
-          {renderSampleContent && (
-            <>
-              <NavHeader.Select
-                id="network-select"
-                ariaLabel="Select Network"
-                value={selectedNetwork as string}
-                onChange={() => {}}
-                icon="Earth"
-              >
-                {sampleNetworkItems.map((network) => (
-                  <NavHeader.SelectOption key={network} value={network}>
-                    {network}
-                  </NavHeader.SelectOption>
-                ))}
-              </NavHeader.Select>
-
-              <Button
-                as="button"
-                icon="Link"
-                onClick={() => {}}
-                style={{ marginLeft: '1rem' }}
-                title="Sample button"
-                variant="positive"
-              >
-                Connect your wallet
-              </Button>
-            </>
-          )}
+          <NavHeader.Select
+            id="network-select"
+            ariaLabel="Select Network"
+            value={selectedNetwork as string}
+            onChange={() => {}}
+            icon="Earth"
+          >
+            {sampleNetworkItems.map((network) => (
+              <NavHeader.SelectOption key={network} value={network}>
+                {network}
+              </NavHeader.SelectOption>
+            ))}
+          </NavHeader.Select>
         </NavHeader.Content>
       </NavHeader.Root>
     );
