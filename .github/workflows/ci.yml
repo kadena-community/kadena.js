@@ -10,13 +10,9 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        NodeVersion: [16, 18]
+    name: Ubuntu/Node.js v18
+    runs-on: ubuntu-latest
+
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -37,13 +33,13 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.NodeVersion }}
+          node-version: 18
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Optimized build, lint, test all packages
+      - name: Build, lint, test all packages
         run: pnpm turbo build lint test
 
       - name: List mismatched dependencies

@@ -1,5 +1,5 @@
 import type { IHeadingProps } from '@kadena/react-ui';
-import { Heading } from '@kadena/react-ui';
+import { Heading, Link } from '@kadena/react-ui';
 
 import type { ILinkBlock } from './LinkBlock';
 import { LinkBlock } from './LinkBlock';
@@ -13,7 +13,7 @@ import {
 } from './styles.css';
 
 import classnames from 'classnames';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 
@@ -60,6 +60,7 @@ const BrowseSection: BrowseSectionType = ({
           if (
             !React.isValidElement(child) ||
             (child.type !== LinkBlock &&
+              child.type !== NextLink &&
               child.type !== Link &&
               child.type !== 'a')
           ) {

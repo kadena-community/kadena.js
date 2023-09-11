@@ -21,6 +21,10 @@
     "test": "turbo run test",
     "version": "changeset version"
   },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
@@ -29,9 +33,5 @@
     "syncpack": "^10.9.3",
     "tsx": "^3.12.8",
     "turbo": "^1.10.13"
-  },
-  "engines": {
-    "node": ">=16",
-    "pnpm": ">=8"
   }
 }

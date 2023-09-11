@@ -20,6 +20,8 @@ import {
 import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -28,7 +30,7 @@ export const Blog: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const { readingTimeInMinutes, publishDate, author } = frontmatter;
+  const { readingTimeInMinutes, publishDate, authorInfo } = frontmatter;
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
@@ -48,7 +50,14 @@ export const Blog: FC<IPageProps> = ({
           icon="BlogChain"
         />
         <div id="maincontent" className={contentClassNames}>
-          <article className={articleClass}>
+          <article
+            className={articleClass}
+            itemScope
+            itemType="http://schema.org/BlogPosting"
+          >
+            <meta itemProp="datePublished" content={publishDate} />
+            <meta itemProp="description" content={frontmatter.description} />
+            <meta itemProp="headline" content={frontmatter.title} />
             <div className={articleTopMetadataClass}>
               <ArticleMetadataItem>
                 {readingTimeInMinutes} {readingTimeLabel} read
@@ -61,7 +70,7 @@ export const Blog: FC<IPageProps> = ({
                 )}
               </ArticleMetadataItem>
             </div>
-            {children}
+            <div itemProp="articleBody">{children}</div>
 
             <div className={bottomWrapperClass}>
               <Grid.Root gap="$xl" columns={12}>
@@ -71,9 +80,27 @@ export const Blog: FC<IPageProps> = ({
                     justifyContent="space-between"
                     direction={'column'}
                   >
-                    <span>
-                      By <b>{author}</b>
-                    </span>
+                    {authorInfo && (
+                      <span
+                        itemProp="author"
+                        itemScope
+                        itemType="https://schema.org/Person"
+                      >
+                        <Link
+                          itemProp="url"
+                          href={`/docs/blogchain/authors/${authorInfo.id}`}
+                        >
+                          <Image
+                            itemProp="image"
+                            src={authorInfo.avatar}
+                            width={48}
+                            height={48}
+                            alt={`avatar for: ${authorInfo.name}`}
+                          />
+                          <span itemProp="name">{authorInfo.name}</span>
+                        </Link>
+                      </span>
+                    )}
                   </Stack>
                 </Grid.Item>
               </Grid.Root>

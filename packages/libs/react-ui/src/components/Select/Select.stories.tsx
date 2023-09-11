@@ -6,12 +6,9 @@ import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const meta: Meta<
-  {
-    icon: keyof typeof SystemIcon;
-  } & ISelectProps
-> = {
+const meta: Meta<ISelectProps> = {
   title: 'Components/Select',
+  component: Select,
   argTypes: {
     disabled: {
       description: 'toggle disabled state of component',

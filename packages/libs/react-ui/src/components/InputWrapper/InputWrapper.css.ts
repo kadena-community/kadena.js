@@ -19,7 +19,7 @@ const statusOptions: Record<Status, Status> = {
 
 export const statusVariant = styleVariants(statusOptions, (status) => {
   if (status === 'disabled') {
-    return [sprinkles({ pointerEvents: 'none' }), { opacity: 0.5 }];
+    return [sprinkles({ pointerEvents: 'none' }), { opacity: 0.4 }];
   }
 
   return {
