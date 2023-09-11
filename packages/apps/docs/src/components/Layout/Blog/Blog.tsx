@@ -1,4 +1,4 @@
-import { Grid, ProfileCard, Stack } from '@kadena/react-ui';
+import { Grid, Stack } from '@kadena/react-ui';
 
 import { baseGridClass } from '../basestyles.css';
 import {
