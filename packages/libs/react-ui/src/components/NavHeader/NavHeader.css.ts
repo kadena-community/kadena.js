@@ -130,3 +130,59 @@ export const glowClass = style([
     zIndex: 0,
   },
 ]);
+
+export const selectContainerClass = style([
+  sprinkles({
+    alignItems: 'stretch',
+    backgroundColor: {
+      lightMode: '$gray90',
+      darkMode: '$gray90',
+    },
+    borderRadius: '$sm',
+    display: 'flex',
+    flexGrow: 1,
+    gap: '$2',
+    lineHeight: '$lg',
+    overflow: 'hidden',
+    paddingLeft: '$4',
+    paddingRight: '$2',
+
+  }),
+  {
+    border: `1px solid ${vars.colors.$gray40}`,
+  },
+]);
+
+export const selectContainerClassDisabled = style([
+  sprinkles({
+    backgroundColor: {
+      lightMode: '$gray20',
+    },
+    color: {
+      lightMode: '$foreground',
+    },
+  }),
+]);
+
+export const selectIconClass = style([
+  sprinkles({
+    alignItems: 'center',
+    display: 'flex',
+  }),
+]);
+
+export const selectClass = style([
+  sprinkles({
+    background: 'none',
+    border: 'none',
+    color: '$gray40',
+    flexGrow: 1,
+    outline: 'none',
+    paddingRight: '$2',
+    paddingY: '$2',
+    fontSize: '$base',
+  }),
+  {
+    backgroundColor: 'inherit',
+  },
+]);

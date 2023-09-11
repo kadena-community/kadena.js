@@ -26,6 +26,11 @@ const sampleNavItems: INavHeaderLinkProps[] = [
   },
 ];
 
+const sampleNetworkItems: string[] = [
+  'Mainnet',
+  'Testnet'
+];
+
 type StoryProps = {
   linksCount: number;
   navHeaderActiveLink: number;
@@ -110,6 +115,7 @@ export const Dynamic: IStory = {
     renderSampleContent = false,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
+    const selectedNetwork = 'Mainnet';
 
     return (
       <NavHeader.Root brand={brand}>
@@ -126,16 +132,32 @@ export const Dynamic: IStory = {
         </NavHeader.Navigation>
         <NavHeader.Content>
           {renderSampleContent && (
-            <Button
-              as="button"
-              icon="Link"
-              onClick={() => {}}
-              style={{ marginLeft: '1rem' }}
-              title="Sample button"
-              variant="positive"
-            >
-              Connect your wallet
-            </Button>
+            <>
+              <NavHeader.Select
+                id="network-select"
+                ariaLabel="Select Network"
+                value={selectedNetwork as string}
+                onChange={() => {}}
+                icon="Link"
+              >
+                {sampleNetworkItems.map((network) => (
+                  <NavHeader.SelectOption key={network} value={network}>
+                    {network}
+                  </NavHeader.SelectOption>
+                ))}
+              </NavHeader.Select>
+
+              <Button
+                as="button"
+                icon="Link"
+                onClick={() => {}}
+                style={{ marginLeft: '1rem' }}
+                title="Sample button"
+                variant="positive"
+              >
+                Connect your wallet
+              </Button>
+            </>
           )}
         </NavHeader.Content>
       </NavHeader.Root>
