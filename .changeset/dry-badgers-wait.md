@@ -1,5 +1,5 @@
 ---
-'@kadena/react-ui': minor
+'@kadena/react-ui': none
 ---
 
 Initial package setup

@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': minor
+'@kadena/react-components': none
 ---
 
 Added stack component
