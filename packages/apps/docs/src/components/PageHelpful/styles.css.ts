@@ -10,6 +10,7 @@ export const textAreaClass = style([
     outline: 'none',
     flexGrow: 1,
     paddingY: '$2',
+    paddingX: '$2',
     color: '$foreground',
     borderRadius: '$sm',
   }),

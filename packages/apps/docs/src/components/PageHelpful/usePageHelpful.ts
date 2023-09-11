@@ -24,6 +24,12 @@ export default function usePageHelpful(
   }, [localStorageKey]);
 
   function handlePageHelpful(): void {
+    if (isPageHelpful === 'up') {
+      setIsPageHelpful('');
+      localStorage.setItem(localStorageKey, '');
+      return;
+    }
+
     setIsPageHelpful('up');
     localStorage.setItem(localStorageKey, 'up');
     analyticsEvent(EVENT_NAMES['click:page_helpful'], {
@@ -33,6 +39,11 @@ export default function usePageHelpful(
   }
 
   function handlePageNotHelpful(): void {
+    if (isPageHelpful === 'down') {
+      setIsPageHelpful('');
+      localStorage.setItem(localStorageKey, '');
+      return;
+    }
     localStorage.setItem(localStorageKey, 'down');
     setIsPageHelpful('down');
     renderModalComponent();
