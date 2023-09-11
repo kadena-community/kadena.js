@@ -145,22 +145,10 @@ export const selectContainerClass = style([
     overflow: 'hidden',
     paddingLeft: '$4',
     paddingRight: '$2',
+    position: 'relative',
   }),
   {
     border: `1px solid ${vars.colors.$gray40}`,
-    selectors: {
-      '&::after': {
-        content: '',
-        position: 'relative',
-
-        backgroundImage: `url('data:image/svg+xml;charset=UTF-8, <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <g opacity="0.6">
-    <path d="M7.41 8.58002L12 13.17L16.59 8.58002L18 10L12 16L6 10L7.41 8.58002Z" fill="#FAFAFA"/>
-  </g>
-</svg>')`,
-        backgroundRepeat: 'no-repeat',
-      },
-    },
   },
 ]);
 
@@ -181,6 +169,13 @@ export const selectIconClass = style([
     display: 'flex',
     marginRight: '$2',
   }),
+  {
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
+  },
 ]);
 
 export const selectClass = style([
@@ -190,12 +185,30 @@ export const selectClass = style([
     color: '$gray40',
     flexGrow: 1,
     outline: 'none',
-    paddingRight: '$2',
+    paddingRight: '$8',
     paddingY: '$2',
     fontSize: '$base',
   }),
   {
     backgroundColor: 'inherit',
     appearance: 'none',
+  },
+]);
+
+export const chevronIconClass = style([
+  sprinkles({
+    alignItems: 'center',
+    display: 'flex',
+    marginRight: '$2',
+    position: 'absolute',
+    right: '$1',
+    top: '$3',
+  }),
+  {
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
   },
 ]);

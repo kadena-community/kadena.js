@@ -1,4 +1,5 @@
 import {
+  chevronIconClass,
   selectClass,
   selectContainerClass,
   selectContainerClassDisabled,
@@ -33,6 +34,7 @@ export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
   ref,
 ) {
   const Icon = icon && SystemIcon[icon];
+  const ChevronDown = SystemIcon.ChevronDown;
 
   return (
     <div
@@ -55,6 +57,9 @@ export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
       >
         {children}
       </select>
+      <span className={chevronIconClass}>
+        <ChevronDown size="md" />
+      </span>
     </div>
   );
 });

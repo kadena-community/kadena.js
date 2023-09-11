@@ -71,7 +71,7 @@ const Header: FC<IHeaderProps> = () => {
           ariaLabel={t('Select Network')}
           value={selectedNetwork as string}
           onChange={(e) => setSelectedNetwork(e.target.value as Network)}
-          icon="Link"
+          icon="Earth"
         >
           {networks.map((network) => (
             <NavHeader.SelectOption key={network} value={network}>

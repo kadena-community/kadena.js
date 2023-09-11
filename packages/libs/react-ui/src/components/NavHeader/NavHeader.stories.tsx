@@ -135,7 +135,7 @@ export const Dynamic: IStory = {
                 ariaLabel="Select Network"
                 value={selectedNetwork as string}
                 onChange={() => {}}
-                icon="Link"
+                icon="Earth"
               >
                 {sampleNetworkItems.map((network) => (
                   <NavHeader.SelectOption key={network} value={network}>
