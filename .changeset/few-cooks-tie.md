@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': minor
+'@kadena/react-components': none
 ---
 
-Added missing colors: secondary, warning
+Add missing colors: secondary, warning

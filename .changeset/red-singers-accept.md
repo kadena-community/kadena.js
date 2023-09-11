@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': patch
+'@kadena/react-components': none
 ---
 
 New Code system icon added

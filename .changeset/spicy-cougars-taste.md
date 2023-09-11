@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': patch
+'@kadena/react-components': minor
 ---
 
-Gradient Text component added
+Add GradientText component 
