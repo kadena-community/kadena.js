@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': none
+'@kadena/react-components': minor
 ---
 
-Added design system defined spacing tokens
+Add design system defined spacing tokens

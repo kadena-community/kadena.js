@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': none
+'@kadena/react-components': minor
 ---
 
-implement input component
+Add input component
