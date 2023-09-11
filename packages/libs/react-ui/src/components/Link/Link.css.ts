@@ -22,3 +22,9 @@ export const linkContainerClass = style([
     },
   },
 ]);
+
+export const inlineLinkClass = style([
+  sprinkles({
+    display: 'inline-flex',
+  }),
+]);
