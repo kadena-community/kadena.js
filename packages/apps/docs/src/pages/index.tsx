@@ -73,7 +73,6 @@ const Home: FC<IProps> = ({ popularPages }) => {
             </Stack>
           </Box>
 
-          <Heading as="h4">Browse by Resources</Heading>
           <Box marginBottom="$10">
             <Stack wrap="wrap">
               <BrowseSection title="General" className={browseSectionWrapper}>
@@ -84,14 +83,18 @@ const Home: FC<IProps> = ({ popularPages }) => {
                 </a>
               </BrowseSection>
               <BrowseSection
-                title="Developers"
+                title="Useful tools"
                 className={browseSectionWrapper}
               >
-                <Link href="/docs/build/quickstart">Quick start</Link>
-                <Link href="/docs/pact/beginner/language-basics">
-                  Pact Language resources
+                <Link href="/docs/build/support">
+                  Chainweaver (Wallet & Workbench)
                 </Link>
-                <Link href="/docs/pact">Pact developer tutorials</Link>
+                <Link href="/docs/kadena/wallets/chainweaver">Atom IDE</Link>
+                <a href="https://explorer.chainweb.com/mainnet">
+                  Block Explorer
+                </a>
+                <a href="https://transfer.chainweb.com/">Web transfer tools</a>
+                <a href="https://balance.chainweb.com/">Balance checker</a>
               </BrowseSection>
               <BrowseSection title="Programs" className={browseSectionWrapper}>
                 <Link href="/docs/build/support">Developer program</Link>
@@ -124,38 +127,6 @@ const Home: FC<IProps> = ({ popularPages }) => {
                 subtitle="Explore all products"
                 icon="Marmalade"
                 href="/docs/marmalade"
-              />
-            </BrowseSection>
-            <BrowseSection title="Pact" titleAs="h5" direction="row">
-              <BrowseSection.LinkBlock
-                title="Pact Language"
-                subtitle="Explore all products"
-                icon="PactLanguage"
-                href="/docs/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Useful Tools"
-                subtitle="Explore all products"
-                icon="UsefulTools"
-                href="/docs/build/tools"
-              />
-              <BrowseSection.LinkBlock
-                title="Beginner Tutorials"
-                subtitle="For starters"
-                icon="PactDeveloper"
-                href="/docs/pact/beginner"
-              />
-              <BrowseSection.LinkBlock
-                title="Intermediate Tutorials"
-                subtitle="get some more experience"
-                icon="PactDeveloper"
-                href="docs/pact/intermediate"
-              />
-              <BrowseSection.LinkBlock
-                title="Quickstart"
-                subtitle="Explore all products"
-                icon="QuickStart"
-                href="/docs/chainweb"
               />
             </BrowseSection>
           </Stack>
