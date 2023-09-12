@@ -104,6 +104,15 @@ const Home: FC<IProps> = ({ popularPages }) => {
                 <Link href="/docs/build/support/technical-grants">
                   Technical grants
                 </Link>
+                <a href="https://github.com/kadena-community/create-kadena-app">
+                  Bootstrap Kadena dApp
+                </a>
+                <a href="https://hub.docker.com/r/kadena/devnet">
+                  Devnet Docker Container
+                </a>
+                <a href="https://github.com/kadena-io/pact#installing-pact">
+                  Pact binary
+                </a>
               </BrowseSection>
             </Stack>
           </Box>
