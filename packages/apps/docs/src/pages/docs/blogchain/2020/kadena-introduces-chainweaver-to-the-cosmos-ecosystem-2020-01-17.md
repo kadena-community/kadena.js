@@ -9,12 +9,12 @@ description:
 menu: Kadena Introduces Chainweaver to the Cosmos Ecosystem
 label: Kadena Introduces Chainweaver to the Cosmos Ecosystem
 publishDate: 2020-01-17
+headerImage: /assets/blog/2020/1_TC6Pmg3mMESvs7C1cZFsrA.webp
+tags: [chainweaver]
 author: Rebecca Rodriguez
 authorId: rebecca.rodriguez
 layout: blog
 ---
-
-![](/assets/blog/2020/1_TC6Pmg3mMESvs7C1cZFsrA.webp)
 
 # Kadena Introduces Chainweaver to the Cosmos Ecosystem
 

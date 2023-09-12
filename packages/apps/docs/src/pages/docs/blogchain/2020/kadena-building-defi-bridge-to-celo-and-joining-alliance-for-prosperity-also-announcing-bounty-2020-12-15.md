@@ -17,12 +17,12 @@ label:
   Kadena Building DeFi Bridge to Celo and Joining Alliance for Prosperity, also
   Announcing Bounty Program for Kadenaswap DEX
 publishDate: 2020-12-15
+headerImage: /assets/blog/2020/1_BWXDWnNDfpa6zTljd7rguQ.webp
+tags: [defi, bridge]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2020/1_BWXDWnNDfpa6zTljd7rguQ.webp)
 
 # Kadena Building DeFi Bridge to Celo and Joining Alliance for Prosperity, also Announcing Bounty Program for Kadenaswap DEX
 

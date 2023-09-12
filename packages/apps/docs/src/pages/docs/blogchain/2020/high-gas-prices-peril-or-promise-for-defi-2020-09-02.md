@@ -9,12 +9,12 @@ description:
 menu: High gas prices peril or promise for DeFi?
 label: High gas prices peril or promise for DeFi?
 publishDate: 2020-09-02
+headerImage: /assets/blog/2020/1_fynn5el1Ya3Q6F-TbBTFGg.webp
+tags: [defi]
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/2020/1_fynn5el1Ya3Q6F-TbBTFGg.webp)
 
 # High gas prices: peril or promise for DeFi?
 

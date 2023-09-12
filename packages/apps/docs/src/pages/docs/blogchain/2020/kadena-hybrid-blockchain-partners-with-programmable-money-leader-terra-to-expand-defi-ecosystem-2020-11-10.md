@@ -18,12 +18,12 @@ label:
   Kadena Hybrid Blockchain Partners with Programmable Money Leader Terra to
   Expand DeFi Ecosystem
 publishDate: 2020-11-10
+headerImage: /assets/blog/2020/1__Usm8O2pFFohsQ6nvuTauA.webp
+tags: [defi]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2020/1__Usm8O2pFFohsQ6nvuTauA.webp)
 
 # Kadena Hybrid Blockchain Partners with Programmable Money Leader Terra to Expand DeFi Ecosystem
 
