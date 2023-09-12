@@ -16,7 +16,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Notification component renders a notification with an icon, title, and text. The notification can be expanded to show additional content. The color variant of the notification can be set with the `color` prop.',
+          'The Notification component renders a notification with an icon, title, and text. The color variant of the notification can be set with the `color` prop.',
       },
     },
   },
