@@ -22,7 +22,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'The Table component renders a table element with a head and body. The table can have a visual distinction between rows with the `striped` prop. The column width can be set with the `columnWidth` prop.',
+          'The Table component renders a table element with a head and body. The table can have a visual distinction between rows with the `striped` prop. The column width can be adjusted via `width`, `minWidth`, and `maxWidth` prop applied to the `Table.Th` subcomponent.',
       },
     },
   },
