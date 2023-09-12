@@ -2,20 +2,12 @@ import { Link, Notification, Table } from '@kadena/react-ui';
 
 import { useGetTransactionByRequestKeySubscription } from '../../__generated__/sdk';
 import Loader from '../../components/loader/loader';
+import { mainStyle } from '../../components/main/styles.css';
 import { Text } from '../../components/text';
-import { styled } from '../../styles/stitches.config';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-const StyledMain = styled('main', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  my: '5rem',
-});
 
 const RequestKey: React.FC = () => {
   const router = useRouter();
@@ -35,7 +27,7 @@ const RequestKey: React.FC = () => {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <StyledMain>
+      <main className={mainStyle}>
         <Text
           as="h1"
           css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
@@ -52,10 +44,12 @@ const RequestKey: React.FC = () => {
           )}
           {error && (
             <Notification.Root color="negative" icon="Close">
-              Unknown error:<br/>
-              <br/>
-              "<code>{error.message}</code>"<br/>
-              <br/>
+              Unknown error:
+              <br />
+              <br />
+              <code>{error.message}</code>
+              <br />
+              <br />
               Check if the Graph server is running.
             </Notification.Root>
           )}
@@ -341,7 +335,7 @@ const RequestKey: React.FC = () => {
             </div>
           )}
         </div>
-      </StyledMain>
+      </main>
     </div>
   );
 };

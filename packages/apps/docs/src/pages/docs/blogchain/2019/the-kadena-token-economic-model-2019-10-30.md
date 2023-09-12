@@ -16,7 +16,7 @@ layout: blog
 Authors: Anastasia Bez, Will Martino, Monica Quaintance
 
 2021/01/29- Please see the updated token model
-[here](../2021/update-to-the-kadena-token-economic-model-2021-01-29).
+[here](/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29).
 
 Kadena has designed a token economic system that aligns the incentives of all
 participants. As Kadena is a public blockchain platform, the main allocation of

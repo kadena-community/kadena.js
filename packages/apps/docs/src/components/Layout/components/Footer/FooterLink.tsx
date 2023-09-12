@@ -11,20 +11,25 @@ interface IProps {
   href: string;
 }
 
-export const FooterLink: FC<IProps> = ({ children, href }) => {
+export const FooterLink: FC<IProps> = React.forwardRef<
+  HTMLAnchorElement,
+  IProps
+>(({ children, href }, ref) => {
   const isInnerLink = href.includes('http');
 
   return (
     <Text size="md" bold={false}>
       {isInnerLink ? (
-        <a href={href} className={linkClass}>
+        <a ref={ref} href={href} className={linkClass}>
           {children}
         </a>
       ) : (
-        <Link href={href} className={linkClass}>
+        <Link ref={ref} href={href} className={linkClass}>
           {children}
         </Link>
       )}
     </Text>
   );
-};
+});
+
+FooterLink.displayName = 'FooterLink';

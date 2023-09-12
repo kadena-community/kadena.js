@@ -12,10 +12,10 @@
     "devnet": "(docker start -ai devnet && docker exec -it devnet /bin/bash) || docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.kda-devnet/data:/data -v ./cwd-extra-migrations:/cwd-extra-migrations --name devnet enof/devnet:l2-latest",
     "devnet:update": "docker pull enof/devnet:l2-latest",
     "format": "pnpm run /^format:.*/",
-    "format:src": "prettier config src --write",
+    "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint package.json src --ext .js,.ts --fix",
+    "lint:src": "eslint src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
@@ -50,6 +50,7 @@
     "@types/pg": "~8.10.2",
     "embedded-postgres": "~15.1.0-beta.6",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "ts-node": "~10.8.2"
   }
 }

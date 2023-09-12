@@ -45,7 +45,7 @@ Kadenamint will allow for rapid implementation of apps in a safer way.
 Entrepreneurs and enterprises alike will have a configuration-free and
 completely open source smart contract language for business applications.
 Kadenamint brings the power of user-code
-[Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11),
+[Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11),
 proper multi-signature features and full capabilities to Tendermint.
 
 ## What people are saying about Kadenamint:

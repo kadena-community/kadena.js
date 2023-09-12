@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': none
+'@kadena/react-components': minor
 ---
 
-add IconButton component
+Add IconButton component

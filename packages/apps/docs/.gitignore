@@ -5,9 +5,8 @@ src/pages/docs/kadena/client
 src/pages/docs/pact/cli
 src/pages/docs/pact/pactjs-test-project/api
 src/pages/docs/pact/pactjs-test-project/project-api
-src/pages/docs/build/tools/create-kadena-app
-src/pages/docs/build/tools/kda-cli
-src/pages/docs/build/tools/cryptography-utils
+src/pages/docs/build/kda-cli
+src/pages/docs/build/cryptography-utils
 src/pages/docs/pact/pactjs
 src/pages/docs/pact/pactjs-generator
 src/pages/docs/kadena/client-examples

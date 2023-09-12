@@ -2,4 +2,4 @@
 '@kadena/react-components': minor
 ---
 
-Added stack component
+Add stack component

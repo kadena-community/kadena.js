@@ -47,7 +47,7 @@ systems and exchange backbones for the financial industry, including as leader
 of the emerging technology group at JP Morgan. Stuart is the creator of Kadena’s
 smart contract language, [Pact](http://pact.kadena.io), the first open-source
 smart contract languages with
-[formal verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
+[formal verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 built-in.
 
 **[Ronghui Gu](https://www.linkedin.com/in/guronghui/), Co-founder @ Certik:**

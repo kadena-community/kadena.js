@@ -7,7 +7,7 @@ const externalLinks = {};
 
 function getBrokenLinks(filePath, links) {
   const brokenLinks = [];
-  const directory = path.dirname(filePath);
+  //const directory = path.dirname(filePath);
   links.forEach((link, index) => {
     // clean the link of hash fragments
     link = link.split('#')[0];
@@ -25,8 +25,6 @@ function getBrokenLinks(filePath, links) {
 
     if (link.startsWith('/assets')) {
       links[index] = path.join('public/', link);
-    } else if (directory.includes('src/pages/docs/blogchain')) {
-      links[index] = path.resolve(directory, link);
     } else {
       links[index] = path.join(__dirname, 'src/pages', link);
     }

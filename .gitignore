@@ -9,7 +9,6 @@ package-lock.json
 yarn.lock
 npm-shrinkwrap.json
 shrinkwrap.json
-!common/**/pnpm-lock.yaml
 
 # Metadata
 tsdoc-metadata.json
@@ -90,3 +89,5 @@ packages/*/*/temp
 
 # Storybook static build
 storybook-static
+
+temp

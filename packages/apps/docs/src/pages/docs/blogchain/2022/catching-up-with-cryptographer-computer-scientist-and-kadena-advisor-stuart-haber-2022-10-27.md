@@ -99,7 +99,7 @@ technical, political, and social circles.
 I keep myself busy these days. I’m currently an advisor and consultant for
 several companies, including Kadena. At Kadena, I apply cryptographic security
 principles to
-[Pact](https://docs.kadena.io/basics/whitepapers/overview#2-pact-kadenas-smart-contract-language-),
+[Pact](/docs/kadena/whitepapers#pact-kadenas-smart-contract-languageh-2100814099),
 reinforcing platform safety.
 
 I also partake in a few speaking engagements every year. In June 2022, Stornetta
@@ -112,11 +112,9 @@ speaker.
 ### What are Kadena and Pact?
 
 [Kadena](https://kadena.io/about/) is a unique scalable layer-1 Proof of Work
-(PoW) blockchain platform, and
-[Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact) is a very
-impressive and proprietary smart contract language that comes with it. Kadena
-was founded by Stuart Popejoy and William Martino, whom I’ve known for several
-years now.
+(PoW) blockchain platform, and [Pact](/docs/pact/beginner) is a very impressive
+and proprietary smart contract language that comes with it. Kadena was founded
+by Stuart Popejoy and William Martino, whom I’ve known for several years now.
 
 ### How did you meet Stuart and William?
 
@@ -133,9 +131,9 @@ months later, when I became an advisor for Kadena.
 
 As I mentioned previously, I’m very impressed with Kadena’s smart contract
 language and Stuart and Will’s principled approach to developing it.
-[Chainweb](https://docs.kadena.io/basics/whitepapers/overview) is a
-differentiating factor as well. It’s a highly scalable braided blockchain
-architecture that can seamlessly scale from 10 to 20 chains. Stuart published an
+[Chainweb](/docs/kadena/whitepapers) is a differentiating factor as well. It’s a
+highly scalable braided blockchain architecture that can seamlessly scale from
+10 to 20 chains. Stuart published an
 [article](./the-future-of-multichain-2022-04-19) in April 2022 on Medium about
 the future of multichain and how builders can scale their applications, which I
 found insightful and profound.
@@ -160,7 +158,7 @@ Blockchain enthusiasts wax eloquently about all the things smart contracts can
 do for [DeFi](https://www.coinbase.com/learn/crypto-basics/what-is-defi),
 [NFTs](https://kadenacommunity.medium.com/kadena-nfts-the-future-is-poly-fungible-6fa14c40e879#:~:text=Kadena%20NFT's%20are%20tokens%20on,the%20only%20game%20in%20town.),
 and
-[DAOs](../2021/kadena-dao-meaningful-initiatives-driven-by-the-voice-of-the-community-2021-07-14);
+[DAOs](/docs/blogchain/2021/kadena-dao-meaningful-initiatives-driven-by-the-voice-of-the-community-2021-07-14);
 however, many smart contracts contain bugs that introduce devastating
 vulnerabilities and consequences, as we’ve seen in a large number of
 [cases.](https://savedby.kadena.network/) From large financial institutions to
@@ -175,9 +173,9 @@ communities:
 
 [Our Blog on Medium](https://medium.com/kadena-io)
 
-[Platform Documentation](https://docs.kadena.io)
+[Platform Documentation](/)
 
-[White Papers](https://docs.kadena.io/basics/whitepapers/overview)
+[White Papers](/docs/kadena/whitepapers)
 
 [Kadena Communities](https://kadena.io/community/)
 

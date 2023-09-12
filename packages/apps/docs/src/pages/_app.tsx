@@ -24,9 +24,6 @@ type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
 
 const deserializePageProps = (props: ImportedPagePropsType): IPageProps => {
   const newProps = JSON.parse(JSON.stringify(props)) as IPageProps;
-  newProps.frontmatter.lastModifiedDate = props.frontmatter.lastModifiedDate
-    ? new Date(props.frontmatter.lastModifiedDate)
-    : undefined;
   return newProps;
 };
 
@@ -38,6 +35,7 @@ export const MyApp = ({
   Component: FC<IPageProps>;
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
+
   const Layout = getLayout(props.frontmatter.layout);
 
   // check for a router query

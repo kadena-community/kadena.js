@@ -2,9 +2,9 @@
 title: Learn Pact
 description: Kadena makes blockchain work for everyone.
 subTitle: Welcome to the Pact Developer Tutorials
-menu: Pact
-label: Pact
-order: 3
+menu: Overview
+label: Overview
+order: 1
 layout: landing
 icon: PactDeveloper
 ---

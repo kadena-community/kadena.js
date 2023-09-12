@@ -51,7 +51,7 @@ tools, tutorials, and apps, such as
 [@kadena/cryptography-utils](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils),
 and much, much more. All the details of what we accomplished in the last 6
 months are outlined in
-our[ 2022 Year in Review.](../2022/kadena-2022-year-in-review-2022-12-22)
+our[ 2022 Year in Review.](/docs/blogchain/2022/kadena-2022-year-in-review-2022-12-22)
 
 Perhaps most excitingly, in December 2022, the team launched the Kadena Learning
 Tutorials Platform, a new comprehensive educational program specifically

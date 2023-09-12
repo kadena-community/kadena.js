@@ -58,7 +58,7 @@ reviewing the [whitepaper](https://kadena.io/docs/chainweb-v15.pdf)._
 
 _For some recent (Oct 2018) follow-ups on security and addressing assumptions
 and misunderstandings about Kadena’s public blockchain, check out our
-[post](../2018/security-kadena-chainweb-blockchain-2018-11-01)._
+[post](/docs/blogchain/2018/security-kadena-chainweb-blockchain-2018-11-01)._
 
 ## Frequently Asked Tech Questions
 

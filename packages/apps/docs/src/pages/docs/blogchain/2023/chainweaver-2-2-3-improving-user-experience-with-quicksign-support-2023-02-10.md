@@ -70,7 +70,7 @@ If you want to test out the quicksign API, it is now available in desktop
 versions of Chainweaver 2.2.3, you can find more information below:
 
 **Download or use Chainweaver here:**
-[https://docs.kadena.io/basics/wallets#chainweaver](https://docs.kadena.io/basics/wallets#chainweaver).
+[/docs/kadena/wallets#chainweaverh-1967816367](/docs/kadena/wallets#chainweaverh-1967816367).
 
 **Official release:**
 [https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3](https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3)

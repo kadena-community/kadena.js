@@ -6,5 +6,6 @@
   "singleQuote": true,
   "trailingComma": "all",
   "arrowParens": "always",
-  "proseWrap": "always"
+  "proseWrap": "always",
+  "plugins": ["prettier-plugin-packagejson"]
 }

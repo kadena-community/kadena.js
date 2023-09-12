@@ -65,7 +65,7 @@ export const SearchResults: FC<IProps> = ({
   });
 
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
-    const buttonName = (e.target as HTMLElement).getAttribute('data-value');
+    const buttonName = (e.target as HTMLElement).getAttribute('data-tab');
     if (buttonName === null) return;
     localStorage.setItem(TABNAME, buttonName);
     onTabSelect(buttonName);
