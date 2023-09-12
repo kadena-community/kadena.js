@@ -74,9 +74,9 @@ const Header: FC<IHeaderProps> = () => {
           icon="Link"
         >
           {networks.map((network) => (
-            <Option key={network} value={network}>
+            <option key={network} value={network}>
               {kadenaConstants?.[network].label}
-            </Option>
+            </option>
           ))}
         </Select>
         <div className={walletConnectWrapperStyle}>
