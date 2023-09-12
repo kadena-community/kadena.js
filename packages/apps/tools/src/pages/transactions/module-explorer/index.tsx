@@ -13,20 +13,12 @@ import Routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import {
-  type IModulesResult,
-  listModules,
-} from '@/services/modules/list-module';
+import type { IModulesResult } from '@/services/modules/list-module';
+import { listModules } from '@/services/modules/list-module';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import type { ChangeEventHandler, FC } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 const ModuleExplorer: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer');

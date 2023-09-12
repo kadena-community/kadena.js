@@ -8,13 +8,13 @@
     "eject": "react-scripts eject",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier locales src --write",
+    "format:src": "prettier . --cache --write",
     "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "pnpm run /^generate:.*:contract/",
     "generate:faucet:contract": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint package.json src --ext .ts,.tsx, --fix",
+    "lint:src": "eslint src --ext .ts,.tsx, --fix",
     "start": "next start",
     "test": "jest --silent"
   },
@@ -81,6 +81,7 @@
     "jest-environment-jsdom": "~29.6.1",
     "next-translate-plugin": "~2.0.5",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "typescript": "5.1.6"
   },
   "volta": {

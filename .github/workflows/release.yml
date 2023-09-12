@@ -1,43 +1,62 @@
 name: Release
 
 # Taken from: https://github.com/changesets/action#with-publishing
-# TODO: get/set GITHUB_TOKEN and NPM_TOKEN
 
 on:
   push:
     branches:
-      - DISABLED_main
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Release
+    name: Changelog PR or Release
+    if: ${{ github.repository_owner == 'kadena-community' }}
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           show-progress: false
 
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: pnpm
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Build, lint, test all packages
+        run: pnpm turbo build lint test
+
+      - name: Create Release PR or Publish
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm publish-packages
+          # Note: pnpm install after versioning is necessary to refresh lockfile
+          version: pnpm run version
+          publish: pnpm run publish
+          commit: 'Update changelogs and bump versions [skip ci]'
+          title: '[ci] Release'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Needs "Contents" r+w and "Pull requests" r+w access to open/update PRs and push to main
+          GITHUB_TOKEN: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
+          # Needs r+w access for packages of both orgs to publish to npm
+          NPM_TOKEN: ${{ secrets.RELEASE_ACTION_NPM_TOKEN }}
 
-      # - name: Send a Slack notification if a publish happens
-      # if: steps.changesets.outputs.published == 'true'
-      # You can do something when a publish happens.
-      # run: my-slack-bot send-notification --message "A new version of ${GITHUB_REPOSITORY} was published!"
+      - name: Output (debug)
+        if: steps.changesets.outputs.published == 'true'
+        # Do something more interesting when a publish happens.
+        run: echo ${{ steps.changesets.outputs.publishedPackages }}

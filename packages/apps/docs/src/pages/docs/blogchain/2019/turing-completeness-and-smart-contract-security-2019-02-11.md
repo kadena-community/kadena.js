@@ -23,11 +23,11 @@ layout: blog
 At Kadena, we talk a lot about blockchain design decisions. One particularly
 profound design decision that I’ve come across recently revolves around the
 property of **Turing completeness**, which sparked debate in a
-[recent post](../2018/the-evm-is-fundamentally-unsafe-2018-12-13) by one of our
-developers. As a non-technical member of the team, I wanted to learn what Turing
-completeness actually means, why the blockchain community seems to be divided on
-the matter, and why our engineers are working hard to educate others on its
-drawbacks for safe smart contract programming.
+[recent post](/docs/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13)
+by one of our developers. As a non-technical member of the team, I wanted to
+learn what Turing completeness actually means, why the blockchain community
+seems to be divided on the matter, and why our engineers are working hard to
+educate others on its drawbacks for safe smart contract programming.
 
 What follows is a brief summary of my exploration to demystify and understand
 this core property of smart contract security. So if you’re somebody like me who

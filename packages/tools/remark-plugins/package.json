@@ -16,9 +16,9 @@
     "build": "tsc",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use ./lib/index.js",
-    "format:src": "prettier src --write",
+    "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
-    "lint:src": "eslint package.json src --ext .ts --fix",
+    "lint:src": "eslint src --ext .ts --fix",
     "test": ""
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "typescript": "5.1.6",
     "unified": "^10.1.2",
     "vfile": "5.3.7"

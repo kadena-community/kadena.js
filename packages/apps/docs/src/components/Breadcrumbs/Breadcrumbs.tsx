@@ -43,7 +43,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
         {items.map((item, idx) =>
           idx < items.length - 1 ? (
             <StyledBreadcrumbs.Item key={item.root} asChild>
-              <Link href={`#${item.root}`}>{item.title}</Link>
+              <Link href={`${item.root}`}>{item.title}</Link>
             </StyledBreadcrumbs.Item>
           ) : (
             <StyledBreadcrumbs.Item key={item.root}>

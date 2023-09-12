@@ -37,13 +37,12 @@ I’ve migrated fully to functional programming, building both production system
 in Haskell and formally verified models in Coq.
 
 As the newest engineering team member at Kadena, I’m now happily wrapping my
-head around [Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact),
-Kadena’s open-sourced smart contract programming language. Not only is it a
-privilege to be part of such an amazing community, but something truly
-transformational is underway. Thanks to connections built earlier in my career,
-my path to Kadena came into clear view at the right time. Here at Kadena I’m
-able to pursue my aspiration of creating a more stable and secure environment
-for blockchain builders.
+head around [Pact](/docs/pact/beginner), Kadena’s open-sourced smart contract
+programming language. Not only is it a privilege to be part of such an amazing
+community, but something truly transformational is underway. Thanks to
+connections built earlier in my career, my path to Kadena came into clear view
+at the right time. Here at Kadena I’m able to pursue my aspiration of creating a
+more stable and secure environment for blockchain builders.
 
 **Early cryptography: Haskell, government contracts, and formal proofs**
 

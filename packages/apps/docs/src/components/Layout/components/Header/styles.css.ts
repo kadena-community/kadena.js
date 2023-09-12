@@ -251,7 +251,7 @@ export const navLinkActiveVariant = styleVariants({
 
     selectors: {
       '&:hover': {
-        color: vars.colors.$neutral1,
+        color: vars.colors.$neutral5,
         opacity: '.8',
       },
 

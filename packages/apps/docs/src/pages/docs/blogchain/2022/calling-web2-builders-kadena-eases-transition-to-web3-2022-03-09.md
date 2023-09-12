@@ -124,11 +124,11 @@ world’s transactions, its energy usage would be acceptable. But it’s not —
 Bitcoin’s current capacity is seven transactions per second. Yet solutions to
 this problem are not unknown; many sharding-based approaches were described
 nearly a decade ago (see section on “PoW Parallel Chain Prior Art” in the
-[Chainweb whitepaper](https://docs.kadena.io/basics/whitepapers/chainweb-layer-1)).
-Proof-of-Work blockchains such as Kadena’s are notoriously stable and stubborn:
-each node operator or miner chooses whether or not to adopt new software,
-effectively forming a Decentralized Autonomous Organizations (DAOs) that resists
-change deemed too bold or in conflict with miner interest.
+[Chainweb whitepaper](/docs/kadena/whitepapers/chainweb-layer-1)). Proof-of-Work
+blockchains such as Kadena’s are notoriously stable and stubborn: each node
+operator or miner chooses whether or not to adopt new software, effectively
+forming a Decentralized Autonomous Organizations (DAOs) that resists change
+deemed too bold or in conflict with miner interest.
 
 **Kadena Eco: the right partner for builders at any stage**
 

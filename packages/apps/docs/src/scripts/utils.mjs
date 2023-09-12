@@ -100,7 +100,7 @@ export const importReadMes = [
   /** /libs/cryptography-utils */
   {
     file: 'libs/cryptography-utils/README.md',
-    destination: 'build/tools/cryptography-utils',
+    destination: 'build/cryptography-utils',
     title: 'Cryptography-Utils',
     options: {
       RootOrder: 3,
@@ -108,7 +108,7 @@ export const importReadMes = [
   },
   {
     file: 'libs/cryptography-utils/etc/cryptography-utils.api.md',
-    destination: 'build/tools/cryptography-utils/api',
+    destination: 'build/cryptography-utils/api',
     title: 'Cryptography-Utils Api',
     options: {
       RootOrder: 98,
@@ -117,7 +117,7 @@ export const importReadMes = [
   },
   {
     file: 'libs/cryptography-utils/etc/crypto.api.md',
-    destination: 'build/tools/cryptography-utils/crypto-api',
+    destination: 'build/cryptography-utils/crypto-api',
     title: 'Crypto Api',
     options: {
       RootOrder: 99,
@@ -190,7 +190,7 @@ export const importReadMes = [
   /** /tools/kda-cli */
   {
     file: 'tools/kda-cli/README.md',
-    destination: 'build/tools/kda-cli',
+    destination: 'build/kda-cli',
     title: 'KDA CLI',
     options: {
       RootOrder: 3,
@@ -198,7 +198,7 @@ export const importReadMes = [
   },
   {
     file: 'tools/kda-cli/etc/kda-cli.api.md',
-    destination: 'build/tools/kda-cli/api',
+    destination: 'build/kda-cli/api',
     title: 'KDA CLI Api',
     options: {
       RootOrder: 99,

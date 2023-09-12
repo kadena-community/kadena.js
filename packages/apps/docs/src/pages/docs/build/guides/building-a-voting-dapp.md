@@ -972,8 +972,8 @@ The snippets can also be found in the
 You can use the snippet below to deploy your contract to **chain 1** on
 `testnet`. To do this, it's required to run Chainweaver locally to sign for the
 transaction. Please see the
-[Chainweaver User Guide](https://docs.kadena.io/basics/chainweaver/chainweaver-user-guide)
-for downloads and instructions.
+[Chainweaver User Guide](/docs/kadena/wallets/chainweaver) for downloads and
+instructions.
 
 Now we can install the dependencies and deploy the contract:
 

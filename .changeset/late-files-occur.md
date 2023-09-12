@@ -1,5 +1,5 @@
 ---
-'@kadena/react-ui': none
+'@kadena/react-ui': minor
 ---
 
-Refactor Accordion component
+Refactor Accordion component to use a subcomponent structure

@@ -119,7 +119,7 @@ received coverage by
 [Fortune](http://fortune.com/2019/01/23/blockchain-aws-kadena) and other media.
 
 While Kadena has offered
-[Formal Verificatio](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)n
+[Formal Verificatio](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)n
 of user-written code for a couple years, we have now made it even easier for
 anyone with a browser to try out. Go to our
 “[Try Pact](https://pact.kadena.io/example/Verification)” site to see for

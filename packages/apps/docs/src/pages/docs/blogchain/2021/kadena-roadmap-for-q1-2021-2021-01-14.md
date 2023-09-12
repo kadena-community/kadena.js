@@ -58,7 +58,7 @@ The Kadena project continues to further its credibility for superior execution.
 
 ![Kadena Q4 2020 roadmap with completed milestones](/assets/blog/1_p9NDUUIwxHvkQ1_RPYTGNw.webp)
 
-[Click here](../2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
+[Click here](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
 to visit Kadena’s timeline from founding in 2016 through Q1 of 2019.
 
 [Click here](https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0)

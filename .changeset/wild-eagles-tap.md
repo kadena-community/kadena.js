@@ -1,5 +1,5 @@
 ---
-'@kadena/react-components': none
+'@kadena/react-components': minor
 ---
 
-Add the breadcrumbs component to the library
+Add Breadcrumbs component

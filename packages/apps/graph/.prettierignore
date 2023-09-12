@@ -1,0 +1,6 @@
+dist
+etc
+lib
+temp
+**/*.graphql
+**/*.md
