@@ -9,6 +9,7 @@ description:
 menu: Why We Open-Sourced Our Blockchain’s Smart Contract Language
 label: Why We Open-Sourced Our Blockchain’s Smart Contract Language
 publishDate: 2018-05-04
+tags: [smart contract, pact, oracles]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog

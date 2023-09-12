@@ -9,12 +9,12 @@ description:
 menu: Pact 3.1 is Unleashed!
 label: Pact 3.1 is Unleashed!
 publishDate: 2019-08-22
+headerImage: /assets/blog/1_Pcj9Zf_irC35TwEGJlpz1Q.webp
+tags: [pact, formal verification]
 author: Emily Pillmore
 authorId: emily.pillmore
 layout: blog
 ---
-
-![](/assets/blog/1_Pcj9Zf_irC35TwEGJlpz1Q.webp)
 
 # Pact 3.1 is Unleashed!
 

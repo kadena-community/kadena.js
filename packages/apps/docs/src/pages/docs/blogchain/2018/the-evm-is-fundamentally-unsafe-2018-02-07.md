@@ -8,6 +8,7 @@ description:
 menu: Kadena The Next Generation Blockchain
 label: Kadena The Next Generation Blockchain
 publishDate: 2018-02-07
+tags: [kadena]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog

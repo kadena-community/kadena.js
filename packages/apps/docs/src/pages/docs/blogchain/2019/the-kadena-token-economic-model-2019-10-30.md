@@ -6,6 +6,7 @@ description:
 menu: The Kadena Token Economic Model
 label: The Kadena Token Economic Model
 publishDate: 2019-10-30
+tags: [kda]
 author: Will Martino
 authorId: will.martino
 layout: blog

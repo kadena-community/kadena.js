@@ -4,12 +4,12 @@ description: What a public-private hybrid blockchain makes possible.
 menu: Hybrid Blockchain 101
 label: Hybrid Blockchain 101
 publishDate: 2019-10-23
+headerImage: /assets/blog/1_cXMen2j6k5hcvXVgyEqqzw.webp
+tags: [kadena]
 author: Miguel Angel Romero Jr.
 authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_cXMen2j6k5hcvXVgyEqqzw.webp)
 
 # Hybrid Blockchain 101
 

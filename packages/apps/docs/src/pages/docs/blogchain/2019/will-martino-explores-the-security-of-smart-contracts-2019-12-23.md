@@ -8,6 +8,8 @@ description:
 menu: Will Martino Explores the Security of Smart Contracts
 label: Will Martino Explores the Security of Smart Contracts
 publishDate: 2019-12-23
+headerImage: /assets/blog/2019/1_etPC4GFJ1YN9Ik3mlmp1dQ.webp
+tags: [smart contract]
 author: Rebecca Rodriguez
 authorId: rebecca.rodriguez
 layout: blog

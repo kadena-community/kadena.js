@@ -6,12 +6,12 @@ description:
 menu: Kadena Launches Blockchain-as-a-Service
 label: Kadena Launches Blockchain-as-a-Service
 publishDate: 2019-08-27
+headerImage: /assets/blog/0_QgOv9OHFdAY2-9Mk.png
+tags: [kadena]
 author: Ben Jessel
 authorId: ben.jessel
 layout: blog
 ---
-
-![](/assets/blog/0_QgOv9OHFdAY2-9Mk.png)
 
 # Kadena Launches Blockchain-as-a-Service (BaaS) on Azure Marketplace
 

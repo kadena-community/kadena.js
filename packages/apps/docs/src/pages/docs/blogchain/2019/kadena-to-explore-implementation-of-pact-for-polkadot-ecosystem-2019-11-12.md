@@ -7,12 +7,12 @@ description:
 menu: Kadena to Explore Implementation of Pact for Polkadot Ecosystem
 label: Kadena to Explore Implementation of Pact for Polkadot Ecosystem
 publishDate: 2019-11-12
+headerImage: /assets/blog/2019/1_GTgK9aN3QCghHn7Zd9GeoQ.webp
+tags: [pact]
 author: Rebecca Rodriguez
 authorId: rebecca.rodriguez
 layout: blog
 ---
-
-![](/assets/blog/2019/1_GTgK9aN3QCghHn7Zd9GeoQ.webp)
 
 # Kadena to Explore Implementation of Pact for Polkadot Ecosystem
 

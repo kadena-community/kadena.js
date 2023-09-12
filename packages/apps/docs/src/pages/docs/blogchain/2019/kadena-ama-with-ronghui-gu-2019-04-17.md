@@ -8,12 +8,12 @@ description:
 menu: Kadena AMA with Certik Co-founder Ronghui Gu
 label: Kadena AMA with Certik Co-founder Ronghui Gu
 publishDate: 2019-04-17
+headerImage: /assets/blog/1_I827oIhMvsisbOvfMiO2Rw.webp
+tags: [chainweb]
 author: Miguel Angel Romero Jr.
 authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_I827oIhMvsisbOvfMiO2Rw.webp)
 
 # Kadena AMA with Certik Co-founder Ronghui Gu
 

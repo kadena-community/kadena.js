@@ -7,6 +7,8 @@ description:
 menu: Kadena Conference & Community Events Schedule
 label: Kadena Conference & Community Events Schedule
 publishDate: 2019-01-18
+headerImage: /assets/blog/1_e-sOQIuA2mE-9eft3OQXOQ.webp
+tags: [kadena]
 author: Miguel Angel Romero Jr.
 authorId: miguel.angel
 layout: blog

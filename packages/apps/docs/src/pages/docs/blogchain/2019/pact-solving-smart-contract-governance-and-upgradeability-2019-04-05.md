@@ -11,12 +11,12 @@ description:
 menu: Pact - Solving Smart Contract Governance and Upgradeability
 label: Pact - Solving Smart Contract Governance and Upgradeability
 publishDate: 2019-04-05
+headerImage: /assets/blog/1_NOwRG03NfMqyaqGrmdPfKg.webp
+tags: [pact]
 author: Marie Leaf
 authorId: marie.leaf
 layout: blog
 ---
-
-![](/assets/blog/1_NOwRG03NfMqyaqGrmdPfKg.webp)
 
 # Pact: Solving Smart Contract Governance and Upgradeability
 

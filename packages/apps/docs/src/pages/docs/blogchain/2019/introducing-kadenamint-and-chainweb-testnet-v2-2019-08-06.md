@@ -6,12 +6,12 @@ description:
 menu: Introducing Kadenamint and Public Blockchain Testnet v2
 label: Introducing Kadenamint and Public Blockchain Testnet v2
 publishDate: 2019-08-06
+headerImage: /assets/docs/1_ioGNdm7WNixtlNPLKwo9eQ.webp
+tags: [kadena]
 author: Doug Beardsley
 authorId: doug.beardsley
 layout: blog
 ---
-
-![](/assets/docs/1_ioGNdm7WNixtlNPLKwo9eQ.webp)
 
 # Introducing Kadenamint and Public Blockchain Testnet v2
 
