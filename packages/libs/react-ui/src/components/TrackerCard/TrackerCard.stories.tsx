@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
-  title: 'Components/TrackerCard',
+  title: 'Content/TrackerCard',
   parameters: {
     docs: {
       description: {

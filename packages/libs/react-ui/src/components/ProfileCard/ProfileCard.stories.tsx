@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IProfileCardProps> = {
-  title: 'Components/ProfileCard',
+  title: 'Content/ProfileCard',
   component: ProfileCard,
   parameters: {
     docs: {

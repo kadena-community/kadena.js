@@ -16,7 +16,7 @@ type StoryProps = {
 } & IInputWrapperProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Components/InputWrapper',
+  title: 'Form/InputWrapper',
   parameters: {
     docs: {
       description: {
