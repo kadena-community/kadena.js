@@ -1,9 +1,8 @@
 import { SystemIcon } from '@components/Icon';
 import { statusVariant } from '@components/InputWrapper/InputWrapper.css';
-import { SelectField } from '@components/SelectField';
 import type { ISelectFieldProps } from '@components/SelectField';
+import { SelectField } from '@components/SelectField';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
 import React from 'react';
 
 type StoryProps = {
