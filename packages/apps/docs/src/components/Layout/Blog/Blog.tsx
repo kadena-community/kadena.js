@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Grid, Stack } from '@kadena/react-ui';
 
 import { baseGridClass } from '../basestyles.css';
@@ -65,11 +64,14 @@ export const Blog: FC<IPageProps> = ({
 
             {headerImage && (
               <figure className={headerFigureClass}>
-                <img
-                  className={headerImageClass}
-                  src={headerImage}
-                  alt={title}
-                />
+                {
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className={headerImageClass}
+                    src={headerImage}
+                    alt={title}
+                  />
+                }
               </figure>
             )}
             <div className={articleTopMetadataClass}>
