@@ -1,16 +1,14 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-const colors: Record<ColorType, ColorType> = {
+export type NotificationColors = 'info' | 'positive' | 'warning' | 'negative' | 'primary';
+const colors: Record<NotificationColors, NotificationColors> = {
   info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',
   primary: 'primary',
-  secondary: 'secondary',
-  tertiary: 'tertiary',
 };
 
 export const containerClass = style([

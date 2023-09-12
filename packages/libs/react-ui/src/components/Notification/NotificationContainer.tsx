@@ -1,3 +1,5 @@
+import type {
+  NotificationColors} from './Notification.css';
 import {
   cardColorVariants,
   closeButtonClass,
@@ -17,7 +19,7 @@ export interface INotificationProps {
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
-  color?: keyof typeof cardColorVariants;
+  color?: NotificationColors;
   hasCloseButton?: boolean;
   onClose?: () => void;
 }

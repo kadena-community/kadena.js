@@ -1,3 +1,4 @@
+import type { NotificationColors} from './Notification.css';
 import { cardColorVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -5,6 +6,8 @@ import type { INotificationProps } from '@components/Notification';
 import { Notification } from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+
+console.log(cardColorVariants)
 
 const meta: Meta<
   {
@@ -35,7 +38,7 @@ const meta: Meta<
     color: {
       options: Object.keys(
         cardColorVariants,
-      ) as (keyof typeof cardColorVariants)[],
+      ).filter(e => e !== 'tertiary' && e !== 'secondary') as (NotificationColors)[],
       control: {
         type: 'select',
       },
