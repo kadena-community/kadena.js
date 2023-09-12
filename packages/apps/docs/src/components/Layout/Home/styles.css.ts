@@ -91,25 +91,3 @@ export const pageGridClass = style({
     },
   },
 });
-
-export const cardClass = style([
-  sprinkles({
-    paddingX: '$10',
-    paddingY: '$6',
-    borderRadius: '$sm',
-    marginRight: '$4',
-    marginBottom: '$4',
-  }),
-  {
-    border: `1px solid ${vars.colors.$gray30}`,
-    flex: 'calc(50% - 40px)',
-  },
-]);
-export const cardSectionClass = style([
-  sprinkles({
-    display: 'flex',
-  }),
-  {
-    flexWrap: 'wrap',
-  },
-]);

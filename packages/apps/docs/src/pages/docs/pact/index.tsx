@@ -6,7 +6,6 @@ import {
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components';
-import { browseSectionWrapper } from '@/styles/index.css';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {

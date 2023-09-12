@@ -1,10 +1,6 @@
-import { Box, Button, Card, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Button, Heading, Text } from '@kadena/react-ui';
 
-import { BrowseSection } from '@/components';
-import {
-  cardClass,
-  cardSectionClass,
-} from '@/components/Layout/Home/styles.css';
+import { LandingPageCard, LandingPageCardSection } from '@/components';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -17,8 +13,8 @@ import React from 'react';
 const Home: FC = () => {
   return (
     <>
-      <div className={cardSectionClass}>
-        <section className={cardClass}>
+      <LandingPageCardSection>
+        <LandingPageCard>
           <Heading as="h4">Kadena DAO</Heading>
           <Box marginY="$4">
             <Text>
@@ -32,8 +28,8 @@ const Home: FC = () => {
           <Button as="a" asChild>
             <Link href={'/docs/contribute/kadena-dao'}>Start contributing</Link>
           </Button>
-        </section>
-        <section className={cardClass}>
+        </LandingPageCard>
+        <LandingPageCard>
           <Heading as="h4">We are looking for Ambassadors</Heading>
           <Box marginY="$4">
             <Text>
@@ -49,9 +45,9 @@ const Home: FC = () => {
               Become an ambassador
             </Link>
           </Button>
-        </section>
+        </LandingPageCard>
 
-        <section className={cardClass}>
+        <LandingPageCard>
           <Heading as="h4">Run a Node</Heading>
           <Box marginY="$4">
             <Text>
@@ -77,9 +73,9 @@ const Home: FC = () => {
               </ul>
             </Text>
           </Box>
-        </section>
+        </LandingPageCard>
 
-        <section className={cardClass}>
+        <LandingPageCard>
           <Heading as="h4">Contribute to the docs</Heading>
           <Box marginY="$4">
             <Text>
@@ -93,8 +89,8 @@ const Home: FC = () => {
           <Button as="a" asChild>
             <Link href={'/docs/contribute/contribute'}>Fix our docs</Link>
           </Button>
-        </section>
-      </div>
+        </LandingPageCard>
+      </LandingPageCardSection>
     </>
   );
 };
