@@ -4,6 +4,7 @@ import { colorVariants } from './Button.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import { withCenteredStory } from '@utils/withCenteredStory';
 import React from 'react';
 
 const meta: Meta<
@@ -13,6 +14,7 @@ const meta: Meta<
 > = {
   title: 'Components/Button',
   component: Button,
+  decorators: [withCenteredStory],
   parameters: {
     controls: {
       hideNoControlsWarning: true,
