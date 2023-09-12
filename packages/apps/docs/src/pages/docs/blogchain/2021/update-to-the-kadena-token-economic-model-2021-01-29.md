@@ -11,12 +11,12 @@ description:
 menu: Update to the Kadena Token Economic Model
 label: Update to the Kadena Token Economic Model
 publishDate: 2021-01-29
+headerImage: /assets/blog/1_8VJm1-4VH7yGxvZRSl8zjA.webp
+tags: [kda]
 author: Will Martino
 authorId: will.martino
 layout: blog
 ---
-
-![](/assets/blog/1_8VJm1-4VH7yGxvZRSl8zjA.webp)
 
 # Update to the Kadena Token Economic Model
 

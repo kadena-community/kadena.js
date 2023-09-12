@@ -8,12 +8,12 @@ description:
 menu: Pact Tips Wrapper Contracts
 label: Pact Tips Wrapper Contracts
 publishDate: 2021-07-04
+headerImage: /assets/blog/1_ErnEQbK35VB7wxDgqoMy9A.webp
+tags: [pact]
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_ErnEQbK35VB7wxDgqoMy9A.webp)
 
 # Pact Tips: Wrapper Contracts
 
