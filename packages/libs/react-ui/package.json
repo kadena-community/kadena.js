@@ -66,6 +66,7 @@
     "@storybook/addon-a11y": "^7.4.0",
     "@storybook/addon-actions": "^7.4.0",
     "@storybook/addon-controls": "^7.4.0",
+    "@storybook/addon-docs": "^7.4.0",
     "@storybook/addon-essentials": "^7.4.0",
     "@storybook/addon-interactions": "^7.4.0",
     "@storybook/addon-links": "^7.4.0",
