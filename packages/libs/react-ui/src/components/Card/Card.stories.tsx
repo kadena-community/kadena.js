@@ -6,7 +6,6 @@ import React from 'react';
 
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
-  // decorators: [withCenteredStory],
   parameters: {
     docs: {
       description: {

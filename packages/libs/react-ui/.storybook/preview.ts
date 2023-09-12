@@ -1,4 +1,5 @@
 import { darkThemeClass } from '../src/styles';
+import { colorPalette } from '../src/styles/colors';
 import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 import { DocsContainer } from '@storybook/addon-docs';
@@ -16,29 +17,29 @@ const preview: Preview = {
       },
     },
     darkMode: {
-      current: 'light',
-      stylePreview: true,
       classTarget: 'html',
-      darkClass: [darkThemeClass, 'dark-mode'],
-      lightClass: ['light-mode'],
+      current: 'light',
       // Override the default dark theme
-      dark: { ...themes.dark, appBg: 'black' },
+      dark: { ...themes.dark, appBg: colorPalette.$black },
+      darkClass: [darkThemeClass, 'dark-mode'],
       // Override the default light theme
-      light: { ...themes.normal, appBg: 'white' },
+      light: { ...themes.normal, appBg: colorPalette.$white },
+      lightClass: ['light-mode'],
+      stylePreview: true,
       theme: themes.dark,
     },
     docs: {
-			container: (context: any) => {
-				const isDark = useDarkMode();
+      container: (context: any) => {
+        const isDark = useDarkMode();
 
-				const props = {
-					...context,
-					theme: isDark ? themes.dark : themes.light,
-				};
+        const props = {
+          ...context,
+          theme: isDark ? themes.dark : themes.light,
+        };
 
-				return React.createElement(DocsContainer, props);
-			},
-		},
+        return React.createElement(DocsContainer, props);
+      },
+    },
   },
 };
 
