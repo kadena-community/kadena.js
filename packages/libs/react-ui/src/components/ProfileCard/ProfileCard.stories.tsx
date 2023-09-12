@@ -10,7 +10,7 @@ const meta: Meta<IProfileCardProps> = {
     docs: {
       description: {
         component:
-          'The ProfileCard component renders a card with a profile picture, name, title, tags, and links. The links are rendered as buttons and can be set with the `links` prop.',
+          'The ProfileCard component renders a card with a profile picture, name, title, tags, and links. The links are rendered using the `Link` component and can be set with the `links` prop.',
       },
     },
   },
