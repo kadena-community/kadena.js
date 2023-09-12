@@ -1,4 +1,4 @@
-import { NavHeader, Option, Select } from '@kadena/react-ui';
+import { NavHeader, Select } from '@kadena/react-ui';
 
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
