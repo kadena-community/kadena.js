@@ -1,6 +1,6 @@
 import { rootPath } from '../constants/config';
 import { displayConfig, getConfig } from '../utils/globalConfig';
-import { collectResponses } from '../utils/helpers';
+import { collectResponses, IQuestion } from '../utils/helpers';
 import { processZodErrors } from '../utils/process-zod-errors';
 
 import { createConfig } from './createConfig';
@@ -24,7 +24,7 @@ const Options = z.object({
     .min(0)
     .max(19)
     .optional(),
-  network: z.enum(['mainnet', 'testnet', 'devnet']),
+  network: z.enum(['mainnet', 'testnet', 'devnet']).optional(),
   networkId: z.string().optional(),
   networkHost: z.string().optional(),
   networkExplorerUrl: z.string().optional(),
@@ -33,87 +33,65 @@ const Options = z.object({
 
 export type TOptions = z.infer<typeof Options>;
 
-interface IQuestionType<K extends keyof TOptions> {
-  key: K;
-  question: () => Promise<TOptions[K]>;
-}
-
-interface IChoice<Value> {
-  value: Value;
-  name?: string;
-  description?: string;
-  disabled?: boolean | string;
-}
-
-const networkChoices: IChoice<string>[] = [
+const networkChoices: { value: string; name: string }[] = [
   { value: 'mainnet', name: 'Mainnet' },
   { value: 'testnet', name: 'Testnet' },
   { value: 'devnet', name: 'Devnet' },
 ];
 
-const generateQuestions = (
-  args: Partial<TOptions>,
-): Array<IQuestionType<keyof TOptions>> => {
-  const questionsList: Array<IQuestionType<keyof TOptions>> = [
-    {
-      key: 'publicKey',
-      question: () => input({ message: 'Enter your publicKey' }),
+const questions: IQuestion<TOptions>[] = [
+  {
+    key: 'publicKey',
+    prompt: async () => await input({ message: 'Enter your publicKey' }),
+  },
+  {
+    key: 'privateKey',
+    prompt: async () => await input({ message: 'Enter your privateKey' }),
+  },
+  {
+    key: 'chainId',
+    prompt: async () => await input({ message: 'Enter chainId (0-19)' }),
+  },
+  {
+    key: 'network',
+    prompt: async () =>
+      await select({
+        message: 'Choose your network',
+        choices: networkChoices,
+      }),
+  },
+  {
+    key: 'networkId',
+    prompt: async (previousAnswers) => {
+      return await input({
+        message: `Enter ${previousAnswers.network} network Id (e.g. "${previousAnswers.network}01")`,
+      });
     },
-    {
-      key: 'privateKey',
-      question: () => input({ message: 'Enter your privateKey' }),
-    },
-    {
-      key: 'chainId',
-      question: async () => await input({ message: 'Enter chainId (0-19)' }),
-    },
-    {
-      key: 'network',
-      question: async () => {
-        return await select({
-          message: 'Choose your network',
-          choices: networkChoices,
-        });
-      },
-    },
-    {
-      key: 'networkId',
-      question: () =>
-        input({ message: 'Enter Kadena network Id (e.g. "mainnet01")' }),
-    },
-    {
-      key: 'networkHost',
-      question: () =>
-        input({
-          message:
-            'Enter Kadena network host (e.g. "https://api.chainweb.com")',
-        }),
-    },
-    {
-      key: 'networkExplorerUrl',
-      question: () =>
-        input({
-          message:
-            'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
-        }),
-    },
-    {
-      key: 'kadenaNamesApiEndpoint',
-      question: () =>
-        input({
-          message:
-            'Enter Kadena Names Api Endpoint (e.g. "https://www.kadenanames.com/api/v1")',
-        }),
-    },
-  ];
-
-  return questionsList.filter((q) => {
-    if (q.key === 'network') {
-      return args[q.key] === 'mainnet';
-    }
-    return args[q.key] === undefined;
-  });
-};
+  },
+  {
+    key: 'networkHost',
+    prompt: async () =>
+      await input({
+        message: 'Enter Kadena network host (e.g. "https://api.chainweb.com")',
+      }),
+  },
+  {
+    key: 'networkExplorerUrl',
+    prompt: async () =>
+      await input({
+        message:
+          'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
+      }),
+  },
+  {
+    key: 'kadenaNamesApiEndpoint',
+    prompt: async () =>
+      await input({
+        message:
+          'Enter Kadena Names Api Endpoint (e.g. "https://www.kadenanames.com/api/v1")',
+      }),
+  },
+];
 
 async function shouldProceedWithConfigInit(): Promise<boolean> {
   if (existsSync(rootPath)) {
@@ -135,8 +113,10 @@ async function runConfigInitialization(
   args: TOptions,
 ): Promise<void> {
   try {
+    console.log('before options: ', args);
     Options.parse(args);
-    const responses = await collectResponses<TOptions>(generateQuestions(args));
+    const responses = await collectResponses(args, questions);
+
     const finalConfig = { ...args, ...responses };
 
     await createConfig(program, version)(finalConfig).catch(console.error);
@@ -173,7 +153,9 @@ export function initCommand(program: Command, version: string): void {
         .argParser((value) => parseInt(value, 10))
         .default(1),
     )
-    .option('-n, --network <network>', 'Network to retrieve from', 'mainnet')
+    .addOption(
+      new Option('-n, --network <network>', 'Network to retrieve from'),
+    )
     .option(
       '-nid, --networkId <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
