@@ -9,7 +9,7 @@ menu: The KDA Command Line Tools
 label: The KDA Command Line Tools
 publishDate: 2023-05-24
 headerImage: /assets/blog/1_rLMz_SpxPnaSj6t8vKSYiQ.wepb
-tags: [KDA, Cli]
+tags: [kda, cli]
 author: Kadena
 authorId: kadena
 layout: blog
