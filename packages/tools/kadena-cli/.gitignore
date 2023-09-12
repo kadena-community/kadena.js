@@ -1,0 +1,6 @@
+### KDACLI - IGNNORE ###
+
+#launch.json folder
+.vscode/
+#Kadena
+.kadena/
