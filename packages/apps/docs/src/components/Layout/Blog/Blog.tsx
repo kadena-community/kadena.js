@@ -14,6 +14,8 @@ import { ArticleMetadataItem } from './ArticleMetadataItem';
 import {
   articleTopMetadataClass,
   bottomWrapperClass,
+  headerFigureClass,
+  headerImageClass,
   pageGridClass,
 } from './styles.css';
 
@@ -30,7 +32,8 @@ export const Blog: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const { readingTimeInMinutes, publishDate, authorInfo } = frontmatter;
+  const { readingTimeInMinutes, title, publishDate, authorInfo, headerImage } =
+    frontmatter;
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
@@ -58,6 +61,16 @@ export const Blog: FC<IPageProps> = ({
             <meta itemProp="datePublished" content={publishDate} />
             <meta itemProp="description" content={frontmatter.description} />
             <meta itemProp="headline" content={frontmatter.title} />
+
+            {headerImage && (
+              <figure className={headerFigureClass}>
+                <img
+                  className={headerImageClass}
+                  src={headerImage}
+                  alt={title}
+                />
+              </figure>
+            )}
             <div className={articleTopMetadataClass}>
               <ArticleMetadataItem>
                 {readingTimeInMinutes} {readingTimeLabel} read
