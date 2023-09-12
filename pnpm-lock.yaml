@@ -370,6 +370,9 @@ importers:
       '@graphql-yoga/apollo-link':
         specifier: ~1.0.1
         version: 1.0.1(@apollo/client@3.7.2)(@types/node@16.0.0)(graphql@16.8.0)
+      '@kadena/react-ui':
+        specifier: workspace:*
+        version: link:../../libs/react-ui
       '@radix-ui/colors':
         specifier: ~0.1.8
         version: 0.1.8
@@ -446,6 +449,12 @@ importers:
       '@types/react-dom':
         specifier: 18.2.7
         version: 18.2.7
+      '@vanilla-extract/css':
+        specifier: 1.12.0
+        version: 1.12.0
+      '@vanilla-extract/next-plugin':
+        specifier: 2.1.2
+        version: 2.1.2(@types/node@16.0.0)(next@13.4.5)(webpack@5.88.2)
       concurrently:
         specifier: ^7.2.2
         version: 7.2.2

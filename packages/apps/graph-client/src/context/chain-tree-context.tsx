@@ -1,5 +1,6 @@
 import type { IBlock } from '../utils/hooks/use-parsed-blocks';
 
+import type { ReactElement } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 
 interface IChainTree {
@@ -15,7 +16,10 @@ const ChainTreeContext = createContext<IChainTreeContext | undefined>(
   undefined,
 );
 
-export function addBlockToChainTree(block: IBlock, chainTree: IChainTree) {
+export function addBlockToChainTree(
+  block: IBlock,
+  chainTree: IChainTree,
+): IChainTree {
   let currentBlock = block;
 
   //Check if chain index exists, if not create it
@@ -56,7 +60,7 @@ export const ChainTreeContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
-}) => {
+}): ReactElement => {
   const [chainTree, setChainTree] = useState<IChainTree>({});
 
   const addBlockToChain = (block: IBlock): void => {
@@ -70,7 +74,7 @@ export const ChainTreeContextProvider = ({
   );
 };
 
-export function useChainTree() {
+export function useChainTree(): IChainTreeContext {
   const context = useContext(ChainTreeContext);
   if (!context) {
     throw new Error('useChainTree must be used within a ChainTreeProvider');
