@@ -113,7 +113,6 @@ async function runConfigInitialization(
   args: TOptions,
 ): Promise<void> {
   try {
-    console.log('before options: ', args);
     Options.parse(args);
     const responses = await collectResponses(args, questions);
 
