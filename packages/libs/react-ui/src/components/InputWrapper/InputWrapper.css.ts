@@ -3,10 +3,11 @@ import {
   helperTextColor,
 } from './InputHelper/InputHelper.css';
 
-import { inputStatusColor } from '@components/Input/Input.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { styleVariants } from '@vanilla-extract/css';
+import { styleVariants, createVar } from '@vanilla-extract/css';
+
+export const statusColor = createVar();
 
 export type Status = 'disabled' | 'positive' | 'warning' | 'negative';
 
@@ -25,7 +26,7 @@ export const statusVariant = styleVariants(statusOptions, (status) => {
   return {
     vars: {
       [helperIconColor]: vars.colors[`$${status}Accent`],
-      [inputStatusColor]: vars.colors[`$${status}Accent`],
+      [statusColor]: vars.colors[`$${status}Accent`],
       [helperTextColor]: vars.colors[`$${status}Contrast`],
     },
   };

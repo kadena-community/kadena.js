@@ -1,7 +1,8 @@
 import { darkThemeClass, vars } from '../../styles';
 
+import { statusColor } from '@components/InputWrapper/InputWrapper.css';
 import { sprinkles } from '@theme/sprinkles.css';
-import { style } from '@vanilla-extract/css';
+import { fallbackVar, style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
@@ -25,7 +26,7 @@ export const containerClass = style([
     paddingRight: '$2',
   }),
   {
-    borderBottom: `1px solid ${vars.colors.$gray30}`,
+    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
   },
 ]);
 
