@@ -11,14 +11,14 @@ description:
 menu: Harnessing Formal Verification for Smart Contract Specification
 label: Harnessing Formal Verification for Smart Contract Specification
 publishDate: 2023-07-05
+headerImage: /assets/blog/1_I5E__mD5RA-gfneIBQgKag.webp
+tags: [smart contract, formal verification, pact]
 author: Andy
 authorId: andy
 layout: blog
 ---
 
 # Harnessing Formal Verification for Smart Contract Specification
-
-![](/assets/blog/1_I5E__mD5RA-gfneIBQgKag.webp)
 
 ## What is Formal Verification?
 

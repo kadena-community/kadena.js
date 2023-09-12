@@ -8,6 +8,7 @@ description:
 menu: Pact Formal Verification
 label: Pact Formal Verification
 publishDate: 2018-05-11
+tags: [pact, formal verification]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog

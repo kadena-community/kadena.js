@@ -10,12 +10,12 @@ description:
 menu: Pact 4.2.0 Blazes to Mainnet!
 label: Pact 4.2.0 Blazes to Mainnet!
 publishDate: 2022-01-19
+headerImage: /assets/blog/1_QEGOGwBeXw78S3eV4V-IDA.webp
+tags: [pact]
 author: Jose Cardona
 authorId: jose.cardona
 layout: blog
 ---
-
-![](/assets/blog/1_QEGOGwBeXw78S3eV4V-IDA.webp)
 
 # Pact 4.2.0 Blazes to Mainnet!
 

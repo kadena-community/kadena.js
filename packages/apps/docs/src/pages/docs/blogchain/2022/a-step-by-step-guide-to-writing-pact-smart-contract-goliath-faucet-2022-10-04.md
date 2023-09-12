@@ -11,14 +11,14 @@ description:
 menu: A Step-By-Step Guide to Writing Pact Smart Contract — Goliath Faucet
 label: A Step-By-Step Guide to Writing Pact Smart Contract — Goliath Faucet
 publishDate: 2022-10-04
+headerImage: /assets/blog/1_wmsX0LzHjaR7HVMUTjLqjw.webp
+tags: [pact]
 author: Heekyun
 authorId: heekyun
 layout: blog
 ---
 
 # A Step-By-Step Guide to Writing Pact Smart Contract — Goliath Faucet
-
-![](/assets/blog/1_wmsX0LzHjaR7HVMUTjLqjw.webp)
 
 Most recently, Thomas Honeyman, _a senior engineer at Awake Security,_ created a
 Pact developer tutorial series titled

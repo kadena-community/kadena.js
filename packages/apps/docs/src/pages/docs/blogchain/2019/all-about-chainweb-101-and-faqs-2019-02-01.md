@@ -6,12 +6,12 @@ description:
 menu: Kadena’s Public Blockchain 101 and FAQs
 label: Kadena’s Public Blockchain 101 and FAQs
 publishDate: 2019-02-01
+headerImage: /assets/blog/1_7spjR-a_pYCJmQLt2qEamg.webp
+tags: [kadena, pow]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_7spjR-a_pYCJmQLt2qEamg.webp)
 
 # Kadena’s Public Blockchain: 101 and FAQs
 

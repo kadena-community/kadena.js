@@ -8,6 +8,8 @@ description:
 menu: The Advantages of Kadena’s Proof-of-Work Mining
 label: The Advantages of Kadena’s Proof-of-Work Mining
 publishDate: 2023-02-03
+headerImage: /assets/blog/1_P58JAVT4RuGQg7ozeEtdKg.webp
+tags: [kadena, pow, mining]
 author: Kadena
 authorId: kadena
 layout: blog
@@ -16,8 +18,6 @@ layout: blog
 # The Advantages of Kadena’s Proof-of-Work Mining
 
 ## The Advantages of Kadena’s Proof-of-Work Mining
-
-![](/assets/blog/1_P58JAVT4RuGQg7ozeEtdKg.webp)
 
 Proof of Work (PoW) is a consensus algorithm used in blockchain technology to
 validate transactions and produce new blocks. In PoW mining, “miners” compete to

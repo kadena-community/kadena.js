@@ -11,12 +11,12 @@ description:
 menu: Kadena Roadmap for Q1 2021
 label: Kadena Roadmap for Q1 2021
 publishDate: 2021-01-14
+headerImage: /assets/blog/1_NXyEgTYElevRugKNoB7z2A.webp
+tags: [kadena, chainweb]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/1_NXyEgTYElevRugKNoB7z2A.webp)
 
 # Kadena Roadmap for Q1 2021
 

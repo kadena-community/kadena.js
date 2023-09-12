@@ -11,6 +11,7 @@ description:
 menu: Spotlight On DNA
 label: Spotlight On DNA
 publishDate: 2022-06-24
+tags: [kadena]
 author: Kadena
 authorId: kadena
 layout: blog

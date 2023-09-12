@@ -11,12 +11,12 @@ description:
 menu: Turbocharging mainstream adoption with Kadena Eco
 label: Turbocharging mainstream adoption with Kadena Eco
 publishDate: 2022-02-15
+headerImage: /assets/blog/1_TaVjEcnJO4qg0ywu08p_qw.webp
+tags: [web3, grant]
 author: Francesco Melpignano
 authorId: francesco.melpignano
 layout: blog
 ---
-
-![](/assets/blog/1_TaVjEcnJO4qg0ywu08p_qw.webp)
 
 # Turbocharging mainstream adoption with Kadena Eco
 

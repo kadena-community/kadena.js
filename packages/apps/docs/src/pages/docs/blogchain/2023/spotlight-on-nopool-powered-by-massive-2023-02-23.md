@@ -12,6 +12,7 @@ description:
 menu: Spotlight on NoPool
 label: Spotlight on NoPool
 publishDate: 2023-02-23
+tags: [nopool]
 author: Kadena
 authorId: kadena
 layout: blog

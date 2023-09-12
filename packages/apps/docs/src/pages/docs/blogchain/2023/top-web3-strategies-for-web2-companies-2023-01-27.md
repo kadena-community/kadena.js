@@ -11,14 +11,14 @@ description:
 menu: Top Web3 Strategies for Web2 Companies
 label: Top Web3 Strategies for Web2 Companies
 publishDate: 2023-01-27
+headerImage: /assets/blog/1_AUUFCecs0s7MaKmMfKwPHQ.webp
+tags: [web3]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Top Web3 Strategies for Web2 Companies
-
-![](/assets/blog/1_AUUFCecs0s7MaKmMfKwPHQ.webp)
 
 Web3 is not only a finance revolution, it’s also a business evolution that
 harnesses powerful ideas such as the Wisdom of Crowds, composability,

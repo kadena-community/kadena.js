@@ -9,6 +9,7 @@ description:
 menu: Guide to Building a Lending Protocol on Kadena — Charkha
 label: Guide to Building a Lending Protocol on Kadena — Charkha
 publishDate: 2023-03-21
+tags: [kadena]
 author: Kadena
 authorId: kadena
 layout: blog

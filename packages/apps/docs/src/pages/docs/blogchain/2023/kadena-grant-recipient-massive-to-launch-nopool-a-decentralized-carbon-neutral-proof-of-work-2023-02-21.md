@@ -9,12 +9,12 @@ description:
 menu: Kadena Grant Recipient Massive to Launch NoPool
 label: Kadena Grant Recipient Massive to Launch NoPool
 publishDate: 2023-02-21
+headerImage: /assets/blog/1_dON9Q1uWxLdnxbVglCoGQw.webp
+tags: [nopool, kadena]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
-
-![](/assets/blog/1_dON9Q1uWxLdnxbVglCoGQw.webp)
 
 # Kadena Grant Recipient Massive to Launch NoPool, a Decentralized Carbon Neutral Proof-of-Work Mining Pool
 

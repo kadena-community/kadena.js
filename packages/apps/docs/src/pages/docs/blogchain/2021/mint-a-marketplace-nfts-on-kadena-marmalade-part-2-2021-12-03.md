@@ -10,12 +10,12 @@ description:
 menu: Mint a Marketplace NFTs on Kadena Marmalade (Part 2)
 label: Mint a Marketplace NFTs on Kadena Marmalade (Part 2)
 publishDate: 2021-12-03
+headerImage: /assets/blog/1_BEuMAVlJ32_pP984cFKAwQ.webp
+tags: [marmalade]
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_BEuMAVlJ32_pP984cFKAwQ.webp)
 
 # Mint a Marketplace: NFTs on Kadena Marmalade (Part 2)
 

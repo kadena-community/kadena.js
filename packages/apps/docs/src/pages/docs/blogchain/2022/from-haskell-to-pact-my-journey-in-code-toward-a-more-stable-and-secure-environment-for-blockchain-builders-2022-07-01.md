@@ -16,12 +16,12 @@ label:
   From Haskell to Pact - My Journey in Code Toward a More Stable and Secure
   Environment for Blockchain Builders
 publishDate: 2022-07-01
+headerImage: /assets/blog/1_VuAQP0wMbSn4odUtYSg97w.webp
+tags: [pact]
 author: John Wiegley
 authorId: john.wiegley
 layout: blog
 ---
-
-![From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders](/assets/blog/1_VuAQP0wMbSn4odUtYSg97w.webp)
 
 # From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders
 

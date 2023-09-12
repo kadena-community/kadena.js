@@ -59,6 +59,8 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
     },
   },
   full: {},
-  blog: {},
+  blog: {
+    paddingTop: 0,
+  },
   redocly: {},
 });

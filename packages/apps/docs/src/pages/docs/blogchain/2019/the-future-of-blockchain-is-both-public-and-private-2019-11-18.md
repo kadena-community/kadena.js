@@ -11,12 +11,12 @@ description:
 menu: The Future of Blockchain Is Both Public and Private
 label: The Future of Blockchain Is Both Public and Private
 publishDate: 2019-11-18
+headerImage: /assets/blog/2019/1_JLawwD1nZ9HTXmK8l6TVaA.webp
+tags: [smart wallet]
 author: Anagha Mercado
 authorId: anagha.mercado
 layout: blog
 ---
-
-![](/assets/blog/2019/1_JLawwD1nZ9HTXmK8l6TVaA.webp)
 
 # The Future of Blockchain Is Both Public and Private
 

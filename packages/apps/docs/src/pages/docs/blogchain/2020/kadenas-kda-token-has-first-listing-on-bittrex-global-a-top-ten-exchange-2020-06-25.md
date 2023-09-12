@@ -16,12 +16,12 @@ menu: Kadena’s KDA Token Has First Listing on Bittrex Global, a Top Ten Exchan
 label:
   Kadena’s KDA Token Has First Listing on Bittrex Global, a Top Ten Exchange
 publishDate: 2020-06-25
+headerImage: /assets/blog/2020/1_HJDBr9jX5Ajucwmynt15eg.webp
+tags: [kda]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2020/1_HJDBr9jX5Ajucwmynt15eg.webp)
 
 # Kadena’s KDA Token Has First Listing on Bittrex Global, a Top Ten Exchange
 

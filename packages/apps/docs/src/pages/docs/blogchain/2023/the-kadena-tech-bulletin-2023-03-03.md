@@ -10,6 +10,7 @@ description:
 menu: Tech Bulletin #1 — March 3, 2023
 label: Tech Bulletin #1 — March 3, 2023
 publishDate: 2023-03-03
+tags: [kadena, chainweaver, pact, marmalade, kadenajs, chainweb, community]
 author: Kadena
 authorId: kadena
 layout: blog

@@ -19,12 +19,12 @@ label:
   Kadena Completes Hybrid Blockchain Scaling to 480,000 Transactions Per Second
   on 20 Chains
 publishDate: 2020-08-20
+headerImage: /assets/blog/2020/1_40MoCSBHaDVFNJCgIcrGqQ.webp
+tags: [kadena]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2020/1_40MoCSBHaDVFNJCgIcrGqQ.webp)
 
 # Kadena Completes Hybrid Blockchain Scaling to 480,000 Transactions Per Second on 20 Chains
 

@@ -8,12 +8,12 @@ description:
 menu: Kadena at Consensus 2019
 label: Kadena at Consensus 2019
 publishDate: 2019-05-01
+headerImage: /assets/blog/1_r_A9MY_7i_J8cFdgZAMUMg.webp
+tags: [kadena]
 author: Miguel Angel Romero Jr.
 authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_r_A9MY_7i_J8cFdgZAMUMg.webp)
 
 # Kadena at Consensus 2019
 

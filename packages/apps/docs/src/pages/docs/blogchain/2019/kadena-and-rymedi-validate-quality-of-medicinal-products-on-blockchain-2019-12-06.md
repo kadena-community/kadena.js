@@ -12,12 +12,12 @@ description:
 menu: Kadena and Rymedi Validate Quality of Medicinal Products on Blockchain
 label: Kadena and Rymedi Validate Quality of Medicinal Products on Blockchain
 publishDate: 2019-12-06
+headerImage: /assets/blog/2019/1_8dws7pDUv76OAVl5jkxWsQ.webp
+tags: [kadena]
 author: Rebecca Rodriguez
 authorId: rebecca.rodriguez
 layout: blog
 ---
-
-![](/assets/blog/2019/1_8dws7pDUv76OAVl5jkxWsQ.webp)
 
 # Kadena and Rymedi Validate Quality of Medicinal Products on Blockchain
 

@@ -9,12 +9,12 @@ description:
 menu: How to Scale a Proof of Work Blockchain
 label: How to Scale a Proof of Work Blockchain
 publishDate: 2021-03-07
+headerImage: /assets/blog/1_3eyrU5ECYCprl5r08ilvlg.webp
+tags: [pow, chainweb]
 author: Doug Beardsley
 authorId: doug.beardsley
 layout: blog
 ---
-
-![Background image originally from [https://www.setzeus.com/](https://www.setzeus.com/)](/assets/blog/1_3eyrU5ECYCprl5r08ilvlg.webp)
 
 # How to Scale a Proof of Work Blockchain
 
