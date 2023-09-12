@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Grid, Stack } from '@kadena/react-ui';
 
 import { baseGridClass } from '../basestyles.css';
