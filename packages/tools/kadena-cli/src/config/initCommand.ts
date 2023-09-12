@@ -1,5 +1,6 @@
 import { rootPath } from '../constants/config';
-import { displayConfig, getConfig } from '../utils/globalConfig';
+import { displayConfig } from '../utils/display';
+import { getConfig } from '../utils/globalConfig';
 import { collectResponses, IQuestion } from '../utils/helpers';
 import { processZodErrors } from '../utils/process-zod-errors';
 
