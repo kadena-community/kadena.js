@@ -39,57 +39,63 @@ export function mergeConfigs<T extends object>(
   return target;
 }
 
-/**
- * Represents a generic question interface.
- *
- * @template Key - Represents the key of the type of the response.
- * @template TResponse - Represents the type of the response.
- *
- * @interface
- * @property {Key} key - The property key of the object being asked about.
- * @property {function} question - A function that prompts a question and returns a promise of the answer.
+/* Interface defining a question structure.
+ * @template T The type to which the question is bound (typically an object of configuration options).
  */
-interface IGenericQuestion<Key extends keyof TResponse, TResponse> {
-  key: Key;
-  question: () => Promise<TResponse[Key]>;
+export interface IQuestion<T> {
+  /** The key representing the property within the type T. */
+  key: keyof T;
+
+  /**
+   * The prompt function to retrieve the answer for this question.
+   * @param previousAnswers Previously provided answers for other questions.
+   * @returns A promise resolving to the answer of the question.
+   */
+  prompt: (previousAnswers: Partial<T>) => Promise<T[keyof T]>;
 }
 
 /**
- * Collects responses for a given array of questions.
- *
- * @template TResponse - Represents the type of the response.
- *
- * @param {Array<IGenericQuestion<keyof TResponse, TResponse>>} questions - An array of questions to be asked.
- *
- * @returns {Promise<TResponse>} - A promise that resolves to an object containing the responses.
+ * Generator function that iterates over a list of questions and yields questions that are yet to be answered.
+ * @template T The type of configuration options the questions correspond to.
+ * @param args The initial or provided answers for some of the questions.
+ * @param questions A list of questions to iterate over.
+ * @yields A question that is yet to be answered.
  */
-export async function collectResponses<TResponse>(
-  questions: Array<IGenericQuestion<keyof TResponse, TResponse>>,
-): Promise<TResponse> {
-  const responses: Partial<TResponse> = {};
+export function* questionGenerator<T>(
+  args: Partial<T>,
+  questions: IQuestion<T>[],
+): Generator<IQuestion<T>, void, void> {
+  for (const question of questions) {
+    if (args[question.key] === undefined) {
+      yield question;
+    }
+  }
+}
 
-  for (const q of questions) {
-    const answer = await q.question();
-    safeAssign(responses, q.key, answer);
+/**
+ * Collects user responses for a set of questions.
+ * @template T The type of configuration options the questions correspond to.
+ * @param args The initial or provided answers for some of the questions.
+ * @param questions A list of questions for which to collect responses.
+ * @returns A promise that resolves to an object of collected responses.
+ */
+
+export async function collectResponses<T>(
+  args: Partial<T>,
+  questions: IQuestion<T>[],
+): Promise<T> {
+  const responses: Partial<T> = {
+    ...args,
+  };
+  const generator = questionGenerator(args, questions);
+
+  let result = generator.next();
+  while (result.done === false) {
+    const question = result.value;
+    responses[question.key as keyof T] = await question.prompt(responses);
+
+    result = generator.next();
   }
 
-  return responses as TResponse;
-}
-
-/**
- * Represents a choice interface for user selection.
- *
- * @template Value - The type of the value property.
- *
- * @interface
- * @property {Value} value - The actual value for the choice.
- * @property {string} [name] - The display name for the choice.
- * @property {string} [description] - A brief description for the choice.
- * @property {boolean|string} [disabled] - A flag to disable the choice or a reason why the choice is disabled.
- */
-export interface IChoice<Value> {
-  value: Value;
-  name?: string;
-  description?: string;
-  disabled?: boolean | string;
+  return responses as T;
 }
