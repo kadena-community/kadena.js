@@ -1,12 +1,15 @@
 import { Box, Button, Card, Heading, Stack, Text } from '@kadena/react-ui';
 
 import { BrowseSection, MostPopular } from '@/components';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components';
+import type { IMenuData } from '@/types/Layout';
 import type { IMostPopularPage } from '@/types/MostPopularData';
+import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
@@ -20,9 +23,10 @@ import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
+  blogPosts: IMenuData[];
 }
 
-const Home: FC<IProps> = ({ popularPages }) => {
+const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
   return (
     <div
       className={classNames(contentClass, contentClassVariants.home)}
@@ -71,6 +75,11 @@ const Home: FC<IProps> = ({ popularPages }) => {
             />
           </BrowseSection>
         </Box>
+        <BlogPostsStrip
+          data={blogPosts}
+          link={`/docs/tags/pact`}
+          linkLabel="More Pact blogchain..."
+        />
       </article>
     </div>
   );
@@ -78,10 +87,12 @@ const Home: FC<IProps> = ({ popularPages }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const mostPopularPages = await getMostPopularPages('/docs/pact');
+  const blogPosts = await getBlogPosts(['pact']);
 
   return {
     props: {
       popularPages: mostPopularPages,
+      blogPosts,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Learn Pact',
@@ -90,6 +101,7 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 3,
         description: 'Kadena makes blockchain work for everyone.',
         layout: 'landing',
+        icon: 'PactLanguage',
       },
     },
   };
