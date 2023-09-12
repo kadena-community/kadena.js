@@ -1,5 +1,5 @@
 /*
-  This Decorator can used to center the story in the Storybook.
+  This Decorator can used to center the story.
   More info: https://storybook.js.org/docs/react/writing-stories/decorators
 */
 
