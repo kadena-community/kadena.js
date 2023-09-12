@@ -28,3 +28,7 @@
 ---
 
 Separate linting (ESLint) and formatting (Prettier)
+
+Adds `eslint-config-prettier` and removes `eslint-plugin-prettier`.
+The formatting that Prettier did is removed (also in `--fix` runs).
+Apply formatting separately using Prettier (`--write` or `--check`).
