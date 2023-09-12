@@ -1,8 +1,0 @@
-publicKey: ''
-privateKey: ''
-chainId: 1
-network: mainnet
-networkId: mainnet01
-networkHost: https://api.chainweb.com
-networkExplorerUrl: https://explorer.chainweb.com/mainnet/tx/
-kadenaNamesApiEndpoint: https://www.kadenanames.com/api/v1
