@@ -15,7 +15,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'TextField is the composition of Input and InputWrapper to provide an input with a label, helper text, and other peripheral information.',
+          'SelectField is the composition of the Select and InputWrapper components to provide an input with a label, helper text, and other peripheral information.',
       },
     },
   },
