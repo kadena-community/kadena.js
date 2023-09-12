@@ -1,4 +1,3 @@
-import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
 import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
@@ -24,19 +23,18 @@ export const container = style([
         outlineOffset: '2px',
         outline: `2px solid ${vars.colors.$neutral5}`,
       },
-      '&:disabled': {
-        opacity: 0.7,
-        backgroundColor: colorPalette.$gray60,
-        color: colorPalette.$gray40,
-        cursor: 'not-allowed',
-        pointerEvents: 'none',
-      },
     },
   },
 ]);
 
-export const selectedIconClass = style({
-  opacity: 0.4,
+export const positiveActiveIconClass = style({
+  outlineOffset: '2px',
+  outlineColor: vars.colors.$green60,
+});
+
+export const negativeActiveIconClass = style({
+  outlineOffset: '2px',
+  outlineColor: vars.colors.$red60,
 });
 
 export type ColorOptions = ColorType | 'default' | 'inverted';
@@ -66,4 +64,19 @@ export const colorVariants = styleVariants(colors, (color) => {
     container,
     sprinkles({ color: `$${color}Contrast`, bg: `$${color}Surface` }),
   ];
+});
+
+export const stateVariants = styleVariants({
+  positive: [
+    {
+      outlineOffset: '2px',
+      outline: `2px solid ${vars.colors.$green60}`,
+    },
+  ],
+  negative: [
+    {
+      outlineOffset: '2px',
+      outline: `2px solid ${vars.colors.$red60}`,
+    },
+  ],
 });
