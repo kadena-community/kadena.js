@@ -9,14 +9,14 @@ description:
 menu: Curating the Kadena.js Dev Experience - 2022–2023
 label: Curating the Kadena.js Dev Experience - 2022–2023
 publishDate: 2023-01-13
+headerImage: /assets/blog/1_gg9ye2dLsWtNjIbG_DfFlA.webp
+tags: [kadenajs]
 author: Randy Daal
 authorId: randy.daal
 layout: blog
 ---
 
 # Curating the Kadena.js Dev Experience: 2022–2023
-
-![](/assets/blog/1_gg9ye2dLsWtNjIbG_DfFlA.webp)
 
 > "The most reliable way to predict the future is to create it”
 >

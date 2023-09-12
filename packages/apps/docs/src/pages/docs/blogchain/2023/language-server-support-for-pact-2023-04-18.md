@@ -10,14 +10,14 @@ description:
 menu: Language Server Support for Pact
 label: Language Server Support for Pact
 publishDate: 2023-04-18
+headerImage: /assets/blog/1_NzViJSe3eJ45qJfeqLh1Lw.webp
+tags: [pact]
 author: Robert Soeldner
 authorId: robert.soeldner
 layout: blog
 ---
 
 # Language Server Support for Pact
-
-![](/assets/blog/1_NzViJSe3eJ45qJfeqLh1Lw.webp)
 
 Tools that support the development process of software are crucial for ensuring
 the quality, security, and timeliness of software. This is especially important

@@ -11,14 +11,14 @@ description:
 menu: Kadena 2023 Q2 Newsletter
 label: Kadena Kadena 2023 Q2 Newsletter
 publishDate: 2023-07-06
+headerImage: /assets/blog/1_CfQ03AfVSFcTBFdaPAYdQw.webp
+tags: [kadena, pact, bridge, smart wallet]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Kadena 2023 Q2 Newsletter
-
-![](/assets/blog/1_CfQ03AfVSFcTBFdaPAYdQw.webp)
 
 As we delve into the exciting developments and achievements of the past three
 months in our Kadena Q2 Newsletter, we are thrilled to share the latest updates

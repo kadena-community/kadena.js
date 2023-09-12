@@ -9,14 +9,14 @@ description:
 menu: KIP-0019 - Future Iteration of the Coin and Fungible Contracts
 label: KIP-0019 - Future Iteration of the Coin and Fungible Contracts
 publishDate: 2023-06-06
+headerImage: /assets/blog/1_dDdOhCBy_d7PrAe-xm8E2w.webp
+tags: [kadena, formal verification]
 author: Robert Soeldner
 authorId: robert.soeldner
 layout: blog
 ---
 
 # KIP-0019: Future Iteration of the Coin and Fungible Contracts
-
-![](/assets/blog/1_dDdOhCBy_d7PrAe-xm8E2w.webp)
 
 We are excited to present KIP-0019
 ([Kadena Improvement Proposal](https://medium.com/r?url=https%3A%2F%2Fgithub.com%2Fkadena-io%2FKIPs)

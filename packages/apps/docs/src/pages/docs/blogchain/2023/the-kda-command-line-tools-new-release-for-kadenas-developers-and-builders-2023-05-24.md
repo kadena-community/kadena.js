@@ -8,14 +8,14 @@ description:
 menu: The KDA Command Line Tools
 label: The KDA Command Line Tools
 publishDate: 2023-05-24
+headerImage: /assets/blog/1_rLMz_SpxPnaSj6t8vKSYiQ.wepb
+tags: [KDA, Cli]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # The KDA Command Line Tools: New Release for Kadena’s Developers and Builders
-
-![](/assets/blog/1_rLMz_SpxPnaSj6t8vKSYiQ.wepb)
 
 We are thrilled to present and showcase the remarkable features of the latest
 release of KDA Command Line Tools, an all-in-one automation solution for

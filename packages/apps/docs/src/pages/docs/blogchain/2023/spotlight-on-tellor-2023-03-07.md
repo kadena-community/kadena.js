@@ -8,6 +8,7 @@ description:
 menu: Spotlight on Tellor
 label: Spotlight on Tellor
 publishDate: 2023-03-07
+tags: [oracle]
 author: Kadena
 authorId: kadena
 layout: blog

@@ -12,14 +12,14 @@ description:
 menu: Randy Daal
 label: Randy Daal
 publishDate: 2023-05-05
+headerImage: /assets/blog/1_I2xj4MFRpqxcHxy1QXuRIw.webp
+tags: [kadena]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Randy Daal: Chief Experience Officer
-
-![](/assets/blog/1_I2xj4MFRpqxcHxy1QXuRIw.webp)
 
 Kadena is extremely pleased to announce that Randy Daal has been promoted to
 **Chief Experience Officer (CXO)** of Kadena. Randy joined Kadena in April of

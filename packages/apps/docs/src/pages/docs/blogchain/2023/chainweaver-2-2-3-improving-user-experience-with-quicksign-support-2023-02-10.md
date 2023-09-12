@@ -8,12 +8,12 @@ description:
 menu: Chainweaver 2.2.3
 label: Chainweaver 2.2.3
 publishDate: 2023-02-10
+headerImage: /assets/blog/1_eQ0aqLVMW21bLxOF1PB8yQ.webp
+tags: [chainweaver]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
-
-![Chainweaver 2.2.3 is taking user experience to the next level with our new Quicksign API!](/assets/blog/1_eQ0aqLVMW21bLxOF1PB8yQ.webp)
 
 # Chainweaver 2.2.3: Improving User Experience with Quicksign Support
 

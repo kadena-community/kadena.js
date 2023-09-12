@@ -9,14 +9,14 @@ description:
 menu: Clarification to the 2021 Token Economics Update
 label: Clarification to the 2021 Token Economics Update
 publishDate: 2023-08-22
+headerImage: /assets/blog/2019/1_68w6sDAETJxMRc_R4wjKmw.webp
+tags: [token, kda]
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
 
 # Clarification to the 2021 Token Economics Update
-
-![](/assets/blog/2019/1_68w6sDAETJxMRc_R4wjKmw.webp)
 
 At [Kadena](https://kadena.io/), we’re proud of our token economic model, as it
 provides robust rewards for the miners who keep our network running, and funds
