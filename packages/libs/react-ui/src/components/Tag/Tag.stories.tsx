@@ -15,7 +15,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Tag component renders a tag with a text. This tag can be dismissed by the user by clicking the X icon when `hasClose` is set to true. Optionally, you can pass a function to the `onClose` prop to handle any additional logic `onClose`.',
+          'The Tag component renders a tag with a text. This tag can be dismissed by the user by clicking the X icon when the optional `onClose` prop is provided.',
       },
     },
   },
