@@ -8,12 +8,12 @@ description:
 menu: The Current State of Marmalade
 label: The Current State of Marmalade
 publishDate: 2022-06-29
+headerImage: /assets/blog/1_sWZGaZatGNQgUoioo9_B0w.webp
+tags: [marmalade]
 author: Randy Daal
 authorId: randy.daal
 layout: blog
 ---
-
-![](/assets/blog/1_sWZGaZatGNQgUoioo9_B0w.webp)
 
 # The Current State of Marmalade
 

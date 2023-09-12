@@ -8,12 +8,12 @@ description:
 menu: How Kadena is Reimagining Blockchain Developer UX
 label: How Kadena is Reimagining Blockchain Developer UX
 publishDate: 2022-06-09
+headerImage: /assets/blog/1_q5vogZ5itWngvqAHv9_Zbg.webp
+tags: [kadena]
 author: Randy Daal
 authorId: randy.daal
 layout: blog
 ---
-
-![](/assets/blog/1_q5vogZ5itWngvqAHv9_Zbg.webp)
 
 # How Kadena is Reimagining Blockchain Developer UX
 
