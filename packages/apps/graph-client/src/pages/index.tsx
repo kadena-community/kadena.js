@@ -36,11 +36,24 @@ const Home: React.FC = () => {
 
   const [searchType, setSearchType] = useState<string>('request-key');
   const [searchField, setSearchField] = useState<string>('');
+  const [moduleField, setModuleField] = useState<string>('');
 
   const search = (): void => {
-    if (searchType === 'request-key') {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/transaction/${searchField}`);
+    switch (searchType) {
+      case 'request-key':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`/transaction/${searchField}`);
+        break;
+      case 'account-transactions':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(
+          `/account/${searchField}/transactions?module=${moduleField}`,
+        );
+        break;
+      case 'account-transfers':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`/account/${searchField}/transfers?module=${moduleField}`);
+        break;
     }
   };
 
@@ -88,7 +101,7 @@ const Home: React.FC = () => {
           Kadena Graph Client
         </Text>
 
-        <Grid.Root columns={3}>
+        <Grid.Root columns={searchType.startsWith('account') ? 4 : 3}>
           <Grid.Item>
             <Select
               style={{ marginTop: '9px' }}
@@ -97,17 +110,34 @@ const Home: React.FC = () => {
               onChange={(event) => setSearchType(event.target.value)}
             >
               <Option value="request-key">Request Key</Option>
+              <Option value="account-transactions">Account Transactions</Option>
+              <Option value="account-transfers">Account Transfers</Option>
             </Select>
           </Grid.Item>
           <Grid.Item>
             <InputWrapper htmlFor="search-field">
               <Input
-                id="seacrh-field"
+                id="search-field"
                 value={searchField}
+                placeholder={
+                  searchType === 'request-key' ? 'Request Key' : 'Account'
+                }
                 onChange={(event) => setSearchField(event.target.value)}
               />
             </InputWrapper>
           </Grid.Item>
+          {searchType.startsWith('account') && (
+            <Grid.Item>
+              <InputWrapper htmlFor="module">
+                <Input
+                  id="module"
+                  value={moduleField}
+                  placeholder="Module name (e.g. 'coin')"
+                  onChange={(event) => setModuleField(event.target.value)}
+                />
+              </InputWrapper>
+            </Grid.Item>
+          )}
           <Grid.Item>
             <Button onClick={search}>Search</Button>
           </Grid.Item>
