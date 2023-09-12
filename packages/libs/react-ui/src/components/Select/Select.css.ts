@@ -86,8 +86,11 @@ export const chevronIconClass = style([
     position: 'absolute',
     right: '$1',
     top: '$2',
+
   }),
   {
+    pointerEvents: 'none',
+    zIndex: 10,
     selectors: {
       '&:active': {
         color: vars.colors.$gray40,

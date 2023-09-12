@@ -149,6 +149,11 @@ export const selectContainerClass = style([
   }),
   {
     border: `1px solid ${vars.colors.$gray40}`,
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
   },
 ]);
 
@@ -192,19 +197,29 @@ export const selectClass = style([
   {
     backgroundColor: 'inherit',
     appearance: 'none',
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+      '&:focus': {
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        borderColor: 'vars.colors.$gray40',
+      },
+    },
   },
 ]);
 
 export const chevronIconClass = style([
   sprinkles({
-    alignItems: 'center',
-    display: 'flex',
     marginRight: '$2',
     position: 'absolute',
     right: '$1',
-    top: '$3',
   }),
   {
+    top: '7px',
+    pointerEvents: 'none',
+    zIndex: 10,
     selectors: {
       '&:active': {
         color: vars.colors.$gray40,
