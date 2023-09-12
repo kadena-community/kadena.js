@@ -13,7 +13,7 @@ const meta: Meta<
     rightIcon: keyof typeof SystemIcon;
   } & IPaginationProps
 > = {
-  title: 'Components/Pagination',
+  title: 'Navigation/Pagination',
   parameters: {
     docs: {
       description: {

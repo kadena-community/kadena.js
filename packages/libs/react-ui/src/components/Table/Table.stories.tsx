@@ -17,7 +17,7 @@ type StoryProps = {
 } & ITableProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Components/Table',
+  title: 'Content/Table',
   parameters: {
     docs: {
       description: {

@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 const meta: Meta<ISelectProps> = {
-  title: 'Components/Select',
+  title: 'Form/Select',
   component: Select,
   parameters: {
     docs: {
