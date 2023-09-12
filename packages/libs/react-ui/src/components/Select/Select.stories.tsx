@@ -9,6 +9,14 @@ import React, { useState } from 'react';
 const meta: Meta<ISelectProps> = {
   title: 'Components/Select',
   component: Select,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Select component renders a select element with options. The select element can be disabled with the `disabled` prop. The icon of the select element can be set with the `icon` prop.',
+      },
+    },
+  },
   argTypes: {
     disabled: {
       description: 'toggle disabled state of component',

@@ -11,6 +11,14 @@ const meta: Meta<
   } & ITagProps
 > = {
   title: 'Components/Tag',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Tag component renders a tag with a text. This tag can be dismissed by the user by clicking the X icon when `hasClose` is set to true. Optionally, you can pass a function to the `onClose` prop to handle any additional logic `onClose`.',
+      },
+    },
+  },
   component: Tag,
   argTypes: {
     text: {

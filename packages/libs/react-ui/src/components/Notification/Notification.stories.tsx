@@ -12,6 +12,14 @@ const meta: Meta<
   } & INotificationProps
 > = {
   title: 'Components/Notification',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Notification component renders a notification with an icon, title, and text. The notification can be expanded to show additional content. The color variant of the notification can be set with the `color` prop.',
+      },
+    },
+  },
   argTypes: {
     icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
