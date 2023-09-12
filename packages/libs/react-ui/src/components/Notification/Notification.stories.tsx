@@ -7,8 +7,6 @@ import { Notification } from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-console.log(cardColorVariants)
-
 const meta: Meta<
   {
     text: string;
