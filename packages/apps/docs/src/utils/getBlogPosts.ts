@@ -21,7 +21,7 @@ export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
       if (a.publishDate < b.publishDate) return 1;
       return 0;
     })
-    .slice(0, 3);
+    .slice(0, 4);
 
   return flatListWithPosts ?? [];
 };
