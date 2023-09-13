@@ -1,5 +1,4 @@
 import { Select } from '@components/Select';
-import { Option } from '@components/Select/Option';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
@@ -12,8 +11,8 @@ describe('Select', () => {
         onChange={() => {}}
         ariaLabel="select"
       >
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -29,8 +28,8 @@ describe('Select', () => {
         onChange={() => {}}
         ariaLabel="select"
       >
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -53,8 +52,8 @@ describe('Select', () => {
         onChange={handleChange}
         ariaLabel="select"
       >
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -76,8 +75,8 @@ describe('Select', () => {
         disabled
         ariaLabel="select"
       >
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 

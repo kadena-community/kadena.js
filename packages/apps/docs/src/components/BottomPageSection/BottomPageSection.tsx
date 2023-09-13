@@ -41,7 +41,7 @@ export const BottomPageSection: FC<IProps> = ({
   };
 
   return (
-    <div className={classes}>
+    <footer className={classes}>
       <Stack alignItems="center" justifyContent="space-between">
         <EditPage editLink={editLink} />
         {navigation?.previous !== undefined && (
@@ -70,6 +70,6 @@ export const BottomPageSection: FC<IProps> = ({
         <div />
         <Subscribe />
       </Stack>
-    </div>
+    </footer>
   );
 };

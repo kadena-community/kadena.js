@@ -4,8 +4,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IProfileCardProps> = {
-  title: 'Components/ProfileCard',
+  title: 'Content/ProfileCard',
   component: ProfileCard,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The ProfileCard component renders a card with a profile picture, name, title, tags, and links. The links are rendered using the `Link` component and can be set with the `links` prop.',
+      },
+    },
+  },
   argTypes: {
     name: {
       control: {
@@ -51,15 +59,11 @@ export const Primary: Story = {
   render: ({ name, title, tags, imageSrc, links }) => {
     return (
       <ProfileCard
-        name={'Tasos Bitsios'}
-        title={'Developer Experience Developer (DED)'}
-        tags={['Chainweb-stream', 'SSE']}
-        imageSrc={'https://avatars.githubusercontent.com/u/115649719?v=4'}
-        links={{
-          'Personal website': 'https://tasosbitsios.com',
-          Twitter: 'https://twitter.com/tasosbitsios',
-          'Custom link': 'https://kadena.io',
-        }}
+        name={name}
+        title={title}
+        tags={tags}
+        imageSrc={imageSrc}
+        links={links}
       />
     );
   },
