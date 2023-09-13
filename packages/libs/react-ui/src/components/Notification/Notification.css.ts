@@ -3,7 +3,7 @@ import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const colors: Omit<Record<ColorType, ColorType>, "secondary" | "tertiary"> = {
+export const ColorVariants: Omit<Record<ColorType, ColorType>, "secondary" | "tertiary"> = {
   info: 'info',
   positive: 'positive',
   warning: 'warning',
@@ -26,7 +26,7 @@ export const containerClass = style([
   },
 ]);
 
-export const cardColorVariants = styleVariants(colors, (color) => {
+export const cardColorVariants = styleVariants(ColorVariants, (color) => {
   return [
     sprinkles({
       backgroundColor: `$${color}Surface`,
@@ -94,7 +94,7 @@ export const actionButtonClass = style([
   }),
 ]);
 
-export const actionButtonColorVariants = styleVariants(colors, (color) => {
+export const actionButtonColorVariants = styleVariants(ColorVariants, (color) => {
   return [
     actionButtonClass,
     sprinkles({
