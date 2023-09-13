@@ -134,10 +134,7 @@ export const glowClass = style([
 export const selectContainerClass = style([
   sprinkles({
     alignItems: 'stretch',
-    backgroundColor: {
-      lightMode: '$gray90',
-      darkMode: '$gray90',
-    },
+    backgroundColor: '$gray90',
     borderRadius: '$sm',
     display: 'flex',
     flexGrow: 1,
@@ -172,7 +169,6 @@ export const selectIconClass = style([
   sprinkles({
     alignItems: 'center',
     display: 'flex',
-    marginRight: '$2',
     color: '$gray40',
   }),
   {
@@ -192,6 +188,7 @@ export const selectClass = style([
     flexGrow: 1,
     outline: 'none',
     paddingRight: '$8',
+    paddingLeft: '$sm',
     paddingY: '$2',
     fontSize: '$base',
   }),
@@ -210,13 +207,15 @@ export const selectClass = style([
 
 export const chevronIconClass = style([
   sprinkles({
+    height: '$9',
     marginRight: '$2',
     position: 'absolute',
     right: '$1',
     color: '$gray40',
+    display: 'inline-flex',
+    alignItems: 'center'
   }),
   {
-    top: '7px',
     pointerEvents: 'none',
     zIndex: 10,
     selectors: {
