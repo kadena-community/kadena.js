@@ -46,7 +46,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
       <Icon size="md" />
 
       <div className={contentClass}>
-        {title !== undefined && <h4>{title}</h4>}
+        {title && <h4>{title}</h4>}
         <div className={descriptionClass}>{children}</div>
       </div>
 

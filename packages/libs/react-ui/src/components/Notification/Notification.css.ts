@@ -57,6 +57,7 @@ export const contentClass = style([
     display: 'flex',
     flexDirection: 'column',
     gap: '$xs',
+    width: '100%',
   }),
   {
     marginTop: 2,
