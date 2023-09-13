@@ -1,5 +1,3 @@
-import { Text } from '@kadena/react-ui';
-
 import { paragraphWrapperClass } from './styles.css';
 
 import { BodyText } from '@/components/Typography';

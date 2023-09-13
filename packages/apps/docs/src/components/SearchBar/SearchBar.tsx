@@ -1,4 +1,4 @@
-import { Input, TextField } from '@kadena/react-ui';
+import { Input } from '@kadena/react-ui';
 
 import { searchFormClass } from './styles.css';
 
