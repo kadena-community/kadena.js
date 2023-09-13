@@ -1,4 +1,3 @@
-import { Option } from './Option';
 import type { ISelectProps } from './Select';
 import { Select } from './Select';
 
@@ -67,8 +66,8 @@ export const Dynamic: Story = {
         disabled={Boolean(disabled)}
         value={value}
       >
-        <Option value={'1'}>option 1</Option>
-        <Option value={'2'}>option 2</Option>
+        <option value={'1'}>option 1</option>
+        <option value={'2'}>option 2</option>
       </Select>
     );
   },

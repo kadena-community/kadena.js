@@ -1,7 +1,7 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { ISelectProps } from '@kadena/react-ui';
-import { InputWrapper, Option, Select } from '@kadena/react-ui';
+import { InputWrapper, Select } from '@kadena/react-ui';
 
 import type { FC, FormEventHandler } from 'react';
 import React, { useCallback } from 'react';
@@ -29,7 +29,7 @@ const ChainSelect: FC<
   );
 
   const options = CHAINS.map((chainID) => {
-    return <Option key={`chain-id-${chainID}`}>{chainID}</Option>;
+    return <option key={`chain-id-${chainID}`}>{chainID}</option>;
   });
 
   return (
