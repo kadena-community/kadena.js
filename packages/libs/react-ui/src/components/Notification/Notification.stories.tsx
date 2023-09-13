@@ -1,5 +1,4 @@
-import type { NotificationColors} from './Notification.css';
-import { cardColorVariants } from './Notification.css';
+import { colors } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { INotificationProps } from '@components/Notification';
@@ -26,9 +25,7 @@ const meta: Meta<
       },
     },
     color: {
-      options: Object.keys(
-        cardColorVariants,
-      ).filter(e => e !== 'tertiary' && e !== 'secondary') as (NotificationColors)[],
+      options: Object.keys(colors),
       control: {
         type: 'select',
       },
