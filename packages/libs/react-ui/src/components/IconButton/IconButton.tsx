@@ -35,8 +35,7 @@ export const IconButton: FC<IIconButtonProps> = ({
   const Icon = icon && SystemIcon[icon];
   const ariaLabel = restProps['aria-label'] ?? title;
   const classNames = classnames(colorVariants[color], {
-    [stateVariants.positive]: color === 'positive' && state === 'active',
-    [stateVariants.negative]: color === 'negative' && state === 'active',
+    [stateVariants[color]]: state === 'active',
   });
 
   if (asChild && React.isValidElement(children)) {

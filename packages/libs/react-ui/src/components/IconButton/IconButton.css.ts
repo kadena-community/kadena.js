@@ -27,16 +27,6 @@ export const container = style([
   },
 ]);
 
-export const positiveActiveIconClass = style({
-  outlineOffset: '2px',
-  outlineColor: vars.colors.$green60,
-});
-
-export const negativeActiveIconClass = style({
-  outlineOffset: '2px',
-  outlineColor: vars.colors.$red60,
-});
-
 export type ColorOptions = ColorType | 'default' | 'inverted';
 
 const colors: Record<ColorOptions, ColorOptions> = {
@@ -66,17 +56,15 @@ export const colorVariants = styleVariants(colors, (color) => {
   ];
 });
 
-export const stateVariants = styleVariants({
-  positive: [
+export const stateVariants = styleVariants(colors, (color) => {
+  if (['default', 'inverted'].includes(color)) {
+    return [];
+  }
+
+  return [
     {
       outlineOffset: '2px',
-      outline: `2px solid ${vars.colors.$green60}`,
+      outline: `2px solid ${vars.colors[`$${color as ColorType}Accent`]}`,
     },
-  ],
-  negative: [
-    {
-      outlineOffset: '2px',
-      outline: `2px solid ${vars.colors.$red60}`,
-    },
-  ],
+  ];
 });
