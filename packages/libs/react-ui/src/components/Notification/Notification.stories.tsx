@@ -1,4 +1,4 @@
-import { ColorVariants } from './Notification.css';
+import { colorVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { INotificationProps } from '@components/Notification';
@@ -25,7 +25,7 @@ const meta: Meta<
       },
     },
     color: {
-      options: Object.keys(ColorVariants),
+      options: Object.keys(colorVariants),
       control: {
         type: 'select',
       },
