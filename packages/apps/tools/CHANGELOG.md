@@ -1,5 +1,83 @@
 # @kadena/tools
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [e8780f4c]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [8adef240]
+- Updated dependencies [b90a2c1d]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [9ef42410]
+- Updated dependencies [17230731]
+- Updated dependencies [a0bdef5c]
+- Updated dependencies [242b5687]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [0afa85d8]
+- Updated dependencies [f148002c]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [664140f3]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [14b81501]
+- Updated dependencies [3e53006e]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+- Updated dependencies [17230731]
+  - @kadena/react-components@0.1.0
+  - @kadena/react-ui@0.1.0
+  - @kadena/chainweb-node-client@0.4.4
+  - @kadena/cryptography-utils@0.3.8
+  - @kadena/pactjs-generator@1.3.0
+  - @kadena/client@1.3.0
+  - @kadena/pactjs@0.3.2
+
 ## 0.1.1
 
 ### Patch Changes
