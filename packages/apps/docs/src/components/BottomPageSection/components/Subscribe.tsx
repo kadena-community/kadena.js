@@ -1,10 +1,4 @@
-import {
-  Button,
-  Heading,
-  Notification,
-  Stack,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, Heading, Input, Notification, Stack } from '@kadena/react-ui';
 
 import { useSubscribe } from './useSubscribe';
 
@@ -35,16 +29,16 @@ export const Subscribe: FC = () => {
           <>
             <form>
               <Stack gap="$sm">
-                <TextField
-                  inputProps={{
-                    id: 'email',
-                    type: 'email',
-                    placeholder: 'Email address',
-                    onChange: handleFormState,
-                    'aria-label': 'Fill in email address',
-                    leftIcon: 'At',
-                  }}
+                <Input
+                  id="email"
+                  leftIcon="At"
+                  onChange={handleFormState}
+                  placeholder="Email address"
+                  outlined
+                  type="email"
+                  aria-label="Fill in email address"
                 />
+
                 <Button
                   disabled={!canSubmit}
                   onClick={handleSubscribe}

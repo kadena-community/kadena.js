@@ -1,4 +1,4 @@
-import { TextField } from '@kadena/react-ui';
+import { Input, TextField } from '@kadena/react-ui';
 
 import { searchFormClass } from './styles.css';
 
@@ -27,17 +27,16 @@ export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
 
     return (
       <form onSubmit={handleSubmit} className={searchFormClass}>
-        <TextField
-          inputProps={{
-            id: 'seachinput',
-            onKeyUp: handleKeyUp,
-            outlined: true,
-            ref: ref,
-            defaultValue: query,
-            placeholder: 'Search',
-            rightIcon: 'Magnify',
-            'aria-label': 'Search',
-          }}
+        <Input
+          id="seachinput"
+          rightIcon="Magnify"
+          onKeyUp={handleKeyUp}
+          placeholder="Search"
+          outlined
+          ref={ref}
+          defaultValue={query}
+          type="text"
+          aria-label="Search"
         />
       </form>
     );
