@@ -75,4 +75,3 @@ export const selectClass = style([
     color: 'inherit',
   },
 ]);
-

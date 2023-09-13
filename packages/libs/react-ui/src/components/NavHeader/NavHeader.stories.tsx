@@ -129,9 +129,9 @@ export const Dynamic: IStory = {
             icon="Earth"
           >
             {sampleNetworkItems.map((network) => (
-              <NavHeader.SelectOption key={network} value={network}>
+              <option key={network} value={network}>
                 {network}
-              </NavHeader.SelectOption>
+              </option>
             ))}
           </NavHeader.Select>
         </NavHeader.Content>
