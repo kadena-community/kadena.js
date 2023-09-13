@@ -74,9 +74,9 @@ const Header: FC<IHeaderProps> = () => {
           icon="Earth"
         >
           {networks.map((network) => (
-            <NavHeader.SelectOption key={network} value={network}>
+            <option key={network} value={network}>
               {kadenaConstants?.[network].label}
-            </NavHeader.SelectOption>
+            </option>
           ))}
         </NavHeader.Select>
         <div className={walletConnectWrapperStyle}>
