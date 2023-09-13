@@ -1,5 +1,11 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.3.0
+
+### Patch Changes
+
+- f148002c: Accept power "^" as a valid operator
+
 ## 1.2.0
 
 This log was last generated on Fri, 04 Aug 2023 16:10:02 GMT and should not be
