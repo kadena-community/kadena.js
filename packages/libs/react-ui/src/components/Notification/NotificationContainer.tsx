@@ -1,9 +1,8 @@
-import type {
-  ColorVariants
-} from './Notification.css';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
   cardColorVariants,
   closeButtonClass,
+  colorVariants,
   containerClass,
   contentClass,
   descriptionClass,
@@ -20,7 +19,7 @@ export interface INotificationProps {
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
-  color?: keyof typeof ColorVariants;
+  color?: keyof typeof colorVariants;
   hasCloseButton?: boolean;
   onClose?: () => void;
 }
