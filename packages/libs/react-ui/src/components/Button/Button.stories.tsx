@@ -43,6 +43,9 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      table: {
+        type: { summary: Object.keys(SystemIcon).join(' | ') },
+      },
       if: { arg: 'loading', eq: false },
     },
     iconAlign: {
@@ -51,12 +54,20 @@ const meta: Meta<
       control: {
         type: 'radio',
       },
+      table: {
+        type: { summary: 'left | right' },
+        defaultValue: { summary: 'right' },
+      },
       if: { arg: 'icon', neq: '-' },
     },
     variant: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
         type: 'select',
+      },
+      table: {
+        type: { summary: Object.keys(colorVariants).join(' | ') },
+        defaultValue: { summary: 'primary' },
       },
     },
     title: {
@@ -90,6 +101,10 @@ const meta: Meta<
       options: ['button', 'a'] as IButtonProps['as'][],
       control: {
         type: 'radio',
+      },
+      table: {
+        type: { summary: 'button | a' },
+        defaultValue: { summary: 'button' },
       },
     },
     disabled: {

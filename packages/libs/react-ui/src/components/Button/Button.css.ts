@@ -1,7 +1,7 @@
 import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
 import type { ColorType } from '@theme/vars.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { vars } from '@theme/vars.css';
 import {
   createVar,
   keyframes,
@@ -27,27 +27,20 @@ export const container = style([
     paddingY: '$3',
     placeItems: 'center',
     textDecoration: 'none',
-    color: {
-      lightMode: '$white',
-      darkMode: '$gray80',
-    },
-    backgroundColor: {
-      darkMode: '$blue50',
-    },
   }),
   {
     selectors: {
       '&[href]': {
         display: 'inline-flex',
       },
-      [`${darkThemeClass} &:hover`]: {
-        color: colorPalette.$gray100,
-        backgroundColor: colorPalette.$blue30,
-      },
+      // [`${darkThemeClass} &:hover`]: {
+      //   color: colorPalette.$gray100,
+      //   backgroundColor: colorPalette.$blue30,
+      // },
     },
     ':hover': {
       backgroundColor: bgHoverColor,
-      color: colorPalette.$white,
+      color: vars.colors.$blue20,
     },
     ':active': {
       backgroundColor: bgActiveColor,
@@ -65,31 +58,13 @@ export const container = style([
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
-    transition: 'background-color 0.4s ease',
+    transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
   },
 ]);
 
-const rotate = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-});
-
-export const buttonLoadingClass = style({
-  pointerEvents: 'none',
-});
-
-export const iconLoadingClass = style({
-  animationName: rotate,
-  animationDuration: '1.5s',
-  animationIterationCount: 'infinite',
-  animationTimingFunction: 'linear',
-});
-
-const variants: Record<ColorType, ColorType> = {
+const variants: Omit<Record<ColorType, ColorType>, 'info' | 'tertiary'> = {
   primary: 'primary',
   secondary: 'secondary',
-  tertiary: 'tertiary',
-  info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',
@@ -110,4 +85,20 @@ export const colorVariants = styleVariants(variants, (variant) => {
       },
     },
   ];
+});
+
+const rotate = keyframes({
+  '0%': { transform: 'rotate(0deg)' },
+  '100%': { transform: 'rotate(360deg)' },
+});
+
+export const buttonLoadingClass = style({
+  pointerEvents: 'none',
+});
+
+export const iconLoadingClass = style({
+  animationName: rotate,
+  animationDuration: '1.5s',
+  animationIterationCount: 'infinite',
+  animationTimingFunction: 'linear',
 });
