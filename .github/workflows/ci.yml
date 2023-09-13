@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Optimized build, lint, test all packages
+      - name: Build, lint, test all packages
         run: pnpm turbo build lint test
 
       - name: List mismatched dependencies

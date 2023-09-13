@@ -10,6 +10,7 @@ description:
 menu: Kadena Eco Office Hours Transcript
 label: Kadena Eco Office Hours Transcript
 publishDate: 2022-07-22
+tags: [kadena, grant]
 author: Kadena
 authorId: kadena
 layout: blog

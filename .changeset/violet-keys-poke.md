@@ -1,5 +1,5 @@
 ---
-'@kadena/react-ui': none
+'@kadena/react-ui': minor
 ---
 
 Updated the Link and Breadcrumb components to have the option to pass props and

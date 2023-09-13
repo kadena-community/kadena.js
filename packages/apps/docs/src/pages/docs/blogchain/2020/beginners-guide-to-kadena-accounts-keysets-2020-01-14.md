@@ -9,12 +9,12 @@ description:
 menu: Beginner’s Guide to Kadena Accounts + Keysets
 label: Beginner’s Guide to Kadena Accounts + Keysets
 publishDate: 2020-01-14
+headerImage: /assets/blog/2020/1_JfE77s3CWXoDbh4o9F2-gA.webp
+tags: [pact]
 author: Emily Pillmore
 authorId: emily.pillmore
 layout: blog
 ---
-
-![](/assets/blog/2020/1_JfE77s3CWXoDbh4o9F2-gA.webp)
 
 # Beginner’s Guide to Kadena Accounts + Keysets
 

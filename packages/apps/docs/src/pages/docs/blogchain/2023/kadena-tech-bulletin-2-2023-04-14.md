@@ -10,14 +10,14 @@ description:
 menu: Kadena Tech Bulletin #2
 label: Kadena Tech Bulletin #2
 publishDate: 2023-04-14
+headerImage: /assets/blog/1_YPQLz17cpWq-z2DKCwGR3g.webp
+tags: [kadena, walletconnect, academy]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Kadena Tech Bulletin #2
-
-![](/assets/blog/1_YPQLz17cpWq-z2DKCwGR3g.webp)
 
 ### Welcome to Kadena’s 2nd issue of The Kadena Tech Bulletin!
 

@@ -71,3 +71,21 @@ export const articleMetaDataItemClass = style({
     },
   },
 });
+
+export const headerFigureClass = style([
+  sprinkles({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: '$10',
+    width: '100%',
+    position: 'relative',
+  }),
+]);
+
+export const headerImageClass = style({
+  position: 'relative',
+  height: 'auto',
+  inset: 0,
+  width: '100%',
+});

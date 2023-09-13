@@ -6,6 +6,7 @@ description:
 menu: KDA Token Listed on Kucoin
 label: KDA Token Listed on Kucoin
 publishDate: 2021-5-10
+tags: [kda]
 author: Kadena
 authorId: kadena
 layout: blog
@@ -29,7 +30,7 @@ a thing of the past which keeps gas fees affordable, and with
 projects can subsidize gas fees to remove that complexity entirely from the user
 experience. Apps on Kadena are powered by smart contracts written in Pact, which
 avoids the
-[bugs and vulnerabilities](../2018/the-evm-is-fundamentally-unsafe-2018-12-13)
+[bugs and vulnerabilities](/docs/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13)
 found in Solidity and other smart contract languages.
 
 ### Kadena’s Listing on Kucoin

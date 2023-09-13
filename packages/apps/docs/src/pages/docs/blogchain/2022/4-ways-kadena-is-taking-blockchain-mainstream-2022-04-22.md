@@ -7,6 +7,7 @@ description:
 menu: 4 Ways Kadena Is Taking Blockchain Mainstream
 label: 4 Ways Kadena Is Taking Blockchain Mainstream
 publishDate: 2022-04-09
+tags: [pact, marmalade]
 author: Kadena
 authorId: kadena
 layout: blog

@@ -9,14 +9,14 @@ description:
 menu: Project Spotlight - KadenAI
 label: Project Spotlight - KadenAI
 publishDate: 2023-08-15
+headerImage: /assets/blog/2023/1_2TrpexM2c0w9JVwBL2JO9g.webp
+tags: [marmalade]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Project Spotlight: KadenAI
-
-![](/assets/blog/2023/1_2TrpexM2c0w9JVwBL2JO9g.webp)
 
 Welcome to the [Kadena](https://kadena.io/) Project Spotlight Series, where we
 highlight the groundbreaking work of organizations currently building and

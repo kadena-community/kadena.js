@@ -12,14 +12,14 @@ description:
 menu: Pact Core Concepts Part I
 label: Pact Core Concepts Part I
 publishDate: 2023-04-20
+headerImage: /assets/blog/1_HTwgnXLGl8yViDoeTNcGAQ.webp
+tags: [pact]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Pact Core Concepts Part I — Introduction to Blockchain Development with Kadena
-
-![](/assets/blog/1_HTwgnXLGl8yViDoeTNcGAQ.webp)
 
 The Pact Core concepts series is a companion guide to the
 [Real World Pact teaching repository](https://github.com/thomashoneyman/real-world-pact).

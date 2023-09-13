@@ -8,12 +8,12 @@ description:
 menu: Chainweaver 2.2.3
 label: Chainweaver 2.2.3
 publishDate: 2023-02-10
+headerImage: /assets/blog/1_eQ0aqLVMW21bLxOF1PB8yQ.webp
+tags: [chainweaver]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
-
-![Chainweaver 2.2.3 is taking user experience to the next level with our new Quicksign API!](/assets/blog/1_eQ0aqLVMW21bLxOF1PB8yQ.webp)
 
 # Chainweaver 2.2.3: Improving User Experience with Quicksign Support
 
@@ -70,7 +70,7 @@ If you want to test out the quicksign API, it is now available in desktop
 versions of Chainweaver 2.2.3, you can find more information below:
 
 **Download or use Chainweaver here:**
-[https://docs.kadena.io/basics/wallets#chainweaver](https://docs.kadena.io/basics/wallets#chainweaver).
+[/docs/kadena/wallets#chainweaverh-1967816367](/docs/kadena/wallets#chainweaverh-1967816367).
 
 **Official release:**
 [https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3](https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3)

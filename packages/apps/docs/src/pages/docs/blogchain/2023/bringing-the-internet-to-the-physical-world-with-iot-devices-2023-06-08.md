@@ -11,14 +11,14 @@ description:
 menu: IoT Devices
 label: IoT Devices
 publishDate: 2023-06-08
+headerImage: /assets/blog/1_-sZboC_fQJg1hXLc1uPAgQ.webp
+tags: [kadena]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Bringing the Internet to the Physical World with IoT Devices
-
-![](/assets/blog/1_-sZboC_fQJg1hXLc1uPAgQ.webp)
 
 The Internet of Things (IoT) has become a buzzword in the technology industry in
 recent years. It refers to the interconnected network of devices, sensors, and

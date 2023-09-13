@@ -16,7 +16,7 @@ const Home: FC = () => {
   return (
     <Stack direction="column" gap="$2xl">
       <div>
-        <Heading as="h2">Welcome to Kadena&apos;s documentation!</Heading>
+        <Heading as="h2">Welcome to Kadena</Heading>
         <Text>
           <a href="https://www.kadena.io" target="_blank" rel="noreferrer">
             Kadena
@@ -47,22 +47,15 @@ const Home: FC = () => {
           <Link href="/docs/kadena/code-of-conduct">Code of Conduct</Link>
           <a href="https://kadena.io">Kadena.io</a>
         </BrowseSection>
-        <BrowseSection title="Support" className={browseSectionWrapper}>
-          <Link href="/docs/kadena/support">FAQ</Link>
-          <Link href="/docs/kadena/support/developer-program">
-            Developer Program
+
+        <BrowseSection title="Whitepapers" className={browseSectionWrapper}>
+          <Link href="/docs/kadena/whitepapers/chainweb-layer-1">
+            Chainweb layer 1
           </Link>
-          <Link href="/docs/kadena/support/technical-grants">
-            Technical Grants
+          <Link href="/docs/kadena/whitepapers/pact-smart-contract-language">
+            Pact Smart Contract
           </Link>
-        </BrowseSection>
-        <BrowseSection title="Resources" className={browseSectionWrapper}>
-          <Link href="/docs/kadena/resources">Overview</Link>
-          <Link href="/docs/kadena/resources/press-kit">Press Kit</Link>
-          <Link href="/docs/kadena/resources/glossary">Glossary</Link>
-          <Link href="/docs/kadena/resources/glossary/kadena-content-repository">
-            Content Repo
-          </Link>
+          <Link href="/docs/kadena/whitepapers/kuro-layer-2">Kuro Layer 2</Link>
         </BrowseSection>
       </Stack>
     </Stack>

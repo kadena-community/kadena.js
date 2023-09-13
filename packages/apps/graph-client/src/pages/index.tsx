@@ -1,27 +1,30 @@
 import {
+  Button,
+  Grid,
+  Input,
+  InputWrapper,
+  Option,
+  Select,
+} from '@kadena/react-ui';
+
+import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
 } from '../__generated__/sdk';
 import { ChainwebGraph } from '../components/chainweb';
+import { mainStyle } from '../components/main/styles.css';
 import { Text } from '../components/text';
 import { useChainTree } from '../context/chain-tree-context';
-import { styled } from '../styles/stitches.config';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
 import { usePrevious } from '../utils/hooks/use-previous';
 
 import isEqual from 'lodash.isequal';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
-
-const StyledMain = styled('main', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  my: '5rem',
-});
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
+  const router = useRouter();
   const { loading: loadingNewBlocks, data: newBlocks } =
     useGetBlocksSubscription();
   const { loading: loadingRecentBlocks, data: recentBlocks } =
@@ -30,6 +33,16 @@ const Home: React.FC = () => {
   const previousRecentBlocks = usePrevious(recentBlocks);
 
   const { allBlocks, addBlocks } = useParsedBlocks();
+
+  const [searchType, setSearchType] = useState<string>('request-key');
+  const [searchField, setSearchField] = useState<string>('');
+
+  const search = (): void => {
+    if (searchType === 'request-key') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`/transaction/${searchField}`);
+    }
+  };
 
   const { addBlockToChain } = useChainTree();
 
@@ -44,7 +57,7 @@ const Home: React.FC = () => {
       });
       addBlocks(newBlocks?.newBlocks);
     }
-  }, [newBlocks, addBlocks, previousNewBlocks]);
+  }, [newBlocks, addBlocks, previousNewBlocks, addBlockToChain]);
 
   useEffect(() => {
     if (
@@ -58,7 +71,7 @@ const Home: React.FC = () => {
 
       addBlocks(recentBlocks?.completedBlockHeights);
     }
-  }, [recentBlocks, addBlocks, previousRecentBlocks]);
+  }, [recentBlocks, addBlocks, previousRecentBlocks, addBlockToChain]);
 
   return (
     <div>
@@ -67,13 +80,38 @@ const Home: React.FC = () => {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <StyledMain>
+      <main className={mainStyle}>
         <Text
           as="h1"
           css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
         >
           Kadena Graph Client
         </Text>
+
+        <Grid.Root columns={3}>
+          <Grid.Item>
+            <Select
+              style={{ marginTop: '9px' }}
+              ariaLabel="search-type"
+              id="search-type"
+              onChange={(event) => setSearchType(event.target.value)}
+            >
+              <Option value="request-key">Request Key</Option>
+            </Select>
+          </Grid.Item>
+          <Grid.Item>
+            <InputWrapper htmlFor="search-field">
+              <Input
+                id="seacrh-field"
+                value={searchField}
+                onChange={(event) => setSearchField(event.target.value)}
+              />
+            </InputWrapper>
+          </Grid.Item>
+          <Grid.Item>
+            <Button onClick={search}>Search</Button>
+          </Grid.Item>
+        </Grid.Root>
 
         <div>
           {loadingRecentBlocks || loadingNewBlocks ? (
@@ -82,7 +120,7 @@ const Home: React.FC = () => {
             <ChainwebGraph blocks={allBlocks} />
           )}
         </div>
-      </StyledMain>
+      </main>
     </div>
   );
 };

@@ -9,14 +9,14 @@ description:
 menu: Token Protocol on Marmalade
 label: Token Protocol on Marmalade
 publishDate: 2022-12-23
+headerImage: /assets/blog/1_PMdTOo8SNitmuC9rU75ahg.webp
+tags: [marmalade]
 author: Heekyun
 authorId: heekyun
 layout: blog
 ---
 
 # Token Protocol on Marmalade
-
-![](/assets/blog/1_PMdTOo8SNitmuC9rU75ahg.webp)
 
 To end 2022 with a bang, we are excited to announce our last feature upgrade of
 the year! The [Marmalade](https://marmalade.art/) team at

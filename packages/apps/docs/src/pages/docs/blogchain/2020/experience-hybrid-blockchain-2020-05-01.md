@@ -8,12 +8,12 @@ description:
 menu: Experience Hybrid Blockchain
 label: Experience Hybrid Blockchain
 publishDate: 2020-05-01
+headerImage: /assets/blog/2020/1_2BA8I4luclrVgk57_6Nb1Q.webp
+tags: [chainweb]
 author: Taylor Rolfe
 authorId: taylor.rolfe
 layout: blog
 ---
-
-![](/assets/blog/2020/1_2BA8I4luclrVgk57_6Nb1Q.webp)
 
 # Experience Hybrid Blockchain
 

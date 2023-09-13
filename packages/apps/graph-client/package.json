@@ -5,23 +5,25 @@
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"sleep 3; pnpm run generate:sdk -w\"",
-    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
+    "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\"",
+    "dev:all:generate": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
     "format": "pnpm run /^format:.*/",
-    "format:ci": "prettier config src --check",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config src --write",
+    "format:src": "prettier . --cache --write",
     "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint package.json src --fix",
+    "lint:src": "eslint src --fix",
     "next:dev": "next dev",
     "start": "next start",
     "start:graph": "cd ../graph && pnpm run start",
+    "start:graph:generate": "cd ../graph && pnpm run start:generate",
     "test": "echo \"No tests yet.\""
   },
   "dependencies": {
     "@apollo/client": "~3.7.2",
     "@graphql-yoga/apollo-link": "~1.0.1",
+    "@kadena/react-ui": "workspace:*",
     "@radix-ui/colors": "~0.1.8",
     "@radix-ui/react-icons": "~1.1.1",
     "@stitches/react": "1.3.1-1",
@@ -49,7 +51,10 @@
     "@types/node": "^16.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
+    "@vanilla-extract/css": "1.12.0",
+    "@vanilla-extract/next-plugin": "2.1.2",
     "concurrently": "^7.2.2",
-    "prettier": "~3.0.0"
+    "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5"
   }
 }

@@ -10,12 +10,12 @@ description:
 menu: Kadena Eco Supercharges Kadena Ecosystem
 label: Kadena Eco Supercharges Kadena Ecosystem
 publishDate: 2022-04-02
+headerImage: /assets/blog/1_XNTbZovY5Di-8JIN2a5W3g.webp
+tags: [kadena, grant]
 author: Doug Beardsley
 authorId: doug.beardsley
 layout: blog
 ---
-
-![](/assets/blog/1_XNTbZovY5Di-8JIN2a5W3g.webp)
 
 # Kadena Eco Supercharges Kadena Ecosystem
 

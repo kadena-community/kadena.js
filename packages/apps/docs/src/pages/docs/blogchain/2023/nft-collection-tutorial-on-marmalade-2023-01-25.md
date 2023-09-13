@@ -10,14 +10,14 @@ description:
 menu: The NFT Collection Tutorial on Marmalade
 label: The NFT Collection Tutorial on Marmalade
 publishDate: 2023-01-25
+headerImage: /assets/blog/1_0RpXuD_h3i9crcT6pRulPg.webp
+tags: [marmalade]
 author: Heekyun
 authorId: heekyun
 layout: blog
 ---
 
 # The NFT Collection Tutorial on Marmalade
-
-![](/assets/blog/1_0RpXuD_h3i9crcT6pRulPg.webp)
 
 Marmalade _token policies_ allow for fine-grained customization of how NFTs are
 minted and sold. This article provides a tutorial demonstrating how an NFT

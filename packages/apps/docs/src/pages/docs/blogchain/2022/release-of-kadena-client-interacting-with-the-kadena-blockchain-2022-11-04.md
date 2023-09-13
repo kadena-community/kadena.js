@@ -8,14 +8,14 @@ description:
 menu: Release of @kadena/client - Interacting with the Kadena Blockchain
 label: Release of @kadena/client - Interacting with the Kadena Blockchain
 publishDate: 2022-11-04
+headerImage: /assets/blog/1_dAoWAzGntfMI0pKJbVSEhw.webp
+tags: [pact]
 author: Albert Groothedde
 authorId: albert.g
 layout: blog
 ---
 
 # Release of @kadena/client Interacting with the Kadena Blockchain
-
-![The Kadena.js team has created a library that allows Javascript/Typescript users to easily interact with the Kadena Blockchain by generating types based on your smart contract.](/assets/blog/1_dAoWAzGntfMI0pKJbVSEhw.webp)
 
 ```ts
     // the blogpost is compatible with the following versions of

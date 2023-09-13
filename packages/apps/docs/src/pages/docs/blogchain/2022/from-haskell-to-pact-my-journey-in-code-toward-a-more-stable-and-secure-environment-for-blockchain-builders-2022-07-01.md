@@ -16,12 +16,12 @@ label:
   From Haskell to Pact - My Journey in Code Toward a More Stable and Secure
   Environment for Blockchain Builders
 publishDate: 2022-07-01
+headerImage: /assets/blog/1_VuAQP0wMbSn4odUtYSg97w.webp
+tags: [pact]
 author: John Wiegley
 authorId: john.wiegley
 layout: blog
 ---
-
-![From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders](/assets/blog/1_VuAQP0wMbSn4odUtYSg97w.webp)
 
 # From Haskell to Pact: My Journey in Code Toward a More Stable and Secure Environment for Blockchain Builders
 
@@ -37,13 +37,12 @@ I’ve migrated fully to functional programming, building both production system
 in Haskell and formally verified models in Coq.
 
 As the newest engineering team member at Kadena, I’m now happily wrapping my
-head around [Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact),
-Kadena’s open-sourced smart contract programming language. Not only is it a
-privilege to be part of such an amazing community, but something truly
-transformational is underway. Thanks to connections built earlier in my career,
-my path to Kadena came into clear view at the right time. Here at Kadena I’m
-able to pursue my aspiration of creating a more stable and secure environment
-for blockchain builders.
+head around [Pact](/docs/pact/beginner), Kadena’s open-sourced smart contract
+programming language. Not only is it a privilege to be part of such an amazing
+community, but something truly transformational is underway. Thanks to
+connections built earlier in my career, my path to Kadena came into clear view
+at the right time. Here at Kadena I’m able to pursue my aspiration of creating a
+more stable and secure environment for blockchain builders.
 
 **Early cryptography: Haskell, government contracts, and formal proofs**
 

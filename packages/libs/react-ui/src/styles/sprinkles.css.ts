@@ -96,6 +96,12 @@ const responsiveProperties = defineProperties({
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
+    minWidth: {
+      ...vars.sizes,
+      '100%': '100%',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+    },
     maxWidth: {
       '100%': '100%',
       maxContent: '42.5rem', // 680px
@@ -107,7 +113,6 @@ const responsiveProperties = defineProperties({
     pointerEvents: ['none', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],
-    minWidth: [0],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
     whiteSpace: ['nowrap', 'break-spaces', 'normal'],

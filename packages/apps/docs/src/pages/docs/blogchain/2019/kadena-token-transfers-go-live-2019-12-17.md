@@ -12,12 +12,11 @@ description:
 menu: Kadena Token Transfers Go Live
 label: Kadena Token Transfers Go Live
 publishDate: 2019-12-17
+headerImage: /assets/blog/2019/1_Cxpn_A_lQAYXzrV1hHZkCg.webp
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/2019/1_Cxpn_A_lQAYXzrV1hHZkCg.webp)
 
 # Kadena Token Transfers Go Live
 

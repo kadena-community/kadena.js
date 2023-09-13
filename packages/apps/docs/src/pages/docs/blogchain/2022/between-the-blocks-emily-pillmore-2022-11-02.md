@@ -10,14 +10,14 @@ description:
 menu: Emily Pillmore
 label: Emily Pillmore
 publishDate: 2022-11-02
+headerImage: /assets/blog/1_E0pjo9TdWL-oq_XvbjC4xA.webp
+tags: [kadena, pact]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Between the Blocks: Emily Pillmore
-
-![Kadena’s Personnel Series: It’s time to take a deep dive with Emily Pillmore, Kadena Pact Lead, about her experience, passions, and her journey with Kadena.](/assets/blog/1_E0pjo9TdWL-oq_XvbjC4xA.webp)
 
 Welcome to Kadena’s Personnel Series, where we showcase some of the most
 brilliant and talented minds behind Kadena! Since its inception in 2016, Kadena
@@ -27,9 +27,8 @@ extraordinary achievements would not be possible without the hard work, visions
 and talent of its team members.
 
 Today, we will be taking a deep dive with Emily Pillmore, Kadena
-[Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact) Lead. We will
-be exploring her past experience, her hobbies and interests, and her journey
-with Kadena.
+[Pact](/docs/pact/beginner) Lead. We will be exploring her past experience, her
+hobbies and interests, and her journey with Kadena.
 
 ### Tell us about a bit of yourself and what you do at Kadena
 

@@ -8,6 +8,7 @@ description:
 menu: AMA, August 11, 2022 Transcript
 label: AMA, August 11, 2022 Transcript
 publishDate: 2022-08-12
+tags: [kadena, grant]
 author: Kadena
 authorId: kadena
 layout: blog

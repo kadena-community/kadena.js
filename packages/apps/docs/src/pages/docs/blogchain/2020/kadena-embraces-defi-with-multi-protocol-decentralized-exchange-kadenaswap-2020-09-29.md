@@ -14,12 +14,12 @@ menu: Kadena Embraces DeFi with Multi-protocol Decentralized Exchange Kadenaswap
 label:
   Kadena Embraces DeFi with Multi-protocol Decentralized Exchange Kadenaswap
 publishDate: 2020-09-29
+headerImage: /assets/blog/2020/1_Q1h18cmTzAA4S4BAk5bXFg.webp
+tags: [defi]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2020/1_Q1h18cmTzAA4S4BAk5bXFg.webp)
 
 # Kadena Embraces DeFi with Multi-protocol Decentralized Exchange Kadenaswap
 
