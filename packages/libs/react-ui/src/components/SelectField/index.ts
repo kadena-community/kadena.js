@@ -1,1 +1,2 @@
-export { type ISelectFieldProps, SelectField } from './SelectField';
+export { SelectField } from './SelectField';
+export type { ISelectFieldProps } from './SelectField';
