@@ -1,9 +1,9 @@
 import { sprinkles } from '@theme/sprinkles.css';
+import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export type NotificationColors = 'info' | 'positive' | 'warning' | 'negative' | 'primary';
-const colors: Record<NotificationColors, NotificationColors> = {
+export const colors: Omit<Record<ColorType, ColorType>, "secondary" | "tertiary"> = {
   info: 'info',
   positive: 'positive',
   warning: 'warning',

@@ -1,12 +1,13 @@
 import type {
-  NotificationColors} from './Notification.css';
+  colors
+} from './Notification.css';
 import {
   cardColorVariants,
   closeButtonClass,
   containerClass,
   contentClass,
   descriptionClass,
-  expandVariants,
+  expandVariants
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -19,7 +20,7 @@ export interface INotificationProps {
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
-  color?: NotificationColors;
+  color?: keyof typeof colors;
   hasCloseButton?: boolean;
   onClose?: () => void;
 }
