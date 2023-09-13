@@ -28,6 +28,7 @@ export const asideItemLinkActiveVariants = styleVariants({
 export const asideItemClass = style([
   sprinkles({
     lineHeight: '$base',
+    paddingY: '$1',
   }),
   {
     selectors: {
@@ -55,7 +56,7 @@ export const asideListClass = style([
 
 export const asideListInnerVariants = styleVariants({
   true: {
-    paddingLeft: vars.sizes.$4,
+    paddingLeft: vars.sizes.$6,
   },
   false: {},
 });

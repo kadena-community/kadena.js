@@ -4,6 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const bottomWrapperClass = style([
   sprinkles({
+    marginTop: '$40',
     width: '100%',
   }),
 ]);

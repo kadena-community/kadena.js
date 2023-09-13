@@ -18,7 +18,6 @@ export const contentClass = style([
     position: 'relative',
     paddingTop: '$10',
     paddingX: 0,
-    paddingBottom: '$35',
     overflow: 'hidden',
     width: '100%',
     height: '100%',
