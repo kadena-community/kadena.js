@@ -266,7 +266,7 @@ const unsignedTransaction = Pact.builder
   .execution('(format "Hello {}!" [(read-msg "person")])')
   // add signer(s) if its required
   .addSigner('your-pubkey')
-  // set chian id and sender
+  // set chain id and sender
   .setMeta({ chainId: '8', sender: 'your-pubkey' })
   // set networkId
   .setNetworkId('mainnet01')

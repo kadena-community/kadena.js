@@ -100,7 +100,7 @@ such as Ethereum’s Solidity. Some of these features include:
 Kadena.js is a mono-repository where the team stores all their JavaScript/
 TypeScript solutions for its blockchain, including but not limited to libraries,
 tooling, and dApps. Essentially, Kadena.js is a software developer kit for
-JavaScript, whereas Chianweb and Pact are the backbone of applications built on
+JavaScript, whereas Chainweb and Pact are the backbone of applications built on
 the Kadena platform. Once builders are familiar with Chainweb and Pact, they can
 then build frontend against the Kadena blockchain backend with Kadena.js.
 
