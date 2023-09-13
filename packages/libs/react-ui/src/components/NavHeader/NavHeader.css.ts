@@ -173,6 +173,7 @@ export const selectIconClass = style([
     alignItems: 'center',
     display: 'flex',
     marginRight: '$2',
+    color: '$gray40',
   }),
   {
     selectors: {
@@ -198,13 +199,10 @@ export const selectClass = style([
     backgroundColor: 'inherit',
     appearance: 'none',
     selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-      '&:focus': {
-        borderWidth: '2px',
+      '&:focus-visible': {
+        borderWidth: '1px',
         borderStyle: 'solid',
-        borderColor: 'vars.colors.$gray40',
+        borderColor: vars.colors.$gray40,
       },
     },
   },
@@ -215,6 +213,7 @@ export const chevronIconClass = style([
     marginRight: '$2',
     position: 'absolute',
     right: '$1',
+    color: '$gray40',
   }),
   {
     top: '7px',

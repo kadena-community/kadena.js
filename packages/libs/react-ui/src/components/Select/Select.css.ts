@@ -23,7 +23,6 @@ export const containerClass = style([
     overflow: 'hidden',
     paddingLeft: '$4',
     paddingRight: '$2',
-    position: 'relative',
   }),
   {
     borderBottom: `1px solid ${vars.colors.$gray30}`,
@@ -74,27 +73,6 @@ export const selectClass = style([
   {
     backgroundColor: 'inherit',
     color: 'inherit',
-    appearance: 'none',
   },
 ]);
 
-export const chevronIconClass = style([
-  sprinkles({
-    alignItems: 'center',
-    display: 'flex',
-    marginRight: '$2',
-    position: 'absolute',
-    right: '$1',
-    top: '$2',
-
-  }),
-  {
-    pointerEvents: 'none',
-    zIndex: 10,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
-  },
-]);
