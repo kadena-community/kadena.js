@@ -41,7 +41,6 @@ export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
       className={classNames(selectContainerClass, {
         [selectContainerClassDisabled]: disabled,
       })}
-      data-testid="kda-select"
     >
       {Icon && (
         <span className={selectIconClass}>

@@ -105,7 +105,7 @@ export const Dynamic: IStory = {
     navHeaderActiveLink,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
-    const selectedNetwork = 'Mainnet';
+    const selectedNetwork = sampleNetworkItems[0];
 
     return (
       <NavHeader.Root brand={brand}>

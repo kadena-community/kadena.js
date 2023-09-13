@@ -207,15 +207,13 @@ export const selectClass = style([
 
 export const chevronIconClass = style([
   sprinkles({
-    height: '$9',
     marginRight: '$2',
     position: 'absolute',
     right: '$1',
     color: '$gray40',
-    display: 'inline-flex',
-    alignItems: 'center',
   }),
   {
+    top: '20%',
     pointerEvents: 'none',
     zIndex: 10,
     selectors: {
