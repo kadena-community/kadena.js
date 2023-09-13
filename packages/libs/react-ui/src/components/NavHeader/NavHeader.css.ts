@@ -213,7 +213,7 @@ export const chevronIconClass = style([
     right: '$1',
     color: '$gray40',
     display: 'inline-flex',
-    alignItems: 'center'
+    alignItems: 'center',
   }),
   {
     pointerEvents: 'none',
