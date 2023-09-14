@@ -16,4 +16,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withVanillaExtract(nextConfig);
+module.exports = withVanillaExtract(nextConfig)
