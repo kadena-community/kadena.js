@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- 17230731: Adds signWithEckoWallet and quickSignWithEckoWallet
+- 17230731: Adds signWithEckoWallet and quicksignWithEckoWallet
 
 ### Patch Changes
 
