@@ -4,13 +4,17 @@
   "private": true,
   "description": "Kadena JS monorepo",
   "license": "ISC",
+  "workspaces": [
+    "packages/apps/*",
+    "packages/libs/*",
+    "packages/tools/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "format": "pnpm run format:md && pnpm -r run format",
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . \"!packages\" --cache --write",
-    "preinstall": "npx --no-install only-allow pnpm",
     "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",
     "lint:ci": "pnpm run lint:versions && turbo run lint",
