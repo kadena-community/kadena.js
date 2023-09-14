@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- e8d0e92a: add missing shebang to the executable file
+- e8d0e92a: fix issue where shebang was missing in the executable file
 - Updated dependencies [8adef240]
 - Updated dependencies [17230731]
 - Updated dependencies [242b5687]
