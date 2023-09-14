@@ -4,19 +4,11 @@ import { useGetEventByNameSubscription } from '../../__generated__/sdk';
 import Loader from '../../components/loader/loader';
 import { Text } from '../../components/text';
 import routes from '../../constants/routes';
-import { styled } from '../../styles/stitches.config';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-const StyledMain = styled('main', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  my: '5rem',
-});
+import { mainStyle } from '../../components/main/styles.css';
 
 const Event: React.FC = () => {
   const router = useRouter();
@@ -36,7 +28,7 @@ const Event: React.FC = () => {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <StyledMain>
+      <main className={mainStyle}>
         <Text
           as="h1"
           css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
@@ -94,7 +86,7 @@ const Event: React.FC = () => {
             </div>
           )}
         </div>
-      </StyledMain>
+      </main>
     </div>
   );
 };
