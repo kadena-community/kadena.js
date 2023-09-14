@@ -63,6 +63,55 @@ optimize your time and the review process.
 - Prefer a rebase over merge commits, for both [updating branches][5] and
   [merging pull requests][6].
 
+### Authoring Change Logs
+
+When you've made changes and are finished you should add a changelog entry. This
+can be done with `changesets`. (Read more about changesets:
+[Simplify Project Versioning with Semantic Releases](https://lirantal.com/blog/introducing-changesets-simplify-project-versioning-with-semantic-releases/))
+
+1. From the root of the repo run: `pnpm changeset add`
+2. Decide whether you want to add `major` `minor` or `patch` changes
+   1. If there are no changes **relevant to consumers**, use
+      `pnpm changeset --empty`
+3. Write your changelog message according to the rules below
+
+To keep everything clear for ourselves and our end users, we have a "change log
+etiquette".
+
+**Only** include changes that **affect the consumer** of your
+package/app/product. **It's not a commit log.**  
+Write descriptions that are understandable from the consumers' perspective
+
+- Start descriptions with action verbs like "Add", "Remove", "Deprecate", "Fix
+  (an issue where)", "Improve", "Update", "Upgrade", or "Initial/Beta release
+  of". Avoid the term "bug", use "issue" instead.
+- Add GitHub issue numbers when fixing those
+- Maintain proper spelling and grammar
+- When referring to public API changes, use parentheses for function names (e.g.
+  `createClient()`) and backticks for classes (e.g. `new TransactionBuilder()`)
+  and property names (e.g. `hash`)
+- Upgrades should be documented with old and new version numbers
+- Avoid trailing periods unless you have multiple sentences in a description
+
+Examples:
+
+- Add `buttonColor` to the button manifest schema
+- Remove support for older mobile web browsers as described in the README.md
+- Deprecate the `doSomething()` API function.
+- Use `doSomethingBetter()` instead.
+- Fix an issue where `ExampleWidget` API did not handle dates correctly (issue
+  #81)
+- Improve the diagnostic logging when running in advanced mode
+- Upgrade from `react@15` to `react@16-beta` release of the flexible panels
+  feature
+
+Credits
+[rushjs.io/pages/best_practices/change_logs](https://rushjs.io/pages/best_practices/change_logs)
+
+If you don't see a need for authoring change logs for your package, this could
+be for PoCs, or packages that have no consumer, you can add it to the ignore
+field of changesets (.changeset/config.json#ignore)
+
 ### Code
 
 This repository uses a combination of TypeScript, ESLint and Prettier to adhere
