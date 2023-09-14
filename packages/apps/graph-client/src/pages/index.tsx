@@ -14,6 +14,7 @@ import {
 import { ChainwebGraph } from '../components/chainweb';
 import { mainStyle } from '../components/main/styles.css';
 import { Text } from '../components/text';
+import routes from '../constants/routes';
 import { useChainTree } from '../context/chain-tree-context';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
 import { usePrevious } from '../utils/hooks/use-previous';
@@ -22,7 +23,6 @@ import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import routes from '../constants/routes';
 
 const Home: React.FC = () => {
   const router = useRouter();

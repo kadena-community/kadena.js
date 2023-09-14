@@ -77,7 +77,6 @@ type Subscription {
   event(eventName: String!): [Event!]
   newBlocks(chainIds: [Int!]): [Block!]
   transaction(requestKey: String!): Transaction
-  transactionByEvent(eventName: String!): [Transaction!]
 }
 
 type Transaction implements Node {

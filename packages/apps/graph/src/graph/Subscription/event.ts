@@ -3,7 +3,7 @@ import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 
-import type { Event, Transaction } from '@prisma/client';
+import type { Event } from '@prisma/client';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
 
@@ -45,7 +45,7 @@ async function* iteratorFn(
   }
 }
 
-async function getLastEvent(eventName: string, id?: number) {
+async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
   // Define a default filter for the query
   const defaultFilter: Parameters<typeof prismaClient.event.findMany>[0] = {
     orderBy: {
