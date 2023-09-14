@@ -48,6 +48,8 @@ model Event {
   paramtext  String @db.VarChar
   qualname   String @db.VarChar
   requestkey String @db.VarChar
+  id         Int    @unique(map: "events_id_uniq") @default(autoincrement())
+  transaction Transaction? @relation(fields: [block, requestkey], references: [block, requestkey])
   blocks     Block  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([block, idx, requestkey])
@@ -97,15 +99,16 @@ model Transaction {
   num_events   BigInt?
   pactid       String?  @db.VarChar
   proof        String?  @db.VarChar
-  requestkey   String   @db.VarChar
+  requestkey   String   @db.VarChar @unique
   rollback     Boolean?
   sender       String   @db.VarChar
   step         BigInt?
   ttl          BigInt
   txid         BigInt?
+  events       Event[]
   blocks       Block    @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([block, requestkey])
+  @@id([block, requestkey], map: "transaction_pkey")
   @@index([height])
   @@index([requestkey])
   @@map("transactions")
@@ -142,3 +145,5 @@ model schema_migrations {
 
   @@ignore
 }
+
+

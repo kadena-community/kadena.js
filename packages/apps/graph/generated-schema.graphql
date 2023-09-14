@@ -39,6 +39,7 @@ type Event implements Node {
   chainId: BigInt!
   height: BigInt!
   id: ID!
+  id_gen: Int!
   index: BigInt!
   module: String!
   name: String!
@@ -46,6 +47,7 @@ type Event implements Node {
   parameters: String!
   qualName: String!
   requestKey: String!
+  transaction: Transaction
 }
 
 interface Node {
@@ -72,9 +74,10 @@ type Query {
 }
 
 type Subscription {
-  event(chainIds: [Int!], name: String!): [Event!]
+  event(eventName: String!): [Event!]
   newBlocks(chainIds: [Int!]): [Block!]
   transaction(requestKey: String!): Transaction
+  transactionByEvent(eventName: String!): [Transaction!]
 }
 
 type Transaction implements Node {
