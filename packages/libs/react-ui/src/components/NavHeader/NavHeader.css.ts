@@ -195,13 +195,6 @@ export const selectClass = style([
   {
     backgroundColor: 'inherit',
     appearance: 'none',
-    selectors: {
-      '&:focus-visible': {
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        borderColor: vars.colors.$gray40,
-      },
-    },
   },
 ]);
 
@@ -209,11 +202,14 @@ export const chevronIconClass = style([
   sprinkles({
     marginRight: '$2',
     position: 'absolute',
+    top: 0,
+    bottom: 0,
     right: '$1',
     color: '$gray40',
+    display: 'inline-flex',
+    alignItems: 'center',
   }),
   {
-    top: '20%',
     pointerEvents: 'none',
     zIndex: 10,
     selectors: {
