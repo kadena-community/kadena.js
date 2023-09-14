@@ -140,3 +140,59 @@ export const getTransactionByRequestKey: DocumentNode = gql`
     }
   }
 `;
+
+export const getEventByName: DocumentNode = gql`
+  subscription getEventByName($eventName: String!) {
+    event(eventName: $eventName) {
+      # id
+      block {
+        id
+      }
+      chainId
+      height
+      index
+      # module
+      # name
+      paramText
+      parameters
+      qualName
+      transaction {
+        requestKey
+      }
+    }
+  }
+`;
+
+export const getTransactionsByEvent: DocumentNode = gql`
+  subscription getTransactionsByEvent($eventName: String!) {
+    transactionByEvent(eventName: $eventName) {
+      # id
+      # badResult
+      block {
+        hash
+      }
+      chainId
+      code
+      # continuation
+      # creationTime
+      # data
+      gas
+      # gasLimit
+      # gasPrice
+      # goodResult
+      height
+      # logs
+      # metadata
+      # nonce
+      # numEvents
+      # pactId
+      # proof
+      requestKey
+      # rollback
+      sender
+      # step
+      # ttl
+      # txId
+    }
+  }
+`;

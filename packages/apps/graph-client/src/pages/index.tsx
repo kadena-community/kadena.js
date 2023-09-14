@@ -22,6 +22,7 @@ import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import routes from '../constants/routes';
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -40,7 +41,10 @@ const Home: React.FC = () => {
   const search = (): void => {
     if (searchType === 'request-key') {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/transaction/${searchField}`);
+      router.push(`${routes.TRANSACTION}/${searchField}`);
+    } else if (searchType === 'event') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`${routes.EVENT}/${searchField}`);
     }
   };
 
