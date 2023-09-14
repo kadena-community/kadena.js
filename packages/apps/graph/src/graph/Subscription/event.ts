@@ -27,16 +27,20 @@ async function* iteratorFn(
   context: IContext,
 ): AsyncGenerator<Event[] | undefined, void, unknown> {
   // Get the last event and yield it
-  let lastEvent = (await getLastEvent(eventName))[0];
-  yield [lastEvent];
+  const eventResult = await getLastEvent(eventName);
+  let lastEvent;
 
-  log('yielding initial block with id %s', lastEvent.id);
+  if (!nullishOrEmpty(eventResult)) {
+    lastEvent = eventResult[0];
+    yield [lastEvent];
+    log('yielding initial block with id %s', lastEvent.id);
+  }
 
   while (!context.req.socket.destroyed) {
     // Get new events
-    const newEvents = await getLastEvent(eventName, lastEvent.id);
+    const newEvents = await getLastEvent(eventName, lastEvent?.id);
 
-    if (nullishOrEmpty(newEvents) && lastEvent.id !== newEvents?.[0]?.id) {
+    if (!nullishOrEmpty(newEvents) && lastEvent?.id !== newEvents?.[0]?.id) {
       lastEvent = newEvents[newEvents.length - 1];
       yield newEvents;
     }
