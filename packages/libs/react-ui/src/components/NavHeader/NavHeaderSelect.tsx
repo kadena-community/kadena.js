@@ -21,7 +21,6 @@ export interface INavHeaderSelectProps
   disabled?: boolean;
   icon?: keyof typeof SystemIcon;
   ref?: React.ForwardedRef<HTMLSelectElement>;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   id: string;
   value?: string;
 }
@@ -30,7 +29,7 @@ export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
   HTMLSelectElement,
   INavHeaderSelectProps
 >(function Select(
-  { ariaLabel, children, disabled = false, onChange, icon, ...rest },
+  { ariaLabel, children, disabled = false, icon, ...rest },
   ref,
 ) {
   const Icon = icon && SystemIcon[icon];
