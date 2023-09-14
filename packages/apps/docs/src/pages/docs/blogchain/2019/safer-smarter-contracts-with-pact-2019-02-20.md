@@ -8,12 +8,12 @@ description:
 menu: Safer, Smarter Contracts with Pact
 label: Safer, Smarter Contracts with Pact
 publishDate: 2019-02-20
+headerImage: /assets/blog/1_F3EjRcDtfBjShCP0qszVLg.webp
+tags: [pact, smart contract, formal verification]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_F3EjRcDtfBjShCP0qszVLg.webp)
 
 # Safer, Smarter Contracts with Pact
 

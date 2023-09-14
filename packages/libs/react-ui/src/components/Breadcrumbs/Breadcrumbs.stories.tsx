@@ -19,7 +19,7 @@ const meta: Meta<
     icon: keyof typeof ProductIcon;
   } & IBreadcrumbsProps
 > = {
-  title: 'Components/Breadcrumbs',
+  title: 'Navigation/Breadcrumbs',
   parameters: {
     docs: {
       description: {

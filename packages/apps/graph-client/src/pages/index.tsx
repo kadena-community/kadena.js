@@ -1,11 +1,4 @@
-import {
-  Button,
-  Grid,
-  Input,
-  InputWrapper,
-  Option,
-  Select,
-} from '@kadena/react-ui';
+import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
 
 import {
   useGetBlocksSubscription,
@@ -100,8 +93,8 @@ const Home: React.FC = () => {
               id="search-type"
               onChange={(event) => setSearchType(event.target.value)}
             >
-              <Option value={['request-key']}>Request Key</Option>
-              <Option value={['event']}>Event</Option>
+              <option value="request-key">Request Key</option>
+              <option value="event">Event</option>
             </Select>
           </Grid.Item>
           <Grid.Item>

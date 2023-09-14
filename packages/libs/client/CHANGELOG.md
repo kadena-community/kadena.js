@@ -1,5 +1,20 @@
 # Change Log - @kadena/client
 
+## 1.3.0
+
+### Minor Changes
+
+- 17230731: Adds signWithEckoWallet and quicksignWithEckoWallet
+
+### Patch Changes
+
+- Updated dependencies [8adef240]
+- Updated dependencies [242b5687]
+- Updated dependencies [664140f3]
+  - @kadena/chainweb-node-client@0.4.4
+  - @kadena/cryptography-utils@0.3.8
+  - @kadena/pactjs@0.3.2
+
 ## 1.2.0
 
 ### Minor Changes

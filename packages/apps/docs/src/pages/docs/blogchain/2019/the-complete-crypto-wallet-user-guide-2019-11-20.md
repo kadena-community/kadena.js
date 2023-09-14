@@ -9,12 +9,12 @@ description:
 menu: The Complete Crypto Wallet User Guide
 label: The Complete Crypto Wallet User Guide
 publishDate: 2019-11-20
+headerImage: /assets/blog/2019/1_byNwUdcRqQV2pExRsgK5KA.webp
+tags: [smart wallet]
 author: Taylor Rolfe
 authorId: taylor.rolfe
 layout: blog
 ---
-
-![](/assets/blog/2019/1_byNwUdcRqQV2pExRsgK5KA.webp)
 
 # The Complete Crypto Wallet User Guide
 

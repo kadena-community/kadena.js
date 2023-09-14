@@ -16,12 +16,12 @@ label:
   Kadena Collaborates with Chainlink in Industry’s First Hybrid Blockchain
   Oracle Integration
 publishDate: 2020-05-19
+headerImage: /assets/blog/2020/1_JGCxne8duh-sQwsqv43p6g.webp
+tags: [kadena]
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2020/1_JGCxne8duh-sQwsqv43p6g.webp)
 
 # Kadena Collaborates with Chainlink in Industry’s First Hybrid Blockchain Oracle Integration
 

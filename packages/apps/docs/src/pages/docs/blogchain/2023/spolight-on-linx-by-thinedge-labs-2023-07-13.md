@@ -13,14 +13,14 @@ description:
 menu: Spotlight on Linx by ThinEdge Labs
 label: Spotlight on Linx by ThinEdge Labs
 publishDate: 2023-07-13
+headerImage: /assets/blog/1_QXVZB4M1sQ9vOtgcwisIlg.webp
+tags: [smart wallet]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Project Spotlight: Linx by ThinEdge Labs
-
-![](/assets/blog/1_QXVZB4M1sQ9vOtgcwisIlg.webp)
 
 Welcome to the Kadena Project Spotlight Series, where we highlight the
 groundbreaking work of organizations currently building and innovating on the

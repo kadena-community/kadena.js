@@ -8,8 +8,8 @@ import {
   tagContainerClass,
 } from './ProfileCard.css';
 
-import { Link } from '@components/Link';
 import { Grid } from '@components/Grid';
+import { Link } from '@components/Link';
 import { Tag } from '@components/Tag';
 import type { FC } from 'react';
 import React from 'react';

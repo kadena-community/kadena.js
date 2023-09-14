@@ -8,7 +8,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
-  title: 'Components/TrackerCard',
+  title: 'Content/TrackerCard',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The TrackerCard component renders a card with a title, label values, and an optional icon. The layout of the card can be set to either horizonal or vertical with the `variant` prop.',
+      },
+    },
+  },
   argTypes: {
     variant: {
       options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],

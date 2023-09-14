@@ -11,12 +11,12 @@ description:
 menu: Turing Completeness and Smart Contract Security
 label: Turing Completeness and Smart Contract Security
 publishDate: 2019-02-11
+headerImage: /assets/blog/1_c2IEMI9RU0GCsulsUkl-8w.webp
+tags: [smart contract, pact]
 author: Taylor Rolfe
 authorId: taylor.rolfe
 layout: blog
 ---
-
-![](/assets/blog/1_c2IEMI9RU0GCsulsUkl-8w.webp)
 
 # Turing Completeness and Smart Contract Security
 

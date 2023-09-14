@@ -10,14 +10,14 @@ description:
 menu: Intro to Kadena Namespaces
 label: Intro to Kadena Namespaces
 publishDate: 2023-01-11
+headerImage: /assets/blog/0_FfPIMjWvXsk0NFOP.webp
+tags: [kadena, pact, chainweb]
 author: Emily Pillmore
 authorId: emily.pillmore
 layout: blog
 ---
 
 # An Introductory Guide to Kadena Namespaces
-
-![](/assets/blog/0_FfPIMjWvXsk0NFOP.webp)
 
 When interacting with smart contracts on
 [Chainweb](https://github.com/kadena-io/chainweb-node), one will often see

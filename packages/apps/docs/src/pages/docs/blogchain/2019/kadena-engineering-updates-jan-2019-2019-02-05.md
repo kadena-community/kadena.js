@@ -5,6 +5,7 @@ description:
 menu: Kadena Engineering Updates Feb 2019
 label: Kadena Engineering Updates Feb 2019
 publishDate: 2019-02-05
+tags: [kadena]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog

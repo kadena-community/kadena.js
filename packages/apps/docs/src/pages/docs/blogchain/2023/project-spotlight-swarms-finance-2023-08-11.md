@@ -10,14 +10,14 @@ description:
 menu: Project Spotlight - Swarms.Finance
 label: Project Spotlight - Swarms.Finance
 publishDate: 2023-08-11
+headerImage: /assets/blog/2023/1_o2Ry6xVk_GnK-GvZrICtew.webp
+tags: [swarms]
 author: Kadena
 authorId: kadena
 layout: blog
 ---
 
 # Project Spotlight: Swarms.Finance
-
-![](/assets/blog/2023/1_o2Ry6xVk_GnK-GvZrICtew.webp)
 
 Welcome to Kadena Project Spotlight Series, where we highlight the
 groundbreaking work of organizations currently building and innovating on the

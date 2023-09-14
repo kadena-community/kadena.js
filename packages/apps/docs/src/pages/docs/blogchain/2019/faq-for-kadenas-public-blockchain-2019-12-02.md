@@ -8,12 +8,12 @@ description:
 menu: FAQ for Kadena’s Public Blockchain
 label: FAQ for Kadena’s Public Blockchain
 publishDate: 2019-12-02
+headerImage: /assets/blog/2019/1_ssB8LvGuMvA270XnoZWHBQ.webp
+tags: [kadena]
 author: Rebecca Rodriguez
 authorId: rebecca.rodriguez
 layout: blog
 ---
-
-![](/assets/blog/2019/1_ssB8LvGuMvA270XnoZWHBQ.webp)
 
 # FAQ for Kadena’s Public Blockchain
 

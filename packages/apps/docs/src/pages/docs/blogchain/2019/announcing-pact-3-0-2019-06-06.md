@@ -9,12 +9,12 @@ description:
 menu: Announcing Pact 3.0
 label: Announcing Pact 3.0
 publishDate: 2019-06-06
+headerImage: /assets/blog/1_jD9StZRQL8Gxw-J4z1Lc9Q.webp
+tags: [pact]
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
-
-![Kadena Founder and President Stuart Popejoy first created the Pact smart contract language in 2016.](/assets/blog/1_jD9StZRQL8Gxw-J4z1Lc9Q.webp)
 
 # Announcing Pact 3.0
 

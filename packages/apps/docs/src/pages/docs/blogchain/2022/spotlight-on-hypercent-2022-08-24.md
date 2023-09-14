@@ -8,6 +8,7 @@ description:
 menu: Spotlight On Hypercent
 label: Spotlight On Hypercent
 publishDate: 2022-08-24
+tags: [marmalade]
 author: Kadena
 authorId: kadena
 layout: blog

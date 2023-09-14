@@ -11,14 +11,14 @@ description:
 menu: Kadena.js - Developer Experience Update
 label: Kadena.js - Developer Experience Update
 publishDate: 2022-11-09
+headerImage: /assets/blog/1_RYwfKuTY3PCXtd8wvbV6DQ.webp
+tags: [kadena, kadenajs, marmalade]
 author: Randy Daal
 authorId: randy.daal
 layout: blog
 ---
 
 # Kadena.js: Developer Experience Update
-
-![Kadena.js: A developer experience update on all the new and exciting features coming soon!](/assets/blog/1_RYwfKuTY3PCXtd8wvbV6DQ.webp)
 
 On July 15th, I posted the first article on KadenaJS. Since then, we’ve started
 building the developer experience team and working on our TypeScript Monorepo

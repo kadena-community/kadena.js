@@ -8,6 +8,7 @@ description:
 menu: Spotlight On Unmarshal
 label: Spotlight On Unmarshal
 publishDate: 2022-09-21
+tags: [defi]
 author: Kadena
 authorId: kadena
 layout: blog

@@ -6,6 +6,14 @@ import React from 'react';
 
 const meta: Meta<{} & ITreeProps> = {
   title: 'Components/Tree',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Tree component renders a tree structure with a root node and child nodes. The tree can be expanded and collapsed by clicking on the root node. The tree can be set to open by default with the `isOpen` prop. The tree can be set to close its siblings when opened with the `linked` prop.',
+      },
+    },
+  },
   argTypes: {
     isOpen: {
       description: 'Initial value for list',

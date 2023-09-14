@@ -2,6 +2,7 @@ import type { ITabsContainerProps } from '@components/Tabs';
 import { Tabs } from '@components/Tabs';
 import { Text } from '@components/Typography/Text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
+import { withCenteredStory } from '@utils/withCenteredStory';
 import React from 'react';
 
 const ExampleTabs: string[] = [
@@ -19,6 +20,7 @@ const meta: Meta<
   }
 > = {
   title: 'Layout/Tabs',
+  decorators: [withCenteredStory],
   parameters: {
     docs: {
       description: {

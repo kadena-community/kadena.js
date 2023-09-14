@@ -9,12 +9,12 @@ description:
 menu: Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap
 label: Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap
 publishDate: 2019-11-25
+headerImage: /assets/blog/2019/1_kpy5UKorBY2Kp6bf8MYL4g.webp
+tags: [chainweb]
 author: Stuart Popejoy
 authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/2019/1_kpy5UKorBY2Kp6bf8MYL4g.webp)
 
 # Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap
 

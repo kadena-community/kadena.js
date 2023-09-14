@@ -16,12 +16,12 @@ label:
   Polkadot Collaboration Update Researching Pact Core for WASM and Exploring
   KadenaDOT
 publishDate: 2020-08-12
+headerImage: /assets/blog/2020/1_gx_qreTbIj3PIoY0_4KtRw.webp
+tags: [pact]
 author: Will Martino
 authorId: will.martino
 layout: blog
 ---
-
-![](/assets/blog/2020/1_gx_qreTbIj3PIoY0_4KtRw.webp)
 
 # Polkadot Collaboration Update: Researching Pact Core for WASM and Exploring KadenaDOT
 

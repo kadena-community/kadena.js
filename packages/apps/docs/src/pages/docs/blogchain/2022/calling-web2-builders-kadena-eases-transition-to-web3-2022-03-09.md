@@ -10,12 +10,12 @@ description:
 menu: Calling Web2 Builders - Kadena Eases Transition to Web3
 label: Calling Web2 Builders - Kadena Eases Transition to Web3
 publishDate: 2022-03-09
+headerImage: /assets/blog/1_jYzwXoAJq18vJgaOfl9rgA.webp
+tags: [kadena, chainweb]
 author: Tyler Benster
 authorId: tyler.benster
 layout: blog
 ---
-
-![](/assets/blog/1_jYzwXoAJq18vJgaOfl9rgA.webp)
 
 # Calling Web2 Builders: Kadena Eases Transition to Web3
 

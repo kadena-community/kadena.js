@@ -55,6 +55,8 @@ export interface IPageMeta extends IBasePageMeta {
   editLink: string;
   navigation: INavigation;
   publishDate?: string;
+  headerImage?: string;
+  tags?: string[];
   author?: string;
   authorId?: string;
   authorInfo?: IAuthorInfo;

@@ -9,6 +9,14 @@ import React from 'react';
 const meta: Meta<IIconButtonProps> = {
   title: 'Components/IconButton',
   component: IconButton,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Use this variation of the Button component if you require a button with only an icon.',
+      },
+    },
+  },
   argTypes: {
     onClick: {
       action: 'clicked',
