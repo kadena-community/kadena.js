@@ -1,5 +1,18 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.3.0
+
+### Patch Changes
+
+- e8d0e92a: fix issue where shebang was missing in the executable file
+- Updated dependencies [8adef240]
+- Updated dependencies [17230731]
+- Updated dependencies [242b5687]
+- Updated dependencies [17230731]
+- Updated dependencies [0afa85d8]
+- Updated dependencies [f148002c]
+  - @kadena/pactjs-generator@1.3.0
+
 ## 1.2.0
 
 ### Patch Changes
