@@ -39,7 +39,6 @@ type Event implements Node {
   chainId: BigInt!
   height: BigInt!
   id: ID!
-  id_gen: Int!
   index: BigInt!
   module: String!
   name: String!

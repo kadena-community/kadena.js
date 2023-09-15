@@ -99,7 +99,7 @@ model Transaction {
   num_events   BigInt?
   pactid       String?  @db.VarChar
   proof        String?  @db.VarChar
-  requestkey   String   @db.VarChar @unique
+  requestkey   String   @db.VarChar
   rollback     Boolean?
   sender       String   @db.VarChar
   step         BigInt?

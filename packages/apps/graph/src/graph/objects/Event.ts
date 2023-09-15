@@ -5,7 +5,6 @@ export default builder.prismaNode('Event', {
   id: { field: 'block_idx_requestkey' },
   fields: (t) => ({
     // database fields
-    id_gen: t.expose('id', { type: 'Int' }),
     chainId: t.expose('chainid', { type: 'BigInt' }),
     height: t.expose('height', { type: 'BigInt' }),
     index: t.expose('idx', { type: 'BigInt' }),
@@ -26,7 +25,7 @@ export default builder.prismaNode('Event', {
       type: 'Transaction',
       nullable: true,
       resolve(query, parent, args, context, info) {
-        return prismaClient.transaction.findUnique({
+        return prismaClient.transaction.findFirst({
           where: {
             requestkey: parent.requestkey,
             block: parent.block,
