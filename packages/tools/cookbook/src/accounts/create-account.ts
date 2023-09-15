@@ -1,5 +1,5 @@
 import {
-  getClient,
+  createClient,
   isSignedTransaction,
   Pact,
   signWithChainweaver,
@@ -40,8 +40,8 @@ async function createAccount(
       keys: [accountKey(receiver)],
       pred: 'keys-all',
     })
-    .addSigner(gasProviderPublicKey, (withCap: any) => [withCap('coin.GAS')])
-    .setMeta({ chainId: '1', sender: gasProvider })
+    .addSigner(gasProviderPublicKey, (withCap) => [withCap('coin.GAS')])
+    .setMeta({ chainId: '1', senderAccount: gasProvider })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
@@ -52,7 +52,7 @@ async function createAccount(
     return;
   }
 
-  const { submit, pollStatus } = getClient(API_HOST);
+  const { submit, pollStatus } = createClient(API_HOST);
 
   const requestKey = await submit(signedTransaction);
   console.log('request key', requestKey);
