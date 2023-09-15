@@ -1,5 +1,15 @@
 # @kadena/cookbook
 
+## 0.0.3
+
+### Patch Changes
+
+- dd86a776: Fixes several recipes that used the old `@kadena/client` syntax
+- Updated dependencies [f6ff5749]
+- Updated dependencies [443c36d4]
+- Updated dependencies [a058e222]
+  - @kadena/client@1.4.0
+
 ## 0.0.2
 
 ### Patch Changes

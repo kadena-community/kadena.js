@@ -3,6 +3,7 @@ name: Release
 # Taken from: https://github.com/changesets/action#with-publishing
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

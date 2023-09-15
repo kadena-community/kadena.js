@@ -1,5 +1,15 @@
 # @kadena/client-examples
 
+## 0.0.4
+
+### Patch Changes
+
+- a058e222: Fixed typo "chian"
+- Updated dependencies [f6ff5749]
+- Updated dependencies [443c36d4]
+- Updated dependencies [a058e222]
+  - @kadena/client@1.4.0
+
 ## 0.0.3
 
 ### Patch Changes
