@@ -1,5 +1,11 @@
 # @kadena/docs
 
+## 0.3.1
+
+### Patch Changes
+
+- a058e222: Fixed typo "chian"
+
 ## 0.3.0
 
 ### Minor Changes
