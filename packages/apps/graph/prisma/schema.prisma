@@ -37,7 +37,7 @@ model Block {
 }
 
 model Event {
-  block      String @db.VarChar
+  blockHash  String @db.VarChar @map("block")
   chainid    BigInt
   height     BigInt
   idx        BigInt
@@ -49,10 +49,10 @@ model Event {
   qualname   String @db.VarChar
   requestkey String @db.VarChar
   id         Int    @unique(map: "events_id_uniq") @default(autoincrement())
-  transaction Transaction? @relation(fields: [block, requestkey], references: [block, requestkey])
-  blocks     Block  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  transaction Transaction? @relation(fields: [blockHash, requestkey], references: [blockHash, requestkey])
+  block     Block  @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([block, idx, requestkey])
+  @@id([blockHash, idx, requestkey])
   @@index([height(sort: Desc), chainid, idx], map: "events_height_chainid_idx")
   @@index([requestkey])
   @@map("events")
@@ -82,7 +82,7 @@ model Signer {
 
 model Transaction {
   badresult    Json?
-  block        String   @db.VarChar
+  blockHash    String   @db.VarChar @map("block")
   chainid      BigInt
   code         String?  @db.VarChar
   continuation Json?
@@ -106,9 +106,9 @@ model Transaction {
   ttl          BigInt
   txid         BigInt?
   events       Event[]
-  blocks       Block    @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  block        Block    @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([block, requestkey], map: "transaction_pkey")
+  @@id([blockHash, requestkey], map: "transaction_pkey")
   @@index([height])
   @@index([requestkey])
   @@map("transactions")

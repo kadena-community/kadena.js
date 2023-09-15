@@ -74,9 +74,15 @@ const Event: React.FC = () => {
                     >
                       <Table.Td>{event.qualName}</Table.Td>
                       <Table.Td>
-                        <pre>
-                          {JSON.stringify(JSON.parse(event.paramText), null, 2)}
-                        </pre>
+                        <Table.Root>
+                          <Table.Body>
+                            {event.eventParameters.map((parameter) => (
+                              <Table.Tr>
+                                <Table.Td>{parameter}</Table.Td>
+                              </Table.Tr>
+                            ))}
+                          </Table.Body>
+                        </Table.Root>
                       </Table.Td>
                       <Table.Td>{event.transaction?.requestKey}</Table.Td>
                     </Table.Tr>

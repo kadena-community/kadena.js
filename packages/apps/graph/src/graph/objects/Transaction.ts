@@ -2,7 +2,7 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
-  id: { field: 'block_requestkey' },
+  id: { field: 'blockHash_requestkey' },
   fields: (t) => ({
     // database fields
     badResult: t.string({
@@ -62,7 +62,7 @@ export default builder.prismaNode('Transaction', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findUnique({
           where: {
-            hash: parent.block,
+            hash: parent.blockHash,
           },
         });
       },
