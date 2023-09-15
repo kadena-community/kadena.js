@@ -35,9 +35,14 @@ interface IWalletConnectClientContext {
   setSelectedAccount: (selectedAccount?: string) => void;
 }
 
-const StorageKeys: Record<'NETWORK' | 'CHAIN_ID', string> = {
+export const StorageKeys: Record<'NETWORK' | 'CHAIN_ID', string> = {
   NETWORK: 'network',
   CHAIN_ID: 'chainID',
+};
+
+export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
+  NETWORK: 'mainnet01',
+  CHAIN_ID: '1',
 };
 
 /**
@@ -68,8 +73,12 @@ export const WalletConnectClientContextProvider: FC<
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>();
-  const [selectedNetwork, setSelectedNetwork] = useState<Network>('mainnet01');
-  const [selectedChain, setSelectedChain] = useState<ChainwebChainId>('1');
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    DefaultValues.NETWORK,
+  );
+  const [selectedChain, setSelectedChain] = useState<ChainwebChainId>(
+    DefaultValues.CHAIN_ID,
+  );
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
 
