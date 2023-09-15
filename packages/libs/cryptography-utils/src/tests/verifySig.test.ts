@@ -16,5 +16,5 @@ test('Takes in message, signature, and public key in binary object, returns bool
     hexToBin(pubKey),
   );
 
-  expect(isValidSig).toEqual(isValidSig);
+  expect(isValidSig).toEqual(true);
 });
