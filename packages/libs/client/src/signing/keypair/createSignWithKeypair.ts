@@ -2,7 +2,7 @@ import { signHash } from '@kadena/cryptography-utils';
 import type { IUnsignedCommand } from '@kadena/types';
 
 import type { IPactCommand } from '../../interfaces/IPactCommand';
-import type { ISignFunction, ISingleSignFunction } from '../ISignFunction';
+import type { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
@@ -11,25 +11,74 @@ import _debug from 'debug';
 
 const debug: Debugger = _debug('pactjs:signWithKeypair');
 
+/**
+ * interface for a keypair
+ *
+ * @public
+ */
 export interface IKeypair {
   publicKey: string;
   secretKey: string;
 }
 
 /**
- * Sign with public/private key-pair according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
+ * interface for the `createSignWithKeypair` function {@link createSignWithKeypair}
  *
  * @public
  */
-export const createSignWithKeypair: (
-  keyOrKeys: IKeypair | IKeypair[],
-) => ISignFunction & ISingleSignFunction = (
-  keyOrKeys,
-): ISignFunction & ISingleSignFunction => {
+export interface ICreateSignWithKeypair {
+  /**
+   * @param key - provide the key to sign with
+   * @returns a function to sign with
+   *
+   * @example
+   * ```ts
+   * const signWithKeystore = createSignWithKeypair([keyPair, keyPair2]);
+   * const [signedTx1, signedTx2] = await signWithKeystore([tx1, tx2]);
+   * const signedTx3 = await signWithKeystore(tx3);
+   * ```
+   *
+   * @public
+   */
+  (key: IKeypair): ISignFunction;
+  /**
+   * @param keys - provide the keys to sign with
+   * @returns a function to sign with
+   *
+   *
+   * @example
+   * ```ts
+   * const signWithKeystore = createSignWithKeypair([keyPair, keyPair2]);
+   * const [signedTx1, signedTx2] = await signWithKeystore([tx1, tx2]);
+   * const signedTx3 = await signWithKeystore(tx3);
+   * ```
+   *
+   * @public
+   */
+  (keys: IKeypair[]): ISignFunction;
+}
+
+/**
+ * function to create a `signWithKeypair` function
+ * This allows you to sign subsequent transactions with the same keypair(s)
+ *
+ * @param keyOrKeys - provide the key or multiple keys to sign with
+ * @returns a function to sign with
+ *
+ * @example
+ * ```ts
+ * const signWithKeystore = createSignWithKeypair([keyPair, keyPair2]);
+ * const [signedTx1, signedTx2] = await signWithKeystore([tx1, tx2]);
+ * const signedTx3 = await signWithKeystore(tx3);
+ * ```
+ *
+ * @public
+ */
+export const createSignWithKeypair: ICreateSignWithKeypair = (keyOrKeys) => {
   const keypairs: IKeypair[] = Array.isArray(keyOrKeys)
     ? keyOrKeys
     : [keyOrKeys];
-  return (async (transactionList) => {
+  return async function signWithKeypair(transactionList) {
     if (transactionList === undefined) {
       throw new Error('No transaction(s) to sign');
     }
@@ -38,6 +87,7 @@ export const createSignWithKeypair: (
     const transactions = isList ? transactionList : [transactionList];
 
     const signedTransactions = transactions.map((tx) => {
+      debug(`signing transaction(s): ${JSON.stringify(tx)}`);
       const parsedTransaction = parseTransactionCommand(tx);
       const relevantKeypairs = getRelevantKeypairs(parsedTransaction, keypairs);
 
@@ -51,7 +101,7 @@ export const createSignWithKeypair: (
     });
 
     return isList ? signedTransactions : signedTransactions[0];
-  }) as ISignFunction & ISingleSignFunction;
+  } as ISignFunction;
 };
 
 function getRelevantKeypairs(

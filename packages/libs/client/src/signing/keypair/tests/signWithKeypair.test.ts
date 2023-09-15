@@ -1,5 +1,5 @@
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
-import type { ISignFunction, ISingleSignFunction } from '../../../index';
+import type { ISignFunction } from '../../../index';
 import { Pact } from '../../../index';
 import { getModule } from '../../../pact';
 import type { IKeypair } from '../createSignWithKeypair';
@@ -13,10 +13,9 @@ const keyPair: IKeypair = {
 const coin: ICoin = getModule('coin');
 
 describe('createSignWithKeypair', () => {
-  let signWithKeypair: ISignFunction & ISingleSignFunction;
+  let signWithKeypair: ISignFunction;
   beforeAll(() => {
-    signWithKeypair = createSignWithKeypair(keyPair) as ISignFunction &
-      ISingleSignFunction;
+    signWithKeypair = createSignWithKeypair(keyPair) as ISignFunction;
   });
 
   it('returns a function to sign with', async () => {
@@ -25,7 +24,7 @@ describe('createSignWithKeypair', () => {
 });
 
 describe('signWithKeypair', () => {
-  let signWithKeypair: ISignFunction & ISingleSignFunction;
+  let signWithKeypair: ISignFunction;
   beforeAll(() => {
     signWithKeypair = createSignWithKeypair(keyPair);
   });

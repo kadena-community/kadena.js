@@ -10,7 +10,7 @@ import _debug from 'debug';
 const debug: Debugger = _debug('@kadena/client:signing:addSignature');
 
 /**
- * adds signatures to an {@link IUnsignedCommand | unsigned command}
+ * adds signatures to an {@link @kadena/types#IUnsignedCommand | unsigned command}
  *
  * @public
  */
