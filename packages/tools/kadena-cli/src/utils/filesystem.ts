@@ -14,7 +14,7 @@ import path from 'path';
  * @param {PathLike} path - The path to check.
  * @returns {Promise<boolean>} - A promise that resolves to true if the path exists, otherwise false.
  */
-export function isExists(path: PathLike): boolean {
+export function PathExists(path: PathLike): boolean {
   try {
     accessSync(path);
     return true;
@@ -46,7 +46,7 @@ export function writeFile(
   options: string | BaseEncodingOptions | undefined,
 ): void {
   const dirname = path.dirname(filePath);
-  if (!isExists(dirname)) {
+  if (!PathExists(dirname)) {
     mkdirSync(dirname, { recursive: true });
   }
   writeFileSync(filePath, data, options);
