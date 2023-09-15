@@ -1,48 +1,117 @@
-import { TOptions } from '../config/initCommand';
+import { IDefaultConfigOptions } from '../constants/config';
 
 import chalk from 'chalk';
+
+interface IFullConfiguration {
+  contexts: Record<string, IDefaultConfigOptions>;
+}
+
+type ConfigType = IDefaultConfigOptions | IFullConfiguration;
+
 /**
- * Displays the configuration summary in a formatted manner.
+ * Checks if the provided config is a full configuration with contexts.
  *
- * @param {TOptions} config - The configuration object to display.
+ * @param config The configuration object to check.
+ * @returns True if it's a full configuration, false otherwise.
+ */
+function isFullConfiguration(config: ConfigType): config is IFullConfiguration {
+  return 'contexts' in config;
+}
+
+/**
+ * Displays the configuration summary based on provided keys or in full.
+ *
+ * @param {ConfigType} config - The configuration object to display.
+ * @param {Array<keyof IDefaultConfigOptions>} [propertyKeys] - The keys of the properties to display. If not provided, all properties are displayed.
  *
  * @example
- * const config = {
- *   publicKey: '123ABC',
- *   privateKey: 'XYZ789',
- *   // ... other properties
- * };
- * displayConfig(config);
+ *
+ * // Displaying a single context configuration in full
+ * const singleConfig = {...};
+ * displayConfig(singleConfig);
+ *
+ * // Displaying a full configuration with all contexts
+ * const fullConfig = { contexts: {...} };
+ * displayConfig(fullConfig);
+ *
+ * // Displaying specific properties of a single context configuration
+ * displayConfig(singleConfig, ['publicKey', 'networkHost']);
+ *
  */
-export function displayConfig(config: TOptions): void {
+export function displayConfig(
+  config: ConfigType,
+  propertyKeys?: Array<keyof IDefaultConfigOptions>,
+): void {
   const log = console.log;
-  const formatLength = 80; // Maximum width for the display
-  const title = `${'  Configuration Options'.padEnd(formatLength, '  ')} `;
+  const formatLength = 80;
 
-  /**
-   * Formats the configuration key-value pair into a string.
-   *
-   * @param {string} key - The configuration key.
-   * @param {string | number | boolean} value - The configuration value.
-   * @returns {string} - The formatted configuration string.
-   */
   const formatConfig = (
     key: string,
     value: string | number | boolean,
   ): string => {
     const keyValue = `${key}: ${chalk.green(String(value))}`;
     const remainingWidth =
-      formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0; // Subtract 2 for the borders
+      formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0;
     return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
   };
 
-  log(chalk.green('-'.padEnd(formatLength, '-')));
-  log(chalk.green(title));
-  log(chalk.green('-'.padEnd(formatLength, '-')));
+  const displaySeparator = (): void => {
+    log(chalk.green('-'.padEnd(formatLength, '-')));
+  };
 
-  Object.entries(config).forEach(([key, value]) => {
-    log(formatConfig(key, value));
-  });
+  const displayProperties = (cfg: IDefaultConfigOptions): void => {
+    if (propertyKeys) {
+      propertyKeys.forEach((key) => {
+        if (key in cfg) {
+          log(formatConfig(key, String(cfg[key])));
+        }
+      });
+    } else {
+      Object.entries(cfg).forEach(([key, value]) => {
+        log(formatConfig(key, String(value)));
+      });
+    }
+  };
 
-  log(chalk.green('-'.padEnd(formatLength, '-')));
+  if (isFullConfiguration(config)) {
+    displaySeparator();
+    for (const [context, contextConfig] of Object.entries(config.contexts)) {
+      log(chalk.green(`Context: ${context}`));
+      displaySeparator();
+      displayProperties(contextConfig);
+      displaySeparator();
+    }
+  } else {
+    const title = `${'  Configuration Options'.padEnd(formatLength, '  ')} `;
+    displaySeparator();
+    log(chalk.green(title));
+    displaySeparator();
+    displayProperties(config);
+    displaySeparator();
+  }
+}
+
+/**
+ * Displays the current context in a formatted manner.
+ *
+ * @param {string} context - The context name to display.
+ */
+export function displayContext(context: string): void {
+  const log = console.log;
+  const formatLength = 80; // Maximum width for the display
+
+  const displaySeparator = (): void => {
+    log(chalk.green('-'.padEnd(formatLength, '-')));
+  };
+
+  const formatContext = (key: string, value: string): string => {
+    const keyValue = `${key}: ${chalk.green(value)}`;
+    const remainingWidth =
+      formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0;
+    return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
+  };
+
+  displaySeparator();
+  log(formatContext('Current Context', context));
+  displaySeparator();
 }

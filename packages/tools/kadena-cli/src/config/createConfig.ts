@@ -5,7 +5,7 @@
 
 import { writeConfig } from '../utils/globalConfig';
 
-import { TOptions } from './initCommand';
+import { TConfigOptions } from './configOptions';
 
 import { Command } from 'commander';
 
@@ -18,22 +18,22 @@ import { Command } from 'commander';
 export function createConfig(
   __program: Command,
   __version: string,
-): (args: TOptions) => Promise<void> {
-  return async function action({
+): (args: TConfigOptions) => void {
+  return function action({
+    context,
     publicKey,
     privateKey,
     chainId,
-    network,
     networkId,
     networkHost,
     networkExplorerUrl,
     kadenaNamesApiEndpoint,
-  }: TOptions) {
+  }: TConfigOptions) {
     return writeConfig({
+      context,
       publicKey,
       privateKey,
       chainId,
-      network,
       networkId,
       networkHost,
       networkExplorerUrl,

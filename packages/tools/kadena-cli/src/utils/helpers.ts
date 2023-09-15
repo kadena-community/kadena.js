@@ -1,3 +1,9 @@
+import { TConfigOptions } from '../config/configOptions';
+
+import { getConfig } from './globalConfig';
+
+import { Command } from 'commander';
+
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
  * This function provides a type-safe way to conditionally update properties on an object.
@@ -51,7 +57,10 @@ export interface IQuestion<T> {
    * @param previousAnswers Previously provided answers for other questions.
    * @returns A promise resolving to the answer of the question.
    */
-  prompt: (previousAnswers: Partial<T>) => Promise<T[keyof T]>;
+  prompt: (
+    config: Partial<TConfigOptions>,
+    previousAnswers: Partial<T>,
+  ) => Promise<T[keyof T]>;
 }
 
 /**
@@ -92,10 +101,84 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done === false) {
     const question = result.value;
-    responses[question.key as keyof T] = await question.prompt(responses);
+    const config = getConfig();
+    responses[question.key as keyof T] = await question.prompt(
+      config,
+      responses,
+    );
 
     result = generator.next();
   }
 
   return responses as T;
+}
+
+/**
+ * Extracts the public key from a given account string.
+ *
+ * @param {string} account - The account string in the format `[kctwu]:[a-zA-Z0-9]{64}`.
+ *
+ * @returns {string} - The extracted public key from the account.
+ *
+ * @throws {Error} - Throws an error if the account format is invalid.
+ *
+ * @example
+ * const account = 'k:abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz01';
+ * const pubKey = getPubKeyFromAccount(account);
+ * console.log(pubKey); // Outputs: abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz01
+ */
+export function getPubKeyFromAccount(account: string): string {
+  if (!account.toLowerCase().match(/^[kctwu]:[a-zA-Z0-9]{64}$/)) {
+    throw new Error('Invalid account');
+  }
+
+  const pubKey = account.toLowerCase().slice(2);
+  return pubKey;
+}
+
+/**
+ * Creates a new sub-command with specified arguments and attaches it to the given Commander program.
+ *
+ * @template T - The type of the arguments that the sub-command will receive.
+ *
+ * @param {string} name - The name of the sub-command.
+ * @param {string} description - The description for the sub-command, to be displayed in help messages.
+ * @param {(args: T) => Promise<void> | void} actionFn - The action function to be executed when the sub-command is called.
+ *   This function can be either synchronous or asynchronous and receives the arguments passed to the sub-command.
+ *
+ * @returns {(program: Command) => void} - A function that, when invoked with a Commander program, adds the
+ *   sub-command to that program.
+ *
+ * @throws Will throw an error if the actionFn results in a rejected promise.
+ *
+ * @example
+ * interface MyArgs {
+ *   verbose: boolean;
+ * }
+ * const myAction = async (args: MyArgs) => {
+ *   if (args.verbose) {
+ *     await someAsyncFunction();
+ *     console.log("Verbose mode on!");
+ *   }
+ * };
+ * createSimpleSubCommand('my-command', 'This is my command', myAction)(program);
+ */
+export function createSimpleSubCommand<T>(
+  name: string,
+  description: string,
+  actionFn: (args: T) => Promise<void> | void,
+): (program: Command) => void {
+  return (program: Command) => {
+    program
+      .command(name)
+      .description(description)
+      .action(async (args, ...rest) => {
+        try {
+          await actionFn(args);
+        } catch (error) {
+          console.error(`Error executing command ${name}:`, error);
+          process.exit(1);
+        }
+      });
+  };
 }

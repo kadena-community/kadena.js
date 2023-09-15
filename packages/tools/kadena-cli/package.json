@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
+    "@kadena/client": "workspace:^",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",

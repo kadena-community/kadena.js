@@ -1,3 +1,18 @@
+import { createSimpleSubCommand } from '../utils/helpers';
+
+import { contextCommand } from './contextCommand';
+import {
+  configurationAction,
+  currentContextAction,
+  fullConfigurationAction,
+  IConfigurationArgs,
+  ICurrentContextArgs,
+  IFullConfigurationArgs,
+  IPrivateKeyArgs,
+  IPublicKeyArgs,
+  privateKeyAction,
+  publicKeyAction,
+} from './infoCommand';
 import { initCommand } from './initCommand';
 
 import { Command } from 'commander';
@@ -15,10 +30,6 @@ const SUBCOMMAND_ROOT: 'config' = 'config';
  * @param {string} version - The version of the CLI.
  */
 export function configCommandFactory(program: Command, version: string): void {
-  /**
-   * Command object for the configuration subcommands.
-   * @type {Command}
-   */
   const configProgram = program
     .command(SUBCOMMAND_ROOT)
     .description(
@@ -26,4 +37,36 @@ export function configCommandFactory(program: Command, version: string): void {
     );
 
   initCommand(configProgram, version);
+  contextCommand(configProgram, version);
+
+  // Attach the subcommands to the configProgram
+  createSimpleSubCommand<ICurrentContextArgs>(
+    'currentContext',
+    'display current Context',
+    currentContextAction,
+  )(configProgram);
+
+  createSimpleSubCommand<IConfigurationArgs>(
+    'currentConfig',
+    'display current configuration for current context',
+    configurationAction,
+  )(configProgram);
+
+  createSimpleSubCommand<IFullConfigurationArgs>(
+    'fullConfig',
+    'displays configuration for all contexts',
+    fullConfigurationAction,
+  )(configProgram);
+
+  createSimpleSubCommand<IPublicKeyArgs>(
+    'publicKey',
+    'display Public Key',
+    publicKeyAction,
+  )(configProgram);
+
+  createSimpleSubCommand<IPrivateKeyArgs>(
+    'privateKey',
+    'display Private Key',
+    privateKeyAction,
+  )(configProgram);
 }
