@@ -1,4 +1,4 @@
-import { fundCommand } from './fund';
+import { fundCommand } from './fundCommand';
 
 import { Command } from 'commander';
 

@@ -1,8 +1,12 @@
-import { Abortable } from 'events';
-import { BaseEncodingOptions, Mode, OpenMode, PathLike } from 'fs';
-import fs from 'fs/promises';
+import {
+  accessSync,
+  BaseEncodingOptions,
+  existsSync,
+  mkdirSync,
+  PathLike,
+  writeFileSync,
+} from 'fs';
 import path from 'path';
-import { Stream } from 'stream';
 
 /**
  * Checks if a given path exists.
@@ -10,9 +14,9 @@ import { Stream } from 'stream';
  * @param {PathLike} path - The path to check.
  * @returns {Promise<boolean>} - A promise that resolves to true if the path exists, otherwise false.
  */
-export async function isExists(path: PathLike): Promise<boolean> {
+export function isExists(path: PathLike): boolean {
   try {
-    await fs.access(path);
+    accessSync(path);
     return true;
   } catch {
     return false;
@@ -20,29 +24,30 @@ export async function isExists(path: PathLike): Promise<boolean> {
 }
 
 /**
+ * Checks if a file exists at a given path.
+ *
+ * @param filePath - The path to the file.
+ */
+export function ensureFileExists(filePath: string): boolean {
+  return existsSync(filePath);
+}
+
+/**
  * Writes data to a file, creating any necessary directories along the path if they don't exist.
  *
  * @param {string} filePath - The path to the file.
- * @param {string | NodeJS.ArrayBufferView | Iterable<string | NodeJS.ArrayBufferView> | AsyncIterable<string | NodeJS.ArrayBufferView> | Stream} data - The data to be written.
- * @param {(BaseEncodingOptions & { mode?: Mode, flag?: OpenMode } & Abortable) | undefined} options - The write options.
- * @returns {Promise<void>} - A promise that resolves once the data has been written to the file.
+ * @param {string | NodeJS.ArrayBufferView} data - The data to be written to the file. Can be a string or a buffer view.
+ * @param {string | BaseEncodingOptions | undefined} options - Encoding options or a string specifying the encoding. Can be undefined.
  */
-export async function writeFile(
+
+export function writeFile(
   filePath: string,
-  data:
-    | string
-    | NodeJS.ArrayBufferView
-    | Iterable<string | NodeJS.ArrayBufferView>
-    | AsyncIterable<string | NodeJS.ArrayBufferView>
-    | Stream,
-  options?: BaseEncodingOptions & {
-    mode?: Mode;
-    flag?: OpenMode;
-  } & Abortable,
-): Promise<void> {
+  data: string | NodeJS.ArrayBufferView,
+  options: string | BaseEncodingOptions | undefined,
+): void {
   const dirname = path.dirname(filePath);
-  if (!(await isExists(dirname))) {
-    await fs.mkdir(dirname, { recursive: true });
+  if (!isExists(dirname)) {
+    mkdirSync(dirname, { recursive: true });
   }
-  await fs.writeFile(filePath, data, options);
+  writeFileSync(filePath, data, options);
 }
