@@ -1,10 +1,5 @@
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
-import type {
-  IQuicksignResponse,
-  IQuicksignResponseOutcomes,
-  ISignFunction,
-  ISingleSignFunction,
-} from '../../../index';
+import type { ISignFunction, ISingleSignFunction } from '../../../index';
 import { Pact } from '../../../index';
 import { getModule } from '../../../pact';
 import type { IKeypair } from '../createSignWithKeypair';
