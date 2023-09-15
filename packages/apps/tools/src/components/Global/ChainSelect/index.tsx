@@ -6,30 +6,47 @@ import { InputWrapper, Select } from '@kadena/react-ui';
 import type { FC, FormEventHandler } from 'react';
 import React, { useCallback } from 'react';
 
-export type OnChainSelectChange = (value: ChainwebChainId) => void;
+export type OnChainSelectChange = (value: ChainwebChainId | '') => void;
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const ELEMENT_ID = 'select-chain-id';
 
 const ChainSelect: FC<
   Omit<ISelectProps, 'children' | 'value' | 'onChange' | 'icon' | 'id'> & {
-    value: ChainwebChainId;
+    value: ChainwebChainId | '';
     onChange: OnChainSelectChange;
+    includeEmpty?: boolean;
   }
-> = ({ value, onChange, ...rest }) => {
+> = ({ value, onChange, includeEmpty = false, ...rest }) => {
   const onSelectChange = useCallback<FormEventHandler<HTMLSelectElement>>(
     (e) => {
+      let selectedValue: ChainwebChainId | '' = '';
+
       const chainId = CHAINS.find((chainId) => {
         return chainId === e.currentTarget.value;
       });
 
-      onChange(chainId!);
+      if (chainId) {
+        selectedValue = chainId;
+      }
+
+      onChange(selectedValue);
     },
     [onChange],
   );
 
-  const options = CHAINS.map((chainID) => {
-    return <option key={`chain-id-${chainID}`}>{chainID}</option>;
+  const values: Array<ChainwebChainId | ''> = [...CHAINS];
+
+  if (includeEmpty) {
+    values.unshift('');
+  }
+
+  const options = values.map((chainID) => {
+    return (
+      <option key={`chain-id-${chainID}`} value={chainID}>
+        {chainID}
+      </option>
+    );
   });
 
   return (
