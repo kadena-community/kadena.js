@@ -1,5 +1,17 @@
 # @kadena/tools
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [f6ff5749]
+- Updated dependencies [5068b099]
+- Updated dependencies [443c36d4]
+- Updated dependencies [143d0bef]
+- Updated dependencies [a058e222]
+  - @kadena/client@1.4.0
+  - @kadena/pactjs-generator@1.4.0
+
 ## 0.1.2
 
 ### Patch Changes
