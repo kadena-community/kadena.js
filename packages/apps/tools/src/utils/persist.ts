@@ -4,16 +4,19 @@ export const prefix: string = '_persist';
 
 export const getName = (key: string): string => `${prefix}:${key}`;
 
+export const encode = (value: unknown) =>
+  encodeURIComponent(JSON.stringify(value));
+
+export const parse = (value: string) => JSON.parse(decodeURIComponent(value));
+
 export const setItem = (key: string, value: unknown): void => {
-  Cookies.set(getName(key), encodeURIComponent(JSON.stringify(value)));
+  Cookies.set(getName(key), encode(value));
 };
 
 export const getItem = (key: string): unknown | undefined => {
   try {
     const cookie = Cookies.get(getName(key));
-    return cookie !== undefined
-      ? JSON.parse(decodeURIComponent(cookie))
-      : undefined;
+    return cookie !== undefined ? parse(cookie) : undefined;
   } catch (e) {
     return undefined;
   }
