@@ -41,31 +41,31 @@ export function configCommandFactory(program: Command, version: string): void {
 
   // Attach the subcommands to the configProgram
   createSimpleSubCommand<ICurrentContextArgs>(
-    'currentContext',
+    'current-context',
     'display current Context',
     currentContextAction,
   )(configProgram);
 
   createSimpleSubCommand<IConfigurationArgs>(
-    'currentConfig',
+    'current-config',
     'display current configuration for current context',
     configurationAction,
   )(configProgram);
 
   createSimpleSubCommand<IFullConfigurationArgs>(
-    'fullConfig',
+    'full-config',
     'displays configuration for all contexts',
     fullConfigurationAction,
   )(configProgram);
 
   createSimpleSubCommand<IPublicKeyArgs>(
-    'publicKey',
+    'public-key',
     'display Public Key',
     publicKeyAction,
   )(configProgram);
 
   createSimpleSubCommand<IPrivateKeyArgs>(
-    'privateKey',
+    'private-key',
     'display Private Key',
     privateKeyAction,
   )(configProgram);
