@@ -76,8 +76,8 @@ const Event: React.FC = () => {
                       <Table.Td>
                         <Table.Root>
                           <Table.Body>
-                            {event.eventParameters.map((parameter) => (
-                              <Table.Tr>
+                            {event.eventParameters.map((parameter, index) => (
+                              <Table.Tr key={`arguments-${index}`}>
                                 <Table.Td>{parameter}</Table.Td>
                               </Table.Tr>
                             ))}
