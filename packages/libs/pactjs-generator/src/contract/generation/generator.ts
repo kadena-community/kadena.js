@@ -1,4 +1,4 @@
-import type { IFunction, IModule } from '../parsing/pactParser';
+import type { IFunction, IModule, IType } from '../parsing/pactParser';
 import { getModuleFullName } from '../parsing/utils/utils';
 
 import { EOL } from 'os';
@@ -13,9 +13,7 @@ const keywordsMap: Record<string, string> = {
   object: 'object',
 };
 
-const mapType = (
-  inputType?: string | { kind: string; value: string },
-): string => {
+const mapType = (inputType?: string | IType): string => {
   if (inputType === undefined) {
     return 'any';
   }
@@ -25,9 +23,10 @@ const mapType = (
 
   if (typeof inputType === 'object' && inputType.kind === 'module')
     return 'PactReference';
+  const isList = inputType.isList ? '[]' : '';
   // TODO: import the schema as interface to return kind instead of any
-  // return inputType.kind;
-  return keywordsMap[inputType.kind] ?? 'any';
+  const type = keywordsMap[inputType.kind] ?? 'any';
+  return `${type}${isList}`;
 };
 
 const getFuncCapInterfaceName = (func: IFunction): string => {

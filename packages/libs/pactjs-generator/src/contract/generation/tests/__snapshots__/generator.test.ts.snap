@@ -245,6 +245,29 @@ declare module '@kadena/client' {
 }"
 `;
 
+exports[`generateDts should generate the function also if return type is a list 1`] = `
+"
+import type { PactReference } from '@kadena/client';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+
+interface ICapability_Coin_GAS {
+  (name: 'coin.GAS'): ICap;
+}
+
+declare module '@kadena/client' {
+  export interface IPactModules {
+    
+    "user.test-module": {
+      /**
+      * Get all events
+      */
+      "get-events-list": () => string & { capability : ICapability_Coin_GAS} 
+
+    }
+  }
+}"
+`;
+
 exports[`generateDts use any type if function parameters dont have a type 1`] = `
 "
 import type { PactReference } from '@kadena/client';

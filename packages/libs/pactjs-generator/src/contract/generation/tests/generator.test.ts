@@ -249,4 +249,23 @@ describe('generateDts', () => {
     const dts = generateDts('user.test-module', modules);
     expect(dts).toMatchSnapshot();
   });
+
+  it('should generate the function also if return type is a list', async () => {
+    const module = `(namespace "user")
+    (module test-module governance
+      (defun get-events-list:[object{networking-event-schema}] ()
+        @doc "Get all events"
+        (select networking-events-table (where "deleted-at" (= -1)))
+      )
+    )
+`;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
+  });
 });
