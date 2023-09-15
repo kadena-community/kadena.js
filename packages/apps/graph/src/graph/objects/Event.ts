@@ -25,10 +25,12 @@ export default builder.prismaNode('Event', {
       type: 'Transaction',
       nullable: true,
       resolve(query, parent, args, context, info) {
-        return prismaClient.transaction.findFirst({
+        return prismaClient.transaction.findUnique({
           where: {
-            requestkey: parent.requestkey,
-            block: parent.block,
+            block_requestkey: {
+              block: parent.block,
+              requestkey: parent.requestkey,
+            },
           },
         });
       },
