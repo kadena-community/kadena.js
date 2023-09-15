@@ -226,4 +226,27 @@ describe('generateDts', () => {
     const dts = generateDts('user.test-module', modules);
     expect(dts).toMatchSnapshot();
   });
+
+  it('adds some _ to capabilityName to make it unique and avoid name collision if the capability function has also an argument exactly with the same name', async () => {
+    const module = `(namespace "user")
+    (module test-module governance
+      @doc "this is module doc"
+      (defcap test-cap (capabilityName:string _capabilityName:string)
+        @doc "this is defcap doc"
+        true)
+      (defpact test-func:bool (parameter-one parameter-two )
+        @doc "this is defpact doc"
+        (with-capability (test-cap "capabilityName"))
+      )
+    )
+  `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
+  });
 });

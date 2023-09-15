@@ -37,7 +37,7 @@ interface ICapability_test_func {
   * this is defcap doc
   */
   (
-    name: "user.test-module.test-cap", 
+    capabilityName: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
@@ -73,7 +73,7 @@ interface ICapability_test_func {
   * this is defcap doc
   */
   (
-    name: "user.test-module.test-cap", 
+    capabilityName: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
@@ -90,6 +90,46 @@ declare module '@kadena/client' {
         parameterone: object,
         parametertwo: boolean) => string & { capability : ICapability_test_func & ICapability_Coin_GAS} 
 
+    }
+  }
+}"
+`;
+
+exports[`generateDts adds some _ to capabilityName to make it unique and avoid name collision if the capability function has also an argument exactly with the same name 1`] = `
+"
+import type { PactReference } from '@kadena/client';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
+
+interface ICapability_Coin_GAS {
+  (name: 'coin.GAS'): ICap;
+}
+
+interface ICapability_defpact_test_func {
+  /**
+  * this is defcap doc
+  */
+  (
+    __capabilityName: "user.test-module.test-cap", 
+    capabilityName: string, 
+    _capabilityName: string): ICap,
+}
+
+declare module '@kadena/client' {
+  export interface IPactModules {
+    /**
+    this is module doc    
+    */
+    "user.test-module": {
+    
+
+      "defpact":{
+        /**
+        * this is defpact doc
+        */
+        "test-func": (
+          parameterone: any,
+          parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICapability_Coin_GAS} 
+      }
     }
   }
 }"
@@ -151,7 +191,7 @@ interface ICapability_defpact_test_func {
   * this is defcap doc
   */
   (
-    name: "user.test-module.test-cap", 
+    capabilityName: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
@@ -188,7 +228,7 @@ interface ICapability_Coin_GAS {
 interface ICapability_test_func {
   
   (
-    name: "user.test-module.test-cap", 
+    capabilityName: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
@@ -217,7 +257,7 @@ interface ICapability_Coin_GAS {
 interface ICapability_test_func {
   
   (
-    name: "user.test-module.test-cap", 
+    capabilityName: "user.test-module.test-cap", 
     name: string): ICap,
 }
 
@@ -246,7 +286,7 @@ interface ICapability_Coin_GAS {
 interface ICapability_test_func {
   
   (
-    name: "user.test-module.test-cap", 
+    capabilityName: "user.test-module.test-cap", 
     name: string): ICap,
 }
 

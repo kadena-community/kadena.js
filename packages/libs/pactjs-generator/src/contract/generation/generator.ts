@@ -76,7 +76,16 @@ function genFunCapsInterface(func: IFunction): string {
   const interfaceName = getFuncCapInterfaceName(func);
 
   const cap = func.allExtractedCaps.map((cap) => {
-    let parameters = [`name: "${cap.fullModuleName}.${cap.name}"`];
+    let capabilityName = 'capabilityName';
+    while (
+      cap.capability.parameters &&
+      cap.capability.parameters.find((p) => p.name === capabilityName)
+    ) {
+      // make sure we don't have a name collision
+      capabilityName = `_${capabilityName}`;
+    }
+
+    let parameters = [`${capabilityName}: "${cap.fullModuleName}.${cap.name}"`];
     if (cap.capability.parameters) {
       const args = getParameters(cap.capability.parameters);
       parameters = [...parameters, ...args];
