@@ -9,7 +9,9 @@ description:
 menu: Spotlight On Lago Finance
 label: Spotlight On Lago Finance
 publishDate: 2022-06-16
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

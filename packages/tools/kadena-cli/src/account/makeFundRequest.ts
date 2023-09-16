@@ -4,7 +4,7 @@
 // import { submit } from '../utils/client';
 // import { getConfig } from '../utils/globalConfig';
 
-import { TFundOptions } from './fundCommand';
+import type { TFundOptions } from './fundCommand';
 // import { defaultContext, defaults } from '../constants/config';
 
 // /* fund code from kadena testnet facuet

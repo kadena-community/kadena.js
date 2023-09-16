@@ -30,13 +30,15 @@
     "lib"
   ],
   "scripts": {
+    "_postinstall": "pnpm run generate:openapi-types",
     "build": "heft build --clean",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config openapi src --write",
+    "format:src": "prettier . --cache --write",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
-    "postinstall": "pnpm run generate:openapi-types",
-    "lint": "eslint package.json src --ext .js,.ts --fix",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts --fix",
     "test": "heft test"
   },
   "dependencies": {
@@ -48,6 +50,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
@@ -56,6 +59,7 @@
     "@types/isomorphic-fetch": "~0.0.36",
     "@types/node": "^16.0.0",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0"
+    "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5"
   }
 }

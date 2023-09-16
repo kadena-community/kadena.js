@@ -8,11 +8,12 @@ description:
 menu: Tokensoft Wrapped & Kadenaswap - the Future of Digital Value
 label: Tokensoft Wrapped & Kadenaswap - the Future of Digital Value
 publishDate: 2021-03-04
+headerImage: /assets/blog/1_eUsRzyRMkkGIFdAg6gBP2A.webp
+tags: [pact, kda]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_eUsRzyRMkkGIFdAg6gBP2A.webp)
 
 # Tokensoft Wrapped & Kadenaswap: the Future of Digital Value
 

@@ -1,9 +1,11 @@
 import { codeTitle, codeWrapper } from './style.css';
 
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProp {
   children: ReactNode;
+  'data-language'?: string;
 }
 
 export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
@@ -17,7 +19,7 @@ export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
 
   return (
     <div className={codeTitle} {...props}>
-      {children}
+      {children} {props['data-language']}
     </div>
   );
 };

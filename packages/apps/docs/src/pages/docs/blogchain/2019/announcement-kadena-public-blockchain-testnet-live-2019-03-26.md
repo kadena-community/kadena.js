@@ -6,11 +6,12 @@ description:
 menu: Announcement Kadena Public Blockchain Testnet LIVE
 label: Announcement Kadena Public Blockchain Testnet LIVE
 publishDate: 2019-03-26
+headerImage: /assets/blog/1_G4ggggsptLXt7z0Rry7UJA.webp
+tags: [kadena, chainweb, pact]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_G4ggggsptLXt7z0Rry7UJA.webp)
 
 # Announcement: Kadena Public Blockchain Testnet LIVE
 

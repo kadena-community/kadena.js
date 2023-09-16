@@ -9,13 +9,14 @@ description:
 menu: Kadena’s WalletConnect Specification
 label: Kadena’s WalletConnect Specification
 publishDate: 2023-03-28
+headerImage: /assets/blog/1_qFkL2D2XFLbmCr3a-MI0_g.webp
+tags: [kadena, walletconnect]
 author: Jermaine Jong
+authorId: jermaine.jong
 layout: blog
 ---
 
 # Kadena’s WalletConnect Specification
-
-![](/assets/blog/1_qFkL2D2XFLbmCr3a-MI0_g.webp)
 
 We are excited to announce that we have taken the next step in standardizing
 development on Kadena, which will significantly improve the development

@@ -7,11 +7,12 @@ description:
 menu: Introducing KIPs
 label: Introducing KIPs
 publishDate: 2019-08-14
+headerImage: /assets/blog/1_CkkM7zCahsGSNluuOQ0w3w.webp
+tags: [kadena]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_CkkM7zCahsGSNluuOQ0w3w.webp)
 
 # Introducing KIPs: Kadena Improvement Proposals
 

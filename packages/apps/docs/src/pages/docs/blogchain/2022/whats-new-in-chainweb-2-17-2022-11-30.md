@@ -10,13 +10,14 @@ description:
 menu: What’s new in Chainweb 2.17
 label: What’s new in Chainweb 2.17
 publishDate: 2022-11-30
+headerImage: /assets/blog/1_ZKcQU0DnPml7EiRCvMoxGg.webp
+tags: [chainweb]
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
 
 # What’s new in Chainweb 2.17
-
-![](/assets/blog/1_ZKcQU0DnPml7EiRCvMoxGg.webp)
 
 Kadena is releasing a new version of Chainweb Node, version 2.17 which will have
 a service date in effect as of **2022–12–01T00:00:00Z**. In addition to various

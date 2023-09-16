@@ -2,26 +2,24 @@ import type { INavHeaderRootProps } from './NavHeader';
 import { NavHeaderContainer } from './NavHeader';
 import type { INavHeaderContentProps } from './NavHeaderContent';
 import { NavHeaderContent } from './NavHeaderContent';
+import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeaderLink } from './NavHeaderLink';
-import type {
-  INavHeaderNavigationProps,
-  INavItem,
-} from './NavHeaderNavigation';
+import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
 import { NavHeaderNavigation } from './NavHeaderNavigation';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 export {
   INavHeaderRootProps,
   INavHeaderContentProps,
-  INavItem as INavHeaderLinkProps,
+  INavHeaderLinkProps,
   INavHeaderNavigationProps,
 };
 
 export interface INavHeaderProps {
   Root: FC<INavHeaderRootProps>;
   Navigation: FC<INavHeaderNavigationProps>;
-  Link: FC<INavItem>;
+  Link: FC<INavHeaderLinkProps>;
   Content: FC<INavHeaderContentProps>;
 }
 

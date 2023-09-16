@@ -8,7 +8,9 @@ description:
 menu: Kadena AMA with Kyle Samani
 label: Kadena AMA with Kyle Samani
 publishDate: 2019-03-14
+tags: [pow]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

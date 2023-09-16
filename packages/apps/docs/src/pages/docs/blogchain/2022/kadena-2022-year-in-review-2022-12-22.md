@@ -10,11 +10,12 @@ description:
 menu: Kadena 2022 Year In Review
 label: Kadena 2022 Year In Review
 publishDate: 2022-12-22
+headerImage: /assets/blog/1_u3HlSK6n4qUw9frTiGjq_g.webp
+tags: [kadena, grants]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
-
-![](/assets/blog/1_u3HlSK6n4qUw9frTiGjq_g.webp)
 
 # Kadena 2022: Year In Review
 

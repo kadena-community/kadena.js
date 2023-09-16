@@ -6,7 +6,9 @@ menu: Kadena Telegram AMA, Feb 5 2021
 label: Kadena Telegram AMA, Feb 5 2021
 order: 1
 publishDate: 2021-02-05
+tags: [kadena, marmalade]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

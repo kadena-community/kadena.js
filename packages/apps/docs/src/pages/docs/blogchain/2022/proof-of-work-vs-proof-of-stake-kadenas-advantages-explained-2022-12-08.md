@@ -9,13 +9,14 @@ description:
 menu: Proof of Work vs Proof of Stake, Kadena’s Advantages Explained
 label: Proof of Work vs Proof of Stake, Kadena’s Advantages Explained
 publishDate: 2022-12-08
+headerImage: /assets/blog/1_JzSicHPhcWHotlKMuXQTlA.webp
+tags: [pow]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Proof of Work vs Proof of Stake, Kadena’s Advantages, Explained
-
-![](/assets/blog/1_JzSicHPhcWHotlKMuXQTlA.webp)
 
 [Kadena](https://kadena.io/) is currently the only blockchain on a proof-of-work
 model that can expand to handle global transaction volumes. This makes it

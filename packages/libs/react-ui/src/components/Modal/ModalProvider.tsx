@@ -2,29 +2,11 @@
 
 import { Modal } from './Modal';
 import { openModal } from './Modal.css';
+import { ModalContext } from './useModal';
 
-import React, {
-  createContext,
-  FC,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { FC, ReactNode } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-
-//Defining context
-interface IModalContext {
-  renderModal: (v: ReactNode, title?: string) => void;
-  clearModal: () => void;
-}
-
-export const ModalContext = createContext<IModalContext>({
-  renderModal: (v: ReactNode, title?: string) => {},
-  clearModal: () => {},
-});
 
 export interface IModalProviderProps {
   children?: ReactNode;
@@ -75,5 +57,3 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
     </ModalContext.Provider>
   );
 };
-
-export const useModal = (): IModalContext => useContext(ModalContext);

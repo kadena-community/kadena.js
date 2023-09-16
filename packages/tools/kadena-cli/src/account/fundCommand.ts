@@ -1,14 +1,16 @@
 import { networkChoices } from '../utils/client';
 // import { displayConfig } from '../utils/display';
 // import { getConfig } from '../utils/globalConfig';
-import { collectResponses, IQuestion } from '../utils/helpers';
+import type { IQuestion } from '../utils/helpers';
+import { collectResponses } from '../utils/helpers';
 import { processZodErrors } from '../utils/process-zod-errors';
 
 import { makeFundRequest } from './makeFundRequest';
 
 import { input, select } from '@inquirer/prompts';
 import clear from 'clear';
-import { Command, Option } from 'commander';
+import type { Command } from 'commander';
+import { Option } from 'commander';
 import { z } from 'zod';
 
 // eslint-disable-next-line @rushstack/typedef-var

@@ -1,7 +1,7 @@
 import { mintCommand } from './mintCommand';
 import { storeCommand } from './storeCommand';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'marmalade' = 'marmalade';
 

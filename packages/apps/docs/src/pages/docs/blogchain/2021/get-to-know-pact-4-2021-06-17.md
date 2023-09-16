@@ -11,11 +11,12 @@ description:
 menu: Get to know Pact 4!
 label: Get to know Pact 4!
 publishDate: 2021-06-17
+headerImage: /assets/blog/1_qYmdUAxT3iqFnIlJSQ_YYw.webp
+tags: [pact]
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
-
-![](/assets/blog/1_qYmdUAxT3iqFnIlJSQ_YYw.webp)
 
 # Get to know Pact 4!
 

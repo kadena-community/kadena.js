@@ -9,15 +9,18 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm prisma:generate && heft build --clean",
+    "devnet": "(docker start -ai devnet && docker exec -it devnet /bin/bash) || docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.kda-devnet/data:/data -v ./cwd-extra-migrations:/cwd-extra-migrations --name devnet enof/devnet:l2-latest",
+    "devnet:update": "docker pull enof/devnet:l2-latest",
     "format": "pnpm run /^format:.*/",
-    "format:src": "prettier config src --write",
-    "lint": "eslint package.json src --ext .js,.ts --fix",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "devnet": "docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.kda-devnet/data:/data -v ./cwd-extra-migrations:/cwd-extra-migrations enof/devnet:l2-latest-arm64",
-    "devnet:update": "docker pull enof/devnet:l2-latest",
-    "start": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "start:generate": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
   },
   "dependencies": {
@@ -37,6 +40,7 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
@@ -45,6 +49,8 @@
     "@types/node": "^16.0.0",
     "@types/pg": "~8.10.2",
     "embedded-postgres": "~15.1.0-beta.6",
-    "prettier": "~3.0.0"
+    "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
+    "ts-node": "~10.8.2"
   }
 }

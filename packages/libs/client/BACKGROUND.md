@@ -61,7 +61,7 @@ The complete example of the command is like this
   "networkId":"testnet04",
   "nonce":"test-nonce",
   "meta":{
-    "chianId":"1",
+    "chainId":"1",
     // if the gas payer is someone else but the transaction signers
     "sender": "gas_payer-public_key";
     "gasLimit": 100;

@@ -1,4 +1,4 @@
-import { IMostPopularPage } from '@/types/MostPopularData';
+import type { IMostPopularPage } from '@/types/MostPopularData';
 
 interface IGetMostPopularPagesResult {
   data: IMostPopularPage[];

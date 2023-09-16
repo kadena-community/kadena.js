@@ -51,14 +51,6 @@ export const footerPanel = style([
   }),
 ]);
 
-export const linkBoxClass = style([
-  sprinkles({
-    display: 'flex',
-    padding: 0,
-    whiteSpace: 'nowrap',
-  }),
-]);
-
 export const linkClass = style([
   sprinkles({
     display: 'flex',

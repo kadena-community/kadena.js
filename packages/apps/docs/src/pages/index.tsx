@@ -1,7 +1,5 @@
 import { Box, Heading, Stack } from '@kadena/react-ui';
 
-import { browseSectionWrapper } from '../styles/index.css';
-
 import { BrowseSection } from '@/components';
 import {
   articleClass,
@@ -9,16 +7,18 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { IMostPopularPage } from '@/types/MostPopularData';
+import { browseSectionWrapper } from '@/styles/index.css';
+import type { IMostPopularPage } from '@/types/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
-import { GetStaticProps } from 'next';
+import type { GetStaticProps } from 'next';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -34,25 +34,34 @@ const Home: FC<IProps> = ({ popularPages }) => {
       >
         <article className={articleClass}>
           <Box marginBottom="$10">
+            <Heading as="h4">Getting started</Heading>
             <Stack wrap="wrap">
-              <BrowseSection title="General" className={browseSectionWrapper}>
-                <Link href="/docs/kadena">Overview of Kadena</Link>
-                <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
-                <a href="https://kadena.io" target="_blank" rel="noreferrer">
-                  Kadena.io
-                </a>
+              <BrowseSection
+                title="Core concepts"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/kadena/overview">
+                  What is the Kadena Blockchain?
+                </Link>
+                <Link href="/docs/kadena/kda">What is KDA token?</Link>
+                <Link href="/docs/pact">What are Pact smart contracts?</Link>
               </BrowseSection>
               <BrowseSection
                 title="Developers"
                 className={browseSectionWrapper}
               >
-                <Link href="/docs/build/quickstart">Quick start</Link>
+                <Link href="/docs/build/quickstart">
+                  Learn through tutorials
+                </Link>
                 <Link href="/docs/pact/beginner/language-basics">
                   Pact Language resources
                 </Link>
                 <Link href="/docs/pact">Pact developer tutorials</Link>
               </BrowseSection>
-              <BrowseSection title="Programs" className={browseSectionWrapper}>
+              <BrowseSection
+                title="Setup local environment"
+                className={browseSectionWrapper}
+              >
                 <Link href="/docs/build/support">Developer program</Link>
                 <Link href="/docs/contribute/ambassadors">
                   Ambassador program
@@ -63,7 +72,51 @@ const Home: FC<IProps> = ({ popularPages }) => {
               </BrowseSection>
             </Stack>
           </Box>
-          <Heading as="h4">Browse by Resources</Heading>
+
+          <Box marginBottom="$10">
+            <Stack wrap="wrap">
+              <BrowseSection title="General" className={browseSectionWrapper}>
+                <Link href="/docs/kadena">Overview of Kadena</Link>
+                <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
+                <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                  Kadena.io
+                </a>
+              </BrowseSection>
+              <BrowseSection
+                title="Useful tools"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/build/support">
+                  Chainweaver (Wallet & Workbench)
+                </Link>
+                <Link href="/docs/kadena/wallets/chainweaver">Atom IDE</Link>
+                <a href="https://explorer.chainweb.com/mainnet">
+                  Block Explorer
+                </a>
+                <a href="https://transfer.chainweb.com/">Web transfer tools</a>
+                <a href="https://balance.chainweb.com/">Balance checker</a>
+              </BrowseSection>
+              <BrowseSection title="Programs" className={browseSectionWrapper}>
+                <Link href="/docs/build/support">Developer program</Link>
+                <Link href="/docs/contribute/ambassadors">
+                  Ambassador program
+                </Link>
+                <Link href="/docs/build/support/technical-grants">
+                  Technical grants
+                </Link>
+                <a href="https://github.com/kadena-community/create-kadena-app">
+                  Bootstrap Kadena dApp
+                </a>
+                <a href="https://hub.docker.com/r/kadena/devnet">
+                  Devnet Docker Container
+                </a>
+                <a href="https://github.com/kadena-io/pact#installing-pact">
+                  Pact binary
+                </a>
+              </BrowseSection>
+            </Stack>
+          </Box>
+
           <Stack direction="column" gap="$2xl">
             <BrowseSection title="General" titleAs="h5" direction="row">
               <BrowseSection.LinkBlock
@@ -83,38 +136,6 @@ const Home: FC<IProps> = ({ popularPages }) => {
                 subtitle="Explore all products"
                 icon="Marmalade"
                 href="/docs/marmalade"
-              />
-            </BrowseSection>
-            <BrowseSection title="Pact" titleAs="h5" direction="row">
-              <BrowseSection.LinkBlock
-                title="Pact Language"
-                subtitle="Explore all products"
-                icon="PactLanguage"
-                href="/docs/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Useful Tools"
-                subtitle="Explore all products"
-                icon="UsefulTools"
-                href="/docs/build/tools"
-              />
-              <BrowseSection.LinkBlock
-                title="Beginner Tutorials"
-                subtitle="For starters"
-                icon="PactDeveloper"
-                href="/docs/pact/beginner"
-              />
-              <BrowseSection.LinkBlock
-                title="Intermediate Tutorials"
-                subtitle="get some more experience"
-                icon="PactDeveloper"
-                href="docs/pact/intermediate"
-              />
-              <BrowseSection.LinkBlock
-                title="Quickstart"
-                subtitle="Explore all products"
-                icon="QuickStart"
-                href="/docs/chainweb"
               />
             </BrowseSection>
           </Stack>

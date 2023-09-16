@@ -2,7 +2,6 @@ import {
   boldTextClass,
   imageClass,
   imageContainerClass,
-  linkClass,
   linkContainerClass,
   profileCardClass,
   tagClass,
@@ -10,8 +9,10 @@ import {
 } from './ProfileCard.css';
 
 import { Grid } from '@components/Grid';
+import { Link } from '@components/Link';
 import { Tag } from '@components/Tag';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export default {};
 export interface IProfileCardProps {
@@ -57,9 +58,7 @@ export const ProfileCard: FC<IProfileCardProps> = ({
               <ul className={linkContainerClass}>
                 {Object.entries(links).map(([text, href]) => (
                   <li key={text}>
-                    <a className={linkClass} href={href}>
-                      {text}
-                    </a>
+                    <Link href={href}>{text}</Link>
                   </li>
                 ))}
               </ul>

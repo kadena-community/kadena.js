@@ -19,7 +19,7 @@ export const codeWrapper = style([
     fontFamily: '$mono',
     lineHeight: '$lg',
     marginX: '$5',
-    marginY: 0,
+    marginY: '$10',
   }),
   {
     borderLeft: `4px solid ${vars.colors.$borderDefault}`,
@@ -33,6 +33,7 @@ export const code = style([
     whiteSpace: 'break-spaces',
     fontFamily: '$mono',
     display: 'none',
+    paddingY: '$3',
   }),
   {
     counterReset: 'line',
@@ -82,6 +83,9 @@ export const codeTitle = style([
     alignItems: 'center',
     fontFamily: '$main',
     backgroundColor: '$neutral3',
+    color: '$neutral1',
+    fontWeight: '$bold',
+    textTransform: 'capitalize',
     padding: '$2',
   }),
   {

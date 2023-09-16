@@ -1,4 +1,4 @@
-import { TConfigOptions } from '../config/configOptions';
+import type { TConfigOptions } from '../config/configOptions';
 
 export type Context = 'mainnet' | 'testnet' | 'devnet';
 

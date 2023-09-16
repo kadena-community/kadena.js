@@ -1,6 +1,11 @@
-import { AnimationBackgroundWrapper } from '../styles';
+import {
+  animationBackgroundClass,
+  animationBackgroundShowVariant,
+} from './styles.css';
 
-import React, { FC } from 'react';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   ref: React.ForwardedRef<HTMLDivElement>;
@@ -11,8 +16,12 @@ export const NavItemActiveBackground: FC<IProps> = React.forwardRef<
   HTMLDivElement,
   IProps
 >(({ show }, ref) => {
+  const classes = classNames(
+    animationBackgroundClass,
+    animationBackgroundShowVariant[show ? 'show' : 'hide'],
+  );
   return (
-    <AnimationBackgroundWrapper show={show} ref={ref}>
+    <div className={classes} ref={ref}>
       <svg
         width="256"
         height="64"
@@ -61,7 +70,7 @@ export const NavItemActiveBackground: FC<IProps> = React.forwardRef<
           </linearGradient>
         </defs>
       </svg>
-    </AnimationBackgroundWrapper>
+    </div>
   );
 });
 

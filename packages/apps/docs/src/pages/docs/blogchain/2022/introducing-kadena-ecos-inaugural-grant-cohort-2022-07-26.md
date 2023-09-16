@@ -10,7 +10,9 @@ description:
 menu: Introducing Kadena Eco
 label: Introducing Kadena Eco
 publishDate: 2022-07-26
+tags: [grant]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

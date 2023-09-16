@@ -1,5 +1,6 @@
 import {
   containerClass,
+  disabledClass,
   inputClass,
   inputContainerClass,
   leadingTextClass,
@@ -10,8 +11,9 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, forwardRef, InputHTMLAttributes } from 'react';
-import { vars } from 'src/styles';
+import type { FC, InputHTMLAttributes } from 'react';
+import React, { forwardRef } from 'react';
+import type { vars } from 'src/styles';
 
 export interface IInputProps
   extends Omit<
@@ -47,7 +49,10 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
 
     return (
       <div
-        className={classNames(containerClass, { [outlinedClass]: outlined })}
+        className={classNames(containerClass, {
+          [outlinedClass]: outlined,
+          [disabledClass]: disabled,
+        })}
         data-testid="kda-input"
       >
         {Boolean(leadingText) && (

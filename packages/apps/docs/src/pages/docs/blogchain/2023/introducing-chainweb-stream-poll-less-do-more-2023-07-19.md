@@ -7,13 +7,14 @@ description:
 menu: Introducing Chainweb-stream - poll less, do more
 label: Introducing Chainweb-stream - poll less, do more
 publishDate: 2023-07-19
+headerImage: /assets/blog/1_ITDZBMILfIYTkDa-djT-8g.webp
+tags: [chainweb]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Introducing Chainweb-stream: poll less, do more
-
-![](/assets/blog/1_ITDZBMILfIYTkDa-djT-8g.webp)
 
 We are delighted to present the first experimental versions of the
 chainweb-stream server and client, a new system that enables persistent

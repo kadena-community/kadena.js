@@ -1,4 +1,4 @@
-import { ISubHeaderElement } from '@/types/Layout';
+import type { ISubHeaderElement } from '@/types/Layout';
 
 /**
  * Function used for creating a nested list of all headers in a document.

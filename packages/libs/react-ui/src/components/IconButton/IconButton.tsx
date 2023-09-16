@@ -1,10 +1,11 @@
 import { colorVariants } from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IIconButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
+  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color' | 'className'> {
   as?: 'button' | 'a';
   icon: keyof typeof SystemIcon;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -12,6 +13,7 @@ export interface IIconButtonProps
   title: string;
   color?: keyof typeof colorVariants;
   type?: 'button' | 'submit' | 'reset';
+  asChild?: boolean;
 }
 
 export const IconButton: FC<IIconButtonProps> = ({
@@ -19,12 +21,24 @@ export const IconButton: FC<IIconButtonProps> = ({
   color = 'default',
   href,
   icon,
-  onClick,
   title,
-  ...props
+  children,
+  asChild = false,
+  ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
-  const ariaLabel = props['aria-label'] ?? title;
+  const ariaLabel = restProps['aria-label'] ?? title;
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      href,
+      ariaLabel,
+      ...children.props,
+      className: colorVariants[color],
+      children: <Icon size="md" />,
+    });
+  }
 
   if (as === 'a' && href !== undefined && href !== '') {
     return (
@@ -36,9 +50,8 @@ export const IconButton: FC<IIconButtonProps> = ({
 
   return (
     <button
-      {...props}
+      {...restProps}
       className={colorVariants[color]}
-      onClick={onClick}
       aria-label={ariaLabel}
       data-testid="kda-icon-button"
     >

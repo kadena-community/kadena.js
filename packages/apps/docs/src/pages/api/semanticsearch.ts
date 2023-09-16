@@ -1,6 +1,6 @@
 import { menuData } from '@/_generated/menu.mjs';
-import { IFrontmatterData } from '@/types';
-import { IMenuData } from '@/types/Layout';
+import type { IFrontmatterData } from '@/types';
+import type { IMenuData } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import type { StreamMetaData } from '@7-docs/edge';
 
@@ -37,6 +37,7 @@ const getData = (file: string): IFrontmatterData => {
 
   let foundItem: IMenuData;
   const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {
+    if (!tree) return;
     tree.forEach((item) => {
       if (item.root === file) {
         foundItem = item;

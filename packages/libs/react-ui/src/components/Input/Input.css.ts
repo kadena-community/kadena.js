@@ -1,13 +1,8 @@
+import { statusColor } from '../InputWrapper/InputWrapper.css';
+
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
-import {
-  createVar,
-  fallbackVar,
-  style,
-  styleVariants,
-} from '@vanilla-extract/css';
-
-export const inputStatusColor = createVar();
+import { fallbackVar, style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
@@ -24,14 +19,11 @@ export const containerClass = style([
   }),
   {
     position: 'relative',
-    borderBottom: `1px solid ${fallbackVar(
-      inputStatusColor,
-      vars.colors.$gray30,
-    )}`,
+    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
     selectors: {
       [`${darkThemeClass} &`]: {
         borderBottom: `1px solid ${fallbackVar(
-          inputStatusColor,
+          statusColor,
           vars.colors.$gray60,
         )}`,
       },
@@ -45,6 +37,27 @@ export const containerClass = style([
       '.inputGroup &:last-child': {
         borderBottomRightRadius: vars.radii.$sm,
         borderBottomLeftRadius: vars.radii.$sm,
+      },
+    },
+  },
+]);
+
+export const disabledClass = style([
+  sprinkles({
+    pointerEvents: 'none',
+    bg: {
+      darkMode: '$gray60',
+      lightMode: '$gray20',
+    },
+  }),
+  {
+    opacity: 0.4,
+    selectors: {
+      '.inputGroup &': {
+        opacity: 1,
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
       },
     },
   },
@@ -97,7 +110,10 @@ export const leadingTextClass = style([
 
 export const leadingTextWrapperClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
+    backgroundColor: {
+      lightMode: '$gray20',
+      darkMode: '$gray60',
+    },
     display: 'flex',
     alignItems: 'center',
   }),

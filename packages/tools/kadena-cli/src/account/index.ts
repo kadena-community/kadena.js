@@ -1,6 +1,6 @@
 import { fundCommand } from './fundCommand';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'account' = 'account';
 

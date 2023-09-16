@@ -1,6 +1,6 @@
 import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
-import { LayoutType } from '@/types/Layout';
+import type { LayoutType } from '@/types/Layout';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([
@@ -18,7 +18,6 @@ export const contentClass = style([
     position: 'relative',
     paddingTop: '$10',
     paddingX: 0,
-    paddingBottom: '$35',
     overflow: 'hidden',
     width: '100%',
     height: '100%',
@@ -59,6 +58,8 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
     },
   },
   full: {},
-  blog: {},
+  blog: {
+    paddingTop: 0,
+  },
   redocly: {},
 });

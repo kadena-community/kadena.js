@@ -1,7 +1,10 @@
 {
   "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
   "compilerOptions": {
+    "types": ["heft-jest"],
     "module": "node16",
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
     "skipLibCheck": true
   }
 }

@@ -12,13 +12,14 @@ description:
 menu: Pact Core Concepts Part I
 label: Pact Core Concepts Part I
 publishDate: 2023-04-20
+headerImage: /assets/blog/1_HTwgnXLGl8yViDoeTNcGAQ.webp
+tags: [pact]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Pact Core Concepts Part I — Introduction to Blockchain Development with Kadena
-
-![](/assets/blog/1_HTwgnXLGl8yViDoeTNcGAQ.webp)
 
 The Pact Core concepts series is a companion guide to the
 [Real World Pact teaching repository](https://github.com/thomashoneyman/real-world-pact).
@@ -99,7 +100,7 @@ such as Ethereum’s Solidity. Some of these features include:
 Kadena.js is a mono-repository where the team stores all their JavaScript/
 TypeScript solutions for its blockchain, including but not limited to libraries,
 tooling, and dApps. Essentially, Kadena.js is a software developer kit for
-JavaScript, whereas Chianweb and Pact are the backbone of applications built on
+JavaScript, whereas Chainweb and Pact are the backbone of applications built on
 the Kadena platform. Once builders are familiar with Chainweb and Pact, they can
 then build frontend against the Kadena blockchain backend with Kadena.js.
 

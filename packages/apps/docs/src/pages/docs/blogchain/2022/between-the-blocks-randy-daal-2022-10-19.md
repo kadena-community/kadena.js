@@ -10,13 +10,14 @@ description:
 menu: Between the Blocks Randy Daal
 label: Between the Blocks Randy Daal
 publishDate: 2022-10-19
+headerImage: /assets/blog/1_bwSQxDBogmkeytcc8tmMQw.webp
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Between the Blocks: Randy Daal
-
-![It’s time to take a deep dive with Randy Daal, Kadena’s Developer Experience Lead, about his past, present, and time at Kadena!](/assets/blog/1_bwSQxDBogmkeytcc8tmMQw.webp)
 
 Welcome to Kadena’ Personnel Series, where we showcase some of the most
 brilliant and talented minds behind Kadena! Since its inception in 2016, Kadena

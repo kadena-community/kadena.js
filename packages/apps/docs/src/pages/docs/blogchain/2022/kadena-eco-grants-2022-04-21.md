@@ -9,11 +9,12 @@ description:
 menu: Kadena Eco Grants - What You Need To Know
 label: Kadena Eco Grants - What You Need To Know
 publishDate: 2022-04-21
+headerImage: /assets/blog/0_32R3zmCL7LfiYyED.png
+tags: [kadena, grant]
 author: Francesco Melpignano
+authorId: francesco.melpignano
 layout: blog
 ---
-
-![](/assets/blog/0_32R3zmCL7LfiYyED.png)
 
 # Kadena Eco Grants: What You Need To Know
 

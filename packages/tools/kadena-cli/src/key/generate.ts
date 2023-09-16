@@ -1,6 +1,6 @@
 import { processZodErrors } from '../utils/process-zod-errors';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 export interface IGenerateOptions {}
 

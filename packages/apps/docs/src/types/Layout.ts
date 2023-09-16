@@ -1,7 +1,7 @@
-import { ProductIcon } from '@kadena/react-ui';
+import type { ProductIcon } from '@kadena/react-ui';
 
-import { ITopDoc } from '@/data/getTopDocs';
-import { ReactNode } from 'react';
+import type { ITopDoc } from '@/data/getTopDocs';
+import type { ReactNode } from 'react';
 
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -23,32 +23,55 @@ export interface ISubHeaderElement {
 }
 
 export interface INavigation {
-  previous?: IMenuItem;
-  next?: IMenuItem;
+  previous?: INavigationMenuItem;
+  next?: INavigationMenuItem;
 }
 
-export interface IPageMeta {
-  title: string; // title of the HEAD info
-  subTitle?: string;
+export interface INavigationMenuItem {
+  title: string;
+  root: string;
+}
+
+export interface IBasePageMeta {
+  title: string;
   menu: string; // name in the main menu
-  order?: number;
+  order: number;
   label: string; // name of the pagdescription: string;
   layout: LayoutType;
   description: string;
-  editLink: string;
-  lastModifiedDate?: Date;
+  subTitle?: string;
   icon?: ProductIconNames;
+  lastModifiedDate?: Date;
+}
+
+export interface IAuthorInfo {
+  id: string;
+  name: string;
+  avatar: string;
+  description?: string;
+  twitter?: string;
+}
+export interface IPageMeta extends IBasePageMeta {
+  editLink: string;
   navigation: INavigation;
   publishDate?: string;
+  headerImage?: string;
+  tags?: string[];
   author?: string;
+  authorId?: string;
+  authorInfo?: IAuthorInfo;
   readingTimeInMinutes?: number;
   wordCount?: number;
 }
 
-export interface IMenuItem extends IPageMeta {
+export interface IMenuItem {
   root: string;
+  title: string;
+  menu: string;
+  label: string;
   isActive: boolean; // checks that the actual item is active in the menu
   isMenuOpen: boolean; // makes sure that the parent slide menu is open
+  icon?: ProductIconNames;
   children: IMenuItem[];
 }
 
@@ -75,6 +98,10 @@ export interface IPageProps {
   topDocs: ITopDoc[];
 }
 
+export interface IBasePageProps extends Omit<IPageProps, 'frontmatter'> {
+  frontmatter: IBasePageMeta;
+}
+
 export interface IMenuData {
   children: IMenuData[];
   root: string;
@@ -88,6 +115,8 @@ export interface IMenuData {
   isActive: boolean;
   publishDate?: string;
   author?: string;
+  authorId?: string;
+  authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
 }

@@ -8,11 +8,12 @@ description:
 menu: Safer, Smarter Contracts with Pact
 label: Safer, Smarter Contracts with Pact
 publishDate: 2019-02-20
+headerImage: /assets/blog/1_F3EjRcDtfBjShCP0qszVLg.webp
+tags: [pact, smart contract, formal verification]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_F3EjRcDtfBjShCP0qszVLg.webp)
 
 # Safer, Smarter Contracts with Pact
 
@@ -78,7 +79,7 @@ reliability seen in Bitcoin. Some pressing issues faced by Ethereum’s Turing
 complete smart contracts include:
 
 - An explosion of attack vectors:
-  [the EVM’s general purpose nature and complexity mean that hackers can find malicious openings to attack and capitalize on smart contract bugs and vulnerabilities](../2018/the-evm-is-fundamentally-unsafe-2018-12-13).
+  [the EVM’s general purpose nature and complexity mean that hackers can find malicious openings to attack and capitalize on smart contract bugs and vulnerabilities](/docs/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13).
   These vulnerabilities have occurred or been exploited in the past resulting in
   the loss of hundreds of millions of dollars, as seen in the
   [DAO hack](https://www.coindesk.com/understanding-dao-hack-journalists/),
@@ -152,7 +153,7 @@ served as inspiration for Pact and they share several similarities, one of which
 is that they are both Turing incomplete, meaning they do not allow recursion or
 infinite loops. In Pact, any recursion that is detected will cause an immediate
 failure and terminate all running code. This feature significantly
-[reduces any potential attack vectors](./turing-completeness-and-smart-contract-security-2019-02-11)
+[reduces any potential attack vectors](/docs/blogchain/2019/turing-completeness-and-smart-contract-security-2019-02-11)
 that may be present in smart contracts.
 
 ### Blockchain Governance
@@ -175,7 +176,7 @@ smart contracts can be extracted into external databases via SQL.
 ### Formal Verification
 
 Pact also comes equipped with a powerful validation tool suite in the form of
-[formal verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
+[formal verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
 Pact uses Z3, an open source tool developed by Microsoft, to mathematically
 verify and test for bugs present in code.
 

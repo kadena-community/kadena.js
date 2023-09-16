@@ -1,8 +1,9 @@
 import { GradientText, Heading, Stack } from '@kadena/react-ui';
 
-import { StyledHeader, SubHeader, Wrapper } from './styles';
+import { headerClass, subheaderClass, wrapperClass } from './style.css';
 
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProps {
   children: ReactNode;
@@ -10,8 +11,8 @@ interface IProps {
 
 export const SearchHeader: FC<IProps> = ({ children }) => {
   return (
-    <StyledHeader>
-      <Wrapper>
+    <header className={headerClass}>
+      <div className={wrapperClass}>
         <Heading as="h1" variant="h2">
           Search spaces
         </Heading>
@@ -19,10 +20,12 @@ export const SearchHeader: FC<IProps> = ({ children }) => {
           <Heading as="h2" variant="h4">
             Traditional or the <GradientText>new</GradientText> way
           </Heading>
-          <SubHeader>Explore our content across spaces</SubHeader>
+          <span className={subheaderClass}>
+            Explore our content across spaces
+          </span>
           {children}
         </Stack>
-      </Wrapper>
-    </StyledHeader>
+      </div>
+    </header>
   );
 };

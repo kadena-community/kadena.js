@@ -10,13 +10,14 @@ description:
 menu: Why Pact is the Best DeFi Language
 label: Why Pact is the Best DeFi Language
 publishDate: 2023-01-05
+headerImage: /assets/blog/1_LodIVJU_PvliNLDGsRZShQ.webp
+tags: [pact]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Why Pact is the Best DeFi Language
-
-![](/assets/blog/1_LodIVJU_PvliNLDGsRZShQ.webp)
 
 2022 has seen over $3 billion worth of hacks in the Ethereum space. Each one was
 a tragedy for users, but also potentially ruinous for the developers behind the

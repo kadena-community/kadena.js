@@ -11,13 +11,14 @@ description:
 menu: Kadena Tech Bulletin #4
 label: Kadena Tech Bulletin #4
 publishDate: 2023-06-20
+headerImage: /assets/blog/1_2SE_f06Kj-A0xvlHr0XKIg.webp
+tags: [kadena, fungible contracts, pact, marmalade]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Kadena Tech Bulletin #4
-
-![](/assets/blog/1_2SE_f06Kj-A0xvlHr0XKIg.webp)
 
 Welcome to the 4th issue of The Kadena Tech Bulletin!
 

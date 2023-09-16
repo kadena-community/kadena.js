@@ -11,13 +11,14 @@ description:
 menu: Pact Core Concepts Part III
 label: Pact Core Concepts Part III
 publishDate: 2023-05-04
+headerImage: /assets/blog/1_ZsQEhEAHC5wr3oj_kODDng.webp
+tags: [pact, formal verification]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Pact Core Concepts Part III — Testing and Formal Verification in the Pact REPL
-
-![](/assets/blog/1_ZsQEhEAHC5wr3oj_kODDng.webp)
 
 The Pact Core Concepts series is a companion guide to the
 [Real World Pact](https://github.com/thomashoneyman/real-world-pact) repository,

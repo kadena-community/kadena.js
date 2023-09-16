@@ -1,6 +1,6 @@
 import { sendCommand } from './send';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'tx' = 'tx';
 

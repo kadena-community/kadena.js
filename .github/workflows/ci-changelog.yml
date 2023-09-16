@@ -7,9 +7,10 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          show-progress: false
 
       - uses: pnpm/action-setup@v2
         with:
@@ -17,7 +18,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.NodeVersion }}
+          node-version: 20
           cache: 'pnpm'
 
       - name: Contains changelog update?

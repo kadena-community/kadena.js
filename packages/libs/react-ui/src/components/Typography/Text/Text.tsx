@@ -8,7 +8,8 @@ import {
 } from './Text.css';
 
 import cn from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITextProps {
   as?: keyof typeof elementVariant;

@@ -11,13 +11,14 @@ jobs:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # 👈 Required to retrieve git history, needed to determine diffs.
+          show-progress: false
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - uses: pnpm/action-setup@v2
         with:
@@ -26,10 +27,9 @@ jobs:
       - name: pnpm install
         run: pnpm install
 
-      - name: pnpm build (internal dependencies)
+      - name: pnpm build (internal dependencies) # build all internal dependencies of docs but not docs itself
         run: |
-          pnpm --filter @kadena/react-ui... build 
-          pnpm --filter @kadena/react-components... build
+          pnpm run build --filter=@kadena/docs^...
 
       - name: Publish Storybook
         uses: chromaui/action@v1

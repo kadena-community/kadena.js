@@ -1,7 +1,10 @@
+import type { ITooltipProps } from './';
 import { container } from './stories.css';
-import { ITooltipProps, Tooltip } from './';
+import { Tooltip } from './';
+
 import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
+import { withCenteredStory } from '@utils/withCenteredStory';
 import React, { useRef } from 'react';
 
 const meta: Meta<
@@ -11,6 +14,15 @@ const meta: Meta<
 > = {
   title: 'Components/Tooltip',
   component: Tooltip.Root,
+  decorators: [withCenteredStory],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Tooltip component renders a tooltip with text. The placement of the tooltip can be set with the `placement` prop. The tooltip can be triggered by hovering over the `IconButton` component.',
+      },
+    },
+  },
   argTypes: {
     text: {
       control: {

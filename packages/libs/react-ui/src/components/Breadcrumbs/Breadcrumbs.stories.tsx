@@ -1,4 +1,5 @@
-import { Breadcrumbs, IBreadcrumbsProps } from '@components/Breadcrumbs';
+import type { IBreadcrumbsProps } from '@components/Breadcrumbs';
+import { Breadcrumbs } from '@components/Breadcrumbs';
 import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -18,7 +19,7 @@ const meta: Meta<
     icon: keyof typeof ProductIcon;
   } & IBreadcrumbsProps
 > = {
-  title: 'Components/Breadcrumbs',
+  title: 'Navigation/Breadcrumbs',
   parameters: {
     docs: {
       description: {

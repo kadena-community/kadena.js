@@ -1,1 +1,6 @@
+dist
+etc
+lib
 src/components/Input/InputGroup.mdx
+temp
+**/*.md

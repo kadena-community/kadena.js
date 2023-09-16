@@ -1,7 +1,5 @@
 import './styles/global.css';
 
-// TODO remove comment
-
 export type {
   IAccordionProps,
   IAccordionSectionProps,
@@ -34,7 +32,6 @@ export type {
   INotificationActionsProps,
   INotificationProps,
   InputWrapperStatus,
-  IOptionProps,
   IPaginationProps,
   IProfileCardProps,
   IProgressBarProps,
@@ -74,12 +71,10 @@ export {
   Label,
   Link,
   MaskedValue,
-  Modal,
   ModalProvider,
   NavFooter,
   NavHeader,
   Notification,
-  Option,
   Pagination,
   ProductIcon,
   ProfileCard,

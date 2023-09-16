@@ -9,13 +9,14 @@ description:
 menu: Kadena 2023 Q1 Newsletter
 label: Kadena 2023 Q1 Newsletter
 publishDate: 2023-04-05
+headerImage: /assets/blog/1_vA09z1Z28bu459OOK2H5iA.webp
+tags: [kadena, grantee]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Kadena 2023 Q1 Newsletter
-
-![](/assets/blog/1_vA09z1Z28bu459OOK2H5iA.webp)
 
 ## Welcome to the first edition of Kadena’s 2023 quarterly newsletter!
 

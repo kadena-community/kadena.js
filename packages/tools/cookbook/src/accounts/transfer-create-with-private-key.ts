@@ -1,4 +1,9 @@
-import { getClient, isSignedTransaction, Pact } from '@kadena/client';
+import {
+  addSignatures,
+  createClient,
+  isSignedTransaction,
+  Pact,
+} from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
 
 import { accountKey } from '../utils/account-key';
@@ -19,14 +24,14 @@ const [sender, senderPrivateKey, receiver, transferAmount] =
 /**
  * Create a new KDA account and transfer funds to it
  *
- * @param sender - Account sending coins
+ * @param senderAccount - Account sending coins
  * @param senderPrivateKey - Private key of the account sending the coins
  * @param receiver - Account being created and receiving coins
  * @param amount - Amount of coins transferred to the new account
  * @return
  */
 async function transferCreate(
-  sender: string,
+  senderAccount: string,
   senderPrivateKey: string,
   receiver: string,
   amount: number,
@@ -40,11 +45,11 @@ async function transferCreate(
       keys: [accountKey(receiver)],
       pred: 'keys-all',
     })
-    .addSigner(senderPublicKey, (withCap: any) => [
+    .addSigner(senderPublicKey, (withCap) => [
       withCap('coin.TRANSFER', sender, receiver, pactDecimal),
       withCap('coin.GAS'),
     ])
-    .setMeta({ chainId: '1', sender })
+    .setMeta({ chainId: '1', senderAccount })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
@@ -57,9 +62,12 @@ async function transferCreate(
     throw new Error('Failed to sign transaction');
   }
 
-  transaction.sigs = [{ sig: sig.sig }];
+  addSignatures(transaction, {
+    sig: sig.sig,
+    pubKey: sig.pubKey,
+  });
 
-  const { submit, pollStatus } = getClient(API_HOST);
+  const { submit, pollStatus } = createClient(API_HOST);
 
   if (!isSignedTransaction(transaction)) {
     throw new Error('Command was not signed.');

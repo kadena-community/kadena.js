@@ -6,7 +6,9 @@ description:
 menu: Kadena’s Stuart Popejoy and Will Martino Speak at World Blockchain Forum
 label: Kadena’s Stuart Popejoy and Will Martino Speak at World Blockchain Forum
 publishDate: 2019-10-11
+headerImage: /assets/blog/0_LBqMHBRpVAueiHqI.jpg
 author: Rebecca Rodriguez
+authorId: rebecca.rodriguez
 layout: blog
 ---
 
@@ -14,8 +16,6 @@ layout: blog
 
 _Highlights from World Blockchain Forum on blockchain application in financial
 services_
-
-![(left to right): Nelson Chu, Will Martino, Jérôme de Tychey, Didier Martin, Chao Cheng-Shorland](/assets/blog/0_LBqMHBRpVAueiHqI.jpg)
 
 In late September, Kadena leadership spoke at the World Blockchain Forum, a
 global conference dedicated to furthering the discussion on blockchain

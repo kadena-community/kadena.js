@@ -11,11 +11,12 @@ description:
 menu: Pact - Solving Smart Contract Governance and Upgradeability
 label: Pact - Solving Smart Contract Governance and Upgradeability
 publishDate: 2019-04-05
+headerImage: /assets/blog/1_NOwRG03NfMqyaqGrmdPfKg.webp
+tags: [pact]
 author: Marie Leaf
+authorId: marie.leaf
 layout: blog
 ---
-
-![](/assets/blog/1_NOwRG03NfMqyaqGrmdPfKg.webp)
 
 # Pact: Solving Smart Contract Governance and Upgradeability
 
@@ -96,8 +97,8 @@ live and running. Total Governance ensures that changes in upstream dependencies
 will not break the contract itself. Developers can be assured that their code
 will maintain its integrity, and fulfill its intended purpose. Pact protects
 against upstream code breaking downstream code, avoiding instances like the
-infamous [“Leftpad” case](../2018/pact-2-4-is-out-2018-06-04) that broke the
-internet, or the case of blockchain, the
+infamous [“Leftpad” case](/docs/blogchain/2018/pact-2-4-is-out-2018-06-04) that
+broke the internet, or the case of blockchain, the
 [Parity multi-sig wallet bug](https://www.ccn.com/i-accidentally-killed-it-parity-wallet-bug-locks-150-million-in-ether/).
 
 ![](/assets/blog/0_NwHvTACo-YPamdsJ.png)
@@ -147,9 +148,9 @@ language that solves the problems that Pact can.
   [Pactlang.org](https://pactlang.org/)’s Tutorial Curriculum
 
 - Check out our [Github](https://github.com/kadena-io/pact) — Pact is fully
-  [open source](../2018/why-we-open-sourced-our-blockchains-smart-contract-language-2018-05-04)
+  [open source](/docs/blogchain/2018/why-we-open-sourced-our-blockchains-smart-contract-language-2018-05-04)
   with
-  [Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
+  [Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
   tools baked-in
 
 - Additional [Resources](https://kadena.io/resources/) and

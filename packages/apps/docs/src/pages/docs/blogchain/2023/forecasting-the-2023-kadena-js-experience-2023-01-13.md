@@ -9,13 +9,14 @@ description:
 menu: Curating the Kadena.js Dev Experience - 2022–2023
 label: Curating the Kadena.js Dev Experience - 2022–2023
 publishDate: 2023-01-13
+headerImage: /assets/blog/1_gg9ye2dLsWtNjIbG_DfFlA.webp
+tags: [kadenajs]
 author: Randy Daal
+authorId: randy.daal
 layout: blog
 ---
 
 # Curating the Kadena.js Dev Experience: 2022–2023
-
-![](/assets/blog/1_gg9ye2dLsWtNjIbG_DfFlA.webp)
 
 > "The most reliable way to predict the future is to create it”
 >
@@ -50,7 +51,7 @@ tools, tutorials, and apps, such as
 [@kadena/cryptography-utils](https://github.com/kadena-community/kadena.js/tree/master/packages/libs/cryptography-utils),
 and much, much more. All the details of what we accomplished in the last 6
 months are outlined in
-our[ 2022 Year in Review.](../2022/kadena-2022-year-in-review-2022-12-22)
+our[ 2022 Year in Review.](/docs/blogchain/2022/kadena-2022-year-in-review-2022-12-22)
 
 Perhaps most excitingly, in December 2022, the team launched the Kadena Learning
 Tutorials Platform, a new comprehensive educational program specifically

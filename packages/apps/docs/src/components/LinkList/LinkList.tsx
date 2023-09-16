@@ -3,7 +3,8 @@ import { Heading } from '@kadena/react-ui';
 import { linkClass, listClass, listItemClass } from './styles.css';
 
 import Link from 'next/link';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface ILinkList {
   children?: ReactNode;

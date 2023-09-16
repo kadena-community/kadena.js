@@ -1,26 +1,25 @@
+import type { SystemIcon } from '@kadena/react-ui';
 import {
   Button,
   Card,
   IconButton,
-  Modal,
   Stack,
-  SystemIcon,
   Tag,
   Text,
   useModal,
 } from '@kadena/react-ui';
 
 import {
-  largeIconStyle,
   modalButtonStyle,
   modalOptionsContentStyle,
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
-import { DevOption } from '@/constants/kadena';
+import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 export interface IDevOption {
   title: string;
@@ -93,12 +92,7 @@ export const OptionsModal: FC = () => {
                       color="default"
                     />
                   )}
-                  <IconButton
-                    title="Radio"
-                    icon={value.icon}
-                    color="default"
-                    className={largeIconStyle}
-                  />
+                  <IconButton title="Radio" icon={value.icon} color="default" />
                   <Stack direction="column" marginX="$md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
@@ -123,20 +117,18 @@ export const OptionsModal: FC = () => {
   };
 
   return (
-    <Modal title="Settings">
-      <div className={modalOptionsContentStyle}>
-        {renderOptions()}
+    <div className={modalOptionsContentStyle}>
+      {renderOptions()}
 
-        <div className={modalButtonStyle}>
-          <Button
-            title={`${t('Save')}`}
-            onClick={() => handleSave()}
-            color="primary"
-          >
-            {`${t('Save')}`}
-          </Button>
-        </div>
+      <div className={modalButtonStyle}>
+        <Button
+          title={`${t('Save')}`}
+          onClick={() => handleSave()}
+          color="primary"
+        >
+          {`${t('Save')}`}
+        </Button>
       </div>
-    </Modal>
+    </div>
   );
 };

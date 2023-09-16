@@ -1,3 +1,3 @@
 export * from './AsideLink';
-export * from './AsideStyles';
+export * from './AsideList';
 export * from './ListItem';

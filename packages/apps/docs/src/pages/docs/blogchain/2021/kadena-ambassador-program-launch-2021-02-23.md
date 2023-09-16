@@ -7,7 +7,9 @@ description:
 menu: Kadena Ambassador Program Launch
 label: Kadena Ambassador Program Launch
 publishDate: 2021-02-23
+tags: [ambassador]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
@@ -94,7 +96,7 @@ channel would be beneficial for spreading Kadena’s brand. In addition, Communi
 Leaders can create rules more or less strict than in our official channels.
 However, Community Leaders must ensure that there is no misinformation being
 spread and uphold Kadena’s brand and
-[Code of Conduct](../../kadena/code-of-conduct).
+[Code of Conduct](/docs/kadena/code-of-conduct).
 
 Kadena recognizes that **community events** are crucial in bringing members
 together to help spread Kadena’s brand. One example of a community-led event was

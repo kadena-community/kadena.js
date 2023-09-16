@@ -1,14 +1,14 @@
-import {
+import type {
   IsWrappedData,
-  isWrappedData,
   IWrappedData,
   UnwrappedObjects,
-  wrapData,
 } from '../dataWrapper';
-import { UnionToIntersection } from '../typeUtilities';
+import { isWrappedData, wrapData } from '../dataWrapper';
+import type { UnionToIntersection } from '../typeUtilities';
 
 import { oneOf } from './oneOf';
-import { FAILED, IParser, rule, RuleReturnType } from './rule';
+import type { IParser, RuleReturnType } from './rule';
+import { FAILED, rule } from './rule';
 
 type MakeArr<Type> = {
   [Property in keyof Type]: Type[Property][];

@@ -1,7 +1,10 @@
-import { Heading, IHeadingProps } from '@kadena/react-ui';
+import type { IHeadingProps } from '@kadena/react-ui';
+import { Heading, Link } from '@kadena/react-ui';
 
-import { ILinkBlock, LinkBlock } from './LinkBlock';
-import { ILinkList, LinkList } from './LinkList';
+import type { ILinkBlock } from './LinkBlock';
+import { LinkBlock } from './LinkBlock';
+import type { ILinkList } from './LinkList';
+import { LinkList } from './LinkList';
 import {
   columnLinkClass,
   columnLinkListItemClass,
@@ -10,8 +13,9 @@ import {
 } from './styles.css';
 
 import classnames from 'classnames';
-import Link from 'next/link';
-import React, { FC, FunctionComponentElement } from 'react';
+import NextLink from 'next/link';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface IBrowseSectionProps {
   title?: string;
@@ -56,6 +60,7 @@ const BrowseSection: BrowseSectionType = ({
           if (
             !React.isValidElement(child) ||
             (child.type !== LinkBlock &&
+              child.type !== NextLink &&
               child.type !== Link &&
               child.type !== 'a')
           ) {

@@ -1,4 +1,5 @@
-import type { INavHeaderRootProps, INavItems } from './NavHeader';
+import type { INavHeaderRootProps } from './NavHeader';
+import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
@@ -6,21 +7,21 @@ import { Button } from '@components/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const sampleNavItems: INavItems = [
+const sampleNavItems: INavHeaderLinkProps[] = [
   {
-    label: 'Faucet',
+    children: 'Faucet',
     href: '#faucet',
   },
   {
-    label: 'Transactions',
+    children: 'Transactions',
     href: '#transactions',
   },
   {
-    label: 'Balance',
+    children: 'Balance',
     href: '#balance',
   },
   {
-    label: 'Learn Pact',
+    children: 'Learn Pact',
     href: '#pact',
   },
 ];
@@ -30,7 +31,7 @@ type StoryProps = {
   navHeaderActiveLink: number;
   renderSampleContent: boolean;
   useCustomNavigation: boolean;
-  customNavigation: INavItems;
+  customNavigation: INavHeaderLinkProps[];
 } & INavHeaderRootProps;
 
 const meta: Meta<StoryProps> = {
@@ -43,7 +44,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          '<i>Note: maximum navigation items is currently limited (not technically enforced).<br>Pending design update to support more items.</i><br><br><strong>NavHeader.Link usage is optional</strong><br>You set your own children of NavHeader.Navigation (e.g. when using NextJS <Link> component).<br>You can set the initial active link with the <i>activeLink</i> prop on the Navigation component.',
+          'The NavHeader component provides styled top bar navigation that be configured with main nav links on the left side and any additional custom items on the right side.<br><br><i>Note: In times when you need to use a different `Link` component (like next/link in Next.js), you can wrap it in the `NavHeader.Link` component and set the `asChild` prop to pass on styles and additional props.</i><br><br><i>In progress: maximum navigation items is currently limited (not technically enforced).<br>Pending design update to support more items.</i>',
       },
     },
   },
@@ -117,9 +118,9 @@ export const Dynamic: IStory = {
             <NavHeader.Link
               key={index}
               href={item.href}
-              onClick={(event) => console.log(item.label, { event })}
+              onClick={(event) => console.log(item.children, { event })}
             >
-              {item.label}
+              {item.children}
             </NavHeader.Link>
           ))}
         </NavHeader.Navigation>

@@ -10,11 +10,12 @@ description:
 menu: Kadena 2023 Live Technical Roadmap
 label: Kadena 2023 Live Technical Roadmap
 publishDate: 2022-12-15
+headerImage: /assets/blog/1_eguMp-5U0vl9Za5LkYNiCw.webp
+tags: [kadena, pact, chainweb]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_eguMp-5U0vl9Za5LkYNiCw.webp)
 
 # Kadena 2023 Live Technical Roadmap
 

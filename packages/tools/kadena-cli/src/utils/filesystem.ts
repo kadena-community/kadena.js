@@ -1,9 +1,8 @@
+import type {   BaseEncodingOptions, PathLike } from 'fs';
 import {
   accessSync,
-  BaseEncodingOptions,
   existsSync,
   mkdirSync,
-  PathLike,
   writeFileSync,
 } from 'fs';
 import path from 'path';

@@ -1,13 +1,9 @@
-import {
-  IconButton,
+import type {
   IInputProps,
   IInputWrapperProps,
-  Input,
-  InputWrapper,
   ISelectProps,
-  Option,
-  Select,
 } from '@kadena/react-ui';
+import { IconButton, Input, InputWrapper, Select } from '@kadena/react-ui';
 
 import { accountInputWrapperStyle } from './styles.css';
 
@@ -15,8 +11,9 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useDidUpdateEffect } from '@/hooks';
 import { getAccounts } from '@/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
-import React, { ChangeEvent, FC, useState } from 'react';
-import { FieldError } from 'react-hook-form';
+import type { ChangeEvent, FC } from 'react';
+import React, { useState } from 'react';
+import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
 interface IAccountNameFieldProps
@@ -70,11 +67,11 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
         icon={'KIcon'}
         id={elementId}
       >
-        <Option value={''}>{t('Select Account')}</Option>
+        <option value={''}>{t('Select Account')}</option>
         {getAccounts(accounts, selectedNetwork).map((account) => (
-          <Option key={account} value={account}>
+          <option key={account} value={account}>
             {account.slice(0, 4)}****{account.slice(-4)}
-          </Option>
+          </option>
         ))}
       </Select>
     ),

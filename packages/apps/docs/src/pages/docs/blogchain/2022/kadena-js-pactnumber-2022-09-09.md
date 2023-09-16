@@ -9,7 +9,9 @@ description:
 menu: Kadena.js — PactNumber has been Released
 label: Kadena.js — PactNumber has been Released
 publishDate: 2022-09-09
+tags: [kadenajs, kda]
 author: Heekyun
+authorId: heekyun
 layout: blog
 ---
 

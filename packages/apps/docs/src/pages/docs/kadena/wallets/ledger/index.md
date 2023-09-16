@@ -55,8 +55,7 @@ Before You Start, Make Sure:
 
 - Verify the account name provided by the Transfer Tool app by selecting
   “Verify” in the web app and following the prompts shown on the Ledger device.
-- Using any of the
-  [officially recognized wallets](https://docs.kadena.io/basics/wallets), select
+- Using any of the [officially recognized wallets](/docs/kadena/wallets), select
   “Watch Account” and enter the account name verified in the Transfer Tool.
 - This will add the Ledger device controlled account to your account list so the
   balance on each chain can be seen.

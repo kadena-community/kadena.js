@@ -1,4 +1,4 @@
-import { Context } from '../constants/config';
+import type { Context } from '../constants/config';
 import { displayConfig, displayContext } from '../utils/display';
 import { getConfig, getContext, setContext } from '../utils/globalConfig';
 import { collectResponses } from '../utils/helpers';
@@ -9,7 +9,7 @@ import { contextQuestions } from './contextOptions';
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import clear from 'clear';
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
 

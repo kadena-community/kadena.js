@@ -1,4 +1,4 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
 import { isSignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 

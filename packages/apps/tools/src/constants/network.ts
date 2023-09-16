@@ -1,4 +1,5 @@
-import { kadenaConstants, Network } from './kadena';
+import type { Network } from './kadena';
+import { kadenaConstants } from './kadena';
 
 export const chainNetwork: {
   [K in Network]: { server: string; network: Network };

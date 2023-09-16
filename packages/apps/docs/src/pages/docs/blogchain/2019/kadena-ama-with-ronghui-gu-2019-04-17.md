@@ -8,11 +8,12 @@ description:
 menu: Kadena AMA with Certik Co-founder Ronghui Gu
 label: Kadena AMA with Certik Co-founder Ronghui Gu
 publishDate: 2019-04-17
+headerImage: /assets/blog/1_I827oIhMvsisbOvfMiO2Rw.webp
+tags: [chainweb]
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_I827oIhMvsisbOvfMiO2Rw.webp)
 
 # Kadena AMA with Certik Co-founder Ronghui Gu
 
@@ -46,7 +47,7 @@ systems and exchange backbones for the financial industry, including as leader
 of the emerging technology group at JP Morgan. Stuart is the creator of Kadena’s
 smart contract language, [Pact](http://pact.kadena.io), the first open-source
 smart contract languages with
-[formal verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
+[formal verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 built-in.
 
 **[Ronghui Gu](https://www.linkedin.com/in/guronghui/), Co-founder @ Certik:**

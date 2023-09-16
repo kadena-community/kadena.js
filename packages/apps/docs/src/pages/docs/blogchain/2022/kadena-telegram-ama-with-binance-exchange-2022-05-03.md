@@ -7,7 +7,9 @@ description:
 menu: Kadena Telegram AMA with Binance Exchange
 label: Kadena Telegram AMA with Binance Exchange
 publishDate: 2022-05-04
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

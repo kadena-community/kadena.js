@@ -11,11 +11,11 @@ description:
 menu: Fully Public Testnet (v3), Hashing Algorithm, and Mining API
 label: Fully Public Testnet (v3), Hashing Algorithm, and Mining API
 publishDate: 2019-09-18
+headerImage: /assets/blog/1_j-19orafTNN7mVB6M4V3Qg.webp
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_j-19orafTNN7mVB6M4V3Qg.webp)
 
 # Kadena Public Blockchain Releases Fully Public Testnet (v3), Hashing Algorithm, and Mining API
 

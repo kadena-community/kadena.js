@@ -1,8 +1,8 @@
 import yaml from 'js-yaml';
-import fs from 'fs';
 import { getReadTime } from './utils.mjs';
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
+import authors from './../data/authors.json' assert { type: 'json' };
 
 const getFrontMatter = (node) => {
   const { type, value } = node;
@@ -12,12 +12,11 @@ const getFrontMatter = (node) => {
   }
 };
 
-const getModifiedDate = (file) => {
-  const stats = fs.statSync(file);
-  if (!stats.isFile() || !stats.mtimeMs) return;
+const getBlogAuthorInfo = (data) => {
+  const authorId = data.authorId;
+  if (!authorId) return;
 
-  const date = new Date(stats.mtimeMs);
-  return date.toISOString();
+  return authors.find((author) => author.id === authorId);
 };
 
 const getFileName = (file) => {
@@ -57,7 +56,9 @@ const createNavigation = (file) => {
   const path = getPathName(getFileName(file));
   const flatData = getData().reduce(flat, []).flat();
 
-  const itemIdx = flatData.findIndex((i) => i.root === path);
+  const itemIdx = flatData.findIndex((i) => {
+    return i && i.root === path;
+  });
 
   return {
     previous: flatData[itemIdx - 1] ?? undefined,
@@ -79,9 +80,9 @@ const remarkFrontmatterToProps = () => {
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),
-            lastModifiedDate: getModifiedDate(getFileName(file)),
             navigation: createNavigation(file),
             ...data,
+            authorInfo: getBlogAuthorInfo(data),
           },
         },
       };

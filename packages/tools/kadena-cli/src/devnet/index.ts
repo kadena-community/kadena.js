@@ -1,6 +1,6 @@
 import { startCommand } from './start';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'devnet' = 'devnet';
 

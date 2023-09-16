@@ -1,4 +1,4 @@
-import { IAnswers, IQuestion } from '../questions/questions.js';
+import type { IAnswers, IQuestion } from '../questions/questions.js';
 
 import { Spinner } from '@inkjs/ui';
 import { Text } from 'ink';

@@ -1,7 +1,7 @@
 import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
-import { prismaModelName } from '@pothos/plugin-prisma';
+import type { prismaModelName } from '@pothos/plugin-prisma';
 import { Prisma } from '@prisma/client';
 
 export default builder.prismaNode('Block', {
@@ -15,8 +15,28 @@ export default builder.prismaNode('Block', {
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
     powhash: t.exposeString('powhash'),
+    parent_old: t.exposeString('parent'),
 
     // computed fields
+    parent: t.prismaField({
+      type: 'Block',
+      nullable: true,
+      resolve(query, parent, args, context, info) {
+        return prismaClient.block.findUnique({
+          where: {
+            hash: parent.parent,
+          },
+        });
+      },
+    }),
+
+    parentHash: t.string({
+      nullable: true,
+      resolve: (parent, args, context, info) => {
+        // Access the parent block's hash from the parent object
+        return parent.parent;
+      },
+    }),
 
     // relations
     transactions: t.prismaConnection({
@@ -47,6 +67,12 @@ export default builder.prismaNode('Block', {
         });
       },
     }),
+
+    confirmationDepth: t.int({
+      resolve: async (parent, args, context, info) => {
+        return getConfirmationDepth(parent.hash);
+      },
+    }),
   }),
 });
 
@@ -65,4 +91,26 @@ async function getTransactionsRequestkeyByEvent(
       WHERE e.qualname IN (${Prisma.join(events as string[])})
       AND t.block = ${parent.hash}`
   ).map((r) => r.requestkey);
+}
+
+async function getConfirmationDepth(blockHash: string): Promise<number> {
+  const result = await prismaClient.$queryRaw<{ depth: number }[]>`
+    WITH RECURSIVE BlockDescendants AS (
+      SELECT hash, parent, 0 AS depth
+      FROM blocks
+      WHERE hash = ${blockHash}
+      UNION ALL
+      SELECT b.hash, b.parent, d.depth + 1 AS depth
+      FROM BlockDescendants d
+      JOIN blocks b ON d.hash = b.parent
+    )
+    SELECT MAX(depth) AS depth
+    FROM BlockDescendants;
+  `;
+
+  if (result.length && result[0].depth) {
+    return Number(result[0].depth);
+  } else {
+    return 0;
+  }
 }

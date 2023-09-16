@@ -9,13 +9,14 @@ description:
 menu: Unlocking the Value of Smart Wallets
 label: Unlocking the Value of Smart Wallets
 publishDate: 2023-06-28
+headerImage: /assets/blog/1_eMeCKlWBLwPy-CvT6iLujw.webp
+tags: [smart wallet]
 author: Ryan Levy
+authorId: ryan.levy
 layout: blog
 ---
 
 # Unlocking the Value of Smart Wallets
-
-![](/assets/blog/1_eMeCKlWBLwPy-CvT6iLujw.webp)
 
 If you’re keeping your finger on the pulse of all things Web3 and blockchain,
 you’ve heard all about smart wallets and how they’ve emerged as powerful and

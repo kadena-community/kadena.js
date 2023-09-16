@@ -1,15 +1,18 @@
-import { NavHeader, Option, Select } from '@kadena/react-ui';
+import { NavHeader, Select } from '@kadena/react-ui';
 
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
-import { kadenaConstants, Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
+import { kadenaConstants } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
 import { getNetworks } from '@/utils/wallet';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -57,12 +60,8 @@ const Header: FC<IHeaderProps> = () => {
         activeLink={navItems.findIndex((item) => item.href === pathname) + 1}
       >
         {navItems.map((item, index) => (
-          <NavHeader.Link
-            key={index}
-            href={item.href}
-            onClick={handleMenuItemClick}
-          >
-            {item.label}
+          <NavHeader.Link key={index} onClick={handleMenuItemClick} asChild>
+            <Link href={item.href}>{item.label}</Link>
           </NavHeader.Link>
         ))}
       </NavHeader.Navigation>
@@ -72,12 +71,12 @@ const Header: FC<IHeaderProps> = () => {
           ariaLabel={t('Select Network')}
           value={selectedNetwork as string}
           onChange={(e) => setSelectedNetwork(e.target.value as Network)}
-          icon={'Link'}
+          icon="Link"
         >
           {networks.map((network) => (
-            <Option key={network} value={network}>
+            <option key={network} value={network}>
               {kadenaConstants?.[network].label}
-            </Option>
+            </option>
           ))}
         </Select>
         <div className={walletConnectWrapperStyle}>

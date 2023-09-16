@@ -6,11 +6,12 @@ description:
 menu: Kadena’s Public Blockchain 101 and FAQs
 label: Kadena’s Public Blockchain 101 and FAQs
 publishDate: 2019-02-01
+headerImage: /assets/blog/1_7spjR-a_pYCJmQLt2qEamg.webp
+tags: [kadena, pow]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_7spjR-a_pYCJmQLt2qEamg.webp)
 
 # Kadena’s Public Blockchain: 101 and FAQs
 
@@ -57,7 +58,7 @@ reviewing the [whitepaper](https://kadena.io/docs/chainweb-v15.pdf)._
 
 _For some recent (Oct 2018) follow-ups on security and addressing assumptions
 and misunderstandings about Kadena’s public blockchain, check out our
-[post](../2018/security-kadena-chainweb-blockchain-2018-11-01)._
+[post](/docs/blogchain/2018/security-kadena-chainweb-blockchain-2018-11-01)._
 
 ## Frequently Asked Tech Questions
 

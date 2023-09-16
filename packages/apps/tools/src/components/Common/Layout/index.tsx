@@ -3,7 +3,8 @@ import { footerStyle, gridItemMainStyle, headerStyle } from './styles.css';
 
 import { useLayoutContext } from '@/context';
 import classNames from 'classnames';
-import React, { type ReactNode, FC } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProps {
   children?: ReactNode;

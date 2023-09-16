@@ -2,8 +2,9 @@ import { itemClass, itemSizeClass } from './stories.css';
 
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Sprinkles } from '@theme/sprinkles.css';
+import type { Sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
+import { withCenteredStory } from '@utils/withCenteredStory';
 import className from 'classnames';
 import React from 'react';
 
@@ -14,6 +15,7 @@ const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
 
 const meta: Meta<typeof Stack> = {
   title: 'Layout/Stack',
+  decorators: [withCenteredStory],
   parameters: {
     docs: {
       description: {

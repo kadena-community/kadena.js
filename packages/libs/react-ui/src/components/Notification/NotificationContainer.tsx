@@ -1,22 +1,25 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
   cardColorVariants,
   closeButtonClass,
+  colorVariants,
   containerClass,
   contentClass,
   descriptionClass,
-  expandVariants,
+  expandVariants
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface INotificationProps {
   icon?: keyof typeof SystemIcon;
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
-  color?: keyof typeof cardColorVariants;
+  color?: keyof typeof colorVariants;
   hasCloseButton?: boolean;
   onClose?: () => void;
 }
@@ -43,7 +46,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
       <Icon size="md" />
 
       <div className={contentClass}>
-        {title !== undefined && <h4>{title}</h4>}
+        {title && <h4>{title}</h4>}
         <div className={descriptionClass}>{children}</div>
       </div>
 

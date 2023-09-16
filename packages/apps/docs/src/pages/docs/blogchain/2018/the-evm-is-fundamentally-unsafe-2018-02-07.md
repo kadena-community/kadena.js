@@ -8,7 +8,9 @@ description:
 menu: Kadena The Next Generation Blockchain
 label: Kadena The Next Generation Blockchain
 publishDate: 2018-02-07
+tags: [kadena]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 
@@ -106,9 +108,9 @@ Those interested should send their resume or CV to
 
 Yours truly,
 
-[Will Martino](http://twitter.com/_wjmartino_)  
-[Stuart Popejoy](http://twitter.com/SirLensALot)  
-[Monica Quaintance](http://twitter.com/QuaintM)  
+[Will Martino](http://twitter.com/_wjmartino_)
+[Stuart Popejoy](http://twitter.com/SirLensALot)
+[Monica Quaintance](http://twitter.com/QuaintM)
 [Vivienne Chen](http://twitter.com/VivienneXChen)
 
 Want to chat with us? Join our channel: [kadena.io/chat](http://kadena.io/chat)

@@ -5,7 +5,8 @@ import { sidebarClass } from './styles.css';
 import { Toolbar } from './Toolbar';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Sidebar: FC = () => {
   return (

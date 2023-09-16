@@ -9,13 +9,14 @@ description:
 menu: Pact Core Concepts Part II
 label: Pact Core Concepts Part II
 publishDate: 2023-04-27
+headerImage: /assets/blog/1_IOeDK7eWYyl_w4yFdEF5vA.webp
+tags: [pact]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Pact Core Concepts Part II— Learn Pact in 20 Minutes
-
-![](/assets/blog/1_IOeDK7eWYyl_w4yFdEF5vA.webp)
 
 The Pact Core Concepts series is a companion guide to the
 [Real World Pact](https://github.com/thomashoneyman/real-world-pact) repository,

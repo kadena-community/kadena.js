@@ -1,8 +1,8 @@
-import { TConfigOptions } from '../config/configOptions';
+import type { TConfigOptions } from '../config/configOptions';
 
 import { getConfig } from './globalConfig';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.

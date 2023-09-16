@@ -6,7 +6,7 @@
 
 import type { IBase64Url } from '@kadena/types';
 import type { IKeyPair } from '@kadena/types';
-import { IUnsignedCommand } from '@kadena/types';
+import type { IUnsignedCommand } from '@kadena/types';
 import type { SignCommand } from '@kadena/types';
 
 // @alpha

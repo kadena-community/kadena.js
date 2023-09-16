@@ -9,13 +9,14 @@ description:
 menu: The Story of Kadena’s Proof of Work Blockchain
 label: The Story of Kadena’s Proof of Work Blockchain
 publishDate: 2022-10-13
+headerImage: /assets/blog/0_slJi3XAk5a2usmEu.png
+tags: [pow, kda]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # The Story of Kadena’s Proof of Work Blockchain
-
-![](/assets/blog/0_slJi3XAk5a2usmEu.png)
 
 Since its inception in 2016, Kadena has continuously innovated and achieved
 tremendous milestones, making it the first and only Layer-1 blockchain that has

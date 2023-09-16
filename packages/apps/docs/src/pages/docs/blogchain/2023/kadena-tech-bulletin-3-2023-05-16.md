@@ -10,13 +10,14 @@ description:
 menu: Kadena Tech Bulletin #3
 label: Kadena Tech Bulletin #3
 publishDate: 2023-05-16
+headerImage: /assets/blog/1_LcO_epRtsyr13yM1hXTasQ.webp
+tags: [kadena, pact, cli, academy]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Kadena Tech Bulletin #3
-
-![](/assets/blog/1_LcO_epRtsyr13yM1hXTasQ.webp)
 
 Welcome to the 3rd issue of The Kadena Tech Bulletin!
 

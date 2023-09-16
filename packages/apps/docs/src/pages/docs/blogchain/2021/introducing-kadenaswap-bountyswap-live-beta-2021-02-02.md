@@ -8,11 +8,12 @@ description:
 menu: Introducing Kadenaswap “Bountyswap” Live Beta
 label: Introducing Kadenaswap “Bountyswap” Live Beta
 publishDate: 2021-02-02
+headerImage: /assets/blog/1_KbYZmw4TE6ZQEIszK0gqkA.webp
+tags: [chainweb]
 author: Emily Pillmore
+authorId: emily.pillmore
 layout: blog
 ---
-
-![](/assets/blog/1_KbYZmw4TE6ZQEIszK0gqkA.webp)
 
 # Introducing Kadenaswap “Bountyswap” Live Beta
 

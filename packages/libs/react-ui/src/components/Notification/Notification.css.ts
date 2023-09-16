@@ -1,15 +1,14 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { ColorType, vars } from '@theme/vars.css';
+import type { ColorType } from '@theme/vars.css';
+import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-const colors: Record<ColorType, ColorType> = {
+export const colorVariants: Omit<Record<ColorType, ColorType>, "secondary" | "tertiary"> = {
   info: 'info',
   positive: 'positive',
   warning: 'warning',
   negative: 'negative',
   primary: 'primary',
-  secondary: 'secondary',
-  tertiary: 'tertiary',
 };
 
 export const containerClass = style([
@@ -27,7 +26,7 @@ export const containerClass = style([
   },
 ]);
 
-export const cardColorVariants = styleVariants(colors, (color) => {
+export const cardColorVariants = styleVariants(colorVariants, (color) => {
   return [
     sprinkles({
       backgroundColor: `$${color}Surface`,
@@ -58,6 +57,7 @@ export const contentClass = style([
     display: 'flex',
     flexDirection: 'column',
     gap: '$xs',
+    width: '100%',
   }),
   {
     marginTop: 2,
@@ -95,7 +95,7 @@ export const actionButtonClass = style([
   }),
 ]);
 
-export const actionButtonColorVariants = styleVariants(colors, (color) => {
+export const actionButtonColorVariants = styleVariants(colorVariants, (color) => {
   return [
     actionButtonClass,
     sprinkles({

@@ -13,7 +13,7 @@ const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
-import { IBlockHeader, IBlockPayload, IPagedResponse } from '../types';
+import type { IBlockHeader, IBlockPayload, IPagedResponse } from '../types';
 import chainweb from '..';
 
 import { header } from './mocks/header';

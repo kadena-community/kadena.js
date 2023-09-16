@@ -10,7 +10,9 @@ description:
 menu: Anastasia Bez
 label: Anastasia Bez
 publishDate: 2022-09-09
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

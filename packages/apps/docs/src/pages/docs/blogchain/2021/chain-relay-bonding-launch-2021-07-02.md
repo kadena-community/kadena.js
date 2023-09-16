@@ -9,11 +9,12 @@ description:
 menu: Chain Relay Bonding Launch
 label: Chain Relay Bonding Launch
 publishDate: 2021-07-02
+headerImage: /assets/blog/1_-YDXCeAfa2h-FyBY4xzE3A.webp
+tags: [chainweb]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_-YDXCeAfa2h-FyBY4xzE3A.webp)
 
 # Chain Relay Bonding Launch
 

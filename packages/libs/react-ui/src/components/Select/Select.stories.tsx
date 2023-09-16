@@ -1,16 +1,21 @@
-import { Option } from './Option';
-import { ISelectProps, Select } from './Select';
+import type { ISelectProps } from './Select';
+import { Select } from './Select';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const meta: Meta<
-  {
-    icon: keyof typeof SystemIcon;
-  } & ISelectProps
-> = {
-  title: 'Components/Select',
+const meta: Meta<ISelectProps> = {
+  title: 'Form/Select',
+  component: Select,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Select component renders a select element with options. The select element can be disabled with the `disabled` prop. The icon of the select element can be set with the `icon` prop.',
+      },
+    },
+  },
   argTypes: {
     disabled: {
       description: 'toggle disabled state of component',
@@ -61,8 +66,8 @@ export const Dynamic: Story = {
         disabled={Boolean(disabled)}
         value={value}
       >
-        <Option value={'1'}>option 1</Option>
-        <Option value={'2'}>option 2</Option>
+        <option value={'1'}>option 1</option>
+        <option value={'2'}>option 2</option>
       </Select>
     );
   },

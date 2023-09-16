@@ -1,19 +1,22 @@
-import { Context, rootPath } from '../constants/config';
+import type { Context } from '../constants/config';
+import {  rootPath } from '../constants/config';
 import { displayConfig } from '../utils/display';
 import { ensureFileExists } from '../utils/filesystem';
 import { getConfig, setContext, writeConfig } from '../utils/globalConfig';
 import { collectResponses } from '../utils/helpers';
 import { processZodErrors } from '../utils/process-zod-errors';
 
+import type {
+  TConfigOptions} from './configOptions';
 import {
   GeneralOptions,
-  generalQuestions,
-  TConfigOptions,
+  generalQuestions
 } from './configOptions';
 
 import { select } from '@inquirer/prompts';
 import clear from 'clear';
-import { Command, Option } from 'commander';
+import type { Command} from 'commander';
+import { Option } from 'commander';
 import debug from 'debug';
 import path from 'path';
 

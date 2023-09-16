@@ -1,4 +1,4 @@
-import { IQuestion } from '../utils/helpers';
+import type { IQuestion } from '../utils/helpers';
 
 import { select } from '@inquirer/prompts';
 import { z } from 'zod';

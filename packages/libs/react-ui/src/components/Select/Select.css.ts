@@ -1,7 +1,8 @@
-import { vars } from '../../styles';
+import { darkThemeClass, vars } from '../../styles';
 
+import { statusColor } from '@components/InputWrapper/InputWrapper.css';
 import { sprinkles } from '@theme/sprinkles.css';
-import { style } from '@vanilla-extract/css';
+import { fallbackVar, style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
@@ -25,19 +26,40 @@ export const containerClass = style([
     paddingRight: '$2',
   }),
   {
-    borderBottom: `1px solid ${vars.colors.$gray30}`,
+    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid ${fallbackVar(
+          statusColor,
+          vars.colors.$gray60,
+        )}`,
+      },
+    },
   },
 ]);
 
 export const containerClassDisabled = style([
   sprinkles({
+    pointerEvents: 'none',
     backgroundColor: {
       lightMode: '$gray20',
+      darkMode: '$gray60',
     },
     color: {
       lightMode: '$foreground',
     },
   }),
+  {
+    opacity: 0.4,
+    selectors: {
+      '.inputGroup &': {
+        opacity: 1,
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
+      },
+    },
+  },
 ]);
 
 export const iconClass = style([

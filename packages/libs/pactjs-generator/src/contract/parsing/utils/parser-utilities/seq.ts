@@ -1,14 +1,13 @@
-import {
+import type {
   IsWrappedData,
-  isWrappedData,
   IWrappedData,
-  unwrapData,
   UnwrappedObjects,
-  wrapData,
 } from '../dataWrapper';
-import { UnionToIntersection } from '../typeUtilities';
+import { isWrappedData, unwrapData, wrapData } from '../dataWrapper';
+import type { UnionToIntersection } from '../typeUtilities';
 
-import { FAILED, IParser, rule, RuleReturnType } from './rule';
+import type { IParser, RuleReturnType } from './rule';
+import { FAILED, rule } from './rule';
 
 export interface ISeq {
   /**

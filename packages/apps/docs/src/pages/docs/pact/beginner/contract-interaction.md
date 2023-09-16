@@ -121,8 +121,7 @@ contracts, feel free to view each of their tutorials.
 - **Auth Module:**
   [Project: Rotatable Wallet](/docs/pact/beginner/rotatable-wallet)
 - **Payments Module:**
-  [Accounts and Transfers](/docs/pact/beginner/accounts-and-transfers)  
-  :::
+  [Accounts and Transfers](/docs/pact/beginner/accounts-and-transfers) :::
 
 There’s not much code to write for this project. Most of it has been written
 previously in the tutorials linked above. For this tutorial, focus on

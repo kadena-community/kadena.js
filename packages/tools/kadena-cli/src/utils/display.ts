@@ -1,4 +1,4 @@
-import { IDefaultConfigOptions } from '../constants/config';
+import type { IDefaultConfigOptions } from '../constants/config';
 
 import chalk from 'chalk';
 

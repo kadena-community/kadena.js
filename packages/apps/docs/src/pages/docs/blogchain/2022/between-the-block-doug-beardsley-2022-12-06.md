@@ -10,7 +10,10 @@ description:
 menu: Doug Beardsley
 label: Doug Beardsley
 publishDate: 2022-12-06
+headerImage: /assets/blog/1_c74yuQndgzdEYUcinKrTEA.webp
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

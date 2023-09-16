@@ -1,6 +1,6 @@
 import { generate } from './generate';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'key' = 'key';
 

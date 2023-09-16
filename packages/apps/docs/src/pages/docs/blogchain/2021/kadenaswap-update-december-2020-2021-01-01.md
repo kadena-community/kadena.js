@@ -7,11 +7,12 @@ description:
 menu: Kadenaswap Update December 2020
 label: Kadenaswap Update December 2020
 publishDate: 2021-01-01
+headerImage: /assets/blog/1_Wjb7k98TA-dHCeuMnHdz0g.webp
+tags: [kadena]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_Wjb7k98TA-dHCeuMnHdz0g.webp)
 
 # Kadenaswap Update December 2020
 

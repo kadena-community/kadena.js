@@ -4,7 +4,9 @@ description: What to do when they bring the lambos to your doorstep
 menu: Consensus2018
 label: Consensus2018
 publishDate: 2018-05-04
+tags: [kadena]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

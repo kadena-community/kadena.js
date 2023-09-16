@@ -1,26 +1,39 @@
 import { activeLinkClass, linkClass } from './NavHeader.css';
-import { INavItem } from './NavHeaderNavigation';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC, HTMLAttributeAnchorTarget, ReactNode } from 'react';
+import React from 'react';
 
-export const NavHeaderLink: FC<INavItem> = ({
+export interface INavHeaderLinkProps {
+  active?: boolean;
+  children: ReactNode;
+  href?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  target?: HTMLAttributeAnchorTarget;
+  asChild?: boolean;
+}
+
+export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
   active,
   children,
-  href,
-  target,
-  onClick,
+  asChild = false,
+  ...restProps
 }) => {
+  const className = classNames(linkClass, {
+    [activeLinkClass]: active,
+  });
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      ...children.props,
+      className: className,
+      children: children.props.children,
+    });
+  }
+
   return (
-    <a
-      className={classNames(linkClass, {
-        [activeLinkClass]: active,
-        'nav-item': true,
-      })}
-      href={href}
-      target={target}
-      onClick={onClick}
-    >
+    <a className={className} {...restProps}>
       {children}
     </a>
   );

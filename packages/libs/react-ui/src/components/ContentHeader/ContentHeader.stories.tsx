@@ -1,4 +1,5 @@
-import { ContentHeader, IContentHeaderProps } from '@components/ContentHeader';
+import type { IContentHeaderProps } from '@components/ContentHeader';
+import { ContentHeader } from '@components/ContentHeader';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -8,7 +9,7 @@ const meta: Meta<
     selectIcon: keyof typeof SystemIcon;
   } & IContentHeaderProps
 > = {
-  title: 'Components/ContentHeader',
+  title: 'Content/ContentHeader',
   argTypes: {
     icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],

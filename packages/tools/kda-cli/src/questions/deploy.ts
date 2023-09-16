@@ -1,8 +1,8 @@
+import type { Reducer } from '../pact/pact.js';
 import {
   addCapability,
   buildCommand,
   listen,
-  Reducer,
   send,
   setCommand,
   setData,
@@ -13,7 +13,7 @@ import {
   signWithKeypair,
 } from '../pact/pact.js';
 
-import { IAnswers, IQuestion } from './questions.js';
+import type { IAnswers, IQuestion } from './questions.js';
 
 import { readFileSync } from 'fs';
 

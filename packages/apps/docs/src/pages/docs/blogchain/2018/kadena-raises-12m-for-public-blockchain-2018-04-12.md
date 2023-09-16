@@ -8,7 +8,9 @@ description:
 menu: Kadena Raises $12M For Public Blockchain
 label: Kadena Raises $12M For Public Blockchain
 publishDate: 2018-04-12
+tags: [kadena]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 

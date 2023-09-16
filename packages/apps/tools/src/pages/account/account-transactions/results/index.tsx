@@ -1,4 +1,4 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
@@ -19,17 +19,16 @@ import {
 } from './styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
-import {
-  getTransactions,
-  ITransaction,
-} from '@/services/accounts/get-transactions';
+import type { ITransaction } from '@/services/accounts/get-transactions';
+import { getTransactions } from '@/services/accounts/get-transactions';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(

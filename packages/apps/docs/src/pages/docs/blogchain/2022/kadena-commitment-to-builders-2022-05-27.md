@@ -9,11 +9,12 @@ description:
 menu: Kadena Commitment To Builders
 label: Kadena Commitment To Builders
 publishDate: 2022-05-27
+headerImage: /assets/blog/0_egllSaAanOmAOb8_.png
+tags: [kadena, grant]
 author: Francesco Melpignano
+authorId: francesco.melpignano
 layout: blog
 ---
-
-![](/assets/blog/0_egllSaAanOmAOb8_.png)
 
 # Kadena Commitment To Builders
 

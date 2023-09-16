@@ -1,9 +1,9 @@
-import { DevOption } from '@/constants/kadena';
+import type { DevOption } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { getItem, setItem } from '@/utils/persist';
+import type { PropsWithChildren } from 'react';
 import React, {
   createContext,
-  PropsWithChildren,
   useContext,
   useLayoutEffect,
   useState,

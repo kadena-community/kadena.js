@@ -7,7 +7,8 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, forwardRef } from 'react';
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 export interface ISelectProps
   extends Omit<
@@ -48,7 +49,7 @@ export const Select: FC<ISelectProps> = forwardRef<
       <select
         aria-label={ariaLabel}
         className={selectClass}
-        disabled={Boolean(disabled)}
+        disabled={disabled}
         ref={ref}
         {...rest}
       >

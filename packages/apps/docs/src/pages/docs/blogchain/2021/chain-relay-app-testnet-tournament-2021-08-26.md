@@ -10,7 +10,9 @@ description:
 menu: Testnet Tournament
 label: Testnet Tournament
 publishDate: 2021-08-26
+tags: [kda]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

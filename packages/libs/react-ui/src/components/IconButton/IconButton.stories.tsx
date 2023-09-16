@@ -1,19 +1,31 @@
 import { colorVariants } from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
-import { IconButton, IIconButtonProps } from '@components/IconButton';
+import type { IIconButtonProps } from '@components/IconButton';
+import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & IIconButtonProps
-> = {
+const meta: Meta<IIconButtonProps> = {
   title: 'Components/IconButton',
+  component: IconButton,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Use this variation of the Button component if you require a button with only an icon.',
+      },
+    },
+  },
   argTypes: {
-    onClick: { action: 'clicked' },
-    selectIcon: {
+    onClick: {
+      action: 'clicked',
+      if: { arg: 'as', eq: 'button' },
+      table: {
+        disable: true,
+      },
+    },
+    icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
@@ -30,37 +42,26 @@ const meta: Meta<
         type: 'select',
       },
     },
+    asChild: {
+      description:
+        'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & IIconButtonProps
->;
-
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/7.0/react/api/csf
- * to learn how to use render functions.
- */
+type Story = StoryObj<IIconButtonProps>;
 
 export const Primary: Story = {
   name: 'IconButton',
   args: {
-    selectIcon: 'Account',
+    icon: 'Account',
     title: 'test title',
     color: 'default',
   },
-  render: ({ selectIcon, onClick, title, color }) => {
+  render: ({ icon, onClick, title, color }) => {
     return (
-      <IconButton
-        title={title}
-        onClick={onClick}
-        icon={selectIcon}
-        color={color}
-      />
+      <IconButton title={title} onClick={onClick} icon={icon} color={color} />
     );
   },
 };

@@ -1,21 +1,21 @@
 import { createSimpleSubCommand } from '../utils/helpers';
 
 import { contextCommand } from './contextCommand';
-import {
-  configurationAction,
-  currentContextAction,
-  fullConfigurationAction,
+import type {
   IConfigurationArgs,
   ICurrentContextArgs,
   IFullConfigurationArgs,
   IPrivateKeyArgs,
-  IPublicKeyArgs,
+  IPublicKeyArgs} from './infoCommand';
+import {
+  configurationAction,
+  currentContextAction,
+  fullConfigurationAction,
   privateKeyAction,
-  publicKeyAction,
-} from './infoCommand';
+  publicKeyAction} from './infoCommand';
 import { initCommand } from './initCommand';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 /**
  * Represents the root command for the configuration CLI.

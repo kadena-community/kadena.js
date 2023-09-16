@@ -1,6 +1,6 @@
 import { generateCommand } from './generate';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'typescript' = 'typescript';
 

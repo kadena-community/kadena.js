@@ -10,7 +10,9 @@ description:
 menu: Spotlight On Crankk
 label: Spotlight On Crankk
 publishDate: 2022-08-03
+tags: [pow]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

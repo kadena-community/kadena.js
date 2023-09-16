@@ -1,18 +1,16 @@
-import { TConfigOptions } from '../config/configOptions';
+import type { TConfigOptions } from '../config/configOptions';
+import type {Context, IContext, IDefaultConfigOptions, IDefaultOptions} from '../constants/config';
 import {
-  Context,
   defaultContext,
   defaults,
-  IContext,
-  IDefaultConfigOptions,
-  IDefaultOptions,
-  rootPath,
+  rootPath
 } from '../constants/config';
 import { ensureFileExists, PathExists, writeFile } from '../utils/filesystem';
 import { mergeConfigs } from '../utils/helpers';
 
 import chalk from 'chalk';
-import { BaseEncodingOptions, readFileSync } from 'fs';
+import type { BaseEncodingOptions} from 'fs';
+import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 

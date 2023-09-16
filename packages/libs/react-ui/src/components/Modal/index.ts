@@ -1,4 +1,4 @@
-export type { IModalProps } from './Modal';
-export { Modal } from './Modal';
+export { type IModalProps, Modal } from './Modal';
 
-export { ModalProvider, useModal } from './ModalProvider';
+export { ModalProvider } from './ModalProvider';
+export { useModal } from './useModal';

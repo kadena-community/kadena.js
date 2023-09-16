@@ -9,7 +9,9 @@ description:
 menu: Spotlight On Eucalyptus Labs
 label: Spotlight On Eucalyptus Labs
 publishDate: 2022-09-06
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

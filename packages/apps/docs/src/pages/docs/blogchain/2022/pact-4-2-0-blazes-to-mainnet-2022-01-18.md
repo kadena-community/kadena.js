@@ -10,11 +10,12 @@ description:
 menu: Pact 4.2.0 Blazes to Mainnet!
 label: Pact 4.2.0 Blazes to Mainnet!
 publishDate: 2022-01-19
+headerImage: /assets/blog/1_QEGOGwBeXw78S3eV4V-IDA.webp
+tags: [pact]
 author: Jose Cardona
+authorId: jose.cardona
 layout: blog
 ---
-
-![](/assets/blog/1_QEGOGwBeXw78S3eV4V-IDA.webp)
 
 # Pact 4.2.0 Blazes to Mainnet!
 
@@ -157,8 +158,8 @@ top-level declarations for single-use functions.
 To learn more about writing safe, smart, and smoking fast contracts in Pact,
 visit our educational resources:
 
-- [docs.kadena.io](https://docs.kadena.io/developer-guides/overview): find
-  videos, tutorials, information on key concepts and example code.
+- [Pact 4.2.0 Blazes to Mainnet!](/docs/blogchain/2022/pact-4-2-0-blazes-to-mainnet-2022-01-18):
+  find videos, tutorials, information on key concepts and example code.
 
 - [Try Pact ](http://pact.kadena.io/)— start exploring Pact (4.2.0) in your
   browser, no downloads necessary!

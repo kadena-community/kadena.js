@@ -22,10 +22,8 @@ JavaScript libraries you can use to interact with nodes running Pact.
 
 ### Voting on the Blockchain
 
-:::info  
-The complete code of this tutorial can also be found in the
-[voting dApp repository](https://github.com/kadena-community/voting-dapp).  
-:::
+:::info The complete code of this tutorial can also be found in the
+[voting dApp repository](https://github.com/kadena-community/voting-dapp). :::
 
 Elections are a necessary part of democracies and democratic organizations. The
 voting systems used to administer elections must ensure a fair process and
@@ -99,13 +97,11 @@ In your project directory, let's create two files:
 - `pact/election.pact`, which will hold the source code for our smart contract
 - `pact/election.repl`, which will hold our tests
 
-:::info  
-What is Pact REPL? The Pact REPL is an environment where we can load our Pact
-source code and work with it interactively. It's a best practice to include a
-`.repl` file next to your source code which imports your contract, calls
+:::info What is Pact REPL? The Pact REPL is an environment where we can load our
+Pact source code and work with it interactively. It's a best practice to include
+a `.repl` file next to your source code which imports your contract, calls
 functions from it, and inspects its current state to ensure everything is
-correct.  
-:::
+correct. :::
 
 We also have to import some dependencies to our project but first let's provide
 some context to better understand why we need them. In the introduction we
@@ -182,12 +178,10 @@ GOVERNANCE capability to guard it. The implementation can be as simple as in our
 example, enforcing a keyset or more complex like tallying a stakeholder vote on
 an upgrade hash.
 
-:::note  
-Module names and keyset definitions are required to be unique. We will mention
-this again when we get to deploy our contract to Testnet, but you should keep
-this in mind when you think about choosing a name for your modules and
-keysets.  
-:::
+:::note Module names and keyset definitions are required to be unique. We will
+mention this again when we get to deploy our contract to Testnet, but you should
+keep this in mind when you think about choosing a name for your modules and
+keysets. :::
 
 #### Capabilities
 
@@ -283,22 +277,18 @@ To summarize, we created a table to store candidates and their associated vote
 counts and one for storing what accounts have already voted to prevent
 double-voting.
 
-:::info  
-To find out about all Pact's supported types you can check the
+:::info To find out about all Pact's supported types you can check the
 [Data Types](/docs/pact/reference/concepts#data-types) section in the Pact
-official documentation.  
-:::
+official documentation. :::
 
-:::note  
-Pact implements a key-row model which means a row is accessed by a single key.
-The key is implicitly present in the schema but it is our responsibility as
-developers to design the schema in a way that we can retrieve the information
-that we need using a single row query. Multiple row queries are very expensive
-and should not be used.
+:::note Pact implements a key-row model which means a row is accessed by a
+single key. The key is implicitly present in the schema but it is our
+responsibility as developers to design the schema in a way that we can retrieve
+the information that we need using a single row query. Multiple row queries are
+very expensive and should not be used.
 
 The row key is always a simple string, not to be confused with the cryptographic
-keys used for signing transactions.  
-:::
+keys used for signing transactions. :::
 
 #### Functionality
 
@@ -446,13 +436,11 @@ module's closing parenthesis:
 )
 ```
 
-:::info  
-Code outside the module will be called when the module is loaded the first time,
-when its deployed or upgraded. In the snippet above we are checking if the
-`upgrade` key that comes from transaction data is `true` and only execute the
-`create-table` calls if it's not since we cannot recreate tables when upgrading
-a module.  
-:::
+:::info Code outside the module will be called when the module is loaded the
+first time, when its deployed or upgraded. In the snippet above we are checking
+if the `upgrade` key that comes from transaction data is `true` and only execute
+the `create-table` calls if it's not since we cannot recreate tables when
+upgrading a module. :::
 
 You can find the complete source code of the `election.pact` contract in the
 [voting dApp repository](https://github.com/kadena-community/voting-dapp).
@@ -492,11 +480,9 @@ We wrote quite a bit of code but at this point we don't know if it's working
 correctly. A critical step in smart-contract development process is writing a
 proper set of tests which is what we're going to focus on now.
 
-:::tip  
-We separated writing functionality and writing tests to make it easier to follow
-this tutorial but in a real-world scenario you should work on these in
-parallel.  
-:::
+:::tip We separated writing functionality and writing tests to make it easier to
+follow this tutorial but in a real-world scenario you should work on these in
+parallel. :::
 
 We're going to start by setting up the environment data that we need for our
 tests, load the required modules, i.e. `coin` module and of our `election`
@@ -680,13 +666,11 @@ variable which we compared with the new count after submitting a vote. Feel free
 to read more about [`let` and `let*`](/docs/pact/reference/syntax#let) in Pact
 official documentation.
 
-:::info  
-Write a test Can you think of some cases that we didn't cover? Hint:
+:::info Write a test Can you think of some cases that we didn't cover? Hint:
 ACCOUNT-OWNER.
 
 Try to write a test that validates that only the correct owner of an account can
-vote.  
-:::
+vote. :::
 
 The only thing left is to run these tests and confirm everything is working:
 
@@ -695,9 +679,8 @@ $ pact
 pact> (load "election.repl")
 ```
 
-:::tip  
-The REPL preserves state between subsequent runs unless the optional parameter
-`reset` is set to true:
+:::tip The REPL preserves state between subsequent runs unless the optional
+parameter `reset` is set to true:
 
 ```
 (load "election.repl" true)
@@ -720,13 +703,12 @@ A unique feature of Kadena is the ability to allow gas to be paid by a different
 entity than the one who initiated the transaction. This entity is what we call a
 _gas station_.
 
-:::info  
-**Gas** is the cost necessary to perform a transaction on the network. Gas is
-paid to miners and its price varies based on supply and demand. It's a critical
-piece of the puzzle, but at the same time it brings up a UX problem. Every user
-needs to be aware of what gas is as well as how much gas they need to pay for
-their transaction. This causes significant friction and a less than ideal
-experience.
+:::info **Gas** is the cost necessary to perform a transaction on the network.
+Gas is paid to miners and its price varies based on supply and demand. It's a
+critical piece of the puzzle, but at the same time it brings up a UX problem.
+Every user needs to be aware of what gas is as well as how much gas they need to
+pay for their transaction. This causes significant friction and a less than
+ideal experience.
 
 To help mitigate this problem Kadena brings an innovation to the game. Hello
 [gas stations](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)!
@@ -742,15 +724,12 @@ miners will still be paid, but our users can vote for free.
 The standard for gas station implementation is defined by the `gas-payer-v1`
 interface. The `gas-payer-v1` interface is deployed to all chains on `testnet`
 and `mainnet` so you can directly use it in your contract. We can specify that a
-module implements an interface using the `(implements INTERFACE)` construct.  
-:::
+module implements an interface using the `(implements INTERFACE)` construct. :::
 
-:::info  
-Pact interfaces are similar to Java's interfaces, Scala's traits, Haskell's
-typeclasses or Solidity's interfaces. If you're not familiar with this concept
-you can [read more about it](/docs/pact/reference/concepts#interfaces) in Pact
-reference.  
-:::
+:::info Pact interfaces are similar to Java's interfaces, Scala's traits,
+Haskell's typeclasses or Solidity's interfaces. If you're not familiar with this
+concept you can [read more about it](/docs/pact/reference/concepts#interfaces)
+in Pact reference. :::
 
 Let's take a look at the `gas-payer-v1` interface defining a capability and a
 function:
@@ -942,12 +921,10 @@ if both `GAS` and `ALLOW_GAS` capabilities are granted. If you're wondering how
 We will see how this works in the frontend section of this tutorial where we
 interact with the smart contracts.
 
-:::info  
-Guards and capabilities are an entire topic that we cannot cover in detail in
-this tutorial. To learn more check the
+:::info Guards and capabilities are an entire topic that we cannot cover in
+detail in this tutorial. To learn more check the
 [Guards, Capabilities and Events](/docs/pact/reference/concepts#guards-capabilities-and-events)
-section of the Pact documentation.  
-:::
+section of the Pact documentation. :::
 
 ### Deploying to Chainweb
 
@@ -960,10 +937,8 @@ transactions. Head over to Chainweaver and create an account on `testnet`.
 Next step is to fund your `testnet` account using this
 [faucet](http://faucet.testnet.chainweb.com). You will receive 20 Testnet KDA.
 
-:::tip  
-Here's a snippet that you can use to list all deployed modules by using the
-top-level `list-modules` built-in function:  
-:::
+:::tip Here's a snippet that you can use to list all deployed modules by using
+the top-level `list-modules` built-in function: :::
 
 ```javascript
 const { PactCommand } = require('@kadena/client');
@@ -997,8 +972,8 @@ The snippets can also be found in the
 You can use the snippet below to deploy your contract to **chain 1** on
 `testnet`. To do this, it's required to run Chainweaver locally to sign for the
 transaction. Please see the
-[Chainweaver User Guide](https://docs.kadena.io/basics/chainweaver/chainweaver-user-guide)
-for downloads and instructions.
+[Chainweaver User Guide](/docs/kadena/wallets/chainweaver) for downloads and
+instructions.
 
 Now we can install the dependencies and deploy the contract:
 
@@ -1121,11 +1096,9 @@ the @kadena/client types to give you type information. Make sure to add
 
 ### Our implementation
 
-:::note  
-Our example uses [React](https://reactjs.org), but you are free to use any
-framework that you are comfortable with. The main focus will be on blockchain
-and wallet interaction.  
-:::
+:::note Our example uses [React](https://reactjs.org), but you are free to use
+any framework that you are comfortable with. The main focus will be on
+blockchain and wallet interaction. :::
 
 There are a few key aspects concerning a frontend implementation of a blockchain
 application:
@@ -1199,13 +1172,11 @@ updating on-chain data, each dApp has to implement the following flow:
 3. Send transaction
 4. Notify when transaction is mined
 
-:::info  
-In this tutorial we are using Chainweaver wallet to sign transactions, other
-wallets might have a different API but the steps mentioned above are similar.
-There might be the case where a wallet takes care of more than signing a
-transaction (e.g. it also sends it to the network) and you will have to adapt
-your implementation accordingly.  
-:::
+:::info In this tutorial we are using Chainweaver wallet to sign transactions,
+other wallets might have a different API but the steps mentioned above are
+similar. There might be the case where a wallet takes care of more than signing
+a transaction (e.g. it also sends it to the network) and you will have to adapt
+your implementation accordingly. :::
 
 **@kadena/client** provides a couple of useful methods here:
 `signWithChainweaver` to interact with the Chainweaver signing API and `send` on
@@ -1261,15 +1232,13 @@ keyset will have to sign. In this case we have two:
 - `free.election.ACCOUNT-OWNER` -> checks if the user is the owner of the KDA
   account
 
-:::note  
-Scoping signatures Keep in mind, for security reasons a keyset should only sign
-specific capabilities and using a keyset in "unrestricted mode" is not
+:::note Scoping signatures Keep in mind, for security reasons a keyset should
+only sign specific capabilities and using a keyset in "unrestricted mode" is not
 recommended. Scoping the signature allows the signer to safely call untrusted
 code which is an important security feature of Pact and Kadena.
 
 "Unrestricted mode" means that we do not define any capabilities when creating a
-transaction.  
-:::
+transaction. :::
 
 Since this is a transaction that requires gas fees, we now set `sender` (account
 paying for gas) to the name of the KDA account of the user. If we would want to

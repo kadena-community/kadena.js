@@ -12,7 +12,9 @@ description:
 menu: Spotlight on NoPool
 label: Spotlight on NoPool
 publishDate: 2023-02-23
+tags: [nopool]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
@@ -164,11 +166,11 @@ their socials:
 
 ## ABOUT KADENA ECO
 
-[Kadena Eco](../2022/kadena-eco-grants-2022-04-21) is an innovation network
-fuelling mainstream adoption of Web3, DeFi and NFTs. We unite technical founders
-and entrepreneurs with the world’s top blockchain leaders, venture capitalists
-and acceleration partners to support startups at every phase of their
-development journey. By leveraging Kadena’s builder-centric blockchain that
-delivers Web3 innovation with Web2 usability, Kadena Eco aims to speed the
+[Kadena Eco](/docs/blogchain/2022/kadena-eco-grants-2022-04-21) is an innovation
+network fuelling mainstream adoption of Web3, DeFi and NFTs. We unite technical
+founders and entrepreneurs with the world’s top blockchain leaders, venture
+capitalists and acceleration partners to support startups at every phase of
+their development journey. By leveraging Kadena’s builder-centric blockchain
+that delivers Web3 innovation with Web2 usability, Kadena Eco aims to speed the
 development and adoption of meaningful applications that benefit everyday
 people, worldwide.

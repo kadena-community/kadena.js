@@ -9,16 +9,17 @@ import {
   TitleHeader,
 } from '@/components/Layout/components';
 import { useGetBlogs } from '@/hooks';
-import { getInitBlogPosts } from '@/hooks/useBlog/utils';
-import { IMenuData, IPageProps } from '@/types/Layout';
+import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
+import type { IMenuData, IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import classNames from 'classnames';
-import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import type { GetStaticProps } from 'next';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps extends IPageProps {
   posts: IMenuData[];
@@ -79,7 +80,7 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData(), 0, 10);
+  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10);
 
   return {
     props: {

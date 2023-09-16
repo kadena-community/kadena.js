@@ -11,11 +11,12 @@ description:
 menu: The Future of Multichain
 label: The Future of Multichain
 publishDate: 2022-04-19
+headerImage: /assets/blog/1_DPNo47Y2B1zwEMGSA_E-gA.webp
+tags: [kda]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_DPNo47Y2B1zwEMGSA_E-gA.webp)
 
 # The Future of Multichain
 

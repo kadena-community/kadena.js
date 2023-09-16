@@ -38,27 +38,17 @@ import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
-import {
-  finishXChainTransfer,
-  ITransferResult,
-} from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
-import {
-  getTransferData,
-  ITransferDataResult,
-} from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import type { ITransferResult } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
+import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
+import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
+import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { ChangeEventHandler, FC } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 

@@ -1,4 +1,4 @@
-import { ITemplate } from '../parsing/parseTemplate';
+import type { ITemplate } from '../parsing/parseTemplate';
 
 function uniq(acc: string[], curr: string): string[] {
   if (acc.includes(curr)) {

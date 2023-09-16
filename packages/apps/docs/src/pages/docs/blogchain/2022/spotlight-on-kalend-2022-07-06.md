@@ -9,7 +9,9 @@ description:
 menu: Spotlight On Kalend
 label: Spotlight On Kalend
 publishDate: 2022-07-06
+tags: [kadena]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 

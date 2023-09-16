@@ -6,7 +6,9 @@ description:
 menu: Meet The Kadena Team - Founder & CEO, Will Martino
 label: Meet The Kadena Team - Founder & CEO, Will Martino
 publishDate: 2019-10-31
+headerImage: /assets/blog/1_XhGJM7IRmpSerlCjrnIKoQ.webp
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
 

@@ -4,11 +4,12 @@ description: What a public-private hybrid blockchain makes possible.
 menu: Hybrid Blockchain 101
 label: Hybrid Blockchain 101
 publishDate: 2019-10-23
+headerImage: /assets/blog/1_cXMen2j6k5hcvXVgyEqqzw.webp
+tags: [kadena]
 author: Miguel Angel Romero Jr.
+authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_cXMen2j6k5hcvXVgyEqqzw.webp)
 
 # Hybrid Blockchain 101
 
@@ -133,7 +134,7 @@ card.
 ### Hybrid Example 3: I run a company that wants to monetize our excess capacity and share our services with others.
 
 We’ve called this concept the
-[smart contract sharing economy](../2018/blockchain-future-smart-contract-sharing-economy-2018-12-17).
+[smart contract sharing economy](/docs/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17).
 It allows individuals and small businesses to gain access to services that are
 normally too costly for them to perform on their own. One example involves
 fashion startup Rent the Runway (RTR), which has the largest dry cleaning
@@ -162,7 +163,7 @@ that people can trust for keeping their money & data safe.
 3.  **[Pact](./safer-smarter-contracts-with-pact-2019-02-20)** — Simple and safe
     smart contract language (open source). Easy to learn with industry-leading
     security features like user code
-    [Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
+    [Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
     Pact facilitates interoperability between Kadena’s permissioned and public
     blockchain.
 

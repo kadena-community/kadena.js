@@ -10,15 +10,16 @@ description:
 menu: Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
 label: Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
 publishDate: 2019-01-23
+headerImage: /assets/blog/1_9Fg_T12VyTTNcIUmqYce_g.webp
+tags: [kadena]
 author: Vivienne Chen
+authorId: vivienne.chen
 layout: blog
 ---
 
 # Kadena Private Blockchain Launches on Amazon (AWS) Marketplace
 
 ### Scalable enterprise smart-contract solution now available to AWS users for free
-
-![](/assets/blog/1_9Fg_T12VyTTNcIUmqYce_g.webp)
 
 While [Kadena](http://kadena.io) is currently making waves in public blockchain
 and safer smart contracts,
@@ -78,7 +79,7 @@ other blockchains cannot? Consider:
   benefits of a blockchain.
 
 - The opportunity to
-  [hybridize your private blockchain with a scalable, public chain](../2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)
+  [hybridize your private blockchain with a scalable, public chain](/docs/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)
   to unlock trapped liquidity.
 
 Wondering what blockchain can do for your industry? Ben Jessel explains how

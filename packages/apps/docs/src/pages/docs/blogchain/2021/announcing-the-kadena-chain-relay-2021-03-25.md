@@ -8,11 +8,12 @@ description:
 menu: Announcing the Kadena Chain Relay
 label: Announcing the Kadena Chain Relay
 publishDate: 2021-03-25
+headerImage: /assets/blog/1_hFmZHqA2HYLgPUAQgVxlog.webp
+tags: [kda]
 author: Stuart Popejoy
+authorId: stuart.popejoy
 layout: blog
 ---
-
-![](/assets/blog/1_hFmZHqA2HYLgPUAQgVxlog.webp)
 
 # Announcing the Kadena Chain Relay
 

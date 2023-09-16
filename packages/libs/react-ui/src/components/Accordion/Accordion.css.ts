@@ -1,11 +1,14 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { style, styleVariants } from '@vanilla-extract/css';
+import { vars } from '@theme/vars.css';
+import { style } from '@vanilla-extract/css';
 
-export const accordionSectionClass = style([
+export const accordionSectionWrapperClass = style([
   sprinkles({
+    display: 'block',
     marginBottom: '$6',
   }),
   {
+    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
     selectors: {
       '&:last-child': {
         marginBottom: 0,
@@ -13,35 +16,31 @@ export const accordionSectionClass = style([
     },
   },
 ]);
-export const accordionTitleClass = style([
+
+export const accordionButtonClass = style([
   sprinkles({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    background: 'none',
+    border: 'none',
+    color: '$neutral5',
     cursor: 'pointer',
+    display: 'flex',
     fontSize: '$base',
     fontWeight: '$medium',
+    justifyContent: 'space-between',
+    padding: 0,
     paddingBottom: '$2',
+    textAlign: 'left',
+    width: '100%',
   }),
-  {
-    transition: 'color 0.2s ease 0s',
-    borderBottom: '1px solid',
-  },
 ]);
-export const accordionTitleVariants = styleVariants({
-  closed: [sprinkles({ color: '$negativeContrast' })],
-  opened: [sprinkles({ color: '$foreground' })],
-});
 
-export const toggleButtonClass = style([
+export const accordionToggleIconClass = style([
   sprinkles({
-    border: 'none',
-    background: 'none',
-    color: 'inherit',
+    color: '$neutral5',
   }),
   {
-    transition: 'transform 0.2s ease 0s',
     transform: 'rotate(45deg)',
+    transition: 'transform 0.2s ease',
     selectors: {
       '&.isOpen': {
         transform: 'rotate(0deg)',
@@ -49,9 +48,13 @@ export const toggleButtonClass = style([
     },
   },
 ]);
-export const accordionContentWrapperClass = style([
+
+export const accordionContentClass = style([
   sprinkles({
-    paddingTop: '$2',
+    color: '$neutral5',
+    fontSize: '$base',
+    overflow: 'hidden',
     paddingBottom: '$2',
+    paddingTop: '$2',
   }),
 ]);

@@ -1,8 +1,8 @@
-import { useModal } from './ModalProvider';
-
 import { Button } from '@components/Button';
+import { useModal } from '@components/Modal';
 import { Text } from '@components/Typography/Text/Text';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 const ModalContent: FC = () => {
   return (

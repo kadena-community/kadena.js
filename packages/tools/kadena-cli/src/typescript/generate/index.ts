@@ -1,9 +1,10 @@
 import { processZodErrors } from '../../utils/process-zod-errors';
-import { networkMap } from '../utils/networkMap';
+import type  { networkMap } from '../utils/networkMap';
 
 import { generate } from './generate';
 
-import { Command, Option } from 'commander';
+import type  { Command } from 'commander';
+import { Option } from 'commander';
 import { z } from 'zod';
 
 export interface ITypescriptGenerateOptions {

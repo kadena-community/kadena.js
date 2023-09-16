@@ -1,18 +1,27 @@
 import { SystemIcon } from '@kadena/react-ui';
 
-import { StyledSearchButton, StyledSearchButtonSlash } from './styles';
+import {
+  headerButtonClass,
+  searchButtonClass,
+  searchButtonSlashClass,
+} from './styles.css';
 
 import { useOpenSearch } from '@/hooks';
-import React, { FC } from 'react';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 
 export const SearchButton: FC = () => {
   const { handleOpenSearch } = useOpenSearch();
   return (
-    <StyledSearchButton onClick={handleOpenSearch}>
+    <button
+      className={classNames(searchButtonClass, headerButtonClass)}
+      onClick={handleOpenSearch}
+    >
       <SystemIcon.Magnify />
-      <StyledSearchButtonSlash>
+      <span className={searchButtonSlashClass}>
         <SystemIcon.SlashForward />
-      </StyledSearchButtonSlash>
-    </StyledSearchButton>
+      </span>
+    </button>
   );
 };

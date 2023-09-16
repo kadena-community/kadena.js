@@ -1,15 +1,16 @@
-import { wrapperClass } from '../styles.css';
+import { paragraphWrapperClass } from './styles.css';
 
 import { BodyText } from '@/components/Typography';
-import React, { FC } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProp {
-  children: string;
+  children: ReactNode;
 }
 
 export const Paragraph: FC<IProp> = ({ children }) => {
   return (
-    <div className={wrapperClass}>
+    <div className={paragraphWrapperClass}>
       <BodyText as="p">{children}</BodyText>
     </div>
   );

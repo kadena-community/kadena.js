@@ -1,0 +1,1 @@
+export { useGetBlogs } from './useGetBlogs';

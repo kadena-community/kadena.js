@@ -11,11 +11,12 @@ description:
 menu: Kadena’s Roadmap to a Hybrid Blockchain Platform
 label: Kadena’s Roadmap to a Hybrid Blockchain Platform
 publishDate: 2019-03-14
+headerImage: /assets/blog/1_Z8h2VlFBFLCxN62TkY6wrQ.webp
+tags: [pact]
 author: Tony Pham
+authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/1_Z8h2VlFBFLCxN62TkY6wrQ.webp)
 
 # Kadena’s Roadmap to a Hybrid Blockchain Platform
 
@@ -118,7 +119,7 @@ received coverage by
 [Fortune](http://fortune.com/2019/01/23/blockchain-aws-kadena) and other media.
 
 While Kadena has offered
-[Formal Verificatio](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)n
+[Formal Verificatio](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)n
 of user-written code for a couple years, we have now made it even easier for
 anyone with a browser to try out. Go to our
 “[Try Pact](https://pact.kadena.io/example/Verification)” site to see for

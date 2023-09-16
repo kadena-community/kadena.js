@@ -111,7 +111,6 @@ describe('lexer', () => {
     [`(let* ())`, 6, 'let_star'],
     [`(step-with-rollback)`, 3, 'lparen', 'stepWithRollback', 'rparen'],
     [`(defun prefix:string (pfx:string str:string))`, 17],
-    [`(namespace 'free)`, 5, 'namespace', 'symbol'],
     ...[
       'bless',
       'defun',

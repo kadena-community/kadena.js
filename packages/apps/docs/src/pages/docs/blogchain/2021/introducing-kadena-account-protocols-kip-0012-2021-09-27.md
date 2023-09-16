@@ -9,11 +9,12 @@ description:
 menu: Introducing Kadena Account Protocols (KIP-0012)
 label: Introducing Kadena Account Protocols (KIP-0012)
 publishDate: 2021-09-27
+headerImage: /assets/blog/1_40Badddk5S15Yw1X3WOSLg.webp
+tags: [kda]
 author: Doug Beardsley
+authorId: doug.beardsley
 layout: blog
 ---
-
-![](/assets/blog/1_40Badddk5S15Yw1X3WOSLg.webp)
 
 # Introducing Kadena Account Protocols (KIP-0012)
 

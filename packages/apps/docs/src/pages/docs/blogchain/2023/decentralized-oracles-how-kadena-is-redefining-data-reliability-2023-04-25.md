@@ -9,13 +9,14 @@ description:
 menu: Decentralized Oracles
 label: Decentralized Oracles
 publishDate: 2023-04-25
+headerImage: /assets/blog/1_xwHa6WkMdrc7q43KhHDdJQ.webp
+tags: [oracle, kadena, defi]
 author: Kadena
+authorId: kadena
 layout: blog
 ---
 
 # Decentralized Oracles: How Kadena is Redefining Data Reliability
-
-![](/assets/blog/1_xwHa6WkMdrc7q43KhHDdJQ.webp)
 
 Decentralized Finance (DeFi) has taken the blockchain world by storm, offering
 new ways for individuals to access financial services without the need for

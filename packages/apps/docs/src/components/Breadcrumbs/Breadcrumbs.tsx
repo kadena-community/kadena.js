@@ -1,8 +1,9 @@
 import { Box, Breadcrumbs as StyledBreadcrumbs } from '@kadena/react-ui';
 
-import { IMenuItem, ProductIconNames } from '@/types/Layout';
+import type { IMenuItem, ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
-import React, { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useMemo } from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];
@@ -42,7 +43,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
         {items.map((item, idx) =>
           idx < items.length - 1 ? (
             <StyledBreadcrumbs.Item key={item.root} asChild>
-              <Link href={`#${item.root}`}>{item.title}</Link>
+              <Link href={`${item.root}`}>{item.title}</Link>
             </StyledBreadcrumbs.Item>
           ) : (
             <StyledBreadcrumbs.Item key={item.root}>

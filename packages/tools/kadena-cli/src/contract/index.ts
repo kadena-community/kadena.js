@@ -1,7 +1,7 @@
 import { deployCommand } from './deployCommand';
 import { retrieveCommand } from './retrieveCommand';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 
 const SUBCOMMAND_ROOT: 'contract' = 'contract';
 

@@ -2,7 +2,8 @@ import { processZodErrors } from '../utils/process-zod-errors';
 
 import { retrieveContract } from './retrieveContract';
 
-import { Command, Option } from 'commander';
+import type { Command } from 'commander';
+import { Option } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
 
