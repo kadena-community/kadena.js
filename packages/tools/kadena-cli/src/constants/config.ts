@@ -55,3 +55,5 @@ export const defaults: IDefaultOptions = {
 };
 
 export const rootPath: string = `${process.cwd()}/.kadena`;
+
+export const defaultContext: Context = 'testnet';

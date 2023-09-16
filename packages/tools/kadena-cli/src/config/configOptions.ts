@@ -18,9 +18,8 @@ export const GeneralOptions = z.object({
       invalid_type_error: 'Error: -c, --chain must be a number',
     })
     .min(0)
-    .max(19)
-    .optional(),
-  networkId: z.string().optional(),
+    .max(19),
+  networkId: z.string(),
   networkHost: z.string().optional(),
   networkExplorerUrl: z.string().optional(),
   kadenaNamesApiEndpoint: z.string().optional(),
