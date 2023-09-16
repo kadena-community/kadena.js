@@ -1,6 +1,7 @@
 import { TConfigOptions } from '../config/configOptions';
 import {
   Context,
+  defaultContext,
   defaults,
   IContext,
   IDefaultConfigOptions,
@@ -51,7 +52,7 @@ export function setContext(currentContext: Context): void {
 export function getContextOrCreateInitial(): Context {
   const filePath = path.join(rootPath, 'context.yaml');
   if (!ensureFileExists(filePath)) {
-    setContext('mainnet');
+    setContext(defaultContext);
   }
   const context = yaml.load(readFileSync(`${rootPath}/context.yaml`, 'utf8'));
   const { currentContext } = context as IContext;
