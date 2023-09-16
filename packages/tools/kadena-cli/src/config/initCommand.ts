@@ -1,7 +1,7 @@
 import { Context, rootPath } from '../constants/config';
 import { displayConfig } from '../utils/display';
 import { ensureFileExists } from '../utils/filesystem';
-import { getConfig, setContext } from '../utils/globalConfig';
+import { getConfig, setContext, writeConfig } from '../utils/globalConfig';
 import { collectResponses } from '../utils/helpers';
 import { processZodErrors } from '../utils/process-zod-errors';
 
@@ -10,7 +10,6 @@ import {
   generalQuestions,
   TConfigOptions,
 } from './configOptions';
-import { createConfig } from './createConfig';
 
 import { select } from '@inquirer/prompts';
 import clear from 'clear';
@@ -45,7 +44,7 @@ async function runConfigInitialization(
 
     GeneralOptions.parse(finalConfig);
 
-    createConfig(program, version)(finalConfig);
+    writeConfig(finalConfig);
 
     await setContext(finalConfig.context as Context);
     displayConfig(getConfig());
