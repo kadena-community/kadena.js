@@ -1,6 +1,6 @@
 # React UI
 
-@kadena/react-ui is a library used to provide a styling environment and basic
+**@kadena/react-ui** is a library used to provide a styling environment and basic
 React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
@@ -32,7 +32,7 @@ need to setup integration with VE. You can find integration instructions in the
 
 ### Integration with Next.js projects within Kadena.js
 
-Add @kadena/react-ui as a dependency in your `package.json`:
+Add **@kadena/react-ui** as a dependency in your `package.json`:
 
 ```json
 {
@@ -58,9 +58,8 @@ will need to install the following plugin:
 pnpm add @vanilla-extract/next-plugin --dev
 ```
 
-If you don’t have a next.config.js file in the root of your project, create one.
-Add the plugin to your next.config.js file and add @kadena/react-ui to
-transpilePackages:
+*If you don’t have a next.config.js file in the root of your project, you'll need to create one first.*
+Add the plugin to your next.config.js file and add **@kadena/react-ui** to transpilePackages:
 
 ```js
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
@@ -78,11 +77,11 @@ If required, this plugin can be composed with other plugins. See [VE Next.js
 integration docs][5].
 
 After the plugin is setup, you should be able to use styling utilities exported
-from @kadena/react-ui and components within your application.
+from **@kadena/react-ui** and components within your application.
 
 ### Usage
 
-As mentioned earlier, @kadena/react-ui provides components and styling utilities
+As mentioned earlier, **@kadena/react-ui** provides components and styling utilities
 that align with the Kadena design system.
 
 Example for importing and using components:
@@ -116,9 +115,9 @@ export const exampleClass = style([
 ### Dark Theme
 
 We are utilizing the [theming][6] feature from VE to create CSS color variables
-that invert depending on the selected theme. By default the theme will have
+that invert depending on the selected theme (light/dark). By default, the theme will have
 colors suitable for light mode, but to add dark theme integration you can export
-`darkThemeClass` from @kadena/react-ui and use it with your theme provider.
+`darkThemeClass` from **@kadena/react-ui** and use it with your theme provider.
 
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
@@ -148,7 +147,7 @@ export default MyApp;
 
 > Note: We understand that just inverting colors is not enough to achieve good
 > UX in dark mode. We are using this color inversion in conjunction with custom
-> color selection to style dark mode within our applications
+> color selection to style dark mode within our applications.
 
 ### Running Storybook
 
@@ -161,7 +160,7 @@ pnpm storybook
 
 ### Installation outside of the Kadena.js monorepo
 
-The component library is not yet published, to use it in an app outside of this
+The component library is not yet published. To use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
@@ -214,8 +213,8 @@ _Sprinkles_
 Sprinkles is an optional utility class built on top of VE that allows users to
 generate a set of custom utility classes (similar to Tailwind). @kadena/react-ui
 has setup sprinkles using the defined theme based on the Kadena Design System.
-When possible it is preferrable to use these utility classes and avoid creating
-unnecessary custom classes using the `style` function to keep the bundle
+Whenever possible it is preferrable to use these utility classes and avoid creating
+unnecessary custom classes using the `style` function to keep the bundle size
 smaller.
 
 _Colors_
@@ -224,13 +223,13 @@ In our theme we have color scales that represent a set of different shades for a
 color as well as theme specific tokens that return different colors depending on
 whether we are in light/dark theme.
 
-Due to the strict nature of our component library, we should use our disgretion
+Due to the strict nature of our component library, we should use our discretion
 to determine what subset of colors should be exposed for a certain component.
 For example, a text component would likely only be used in a small subset of
 colors on an interface - our approach to doing this would be to create a color
 variant with named options that map to each of the colors options.
 
-When it comes to dark theme, the default behavior when using theme specific
+When it comes to the dark theme, the default behavior when using theme specific
 tokens will effectively be the inverse of the opposing theme. This is not always
 ideal since visual cues can be lost. When using sprinkles, you can specify a
 different color for dark vs light mode and when using the style function, you
@@ -249,7 +248,7 @@ primaryHighContrast: '#002F5C', // High Contrast
 ```
 
 If at any point you feel that you need more than these variations of a specific
-color, reach out to Isa to discuss if it would be possible to simplify the
+color, reach out to our designer(s) to discuss if it would be possible to simplify the
 design to use these 4 colors before adding them to the color tokens.
 
 _Spacing_
