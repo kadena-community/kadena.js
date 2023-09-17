@@ -2,7 +2,7 @@
 
 This is an aggregation of the conventions that we have picked up while
 developing this component library. This library is still in its early stages of
-development so please make any suggestions if you see ways it can be improved!
+development so please make any suggestions if you see ways it could be improved!
 
 ## Component Conventions
 
@@ -10,8 +10,8 @@ development so please make any suggestions if you see ways it can be improved!
 
 We have had discussions around whether we want to use composition or
 configuration as the pattern for developing components and have decided that
-**in most cases we want to use composition, but it differs on a case by case
-basis**. [Composition over Configuration][1]
+**in most cases** we want to use composition, but it can differ on a case by case
+basis. [Composition over Configuration][1]
 
 #### Composition - Subcomponent structure
 
@@ -52,6 +52,8 @@ more subcomponents would negatively affect DX.
 > [here](https://bradfrost.com/blog/post/atomic-web-design/) and
 > [here](https://atomicdesign.bradfrost.com/chapter-2/).
 
+#### Button component as an example
+
 One example of a component that we updated from the Composition to Configuration
 approach was the `Button` component.
 
@@ -69,10 +71,10 @@ The reason we went for this approach originally was because it matched the
 pattern of the other components, however in usage it caused confusion becuase:
 
 - It often didn't have an icon, but we still needed to use the `Root` export
-- Users didn't realize the `Button` component exported it's own `Button.Icon` so
+- Users didn't realize the `Button` component exported its own `Button.Icon` so
   they would use other Icon components
-- It also allows for too much flexibility in terms of what can be placed within
-  the button when it should only ever have text and optionally, an icon or
+- It allows for too much flexibility in terms of what can be placed within
+  the button when it should only ever have text and, optionally, an icon or
   loading state.
 
 Now, it has been updated with the configuration approach and can be used in the
@@ -90,10 +92,10 @@ fixed number of variations.
 ### External Elements/Components
 
 This library exports prestyled components that are meant to make building UIs at
-Kadena easier, but they will often be used in conjunction with native html
+Kadena easier but they will often be used in conjunction with native html
 elements or components that are unique to the consuming project. In cases when
 using layout components we offer full flexiblity in what can be passed as child
-components, however, with most other components we try to provide all
+components. However, with most other components we try to provide all
 subcomponents necessary to compose an entire `organism` and **avoid using
 external elements in our component compositions**.
 
@@ -107,12 +109,12 @@ section.
 
 #### Next.js next/link
 
-One exception to the general approach to avoid external elements in our component compositions is the use of next/link or similar components. Since next/link provides additional feature on top of the native anchor element, we want to be able to utilize it while still maintaining the integrity of our compositions. In this case, our approach to using external links is by doing the following: 
+One exception to the general approach to avoid external elements in our component compositions is the use of next/link or similar components. Since next/link provides additional feature on top of the native anchor element, we want to be able to utilize it while still maintaining the integrity of our compositions. In this case, our approach to using external links is by doing the following:
 - Adding an `asChild` prop to any link components
 - Use `React.cloneElement` to forward props to the child component - effectively allowing us to apply styles and any additional logic from our component to the external component
 - Ensure that the child component's props override the UI component which keeps behavior more predictable
 
-This is the current solution for external links, but the same underlying approach can be applied to other circumstances as well. 
+This is the current solution for external links, but the same underlying approach can be applied in other circumstances as well.
 
 ### Typing
 
@@ -135,29 +137,29 @@ Guidlines for defining types:
 
 ### Property Naming Convention
 
-- Actions should be prefixed with `on` - e.g. `onClick` or `onHover`
+- Actions should be prefixed with `on` - e.g. `onClick` or `onHover`.
 - All boolean props should be named like an adjective to describe the
-  Component - `disabled`, `stacked`, `fullWidth` Card
+  Component - `disabled`, `stacked`, `fullWidth` Card.
 
 ### Controlled - Components with state
 
 Some components will require state to be able to function, in these cases we
 should **offer a controlled and uncontrolled version**. For example, the
-`Pagination` component can be uncontrolled in the sense that it handles it's own
+`Pagination` component can be uncontrolled in the sense that it handles its own
 state (which page you are on) when clicking arrows, but it also accepts an
-optional `currentPage` prop which allows the user to control it's state.
+optional `currentPage` prop which allows the user to control its state.
 
 This means these components should always have two optional props:
 
-- Value that is being controlled
+- Value that is being controlled.
 - Initial value (for when it is not controlled). This prop should always be
-  prefixed with `default` - e.g. `initialPage`
+  prefixed with `default` - e.g. `initialPage`.
 
 ### Custom Styling
 
 Since this component library was created for usage within Kadena, the components
 are very opinionated in terms of functionality and style. For this reason, we
-wanted to be very strict with props and styling so **components currently do not
+wanted to be very strict with props and styling which is why **components currently do not
 accept a classname prop to alter styles**. Layout components (Box, Stack, Grid)
 should be used when positioning the components and any additional style changes
 cannot be applied for the sake of visual consistency. If a new style/iteration
@@ -226,7 +228,7 @@ any client component files:
 
 ## Styling with Vanilla Extract
 
-Guidlines when styling with VE:
+Guidelines when styling with VE:
 
 - Classnames should use camel-casing and always have `Class` suffix -
   `containerClass`
@@ -238,7 +240,7 @@ Guidlines when styling with VE:
 
 ### Selectors
 
-Simple Pseudo Selectors and complex selectors can be used on components, but
+Simple pseudo selectors and complex selectors can be used on components, but
 **styles can only be applied to the element that the class is applied to**. This
 is a deliberate restriction set by VE to help with maintainability. If you need
 to apply a style to a child element depending on the state of a parent element,
