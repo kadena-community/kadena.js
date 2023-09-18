@@ -1,5 +1,6 @@
 import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
+import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
 
 export const stripClass = style([
@@ -8,6 +9,7 @@ export const stripClass = style([
     display: 'flex',
   }),
   {
+    width: '100%',
     listStyle: 'none',
     flexWrap: 'wrap',
   },
@@ -16,12 +18,14 @@ export const stripClass = style([
 export const stripItemWrapperClass = style([
   sprinkles({
     paddingRight: '$4',
+    marginBottom: '$8',
   }),
   {
+    minWidth: '100px',
     flex: '50%',
     selectors: {
       '&:last-child': {
-        display: 'flex',
+        display: 'block',
       },
     },
 
@@ -40,7 +44,11 @@ export const stripItemWrapperClass = style([
 ]);
 
 export const stripItemClass = style([
-  sprinkles({}),
+  sprinkles({
+    display: 'flex',
+    flexDirection: 'column',
+    textDecoration: 'none',
+  }),
   {
     selectors: {},
   },
@@ -54,9 +62,41 @@ export const figureClass = style([
     margin: 0,
     width: '100%',
     position: 'relative',
-    borderRadius: '$lg',
   }),
   {
     aspectRatio: '20 / 9',
   },
 ]);
+
+export const imageClass = style([
+  sprinkles({
+    borderRadius: '$md',
+  }),
+]);
+
+export const headerClass = style([
+  sprinkles({
+    color: '$primaryContrast',
+    paddingRight: '$4',
+  }),
+  {
+    flex: 1,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+]);
+
+export const textClass = style([
+  sprinkles({
+    color: '$foreground',
+    paddingRight: '$4',
+  }),
+  {
+    display: '-webkit-box',
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+] as ComplexStyleRule);
