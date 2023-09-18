@@ -7,6 +7,7 @@ menu: Database
 label: Database
 order: 2
 layout: full
+tags: ['pact', 'language reference', 'database']
 ---
 
 # Database

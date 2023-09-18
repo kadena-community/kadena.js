@@ -7,6 +7,7 @@ menu: Other Operators
 label: Other Operators
 order: 14
 layout: full
+tags: ['pact', 'language reference', 'other operators', 'pact operators']
 ---
 
 # Other operators

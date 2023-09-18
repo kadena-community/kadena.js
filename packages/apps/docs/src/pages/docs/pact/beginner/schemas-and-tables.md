@@ -8,6 +8,15 @@ menu: Schemas and Tables
 label: Schemas and Tables
 order: 7
 layout: full
+tags:
+  [
+    'pact',
+    'beginner',
+    'schemas and tables',
+    'schemas',
+    'tables',
+    'pact tutorials',
+  ]
 ---
 
 # Schemas and Tables

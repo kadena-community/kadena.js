@@ -7,6 +7,7 @@ menu: Logical Operators
 label: Logical Operators
 order: 4
 layout: full
+tags: ['pact', 'language reference', 'logical operators', 'pact operators']
 ---
 
 # Logical operators

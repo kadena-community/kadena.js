@@ -7,6 +7,7 @@ menu: Keysets
 label: Keysets
 order: 5
 layout: full
+tags: ['pact', 'language reference', 'keysets']
 ---
 
 # Keysets

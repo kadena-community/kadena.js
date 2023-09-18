@@ -7,6 +7,7 @@ menu: Function Operators
 label: Function Operators
 order: 13
 layout: full
+tags: ['pact', 'language reference', 'function operators', 'pact operators']
 ---
 
 # Function operators

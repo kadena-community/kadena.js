@@ -13,6 +13,10 @@ export interface IThProps
 
 export const Th: FC<IThProps> = ({ children, width, minWidth, maxWidth }) => {
   return (
-    <th className={classNames(thClass, sprinkles({ width, minWidth, maxWidth }))}>{children}</th>
+    <th
+      className={classNames(thClass, sprinkles({ width, minWidth, maxWidth }))}
+    >
+      {children}
+    </th>
   );
 };

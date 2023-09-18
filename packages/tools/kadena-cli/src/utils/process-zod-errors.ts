@@ -1,5 +1,5 @@
-import type  { Command } from 'commander';
-import type z from 'zod';
+import { Command } from 'commander';
+import z from 'zod';
 
 export function processZodErrors<T>(
   program: Command,

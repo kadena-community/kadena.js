@@ -7,6 +7,7 @@ menu: Temporal Operators
 label: Temporal Operators
 order: 8
 layout: full
+tags: ['pact', 'language reference', 'temporal operators', 'pact operators']
 ---
 
 # Temporal operators
