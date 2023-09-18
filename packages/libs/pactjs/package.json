@@ -24,7 +24,7 @@
     }
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/pactjs.d.ts",
   "files": [
     "dist",
     "lib"

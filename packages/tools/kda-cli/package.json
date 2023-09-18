@@ -13,6 +13,7 @@
   ],
   "license": "MIT",
   "type": "module",
+  "types": "dist/kda-cli.d.ts",
   "bin": {
     "kda": "bin/kda.js"
   },
