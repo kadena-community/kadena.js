@@ -1,4 +1,5 @@
 import { SearchResults } from './components/SearchResults';
+import useAlgoliaSearch from './useAlgoliaSearch';
 
 import { useSearch } from '@/hooks';
 import { mapMatches } from '@/pages/api/semanticsearch';
@@ -16,14 +17,16 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   const [tabName, setTabName] = useState<string | undefined>();
   const {
     metadata = [],
-    outputStream,
+    // outputStream,
     handleSubmit,
-    conversation,
+    // conversation,
     error,
     isLoading,
-  } = useSearch(limitResults);
+  } = useAlgoliaSearch(limitResults);
 
   const semanticResults = metadata.map(mapMatches);
+
+  console.log('Search.tsx: semanticResults: ', semanticResults);
 
   useEffect(() => {
     if (
@@ -48,8 +51,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
       <SearchResults
         semanticResults={semanticResults}
         semanticIsLoading={isLoading}
-        conversation={conversation}
-        outputStream={outputStream}
+        outputStream="outoputStream"
         query={query}
         error={error}
         isLoading={isLoading}
