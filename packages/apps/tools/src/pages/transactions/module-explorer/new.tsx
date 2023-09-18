@@ -2,6 +2,7 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import {
   Box,
+  Breadcrumbs,
   Card,
   Grid,
   Heading,
@@ -15,11 +16,13 @@ import ModulesTable from './modules-table';
 import { ChainSelect } from '@/components/Global';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
+import Routes from '@/constants/routes';
 import {
   DefaultValues,
   StorageKeys,
   useWalletConnectClient,
 } from '@/context/connect-wallet-context';
+import { useToolbar } from '@/context/layout-context';
 import { describeModule } from '@/services/modules/describe-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
@@ -27,6 +30,7 @@ import { getName, parse } from '@/utils/persist';
 import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import dynamic from 'next/dynamic';
+import useTranslation from 'next-translate/useTranslation';
 import React, { useState, useTransition } from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
@@ -85,6 +89,7 @@ export const getServerSideProps: GetServerSideProps<{
 const NewPage = ({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { t } = useTranslation('common');
   const [text, setText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -95,6 +100,24 @@ const NewPage = ({
       setSearchQuery(e.target.value);
     });
   };
+
+  useToolbar([
+    {
+      title: t('Cross Chain'),
+      icon: 'Transition',
+      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    },
+    {
+      title: t('Finalize Cross Chain'),
+      icon: 'TransitionMasked',
+      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+    },
+    {
+      title: t('Module Explorer'),
+      icon: 'Earth',
+      href: Routes.MODULE_EXPLORER,
+    },
+  ]);
 
   const [chainID, setChainID] = useState<ChainwebChainId | ''>('');
 
@@ -138,54 +161,60 @@ const NewPage = ({
 
 
   return (
-    <Grid.Root columns={2}>
-      <Grid.Item>
-        <Card fullWidth>
-          <Heading as="h4">
-            {selectedModule ? selectedModule.moduleName : 'Select a module'}
-            {selectedModule ? (
-              <Box display={'inline-block'}>
-                <SystemIcon.Link display={'inline-block'} />
-              </Box>
-            ) : null}
-            {selectedModule ? selectedModule.chainId : null}
-          </Heading>
-          <AceViewer code={moduleCode} />
-        </Card>
-      </Grid.Item>
-      <Grid.Item>
-        <Card fullWidth>
-          <Grid.Root columns={2}>
-            <Grid.Item>
-              <TextField
-                label="Search"
-                inputProps={{
-                  id: 'something',
-                  placeholder: 'Module name',
-                  onChange,
-                  value: text,
-                }}
-              />
-            </Grid.Item>
-            <Grid.Item>
-              <ChainSelect
-                includeEmpty
-                onChange={(value) => setChainID(value)}
-                value={chainID}
-                ariaLabel="Select Chain ID"
-              />
-            </Grid.Item>
-          </Grid.Root>
-          {isPending && <Text>Loading...</Text>}
-          <ModulesTable
-            modules={modules}
-            searchQuery={searchQuery}
-            chainID={chainID}
-            onModuleClick={setSelectedModule}
-          />
-        </Card>
-      </Grid.Item>
-    </Grid.Root>
+    <>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('Module Explorer')}</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+      <Grid.Root columns={2}>
+        <Grid.Item>
+          <Card fullWidth>
+            <Heading as="h4">
+              {selectedModule ? selectedModule.moduleName : 'Select a module'}
+              {selectedModule ? (
+                <Box display={'inline-block'}>
+                  <SystemIcon.Link display={'inline-block'} />
+                </Box>
+              ) : null}
+              {selectedModule ? selectedModule.chainId : null}
+            </Heading>
+            <AceViewer code={moduleCode} />
+          </Card>
+        </Grid.Item>
+        <Grid.Item>
+          <Card fullWidth>
+            <Grid.Root columns={2}>
+              <Grid.Item>
+                <TextField
+                  label="Search"
+                  inputProps={{
+                    id: 'something',
+                    placeholder: 'Module name',
+                    onChange,
+                    value: text,
+                  }}
+                />
+              </Grid.Item>
+              <Grid.Item>
+                <ChainSelect
+                  includeEmpty
+                  onChange={(value) => setChainID(value)}
+                  value={chainID}
+                  ariaLabel="Select Chain ID"
+                />
+              </Grid.Item>
+            </Grid.Root>
+            {isPending && <Text>Loading...</Text>}
+            <ModulesTable
+              modules={modules}
+              searchQuery={searchQuery}
+              chainID={chainID}
+              onModuleClick={setSelectedModule}
+            />
+          </Card>
+        </Grid.Item>
+      </Grid.Root>
+    </>
   );
 };
 
