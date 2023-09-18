@@ -162,7 +162,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const mostPopularPages = await getMostPopularPages();
   const blogPosts = await getBlogPosts();
 
-  console.log({ blogPosts });
   return {
     props: {
       popularPages: mostPopularPages,
