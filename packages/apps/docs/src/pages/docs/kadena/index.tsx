@@ -20,7 +20,6 @@ interface IProps {
 }
 
 const Home: FC<IProps> = ({ blogPosts }) => {
-  console.log(blogPosts);
   return (
     <Stack direction="column" gap="$2xl">
       <div>

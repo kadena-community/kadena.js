@@ -115,7 +115,7 @@ export interface IMenuData {
   isActive: boolean;
   publishDate?: string;
   headerImage?: string;
-  tags: string[];
+  tags?: string[];
   author?: string;
   authorId?: string;
   authorInfo?: IAuthorInfo;

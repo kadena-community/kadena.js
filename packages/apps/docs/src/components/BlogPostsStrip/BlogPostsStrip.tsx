@@ -10,8 +10,8 @@ import React from 'react';
 
 interface IProps {
   data: IMenuData[];
-  link: string;
-  linkLabel: string;
+  link?: string;
+  linkLabel?: string;
 }
 
 export const BlogPostsStrip: FC<IProps> = ({ data, link, linkLabel }) => {
