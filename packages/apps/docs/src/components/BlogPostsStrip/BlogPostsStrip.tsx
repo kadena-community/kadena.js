@@ -1,8 +1,14 @@
-import { Link } from '@kadena/react-ui';
+import { Link, Text } from '@kadena/react-ui';
 
-import { stripClass, stripItemClass } from './styles.css';
+import {
+  figureClass,
+  stripClass,
+  stripItemClass,
+  stripItemWrapperClass,
+} from './styles.css';
 
 import type { IMenuData } from '@/types/Layout';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
@@ -18,13 +24,23 @@ export const BlogPostsStrip: FC<IProps> = ({ data, link, linkLabel }) => {
     <section>
       <ul className={stripClass}>
         {data.map((post) => (
-          <li className={stripItemClass} key={post.root}>
-            {post.title}
-            <ul>
-              {post.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
+          <li className={stripItemWrapperClass} key={post.root}>
+            <div className={stripItemClass}>
+              <figure className={figureClass}>
+                {post.headerImage ? (
+                  <Image
+                    src={post.headerImage}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    alt={post.title}
+                  />
+                ) : (
+                  <div />
+                )}
+              </figure>
+              <h4>{post.title}</h4>
+              <Text>{post.description}</Text>
+            </div>
           </li>
         ))}
       </ul>

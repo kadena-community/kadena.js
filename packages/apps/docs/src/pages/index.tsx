@@ -121,29 +121,32 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Stack>
           </Box>
 
-          <Stack direction="column" gap="$2xl">
-            <BrowseSection title="General" titleAs="h5" direction="row">
-              <BrowseSection.LinkBlock
-                title="Overview of Pact"
-                subtitle="Explore all products"
-                icon="Overview"
-                href="/docs/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Chainweb"
-                subtitle="Explore all products"
-                icon="SmartContract"
-                href="/docs/chainweb"
-              />
-              <BrowseSection.LinkBlock
-                title="Marmalade"
-                subtitle="Explore all products"
-                icon="Marmalade"
-                href="/docs/marmalade"
-              />
-            </BrowseSection>
-          </Stack>
+          <Box marginBottom="$10">
+            <Stack direction="column" gap="$2xl">
+              <BrowseSection title="General" titleAs="h5" direction="row">
+                <BrowseSection.LinkBlock
+                  title="Overview of Pact"
+                  subtitle="Explore all products"
+                  icon="Overview"
+                  href="/docs/pact"
+                />
+                <BrowseSection.LinkBlock
+                  title="Chainweb"
+                  subtitle="Explore all products"
+                  icon="SmartContract"
+                  href="/docs/chainweb"
+                />
+                <BrowseSection.LinkBlock
+                  title="Marmalade"
+                  subtitle="Explore all products"
+                  icon="Marmalade"
+                  href="/docs/marmalade"
+                />
+              </BrowseSection>
+            </Stack>
+          </Box>
 
+          <Heading as="h4">Latest Blogchain posts</Heading>
           <BlogPostsStrip
             data={blogPosts}
             link="/docs/blogchain"
