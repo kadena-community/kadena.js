@@ -2,7 +2,6 @@
 '@kadena/chainweb-stream-client': patch
 '@kadena/chainweb-node-client': patch
 '@kadena/cryptography-utils': patch
-'@kadena-dev/lint-package': patch
 '@kadena/pactjs-cli': patch
 '@kadena/chainwebjs': patch
 '@kadena/cookbook': patch
