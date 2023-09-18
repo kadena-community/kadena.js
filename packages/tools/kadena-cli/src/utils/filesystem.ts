@@ -1,10 +1,5 @@
-import type {   BaseEncodingOptions, PathLike } from 'fs';
-import {
-  accessSync,
-  existsSync,
-  mkdirSync,
-  writeFileSync,
-} from 'fs';
+import type { PathLike, WriteFileOptions } from 'fs';
+import { accessSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import path from 'path';
 
 /**
@@ -42,7 +37,7 @@ export function ensureFileExists(filePath: string): boolean {
 export function writeFile(
   filePath: string,
   data: string | NodeJS.ArrayBufferView,
-  options: string | BaseEncodingOptions | undefined,
+  options: WriteFileOptions | undefined,
 ): void {
   const dirname = path.dirname(filePath);
   if (!PathExists(dirname)) {

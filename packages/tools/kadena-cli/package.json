@@ -38,6 +38,7 @@
     "@kadena/client": "workspace:^",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
     "@types/clear": "^0.1.2",
     "@types/js-yaml": "^4.0.5",

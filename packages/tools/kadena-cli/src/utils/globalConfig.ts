@@ -1,15 +1,16 @@
 import type { TConfigOptions } from '../config/configOptions';
-import type {Context, IContext, IDefaultConfigOptions, IDefaultOptions} from '../constants/config';
-import {
-  defaultContext,
-  defaults,
-  rootPath
+import type {
+  Context,
+  IContext,
+  IDefaultConfigOptions,
+  IDefaultOptions,
 } from '../constants/config';
+import { defaultContext, defaults, rootPath } from '../constants/config';
 import { ensureFileExists, PathExists, writeFile } from '../utils/filesystem';
 import { mergeConfigs } from '../utils/helpers';
 
 import chalk from 'chalk';
-import type { BaseEncodingOptions} from 'fs';
+import type { WriteFileOptions } from 'fs';
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
@@ -37,7 +38,7 @@ export function setContext(currentContext: Context): void {
   writeFile(
     filePath,
     yaml.dump(makeContext(currentContext)),
-    'utf8' as BaseEncodingOptions,
+    'utf8' as WriteFileOptions,
   );
 }
 
@@ -190,5 +191,5 @@ export function writeConfig(options: TConfigOptions): void {
 
   existingConfig.contexts[context] = updatedConfigForContext;
 
-  writeFile(filePath, yaml.dump(existingConfig), 'utf8' as BaseEncodingOptions);
+  writeFile(filePath, yaml.dump(existingConfig), 'utf8' as WriteFileOptions);
 }
