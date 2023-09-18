@@ -26,16 +26,22 @@ import {
 
 const kind = oneOf(atom, id('module'));
 
-// :string :object{schema-one} {kind:object,value:schema-one} | string
-export const typeRule = seq(
-  id(':'),
-  oneOf(
-    // types with interface/schema
-    seq($('kind', kind), id('{'), $('value', oneOf(dotedAtom, atom)), id('}')),
-    // primary types
-    $(atom),
-  ),
+const list = (rule: IParser) =>
+  seq(
+    $('isList', () => true),
+    id('['),
+    rule,
+    id(']'),
+  );
+const typeItem = oneOf(
+  // types with interface/schema
+  seq($('kind', kind), id('{'), $('value', oneOf(dotedAtom, atom)), id('}')),
+  // primary types
+  $(atom),
 );
+
+// :string :object{schema-one} :[object{schema-one}] => {kind:object,value:schema-one} | string
+export const typeRule = seq(id(':'), oneOf(list(typeItem), typeItem));
 
 // (defun|defcap name (a:string,b:object{schema-one},c) @doc "test doc")
 export const method = <T extends IParser>(

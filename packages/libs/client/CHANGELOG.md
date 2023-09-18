@@ -1,5 +1,17 @@
 # Change Log - @kadena/client
 
+## 1.4.0
+
+### Minor Changes
+
+- f6ff5749: Add feature to allow signing with keypair:
+
+  ```ts
+  const signWithKeystore = createSignWithKeypair([keyPair, keyPair2]);
+  const [signedTx1, signedTx2] = await signWithKeystore([tx1, tx2]);
+  const signedTx3 = await signWithKeystore(tx3);
+  ```
+
 ## 1.3.0
 
 ### Minor Changes
