@@ -1,6 +1,6 @@
 import {
   Button,
-  Heading,
+  // Heading,
   Notification,
   Stack,
   Tabs,
@@ -8,8 +8,8 @@ import {
 } from '@kadena/react-ui';
 
 import type { IQueryResult } from '../../../types';
-import { removeUnnecessarySearchRecords } from '../utils';
 
+// import { removeUnnecessarySearchRecords } from '../utils';
 import {
   loadingWrapperClass,
   scrollBoxClass,
@@ -18,14 +18,14 @@ import {
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
-import { BrowseSection, Loading } from '@/components';
-import type { IConversation } from '@/hooks/useSearch/useConversation';
-import { filePathToRoute } from '@/pages/api/semanticsearch';
+import { Loading } from '@/components';
+// import type { IConversation } from '@/hooks/useSearch/useConversation';
+// import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+// import ReactMarkdown from 'react-markdown';
 
 interface IProps {
   semanticResults: IQueryResult[];
