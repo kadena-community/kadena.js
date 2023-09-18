@@ -87,7 +87,6 @@ export const selectClass = style([
   },
 ]);
 
-
 export const chevronIconClass = style([
   sprinkles({
     display: 'inline-flex',

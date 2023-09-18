@@ -9,5 +9,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@kadena/bootstrap-lib"]
+  "ignore": ["@kadena/bootstrap-lib", "@kadena/react-ui"]
 }
