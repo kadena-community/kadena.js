@@ -62,6 +62,8 @@ export const figureClass = style([
     margin: 0,
     width: '100%',
     position: 'relative',
+    backgroundColor: '$neutral2',
+    borderRadius: '$md',
   }),
   {
     aspectRatio: '20 / 9',

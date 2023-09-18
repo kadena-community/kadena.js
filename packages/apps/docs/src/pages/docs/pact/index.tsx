@@ -55,7 +55,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </Box>
         </Stack>
 
-        <Box marginTop="$4">
+        <Box marginTop="$4" marginBottom="$10">
           <BrowseSection title="Learn about Pact" titleAs="h5" direction="row">
             <BrowseSection.LinkBlock
               title="Language reference"
@@ -75,6 +75,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             />
           </BrowseSection>
         </Box>
+
+        <Heading as="h4">Latest Pact posts</Heading>
         <BlogPostsStrip
           data={blogPosts}
           link={`/docs/tags/pact`}

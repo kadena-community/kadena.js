@@ -23,9 +23,11 @@ export const BlogPostsStrip: FC<IProps> = ({ data, link, linkLabel }) => {
         ))}
       </ul>
 
-      <NextLink href={link} passHref legacyBehavior>
-        <Link asChild>{linkLabel}</Link>
-      </NextLink>
+      {link && (
+        <NextLink href={link} passHref legacyBehavior>
+          <Link asChild>{linkLabel}</Link>
+        </NextLink>
+      )}
     </section>
   );
 };
