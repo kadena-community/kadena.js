@@ -85,6 +85,7 @@ type Transaction implements Node {
   continuation: String
   creationTime: DateTime!
   data: String
+  events: [Event!]
   gas: BigInt!
   gasLimit: BigInt!
   gasPrice: Float!

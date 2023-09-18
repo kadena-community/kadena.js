@@ -67,5 +67,19 @@ export default builder.prismaNode('Transaction', {
         });
       },
     }),
+
+    events: t.prismaField({
+      type: ['Event'],
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.event.findMany({
+          where: {
+            requestkey: parent.requestkey,
+            blockHash: parent.blockHash,
+          },
+        });
+      },
+    }),
   }),
 });

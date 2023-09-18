@@ -115,6 +115,10 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       block {
         id
       }
+      events {
+        qualName
+        eventParameters
+      }
       chainId
       code
       continuation
