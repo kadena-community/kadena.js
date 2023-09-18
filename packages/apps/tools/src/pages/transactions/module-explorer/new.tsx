@@ -24,9 +24,10 @@ import { describeModule } from '@/services/modules/describe-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import { getName, parse } from '@/utils/persist';
+import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
@@ -100,27 +101,26 @@ const NewPage = ({
   const [selectedModule, setSelectedModule] = useState<IModule>();
   const { selectedNetwork: network } = useWalletConnectClient();
 
-  const [modules, setModules] = useState(data);
+  const {
+    isLoading: areModulesLoading,
+    error: modulesError,
+    data: modules,
+  } = useQuery({
+    queryKey: ['modules', network],
+    queryFn: () => getModules(network),
+    initialData: data,
+  });
 
-  useEffect(() => {
-    const fetchModules = async (): Promise<void> => {
-      const results = await getModules(network);
-      setModules(results);
-    };
-    fetchModules().catch(console.error);
-  }, [network]);
-
-  const [code, setCode] = useState<string>('');
-
-  useEffect(() => {
-    const fetchModule = async (): Promise<void> => {
-      if (!selectedModule) {
-        return;
-      }
-
+  const {
+    isLoading: isModuleLoading,
+    error: moduleError,
+    data: moduleCode,
+  } = useQuery({
+    queryKey: ['module', selectedModule, network],
+    queryFn: async () => {
       const result = await describeModule(
-        selectedModule.moduleName,
-        selectedModule.chainId,
+        selectedModule!.moduleName,
+        selectedModule!.chainId,
         network,
         kadenaConstants.DEFAULT_SENDER,
         kadenaConstants.GAS_PRICE,
@@ -128,15 +128,14 @@ const NewPage = ({
       );
 
       if (result.result.status === 'failure') {
-        // TODO: do something
-        return;
+        throw new Error('Something went wrong');
       }
 
-      setCode((result.result.data as unknown as { code: string }).code);
-    };
+      return (result.result.data as unknown as { code: string }).code;
+    },
+    enabled: !!selectedModule,
+  });
 
-    fetchModule().catch(console.error);
-  }, [network, selectedModule]);
 
   return (
     <Grid.Root columns={2}>
@@ -151,7 +150,7 @@ const NewPage = ({
             ) : null}
             {selectedModule ? selectedModule.chainId : null}
           </Heading>
-          <AceViewer code={code} />
+          <AceViewer code={moduleCode} />
         </Card>
       </Grid.Item>
       <Grid.Item>
