@@ -28,7 +28,7 @@ type StoryProps = {
 } & IAccordionProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Components/Accordion',
+  title: 'Layout/Accordion',
   parameters: {
     controls: {
       hideNoControlsWarning: true,

@@ -4,7 +4,8 @@
   "moduleNameMapper": {
     "@/(.*)": "<rootDir>/src/$1",
     "@components/(.*)": "<rootDir>/src/components/$1",
-    "@theme/(.*)": "<rootDir>/src/styles/$1"
+    "@theme/(.*)": "<rootDir>/src/styles/$1",
+    "@utils/(.*)": "<rootDir>/src/utils/$1"
   },
   "modulePathIgnorePatterns": ["<rootDir>/dist/"],
   "moduleDirectories": ["node_modules", "src"],

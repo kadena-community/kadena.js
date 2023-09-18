@@ -18,7 +18,7 @@ their configuration options.
 
 Run the following commands to install dependencies and build the library:
 
-```sh
+```bash
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 pnpm install
@@ -47,14 +47,14 @@ Add @kadena/react-ui as a dependency in your `package.json`:
 Then run the following commands to install the package and update the monorepo's
 state:
 
-```sh
+```bash
 pnpm install
 ```
 
 VE requires bundler configuration to handle CSS. To set this up in Next.js you
 will need to install the following plugin:
 
-```sh
+```bash
 pnpm add @vanilla-extract/next-plugin --dev
 ```
 
@@ -155,7 +155,7 @@ export default MyApp;
 After installing dependencies, you can start Storybook with the following
 command:
 
-```sh
+```bash
 pnpm storybook
 ```
 
@@ -165,7 +165,7 @@ The component library is not yet published, to use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-```sh
+```bash
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 pnpm install
@@ -242,10 +242,10 @@ general you can expect each set of colors to have the following 4 options.
 Example:
 
 ```js
-  primaryAccent: '#2997FF', // Vibrant
-  primarySurface: '#C2E1FF', // Low contrast
-  primaryContrast: '#00498F', // Contrast
-  primaryHighContrast: '#002F5C', // High Contrast
+primaryAccent: '#2997FF', // Vibrant
+primarySurface: '#C2E1FF', // Low contrast
+primaryContrast: '#00498F', // Contrast
+primaryHighContrast: '#002F5C', // High Contrast
 ```
 
 If at any point you feel that you need more than these variations of a specific

@@ -17,7 +17,15 @@ type StoryProps = {
 } & ITableProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Components/Table',
+  title: 'Content/Table',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Table component renders a table element with a head and body. The table can have a visual distinction between rows with the `striped` prop. The column width can be adjusted via `width`, `minWidth`, and `maxWidth` prop applied to the `Table.Th` subcomponent.',
+      },
+    },
+  },
   argTypes: {
     rowCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },

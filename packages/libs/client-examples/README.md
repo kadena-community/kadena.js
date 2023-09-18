@@ -41,7 +41,7 @@ npx pactjs contract-generate --file=./coin.pact --api https://api.chainweb.com/c
 
 if your contract has dependency to other modules you should either pass those
 modules with `--file` or if they are already deployed on the chain you can use
-`--api` to let the script fetch them from the chian. So for the coin example you
+`--api` to let the script fetch them from the chain. So for the coin example you
 can alternatively use the following command if you have all of the files
 locally.
 

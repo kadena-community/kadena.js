@@ -3,13 +3,7 @@ import type {
   IInputWrapperProps,
   ISelectProps,
 } from '@kadena/react-ui';
-import {
-  IconButton,
-  Input,
-  InputWrapper,
-  Option,
-  Select,
-} from '@kadena/react-ui';
+import { IconButton, Input, InputWrapper, Select } from '@kadena/react-ui';
 
 import { accountInputWrapperStyle } from './styles.css';
 
@@ -73,11 +67,11 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
         icon={'KIcon'}
         id={elementId}
       >
-        <Option value={''}>{t('Select Account')}</Option>
+        <option value={''}>{t('Select Account')}</option>
         {getAccounts(accounts, selectedNetwork).map((account) => (
-          <Option key={account} value={account}>
+          <option key={account} value={account}>
             {account.slice(0, 4)}****{account.slice(-4)}
-          </Option>
+          </option>
         ))}
       </Select>
     ),

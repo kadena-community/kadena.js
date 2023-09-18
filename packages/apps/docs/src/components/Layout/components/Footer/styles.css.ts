@@ -8,7 +8,7 @@ export const footerWrapperClass = style([
   sprinkles({
     position: 'relative',
     background: '$neutral2',
-    marginTop: '$40',
+    marginTop: '$20',
   }),
   {
     zIndex: $$navMenu,

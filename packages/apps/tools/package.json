@@ -1,6 +1,6 @@
 {
   "name": "@kadena/tools",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:contracts && next build",

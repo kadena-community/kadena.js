@@ -163,4 +163,32 @@ describe('pactParser', () => {
     expect(testModule.functions).toHaveLength(1);
     expect(testModule.functions![0].name).toBe('test_fun');
   });
+
+  it('parses a function with list as return type', async () => {
+    const contract = `
+      (module test_module GOVERNANCE
+        (defun get-events-list:[object{networking-event-schema}] ()
+          @doc "Get all events"
+          (with-capability (OPS)
+            (select networking-events-table (where "deleted-at" (= -1)))
+          )
+        )
+      )
+      `;
+
+    const getContract = (): Promise<string> => Promise.resolve('');
+    const modules = await pactParser({ files: [contract], getContract });
+    expect(Object.keys(modules)).toHaveLength(1);
+    const testModule = modules.test_module;
+    expect(testModule).toBeDefined();
+    expect(testModule.name).toBe('test_module');
+    expect(testModule.kind).toBe('module');
+    expect(testModule.functions).toHaveLength(1);
+    expect(testModule.functions![0].name).toBe('get-events-list');
+    expect(testModule.functions![0].returnType).toEqual({
+      kind: 'object',
+      value: 'networking-event-schema',
+      isList: true,
+    });
+  });
 });
