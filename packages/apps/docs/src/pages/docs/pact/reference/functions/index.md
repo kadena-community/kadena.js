@@ -7,6 +7,7 @@ menu: Built-in Functions
 label: General
 order: 6
 layout: full
+tags: ['pact', 'language reference', 'built-in functions']
 ---
 
 # Built-in Functions

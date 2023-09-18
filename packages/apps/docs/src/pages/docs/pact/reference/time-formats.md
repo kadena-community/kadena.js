@@ -7,6 +7,7 @@ menu: Time Formats
 label: Time Formats
 order: 5
 layout: full
+tags: ['pact', 'language reference', 'time formats']
 ---
 
 # Time formats

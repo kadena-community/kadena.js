@@ -7,6 +7,14 @@ menu: Rotatable Wallet
 label: Rotatable Wallet
 order: 11
 layout: full
+tags:
+  [
+    'pact',
+    'beginner',
+    'rotatable wallet',
+    'rotatable wallet tutorial',
+    'tutorial',
+  ]
 ---
 
 # Rotatable Wallet

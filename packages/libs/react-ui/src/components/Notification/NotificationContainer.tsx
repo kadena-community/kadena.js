@@ -6,7 +6,7 @@ import {
   containerClass,
   contentClass,
   descriptionClass,
-  expandVariants
+  expandVariants,
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';

@@ -7,6 +7,7 @@ menu: Pact and JavaScript
 label: Pact and JavaScript
 order: 2
 layout: full
+tags: ['pact', 'tutorials', 'intermediate', 'pact javascript']
 ---
 
 # Pact and JavaScript

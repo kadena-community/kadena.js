@@ -5,6 +5,7 @@ menu: Build
 label: Safe Rotate and Drain
 order: 4
 layout: full
+tags: [pact, tutorial, signing]
 ---
 
 # Safe Rotate and Drain

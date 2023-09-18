@@ -8,6 +8,7 @@ menu: Keysets
 label: Keysets
 order: 6
 layout: full
+tags: ['pact', 'beginner', 'keysets']
 ---
 
 # Keysets

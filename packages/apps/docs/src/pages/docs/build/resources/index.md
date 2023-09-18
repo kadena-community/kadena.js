@@ -5,6 +5,7 @@ menu: Resources
 label: Pact Resources
 order: 6
 layout: full
+tags: [pact, resources]
 ---
 
 # Pact Resources

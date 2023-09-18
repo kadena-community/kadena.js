@@ -12,7 +12,11 @@ interface ICenteredStoryProps {
   horizontal?: boolean;
   vertical?: boolean;
 }
-const CenteredStory: FC<ICenteredStoryProps> = ({ horizontal, vertical, children }) => {
+const CenteredStory: FC<ICenteredStoryProps> = ({
+  horizontal,
+  vertical,
+  children,
+}) => {
   return (
     <div
       style={{
@@ -28,7 +32,9 @@ const CenteredStory: FC<ICenteredStoryProps> = ({ horizontal, vertical, children
   );
 };
 
-export const withNotCenteredStory: Decorator = (story) => <CenteredStory>{story()}</CenteredStory>;
+export const withNotCenteredStory: Decorator = (story) => (
+  <CenteredStory>{story()}</CenteredStory>
+);
 export const withCenteredStory: Decorator = (story) => (
   <CenteredStory horizontal vertical>
     {story()}
@@ -37,4 +43,6 @@ export const withCenteredStory: Decorator = (story) => (
 export const withHorizontallyCenteredStory: Decorator = (story) => (
   <CenteredStory horizontal>{story()}</CenteredStory>
 );
-export const withVerticallyCenteredStory: Decorator = (story) => <CenteredStory vertical>{story()}</CenteredStory>;
+export const withVerticallyCenteredStory: Decorator = (story) => (
+  <CenteredStory vertical>{story()}</CenteredStory>
+);

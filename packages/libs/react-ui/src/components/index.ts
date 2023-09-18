@@ -32,6 +32,7 @@ export type {
   INavHeaderContentProps,
   INavHeaderLinkProps,
   INavHeaderNavigationProps,
+  INavHeaderSelectProps,
   INavHeaderRootProps,
 } from './NavHeader';
 export type {

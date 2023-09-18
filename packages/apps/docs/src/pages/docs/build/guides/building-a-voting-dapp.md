@@ -5,6 +5,7 @@ menu: Build
 label: Building a voting dApp
 order: 3
 layout: full
+tags: [pact, smart contract, typescript, tutorial]
 ---
 
 # Building a voting dApp
@@ -22,8 +23,12 @@ JavaScript libraries you can use to interact with nodes running Pact.
 
 ### Voting on the Blockchain
 
-:::info The complete code of this tutorial can also be found in the
-[voting dApp repository](https://github.com/kadena-community/voting-dapp). :::
+:::info
+
+The complete code of this tutorial can also be found in the
+[voting dApp repository](https://github.com/kadena-community/voting-dapp).
+
+:::
 
 Elections are a necessary part of democracies and democratic organizations. The
 voting systems used to administer elections must ensure a fair process and
@@ -97,11 +102,15 @@ In your project directory, let's create two files:
 - `pact/election.pact`, which will hold the source code for our smart contract
 - `pact/election.repl`, which will hold our tests
 
-:::info What is Pact REPL? The Pact REPL is an environment where we can load our
-Pact source code and work with it interactively. It's a best practice to include
-a `.repl` file next to your source code which imports your contract, calls
+:::info
+
+What is Pact REPL? The Pact REPL is an environment where we can load our Pact
+source code and work with it interactively. It's a best practice to include a
+`.repl` file next to your source code which imports your contract, calls
 functions from it, and inspects its current state to ensure everything is
-correct. :::
+correct.
+
+:::
 
 We also have to import some dependencies to our project but first let's provide
 some context to better understand why we need them. In the introduction we
@@ -148,7 +157,7 @@ the module.
 
 Let's copy the following code in the `election.pact` file:
 
-```clojure
+```pact
 ;; election.pact
 
 (namespace 'free)
@@ -178,10 +187,13 @@ GOVERNANCE capability to guard it. The implementation can be as simple as in our
 example, enforcing a keyset or more complex like tallying a stakeholder vote on
 an upgrade hash.
 
-:::note Module names and keyset definitions are required to be unique. We will
-mention this again when we get to deploy our contract to Testnet, but you should
-keep this in mind when you think about choosing a name for your modules and
-keysets. :::
+:::note
+
+Module names and keyset definitions are required to be unique. We will mention
+this again when we get to deploy our contract to Testnet, but you should keep
+this in mind when you think about choosing a name for your modules and keysets.
+
+:::
 
 #### Capabilities
 
@@ -196,7 +208,7 @@ been made. The `ACCOUNT-OWNER` capability validates the ownership of the KDA
 account that's used to identify a user. This might not be clear at first but
 let's look at the code:
 
-```clojure
+```pact
 ;; election.pact
 
   ;; Import `coin` module while only making the `details` function available
@@ -246,7 +258,7 @@ vote for them and as well as who voted already so we can prevent double-voting.
 Pact smart contracts store data in tables and each table has its own schema. For
 our voting contract we need 2 tables: `candidates` and `votes`.
 
-```clojure
+```pact
   ;; election.pact
 
   ;; Define the `candidates-schema` schema
@@ -281,14 +293,18 @@ double-voting.
 [Data Types](/docs/pact/reference/concepts#data-types) section in the Pact
 official documentation. :::
 
-:::note Pact implements a key-row model which means a row is accessed by a
-single key. The key is implicitly present in the schema but it is our
-responsibility as developers to design the schema in a way that we can retrieve
-the information that we need using a single row query. Multiple row queries are
-very expensive and should not be used.
+:::note
+
+Pact implements a key-row model which means a row is accessed by a single key.
+The key is implicitly present in the schema but it is our responsibility as
+developers to design the schema in a way that we can retrieve the information
+that we need using a single row query. Multiple row queries are very expensive
+and should not be used.
 
 The row key is always a simple string, not to be confused with the cryptographic
-keys used for signing transactions. :::
+keys used for signing transactions.
+
+:::
 
 #### Functionality
 
@@ -297,7 +313,7 @@ data, i.e. candidates and votes. One of the core features of our voting contract
 is to allow users to vote for a candidate while preventing double-voting so
 let's implement it:
 
-```clojure
+```pact
   ;; election.pact
 
   (defun user-voted:bool (account:string)
@@ -381,7 +397,7 @@ exist or voting with an account that the user doesn't own**.
 Now that we can vote, we also need a function to read the number of votes a
 candidate received:
 
-```clojure
+```pact
   (defun get-votes:integer (cid:string)
     "Get the votes count by cid"
 
@@ -392,7 +408,7 @@ candidate received:
 
 Last thing on the list is adding candidates:
 
-```clojure
+```pact
   (defun insert-candidate (candidate)
     "Insert a new candidate, admin operation"
 
@@ -421,7 +437,7 @@ When a module is deployed, the tables that it defines need to be created. This
 is done using the `create-table` function. Insert the snippet below after the
 module's closing parenthesis:
 
-```clojure
+```pact
 ;; election.pact
 
 ;; Read the `upgrade` key from transaction data
@@ -460,7 +476,7 @@ Each module or interface needs to be part of a namespace. To set the namespace
 of a module we have to use the `namespace` function. Ensure the following line
 is at the beginning of your `.pact` files:
 
-```clojure
+```pact
 (namespace 'free)
 ```
 
@@ -480,9 +496,12 @@ We wrote quite a bit of code but at this point we don't know if it's working
 correctly. A critical step in smart-contract development process is writing a
 proper set of tests which is what we're going to focus on now.
 
-:::tip We separated writing functionality and writing tests to make it easier to
-follow this tutorial but in a real-world scenario you should work on these in
-parallel. :::
+:::tip
+
+We separated writing functionality and writing tests to make it easier to follow
+this tutorial but in a real-world scenario you should work on these in parallel.
+
+:::
 
 We're going to start by setting up the environment data that we need for our
 tests, load the required modules, i.e. `coin` module and of our `election`
@@ -490,7 +509,7 @@ module and create some KDA accounts that we will use to vote later on.
 
 Create the `election.repl` file and copy the snippet below:
 
-```clojure
+```pact
 ;; election.repl
 
 ;; begin-tx and commit-tx simulate a transaction
@@ -556,7 +575,7 @@ Now that this initial setup is done, we can go on and write some tests. Notice
 that we did not add any candidates just yet so any attempt to vote at this point
 should fail. Let's try it:
 
-```clojure
+```pact
 ;; election.repl
 
 (begin-tx "Vote for non-existing candidate")
@@ -575,16 +594,20 @@ In the snippet above we've learned that we can use `expect-failure` to test that
 an expression will fail and that we can configure the keys and capabilities
 signing a transaction using `env-sigs`.
 
-:::note REPL-Only Functions `expect-failure` and `env-sigs` are two of the many
+:::note
+
+REPL-Only Functions `expect-failure` and `env-sigs` are two of the many
 REPL-only functions that we can use in `.repl` files to test Pact
 smart-contracts by simulating blockchain environment. You can check the
 [complete list of REPL-only functions](/docs/pact/reference/functions/repl-only-functions#repl-only-functions)
-in the Pact official documentation. :::
+in the Pact official documentation.
+
+:::
 
 Next we're going to add some candidates and check if their number of votes is
 correctly initialized.
 
-```clojure
+```pact
 ;; election.repl
 
 (begin-tx "Add candidates")
@@ -614,7 +637,7 @@ this case we checked if `get-votes` returns 0 for each candidate.
 Moving on, we want to validate that votes are correctly recorded, the `VOTED`
 event is emitted and double-voting is not allowed.
 
-```clojure
+```pact
 ;; election.repl
 
 (begin-tx)
@@ -666,11 +689,15 @@ variable which we compared with the new count after submitting a vote. Feel free
 to read more about [`let` and `let*`](/docs/pact/reference/syntax#let) in Pact
 official documentation.
 
-:::info Write a test Can you think of some cases that we didn't cover? Hint:
+:::info
+
+Write a test Can you think of some cases that we didn't cover? Hint:
 ACCOUNT-OWNER.
 
 Try to write a test that validates that only the correct owner of an account can
-vote. :::
+vote.
+
+:::
 
 The only thing left is to run these tests and confirm everything is working:
 
@@ -679,8 +706,10 @@ $ pact
 pact> (load "election.repl")
 ```
 
-:::tip The REPL preserves state between subsequent runs unless the optional
-parameter `reset` is set to true:
+:::tip
+
+The REPL preserves state between subsequent runs unless the optional parameter
+`reset` is set to true:
 
 ```
 (load "election.repl" true)
@@ -703,12 +732,14 @@ A unique feature of Kadena is the ability to allow gas to be paid by a different
 entity than the one who initiated the transaction. This entity is what we call a
 _gas station_.
 
-:::info **Gas** is the cost necessary to perform a transaction on the network.
-Gas is paid to miners and its price varies based on supply and demand. It's a
-critical piece of the puzzle, but at the same time it brings up a UX problem.
-Every user needs to be aware of what gas is as well as how much gas they need to
-pay for their transaction. This causes significant friction and a less than
-ideal experience.
+:::info
+
+**Gas** is the cost necessary to perform a transaction on the network. Gas is
+paid to miners and its price varies based on supply and demand. It's a critical
+piece of the puzzle, but at the same time it brings up a UX problem. Every user
+needs to be aware of what gas is as well as how much gas they need to pay for
+their transaction. This causes significant friction and a less than ideal
+experience.
 
 To help mitigate this problem Kadena brings an innovation to the game. Hello
 [gas stations](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)!
@@ -724,17 +755,23 @@ miners will still be paid, but our users can vote for free.
 The standard for gas station implementation is defined by the `gas-payer-v1`
 interface. The `gas-payer-v1` interface is deployed to all chains on `testnet`
 and `mainnet` so you can directly use it in your contract. We can specify that a
-module implements an interface using the `(implements INTERFACE)` construct. :::
+module implements an interface using the `(implements INTERFACE)` construct.
 
-:::info Pact interfaces are similar to Java's interfaces, Scala's traits,
-Haskell's typeclasses or Solidity's interfaces. If you're not familiar with this
-concept you can [read more about it](/docs/pact/reference/concepts#interfaces)
-in Pact reference. :::
+:::
+
+:::info
+
+Pact interfaces are similar to Java's interfaces, Scala's traits, Haskell's
+typeclasses or Solidity's interfaces. If you're not familiar with this concept
+you can [read more about it](/docs/pact/reference/concepts#interfaces) in Pact
+reference.
+
+:::
 
 Let's take a look at the `gas-payer-v1` interface defining a capability and a
 function:
 
-```clojure
+```pact
 (interface gas-payer-v1
 
   (defcap GAS_PAYER:bool
@@ -789,7 +826,7 @@ conditions. How exactly that happens, let's see below.
 
 Create a new file `election-gas-station.pact` and paste the following snippet:
 
-```clojure
+```pact
 ;; election-gas-station.pact
 
 (module election-gas-station GOVERNANCE
@@ -811,7 +848,7 @@ abuse our gas station so we'll have to add a limit for the maximum gas price
 we're willing to pay or make sure it can only be used to pay for transactions
 that are calling the `election` module. Let's get to it:
 
-```clojure
+```pact
   ;; election-gas-station.pact
 
   (defun chain-gas-price ()
@@ -859,7 +896,7 @@ composes the `ALLOW_GAS` capability that we will define next. `chain-gas-price`
 and `enforce-below-or-at-gas-price` are helper functions to limit the gas price
 that our gas station is willing to pay.
 
-```clojure
+```pact
   ;; election-gas-station.pact
   (defcap ALLOW_GAS () true)
 
@@ -882,7 +919,7 @@ that our gas station is willing to pay.
 Then we can wrap it up and make sure the `init` function is called when we're
 deploying the module:
 
-```clojure
+```pact
 ;; election-gas-station.pact
 (if (read-msg 'upgrade)
   ["upgrade"]
@@ -895,10 +932,13 @@ deploying the module:
 First we define the `ALLOW_GAS` capability which is brought in scope by the
 `GAS_PAYER` capability through `compose-capability` function.
 
-:::note Composing capabilities allows for modular factoring of guard code, e.g.
-an "outer" capability could be composed out of multiple "inner" capabilities.
-Also composed capabilities are only in scope when their parent capability is
-granted. :::
+:::note
+
+Composing capabilities allows for modular factoring of guard code, e.g. an
+"outer" capability could be composed out of multiple "inner" capabilities. Also
+composed capabilities are only in scope when their parent capability is granted.
+
+:::
 
 Then we implement the `gas-payer-guard` function which tests if `GAS` (magic
 capability defined in coin contract) and `ALLOW_GAS` capabilities have been
@@ -937,8 +977,12 @@ transactions. Head over to Chainweaver and create an account on `testnet`.
 Next step is to fund your `testnet` account using this
 [faucet](http://faucet.testnet.chainweb.com). You will receive 20 Testnet KDA.
 
-:::tip Here's a snippet that you can use to list all deployed modules by using
-the top-level `list-modules` built-in function: :::
+:::tip
+
+Here's a snippet that you can use to list all deployed modules by using the
+top-level `list-modules` built-in function:
+
+:::
 
 ```javascript
 const { PactCommand } = require('@kadena/client');
@@ -1096,9 +1140,13 @@ the @kadena/client types to give you type information. Make sure to add
 
 ### Our implementation
 
-:::note Our example uses [React](https://reactjs.org), but you are free to use
-any framework that you are comfortable with. The main focus will be on
-blockchain and wallet interaction. :::
+:::note
+
+Our example uses [React](https://reactjs.org), but you are free to use any
+framework that you are comfortable with. The main focus will be on blockchain
+and wallet interaction.
+
+:::
 
 There are a few key aspects concerning a frontend implementation of a blockchain
 application:
@@ -1154,8 +1202,11 @@ We're sending a command to the `/local` endpoint where the `pactCode` attribute
 is a call to our module function which returns the number of votes for the given
 candidate.
 
-:::note Remember to always use the fully qualified name,
-_namespace.module.function_. :::
+:::note
+
+Remember to always use the fully qualified name, _namespace.module.function_.
+
+:::
 
 Here's a screenshot from our demo app where we display the candidates and the
 number of votes received by each candidate:
@@ -1172,11 +1223,15 @@ updating on-chain data, each dApp has to implement the following flow:
 3. Send transaction
 4. Notify when transaction is mined
 
-:::info In this tutorial we are using Chainweaver wallet to sign transactions,
-other wallets might have a different API but the steps mentioned above are
-similar. There might be the case where a wallet takes care of more than signing
-a transaction (e.g. it also sends it to the network) and you will have to adapt
-your implementation accordingly. :::
+:::info
+
+In this tutorial we are using Chainweaver wallet to sign transactions, other
+wallets might have a different API but the steps mentioned above are similar.
+There might be the case where a wallet takes care of more than signing a
+transaction (e.g. it also sends it to the network) and you will have to adapt
+your implementation accordingly.
+
+:::
 
 **@kadena/client** provides a couple of useful methods here:
 `signWithChainweaver` to interact with the Chainweaver signing API and `send` on
@@ -1232,13 +1287,17 @@ keyset will have to sign. In this case we have two:
 - `free.election.ACCOUNT-OWNER` -> checks if the user is the owner of the KDA
   account
 
-:::note Scoping signatures Keep in mind, for security reasons a keyset should
-only sign specific capabilities and using a keyset in "unrestricted mode" is not
+:::note
+
+Scoping signatures Keep in mind, for security reasons a keyset should only sign
+specific capabilities and using a keyset in "unrestricted mode" is not
 recommended. Scoping the signature allows the signer to safely call untrusted
 code which is an important security feature of Pact and Kadena.
 
 "Unrestricted mode" means that we do not define any capabilities when creating a
-transaction. :::
+transaction.
+
+:::
 
 Since this is a transaction that requires gas fees, we now set `sender` (account
 paying for gas) to the name of the KDA account of the user. If we would want to
@@ -1274,8 +1333,12 @@ _Note: Since mining is an external process, while waiting for our transaction to
 be included in the blockchain, the user should be able to keep using the
 application freely._
 
-:::info As an extra excercise; modify the code to utilize the gasstation instead
-of having the user pay for gas fees. :::
+:::info
+
+As an extra excercise; modify the code to utilize the gasstation instead of
+having the user pay for gas fees.
+
+:::
 
 ### Conclusion
 
