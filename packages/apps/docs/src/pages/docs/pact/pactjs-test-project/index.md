@@ -6,6 +6,8 @@ label: PactJS Test Project
 order: 10
 editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/libs/pactjs-test-project/README.md
 layout: full
+tags:
+  ['pact', 'pactjs', 'pactjs test project', 'pactjs tutorial', 'pactjs example']
 ---
 
 # PactJS Test Project

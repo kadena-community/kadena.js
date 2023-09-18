@@ -7,6 +7,7 @@ menu: Pact Property Checking System
 label: Pact Property Checking System
 order: 7
 layout: full
+tags: ['pact', 'property checking system']
 ---
 
 # Pact Property Checking System

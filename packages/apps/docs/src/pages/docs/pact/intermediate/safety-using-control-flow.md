@@ -7,6 +7,7 @@ menu: Safety Using Control Flow
 label: Safety
 order: 3
 layout: full
+tags: ['pact', 'intermediate', 'safety', 'control flow']
 ---
 
 # Safety Using Control Flow

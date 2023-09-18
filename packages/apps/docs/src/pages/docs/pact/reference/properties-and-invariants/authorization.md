@@ -7,6 +7,13 @@ menu: Authorization Operators
 label: Authorization Operators
 order: 12
 layout: full
+tags:
+  [
+    'pact',
+    'language reference',
+    'authorization operators',
+    'pact authorization',
+  ]
 ---
 
 # Authorization operators

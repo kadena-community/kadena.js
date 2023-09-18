@@ -8,6 +8,7 @@ menu: Modules
 label: Modules
 order: 5
 layout: full
+tags: ['pact', 'beginner', 'modules', 'pact modules tutorial']
 ---
 
 # Modules

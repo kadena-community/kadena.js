@@ -7,6 +7,7 @@ menu: Language Reference
 label: Intro
 order: 4
 layout: full
+tags: ['pact', 'language reference']
 ---
 
 # Language Reference

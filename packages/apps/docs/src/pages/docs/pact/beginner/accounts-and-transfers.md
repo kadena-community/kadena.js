@@ -10,6 +10,7 @@ menu: Accounts and Transfers
 label: Accounts and Transfers
 order: 9
 layout: full
+tags: ['pact', 'beginner tutorials', 'accounts and transfers']
 ---
 
 # Accounts and Transfers

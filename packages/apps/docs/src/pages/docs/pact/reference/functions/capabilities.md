@@ -7,6 +7,7 @@ menu: Capabilities
 label: Capabilities
 order: 6
 layout: full
+tags: ['pact', 'language reference', 'capabilities']
 ---
 
 # Capabilities

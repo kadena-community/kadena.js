@@ -7,6 +7,7 @@ menu: Time
 label: Time
 order: 3
 layout: full
+tags: ['pact', 'language reference', 'time']
 ---
 
 # Time

@@ -7,6 +7,7 @@ menu: Loans
 label: Loans
 order: 12
 layout: full
+tags: ['pact', 'beginner', 'loans']
 ---
 
 # Loans

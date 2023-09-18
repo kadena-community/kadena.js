@@ -7,6 +7,7 @@ label: Overview
 order: 1
 layout: landing
 icon: PactDeveloper
+tags: ['pact', 'pact definition', 'prerequisites']
 ---
 
 # Learn Pact

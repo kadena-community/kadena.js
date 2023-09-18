@@ -7,6 +7,13 @@ menu: Property and Invariant Functions
 label: Intro
 order: 8
 layout: full
+tags:
+  [
+    'pact',
+    'language reference',
+    'property and invariant functions',
+    'pact functions',
+  ]
 ---
 
 # Property and Invariant Functions

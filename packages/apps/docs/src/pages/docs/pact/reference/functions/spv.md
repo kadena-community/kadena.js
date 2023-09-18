@@ -7,6 +7,7 @@ menu: SPV
 label: SPV
 order: 7
 layout: full
+tags: ['pact', 'language reference', 'spv', 'spv proof verification']
 ---
 
 # SPV
