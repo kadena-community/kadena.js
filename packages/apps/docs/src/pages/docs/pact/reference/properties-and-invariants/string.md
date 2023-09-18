@@ -7,6 +7,7 @@ menu: String Operators
 label: String Operators
 order: 7
 layout: full
+tags: ['pact', 'language reference', 'string operators', 'pact operators']
 ---
 
 # String operators

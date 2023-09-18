@@ -7,6 +7,7 @@ menu: Guards
 label: Guards
 order: 9
 layout: full
+tags: ['pact', 'language reference', 'guards']
 ---
 
 # Guards

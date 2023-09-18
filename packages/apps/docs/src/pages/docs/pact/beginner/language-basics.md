@@ -5,6 +5,7 @@ menu: Language Basics
 label: Language Basics
 order: 4
 layout: full
+tags: ['pact', 'language basics']
 ---
 
 # Language Basics

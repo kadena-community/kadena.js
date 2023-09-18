@@ -7,6 +7,7 @@ menu: Concepts
 label: Concepts
 order: 3
 layout: full
+tags: ['pact', 'concepts', 'declaration']
 ---
 
 # Concepts

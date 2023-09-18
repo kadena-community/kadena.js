@@ -7,6 +7,7 @@ menu: Pact Rest API
 label: Pact Rest API
 order: 2
 layout: full
+tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 ---
 
 # Rest API

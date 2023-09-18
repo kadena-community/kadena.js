@@ -7,6 +7,7 @@ menu: Operators
 label: Operators
 order: 4
 layout: full
+tags: ['pact', 'language reference', 'operators']
 ---
 
 # Operators

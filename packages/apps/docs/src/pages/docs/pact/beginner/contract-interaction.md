@@ -9,6 +9,11 @@ menu: Contract Interaction
 label: Contract Interaction
 order: 10
 layout: full
+tags:
+  [
+    'pact',',
+    'contract interaction',
+  ]
 ---
 
 # Contract Interaction

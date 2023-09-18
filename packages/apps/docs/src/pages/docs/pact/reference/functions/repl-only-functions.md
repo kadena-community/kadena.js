@@ -7,6 +7,7 @@ menu: REPL-only functions
 label: REPL-only functions
 order: 11
 layout: full
+tags: ['pact', 'language reference', 'repl-only functions', 'repl functions']
 ---
 
 # REPL-only functions

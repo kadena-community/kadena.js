@@ -5,6 +5,7 @@ menu: Beginner
 label: Welcome to Pact
 order: 2
 layout: full
+tags: ['pact', 'pact tutorial', 'pact beginner', 'pact introduction']
 ---
 
 # Welcome to Pact

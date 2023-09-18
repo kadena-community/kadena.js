@@ -7,6 +7,7 @@ menu: Atom SDK
 label: Atom SDK
 order: 8
 layout: full
+tags: ['pact', 'atom sdk', 'pact installation', 'local development']
 ---
 
 # Atom SDK

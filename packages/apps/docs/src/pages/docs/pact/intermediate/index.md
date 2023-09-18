@@ -7,6 +7,7 @@ menu: Intermediate
 label: Intermediate
 order: 3
 layout: full
+tags: ['pact', 'intermediate', 'deploy to local server'. 'local test server tutorial']
 ---
 
 # Deploy to a Local Server

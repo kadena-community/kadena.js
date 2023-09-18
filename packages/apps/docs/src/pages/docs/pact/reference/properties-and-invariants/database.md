@@ -7,6 +7,7 @@ menu: Database Operators
 label: Database Operators
 order: 11
 layout: full
+tags: ['pact', 'language reference', 'database operators', 'pact operators']
 ---
 
 # Database operators
