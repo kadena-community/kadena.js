@@ -192,15 +192,15 @@ const RequestKey: React.FC = () => {
                     <Table.Td>
                       {transactionSubscription?.transaction?.events?.map(
                         (event, index) => (
-                          <Table.Root>
+                          <Table.Root key={index}>
                             <Table.Body>
-                              <Table.Tr key={`name-${index}`}>
+                              <Table.Tr>
                                 <Table.Td>
                                   <strong>Name</strong>
                                 </Table.Td>
                                 <Table.Td>{event.qualName}</Table.Td>
                               </Table.Tr>
-                              <Table.Tr key={`arguments-${index}`}>
+                              <Table.Tr>
                                 <Table.Td>
                                   <strong>Parameters</strong>
                                 </Table.Td>
