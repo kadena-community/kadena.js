@@ -3,7 +3,10 @@ import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const colorVariants: Omit<Record<ColorType, ColorType>, "secondary" | "tertiary"> = {
+export const colorVariants: Omit<
+  Record<ColorType, ColorType>,
+  'secondary' | 'tertiary'
+> = {
   info: 'info',
   positive: 'positive',
   warning: 'warning',
@@ -95,11 +98,14 @@ export const actionButtonClass = style([
   }),
 ]);
 
-export const actionButtonColorVariants = styleVariants(colorVariants, (color) => {
-  return [
-    actionButtonClass,
-    sprinkles({
-      color: `$${color}Contrast`,
-    }),
-  ];
-});
+export const actionButtonColorVariants = styleVariants(
+  colorVariants,
+  (color) => {
+    return [
+      actionButtonClass,
+      sprinkles({
+        color: `$${color}Contrast`,
+      }),
+    ];
+  },
+);

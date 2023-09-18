@@ -3,7 +3,6 @@ import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
-import { Button } from '@components/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -26,10 +25,11 @@ const sampleNavItems: INavHeaderLinkProps[] = [
   },
 ];
 
+const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
+
 type StoryProps = {
   linksCount: number;
   navHeaderActiveLink: number;
-  renderSampleContent: boolean;
   useCustomNavigation: boolean;
   customNavigation: INavHeaderLinkProps[];
 } & INavHeaderRootProps;
@@ -84,10 +84,6 @@ const meta: Meta<StoryProps> = {
       },
       if: { arg: 'useCustomNavigation', eq: true },
     },
-    renderSampleContent: {
-      control: { type: 'boolean' },
-      description: 'Populate (right-hand side) children with sample content?',
-    },
   },
 };
 
@@ -107,9 +103,9 @@ export const Dynamic: IStory = {
     customNavigation,
     linksCount,
     navHeaderActiveLink,
-    renderSampleContent = false,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
+    const selectedNetwork = sampleNetworkItems[0];
 
     return (
       <NavHeader.Root brand={brand}>
@@ -125,18 +121,19 @@ export const Dynamic: IStory = {
           ))}
         </NavHeader.Navigation>
         <NavHeader.Content>
-          {renderSampleContent && (
-            <Button
-              as="button"
-              icon="Link"
-              onClick={() => {}}
-              style={{ marginLeft: '1rem' }}
-              title="Sample button"
-              variant="positive"
-            >
-              Connect your wallet
-            </Button>
-          )}
+          <NavHeader.Select
+            id="network-select"
+            ariaLabel="Select Network"
+            value={selectedNetwork as string}
+            onChange={() => {}}
+            icon="Earth"
+          >
+            {sampleNetworkItems.map((network) => (
+              <option key={network} value={network}>
+                {network}
+              </option>
+            ))}
+          </NavHeader.Select>
         </NavHeader.Content>
       </NavHeader.Root>
     );
