@@ -18,14 +18,23 @@ const main = async () => {
 
   const packages = manifests
     .map((pkg) => JSON.parse(String(pkg)))
-    .map((pkg, index) => {
-      return {
-        name: pkg.name,
-        version: pkg.version,
-        private: Boolean(pkg.private),
-        path: relative(baseDir, dirname(filePaths[index])) || '.',
-      };
-    });
+    .map((pkg, index) => ({
+      path: relative(baseDir, dirname(filePaths[index])) || '.',
+      ...pkg,
+    }))
+    .sort((a, b) => {
+      if (a.name.startsWith('@kadena/') && !b.name.startsWith('@kadena/'))
+        return -1;
+      if (b.name.startsWith('@kadena/') && !a.name.startsWith('@kadena/'))
+        return 1;
+      return a.name > b.name ? 1 : -1;
+    })
+    .map((pkg) => ({
+      name: pkg.name,
+      version: pkg.version,
+      private: Boolean(pkg.private),
+      path: pkg.path,
+    }));
 
   await fs.writeFile(
     join(baseDir, 'packages.json'),
