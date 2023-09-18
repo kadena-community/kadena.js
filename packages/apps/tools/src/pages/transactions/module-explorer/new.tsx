@@ -30,6 +30,7 @@ import { getName, parse } from '@/utils/persist';
 import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState, useTransition } from 'react';
 
@@ -65,6 +66,11 @@ export const getModules = async (network: Network): Promise<IModule[]> => {
   });
 
   return sorted;
+};
+
+const QueryParams = {
+  MODULE: 'module',
+  CHAIN: 'chain',
 };
 
 export const getServerSideProps: GetServerSideProps<{
@@ -159,6 +165,20 @@ const NewPage = ({
     enabled: !!selectedModule,
   });
 
+  const router = useRouter();
+
+  const onModuleClick = useCallback<(selectedModule: IModule) => void>(
+    (selectedModule) => {
+      setSelectedModule(selectedModule);
+      // eslint-disable-next-line no-void
+      void router.replace(
+        `?${QueryParams.MODULE}=${selectedModule.moduleName}&${QueryParams.CHAIN}=${selectedModule.chainId}`,
+        undefined,
+        { shallow: true },
+      );
+    },
+    [router],
+  );
 
   return (
     <>
@@ -209,7 +229,7 @@ const NewPage = ({
               modules={modules}
               searchQuery={searchQuery}
               chainID={chainID}
-              onModuleClick={setSelectedModule}
+              onModuleClick={onModuleClick}
             />
           </Card>
         </Grid.Item>
