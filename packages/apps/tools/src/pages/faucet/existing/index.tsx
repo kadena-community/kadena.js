@@ -16,6 +16,7 @@ import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
@@ -54,6 +55,7 @@ interface IFundExistingAccountResponse
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
+  const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
@@ -115,6 +117,8 @@ const ExistingAccountFaucetPage: FC = () => {
     [chainID, t],
   );
 
+  const showNotification = selectedNetwork === 'mainnet01';
+
   const {
     register,
     handleSubmit,
@@ -136,6 +140,16 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
+        {showNotification ? (
+            <FormStatusNotification
+              status={'erroneous'}
+              statusBodies={{
+                erroneous: t('You cannot use faucet on Mainnet.'),
+              }}
+              body={t('You cannot use faucet on Mainnet.')}
+            />
+        )
+        : null}
         <Card fullWidth>
           <Heading as="h5">Account</Heading>
           <Box marginBottom="$4" />
