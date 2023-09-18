@@ -32,7 +32,8 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { useState, useTransition } from 'react';
+import type { ParsedUrlQuery } from 'querystring';
+import React, { useCallback, useState, useTransition } from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
@@ -68,6 +69,26 @@ export const getModules = async (network: Network): Promise<IModule[]> => {
   return sorted;
 };
 
+const getQueryValue = (
+  needle: string,
+  haystack: ParsedUrlQuery,
+  validator?: (value: string) => boolean,
+): string | undefined => {
+  if (typeof haystack[needle] === 'undefined') {
+    return undefined;
+  }
+
+  const value = Array.isArray(haystack[needle])
+    ? (haystack[needle]![0] as string)
+    : (haystack[needle] as string);
+
+  if (validator) {
+    return validator(value) ? value : undefined;
+  }
+
+  return value;
+};
+
 const QueryParams = {
   MODULE: 'module',
   CHAIN: 'chain',
@@ -75,6 +96,7 @@ const QueryParams = {
 
 export const getServerSideProps: GetServerSideProps<{
   data: Array<{ chainId: ChainwebChainId; moduleName: string }>;
+  prefetchedModule: (IModule & { code: string }) | null;
 }> = async (context) => {
   // TODO: Tidy this up
   const network: Network =
@@ -85,15 +107,43 @@ export const getServerSideProps: GetServerSideProps<{
 
   const modules = await getModules(network);
 
+  let prefetchedModule = null;
+  const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
+  const chainQueryValue = getQueryValue(
+    QueryParams.CHAIN,
+    context.query,
+    (value) => CHAINS.includes(value as ChainwebChainId),
+  );
+  if (moduleQueryValue && chainQueryValue) {
+    const moduleResponse = await describeModule(
+      moduleQueryValue,
+      chainQueryValue as ChainwebChainId,
+      network,
+      kadenaConstants.DEFAULT_SENDER,
+      kadenaConstants.GAS_PRICE,
+      1000,
+    );
+
+    if (moduleResponse.result.status !== 'failure') {
+      prefetchedModule = {
+        code: (moduleResponse.result.data as unknown as { code: string }).code,
+        moduleName: moduleQueryValue,
+        chainId: chainQueryValue,
+      } as IModule & { code: string };
+    }
+  }
+
   return {
     props: {
       data: modules,
+      prefetchedModule,
     },
   };
 };
 
 const NewPage = ({
   data,
+  prefetchedModule,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
   const [text, setText] = useState('');
@@ -127,7 +177,9 @@ const NewPage = ({
 
   const [chainID, setChainID] = useState<ChainwebChainId | ''>('');
 
-  const [selectedModule, setSelectedModule] = useState<IModule>();
+  const [selectedModule, setSelectedModule] = useState<IModule | null>(
+    prefetchedModule,
+  );
   const { selectedNetwork: network } = useWalletConnectClient();
 
   const {
@@ -163,6 +215,7 @@ const NewPage = ({
       return (result.result.data as unknown as { code: string }).code;
     },
     enabled: !!selectedModule,
+    initialData: prefetchedModule?.code,
   });
 
   const router = useRouter();
