@@ -7,7 +7,7 @@ import { importReadMes } from './utils.mjs';
 
 const DOCSROOT = './src/pages/docs/';
 
-const createFrontMatter = (title, menuTitle, order, editLink) => {
+const createFrontMatter = (title, menuTitle, order, editLink, tags = []) => {
   return `---
 title: ${title}
 description: Kadena makes blockchain work for everyone.
@@ -16,6 +16,7 @@ label: ${title}
 order: ${order}
 editLink: ${editLink}
 layout: full
+tags: [${tags.toString()}]
 ---
 `;
 };
@@ -230,6 +231,7 @@ const importDocs = (filename, destination, parentTitle, options) => {
         menuTitle,
         order,
         createEditOverwrite(filename, options),
+        options.tags,
       ) + doc,
       {
         flag: 'w',

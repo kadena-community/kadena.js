@@ -5,6 +5,7 @@ menu: Build
 label: Pact Local API queries
 order: 2
 layout: full
+tags: [pact, tutorial, local api]
 ---
 
 # Pact Local API queries
