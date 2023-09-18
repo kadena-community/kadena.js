@@ -2,8 +2,8 @@ import type { ChainId } from '@kadena/client';
 import { isSignedTransaction, Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
-import { submit } from '../utils/client';
-import { getConfig } from '../utils/globalConfig';
+import { listen, submit } from '../utils/client';
+import { getConfig, getContext } from '../utils/globalConfig';
 
 import type { TFundOptions } from './fundCommand';
 
@@ -44,6 +44,7 @@ import type { TFundOptions } from './fundCommand';
 // */
 
 async function fundTestNet({ receiver }: TFundOptions): Promise<void> {
+  console.log('hit');
   const { chainId, networkId, publicKey } = getConfig();
   const amount = 100;
   const transaction = Pact.builder
@@ -72,9 +73,19 @@ async function fundTestNet({ receiver }: TFundOptions): Promise<void> {
     })
     .setNetworkId(networkId)
     .createTransaction();
+
+  console.log('transaction', transaction);
   try {
     if (isSignedTransaction(transaction)) {
-      await submit(transaction);
+      console.log('hi');
+      const transactionDescriptor = await submit(transaction);
+      const response = await listen(transactionDescriptor);
+      console.log(response);
+      if (response.result.status === 'failure') {
+        throw response.result.error;
+      } else {
+        console.log(response.result);
+      }
     }
   } catch (e) {
     throw new Error(`Failed to fund account: ${e}`);
@@ -86,13 +97,14 @@ async function fundDevNet({ receiver }: TFundOptions): Promise<void> {
 }
 
 export async function makeFundRequest(args: TFundOptions): Promise<void> {
-  const { network } = args;
-  switch (network) {
+  const context = getContext();
+  console.log(context);
+  switch (context) {
     case 'testnet':
       return fundTestNet(args);
     case 'devnet':
       return fundDevNet(args);
     default:
-      throw new Error(`Unsupported network: ${network}`);
+      throw new Error(`Unsupported network: ${context}`);
   }
 }
